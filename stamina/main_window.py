@@ -216,7 +216,9 @@ class MainWindow(tk.Tk):
 
     def _update_stats(self) -> None:
         elapsed = self._current_elapsed()
-        cpm = (self._typed / elapsed) * 60 if elapsed > 0.1 else 0.0
+        # CPM считаем по правильно набранным символам (self._index),
+        # а не по всем нажатиям — иначе ошибки задирали бы скорость.
+        cpm = (self._index / elapsed) * 60 if elapsed > 0.1 else 0.0
         self.stats.update_stats(cpm=cpm, errors=self._errors, elapsed=elapsed)
 
     def _stats_tick(self) -> None:
@@ -284,18 +286,21 @@ class MainWindow(tk.Tk):
         self._session_active = False
         clear_session()
         elapsed = max(self._current_elapsed(), 0.001)
-        cpm = (self._typed / elapsed) * 60
+        cpm = (self._index / elapsed) * 60
         self.stats.update_stats(cpm=cpm, errors=self._errors, elapsed=elapsed)
 
         self.sequence.show_placeholder("Готово!")
         self.keyboard.highlight(None)
 
+        accuracy = (self._index / self._typed * 100) if self._typed else 100.0
         result = messagebox.askyesnocancel(
             "Текст завершён",
             "Поздравляем! Вы завершили текст.\n\n"
-            f"Введено символов: {self._typed}\n"
-            f"Ошибки: {self._errors}\n"
-            f"Символов в минуту: {cpm:.2f}\n\n"
+            f"Правильно набрано: {self._index} симв.\n"
+            f"Всего нажатий:    {self._typed}\n"
+            f"Ошибки:           {self._errors}\n"
+            f"Точность:         {accuracy:.1f}%\n"
+            f"Скорость:         {cpm:.1f} симв./мин\n\n"
             "Да — пройти этот же текст ещё раз\n"
             "Нет — выйти из программы\n"
             "Отмена — остаться на экране результата",
