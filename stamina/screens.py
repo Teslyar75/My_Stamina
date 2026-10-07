@@ -605,7 +605,7 @@ class SettingsScreen(tk.Frame):
         self._toggle_row("stars", "Звёздное поле", "Звёзды в иллюминаторе летят быстрее, когда вы печатаете "
                          "быстрее. Выключите, если ноутбук греется.")
         self._toggle_row("keyboard", "Экранная клавиатура", "Подсветка следующей клавиши и пальца.")
-        self._toggle_row("zones", "Цветные зоны пальцев", "Клавиши окрашены по пальцам, как в исходном Stamina.")
+        self._toggle_row("zones", "Цветные зоны пальцев", "Клавиши окрашены по пальцам, как в прежнем Stamina.")
         fs = self._row("Размер шрифта строки", "Размер букв в иллюминаторе.")
         self.font_btns = {}
         for key, name in (("S", "МЕЛКИЙ"), ("M", "СРЕДНИЙ"), ("L", "КРУПНЫЙ")):
@@ -695,7 +695,7 @@ class HelpScreen(tk.Frame):
     def __init__(self, master, app: "Cockpit") -> None:
         super().__init__(master, bg=BG)
         self.app = app
-        panel = HudPanel(self, "СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ  (F1)")
+        panel = HudPanel(self, "СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ STAR TYPING  (F1)")
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(10))
         sb = ttk.Scrollbar(panel.body, orient=tk.VERTICAL, style="Hud.Vertical.TScrollbar")
         sb.pack(side=tk.RIGHT, fill=tk.Y)

@@ -29,7 +29,7 @@ from stamina.text_processing import adapt_for_typing
 CHUNK_WORDS = 14
 MAX_SOURCE_CHARS = 1200
 TIMEOUT = 7
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Stamina/3.0"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) StarTyping/3.1"
 
 _SENTENCE_RE = re.compile(r"(?<=[.!?…])[\"'»”)\]]*\s+")
 

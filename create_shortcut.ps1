@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------
-# Stamina - create a desktop shortcut.
+# Star Typing (formerly Stamina) - create a desktop shortcut.
 # Run:  powershell -ExecutionPolicy Bypass -File create_shortcut.ps1
 # ----------------------------------------------------------------
 
@@ -18,12 +18,15 @@ if (-not $target) {
     exit 1
 }
 
-# Use Windows shell32 keyboard icon
-$iconSource = "$env:SystemRoot\System32\shell32.dll"
-$iconIndex  = 173
+# Star icon from the project; fallback: Windows shell32 keyboard icon
+$ico = Join-Path $root "stamina\assets\star_typing.ico"
+if (Test-Path $ico) { $iconLocation = "$ico,0" }
+else { $iconLocation = "$env:SystemRoot\System32\shell32.dll,173" }
 
 $desktop = [Environment]::GetFolderPath("Desktop")
-$lnkPath = Join-Path $desktop "Stamina.lnk"
+$lnkPath = Join-Path $desktop "Star Typing.lnk"
+$oldLnk  = Join-Path $desktop "Stamina.lnk"   # old name (before the rename)
+if (Test-Path $oldLnk) { Remove-Item $oldLnk }
 
 $wsh      = New-Object -ComObject WScript.Shell
 $shortcut = $wsh.CreateShortcut($lnkPath)
@@ -31,8 +34,8 @@ $shortcut.TargetPath       = $target
 $shortcut.Arguments        = "`"$mainPy`""
 $shortcut.WorkingDirectory = $root
 $shortcut.WindowStyle      = 1
-$shortcut.IconLocation     = "$iconSource,$iconIndex"
-$shortcut.Description      = "Stamina - typing trainer"
+$shortcut.IconLocation     = $iconLocation
+$shortcut.Description      = "Star Typing - touch typing trainer (formerly Stamina)"
 $shortcut.Save()
 
 Write-Host "Shortcut created:" -ForegroundColor Green

@@ -6,7 +6,9 @@ import time
 import tkinter as tk
 from tkinter import messagebox
 
-from stamina import __version__, missions, theme
+from pathlib import Path
+
+from stamina import APP_NAME, __version__, missions, theme
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -30,7 +32,8 @@ class Cockpit(tk.Tk):
         self.translator = None
         self.current: str | None = None
         self._last_action = None      # для F5: функция перезапуска
-        self.title(f"Stamina — пульт пилота  v{__version__}")
+        self.title(f"{APP_NAME} — пульт пилота  v{__version__}")
+        self._set_icon()
         self.configure(bg=BG)
         self._apply_geometry()
         self._build()
@@ -125,6 +128,21 @@ class Cockpit(tk.Tk):
         self.update_rank()
         self._update_sound_button()
 
+    def _set_icon(self) -> None:
+        """Иконка окна и панели задач: звезда в шестиграннике (stamina/assets)."""
+        assets = Path(__file__).resolve().parent / "assets"
+        try:
+            self._icon_img = tk.PhotoImage(file=str(assets / "star_typing_64.png"))
+            self.iconphoto(True, self._icon_img)
+        except tk.TclError:
+            pass
+        ico = assets / "star_typing.ico"
+        if ico.exists() and self.tk.call("tk", "windowingsystem") == "win32":
+            try:
+                self.iconbitmap(default=str(ico))
+            except tk.TclError:
+                pass
+
     def _draw_logo(self, c: tk.Canvas) -> None:
         cx, cy, r = px(22), px(22), px(17)
         import math
@@ -133,8 +151,13 @@ class Cockpit(tk.Tk):
             a = math.radians(60 * i + 30)
             pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
         c.create_polygon(pts, fill=blend(BG, CYAN, 0.15), outline=CYAN, width=2)
-        c.create_text(cx, cy, text="S", fill=CYAN, font=theme.font(15, True))
-        c.create_text(px(48), px(15), text="STAMINA", anchor="w", fill=TEXT,
+        star = []
+        for i in range(10):
+            a = math.radians(-90 + 36 * i)
+            rr = r * (0.62 if i % 2 == 0 else 0.26)
+            star += [cx + rr * math.cos(a), cy + px(1) + rr * math.sin(a)]
+        c.create_polygon(star, fill=AMBER, outline="")
+        c.create_text(px(48), px(15), text="STAR TYPING", anchor="w", fill=TEXT,
                       font=theme.font(17, True))
         c.create_text(px(49), px(35), text="ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ", anchor="w",
                       fill=CYAN_DIM, font=theme.font(7, True))

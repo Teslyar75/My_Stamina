@@ -1,11 +1,11 @@
-# Задача для Cursor: Stamina — редизайн в стиле «пульт космического корабля»
+# Задача для Cursor: Star Typing (бывший Stamina) — редизайн в стиле «пульт космического корабля»
 
 > Это инструкция-передача. Если работа уже доделана (см. раздел **STATUS** внизу),
 > используй её как описание проекта и список того, что ещё можно улучшить.
 
 ## 1. Что это за проект
 
-**Stamina** — мой тренажёр слепой печати на Python (tkinter). Пользователь загружает
+**Star Typing** (до версии 3.1 — **Stamina**) — мой тренажёр слепой печати на Python (tkinter). Пользователь загружает
 свой текст (книгу/статью), программа адаптирует его (без знаков препинания, строчные,
 один пробел) и даёт набирать. Сейчас я набираю «1984» Оруэлла на английском.
 
@@ -14,7 +14,8 @@
 | Папка проекта | `D:\My_New_Stamina` (git, remote `https://github.com/Teslyar75/My_Stamina.git`, ветка `master`) |
 | Точка входа | `main.py` → `stamina.app.run_app()` (**не менять имя/путь**) |
 | Python | `C:\Users\mi\AppData\Local\Programs\Python\Python314\pythonw.exe` (3.14) |
-| Ярлык на рабочем столе | `pythonw.exe "D:\My_New_Stamina\main.py"`, рабочая папка `D:\My_New_Stamina` — должен работать дальше |
+| Ярлык на рабочем столе | `C:\Users\mi\OneDrive\Рабочий стол\Star Typing.lnk` (раньше `Stamina.lnk`): `pythonw.exe "D:\My_New_Stamina\main.py"`, рабочая папка `D:\My_New_Stamina`, значок `stamina\assets\star_typing.ico`. Должен работать дальше |
+| Название | Пользователю показываем **Star Typing**. Внутренние имена (папка, `main.py`, пакет `stamina`, `%APPDATA%\Stamina`, репозиторий `My_Stamina`) **не переименовывать**: иначе сломается ярлык и потеряется прогресс |
 | Инструменты | только стандартная библиотека: `tkinter` (+ `Canvas` для HUD), `winsound`, `urllib`, `threading`. Установлены также CustomTkinter 6.0.0 и psutil, но они **не нужны** |
 | Данные пользователя | `%APPDATA%\Stamina\` (= `C:\Users\mi\AppData\Roaming\Stamina`) |
 | Резервная копия | `D:\My_New_Stamina_backup_2026-10-07` (97 файлов, включая `.git`) + `...\_appdata_Stamina\session.json` (копия данных пользователя) |
@@ -97,10 +98,17 @@ C:\Users\mi\AppData\Local\Programs\Python\Python314\python.exe main.py   # с к
 
 ## STATUS
 
-_Обновлено: 08.10.2026, 00:30 (Киев). Состояние: **ГОТОВО**, выложено в `D:\My_New_Stamina`,
+_Обновлено: 08.10.2026, 00:40 (Киев). Состояние: **ГОТОВО**, выложено в `D:\My_New_Stamina`,
 закоммичено и отправлено в GitHub (`Teslyar75/My_Stamina`, ветка `master`)._
 
 ### Сделано
+- **3.1.0: переименование в Star Typing.** Заголовок окна, логотип «STAR TYPING» (звезда в
+  шестиграннике), справка F1, README, ИНСТРУКЦИЯ, CHANGELOG. Новая иконка
+  `stamina/assets/star_typing.ico` (+ `star_typing_64.png`) у окна и на панели задач
+  (AppUserModelID `Teslyar75.StarTyping`). Ярлык на рабочем столе переименован в «Star Typing»
+  (цель, аргументы и рабочая папка прежние), копия инструкции на рабочем столе теперь
+  «Star Typing — ИНСТРУКЦИЯ.md». Внутренние имена не менялись. Репозиторий на GitHub остался
+  `My_Stamina`: переименовать его может только владелец в Settings → Repository name.
 - Резервная копия `D:\My_New_Stamina_backup_2026-10-07` (97 = 97 файлов, с `.git`) и копия данных
   пользователя `...\_appdata_Stamina\session.json`.
 - Версия 3.0.0, только стандартная библиотека:

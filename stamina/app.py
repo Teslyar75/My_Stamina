@@ -1,4 +1,4 @@
-"""Точка сборки приложения Stamina."""
+"""Точка сборки приложения Star Typing (пакет по-прежнему называется stamina)."""
 
 from __future__ import annotations
 
@@ -19,7 +19,19 @@ def _enable_dpi_awareness() -> None:
         pass
 
 
+def _set_app_id() -> None:
+    """Своя иконка на панели задач Windows вместо иконки Python."""
+    if sys.platform != "win32":
+        return
+    try:
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("Teslyar75.StarTyping")
+    except Exception:
+        pass
+
+
 def run_app() -> None:
     _enable_dpi_awareness()
+    _set_app_id()
     from stamina.cockpit import Cockpit
     Cockpit().mainloop()
