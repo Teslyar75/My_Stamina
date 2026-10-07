@@ -27,3 +27,6 @@ htmlcov/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Кэш переводов UPLINK (создаётся автоматически)
+/cache/
