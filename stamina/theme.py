@@ -1,43 +1,110 @@
-"""Цвета, шрифты и размеры — как в Stamina2_XAML (WPF MainWindow.xaml)."""
+"""Палитра, шрифты и масштаб интерфейса «пульт космического корабля».
 
-# --- Цвета клавиш (1:1 из MainWindow.xaml) ---
-PINK = "#EA6E91"      # #FFEA6E91 — мизинец
-YELLOW = "#F0E110"    # #FFF0E110 — безымянный
-GREEN = "#10F013"     # #FF10F013 — средний
-CYAN = "#19C0E0"      # #FF19C0E0 — указательный
-PURPLE = "#D710F0"    # #FFD710F0 — указательный (внешний)
-GRAY = "#83837B"      # #FF83837B — служебные клавиши
-HIGHLIGHT = "#FF0000" # текущая клавиша подсвечивается красным (как в C#)
+Цвета подобраны под тёмный HUD: глубокий космос + неоновый циан и янтарь.
+В Tkinter нет прозрачности, поэтому «свечение» рисуется несколькими
+контурами заранее смешанных цветов (см. :func:`blend`).
+"""
 
-# --- Цвета окна ---
-# В WPF Window по умолчанию белый — повторяем точно.
-WINDOW_BG = "#FFFFFF"
-PANEL_BG = "#FFFFFF"
+from __future__ import annotations
 
-# Цветовая полоса набора: уже набранная часть и оставшаяся.
-SEQUENCE_DONE_BG = "#19C0E0"      # бирюзовый — как клавиши указательного пальца
-SEQUENCE_REMAINING_BG = "#9A9A9A" # средне-серый, чтобы тёмный текст был читаем
-SEQUENCE_BORDER = "#5A5A5A"
+import tkinter as tk
+import tkinter.font as tkfont
 
-TEXT_FG = "#1A1A1A"
-MUTED_FG = "#666666"
+# --- Фон и панели ------------------------------------------------------
+BG = "#03060C"          # глубокий космос
+BG2 = "#060C17"
+PANEL = "#081221"       # заливка панелей
+PANEL_HI = "#0D1C33"    # наведение / активная панель
+LINE = "#15314D"        # тонкие рамки
+LINE_HI = "#1F4F7A"
 
-# --- Шрифты ---
-FONT_UI = ("Segoe UI", 10)
-FONT_UI_BOLD = ("Segoe UI", 10, "bold")
-# Моноширинный — чтобы подчёркивание точно «садилось» под букву.
-FONT_SEQUENCE = ("Consolas", 22)
-FONT_KEY = ("Segoe UI", 14)
-FONT_KEY_WIDE = ("Segoe UI", 11)
+# --- Неон ----------------------------------------------------------------
+CYAN = "#00E5FF"
+CYAN_DIM = "#0B7285"
+CYAN_DEEP = "#06303B"
+AMBER = "#FFB000"
+AMBER_DIM = "#7A5300"
+RED = "#FF3B5C"
+RED_DIM = "#5E1426"
+GREEN = "#3DFF8A"
+GREEN_DIM = "#155E36"
+PURPLE = "#B76BFF"
 
-# --- Геометрия клавиш ---
-KEY_RADIUS = 10        # CornerRadius="10" в XAML
-KEY_PADX = 2
-KEY_PADY = 2
+TEXT = "#D6F4FF"
+MUTED = "#6F90AB"
+FAINT = "#2B4762"
 
-# --- Размеры окна (Width=1050 Height=450 из MainWindow.xaml) ---
-WINDOW_SIZE = "1050x460"
-WINDOW_MIN = (940, 420)
-KEYBOARD_MAX_WIDTH = 1050
-KEYBOARD_ROW_HEIGHT = 52
-KEYBOARD_HEIGHT = KEYBOARD_ROW_HEIGHT * 5 + KEY_PADY * 2 * 5
+# --- Зоны пальцев (неоновые версии цветов исходного Stamina) ------------
+ZONE_PINKY = "#FF4FA3"
+ZONE_RING = "#FFD84A"
+ZONE_MIDDLE = "#4CFF8F"
+ZONE_L_INDEX = "#2ED8FF"
+ZONE_R_INDEX = "#B76BFF"
+ZONE_THUMB = "#8FA6BF"
+ZONE_MOD = "#4A6580"
+
+# --- Шрифты (определяются при запуске, есть запасные варианты) ----------
+HUD_FAMILY = "Segoe UI"
+MONO_FAMILY = "Consolas"
+
+# Масштаб: 1.0 при 96 DPI, 1.25 при 120 DPI и т.д.
+S = 1.0
+
+
+def px(value: float) -> int:
+    """Пиксели с учётом масштаба экрана."""
+    return int(round(value * S))
+
+
+def init(root: tk.Tk) -> None:
+    """Определить масштаб и доступные шрифты. Вызывать один раз."""
+    global S, HUD_FAMILY, MONO_FAMILY
+    try:
+        S = max(1.0, float(root.winfo_fpixels("1i")) / 96.0)
+    except tk.TclError:
+        S = 1.0
+    families = set(tkfont.families(root))
+    for name in ("Bahnschrift", "Segoe UI", "DejaVu Sans", "Helvetica"):
+        if name in families:
+            HUD_FAMILY = name
+            break
+    for name in ("Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Courier New"):
+        if name in families:
+            MONO_FAMILY = name
+            break
+
+
+def font(size: int, bold: bool = False, mono: bool = False) -> tuple:
+    family = MONO_FAMILY if mono else HUD_FAMILY
+    return (family, size, "bold") if bold else (family, size)
+
+
+def _rgb(color: str) -> tuple[int, int, int]:
+    color = color.lstrip("#")
+    return int(color[0:2], 16), int(color[2:4], 16), int(color[4:6], 16)
+
+
+def blend(c1: str, c2: str, t: float) -> str:
+    """Смешать цвета: t=0 → c1, t=1 → c2."""
+    t = max(0.0, min(1.0, t))
+    r1, g1, b1 = _rgb(c1)
+    r2, g2, b2 = _rgb(c2)
+    return "#{:02X}{:02X}{:02X}".format(
+        int(r1 + (r2 - r1) * t),
+        int(g1 + (g2 - g1) * t),
+        int(b1 + (b2 - b1) * t),
+    )
+
+
+def chamfer(x1: float, y1: float, x2: float, y2: float, c: float) -> list[float]:
+    """Точки прямоугольника со срезанными углами (левый верх и правый низ)."""
+    return [x1 + c, y1, x2, y1, x2, y2 - c, x2 - c, y2, x1, y2, x1, y1 + c]
+
+
+def heat_color(rate: float) -> str:
+    """Цвет тепловой карты: 0 → спокойный, 1 → ярко-красный."""
+    if rate <= 0:
+        return blend(PANEL, GREEN_DIM, 0.6)
+    if rate < 0.5:
+        return blend(GREEN_DIM, AMBER, rate * 2)
+    return blend(AMBER, RED, (rate - 0.5) * 2)
