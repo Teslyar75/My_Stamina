@@ -44,3 +44,41 @@ def adapt_for_typing(text: str) -> str:
 def is_valid_practice_text(text: str) -> bool:
     """Текст пригоден для тренировки, если после адаптации есть символы."""
     return bool(adapt_for_typing(text).strip())
+
+
+_TYPOGRAPHY = {
+    "«": '"', "»": '"', "“": '"', "”": '"', "„": '"', "‟": '"',
+    "‘": "'", "’": "'", "‚": "'", "‛": "'", "‹": "'", "›": "'",
+    "—": "-", "–": "-", "−": "-", "…": "...", "\u00a0": " ", "\u202f": " ",
+}
+
+
+def normalize_typography(text: str) -> str:
+    """Типографские символы, которых нет на клавиатуре, → обычные (« » → ", — → -).
+
+    Переводы строк и табуляции становятся пробелами: строка набора одна.
+    """
+    out = "".join(_TYPOGRAPHY.get(ch, ch) for ch in text)
+    return "".join(" " if ch in "\r\n\t\v\f" else ch for ch in out)
+
+
+def process_text(text: str, *, lower: bool = True, punct: bool = True,
+                 spaces: bool = True) -> str:
+    """Подготовка текста по выбранным опциям.
+
+    * ``lower``  — убрать заглавные буквы;
+    * ``punct``  — убрать знаки препинания;
+    * ``spaces`` — один пробел между словами.
+
+    Со всеми тремя опциями результат в точности равен :func:`adapt_for_typing`.
+    """
+    if lower and punct and spaces:
+        return adapt_for_typing(text)
+    if punct:
+        text = remove_punctuation(text)
+    text = normalize_typography(text)
+    if lower:
+        text = to_lowercase(text)
+    if spaces:
+        return normalize_spaces(text)
+    return text.strip()

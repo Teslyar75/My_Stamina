@@ -35,6 +35,7 @@ class SessionState:
     typed: int = 0
     errors: int = 0
     elapsed: float = 0.0  # суммарное время набора в секундах
+    case_sensitive: bool = False  # True — в тексте оставлены заглавные буквы
 
     @property
     def is_unfinished(self) -> bool:
@@ -70,6 +71,7 @@ def load_session() -> SessionState | None:
             typed=int(data.get("typed", 0)),
             errors=int(data.get("errors", 0)),
             elapsed=float(data.get("elapsed", 0.0)),
+            case_sensitive=bool(data.get("case_sensitive", False)),
         )
     except (ValueError, TypeError):
         return None

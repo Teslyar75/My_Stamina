@@ -104,14 +104,40 @@ for _row in ROWS:
 CHAR_TO_KEY.setdefault("ъ", "]")
 
 
-def key_for_char(char: str | None) -> str | None:
+# Символы, набираемые с Shift: символ → клавиша (английская раскладка).
+SHIFTED_EN = {"~": "`", "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7",
+              "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", "{": "[", "}": "]", "|": "\\",
+              ":": ";", '"': "'", "<": ",", ">": ".", "?": "/"}
+# Знаки в русской раскладке (ЙЦУКЕН): символ → (клавиша, нужен ли Shift).
+PUNCT_RU = {".": ("/", False), ",": ("/", True), "!": ("1", True), '"': ("2", True),
+            "№": ("3", True), ";": ("4", True), "%": ("5", True), ":": ("6", True),
+            "?": ("7", True), "*": ("8", True), "(": ("9", True), ")": ("0", True),
+            "-": ("-", False), "_": ("-", True), "=": ("=", False), "+": ("=", True),
+            "\\": ("\\", False), "/": ("\\", True)}
+
+
+def key_for_char(char: str | None, lang: str = "en") -> str | None:
     if not char:
         return None
+    if lang == "ru" and char in PUNCT_RU:
+        return PUNCT_RU[char][0]
+    if char in SHIFTED_EN:
+        return SHIFTED_EN[char]
     return CHAR_TO_KEY.get(char.lower())
 
 
-def finger_for_char(char: str | None) -> int | None:
-    kid = key_for_char(char)
+def needs_shift(char: str | None, lang: str = "en") -> bool:
+    if not char:
+        return False
+    if char.isalpha():
+        return char != char.lower()
+    if lang == "ru" and char in PUNCT_RU:
+        return PUNCT_RU[char][1]
+    return char in SHIFTED_EN
+
+
+def finger_for_char(char: str | None, lang: str = "en") -> int | None:
+    kid = key_for_char(char, lang)
     return KEY_FINGER.get(kid) if kid else None
 
 

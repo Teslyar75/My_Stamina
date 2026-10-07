@@ -39,7 +39,8 @@ _SENTENCE_RE = re.compile(r"(?<=[.!?…])[\"'»”)\]]*\s+")
 class Segments:
     """Фрагменты адаптированного текста с исходным текстом для перевода."""
 
-    def __init__(self, adapted: str, original: str | None = None) -> None:
+    def __init__(self, adapted: str, original: str | None = None, process=None) -> None:
+        self._process = process or adapt_for_typing
         self.starts: list[int] = []
         self.ends: list[int] = []
         self.sources: list[str] = []
@@ -66,13 +67,14 @@ class Segments:
         self.sources.append(source[:MAX_SOURCE_CHARS])
 
     def _from_original(self, adapted, original, words, offsets) -> bool:
-        if adapt_for_typing(original) != adapted:
+        process = self._process
+        if process(original) != adapted:
             return False
         flat = " ".join(original.split())
         sentences = [s.strip() for s in _SENTENCE_RE.split(flat) if s.strip()]
         if len(sentences) < 2 and len(words) > CHUNK_WORDS * 2:
             return False  # в оригинале нет знаков конца предложения
-        counts = [len(adapt_for_typing(s).split()) for s in sentences]
+        counts = [len(process(s).split()) for s in sentences]
         if sum(counts) != len(words):
             return False
         wi = 0

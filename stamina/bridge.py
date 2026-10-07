@@ -14,7 +14,7 @@ from stamina.hud import (
 )
 from stamina.session_storage import SessionState, clear_session, save_session
 from stamina.theme import (
-    AMBER, BG, CYAN, CYAN_DEEP, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, blend,
+    AMBER, BG, CYAN, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, blend,
     chamfer, px,
 )
 
@@ -171,17 +171,19 @@ class Bridge(tk.Frame):
 
     def start(self, text: str, *, mode: str, title: str, subtitle: str,
               mission: dict | None = None, resume: SessionState | None = None,
-              original: str = "") -> None:
+              original: str = "", case_sensitive: bool = False, process=None) -> None:
         self.leave_current()
         self.hide_debrief()
         if resume is not None:
             self.engine = TypingEngine(text, index=resume.index, typed=resume.typed,
-                                       errors=resume.errors, elapsed=resume.elapsed)
+                                       errors=resume.errors, elapsed=resume.elapsed,
+                                       case_sensitive=case_sensitive)
         else:
-            self.engine = TypingEngine(text)
+            self.engine = TypingEngine(text, case_sensitive=case_sensitive)
         lang = missions.detect_lang(text)
         self.meta = {"mode": mode, "title": title, "subtitle": subtitle,
-                     "mission": mission, "lang": lang, "original": original}
+                     "mission": mission, "lang": lang, "original": original,
+                     "process": process}
         self.state = "ready"
         self.keyboard.set_lang(lang)
         self.keyboard.set_heat(None)
@@ -260,7 +262,7 @@ class Bridge(tk.Frame):
                     layouts.is_cyrillic(ch) != layouts.is_cyrillic(expected):
                 hint = "ПЕРЕКЛЮЧИТЕ РАСКЛАДКУ (Alt+Shift)"
             self.viewport.flash_error(ch, expected, hint)
-            self.keyboard.flash(layouts.key_for_char(expected))
+            self.keyboard.flash(layouts.key_for_char(expected, self.meta.get("lang", "en")))
         if self.state == "ready":
             self.state = "run"
         if self.meta.get("mode") == "cargo":
@@ -277,16 +279,20 @@ class Bridge(tk.Frame):
         if eng is None:
             return
         cur = eng.current
-        finger = layouts.finger_for_char(cur)
+        lang = self.meta.get("lang", "en")
+        finger = layouts.finger_for_char(cur, lang)
         finger_info = ""
         if finger is not None and layouts.FINGER_NAMES.get(finger):
-            finger_info = (layouts.FINGER_NAMES[finger], layouts.FINGER_COLORS[finger])
+            name = layouts.FINGER_NAMES[finger]
+            if layouts.needs_shift(cur, lang):
+                name += " + Shift другой рукой"
+            finger_info = (name, layouts.FINGER_COLORS[finger])
         mode = "pause" if self.state == "pause" else ("ready" if self.state == "ready" else "run")
         status = {"ready": ("К ЗАПУСКУ ГОТОВ", AMBER), "run": ("● В ПОЛЁТЕ", GREEN),
                   "pause": ("❚❚ ПАУЗА", AMBER)}[mode]
         self.viewport.set_state(index=eng.index, mode=mode, finger=finger_info,
                                 status=status[0], status_color=status[1])
-        self.keyboard.highlight(layouts.key_for_char(cur))
+        self.keyboard.highlight(layouts.key_for_char(cur, lang))
         self._update_uplink()
 
     # ------------------------------------------------------------------
@@ -454,7 +460,8 @@ class Bridge(tk.Frame):
         if not force and (not self._session_dirty or now - self._last_persist < 3.0):
             return
         save_session(SessionState(text=eng.text, index=eng.index, typed=eng.typed,
-                                  errors=eng.errors, elapsed=eng.elapsed(now)))
+                                  errors=eng.errors, elapsed=eng.elapsed(now),
+                                  case_sensitive=eng.case_sensitive))
         self._session_dirty = False
         self._last_persist = now
 
@@ -496,7 +503,8 @@ class Bridge(tk.Frame):
             self.uplink.grid_remove()
             return
         from stamina.translator import Segments
-        self._segments = Segments(self.engine.text, self.meta.get("original") or None)
+        self._segments = Segments(self.engine.text, self.meta.get("original") or None,
+                                  self.meta.get("process"))
         sl, tl = self._tr_dir
         self.uplink.set(direction=f"{sl.upper()} → {tl.upper()}", source="", translation="",
                         status="")

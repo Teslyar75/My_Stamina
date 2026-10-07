@@ -6,7 +6,7 @@ import unittest
 from stamina import missions
 from stamina.engine import DONE, ERROR, IDLE_CAP, OK, TypingEngine
 from stamina.layouts import key_for_char
-from stamina.text_processing import adapt_for_typing
+from stamina.text_processing import adapt_for_typing, process_text
 from stamina.translator import Segments
 
 
@@ -65,6 +65,27 @@ class MissionTests(unittest.TestCase):
         self.assertEqual(key_for_char("ф"), "a")
         self.assertEqual(key_for_char("Ё"), "`")
         self.assertEqual(key_for_char(" "), "space")
+
+
+class ProcessTextTests(unittest.TestCase):
+    RAW = "  «Привет»,   Мир —\nэто  тест…  "
+
+    def test_all_options_equal_original_adaptation(self):
+        self.assertEqual(process_text(self.RAW), adapt_for_typing(self.RAW))
+
+    def test_keep_capitals(self):
+        self.assertEqual(process_text(self.RAW, lower=False), "Привет Мир это тест")
+
+    def test_keep_punctuation_makes_it_typeable(self):
+        self.assertEqual(process_text(self.RAW, punct=False), '"привет", мир - это тест...')
+
+    def test_keep_spaces(self):
+        self.assertEqual(process_text("a  b\nc", spaces=False), "a  b c")
+
+    def test_case_sensitive_engine(self):
+        e = TypingEngine("Ab", case_sensitive=True)
+        self.assertEqual(e.press("a", 0.0), ERROR)
+        self.assertEqual(e.press("A", 0.1), OK)
 
 
 class SegmentTests(unittest.TestCase):

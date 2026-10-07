@@ -32,6 +32,8 @@ DEFAULT_SETTINGS = {
     "font": "M",
     "lang": "en",
     "translator": True,
+    # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы
+    "cargo_opts": {"lower": True, "punct": True, "spaces": True},
     "geometry": "",
 }
 

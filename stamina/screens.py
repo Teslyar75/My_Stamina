@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import time
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import TYPE_CHECKING
@@ -13,11 +12,9 @@ from stamina.bridge import fmt_int, fmt_time
 from stamina.hud import HudButton, HudKeyboard, HudPanel, LineChart
 from stamina.session_storage import load_session
 from stamina.storage import DATA_DIR
-from stamina.text_processing import (
-    adapt_for_typing, is_valid_practice_text, normalize_spaces, remove_punctuation, to_lowercase,
-)
+from stamina.text_processing import process_text
 from stamina.theme import (
-    AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, PANEL_HI,
+    AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, MUTED, PANEL, PANEL_HI,
     RED, TEXT, blend, chamfer, px,
 )
 
@@ -200,17 +197,29 @@ class MissionsScreen(tk.Frame):
 # ===========================================================================
 
 class CargoScreen(tk.Frame):
+    """Подготовка своего текста: загрузка, опции обработки, предпросмотр, старт."""
+
+    OPTIONS = (
+        ("lower", "Убрать заглавные буквы",
+         "«Дом» → «дом». Выключите, чтобы тренировать Shift: тогда регистр учитывается."),
+        ("punct", "Убрать знаки препинания",
+         "Точки, запятые, кавычки, тире и другие знаки удаляются."),
+        ("spaces", "Один пробел между словами",
+         "Лишние пробелы, табуляции и переводы строк схлопываются в один пробел."),
+    )
+
     def __init__(self, master, app: "Cockpit") -> None:
         super().__init__(master, bg=BG)
         self.app = app
         self._original: str | None = None
+        self._readonly = False
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(2)))
-        _label(top, "ГРУЗОВОЙ ОТСЕК — СВОЙ ТЕКСТ", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        _label(self, "Вставьте или откройте текст (книга, статья). Для тренажёра он будет "
-                     "адаптирован: без знаков препинания, строчными буквами, один пробел между "
-                     "словами. Оригинал сохраняется — по нему работает переводчик UPLINK.",
-               fg=MUTED, size=9, bg=BG, wraplength=px(1100), justify="left").pack(anchor="w", padx=px(16))
+        _label(top, "ПОДГОТОВКА ТЕКСТА — ЗАГРУЗКА ГРУЗА", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        _label(self, "1) Откройте файл или вставьте текст  →  2) выберите обработку справа  →  "
+                     "3) проверьте предпросмотр  →  4) «Сохранить на борт» или «Старт». "
+                     "Оригинал текста сохраняется: по нему работает переводчик UPLINK.",
+               fg=MUTED, size=9, bg=BG, wraplength=px(1150), justify="left").pack(anchor="w", padx=px(16))
 
         tools = tk.Frame(self, bg=BG)
         tools.pack(fill=tk.X, padx=px(12), pady=px(8))
@@ -220,16 +229,55 @@ class CargoScreen(tk.Frame):
             ("ОЧИСТИТЬ", self._clear, MUTED),
         ):
             HudButton(tools, text, cmd, color=col, height=32, font_size=9).pack(side=tk.LEFT, padx=(0, px(6)))
-        tk.Frame(tools, bg=LINE, width=2, height=px(26)).pack(side=tk.LEFT, padx=px(8))
-        for text, fn in (("ОДИН ПРОБЕЛ", normalize_spaces), ("БЕЗ ЗНАКОВ", remove_punctuation),
-                         ("СТРОЧНЫЕ", to_lowercase), ("✦ ВСЁ СРАЗУ", adapt_for_typing)):
-            HudButton(tools, text, lambda f=fn: self._apply(f), color=AMBER, height=32,
-                      font_size=9).pack(side=tk.LEFT, padx=(0, px(6)))
+        self.btn_ro = HudButton(tools, "ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ", self._toggle_readonly, color=MUTED,
+                                height=32, font_size=9, width=210)
+        self.btn_ro.pack(side=tk.LEFT, padx=(px(10), 0))
         HudButton(tools, "ЭКСПОРТ .TXT", self._export, color=MUTED, height=32,
                   font_size=9).pack(side=tk.RIGHT)
 
-        panel = HudPanel(self, "ТЕКСТ")
-        panel.pack(fill=tk.BOTH, expand=True, padx=px(12))
+        bottom = tk.Frame(self, bg=BG)
+        bottom.pack(fill=tk.X, side=tk.BOTTOM, padx=px(12), pady=px(8))
+        self.btn_start = HudButton(bottom, "▶ НА БОРТ И СТАРТ С НАЧАЛА", self._start_new,
+                                   color=AMBER, height=40, font_size=11)
+        self.btn_start.pack(side=tk.RIGHT)
+        self.btn_resume = HudButton(bottom, "▶ ПРОДОЛЖИТЬ С МЕСТА", self.app.resume_cargo,
+                                    color=GREEN, height=40, font_size=11, width=250)
+        self.btn_resume.pack(side=tk.RIGHT, padx=px(8))
+        HudButton(bottom, "СОХРАНИТЬ НА БОРТ", lambda: self._start_new(switch=False), color=CYAN,
+                  height=40, font_size=11).pack(side=tk.RIGHT)
+        self.status = _label(bottom, "", fg=MUTED, size=9, bg=BG, justify="left", anchor="w")
+        self.status.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        middle = tk.Frame(self, bg=BG)
+        middle.pack(fill=tk.BOTH, expand=True, padx=px(12))
+        side = HudPanel(middle, "ОБРАБОТКА ТЕКСТА", accent=AMBER)
+        side.pack(side=tk.RIGHT, fill=tk.Y, padx=(px(8), 0))
+        side.configure(width=px(360))
+        sb_body = side.body
+        self.opt_btns: dict[str, HudButton] = {}
+        for key, title, desc in self.OPTIONS:
+            row = tk.Frame(sb_body, bg=PANEL)
+            row.pack(fill=tk.X, pady=(0, px(8)))
+            b = HudButton(row, "● ВКЛ", lambda k=key: self._toggle_opt(k), width=86, height=30, font_size=9)
+            b.pack(side=tk.LEFT, anchor="n")
+            txt = tk.Frame(row, bg=PANEL)
+            txt.pack(side=tk.LEFT, fill=tk.X, padx=(px(8), 0))
+            _label(txt, title, size=10, bold=True, anchor="w").pack(anchor="w")
+            _label(txt, desc, fg=MUTED, size=8, wraplength=px(240), justify="left").pack(anchor="w")
+            self.opt_btns[key] = b
+        HudButton(sb_body, "✦ ПРИМЕНИТЬ К ТЕКСТУ В ПОЛЕ", self._apply_to_field, color=AMBER,
+                  height=32, font_size=9).pack(fill=tk.X, pady=(0, px(10)))
+        tk.Frame(sb_body, bg=LINE, height=1).pack(fill=tk.X)
+        _label(sb_body, "ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА", fg=blend(CYAN, TEXT, 0.3), size=9,
+               bold=True).pack(anchor="w", pady=(px(8), px(2)))
+        self.preview_info = _label(sb_body, "", fg=AMBER, size=9, bold=True, justify="left", anchor="w")
+        self.preview_info.pack(anchor="w")
+        self.preview = _label(sb_body, "", fg=TEXT, size=10, mono=True, wraplength=px(330),
+                              justify="left", anchor="nw", bg=BG2, padx=px(8), pady=px(6))
+        self.preview.pack(fill=tk.BOTH, expand=True, pady=(px(4), 0))
+
+        panel = HudPanel(middle, "ТЕКСТ")
+        panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         style = ttk.Style(self)
         try:
             style.theme_use("clam")
@@ -243,32 +291,64 @@ class CargoScreen(tk.Frame):
                             insertbackground=CYAN, selectbackground=CYAN_DIM, relief=tk.FLAT,
                             font=theme.font(12, mono=True), padx=px(10), pady=px(8),
                             yscrollcommand=sb.set, highlightthickness=1,
-                            highlightbackground=LINE, highlightcolor=CYAN_DIM)
+                            highlightbackground=LINE, highlightcolor=CYAN_DIM, width=40)
         self.text.pack(fill=tk.BOTH, expand=True)
         sb.configure(command=self.text.yview)
         self.text.bind("<<Modified>>", self._on_modified)
+        self._refresh_opts()
 
-        bottom = tk.Frame(self, bg=BG)
-        bottom.pack(fill=tk.X, padx=px(12), pady=px(8))
-        self.preview = _label(bottom, "", fg=MUTED, size=9, bg=BG, justify="left", anchor="w")
-        self.preview.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        self.btn_start = HudButton(bottom, "▶ НА БОРТ И СТАРТ С НАЧАЛА", self._start_new,
-                                   color=AMBER, height=40, font_size=11)
-        self.btn_start.pack(side=tk.RIGHT)
-        self.btn_resume = HudButton(bottom, "▶ ПРОДОЛЖИТЬ С МЕСТА", self.app.resume_cargo,
-                                    color=GREEN, height=40, font_size=11)
-        self.btn_resume.pack(side=tk.RIGHT, padx=px(8))
+    # -- опции --------------------------------------------------------------
+    def _opts(self) -> dict:
+        opts = self.app.store.settings.setdefault("cargo_opts", {})
+        for k in ("lower", "punct", "spaces"):
+            opts.setdefault(k, True)
+        return opts
 
-    # -- данные -----------------------------------------------------------
+    def _toggle_opt(self, key: str) -> None:
+        opts = self._opts()
+        opts[key] = not opts[key]
+        self.app.store.save_settings()
+        self._refresh_opts()
+        self._update_preview()
+
+    def _refresh_opts(self) -> None:
+        opts = self._opts()
+        for key, b in self.opt_btns.items():
+            on = opts[key]
+            b.set_text("● ВКЛ" if on else "○ ВЫКЛ")
+            b.set_color(GREEN if on else MUTED)
+            b.set_active(on)
+
+    def _process(self, text: str) -> str:
+        o = self._opts()
+        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"])
+
+    def _toggle_readonly(self) -> None:
+        self._readonly = not self._readonly
+        self.text.configure(state=tk.DISABLED if self._readonly else tk.NORMAL)
+        self.btn_ro.set_text("ЗАЩИТА ОТ ПРАВКИ: ВКЛ" if self._readonly else "ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ")
+        self.btn_ro.set_color(AMBER if self._readonly else MUTED)
+        self.btn_ro.set_active(self._readonly)
+
+    # -- данные -------------------------------------------------------------
+    def refresh(self) -> None:
+        self._refresh_opts()
+        self._update_preview()
+
     def load_initial(self, adapted: str, original: str) -> None:
-        text = original if original and adapt_for_typing(original) == adapted else adapted
+        text = original if original and self._process(original) == adapted else adapted
         self._original = original or None
         self._set(text)
 
     def _set(self, text: str) -> None:
+        ro = self._readonly
+        if ro:
+            self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
         self.text.insert("1.0", text)
         self.text.edit_modified(False)
+        if ro:
+            self.text.configure(state=tk.DISABLED)
         self._update_preview()
 
     def _get(self) -> str:
@@ -280,22 +360,29 @@ class CargoScreen(tk.Frame):
             self.after_idle(self._update_preview)
 
     def _update_preview(self) -> None:
-        adapted = adapt_for_typing(self._get())
+        adapted = self._process(self._get())
         saved = load_session()
         same = bool(saved) and saved.text == adapted
         self.btn_resume.set_enabled(same)
-        if same:
-            self.btn_resume.set_text(f"▶ ПРОДОЛЖИТЬ С {saved.index / len(saved.text) * 100:.0f}%")
+        self.btn_resume.set_text(f"▶ ПРОДОЛЖИТЬ С {saved.index / len(saved.text) * 100:.0f}%"
+                                 if same else "▶ ПРОДОЛЖИТЬ С МЕСТА")
+        if saved and not same:
+            self.status.configure(text="На борту другой незаконченный текст.")
+        elif same:
+            self.status.configure(text=f"Этот текст уже на борту: пройдено {fmt_int(saved.index)} из "
+                                       f"{fmt_int(len(saved.text))}.")
+        else:
+            self.status.configure(text="")
         if not adapted:
-            self.preview.configure(text="Текст пуст — откройте файл или вставьте текст.")
+            self.preview_info.configure(text="Текст пуст")
+            self.preview.configure(text="Откройте файл или вставьте текст.")
             return
         runs = [r for r in self.app.store.stats["runs"][-20:] if r.get("cpm")]
         avg = sum(r["cpm"] for r in runs) / len(runs) if runs else 150
         eta = fmt_time(len(adapted) / max(avg, 30) * 60)
         lang = "русский" if missions.detect_lang(adapted) == "ru" else "английский"
-        self.preview.configure(
-            text=f"Для тренажёра: {fmt_int(len(adapted))} знаков · язык: {lang} · "
-                 f"≈ {eta} при вашей скорости {avg:.0f} зн/мин\n«{adapted[:110]}…»")
+        self.preview_info.configure(text=f"{fmt_int(len(adapted))} знаков · {lang} · ≈ {eta}")
+        self.preview.configure(text=adapted[:260] + ("…" if len(adapted) > 260 else ""))
 
     def _open_file(self) -> None:
         path = filedialog.askopenfilename(parent=self, title="Открыть текст",
@@ -333,17 +420,18 @@ class CargoScreen(tk.Frame):
         self._original = None
         self._set("")
 
-    def _apply(self, fn) -> None:
+    def _apply_to_field(self) -> None:
+        """Как «Применить все правки» в исходной версии, но по выбранным опциям."""
         if self._original is None:
             self._original = self._get()
-        self._set(fn(self._get()))
+        self._set(self._process(self._get()))
 
     def _export(self) -> None:
-        adapted = adapt_for_typing(self._get())
+        adapted = self._process(self._get())
         if not adapted:
             return
         path = filedialog.asksaveasfilename(parent=self, defaultextension=".txt",
-                                            title="Сохранить адаптированный текст",
+                                            title="Сохранить подготовленный текст",
                                             filetypes=[("Текстовые файлы", "*.txt")])
         if path:
             try:
@@ -352,24 +440,30 @@ class CargoScreen(tk.Frame):
             except OSError as exc:
                 messagebox.showerror("Ошибка", f"Не удалось сохранить:\n{exc}", parent=self)
 
-    def _start_new(self) -> None:
+    def _start_new(self, switch: bool = True) -> None:
         current = self._get()
-        if not is_valid_practice_text(current):
+        adapted = self._process(current)
+        if not adapted.strip():
             messagebox.showwarning("Пустой текст", "Введите текст или откройте файл.", parent=self)
             return
-        adapted = adapt_for_typing(current)
         saved = load_session()
-        if saved and saved.text == adapted and saved.index > 0:
-            if not messagebox.askyesno(
-                    "Начать заново?",
-                    f"Этот текст уже пройден на {saved.index / len(saved.text) * 100:.0f}%.\n"
-                    "Начать его с самого начала? (Чтобы продолжить — кнопка «Продолжить с места»)",
-                    parent=self):
+        if saved and saved.index > 0:
+            pct = saved.index / len(saved.text) * 100
+            msg = (f"Этот текст уже пройден на {pct:.0f}%.\nНачать его с самого начала? "
+                   "(Чтобы продолжить — кнопка «Продолжить с места».)") if saved.text == adapted else (
+                   f"На борту незаконченный текст (пройдено {pct:.0f}%).\n"
+                   "Заменить его новым? Прогресс старого текста будет потерян.")
+            if not messagebox.askyesno("Заменить текст?", msg, parent=self):
                 return
         original = current
-        if self._original and adapt_for_typing(self._original) == adapted:
+        if self._original and self._process(self._original) == adapted:
             original = self._original
-        self.app.start_cargo(adapted, original)
+        self.app.start_cargo(adapted, original, switch=switch)
+        if not switch:
+            self._update_preview()
+            self.status.configure(text="Текст сохранён на борт. Таймер стартует с первой клавиши на "
+                                       "Мостике (Ctrl+1).", fg=GREEN)
+            self.after(5000, lambda: self.status.configure(fg=MUTED))
 
 
 # ===========================================================================
@@ -565,7 +659,6 @@ class SettingsScreen(tk.Frame):
         if not snd.available:
             messagebox.showinfo("Звук", "Звук доступен только в Windows.", parent=self)
             return
-        was = snd.enabled
         snd.enabled = True
         snd.click()
         self.after(160, snd.click)

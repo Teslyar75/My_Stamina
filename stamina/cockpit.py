@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import random
 import time
 import tkinter as tk
 from tkinter import messagebox
@@ -14,7 +13,7 @@ from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, 
 from stamina.session_storage import clear_session, load_session
 from stamina.sounds import SoundBoard
 from stamina.storage import Store
-from stamina.text_processing import adapt_for_typing
+from stamina.text_processing import process_text
 from stamina.theme import AMBER, BG, CYAN, CYAN_DIM, GREEN, LINE, MUTED, TEXT, blend, px
 
 
@@ -218,10 +217,16 @@ class Cockpit(tk.Tk):
         self._last_action = lambda: self.start_repair(lang)
         self.show("bridge")
 
-    def start_cargo(self, adapted: str, original: str) -> None:
+    def cargo_process(self):
+        """Функция подготовки своего текста по текущим опциям."""
+        opts = dict(self.store.settings.get("cargo_opts") or {})
+        lower, punct, spaces = (bool(opts.get(k, True)) for k in ("lower", "punct", "spaces"))
+        return lambda t: process_text(t, lower=lower, punct=punct, spaces=spaces)
+
+    def start_cargo(self, adapted: str, original: str, switch: bool = True) -> None:
         self.store.save_cargo(adapted, original)
         clear_session()
-        self._start_cargo_engine(adapted, original, None)
+        self._start_cargo_engine(adapted, original, None, switch=switch)
 
     def resume_cargo(self) -> None:
         saved = load_session()
@@ -229,23 +234,28 @@ class Cockpit(tk.Tk):
             self.show("cargo")
             return
         adapted, original = self.store.load_cargo()
-        if adapt_for_typing(original or "") != saved.text:
+        if not original or self.cargo_process()(original) != saved.text:
             original = ""
         self._start_cargo_engine(saved.text, original, saved)
 
-    def _start_cargo_engine(self, text: str, original: str, resume) -> None:
+    def _start_cargo_engine(self, text: str, original: str, resume, switch: bool = True) -> None:
         preview = text[:40] + ("…" if len(text) > 40 else "")
+        lower = bool((self.store.settings.get("cargo_opts") or {}).get("lower", True))
+        case_sensitive = resume.case_sensitive if resume is not None else not lower
         self.screens["bridge"].start(
             text, mode="cargo", resume=resume, original=original,
+            case_sensitive=case_sensitive, process=self.cargo_process(),
             title="СВОЙ ТЕКСТ · ДОСТАВКА ГРУЗА",
-            subtitle=f"«{preview}» · прогресс сохраняется автоматически, можно закрыть программу")
+            subtitle=f"«{preview}» · прогресс сохраняется автоматически, можно закрыть программу"
+                     + (" · с заглавными буквами" if case_sensitive else ""))
 
         def again():
             if messagebox.askyesno("Заново", "Начать этот текст с самого начала?", parent=self):
                 clear_session()
                 self._start_cargo_engine(text, original, None)
         self._last_action = again
-        self.show("bridge")
+        if switch:
+            self.show("bridge")
 
     def restart_current(self) -> None:
         if self._last_action:

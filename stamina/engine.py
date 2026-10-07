@@ -25,8 +25,10 @@ class TypingEngine:
         typed: int = 0,
         errors: int = 0,
         elapsed: float = 0.0,
+        case_sensitive: bool = False,
     ) -> None:
         self.text = text
+        self.case_sensitive = case_sensitive
         self.index = max(0, min(index, len(text)))
         self.typed = typed
         self.errors = errors
@@ -126,7 +128,8 @@ class TypingEngine:
         self._last = now
         self.typed += 1
         stat = self.key_stats.setdefault(expected.lower(), [0, 0])
-        if char.lower() == expected.lower():
+        same = char == expected if self.case_sensitive else char.lower() == expected.lower()
+        if same:
             stat[0] += 1
             self.index += 1
             self.streak += 1
