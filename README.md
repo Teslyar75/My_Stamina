@@ -27,9 +27,6 @@ Star Typing — настольная программа на Python (tkinter) в
 нужно нажать сейчас, справа перевод `цветной`, ниже — перевод всего предложения.
 ![UPLINK: слово и предложение](screenshots/cockpit_uplink_word.png)
 
-**Мостик: печать своего текста с переводчиком UPLINK (общий вид)**
-![Мостик](screenshots/cockpit_typing_uplink.png)
-
 | Звёздная карта миссий | Отчёт о полёте |
 | --- | --- |
 | ![Миссии](screenshots/missions_star_map.png) | ![Отчёт](screenshots/mission_debrief.png) |
