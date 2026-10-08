@@ -815,24 +815,41 @@ class LineChart(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 class TranslatorPanel(tk.Canvas):
+    """Панель UPLINK с внутренним окном слова под прицелом.
+
+    Схема сверху вниз:
+    1. заголовок + статус;
+    2. исходное предложение (приглушённо);
+    3. **внутреннее окно** чуть выше середины — набираемое слово и его перевод;
+    4. **под ним** — строка перевода всего предложения (крупный шрифт).
+    """
+
     def __init__(self, master: tk.Misc) -> None:
-        super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0, height=px(78))
+        # Выше прежнего UPLINK: место под окно слова и под крупный перевод предложения.
+        super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0, height=px(158))
         self.direction = "EN → RU"
         self.source = ""
         self.translation = ""
+        self.word = ""            # слово под прицелом (оригинал)
+        self.word_tr = ""         # его перевод
+        self.word_cursor = -1     # индекс буквы внутри слова (−1 = нет подсветки)
         self.status = ""
         self.status_color = MUTED
-        self._f_tr = theme.font(11)
+        self._f_tr = theme.font(18)             # перевод всего предложения — крупно
         self._f_src = theme.font(8)
+        self._f_word = theme.font(22, True)     # оригинал слова слева (EN)
+        self._f_word_tr = theme.font(26, True)  # перевод слова справа
         self.bind("<Configure>", lambda _e: self.redraw())
 
     def set(self, *, direction: str | None = None, source: str | None = None,
-            translation: str | None = None, status: str | None = None,
-            status_color: str | None = None) -> None:
+            translation: str | None = None, word: str | None = None,
+            word_tr: str | None = None, word_cursor: int | None = None,
+            status: str | None = None, status_color: str | None = None) -> None:
         changed = False
         for name, val in (("direction", direction), ("source", source),
-                          ("translation", translation), ("status", status),
-                          ("status_color", status_color)):
+                          ("translation", translation), ("word", word),
+                          ("word_tr", word_tr), ("word_cursor", word_cursor),
+                          ("status", status), ("status_color", status_color)):
             if val is not None and getattr(self, name) != val:
                 setattr(self, name, val)
                 changed = True
@@ -854,14 +871,96 @@ class TranslatorPanel(tk.Canvas):
         c = px(10)
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=PANEL, outline=LINE_HI)
         self.create_line(1, 1 + c, 1, h - 2, fill=AMBER, width=3)
-        self.create_text(px(14), px(11), text=f"UPLINK // ПЕРЕВОДЧИК   {self.direction}",
+
+        # 1) Заголовок + статус
+        self.create_text(px(14), px(12), text=f"UPLINK // ПЕРЕВОДЧИК   {self.direction}",
                          anchor="w", fill=AMBER, font=theme.font(8, True))
         if self.status:
-            self.create_text(w - px(14), px(11), text=self.status, anchor="e",
+            self.create_text(w - px(14), px(12), text=self.status, anchor="e",
                              fill=self.status_color, font=theme.font(8, True))
-        inner = w - px(28)
-        src = self._fit(self.source, self._f_src, inner, 1)
-        self.create_text(px(14), px(26), text=src, anchor="w", fill=MUTED, font=self._f_src)
-        tr = self._fit(self.translation, self._f_tr, inner, 2)
-        self.create_text(px(14), px(38), text=tr, anchor="nw", fill=TEXT, font=self._f_tr,
-                         width=inner)
+
+        margin = px(14)
+        full_w = w - margin * 2
+        center_x = w / 2  # ось прицела иллюминатора — по центру панели
+
+        # 2) Исходное предложение — узкая полоска под заголовком (окошко слова выше)
+        src = self._fit(self.source, self._f_src, full_w * 0.72, 1)
+        self.create_text(margin, px(22), text=src or "—", anchor="w",
+                         fill=MUTED, font=self._f_src)
+
+        # 3) Внутреннее окошко под прицелом: слово и перевод целиком, без обрезки
+        word_src = (self.word or "—").strip() or "—"
+        word_dst = (self.word_tr or "…").strip() or "…"
+        f_word = tkfont.Font(font=self._f_word)
+        f_arrow = tkfont.Font(font=theme.font(14, True))
+        f_wtr = tkfont.Font(font=self._f_word_tr)
+        pad = px(16)
+        gap = px(10)
+        arrow_w = f_arrow.measure("→")
+        need_w = (pad + f_word.measure(word_src) + gap + arrow_w + gap
+                  + f_wtr.measure(word_dst) + pad)
+        # Расширяем до нужной ширины (почти на всю панель, если слово длинное)
+        box_w = min(full_w, max(px(200), need_w))
+        box_h = px(56)
+        box_x0 = center_x - box_w / 2
+        box_x1 = center_x + box_w / 2
+        box_top = px(26)   # ещё выше — ближе к прицелу
+        box_bot = box_top + box_h
+
+        # Если даже на полной ширине не влезает — чуть уменьшаем шрифт перевода слова
+        word_tr_font = self._f_word_tr
+        show_dst = word_dst
+        if need_w > full_w:
+            for size in (24, 22, 20, 18, 16):
+                trial = theme.font(size, True)
+                ft = tkfont.Font(font=trial)
+                trial_need = (pad + f_word.measure(word_src) + gap + arrow_w + gap
+                              + ft.measure(word_dst) + pad)
+                if trial_need <= full_w:
+                    word_tr_font = trial
+                    f_wtr = ft
+                    box_w = full_w
+                    box_x0 = margin
+                    box_x1 = margin + full_w
+                    break
+            else:
+                word_tr_font = theme.font(16, True)
+                f_wtr = tkfont.Font(font=word_tr_font)
+                box_w = full_w
+                box_x0 = margin
+                box_x1 = margin + full_w
+                avail = box_w - pad * 2 - f_word.measure(word_src) - gap * 2 - arrow_w
+                show_dst = self._fit(word_dst, word_tr_font, max(avail, px(40)), 1)
+
+        self.create_rectangle(
+            box_x0, box_top, box_x1, box_bot,
+            fill=blend(PANEL, AMBER, 0.10), outline=AMBER, width=2,
+        )
+        tick = px(6)
+        self.create_line(center_x, box_top - tick, center_x, box_top, fill=AMBER, width=2)
+        self.create_line(center_x, box_bot, center_x, box_bot + tick, fill=AMBER, width=2)
+
+        mid_y = (box_top + box_bot) / 2
+        # Раскладка: слово (по буквам, текущая — красная) | → | перевод
+        left_x = box_x0 + pad
+        right_x = box_x1 - pad
+        x = left_x
+        cursor = self.word_cursor
+        for i, ch in enumerate(word_src):
+            color = RED if i == cursor else CYAN
+            # уже набранные буквы слова — чуть приглушённые
+            if 0 <= cursor and i < cursor:
+                color = blend(CYAN, PANEL, 0.45)
+            self.create_text(x, mid_y, text=ch, anchor="w",
+                             fill=color, font=self._f_word)
+            x += f_word.measure(ch)
+        self.create_text(center_x, mid_y, text="→", anchor="center",
+                         fill=AMBER, font=theme.font(14, True))
+        self.create_text(right_x, mid_y, text=show_dst, anchor="e",
+                         fill=TEXT, font=word_tr_font)
+
+        # 4) Под окошком — крупный перевод всего предложения
+        sent_y = box_bot + px(14)
+        sent = self._fit(self.translation, self._f_tr, full_w, 2)
+        self.create_text(margin, sent_y, text=sent or "—", anchor="nw",
+                         fill=TEXT, font=self._f_tr, width=full_w)

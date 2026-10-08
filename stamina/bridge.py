@@ -100,6 +100,11 @@ class Bridge(tk.Frame):
         self._tr_dir = ("en", "ru")
         self._last_retry = 0.0
         self._last_stats = 0.0
+        self._segments = None
+        self._seg_i = None
+        self._seg_key = None
+        self._word_key = None
+        self._word_src = None
         self.debrief: HudPanel | None = None
         self._build()
 
@@ -493,10 +498,45 @@ class Bridge(tk.Frame):
     # ------------------------------------------------------------------
     # UPLINK — переводчик
     # ------------------------------------------------------------------
+    @staticmethod
+    def _word_at(text: str, index: int) -> str:
+        """Слово под прицелом: токен вокруг index; на пробеле — следующее слово."""
+        if not text or index < 0:
+            return ""
+        if index >= len(text):
+            index = len(text) - 1
+        if text[index] != " ":
+            i = index
+            while i > 0 and text[i - 1] != " ":
+                i -= 1
+            j = index
+            while j < len(text) and text[j] != " ":
+                j += 1
+            return text[i:j]
+        j = index + 1
+        while j < len(text) and text[j] == " ":
+            j += 1
+        k = j
+        while k < len(text) and text[k] != " ":
+            k += 1
+        return text[j:k]
+
+    @staticmethod
+    def _word_cursor(text: str, index: int) -> int:
+        """Индекс текущей буквы внутри слова (−1, если сейчас пробел)."""
+        if not text or index < 0 or index >= len(text) or text[index] == " ":
+            return -1
+        start = index
+        while start > 0 and text[start - 1] != " ":
+            start -= 1
+        return index - start
+
     def _setup_uplink(self) -> None:
         self._segments = None
         self._seg_i = None
         self._seg_key = None
+        self._word_key = None
+        self._word_src = None
         on = (self.app.store.settings.get("translator") and self.engine is not None
               and self.meta.get("mode") == "cargo")
         if not on:
@@ -507,40 +547,68 @@ class Bridge(tk.Frame):
                                   self.meta.get("process"))
         sl, tl = self._tr_dir
         self.uplink.set(direction=f"{sl.upper()} → {tl.upper()}", source="", translation="",
-                        status="")
+                        word="", word_tr="", status="")
         self.uplink.grid()
-        self._update_uplink()
+        self._update_uplink(force=True)
 
-    def _update_uplink(self) -> None:
+    def _update_uplink(self, *, force: bool = False) -> None:
         if self._segments is None or self.engine is None or not len(self._segments):
             return
-        si = self._segments.index_at(min(self.engine.index, len(self.engine.text) - 1))
-        if si == self._seg_i:
-            return
-        self._seg_i = si
+        eng = self.engine
+        si = self._segments.index_at(min(eng.index, len(eng.text) - 1))
         tr = self.app.get_translator()
         sl, tl = self._tr_dir
-        source = self._segments.sources[si]
-        self._seg_key = tr.key(source, sl, tl)
-        cached = tr.cached(source, sl, tl)
-        if cached:
-            self.uplink.set(source=source, translation=cached, status="✓ ПРИНЯТО",
-                            status_color=GREEN)
+
+        # --- предложение (только при смене сегмента) ---
+        if force or si != self._seg_i:
+            self._seg_i = si
+            source = self._segments.sources[si]
+            self._seg_key = tr.key(source, sl, tl)
+            cached = tr.cached(source, sl, tl)
+            if cached:
+                self.uplink.set(source=source, translation=cached, status="✓ ПРИНЯТО",
+                                status_color=GREEN)
+            else:
+                tr.request(source, sl, tl)
+                self.uplink.set(source=source, translation="Запрос перевода…",
+                                status="◌ ПРИЁМ…", status_color=AMBER)
+            if si + 1 < len(self._segments):
+                tr.request(self._segments.sources[si + 1], sl, tl)
+
+        # --- слово под прицелом (при каждом сдвиге индекса) ---
+        word = self._word_at(eng.text, eng.index)
+        cursor = self._word_cursor(eng.text, eng.index)
+        if not word:
+            self._word_src = ""
+            self._word_key = None
+            self.uplink.set(word="—", word_tr="—", word_cursor=-1)
+            return
+        if word == self._word_src and not force:
+            # то же слово — только сдвигаем красную букву
+            self.uplink.set(word_cursor=cursor)
+            return
+        self._word_src = word
+        self._word_key = tr.key(word, sl, tl)
+        w_cached = tr.cached(word, sl, tl)
+        if w_cached:
+            self.uplink.set(word=word, word_tr=w_cached, word_cursor=cursor)
         else:
-            tr.request(source, sl, tl)
-            self.uplink.set(source=source, translation="Запрос перевода…",
-                            status="◌ ПРИЁМ…", status_color=AMBER)
-        if si + 1 < len(self._segments):       # заранее подгружаем следующее
-            tr.request(self._segments.sources[si + 1], sl, tl)
+            tr.request(word, sl, tl)
+            self.uplink.set(word=word, word_tr="…", word_cursor=cursor)
 
     def _poll_uplink(self) -> None:
         tr = self.app.translator
         if tr is None:
             return
         results = tr.poll()
-        if self._segments is None or self._seg_key is None:
+        if self._segments is None:
             return
         for key, result in results:
+            if key == self._word_key:
+                if result:
+                    self.uplink.set(word_tr=result)
+                else:
+                    self.uplink.set(word_tr="?")
             if key != self._seg_key:
                 continue
             if result:
@@ -555,6 +623,8 @@ class Bridge(tk.Frame):
             self._last_retry = time.monotonic()
             sl, tl = self._tr_dir
             tr.request(self._segments.sources[self._seg_i], sl, tl)
+            if self._word_src:
+                tr.request(self._word_src, sl, tl)
 
     # ------------------------------------------------------------------
     # Приборы и анимация
