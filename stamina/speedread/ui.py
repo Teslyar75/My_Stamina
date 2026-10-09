@@ -1,6 +1,8 @@
 """Мелкие виджеты отсека «СКОРОЧТЕНИЕ» поверх компонентов Star Typing (только theme/hud)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import tkinter as tk
 
 from stamina import theme
@@ -38,8 +40,18 @@ class ScrollFrame(tk.Frame):
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
         self.inner.bind("<Configure>", lambda _e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
-        self.bind("<Enter>", lambda _e: self.bind_all("<MouseWheel>", self._wheel))
-        self.bind("<Leave>", lambda _e: self.unbind_all("<MouseWheel>"))
+        self.bind("<Enter>", lambda _e: self._wheel_on(True))
+        self.bind("<Leave>", lambda _e: self._wheel_on(False))
+
+    def _wheel_on(self, on: bool) -> None:
+        # Windows/macOS: <MouseWheel>; Linux (X11): кнопки 4/5
+        for seq, fn in (("<MouseWheel>", self._wheel), ("<Button-4>", lambda e: self._step(-3)),
+                        ("<Button-5>", lambda e: self._step(3))):
+            self.bind_all(seq, fn) if on else self.unbind_all(seq)
+
+    def _step(self, n: int) -> None:
+        if self.inner.winfo_height() > self.canvas.winfo_height():
+            self.canvas.yview_scroll(n, "units")
 
     def _wheel(self, e) -> None:
         if self.inner.winfo_height() > self.canvas.winfo_height():
@@ -57,7 +69,7 @@ class Toggle(HudButton):
     def __init__(self, master, value: bool, command=None, width=86) -> None:
         self.value = bool(value)
         self._cb = command
-        super().__init__(master, "ВКЛ" if value else "ВЫКЛ", self._flip, height=26, font_size=8,
+        super().__init__(master, t("ВКЛ") if value else t("ВЫКЛ"), self._flip, height=26, font_size=8,
                          width=width, color=GREEN if value else MUTED, active=value)
 
     def _flip(self) -> None:
@@ -67,7 +79,7 @@ class Toggle(HudButton):
 
     def set(self, value: bool) -> None:
         self.value = bool(value)
-        self.set_text("ВКЛ" if self.value else "ВЫКЛ")
+        self.set_text(t("ВКЛ") if self.value else t("ВЫКЛ"))
         self.set_color(GREEN if self.value else MUTED)
         self.set_active(self.value)
 
@@ -124,10 +136,10 @@ class WpmChart(tk.Canvas):
         self.create_line(pad, h - pad, w - pad, h - pad, fill=LINE)
         gy = y(self.goal)
         self.create_line(pad, gy, w - pad, gy, fill=blend(AMBER, BG, 0.4), dash=(4, 4))
-        self.create_text(w - pad, gy - px(7), text=f"ЦЕЛЬ {self.goal}", anchor="e", fill=AMBER,
+        self.create_text(w - pad, gy - px(7), text=t("ЦЕЛЬ {0}").format(self.goal), anchor="e", fill=AMBER,
                          font=theme.font(7, True))
         if not vals:
-            self.create_text(w / 2, h / 2, text="ещё нет сессий чтения", fill=MUTED, font=theme.font(9))
+            self.create_text(w / 2, h / 2, text=t("ещё нет сессий чтения"), fill=MUTED, font=theme.font(9))
             return
         n = len(vals)
         xs = [pad + (w - 2 * pad) * (i / max(1, n - 1) if n > 1 else 0.5) for i in range(n)]

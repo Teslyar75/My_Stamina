@@ -44,7 +44,7 @@ if not exist "%VPY%" (
     set "VPY=%PYEXE%"
 )
 
-echo  [3/5] Пакеты: Pillow ...
+echo  [3/5] Пакеты: Pillow, pypdf ...
 "%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt"
 if errorlevel 1 echo  [!] pip не смог поставить пакеты - проверьте интернет. Программа запустится и без них.
 

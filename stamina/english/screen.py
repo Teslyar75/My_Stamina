@@ -1,6 +1,8 @@
 """Вкладка «АНГЛИЙСКИЙ» внутри Star Typing: подразделы, общий контекст, горячие клавиши."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import tkinter as tk
 from tkinter import simpledialog
 
@@ -18,13 +20,13 @@ from .tts import TTS
 from .ui import L, entry
 from .vocab import Vocab
 
-SUBPAGES = [("overview", "ОБЗОР"), ("sets", "ЗВЁЗДНЫЕ КАРТЫ"), ("scanner", "СКАНЕР"),
-            ("practice", "МИССИИ"), ("review", "ПРОВЕРКА СИСТЕМ"), ("lists", "ОТСЕКИ"),
-            ("log", "ЖУРНАЛ"), ("settings", "НАСТРОЙКИ")]
+SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("ЗВЁЗДНЫЕ КАРТЫ")), ("scanner", t("СКАНЕР")),
+            ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("lists", t("ОТСЕКИ")),
+            ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
 
 
 class EnglishScreen(tk.Frame):
-    TITLE = "АНГЛИЙСКИЙ"
+    TITLE = t("АНГЛИЙСКИЙ")
 
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
@@ -38,7 +40,7 @@ class EnglishScreen(tk.Frame):
         self.current = None
         self._built = False
         self._search_pop = None
-        self._loading = L(self, "ЗАГРУЗКА СЛОВАРЯ…", fg=CYAN, size=14, bold=True, bg=BG)
+        self._loading = L(self, t("ЗАГРУЗКА СЛОВАРЯ…"), fg=CYAN, size=14, bold=True, bg=BG)
         self._loading.place(relx=0.5, rely=0.4, anchor="center")
         self.vocab.load_async()
         self.after(150, self._wait_vocab)
@@ -53,8 +55,7 @@ class EnglishScreen(tk.Frame):
     def _on_loaded(self) -> None:
         self._loading.destroy()
         if self.vocab.error or not self.vocab.words:
-            L(self, f"Словарь не загрузился: {self.vocab.error or 'пустой файл'}\n"
-                    f"Ожидается файл {paths.VOCAB_PATH}", fg=AMBER, size=11, bg=BG,
+            L(self, t("Словарь не загрузился: {0}\nОжидается файл {1}").format(self.vocab.error or 'пустой файл', paths.VOCAB_PATH), fg=AMBER, size=11, bg=BG,
               justify="left").place(relx=0.5, rely=0.4, anchor="center")
             return
         self._build()
@@ -75,7 +76,7 @@ class EnglishScreen(tk.Frame):
         L(sbox, "⌕", fg=CYAN, size=13, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(4)))
         self.search = entry(sbox, width=22, size=10)
         self.search.pack(side=tk.LEFT, ipady=px(4))
-        self._ph = "СКАНИРОВАТЬ СЛОВО…"
+        self._ph = t("СКАНИРОВАТЬ СЛОВО…")
         self._placeholder(True)
         self.search.bind("<FocusIn>", lambda _e: self._placeholder(False))
         self.search.bind("<FocusOut>", lambda _e: (self._placeholder(True), self.after(200, self._close_pop)))
@@ -119,7 +120,7 @@ class EnglishScreen(tk.Frame):
 
     def _update_nav(self) -> None:
         due = len(self.progress.due_cards())
-        self.nav["review"].set_text(f"ПРОВЕРКА СИСТЕМ ({due})" if due else "ПРОВЕРКА СИСТЕМ")
+        self.nav["review"].set_text(t("ПРОВЕРКА СИСТЕМ ({0})").format(due) if due else t("ПРОВЕРКА СИСТЕМ"))
 
     def changed(self) -> None:
         self._update_nav()
@@ -138,7 +139,7 @@ class EnglishScreen(tk.Frame):
         self.show("review")
 
     # -- озвучка с индикацией на кнопке ------------------------------------------------
-    SPEAK_LABEL, ERR_LABEL = "▶ ЧИТАЕТ…", "ОШИБКА ЗВУКА"
+    SPEAK_LABEL, ERR_LABEL = t("▶ ЧИТАЕТ…"), t("ОШИБКА ЗВУКА")
 
     def audio_button(self, parent, label: str, text_fn, slow: bool = False, **kw) -> HudButton:
         """Кнопка озвучки: при нажатии светится и пишет «▶ ЧИТАЕТ…», пока голос не договорит."""
@@ -190,7 +191,7 @@ class EnglishScreen(tk.Frame):
             pass
 
     def _btn_error(self, b: HudButton | None, msg: str) -> None:
-        self.status(f"ОШИБКА ЗВУКА: {msg}", RED)
+        self.status(t("ОШИБКА ЗВУКА: {0}").format(msg), RED)
         self.sfx("error")
         if b is None:
             return
@@ -224,7 +225,7 @@ class EnglishScreen(tk.Frame):
         for k, (b, t0, started) in list(self._tts_btns.items()):
             if not started and now - t0 > 10:  # голос так и не начал говорить
                 self._tts_btns.pop(k)
-                self._btn_error(b, self.tts.last_error or "голос Windows не ответил за 10 с")
+                self._btn_error(b, self.tts.last_error or t("голос Windows не ответил за 10 с"))
             elif started and now - t0 > 120:
                 self._tts_btns.pop(k)
                 self._btn_restore(b)
@@ -247,7 +248,7 @@ class EnglishScreen(tk.Frame):
 
     def _on_progress_event(self, kind, name, bonus) -> None:
         if kind == "achievement":
-            self.status(f"★ НОВЫЙ ЗНАК ОТЛИЧИЯ: «{name}»  +{bonus} XP", AMBER)
+            self.status(t("★ НОВЫЙ ЗНАК ОТЛИЧИЯ: «{0}»  +{1} XP").format(name, bonus), AMBER)
             self.sfx("bell")
 
     # -- меню «В отсек» ---------------------------------------------------------------
@@ -260,7 +261,7 @@ class EnglishScreen(tk.Frame):
             m.add_command(label=f"{mark}{l['name']}  ({len(l['slugs'])})",
                           command=lambda lid=l["id"]: self._toggle_list(lid, slug, after))
         m.add_separator()
-        m.add_command(label="+ Новый отсек…", command=lambda: self._new_list(slug, after))
+        m.add_command(label=t("+ Новый отсек…"), command=lambda: self._new_list(slug, after))
         x = event.x_root if event else widget.winfo_rootx() + 10
         y = event.y_root if event else widget.winfo_rooty() + widget.winfo_height()
         try:
@@ -271,12 +272,12 @@ class EnglishScreen(tk.Frame):
     def _toggle_list(self, lid, slug, after) -> None:
         added = self.progress.toggle_in_list(lid, slug)
         name = self.progress.list_by_id(lid)["name"]
-        self.status(f"«{slug}» {'добавлено в' if added else 'убрано из'} отсек «{name}»", CYAN)
+        self.status(t("«{0}» {1} отсек «{2}»").format(slug, 'добавлено в' if added else 'убрано из', name), CYAN)
         if after:
             after()
 
     def _new_list(self, slug, after) -> None:
-        name = simpledialog.askstring("Новый отсек", "Название отсека:", parent=self)
+        name = simpledialog.askstring(t("Новый отсек"), t("Название отсека:"), parent=self)
         if name:
             l = self.progress.create_list(name)
             self._toggle_list(l["id"], slug, after)

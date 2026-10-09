@@ -1,6 +1,8 @@
 """Эмблемы пилотов: 16 встроенных (рисуются на Canvas) и своя картинка (avatar.png 256×256)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import math
 import tkinter as tk
 from pathlib import Path
@@ -89,7 +91,7 @@ def save_image(src: str | Path, pid: str) -> Path:
     """Своя картинка → центральный квадрат → avatar.png 256×256 в папке пилота."""
     src = Path(src)
     if src.stat().st_size > MAX_FILE:
-        raise ValueError("Файл больше 15 МБ")
+        raise ValueError(t("Файл больше 15 МБ"))
     dest = pilots.pilot_dir(pid) / "avatar.png"
     dest.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -100,13 +102,13 @@ def save_image(src: str | Path, pid: str) -> Path:
     except ImportError:
         pass
     except Exception as exc:  # noqa: BLE001
-        raise ValueError(f"Не удалось прочитать картинку: {exc}") from exc
+        raise ValueError(t("Не удалось прочитать картинку: {0}").format(exc)) from exc
     if src.suffix.lower() not in (".png", ".gif"):
-        raise ValueError("Без Pillow поддерживаются только PNG и GIF — сохраните картинку как PNG")
+        raise ValueError(t("Без Pillow поддерживаются только PNG и GIF — сохраните картинку как PNG"))
     try:
         full = tk.PhotoImage(file=str(src))
     except tk.TclError as exc:
-        raise ValueError(f"Не удалось прочитать картинку: {exc}") from exc
+        raise ValueError(t("Не удалось прочитать картинку: {0}").format(exc)) from exc
     w, h = full.width(), full.height()
     side = min(w, h)
     sq = tk.PhotoImage()

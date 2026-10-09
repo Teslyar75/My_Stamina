@@ -1,6 +1,8 @@
 """Прогресс модуля «Английский»: %APPDATA%\\Stamina\\english.json (рядом с данными Star Typing)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import datetime as dt
 import json
 import math
@@ -17,18 +19,18 @@ DEFAULT_SETTINGS = {
 
 ACHIEVEMENTS = [
     # id, название, условие (текст), бонус XP
-    ("first_step", "Первый шаг", "первое выполненное задание", 10),
-    ("known_10", "Словарный запас I", "10 слов «знаю» или выучено", 20),
-    ("known_100", "Словарный запас II", "100 слов", 50),
-    ("known_500", "Словарный запас III", "500 слов", 100),
-    ("known_1000", "Словарный запас IV", "1000 слов", 200),
-    ("streak_3", "Серия 3", "3 дня подряд с дневной целью", 20),
-    ("streak_7", "Серия 7", "7 дней подряд", 50),
-    ("streak_30", "Серия 30", "30 дней подряд", 200),
-    ("perfect_session", "Без ошибок", "миссия ≥ 10 заданий без ошибок", 30),
-    ("speaker", "Голос", "50 ответов голосом с баллом ≥ 85", 50),
-    ("reviewer", "Без долгов", "очередь проверки систем пройдена 7 дней подряд", 50),
-    ("set_1000", "Фундамент", "все слова top-1000 «знаю» или выучены", 300),
+    ("first_step", _t("Первый шаг"), _t("первое выполненное задание"), 10),
+    ("known_10", _t("Словарный запас I"), _t("10 слов «знаю» или выучено"), 20),
+    ("known_100", _t("Словарный запас II"), _t("100 слов"), 50),
+    ("known_500", _t("Словарный запас III"), _t("500 слов"), 100),
+    ("known_1000", _t("Словарный запас IV"), _t("1000 слов"), 200),
+    ("streak_3", _t("Серия 3"), _t("3 дня подряд с дневной целью"), 20),
+    ("streak_7", _t("Серия 7"), _t("7 дней подряд"), 50),
+    ("streak_30", _t("Серия 30"), _t("30 дней подряд"), 200),
+    ("perfect_session", _t("Без ошибок"), _t("миссия ≥ 10 заданий без ошибок"), 30),
+    ("speaker", _t("Голос"), _t("50 ответов голосом с баллом ≥ 85"), 50),
+    ("reviewer", _t("Без долгов"), _t("очередь проверки систем пройдена 7 дней подряд"), 50),
+    ("set_1000", _t("Фундамент"), _t("все слова top-1000 «знаю» или выучены"), 300),
 ]
 
 
@@ -58,7 +60,7 @@ class Progress:
         for k, v in DEFAULT_SETTINGS.items():
             d["settings"].setdefault(k, v)
         if not any(l.get("id") == "favorites" for l in d["lists"]):
-            d["lists"].insert(0, {"id": "favorites", "name": "Избранное", "slugs": [], "created": _today()})
+            d["lists"].insert(0, {"id": "favorites", "name": _t("Избранное"), "slugs": [], "created": _today()})
         cutoff = time.time() - 90 * 86400
         d["attempts"] = [a for a in d["attempts"] if a.get("ts", 0) >= cutoff]
         return d
@@ -123,7 +125,7 @@ class Progress:
         return next((l for l in self.lists if l["id"] == lid), None)
 
     def create_list(self, name: str) -> dict:
-        l = {"id": f"l{int(time.time() * 1000)}", "name": name.strip() or "Новый отсек", "slugs": [],
+        l = {"id": f"l{int(time.time() * 1000)}", "name": name.strip() or _t("Новый отсек"), "slugs": [],
              "created": _today()}
         self.lists.append(l)
         self.save()
@@ -325,12 +327,12 @@ class Progress:
     def import_from(self, path: str) -> str:
         d = json.loads(Path(path).read_text(encoding="utf-8"))
         if d.get("app") != "my-english" or "state" not in d:
-            raise ValueError("это не файл прогресса «Английского»")
+            raise ValueError(_t("это не файл прогресса «Английского»"))
         self.data = d["state"]
         self.save()
         self.data = self._load()
         self.save()
-        return f"слов: {len(self.data['words'])}, карточек: {len(self.data['cards'])}, XP: {self.xp_total}"
+        return _t("слов: {0}, карточек: {1}, XP: {2}").format(len(self.data['words']), len(self.data['cards']), self.xp_total)
 
     def reset(self) -> None:
         keep = dict(self.settings)

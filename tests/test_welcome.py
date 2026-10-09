@@ -8,7 +8,7 @@ class DepsTest(unittest.TestCase):
     def test_check_items(self):
         for system in deps.SYSTEMS:
             items = deps.check(system)
-            self.assertEqual([i["key"] for i in items], ["python", "pillow", "tts", "vosk", "model"])
+            self.assertEqual([i["key"] for i in items], ["python", "pillow", "pypdf", "tts", "vosk", "model"])
             for it in items:
                 self.assertTrue({"name", "ok", "need", "what", "how", "pip", "sys"} <= set(it))
                 self.assertTrue(it["how"])
@@ -71,7 +71,7 @@ class WelcomeScreenTest(unittest.TestCase):
         E.keysym = "Escape"
         w.on_key(E())
         self.assertEqual(calls, ["create", "exit"])
-        self.assertEqual(len(w.items), 5)
+        self.assertEqual(len(w.items), 6)
         other = "linux" if deps.detect_system() == "windows" else "windows"
         w.set_system(other)
         self.assertIn("команды показаны", w.sys_note.cget("text"))

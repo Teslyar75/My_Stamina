@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import math
 import random
 import time
@@ -181,8 +183,8 @@ class HudPanel(tk.Canvas):
 class SpeedGauge(tk.Canvas):
     START, SWEEP = 215.0, 250.0
 
-    def __init__(self, master: tk.Misc, *, title: str = "СКОРОСТЬ",
-                 unit: str = "ЗН/МИН", vmax: int = 400) -> None:
+    def __init__(self, master: tk.Misc, *, title: str = _t("СКОРОСТЬ"),
+                 unit: str = _t("ЗН/МИН"), vmax: int = 400) -> None:
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(210), height=px(200))
         self.title, self.unit, self.vmax = title, unit, vmax
@@ -294,7 +296,7 @@ class SpeedGauge(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 class RingGauge(tk.Canvas):
-    def __init__(self, master: tk.Misc, *, title: str = "ТОЧНОСТЬ") -> None:
+    def __init__(self, master: tk.Misc, *, title: str = _t("ТОЧНОСТЬ")) -> None:
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(200), height=px(170))
         self.title = title
@@ -480,9 +482,9 @@ class Viewport(tk.Canvas):
 
     def flash_error(self, pressed: str, expected: str, hint: str = "") -> None:
         self._err_until = time.monotonic() + 0.22
-        exp = "пробел" if expected == " " else expected
-        prs = "пробел" if pressed == " " else pressed
-        self._err_text = f"▲ НАЖАТО «{prs}» — НУЖНО «{exp}»" + (f"  ·  {hint}" if hint else "")
+        exp = _t("пробел") if expected == " " else expected
+        prs = _t("пробел") if pressed == " " else pressed
+        self._err_text = _t("▲ НАЖАТО «{0}» — НУЖНО «{1}»").format(prs, exp) + (f"  ·  {hint}" if hint else "")
         self._err_text_until = time.monotonic() + 1.1
         self._err_shown = True
         self.redraw()
@@ -556,7 +558,7 @@ class Viewport(tk.Canvas):
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill="", outline=LINE_HI, tags=T)
         self.create_line(1 + c, 1, 1 + c + px(60), 1, fill=CYAN, width=2, tags=T)
         self.create_line(w - 2 - c, h - 2, w - 2 - c - px(60), h - 2, fill=CYAN, width=2, tags=T)
-        self.create_text(px(18), px(12), text="◉ НАВИГАЦИОННЫЙ КАНАЛ", anchor="w",
+        self.create_text(px(18), px(12), text=_t("◉ НАВИГАЦИОННЫЙ КАНАЛ"), anchor="w",
                          fill=CYAN_DIM, font=theme.font(8, True), tags=T)
         if self.status:
             self.create_text(w - px(18), px(12), text=self.status, anchor="e",
@@ -620,16 +622,16 @@ class Viewport(tk.Canvas):
             self.create_text(cx, px(12), text=self._err_text, fill=RED,
                              font=theme.font(9, True), tags=T)
         elif self.mode == "ready":
-            self.create_text(cx, px(12), text="НАЧНИТЕ ПЕЧАТАТЬ — ТАЙМЕР СТАРТУЕТ С ПЕРВОЙ КЛАВИШИ",
+            self.create_text(cx, px(12), text=_t("НАЧНИТЕ ПЕЧАТАТЬ — ТАЙМЕР СТАРТУЕТ С ПЕРВОЙ КЛАВИШИ"),
                              fill=AMBER, font=theme.font(9, True), tags=T)
         if self.mode == "pause":
             band = h * 0.62
             self.create_rectangle(px(4), cy - band / 2, w - px(4), cy + band / 2,
                                   fill=blend(BG, AMBER, 0.07), outline=AMBER_DIM, tags=T)
-            self.create_text(cx, cy - px(10), text="❚❚  ПАУЗА", fill=AMBER,
+            self.create_text(cx, cy - px(10), text=_t("❚❚  ПАУЗА"), fill=AMBER,
                              font=theme.font(18, True), tags=T)
             self.create_text(cx, cy + px(18),
-                             text=self.sub_message or "Esc или Пробел — продолжить полёт",
+                             text=self.sub_message or _t("Esc или Пробел — продолжить полёт"),
                              fill=TEXT, font=theme.font(10), tags=T)
 
 
@@ -687,7 +689,8 @@ class HudKeyboard(tk.Canvas):
         if self.heat is None:
             return None
         en, ru = layouts.KEY_LABELS[kid]
-        rates = [self.heat.get(ch) for ch in (en.lower(), ru.lower()) if ch]
+        rates = [self.heat.get(ch) for ch in (en.lower(), ru.lower(), layouts.label(kid, "de")[0].lower(),
+                                         layouts.label(kid, "uk")[0].lower()) if ch]
         rates = [r for r in rates if r is not None]
         if kid == "space":
             rates = [self.heat.get(" ")] if self.heat.get(" ") is not None else []
@@ -728,8 +731,7 @@ class HudKeyboard(tk.Canvas):
         hl = kid == self.highlighted
         flashing = kid in self._flash
         c = (y2 - y1) * 0.18
-        en, ru = layouts.KEY_LABELS[kid]
-        main, second = (ru, en) if self.lang == "ru" else (en, ru)
+        main, second = layouts.label(kid, self.lang)
         fg = TEXT
         if flashing:
             fill, outline, fg = RED_DIM, RED, RED
@@ -801,7 +803,7 @@ class LineChart(tk.Canvas):
             self.create_line(l, y, l + pw, y, fill=LINE, dash=(2, 4))
         self.create_rectangle(l, t, l + pw, t + ph, outline=LINE_HI)
         if len(self.runs) < 1:
-            self.create_text(w / 2, h / 2, text="Пока нет записей о полётах — пройдите первую миссию",
+            self.create_text(w / 2, h / 2, text=_t("Пока нет записей о полётах — пройдите первую миссию"),
                              fill=MUTED, font=theme.font(11))
             return
         cpms = [x.get("cpm", 0) for x in self.runs]
@@ -832,9 +834,9 @@ class LineChart(tk.Canvas):
         x, y = xy(n - 1, cpms[-1], 0, vmax)
         self.create_text(x - px(6), y - px(10), text=f"{cpms[-1]:.0f}", anchor="e",
                          fill=CYAN, font=theme.font(9, True))
-        self.create_text(l, h - px(10), text="● скорость, зн/мин", anchor="w", fill=CYAN,
+        self.create_text(l, h - px(10), text=_t("● скорость, зн/мин"), anchor="w", fill=CYAN,
                          font=theme.font(8, True))
-        self.create_text(l + pw, h - px(10), text="точность, % ●", anchor="e", fill=AMBER,
+        self.create_text(l + pw, h - px(10), text=_t("точность, % ●"), anchor="e", fill=AMBER,
                          font=theme.font(8, True))
 
 
@@ -887,7 +889,7 @@ class TranslatorPanel(tk.Canvas):
     @staticmethod
     def _fit(text: str, font: tuple, width: float, lines: int) -> str:
         f = tkfont.Font(font=font)
-        avg = max(1, f.measure("абвгдеёжзиклмнопрстabcdefghij") / 29)
+        avg = max(1, f.measure(_t("абвгдеёжзиклмнопрстabcdefghij")) / 29)
         limit = int(width / avg * lines * 0.97)
         return text if len(text) <= limit else text[: max(0, limit - 1)].rstrip() + "…"
 
@@ -902,7 +904,7 @@ class TranslatorPanel(tk.Canvas):
         self.create_line(1, 1 + c, 1, h - 2, fill=AMBER, width=3)
 
         # 1) Заголовок + статус
-        self.create_text(px(14), px(12), text=f"UPLINK // ПЕРЕВОДЧИК   {self.direction}",
+        self.create_text(px(14), px(12), text=_t("UPLINK // ПЕРЕВОДЧИК   {0}").format(self.direction),
                          anchor="w", fill=AMBER, font=theme.font(8, True))
         if self.status:
             self.create_text(w - px(14), px(12), text=self.status, anchor="e",

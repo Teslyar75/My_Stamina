@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import re
 import string
 
 
@@ -26,9 +27,16 @@ def normalize_spaces(text: str) -> str:
     return " ".join(text.split())
 
 
+_UK_APOS = re.compile(r"(?<=[А-Яа-яЁёІіЇїЄєҐґ])['’ʼ](?=[А-Яа-яЁёІіЇїЄєҐґ])")
+
+
 def remove_punctuation(text: str) -> str:
-    """Удаляет знаки препинания, сохраняя буквы, цифры и пробельные символы."""
-    return "".join("" if ch in _PUNCTUATION else ch for ch in text)
+    """Удаляет знаки препинания, сохраняя буквы, цифры и пробельные символы.
+
+    Апостроф внутри украинского слова (м'ясо, сім'я) — часть слова: остаётся как «'»."""
+    text = _UK_APOS.sub("\x01", text)
+    out = "".join("" if ch in _PUNCTUATION else ch for ch in text)
+    return out.replace("\x01", "'")
 
 
 def to_lowercase(text: str) -> str:
@@ -63,15 +71,24 @@ def normalize_typography(text: str) -> str:
 
 
 def process_text(text: str, *, lower: bool = True, punct: bool = True,
-                 spaces: bool = True) -> str:
+                 spaces: bool = True, translit: bool = False, yo: bool = False) -> str:
     """Подготовка текста по выбранным опциям.
 
     * ``lower``  — убрать заглавные буквы;
     * ``punct``  — убрать знаки препинания;
     * ``spaces`` — один пробел между словами.
 
+    * ``yo``       — «ё» → «е» (многие печатают без ё);
+    * ``translit`` — немецкие ä ö ü ß → ae oe ue ss, прочие é ñ ł … → без значков (если нет
+      немецкой раскладки); по умолчанию буквы остаются как в книге.
+
     Со всеми тремя опциями результат в точности равен :func:`adapt_for_typing`.
     """
+    if yo:
+        text = text.replace("ё", "е").replace("Ё", "Е")
+    if translit:
+        from stamina.langdetect import transliterate_latin
+        text = transliterate_latin(text)
     if lower and punct and spaces:
         return adapt_for_typing(text)
     if punct:

@@ -14,6 +14,8 @@ Linux: espeak-ng / espeak (или spd-say из speech-dispatcher), по проц
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import base64
 import itertools
 import queue
@@ -97,8 +99,8 @@ class TTS:
 
     def why_unavailable(self) -> str:
         if sys.platform != "win32":
-            return self.last_error or ("нет программы озвучки. Установите: " + LINUX_HINT)
-        return self.last_error or "голос Windows не запустился"
+            return self.last_error or (t("нет программы озвучки. Установите: ") + LINUX_HINT)
+        return self.last_error or t("голос Windows не запустился")
 
     def _reader(self, proc: subprocess.Popen) -> None:
         try:
@@ -108,7 +110,7 @@ class TTS:
                 if kind == "VOICE":
                     self.voice = rest
                     if not rest:
-                        self.last_error = "в Windows нет английского голоса (нужен Microsoft Zira / David)"
+                        self.last_error = t("в Windows нет английского голоса (нужен Microsoft Zira / David)")
                 elif kind == "FATAL":
                     self.last_error = rest
                     self.events.put(("error", 0, rest))
@@ -123,7 +125,7 @@ class TTS:
             pass
         finally:
             if self.proc is proc:
-                self.events.put(("dead", 0, self.last_error or "процесс озвучки завершился"))
+                self.events.put(("dead", 0, self.last_error or t("процесс озвучки завершился")))
 
     def _ensure(self) -> bool:
         if not self.available:
@@ -142,7 +144,7 @@ class TTS:
             threading.Thread(target=self._reader, args=(self.proc,), daemon=True).start()
             return True
         except Exception as exc:  # noqa: BLE001
-            self.last_error = f"не удалось запустить PowerShell: {exc}"
+            self.last_error = t("не удалось запустить PowerShell: {0}").format(exc)
             self.available = False
             return False
 
@@ -158,7 +160,7 @@ class TTS:
             t0 = time.monotonic()
             proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError as exc:
-            self.last_error = f"не удалось запустить озвучку: {exc}"
+            self.last_error = t("не удалось запустить озвучку: {0}").format(exc)
             self.events.put(("error", sid, self.last_error))
             return
         self._lproc = proc
@@ -181,7 +183,7 @@ class TTS:
             self.proc.stdin.flush()  # type: ignore[union-attr]
             return True
         except Exception as exc:  # noqa: BLE001
-            self.last_error = f"канал озвучки оборвался: {exc}"
+            self.last_error = t("канал озвучки оборвался: {0}").format(exc)
             self.proc = None
             return False
 

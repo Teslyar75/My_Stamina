@@ -8,7 +8,8 @@ _WORD_RE = re.compile(r"\S+")
 _CORE_RE = re.compile(r"[\w\u00C0-\u024F\u0400-\u04FF]", re.UNICODE)
 SENT_END = (".", "!", "?", "…")
 CLAUSE = (",", ";", ":", "—", "–")
-CHAPTER_RE = re.compile(r"^\s*(глава|часть|chapter|part|book|книга)\b", re.IGNORECASE)
+CHAPTER_RE = re.compile(r"^\s*(глава|часть|книга|розділ|частина|chapter|part|book|kapitel|teil|buch)\b",
+                        re.IGNORECASE)
 
 
 @dataclass
@@ -30,7 +31,7 @@ def tokenize(text: str) -> list[Word]:
         nxt = matches[i + 1].start() if i + 1 < len(matches) else len(text)
         gap = text[m.end():nxt]
         w.para_end = gap.count("\n") >= 2 or (i + 1 == len(matches))
-        core = w.text.rstrip("\"'»”’)]")
+        core = w.text.rstrip("\"'»”“’)]›«")
         w.sent_end = core.endswith(SENT_END) or w.para_end
         line_start = text.rfind("\n", 0, m.start()) + 1
         if line_start == m.start() or i == 0:

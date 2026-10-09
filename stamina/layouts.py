@@ -7,20 +7,21 @@
 from __future__ import annotations
 
 from stamina import theme
+from stamina.i18n import t
 
 # Пальцы
 L_PINKY, L_RING, L_MIDDLE, L_INDEX, R_INDEX, R_MIDDLE, R_RING, R_PINKY, THUMB, MOD = range(10)
 
 FINGER_NAMES = {
-    L_PINKY: "левый мизинец",
-    L_RING: "левый безымянный",
-    L_MIDDLE: "левый средний",
-    L_INDEX: "левый указательный",
-    R_INDEX: "правый указательный",
-    R_MIDDLE: "правый средний",
-    R_RING: "правый безымянный",
-    R_PINKY: "правый мизинец",
-    THUMB: "большой палец",
+    L_PINKY: t("левый мизинец"),
+    L_RING: t("левый безымянный"),
+    L_MIDDLE: t("левый средний"),
+    L_INDEX: t("левый указательный"),
+    R_INDEX: t("правый указательный"),
+    R_MIDDLE: t("правый средний"),
+    R_RING: t("правый безымянный"),
+    R_PINKY: t("правый мизинец"),
+    THUMB: t("большой палец"),
     MOD: "",
 }
 
@@ -116,9 +117,58 @@ PUNCT_RU = {".": ("/", False), ",": ("/", True), "!": ("1", True), '"': ("2", Tr
             "\\": ("\\", False), "/": ("\\", True)}
 
 
+# Немецкая раскладка QWERTZ на той же физической клавиатуре: подписи и символы.
+DE_LABELS = {"y": "Z", "z": "Y", ";": "Ö", "'": "Ä", "[": "Ü", "]": "+", "-": "ß", "=": "´",
+             "/": "-", "`": "^", "\\": "#"}
+DE_CHAR_TO_KEY = {"z": "y", "y": "z", "ö": ";", "ä": "'", "ü": "[", "ß": "-", "ẞ": "-", "+": "]",
+                  "#": "\\", "-": "/", ",": ",", ".": "."}
+SHIFTED_DE = {"!": "1", '"': "2", "§": "3", "$": "4", "%": "5", "&": "6", "/": "7", "(": "8", ")": "9",
+              "=": "0", "?": "-", "*": "]", "'": "\\", ";": ",", ":": ".", "_": "/", "°": "`"}
+LATIN_LAYOUTS = {"en": "QWERTY", "de": "QWERTZ"}
+# Украинская раскладка ЙЦУКЕН (Windows «Українська (розширена)»): отличия от русской.
+UK_LABELS = {"s": "І", "'": "Є", "]": "Ї", "`": "'", "\\": "Ґ"}
+UK_CHAR_TO_KEY = {"і": "s", "є": "'", "ї": "]", "ґ": "\\", "'": "`", "’": "`", "ʼ": "`"}
+for _c, _k in UK_CHAR_TO_KEY.items():
+    if _c.isalpha():
+        CHAR_TO_KEY.setdefault(_c, _k)
+
+
+def keyboard_for(text_lang: str) -> str:
+    """Раскладка для подсказки по языку текста: ru/uk/be → ЙЦУКЕН, de → QWERTZ, остальное → QWERTY."""
+    if text_lang in ("ru", "uk", "be"):
+        return "ru"
+    return "de" if text_lang == "de" else "en"
+
+
+def label(kid: str, lang: str) -> tuple[str, str]:
+    """(главная подпись, вторая подпись) клавиши для раскладки lang."""
+    en, ru = KEY_LABELS[kid]
+    if lang == "ru":
+        return ru, en
+    if lang == "de":
+        return DE_LABELS.get(kid, en), ru
+    if lang == "uk":
+        return UK_LABELS.get(kid, ru), en
+    return en, ru
+
+
 def key_for_char(char: str | None, lang: str = "en") -> str | None:
     if not char:
         return None
+    if lang == "de":
+        if char in SHIFTED_DE:
+            return SHIFTED_DE[char]
+        low = char.lower() if char != "ẞ" else "ß"
+        if low in DE_CHAR_TO_KEY:
+            return DE_CHAR_TO_KEY[low]
+        return CHAR_TO_KEY.get(low)
+    if lang == "uk":
+        low = char.lower()
+        if low in UK_CHAR_TO_KEY:
+            return UK_CHAR_TO_KEY[low]
+        if char in PUNCT_RU:
+            return PUNCT_RU[char][0]
+        return CHAR_TO_KEY.get(low)
     if lang == "ru" and char in PUNCT_RU:
         return PUNCT_RU[char][0]
     if char in SHIFTED_EN:
@@ -131,7 +181,9 @@ def needs_shift(char: str | None, lang: str = "en") -> bool:
         return False
     if char.isalpha():
         return char != char.lower()
-    if lang == "ru" and char in PUNCT_RU:
+    if lang == "de":
+        return char in SHIFTED_DE
+    if lang in ("ru", "uk") and char in PUNCT_RU:
         return PUNCT_RU[char][1]
     return char in SHIFTED_EN
 
@@ -142,4 +194,6 @@ def finger_for_char(char: str | None, lang: str = "en") -> int | None:
 
 
 def is_cyrillic(char: str) -> bool:
-    return "а" <= char.lower() <= "я" or char.lower() == "ё"
+    """Русские и украинские буквы (і ї є ґ тоже), апостроф — нет."""
+    c = char.lower()
+    return "а" <= c <= "я" or c in "ёіїєґўъ"

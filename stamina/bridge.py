@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import time
 import tkinter as tk
 from typing import TYPE_CHECKING
@@ -40,8 +42,8 @@ class MissionStrip(tk.Canvas):
 
     def __init__(self, master: tk.Misc) -> None:
         super().__init__(master, bg=BG, highlightthickness=0, bd=0, height=px(52))
-        self.title = "ОЖИДАНИЕ ЗАДАНИЯ"
-        self.subtitle = "Выберите миссию или загрузите свой текст"
+        self.title = t("ОЖИДАНИЕ ЗАДАНИЯ")
+        self.subtitle = t("Выберите миссию или загрузите свой текст")
         self.progress = 0.0
         self.progress_text = ""
         self.bind("<Configure>", lambda _e: self.redraw())
@@ -79,7 +81,7 @@ class MissionStrip(tk.Canvas):
         for i in range(1, 10):
             x = x1 + bw * i / 10
             self.create_line(x, y1 + px(2), x, y2 - px(2), fill=blend(BG, LINE, 0.5))
-        self.create_text(x1, px(14), text="ПРОГРЕСС МАРШРУТА", anchor="w", fill=MUTED,
+        self.create_text(x1, px(14), text=t("ПРОГРЕСС МАРШРУТА"), anchor="w", fill=MUTED,
                          font=theme.font(8, True))
         self.create_text(x2, px(14), text=self.progress_text, anchor="e", fill=CYAN,
                          font=theme.font(9, True, mono=True))
@@ -126,14 +128,14 @@ class Bridge(tk.Frame):
         self.uplink.grid(row=2, column=0, columnspan=3, sticky="ew", padx=px(10), pady=(0, px(6)))
         self.uplink.grid_remove()
 
-        left = HudPanel(self, "ДВИГАТЕЛЬ")
+        left = HudPanel(self, t("ДВИГАТЕЛЬ"))
         left.grid(row=3, column=0, sticky="nsew", padx=(px(10), px(5)), pady=(0, px(8)))
         self.speed = SpeedGauge(left.body)
         self.speed.pack(fill=tk.BOTH, expand=True)
-        self.rhythm = SegmentBar(left.body, "РИТМ ПЕЧАТИ", color="auto")
+        self.rhythm = SegmentBar(left.body, t("РИТМ ПЕЧАТИ"), color="auto")
         self.rhythm.pack(fill=tk.X, pady=(px(4), 0))
 
-        center = HudPanel(self, "НАВИГАЦИЯ ПАЛЬЦЕВ", accent=AMBER)
+        center = HudPanel(self, t("НАВИГАЦИЯ ПАЛЬЦЕВ"), accent=AMBER)
         center.grid(row=3, column=1, sticky="nsew", padx=px(5), pady=(0, px(8)))
         self.center = center
         self.keyboard = HudKeyboard(center.body)
@@ -141,12 +143,12 @@ class Bridge(tk.Frame):
         self.keyboard.set_zones(st["zones"])
         bar = tk.Canvas(center.body, bg=PANEL, highlightthickness=0, bd=0, height=px(28))
         bar.pack(fill=tk.X, pady=(px(4), 0))
-        self.btn_pause = HudButton(bar, "❚❚ ПАУЗА  Esc", self.toggle_pause, height=28, font_size=9,
+        self.btn_pause = HudButton(bar, t("❚❚ ПАУЗА  Esc"), self.toggle_pause, height=28, font_size=9,
                                    width=180)
         self.btn_pause.pack(side=tk.LEFT)
-        HudButton(bar, "↻ ЗАНОВО  F5", self.app.restart_current, height=28,
+        HudButton(bar, t("↻ ЗАНОВО  F5"), self.app.restart_current, height=28,
                   font_size=9).pack(side=tk.LEFT, padx=px(6))
-        self.btn_heat = HudButton(bar, "ТЕПЛОВАЯ КАРТА", self.toggle_heat, height=28,
+        self.btn_heat = HudButton(bar, t("ТЕПЛОВАЯ КАРТА"), self.toggle_heat, height=28,
                                   font_size=9, color=AMBER)
         self.btn_heat.pack(side=tk.RIGHT)
         self.legend = tk.Label(bar, text="", bg=PANEL, fg=MUTED, font=theme.font(8))
@@ -154,7 +156,7 @@ class Bridge(tk.Frame):
         if not st["keyboard"]:
             self.keyboard.pack_forget()
 
-        right = HudPanel(self, "ТЕЛЕМЕТРИЯ")
+        right = HudPanel(self, t("ТЕЛЕМЕТРИЯ"))
         right.grid(row=3, column=2, sticky="nsew", padx=(px(5), px(10)), pady=(0, px(8)))
         self.ring = RingGauge(right.body)
         self.ring.pack(fill=tk.BOTH, expand=True)
@@ -168,11 +170,11 @@ class Bridge(tk.Frame):
     # ------------------------------------------------------------------
     # Старт / состояние
     # ------------------------------------------------------------------
-    def show_idle(self, message: str = "ПУЛЬТ ГОТОВ К ПОЛЁТУ",
-                  sub: str = "Ctrl+2 — миссии   ·   Ctrl+3 — свой текст   ·   Ctrl+4 — бортжурнал") -> None:
+    def show_idle(self, message: str = t("ПУЛЬТ ГОТОВ К ПОЛЁТУ"),
+                  sub: str = t("Ctrl+2 — миссии   ·   Ctrl+3 — свой текст   ·   Ctrl+4 — бортжурнал")) -> None:
         self.state = "idle" if self.engine is None else self.state
         self.viewport.set_state(mode="idle", message=message, sub_message=sub,
-                                status="ОЖИДАНИЕ", status_color=MUTED, finger="")
+                                status=t("ОЖИДАНИЕ"), status_color=MUTED, finger="")
         self.keyboard.highlight(None)
 
     def start(self, text: str, *, mode: str, title: str, subtitle: str,
@@ -194,14 +196,24 @@ class Bridge(tk.Frame):
         self.keyboard.set_lang(lang)
         self.keyboard.set_heat(None)
         self.btn_heat.set_active(False)
-        self._tr_dir = ("en", "ru") if lang == "en" else ("ru", "en")
+        from stamina import langdetect, translator
+        text_lang = langdetect.detect(original or text)
+        if text_lang == "de" and lang != "ru" and any(ch in text.lower() for ch in "äöüß"):
+            lang = "de"                                  # подсказка по раскладке QWERTZ
+            self.meta["lang"] = "de"
+            self.keyboard.set_lang("de")
+        if lang == "ru" and text_lang == "uk" and any(ch in text.lower() for ch in "іїєґ"):
+            lang = "uk"                                  # подсказка по украинской раскладке
+            self.meta["lang"] = "uk"
+            self.keyboard.set_lang("uk")
+        self.meta["text_lang"] = text_lang
+        self._tr_dir = translator.direction(text_lang, self.app.store.settings.get("uplink_target"))
         self._setup_uplink()
         sub = ""
         if resume is not None:
-            sub = (f"Продолжение: {fmt_int(resume.index)} из {fmt_int(len(text))} "
-                   f"({resume.index / max(1, len(text)) * 100:.0f}%)")
+            sub = (t("Продолжение: {0} из {1} ({2:.0f}%)").format(fmt_int(resume.index), fmt_int(len(text)), resume.index / max(1, len(text)) * 100))
         self.viewport.set_state(text=text, index=self.engine.index, mode="ready",
-                                sub_message=sub, status="К ЗАПУСКУ ГОТОВ", status_color=AMBER)
+                                sub_message=sub, status=t("К ЗАПУСКУ ГОТОВ"), status_color=AMBER)
         self.strip.set(title=title, subtitle=subtitle)
         self._update_cursor()
         self.refresh_stats()
@@ -269,7 +281,7 @@ class Bridge(tk.Frame):
             hint = ""
             if expected.isalpha() and ch.isalpha() and \
                     layouts.is_cyrillic(ch) != layouts.is_cyrillic(expected):
-                hint = "ПЕРЕКЛЮЧИТЕ РАСКЛАДКУ (Alt+Shift)"
+                hint = t("ПЕРЕКЛЮЧИТЕ РАСКЛАДКУ (Alt+Shift)")
             self.viewport.flash_error(ch, expected, hint)
             self.keyboard.flash(layouts.key_for_char(expected, self.meta.get("lang", "en")))
         if self.state == "ready":
@@ -294,11 +306,11 @@ class Bridge(tk.Frame):
         if finger is not None and layouts.FINGER_NAMES.get(finger):
             name = layouts.FINGER_NAMES[finger]
             if layouts.needs_shift(cur, lang):
-                name += " + Shift другой рукой"
+                name += t(" + Shift другой рукой")
             finger_info = (name, layouts.FINGER_COLORS[finger])
         mode = "pause" if self.state == "pause" else ("ready" if self.state == "ready" else "run")
-        status = {"ready": ("К ЗАПУСКУ ГОТОВ", AMBER), "run": ("● В ПОЛЁТЕ", GREEN),
-                  "pause": ("❚❚ ПАУЗА", AMBER)}[mode]
+        status = {"ready": (t("К ЗАПУСКУ ГОТОВ"), AMBER), "run": (t("● В ПОЛЁТЕ"), GREEN),
+                  "pause": (t("❚❚ ПАУЗА"), AMBER)}[mode]
         self.viewport.set_state(index=eng.index, mode=mode, finger=finger_info,
                                 status=status[0], status_color=status[1])
         self.keyboard.highlight(layouts.key_for_char(cur, lang))
@@ -321,7 +333,7 @@ class Bridge(tk.Frame):
         self.state = "pause"
         self.viewport.set_state(sub_message=sub)
         self._update_cursor()
-        self.btn_pause.set_text("▶ ПРОДОЛЖИТЬ  Esc")
+        self.btn_pause.set_text(t("▶ ПРОДОЛЖИТЬ  Esc"))
         self.persist(force=True)
         self.refresh_stats()
 
@@ -331,7 +343,7 @@ class Bridge(tk.Frame):
         self.engine.resume()
         self.state = getattr(self, "_prev_state", "run")
         self.viewport.set_state(sub_message="")
-        self.btn_pause.set_text("❚❚ ПАУЗА  Esc")
+        self.btn_pause.set_text(t("❚❚ ПАУЗА  Esc"))
         self._update_cursor()
         self.app.focus_set()
 
@@ -360,8 +372,8 @@ class Bridge(tk.Frame):
         else:
             self.app.sound.error()
         self.viewport.set_state(mode="done",
-                                message="МИССИЯ ВЫПОЛНЕНА" if passed else "МИССИЯ НЕ ЗАСЧИТАНА",
-                                sub_message="", status="ФИНИШ", status_color=GREEN if passed else RED,
+                                message=t("МИССИЯ ВЫПОЛНЕНА") if passed else t("МИССИЯ НЕ ЗАСЧИТАНА"),
+                                sub_message="", status=t("ФИНИШ"), status_color=GREEN if passed else RED,
                                 finger="")
         self.keyboard.highlight(None)
         self.strip.set(progress=1.0)
@@ -376,35 +388,33 @@ class Bridge(tk.Frame):
         self.hide_debrief()
         m = self.meta.get("mission")
         accent = GREEN if passed else RED
-        panel = HudPanel(self, "ОТЧЁТ О ПОЛЁТЕ", accent=accent, pad=16)
+        panel = HudPanel(self, t("ОТЧЁТ О ПОЛЁТЕ"), accent=accent, pad=16)
         self.debrief = panel
         panel.place(relx=0.5, rely=0.56, anchor="center", relwidth=0.7, relheight=0.76)
         b = panel.body
         if m:
-            title = "МИССИЯ ВЫПОЛНЕНА" if passed else "МИССИЯ НЕ ЗАСЧИТАНА"
+            title = t("МИССИЯ ВЫПОЛНЕНА") if passed else t("МИССИЯ НЕ ЗАСЧИТАНА")
         else:
-            title = "ГРУЗ ДОСТАВЛЕН — ТЕКСТ ПРОЙДЕН"
+            title = t("ГРУЗ ДОСТАВЛЕН — ТЕКСТ ПРОЙДЕН")
         tk.Label(b, text=title, bg=PANEL, fg=accent, font=theme.font(20, True)).pack(pady=(0, px(2)))
         if m:
             tk.Label(b, text="★" * stars + "☆" * (3 - stars), bg=PANEL, fg=AMBER,
                      font=theme.font(26)).pack()
             if not passed:
-                tk.Label(b, text=f"Нужна точность не ниже {missions.PASS_ACCURACY:.0f}% — попробуйте "
-                                 "ещё раз, не спешите.", bg=PANEL, fg=MUTED,
+                tk.Label(b, text=t("Нужна точность не ниже {0:.0f}% — попробуйте ещё раз, не спешите.").format(missions.PASS_ACCURACY), bg=PANEL, fg=MUTED,
                          font=theme.font(10)).pack()
             else:
-                tk.Label(b, text=f"Цель: {m['goal']} зн/мин. ★★ — точность ≥95% и цель по скорости, "
-                                 "★★★ — точность ≥98% и скорость на 25% выше цели.",
+                tk.Label(b, text=t("Цель: {0} зн/мин. ★★ — точность ≥95% и цель по скорости, ★★★ — точность ≥98% и скорость на 25% выше цели.").format(m['goal']),
                          bg=PANEL, fg=MUTED, font=theme.font(9), wraplength=px(700)).pack()
         grid = tk.Frame(b, bg=PANEL)
         grid.pack(pady=px(10))
         cells = [
-            ("СКОРОСТЬ", f"{seg['cpm']:.0f}", "зн/мин", CYAN),
-            ("ТОЧНОСТЬ", f"{seg['acc']:.1f}%", "", GREEN if seg["acc"] >= 96 else AMBER),
-            ("ОШИБКИ", str(seg["errors"]), "", RED if seg["errors"] else GREEN),
-            ("ВРЕМЯ", fmt_time(seg["elapsed"]), "", TEXT),
-            ("РИТМ", f"{seg['rhythm']:.0f}%", "", CYAN),
-            ("ЛУЧШАЯ СЕРИЯ", str(seg["best_streak"]), "без ошибок", AMBER),
+            (t("СКОРОСТЬ"), f"{seg['cpm']:.0f}", t("зн/мин"), CYAN),
+            (t("ТОЧНОСТЬ"), f"{seg['acc']:.1f}%", "", GREEN if seg["acc"] >= 96 else AMBER),
+            (t("ОШИБКИ"), str(seg["errors"]), "", RED if seg["errors"] else GREEN),
+            (t("ВРЕМЯ"), fmt_time(seg["elapsed"]), "", TEXT),
+            (t("РИТМ"), f"{seg['rhythm']:.0f}%", "", CYAN),
+            (t("ЛУЧШАЯ СЕРИЯ"), str(seg["best_streak"]), t("без ошибок"), AMBER),
         ]
         for i, (cap, val, unit, col) in enumerate(cells):
             f = tk.Frame(grid, bg=PANEL)
@@ -415,25 +425,25 @@ class Bridge(tk.Frame):
                 tk.Label(f, text=unit, bg=PANEL, fg=MUTED, font=theme.font(8)).pack()
         info = f"+{xp} XP"
         if new_rank:
-            info += f"   ·   НОВОЕ ЗВАНИЕ: {new_rank.upper()}!"
+            info += t("   ·   НОВОЕ ЗВАНИЕ: {0}!").format(new_rank.upper())
         tk.Label(b, text=info, bg=PANEL, fg=AMBER, font=theme.font(12, True)).pack()
         if weak:
             keys = ", ".join(f"«{ch}» ×{n}" for ch, n in weak)
-            tk.Label(b, text=f"Ошибки чаще всего на: {keys}", bg=PANEL, fg=TEXT,
+            tk.Label(b, text=t("Ошибки чаще всего на: {0}").format(keys), bg=PANEL, fg=TEXT,
                      font=theme.font(10), wraplength=px(700)).pack(pady=(px(4), 0))
         row = tk.Frame(b, bg=PANEL)
         row.pack(side=tk.BOTTOM, pady=(px(8), 0))
-        HudButton(row, "↻ ПОВТОР  Enter", self.app.restart_current, color=CYAN,
+        HudButton(row, t("↻ ПОВТОР  Enter"), self.app.restart_current, color=CYAN,
                   height=36, font_size=9).pack(side=tk.LEFT, padx=px(4))
         nxt = missions.next_mission(m["id"]) if (m and passed) else None
         if nxt:
-            HudButton(row, f"▶ ДАЛЕЕ: {nxt['title'].upper()}  →",
+            HudButton(row, t("▶ ДАЛЕЕ: {0}  →").format(nxt['title'].upper()),
                       lambda: self.app.start_mission(nxt), color=GREEN,
                       height=36, font_size=9).pack(side=tk.LEFT, padx=px(4))
         if weak or self.app.store.weakest_keys():
-            HudButton(row, "⚙ РЕМОНТ  R", lambda: self.app.start_repair(self.meta.get("lang")),
+            HudButton(row, t("⚙ РЕМОНТ  R"), lambda: self.app.start_repair(self.meta.get("lang")),
                       color=AMBER, height=36, font_size=9).pack(side=tk.LEFT, padx=px(4))
-        HudButton(row, "✕ ЗАКРЫТЬ  Esc", self._close_debrief, color=MUTED,
+        HudButton(row, t("✕ ЗАКРЫТЬ  Esc"), self._close_debrief, color=MUTED,
                   height=36, font_size=9).pack(side=tk.LEFT, padx=px(4))
         self._debrief_next = nxt
 
@@ -450,8 +460,8 @@ class Bridge(tk.Frame):
 
     def _close_debrief(self) -> None:
         self.hide_debrief()
-        self.show_idle("ПОЛЁТ ЗАВЕРШЁН",
-                       "F5 — повторить   ·   Ctrl+2 — миссии   ·   Ctrl+3 — свой текст")
+        self.show_idle(t("ПОЛЁТ ЗАВЕРШЁН"),
+                       t("F5 — повторить   ·   Ctrl+2 — миссии   ·   Ctrl+3 — свой текст"))
 
     def hide_debrief(self) -> None:
         if self.debrief is not None:
@@ -481,7 +491,7 @@ class Bridge(tk.Frame):
         if self.keyboard.heat is None:
             self.keyboard.set_heat(self.app.store.key_error_rates(min_total=5))
             self.btn_heat.set_active(True)
-            self.legend.configure(text="процент ошибок по клавишам (за всё время)")
+            self.legend.configure(text=t("процент ошибок по клавишам (за всё время)"))
         else:
             self.keyboard.set_heat(None)
             self.btn_heat.set_active(False)
@@ -570,12 +580,12 @@ class Bridge(tk.Frame):
             self._seg_key = tr.key(source, sl, tl)
             cached = tr.cached(source, sl, tl)
             if cached:
-                self.uplink.set(source=source, translation=cached, status="✓ ПРИНЯТО",
+                self.uplink.set(source=source, translation=cached, status=t("✓ ПРИНЯТО"),
                                 status_color=GREEN)
             else:
                 tr.request(source, sl, tl)
-                self.uplink.set(source=source, translation="Запрос перевода…",
-                                status="◌ ПРИЁМ…", status_color=AMBER)
+                self.uplink.set(source=source, translation=t("Запрос перевода…"),
+                                status=t("◌ ПРИЁМ…"), status_color=AMBER)
             if si + 1 < len(self._segments):
                 tr.request(self._segments.sources[si + 1], sl, tl)
 
@@ -616,11 +626,10 @@ class Bridge(tk.Frame):
             if key != self._seg_key:
                 continue
             if result:
-                self.uplink.set(translation=result, status="✓ ПРИНЯТО", status_color=GREEN)
+                self.uplink.set(translation=result, status=t("✓ ПРИНЯТО"), status_color=GREEN)
             else:
-                self.uplink.set(translation="Нет связи с интернетом — перевод появится, когда сеть "
-                                            "вернётся. Уже переведённые фразы хранятся в кэше.",
-                                status="✕ НЕТ СВЯЗИ", status_color=RED)
+                self.uplink.set(translation=t("Нет связи с интернетом — перевод появится, когда сеть вернётся. Уже переведённые фразы хранятся в кэше."),
+                                status=t("✕ НЕТ СВЯЗИ"), status_color=RED)
                 self._last_retry = time.monotonic()
         # повторная попытка раз в 20 секунд, если связи не было
         if tr.online is False and time.monotonic() - self._last_retry > 20 and self._seg_i is not None:
@@ -639,28 +648,28 @@ class Bridge(tk.Frame):
         self._last_stats = time.monotonic()
         if eng is None:
             self.speed.set(0)
-            self.ring.set(None, "ОШИБОК 0")
+            self.ring.set(None, t("ОШИБОК 0"))
             self.rhythm.set(None, "—")
-            self.readouts.set([("ВРЕМЯ", "00:00", CYAN), ("ОШИБКИ", "0", GREEN),
-                               ("СЕРИЯ / ЛУЧШАЯ", "0 / 0", AMBER), ("ОСТАЛОСЬ", "—", TEXT)])
+            self.readouts.set([(t("ВРЕМЯ"), "00:00", CYAN), (t("ОШИБКИ"), "0", GREEN),
+                               (t("СЕРИЯ / ЛУЧШАЯ"), "0 / 0", AMBER), (t("ОСТАЛОСЬ"), "—", TEXT)])
             return
         avg = eng.cpm(now)
         running = self.state == "run" and eng.elapsed(now) - eng._elapsed < 3.0
         live = eng.instant_cpm() if running else avg
         m = self.meta.get("mission")
         self.speed.set(live, goal=m["goal"] if m else None,
-                       sub=f"СРЕДН. {avg:.0f} · ≈{avg / 5:.0f} WPM")
+                       sub=t("СРЕДН. {0:.0f} · ≈{1:.0f} WPM").format(avg, avg / 5))
         acc = eng.accuracy
-        self.ring.set(acc, f"ОШИБОК {eng.errors}")
+        self.ring.set(acc, t("ОШИБОК {0}").format(eng.errors))
         r = eng.rhythm
         self.rhythm.set(None if r is None else r / 100, "—" if r is None else f"{r:.0f}%")
         left = len(eng.text) - eng.index
         eta = f"≈{fmt_time(left / avg * 60)}" if avg > 10 and left else fmt_int(left)
         self.readouts.set([
-            ("ВРЕМЯ", fmt_time(eng.elapsed(now)), CYAN),
-            ("ОШИБКИ", str(eng.errors), RED if eng.errors else GREEN),
-            ("СЕРИЯ / ЛУЧШАЯ", f"{eng.streak} / {eng.best_streak}", AMBER),
-            ("ОСТАЛОСЬ", eta, TEXT),
+            (t("ВРЕМЯ"), fmt_time(eng.elapsed(now)), CYAN),
+            (t("ОШИБКИ"), str(eng.errors), RED if eng.errors else GREEN),
+            (t("СЕРИЯ / ЛУЧШАЯ"), f"{eng.streak} / {eng.best_streak}", AMBER),
+            (t("ОСТАЛОСЬ"), eta, TEXT),
         ])
         self.strip.set(progress=eng.progress,
                        progress_text=f"{fmt_int(eng.index)} / {fmt_int(len(eng.text))} · "

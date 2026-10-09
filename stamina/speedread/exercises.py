@@ -1,6 +1,8 @@
 """ТРЕНАЖЁРЫ ОБЗОРА: таблицы Шульте и Горбова, пирамида, вспышка (тахистоскоп)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import random
 import time
 import tkinter as tk
@@ -13,19 +15,45 @@ from .ui import HudButton, HudPanel, L, entry
 
 CATALOG = [
     # code, title, description, ready
-    ("R-HYP", "Гипердрайв", "Чтение по слову (RSVP), красная буква", True),
-    ("E-SHL", "Таблица Шульте", "Числа или буквы по порядку, 3×3…7×7", True),
-    ("E-GRB", "Таблица Горбова", "Чёрные ↑ и красные ↓ поочерёдно", True),
-    ("E-PYR", "Пирамида", "Расширение поля зрения по клину", True),
-    ("E-TAC", "Вспышка", "Тахистоскоп: слова на 50–300 мс", True),
-    ("E-FND", "Поиск слов", "Найди заданные слова в тексте", False),
-    ("E-GAP", "Пропущенные буквы", "Прочти слова с пропусками", False),
-    ("E-EYE", "Глазодвигатель", "Точки-мишени, саккады", False),
-    ("E-PCR", "Указка", "Ведущая строка без возвратов", False),
+    ("R-HYP", _t("Гипердрайв"), _t("Чтение по слову (RSVP), красная буква"), True),
+    ("E-SHL", _t("Таблица Шульте"), _t("Числа или буквы по порядку, 3×3…7×7"), True),
+    ("E-GRB", _t("Таблица Горбова"), _t("Чёрные ↑ и красные ↓ поочерёдно"), True),
+    ("E-PYR", _t("Пирамида"), _t("Расширение поля зрения по клину"), True),
+    ("E-TAC", _t("Вспышка"), _t("Тахистоскоп: слова на 50–300 мс"), True),
+    ("E-FND", _t("Поиск слов"), _t("Найди заданные слова в тексте"), False),
+    ("E-GAP", _t("Пропущенные буквы"), _t("Прочти слова с пропусками"), False),
+    ("E-EYE", _t("Глазодвигатель"), _t("Точки-мишени, саккады"), False),
+    ("E-PCR", _t("Указка"), _t("Ведущая строка без возвратов"), False),
 ]
 
 RU_ABC = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ"
 EN_ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+UK_ABC = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯ"
+DE_ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
+ALPHABETS = {"ru": RU_ABC, "uk": UK_ABC, "en": EN_ABC, "de": DE_ABC}
+FLASH_WORDS = {   # тахистоскоп без книги: короткие слова на языке чтения
+    "ru": "дом лес мир свет поле река небо окно море город книга время слово ветер звезда планета "
+          "корабль пилот ракета космос орбита сигнал радар",
+    "uk": "дім ліс світ поле річка небо вікно море місто книга час слово вітер зірка планета "
+          "корабель пілот ракета космос орбіта сигнал радар",
+    "en": "home tree world light field river sky window sea city book time word wind star planet "
+          "ship pilot rocket space orbit signal radar",
+    "de": "haus wald welt licht feld fluss himmel fenster meer stadt buch zeit wort wind stern "
+          "planet schiff pilot rakete raum umlauf signal radar straße größe",
+}
+
+
+def reading_lang(ctx, default: str = "ru") -> str:
+    """Язык текущей книги (ru/uk/en/de), иначе — язык интерфейса."""
+    try:
+        tid = ctx.lib.index.get("active_reading")
+        lang = (ctx.lib.meta(tid) or {}).get("lang") if tid else None
+    except Exception:  # noqa: BLE001
+        lang = None
+    if lang not in ALPHABETS:
+        from stamina import i18n
+        lang = i18n.language() if i18n.language() in ALPHABETS else default
+    return lang
 
 
 def fmt_s(sec: float) -> str:
@@ -77,7 +105,7 @@ class ExerciseBase(tk.Frame):
         self.h1.pack(anchor="w")
         self.h2 = L(box, "", fg=MUTED, size=8, bg=BG)
         self.h2.pack(anchor="w")
-        HudButton(strip, "← ТРЕНАЖЁРЫ  ESC", self.exit, height=30, font_size=9).pack(side=tk.RIGHT)
+        HudButton(strip, _t("← ТРЕНАЖЁРЫ  ESC"), self.exit, height=30, font_size=9).pack(side=tk.RIGHT)
         self.body = tk.Frame(self, bg=BG)
         self.body.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=(0, px(10)))
 
@@ -118,7 +146,7 @@ class SchulteEx(ExerciseBase):
         left = tk.Frame(self.body, bg=BG, width=px(250))
         left.grid(row=0, column=0, sticky="ns")
         left.grid_propagate(False)
-        tp = HudPanel(left, "НАЙДИ", accent=AMBER)
+        tp = HudPanel(left, _t("НАЙДИ"), accent=AMBER)
         tp.pack(fill=tk.X)
         tp.configure(height=px(190))
         tp.pack_propagate(False)
@@ -128,9 +156,9 @@ class SchulteEx(ExerciseBase):
         self.lbl_next.pack()
         self.lbl_found = L(tp.body, "", fg=AMBER, size=9, bold=True, mono=True)
         self.lbl_found.pack(pady=(px(8), 0))
-        mp = HudPanel(left, "РЕЖИМ")
+        mp = HudPanel(left, _t("РЕЖИМ"))
         mp.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
-        L(mp.body, "РАЗМЕР", fg=MUTED, size=8, bold=True).pack(anchor="w")
+        L(mp.body, _t("РАЗМЕР"), fg=MUTED, size=8, bold=True).pack(anchor="w")
         r = tk.Frame(mp.body, bg=PANEL)
         r.pack(anchor="w", pady=px(3))
         self.size_btns = {}
@@ -139,17 +167,16 @@ class SchulteEx(ExerciseBase):
             b.pack(side=tk.LEFT, padx=1)
             self.size_btns[n] = b
         if not gorbov:
-            L(mp.body, "СИМВОЛЫ", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(8), 0))
+            L(mp.body, _t("СИМВОЛЫ"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(8), 0))
             r = tk.Frame(mp.body, bg=PANEL)
             r.pack(anchor="w", pady=px(3))
             self.sym_btns = {}
-            for key, t in (("num", "1–N"), ("ru", "А–Я"), ("en", "A–Z")):
-                b = HudButton(r, t, lambda k=key: self.set_symbols(k), height=26, font_size=8, width=60)
+            for key, t in (("num", "1–N"), ("ru", "А–Я"), ("uk", "А–Ї"), ("en", "A–Z"), ("de", "A–Ü")):
+                b = HudButton(r, t, lambda k=key: self.set_symbols(k), height=26, font_size=8, width=46)
                 b.pack(side=tk.LEFT, padx=1)
                 self.sym_btns[key] = b
-        L(mp.body, ("Чередуйте: чёрное по возрастанию,\nкрасное по убыванию (ч1 → к12 → ч2 → к11…)."
-                    if gorbov else "Смотрите в центр (красная точка).\nИщите периферийным зрением, щёлкайте\n"
-                    "мышью. Ошибка — +2 с."), fg=MUTED, size=8, justify="left").pack(anchor="w", pady=(px(10), 0))
+        L(mp.body, (_t("Чередуйте: чёрное по возрастанию,\nкрасное по убыванию (ч1 → к12 → ч2 → к11…).")
+                    if gorbov else _t("Смотрите в центр (красная точка).\nИщите периферийным зрением, щёлкайте\nмышью. Ошибка — +2 с.")), fg=MUTED, size=8, justify="left").pack(anchor="w", pady=(px(10), 0))
         self.board = tk.Canvas(self.body, bg=BG2, highlightthickness=0, bd=0)
         self.board.grid(row=0, column=1, sticky="nsew", padx=px(12))
         self.board.bind("<Configure>", lambda _e: self.draw())
@@ -157,7 +184,7 @@ class SchulteEx(ExerciseBase):
         right = tk.Frame(self.body, bg=BG, width=px(250))
         right.grid(row=0, column=2, sticky="ns")
         right.grid_propagate(False)
-        tm = HudPanel(right, "ТАЙМЕР")
+        tm = HudPanel(right, _t("ТАЙМЕР"))
         tm.pack(fill=tk.X)
         tm.configure(height=px(130))
         tm.pack_propagate(False)
@@ -165,13 +192,13 @@ class SchulteEx(ExerciseBase):
         self.lbl_timer.pack()
         self.lbl_rec = L(tm.body, "", fg=GREEN, size=8, bold=True)
         self.lbl_rec.pack()
-        te = HudPanel(right, "ТЕЛЕМЕТРИЯ", accent=LINE_HI)
+        te = HudPanel(right, _t("ТЕЛЕМЕТРИЯ"), accent=LINE_HI)
         te.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
         self.lbl_tele = L(te.body, "", fg=TEXT, size=10, mono=True, justify="left", anchor="nw")
         self.lbl_tele.pack(fill=tk.BOTH, expand=True)
         acts = tk.Frame(right, bg=BG)
         acts.pack(fill=tk.X, pady=(px(8), 0))
-        HudButton(acts, "⟲ ЗАНОВО  R", self.new_game, color=AMBER, height=36).pack(fill=tk.X)
+        HudButton(acts, _t("⟲ ЗАНОВО  R"), self.new_game, color=AMBER, height=36).pack(fill=tk.X)
         self.new_game()
 
     # -- игра ---------------------------------------------------------------
@@ -194,7 +221,7 @@ class SchulteEx(ExerciseBase):
             return [(str(v), RED if c == "r" else TEXT) for c, v in gorbov_sequence(self.n)]
         if self.symbols == "num":
             return [(str(i + 1), TEXT) for i in range(cells)]
-        abc = RU_ABC if self.symbols == "ru" else EN_ABC
+        abc = ALPHABETS.get(self.symbols, EN_ABC)
         if cells > len(abc):
             return [(str(i + 1), TEXT) for i in range(cells)]
         return [(abc[i], TEXT) for i in range(cells)]
@@ -212,10 +239,9 @@ class SchulteEx(ExerciseBase):
         variant = f"{self.n}x{self.n}" + ("" if self.gorbov or self.symbols == "num" else f"-{self.symbols}")
         self.variant = variant
         best = (self.ctx.sstore.data["exercises"].get(self.code, {}).get(variant) or {}).get("best")
-        self.lbl_rec.configure(text=f"РЕКОРД {self.n}×{self.n}: {fmt_s(best)}" if best else "РЕКОРДА ЕЩЁ НЕТ")
-        self.h1.configure(text=f"ТРЕНАЖЁР {self.code} · {'ТАБЛИЦА ГОРБОВА' if self.gorbov else 'ТАБЛИЦА ШУЛЬТЕ'} "
-                               f"{self.n}×{self.n}")
-        self.h2.configure(text="← тренажёры обзора · таймер стартует с первого щелчка · взгляд — в центр")
+        self.lbl_rec.configure(text=_t("РЕКОРД {0}×{1}: {2}").format(self.n, self.n, fmt_s(best)) if best else _t("РЕКОРДА ЕЩЁ НЕТ"))
+        self.h1.configure(text=_t("ТРЕНАЖЁР {0} · {1} {2}×{3}").format(self.code, 'ТАБЛИЦА ГОРБОВА' if self.gorbov else 'ТАБЛИЦА ШУЛЬТЕ', self.n, self.n))
+        self.h2.configure(text=_t("← тренажёры обзора · таймер стартует с первого щелчка · взгляд — в центр"))
         for n, b in self.size_btns.items():
             b.set_active(n == self.n)
         if not self.gorbov:
@@ -297,16 +323,15 @@ class SchulteEx(ExerciseBase):
             label, color = self.order[self.found]
             self.lbl_target.configure(text=label, fg=RED if color == RED else AMBER)
             nxt = self.order[self.found + 1][0] if self.found + 1 < total else "—"
-            self.lbl_next.configure(text=f"СЛЕДУЮЩЕЕ: {nxt}")
+            self.lbl_next.configure(text=_t("СЛЕДУЮЩЕЕ: {0}").format(nxt))
         else:
             self.lbl_target.configure(text="✓", fg=GREEN)
-            self.lbl_next.configure(text="ТАБЛИЦА ПРОЙДЕНА")
-        self.lbl_found.configure(text=f"НАЙДЕНО {self.found} / {total}")
+            self.lbl_next.configure(text=_t("ТАБЛИЦА ПРОЙДЕНА"))
+        self.lbl_found.configure(text=_t("НАЙДЕНО {0} / {1}").format(self.found, total))
         el = self.elapsed()
         tempo = el / self.found if self.found else 0
         a, b, c = schulte_norm(self.n) if not self.gorbov else tuple(v * 1.7 for v in schulte_norm(self.n))
-        self.lbl_tele.configure(text=f"ОШИБКИ        {self.errors}\nТЕМП, С/ЗНАК  {tempo:4.2f}\n"
-                                     f"НОРМА ★★★   ≤ {a:.0f} С\nНОРМА ★★    ≤ {b:.0f} С\nНОРМА ★     ≤ {c:.0f} С")
+        self.lbl_tele.configure(text=_t("ОШИБКИ        {0}\nТЕМП, С/ЗНАК  {1:4.2f}\nНОРМА ★★★   ≤ {2:.0f} С\nНОРМА ★★    ≤ {3:.0f} С\nНОРМА ★     ≤ {4:.0f} С").format(self.errors, tempo, a, b, c))
 
     def finish(self) -> None:
         self.done = True
@@ -319,7 +344,7 @@ class SchulteEx(ExerciseBase):
         xp, record = self.ctx.sstore.add_exercise(self.code, self.variant, el, stars,
                                                   extra={"errors": self.errors})
         self.ctx.changed()
-        self.lbl_rec.configure(text=("★ НОВЫЙ РЕКОРД! " if record else "") + f"{'★' * stars}{'☆' * (3 - stars)}"
+        self.lbl_rec.configure(text=(_t("★ НОВЫЙ РЕКОРД! ") if record else "") + f"{'★' * stars}{'☆' * (3 - stars)}"
                                f"  +{xp} XP", fg=AMBER)
 
     def on_key(self, e) -> None:
@@ -337,21 +362,20 @@ class PyramidEx(ExerciseBase):
 
     def __init__(self, master, ctx, on_exit) -> None:
         super().__init__(master, ctx, on_exit)
-        self.h1.configure(text="ТРЕНАЖЁР E-PYR · ПИРАМИДА (ПОЛЕ ЗРЕНИЯ)")
-        self.h2.configure(text="смотрите только на красную линию · читайте обе части строки · "
-                               "щёлкните по последней строке, где видно обе части без движения глаз")
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-PYR · ПИРАМИДА (ПОЛЕ ЗРЕНИЯ)"))
+        self.h2.configure(text=_t("смотрите только на красную линию · читайте обе части строки · щёлкните по последней строке, где видно обе части без движения глаз"))
         self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0)
         self.canvas.pack(fill=tk.BOTH, expand=True)
         self.canvas.bind("<Configure>", lambda _e: self.draw())
         self.canvas.bind("<Button-1>", self.click)
         self.result = L(self.body, "", fg=AMBER, size=11, bold=True, bg=BG)
         self.result.pack(pady=px(6))
-        HudButton(self.body, "⟲ НОВАЯ ПИРАМИДА  R", self.new, color=AMBER, height=34).pack()
+        HudButton(self.body, _t("⟲ НОВАЯ ПИРАМИДА  R"), self.new, color=AMBER, height=34).pack()
         self.new()
 
     def new(self) -> None:
-        lang = self.ctx.sstore.settings.get("pyr_lang", "ru")
-        abc = RU_ABC if lang == "ru" else EN_ABC
+        lang = self.ctx.sstore.settings.get("pyr_lang") or reading_lang(self.ctx)
+        abc = ALPHABETS.get(lang, RU_ABC)
         self.rows = []
         for i in range(14):
             width = 2 + i * 3            # расстояние между частями, знаков
@@ -380,7 +404,7 @@ class PyramidEx(ExerciseBase):
             col = AMBER if self.chosen == i else TEXT
             c.create_text(cx - half, y, text=a, anchor="e", fill=col, font=f)
             c.create_text(cx + half, y, text=b, anchor="w", fill=col, font=f)
-            c.create_text(px(20), y, text=f"{width + 4:2d} зн.", anchor="w", fill=FAINT, font=theme.font(8, True))
+            c.create_text(px(20), y, text=_t("{0:2d} зн.").format(width + 4), anchor="w", fill=FAINT, font=theme.font(8, True))
 
     def click(self, e) -> None:
         h = self.canvas.winfo_height()
@@ -393,8 +417,8 @@ class PyramidEx(ExerciseBase):
         stars = stars_for(width, (34, 24, 14), lower_is_better=False)
         xp, rec = self.ctx.sstore.add_exercise(self.code, "default", width, stars, lower_is_better=False)
         self.ctx.changed()
-        self.result.configure(text=f"ШИРИНА ПОЛЯ: {width} знаков  {'★' * stars}{'☆' * (3 - stars)}  +{xp} XP"
-                                   + ("  · НОВЫЙ РЕКОРД!" if rec else ""))
+        self.result.configure(text=_t("ШИРИНА ПОЛЯ: {0} знаков  {1}{2}  +{3} XP").format(width, '★' * stars, '☆' * (3 - stars), xp)
+                                   + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""))
         self.draw()
 
     def on_key(self, e) -> None:
@@ -413,8 +437,8 @@ class FlashEx(ExerciseBase):
 
     def __init__(self, master, ctx, on_exit) -> None:
         super().__init__(master, ctx, on_exit)
-        self.h1.configure(text="ТРЕНАЖЁР E-TAC · ВСПЫШКА (ТАХИСТОСКОП)")
-        self.h2.configure(text="смотрите в центр прицела · слово мелькнёт и скроется · введите его и Enter")
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-TAC · ВСПЫШКА (ТАХИСТОСКОП)"))
+        self.h2.configure(text=_t("смотрите в центр прицела · слово мелькнёт и скроется · введите его и Enter"))
         self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0, height=px(300))
         self.canvas.pack(fill=tk.BOTH, expand=True)
         self.canvas.bind("<Configure>", lambda _e: self._frame())
@@ -423,14 +447,14 @@ class FlashEx(ExerciseBase):
         self.inp = entry(row, width=34, size=16, mono=True)
         self.inp.pack(side=tk.LEFT, ipady=px(4))
         self.inp.bind("<Return>", lambda _e: self.check())
-        HudButton(row, "ПРОВЕРИТЬ  ENTER", self.check, color=GREEN, height=36).pack(side=tk.LEFT, padx=px(8))
-        HudButton(row, "⟲ ЗАНОВО", self.new, color=AMBER, height=36).pack(side=tk.LEFT)
+        HudButton(row, _t("ПРОВЕРИТЬ  ENTER"), self.check, color=GREEN, height=36).pack(side=tk.LEFT, padx=px(8))
+        HudButton(row, _t("⟲ ЗАНОВО"), self.new, color=AMBER, height=36).pack(side=tk.LEFT)
         self.status = L(self.body, "", fg=MUTED, size=10, bold=True, bg=BG)
         self.status.pack()
         self.new()
 
     def _pool(self) -> list[str]:
-        lang = self.ctx.sstore.settings.get("tac_lang", "ru")
+        lang = self.ctx.sstore.settings.get("tac_lang") or reading_lang(self.ctx)
         words: list[str] = []
         try:
             lib = self.ctx.lib
@@ -438,15 +462,12 @@ class FlashEx(ExerciseBase):
             if tid:
                 import re
                 txt = lib.reading_text(tid)[:200000]
-                words = [w.lower() for w in re.findall(r"[A-Za-zА-Яа-яЁё]{3,9}", txt)]
+                words = [w.lower() for w in re.findall(r"[^\W\d_](?:[^\W\d_]|['’](?=[^\W\d_])){2,8}", txt)]
                 if words:
                     return list(dict.fromkeys(words))
         except Exception:  # noqa: BLE001
             pass
-        base = ("дом лес мир свет поле река небо окно море город книга время слово ветер звезда планета "
-                "корабль пилот ракета космос орбита сигнал радар " if lang == "ru" else
-                "home tree world light field river sky window sea city book time word wind star planet "
-                "ship pilot rocket space orbit signal radar ")
+        base = FLASH_WORDS.get(lang, FLASH_WORDS["en"])
         return base.split()
 
     def new(self) -> None:
@@ -472,7 +493,7 @@ class FlashEx(ExerciseBase):
             x, y = cx + dx * px(200), cy + dy * px(50)
             c.create_line(x, y, x - dx * px(18), y, fill=CYAN, width=2)
             c.create_line(x, y, x, y - dy * px(18), fill=CYAN, width=2)
-        c.create_text(px(20), px(16), text=f"РАУНД {self.round}/{self.ROUNDS} · ПОКАЗ {self.ms} МС · СЛОВ {self.nwords}",
+        c.create_text(px(20), px(16), text=_t("РАУНД {0}/{1} · ПОКАЗ {2} МС · СЛОВ {3}").format(self.round, self.ROUNDS, self.ms, self.nwords),
                       anchor="w", fill=MUTED, font=theme.font(9, True))
         if mask:
             c.create_text(cx, cy, text="#" * max(5, len(getattr(self, "answer", "")) or 5), fill=FAINT,
@@ -521,14 +542,14 @@ class FlashEx(ExerciseBase):
         else:
             self.streak = 0
             self.ms = min(500, self.ms + 20)
-        self.status.configure(text=(f"✓ ВЕРНО: {self.answer}" if ok else f"✕ БЫЛО: {self.answer}"),
+        self.status.configure(text=(_t("✓ ВЕРНО: {0}").format(self.answer) if ok else _t("✕ БЫЛО: {0}").format(self.answer)),
                               fg=GREEN if ok else RED)
         self._next_round()
 
     def finish(self) -> None:
         self.stop()
         if self.best_ms is None:
-            self.status.configure(text="Нет верных ответов — попробуйте ещё раз (время показа вернётся к 300 мс).",
+            self.status.configure(text=_t("Нет верных ответов — попробуйте ещё раз (время показа вернётся к 300 мс)."),
                                   fg=AMBER)
             return
         score = self.best_nw * 1000 - self.best_ms     # больше — лучше
@@ -538,8 +559,7 @@ class FlashEx(ExerciseBase):
                                                extra={"ms": self.best_ms, "words": self.best_nw, "ok": self.ok})
         self.ctx.changed()
         self._frame()
-        self.status.configure(text=f"ИТОГ: {self.best_nw} сл. за {self.best_ms} мс · верно {self.ok}/{self.ROUNDS}  "
-                                   f"{'★' * stars}{'☆' * (3 - stars)}  +{xp} XP" + ("  · НОВЫЙ РЕКОРД!" if rec else ""),
+        self.status.configure(text=_t("ИТОГ: {0} сл. за {1} мс · верно {2}/{3}  {4}{5}  +{6} XP").format(self.best_nw, self.best_ms, self.ok, self.ROUNDS, '★' * stars, '☆' * (3 - stars), xp) + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""),
                               fg=AMBER)
 
     def on_key(self, e) -> None:
@@ -549,16 +569,16 @@ class FlashEx(ExerciseBase):
 
 def best_text(code: str, rec: dict | None) -> str:
     if not rec:
-        return "не начат"
+        return _t("не начат")
     variant, r = rec
     b = r.get("best")
     if b is None:
         return "—"
     if code in ("E-SHL", "E-GRB"):
-        return f"{variant.split('-')[0].replace('x', '×')} · {b:.1f} с"
+        return _t("{0} · {1:.1f} с").format(variant.split('-')[0].replace('x', '×'), b)
     if code == "E-PYR":
-        return f"ширина {int(b)} зн."
+        return _t("ширина {0} зн.").format(int(b))
     if code == "E-TAC":
         best_run = max(r["runs"], key=lambda x: x["result"])
-        return f"{best_run.get('words', 1)} сл · {best_run.get('ms', '?')} мс"
+        return _t("{0} сл · {1} мс").format(best_run.get('words', 1), best_run.get('ms', '?'))
     return str(b)

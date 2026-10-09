@@ -6,6 +6,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import time
 import tkinter as tk
 
@@ -13,17 +15,17 @@ from stamina import avatars, deps, theme
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
 
-STEPS = (
-    ("1", "СОЗДАЙТЕ ПИЛОТА", AMBER,
-     "Позывной, эмблема и (по желанию) код доступа. У каждого пилота свой прогресс — "
-     "за одним компьютером может учиться вся семья."),
-    ("2", "МОСТИК И МИССИИ", CYAN,
-     "Печатайте текст в иллюминаторе, не глядя на клавиатуру: подсказка покажет клавишу и палец. "
-     "Миссии учат клавиатуру ряд за рядом, за точность — звёзды и звания."),
-    ("3", "СВОЙ ТЕКСТ · АНГЛИЙСКИЙ · СКОРОЧТЕНИЕ", GREEN,
-     "Загрузите книгу и печатайте её с переводом UPLINK, учите слова и читайте быстрее. "
-     "F1 — подробная инструкция в любой момент."),
-)
+
+def steps():
+    """Шаги вступления (функция, а не константа: язык можно сменить прямо на этом экране)."""
+    return (
+        ("1", t("СОЗДАЙТЕ ПИЛОТА"), AMBER,
+         t("Позывной, эмблема и (по желанию) код доступа. У каждого пилота свой прогресс — за одним компьютером может учиться вся семья.")),
+        ("2", t("МОСТИК И МИССИИ"), CYAN,
+         t("Печатайте текст в иллюминаторе, не глядя на клавиатуру: подсказка покажет клавишу и палец. Миссии учат клавиатуру ряд за рядом, за точность — звёзды и звания.")),
+        ("3", t("СВОЙ ТЕКСТ · АНГЛИЙСКИЙ · СКОРОЧТЕНИЕ"), GREEN,
+         t("Загрузите книгу и печатайте её с переводом UPLINK, учите слова и читайте быстрее. F1 — подробная инструкция в любой момент.")),
+    )
 
 
 def L(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw) -> tk.Label:
@@ -31,7 +33,8 @@ def L(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw) -> tk.La
 
 
 class WelcomeScreen(tk.Frame):
-    def __init__(self, master, *, on_create, on_import, on_exit, app_version: str = "") -> None:
+    def __init__(self, master, *, on_create, on_import, on_exit, app_version: str = "",
+                 on_language=None) -> None:
         super().__init__(master, bg=BG)
         self.on_create, self.on_import, self.on_exit = on_create, on_import, on_exit
         top = tk.Frame(self, bg=BG)
@@ -41,11 +44,20 @@ class WelcomeScreen(tk.Frame):
         avatars.draw(logo, px(22), px(22), px(36), {"id": "-", "accent": "cyan",
                                                      "avatar": {"kind": "builtin", "glyph": "star"}})
         logo.create_text(px(48), px(15), text="STAR TYPING", anchor="w", fill=TEXT, font=theme.font(17, True))
-        logo.create_text(px(49), px(35), text="ПЕРВЫЙ ЗАПУСК", anchor="w", fill=AMBER, font=theme.font(8, True))
+        logo.create_text(px(49), px(35), text=t("ПЕРВЫЙ ЗАПУСК"), anchor="w", fill=AMBER, font=theme.font(8, True))
         self.clock = L(top, "", fg=CYAN, size=14, bold=True, bg=BG)
         self.clock.pack(side=tk.RIGHT)
         if app_version:
-            L(top, f"версия {app_version}", fg=MUTED, size=9, bg=BG).pack(side=tk.RIGHT, padx=px(12))
+            L(top, t("версия {0}").format(app_version), fg=MUTED, size=9, bg=BG).pack(side=tk.RIGHT, padx=px(12))
+        if on_language is not None:                       # язык интерфейса — сразу, без перезапуска
+            from stamina import i18n
+            langs = tk.Frame(top, bg=BG)
+            langs.pack(side=tk.RIGHT, padx=px(12))
+            L(langs, t("ЯЗЫК:"), fg=MUTED, size=9, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(6)))
+            for code, name in i18n.LANGS.items():
+                b = HudButton(langs, name, lambda c=code: on_language(c), height=30, font_size=9,
+                              active=code == i18n.language())
+                b.pack(side=tk.LEFT, padx=px(2))
         tk.Frame(self, bg=LINE, height=1).pack(fill=tk.X, padx=px(16), pady=px(6))
 
         hero = tk.Canvas(self, bg=BG, highlightthickness=0, height=px(150))
@@ -55,20 +67,20 @@ class WelcomeScreen(tk.Frame):
 
         row = tk.Frame(self, bg=BG)
         row.pack(fill=tk.X, padx=px(16), pady=px(12))
-        for i, (num, title, col, text) in enumerate(STEPS):
+        for i, (num, title, col, text) in enumerate(steps()):
             row.grid_columnconfigure(i, weight=1, uniform="s")
-            p = HudPanel(row, f"ШАГ {num}", accent=col, pad=12)
+            p = HudPanel(row, t("ШАГ {0}").format(num), accent=col, pad=12)
             p.grid(row=0, column=i, sticky="nsew", padx=px(6))
             L(p.body, title, fg=col, size=11, bold=True).pack(anchor="w")
             L(p.body, text, fg=TEXT, size=10, wraplength=px(340)).pack(anchor="w", pady=(px(6), 0))
 
-        sysp = HudPanel(self, "ПРОВЕРКА БОРТОВЫХ СИСТЕМ", accent=CYAN, pad=10)
+        sysp = HudPanel(self, t("ПРОВЕРКА БОРТОВЫХ СИСТЕМ"), accent=CYAN, pad=10)
         sysp.pack(fill=tk.X, padx=px(22), pady=px(8))
         head = tk.Frame(sysp.body, bg=PANEL)
         head.pack(fill=tk.X, pady=(0, px(4)))
         self.system = deps.detect_system()
-        L(head, "ВАША СИСТЕМА:", fg=MUTED, size=9, bold=True).pack(side=tk.LEFT)
-        L(head, f"определена автоматически — {deps.system_details()}", fg=TEXT, size=9).pack(side=tk.LEFT, padx=px(8))
+        L(head, t("ВАША СИСТЕМА:"), fg=MUTED, size=9, bold=True).pack(side=tk.LEFT)
+        L(head, t("определена автоматически — {0}").format(deps.system_details()), fg=TEXT, size=9).pack(side=tk.LEFT, padx=px(8))
         self.sys_btns = {}
         for key in deps.SYSTEMS:
             b = HudButton(head, deps.SYSTEM_TITLES[key], lambda k=key: self.set_system(k), height=28, font_size=9,
@@ -81,13 +93,12 @@ class WelcomeScreen(tk.Frame):
         self.list.pack(fill=tk.X)
         act = tk.Frame(sysp.body, bg=PANEL)
         act.pack(fill=tk.X, pady=(px(6), 0))
-        self.btn_install = HudButton(act, "⇩ УСТАНОВИТЬ ВСЁ", self.install_all, color=GREEN, height=34, font_size=10,
+        self.btn_install = HudButton(act, t("⇩ УСТАНОВИТЬ ВСЁ"), self.install_all, color=GREEN, height=34, font_size=10,
                                      width=220)
         self.btn_install.pack(side=tk.LEFT)
         self.log = L(act, "", fg=MUTED, size=8, anchor="w", wraplength=px(900))
         self.log.pack(side=tk.LEFT, padx=px(10), fill=tk.X, expand=True)
-        L(sysp.body, "Без необязательных пунктов всё работает: печать, миссии, свой текст, английский (без микрофона), "
-                     "скорочтение. Установить их можно и позже — README, раздел «Быстрый старт».",
+        L(sysp.body, t("Без необязательных пунктов всё работает: печать, миссии, свой текст, английский (без микрофона), скорочтение. Установить их можно и позже — README, раздел «Быстрый старт»."),
           fg=MUTED, size=8).pack(anchor="w", pady=(px(4), 0))
         self._busy = False
         self._last = ""
@@ -95,13 +106,13 @@ class WelcomeScreen(tk.Frame):
 
         bottom = tk.Frame(self, bg=BG)
         bottom.pack(side=tk.BOTTOM, fill=tk.X, padx=px(22), pady=(0, px(14)))
-        self.btn_create = HudButton(bottom, "► СОЗДАТЬ ПИЛОТА И НАЧАТЬ  ENTER", self.on_create, color=AMBER,
+        self.btn_create = HudButton(bottom, t("► СОЗДАТЬ ПИЛОТА И НАЧАТЬ  ENTER"), self.on_create, color=AMBER,
                                     height=48, font_size=12, width=420)
         self.btn_create.nav_primary = True
         self.btn_create.pack(side=tk.LEFT)
-        HudButton(bottom, "⇩ У МЕНЯ ЕСТЬ ФАЙЛ ПИЛОТА (.stpilot)", self.on_import, height=48,
+        HudButton(bottom, t("⇩ У МЕНЯ ЕСТЬ ФАЙЛ ПИЛОТА (.stpilot)"), self.on_import, height=48,
                   font_size=9).pack(side=tk.LEFT, padx=px(10))
-        HudButton(bottom, "ВЫХОД  ESC", self.on_exit, height=48, font_size=9).pack(side=tk.RIGHT)
+        HudButton(bottom, t("ВЫХОД  ESC"), self.on_exit, height=48, font_size=9).pack(side=tk.RIGHT)
         self._tick()
 
     # -- компоненты
@@ -111,8 +122,7 @@ class WelcomeScreen(tk.Frame):
             b.set_active(k == key)
         real = deps.detect_system()
         self.sys_note.configure(text="" if key == real else
-                                f"программа запущена в {deps.SYSTEM_TITLES[real]} — команды показаны для "
-                                f"{deps.SYSTEM_TITLES[key]}")
+                                t("программа запущена в {0} — команды показаны для {1}").format(deps.SYSTEM_TITLES[real], deps.SYSTEM_TITLES[key]))
         self.refresh_items()
 
     def refresh_items(self) -> None:
@@ -123,17 +133,17 @@ class WelcomeScreen(tk.Frame):
             line = tk.Frame(self.list, bg=PANEL)
             line.pack(fill=tk.X, pady=px(1))
             ok = it["ok"]
-            mark, col = ("✓", GREEN) if ok else (("✕", RED) if it["need"] == "нужно" else ("○", AMBER))
+            mark, col = ("✓", GREEN) if ok else (("✕", RED) if it["need"] == t("нужно") else ("○", AMBER))
             L(line, mark, fg=col, size=11, bold=True, width=2).pack(side=tk.LEFT)
             L(line, it["name"], fg=TEXT, size=10, bold=True, width=20, anchor="w").pack(side=tk.LEFT)
             L(line, f"{it['need']} · {it['what']}", fg=MUTED, size=9, width=50, anchor="w").pack(side=tk.LEFT)
-            L(line, "готово" if ok else "нет · " + it["how"], fg=GREEN if ok else AMBER,
+            L(line, t("готово") if ok else t("нет · ") + it["how"], fg=GREEN if ok else AMBER,
               size=9, anchor="w").pack(side=tk.LEFT, fill=tk.X)
         miss = deps.missing(self.items)
         can = bool(miss) and self.system == deps.detect_system()
         self.btn_install.set_enabled(can and not self._busy)
         if not miss and not self._busy:
-            self.log.configure(text="Все компоненты на месте.", fg=GREEN)
+            self.log.configure(text=t("Все компоненты на месте."), fg=GREEN)
 
     def install_all(self) -> None:
         if self._busy or self.system != deps.detect_system():
@@ -145,7 +155,7 @@ class WelcomeScreen(tk.Frame):
         import threading
         self._busy = True
         q: queue.Queue = queue.Queue()
-        self.log.configure(text="Устанавливаю: " + ", ".join(it["name"] for it in miss) + "…", fg=AMBER)
+        self.log.configure(text=t("Устанавливаю: ") + ", ".join(it["name"] for it in miss) + "…", fg=AMBER)
 
         def work():
             res = deps.install_all(self.items, log=q.put, system=self.system)
@@ -158,8 +168,8 @@ class WelcomeScreen(tk.Frame):
                     if isinstance(m, tuple):
                         self._busy = False
                         self.refresh_items()
-                        self.log.configure(text=("Готово: компоненты установлены." if m[1] else
-                                                 "Установлено не всё: " + self._last), fg=GREEN if m[1] else AMBER)
+                        self.log.configure(text=(t("Готово: компоненты установлены.") if m[1] else
+                                                 t("Установлено не всё: ") + self._last), fg=GREEN if m[1] else AMBER)
                         return
                     self._last = m.strip()
                     self.log.configure(text=self._last[-150:])
@@ -172,9 +182,8 @@ class WelcomeScreen(tk.Frame):
 
     def _hero(self, c: tk.Canvas, w: int) -> None:
         c.delete("t")
-        c.create_text(w // 2, px(58), text="ДОБРО ПОЖАЛОВАТЬ НА БОРТ", fill=AMBER, font=theme.font(32, True), tags="t")
-        c.create_text(w // 2, px(110), text="Star Typing — тренажёр слепой печати, английского и скорочтения "
-                      "в кабине космолёта. Три шага — и вы на мостике.", fill=TEXT, font=theme.font(11), tags="t")
+        c.create_text(w // 2, px(58), text=t("ДОБРО ПОЖАЛОВАТЬ НА БОРТ"), fill=AMBER, font=theme.font(32, True), tags="t")
+        c.create_text(w // 2, px(110), text=t("Star Typing — тренажёр слепой печати, английского и скорочтения в кабине космолёта. Три шага — и вы на мостике."), fill=TEXT, font=theme.font(11), tags="t")
 
     def _tick(self) -> None:
         if self.winfo_exists():
@@ -200,7 +209,7 @@ class WelcomeScreen(tk.Frame):
 def run_welcome(root: tk.Tk, *, app_version: str = "") -> str | None:
     """Экран приветствия в окне root → id созданного (или импортированного) пилота, None — выход."""
     from stamina import pilot_screens
-    root.title("Star Typing — добро пожаловать на борт")
+    root.title(t("Star Typing — добро пожаловать на борт"))
     box = {"pid": None}
     holder = tk.Frame(root, bg=BG)
     holder.pack(fill=tk.BOTH, expand=True)
@@ -226,19 +235,42 @@ def run_welcome(root: tk.Tk, *, app_version: str = "") -> str | None:
         if pid:
             done(pid)
 
-    page = WelcomeScreen(holder, on_create=create, on_import=import_, on_exit=lambda: done(None),
-                         app_version=app_version)
-    page.pack(fill=tk.BOTH, expand=True)
+    cur = {}
+
+    def build():
+        page = WelcomeScreen(holder, on_create=create, on_import=import_, on_exit=lambda: done(None),
+                             app_version=app_version, on_language=set_lang)
+        page.pack(fill=tk.BOTH, expand=True)
+        cur["page"] = page
+        root.title(t("Star Typing — добро пожаловать на борт"))
+        return page
+
+    def set_lang(code):
+        from stamina import i18n
+        if code == i18n.language():
+            return
+        i18n.set_language(code)
+        try:
+            i18n.save_language(code)
+        except OSError:
+            pass
+        old = cur["page"]
+        new = build()
+        old.destroy()
+        if live is not None:
+            root.after(80, lambda: new.winfo_exists() and live.attach(new))
+
     live = None
+    build()
     try:
         from stamina.living_space import DEFAULT_MODE, LivingSpace
         live = LivingSpace(root, holder, DEFAULT_MODE)
-        root.after(120, lambda: page.winfo_exists() and live.attach(page))
+        root.after(120, lambda: cur["page"].winfo_exists() and live.attach(cur["page"]))
     except Exception:  # noqa: BLE001
         live = None
     from stamina import keynav
     keynav.install(root)
-    root.bind("<Key>", lambda e: e.widget.winfo_toplevel() is root and page.on_key(e))
+    root.bind("<Key>", lambda e: e.widget.winfo_toplevel() is root and cur["page"].on_key(e))
     root.protocol("WM_DELETE_WINDOW", lambda: done(None))
     root.after(200, root.focus_force)
     root.mainloop()

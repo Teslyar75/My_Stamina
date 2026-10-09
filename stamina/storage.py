@@ -115,9 +115,9 @@ class Store:
         from stamina.layouts import is_cyrillic
         rates = self.key_error_rates()
         items = [(ch, r) for ch, r in rates.items() if r > 0 and ch.isalnum()]
-        if lang == "ru":
+        if lang in ("ru", "uk"):
             items = [x for x in items if is_cyrillic(x[0])]
-        elif lang == "en":
+        elif lang in ("en", "de"):
             items = [x for x in items if not is_cyrillic(x[0])]
         items.sort(key=lambda x: x[1], reverse=True)
         return items[:count]

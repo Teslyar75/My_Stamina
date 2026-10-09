@@ -1,6 +1,8 @@
 """Проверка систем (флеш-карточки SM-2) и миссии (практика R1–R3, Q1–Q4, S1–S3, случайный микс)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import random
 import time
 import tkinter as tk
@@ -38,7 +40,7 @@ class ReviewPage(tk.Frame):
         self.custom = False
         self.strip = Strip(self)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
-        self.panel = HudPanel(self, "КАРТОЧКА")
+        self.panel = HudPanel(self, _t("КАРТОЧКА"))
         self.panel.pack(fill=tk.BOTH, expand=True, padx=px(60), pady=px(8))
         self.body = self.panel.body
         self.btns = tk.Frame(self, bg=BG)
@@ -76,14 +78,14 @@ class ReviewPage(tk.Frame):
         _clear(self.body)
         _clear(self.btns)
         p = self.ctx.progress
-        self.strip.set(f"ПРОВЕРКА СИСТЕМ · ОСТАЛОСЬ {len(self.queue)}",
-                       "Space — расшифровать, 1–4 — оценка. Интервалы по алгоритму SM-2.",
+        self.strip.set(_t("ПРОВЕРКА СИСТЕМ · ОСТАЛОСЬ {0}").format(len(self.queue)),
+                       _t("Space — расшифровать, 1–4 — оценка. Интервалы по алгоритму SM-2."),
                        self.done / max(1, self.done + len(self.queue)), f"{self.done} / {self.done + len(self.queue)}")
         if not self.queue:
-            L(self.body, "ВСЕ СИСТЕМЫ В НОРМЕ ✓", fg=GREEN, size=22, bold=True).pack(pady=(px(60), px(8)))
+            L(self.body, _t("ВСЕ СИСТЕМЫ В НОРМЕ ✓"), fg=GREEN, size=22, bold=True).pack(pady=(px(60), px(8)))
             nxt = min((c["due"] for c in p.data["cards"].values()), default=None)
-            L(self.body, f"Ближайшая проверка: {nxt}" if nxt else "Колода пока пустая.", fg=MUTED, size=11).pack()
-            HudButton(self.btns, "ДОБАВИТЬ 10 НОВЫХ", self.add_new, color=AMBER, height=36).pack()
+            L(self.body, _t("Ближайшая проверка: {0}").format(nxt) if nxt else _t("Колода пока пустая."), fg=MUTED, size=11).pack()
+            HudButton(self.btns, _t("ДОБАВИТЬ 10 НОВЫХ"), self.add_new, color=AMBER, height=36).pack()
             if self.done:
                 p.mark_review_done()
             return
@@ -92,7 +94,7 @@ class ReviewPage(tk.Frame):
         p.add_card(slug)
         card = p.card(slug)
         rev = bool(p.settings.get("reverse"))
-        tag = "НОВОЕ" if card.get("reps", 0) == 0 else f"повтор · интервал {card['interval']} дн"
+        tag = _t("НОВОЕ") if card.get("reps", 0) == 0 else _t("повтор · интервал {0} дн").format(card['interval'])
         L(self.body, f"#{w['rank']} · {POS_SHORT.get(w['pos'], w['pos'].upper())} · {tag}", fg=MUTED, size=8,
           bold=True, mono=True).pack(pady=(px(20), px(6)))
         front = (p.tr(slug) or w.get("definition", "")) if rev else w["word"]
@@ -101,7 +103,7 @@ class ReviewPage(tk.Frame):
         if not rev and p.settings.get("autoplay") and not self.shown:
             self.after(200, lambda: self.ctx.say(w["word"]))
         if not self.shown:
-            HudButton(self.btns, "РАСШИФРОВАТЬ  Space", self.show_answer, color=AMBER, height=40,
+            HudButton(self.btns, _t("РАСШИФРОВАТЬ  Space"), self.show_answer, color=AMBER, height=40,
                       font_size=11).pack()
             return
         if rev:
@@ -117,9 +119,9 @@ class ReviewPage(tk.Frame):
             L(self.body, s[0]["en"], fg=MUTED, size=11, wraplength=px(800)).pack(pady=(px(6), 0))
             if s[0].get("ru"):
                 L(self.body, s[0]["ru"], fg=FAINT if False else MUTED, size=10, wraplength=px(800)).pack()
-        self.ctx.audio_button(self.body, "🔊 ГОЛОС", lambda: w["word"], height=30, font_size=9).pack(pady=px(6))
-        for q, text, col, key in ((1, "СНОВА", RED, "1"), (3, "ТРУДНО", AMBER, "2"), (4, "ХОРОШО", CYAN, "3"),
-                                  (5, "ЛЕГКО", GREEN, "4")):
+        self.ctx.audio_button(self.body, _t("🔊 ГОЛОС"), lambda: w["word"], height=30, font_size=9).pack(pady=px(6))
+        for q, text, col, key in ((1, _t("СНОВА"), RED, "1"), (3, _t("ТРУДНО"), AMBER, "2"), (4, _t("ХОРОШО"), CYAN, "3"),
+                                  (5, _t("ЛЕГКО"), GREEN, "4")):
             f = tk.Frame(self.btns, bg=BG)
             f.pack(side=tk.LEFT, padx=px(6))
             HudButton(f, f"{text}  {key}", lambda qq=q: self.grade(qq), color=col, height=40, width=150,
@@ -152,7 +154,7 @@ class ReviewPage(tk.Frame):
         fresh = [w["slug"] for w in v.in_set(p.settings["current_set"])
                  if not p.is_known(w["slug"]) and not p.has_card(w["slug"])][:10]
         if not fresh:
-            self.ctx.status("В текущем наборе нет новых слов — выбери набор побольше в настройках", AMBER)
+            self.ctx.status(_t("В текущем наборе нет новых слов — выбери набор побольше в настройках"), AMBER)
         self.start(fresh)
 
     def on_key(self, e) -> None:
@@ -201,7 +203,7 @@ class MissionCardC(tk.Canvas):
         self.create_text(w - px(12), h - px(18), text="★" * stars + "☆" * (3 - stars), anchor="e", fill=AMBER,
                          font=theme.font(14, True))
         if best is not None:
-            self.create_text(px(12), h - px(18), text=f"рекорд {best}%", anchor="w", fill=MUTED, font=theme.font(8))
+            self.create_text(px(12), h - px(18), text=_t("рекорд {0}%").format(best), anchor="w", fill=MUTED, font=theme.font(8))
 
 
 class PracticePage(tk.Frame):
@@ -221,21 +223,21 @@ class PracticePage(tk.Frame):
     # -- хаб --------------------------------------------------------------------------
     def _build_hub(self) -> None:
         h = self.hub
-        L(h, "МИССИИ · ПРАКТИКА", fg=TEXT, size=16, bold=True, bg=BG).pack(anchor="w", padx=px(14), pady=(px(10), 0))
-        L(h, "Чтение, вопросы и говорение. Аудирования, диктанта и письменной проверки нет (решение пользователя).",
+        L(h, _t("МИССИИ · ПРАКТИКА"), fg=TEXT, size=16, bold=True, bg=BG).pack(anchor="w", padx=px(14), pady=(px(10), 0))
+        L(h, _t("Чтение, вопросы и говорение. Аудирования, диктанта и письменной проверки нет (решение пользователя)."),
           fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(16))
-        opt = HudPanel(h, "ПОЛЁТНЫЙ ПЛАН")
+        opt = HudPanel(h, _t("ПОЛЁТНЫЙ ПЛАН"))
         opt.pack(fill=tk.X, padx=px(12), pady=px(8))
         r = tk.Frame(opt.body, bg=PANEL)
         r.pack(fill=tk.X)
-        L(r, "ИСТОЧНИК", fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(0, px(6)))
+        L(r, _t("ИСТОЧНИК"), fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(0, px(6)))
         self.src_btns = {}
-        for key, text in (("set", "ТЕКУЩИЙ НАБОР · НЕЗНАКОМЫЕ"), ("list", "ОТСЕК ▾"), ("due", "НА ПОВТОРЕНИИ"),
-                          ("mistakes", "ОШИБКИ 7 ДН")):
+        for key, text in (("set", _t("ТЕКУЩИЙ НАБОР · НЕЗНАКОМЫЕ")), ("list", _t("ОТСЕК ▾")), ("due", _t("НА ПОВТОРЕНИИ")),
+                          ("mistakes", _t("ОШИБКИ 7 ДН"))):
             b = HudButton(r, text, lambda k=key: self.set_src(k), height=28, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.src_btns[key] = b
-        L(r, "   ДЛИНА", fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(px(6), px(6)))
+        L(r, _t("   ДЛИНА"), fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(px(6), px(6)))
         self.len_btns = {}
         for n in (5, 10, 20):
             b = HudButton(r, str(n), lambda k=n: self.set_len(k), width=44, height=28, font_size=9)
@@ -300,12 +302,12 @@ class PracticePage(tk.Frame):
             b.set_active(k == self.src)
         for n, b in self.len_btns.items():
             b.set_active(n == self.length)
-        name = {"set": f"набор {self.ctx.progress.settings['current_set']}", "due": "слова на повторении",
-                "mistakes": "ошибки за 7 дней"}.get(self.src)
+        name = {"set": _t("набор {0}").format(self.ctx.progress.settings['current_set']), "due": _t("слова на повторении"),
+                "mistakes": _t("ошибки за 7 дней")}.get(self.src)
         if self.src == "list":
             l = self.ctx.progress.list_by_id(self.src_list)
-            name = f"отсек «{l['name'] if l else '?'}»"
-        self.src_info.configure(text=f"Слова для миссии: {name} · доступно {len(self.pool(self.src))}")
+            name = _t("отсек «{0}»").format(l['name'] if l else '?')
+        self.src_info.configure(text=_t("Слова для миссии: {0} · доступно {1}").format(name, len(self.pool(self.src))))
         for c in self.mcards:
             c.redraw()
 
@@ -319,20 +321,20 @@ class PracticePage(tk.Frame):
         main.grid_columnconfigure(0, weight=1)
         main.grid_columnconfigure(1, minsize=px(240))
         main.grid_rowconfigure(0, weight=1)
-        self.chan = HudPanel(main, "НАВИГАЦИОННЫЙ КАНАЛ")
+        self.chan = HudPanel(main, _t("НАВИГАЦИОННЫЙ КАНАЛ"))
         self.chan.grid(row=0, column=0, sticky="nsew", padx=(0, px(6)))
         self.tb = self.chan.body
-        tel = HudPanel(main, "ТЕЛЕМЕТРИЯ")
+        tel = HudPanel(main, _t("ТЕЛЕМЕТРИЯ"))
         tel.grid(row=0, column=1, sticky="nsew")
-        self.ring = RingGauge(tel.body, title="ТОЧНОСТЬ")
+        self.ring = RingGauge(tel.body, title=_t("ТОЧНОСТЬ"))
         self.ring.pack(fill=tk.X)
         self.ro = Readouts(tel.body, rows=4)
         self.ro.pack(fill=tk.BOTH, expand=True)
         bot = tk.Frame(s, bg=BG)
         bot.pack(fill=tk.X, padx=px(12), pady=(0, px(8)))
-        HudButton(bot, "✕ ВЫЙТИ  Esc", self.quit_session, color=RED, height=32, font_size=9).pack(side=tk.LEFT)
-        HudButton(bot, "ПРОПУСТИТЬ", self.skip, height=32, font_size=9).pack(side=tk.LEFT, padx=px(6))
-        self.next_btn = HudButton(bot, "ДАЛЕЕ  Enter", self.next_task, color=GREEN, height=32, font_size=10)
+        HudButton(bot, _t("✕ ВЫЙТИ  Esc"), self.quit_session, color=RED, height=32, font_size=9).pack(side=tk.LEFT)
+        HudButton(bot, _t("ПРОПУСТИТЬ"), self.skip, height=32, font_size=9).pack(side=tk.LEFT, padx=px(6))
+        self.next_btn = HudButton(bot, _t("ДАЛЕЕ  Enter"), self.next_task, color=GREEN, height=32, font_size=10)
         self.next_btn.pack(side=tk.RIGHT)
 
     def start(self, mode: str, source: str = "set", single: str | None = None, ids=None) -> None:
@@ -344,13 +346,13 @@ class PracticePage(tk.Frame):
         n = 5 if sw else self.length
         pool = self.pool(source, ids) if not sw else [sw]
         if not pool:
-            self.ctx.status("Для этой миссии нет слов — выбери другой источник", AMBER)
+            self.ctx.status(_t("Для этой миссии нет слов — выбери другой источник"), AMBER)
             self.active = False
             self.ctx.show("practice")
             return
         words = fac.pick_words(pool, n, single=sw)
         if mode == "speaking" and not speech_ok:
-            self.ctx.status("Говорение недоступно: нет распознавания и выключена самооценка", AMBER)
+            self.ctx.status(_t("Говорение недоступно: нет распознавания и выключена самооценка"), AMBER)
             return
         self.tasks = fac.build(mode, words, speech_ok)
         self.repeat_added: set[int] = set()
@@ -378,10 +380,10 @@ class PracticePage(tk.Frame):
 
     def _telemetry(self) -> None:
         acc = 100 * self.ok / self.answered if self.answered else None
-        self.ring.set(acc, f"ошибок {self.bad}")
+        self.ring.set(acc, _t("ошибок {0}").format(self.bad))
         el = int(time.time() - self.t0)
-        self.ro.set([("ВРЕМЯ", f"{el // 60:02d}:{el % 60:02d}", CYAN), ("ОШИБКИ", str(self.bad), RED),
-                     ("СЕРИЯ / ЛУЧШАЯ", f"{self.combo} / {self.best_combo}", AMBER), ("XP", f"+{self.xp}", GREEN)])
+        self.ro.set([(_t("ВРЕМЯ"), f"{el // 60:02d}:{el % 60:02d}", CYAN), (_t("ОШИБКИ"), str(self.bad), RED),
+                     (_t("СЕРИЯ / ЛУЧШАЯ"), f"{self.combo} / {self.best_combo}", AMBER), ("XP", f"+{self.xp}", GREEN)])
 
     def render_task(self) -> None:
         _clear(self.tb)
@@ -394,8 +396,8 @@ class PracticePage(tk.Frame):
         t = self.tasks[self.i]
         w = t["word"]
         title = MODES[self.mode][0]
-        self.strip.set(f"МИССИЯ · {title} · {TYPE_TITLE[t['type']]}",
-                       f"Слово #{w['rank']} · 1–4 выбрать, Enter — далее, M — микрофон, Space — голос",
+        self.strip.set(_t("МИССИЯ · {0} · {1}").format(title, TYPE_TITLE[t['type']]),
+                       _t("Слово #{0} · 1–4 выбрать, Enter — далее, M — микрофон, Space — голос").format(w['rank']),
                        self.i / len(self.tasks), f"{self.i + 1} / {len(self.tasks)}")
         L(self.tb, TYPE_TITLE[t["type"]], fg=AMBER, size=10, bold=True).pack(anchor="w")
         self.fb = None
@@ -423,12 +425,12 @@ class PracticePage(tk.Frame):
 
     def _t_R2(self, t, w) -> None:
         self._big(t["sentence"]["en"], size=16, mono=False)
-        L(self.tb, "Какой перевод верный?", fg=MUTED, size=9).pack(anchor="w")
+        L(self.tb, _t("Какой перевод верный?"), fg=MUTED, size=9).pack(anchor="w")
         self._choices(t)
 
     def _t_R3(self, t, w) -> None:
         self._sent_with_word(t["sentence"]["en"], w["word"])
-        L(self.tb, f"Что значит «{w['word']}» в этом предложении?", fg=MUTED, size=9).pack(anchor="w")
+        L(self.tb, _t("Что значит «{0}» в этом предложении?").format(w['word']), fg=MUTED, size=9).pack(anchor="w")
         self._choices(t)
 
     def _t_Q1(self, t, w) -> None:
@@ -439,7 +441,7 @@ class PracticePage(tk.Frame):
         r = tk.Frame(self.tb, bg=PANEL)
         r.pack(anchor="w")
         L(r, w["word"], fg=TEXT, size=28, bold=True, mono=True).pack(side=tk.LEFT)
-        self.ctx.audio_button(r, "🔊 ГОЛОС", lambda: w["word"], height=32, font_size=9).pack(side=tk.LEFT, padx=px(10))
+        self.ctx.audio_button(r, _t("🔊 ГОЛОС"), lambda: w["word"], height=32, font_size=9).pack(side=tk.LEFT, padx=px(10))
         self._choices(t)
 
     def _t_Q3(self, t, w) -> None:
@@ -456,8 +458,8 @@ class PracticePage(tk.Frame):
         self.q4 = entry(r, width=24, size=16, mono=True)
         self.q4.pack(side=tk.LEFT, ipady=px(4))
         self.q4.bind("<Return>", lambda _e: self.check_q4() if not self.answered_cur else self.next_task())
-        HudButton(r, "ПРОВЕРИТЬ", self.check_q4, color=GREEN, height=34).pack(side=tk.LEFT, padx=px(6))
-        HudButton(r, "💡 ЕЩЁ БУКВА", lambda: self._q4_more(t), color=AMBER, height=34).pack(side=tk.LEFT)
+        HudButton(r, _t("ПРОВЕРИТЬ"), self.check_q4, color=GREEN, height=34).pack(side=tk.LEFT, padx=px(6))
+        HudButton(r, _t("💡 ЕЩЁ БУКВА"), lambda: self._q4_more(t), color=AMBER, height=34).pack(side=tk.LEFT)
         self.after(50, self.q4.focus_set)
 
     def _q4_hint_update(self, t) -> None:
@@ -481,10 +483,10 @@ class PracticePage(tk.Frame):
         ok = guess == word or guess in word_forms(word) and guess.startswith(word[:-1])
         if not ok and self.attempt == 1 and guess:
             self.attempt = 2
-            self.fb.configure(text="Не совсем. Попробуй ещё раз (или возьми подсказку).", fg=AMBER)
+            self.fb.configure(text=_t("Не совсем. Попробуй ещё раз (или возьми подсказку)."), fg=AMBER)
             return
         q = 2 if not ok else (3 if self.attempt > 1 or t.get("hinted") else 4)
-        self.answer(ok, q, f"Правильно: {t['word']['word']}")
+        self.answer(ok, q, _t("Правильно: {0}").format(t['word']['word']))
 
     def choose(self, k: int) -> None:
         if self.answered_cur:
@@ -500,7 +502,7 @@ class PracticePage(tk.Frame):
             else:
                 c.mark("dim")
         right = t["options"][t["answer"]]
-        self.answer(ok, 4 if ok else 2, "" if ok else f"Правильный ответ: {right}")
+        self.answer(ok, 4 if ok else 2, "" if ok else _t("Правильный ответ: {0}").format(right))
 
     # ---- говорение ------------------------------------------------------------------
     def _sent_with_word(self, text, word, size=16) -> None:
@@ -523,8 +525,8 @@ class PracticePage(tk.Frame):
         r.pack(fill=tk.X)
         left = tk.Frame(r, bg=PANEL)
         left.pack(side=tk.LEFT, anchor="n")
-        self.ctx.audio_button(left, "🔊 ОБРАЗЕЦ", lambda: sample, height=30, font_size=9).pack(anchor="w", pady=px(2))
-        self.ctx.audio_button(left, "🐢 МЕДЛЕННО", lambda: sample, slow=True, height=30, font_size=9).pack(anchor="w")
+        self.ctx.audio_button(left, _t("🔊 ОБРАЗЕЦ"), lambda: sample, height=30, font_size=9).pack(anchor="w", pady=px(2))
+        self.ctx.audio_button(left, _t("🐢 МЕДЛЕННО"), lambda: sample, slow=True, height=30, font_size=9).pack(anchor="w")
         self.mic = MicPanel(r, self.ctx, self.on_speech)
         self.mic.pack(side=tk.LEFT, padx=px(30))
         self.match = MatchReadout(self.tb)  # «СОВПАДЕНИЕ: N%» после каждой попытки
@@ -541,9 +543,9 @@ class PracticePage(tk.Frame):
         self._speak_box(t, t["sentence"]["en"])
 
     def _t_S3(self, t, w) -> None:
-        L(self.tb, "Скажи по-английски:", fg=MUTED, size=9).pack(anchor="w", pady=(px(6), 0))
+        L(self.tb, _t("Скажи по-английски:"), fg=MUTED, size=9).pack(anchor="w", pady=(px(6), 0))
         self._big(t["sentence"]["ru"], size=16, mono=False)
-        L(self.tb, f"подсказка: в предложении есть слово «{w['word']}»", fg=MUTED, size=8).pack(anchor="w")
+        L(self.tb, _t("подсказка: в предложении есть слово «{0}»").format(w['word']), fg=MUTED, size=8).pack(anchor="w")
         self._speak_box(t, "")
 
     def on_speech(self, alts, self_score) -> None:
@@ -566,14 +568,14 @@ class PracticePage(tk.Frame):
         if not passed and self.attempt < 3 and self_score is None:
             self.attempt += 1
             text, vk = verdict(score)
-            self.fb.configure(text=f"Совпадение {score}% · {text} — попытка {self.attempt} из 3", fg=VCOL[vk])
+            self.fb.configure(text=_t("Совпадение {0}% · {1} — попытка {2} из 3").format(score, text, self.attempt), fg=VCOL[vk])
             self._marks(marks)
             return
         q = 5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2
         text, vk = verdict(score)
-        extra = f"Оригинал: {t['sentence']['en']}" if t["type"] == "S3" else ""
+        extra = _t("Оригинал: {0}").format(t['sentence']['en']) if t["type"] == "S3" else ""
         self._marks(marks)
-        lab = "Самооценка" if self_score is not None else "Совпадение"
+        lab = _t("Самооценка") if self_score is not None else _t("Совпадение")
         self.answer(passed, q, f"{lab} {score}% · {text}. {extra}", score=score, color=VCOL[vk])
 
     def _marks(self, marks) -> None:
@@ -613,7 +615,7 @@ class PracticePage(tk.Frame):
         mode = {"S": "speaking", "R": "reading", "Q": "questions"}[t["type"][0]]
         p.record_attempt(t["slug"], mode, t["type"], ok, q, score)
         p.grade(t["slug"], q)
-        txt = ("✓ ВЕРНО" if ok else "✗ ОШИБКА") + (f"  +{10 if q >= 4 else 5} XP" if ok else "")
+        txt = (_t("✓ ВЕРНО") if ok else _t("✗ ОШИБКА")) + (f"  +{10 if q >= 4 else 5} XP" if ok else "")
         self.fb.configure(text=f"{txt}   {msg}".strip(), fg=color or (GREEN if ok else RED))
         self.next_btn.set_enabled(True)
         self._telemetry()
@@ -670,18 +672,18 @@ class PracticePage(tk.Frame):
             rec["best_acc"] = max(rec.get("best_acc", 0), acc)
         p.check_achievements()
         p.save()
-        self.strip.set(f"ОТЧЁТ О ПОЛЁТЕ · {MODES[self.mode][0]}", "Enter — ещё раз, R — повторить ошибки, Esc — к миссиям",
-                       1.0, f"{self.answered} заданий")
-        L(self.tb, "МИССИЯ ПРЕРВАНА" if aborted else "МИССИЯ ВЫПОЛНЕНА", fg=AMBER if aborted else GREEN, size=20,
+        self.strip.set(_t("ОТЧЁТ О ПОЛЁТЕ · {0}").format(MODES[self.mode][0]), _t("Enter — ещё раз, R — повторить ошибки, Esc — к миссиям"),
+                       1.0, _t("{0} заданий").format(self.answered))
+        L(self.tb, _t("МИССИЯ ПРЕРВАНА") if aborted else _t("МИССИЯ ВЫПОЛНЕНА"), fg=AMBER if aborted else GREEN, size=20,
           bold=True).pack(pady=(px(10), px(2)))
         L(self.tb, "★" * stars + "☆" * (3 - stars), fg=AMBER, size=26, bold=True).pack()
-        L(self.tb, "★ — точность ≥ 60%, ★★ — ≥ 80%, ★★★ — ≥ 95%", fg=MUTED, size=8).pack()
+        L(self.tb, _t("★ — точность ≥ 60%, ★★ — ≥ 80%, ★★★ — ≥ 95%"), fg=MUTED, size=8).pack()
         grid = tk.Frame(self.tb, bg=PANEL)
         grid.pack(pady=px(8))
         el = int(time.time() - self.t0)
-        for i, (t, v, c) in enumerate((("ТОЧНОСТЬ", f"{acc}%", GREEN), ("ОШИБКИ", str(self.bad), RED),
-                                       ("ВРЕМЯ", f"{el // 60:02d}:{el % 60:02d}", TEXT),
-                                       ("ЛУЧШАЯ СЕРИЯ", str(self.best_combo), AMBER))):
+        for i, (t, v, c) in enumerate(((_t("ТОЧНОСТЬ"), f"{acc}%", GREEN), (_t("ОШИБКИ"), str(self.bad), RED),
+                                       (_t("ВРЕМЯ"), f"{el // 60:02d}:{el % 60:02d}", TEXT),
+                                       (_t("ЛУЧШАЯ СЕРИЯ"), str(self.best_combo), AMBER))):
             f = tk.Frame(grid, bg=PANEL)
             f.grid(row=0, column=i, padx=px(20))
             L(f, t, fg=MUTED, size=8, bold=True).pack()
@@ -701,10 +703,10 @@ class PracticePage(tk.Frame):
         btns = tk.Frame(self.tb, bg=PANEL)
         btns.pack(pady=px(10))
         self._last_bad = [s for s, ok in seen.items() if not ok]
-        HudButton(btns, "⟲ ЕЩЁ РАЗ  Enter", lambda: self.start(self.mode, source=self.src), color=CYAN, height=34).pack(
+        HudButton(btns, _t("⟲ ЕЩЁ РАЗ  Enter"), lambda: self.start(self.mode, source=self.src), color=CYAN, height=34).pack(
             side=tk.LEFT, padx=px(4))
-        HudButton(btns, "⚙ ПОВТОРИТЬ ОШИБКИ  R", self.retry_bad, color=AMBER, height=34).pack(side=tk.LEFT, padx=px(4))
-        HudButton(btns, "✕ К МИССИЯМ  Esc", self.to_hub, height=34).pack(side=tk.LEFT, padx=px(4))
+        HudButton(btns, _t("⚙ ПОВТОРИТЬ ОШИБКИ  R"), self.retry_bad, color=AMBER, height=34).pack(side=tk.LEFT, padx=px(4))
+        HudButton(btns, _t("✕ К МИССИЯМ  Esc"), self.to_hub, height=34).pack(side=tk.LEFT, padx=px(4))
         self.next_btn.set_enabled(False)
         self.finished = True
         self.ctx.sfx("bell")
@@ -714,7 +716,7 @@ class PracticePage(tk.Frame):
         if self._last_bad:
             self.start(self.mode, source="filtered", ids=self._last_bad)
         else:
-            self.ctx.status("Ошибок не было — отличная работа!", GREEN)
+            self.ctx.status(_t("Ошибок не было — отличная работа!"), GREEN)
 
     def to_hub(self) -> None:
         self.active = False

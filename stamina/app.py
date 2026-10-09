@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import os
 import sys
 
@@ -93,17 +95,17 @@ def choose_pilot(argv: list[str]) -> str | None:
             p = pilots.get(pid)
         else:
             if pilot_pin.has_pin(p["id"]):
-                root.title("Star Typing — код доступа")
+                root.title(t("Star Typing — код доступа"))
                 _center(root, theme.px(520), theme.px(560))
                 root.update_idletasks()
-                if not pilot_screens.ask_pin(root, p, "ВХОД В КАБИНУ"):
+                if not pilot_screens.ask_pin(root, p, t("ВХОД В КАБИНУ")):
                     return None
             pid = p["id"]
         p = pilots.get(pid) or p
         if p.get("pin_setup_pending") and not pilot_pin.has_pin(pid):
             if not root.winfo_viewable():
                 _center(root, theme.px(620), theme.px(420))
-            root.title("Star Typing — код доступа")
+            root.title(t("Star Typing — код доступа"))
             root.update_idletasks()
             pilot_screens.SetPinDialog(root, p, first_time=True).run()
         return pid
@@ -123,7 +125,7 @@ def run_app(argv: list[str] | None = None) -> None:
     except Exception:  # noqa: BLE001 — экипаж не должен мешать полётам
         import traceback
         from stamina import pilots
-        pilots.log_error("Ошибка выбора пилота:\n" + traceback.format_exc())
+        pilots.log_error(t("Ошибка выбора пилота:\n") + traceback.format_exc())
         # с реестром нельзя молча работать «по-старому» (корень уже пуст) — выходим, ошибка в логе
         pid = None if pilots.load_registry() is not None else ""
     if pid is None:
@@ -133,3 +135,18 @@ def run_app(argv: list[str] | None = None) -> None:
         pilots.activate(pid)
     from stamina.cockpit import Cockpit
     Cockpit().mainloop()
+
+
+def relaunch() -> bool:
+    """Запустить программу заново тем же Python и с теми же аргументами (смена языка интерфейса)."""
+    import subprocess
+    try:
+        from stamina import pilots
+        env = dict(os.environ)
+        cur = pilots.active()
+        if cur:
+            env["STAMINA_PILOT"] = cur["id"]          # вернуться в кабину того же пилота
+        subprocess.Popen([sys.executable] + sys.argv, cwd=os.getcwd(), close_fds=True, env=env)
+    except OSError:
+        return False
+    return True

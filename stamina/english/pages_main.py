@@ -1,6 +1,8 @@
 """Обзор (мостик), звёздные карты (наборы слов), сканер объекта (карточка слова)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import datetime as dt
 import random
 import tkinter as tk
@@ -54,8 +56,8 @@ class SectorCard(tk.Canvas):
                          font=theme.font(9, True, mono=True))
         self.create_text(w - px(12), px(14), text=sub, anchor="e", fill=MUTED, font=theme.font(8, True))
         self.create_text(px(12), px(40), text=name, anchor="w", fill=TEXT, font=theme.font(13, True))
-        status = "пройден" if frac >= 1 else ("в процессе" if known else "не начат")
-        self.create_text(px(12), px(62), text=f"знаю {known} / {total} · {status}", anchor="w", fill=MUTED,
+        status = _t("пройден") if frac >= 1 else (_t("в процессе") if known else _t("не начат"))
+        self.create_text(px(12), px(62), text=_t("знаю {0} / {1} · {2}").format(known, total, status), anchor="w", fill=MUTED,
                          font=theme.font(8))
         rng = random.Random(sid)
         pts = [(px(14) + i * (w - px(28)) / 5, px(78) + rng.random() * px(30)) for i in range(6)]
@@ -82,24 +84,24 @@ class OverviewPage(tk.Frame):
         grid.grid_columnconfigure(1, weight=1, minsize=px(330))
         grid.grid_rowconfigure(1, weight=1)
         # курс на сегодня
-        today = HudPanel(grid, "КУРС НА СЕГОДНЯ", accent=AMBER)
+        today = HudPanel(grid, _t("КУРС НА СЕГОДНЯ"), accent=AMBER)
         today.grid(row=0, column=0, sticky="nsew", padx=(0, px(6)), pady=(0, px(6)))
         b = today.body
-        self.ring = RingGauge(b, title="ДНЕВНАЯ ЦЕЛЬ")
+        self.ring = RingGauge(b, title=_t("ДНЕВНАЯ ЦЕЛЬ"))
         self.ring.pack(side=tk.LEFT)
         self.ro = Readouts(b, rows=3)
         self.ro.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(10))
         acts = tk.Frame(b, bg=PANEL)
         acts.pack(side=tk.LEFT, padx=px(6))
-        HudButton(acts, "▶ НАЧАТЬ ЗАНЯТИЕ", lambda: self.ctx.start_review(), color=AMBER, height=42,
+        HudButton(acts, _t("▶ НАЧАТЬ ЗАНЯТИЕ"), lambda: self.ctx.start_review(), color=AMBER, height=42,
                   font_size=11, width=230).pack(pady=px(4))
-        HudButton(acts, "БЫСТРАЯ МИССИЯ · 10", lambda: self.ctx.start_session("random", source="set"),
+        HudButton(acts, _t("БЫСТРАЯ МИССИЯ · 10"), lambda: self.ctx.start_session("random", source="set"),
                   height=42, font_size=11, width=230).pack(pady=px(4))
-        L(acts, "сначала проверка систем, потом новые слова", fg=MUTED, size=8).pack()
+        L(acts, _t("сначала проверка систем, потом новые слова"), fg=MUTED, size=8).pack()
         # секторы
         sec = tk.Frame(grid, bg=BG)
         sec.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
-        L(sec, "СЕКТОРЫ · НАБОРЫ СЛОВ ПО ЧАСТОТЕ", fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
+        L(sec, _t("СЕКТОРЫ · НАБОРЫ СЛОВ ПО ЧАСТОТЕ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
         row = tk.Frame(sec, bg=BG)
         row.pack(fill=tk.X)
         self.cards = []
@@ -108,10 +110,10 @@ class OverviewPage(tk.Frame):
             c.grid(row=0, column=i, sticky="nsew", padx=px(3))
             row.grid_columnconfigure(i, weight=1, uniform="sec")
             self.cards.append(c)
-        L(sec, "Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются.",
+        L(sec, _t("Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются."),
           fg=FAINT, size=8, bg=BG).pack(anchor="w", pady=(px(8), 0))
         # телеметрия
-        tel = HudPanel(grid, "ТЕЛЕМЕТРИЯ ПИЛОТА")
+        tel = HudPanel(grid, _t("ТЕЛЕМЕТРИЯ ПИЛОТА"))
         tel.grid(row=0, column=1, sticky="nsew", pady=(0, px(6)))
         tb = tel.body
         top = tk.Frame(tb, bg=PANEL)
@@ -126,12 +128,12 @@ class OverviewPage(tk.Frame):
         self.lvl_bar.pack(fill=tk.X, pady=px(3))
         self.rank_txt = L(info, "", fg=AMBER, size=9, bold=True)
         self.rank_txt.pack(anchor="w")
-        self.streak = Segments(tb, "СЕРИЯ · 14 ДНЕЙ")
+        self.streak = Segments(tb, _t("СЕРИЯ · 14 ДНЕЙ"))
         self.streak.pack(fill=tk.X, pady=(px(8), 0))
-        self.learned = SegmentBar(tb, "ВЫУЧЕНО В ТЕКУЩЕМ НАБОРЕ", color=GREEN)
+        self.learned = SegmentBar(tb, _t("ВЫУЧЕНО В ТЕКУЩЕМ НАБОРЕ"), color=GREEN)
         self.learned.pack(fill=tk.X)
         # слово дня
-        self.sig = HudPanel(grid, "ПЕРЕХВАЧЕН СИГНАЛ · СЛОВО ДНЯ", accent=GREEN)
+        self.sig = HudPanel(grid, _t("ПЕРЕХВАЧЕН СИГНАЛ · СЛОВО ДНЯ"), accent=GREEN)
         self.sig.grid(row=1, column=1, sticky="nsew")
         sb = self.sig.body
         self.sig_meta = L(sb, "", fg=MUTED, size=8, mono=True)
@@ -140,11 +142,11 @@ class OverviewPage(tk.Frame):
         wr.pack(anchor="w", fill=tk.X)
         self.sig_word = L(wr, "", fg=TEXT, size=26, bold=True, mono=True)
         self.sig_word.pack(side=tk.LEFT)
-        self.ctx.audio_button(wr, "🔊 ГОЛОС", lambda: self.sig_word.cget("text"), height=32, font_size=9).pack(
+        self.ctx.audio_button(wr, _t("🔊 ГОЛОС"), lambda: self.sig_word.cget("text"), height=32, font_size=9).pack(
             side=tk.LEFT, padx=px(8))
         self.sig_def = L(sb, "", fg=TEXT, size=10, wraplength=px(300), justify="left")
         self.sig_def.pack(anchor="w", pady=px(4))
-        HudButton(sb, "СКАНИРОВАТЬ", lambda: self.ctx.open_word(self._wod), height=32).pack(anchor="w", pady=px(4))
+        HudButton(sb, _t("СКАНИРОВАТЬ"), lambda: self.ctx.open_word(self._wod), height=32).pack(anchor="w", pady=px(4))
         self._wod = None
 
     def refresh(self) -> None:
@@ -157,21 +159,21 @@ class OverviewPage(tk.Frame):
         new_left = max(0, p.settings["new_per_day"] - p.new_today_count())
         avail = sum(1 for w in cur if not p.is_known(w["slug"]) and not p.has_card(w["slug"]))
         st = p.streak()
-        self.ro.set([("К ПОВТОРЕНИЮ", str(due), CYAN), ("НОВЫХ ДОСТУПНО", str(min(new_left, avail)), GREEN),
-                     ("СЕРИЯ ДНЕЙ / ЛУЧШАЯ", f"{st} / {max(st, p.data['xp'].get('best_streak', 0))}", AMBER)])
+        self.ro.set([(_t("К ПОВТОРЕНИЮ"), str(due), CYAN), (_t("НОВЫХ ДОСТУПНО"), str(min(new_left, avail)), GREEN),
+                     (_t("СЕРИЯ ДНЕЙ / ЛУЧШАЯ"), f"{st} / {max(st, p.data['xp'].get('best_streak', 0))}", AMBER)])
         for c in self.cards:
             c.redraw()
         lvl, lo, hi = p.level()
         self.lvl.configure(text=str(lvl))
-        self.lvl_txt.configure(text=f"УРОВЕНЬ · {p.xp_total} XP · ДО {lvl + 1}: {hi - p.xp_total} XP")
+        self.lvl_txt.configure(text=_t("УРОВЕНЬ · {0} XP · ДО {1}: {2} XP").format(p.xp_total, lvl + 1, hi - p.xp_total))
         self.lvl_bar.set((p.xp_total - lo) / max(1, hi - lo))
         try:
             xp = self.ctx.app.store.stats["xp"]
             rank, _lo, nxt = missions.rank_for(xp)
-            self.rank_txt.configure(text=f"★ {rank.upper()} · общий XP Star Typing {xp}" + (f" / {nxt}" if nxt else ""))
+            self.rank_txt.configure(text=_t("★ {0} · общий XP Star Typing {1}").format(rank.upper(), xp) + (f" / {nxt}" if nxt else ""))
         except Exception:
             self.rank_txt.configure(text="")
-        self.streak.set(p.day_flags(14), f"{st} дн.")
+        self.streak.set(p.day_flags(14), _t("{0} дн.").format(st))
         n = p.known_or_learned([w["slug"] for w in cur])
         self.learned.set(n / max(1, len(cur)), f"{n} / {len(cur)}")
         pool = [w for w in cur if not p.is_known(w["slug"])] or cur
@@ -200,7 +202,7 @@ class SetsPage(tk.Frame):
         self.items: list[dict] = []
         self.strip = Strip(self)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
-        fp = HudPanel(self, "ПАРАМЕТРЫ СКАНИРОВАНИЯ")
+        fp = HudPanel(self, _t("ПАРАМЕТРЫ СКАНИРОВАНИЯ"))
         fp.pack(fill=tk.X, padx=px(12), pady=px(4))
         b = fp.body
         r1 = tk.Frame(b, bg=PANEL)
@@ -210,26 +212,26 @@ class SetsPage(tk.Frame):
             bt = HudButton(r1, code, lambda s=sid: self.open_set(s), height=28, font_size=9)
             bt.pack(side=tk.LEFT, padx=px(2))
             self.btn_set[sid] = bt
-        L(r1, "   ПОИСК", fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
+        L(r1, _t("   ПОИСК"), fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
         self.q = entry(r1, width=18, size=10)
         self.q.pack(side=tk.LEFT, padx=px(6), ipady=px(3))
         self.q.bind("<KeyRelease>", lambda _e: self._set("q", self.q.get()))
         self.count = L(r1, "", fg=CYAN, size=9, bold=True, mono=True)
         self.count.pack(side=tk.RIGHT)
-        HudButton(r1, "✕ СБРОС", self.reset, color=RED, height=28, font_size=8).pack(side=tk.RIGHT, padx=px(4))
-        HudButton(r1, "⤨ ПЕРЕМЕШАТЬ", self.shuffle, height=28, font_size=8).pack(side=tk.RIGHT, padx=px(4))
+        HudButton(r1, _t("✕ СБРОС"), self.reset, color=RED, height=28, font_size=8).pack(side=tk.RIGHT, padx=px(4))
+        HudButton(r1, _t("⤨ ПЕРЕМЕШАТЬ"), self.shuffle, height=28, font_size=8).pack(side=tk.RIGHT, padx=px(4))
         r2 = tk.Frame(b, bg=PANEL)
         r2.pack(fill=tk.X, pady=(px(6), 0))
         self.groups: dict[str, dict] = {}
-        self._group(r2, "status", "СТАТУС", [("all", "ВСЕ"), ("known", "ЗНАЮ"), ("unknown", "НЕ ЗНАЮ"),
-                                              ("review", "НА ПОВТОРЕНИИ")])
-        self._group(r2, "len", "ДЛИНА", [("all", "ВСЕ"), ("short", "1–4"), ("mid", "5–7"), ("long", "8+")])
-        self._group(r2, "diff", "СЛОЖНОСТЬ", [("all", "ВСЕ"), ("easy", "ЛЁГК."), ("medium", "СРЕД."), ("tricky", "ТРУД.")])
+        self._group(r2, "status", _t("СТАТУС"), [("all", _t("ВСЕ")), ("known", _t("ЗНАЮ")), ("unknown", _t("НЕ ЗНАЮ")),
+                                              ("review", _t("НА ПОВТОРЕНИИ"))])
+        self._group(r2, "len", _t("ДЛИНА"), [("all", _t("ВСЕ")), ("short", "1–4"), ("mid", "5–7"), ("long", "8+")])
+        self._group(r2, "diff", _t("СЛОЖНОСТЬ"), [("all", _t("ВСЕ")), ("easy", _t("ЛЁГК.")), ("medium", _t("СРЕД.")), ("tricky", _t("ТРУД."))])
         r3 = tk.Frame(b, bg=PANEL)
         r3.pack(fill=tk.X, pady=(px(6), 0))
-        self._group(r3, "sort", "СОРТИРОВКА", [("random", "СЛУЧАЙНО"), ("freq", "ЧАСТОТА"), ("alpha", "A→Z"),
-                                               ("difficulty", "СЛОЖНОСТЬ")])
-        self._group(r3, "pos", "ЧАСТЬ РЕЧИ", POS_FILTER)
+        self._group(r3, "sort", _t("СОРТИРОВКА"), [("random", _t("СЛУЧАЙНО")), ("freq", _t("ЧАСТОТА")), ("alpha", "A→Z"),
+                                               ("difficulty", _t("СЛОЖНОСТЬ"))])
+        self._group(r3, "pos", _t("ЧАСТЬ РЕЧИ"), POS_FILTER)
         # сетка
         self.gridf = tk.Frame(self, bg=BG)
         self.gridf.pack(fill=tk.BOTH, expand=True, padx=px(10))
@@ -245,9 +247,9 @@ class SetsPage(tk.Frame):
         HudButton(bot, "▶", lambda: self.go(1), width=44, height=30).pack(side=tk.LEFT)
         self.tip = L(bot, "", fg=AMBER, size=8, bg=BG)
         self.tip.pack(side=tk.LEFT, padx=px(14))
-        HudButton(bot, "МИССИЯ ПО НАБОРУ", lambda: self.ctx.start_session("random", source="filtered",
+        HudButton(bot, _t("МИССИЯ ПО НАБОРУ"), lambda: self.ctx.start_session("random", source="filtered",
                   ids=[w["slug"] for w in self.items]), height=30, font_size=9).pack(side=tk.RIGHT, padx=px(3))
-        HudButton(bot, "УЧИТЬ КАРТОЧКАМИ", self.learn_cards, color=AMBER, height=30, font_size=9).pack(
+        HudButton(bot, _t("УЧИТЬ КАРТОЧКАМИ"), self.learn_cards, color=AMBER, height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
 
@@ -300,10 +302,10 @@ class SetsPage(tk.Frame):
         name = next(s for s in SETS if s[0] == f["set"])
         words = self.ctx.vocab.in_set(f["set"])
         known = self.ctx.progress.known_or_learned([w["slug"] for w in words])
-        self.strip.set(f"СЕКТОР {name[4]} · {name[2].upper()} · ЗВЁЗДНАЯ КАРТА",
-                       "Клик по слову — сканер. ⟳ — перевернуть, ✓ — знаю, ⊞ — в отсек.",
+        self.strip.set(_t("СЕКТОР {0} · {1} · ЗВЁЗДНАЯ КАРТА").format(name[4], name[2].upper()),
+                       _t("Клик по слову — сканер. ⟳ — перевернуть, ✓ — знаю, ⊞ — в отсек."),
                        known / max(1, len(words)), f"{known} / {len(words)} · {100 * known // max(1, len(words))}%")
-        self.count.configure(text=f"НАЙДЕНО: {len(self.items)}")
+        self.count.configure(text=_t("НАЙДЕНО: {0}").format(len(self.items)))
         self.render()
 
     def go(self, d: int) -> None:
@@ -323,8 +325,8 @@ class SetsPage(tk.Frame):
             t = Tile(self.gridf, self.ctx, w)
             t.grid(row=i // self.COLS, column=i % self.COLS, sticky="nsew", padx=px(3), pady=px(3))
             self.tiles.append(t)
-        self.pg.configure(text=f"СТР. {self.page + 1} / {pages}")
-        self.tip.configure(text="БОРТОВОЙ СОВЕТ: " + TIPS[self.page % len(TIPS)])
+        self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
+        self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
 
     def learn_cards(self) -> None:
         p = self.ctx.progress
@@ -358,12 +360,12 @@ class ScannerPage(tk.Frame):
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
         nav = tk.Frame(root, bg=BG)
         nav.pack(fill=tk.X, padx=px(12))
-        self.btn_back = HudButton(nav, "← НАЗАД", self.go_back, height=28, font_size=8)
+        self.btn_back = HudButton(nav, _t("← НАЗАД"), self.go_back, height=28, font_size=8)
         self.btn_back.pack(side=tk.LEFT)
-        HudButton(nav, "◀ ПРЕДЫДУЩЕЕ", lambda: self.neighbor(-1), height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
-        HudButton(nav, "СЛЕДУЮЩЕЕ ▶", lambda: self.neighbor(1), height=28, font_size=8).pack(side=tk.LEFT)
+        HudButton(nav, _t("◀ ПРЕДЫДУЩЕЕ"), lambda: self.neighbor(-1), height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
+        HudButton(nav, _t("СЛЕДУЮЩЕЕ ▶"), lambda: self.neighbor(1), height=28, font_size=8).pack(side=tk.LEFT)
         # окно сканера
-        win = HudPanel(root, "ОКНО СКАНЕРА")
+        win = HudPanel(root, _t("ОКНО СКАНЕРА"))
         win.pack(fill=tk.X, padx=px(12), pady=px(4))
         wb = win.body
         self.rank = chip(wb, "", CYAN)
@@ -374,14 +376,14 @@ class ScannerPage(tk.Frame):
         self.meta.pack(pady=px(4))
         sens = tk.Frame(wb, bg=PANEL)
         sens.pack(pady=px(2))
-        self.ctx.audio_button(sens, "🔊 ГОЛОС", lambda: self._cur_word()["word"], height=30, font_size=9).pack(side=tk.LEFT, padx=px(3))
-        self.ctx.audio_button(sens, "🐢 МЕДЛЕННО", lambda: self._cur_word()["word"], slow=True, height=30, font_size=9).pack(side=tk.LEFT, padx=px(3))
+        self.ctx.audio_button(sens, _t("🔊 ГОЛОС"), lambda: self._cur_word()["word"], height=30, font_size=9).pack(side=tk.LEFT, padx=px(3))
+        self.ctx.audio_button(sens, _t("🐢 МЕДЛЕННО"), lambda: self._cur_word()["word"], slow=True, height=30, font_size=9).pack(side=tk.LEFT, padx=px(3))
         # две колонки
         cols = tk.Frame(root, bg=BG)
         cols.pack(fill=tk.X, padx=px(12))
         cols.grid_columnconfigure(0, weight=1, uniform="c")
         cols.grid_columnconfigure(1, weight=1, uniform="c")
-        pr = HudPanel(cols, "АНАЛИЗ ПРОИЗНОШЕНИЯ")
+        pr = HudPanel(cols, _t("АНАЛИЗ ПРОИЗНОШЕНИЯ"))
         pr.grid(row=0, column=0, sticky="nsew", padx=(0, px(4)))
         pb = pr.body
         self.resp = L(pb, "", fg=CYAN, size=22, bold=True, mono=True)
@@ -391,13 +393,13 @@ class ScannerPage(tk.Frame):
         tabs = tk.Frame(pb, bg=PANEL)
         tabs.pack(pady=px(4))
         self.ptabs = {}
-        for key, title in (("ipa", "IPA"), ("syl", "СЛОГИ"), ("guide", "КАК ПРОИЗНОСИТЬ"), ("notes", "ЗАМЕТКИ")):
+        for key, title in (("ipa", "IPA"), ("syl", _t("СЛОГИ")), ("guide", _t("КАК ПРОИЗНОСИТЬ")), ("notes", _t("ЗАМЕТКИ"))):
             bt = HudButton(tabs, title, lambda k=key: self.set_ptab(k), height=26, font_size=8)
             bt.pack(side=tk.LEFT, padx=px(2))
             self.ptabs[key] = bt
         self.ptext = L(pb, "", fg=TEXT, size=11, wraplength=px(480), justify="left")
         self.ptext.pack(anchor="w", pady=px(4))
-        da = HudPanel(cols, "ДАННЫЕ ОБЪЕКТА")
+        da = HudPanel(cols, _t("ДАННЫЕ ОБЪЕКТА"))
         da.grid(row=0, column=1, sticky="nsew", padx=(px(4), 0))
         db = da.body
         self.defn = L(db, "", fg=TEXT, size=12, wraplength=px(480), justify="left")
@@ -408,19 +410,19 @@ class ScannerPage(tk.Frame):
         self.example.pack(fill=tk.X, pady=px(4))
         trr = tk.Frame(db, bg=PANEL)
         trr.pack(fill=tk.X, pady=px(2))
-        L(trr, "МОЙ ПЕРЕВОД", fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
+        L(trr, _t("МОЙ ПЕРЕВОД"), fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
         self.tr = entry(trr, width=26, size=11)
         self.tr.pack(side=tk.LEFT, padx=px(6), fill=tk.X, expand=True, ipady=px(3))
         self.tr.bind("<FocusOut>", lambda _e: self._save_tr())
         self.tr.bind("<Return>", lambda _e: (self._save_tr(), self.focus_set()))
         acts = tk.Frame(db, bg=PANEL)
         acts.pack(fill=tk.X, pady=px(6))
-        self.btn_known = HudButton(acts, "✓ ЗНАЮ", self.toggle_known, color=GREEN, height=30, font_size=9, width=120)
+        self.btn_known = HudButton(acts, _t("✓ ЗНАЮ"), self.toggle_known, color=GREEN, height=30, font_size=9, width=120)
         self.btn_known.pack(side=tk.LEFT, padx=(0, px(4)))
-        self.btn_list = HudButton(acts, "⊞ В ОТСЕК", lambda: self.ctx.list_menu(self.btn_list, self.slug, None, self.refresh),
+        self.btn_list = HudButton(acts, _t("⊞ В ОТСЕК"), lambda: self.ctx.list_menu(self.btn_list, self.slug, None, self.refresh),
                                   height=30, font_size=9, width=150)
         self.btn_list.pack(side=tk.LEFT, padx=px(4))
-        self.btn_card = HudButton(acts, "В ПРОВЕРКУ СИСТЕМ", self.add_card, color=AMBER, height=30, font_size=9, width=190)
+        self.btn_card = HudButton(acts, _t("В ПРОВЕРКУ СИСТЕМ"), self.add_card, color=AMBER, height=30, font_size=9, width=190)
         self.btn_card.pack(side=tk.LEFT, padx=px(4))
         # миссии по слову
         mrow = tk.Frame(root, bg=BG)
@@ -429,7 +431,7 @@ class ScannerPage(tk.Frame):
             HudButton(mrow, f"{icon} {tasks.MODES[mode][0]}", lambda m=mode: self.ctx.start_session(m, single=self.slug),
                       height=32, font_size=9).pack(side=tk.LEFT, padx=px(4))
         # канал связи — практика предложений
-        self.chan = HudPanel(root, "КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ")
+        self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"))
         self.chan.pack(fill=tk.X, padx=px(12), pady=(px(2), px(10)))
         cb = self.chan.body
         cb.grid_columnconfigure(0, weight=1)
@@ -451,10 +453,10 @@ class ScannerPage(tk.Frame):
         sbtn.pack(anchor="w", pady=px(6))
         HudButton(sbtn, "◀", lambda: self.step_sent(-1), width=40, height=28).pack(side=tk.LEFT)
         HudButton(sbtn, "▶", lambda: self.step_sent(1), width=40, height=28).pack(side=tk.LEFT, padx=px(4))
-        self.ctx.audio_button(sbtn, "🔊 ГОЛОС", lambda: self._sent()["en"], height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
-        self.ctx.audio_button(sbtn, "🐢 МЕДЛЕННО", lambda: self._sent()["en"], slow=True, height=28, font_size=8).pack(side=tk.LEFT)
-        HudButton(sbtn, "ПЕРЕВОД", self.show_tr, height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
-        HudButton(sbtn, "💡 ПОДСКАЗКА", self.show_hint, height=28, font_size=8, color=AMBER).pack(side=tk.LEFT)
+        self.ctx.audio_button(sbtn, _t("🔊 ГОЛОС"), lambda: self._sent()["en"], height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
+        self.ctx.audio_button(sbtn, _t("🐢 МЕДЛЕННО"), lambda: self._sent()["en"], slow=True, height=28, font_size=8).pack(side=tk.LEFT)
+        HudButton(sbtn, _t("ПЕРЕВОД"), self.show_tr, height=28, font_size=8).pack(side=tk.LEFT, padx=px(4))
+        HudButton(sbtn, _t("💡 ПОДСКАЗКА"), self.show_hint, height=28, font_size=8, color=AMBER).pack(side=tk.LEFT)
         self.result = L(left, "", fg=MUTED, size=11, bold=True)
         self.result.pack(anchor="w")
         self.match = MatchReadout(left)  # «СОВПАДЕНИЕ: 86%» + шкала + пропущенные слова
@@ -506,9 +508,9 @@ class ScannerPage(tk.Frame):
                 return
             self.slug = w[0]["slug"]
         w, p = self._cur_word(), self.ctx.progress
-        self.strip.set(f"СКАНЕР ОБЪЕКТА · {w['word'].upper()}",
-                       f"Набор: {w.get('level', '')} · частотность #{w['rank']}")
-        self.rank.configure(text=f" ЧАСТОТНОСТЬ #{w['rank']} ")
+        self.strip.set(_t("СКАНЕР ОБЪЕКТА · {0}").format(w['word'].upper()),
+                       _t("Набор: {0} · частотность #{1}").format(w.get('level', ''), w['rank']))
+        self.rank.configure(text=_t(" ЧАСТОТНОСТЬ #{0} ").format(w['rank']))
         self.word.configure(text=w["word"])
         for c in self.meta.winfo_children():
             c.destroy()
@@ -522,25 +524,25 @@ class ScannerPage(tk.Frame):
         for c in self.pchips.winfo_children():
             c.destroy()
         if w.get("syllables"):
-            chip(self.pchips, f"{w['syllables']} слог(а)", MUTED).pack(side=tk.LEFT, padx=px(2))
+            chip(self.pchips, _t("{0} слог(а)").format(w['syllables']), MUTED).pack(side=tk.LEFT, padx=px(2))
         self.set_ptab(self.ptab)
         self.defn.configure(text=w.get("definition", ""))
         self._fill_text(self.example, f"“{w['example']}”" if w.get("example") else "", w["word"])
         self.tr.delete(0, tk.END)
         self.tr.insert(0, p.tr(self.slug))  # свой перевод или словарный
         known = p.is_known(self.slug)
-        self.btn_known.set_text("✓ ЗНАЮ" if known else "○ НЕ ЗНАЮ")
+        self.btn_known.set_text(_t("✓ ЗНАЮ") if known else _t("○ НЕ ЗНАЮ"))
         self.btn_known.set_active(known)
         self.btn_known.set_color(GREEN if known else MUTED)
         inl = p.lists_of(self.slug)
-        self.btn_list.set_text(f"⊞ В ОТСЕКАХ: {len(inl)}" if inl else "⊞ В ОТСЕК")
+        self.btn_list.set_text(_t("⊞ В ОТСЕКАХ: {0}").format(len(inl)) if inl else _t("⊞ В ОТСЕК"))
         c = p.card(self.slug)
         if c and c.get("reps", 0) > 0:
-            self.btn_card.set_text(f"ПОВТОР {c['due']}")
+            self.btn_card.set_text(_t("ПОВТОР {0}").format(c['due']))
         elif c:
-            self.btn_card.set_text("В ОЧЕРЕДИ ПРОВЕРКИ")
+            self.btn_card.set_text(_t("В ОЧЕРЕДИ ПРОВЕРКИ"))
         else:
-            self.btn_card.set_text("В ПРОВЕРКУ СИСТЕМ")
+            self.btn_card.set_text(_t("В ПРОВЕРКУ СИСТЕМ"))
         self.render_sentence()
         self.mic.reset()
         if p.settings.get("autoplay"):
@@ -550,13 +552,13 @@ class ScannerPage(tk.Frame):
         self.ptab = key
         w = self._cur_word()
         txt = {
-            "ipa": w.get("ipa") or "нет данных",
-            "syl": w.get("syllable_breakdown") or "нет данных",
-            "guide": (w.get("guide") or "нет данных") + (f"\nзвучит как: {', '.join(w['sounds_like'])}"
+            "ipa": w.get("ipa") or _t("нет данных"),
+            "syl": w.get("syllable_breakdown") or _t("нет данных"),
+            "guide": (w.get("guide") or _t("нет данных")) + (_t("\nзвучит как: {0}").format(', '.join(w['sounds_like']))
                                                          if w.get("sounds_like") else ""),
             "notes": "\n".join(f"• {n}" for n in (w.get("notes") or [])) +
-                     ("\nЧастые ошибки:\n" + "\n".join(f"• {n}" for n in w["common_mistakes"])
-                      if w.get("common_mistakes") else "") or "нет данных",
+                     (_t("\nЧастые ошибки:\n") + "\n".join(f"• {n}" for n in w["common_mistakes"])
+                      if w.get("common_mistakes") else "") or _t("нет данных"),
         }[key]
         self.ptext.configure(text=txt, font=theme.font(14 if key == "ipa" else 10, False, key in ("ipa", "syl")),
                              fg=CYAN if key in ("ipa", "syl") else TEXT)
@@ -579,7 +581,7 @@ class ScannerPage(tk.Frame):
     def render_sentence(self) -> None:
         s = self._sents()
         if not s:
-            self.snum.configure(text="ПРЕДЛОЖЕНИЙ ДЛЯ ЭТОГО СЛОВА НЕТ")
+            self.snum.configure(text=_t("ПРЕДЛОЖЕНИЙ ДЛЯ ЭТОГО СЛОВА НЕТ"))
             self._fill_text(self.sent, "", "")
             self.str_.configure(text="")
             self.hint.configure(text="")
@@ -588,8 +590,8 @@ class ScannerPage(tk.Frame):
             return
         cur = self._sent()
         best = self.ctx.progress.data["speech_best"].get(f"{self.slug}:{self.si % len(s)}")
-        self.snum.configure(text=f"КАРТОЧКА ПРЕДЛОЖЕНИЯ {self.si % len(s) + 1:02d} / {len(s):02d}"
-                                 + (f"   · лучший результат {best}" if best is not None else ""))
+        self.snum.configure(text=_t("КАРТОЧКА ПРЕДЛОЖЕНИЯ {0:02d} / {1:02d}").format(self.si % len(s) + 1, len(s))
+                                 + (_t("   · лучший результат {0}").format(best) if best is not None else ""))
         self._fill_text(self.sent, cur["en"], self._cur_word()["word"])
         self.str_.configure(text=cur.get("ru") or "" if self.ctx.progress.settings.get("show_tr") else "")
         self.hint.configure(text="")
@@ -602,12 +604,12 @@ class ScannerPage(tk.Frame):
         self.mic.reset()
 
     def show_tr(self) -> None:
-        self.str_.configure(text=self._sent().get("ru") or "перевода нет")
+        self.str_.configure(text=self._sent().get("ru") or _t("перевода нет"))
 
     def show_hint(self) -> None:
         s = self._sent()
         self.hint.configure(text=s.get("context_ru") or s.get("context") or
-                            "\n".join(self._cur_word().get("notes") or []) or "подсказки нет")
+                            "\n".join(self._cur_word().get("notes") or []) or _t("подсказки нет"))
 
     def on_speech(self, alts, self_score) -> None:
         s = self._sent()
@@ -638,7 +640,7 @@ class ScannerPage(tk.Frame):
         best[key] = max(best.get(key, 0), score)
         xp = 5 if score >= 85 else (3 if score >= 60 else 0)
         if xp and self.ctx.progress.award_once(f"sent:{key}:{dt.date.today().isoformat()}", xp):
-            self.ctx.status(f"Совпадение: {score}% · +{xp} XP", VCOL[vk])
+            self.ctx.status(_t("Совпадение: {0}% · +{1} XP").format(score, xp), VCOL[vk])
         self.ctx.progress.record_attempt(self.slug, "speaking", "sentence", score >= 60,
                                          5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2, score)
         self.ctx.sfx("click" if score >= 60 else "error")
@@ -651,7 +653,7 @@ class ScannerPage(tk.Frame):
 
     def add_card(self) -> None:
         self.ctx.progress.add_card(self.slug)
-        self.ctx.status(f"«{self._cur_word()['word']}» добавлено в проверку систем", CYAN)
+        self.ctx.status(_t("«{0}» добавлено в проверку систем").format(self._cur_word()['word']), CYAN)
         self.refresh()
         self.ctx.changed()
 
