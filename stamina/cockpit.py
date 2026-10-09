@@ -57,6 +57,8 @@ class Cockpit(tk.Tk):
         self.bind("<FocusOut>", self._on_focus_out)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._clock_tick()
+        from stamina.living_space import LivingSpace, DEFAULT_MODE
+        self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
 
@@ -244,6 +246,8 @@ class Cockpit(tk.Tk):
         if hasattr(scr, "refresh"):
             scr.refresh()
         scr.tkraise()
+        if hasattr(self, "living"):
+            self.after(30, lambda s_=scr: self.current_screen_is(s_) and self.living.attach(s_))
         for n, b in self.nav_buttons.items():
             b.set_active(n == name)
         self.btn_help.set_active(name == "help")
@@ -442,12 +446,25 @@ class Cockpit(tk.Tk):
         self.btn_sound.set_active(on)
         self.btn_sound.set_color(CYAN if on else MUTED)
 
+    def current_screen_is(self, scr) -> bool:
+        return self.screens.get(self.current) is scr
+
     def apply_settings(self) -> None:
         st = self.store.settings
         self.sound.enabled = bool(st["sound"])
         self.sound.volume = int(st.get("volume", 3))
         self._update_sound_button()
         self.screens["bridge"].apply_settings()
+        mode = st.get("living_space", "light")
+        if hasattr(self, "living"):
+            self.living.set_mode(mode)
+        try:   # окно входа не знает настроек пилота — режим фона дублируется в app.json
+            app = pilots.load_app()
+            if app.get("living_space") != mode:
+                app["living_space"] = mode
+                pilots.save_app(app)
+        except Exception:  # noqa: BLE001
+            pass
         self.store.save_settings()
 
     # ------------------------------------------------------------------
