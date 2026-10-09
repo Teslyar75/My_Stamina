@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t as tr_
+
 import time
 import tkinter as tk
 from tkinter import messagebox
@@ -20,8 +22,8 @@ from stamina.theme import AMBER, BG, CYAN, CYAN_DIM, GREEN, LINE, MUTED, PANEL, 
 
 
 class Cockpit(tk.Tk):
-    SCREENS = [("bridge", "МОСТИК"), ("missions", "МИССИИ"), ("cargo", "СВОЙ ТЕКСТ"),
-               ("log", "БОРТЖУРНАЛ"), ("settings", "НАСТРОЙКИ")]
+    SCREENS = [("bridge", tr_("МОСТИК")), ("missions", tr_("МИССИИ")), ("cargo", tr_("СВОЙ ТЕКСТ")),
+               ("log", tr_("БОРТЖУРНАЛ")), ("settings", tr_("НАСТРОЙКИ"))]
 
     def __init__(self) -> None:
         super().__init__()
@@ -41,11 +43,11 @@ class Cockpit(tk.Tk):
         self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
-                [(english_hook.KEY, english_hook.TITLE), ("settings", "НАСТРОЙКИ")]
+                [(english_hook.KEY, english_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         self._speed_cls = speedread_hook.load_class()  # вкладка «СКОРОЧТЕНИЕ» (stamina/speedread)
         if self._speed_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
-                [(speedread_hook.KEY, speedread_hook.TITLE), ("settings", "НАСТРОЙКИ")]
+                [(speedread_hook.KEY, speedread_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
@@ -112,7 +114,7 @@ class Cockpit(tk.Tk):
         right.pack(side=tk.RIGHT)
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
         self.clock.pack(side=tk.RIGHT, padx=(px(10), 0))
-        self.btn_sound = HudButton(right, "♪ ЗВУК ВЫКЛ", self.toggle_sound, height=36, font_size=9,
+        self.btn_sound = HudButton(right, tr_("♪ ЗВУК ВЫКЛ"), self.toggle_sound, height=36, font_size=9,
                                    width=116 if len(self.SCREENS) <= 6 else 38)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
         self.btn_help = HudButton(right, "?" if self._compact else "? F1", self.open_help, height=36,
@@ -135,10 +137,10 @@ class Cockpit(tk.Tk):
         status.pack(fill=tk.X, side=tk.BOTTOM)
         self.status_dot = tk.Label(status, text="●", bg=status["bg"], fg=GREEN, font=theme.font(9))
         self.status_dot.pack(side=tk.LEFT, padx=(px(10), px(4)))
-        self.status = tk.Label(status, text="ВСЕ СИСТЕМЫ В НОРМЕ", bg=status["bg"], fg=MUTED,
+        self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=f"F1 справка · F5 заново · Esc пауза · F9 звук · Ctrl+1…{len(self.SCREENS)} разделы",
+        tk.Label(status, text=tr_("F1 справка · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
                  bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
@@ -201,7 +203,7 @@ class Cockpit(tk.Tk):
         compact = getattr(self, "_compact", False)
         c.create_text(px(48), px(15), text="STAR TYPING", anchor="w", fill=TEXT,
                       font=theme.font(14 if compact else 17, True))
-        c.create_text(px(49), px(35), text="ПУЛЬТ ПИЛОТА" if compact else "ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ",
+        c.create_text(px(49), px(35), text=tr_("ПУЛЬТ ПИЛОТА") if compact else tr_("ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ"),
                       anchor="w", fill=CYAN_DIM, font=theme.font(7, True))
 
     def _draw_line(self, c: tk.Canvas) -> None:
@@ -217,8 +219,8 @@ class Cockpit(tk.Tk):
     # ------------------------------------------------------------------
     def open_help(self) -> None:
         """F1: справка; с вкладки «Английский» — сразу глава про неё."""
-        chapter = {english_hook.KEY: "АНГЛИЙСКИЙ",
-                   speedread_hook.KEY: "СКОРОЧТЕНИЕ", "honor": "ЭКИПАЖ"}.get(self.current or "")
+        chapter = {english_hook.KEY: tr_("АНГЛИЙСКИЙ"),
+                   speedread_hook.KEY: tr_("СКОРОЧТЕНИЕ"), "honor": tr_("ЭКИПАЖ")}.get(self.current or "")
         self.show("help")
         scr = self.screens.get("help")
         if scr is not None and hasattr(scr, "goto"):
@@ -229,7 +231,7 @@ class Cockpit(tk.Tk):
             return
         bridge: Bridge = self.screens["bridge"]
         if self.current == "bridge" and bridge.state in ("run", "ready") and name != "bridge":
-            bridge.pause("Пауза — вы перешли в другой раздел")
+            bridge.pause(tr_("Пауза — вы перешли в другой раздел"))
         if self.current == speedread_hook.KEY and name != self.current:
             try:
                 self.screens[speedread_hook.KEY].on_leave()
@@ -292,18 +294,18 @@ class Cockpit(tk.Tk):
     # Экипаж
     # ------------------------------------------------------------------
     def _update_title(self) -> None:
-        who = f"пилот {self.pilot['callsign']}" if self.pilot else "пульт пилота"
+        who = tr_("пилот {0}").format(self.pilot['callsign']) if self.pilot else tr_("пульт пилота")
         self.title(f"{APP_NAME} — {who}  v{__version__}")
 
     def pilot_menu(self) -> None:
         m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=blend(PANEL, AMBER, 0.2),
                     activeforeground=TEXT, font=theme.font(10, True))
         if self.pilot is not None:
-            m.add_command(label="⇄  СМЕНИТЬ ПИЛОТА   Ctrl+Shift+P", command=self.switch_pilot)
-            m.add_command(label="✎  ЛИЧНОЕ ДЕЛО", command=self.edit_pilot)
-            m.add_command(label="⇪  ЭКСПОРТ ПИЛОТА", command=self.export_pilot)
+            m.add_command(label=tr_("⇄  СМЕНИТЬ ПИЛОТА   Ctrl+Shift+P"), command=self.switch_pilot)
+            m.add_command(label=tr_("✎  ЛИЧНОЕ ДЕЛО"), command=self.edit_pilot)
+            m.add_command(label=tr_("⇪  ЭКСПОРТ ПИЛОТА"), command=self.export_pilot)
             m.add_separator()
-        m.add_command(label="★  ДОСКА ПОЧЁТА", command=lambda: self.show("honor"))
+        m.add_command(label=tr_("★  ДОСКА ПОЧЁТА"), command=lambda: self.show("honor"))
         c = self.rank_label
         m.tk_popup(c.winfo_rootx(), c.winfo_rooty() + c.winfo_height())
 
@@ -332,7 +334,7 @@ class Cockpit(tk.Tk):
         try:
             subprocess.Popen([sys.executable, str(main), "--select"], cwd=str(main.parent))
         except OSError as exc:
-            messagebox.showerror("Смена пилота", f"Не удалось перезапустить программу:\n{exc}", parent=self)
+            messagebox.showerror(tr_("Смена пилота"), tr_("Не удалось перезапустить программу:\n{0}").format(exc), parent=self)
             return
         self.destroy()
 
@@ -341,37 +343,37 @@ class Cockpit(tk.Tk):
     # ------------------------------------------------------------------
     def start_mission(self, m: dict) -> None:
         if not self.store.is_unlocked(m):
-            self.set_status("МИССИЯ ЗАКРЫТА — сначала пройдите предыдущую", AMBER)
+            self.set_status(tr_("МИССИЯ ЗАКРЫТА — сначала пройдите предыдущую"), AMBER)
             return
         text = missions.generate_mission_text(m)
         keys = " ".join(m["new"].upper()) if m["new"] and not m["new"].isdigit() else (
-            "цифры 0–9" if m["new"] else "все буквы")
+            tr_("цифры 0–9") if m["new"] else tr_("все буквы"))
         self.screens["bridge"].start(
             text, mode="mission", mission=m,
-            title=f"МИССИЯ {m['lang'].upper()}-{m['num']:02d} · {m['title'].upper()}",
-            subtitle=f"Сектор: {m['sector'].lower()} · новые клавиши: {keys} · цель: "
-                     f"{m['goal']} зн/мин при точности ≥ {missions.PASS_ACCURACY:.0f}%")
+            title=tr_("МИССИЯ {0}-{1:02d} · {2}").format(m['lang'].upper(), m['num'], m['title'].upper()),
+            subtitle=tr_("Сектор: {0} · новые клавиши: {1} · цель: {2} зн/мин при точности ≥ {3:.0f}%").format(m['sector'].lower(), keys, m['goal'], missions.PASS_ACCURACY))
         self._last_action = lambda: self.start_mission(m)
         self.show("bridge")
 
     def start_repair(self, lang: str | None = None) -> None:
         lang = lang or self.store.settings.get("lang", "en")
+        if lang not in ("ru", "en"):      # украинский → кириллица, немецкий и др. → латиница
+            lang = "ru" if lang == "uk" else "en"
         weak = self.store.weakest_keys(lang)
         if not weak:
             other = "ru" if lang == "en" else "en"
             if self.store.weakest_keys(other):
                 lang, weak = other, self.store.weakest_keys(other)
         if not weak:
-            messagebox.showinfo("Ремонт систем", "Пока недостаточно данных об ошибках.\n"
-                                "Пройдите пару миссий — и бортовой компьютер найдёт слабые клавиши.",
+            messagebox.showinfo(tr_("Ремонт систем"), tr_("Пока недостаточно данных об ошибках.\nПройдите пару миссий — и бортовой компьютер найдёт слабые клавиши."),
                                 parent=self)
             return
         chars = [ch for ch, _r in weak]
         text = missions.generate_repair_text(chars, lang)
         self.screens["bridge"].start(
-            text, mode="repair", title="РЕМОНТ СИСТЕМ · СЛАБЫЕ КЛАВИШИ",
-            subtitle="Тренируем: " + "  ".join(f"«{c}»" for c in chars) +
-                     " — упражнение собрано из слов с этими буквами")
+            text, mode="repair", title=tr_("РЕМОНТ СИСТЕМ · СЛАБЫЕ КЛАВИШИ"),
+            subtitle=tr_("Тренируем: ") + "  ".join(f"«{c}»" for c in chars) +
+                     tr_(" — упражнение собрано из слов с этими буквами"))
         self._last_action = lambda: self.start_repair(lang)
         self.show("bridge")
 
@@ -379,7 +381,8 @@ class Cockpit(tk.Tk):
         """Функция подготовки своего текста по текущим опциям."""
         opts = dict(self.store.settings.get("cargo_opts") or {})
         lower, punct, spaces = (bool(opts.get(k, True)) for k in ("lower", "punct", "spaces"))
-        return lambda t: process_text(t, lower=lower, punct=punct, spaces=spaces)
+        translit, yo = bool(opts.get("translit", False)), bool(opts.get("yo", False))
+        return lambda t: process_text(t, lower=lower, punct=punct, spaces=spaces, translit=translit, yo=yo)
 
     def start_cargo(self, adapted: str, original: str, switch: bool = True) -> None:
         self.store.save_cargo(adapted, original)
@@ -409,12 +412,12 @@ class Cockpit(tk.Tk):
         self.screens["bridge"].start(
             text, mode="cargo", resume=resume, original=original,
             case_sensitive=case_sensitive, process=self.cargo_process(),
-            title="СВОЙ ТЕКСТ · ДОСТАВКА ГРУЗА",
-            subtitle=f"«{preview}» · прогресс сохраняется автоматически, можно закрыть программу"
-                     + (" · с заглавными буквами" if case_sensitive else ""))
+            title=tr_("СВОЙ ТЕКСТ · ДОСТАВКА ГРУЗА"),
+            subtitle=tr_("«{0}» · прогресс сохраняется автоматически, можно закрыть программу").format(preview)
+                     + (tr_(" · с заглавными буквами") if case_sensitive else ""))
 
         def again():
-            if messagebox.askyesno("Заново", "Начать этот текст с самого начала?", parent=self):
+            if messagebox.askyesno(tr_("Заново"), tr_("Начать этот текст с самого начала?"), parent=self):
                 clear_session()
                 self._start_cargo_engine(text, original, None)
         self._last_action = again
@@ -445,7 +448,7 @@ class Cockpit(tk.Tk):
         if len(self.SCREENS) > 6:  # много разделов — компактная кнопка
             self.btn_sound.set_text("♪" if on else "♪̸")
         else:
-            self.btn_sound.set_text("♪ ЗВУК ВКЛ" if on else "♪ ЗВУК ВЫКЛ")
+            self.btn_sound.set_text(tr_("♪ ЗВУК ВКЛ") if on else tr_("♪ ЗВУК ВЫКЛ"))
         self.btn_sound.set_active(on)
         self.btn_sound.set_color(CYAN if on else MUTED)
 
@@ -489,7 +492,7 @@ class Cockpit(tk.Tk):
         elif not self.store.stats.get("runs"):
             # новичок: сразу на мостик с первой миссией (домашний ряд) — нажмите любую клавишу и летите
             self.start_mission(missions.missions_for("en")[0])
-            self.set_status("ДОБРО ПОЖАЛОВАТЬ НА БОРТ — первая миссия готова: печатайте F и J. F1 — инструкция", AMBER)
+            self.set_status(tr_("ДОБРО ПОЖАЛОВАТЬ НА БОРТ — первая миссия готова: печатайте F и J. F1 — инструкция"), AMBER)
         else:
             self.show("missions")
 
@@ -514,7 +517,7 @@ class Cockpit(tk.Tk):
         def check():
             try:
                 if self.focus_displayof() is None and self.current == "bridge":
-                    self.screens["bridge"].pause("Окно потеряло фокус — полёт на паузе")
+                    self.screens["bridge"].pause(tr_("Окно потеряло фокус — полёт на паузе"))
             except (tk.TclError, KeyError):
                 pass
         self.after(150, check)

@@ -16,6 +16,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import math
 import random
 import sys
@@ -30,7 +32,7 @@ except ImportError:  # без Pillow режим недоступен, всё р�
 from stamina.theme import BG, CYAN, PANEL
 
 MODES = ("off", "light", "full")
-MODE_TITLES = {"off": "ВЫКЛ", "light": "ЛЁГКИЙ", "full": "ПОЛНЫЙ"}
+MODE_TITLES = {"off": _t("ВЫКЛ"), "light": _t("ЛЁГКИЙ"), "full": _t("ПОЛНЫЙ")}
 DEFAULT_MODE = "light"
 PROFILE = {
     # к/с резкого окна, к/с просветов, к/с стекла, бюджет стекла на кадр (мс), объекты

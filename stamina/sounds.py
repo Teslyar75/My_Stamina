@@ -8,6 +8,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import math
 import random
 import struct
@@ -172,4 +174,4 @@ class SoundBoard:
 
 if __name__ == "__main__":
     generate_all()
-    print("Звуки сгенерированы в", SOUND_DIR)
+    print(_t("Звуки сгенерированы в"), SOUND_DIR)

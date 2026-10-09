@@ -4,6 +4,8 @@
 переходит на самооценку (SPEC §0). События отдаются через очередь: UI опрашивает poll()."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import array
 import json
 import math
@@ -17,7 +19,7 @@ from . import paths
 class ASR:
     def __init__(self) -> None:
         self.model = None
-        self.status = "не загружен"
+        self.status = _t("не загружен")
         self.events: queue.Queue = queue.Queue()
         self._stop = threading.Event()
         self.listening = False
@@ -37,9 +39,9 @@ class ASR:
 
     def why_unavailable(self) -> str:
         if not self.libs_ok():
-            return "нет библиотек vosk / sounddevice (pip install vosk sounddevice)"
+            return _t("нет библиотек vosk / sounddevice (pip install vosk sounddevice)")
         if paths.vosk_model_dir() is None:
-            return f"нет модели Vosk в {paths.MODELS_DIR}"
+            return _t("нет модели Vosk в {0}").format(paths.MODELS_DIR)
         return self.status
 
     def load_async(self) -> None:
@@ -51,11 +53,11 @@ class ASR:
             try:
                 import vosk
                 vosk.SetLogLevel(-1)
-                self.status = "загрузка модели…"
+                self.status = _t("загрузка модели…")
                 self.model = vosk.Model(str(paths.vosk_model_dir()))
-                self.status = "готов"
+                self.status = _t("готов")
             except Exception as exc:  # noqa: BLE001
-                self.status = f"ошибка: {exc}"
+                self.status = _t("ошибка: {0}").format(exc)
             finally:
                 self._loading = False
         threading.Thread(target=work, daemon=True).start()
@@ -86,7 +88,7 @@ class ASR:
                     self.load_async()
                 time.sleep(0.1)
             if self.model is None:
-                raise RuntimeError("модель не загрузилась")
+                raise RuntimeError(_t("модель не загрузилась"))
             rec = vosk.KaldiRecognizer(self.model, 16000)
             rec.SetMaxAlternatives(5)
             q: queue.Queue = queue.Queue()
@@ -132,8 +134,7 @@ class ASR:
             if not any(a.strip() for a in alts):
                 alts = _alts(rec.FinalResult())
             if peak[0] < 0.004 and not any(a.strip() for a in alts):
-                self.events.put(("silent", "Микрофон не слышит звук — проверьте устройство ввода в Windows "
-                                           "(Параметры → Звук → Ввод) и доступ к микрофону"))
+                self.events.put(("silent", _t("Микрофон не слышит звук — проверьте устройство ввода в Windows (Параметры → Звук → Ввод) и доступ к микрофону")))
             self.events.put(("final", [a for a in alts if a.strip()] or ([] if not heard_any else [])))
         except Exception as exc:  # noqa: BLE001
             self.events.put(("error", str(exc)))

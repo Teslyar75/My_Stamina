@@ -5,6 +5,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import datetime as dt
 import time
 
@@ -32,26 +34,26 @@ def _streak(days: set[str]) -> int:
 def achievements(s: dict) -> list[tuple[str, bool]]:
     """Достижения пилота (вычисляются по данным; английские — из english.json)."""
     out = [
-        ("Первая миссия", s["missions_done"] >= 1),
-        ("Ряд миссий на ★★★", s["missions_3star"] >= 5),
-        ("Все 20 миссий пройдены", s["missions_done"] >= 20),
-        ("Свой текст 25 %", (s["book_pct"] or 0) >= 25),
-        ("Свой текст 50 %", (s["book_pct"] or 0) >= 50),
-        ("Свой текст 100 %", (s["book_pct"] or 0) >= 100),
-        ("Печать 200 зн/мин", s["best_cpm"] >= 200),
-        ("Печать 300 зн/мин", s["best_cpm"] >= 300),
-        ("Точность 98 %", s["best_acc"] >= 98),
-        ("Чтение 500 сл/мин с пониманием", (s["sr_eff"] or 0) >= 500),
-        ("Шульте 5×5 быстрее 35 с", s["schulte_5x5"] is not None and s["schulte_5x5"] < 35),
-        ("100 английских слов", s["en_known"] >= 100),
-        ("1000 английских слов", s["en_known"] >= 1000),
-        ("Серия 7 дней", s["streak"] >= 7),
-        ("Серия 30 дней", s["streak"] >= 30),
+        (_t("Первая миссия"), s["missions_done"] >= 1),
+        (_t("Ряд миссий на ★★★"), s["missions_3star"] >= 5),
+        (_t("Все 20 миссий пройдены"), s["missions_done"] >= 20),
+        (_t("Свой текст 25 %"), (s["book_pct"] or 0) >= 25),
+        (_t("Свой текст 50 %"), (s["book_pct"] or 0) >= 50),
+        (_t("Свой текст 100 %"), (s["book_pct"] or 0) >= 100),
+        (_t("Печать 200 зн/мин"), s["best_cpm"] >= 200),
+        (_t("Печать 300 зн/мин"), s["best_cpm"] >= 300),
+        (_t("Точность 98 %"), s["best_acc"] >= 98),
+        (_t("Чтение 500 сл/мин с пониманием"), (s["sr_eff"] or 0) >= 500),
+        (_t("Шульте 5×5 быстрее 35 с"), s["schulte_5x5"] is not None and s["schulte_5x5"] < 35),
+        (_t("100 английских слов"), s["en_known"] >= 100),
+        (_t("1000 английских слов"), s["en_known"] >= 1000),
+        (_t("Серия 7 дней"), s["streak"] >= 7),
+        (_t("Серия 30 дней"), s["streak"] >= 30),
     ]
     for _thr, name in RANKS[1:]:
-        out.append((f"Звание «{name}»", s["xp"] >= _thr))
+        out.append((_t("Звание «{0}»").format(name), s["xp"] >= _thr))
     for key in s.get("en_achievements", []):
-        out.append((f"Английский: {key}", True))
+        out.append((_t("Английский: {0}").format(key), True))
     return out
 
 
@@ -83,7 +85,7 @@ def pilot_stats(pid: str, period: str = "all", now: float | None = None) -> dict
         for t in lib.get("texts", []):
             if t.get("id") == tid:
                 book_title = t.get("title", "")
-        book_title = book_title or "свой текст"
+        book_title = book_title or _t("свой текст")
     # английский
     words = eng.get("words", {}) or {}
     cards = eng.get("cards", {}) or {}

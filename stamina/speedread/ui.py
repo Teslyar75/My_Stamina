@@ -1,6 +1,8 @@
 """Мелкие виджеты отсека «СКОРОЧТЕНИЕ» поверх компонентов Star Typing (только theme/hud)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import tkinter as tk
 
 from stamina import theme
@@ -57,7 +59,7 @@ class Toggle(HudButton):
     def __init__(self, master, value: bool, command=None, width=86) -> None:
         self.value = bool(value)
         self._cb = command
-        super().__init__(master, "ВКЛ" if value else "ВЫКЛ", self._flip, height=26, font_size=8,
+        super().__init__(master, t("ВКЛ") if value else t("ВЫКЛ"), self._flip, height=26, font_size=8,
                          width=width, color=GREEN if value else MUTED, active=value)
 
     def _flip(self) -> None:
@@ -67,7 +69,7 @@ class Toggle(HudButton):
 
     def set(self, value: bool) -> None:
         self.value = bool(value)
-        self.set_text("ВКЛ" if self.value else "ВЫКЛ")
+        self.set_text(t("ВКЛ") if self.value else t("ВЫКЛ"))
         self.set_color(GREEN if self.value else MUTED)
         self.set_active(self.value)
 
@@ -124,10 +126,10 @@ class WpmChart(tk.Canvas):
         self.create_line(pad, h - pad, w - pad, h - pad, fill=LINE)
         gy = y(self.goal)
         self.create_line(pad, gy, w - pad, gy, fill=blend(AMBER, BG, 0.4), dash=(4, 4))
-        self.create_text(w - pad, gy - px(7), text=f"ЦЕЛЬ {self.goal}", anchor="e", fill=AMBER,
+        self.create_text(w - pad, gy - px(7), text=t("ЦЕЛЬ {0}").format(self.goal), anchor="e", fill=AMBER,
                          font=theme.font(7, True))
         if not vals:
-            self.create_text(w / 2, h / 2, text="ещё нет сессий чтения", fill=MUTED, font=theme.font(9))
+            self.create_text(w / 2, h / 2, text=t("ещё нет сессий чтения"), fill=MUTED, font=theme.font(9))
             return
         n = len(vals)
         xs = [pad + (w - 2 * pad) * (i / max(1, n - 1) if n > 1 else 0.5) for i in range(n)]

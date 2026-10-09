@@ -5,10 +5,12 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import time
 import traceback
 
-KEY, TITLE = "speedread", "СКОРОЧТЕНИЕ"
+KEY, TITLE = "speedread", t("СКОРОЧТЕНИЕ")
 
 
 def _log(text: str) -> None:

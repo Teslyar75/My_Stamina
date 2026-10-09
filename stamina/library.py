@@ -9,6 +9,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import hashlib
 import json
 import os
@@ -23,7 +25,7 @@ from typing import Callable
 from stamina.text_processing import process_text
 from stamina.textmap import TextMap, fragment_of
 
-DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True}
+DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True, "translit": False, "yo": False}
 PROCESSOR = "text_processing v1"
 MAX_CANDIDATE_BYTES = 20 * 1024 * 1024
 ORWELL_HEAD = "part one chapter 1 it was a bright cold day in april"
@@ -45,7 +47,8 @@ def norm_opts(opts: dict | None) -> dict:
 
 def processor(opts: dict | None) -> Callable[[str], str]:
     o = norm_opts(opts)
-    return lambda t: process_text(t, lower=o["lower"], punct=o["punct"], spaces=o["spaces"])
+    return lambda t: process_text(t, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                                  translit=o["translit"], yo=o["yo"])
 
 
 def read_text_file(path: str | Path) -> tuple[str, str]:
@@ -56,7 +59,7 @@ def read_text_file(path: str | Path) -> tuple[str, str]:
             return raw.decode(enc).replace("\r\n", "\n").replace("\r", "\n"), enc
         except UnicodeDecodeError:
             continue
-    raise UnicodeDecodeError("utf-8", b"", 0, 1, "неизвестная кодировка")
+    raise UnicodeDecodeError("utf-8", b"", 0, 1, _t("неизвестная кодировка"))
 
 
 def _write_atomic(path: Path, data: str) -> None:
@@ -67,13 +70,12 @@ def _write_atomic(path: Path, data: str) -> None:
 
 
 def detect_lang(text: str) -> str:
-    sample = text[:4000]
-    cyr = sum(1 for ch in sample if "\u0400" <= ch <= "\u04FF")
-    lat = sum(1 for ch in sample if "a" <= ch.lower() <= "z")
-    return "ru" if cyr > lat else "en"
+    """Язык книги (ru, uk, en, de, fr …) — stamina.langdetect, без интернета."""
+    from stamina.langdetect import detect
+    return detect(text)
 
 
-def guess_title(text: str, fallback: str = "Без названия") -> tuple[str, str]:
+def guess_title(text: str, fallback: str = _t("Без названия")) -> tuple[str, str]:
     """(название, автор) по началу текста."""
     from stamina.text_processing import adapt_for_typing
     if adapt_for_typing(text[:400]).startswith(ORWELL_HEAD):
@@ -257,8 +259,7 @@ class Library:
             if frag is None:
                 return ""
             text, status = frag, "recovered"
-            note = (f"оригинал — начало файла {Path((source or {}).get('path', '')).name or 'источника'} "
-                    f"({len(frag)} из {len(original)} символов)")
+            note = (_t("оригинал — начало файла {0} ({1} из {2} символов)").format(Path((source or {}).get('path', '')).name or 'источника', len(frag), len(original)))
         _write_atomic(self._dir(tid) / "original.txt", text)
         m["original"] = {"status": status, "chars": len(text), "words": len(text.split()),
                          "sha256": sha(text), "note": note}
@@ -456,8 +457,7 @@ def migrate(lib: Library, store, *, search: bool = True,
             title, author = guess_title(prepared)
             if found:
                 text, path, is_frag = found
-                note = (f"оригинал — начало файла {path.name} ({len(text)} из "
-                        f"{path.stat().st_size} байт)") if is_frag else ""
+                note = (_t("оригинал — начало файла {0} ({1} из {2} байт)").format(path.name, len(text), path.stat().st_size)) if is_frag else ""
                 src = {"kind": "migrated", "path": str(path), "filename": path.name,
                        "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                 tid = lib.add(text, title=title, author=author, opts=opts, source=src,

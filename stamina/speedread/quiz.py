@@ -1,6 +1,8 @@
 """Дебрифинг — проверка понимания прочитанного куска (без интернета)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import random
 
 
@@ -11,6 +13,10 @@ _DECOYS = {
            "pocket", "theatre", "carpet", "lantern", "bicycle", "orchard", "festival", "compass", "kitchen"],
     "ru": ["самовар", "крепость", "лестница", "пароход", "мельница", "колокол", "фонарик", "пустыня",
            "скрипка", "библиотека", "трамвай", "черника", "подсолнух", "маятник", "кораблик", "огород"],
+    "uk": ["самовар", "фортеця", "драбина", "пароплав", "млинок", "дзвіниця", "ліхтарик", "пустеля",
+           "скрипка", "бібліотека", "трамвай", "чорниця", "соняшник", "маятник", "кораблик", "городина"],
+    "de": ["gebirge", "silber", "maschine", "hafenstadt", "geige", "decke", "garten", "planeten",
+           "kapitän", "tasche", "theater", "teppich", "laterne", "fahrrad", "obstgarten", "kompass", "küche"],
 }
 
 
@@ -25,6 +31,10 @@ def make_quiz(words: list[Word], start: int, end: int, lang: str = "en", rng=Non
     Каждое задание: {kind, question, options, answer}."""
     rng = rng or random.Random()
     seg = words[start:end]
+    if lang in ("", "auto", None) or lang not in _DECOYS:
+        from stamina.langdetect import detect
+        guess = detect(" ".join(w.text for w in seg[:800]))
+        lang = guess if guess in _DECOYS else ("en" if lang in ("", "auto", None) else lang)
     if len(seg) < 40:
         return []
     seen = {_core(w.text) for w in seg}
@@ -36,9 +46,9 @@ def make_quiz(words: list[Word], start: int, end: int, lang: str = "en", rng=Non
     pool += [d for d in _DECOYS.get(lang, _DECOYS["en"]) if d not in seen]
     rng.shuffle(pool)
     no = pool[:3]
-    items = [{"kind": "seen", "question": f"Было ли в тексте слово «{w}»?", "options": ["ДА", "НЕТ"],
+    items = [{"kind": "seen", "question": t("Было ли в тексте слово «{0}»?").format(w), "options": [t("ДА"), t("НЕТ")],
               "answer": 0} for w in yes]
-    items += [{"kind": "seen", "question": f"Было ли в тексте слово «{w}»?", "options": ["ДА", "НЕТ"],
+    items += [{"kind": "seen", "question": t("Было ли в тексте слово «{0}»?").format(w), "options": [t("ДА"), t("НЕТ")],
                "answer": 1} for w in no]
     # предложения
     sentences: list[list[Word]] = []
@@ -63,7 +73,7 @@ def make_quiz(words: list[Word], start: int, end: int, lang: str = "en", rng=Non
             continue
         rng.shuffle(opts)
         shown = " ".join(w.text if i != k else "_____" for i, w in enumerate(sent))
-        items.append({"kind": "gap", "question": f"Закончите фразу:\n{shown}", "options": opts,
+        items.append({"kind": "gap", "question": t("Закончите фразу:\n{0}").format(shown), "options": opts,
                       "answer": opts.index(ans)})
     rng.shuffle(items)
     return items

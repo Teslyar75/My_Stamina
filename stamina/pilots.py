@@ -11,6 +11,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import hashlib
 import json
 import os
@@ -190,19 +192,19 @@ def validate_callsign(callsign: str, exclude: str | None = None) -> str:
     """'' — можно, иначе текст ошибки."""
     c = (callsign or "").strip()
     if len(c) < 2:
-        return "Слишком короткий позывной (от 2 символов)"
+        return t("Слишком короткий позывной (от 2 символов)")
     if len(c) > 16:
-        return "Слишком длинный позывной (до 16 символов)"
+        return t("Слишком длинный позывной (до 16 символов)")
     if not CALLSIGN_RE.match(c):
-        return "Недопустимые символы: только буквы, цифры, пробел и дефис"
+        return t("Недопустимые символы: только буквы, цифры, пробел и дефис")
     for p in pilots():
         if p["id"] != exclude and p["callsign"].casefold() == c.casefold():
-            return "Позывной занят"
+            return t("Позывной занят")
     return ""
 
 
 def free_callsign(base: str) -> str:
-    base = base.strip()[:13] or "Пилот"
+    base = base.strip()[:13] or t("Пилот")
     if not validate_callsign(base):
         return base
     for i in range(2, 100):
@@ -242,14 +244,14 @@ def delete(pid: str, active: str | None = None) -> Path:
     """Списать пилота: папка → backups/deleted/<позывной>-<время>. Не активного и не последнего."""
     reg = load_registry()
     if not reg:
-        raise ValueError("Экипаж пуст")
+        raise ValueError(t("Экипаж пуст"))
     if pid == active:
-        raise ValueError("Нельзя списать пилота, который сейчас в кабине")
+        raise ValueError(t("Нельзя списать пилота, который сейчас в кабине"))
     if len(reg["pilots"]) <= 1:
-        raise ValueError("Нельзя списать последнего пилота")
+        raise ValueError(t("Нельзя списать последнего пилота"))
     p = next((x for x in reg["pilots"] if x["id"] == pid), None)
     if p is None:
-        raise ValueError("Пилот не найден")
+        raise ValueError(t("Пилот не найден"))
     safe = re.sub(r"[^0-9A-Za-zА-Яа-яЁё\-]+", "_", p["callsign"])
     dest = ROOT_DIR / "backups" / "deleted" / f"{safe}-{time.strftime('%Y%m%d-%H%M%S')}"
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -268,10 +270,10 @@ def activate(pid: str) -> Path:
     global _active
     reg = load_registry()
     if not reg:
-        raise ValueError("Реестр пилотов не найден")
+        raise ValueError(t("Реестр пилотов не найден"))
     p = next((x for x in reg["pilots"] if x["id"] == pid), None)
     if p is None:
-        raise ValueError("Пилот не найден")
+        raise ValueError(t("Пилот не найден"))
     pilot_dir(pid).mkdir(parents=True, exist_ok=True)
     p["last_seen"] = now_iso()
     reg["last_pilot"] = pid
@@ -307,7 +309,7 @@ def _pilot_files(pid: str) -> list[Path]:
 def export(pid: str, dest: Path, app_version: str = "") -> Path:
     p = get(pid)
     if p is None:
-        raise ValueError("Пилот не найден")
+        raise ValueError(t("Пилот не найден"))
     d = pilot_dir(pid)
     files = _pilot_files(pid)
     manifest = {"format": "stpilot", "version": FORMAT_VERSION, "app": app_version, "exported": now_iso(),
@@ -326,12 +328,12 @@ def read_package(path: Path) -> dict:
     with zipfile.ZipFile(path) as z:
         man = json.loads(z.read("manifest.json").decode("utf-8"))
         if man.get("format") != "stpilot":
-            raise ValueError("Это не файл пилота Star Typing")
+            raise ValueError(t("Это не файл пилота Star Typing"))
         for rel, h in man.get("files", {}).items():
             if ".." in rel.split("/"):
-                raise ValueError("Недопустимый путь в архиве")
+                raise ValueError(t("Недопустимый путь в архиве"))
             if hashlib.sha256(z.read("data/" + rel)).hexdigest() != h:
-                raise ValueError(f"Файл повреждён: {rel}")
+                raise ValueError(t("Файл повреждён: {0}").format(rel))
     return man
 
 
@@ -339,7 +341,7 @@ def import_package(path: Path, callsign: str | None = None) -> dict:
     """Импорт: всегда новый id; позывной — свободный (или указанный)."""
     man = read_package(path)
     src = man["pilot"]
-    cs = callsign or free_callsign(src.get("callsign", "Пилот"))
+    cs = callsign or free_callsign(src.get("callsign", t("Пилот")))
     err = validate_callsign(cs)
     if err:
         raise ValueError(err)

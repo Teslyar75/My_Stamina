@@ -5,6 +5,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as tr_
+
 import time
 import tkinter as tk
 from pathlib import Path
@@ -44,10 +46,10 @@ def fmt_num(v, unit="") -> str:
 
 def when(day: str | None) -> str:
     if not day:
-        return "ещё не летал"
+        return tr_("ещё не летал")
     today = time.strftime("%Y-%m-%d")
     y = time.strftime("%Y-%m-%d", time.localtime(time.time() - 86400))
-    return "сегодня" if day == today else "вчера" if day == y else ".".join(reversed(day.split("-")[1:]))
+    return tr_("сегодня") if day == today else tr_("вчера") if day == y else ".".join(reversed(day.split("-")[1:]))
 
 
 class Modal(tk.Toplevel):
@@ -151,8 +153,8 @@ class PinPad(tk.Frame):
 class PinDialog(Modal):
     """Ввод кода доступа. result = True при верном коде; "reset" — код сброшен через «Забыли код?»."""
 
-    def __init__(self, master, pilot: dict, purpose: str = "ВХОД В КАБИНУ") -> None:
-        super().__init__(master, "Код доступа", AMBER)
+    def __init__(self, master, pilot: dict, purpose: str = tr_("ВХОД В КАБИНУ")) -> None:
+        super().__init__(master, tr_("Код доступа"), AMBER)
         self.pilot = pilot
         top = tk.Frame(self.body, bg=PANEL)
         top.pack(fill=tk.X)
@@ -162,17 +164,17 @@ class PinDialog(Modal):
         box = tk.Frame(top, bg=PANEL)
         box.pack(side=tk.LEFT, padx=px(10))
         L(box, pilot["callsign"], size=16, bold=True).pack(anchor="w")
-        L(box, f"{purpose} · ВВЕДИТЕ КОД ДОСТУПА", fg=AMBER, size=9, bold=True).pack(anchor="w")
+        L(box, tr_("{0} · ВВЕДИТЕ КОД ДОСТУПА").format(purpose), fg=AMBER, size=9, bold=True).pack(anchor="w")
         self.pad = PinPad(self.body, self.submit)
         self.pad.pack(pady=px(8))
         self.msg = L(self.body, "", fg=RED, size=9, bold=True)
         self.msg.pack()
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X, pady=(px(8), 0))
-        self.btn_ok = HudButton(row, "✓ ВОЙТИ  ENTER", self.submit, color=AMBER, height=38)
+        self.btn_ok = HudButton(row, tr_("✓ ВОЙТИ  ENTER"), self.submit, color=AMBER, height=38)
         self.btn_ok.pack(side=tk.LEFT)
-        HudButton(row, "ОТМЕНА  ESC", self.cancel, height=38).pack(side=tk.LEFT, padx=px(6))
-        lnk = L(self.body, "ЗАБЫЛИ КОД?", fg=CYAN, size=9, bold=True, cursor="hand2")
+        HudButton(row, tr_("ОТМЕНА  ESC"), self.cancel, height=38).pack(side=tk.LEFT, padx=px(6))
+        lnk = L(self.body, tr_("ЗАБЫЛИ КОД?"), fg=CYAN, size=9, bold=True, cursor="hand2")
         lnk.pack(anchor="e", pady=(px(8), 0))
         lnk.bind("<Button-1>", lambda _e: self.forgot())
         self.bind("<Key>", self._key)
@@ -187,7 +189,7 @@ class PinDialog(Modal):
             return
         left = pilot_pin.lock_left(self.pilot["id"])
         if left:
-            self.msg.configure(text=f"ВВОД ЗАБЛОКИРОВАН · ПОДОЖДИТЕ {left} С", fg=RED)
+            self.msg.configure(text=tr_("ВВОД ЗАБЛОКИРОВАН · ПОДОЖДИТЕ {0} С").format(left), fg=RED)
             self.btn_ok.set_enabled(False)
         elif not self.btn_ok._enabled:
             self.btn_ok.set_enabled(True)
@@ -216,29 +218,27 @@ class SetPinDialog(Modal):
     """Задать новый код. result: "set" | "later" | "none" | None."""
 
     def __init__(self, master, pilot: dict, first_time: bool = False) -> None:
-        super().__init__(master, "Задайте код доступа", AMBER)
+        super().__init__(master, tr_("Задайте код доступа"), AMBER)
         self.pilot = pilot
         L(self.body, pilot["callsign"], size=16, bold=True).pack(anchor="w")
-        L(self.body, ("Вы решили защитить пилота кодом доступа. Задайте его сейчас: 4–8 цифр.\n"
-                      "Код хранится только в виде солёного хэша; это защита от случайного входа,\n"
-                      "а не шифрование данных.") if first_time else "Новый код: 4–8 цифр.",
+        L(self.body, (tr_("Вы решили защитить пилота кодом доступа. Задайте его сейчас: 4–8 цифр.\nКод хранится только в виде солёного хэша; это защита от случайного входа,\nа не шифрование данных.")) if first_time else tr_("Новый код: 4–8 цифр."),
           fg=MUTED, size=9, justify="left").pack(anchor="w", pady=(px(4), px(10)))
         g = tk.Frame(self.body, bg=PANEL)
         g.pack(anchor="w")
-        L(g, "НОВЫЙ КОД", fg=MUTED, size=9, bold=True).grid(row=0, column=0, sticky="w", pady=px(4))
+        L(g, tr_("НОВЫЙ КОД"), fg=MUTED, size=9, bold=True).grid(row=0, column=0, sticky="w", pady=px(4))
         self.e1 = entry(g, width=12, size=16, show="●", mono=True)
         self.e1.grid(row=0, column=1, padx=px(10))
-        L(g, "ПОВТОРИТЕ КОД", fg=MUTED, size=9, bold=True).grid(row=1, column=0, sticky="w", pady=px(4))
+        L(g, tr_("ПОВТОРИТЕ КОД"), fg=MUTED, size=9, bold=True).grid(row=1, column=0, sticky="w", pady=px(4))
         self.e2 = entry(g, width=12, size=16, show="●", mono=True)
         self.e2.grid(row=1, column=1, padx=px(10))
         self.msg = L(self.body, "", fg=RED, size=9, bold=True)
         self.msg.pack(anchor="w", pady=px(6))
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X)
-        HudButton(row, "✓ СОХРАНИТЬ КОД", self.save, color=AMBER, height=38).pack(side=tk.LEFT)
-        HudButton(row, "ПОЗЖЕ" if first_time else "ОТМЕНА", self.later, height=38).pack(side=tk.LEFT, padx=px(6))
+        HudButton(row, tr_("✓ СОХРАНИТЬ КОД"), self.save, color=AMBER, height=38).pack(side=tk.LEFT)
+        HudButton(row, tr_("ПОЗЖЕ") if first_time else tr_("ОТМЕНА"), self.later, height=38).pack(side=tk.LEFT, padx=px(6))
         if first_time:
-            HudButton(row, "БЕЗ КОДА", self.no_pin, color=MUTED, height=38).pack(side=tk.LEFT)
+            HudButton(row, tr_("БЕЗ КОДА"), self.no_pin, color=MUTED, height=38).pack(side=tk.LEFT)
         self.e1.focus_set()
         self.e1.bind("<Return>", lambda _e: self.e2.focus_set())
         self.e2.bind("<Return>", lambda _e: self.save())
@@ -246,10 +246,10 @@ class SetPinDialog(Modal):
     def save(self) -> None:
         a, b = self.e1.get().strip(), self.e2.get().strip()
         if not pilot_pin.valid_code(a):
-            self.msg.configure(text="Код — от 4 до 8 цифр")
+            self.msg.configure(text=tr_("Код — от 4 до 8 цифр"))
             return
         if a != b:
-            self.msg.configure(text="Коды не совпадают")
+            self.msg.configure(text=tr_("Коды не совпадают"))
             return
         pilot_pin.set_pin(self.pilot["id"], a)
         self.e1.delete(0, tk.END)
@@ -271,22 +271,22 @@ class ResetPinDialog(Modal):
     WAIT = 10
 
     def __init__(self, master, pilot: dict) -> None:
-        super().__init__(master, f"Сброс кода доступа · {pilot['callsign']}", RED)
+        super().__init__(master, tr_("Сброс кода доступа · {0}").format(pilot['callsign']), RED)
         self.pilot = pilot
         self.t0 = time.time()
-        L(self.body, "Код будет удалён, прогресс сохранится.", fg=RED, size=11, bold=True).pack(anchor="w")
-        L(self.body, "Введите позывной полностью для подтверждения:", fg=MUTED, size=9).pack(anchor="w", pady=(px(8), 0))
+        L(self.body, tr_("Код будет удалён, прогресс сохранится."), fg=RED, size=11, bold=True).pack(anchor="w")
+        L(self.body, tr_("Введите позывной полностью для подтверждения:"), fg=MUTED, size=9).pack(anchor="w", pady=(px(8), 0))
         self.e = entry(self.body, width=24)
         self.e.pack(anchor="w", pady=px(4))
         self.var = tk.BooleanVar(value=False)
-        tk.Checkbutton(self.body, text="Я владелец этого пилота или имею разрешение", variable=self.var,
+        tk.Checkbutton(self.body, text=tr_("Я владелец этого пилота или имею разрешение"), variable=self.var,
                        bg=PANEL, fg=TEXT, selectcolor=BG2, activebackground=PANEL, activeforeground=TEXT,
                        font=theme.font(9)).pack(anchor="w")
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X, pady=(px(10), 0))
-        self.btn = HudButton(row, "СБРОСИТЬ КОД", self.do, color=RED, height=36)
+        self.btn = HudButton(row, tr_("СБРОСИТЬ КОД"), self.do, color=RED, height=36)
         self.btn.pack(side=tk.LEFT)
-        HudButton(row, "ОТМЕНА", self.cancel, height=36).pack(side=tk.LEFT, padx=px(6))
+        HudButton(row, tr_("ОТМЕНА"), self.cancel, height=36).pack(side=tk.LEFT, padx=px(6))
         self._tick()
 
     def _ready(self) -> bool:
@@ -297,19 +297,19 @@ class ResetPinDialog(Modal):
         if not self.winfo_exists():
             return
         left = int(self.WAIT - (time.time() - self.t0)) + 1
-        self.btn.set_text(f"СБРОСИТЬ КОД · {left}" if left > 0 else "СБРОСИТЬ КОД")
+        self.btn.set_text(tr_("СБРОСИТЬ КОД · {0}").format(left) if left > 0 else tr_("СБРОСИТЬ КОД"))
         self.btn.set_enabled(self._ready())
         self.after(300, self._tick)
 
     def do(self) -> None:
         if not self._ready():
             return
-        pilot_pin.clear_pin(self.pilot["id"], reason="Код доступа сброшен через «Забыли код?»")
+        pilot_pin.clear_pin(self.pilot["id"], reason=tr_("Код доступа сброшен через «Забыли код?»"))
         self.result = True
         self.destroy()
 
 
-def ask_pin(master, pilot: dict, purpose: str = "ВХОД В КАБИНУ") -> bool:
+def ask_pin(master, pilot: dict, purpose: str = tr_("ВХОД В КАБИНУ")) -> bool:
     """True — можно продолжать (кода нет, или он верен, или сброшен)."""
     if not pilot_pin.has_pin(pilot["id"]):
         return True
@@ -324,22 +324,20 @@ def ask_pin(master, pilot: dict, purpose: str = "ВХОД В КАБИНУ") -> b
 # ===================================================================== списание
 class DeleteDialog(Modal):
     def __init__(self, master, pilot: dict, s: dict) -> None:
-        super().__init__(master, f"Списать пилота «{pilot['callsign']}»?", RED)
+        super().__init__(master, tr_("Списать пилота «{0}»?").format(pilot['callsign']), RED)
         self.pilot = pilot
-        L(self.body, f"СПИСАТЬ ПИЛОТА «{pilot['callsign'].upper()}»?", fg=RED, size=16, bold=True).pack(anchor="w")
-        info = (f"Звание: {s['rank']} · {s['xp']} XP\nЗаходов печати: {s['runs']}\n"
-                f"Свой текст: {fmt_num(s['book_pct'], ' %')}\nАнглийский: {s['en_known']} слов\n\n"
-                "Папка пилота не стирается: она переносится в backups\\deleted\\.")
+        L(self.body, tr_("СПИСАТЬ ПИЛОТА «{0}»?").format(pilot['callsign'].upper()), fg=RED, size=16, bold=True).pack(anchor="w")
+        info = (tr_("Звание: {0} · {1} XP\nЗаходов печати: {2}\nСвой текст: {3}\nАнглийский: {4} слов\n\nПапка пилота не стирается: она переносится в backups\\deleted\\.").format(s['rank'], s['xp'], s['runs'], fmt_num(s['book_pct'], ' %'), s['en_known']))
         L(self.body, info, fg=TEXT, size=10, justify="left").pack(anchor="w", pady=px(8))
-        L(self.body, "Введите позывной для подтверждения:", fg=MUTED, size=9).pack(anchor="w")
+        L(self.body, tr_("Введите позывной для подтверждения:"), fg=MUTED, size=9).pack(anchor="w")
         self.e = entry(self.body)
         self.e.pack(anchor="w", pady=px(4))
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X, pady=(px(8), 0))
-        self.btn = HudButton(row, "✕ СПИСАТЬ", self.do, color=RED, height=36)
+        self.btn = HudButton(row, tr_("✕ СПИСАТЬ"), self.do, color=RED, height=36)
         self.btn.pack(side=tk.LEFT)
         self.btn.set_enabled(False)
-        HudButton(row, "ОТМЕНА", self.cancel, height=36).pack(side=tk.LEFT, padx=px(6))
+        HudButton(row, tr_("ОТМЕНА"), self.cancel, height=36).pack(side=tk.LEFT, padx=px(6))
         self.e.bind("<KeyRelease>", lambda _e: self.btn.set_enabled(self._ok()))
         self.e.focus_set()
 
@@ -361,7 +359,7 @@ class ProfileDialog(Modal):
         self.p = dict(pilots.get(pid) or {}) if pid else {"callsign": "", "name": "", "accent": "cyan",
                                                            "avatar": {"kind": "builtin", "glyph": "star"},
                                                            "id": "preview"}
-        super().__init__(master, "Личное дело · редактирование" if pid else "Зачисление в экипаж", AMBER)
+        super().__init__(master, tr_("Личное дело · редактирование") if pid else tr_("Зачисление в экипаж"), AMBER)
         self.img_src: str | None = None
         cols = tk.Frame(self.body, bg=PANEL)
         cols.pack(fill=tk.BOTH, expand=True)
@@ -372,23 +370,23 @@ class ProfileDialog(Modal):
         right = tk.Frame(cols, bg=PANEL)
         right.pack(side=tk.LEFT, fill=tk.Y, anchor="n")
         # -- личное дело
-        L(left, "ЛИЧНОЕ ДЕЛО", fg=AMBER, size=10, bold=True).pack(anchor="w")
-        L(left, "ПОЗЫВНОЙ *", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(8), 0))
+        L(left, tr_("ЛИЧНОЕ ДЕЛО"), fg=AMBER, size=10, bold=True).pack(anchor="w")
+        L(left, tr_("ПОЗЫВНОЙ *"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(8), 0))
         self.e_cs = entry(left, width=20, size=16)
         self.e_cs.insert(0, self.p.get("callsign", ""))
         self.e_cs.pack(anchor="w")
         self.err = L(left, "", fg=RED, size=8, bold=True)
         self.err.pack(anchor="w")
-        L(left, "ИМЯ (ВТОРАЯ СТРОКА)", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(6), 0))
+        L(left, tr_("ИМЯ (ВТОРАЯ СТРОКА)"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(6), 0))
         self.e_name = entry(left, width=20, size=12)
         self.e_name.insert(0, self.p.get("name", ""))
         self.e_name.pack(anchor="w")
-        L(left, "АКЦЕНТНЫЙ ЦВЕТ", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
+        L(left, tr_("АКЦЕНТНЫЙ ЦВЕТ"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
         self.acc = tk.Canvas(left, bg=PANEL, highlightthickness=0, height=px(34), width=px(5 * 40))
         self.acc.pack(anchor="w")
         self.acc.bind("<Button-1>", self._pick_accent)
         # код доступа
-        L(left, "КОД ДОСТУПА (НЕОБЯЗАТЕЛЬНО)", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
+        L(left, tr_("КОД ДОСТУПА (НЕОБЯЗАТЕЛЬНО)"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
         pinbox = tk.Frame(left, bg=PANEL)
         pinbox.pack(anchor="w")
         if pid is None:
@@ -396,47 +394,47 @@ class ProfileDialog(Modal):
             self.e_pin1.grid(row=0, column=0)
             self.e_pin2 = entry(pinbox, width=10, size=12, show="●", mono=True)
             self.e_pin2.grid(row=0, column=1, padx=px(6))
-            L(pinbox, "код · повторите (4–8 цифр)", fg=FAINT, size=8).grid(row=1, column=0, columnspan=2, sticky="w")
+            L(pinbox, tr_("код · повторите (4–8 цифр)"), fg=FAINT, size=8).grid(row=1, column=0, columnspan=2, sticky="w")
         else:
             has = pilot_pin.has_pin(pid)
-            L(pinbox, "🔒 КОД ЗАДАН" if has else "КОДА НЕТ", fg=AMBER if has else MUTED, size=9,
+            L(pinbox, tr_("🔒 КОД ЗАДАН") if has else tr_("КОДА НЕТ"), fg=AMBER if has else MUTED, size=9,
               bold=True).pack(side=tk.LEFT, padx=(0, px(8)))
-            HudButton(pinbox, "СМЕНИТЬ" if has else "ЗАДАТЬ", self._change_pin, height=28, font_size=8).pack(side=tk.LEFT)
+            HudButton(pinbox, tr_("СМЕНИТЬ") if has else tr_("ЗАДАТЬ"), self._change_pin, height=28, font_size=8).pack(side=tk.LEFT)
             if has:
-                HudButton(pinbox, "СНЯТЬ", self._remove_pin, height=28, font_size=8, color=RED).pack(
+                HudButton(pinbox, tr_("СНЯТЬ"), self._remove_pin, height=28, font_size=8, color=RED).pack(
                     side=tk.LEFT, padx=px(4))
         if pid is None:
-            L(left, "СТАРТОВЫЕ НАСТРОЙКИ", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
-            self.copy_from = tk.StringVar(value="по умолчанию")
-            names = ["по умолчанию"] + [f"от {x['callsign']}" for x in pilots.pilots()]
+            L(left, tr_("СТАРТОВЫЕ НАСТРОЙКИ"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(10), px(2)))
+            self.copy_from = tk.StringVar(value=tr_("по умолчанию"))
+            names = [tr_("по умолчанию")] + [tr_("от {0}").format(x['callsign']) for x in pilots.pilots()]
             om = tk.OptionMenu(left, self.copy_from, *names)
             om.configure(bg=BG2, fg=TEXT, activebackground=PANEL, activeforeground=TEXT, relief="flat",
                          highlightthickness=1, highlightbackground=LINE_HI, font=theme.font(9))
             om["menu"].configure(bg=BG2, fg=TEXT, font=theme.font(9))
             om.pack(anchor="w")
-            L(left, "копируются только настройки, не прогресс", fg=FAINT, size=8).pack(anchor="w")
+            L(left, tr_("копируются только настройки, не прогресс"), fg=FAINT, size=8).pack(anchor="w")
         # -- эмблема
-        L(mid, "ЭМБЛЕМА ПИЛОТА", fg=AMBER, size=10, bold=True).pack(anchor="w")
+        L(mid, tr_("ЭМБЛЕМА ПИЛОТА"), fg=AMBER, size=10, bold=True).pack(anchor="w")
         self.grid = tk.Canvas(mid, bg=PANEL, highlightthickness=0, width=px(8 * 56), height=px(2 * 56))
         self.grid.pack(anchor="w", pady=px(6))
         self.grid.bind("<Button-1>", self._pick_glyph)
-        L(mid, "СВОЁ ИЗОБРАЖЕНИЕ", fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(6), px(2)))
+        L(mid, tr_("СВОЁ ИЗОБРАЖЕНИЕ"), fg=MUTED, size=8, bold=True).pack(anchor="w", pady=(px(6), px(2)))
         r = tk.Frame(mid, bg=PANEL)
         r.pack(anchor="w")
-        HudButton(r, "⇪ ЗАГРУЗИТЬ ФАЙЛ…", self._load_image, height=30, font_size=8).pack(side=tk.LEFT)
-        HudButton(r, "⟲ СБРОСИТЬ", self._reset_image, height=30, font_size=8).pack(side=tk.LEFT, padx=px(4))
-        L(mid, "PNG / GIF (JPG — если установлен Pillow), до 15 МБ.\nКартинка обрезается по центру до квадрата 256×256.",
+        HudButton(r, tr_("⇪ ЗАГРУЗИТЬ ФАЙЛ…"), self._load_image, height=30, font_size=8).pack(side=tk.LEFT)
+        HudButton(r, tr_("⟲ СБРОСИТЬ"), self._reset_image, height=30, font_size=8).pack(side=tk.LEFT, padx=px(4))
+        L(mid, tr_("PNG / GIF (JPG — если установлен Pillow), до 15 МБ.\nКартинка обрезается по центру до квадрата 256×256."),
           fg=FAINT, size=8, justify="left").pack(anchor="w")
         # -- предпросмотр
-        L(right, "ПРЕДПРОСМОТР", fg=AMBER, size=10, bold=True).pack(anchor="w")
+        L(right, tr_("ПРЕДПРОСМОТР"), fg=AMBER, size=10, bold=True).pack(anchor="w")
         self.prev = tk.Canvas(right, bg=PANEL, highlightthickness=0, width=px(230), height=px(230))
         self.prev.pack(pady=px(6))
         # -- кнопки
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X, pady=(px(12), 0))
-        HudButton(row, "✓ СОХРАНИТЬ  ENTER" if pid else "✓ СОЗДАТЬ ПИЛОТА  ENTER", self.save, color=AMBER,
+        HudButton(row, tr_("✓ СОХРАНИТЬ  ENTER") if pid else tr_("✓ СОЗДАТЬ ПИЛОТА  ENTER"), self.save, color=AMBER,
                   height=40).pack(side=tk.LEFT)
-        HudButton(row, "ОТМЕНА  ESC", self.cancel, height=40).pack(side=tk.LEFT, padx=px(6))
+        HudButton(row, tr_("ОТМЕНА  ESC"), self.cancel, height=40).pack(side=tk.LEFT, padx=px(6))
         self.bind("<Return>", lambda _e: self.save())
         self.e_cs.bind("<KeyRelease>", lambda _e: self.redraw())
         self.e_name.bind("<KeyRelease>", lambda _e: self.redraw())
@@ -471,12 +469,12 @@ class ProfileDialog(Modal):
         show = dict(self.p)
         if self.img_src and show.get("avatar", {}).get("kind") == "file":
             show["avatar"] = {"kind": "builtin", "glyph": "star"}
-            pv.create_text(w / 2, px(150), text="(своя картинка — после сохранения)", fill=MUTED,
+            pv.create_text(w / 2, px(150), text=tr_("(своя картинка — после сохранения)"), fill=MUTED,
                            font=theme.font(7))
         avatars.draw(pv, w / 2, px(80), px(110), show, bg=BG2)
-        pv.create_text(w / 2, px(165), text=self.p["callsign"] or "ПОЗЫВНОЙ", fill=TEXT, font=theme.font(15, True))
+        pv.create_text(w / 2, px(165), text=self.p["callsign"] or tr_("ПОЗЫВНОЙ"), fill=TEXT, font=theme.font(15, True))
         pv.create_text(w / 2, px(190), text=self.p["name"], fill=MUTED, font=theme.font(9))
-        pv.create_text(w / 2, px(212), text="★ КАДЕТ · 0 XP" if not self.pid else "", fill=AMBER, font=theme.font(8, True))
+        pv.create_text(w / 2, px(212), text=tr_("★ КАДЕТ · 0 XP") if not self.pid else "", fill=AMBER, font=theme.font(8, True))
 
     def _pick_accent(self, e) -> None:
         i = int(e.x // px(40))
@@ -494,12 +492,12 @@ class ProfileDialog(Modal):
             self.redraw()
 
     def _load_image(self) -> None:
-        path = filedialog.askopenfilename(parent=self, title="Эмблема пилота",
-                                          filetypes=[("Картинки", "*.png *.gif *.jpg *.jpeg *.webp"), ("Все", "*.*")])
+        path = filedialog.askopenfilename(parent=self, title=tr_("Эмблема пилота"),
+                                          filetypes=[(tr_("Картинки"), "*.png *.gif *.jpg *.jpeg *.webp"), (tr_("Все"), "*.*")])
         if not path:
             return
         if Path(path).stat().st_size > avatars.MAX_FILE:
-            messagebox.showwarning("Эмблема", "Файл больше 15 МБ", parent=self)
+            messagebox.showwarning(tr_("Эмблема"), tr_("Файл больше 15 МБ"), parent=self)
             return
         self.img_src = path
         self.p["avatar"] = {"kind": "file"}
@@ -508,7 +506,7 @@ class ProfileDialog(Modal):
                 avatars.save_image(path, self.pid)
                 self.img_src = None
             except ValueError as exc:
-                messagebox.showwarning("Эмблема", str(exc), parent=self)
+                messagebox.showwarning(tr_("Эмблема"), str(exc), parent=self)
                 self.p["avatar"] = {"kind": "builtin", "glyph": "star"}
         self.redraw()
 
@@ -518,14 +516,14 @@ class ProfileDialog(Modal):
         self.redraw()
 
     def _change_pin(self) -> None:
-        if not ask_pin(self, pilots.get(self.pid), "СМЕНА КОДА"):
+        if not ask_pin(self, pilots.get(self.pid), tr_("СМЕНА КОДА")):
             return
         SetPinDialog(self, pilots.get(self.pid)).run()
         self.destroy()
         self.result = "pin"
 
     def _remove_pin(self) -> None:
-        if not ask_pin(self, pilots.get(self.pid), "СНЯТИЕ КОДА"):
+        if not ask_pin(self, pilots.get(self.pid), tr_("СНЯТИЕ КОДА")):
             return
         pilot_pin.clear_pin(self.pid)
         pilots.update_pilot(self.pid, pin_setup_pending=False)
@@ -542,15 +540,15 @@ class ProfileDialog(Modal):
             a, b = self.e_pin1.get().strip(), self.e_pin2.get().strip()
             if a or b:
                 if not pilot_pin.valid_code(a):
-                    self.err.configure(text="Код доступа — от 4 до 8 цифр")
+                    self.err.configure(text=tr_("Код доступа — от 4 до 8 цифр"))
                     return
                 if a != b:
-                    self.err.configure(text="Коды доступа не совпадают")
+                    self.err.configure(text=tr_("Коды доступа не совпадают"))
                     return
             src = None
             sel = self.copy_from.get()
             for x in pilots.pilots():
-                if sel == f"от {x['callsign']}":
+                if sel == tr_("от {0}").format(x['callsign']):
                     src = x["id"]
             av = self.p.get("avatar") if not self.img_src else {"kind": "builtin", "glyph": "star"}
             entry_ = pilots.create(cs, name=self.e_name.get(), accent=self.p.get("accent", "cyan"), avatar=av,
@@ -560,7 +558,7 @@ class ProfileDialog(Modal):
                     avatars.save_image(self.img_src, entry_["id"])
                     pilots.update_pilot(entry_["id"], avatar={"kind": "file"})
                 except ValueError as exc:
-                    messagebox.showwarning("Эмблема", str(exc), parent=self)
+                    messagebox.showwarning(tr_("Эмблема"), str(exc), parent=self)
             if a:
                 pilot_pin.set_pin(entry_["id"], a)
             self.e_pin1.delete(0, tk.END)
@@ -593,9 +591,9 @@ class PilotCard(tk.Canvas):
         fill = blend(PANEL, AMBER, 0.06) if self.selected else PANEL
         self.create_polygon(chamfer(2, 2, w - 2, h - 2, px(14)), fill=fill, outline=frame, width=2 if self.selected else 1)
         if self.selected:
-            self.create_text(px(14), px(16), text="▶ ВЫБРАН", anchor="w", fill=AMBER, font=theme.font(8, True))
+            self.create_text(px(14), px(16), text=tr_("▶ ВЫБРАН"), anchor="w", fill=AMBER, font=theme.font(8, True))
         if p.get("locked"):
-            self.create_text(w - px(14), px(16), text="🔒 КОД", anchor="e", fill=AMBER, font=theme.font(8, True))
+            self.create_text(w - px(14), px(16), text=tr_("🔒 КОД"), anchor="e", fill=AMBER, font=theme.font(8, True))
         avatars.draw(self, w / 2, px(84), px(104), p, bg=fill)
         y = px(150)
         self.create_text(w / 2, y, text=p["callsign"], fill=TEXT, font=theme.font(17, True), width=w - px(20),
@@ -611,16 +609,16 @@ class PilotCard(tk.Canvas):
         self.create_rectangle(bx0, by, bx0 + (bx1 - bx0) * max(0, min(1, frac)), by + px(5), fill=AMBER, outline="")
         self.create_text(w / 2, by + px(16), text=f"{s['xp']} / {hi} XP" if hi else f"{s['xp']} XP", fill=MUTED,
                          font=theme.font(8, True))
-        rows = [("ПЕЧАТЬ", fmt_num(s["best_cpm"], " зн/мин")),
-                (s.get("book_title", "свой текст")[:14].upper() or "СВОЙ ТЕКСТ", fmt_num(s["book_pct"], " %")),
-                ("ENGLISH", fmt_num(s["en_known"], " слов")),
-                ("ЧТЕНИЕ", fmt_num(s.get("sr_eff") or s.get("sr_best"), " сл/мин"))]
+        rows = [(tr_("ПЕЧАТЬ"), fmt_num(s["best_cpm"], tr_(" зн/мин"))),
+                (s.get("book_title", tr_("свой текст"))[:14].upper() or tr_("СВОЙ ТЕКСТ"), fmt_num(s["book_pct"], " %")),
+                ("ENGLISH", fmt_num(s["en_known"], tr_(" слов"))),
+                (tr_("ЧТЕНИЕ"), fmt_num(s.get("sr_eff") or s.get("sr_best"), tr_(" сл/мин")))]
         y = by + px(36)
         for k, v in rows:
             self.create_text(px(22), y, text=k, anchor="w", fill=MUTED, font=theme.font(8, True))
             self.create_text(w - px(22), y, text=v, anchor="e", fill=CYAN, font=theme.font(10, True, mono=True))
             y += px(19)
-        self.create_text(w / 2, h - px(16), text=f"последний полёт · {when(s.get('last_day'))}", fill=FAINT,
+        self.create_text(w / 2, h - px(16), text=tr_("последний полёт · {0}").format(when(s.get('last_day'))), fill=FAINT,
                          font=theme.font(8))
 
 
@@ -631,10 +629,10 @@ class AddCard(tk.Canvas):
         w, h = px(PilotCard.W), px(PilotCard.H)
         self.create_polygon(chamfer(2, 2, w - 2, h - px(60), px(14)), fill=BG, outline=LINE_HI, dash=(5, 4))
         self.create_text(w / 2, px(120), text="+", fill=CYAN, font=theme.font(40, True))
-        self.create_text(w / 2, px(190), text="ЗАЧИСЛИТЬ\nВ ЭКИПАЖ", fill=TEXT, font=theme.font(12, True),
+        self.create_text(w / 2, px(190), text=tr_("ЗАЧИСЛИТЬ\nВ ЭКИПАЖ"), fill=TEXT, font=theme.font(12, True),
                          justify="center")
         self.create_text(w / 2, px(236), text="Insert", fill=MUTED, font=theme.font(8, True))
-        self.create_text(w / 2, h - px(30), text="⇩ ИМПОРТ ПИЛОТА", fill=CYAN, font=theme.font(10, True), tags="imp")
+        self.create_text(w / 2, h - px(30), text=tr_("⇩ ИМПОРТ ПИЛОТА"), fill=CYAN, font=theme.font(10, True), tags="imp")
         self.bind("<Button-1>", lambda e: on_import() if e.y > h - px(60) else on_add())
 
 
@@ -656,15 +654,15 @@ class LoginScreen(tk.Frame):
         avatars.draw(logo, px(22), px(22), px(36), {"id": "-", "accent": "cyan",
                                                      "avatar": {"kind": "builtin", "glyph": "star"}})
         logo.create_text(px(48), px(15), text="STAR TYPING", anchor="w", fill=TEXT, font=theme.font(17, True))
-        logo.create_text(px(49), px(35), text="ВХОД В КАБИНУ", anchor="w", fill=AMBER, font=theme.font(8, True))
+        logo.create_text(px(49), px(35), text=tr_("ВХОД В КАБИНУ"), anchor="w", fill=AMBER, font=theme.font(8, True))
         self.clock = L(top, "", fg=CYAN, size=14, bold=True, mono=True, bg=BG)
         self.clock.pack(side=tk.RIGHT)
-        HudButton(top, "★ ДОСКА ПОЧЁТА", self.on_board, color=AMBER, height=36).pack(side=tk.RIGHT, padx=px(10))
+        HudButton(top, tr_("★ ДОСКА ПОЧЁТА"), self.on_board, color=AMBER, height=36).pack(side=tk.RIGHT, padx=px(10))
         self.crew = L(top, "", fg=MUTED, size=10, bold=True, bg=BG)
         self.crew.pack(side=tk.RIGHT, padx=px(10))
         tk.Frame(self, bg=LINE, height=1).pack(fill=tk.X, padx=px(16), pady=px(6))
-        L(self, "ВЫБЕРИТЕ ПИЛОТА", fg=AMBER, size=12, bold=True, bg=BG).pack(anchor="w", padx=px(20))
-        L(self, "← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · Del — списать",
+        L(self, tr_("ВЫБЕРИТЕ ПИЛОТА"), fg=AMBER, size=12, bold=True, bg=BG).pack(anchor="w", padx=px(20))
+        L(self, tr_("← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · Del — списать"),
           fg=MUTED, size=8, bg=BG).pack(anchor="w", padx=px(20))
         wrap = tk.Frame(self, bg=BG)
         wrap.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
@@ -683,14 +681,14 @@ class LoginScreen(tk.Frame):
         self.enter_box = tk.Frame(bottom, bg=BG)
         self.enter_box.pack(side=tk.LEFT)
         self.btn_enter = None
-        for t, f, c in (("✎ ЛИЧНОЕ ДЕЛО  F2", self.edit, CYAN), ("⇪ ЭКСПОРТ", self.export, CYAN),
-                        ("✕ СПИСАТЬ  DEL", self.delete, RED)):
+        for t, f, c in ((tr_("✎ ЛИЧНОЕ ДЕЛО  F2"), self.edit, CYAN), (tr_("⇪ ЭКСПОРТ"), self.export, CYAN),
+                        (tr_("✕ СПИСАТЬ  DEL"), self.delete, RED)):
             HudButton(bottom, t, f, color=c, height=40, font_size=9).pack(side=tk.LEFT, padx=px(3))
         self.ask = tk.BooleanVar(value=bool(reg.get("ask_on_start", True)))
-        tk.Checkbutton(bottom, text="СПРАШИВАТЬ ПРИ ЗАПУСКЕ", variable=self.ask, command=self._ask_changed,
+        tk.Checkbutton(bottom, text=tr_("СПРАШИВАТЬ ПРИ ЗАПУСКЕ"), variable=self.ask, command=self._ask_changed,
                        bg=BG, fg=MUTED, selectcolor=BG2, activebackground=BG, activeforeground=TEXT,
                        font=theme.font(9, True)).pack(side=tk.RIGHT)
-        HudButton(bottom, "ВЫХОД  ESC", self.on_exit, height=40, font_size=9).pack(side=tk.RIGHT, padx=px(8))
+        HudButton(bottom, tr_("ВЫХОД  ESC"), self.on_exit, height=40, font_size=9).pack(side=tk.RIGHT, padx=px(8))
         self.cards: list = []
         self.refresh()
         self._tick()
@@ -713,7 +711,7 @@ class LoginScreen(tk.Frame):
             self.sel = ids[0] if ids else None
         self.stats = {p["id"]: pilot_stats(p["id"]) for p in self.plist}
         n = len(self.plist)
-        self.crew.configure(text=f"ЭКИПАЖ: {n} {'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'}")
+        self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, 'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'))
         self._layout()
 
     def _layout(self) -> None:
@@ -729,7 +727,7 @@ class LoginScreen(tk.Frame):
         cur = next((p for p in self.plist if p["id"] == self.sel), None)
         if self.btn_enter is not None:
             self.btn_enter.destroy()
-        text = f"► ВОЙТИ В КАБИНУ · {cur['callsign'].upper()}  ENTER" if cur else "► ВОЙТИ В КАБИНУ"
+        text = tr_("► ВОЙТИ В КАБИНУ · {0}  ENTER").format(cur['callsign'].upper()) if cur else tr_("► ВОЙТИ В КАБИНУ")
         self.btn_enter = HudButton(self.enter_box, text, self.enter, color=AMBER, height=44, font_size=11, active=True)
         self.btn_enter.pack()
 
@@ -751,7 +749,7 @@ class LoginScreen(tk.Frame):
         p = pilots.get(self.sel) if self.sel else None
         if p is None:
             return
-        if not ask_pin(self, p, "ВХОД В КАБИНУ"):
+        if not ask_pin(self, p, tr_("ВХОД В КАБИНУ")):
             return
         self.on_enter(p["id"])
 
@@ -763,7 +761,7 @@ class LoginScreen(tk.Frame):
 
     def edit(self) -> None:
         p = pilots.get(self.sel) if self.sel else None
-        if p and ask_pin(self, p, "ЛИЧНОЕ ДЕЛО"):
+        if p and ask_pin(self, p, tr_("ЛИЧНОЕ ДЕЛО")):
             ProfileDialog(self, p["id"]).run()
             self.refresh()
 
@@ -783,18 +781,18 @@ class LoginScreen(tk.Frame):
         if p is None:
             return
         if p["id"] == self.active:
-            messagebox.showinfo("Списание", "Этот пилот сейчас в кабине. Сначала войдите другим пилотом.", parent=self)
+            messagebox.showinfo(tr_("Списание"), tr_("Этот пилот сейчас в кабине. Сначала войдите другим пилотом."), parent=self)
             return
         if len(self.plist) <= 1:
-            messagebox.showinfo("Списание", "Нельзя списать последнего пилота.", parent=self)
+            messagebox.showinfo(tr_("Списание"), tr_("Нельзя списать последнего пилота."), parent=self)
             return
-        if not ask_pin(self, p, "СПИСАНИЕ"):
+        if not ask_pin(self, p, tr_("СПИСАНИЕ")):
             return
         if DeleteDialog(self, p, self.stats[p["id"]]).run():
             try:
                 pilots.delete(p["id"], active=self.active)
             except ValueError as exc:
-                messagebox.showwarning("Списание", str(exc), parent=self)
+                messagebox.showwarning(tr_("Списание"), str(exc), parent=self)
             self.sel = None
             self.refresh()
 
@@ -817,33 +815,33 @@ class LoginScreen(tk.Frame):
 
 
 def export_pilot(master, p: dict, app_version: str = "") -> None:
-    if not ask_pin(master, p, "ЭКСПОРТ"):
+    if not ask_pin(master, p, tr_("ЭКСПОРТ")):
         return
     docs = Path.home() / "Documents"
-    path = filedialog.asksaveasfilename(parent=master, title="Экспорт пилота", defaultextension=".stpilot",
+    path = filedialog.asksaveasfilename(parent=master, title=tr_("Экспорт пилота"), defaultextension=".stpilot",
                                         initialdir=str(docs if docs.exists() else Path.home()),
                                         initialfile=f"{p['callsign']}_{time.strftime('%Y-%m-%d')}.stpilot",
-                                        filetypes=[("Пилот Star Typing", "*.stpilot")])
+                                        filetypes=[(tr_("Пилот Star Typing"), "*.stpilot")])
     if path:
         pilots.export(p["id"], Path(path), app_version)
-        messagebox.showinfo("Экспорт", f"Пилот сохранён:\n{path}", parent=master)
+        messagebox.showinfo(tr_("Экспорт"), tr_("Пилот сохранён:\n{0}").format(path), parent=master)
 
 
 def import_pilot(master) -> str | None:
-    path = filedialog.askopenfilename(parent=master, title="Импорт пилота",
-                                      filetypes=[("Пилот Star Typing", "*.stpilot"), ("Все", "*.*")])
+    path = filedialog.askopenfilename(parent=master, title=tr_("Импорт пилота"),
+                                      filetypes=[(tr_("Пилот Star Typing"), "*.stpilot"), (tr_("Все"), "*.*")])
     if not path:
         return None
     try:
         man = pilots.read_package(Path(path))
-        cs = man["pilot"].get("callsign", "Пилот")
+        cs = man["pilot"].get("callsign", tr_("Пилот"))
         new_cs = pilots.free_callsign(cs)
         if new_cs != cs and not messagebox.askyesno(
-                "Импорт", f"Позывной «{cs}» уже занят. Импортировать как «{new_cs}»?", parent=master):
+                tr_("Импорт"), tr_("Позывной «{0}» уже занят. Импортировать как «{1}»?").format(cs, new_cs), parent=master):
             return None
         return pilots.import_package(Path(path), new_cs)["id"]
     except Exception as exc:  # noqa: BLE001
-        messagebox.showerror("Импорт", f"Не удалось импортировать:\n{exc}", parent=master)
+        messagebox.showerror(tr_("Импорт"), tr_("Не удалось импортировать:\n{0}").format(exc), parent=master)
         return None
 
 
@@ -851,16 +849,16 @@ def import_pilot(master) -> str | None:
 COLUMNS = [
     # key, title, width, sort key
     ("place", "№", 50, None),
-    ("pilot", "ПИЛОТ", 230, lambda s, p: p["callsign"].casefold()),
-    ("rank", "ЗВАНИЕ", 205, lambda s, p: (s["rank_idx"], s["xp"])),
+    ("pilot", tr_("ПИЛОТ"), 230, lambda s, p: p["callsign"].casefold()),
+    ("rank", tr_("ЗВАНИЕ"), 205, lambda s, p: (s["rank_idx"], s["xp"])),
     ("xp", "XP", 90, lambda s, p: s["xp"]),
-    ("typing", "ПЕЧАТЬ", 140, lambda s, p: (s["best_cpm"], s["best_acc"])),
-    ("book", "СВОЙ ТЕКСТ", 120, lambda s, p: s["book_pct"] or 0),
+    ("typing", tr_("ПЕЧАТЬ"), 140, lambda s, p: (s["best_cpm"], s["best_acc"])),
+    ("book", tr_("СВОЙ ТЕКСТ"), 120, lambda s, p: s["book_pct"] or 0),
     ("english", "ENGLISH", 140, lambda s, p: (s["en_known"], s["en_pron"] or 0)),
-    ("reading", "ЧТЕНИЕ", 120, lambda s, p: s["sr_eff"] or 0),
-    ("schulte", "ШУЛЬТЕ", 110, lambda s, p: -(s["schulte"][1]) if s["schulte"] else -1e9),
-    ("streak", "СЕРИЯ", 80, lambda s, p: s["streak"]),
-    ("ach", "ДОСТИЖЕНИЯ", 120, lambda s, p: s["ach_done"]),
+    ("reading", tr_("ЧТЕНИЕ"), 120, lambda s, p: s["sr_eff"] or 0),
+    ("schulte", tr_("ШУЛЬТЕ"), 110, lambda s, p: -(s["schulte"][1]) if s["schulte"] else -1e9),
+    ("streak", tr_("СЕРИЯ"), 80, lambda s, p: s["streak"]),
+    ("ach", tr_("ДОСТИЖЕНИЯ"), 120, lambda s, p: s["ach_done"]),
 ]
 
 
@@ -882,23 +880,23 @@ class HonorBoard(tk.Frame):
         tk.Frame(top, bg=AMBER, width=px(5)).pack(side=tk.LEFT, fill=tk.Y, padx=(0, px(10)))
         box = tk.Frame(top, bg=BG)
         box.pack(side=tk.LEFT)
-        L(box, "ДОСКА ПОЧЁТА", fg=TEXT, size=16, bold=True, bg=BG).pack(anchor="w")
-        L(box, "все пилоты экипажа · щелчок по заголовку — сортировка · щелчок по пилоту — достижения",
+        L(box, tr_("ДОСКА ПОЧЁТА"), fg=TEXT, size=16, bold=True, bg=BG).pack(anchor="w")
+        L(box, tr_("все пилоты экипажа · щелчок по заголовку — сортировка · щелчок по пилоту — достижения"),
           fg=MUTED, size=8, bg=BG).pack(anchor="w")
         if on_back:
-            HudButton(top, "← НАЗАД  ESC", on_back, height=34).pack(side=tk.RIGHT)
-        self.btn_week = HudButton(top, "НЕДЕЛЯ", lambda: self.set_period("week"), height=34)
+            HudButton(top, tr_("← НАЗАД  ESC"), on_back, height=34).pack(side=tk.RIGHT)
+        self.btn_week = HudButton(top, tr_("НЕДЕЛЯ"), lambda: self.set_period("week"), height=34)
         self.btn_week.pack(side=tk.RIGHT, padx=px(4))
-        self.btn_all = HudButton(top, "ВСЁ ВРЕМЯ", lambda: self.set_period("all"), height=34)
+        self.btn_all = HudButton(top, tr_("ВСЁ ВРЕМЯ"), lambda: self.set_period("all"), height=34)
         self.btn_all.pack(side=tk.RIGHT, padx=px(4))
-        L(top, "ПЕРИОД:", fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.RIGHT, padx=px(4))
+        L(top, tr_("ПЕРИОД:"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.RIGHT, padx=px(4))
         body = tk.Frame(self, bg=BG)
         body.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=(px(4), px(12)))
         self.table = tk.Canvas(body, bg=BG, highlightthickness=0)
         self.table.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.table.bind("<Configure>", lambda _e: self.draw())
         self.table.bind("<Button-1>", self.click)
-        self.side = HudPanel(body, "ДОСТИЖЕНИЯ", accent=AMBER)
+        self.side = HudPanel(body, tr_("ДОСТИЖЕНИЯ"), accent=AMBER)
         self.side.configure(width=px(300))
         self.side.pack_propagate(False)
         self.refresh()
@@ -948,7 +946,7 @@ class HonorBoard(tk.Frame):
             on = key == self.sort_key
             label = title + ((" ▼" if self.desc else " ▲") if on else "")
             if key == "xp" and self.period == "week":
-                label = "XP ЗА НЕДЕЛЮ" + ((" ▼" if self.desc else " ▲") if on else "")
+                label = tr_("XP ЗА НЕДЕЛЮ") + ((" ▼" if self.desc else " ▲") if on else "")
             t.create_text(x + px(6), hh / 2, text=label, anchor="w", fill=AMBER if on else MUTED,
                           font=theme.font(8, True))
         self._row_ids = []
@@ -977,7 +975,7 @@ class HonorBoard(tk.Frame):
                     avatars.draw(t, cx + px(22), yc, px(46), p, bg=fill)
                     t.create_text(cx + px(52), yc - px(9), text=p["callsign"], anchor="w", fill=TEXT,
                                   font=theme.font(12, True))
-                    sub = (p.get("name") or "") + ("  · В КАБИНЕ" if p["id"] == self.active else "")
+                    sub = (p.get("name") or "") + (tr_("  · В КАБИНЕ") if p["id"] == self.active else "")
                     t.create_text(cx + px(52), yc + px(11), text=sub, anchor="w",
                                   fill=CYAN if p["id"] == self.active else MUTED, font=theme.font(8, True))
                     if p.get("locked"):
@@ -994,7 +992,7 @@ class HonorBoard(tk.Frame):
                     if b:
                         t.create_text(cx, yc + px(12), text=b, anchor="w", fill=MUTED, font=theme.font(8))
         if not self.plist:
-            t.create_text(w / 2, hh + px(60), text="Экипаж пуст", fill=MUTED, font=theme.font(12))
+            t.create_text(w / 2, hh + px(60), text=tr_("Экипаж пуст"), fill=MUTED, font=theme.font(12))
         t.configure(scrollregion=(0, 0, w, hh + px(10) + len(self.plist) * px(self.ROW)))
 
     def _badge(self, t, x, y, idx, acc) -> None:
@@ -1013,20 +1011,20 @@ class HonorBoard(tk.Frame):
         if key == "xp":
             return (fmt_num(s["xp_week"]) if self.period == "week" else fmt_num(s["xp"])), ""
         if key == "typing":
-            return fmt_num(s["best_cpm"]), (f"зн/мин · {s['best_acc']:.1f} %" if s["best_cpm"] else "")
+            return fmt_num(s["best_cpm"]), (tr_("зн/мин · {0:.1f} %").format(s['best_acc']) if s["best_cpm"] else "")
         if key == "book":
             return fmt_num(s["book_pct"], " %") if s["book_pct"] else "—", (s["book_title"][:16] if s["book_pct"] else "")
         if key == "english":
-            return fmt_num(s["en_known"]), (f"слов · речь {s['en_pron']} %" if s["en_pron"] is not None
-                                             else ("слов" if s["en_known"] else ""))
+            return fmt_num(s["en_known"]), (tr_("слов · речь {0} %").format(s['en_pron']) if s["en_pron"] is not None
+                                             else (tr_("слов") if s["en_known"] else ""))
         if key == "reading":
-            return fmt_num(s["sr_eff"]), ("эфф. сл/мин" if s["sr_eff"] else "")
+            return fmt_num(s["sr_eff"]), (tr_("эфф. сл/мин") if s["sr_eff"] else "")
         if key == "schulte":
-            return (f"{s['schulte'][1]:.1f} с", s["schulte"][0]) if s["schulte"] else ("—", "")
+            return (tr_("{0:.1f} с").format(s['schulte'][1]), s["schulte"][0]) if s["schulte"] else ("—", "")
         if key == "streak":
-            return (f"{s['streak']}", "дн.") if s["streak"] else ("—", "")
+            return (f"{s['streak']}", tr_("дн.")) if s["streak"] else ("—", "")
         if key == "ach":
-            return f"{s['ach_done']}", f"из {s['ach_total']}"
+            return f"{s['ach_done']}", tr_("из {0}").format(s['ach_total'])
         return "", ""
 
     def click(self, e) -> None:
@@ -1057,7 +1055,7 @@ class HonorBoard(tk.Frame):
         p = pilots.get(self.detail_id) or {}
         s = self.stats[self.detail_id]
         L(b, p.get("callsign", ""), size=13, bold=True).pack(anchor="w")
-        L(b, f"{s['ach_done']} из {s['ach_total']}", fg=AMBER, size=9, bold=True).pack(anchor="w", pady=(0, px(6)))
+        L(b, tr_("{0} из {1}").format(s['ach_done'], s['ach_total']), fg=AMBER, size=9, bold=True).pack(anchor="w", pady=(0, px(6)))
         for name, ok in sorted(s["achievements"], key=lambda x: not x[1]):
             L(b, ("★ " if ok else "☆ ") + name, fg=TEXT if ok else FAINT, size=9, anchor="w", justify="left",
               wraplength=px(260)).pack(anchor="w")
@@ -1071,7 +1069,7 @@ class HonorBoard(tk.Frame):
 def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False) -> str | None:
     """Показать «ВХОД В КАБИНУ» в root; вернуть выбранный id (код проверен) или None (выход)."""
     box: dict = {"pid": None}
-    root.title("Star Typing — вход в кабину")
+    root.title(tr_("Star Typing — вход в кабину"))
     root.configure(bg=BG)
     holder = tk.Frame(root, bg=BG)
     holder.pack(fill=tk.BOTH, expand=True)

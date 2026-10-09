@@ -4,6 +4,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import hashlib
 import hmac
 import secrets
@@ -23,7 +25,7 @@ def valid_code(code: str) -> bool:
 
 def make_hash(code: str, salt: bytes | None = None, iterations: int = ITERATIONS) -> dict:
     if not valid_code(code):
-        raise ValueError("Код — от 4 до 8 цифр")
+        raise ValueError(t("Код — от 4 до 8 цифр"))
     salt = salt or secrets.token_bytes(16)
     h = hashlib.pbkdf2_hmac("sha256", code.encode("ascii"), salt, iterations)
     return {"algo": ALGO, "iter": iterations, "salt": salt.hex(), "hash": h.hex(), "set": pilots.now_iso()}
@@ -87,7 +89,7 @@ def verify(pid: str, code: str, now: float | None = None) -> tuple[bool, str]:
         return True, ""
     fail = prof.setdefault("pin_fail", {"count": 0, "until": None, "level": 0})
     if fail.get("until") and now < fail["until"]:
-        return False, f"ВВОД ЗАБЛОКИРОВАН · {int(fail['until'] - now) + 1} С"
+        return False, t("ВВОД ЗАБЛОКИРОВАН · {0} С").format(int(fail['until'] - now) + 1)
     if check_hash(rec, code):
         prof["pin_fail"] = {"count": 0, "until": None, "level": 0}
         pilots.save_profile(pid, prof)
@@ -99,7 +101,7 @@ def verify(pid: str, code: str, now: float | None = None) -> tuple[bool, str]:
         fail["level"] = lvl + 1
         fail["count"] = 0
         pilots.save_profile(pid, prof)
-        return False, f"КОД НЕВЕРЕН · ВВОД ЗАБЛОКИРОВАН НА {LOCK_STEPS[min(lvl, len(LOCK_STEPS) - 1)]} С"
+        return False, t("КОД НЕВЕРЕН · ВВОД ЗАБЛОКИРОВАН НА {0} С").format(LOCK_STEPS[min(lvl, len(LOCK_STEPS) - 1)])
     fail["until"] = None
     pilots.save_profile(pid, prof)
-    return False, f"КОД НЕВЕРЕН · ОСТАЛОСЬ ПОПЫТОК: {MAX_TRIES - fail['count']}"
+    return False, t("КОД НЕВЕРЕН · ОСТАЛОСЬ ПОПЫТОК: {0}").format(MAX_TRIES - fail['count'])

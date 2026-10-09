@@ -3,6 +3,10 @@
 * Запросы идут в фоновом потоке, поэтому печать никогда не тормозит.
 * Сначала бесплатный Google Translate (без ключа), запасной вариант —
   MyMemory. Оба работают через стандартный ``urllib``.
+* Направление: язык книги определяется сам (stamina.langdetect, без сети) или берётся из
+  библиотеки; язык перевода — настройка «UPLINK: перевод на» (по умолчанию язык интерфейса).
+  Кэш отдельный для каждой пары языков (ключ «de|ru|фраза»).
+* Без интернета переводятся только уже встречавшиеся фразы (из кэша) — офлайн-переводчика нет.
 * Все переводы кэшируются в JSON (``cache/translations.json`` в папке
   программы), так что уже встречавшиеся предложения работают без сети.
 
@@ -12,6 +16,8 @@
 """
 
 from __future__ import annotations
+
+from stamina.i18n import t
 
 import bisect
 import json
@@ -113,7 +119,7 @@ def _google(text: str, sl: str, tl: str) -> str:
     parts = [p[0] for p in (data[0] or []) if p and p[0]]
     result = "".join(parts).strip()
     if not result:
-        raise ValueError("пустой ответ")
+        raise ValueError(t("пустой ответ"))
     return result
 
 
@@ -125,10 +131,30 @@ def _mymemory(text: str, sl: str, tl: str) -> str:
         data = json.loads(resp.read().decode("utf-8"))
     result = (data.get("responseData") or {}).get("translatedText") or ""
     if int(data.get("responseStatus", 200)) != 200 or "MYMEMORY WARNING" in result.upper():
-        raise ValueError("лимит MyMemory")
+        raise ValueError(t("лимит MyMemory"))
     if not result.strip():
-        raise ValueError("пустой ответ")
+        raise ValueError(t("пустой ответ"))
     return result.strip()
+
+
+TARGETS = ("ru", "uk", "en", "de")
+
+
+def default_target() -> str:
+    """Язык перевода по умолчанию — язык интерфейса (если это ru/uk/en/de)."""
+    from stamina import i18n
+    lang = i18n.language()
+    return lang if lang in TARGETS else "ru"
+
+
+def direction(text_lang: str, target: str | None = None) -> tuple[str, str]:
+    """(язык источника, язык перевода). Неизвестный язык → auto (определит Google).
+    Если книга уже на языке перевода: русский/украинский текст → английский, остальное → русский."""
+    sl = text_lang if text_lang and text_lang != "und" else "auto"
+    tl = target if target in TARGETS else default_target()
+    if sl == tl:
+        tl = "en" if sl in ("ru", "uk", "be") else "ru"
+    return sl, tl
 
 
 def _cache_path() -> Path:
@@ -209,7 +235,7 @@ class Translator:
             if wait > 0:
                 time.sleep(min(wait, 15))
             result = None
-            for backend in (_google, _mymemory):
+            for backend in ((_google,) if sl == "auto" else (_google, _mymemory)):
                 try:
                     result = backend(text, sl, tl)
                     break

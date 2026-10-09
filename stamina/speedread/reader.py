@@ -1,6 +1,8 @@
 """ГИПЕРДРАЙВ — RSVP-читалка: слово с красной буквой в центре, разгон, пауза с контекстом."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import bisect
 import time
 import tkinter as tk
@@ -193,12 +195,11 @@ class ReaderPage(tk.Frame):
             c.create_line(w * 0.12, cy + half, w * 0.88, cy + half, fill=LINE)
             c.create_line(cx, cy - half - px(36), cx, cy - half - px(4), fill=CYAN, width=2)
             c.create_line(cx, cy + half + px(4), cx, cy + half + px(36), fill=CYAN, width=2)
-        c.create_text(px(46), px(22), text=f"ГИПЕРДРАЙВ · {self.title.upper()}", anchor="w",
+        c.create_text(px(46), px(22), text=_t("ГИПЕРДРАЙВ · {0}").format(self.title.upper()), anchor="w",
                       fill=blend(CYAN, BG, 0.35), font=theme.font(9, True))
-        c.create_text(w - px(46), px(22), text="РЕЖИМ ФОКУСА · ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА", anchor="e",
+        c.create_text(w - px(46), px(22), text=_t("РЕЖИМ ФОКУСА · ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА"), anchor="e",
                       fill=FAINT, font=theme.font(8, True))
-        c.create_text(cx, h - px(28), text="ПРОБЕЛ — ПАУЗА · ↑ ↓ — СКОРОСТЬ · ← — НАЗАД НА ПРЕДЛОЖЕНИЕ · "
-                      "1–5 — СЛОВ ЗА КАДР · + − ШРИФТ · ENTER — ФИНИШ · ESC — ВЫХОД",
+        c.create_text(cx, h - px(28), text=_t("ПРОБЕЛ — ПАУЗА · ↑ ↓ — СКОРОСТЬ · ← — НАЗАД НА ПРЕДЛОЖЕНИЕ · 1–5 — СЛОВ ЗА КАДР · + − ШРИФТ · ENTER — ФИНИШ · ESC — ВЫХОД"),
                       fill=FAINT, font=theme.font(8, True))
         f = self._font(fs)
         for tag, anchor in (("wl", "e"), ("wc", "center"), ("wr", "w")):
@@ -243,19 +244,19 @@ class ReaderPage(tk.Frame):
         w, _h, _cx, _cy = self._geom()
         r = self.ramp
         c.itemconfigure("wpm", text=f"{int(r.wpm)}")
-        c.itemconfigure("wpmsub", text="СЛОВ / МИН" + (f" · ↗ К {int(r.target)}" if r.ramping else ""))
+        c.itemconfigure("wpmsub", text=_t("СЛОВ / МИН") + (_t(" · ↗ К {0}").format(int(r.target)) if r.ramping else ""))
         n = len(self.words)
         pct = self.pos / n * 100 if n else 0
-        c.itemconfigure("route", text=f"МАРШРУТ  {self.pos:,} / {n:,} СЛОВ · {pct:.0f}%".replace(",", " "))
+        c.itemconfigure("route", text=_t("МАРШРУТ  {0:,} / {1:,} СЛОВ · {2:.0f}%").format(self.pos, n, pct).replace(",", " "))
         st = self.st
         if st["ramp"] == "smooth":
-            rt = f"РАЗГОН +{st['ramp_step']} СЛОВ/МИН КАЖДЫЕ {st['ramp_every_s']} С"
+            rt = _t("РАЗГОН +{0} СЛОВ/МИН КАЖДЫЕ {1} С").format(st['ramp_step'], st['ramp_every_s'])
         elif st["ramp"] == "steps":
-            rt = "РАЗГОН +50 КАЖДЫЕ 500 СЛОВ"
+            rt = _t("РАЗГОН +50 КАЖДЫЕ 500 СЛОВ")
         else:
-            rt = "ПОСТОЯННАЯ СКОРОСТЬ"
+            rt = _t("ПОСТОЯННАЯ СКОРОСТЬ")
         if r.mode != "off" and not r.ramping and r.wpm < r.target:
-            rt = "ПЛАТО · РАЗГОН НА ПАУЗЕ 2 МИН"
+            rt = _t("ПЛАТО · РАЗГОН НА ПАУЗЕ 2 МИН")
         c.itemconfigure("ramp", text=rt)
         m = px(40)
         c.coords("bar", m, c.coords("bar")[1], m + (w - 2 * m) * pct / 100, c.coords("bar")[3])
@@ -265,7 +266,7 @@ class ReaderPage(tk.Frame):
         pv = self.pause_view
         pv.grid_rowconfigure(0, weight=1)
         pv.grid_columnconfigure(0, weight=1)
-        left = HudPanel(pv, "ОБЗОР КОНТЕКСТА · ПАУЗА", accent=AMBER)
+        left = HudPanel(pv, _t("ОБЗОР КОНТЕКСТА · ПАУЗА"), accent=AMBER)
         left.grid(row=0, column=0, sticky="nsew", padx=(px(14), px(6)), pady=(px(6), px(6)))
         self.ctx_title = L(left.body, "", fg=MUTED, size=8, bold=True)
         self.ctx_title.pack(anchor="e")
@@ -285,7 +286,7 @@ class ReaderPage(tk.Frame):
         right = tk.Frame(pv, bg=BG, width=px(340))
         right.grid(row=0, column=1, sticky="ns", padx=(px(6), px(14)), pady=(px(6), px(6)))
         right.grid_propagate(False)
-        sp = HudPanel(right, "СКОРОСТЬ")
+        sp = HudPanel(right, _t("СКОРОСТЬ"))
         sp.pack(fill=tk.X)
         sp.configure(height=px(150))
         sp.pack_propagate(False)
@@ -296,11 +297,11 @@ class ReaderPage(tk.Frame):
         mid.pack(side=tk.LEFT, padx=px(14))
         self.lbl_wpm = L(mid, "300", fg=CYAN, size=30, bold=True, mono=True)
         self.lbl_wpm.pack()
-        L(mid, "СЛОВ / МИН", fg=MUTED, size=8, bold=True).pack()
+        L(mid, _t("СЛОВ / МИН"), fg=MUTED, size=8, bold=True).pack()
         HudButton(row, "▲", lambda: self.speed(25), width=54, height=50, font_size=16).pack(side=tk.LEFT)
         self.lbl_ramp = L(sp.body, "", fg=AMBER, size=8, bold=True)
         self.lbl_ramp.pack(pady=(px(6), 0))
-        fp = HudPanel(right, "НАСТРОЙКИ ПОЛЁТА")
+        fp = HudPanel(right, _t("НАСТРОЙКИ ПОЛЁТА"))
         fp.pack(fill=tk.X, pady=(px(10), 0))
         fb = fp.body
 
@@ -309,40 +310,40 @@ class ReaderPage(tk.Frame):
             r.pack(fill=tk.X, pady=px(3))
             L(r, title, fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
             return r
-        r = line("ШРИФТ")
+        r = line(_t("ШРИФТ"))
         HudButton(r, "A+", lambda: self.font_size(+4), height=26, font_size=9, width=40).pack(side=tk.RIGHT)
         self.lbl_font = L(r, "", fg=CYAN, size=11, bold=True, mono=True, width=4)
         self.lbl_font.pack(side=tk.RIGHT)
         HudButton(r, "A−", lambda: self.font_size(-4), height=26, font_size=9, width=40).pack(side=tk.RIGHT)
-        r = line("СЛОВ ЗА КАДР")
+        r = line(_t("СЛОВ ЗА КАДР"))
         self.chunk_btns = {}
         for n in (5, 4, 3, 2, 1):
             b = HudButton(r, str(n), lambda n=n: self.set_chunk(n), height=26, font_size=9, width=30)
             b.pack(side=tk.RIGHT, padx=1)
             self.chunk_btns[n] = b
         self.toggles = {}
-        for key, title in (("orp", "КРАСНАЯ БУКВА (ORP)"), ("punct_pauses", "ПАУЗЫ НА ЗНАКАХ"),
-                           ("ramp", "ПЛАВНЫЙ РАЗГОН"), ("guides", "ПРИЦЕЛ")):
+        for key, title in (("orp", _t("КРАСНАЯ БУКВА (ORP)")), ("punct_pauses", _t("ПАУЗЫ НА ЗНАКАХ")),
+                           ("ramp", _t("ПЛАВНЫЙ РАЗГОН")), ("guides", _t("ПРИЦЕЛ"))):
             r = line(title)
             val = self.st[key] != "off" if key == "ramp" else bool(self.st[key])
             tg = Toggle(r, val, lambda v, k=key: self._toggle(k, v), width=70)
             tg.pack(side=tk.RIGHT)
             self.toggles[key] = tg
-        tp = HudPanel(right, "ТЕЛЕМЕТРИЯ СЕССИИ", accent=LINE_HI)
+        tp = HudPanel(right, _t("ТЕЛЕМЕТРИЯ СЕССИИ"), accent=LINE_HI)
         tp.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
         self.lbl_tele = L(tp.body, "", fg=TEXT, size=10, mono=True, justify="left", anchor="nw")
         self.lbl_tele.pack(fill=tk.BOTH, expand=True)
         acts = tk.Frame(pv, bg=BG)
         acts.grid(row=1, column=0, columnspan=2, sticky="w", padx=px(14), pady=(0, px(8)))
-        self.btn_go = HudButton(acts, "▶ ПРОДОЛЖИТЬ  ·  ПРОБЕЛ", self.resume, color=AMBER, height=42,
+        self.btn_go = HudButton(acts, _t("▶ ПРОДОЛЖИТЬ  ·  ПРОБЕЛ"), self.resume, color=AMBER, height=42,
                                 font_size=11, active=True)
         self.btn_go.pack(side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, "⟲ НАЗАД  ←", lambda: self.jump("sent", -1), height=42, font_size=10).pack(side=tk.LEFT, padx=px(3))
-        HudButton(acts, "⇤ В НАЧАЛО ГЛАВЫ  HOME", lambda: self.jump("chapter", -1), height=42,
+        HudButton(acts, _t("⟲ НАЗАД  ←"), lambda: self.jump("sent", -1), height=42, font_size=10).pack(side=tk.LEFT, padx=px(3))
+        HudButton(acts, _t("⇤ В НАЧАЛО ГЛАВЫ  HOME"), lambda: self.jump("chapter", -1), height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
-        HudButton(acts, "✓ ФИНИШ + ТЕСТ  ENTER", lambda: self.finish(end=False), color=GREEN, height=42,
+        HudButton(acts, _t("✓ ФИНИШ + ТЕСТ  ENTER"), lambda: self.finish(end=False), color=GREEN, height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
-        HudButton(acts, "БИБЛИОТЕКА", lambda: self.ctx.show("library"), height=42,
+        HudButton(acts, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
         self.lbl_sync = L(acts, "", fg=AMBER, size=9, bold=True, bg=BG)
         self.lbl_sync.pack(side=tk.LEFT, padx=px(10))
@@ -360,7 +361,7 @@ class ReaderPage(tk.Frame):
         t.delete("1.0", tk.END)
         self._ctx_base = 0
         if not self.words:
-            t.insert(tk.END, "Текст не выбран. Откройте БИБЛИОТЕКУ и нажмите «ЧИТАТЬ».", "near")
+            t.insert(tk.END, _t("Текст не выбран. Откройте БИБЛИОТЕКУ и нажмите «ЧИТАТЬ»."), "near")
             return
         i = min(self.pos, len(self.words) - 1)
         a = max(0, rsvp.paragraph_start(self.words, max(0, i - 160)))
@@ -390,12 +391,12 @@ class ReaderPage(tk.Frame):
         t.tag_raise("cur")
         t.tag_raise("orp")
         line_start = t.index(f"{idx(self.words[sent_a].start)} linestart")
-        t.insert(line_start, f"❚❚  ПАУЗА · ОСТАНОВКА НА СЛОВЕ {i + 1:,}\n".replace(",", " "), "mark")
+        t.insert(line_start, _t("❚❚  ПАУЗА · ОСТАНОВКА НА СЛОВЕ {0:,}\n").format(i + 1).replace(",", " "), "mark")
         t.see(idx(w.start))
         t.yview_scroll(-3, "units")
         n = len(self.words)
         self.ctx_title.configure(text=f"{self.title.upper()} · {self.pos / n * 100:.0f}%"
-                                 + ("  · ⚠ БЕЗ ОРИГИНАЛА (текст без заглавных и знаков)" if self.no_original else ""))
+                                 + (_t("  · ⚠ БЕЗ ОРИГИНАЛА (текст без заглавных и знаков)") if self.no_original else ""))
 
     def _ctx_click(self, e) -> str:
         if not self.words:
@@ -419,7 +420,7 @@ class ReaderPage(tk.Frame):
         if self.ramp:
             self.lbl_wpm.configure(text=str(int(self.ramp.wpm)))
             st = self.st
-            self.lbl_ramp.configure(text=f"СТАРТ {st['wpm_start']} → ЦЕЛЬ {st['wpm_target']} · ШАГ ±25  ↑ ↓")
+            self.lbl_ramp.configure(text=_t("СТАРТ {0} → ЦЕЛЬ {1} · ШАГ ±25  ↑ ↓").format(st['wpm_start'], st['wpm_target']))
         self.lbl_font.configure(text=str(self.st["font_pt"]))
         for n, b in self.chunk_btns.items():
             b.set_active(n == int(self.st["chunk"]))
@@ -427,10 +428,9 @@ class ReaderPage(tk.Frame):
         if s:
             avg = s["words"] / s["secs"] * 60 if s["secs"] else 0
             mm, ss = divmod(int(s["secs"]), 60)
-            self.lbl_tele.configure(text=f"ВРЕМЯ В ПОЛЁТЕ   {mm:02d}:{ss:02d}\nСРЕДНЯЯ СКОРОСТЬ {avg:5.0f}\n"
-                                    f"ПРОЧИТАНО СЛОВ   {s['words']:5d}")
+            self.lbl_tele.configure(text=_t("ВРЕМЯ В ПОЛЁТЕ   {0:02d}:{1:02d}\nСРЕДНЯЯ СКОРОСТЬ {2:5.0f}\nПРОЧИТАНО СЛОВ   {3:5d}").format(mm, ss, avg, s['words']))
         else:
-            self.lbl_tele.configure(text="СЕССИЯ ЕЩЁ НЕ НАЧАТА\nПРОБЕЛ — СТАРТ")
+            self.lbl_tele.configure(text=_t("СЕССИЯ ЕЩЁ НЕ НАЧАТА\nПРОБЕЛ — СТАРТ"))
 
     def _update_sync_hint(self) -> None:
         self.lbl_sync.configure(text="")
@@ -445,7 +445,7 @@ class ReaderPage(tk.Frame):
                 self._fill_context()
                 return
             self._sync_word = tw
-            self.lbl_sync.configure(text=f"В ПЕЧАТИ ВЫ ДАЛЬШЕ: {pct:.0f}% · S — ПРОДОЛЖИТЬ С ЭТОГО МЕСТА",
+            self.lbl_sync.configure(text=_t("В ПЕЧАТИ ВЫ ДАЛЬШЕ: {0:.0f}% · S — ПРОДОЛЖИТЬ С ЭТОГО МЕСТА").format(pct),
                                     cursor="hand2")
             self.lbl_sync.bind("<Button-1>", lambda _e: self.sync_from_typing())
 
@@ -569,7 +569,8 @@ class ReaderPage(tk.Frame):
         start = max(self._quiz_from, self.pos - int(self.st["quiz_words"]) * 2)
         items = []
         if self.st["quiz"] != "never":
-            lang = (self.ctx.lib.meta(self.tid) or {}).get("lang", "en")
+            from stamina.langdetect import detect      # язык самого куска: книги бывают смешанные
+            lang = detect(" ".join(w.text for w in self.words[start:self.pos][:800]))
             items = make_quiz(self.words, start, self.pos, lang)
         self._quiz_from = self.pos
         self._end_reached = end
@@ -592,7 +593,7 @@ class ReaderPage(tk.Frame):
         self._clear_quiz()
         self._quiz_next = None
         q = self._quiz[self._quiz_i]
-        p = HudPanel(self.quiz_view, f"ДЕБРИФИНГ · ПРОВЕРКА ПОНИМАНИЯ · {self._quiz_i + 1} / {len(self._quiz)}",
+        p = HudPanel(self.quiz_view, _t("ДЕБРИФИНГ · ПРОВЕРКА ПОНИМАНИЯ · {0} / {1}").format(self._quiz_i + 1, len(self._quiz)),
                      accent=AMBER)
         p.pack(fill=tk.BOTH, expand=True, padx=px(120), pady=px(30))
         L(p.body, q["question"], fg=TEXT, size=14, justify="left", wraplength=px(760)).pack(anchor="w", pady=(px(16), px(16)))
@@ -601,7 +602,7 @@ class ReaderPage(tk.Frame):
             ch = Choice(p.body, i + 1, opt, lambda i=i: self._quiz_answer(i))
             ch.pack(fill=tk.X, pady=px(4))
             self._quiz_choices.append(ch)
-        self._quiz_status = L(p.body, "1–4 — ответ · ESC — пропустить проверку", fg=MUTED, size=9, bold=True)
+        self._quiz_status = L(p.body, _t("1–4 — ответ · ESC — пропустить проверку"), fg=MUTED, size=9, bold=True)
         self._quiz_status.pack(anchor="w", pady=(px(14), 0))
 
     def _quiz_answer(self, i: int) -> None:
@@ -620,7 +621,7 @@ class ReaderPage(tk.Frame):
             else:
                 self._quiz_render()
         self._quiz_next = nxt
-        self._quiz_status.configure(text=("✓ ВЕРНО" if ok else "✕ НЕВЕРНО") + " · ENTER — ДАЛЕЕ",
+        self._quiz_status.configure(text=(_t("✓ ВЕРНО") if ok else _t("✕ НЕВЕРНО")) + _t(" · ENTER — ДАЛЕЕ"),
                                     fg=GREEN if ok else RED)
         self.after(900 if ok else 1600, lambda: self._quiz_next is nxt and nxt())
 
@@ -649,34 +650,34 @@ class ReaderPage(tk.Frame):
         self.quiz_view.tkraise()
         rec = rec or (self.ctx.sstore.last_sessions(1) or [None])[-1]
         ok = comp is None or comp >= 0.6
-        p = HudPanel(self.quiz_view, "ОТЧЁТ О ПОЛЁТЕ · ГИПЕРДРАЙВ", accent=GREEN if ok else AMBER)
+        p = HudPanel(self.quiz_view, _t("ОТЧЁТ О ПОЛЁТЕ · ГИПЕРДРАЙВ"), accent=GREEN if ok else AMBER)
         p.pack(fill=tk.BOTH, expand=True, padx=px(160), pady=px(40))
-        L(p.body, "МИССИЯ ВЫПОЛНЕНА" if ok else "ПОВТОРИТЕ ЗАХОД", fg=GREEN if ok else AMBER, size=24,
+        L(p.body, _t("МИССИЯ ВЫПОЛНЕНА") if ok else _t("ПОВТОРИТЕ ЗАХОД"), fg=GREEN if ok else AMBER, size=24,
           bold=True).pack(pady=(px(20), px(6)))
         if rec:
             stars = rec.get("stars", 0)
             L(p.body, "★" * stars + "☆" * (3 - stars), fg=AMBER, size=22).pack()
-            rows = [("СРЕДНЯЯ СКОРОСТЬ", f"{rec['avg_wpm']} сл/мин"), ("МАКС. СКОРОСТЬ", f"{rec['max_wpm']} сл/мин"),
-                    ("ПРОЧИТАНО СЛОВ", str(rec["words"])),
-                    ("ПОНИМАНИЕ", f"{comp * 100:.0f}%" if comp is not None else "— (без проверки)"),
-                    ("ЭФФЕКТИВНАЯ СКОРОСТЬ", f"{rec.get('eff_wpm') or '—'}"),
-                    ("ОПЫТ", f"+{rec.get('xp', 0)} XP")]
+            rows = [(_t("СРЕДНЯЯ СКОРОСТЬ"), _t("{0} сл/мин").format(rec['avg_wpm'])), (_t("МАКС. СКОРОСТЬ"), _t("{0} сл/мин").format(rec['max_wpm'])),
+                    (_t("ПРОЧИТАНО СЛОВ"), str(rec["words"])),
+                    (_t("ПОНИМАНИЕ"), f"{comp * 100:.0f}%" if comp is not None else _t("— (без проверки)")),
+                    (_t("ЭФФЕКТИВНАЯ СКОРОСТЬ"), f"{rec.get('eff_wpm') or '—'}"),
+                    (_t("ОПЫТ"), f"+{rec.get('xp', 0)} XP")]
             g = tk.Frame(p.body, bg=PANEL)
             g.pack(pady=px(14))
             for i, (a, b) in enumerate(rows):
                 L(g, a, fg=MUTED, size=9, bold=True).grid(row=i, column=0, sticky="w", padx=px(10), pady=px(3))
-                L(g, b, fg=AMBER if a == "ОПЫТ" else CYAN, size=13, bold=True, mono=True).grid(
+                L(g, b, fg=AMBER if a == _t("ОПЫТ") else CYAN, size=13, bold=True, mono=True).grid(
                     row=i, column=1, sticky="e", padx=px(10))
             if comp is not None and comp < 0.6:
-                L(p.body, "Совет: понимание ниже 60% — снизьте целевую скорость на 50 и повторите.",
+                L(p.body, _t("Совет: понимание ниже 60% — снизьте целевую скорость на 50 и повторите."),
                   fg=AMBER, size=10).pack()
         acts = tk.Frame(p.body, bg=PANEL)
         acts.pack(pady=px(14))
         if not getattr(self, "_end_reached", False):
-            HudButton(acts, "▶ ЧИТАТЬ ДАЛЬШЕ", self._continue_after, color=AMBER, height=40,
+            HudButton(acts, _t("▶ ЧИТАТЬ ДАЛЬШЕ"), self._continue_after, color=AMBER, height=40,
                       font_size=11, active=True).pack(side=tk.LEFT, padx=px(4))
-        HudButton(acts, "ОБЗОР", lambda: self.ctx.show("overview"), height=40).pack(side=tk.LEFT, padx=px(4))
-        HudButton(acts, "БИБЛИОТЕКА", lambda: self.ctx.show("library"), height=40).pack(side=tk.LEFT, padx=px(4))
+        HudButton(acts, _t("ОБЗОР"), lambda: self.ctx.show("overview"), height=40).pack(side=tk.LEFT, padx=px(4))
+        HudButton(acts, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=40).pack(side=tk.LEFT, padx=px(4))
         self._quiz_next = self._continue_after if not getattr(self, "_end_reached", False) else None
 
     def _continue_after(self) -> None:

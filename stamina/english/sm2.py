@@ -1,6 +1,8 @@
 """Алгоритм интервального повторения SM-2 (SPEC §6)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import datetime as dt
 
 
@@ -46,6 +48,6 @@ def next_state(card: dict, q: int, day: str | None = None) -> dict:
 def preview(card: dict, q: int) -> str:
     """Подпись интервала для кнопки оценки."""
     if q < 3:
-        return "<10 мин"
+        return t("<10 мин")
     n = next_state(card, q)["interval"]
-    return f"{n} дн"
+    return t("{0} дн").format(n)

@@ -2,6 +2,8 @@
 Новых цветов и шрифтов нет: всё из theme.py (DESIGN.md)."""
 from __future__ import annotations
 
+from stamina.i18n import t as tr_
+
 import tkinter as tk
 
 from stamina import theme
@@ -164,10 +166,10 @@ class Tile(tk.Canvas):
         by = h - px(28)
         self.create_line(px(8), by - px(4), w - px(8), by - px(4), fill=LINE)
         kc = GREEN if known else blend(MUTED, BG, 0.1)
-        self.create_text(w * 0.28, by + px(10), text=("✓ ЗНАЮ" if known else "✓ знаю"), fill=kc,
+        self.create_text(w * 0.28, by + px(10), text=(tr_("✓ ЗНАЮ") if known else tr_("✓ знаю")), fill=kc,
                          font=theme.font(8, True), tags="known")
         inl = bool(p.lists_of(slug))
-        self.create_text(w * 0.72, by + px(10), text="⊞ В ОТСЕКЕ" if inl else "⊞ В отсек",
+        self.create_text(w * 0.72, by + px(10), text=tr_("⊞ В ОТСЕКЕ") if inl else tr_("⊞ В отсек"),
                          fill=AMBER if inl else blend(MUTED, BG, 0.1), font=theme.font(8, True), tags="list")
         self.tag_bind("flip", "<Button-1>", lambda _e: self._flip())
         self.tag_bind("known", "<Button-1>", lambda _e: self._known())
@@ -234,7 +236,7 @@ class Strip(tk.Canvas):
         self.create_text(px(16), px(38), text=self.sub, anchor="w", fill=MUTED, font=theme.font(8))
         if self.prog is not None:
             x1, x2 = w - px(320), w - px(6)
-            self.create_text(x1, px(14), text="ПРОГРЕСС МАРШРУТА", anchor="w", fill=MUTED, font=theme.font(8, True))
+            self.create_text(x1, px(14), text=tr_("ПРОГРЕСС МАРШРУТА"), anchor="w", fill=MUTED, font=theme.font(8, True))
             self.create_text(x2, px(14), text=self.ptext, anchor="e", fill=CYAN, font=theme.font(9, True, mono=True))
             self.create_rectangle(x1, px(26), x2, px(34), fill=BG2, outline=LINE)
             if self.prog > 0:
@@ -277,16 +279,16 @@ class Segments(tk.Canvas):
 
 
 TIPS = [
-    "Повторяй слово вслух 3 раза: мозг запоминает звук вместе с написанием.",
-    "Придумай смешную историю или образ для трудного слова — так оно держится дольше.",
-    "Лучше 15 минут каждый день, чем 2 часа раз в неделю: серия дней работает.",
-    "Учись словами в предложениях, а не по одному: контекст подсказывает смысл.",
-    "Ошибки — нормально: проверка систем вернёт трудные слова в нужный момент.",
-    "Слушай голос и повторяй с той же интонацией — это тренирует произношение.",
-    "Свяжи новое слово с уже знакомым: lead → leader → leadership.",
-    "Отмечай «Знаю» честно — иначе слово не попадёт в повторение.",
-    "Говори в микрофон спокойно и чётко: распознавание любит паузы между фразами.",
-    "Держи под рукой отсек «Избранное» для слов, которые встретил в жизни.",
+    tr_("Повторяй слово вслух 3 раза: мозг запоминает звук вместе с написанием."),
+    tr_("Придумай смешную историю или образ для трудного слова — так оно держится дольше."),
+    tr_("Лучше 15 минут каждый день, чем 2 часа раз в неделю: серия дней работает."),
+    tr_("Учись словами в предложениях, а не по одному: контекст подсказывает смысл."),
+    tr_("Ошибки — нормально: проверка систем вернёт трудные слова в нужный момент."),
+    tr_("Слушай голос и повторяй с той же интонацией — это тренирует произношение."),
+    tr_("Свяжи новое слово с уже знакомым: lead → leader → leadership."),
+    tr_("Отмечай «Знаю» честно — иначе слово не попадёт в повторение."),
+    tr_("Говори в микрофон спокойно и чётко: распознавание любит паузы между фразами."),
+    tr_("Держи под рукой отсек «Избранное» для слов, которые встретил в жизни."),
 ]
 
 
@@ -318,10 +320,10 @@ class MatchReadout(tk.Canvas):
             return
         score, marks, heard, tmiss, selfr = self.data
         col = GREEN if score >= 85 else AMBER if score >= 60 else RED
-        verdict = "ОТЛИЧНО" if score >= 85 else "ХОРОШО" if score >= 60 else "ЕЩЁ РАЗ"
+        verdict = tr_("ОТЛИЧНО") if score >= 85 else tr_("ХОРОШО") if score >= 60 else tr_("ЕЩЁ РАЗ")
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, px(10)), fill=blend(col, PANEL, 0.88), outline=col)
         self.create_rectangle(px(2), px(8), px(6), h - px(8), fill=col, outline="")
-        label = "САМООЦЕНКА" if selfr else "СОВПАДЕНИЕ"
+        label = tr_("САМООЦЕНКА") if selfr else tr_("СОВПАДЕНИЕ")
         self.create_text(px(16), px(22), text=f"{label}:", anchor="w", fill=MUTED, font=theme.font(10, True))
         self.create_text(px(16) + px(118), px(22), text=f"{score}%", anchor="w", fill=col,
                          font=theme.font(24, True, mono=True))
@@ -339,17 +341,17 @@ class MatchReadout(tk.Canvas):
         if marks:
             ok = sum(1 for _t, m in marks if m)
             miss = [t for t, m in marks if not m]
-            line = f"слов засчитано {ok} / {len(marks)}"
+            line = tr_("слов засчитано {0} / {1}").format(ok, len(marks))
             if miss:
-                line += " · пропущено: " + ", ".join(miss[:8]) + ("…" if len(miss) > 8 else "")
+                line += tr_(" · пропущено: ") + ", ".join(miss[:8]) + ("…" if len(miss) > 8 else "")
             if tmiss:
-                line += " · ключевое слово не распознано (максимум 59%)"
+                line += tr_(" · ключевое слово не распознано (максимум 59%)")
         elif selfr:
-            line = "распознавание недоступно — оценка по кнопке"
+            line = tr_("распознавание недоступно — оценка по кнопке")
         else:
             line = ""
         if heard:
-            line = (line + "   ·   " if line else "") + f"услышано: «{heard}»"
+            line = (line + "   ·   " if line else "") + tr_("услышано: «{0}»").format(heard)
         self.create_text(px(16), px(70), text=line, anchor="w", fill=MUTED, font=theme.font(9), width=w - px(28))
 
 

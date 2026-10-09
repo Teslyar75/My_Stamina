@@ -1,6 +1,8 @@
 """Нормализация текста, расстояние Левенштейна, оценка произнесённого предложения (SPEC §3.1)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import re
 
 CONTRACTIONS = {
@@ -144,7 +146,7 @@ def score_word(target: str, alternatives: list[str], sounds_like: list[str] | No
 def verdict(score: int) -> tuple[str, str]:
     """(текст, ключ цвета)."""
     if score >= 85:
-        return "ОТЛИЧНО", "green"
+        return _t("ОТЛИЧНО"), "green"
     if score >= 60:
-        return "ХОРОШО", "amber"
-    return "ЕЩЁ РАЗ", "red"
+        return _t("ХОРОШО"), "amber"
+    return _t("ЕЩЁ РАЗ"), "red"

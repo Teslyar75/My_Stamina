@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import os
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
@@ -74,14 +76,14 @@ class MissionCard(tk.Canvas):
                          fill=TEXT if unlocked else MUTED, font=theme.font(12, True))
         if self.m["new"]:
             keys = " ".join(self.m["new"].upper()) if not self.m["new"].isdigit() else "0–9"
-            info = f"новые клавиши: {keys}"
+            info = _t("новые клавиши: {0}").format(keys)
         else:
-            info = "все буквы, настоящие слова"
+            info = _t("все буквы, настоящие слова")
         self.create_text(px(14), px(60), text=info, anchor="w", fill=MUTED, font=theme.font(8),
                          width=w - px(24))
         new = self.m["new"]
         if not new:
-            caps = ["A–Z"] if self.m["lang"] == "en" else ["А–Я"]
+            caps = ["A–Z"] if self.m["lang"] == "en" else [_t("А–Я")]
         elif new.isdigit():
             caps = ["0–9"]
         else:
@@ -101,16 +103,16 @@ class MissionCard(tk.Canvas):
                 self.create_text(x + cw / 2, y1 + size / 2, text=cap, fill=TEXT if unlocked else MUTED,
                                  font=theme.font(max(7, int(size / theme.S * 0.42)), True))
                 x += cw + px(4)
-        self.create_text(px(14), h - px(20), text=f"цель {self.m['goal']} зн/мин", anchor="w",
+        self.create_text(px(14), h - px(20), text=_t("цель {0} зн/мин").format(self.m['goal']), anchor="w",
                          fill=CYAN_DIM, font=theme.font(8, True))
         if not unlocked:
-            self.create_text(w - px(12), h - px(20), text="⊘ ЗАКРЫТО", anchor="e", fill=FAINT,
+            self.create_text(w - px(12), h - px(20), text=_t("⊘ ЗАКРЫТО"), anchor="e", fill=FAINT,
                              font=theme.font(8, True))
         else:
             self.create_text(w - px(12), h - px(21), text="★" * stars + "☆" * (3 - stars),
                              anchor="e", fill=AMBER, font=theme.font(13))
             if rec.get("best_cpm"):
-                self.create_text(w - px(12), h - px(40), text=f"рекорд {rec['best_cpm']:.0f}",
+                self.create_text(w - px(12), h - px(40), text=_t("рекорд {0:.0f}").format(rec['best_cpm']),
                                  anchor="e", fill=MUTED, font=theme.font(7))
 
 
@@ -121,31 +123,29 @@ class MissionsScreen(tk.Frame):
         self.lang = app.store.settings.get("lang", "en")
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
-        _label(top, "ЗВЁЗДНАЯ КАРТА МИССИЙ", fg=TEXT, size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        self.btn_ru = HudButton(top, "РУССКИЙ  ЙЦУКЕН", lambda: self.set_lang("ru"), height=32)
+        _label(top, _t("ЗВЁЗДНАЯ КАРТА МИССИЙ"), fg=TEXT, size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        self.btn_ru = HudButton(top, _t("РУССКИЙ  ЙЦУКЕН"), lambda: self.set_lang("ru"), height=32)
         self.btn_ru.pack(side=tk.RIGHT)
         self.btn_en = HudButton(top, "ENGLISH  QWERTY", lambda: self.set_lang("en"), height=32)
         self.btn_en.pack(side=tk.RIGHT, padx=px(8))
-        _label(self, "Каждая миссия добавляет новые клавиши. Пройдите с точностью от "
-                     f"{missions.PASS_ACCURACY:.0f}%, чтобы открыть следующую. Звёзды дают за "
-                     "точность и скорость.", fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(16))
+        _label(self, _t("Каждая миссия добавляет новые клавиши. Пройдите с точностью от {0:.0f}%, чтобы открыть следующую. Звёзды дают за точность и скорость.").format(missions.PASS_ACCURACY), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(16))
         self.grid_frame = tk.Frame(self, bg=BG)
         self.grid_frame.pack(fill=tk.BOTH, expand=True, padx=px(10), pady=px(8))
         special = tk.Frame(self, bg=BG)
         special.pack(fill=tk.X, padx=px(10), pady=(0, px(10)))
-        self.repair_panel = HudPanel(special, "РЕМОНТ СИСТЕМ — АДАПТИВНАЯ ТРЕНИРОВКА", accent=AMBER)
+        self.repair_panel = HudPanel(special, _t("РЕМОНТ СИСТЕМ — АДАПТИВНАЯ ТРЕНИРОВКА"), accent=AMBER)
         self.repair_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(4), px(6)))
         self.repair_info = _label(self.repair_panel.body, "", fg=TEXT, size=10, justify="left",
                                   anchor="w")
         self.repair_info.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        HudButton(self.repair_panel.body, "⚙ ЗАПУСТИТЬ", lambda: self.app.start_repair(self.lang),
+        HudButton(self.repair_panel.body, _t("⚙ ЗАПУСТИТЬ"), lambda: self.app.start_repair(self.lang),
                   color=AMBER).pack(side=tk.RIGHT)
-        self.cargo_panel = HudPanel(special, "СВОЙ ТЕКСТ — ГРУЗ НА БОРТУ")
+        self.cargo_panel = HudPanel(special, _t("СВОЙ ТЕКСТ — ГРУЗ НА БОРТУ"))
         self.cargo_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(6), px(4)))
         self.cargo_info = _label(self.cargo_panel.body, "", fg=TEXT, size=10, justify="left",
                                  anchor="w")
         self.cargo_info.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        self.btn_cargo = HudButton(self.cargo_panel.body, "▶ ПРОДОЛЖИТЬ", self.app.resume_cargo,
+        self.btn_cargo = HudButton(self.cargo_panel.body, _t("▶ ПРОДОЛЖИТЬ"), self.app.resume_cargo,
                                    color=GREEN)
         self.btn_cargo.pack(side=tk.RIGHT)
         self.cards: list[MissionCard] = []
@@ -175,21 +175,18 @@ class MissionsScreen(tk.Frame):
         weak = self.app.store.weakest_keys(self.lang)
         if weak:
             keys = "  ".join(f"«{ch}» {r * 100:.0f}%" for ch, r in weak)
-            self.repair_info.configure(text=f"Слабые клавиши: {keys}\nУпражнение из слов с этими буквами.")
+            self.repair_info.configure(text=_t("Слабые клавиши: {0}\nУпражнение из слов с этими буквами.").format(keys))
         else:
-            self.repair_info.configure(text="Пока мало данных: пройдите пару миссий,\n"
-                                            "и бортовой компьютер найдёт слабые клавиши.")
+            self.repair_info.configure(text=_t("Пока мало данных: пройдите пару миссий,\nи бортовой компьютер найдёт слабые клавиши."))
         saved = load_session()
         if saved:
             preview = saved.text[:48] + ("…" if len(saved.text) > 48 else "")
             self.cargo_info.configure(
-                text=f"«{preview}»\nпройдено {fmt_int(saved.index)} из {fmt_int(len(saved.text))} "
-                     f"({saved.index / len(saved.text) * 100:.0f}%)")
-            self.btn_cargo.set_text("▶ ПРОДОЛЖИТЬ")
+                text=_t("«{0}»\nпройдено {1} из {2} ({3:.0f}%)").format(preview, fmt_int(saved.index), fmt_int(len(saved.text)), saved.index / len(saved.text) * 100))
+            self.btn_cargo.set_text(_t("▶ ПРОДОЛЖИТЬ"))
         else:
-            self.cargo_info.configure(text="Загрузите книгу или статью и печатайте её\n"
-                                           "с переводом предложений (UPLINK).")
-            self.btn_cargo.set_text("ЗАГРУЗИТЬ ТЕКСТ")
+            self.cargo_info.configure(text=_t("Загрузите книгу или статью и печатайте её\nс переводом предложений (UPLINK)."))
+            self.btn_cargo.set_text(_t("ЗАГРУЗИТЬ ТЕКСТ"))
 
 
 # ===========================================================================
@@ -200,12 +197,16 @@ class CargoScreen(tk.Frame):
     """Подготовка своего текста: загрузка, опции обработки, предпросмотр, старт."""
 
     OPTIONS = (
-        ("lower", "Убрать заглавные буквы",
-         "«Дом» → «дом». Выключите, чтобы тренировать Shift: тогда регистр учитывается."),
-        ("punct", "Убрать знаки препинания",
-         "Точки, запятые, кавычки, тире и другие знаки удаляются."),
-        ("spaces", "Один пробел между словами",
-         "Лишние пробелы, табуляции и переводы строк схлопываются в один пробел."),
+        ("lower", _t("Убрать заглавные буквы"),
+         _t("«Дом» → «дом». Выключите, чтобы тренировать Shift: тогда регистр учитывается.")),
+        ("punct", _t("Убрать знаки препинания"),
+         _t("Точки, запятые, кавычки, тире и другие знаки удаляются.")),
+        ("spaces", _t("Один пробел между словами"),
+         _t("Лишние пробелы, табуляции и переводы строк схлопываются в один пробел.")),
+        ("yo", _t("Ё → Е"),
+         _t("«Ёлка» → «елка», если привычнее печатать без буквы ё. По умолчанию выкл.")),
+        ("translit", _t("Без умлаутов: ä ö ü ß → ae oe ue ss"),
+         _t("Для немецких и других книг, если на клавиатуре нет немецкой раскладки. По умолчанию выкл.: буквы как в книге, подсказка — раскладка QWERTZ.")),
     )
 
     def __init__(self, master, app: "Cockpit") -> None:
@@ -215,42 +216,41 @@ class CargoScreen(tk.Frame):
         self._readonly = False
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(2)))
-        _label(top, "ПОДГОТОВКА ТЕКСТА — ЗАГРУЗКА ГРУЗА", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        _label(self, "1) Откройте файл или вставьте текст  →  2) выберите обработку справа  →  "
-                     "3) проверьте предпросмотр  →  4) «Сохранить на борт» или «Старт». "
-                     "Оригинал текста сохраняется: по нему работает переводчик UPLINK.",
+        _label(top, _t("ПОДГОТОВКА ТЕКСТА — ЗАГРУЗКА ГРУЗА"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        _label(self, _t("1) Откройте файл или вставьте текст  →  2) выберите обработку справа  →  3) проверьте предпросмотр  →  4) «Сохранить на борт» или «Старт». Оригинал текста сохраняется: по нему работает переводчик UPLINK."),
                fg=MUTED, size=9, bg=BG, wraplength=px(1150), justify="left").pack(anchor="w", padx=px(16))
 
         tools = tk.Frame(self, bg=BG)
         tools.pack(fill=tk.X, padx=px(12), pady=px(8))
         for text, cmd, col in (
-            ("ОТКРЫТЬ ФАЙЛ…", self._open_file, CYAN),
-            ("ВСТАВИТЬ ИЗ БУФЕРА", self._paste, CYAN),
-            ("ОЧИСТИТЬ", self._clear, MUTED),
+            (_t("ОТКРЫТЬ ФАЙЛ…"), self._open_file, CYAN),
+            (_t("ОТКРЫТЬ PDF…"), self._open_pdf, CYAN),
+            (_t("ВСТАВИТЬ ИЗ БУФЕРА"), self._paste, CYAN),
+            (_t("ОЧИСТИТЬ"), self._clear, MUTED),
         ):
             HudButton(tools, text, cmd, color=col, height=32, font_size=9).pack(side=tk.LEFT, padx=(0, px(6)))
-        self.btn_ro = HudButton(tools, "ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ", self._toggle_readonly, color=MUTED,
+        self.btn_ro = HudButton(tools, _t("ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ"), self._toggle_readonly, color=MUTED,
                                 height=32, font_size=9, width=210)
         self.btn_ro.pack(side=tk.LEFT, padx=(px(10), 0))
-        HudButton(tools, "ЭКСПОРТ .TXT", self._export, color=MUTED, height=32,
+        HudButton(tools, _t("ЭКСПОРТ .TXT"), self._export, color=MUTED, height=32,
                   font_size=9).pack(side=tk.RIGHT)
 
         bottom = tk.Frame(self, bg=BG)
         bottom.pack(fill=tk.X, side=tk.BOTTOM, padx=px(12), pady=px(8))
-        self.btn_start = HudButton(bottom, "▶ НА БОРТ И СТАРТ С НАЧАЛА", self._start_new,
+        self.btn_start = HudButton(bottom, _t("▶ НА БОРТ И СТАРТ С НАЧАЛА"), self._start_new,
                                    color=AMBER, height=40, font_size=11)
         self.btn_start.pack(side=tk.RIGHT)
-        self.btn_resume = HudButton(bottom, "▶ ПРОДОЛЖИТЬ С МЕСТА", self.app.resume_cargo,
+        self.btn_resume = HudButton(bottom, _t("▶ ПРОДОЛЖИТЬ С МЕСТА"), self.app.resume_cargo,
                                     color=GREEN, height=40, font_size=11, width=250)
         self.btn_resume.pack(side=tk.RIGHT, padx=px(8))
-        HudButton(bottom, "СОХРАНИТЬ НА БОРТ", lambda: self._start_new(switch=False), color=CYAN,
+        HudButton(bottom, _t("СОХРАНИТЬ НА БОРТ"), lambda: self._start_new(switch=False), color=CYAN,
                   height=40, font_size=11).pack(side=tk.RIGHT)
         self.status = _label(bottom, "", fg=MUTED, size=9, bg=BG, justify="left", anchor="w")
         self.status.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         middle = tk.Frame(self, bg=BG)
         middle.pack(fill=tk.BOTH, expand=True, padx=px(12))
-        side = HudPanel(middle, "ОБРАБОТКА ТЕКСТА", accent=AMBER)
+        side = HudPanel(middle, _t("ОБРАБОТКА ТЕКСТА"), accent=AMBER)
         side.pack(side=tk.RIGHT, fill=tk.Y, padx=(px(8), 0))
         side.configure(width=px(360))
         sb_body = side.body
@@ -258,17 +258,17 @@ class CargoScreen(tk.Frame):
         for key, title, desc in self.OPTIONS:
             row = tk.Frame(sb_body, bg=PANEL)
             row.pack(fill=tk.X, pady=(0, px(8)))
-            b = HudButton(row, "● ВКЛ", lambda k=key: self._toggle_opt(k), width=86, height=30, font_size=9)
+            b = HudButton(row, _t("● ВКЛ"), lambda k=key: self._toggle_opt(k), width=86, height=30, font_size=9)
             b.pack(side=tk.LEFT, anchor="n")
             txt = tk.Frame(row, bg=PANEL)
             txt.pack(side=tk.LEFT, fill=tk.X, padx=(px(8), 0))
             _label(txt, title, size=10, bold=True, anchor="w").pack(anchor="w")
             _label(txt, desc, fg=MUTED, size=8, wraplength=px(240), justify="left").pack(anchor="w")
             self.opt_btns[key] = b
-        HudButton(sb_body, "✦ ПРИМЕНИТЬ К ТЕКСТУ В ПОЛЕ", self._apply_to_field, color=AMBER,
+        HudButton(sb_body, _t("✦ ПРИМЕНИТЬ К ТЕКСТУ В ПОЛЕ"), self._apply_to_field, color=AMBER,
                   height=32, font_size=9).pack(fill=tk.X, pady=(0, px(10)))
         tk.Frame(sb_body, bg=LINE, height=1).pack(fill=tk.X)
-        _label(sb_body, "ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА", fg=blend(CYAN, TEXT, 0.3), size=9,
+        _label(sb_body, _t("ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА"), fg=blend(CYAN, TEXT, 0.3), size=9,
                bold=True).pack(anchor="w", pady=(px(8), px(2)))
         self.preview_info = _label(sb_body, "", fg=AMBER, size=9, bold=True, justify="left", anchor="w")
         self.preview_info.pack(anchor="w")
@@ -276,7 +276,7 @@ class CargoScreen(tk.Frame):
                               justify="left", anchor="nw", bg=BG2, padx=px(8), pady=px(6))
         self.preview.pack(fill=tk.BOTH, expand=True, pady=(px(4), 0))
 
-        panel = HudPanel(middle, "ТЕКСТ")
+        panel = HudPanel(middle, _t("ТЕКСТ"))
         panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         style = ttk.Style(self)
         try:
@@ -302,6 +302,8 @@ class CargoScreen(tk.Frame):
         opts = self.app.store.settings.setdefault("cargo_opts", {})
         for k in ("lower", "punct", "spaces"):
             opts.setdefault(k, True)
+        opts.setdefault("translit", False)
+        opts.setdefault("yo", False)
         return opts
 
     def _toggle_opt(self, key: str) -> None:
@@ -315,18 +317,18 @@ class CargoScreen(tk.Frame):
         opts = self._opts()
         for key, b in self.opt_btns.items():
             on = opts[key]
-            b.set_text("● ВКЛ" if on else "○ ВЫКЛ")
+            b.set_text(_t("● ВКЛ") if on else _t("○ ВЫКЛ"))
             b.set_color(GREEN if on else MUTED)
             b.set_active(on)
 
     def _process(self, text: str) -> str:
         o = self._opts()
-        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"])
+        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"], translit=o["translit"], yo=o["yo"])
 
     def _toggle_readonly(self) -> None:
         self._readonly = not self._readonly
         self.text.configure(state=tk.DISABLED if self._readonly else tk.NORMAL)
-        self.btn_ro.set_text("ЗАЩИТА ОТ ПРАВКИ: ВКЛ" if self._readonly else "ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ")
+        self.btn_ro.set_text(_t("ЗАЩИТА ОТ ПРАВКИ: ВКЛ") if self._readonly else _t("ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ"))
         self.btn_ro.set_color(AMBER if self._readonly else MUTED)
         self.btn_ro.set_active(self._readonly)
 
@@ -364,30 +366,35 @@ class CargoScreen(tk.Frame):
         saved = load_session()
         same = bool(saved) and saved.text == adapted
         self.btn_resume.set_enabled(same)
-        self.btn_resume.set_text(f"▶ ПРОДОЛЖИТЬ С {saved.index / len(saved.text) * 100:.0f}%"
-                                 if same else "▶ ПРОДОЛЖИТЬ С МЕСТА")
+        self.btn_resume.set_text(_t("▶ ПРОДОЛЖИТЬ С {0:.0f}%").format(saved.index / len(saved.text) * 100)
+                                 if same else _t("▶ ПРОДОЛЖИТЬ С МЕСТА"))
         if saved and not same:
-            self.status.configure(text="На борту другой незаконченный текст.")
+            self.status.configure(text=_t("На борту другой незаконченный текст."))
         elif same:
-            self.status.configure(text=f"Этот текст уже на борту: пройдено {fmt_int(saved.index)} из "
-                                       f"{fmt_int(len(saved.text))}.")
+            self.status.configure(text=_t("Этот текст уже на борту: пройдено {0} из {1}.").format(fmt_int(saved.index), fmt_int(len(saved.text))))
         else:
             self.status.configure(text="")
         if not adapted:
-            self.preview_info.configure(text="Текст пуст")
-            self.preview.configure(text="Откройте файл или вставьте текст.")
+            self.preview_info.configure(text=_t("Текст пуст"))
+            self.preview.configure(text=_t("Откройте файл или вставьте текст."))
             return
         runs = [r for r in self.app.store.stats["runs"][-20:] if r.get("cpm")]
         avg = sum(r["cpm"] for r in runs) / len(runs) if runs else 150
         eta = fmt_time(len(adapted) / max(avg, 30) * 60)
-        lang = "русский" if missions.detect_lang(adapted) == "ru" else "английский"
-        self.preview_info.configure(text=f"{fmt_int(len(adapted))} знаков · {lang} · ≈ {eta}")
+        from stamina import langdetect
+        lang = langdetect.name(langdetect.detect(self._original or adapted))
+        self.preview_info.configure(text=_t("{0} знаков · {1} · ≈ {2}").format(fmt_int(len(adapted)), lang, eta))
         self.preview.configure(text=adapted[:260] + ("…" if len(adapted) > 260 else ""))
 
     def _open_file(self) -> None:
-        path = filedialog.askopenfilename(parent=self, title="Открыть текст",
-                                          filetypes=[("Текстовые файлы", "*.txt"), ("Все файлы", "*.*")])
+        path = filedialog.askopenfilename(parent=self, title=_t("Открыть текст"),
+                                          filetypes=[(_t("Текст или PDF"), "*.txt *.pdf"),
+                                                     (_t("Текстовые файлы"), "*.txt"), ("PDF", "*.pdf"),
+                                                     (_t("Все файлы"), "*.*")])
         if not path:
+            return
+        if path.lower().endswith(".pdf"):
+            self._open_pdf(path)
             return
         content = None
         for enc in ("utf-8-sig", "cp1251"):
@@ -398,13 +405,21 @@ class CargoScreen(tk.Frame):
             except UnicodeDecodeError:
                 continue
             except OSError as exc:
-                messagebox.showerror("Ошибка", f"Не удалось открыть файл:\n{exc}", parent=self)
+                messagebox.showerror(_t("Ошибка"), _t("Не удалось открыть файл:\n{0}").format(exc), parent=self)
                 return
         if content is None:
-            messagebox.showerror("Ошибка", "Не удалось определить кодировку файла.", parent=self)
+            messagebox.showerror(_t("Ошибка"), _t("Не удалось определить кодировку файла."), parent=self)
             return
         self._original = content
         self._set(content)
+
+    def _open_pdf(self, path: str | None = None) -> None:
+        """PDF → предпросмотр → текст как из файла (оригинал сохранится в библиотеку при «Сохранить на борт»)."""
+        from stamina.pdf_dialog import import_pdf
+        res = import_pdf(self, path)
+        if res:
+            self._original = res[0]
+            self._set(res[0])
 
     def _paste(self) -> None:
         try:
@@ -415,7 +430,7 @@ class CargoScreen(tk.Frame):
         self._set(content)
 
     def _clear(self) -> None:
-        if self._get().strip() and not messagebox.askyesno("Очистить", "Очистить поле текста?", parent=self):
+        if self._get().strip() and not messagebox.askyesno(_t("Очистить"), _t("Очистить поле текста?"), parent=self):
             return
         self._original = None
         self._set("")
@@ -431,29 +446,27 @@ class CargoScreen(tk.Frame):
         if not adapted:
             return
         path = filedialog.asksaveasfilename(parent=self, defaultextension=".txt",
-                                            title="Сохранить подготовленный текст",
-                                            filetypes=[("Текстовые файлы", "*.txt")])
+                                            title=_t("Сохранить подготовленный текст"),
+                                            filetypes=[(_t("Текстовые файлы"), "*.txt")])
         if path:
             try:
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(adapted)
             except OSError as exc:
-                messagebox.showerror("Ошибка", f"Не удалось сохранить:\n{exc}", parent=self)
+                messagebox.showerror(_t("Ошибка"), _t("Не удалось сохранить:\n{0}").format(exc), parent=self)
 
     def _start_new(self, switch: bool = True) -> None:
         current = self._get()
         adapted = self._process(current)
         if not adapted.strip():
-            messagebox.showwarning("Пустой текст", "Введите текст или откройте файл.", parent=self)
+            messagebox.showwarning(_t("Пустой текст"), _t("Введите текст или откройте файл."), parent=self)
             return
         saved = load_session()
         if saved and saved.index > 0:
             pct = saved.index / len(saved.text) * 100
-            msg = (f"Этот текст уже пройден на {pct:.0f}%.\nНачать его с самого начала? "
-                   "(Чтобы продолжить — кнопка «Продолжить с места».)") if saved.text == adapted else (
-                   f"На борту незаконченный текст (пройдено {pct:.0f}%).\n"
-                   "Заменить его новым? Прогресс старого текста будет потерян.")
-            if not messagebox.askyesno("Заменить текст?", msg, parent=self):
+            msg = (_t("Этот текст уже пройден на {0:.0f}%.\nНачать его с самого начала? (Чтобы продолжить — кнопка «Продолжить с места».)").format(pct)) if saved.text == adapted else (
+                   _t("На борту незаконченный текст (пройдено {0:.0f}%).\nЗаменить его новым? Прогресс старого текста будет потерян.").format(pct))
+            if not messagebox.askyesno(_t("Заменить текст?"), msg, parent=self):
                 return
         original = current
         if self._original and self._process(self._original) == adapted:
@@ -461,8 +474,7 @@ class CargoScreen(tk.Frame):
         self.app.start_cargo(adapted, original, switch=switch)
         if not switch:
             self._update_preview()
-            self.status.configure(text="Текст сохранён на борт. Таймер стартует с первой клавиши на "
-                                       "Мостике (Ctrl+1).", fg=GREEN)
+            self.status.configure(text=_t("Текст сохранён на борт. Таймер стартует с первой клавиши на Мостике (Ctrl+1)."), fg=GREEN)
             self.after(5000, lambda: self.status.configure(fg=MUTED))
 
 
@@ -477,8 +489,8 @@ class LogScreen(tk.Frame):
         self.heat_lang = "en"
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
-        _label(top, "БОРТЖУРНАЛ — СТАТИСТИКА ПОЛЁТОВ", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        HudButton(top, "★ ДОСКА ПОЧЁТА", lambda: app.show("honor"), color=AMBER, height=34).pack(side=tk.RIGHT)
+        _label(top, _t("БОРТЖУРНАЛ — СТАТИСТИКА ПОЛЁТОВ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        HudButton(top, _t("★ ДОСКА ПОЧЁТА"), lambda: app.show("honor"), color=AMBER, height=34).pack(side=tk.RIGHT)
         self.summary = tk.Frame(self, bg=BG)
         self.summary.pack(fill=tk.X, padx=px(10))
         self.cells = []
@@ -494,14 +506,14 @@ class LogScreen(tk.Frame):
             sub.pack(anchor="w")
             self.cells.append((cap, val, sub))
 
-        mid = HudPanel(self, "ДИНАМИКА — ПОСЛЕДНИЕ 30 ПОЛЁТОВ")
+        mid = HudPanel(self, _t("ДИНАМИКА — ПОСЛЕДНИЕ 30 ПОЛЁТОВ"))
         mid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(4))
         self.chart = LineChart(mid.body)
         self.chart.pack(fill=tk.BOTH, expand=True)
 
         bottom = tk.Frame(self, bg=BG)
         bottom.pack(fill=tk.BOTH, expand=True, padx=px(10), pady=(px(4), px(10)))
-        heat = HudPanel(bottom, "ТЕПЛОВАЯ КАРТА ОШИБОК (ЗА ВСЁ ВРЕМЯ)", accent=AMBER)
+        heat = HudPanel(bottom, _t("ТЕПЛОВАЯ КАРТА ОШИБОК (ЗА ВСЁ ВРЕМЯ)"), accent=AMBER)
         heat.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(4))
         self.kb = HudKeyboard(heat.body)
         self.kb.pack(fill=tk.BOTH, expand=True)
@@ -511,16 +523,16 @@ class LogScreen(tk.Frame):
         self.b_en.pack(side=tk.LEFT)
         self.b_ru = HudButton(row, "RU", lambda: self._heat_lang("ru"), height=26, font_size=9)
         self.b_ru.pack(side=tk.LEFT, padx=px(6))
-        _label(row, "цифра на клавише — % ошибок; зелёный — хорошо, красный — нужен ремонт",
+        _label(row, _t("цифра на клавише — % ошибок; зелёный — хорошо, красный — нужен ремонт"),
                fg=MUTED, size=8).pack(side=tk.LEFT, padx=px(8))
 
-        side = HudPanel(bottom, "СЛАБЫЕ КЛАВИШИ")
+        side = HudPanel(bottom, _t("СЛАБЫЕ КЛАВИШИ"))
         side.pack(side=tk.LEFT, fill=tk.BOTH, padx=px(4))
         self.weak_label = _label(side.body, "", fg=TEXT, size=11, mono=True, justify="left", anchor="nw")
         self.weak_label.pack(fill=tk.BOTH, expand=True)
-        HudButton(side.body, "⚙ РЕМОНТ СЛАБЫХ КЛАВИШ", lambda: self.app.start_repair(self.heat_lang),
+        HudButton(side.body, _t("⚙ РЕМОНТ СЛАБЫХ КЛАВИШ"), lambda: self.app.start_repair(self.heat_lang),
                   color=AMBER).pack(fill=tk.X, pady=(px(6), 0))
-        HudButton(side.body, "СБРОСИТЬ СТАТИСТИКУ", self._reset, color=RED, height=28,
+        HudButton(side.body, _t("СБРОСИТЬ СТАТИСТИКУ"), self._reset, color=RED, height=28,
                   font_size=8).pack(fill=tk.X, pady=(px(6), 0))
 
     def _heat_lang(self, lang: str) -> None:
@@ -528,9 +540,8 @@ class LogScreen(tk.Frame):
         self.refresh()
 
     def _reset(self) -> None:
-        if messagebox.askyesno("Сброс статистики",
-                               "Удалить всю статистику: историю полётов, звёзды миссий, "
-                               "звание и тепловую карту?\nЭто нельзя отменить.", parent=self):
+        if messagebox.askyesno(_t("Сброс статистики"),
+                               _t("Удалить всю статистику: историю полётов, звёзды миссий, звание и тепловую карту?\nЭто нельзя отменить."), parent=self):
             self.app.store.reset_stats()
             self.app.update_rank()
             self.refresh()
@@ -547,12 +558,12 @@ class LogScreen(tk.Frame):
         done = sum(1 for v in st["missions"].values() if v.get("stars"))
         stars = sum(v.get("stars", 0) for v in st["missions"].values())
         data = [
-            ("ВРЕМЯ В ПОЛЁТЕ", fmt_time(st["total_time"]), f"{len(runs)} полётов", CYAN),
-            ("НАБРАНО ЗНАКОВ", fmt_int(st["total_chars"]), "правильно набранных", CYAN),
-            ("ЛУЧШАЯ СКОРОСТЬ", f"{best:.0f}", f"средняя (10 последних): {avg_cpm:.0f}", GREEN),
-            ("ТОЧНОСТЬ", f"{avg_acc:.1f}%", "средняя за 10 полётов", AMBER),
-            ("ЗВАНИЕ", rank.upper(), f"{st['xp']} XP" + (f" · до след. {hi - st['xp']}" if hi else "")
-             + f" · миссий {done}/20 · ★{stars}", AMBER),
+            (_t("ВРЕМЯ В ПОЛЁТЕ"), fmt_time(st["total_time"]), _t("{0} полётов").format(len(runs)), CYAN),
+            (_t("НАБРАНО ЗНАКОВ"), fmt_int(st["total_chars"]), _t("правильно набранных"), CYAN),
+            (_t("ЛУЧШАЯ СКОРОСТЬ"), f"{best:.0f}", _t("средняя (10 последних): {0:.0f}").format(avg_cpm), GREEN),
+            (_t("ТОЧНОСТЬ"), f"{avg_acc:.1f}%", _t("средняя за 10 полётов"), AMBER),
+            (_t("ЗВАНИЕ"), rank.upper(), f"{st['xp']} XP" + (_t(" · до след. {0}").format(hi - st['xp']) if hi else "")
+             + _t(" · миссий {0}/20 · ★{1}").format(done, stars), AMBER),
         ]
         for (cap, val, sub), (c, v, s, col) in zip(self.cells, data):
             cap.configure(text=c)
@@ -568,10 +579,10 @@ class LogScreen(tk.Frame):
             lines = []
             for ch, r in weak:
                 hits, misses = st["keys"].get(ch, [0, 0])
-                lines.append(f"«{ch}»  {r * 100:4.1f}%  ({misses} из {hits + misses})")
+                lines.append(_t("«{0}»  {1:4.1f}%  ({2} из {3})").format(ch, r * 100, misses, hits + misses))
             self.weak_label.configure(text="\n".join(lines))
         else:
-            self.weak_label.configure(text="Данных пока мало.\nПечатайте —\nкомпьютер считает\nошибки по каждой\nклавише.")
+            self.weak_label.configure(text=_t("Данных пока мало.\nПечатайте —\nкомпьютер считает\nошибки по каждой\nклавише."))
 
 
 # ===========================================================================
@@ -584,33 +595,42 @@ class SettingsScreen(tk.Frame):
         self.app = app
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
-        _label(top, "НАСТРОЙКИ БОРТОВЫХ СИСТЕМ", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        panel = HudPanel(self, "СИСТЕМЫ")
+        _label(top, _t("НАСТРОЙКИ БОРТОВЫХ СИСТЕМ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        panel = HudPanel(self, _t("СИСТЕМЫ"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
         self.body = panel.body
         self.toggles: dict[str, HudButton] = {}
         self._row_i = 0
-        self._toggle_row("sound", "Звук клавиш", "Щелчок печатной машинки на верную клавишу, «бззт» — на ошибку, "
-                         "колокольчик — в конце миссии. Горячая клавиша F9.")
-        vol = self._row("Громкость", "Звуки синтезированы программой, лежат в stamina/sounds.")
+        from stamina import i18n
+        lr = self._row(_t("Язык интерфейса"), _t("Русский, українська, English, Deutsch. Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится)."))
+        self.lang_btns = {}
+        for code, name in i18n.LANGS.items():
+            b = HudButton(lr, name, lambda c=code: self._set_lang(c), height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(3))
+            self.lang_btns[code] = b
+        self.btn_restart = HudButton(lr, _t("⟳ ПЕРЕЗАПУСТИТЬ"), self._restart, color=AMBER, height=30, font_size=9)
+        self._toggle_row("sound", _t("Звук клавиш"), _t("Щелчок печатной машинки на верную клавишу, «бззт» — на ошибку, колокольчик — в конце миссии. Горячая клавиша F9."))
+        vol = self._row(_t("Громкость"), _t("Звуки синтезированы программой, лежат в stamina/sounds."))
         self.vol_btns = {}
         for lvl in (1, 2, 3, 4):
             b = HudButton(vol, "▮" * lvl, lambda l=lvl: self._set_volume(l), width=64, height=30)
             b.pack(side=tk.LEFT, padx=px(3))
             self.vol_btns[lvl] = b
-        HudButton(vol, "ПРОВЕРИТЬ", self._test_sound, color=AMBER, height=30,
+        HudButton(vol, _t("ПРОВЕРИТЬ"), self._test_sound, color=AMBER, height=30,
                   font_size=9).pack(side=tk.LEFT, padx=px(10))
-        self._toggle_row("translator", "Переводчик UPLINK",
-                         "Перевод текущего предложения своего текста через интернет "
-                         "(Google / MyMemory). Кэш: папка cache рядом с программой.")
-        self._toggle_row("stars", "Звёздное поле", "Звёзды в иллюминаторе летят быстрее, когда вы печатаете "
-                         "быстрее. Выключите, если ноутбук греется.")
-        ls = self._row("Живой космос", "Во всех разделах за стеклянными панелями летят звёзды, кометы, "
-                       "планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, "
-                       "«Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows "
-                       "картинка неподвижна.")
+        self._toggle_row("translator", _t("Переводчик UPLINK"),
+                         _t("Перевод текущего предложения своего текста через интернет (Google / MyMemory). Кэш: папка cache рядом с программой."))
+        up = self._row(_t("UPLINK: перевод на"), _t("Язык книги определяется сам (немецкий, английский, русский, украинский…). Перевод — на выбранный язык; АВТО — язык интерфейса. Русский или украинский текст переводится на английский. Нужен интернет (Google / MyMemory); без сети — только уже переведённые фразы из кэша."))
+        self.up_btns = {}
+        for code, name in (("", _t("АВТО")), ("ru", "RU"), ("uk", "UK"), ("en", "EN"), ("de", "DE")):
+            b = HudButton(up, name, lambda c=code: self._set_uplink(c), height=30, font_size=9,
+                          width=None if code == "" else 52)
+            b.pack(side=tk.LEFT, padx=px(3))
+            self.up_btns[code] = b
+        self._toggle_row("stars", _t("Звёздное поле"), _t("Звёзды в иллюминаторе летят быстрее, когда вы печатаете быстрее. Выключите, если ноутбук греется."))
+        ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
-        for key, name in (("off", "ВЫКЛ"), ("light", "ЛЁГКИЙ"), ("full", "ПОЛНЫЙ")):
+        for key, name in (("off", _t("ВЫКЛ")), ("light", _t("ЛЁГКИЙ")), ("full", _t("ПОЛНЫЙ"))):
             b = HudButton(ls, name, lambda k=key: self._set_living(k), width=96, height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.ls_btns[key] = b
@@ -619,18 +639,17 @@ class SettingsScreen(tk.Frame):
             from stamina.deps import pillow_hint
             tk.Label(ls, text=pillow_hint(), fg=AMBER, bg=PANEL, font=theme.font(8, True),
                      wraplength=px(420), justify="left").pack(side=tk.LEFT, padx=px(8))
-        self._toggle_row("keyboard", "Экранная клавиатура", "Подсветка следующей клавиши и пальца.")
-        self._toggle_row("zones", "Цветные зоны пальцев", "Клавиши окрашены по пальцам, как в прежнем Stamina.")
-        fs = self._row("Размер шрифта строки", "Размер букв в иллюминаторе.")
+        self._toggle_row("keyboard", _t("Экранная клавиатура"), _t("Подсветка следующей клавиши и пальца."))
+        self._toggle_row("zones", _t("Цветные зоны пальцев"), _t("Клавиши окрашены по пальцам, как в прежнем Stamina."))
+        fs = self._row(_t("Размер шрифта строки"), _t("Размер букв в иллюминаторе."))
         self.font_btns = {}
-        for key, name in (("S", "МЕЛКИЙ"), ("M", "СРЕДНИЙ"), ("L", "КРУПНЫЙ")):
+        for key, name in (("S", _t("МЕЛКИЙ")), ("M", _t("СРЕДНИЙ")), ("L", _t("КРУПНЫЙ"))):
             b = HudButton(fs, name, lambda k=key: self._set_font(k), width=100, height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.font_btns[key] = b
-        data = self._row("Данные", f"Статистика и прогресс: {DATA_DIR}")
-        HudButton(data, "ОТКРЫТЬ ПАПКУ", self._open_data, height=30, font_size=9).pack(side=tk.LEFT)
-        _label(self.body, "Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  "
-                          "Ctrl+1…5 — разделы  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт",
+        data = self._row(_t("Данные"), _t("Статистика и прогресс: {0}").format(DATA_DIR))
+        HudButton(data, _t("ОТКРЫТЬ ПАПКУ"), self._open_data, height=30, font_size=9).pack(side=tk.LEFT)
+        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…5 — разделы  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.refresh()
 
@@ -648,7 +667,7 @@ class SettingsScreen(tk.Frame):
 
     def _toggle_row(self, key: str, title: str, desc: str) -> None:
         right = self._row(title, desc)
-        b = HudButton(right, "ВКЛ", lambda: self._toggle(key), width=110, height=30)
+        b = HudButton(right, _t("ВКЛ"), lambda: self._toggle(key), width=110, height=30)
         b.pack(side=tk.LEFT)
         self.toggles[key] = b
 
@@ -671,6 +690,26 @@ class SettingsScreen(tk.Frame):
         for k, b in self.ls_btns.items():
             b.set_active(k == key)
 
+    def _set_uplink(self, code: str) -> None:
+        self.app.store.settings["uplink_target"] = code
+        self.app.store.save_settings()
+        self.refresh()
+
+    def _set_lang(self, code: str) -> None:
+        from stamina import i18n
+        try:
+            i18n.save_language(code)
+        except OSError as exc:
+            messagebox.showerror(_t("Язык интерфейса"), str(exc), parent=self)
+            return
+        self.refresh()
+
+    def _restart(self) -> None:
+        from stamina.app import relaunch
+        self.app._save_all()
+        if relaunch():
+            self.app.destroy()
+
     def _set_font(self, key: str) -> None:
         self.app.store.settings["font"] = key
         self.app.apply_settings()
@@ -679,7 +718,7 @@ class SettingsScreen(tk.Frame):
     def _test_sound(self) -> None:
         snd = self.app.sound
         if not snd.available:
-            messagebox.showinfo("Звук", "Звук доступен только в Windows.", parent=self)
+            messagebox.showinfo(_t("Звук"), _t("Звук недоступен: в Windows он встроен, в Linux нужен aplay или paplay (пакет alsa-utils)."), parent=self)
             return
         snd.enabled = True
         snd.click()
@@ -696,13 +735,13 @@ class SettingsScreen(tk.Frame):
                 import subprocess
                 subprocess.Popen(["xdg-open", str(DATA_DIR)])
         except (AttributeError, OSError):
-            messagebox.showinfo("Данные", str(DATA_DIR), parent=self)
+            messagebox.showinfo(_t("Данные"), str(DATA_DIR), parent=self)
 
     def refresh(self) -> None:
         st = self.app.store.settings
         for key, b in self.toggles.items():
             on = bool(st.get(key))
-            b.set_text("● ВКЛ" if on else "○ ВЫКЛ")
+            b.set_text(_t("● ВКЛ") if on else _t("○ ВЫКЛ"))
             b.set_color(GREEN if on else MUTED)
             b.set_active(on)
         for lvl, b in self.vol_btns.items():
@@ -711,6 +750,16 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("living_space", "light"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
+        for k, b in getattr(self, "up_btns", {}).items():
+            b.set_active(k == (st.get("uplink_target") or ""))
+        from stamina import i18n
+        chosen = i18n.saved_language() or i18n.language()
+        for k, b in getattr(self, "lang_btns", {}).items():
+            b.set_active(k == chosen)
+        if chosen != i18n.language():
+            self.btn_restart.pack(side=tk.LEFT, padx=(px(10), 0))
+        else:
+            self.btn_restart.pack_forget()
 
 
 # ===========================================================================
@@ -723,7 +772,7 @@ class HelpScreen(tk.Frame):
     def __init__(self, master, app: "Cockpit") -> None:
         super().__init__(master, bg=BG)
         self.app = app
-        panel = HudPanel(self, "СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ STAR TYPING  (F1)")
+        panel = HudPanel(self, _t("СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ STAR TYPING  (F1)"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(10))
         sb = ttk.Scrollbar(panel.body, orient=tk.VERTICAL, style="Hud.Vertical.TScrollbar")
         sb.pack(side=tk.RIGHT, fill=tk.Y)
@@ -758,9 +807,9 @@ class HelpScreen(tk.Frame):
     def _load(self) -> None:
         from stamina.storage import PROJECT_DIR
         try:
-            lines = (PROJECT_DIR / "ИНСТРУКЦИЯ.md").read_text(encoding="utf-8").splitlines()
+            lines = (PROJECT_DIR / _t("ИНСТРУКЦИЯ.md")).read_text(encoding="utf-8").splitlines()
         except OSError:
-            lines = ["# Инструкция не найдена", "Файл ИНСТРУКЦИЯ.md должен лежать рядом с main.py."]
+            lines = [_t("# Инструкция не найдена"), _t("Файл ИНСТРУКЦИЯ.md должен лежать рядом с main.py.")]
         t = self.text
         buf: list[str] = []
         buf_tag = [""]

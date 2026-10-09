@@ -1,6 +1,8 @@
 # Star Typing — Python 3.10+, стандартная библиотека (tkinter, winsound, urllib) + Pillow.
 # Pillow — фон «Живой космос» и собственные аватары пилотов (без него программа работает, фон выключен):
 Pillow>=10.0
+# pypdf — импорт PDF в библиотеку текстов (чистый Python):
+pypdf>=4.0
 # Для проверки произношения во вкладке «АНГЛИЙСКИЙ» (необязательно):
 #   pip install vosk sounddevice
 #   python scripts/download_vosk_model.py

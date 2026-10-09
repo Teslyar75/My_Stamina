@@ -6,6 +6,8 @@ scripts/download_vosk_model.py, системные пакеты Linux — чер
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import importlib
 import importlib.util
 import os
@@ -91,19 +93,21 @@ def check(system: str | None = None) -> list[dict]:
     pm = package_manager() if system == "linux" else None
     items = [
         {"key": "python", "name": f"Python {sys.version_info.major}.{sys.version_info.minor}", "ok": python_ok(),
-         "need": "нужно", "what": "сама программа", "pip": [], "sys": [],
+         "need": t("нужно"), "what": t("сама программа"), "pip": [], "sys": [],
          "how": "python.org → Python 3.10+" if system == "windows" else "install.sh"},
-        {"key": "pillow", "name": "Pillow", "ok": has("PIL"), "need": "рекомендуется",
-         "what": "фон «Живой космос», аватары JPG", "pip": ["Pillow"], "sys": []},
-        {"key": "tts", "name": "Озвучка: SAPI" if system == "windows" else "Озвучка: espeak-ng",
-         "ok": _tts_ok(system), "need": "рекомендуется", "what": "произнести слово в АНГЛИЙСКОМ",
+        {"key": "pillow", "name": "Pillow", "ok": has("PIL"), "need": t("рекомендуется"),
+         "what": t("фон «Живой космос», аватары JPG"), "pip": ["Pillow"], "sys": []},
+        {"key": "pypdf", "name": "pypdf", "ok": has("pypdf"), "need": t("рекомендуется"),
+         "what": t("импорт PDF в библиотеку"), "pip": ["pypdf"], "sys": []},
+        {"key": "tts", "name": t("Озвучка: SAPI") if system == "windows" else t("Озвучка: espeak-ng"),
+         "ok": _tts_ok(system), "need": t("рекомендуется"), "what": t("произнести слово в АНГЛИЙСКОМ"),
          "pip": [], "sys": [] if system == "windows" else ["tts"]},
         {"key": "vosk", "name": "vosk + sounddevice", "ok": has("vosk") and has("sounddevice") and _portaudio_ok(),
-         "need": "необязательно", "what": "проверка произношения (микрофон)",
+         "need": t("необязательно"), "what": t("проверка произношения (микрофон)"),
          "pip": [p for p, m in (("vosk", "vosk"), ("sounddevice", "sounddevice")) if not has(m)],
          "sys": [] if system == "windows" or _portaudio_ok() else ["portaudio"]},
-        {"key": "model", "name": "Модель речи vosk", "ok": paths.vosk_model_dir() is not None, "need": "необязательно",
-         "what": "проверка произношения, ≈ 40 МБ", "pip": [], "sys": []},
+        {"key": "model", "name": t("Модель речи vosk"), "ok": paths.vosk_model_dir() is not None, "need": t("необязательно"),
+         "what": t("проверка произношения, ≈ 40 МБ"), "pip": [], "sys": []},
     ]
     for it in items:
         if "how" not in it:
@@ -116,13 +120,13 @@ def how(it: dict, system: str, pm: str | None) -> str:
     if it["pip"]:
         parts.append("pip install " + " ".join(it["pip"]))
     if it["sys"]:
-        parts.append(system_command(it["sys"], pm) or "пакеты: " + ", ".join(it["sys"]))
+        parts.append(system_command(it["sys"], pm) or t("пакеты: ") + ", ".join(it["sys"]))
     if it["key"] == "model":
         parts.append("scripts/download_vosk_model.py")
     if it["key"] == "tts" and system == "windows":
-        parts.append("Параметры → Время и язык → Речь → добавить английский голос")
-    if not parts and (it["key"] == "pillow" or it["key"] == "vosk"):
-        parts.append("pip install " + ("Pillow" if it["key"] == "pillow" else "vosk sounddevice"))
+        parts.append(t("Параметры → Время и язык → Речь → добавить английский голос"))
+    if not parts and it["key"] in ("pillow", "vosk", "pypdf"):
+        parts.append("pip install " + {"pillow": "Pillow", "vosk": "vosk sounddevice", "pypdf": "pypdf"}[it["key"]])
     return " · ".join(parts) or "—"
 
 
@@ -156,24 +160,24 @@ def install_all(items: list[dict], log=print, system: str | None = None) -> bool
         gui_sudo = shutil.which("pkexec") and (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
         if pk and (root or gui_sudo):
             cmd = ([] if root else ["pkexec"]) + PM_ARGS[pm] + pk
-            log("Системные пакеты: " + " ".join(pk) + ("" if root else " (система спросит пароль)") + "…")
+            log(t("Системные пакеты: ") + " ".join(pk) + ("" if root else t(" (система спросит пароль)")) + "…")
             ok &= _run(cmd, log)
         else:
-            log("Системные пакеты поставьте в терминале:  " + (system_command(comps, pm) or ", ".join(comps)))
+            log(t("Системные пакеты поставьте в терминале:  ") + (system_command(comps, pm) or ", ".join(comps)))
             ok = False
     pips = [p for it in missing(items) for p in it["pip"]]
     if pips:
         log("pip install " + " ".join(pips) + " …")
         res = _run([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", *pips], log)
         if not res:
-            log("pip не смог установить пакеты. Запустите установщик: "
+            log(t("pip не смог установить пакеты. Запустите установщик: ")
                 + ("install.bat" if system == "windows" else "bash install.sh"))
         ok &= res
         importlib.invalidate_caches()
     if any(it["key"] == "model" for it in missing(items)):
-        log("Скачиваю модель речи (≈ 40 МБ)…")
+        log(t("Скачиваю модель речи (≈ 40 МБ)…"))
         ok &= _run([sys.executable, str(PROJECT / "scripts" / "download_vosk_model.py")], log)
-    log("Готово." if ok else "Готово не всё — см. строки выше.")
+    log(t("Готово.") if ok else t("Готово не всё — см. строки выше."))
     return ok
 
 
@@ -187,10 +191,10 @@ def _run(cmd: list[str], log) -> bool:
                 log("  " + line[-160:])
         return p.wait() == 0
     except OSError as exc:
-        log(f"  ошибка запуска: {exc}")
+        log(t("  ошибка запуска: {0}").format(exc))
         return False
 
 
 def pillow_hint() -> str:
     tool = "install.bat" if sys.platform == "win32" else "bash install.sh"
-    return f"Не установлен Pillow — фон «Живой космос» выключен. Установка: {tool} или кнопка «УСТАНОВИТЬ ВСЁ» в приветствии (pip install Pillow)."
+    return t("Не установлен Pillow — фон «Живой космос» выключен. Установка: {0} или кнопка «УСТАНОВИТЬ ВСЁ» в приветствии (pip install Pillow).").format(tool)

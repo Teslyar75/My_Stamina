@@ -1,6 +1,8 @@
 """Вкладка «СКОРОЧТЕНИЕ»: обзор, гипердрайв, тренажёры, библиотека, журнал, настройки."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import threading
 import time
 import tkinter as tk
@@ -19,11 +21,11 @@ from .reader import ReaderPage
 from .store import SpeedStore
 from .ui import HudButton, HudPanel, L, ScrollFrame, Toggle, WpmChart, entry
 
-TABS = [("overview", "ОБЗОР"), ("reader", "ГИПЕРДРАЙВ"), ("exercises", "ТРЕНАЖЁРЫ"),
-        ("library", "БИБЛИОТЕКА"), ("journal", "ЖУРНАЛ"), ("settings", "НАСТРОЙКИ")]
+TABS = [("overview", _t("ОБЗОР")), ("reader", _t("ГИПЕРДРАЙВ")), ("exercises", _t("ТРЕНАЖЁРЫ")),
+        ("library", _t("БИБЛИОТЕКА")), ("journal", _t("ЖУРНАЛ")), ("settings", _t("НАСТРОЙКИ"))]
 
-STATUS_RU = {"full": ("ОРИГИНАЛ", GREEN), "recovered": ("ОРИГИНАЛ ВОССТАНОВЛЕН", CYAN),
-             "missing": ("НЕТ ОРИГИНАЛА", AMBER)}
+STATUS_RU = {"full": (_t("ОРИГИНАЛ"), GREEN), "recovered": (_t("ОРИГИНАЛ ВОССТАНОВЛЕН"), CYAN),
+             "missing": (_t("НЕТ ОРИГИНАЛА"), AMBER)}
 
 
 def _log(text: str) -> None:
@@ -49,7 +51,7 @@ class SpeedReadScreen(tk.Frame):
         self.migration_report: dict | None = None
         self.bar = tk.Frame(self, bg=BG)
         self.bar.pack(fill=tk.X, padx=px(14), pady=(px(8), px(6)))
-        L(self.bar, "СКОРОЧТЕНИЕ", fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(14)))
+        L(self.bar, _t("СКОРОЧТЕНИЕ"), fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(14)))
         self.tab_btns: dict[str, HudButton] = {}
         for key, title in TABS:
             b = HudButton(self.bar, title, lambda k=key: self.show(k), height=30, font_size=9)
@@ -78,7 +80,7 @@ class SpeedReadScreen(tk.Frame):
     def _start_migration(self) -> None:
         if self.lib.index.get("migrated"):
             return
-        self.lbl_info.configure(text="БИБЛИОТЕКА: перенос текста…", fg=AMBER)
+        self.lbl_info.configure(text=_t("БИБЛИОТЕКА: перенос текста…"), fg=AMBER)
         box: dict = {}
 
         def work():
@@ -95,13 +97,13 @@ class SpeedReadScreen(tk.Frame):
                 return
             if "err" in box:
                 _log(box["err"])
-                self.lbl_info.configure(text="БИБЛИОТЕКА: ошибка переноса (см. speedread_error.log)", fg=RED)
+                self.lbl_info.configure(text=_t("БИБЛИОТЕКА: ошибка переноса (см. speedread_error.log)"), fg=RED)
                 return
             self.migration_report = box.get("r")
             r = self.migration_report or {}
-            msg = {"full": "текст перенесён с оригиналом", "recovered": "оригинал найден и привязан",
-                   "missing": "текст перенесён, оригинал не найден"}.get(r.get("original", ""), "готово")
-            self.lbl_info.configure(text=f"БИБЛИОТЕКА: {msg}", fg=GREEN)
+            msg = {"full": _t("текст перенесён с оригиналом"), "recovered": _t("оригинал найден и привязан"),
+                   "missing": _t("текст перенесён, оригинал не найден")}.get(r.get("original", ""), _t("готово"))
+            self.lbl_info.configure(text=_t("БИБЛИОТЕКА: {0}").format(msg), fg=GREEN)
             self.changed()
         self.after(200, poll)
 
@@ -116,7 +118,7 @@ class SpeedReadScreen(tk.Frame):
             if rd.tid is None:
                 tid = self.lib.index.get("active_reading") or (self.lib.ids() or [None])[0]
                 if tid is None:
-                    self.app.set_status("БИБЛИОТЕКА ПУСТА — добавьте текст", AMBER)
+                    self.app.set_status(_t("БИБЛИОТЕКА ПУСТА — добавьте текст"), AMBER)
                     name = "library"
                 else:
                     rd.open(tid)
@@ -184,7 +186,7 @@ class OverviewPage(tk.Frame):
         top = tk.Frame(root, bg=BG)
         top.pack(fill=tk.X)
         top.grid_columnconfigure(1, weight=1)
-        launch = HudPanel(top, "СТАРТ ГИПЕРДРАЙВА", accent=AMBER)
+        launch = HudPanel(top, _t("СТАРТ ГИПЕРДРАЙВА"), accent=AMBER)
         launch.grid(row=0, column=0, sticky="nsew")
         launch.configure(width=px(360), height=px(250))
         launch.grid_propagate(False)
@@ -198,29 +200,29 @@ class OverviewPage(tk.Frame):
         self.lbl_pos.pack(anchor="w")
         row = tk.Frame(b, bg=PANEL)
         row.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
-        self.btn_go = HudButton(row, "▶ ГИПЕРДРАЙВ", lambda: self.ctx.show("reader"), color=GREEN, height=40)
+        self.btn_go = HudButton(row, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.show("reader"), color=GREEN, height=40)
         self.btn_go.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        HudButton(row, "БИБЛИОТЕКА", lambda: self.ctx.show("library"), height=40, width=120).pack(
+        HudButton(row, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=40, width=120).pack(
             side=tk.LEFT, padx=(px(6), 0))
-        chart = HudPanel(top, "СКОРОСТЬ ПО СЕССИЯМ · СЛОВ/МИН (ЦИАН) · С ПОНИМАНИЕМ (ЗЕЛЁНЫЙ)")
+        chart = HudPanel(top, _t("СКОРОСТЬ ПО СЕССИЯМ · СЛОВ/МИН (ЦИАН) · С ПОНИМАНИЕМ (ЗЕЛЁНЫЙ)"))
         chart.grid(row=0, column=1, sticky="nsew", padx=px(10))
         chart.configure(height=px(250))
         chart.pack_propagate(False)
         self.chart = WpmChart(chart.body, height=190)
         self.chart.pack(fill=tk.BOTH, expand=True)
-        rg = HudPanel(top, "ПОНИМАНИЕ")
+        rg = HudPanel(top, _t("ПОНИМАНИЕ"))
         rg.grid(row=0, column=2, sticky="nsew")
         rg.configure(width=px(190), height=px(250))
         rg.pack_propagate(False)
-        self.ring = RingGauge(rg.body, title="ТЕСТЫ")
+        self.ring = RingGauge(rg.body, title=_t("ТЕСТЫ"))
         self.ring.pack(fill=tk.BOTH, expand=True)
-        rp = HudPanel(top, "ТЕЛЕМЕТРИЯ", accent=LINE_HI)
+        rp = HudPanel(top, _t("ТЕЛЕМЕТРИЯ"), accent=LINE_HI)
         rp.grid(row=0, column=3, sticky="nsew", padx=(px(10), 0))
         rp.configure(width=px(240), height=px(250))
         rp.pack_propagate(False)
         self.readouts = Readouts(rp.body, rows=4)
         self.readouts.pack(fill=tk.BOTH, expand=True)
-        L(root, "ТРЕНАЖЁРЫ ОБЗОРА", fg=AMBER, size=10, bold=True, bg=BG).pack(anchor="w", pady=(px(12), px(4)))
+        L(root, _t("ТРЕНАЖЁРЫ ОБЗОРА"), fg=AMBER, size=10, bold=True, bg=BG).pack(anchor="w", pady=(px(12), px(4)))
         self.cards = tk.Frame(root, bg=BG)
         self.cards.pack(fill=tk.X)
 
@@ -236,31 +238,30 @@ class OverviewPage(tk.Frame):
             rw = m["positions"]["reading"].get("word", 0)
             tw = lib.typing_word(tid)
             last = st.data.get("last_wpm", {}).get(tid) or st.settings["wpm_start"]
-            self.lbl_pos.configure(text=f"ЧТЕНИЕ  слово {rw:,} / {words:,} · {pct(rw, words)}\n"
-                                        f"ПЕЧАТЬ  " + (f"слово {tw:,} · {pct(tw, words)}" if tw else "—") +
-                                        f"\nСКОРОСТЬ СТАРТА  {last} сл/мин".replace(",", " "))
+            self.lbl_pos.configure(text=_t("ЧТЕНИЕ  слово {0:,} / {1:,} · {2}\nПЕЧАТЬ  ").format(rw, words, pct(rw, words)) + (_t("слово {0:,} · {1}").format(tw, pct(tw, words)) if tw else "—") +
+                                        _t("\nСКОРОСТЬ СТАРТА  {0} сл/мин").format(last).replace(",", " "))
             self.btn_go.set_enabled(True)
         else:
-            self.lbl_title.configure(text="Библиотека пуста")
-            self.lbl_status.configure(text="Добавьте текст в «Библиотеке» или «Своём тексте»", fg=AMBER)
+            self.lbl_title.configure(text=_t("Библиотека пуста"))
+            self.lbl_status.configure(text=_t("Добавьте текст в «Библиотеке» или «Своём тексте»"), fg=AMBER)
             self.lbl_pos.configure(text="")
             self.btn_go.set_enabled(False)
         self.chart.set(st.last_sessions(30), int(st.settings["wpm_target"]))
         comp = st.avg_comp()
-        self.ring.set(comp * 100 if comp is not None else None, "средн. 20 сессий" if comp is not None else "нет тестов")
+        self.ring.set(comp * 100 if comp is not None else None, _t("средн. 20 сессий") if comp is not None else _t("нет тестов"))
         sess = st.data["sessions"]
         eff = [s["eff_wpm"] for s in sess if s.get("eff_wpm")]
         self.readouts.set([
-            ("РЕКОРД, СЛ/МИН", f"{st.best_wpm() or '—'}", CYAN),
-            ("ЭФФЕКТ., СЛ/МИН", f"{eff[-1]}" if eff else "—", GREEN),
-            ("СЕРИЯ, ДНЕЙ", f"{st.streak()}", AMBER),
-            ("XP В ЗВАНИЕ", f"{st.data['xp'].get('total', 0)}", AMBER),
+            (_t("РЕКОРД, СЛ/МИН"), f"{st.best_wpm() or '—'}", CYAN),
+            (_t("ЭФФЕКТ., СЛ/МИН"), f"{eff[-1]}" if eff else "—", GREEN),
+            (_t("СЕРИЯ, ДНЕЙ"), f"{st.streak()}", AMBER),
+            (_t("XP В ЗВАНИЕ"), f"{st.data['xp'].get('total', 0)}", AMBER),
         ])
         for w in self.cards.winfo_children():
             w.destroy()
         for i, (code, title, desc, ready) in enumerate(CATALOG[1:]):
             card = ExerciseCard(self.cards, code, title, desc, ready,
-                                best_text(code, st.exercise_best(code)) if ready else "скоро",
+                                best_text(code, st.exercise_best(code)) if ready else _t("скоро"),
                                 lambda c=code: self.ctx.pages["exercises"].launch(c))
             card.grid(row=i // 4, column=i % 4, sticky="nsew", padx=px(3), pady=px(3))
         for c in range(4):
@@ -279,7 +280,7 @@ class ExerciseCard(tk.Frame):
         b.pack(anchor="w")
         c = L(inner, desc, fg=MUTED, size=8, wraplength=px(230), justify="left")
         c.pack(anchor="w")
-        d = L(inner, ("ЛУЧШЕЕ: " + best) if ready else "В РАЗРАБОТКЕ", fg=GREEN if ready else FAINT, size=8, bold=True)
+        d = L(inner, (_t("ЛУЧШЕЕ: ") + best) if ready else _t("В РАЗРАБОТКЕ"), fg=GREEN if ready else FAINT, size=8, bold=True)
         d.pack(anchor="w", pady=(px(4), 0))
         if ready:
             for w in (self, inner, a, b, c, d):
@@ -302,14 +303,13 @@ class ExercisesPage(tk.Frame):
             return
         for w in self.catalog.winfo_children():
             w.destroy()
-        L(self.catalog, "ТРЕНАЖЁРЫ ОБЗОРА — расширяют поле зрения и убирают проговаривание. "
-                        "5–10 минут перед чтением.", fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(14))
+        L(self.catalog, _t("ТРЕНАЖЁРЫ ОБЗОРА — расширяют поле зрения и убирают проговаривание. 5–10 минут перед чтением."), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(14))
         grid = tk.Frame(self.catalog, bg=BG)
         grid.pack(fill=tk.X, padx=px(14), pady=px(8))
         st = self.ctx.sstore
         for i, (code, title, desc, ready) in enumerate(CATALOG[1:]):
             ExerciseCard(grid, code, title, desc, ready,
-                         best_text(code, st.exercise_best(code)) if ready else "скоро",
+                         best_text(code, st.exercise_best(code)) if ready else _t("скоро"),
                          lambda c=code: self.launch(c)).grid(row=i // 3, column=i % 3, sticky="nsew",
                                                               padx=px(4), pady=px(4))
         for c in range(3):
@@ -354,19 +354,21 @@ class LibraryPage(tk.Frame):
         self.sel: str | None = None
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        left = HudPanel(self, "ТЕКСТЫ НА БОРТУ")
+        left = HudPanel(self, _t("ТЕКСТЫ НА БОРТУ"))
         left.grid(row=0, column=0, sticky="nsew", padx=(px(14), px(6)), pady=(0, px(10)))
         left.configure(width=px(380))
         left.grid_propagate(False)
         left.pack_propagate(False)
         acts = tk.Frame(left.body, bg=PANEL)
         acts.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(6), 0))
-        HudButton(acts, "＋ ОТКРЫТЬ .TXT", self.open_file, height=32, font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        HudButton(acts, "＋ ВСТАВИТЬ", self.paste_dialog, height=32, font_size=8).pack(
+        HudButton(acts, _t("＋ ОТКРЫТЬ .TXT"), self.open_file, height=32, font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        HudButton(acts, _t("＋ ОТКРЫТЬ PDF"), self.open_pdf, height=32, font_size=8).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
+        HudButton(acts, _t("＋ ВСТАВИТЬ"), self.paste_dialog, height=32, font_size=8).pack(
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
         self.list = ScrollFrame(left.body, bg=PANEL)
         self.list.pack(fill=tk.BOTH, expand=True)
-        self.detail = HudPanel(self, "ПАСПОРТ ТЕКСТА", accent=AMBER)
+        self.detail = HudPanel(self, _t("ПАСПОРТ ТЕКСТА"), accent=AMBER)
         self.detail.grid(row=0, column=1, sticky="nsew", padx=(px(6), px(14)), pady=(0, px(10)))
 
     def refresh(self) -> None:
@@ -382,7 +384,7 @@ class LibraryPage(tk.Frame):
             s, col = STATUS_RU.get(m["original"]["status"], ("", MUTED))
             t = L(row, m["title"], fg=TEXT, size=10, bold=True, bg=row["bg"], anchor="w")
             t.pack(fill=tk.X, padx=px(8), pady=(px(4), 0))
-            sub = f"{m.get('author') or '—'} · {m['lang'].upper()} · {m['original']['words'] or '?'} сл."
+            sub = _t("{0} · {1} · {2} сл.").format(m.get('author') or '—', m['lang'].upper(), m['original']['words'] or '?')
             a = L(row, sub, fg=MUTED, size=8, bg=row["bg"], anchor="w")
             a.pack(fill=tk.X, padx=px(8))
             c = L(row, "● " + s, fg=col, size=7, bold=True, bg=row["bg"], anchor="w")
@@ -390,8 +392,7 @@ class LibraryPage(tk.Frame):
             for w in (row, t, a, c):
                 w.bind("<Button-1>", lambda _e, i=m["id"]: self.select(i))
         if not metas:
-            L(self.list.inner, "Пусто. Добавьте текст: «Открыть .txt» или «Вставить».\n"
-                               "Тексты из «Своего текста» попадают сюда сами.", fg=MUTED, size=9,
+            L(self.list.inner, _t("Пусто. Добавьте текст: «Открыть .txt» или «Вставить».\nТексты из «Своего текста» попадают сюда сами."), fg=MUTED, size=9,
               justify="left").pack(anchor="w", padx=px(8), pady=px(8))
         self._detail()
 
@@ -406,75 +407,74 @@ class LibraryPage(tk.Frame):
         lib = self.ctx.lib
         m = lib.meta(self.sel) if self.sel else None
         if not m:
-            L(b, "Выберите текст слева.", fg=MUTED, size=10).pack(anchor="w")
+            L(b, _t("Выберите текст слева."), fg=MUTED, size=10).pack(anchor="w")
             return
         tid = m["id"]
         L(b, m["title"], fg=TEXT, size=16, bold=True, anchor="w").pack(fill=tk.X)
-        L(b, m.get("author") or "автор не указан", fg=MUTED, size=10, anchor="w").pack(fill=tk.X)
+        L(b, m.get("author") or _t("автор не указан"), fg=MUTED, size=10, anchor="w").pack(fill=tk.X)
         chips = tk.Frame(b, bg=PANEL)
         chips.pack(anchor="w", pady=px(8))
         s, col = STATUS_RU.get(m["original"]["status"], ("", MUTED))
         for text, c in ((s, col), (m["lang"].upper(), CYAN),
-                        ("ПЕЧАТЬ: " + ("без заглавных" if m["prepared"]["opts"].get("lower") else "с заглавными"), MUTED)):
+                        (_t("ПЕЧАТЬ: ") + (_t("без заглавных") if m["prepared"]["opts"].get("lower") else _t("с заглавными")), MUTED)):
             L(chips, f" {text} ", fg=c, size=8, bold=True, bg=blend(c, BG, 0.82)).pack(side=tk.LEFT, padx=(0, px(6)))
         words = m["original"]["words"] or len(lib.prepared(tid).split())
         rw = m["positions"]["reading"].get("word", 0)
         tw = lib.typing_word(tid)
         tp = lib.typing_position(tid)
-        info = (f"ВЕРСИЯ ДЛЯ ЧТЕНИЯ   {m['original']['chars']:,} зн. · {words:,} слов\n"
-                f"ВЕРСИЯ ДЛЯ ПЕЧАТИ   {m['prepared']['chars']:,} зн.\n"
-                f"ЧТЕНИЕ              слово {rw:,} ({pct(rw, words)})\n"
-                f"ПЕЧАТЬ              знак {tp:,} ({pct(tp, m['prepared']['chars'])})"
-                + (f" ≈ слово {tw:,}" if tw else "")).replace(",", " ")
+        info = (_t("ВЕРСИЯ ДЛЯ ЧТЕНИЯ   {0:,} зн. · {1:,} слов\nВЕРСИЯ ДЛЯ ПЕЧАТИ   {2:,} зн.\nЧТЕНИЕ              слово {3:,} ({4})\nПЕЧАТЬ              знак {5:,} ({6})").format(m['original']['chars'], words, m['prepared']['chars'], rw, pct(rw, words), tp, pct(tp, m['prepared']['chars']))
+                + (_t(" ≈ слово {0:,}").format(tw) if tw else "")).replace(",", " ")
         L(b, info, fg=TEXT, size=10, mono=True, justify="left", anchor="w").pack(fill=tk.X)
         if m["original"].get("note"):
             L(b, m["original"]["note"], fg=MUTED, size=8, anchor="w", wraplength=px(560),
               justify="left").pack(fill=tk.X, pady=(px(4), 0))
         if m["original"]["status"] == "missing":
-            L(b, "Оригинал не найден: гипердрайв покажет подготовленный текст (без заглавных и знаков). "
-                 "Привяжите файл с оригиналом — позиции сохранятся.", fg=AMBER, size=9,
+            L(b, _t("Оригинал не найден: гипердрайв покажет подготовленный текст (без заглавных и знаков). Привяжите файл с оригиналом — позиции сохранятся."), fg=AMBER, size=9,
               wraplength=px(560), justify="left", anchor="w").pack(fill=tk.X, pady=(px(6), 0))
         offer = m.get("full_source_offer")
         if offer and not offer.get("asked"):
             box = tk.Frame(b, bg=blend(GREEN, BG, 0.85), padx=px(10), pady=px(8))
             box.pack(fill=tk.X, pady=(px(10), 0))
-            L(box, "Найден полный файл книги. Печатаете вы фрагмент — а читать можно всю книгу целиком "
-                   "(отдельной записью; печать не изменится).", fg=TEXT, size=9, bg=box["bg"],
+            L(box, _t("Найден полный файл книги. Печатаете вы фрагмент — а читать можно всю книгу целиком (отдельной записью; печать не изменится)."), fg=TEXT, size=9, bg=box["bg"],
               wraplength=px(540), justify="left").pack(anchor="w")
             r = tk.Frame(box, bg=box["bg"])
             r.pack(anchor="w", pady=(px(6), 0))
-            HudButton(r, "ДОБАВИТЬ ВСЮ КНИГУ", lambda: self.add_full(tid), color=GREEN, height=30,
+            HudButton(r, _t("ДОБАВИТЬ ВСЮ КНИГУ"), lambda: self.add_full(tid), color=GREEN, height=30,
                       font_size=8).pack(side=tk.LEFT)
-            HudButton(r, "НЕ НАДО", lambda: self.dismiss_offer(tid), height=30, font_size=8).pack(
+            HudButton(r, _t("НЕ НАДО"), lambda: self.dismiss_offer(tid), height=30, font_size=8).pack(
                 side=tk.LEFT, padx=px(6))
         acts = tk.Frame(b, bg=PANEL)
         acts.pack(side=tk.BOTTOM, fill=tk.X)
-        HudButton(acts, "▶ ЧИТАТЬ", lambda: self.ctx.read(tid), color=GREEN, height=40).pack(
+        HudButton(acts, _t("▶ ЧИТАТЬ"), lambda: self.ctx.read(tid), color=GREEN, height=40).pack(
             side=tk.LEFT, padx=(0, px(6)))
         if tw:
-            HudButton(acts, "ЧИТАТЬ С МЕСТА ПЕЧАТИ", lambda: self.ctx.read(tid, tw), height=40).pack(
+            HudButton(acts, _t("ЧИТАТЬ С МЕСТА ПЕЧАТИ"), lambda: self.ctx.read(tid, tw), height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, "⌨ ПЕЧАТАТЬ", lambda: self.type_text(tid), color=CYAN, height=40).pack(
+        HudButton(acts, _t("⌨ ПЕЧАТАТЬ"), lambda: self.type_text(tid), color=CYAN, height=40).pack(
             side=tk.LEFT, padx=(0, px(6)))
         if m["original"]["status"] == "missing":
-            HudButton(acts, "ПРИВЯЗАТЬ ОРИГИНАЛ", lambda: self.attach(tid), color=AMBER, height=40).pack(
+            HudButton(acts, _t("ПРИВЯЗАТЬ ОРИГИНАЛ"), lambda: self.attach(tid), color=AMBER, height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, "ПЕРЕИМЕНОВАТЬ", lambda: self.rename(tid), height=40).pack(side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, "✕ УДАЛИТЬ", lambda: self.delete(tid), color=RED, height=40).pack(side=tk.RIGHT)
+        HudButton(acts, _t("ПЕРЕИМЕНОВАТЬ"), lambda: self.rename(tid), height=40).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts, _t("✕ УДАЛИТЬ"), lambda: self.delete(tid), color=RED, height=40).pack(side=tk.RIGHT)
 
     # -- действия -----------------------------------------------------------------------
     def _opts(self) -> dict:
         return dict(self.ctx.app.store.settings.get("cargo_opts") or {})
 
     def open_file(self) -> None:
-        path = filedialog.askopenfilename(parent=self, title="Текст для библиотеки",
-                                          filetypes=[("Текст", "*.txt"), ("Все файлы", "*.*")])
+        path = filedialog.askopenfilename(parent=self, title=_t("Текст для библиотеки"),
+                                          filetypes=[(_t("Текст или PDF"), "*.txt *.pdf"), (_t("Текст"), "*.txt"),
+                                                     ("PDF", "*.pdf"), (_t("Все файлы"), "*.*")])
         if not path:
+            return
+        if path.lower().endswith(".pdf"):
+            self.open_pdf(path)
             return
         try:
             text, _enc = libmod.read_text_file(path)
         except (OSError, UnicodeDecodeError) as exc:
-            messagebox.showerror("Библиотека", f"Не удалось прочитать файл:\n{exc}", parent=self)
+            messagebox.showerror(_t("Библиотека"), _t("Не удалось прочитать файл:\n{0}").format(exc), parent=self)
             return
         from pathlib import Path
         title, author = libmod.guess_title(text, Path(path).stem)
@@ -483,11 +483,26 @@ class LibraryPage(tk.Frame):
         self.sel = m["id"]
         self.refresh()
 
+    def open_pdf(self, path: str | None = None) -> None:
+        """PDF → предпросмотр очищенного текста → обычная книга библиотеки (оригинал + подготовленный)."""
+        from pathlib import Path
+        from stamina.pdf_dialog import import_pdf
+        res = import_pdf(self, path)
+        if not res:
+            return
+        text, path, (first, last) = res
+        title, author = libmod.guess_title(text, Path(path).stem)
+        m = self.ctx.lib.add(text, title=title, author=author, opts=self._opts(),
+                             source={"kind": "pdf", "path": path, "filename": Path(path).name,
+                                     "pages": [first, last]})
+        self.sel = m["id"]
+        self.refresh()
+
     def paste_dialog(self) -> None:
         dlg = tk.Toplevel(self, bg=BG)
-        dlg.title("Вставить текст")
+        dlg.title(_t("Вставить текст"))
         dlg.transient(self.winfo_toplevel())
-        L(dlg, "Название:", fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
+        L(dlg, _t("Название:"), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
         e = entry(dlg, width=50)
         e.pack(fill=tk.X, padx=px(10))
         t = tk.Text(dlg, width=80, height=18, bg=BG2, fg=TEXT, insertbackground=CYAN, relief="flat",
@@ -505,24 +520,24 @@ class LibraryPage(tk.Frame):
                 self.sel = m["id"]
             dlg.destroy()
             self.refresh()
-        HudButton(dlg, "СОХРАНИТЬ В БИБЛИОТЕКУ", ok, color=GREEN, height=36).pack(pady=(0, px(10)))
+        HudButton(dlg, _t("СОХРАНИТЬ В БИБЛИОТЕКУ"), ok, color=GREEN, height=36).pack(pady=(0, px(10)))
         e.focus_set()
 
     def attach(self, tid: str) -> None:
-        path = filedialog.askopenfilename(parent=self, title="Файл с оригиналом",
-                                          filetypes=[("Текст", "*.txt"), ("Все файлы", "*.*")])
+        path = filedialog.askopenfilename(parent=self, title=_t("Файл с оригиналом"),
+                                          filetypes=[(_t("Текст"), "*.txt"), (_t("Все файлы"), "*.*")])
         if not path:
             return
         try:
             text, _enc = libmod.read_text_file(path)
         except (OSError, UnicodeDecodeError) as exc:
-            messagebox.showerror("Библиотека", str(exc), parent=self)
+            messagebox.showerror(_t("Библиотека"), str(exc), parent=self)
             return
         st = self.ctx.lib.attach_original(tid, text, {"path": path})
         if st:
-            self.ctx.app.set_status("ОРИГИНАЛ ПРИВЯЗАН — позиции чтения и печати сохранены", GREEN)
+            self.ctx.app.set_status(_t("ОРИГИНАЛ ПРИВЯЗАН — позиции чтения и печати сохранены"), GREEN)
         else:
-            messagebox.showwarning("Библиотека", "Этот файл не совпадает с текстом для печати.", parent=self)
+            messagebox.showwarning(_t("Библиотека"), _t("Этот файл не совпадает с текстом для печати."), parent=self)
         self.refresh()
 
     def add_full(self, tid: str) -> None:
@@ -532,9 +547,9 @@ class LibraryPage(tk.Frame):
         try:
             text, _enc = libmod.read_text_file(path)
         except (OSError, UnicodeDecodeError) as exc:
-            messagebox.showerror("Библиотека", f"Файл недоступен:\n{exc}", parent=self)
+            messagebox.showerror(_t("Библиотека"), _t("Файл недоступен:\n{0}").format(exc), parent=self)
             return
-        nm = lib.add(text, title=m["title"] + " (вся книга)", author=m.get("author", ""),
+        nm = lib.add(text, title=m["title"] + _t(" (вся книга)"), author=m.get("author", ""),
                      opts=m["prepared"]["opts"], source={"kind": "file", "path": path})
         lib.set_position(nm["id"], "reading", m["positions"]["reading"].get("word", 0))
         self.dismiss_offer(tid)
@@ -552,13 +567,13 @@ class LibraryPage(tk.Frame):
     def rename(self, tid: str) -> None:
         m = self.ctx.lib.meta(tid)
         dlg = tk.Toplevel(self, bg=BG)
-        dlg.title("Переименовать")
+        dlg.title(_t("Переименовать"))
         dlg.transient(self.winfo_toplevel())
-        L(dlg, "Название:", fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
+        L(dlg, _t("Название:"), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
         e1 = entry(dlg, width=44)
         e1.insert(0, m["title"])
         e1.pack(padx=px(10))
-        L(dlg, "Автор:", fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(6), 0))
+        L(dlg, _t("Автор:"), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(6), 0))
         e2 = entry(dlg, width=44)
         e2.insert(0, m.get("author", ""))
         e2.pack(padx=px(10))
@@ -567,13 +582,12 @@ class LibraryPage(tk.Frame):
             self.ctx.lib.rename(tid, e1.get(), e2.get())
             dlg.destroy()
             self.refresh()
-        HudButton(dlg, "СОХРАНИТЬ", ok, color=GREEN, height=34).pack(pady=px(10))
+        HudButton(dlg, _t("СОХРАНИТЬ"), ok, color=GREEN, height=34).pack(pady=px(10))
 
     def delete(self, tid: str) -> None:
         m = self.ctx.lib.meta(tid)
-        if not messagebox.askyesno("Удалить текст",
-                                   f"Убрать «{m['title']}» из библиотеки?\n"
-                                   "Файлы будут перенесены в backups\\deleted-texts (не стираются).",
+        if not messagebox.askyesno(_t("Удалить текст"),
+                                   _t("Убрать «{0}» из библиотеки?\nФайлы будут перенесены в backups\\deleted-texts (не стираются).").format(m['title']),
                                    parent=self):
             return
         rd = self.ctx.pages["reader"]
@@ -595,8 +609,7 @@ class LibraryPage(tk.Frame):
             app.resume_cargo()
             return
         if saved is not None:
-            if not messagebox.askyesno("Печать", f"Переключить печать на «{m['title']}»?\n"
-                                                 "Позиция текущего текста сохранится в библиотеке.", parent=self):
+            if not messagebox.askyesno(_t("Печать"), _t("Переключить печать на «{0}»?\nПозиция текущего текста сохранится в библиотеке.").format(m['title']), parent=self):
                 return
             try:
                 app.screens["bridge"].leave_current()
@@ -626,7 +639,7 @@ class JournalPage(tk.Frame):
     def __init__(self, master, ctx: SpeedReadScreen) -> None:
         super().__init__(master, bg=BG)
         self.ctx = ctx
-        p = HudPanel(self, "ЖУРНАЛ ПОЛЁТОВ · ЧТЕНИЕ И ТРЕНАЖЁРЫ")
+        p = HudPanel(self, _t("ЖУРНАЛ ПОЛЁТОВ · ЧТЕНИЕ И ТРЕНАЖЁРЫ"))
         p.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=(0, px(10)))
         self.chart = WpmChart(p.body, height=150)
         self.chart.pack(fill=tk.X)
@@ -640,15 +653,12 @@ class JournalPage(tk.Frame):
         rows = []
         for s in st.data["sessions"]:
             comp = f"{s['comp'] * 100:.0f}%" if s.get("comp") is not None else "—"
-            rows.append((s["ts"], f"ЧТЕНИЕ   {s.get('title', '')[:34]:<34} {s['words']:>6} сл  "
-                                  f"{s['avg_wpm']:>4} сл/мин  max {s.get('max_wpm', 0):>4}  понимание {comp:>4}  "
-                                  f"{'★' * s.get('stars', 0):<3} +{s.get('xp', 0)} XP", CYAN))
+            rows.append((s["ts"], _t("ЧТЕНИЕ   {0:<34} {1:>6} сл  {2:>4} сл/мин  max {3:>4}  понимание {4:>4}  {5:<3} +{6} XP").format(s.get('title', '')[:34], s['words'], s['avg_wpm'], s.get('max_wpm', 0), comp, '★' * s.get('stars', 0), s.get('xp', 0)), CYAN))
         names = {c: t for c, t, _d, _r in CATALOG}
         for code, ex in st.data["exercises"].items():
             for variant, rec in ex.items():
                 for r in rec["runs"]:
-                    rows.append((r["ts"], f"ТРЕНАЖЁР {names.get(code, code)[:20]:<20} {variant:<10} "
-                                          f"результат {r['result']}  {'★' * r.get('stars', 0)}", AMBER))
+                    rows.append((r["ts"], _t("ТРЕНАЖЁР {0:<20} {1:<10} результат {2}  {3}").format(names.get(code, code)[:20], variant, r['result'], '★' * r.get('stars', 0)), AMBER))
         rows.sort(key=lambda x: -x[0])
         for ts, text, col in rows[:300]:
             r = tk.Frame(self.list.inner, bg=PANEL)
@@ -656,7 +666,7 @@ class JournalPage(tk.Frame):
             L(r, time.strftime("%d.%m %H:%M", time.localtime(ts)), fg=MUTED, size=9, mono=True).pack(side=tk.LEFT)
             L(r, "  " + text, fg=col if col == AMBER else TEXT, size=9, mono=True, anchor="w").pack(side=tk.LEFT)
         if not rows:
-            L(self.list.inner, "Пока пусто — первый полёт впереди.", fg=MUTED, size=10).pack(anchor="w")
+            L(self.list.inner, _t("Пока пусто — первый полёт впереди."), fg=MUTED, size=10).pack(anchor="w")
 
 
 # ======================================================================================
@@ -677,9 +687,9 @@ class SettingsPage(tk.Frame):
         cols.pack(fill=tk.X)
         cols.grid_columnconfigure(0, weight=1)
         cols.grid_columnconfigure(1, weight=1)
-        a = HudPanel(cols, "СКОРОСТЬ И РАЗГОН")
+        a = HudPanel(cols, _t("СКОРОСТЬ И РАЗГОН"))
         a.grid(row=0, column=0, sticky="nsew", padx=(0, px(6)))
-        b = HudPanel(cols, "ПОКАЗ И ПРОВЕРКА", accent=AMBER)
+        b = HudPanel(cols, _t("ПОКАЗ И ПРОВЕРКА"), accent=AMBER)
         b.grid(row=0, column=1, sticky="nsew", padx=(px(6), 0))
 
         def stepper(parent, label, key, step, lo, hi, unit=""):
@@ -723,20 +733,19 @@ class SettingsPage(tk.Frame):
                 self.ctx.sstore.save()
             Toggle(r, st[key], cb).pack(side=tk.LEFT)
 
-        stepper(a.body, "СТАРТОВАЯ СКОРОСТЬ", "wpm_start", 25, 100, 1500, "сл/мин")
-        stepper(a.body, "ЦЕЛЕВАЯ СКОРОСТЬ", "wpm_target", 25, 150, 2000, "сл/мин")
-        choice(a.body, "РАЗГОН", "ramp", [("smooth", "ПЛАВНЫЙ"), ("steps", "СТУПЕНИ"), ("off", "ВЫКЛ")])
-        stepper(a.body, "ШАГ ПЛАВНОГО РАЗГОНА", "ramp_step", 5, 5, 100, "сл/мин")
-        stepper(a.body, "КАЖДЫЕ", "ramp_every_s", 10, 10, 300, "с")
-        toggle(a.body, "ПАУЗЫ НА ЗНАКАХ", "punct_pauses")
-        stepper(b.body, "СЛОВ В КАДРЕ", "chunk", 1, 1, 5)
-        stepper(b.body, "МАКС. ДЛИНА КАДРА", "chunk_max_chars", 2, 12, 40, "зн.")
-        stepper(b.body, "РАЗМЕР ШРИФТА", "font_pt", 4, 24, 120, "pt")
-        toggle(b.body, "КРАСНАЯ БУКВА (ORP)", "orp")
-        toggle(b.body, "НАПРАВЛЯЮЩИЕ", "guides")
-        choice(b.body, "ТЕСТ ПОНИМАНИЯ", "quiz", [("always", "ВСЕГДА"), ("ask", "СПРОСИТЬ"), ("never", "НЕТ")])
-        stepper(b.body, "ТЕСТ КАЖДЫЕ", "quiz_words", 250, 250, 5000, "слов")
-        choice(b.body, "СИНХРОНИЗАЦИЯ С ПЕЧАТЬЮ", "sync", [("ask", "ПОДСКАЗКА"), ("off", "НЕТ")])
-        L(self.root, "Изменения применяются к следующему запуску гипердрайва. Данные: "
-                     "%APPDATA%\\Stamina\\speedread.json и library\\.", fg=MUTED, size=8, bg=BG).pack(
+        stepper(a.body, _t("СТАРТОВАЯ СКОРОСТЬ"), "wpm_start", 25, 100, 1500, _t("сл/мин"))
+        stepper(a.body, _t("ЦЕЛЕВАЯ СКОРОСТЬ"), "wpm_target", 25, 150, 2000, _t("сл/мин"))
+        choice(a.body, _t("РАЗГОН"), "ramp", [("smooth", _t("ПЛАВНЫЙ")), ("steps", _t("СТУПЕНИ")), ("off", _t("ВЫКЛ"))])
+        stepper(a.body, _t("ШАГ ПЛАВНОГО РАЗГОНА"), "ramp_step", 5, 5, 100, _t("сл/мин"))
+        stepper(a.body, _t("КАЖДЫЕ"), "ramp_every_s", 10, 10, 300, _t("с"))
+        toggle(a.body, _t("ПАУЗЫ НА ЗНАКАХ"), "punct_pauses")
+        stepper(b.body, _t("СЛОВ В КАДРЕ"), "chunk", 1, 1, 5)
+        stepper(b.body, _t("МАКС. ДЛИНА КАДРА"), "chunk_max_chars", 2, 12, 40, _t("зн."))
+        stepper(b.body, _t("РАЗМЕР ШРИФТА"), "font_pt", 4, 24, 120, "pt")
+        toggle(b.body, _t("КРАСНАЯ БУКВА (ORP)"), "orp")
+        toggle(b.body, _t("НАПРАВЛЯЮЩИЕ"), "guides")
+        choice(b.body, _t("ТЕСТ ПОНИМАНИЯ"), "quiz", [("always", _t("ВСЕГДА")), ("ask", _t("СПРОСИТЬ")), ("never", _t("НЕТ"))])
+        stepper(b.body, _t("ТЕСТ КАЖДЫЕ"), "quiz_words", 250, 250, 5000, _t("слов"))
+        choice(b.body, _t("СИНХРОНИЗАЦИЯ С ПЕЧАТЬЮ"), "sync", [("ask", _t("ПОДСКАЗКА")), ("off", _t("НЕТ"))])
+        L(self.root, _t("Изменения применяются к следующему запуску гипердрайва. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
             anchor="w", pady=px(8))

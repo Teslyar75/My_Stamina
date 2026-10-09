@@ -1,6 +1,8 @@
 """Словарь: загрузка data/vocab.json (схема DATA_MODEL §1), индексы, поиск, фильтры."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import gzip
 import json
 import random
@@ -10,20 +12,20 @@ from . import paths
 from .textutil import lev
 
 SETS = [
-    ("top-1000", 1000, "Essential 1000", "ФУНДАМЕНТ", "S-1000"),
-    ("top-3000", 3000, "Core 3000", "РАЗГОВОРНЫЙ", "S-3000"),
-    ("top-10000", 10000, "Advanced 10 000", "СВОБОДНЫЙ", "S-10K"),
-    ("top-20000", 20000, "Master 20 000", "КАК НОСИТЕЛЬ", "S-20K"),
+    ("top-1000", 1000, "Essential 1000", t("ФУНДАМЕНТ"), "S-1000"),
+    ("top-3000", 3000, "Core 3000", t("РАЗГОВОРНЫЙ"), "S-3000"),
+    ("top-10000", 10000, "Advanced 10 000", t("СВОБОДНЫЙ"), "S-10K"),
+    ("top-20000", 20000, "Master 20 000", t("КАК НОСИТЕЛЬ"), "S-20K"),
 ]
 SET_LIMIT = {s[0]: s[1] for s in SETS}
 POS_NORM = {"adj": "adjective", "adv": "adverb", "prep": "preposition", "conj": "conjunction",
             "pron": "pronoun", "n": "noun", "v": "verb"}
-POS_FILTER = [("all", "ВСЕ"), ("noun", "СУЩ."), ("verb", "ГЛАГ."), ("adjective", "ПРИЛ."),
-              ("adverb", "НАРЕЧ."), ("pronoun", "МЕСТ."), ("preposition", "ПРЕДЛ."),
-              ("conjunction", "СОЮЗ"), ("other", "ДРУГОЕ")]
+POS_FILTER = [("all", t("ВСЕ")), ("noun", t("СУЩ.")), ("verb", t("ГЛАГ.")), ("adjective", t("ПРИЛ.")),
+              ("adverb", t("НАРЕЧ.")), ("pronoun", t("МЕСТ.")), ("preposition", t("ПРЕДЛ.")),
+              ("conjunction", t("СОЮЗ")), ("other", t("ДРУГОЕ"))]
 POS_SHORT = {"noun": "NOUN", "verb": "VERB", "adjective": "ADJ", "adverb": "ADVERB", "pronoun": "PRONOUN",
              "preposition": "PREP", "conjunction": "CONJ", "interjection": "INTERJ", "determiner": "DET"}
-DIFF_RU = {"easy": "ЛЁГКОЕ", "medium": "СРЕДНЕЕ", "tricky": "ТРУДНОЕ"}
+DIFF_RU = {"easy": t("ЛЁГКОЕ"), "medium": t("СРЕДНЕЕ"), "tricky": t("ТРУДНОЕ")}
 DIFF_ORDER = {"easy": 0, "medium": 1, "tricky": 2}
 
 

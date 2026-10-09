@@ -1,6 +1,8 @@
 """Кнопка микрофона «ПЕРЕДАЧА» с живым текстом и самооценкой при недоступном распознавании."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import tkinter as tk
 
 from stamina.hud import HudButton
@@ -53,7 +55,7 @@ class MicPanel(tk.Frame):
         bg = bg or master.cget("bg")
         super().__init__(master, bg=bg)
         self.ctx, self.on_result = ctx, on_result
-        self.btn = HudButton(self, "🎤 ПЕРЕДАЧА  M", self.toggle, color=RED, height=44, font_size=12, width=210)
+        self.btn = HudButton(self, _t("🎤 ПЕРЕДАЧА  M"), self.toggle, color=RED, height=44, font_size=12, width=210)
         self.btn.pack(pady=(0, px(4)))
         self.meter = LevelMeter(self)
         self.meter.pack(pady=(0, px(4)))
@@ -61,10 +63,10 @@ class MicPanel(tk.Frame):
         self.live.pack()
         self._silent = ""
         self.selfbox = tk.Frame(self, bg=bg)
-        L(self.selfbox, "Оцени себя после прослушивания образца:", fg=MUTED, size=8, bg=bg).pack()
+        L(self.selfbox, _t("Оцени себя после прослушивания образца:"), fg=MUTED, size=8, bg=bg).pack()
         row = tk.Frame(self.selfbox, bg=bg)
         row.pack(pady=px(2))
-        for text, score, col in (("СКАЗАЛ ХОРОШО", 90, GREEN), ("ТАК СЕБЕ", 60, AMBER), ("НЕ ПОЛУЧИЛОСЬ", 20, RED)):
+        for text, score, col in ((_t("СКАЗАЛ ХОРОШО"), 90, GREEN), (_t("ТАК СЕБЕ"), 60, AMBER), (_t("НЕ ПОЛУЧИЛОСЬ"), 20, RED)):
             HudButton(row, text, lambda s=score: self._self(s), color=col, height=28, font_size=8).pack(
                 side=tk.LEFT, padx=px(2))
         self._polling = False
@@ -77,16 +79,16 @@ class MicPanel(tk.Frame):
         if self.speech_on():
             self.btn.pack(pady=(0, px(4)))
             self.selfbox.pack_forget()
-            self.live.configure(text="Нажми и прочитай вслух. Запись остановится сама после паузы.")
+            self.live.configure(text=_t("Нажми и прочитай вслух. Запись остановится сама после паузы."))
         else:
             self.btn.pack_forget()
             if self.ctx.progress.settings.get("self_assess", True):
                 self.selfbox.pack()
-            why = self.ctx.asr.why_unavailable() if self.ctx.progress.settings.get("asr", True) else "выключено в настройках"
-            self.live.configure(text=f"Распознавание недоступно: {why}")
+            why = self.ctx.asr.why_unavailable() if self.ctx.progress.settings.get("asr", True) else _t("выключено в настройках")
+            self.live.configure(text=_t("Распознавание недоступно: {0}").format(why))
 
     def _btn_idle(self) -> None:
-        self.btn.set_text("🎤 ПЕРЕДАЧА  M")
+        self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M"))
         self.btn.set_color(RED)
         self.btn.set_active(False)
         self.meter.clear()
@@ -108,11 +110,11 @@ class MicPanel(tk.Frame):
         asr.poll()  # очистить старые события
         self._silent = ""
         if asr.listen():
-            self.btn.set_text("● СЛУШАЮ…")
+            self.btn.set_text(_t("● СЛУШАЮ…"))
             self.btn.set_color(RED)
             self.btn.set_active(True)
             self.meter.clear()
-            self.live.configure(text="Включаю микрофон… (при первом запуске загружается модель)", fg=AMBER)
+            self.live.configure(text=_t("Включаю микрофон… (при первом запуске загружается модель)"), fg=AMBER)
             if not self._polling:
                 self._polling = True
                 self.after(80, self._poll)
@@ -125,30 +127,30 @@ class MicPanel(tk.Frame):
         done = False
         for kind, val in self.ctx.asr.poll():
             if kind == "started":
-                self.live.configure(text="● Говори — полоска выше показывает, что звук доходит", fg=RED)
+                self.live.configure(text=_t("● Говори — полоска выше показывает, что звук доходит"), fg=RED)
             elif kind == "level":
                 self.meter.set(val)
             elif kind == "processing":
-                self.btn.set_text("◌ РАСПОЗНАЮ…")
+                self.btn.set_text(_t("◌ РАСПОЗНАЮ…"))
                 self.btn.set_color(AMBER)
                 self.meter.clear()
-                self.live.configure(text="Распознаю речь…", fg=AMBER)
+                self.live.configure(text=_t("Распознаю речь…"), fg=AMBER)
             elif kind == "silent":
                 self._silent = val
             elif kind == "partial":
                 self.live.configure(text=f"«{val}»", fg=TEXT)
             elif kind == "final":
                 done = True
-                self.live.configure(text=f"Распознано: «{val[0]}»" if val else
-                                    (self._silent or "Звук был, но слова не распознаны — попробуй ещё раз чётче"),
+                self.live.configure(text=_t("Распознано: «{0}»").format(val[0]) if val else
+                                    (self._silent or _t("Звук был, но слова не распознаны — попробуй ещё раз чётче")),
                                     fg=TEXT if val else (RED if self._silent else AMBER))
                 if not val and self._silent:
                     self.ctx.status(self._silent, RED)
                 self.on_result(val, None)
             elif kind == "error":
                 done = True
-                self.live.configure(text=f"Ошибка микрофона: {val}", fg=RED)
-                self.ctx.status(f"Ошибка микрофона: {val}", RED)
+                self.live.configure(text=_t("Ошибка микрофона: {0}").format(val), fg=RED)
+                self.ctx.status(_t("Ошибка микрофона: {0}").format(val), RED)
         if done or (not self.ctx.asr.listening and self.ctx.asr.events.empty()):
             self._polling = False
             self._btn_idle()
