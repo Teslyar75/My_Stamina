@@ -8,7 +8,7 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import APP_NAME, __version__, english_hook, missions, theme
+from stamina import APP_NAME, __version__, english_hook, missions, speedread_hook, theme
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -40,6 +40,10 @@ class Cockpit(tk.Tk):
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(english_hook.KEY, english_hook.TITLE), ("settings", "НАСТРОЙКИ")]
+        self._speed_cls = speedread_hook.load_class()  # вкладка «СКОРОЧТЕНИЕ» (stamina/speedread)
+        if self._speed_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(speedread_hook.KEY, speedread_hook.TITLE), ("settings", "НАСТРОЙКИ")]
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
@@ -77,23 +81,29 @@ class Cockpit(tk.Tk):
     def _build(self) -> None:
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(10), pady=(px(8), 0))
-        logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(250), height=px(44))
+        self._compact = len(self.SCREENS) > 6  # много разделов — шапка поуже
+        logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(200 if self._compact else 250),
+                         height=px(44))
         logo.pack(side=tk.LEFT)
         self._draw_logo(logo)
         nav = tk.Frame(top, bg=BG)
-        nav.pack(side=tk.LEFT, padx=px(10))
+        nav.pack(side=tk.LEFT, padx=px(4 if self._compact else 10))
         self.nav_buttons: dict[str, HudButton] = {}
         for i, (name, title) in enumerate(self.SCREENS, 1):
-            b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36,
-                          font_size=10 if len(self.SCREENS) <= 5 else 9)
-            b.pack(side=tk.LEFT, padx=px(3))
+            fs = 10 if len(self.SCREENS) <= 5 else 9 if len(self.SCREENS) <= 6 else 8
+            bw = None
+            if self._compact:  # узкие поля у кнопок, чтобы всё влезло в 1260 px
+                import tkinter.font as tkfont
+                bw = int(tkfont.Font(font=theme.font(fs, True)).measure(title) / theme.S) + 18
+            b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36, font_size=fs, width=bw)
+            b.pack(side=tk.LEFT, padx=px(3) if len(self.SCREENS) <= 6 else px(1))
             self.nav_buttons[name] = b
         right = tk.Frame(top, bg=BG)
         right.pack(side=tk.RIGHT)
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
         self.clock.pack(side=tk.RIGHT, padx=(px(10), 0))
         self.btn_sound = HudButton(right, "♪ ЗВУК ВЫКЛ", self.toggle_sound, height=36, font_size=9,
-                                   width=116)
+                                   width=116 if len(self.SCREENS) <= 6 else 76)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
         self.btn_help = HudButton(right, "? F1", self.open_help, height=36, font_size=9,
                                   width=60, color=AMBER)
@@ -135,6 +145,13 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != english_hook.KEY]
                 self.nav_buttons.pop(english_hook.KEY).destroy()
+        if self._speed_cls is not None:
+            spd = speedread_hook.create(self._speed_cls, self.content, self)
+            if spd is not None:
+                self.screens[speedread_hook.KEY] = spd
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != speedread_hook.KEY]
+                self.nav_buttons.pop(speedread_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
@@ -169,10 +186,11 @@ class Cockpit(tk.Tk):
             rr = r * (0.62 if i % 2 == 0 else 0.26)
             star += [cx + rr * math.cos(a), cy + px(1) + rr * math.sin(a)]
         c.create_polygon(star, fill=AMBER, outline="")
+        compact = getattr(self, "_compact", False)
         c.create_text(px(48), px(15), text="STAR TYPING", anchor="w", fill=TEXT,
-                      font=theme.font(17, True))
-        c.create_text(px(49), px(35), text="ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ", anchor="w",
-                      fill=CYAN_DIM, font=theme.font(7, True))
+                      font=theme.font(14 if compact else 17, True))
+        c.create_text(px(49), px(35), text="ПУЛЬТ ПИЛОТА" if compact else "ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ",
+                      anchor="w", fill=CYAN_DIM, font=theme.font(7, True))
 
     def _draw_line(self, c: tk.Canvas) -> None:
         c.delete("all")
@@ -187,7 +205,8 @@ class Cockpit(tk.Tk):
     # ------------------------------------------------------------------
     def open_help(self) -> None:
         """F1: справка; с вкладки «Английский» — сразу глава про неё."""
-        chapter = "АНГЛИЙСКИЙ" if self.current == english_hook.KEY else None
+        chapter = {english_hook.KEY: "АНГЛИЙСКИЙ",
+                   speedread_hook.KEY: "СКОРОЧТЕНИЕ"}.get(self.current or "")
         self.show("help")
         scr = self.screens.get("help")
         if scr is not None and hasattr(scr, "goto"):
@@ -199,6 +218,11 @@ class Cockpit(tk.Tk):
         bridge: Bridge = self.screens["bridge"]
         if self.current == "bridge" and bridge.state in ("run", "ready") and name != "bridge":
             bridge.pause("Пауза — вы перешли в другой раздел")
+        if self.current == speedread_hook.KEY and name != self.current:
+            try:
+                self.screens[speedread_hook.KEY].on_leave()
+            except Exception:  # noqa: BLE001
+                pass
         self.current = name
         scr = self.screens[name]
         if hasattr(scr, "refresh"):
@@ -268,6 +292,12 @@ class Cockpit(tk.Tk):
 
     def start_cargo(self, adapted: str, original: str, switch: bool = True) -> None:
         self.store.save_cargo(adapted, original)
+        spd = self.screens.get(speedread_hook.KEY)
+        if spd is not None:  # общая библиотека: текст сразу доступен и для чтения
+            try:
+                spd.lib.upsert_from_cargo(adapted, original, self.store.settings.get("cargo_opts"))
+            except Exception:  # noqa: BLE001
+                speedread_hook._log(__import__("traceback").format_exc())
         clear_session()
         self._start_cargo_engine(adapted, original, None, switch=switch)
 
@@ -321,7 +351,10 @@ class Cockpit(tk.Tk):
 
     def _update_sound_button(self) -> None:
         on = self.store.settings["sound"]
-        self.btn_sound.set_text("♪ ЗВУК ВКЛ" if on else "♪ ЗВУК ВЫКЛ")
+        if len(self.SCREENS) > 6:  # много разделов — компактная кнопка
+            self.btn_sound.set_text("♪ ВКЛ" if on else "♪ ВЫКЛ")
+        else:
+            self.btn_sound.set_text("♪ ЗВУК ВКЛ" if on else "♪ ЗВУК ВЫКЛ")
         self.btn_sound.set_active(on)
         self.btn_sound.set_color(CYAN if on else MUTED)
 
@@ -350,6 +383,8 @@ class Cockpit(tk.Tk):
             self.screens["bridge"].on_key(e)
         elif self.current == english_hook.KEY:
             self.screens[english_hook.KEY].on_key(e)
+        elif self.current == speedread_hook.KEY:
+            self.screens[speedread_hook.KEY].on_key(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():
@@ -379,11 +414,12 @@ class Cockpit(tk.Tk):
             self.screens["bridge"].leave_current()
         except Exception:
             pass
-        if english_hook.KEY in self.screens:
-            try:
-                self.screens[english_hook.KEY].close()
-            except Exception:
-                pass
+        for key in (english_hook.KEY, speedread_hook.KEY):
+            if key in self.screens:
+                try:
+                    self.screens[key].close()
+                except Exception:
+                    pass
         st = self.store.settings
         st["geometry"] = "zoomed" if self.state() == "zoomed" else self.geometry()
         self.store.save_settings()
