@@ -8,7 +8,7 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import APP_NAME, __version__, english_hook, missions, speedread_hook, theme
+from stamina import APP_NAME, __version__, avatars, english_hook, missions, pilots, speedread_hook, theme
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -16,7 +16,7 @@ from stamina.session_storage import clear_session, load_session
 from stamina.sounds import SoundBoard
 from stamina.storage import Store
 from stamina.text_processing import process_text
-from stamina.theme import AMBER, BG, CYAN, CYAN_DIM, GREEN, LINE, MUTED, TEXT, blend, px
+from stamina.theme import AMBER, BG, CYAN, CYAN_DIM, GREEN, LINE, MUTED, PANEL, TEXT, blend, px
 
 
 class Cockpit(tk.Tk):
@@ -31,8 +31,10 @@ class Cockpit(tk.Tk):
         self.sound = SoundBoard(bool(st["sound"]), int(st.get("volume", 3)))
         self.translator = None
         self.current: str | None = None
+        self._prev_screen: str | None = None
         self._last_action = None      # для F5: функция перезапуска
-        self.title(f"{APP_NAME} — пульт пилота  v{__version__}")
+        self.pilot = pilots.active()  # None — режим без экипажа (миграция не удалась)
+        self._update_title()
         self._set_icon()
         self.configure(bg=BG)
         self._apply_geometry()
@@ -48,6 +50,7 @@ class Cockpit(tk.Tk):
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show(n))
+        self.bind("<Control-Shift-P>", lambda _e: self.switch_pilot())
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
         self.bind("<F1>", lambda _e: self.open_help())
@@ -62,6 +65,8 @@ class Cockpit(tk.Tk):
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         self.minsize(min(px(1000), sw - 40), min(px(660), sh - 80))
         geo = self.store.settings.get("geometry") or ""
+        if self.pilot is not None:
+            geo = pilots.load_app().get("geometry") or geo  # окно — общее для экипажа
         if geo == "zoomed":
             self.after(10, lambda: self.state("zoomed"))
             geo = ""
@@ -103,14 +108,15 @@ class Cockpit(tk.Tk):
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
         self.clock.pack(side=tk.RIGHT, padx=(px(10), 0))
         self.btn_sound = HudButton(right, "♪ ЗВУК ВЫКЛ", self.toggle_sound, height=36, font_size=9,
-                                   width=116 if len(self.SCREENS) <= 6 else 76)
+                                   width=116 if len(self.SCREENS) <= 6 else 38)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
-        self.btn_help = HudButton(right, "? F1", self.open_help, height=36, font_size=9,
-                                  width=60, color=AMBER)
+        self.btn_help = HudButton(right, "?" if self._compact else "? F1", self.open_help, height=36,
+                                  font_size=9, width=36 if self._compact else 60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
-        self.rank_label = tk.Label(right, text="", bg=BG, fg=AMBER, font=theme.font(10, True),
-                                   justify="right")
-        self.rank_label.pack(side=tk.RIGHT, padx=px(8))
+        self.rank_label = tk.Canvas(right, bg=BG, highlightthickness=0, height=px(44),
+                                    width=px(170 if self._compact else 230), cursor="hand2")
+        self.rank_label.pack(side=tk.RIGHT, padx=px(6))
+        self.rank_label.bind("<Button-1>", lambda _e: self.pilot_menu())
         line = tk.Canvas(self, bg=BG, highlightthickness=0, height=px(6))
         line.pack(fill=tk.X, padx=px(10), pady=(px(4), 0))
         line.bind("<Configure>", lambda e: self._draw_line(line))
@@ -137,6 +143,7 @@ class Cockpit(tk.Tk):
             "log": LogScreen(self.content, self),
             "settings": SettingsScreen(self.content, self),
             "help": HelpScreen(self.content, self),
+            "honor": self._make_honor(),
         }
         if self._english_cls is not None:
             eng = english_hook.create(self._english_cls, self.content, self)
@@ -206,7 +213,7 @@ class Cockpit(tk.Tk):
     def open_help(self) -> None:
         """F1: справка; с вкладки «Английский» — сразу глава про неё."""
         chapter = {english_hook.KEY: "АНГЛИЙСКИЙ",
-                   speedread_hook.KEY: "СКОРОЧТЕНИЕ"}.get(self.current or "")
+                   speedread_hook.KEY: "СКОРОЧТЕНИЕ", "honor": "ЭКИПАЖ"}.get(self.current or "")
         self.show("help")
         scr = self.screens.get("help")
         if scr is not None and hasattr(scr, "goto"):
@@ -223,6 +230,15 @@ class Cockpit(tk.Tk):
                 self.screens[speedread_hook.KEY].on_leave()
             except Exception:  # noqa: BLE001
                 pass
+        if name == "honor" and self.current != "honor":
+            self._prev_screen = self.current
+            try:
+                from stamina.pilot_stats import summary
+                self.store.save_stats()
+                if self.pilot is not None:
+                    pilots.update_pilot(self.pilot["id"], summary=summary(self.pilot["id"]))
+            except Exception:  # noqa: BLE001
+                pass
         self.current = name
         scr = self.screens[name]
         if hasattr(scr, "refresh"):
@@ -236,6 +252,11 @@ class Cockpit(tk.Tk):
         else:
             self.focus_set()
 
+    def _make_honor(self):
+        from stamina.pilot_screens import HonorBoard
+        return HonorBoard(self.content, on_back=lambda: self.show(self._prev_screen or "bridge"),
+                          active=self.pilot["id"] if self.pilot else None)
+
     def set_status(self, text: str, color: str = MUTED) -> None:
         self.status.configure(text=text, fg=color)
 
@@ -243,7 +264,70 @@ class Cockpit(tk.Tk):
         xp = self.store.stats["xp"]
         rank, lo, hi = missions.rank_for(xp)
         tail = f"{xp} / {hi} XP" if hi else f"{xp} XP"
-        self.rank_label.configure(text=f"★ {rank.upper()}\n{tail}")
+        c = self.rank_label
+        c.delete("all")
+        w = int(c.cget("width"))
+        x = w - px(2)
+        if self.pilot is not None:
+            avatars.draw(c, w - px(18), px(22), px(34), self.pilot, bg=BG)
+            x = w - px(42)
+            name = self.pilot["callsign"]
+            if len(name) > 13:
+                name = name[:12] + "…"
+            c.create_text(x, px(9), text=f"{name.upper()} ▾", anchor="e", fill=TEXT, font=theme.font(8, True))
+            c.create_text(x, px(24), text=f"★ {rank.upper()}", anchor="e", fill=AMBER, font=theme.font(7, True))
+            c.create_text(x, px(37), text=tail, anchor="e", fill=MUTED, font=theme.font(7, True))
+        else:
+            c.create_text(x, px(13), text=f"★ {rank.upper()}", anchor="e", fill=AMBER, font=theme.font(10, True))
+            c.create_text(x, px(32), text=tail, anchor="e", fill=AMBER, font=theme.font(9, True))
+
+    # ------------------------------------------------------------------
+    # Экипаж
+    # ------------------------------------------------------------------
+    def _update_title(self) -> None:
+        who = f"пилот {self.pilot['callsign']}" if self.pilot else "пульт пилота"
+        self.title(f"{APP_NAME} — {who}  v{__version__}")
+
+    def pilot_menu(self) -> None:
+        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=blend(PANEL, AMBER, 0.2),
+                    activeforeground=TEXT, font=theme.font(10, True))
+        if self.pilot is not None:
+            m.add_command(label="⇄  СМЕНИТЬ ПИЛОТА   Ctrl+Shift+P", command=self.switch_pilot)
+            m.add_command(label="✎  ЛИЧНОЕ ДЕЛО", command=self.edit_pilot)
+            m.add_command(label="⇪  ЭКСПОРТ ПИЛОТА", command=self.export_pilot)
+            m.add_separator()
+        m.add_command(label="★  ДОСКА ПОЧЁТА", command=lambda: self.show("honor"))
+        c = self.rank_label
+        m.tk_popup(c.winfo_rootx(), c.winfo_rooty() + c.winfo_height())
+
+    def edit_pilot(self) -> None:
+        from stamina.pilot_screens import ProfileDialog
+        if self.pilot is None:
+            return
+        ProfileDialog(self, self.pilot["id"]).run()
+        self.pilot = pilots.get(self.pilot["id"]) or self.pilot
+        self._update_title()
+        self.update_rank()
+
+    def export_pilot(self) -> None:
+        from stamina.pilot_screens import export_pilot
+        if self.pilot is not None:
+            export_pilot(self, pilots.get(self.pilot["id"]) or self.pilot, __version__)
+
+    def switch_pilot(self) -> None:
+        """Сохранить всё и перезапустить программу с экраном «ВХОД В КАБИНУ» (SPEC §6.3)."""
+        if self.pilot is None:
+            return
+        import subprocess
+        import sys
+        self._save_all()
+        main = Path(__file__).resolve().parent.parent / "main.py"
+        try:
+            subprocess.Popen([sys.executable, str(main), "--select"], cwd=str(main.parent))
+        except OSError as exc:
+            messagebox.showerror("Смена пилота", f"Не удалось перезапустить программу:\n{exc}", parent=self)
+            return
+        self.destroy()
 
     # ------------------------------------------------------------------
     # Запуск упражнений
@@ -352,7 +436,7 @@ class Cockpit(tk.Tk):
     def _update_sound_button(self) -> None:
         on = self.store.settings["sound"]
         if len(self.SCREENS) > 6:  # много разделов — компактная кнопка
-            self.btn_sound.set_text("♪ ВКЛ" if on else "♪ ВЫКЛ")
+            self.btn_sound.set_text("♪" if on else "♪̸")
         else:
             self.btn_sound.set_text("♪ ЗВУК ВКЛ" if on else "♪ ЗВУК ВЫКЛ")
         self.btn_sound.set_active(on)
@@ -379,12 +463,18 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _on_key(self, e: tk.Event) -> None:
+        # Ctrl+Shift+P в любой раскладке (Windows: код клавиши P = 80)
+        if (e.state & 0x4) and (e.state & 0x1) and (e.keycode == 80 or e.keysym in ("P", "p")):
+            self.switch_pilot()
+            return
         if self.current == "bridge":
             self.screens["bridge"].on_key(e)
         elif self.current == english_hook.KEY:
             self.screens[english_hook.KEY].on_key(e)
         elif self.current == speedread_hook.KEY:
             self.screens[speedread_hook.KEY].on_key(e)
+        elif self.current == "honor":
+            self.screens["honor"].on_key(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():
@@ -410,6 +500,10 @@ class Cockpit(tk.Tk):
         self.after(33 if smooth else 200, self._tick)
 
     def _on_close(self) -> None:
+        self._save_all()
+        self.destroy()
+
+    def _save_all(self) -> None:
         try:
             self.screens["bridge"].leave_current()
         except Exception:
@@ -426,4 +520,12 @@ class Cockpit(tk.Tk):
         self.store.save_stats()
         if self.translator is not None:
             self.translator.save()
-        self.destroy()
+        if self.pilot is not None:
+            try:
+                app = pilots.load_app()
+                app["geometry"] = st["geometry"]
+                pilots.save_app(app)
+                from stamina.pilot_stats import summary
+                pilots.update_pilot(self.pilot["id"], last_seen=pilots.now_iso(), summary=summary(self.pilot["id"]))
+            except Exception:  # noqa: BLE001
+                pass

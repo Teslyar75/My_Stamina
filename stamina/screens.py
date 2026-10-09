@@ -478,6 +478,7 @@ class LogScreen(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
         _label(top, "БОРТЖУРНАЛ — СТАТИСТИКА ПОЛЁТОВ", size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        HudButton(top, "★ ДОСКА ПОЧЁТА", lambda: app.show("honor"), color=AMBER, height=34).pack(side=tk.RIGHT)
         self.summary = tk.Frame(self, bg=BG)
         self.summary.pack(fill=tk.X, padx=px(10))
         self.cells = []

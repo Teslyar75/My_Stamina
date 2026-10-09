@@ -7,20 +7,19 @@
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
 def _session_dir() -> Path:
-    """Каталог, в котором хранится файл сессии.
+    """Каталог данных активного пилота.
 
-    На Windows используем ``%APPDATA%/Stamina``, иначе ``~/.stamina``.
+    С версии 3.4 данные каждого пилота лежат в ``%APPDATA%/Stamina/pilots/<id>``
+    (см. ``stamina.pilots``). Пока пилот не выбран (или реестра нет) — прежний
+    корень ``%APPDATA%/Stamina`` (вне Windows ``~/.stamina``).
     """
-    appdata = os.environ.get("APPDATA")
-    if appdata:
-        return Path(appdata) / "Stamina"
-    return Path.home() / ".stamina"
+    from stamina import pilots
+    return pilots.active_dir()
 
 
 SESSION_PATH = _session_dir() / "session.json"
