@@ -1,0 +1,27 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Гипердрайв — чтение</title><link rel="stylesheet" href="hud.css"><link rel="stylesheet" href="sr.css"><style>
+body{height:800px}
+.top{display:flex;align-items:center;gap:14px;padding:12px 20px;opacity:.55}
+.top .t{font:700 9pt var(--font-hud);letter-spacing:.06em;text-transform:uppercase;color:var(--cyan)}
+.view{position:absolute;left:40px;right:40px;top:120px;height:470px}
+.view .in{background:var(--bg-2)}
+.wpm{position:absolute;right:30px;bottom:26px;text-align:right}
+.wpm b{font:700 26pt var(--font-mono);color:var(--cyan)}.wpm small{display:block;font:700 8pt var(--font-hud);color:var(--muted);letter-spacing:.06em}
+.foot{position:absolute;left:40px;right:40px;bottom:120px}
+.hint{position:absolute;left:0;right:0;bottom:44px;text-align:center;font:700 9pt var(--font-hud);color:var(--faint);letter-spacing:.08em}
+</style></head><body>
+
+<div class="top"><div class="hex" style="width:26px;height:26px"><i style="width:22px;height:22px;font-size:11pt">★</i></div><span class="t">Гипердрайв · Свой текст · «1984» (рус.)</span><div class="sp"></div><span class="t" style="color:var(--muted)">режим фокуса · шапка скрыта</span></div>
+<div class="pnl view dim"><span class="tl"></span><span class="br"></span><div class="in"><div class="stage">
+ <span class="tick" style="top:120px;height:44px;background:var(--cyan)"></span>
+ <span class="hairline" style="top:166px"></span>
+ <div class="orp" style="--fs:66pt"><span class="l">хо</span><span class="c">л</span><span class="r">одный</span></div>
+ <span class="hairline" style="bottom:166px"></span>
+ <span class="tick" style="bottom:120px;height:44px;background:var(--cyan)"></span>
+ <div class="wpm"><b>452</b><small>СЛОВ / МИН · ↗ К 600</small></div>
+</div></div></div>
+<div class="foot">
+ <div class="ramp"><span>Маршрут</span><span class="mono" style="color:var(--cyan)">1 248 / 9 806 слов · 13%</span><div class="sp"></div><span>Разгон</span><span class="mono" style="color:var(--amber)">+10 слов/мин каждые 30 с</span></div>
+ <div class="bar" style="margin-top:6px"><i style="width:13%"></i></div>
+</div>
+<div class="hint">ПРОБЕЛ — ПАУЗА · ↑ ↓ — СКОРОСТЬ · ← — НАЗАД НА ПРЕДЛОЖЕНИЕ · ESC — ВЫХОД</div>
+<div class="note">Макет · отсек «СКОРОЧТЕНИЕ» · палитра и шрифты Star Typing</div></body></html>

@@ -1,0 +1,56 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Новый пилот</title><link rel="stylesheet" href="hud.css"><style>
+.logo small{white-space:nowrap}
+.av{--a:var(--cyan);position:relative;width:var(--s,84px);height:var(--s,84px);clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);background:var(--a);display:grid;place-items:center;flex:none}
+.av i{width:calc(100% - 4px);height:calc(100% - 4px);clip-path:inherit;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--a) 30%,var(--panel)) 0,var(--panel) 70%);display:grid;place-items:center;font-style:normal;color:var(--a);font-size:calc(var(--s,84px)*.45);font-family:"DejaVu Sans",sans-serif}
+.av.amber{--a:var(--amber)}.av.green{--a:var(--green)}.av.red{--a:var(--red)}.av.purple{--a:var(--purple)}
+.lbl{font:700 8pt var(--font-hud);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.bar{height:6px;background:var(--bg-2);border:1px solid var(--line)}.bar i{display:block;height:100%;background:var(--amber)}
+.kbd{font:700 8pt var(--font-mono);color:var(--muted)}
+
+.strip{display:flex;align-items:center;gap:12px;margin:4px 14px 12px;padding-left:12px;border-left:5px solid var(--amber)}
+.strip h1{font:700 16pt var(--font-hud);text-transform:uppercase;letter-spacing:.06em}
+.grid{display:grid;grid-template-columns:360px minmax(0,1fr) 300px;gap:12px;padding:0 14px}
+.field{margin:6px 0 4px;height:40px;display:flex;align-items:center;padding:0 12px;background:var(--bg-2);border:1px solid var(--line-hi);font:700 15pt var(--font-hud)}
+.field.on{border-color:var(--amber);box-shadow:inset 3px 0 0 var(--amber)}
+.field .cur{display:inline-block;width:2px;height:22px;background:var(--amber);margin-left:2px}
+.hint{font-size:8.5pt;color:var(--muted);margin-bottom:12px}
+.sws{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.sw{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid var(--line-hi);font:700 8.5pt var(--font-hud);color:var(--muted);text-transform:uppercase}
+.sw b{width:14px;height:14px;background:var(--c)}.sw.on{border-color:var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--bg))}
+.avs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+.cell{display:grid;place-items:center;height:74px;background:var(--bg-2);border:1px solid var(--line)}
+.cell.on{border:2px solid var(--amber);background:color-mix(in srgb,var(--amber) 10%,var(--bg))}
+.up{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.crop{position:relative;width:150px;height:150px;background:repeating-linear-gradient(45deg,#0B2A3A 0 10px,#0A2232 10px 20px);border:1px solid var(--line-hi)}
+.crop .sq{position:absolute;left:22px;top:12px;width:116px;height:116px;border:2px solid var(--amber);box-shadow:0 0 0 999px rgba(3,6,12,.55)}
+.crop .hx{position:absolute;left:24px;top:14px;width:112px;height:112px;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);border:0;background:linear-gradient(160deg,#3a6a8a,#14324a)}
+.crop .hx::after{content:"фото";position:absolute;inset:0;display:grid;place-items:center;font:700 10pt var(--font-hud);color:#9fc3d8}
+.prev{display:flex;flex-direction:column;align-items:center;text-align:center}
+.mini{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg-2);border:1px solid var(--line);margin-top:8px}
+</style></head><body><div class="hdr"><div class="logo"><div class="hex"><i>★</i></div><div><b>STAR TYPING</b><small>ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ</small></div></div><div class="sp"></div><span class="clock">18:42</span></div><div class="hline"></div>
+<div class="strip"><div><h1>Зачисление в экипаж · новый пилот</h1><span class="muted" style="font-size:9pt">← вход в кабину · Tab — следующее поле · Enter — создать · Esc — отмена</span></div></div>
+<div class="grid">
+ <div class="pnl amber" style="height:540px"><span class="tl"></span><span class="br"></span><span class="ttl">Личное дело</span><div class="in">
+  <div class="lbl">Позывной *</div><div class="field on">КОМЕТА<span class="cur"></span></div><div class="hint">2–16 символов, будет в шапке и на карточке · должен быть уникальным</div>
+  <div class="lbl">Имя</div><div class="field" style="font-weight:400">Аня</div><div class="hint">необязательно</div>
+  <div class="lbl">Акцентный цвет</div><div class="sws"><span class="sw" style="--c:var(--cyan)"><b></b>Циан</span><span class="sw on" style="--c:var(--amber)"><b></b>Янтарь</span><span class="sw" style="--c:var(--green)"><b></b>Зелёный</span><span class="sw" style="--c:var(--red)"><b></b>Красный</span><span class="sw" style="--c:var(--purple)"><b></b>Фиолет</span></div><div class="hint" style="margin-top:6px">рамка аватара и карточки; остальной интерфейс не меняется</div>
+  <div class="lbl" style="margin-top:4px">Стартовые настройки</div>
+  <div class="ro" style="margin-top:6px"><span class="l">Язык раскладки</span><span class="v" style="font-size:11pt">RU + EN</span></div>
+  <div class="ro" style="--c:var(--amber)"><span class="l">Копировать настройки</span><span class="v" style="font-size:11pt">от ТЕСЛЯР ▾</span></div>
+ </div></div>
+ <div class="pnl" style="height:540px"><span class="tl"></span><span class="br"></span><span class="ttl">Эмблема пилота</span><span class="st muted">16 встроенных</span><div class="in">
+  <div class="avs"><div class="cell"><div class="av " style="--s:58px"><i>★</i></div></div><div class="cell on"><div class="av amber" style="--s:58px"><i>☄</i></div></div><div class="cell"><div class="av green" style="--s:58px"><i>✈</i></div></div><div class="cell"><div class="av purple" style="--s:58px"><i>♆</i></div></div><div class="cell"><div class="av amber" style="--s:58px"><i>⚡</i></div></div><div class="cell"><div class="av " style="--s:58px"><i>◉</i></div></div><div class="cell"><div class="av red" style="--s:58px"><i>▲</i></div></div><div class="cell"><div class="av amber" style="--s:58px"><i>♛</i></div></div><div class="cell"><div class="av " style="--s:58px"><i>⚓</i></div></div><div class="cell"><div class="av purple" style="--s:58px"><i>☾</i></div></div><div class="cell"><div class="av green" style="--s:58px"><i>✪</i></div></div><div class="cell"><div class="av red" style="--s:58px"><i>☢</i></div></div><div class="cell"><div class="av " style="--s:58px"><i>✦</i></div></div><div class="cell"><div class="av green" style="--s:58px"><i>⬡</i></div></div><div class="cell"><div class="av amber" style="--s:58px"><i>♞</i></div></div><div class="cell"><div class="av " style="--s:58px"><i>⊕</i></div></div></div>
+  <div class="up"><div class="crop"><div class="hx"></div><div class="sq"></div></div>
+   <div><div style="font:700 12pt var(--font-hud)">СВОЁ ИЗОБРАЖЕНИЕ</div><div class="muted" style="font-size:9pt;margin:6px 0 10px">PNG / GIF (JPG — если есть Pillow). Обрезается по центру в квадрат 256×256 и показывается в шестиугольнике. Рамку кадрирования можно сдвинуть мышью.</div>
+   <div style="display:flex;gap:8px"><span class="btn"><span>⇪ Загрузить файл…</span></span><span class="btn"><span>⟲ Сбросить</span></span></div></div></div>
+ </div></div>
+ <div class="pnl green" style="height:540px"><span class="tl"></span><span class="br"></span><span class="ttl">Предпросмотр</span><div class="in prev">
+  <div class="av amber" style="--s:120px;margin-top:16px"><i>☄</i></div>
+  <div style="font:700 20pt var(--font-hud);letter-spacing:.06em;margin-top:12px">КОМЕТА</div><div class="muted">Аня</div>
+  <div style="color:var(--amber);font:700 10pt var(--font-hud);margin-top:10px">★ КАДЕТ · 0 / 100 XP</div>
+  <div class="lbl" style="margin-top:24px">В шапке</div>
+  <div class="mini"><div class="av amber" style="--s:30px"><i>☄</i></div><div style="text-align:left"><div style="font:700 9pt var(--font-hud);color:var(--amber)">КОМЕТА ▾</div><div class="kbd">★ КАДЕТ · 0 / 100 XP</div></div></div>
+  <div class="muted" style="font-size:8.5pt;margin-top:auto">Свой прогресс: печать и миссии, «1984», английский, скорочтение, достижения, настройки.</div>
+ </div></div>
+</div>
+<div style="display:flex;gap:10px;padding:14px"><span class="btn amber big act"><span>✓ Создать пилота</span><span class="k">Enter</span></span><span class="btn big"><span>Отмена</span><span class="k">Esc</span></span></div>
+<div class="note">Макет · профили пилотов · палитра и шрифты Star Typing</div></body></html>
