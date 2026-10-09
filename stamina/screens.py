@@ -715,6 +715,18 @@ class HelpScreen(tk.Frame):
         self._load()
         t.configure(state=tk.DISABLED)
 
+    def goto(self, chapter: str | None) -> None:
+        """Прокрутить к заголовку h2, содержащему chapter (None — в начало)."""
+        t = self.text
+        if not chapter:
+            t.yview_moveto(0)
+            return
+        rng = t.tag_ranges("h2")
+        for i in range(0, len(rng), 2):
+            if chapter.lower() in t.get(rng[i], rng[i + 1]).lower():
+                t.yview(rng[i])
+                return
+
     def _load(self) -> None:
         from stamina.storage import PROJECT_DIR
         try:

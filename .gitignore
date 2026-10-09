@@ -28,5 +28,17 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Кэш переводов UPLINK (создаётся автоматически)
+# Кэш переводов UPLINK (личные тексты пользователя)
 /cache/
+
+# Модель распознавания речи Vosk: скачивается scripts/download_vosk_model.py
+/models/
+
+# Личные данные и прогресс (обычно лежат в %APPDATA%\Stamina, здесь — на всякий случай)
+session.json
+stats.json
+settings.json
+english.json
+english_error.log
+*.log
+/data_user/

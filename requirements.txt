@@ -1,2 +1,4 @@
-# Star Typing (бывший Stamina, Python) — внешних зависимостей нет.
-# Нужен только Python 3.10+ со стандартной библиотекой (tkinter, winsound, urllib).
+# Star Typing — Python 3.10+, стандартная библиотека (tkinter, winsound, urllib).
+# Для проверки произношения во вкладке «АНГЛИЙСКИЙ» (необязательно):
+#   pip install vosk sounddevice
+#   python scripts/download_vosk_model.py
