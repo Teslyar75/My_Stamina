@@ -138,8 +138,12 @@ class HudPanel(tk.Canvas):
         if w < 10 or h < 10:
             return
         c = px(12)
-        self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=PANEL, outline=LINE_HI,
+        glass = getattr(self, "glass", False)   # «Живой космос»: панель-стекло
+        self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill="" if glass else PANEL, outline=LINE_HI,
                             tags="frame")
+        if glass:
+            from stamina.living_space import edge_glow
+            edge_glow(self, chamfer(2, 2, w - 3, h - 3, c))
         a = self.accent
         self.create_line(1, 1 + c, 1, 1 + c + px(22), fill=a, width=2, tags="frame")
         self.create_line(1 + c, 1, 1 + c + px(40), 1, fill=a, width=2, tags="frame")
@@ -468,6 +472,10 @@ class Viewport(tk.Canvas):
         self.delete("all")
         w, h = self.winfo_width(), self.winfo_height()
         if w < 20 or h < 20:
+            return
+        self._stars = []
+        if getattr(self, "living", False):   # фон рисует «Живой космос»
+            self.redraw()
             return
         bands = 8
         for i in range(bands):
@@ -869,7 +877,8 @@ class TranslatorPanel(tk.Canvas):
         if w < 60:
             return
         c = px(10)
-        self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=PANEL, outline=LINE_HI)
+        self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill="" if getattr(self, "glass", False) else PANEL,
+                            outline=LINE_HI)
         self.create_line(1, 1 + c, 1, h - 2, fill=AMBER, width=3)
 
         # 1) Заголовок + статус

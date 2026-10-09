@@ -605,6 +605,14 @@ class SettingsScreen(tk.Frame):
                          "(Google / MyMemory). Кэш: папка cache рядом с программой.")
         self._toggle_row("stars", "Звёздное поле", "Звёзды в иллюминаторе летят быстрее, когда вы печатаете "
                          "быстрее. Выключите, если ноутбук греется.")
+        ls = self._row("Живой космос (прототип)", "Мостик: за стеклянными панелями летят звёзды, кометы, "
+                       "планеты и астероиды. «Лёгкий» — меньше объектов и кадров. Нужен Pillow. "
+                       "При «уменьшении движения» Windows картинка неподвижна.")
+        self.ls_btns = {}
+        for key, name in (("off", "ВЫКЛ"), ("light", "ЛЁГКИЙ"), ("full", "ПОЛНЫЙ")):
+            b = HudButton(ls, name, lambda k=key: self._set_living(k), width=96, height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(3))
+            self.ls_btns[key] = b
         self._toggle_row("keyboard", "Экранная клавиатура", "Подсветка следующей клавиши и пальца.")
         self._toggle_row("zones", "Цветные зоны пальцев", "Клавиши окрашены по пальцам, как в прежнем Stamina.")
         fs = self._row("Размер шрифта строки", "Размер букв в иллюминаторе.")
@@ -650,6 +658,13 @@ class SettingsScreen(tk.Frame):
         self.refresh()
         self._test_sound()
 
+    def _set_living(self, key: str) -> None:
+        self.app.store.settings["living_space"] = key
+        self.app.apply_settings()
+        self.refresh()
+        for k, b in self.ls_btns.items():
+            b.set_active(k == key)
+
     def _set_font(self, key: str) -> None:
         self.app.store.settings["font"] = key
         self.app.apply_settings()
@@ -682,6 +697,8 @@ class SettingsScreen(tk.Frame):
             b.set_active(on)
         for lvl, b in self.vol_btns.items():
             b.set_active(st.get("volume") == lvl)
+        for k, b in getattr(self, "ls_btns", {}).items():
+            b.set_active(k == st.get("living_space", "full"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
 

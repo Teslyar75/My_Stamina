@@ -154,15 +154,44 @@ class Bridge(tk.Frame):
         if not st["keyboard"]:
             self.keyboard.pack_forget()
 
+        self.living = None
         right = HudPanel(self, "ТЕЛЕМЕТРИЯ")
         right.grid(row=3, column=2, sticky="nsew", padx=(px(5), px(10)), pady=(0, px(8)))
         self.ring = RingGauge(right.body)
         self.ring.pack(fill=tk.BOTH, expand=True)
         self.readouts = Readouts(right.body, rows=4)
         self.readouts.pack(fill=tk.X)
+        self.panels = [left, center, right]
 
+        self._setup_living()
         self.show_idle()
         self.refresh_stats()
+
+    # ------------------------------------------------------------------
+    # «Живой космос» (прототип)
+    # ------------------------------------------------------------------
+    def _setup_living(self) -> None:
+        from stamina import living_space
+        mode = self.app.store.settings.get("living_space", "full")
+        old = getattr(self, "living", None)
+        if old is not None:
+            old.disable()
+            self.living = None
+        on = living_space.available() and mode in ("light", "full")
+        glass = [self.panels[0], self.panels[1], self.panels[2], self.uplink, self.strip,
+                 self.speed, self.rhythm, self.keyboard, self.ring, self.readouts]
+        for c in glass:
+            c.glass = on
+        self.viewport.living = on
+        if on:
+            self.living = living_space.LivingSpace(self, mode)
+            self.living.add_sharp(self.viewport)
+            for c in glass:
+                self.living.add_glass(c)
+            self.living.enable()
+        for c in self.panels + [self.uplink]:
+            c.event_generate("<Configure>")
+        self.viewport._rebuild()
 
     # ------------------------------------------------------------------
     # Старт / состояние
@@ -494,6 +523,8 @@ class Bridge(tk.Frame):
         else:
             self.keyboard.pack_forget()
         self._setup_uplink()
+        if st.get("living_space", "full") != getattr(self.living, "mode", "off"):
+            self._setup_living()
 
     # ------------------------------------------------------------------
     # UPLINK — переводчик
@@ -675,10 +706,14 @@ class Bridge(tk.Frame):
             warp = 0.15
         else:
             warp = 0.6
+        live = False
+        if self.living is not None:
+            live = self.living.tick(typing=self.state == "run", warp=warp)
+            stars_on = False
         self.viewport.tick(warp, stars_on)
         self.keyboard.tick()
         moving = self.speed.animate()
         if time.monotonic() - self._last_stats > 0.25 and self.state in ("run", "ready"):
             self.refresh_stats()
         self.persist()
-        return stars_on or moving
+        return stars_on or moving or live
