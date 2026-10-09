@@ -98,8 +98,9 @@ class HudButton(tk.Canvas):
             return
         c = min(px(8), h // 3)
         col = self.color
+        base = "" if getattr(self, "glass", False) else PANEL   # «Живой космос»: кнопка-стекло
         if not self._enabled:
-            fill, outline, fg = PANEL, FAINT, FAINT
+            fill, outline, fg = base, FAINT, FAINT
         elif self._pressed:
             fill, outline, fg = blend(col, BG, 0.55), col, "#FFFFFF"
         elif self._active:
@@ -107,7 +108,7 @@ class HudButton(tk.Canvas):
         elif self._hover:
             fill, outline, fg = blend(col, BG, 0.88), col, TEXT
         else:
-            fill, outline, fg = PANEL, blend(col, BG, 0.5), blend(col, TEXT, 0.45)
+            fill, outline, fg = base, blend(col, BG, 0.5), blend(col, TEXT, 0.45)
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=fill, outline=outline,
                             width=2 if self._active else 1)
         if self._enabled and (self._active or self._hover):
@@ -127,7 +128,8 @@ class HudPanel(tk.Canvas):
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0)
         self.title = title
         self.accent = accent
-        self.body = tk.Frame(self, bg=PANEL)
+        # холст, а не Frame: в «Живом космосе» под содержимым панели видно стекло
+        self.body = tk.Canvas(self, bg=PANEL, highlightthickness=0, bd=0)
         top = px(26) if title else px(pad)
         self.body.pack(fill=tk.BOTH, expand=True, padx=px(pad), pady=(top, px(pad)))
         self.bind("<Configure>", lambda _e: self._draw())
@@ -411,6 +413,7 @@ class Viewport(tk.Canvas):
 
     def __init__(self, master: tk.Misc, font_size: int = 26) -> None:
         super().__init__(master, bg=BG2, highlightthickness=0, bd=0, height=px(140))
+        self.living_sharp = True    # «Живой космос»: здесь сцена резкая (окно иллюминатора)
         self._rng = random.Random(7)
         self.set_font_size(font_size)
         self.text = ""

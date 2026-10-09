@@ -35,7 +35,7 @@ DEFAULT_SETTINGS = {
     # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы
     "cargo_opts": {"lower": True, "punct": True, "spaces": True},
     "geometry": "",
-    "living_space": "full",   # «Живой космос» на мостике: off | light | full (прототип)
+    "living_space": "light",  # «Живой космос» во всех разделах: off | light | full
 }
 
 MAX_RUNS = 500

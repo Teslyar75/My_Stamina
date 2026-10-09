@@ -670,7 +670,8 @@ class LoginScreen(tk.Frame):
         wrap.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
         self.canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0)
         self.bar = tk.Scrollbar(wrap, orient="vertical", command=self.canvas.yview)
-        self.inner = tk.Frame(self.canvas, bg=BG)
+        self.inner = tk.Canvas(self.canvas, bg=BG, highlightthickness=0, bd=0)   # холст: «Живой космос» между карточками
+        self.inner.living_sharp = True
         self.canvas.create_window(0, 0, window=self.inner, anchor="nw")
         self.canvas.configure(yscrollcommand=self.bar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -1077,6 +1078,12 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
     holder.grid_rowconfigure(0, weight=1)
     holder.grid_columnconfigure(0, weight=1)
     cur = {"page": None}
+    live = None
+    try:
+        from stamina.living_space import LivingSpace, DEFAULT_MODE
+        live = LivingSpace(root, holder, pilots.load_app().get("living_space", DEFAULT_MODE))
+    except Exception:  # noqa: BLE001
+        live = None
 
     def done(pid):
         box["pid"] = pid
@@ -1098,6 +1105,8 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
             cur["page"].destroy()
         cur["page"] = page
         page.tkraise()
+        if live is not None:
+            root.after(80, lambda: page.winfo_exists() and live.attach(page))
 
     root.bind("<Key>", lambda e: cur["page"] is not None and e.widget.winfo_toplevel() is root
               and not isinstance(e.widget, tk.Entry) and cur["page"].on_key(e))
@@ -1106,5 +1115,7 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
     root.after(200, root.focus_force)
     root.mainloop()
     root.unbind("<Key>")
+    if live is not None:
+        live.detach()
     holder.destroy()
     return box["pid"]

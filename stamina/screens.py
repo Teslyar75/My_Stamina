@@ -605,9 +605,10 @@ class SettingsScreen(tk.Frame):
                          "(Google / MyMemory). Кэш: папка cache рядом с программой.")
         self._toggle_row("stars", "Звёздное поле", "Звёзды в иллюминаторе летят быстрее, когда вы печатаете "
                          "быстрее. Выключите, если ноутбук греется.")
-        ls = self._row("Живой космос (прототип)", "Мостик: за стеклянными панелями летят звёзды, кометы, "
-                       "планеты и астероиды. «Лёгкий» — меньше объектов и кадров. Нужен Pillow. "
-                       "При «уменьшении движения» Windows картинка неподвижна.")
+        ls = self._row("Живой космос", "Во всех разделах за стеклянными панелями летят звёзды, кометы, "
+                       "планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, "
+                       "«Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows "
+                       "картинка неподвижна.")
         self.ls_btns = {}
         for key, name in (("off", "ВЫКЛ"), ("light", "ЛЁГКИЙ"), ("full", "ПОЛНЫЙ")):
             b = HudButton(ls, name, lambda k=key: self._set_living(k), width=96, height=30, font_size=9)
@@ -698,7 +699,7 @@ class SettingsScreen(tk.Frame):
         for lvl, b in self.vol_btns.items():
             b.set_active(st.get("volume") == lvl)
         for k, b in getattr(self, "ls_btns", {}).items():
-            b.set_active(k == st.get("living_space", "full"))
+            b.set_active(k == st.get("living_space", "light"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
 
