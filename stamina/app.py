@@ -60,6 +60,7 @@ def choose_pilot(argv: list[str]) -> str | None:
     want = _arg(argv, "--pilot") or os.environ.get("STAMINA_PILOT")
     plist = pilots.pilots()
     p = pilots.find(want) if want else None
+    first_run = "--welcome" in argv or (not plist and p is None and "--select" not in argv and "--board" not in argv)
     need_login = "--select" in argv or "--board" in argv or (
         p is None and (not plist or (len(plist) >= 2 and (reg or {}).get("ask_on_start", True))))
     if p is None and not need_login:
@@ -77,7 +78,14 @@ def choose_pilot(argv: list[str]) -> str | None:
         pass
     pid = None
     try:
-        if need_login:
+        if first_run:     # чистая установка: приветствие → создание пилота → мостик
+            from stamina import welcome
+            _center(root, theme.px(1260), theme.px(800))
+            pid = welcome.run_welcome(root, app_version=__version__)
+            if pid is None:
+                return None
+            p = pilots.get(pid)
+        elif need_login:
             _center(root, theme.px(1260), theme.px(800))
             pid = pilot_screens.run_login(root, app_version=__version__, initial_board="--board" in argv)
             if pid is None:

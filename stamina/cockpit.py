@@ -57,6 +57,8 @@ class Cockpit(tk.Tk):
         self.bind("<FocusOut>", self._on_focus_out)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._clock_tick()
+        from stamina import keynav
+        keynav.install(self, current_menu=lambda: self.nav_buttons.get(self.current), before_tab=self._tab_typing)
         from stamina.living_space import LivingSpace, DEFAULT_MODE
         self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
         self.after(60, self._bootstrap)
@@ -104,6 +106,7 @@ class Cockpit(tk.Tk):
                 bw = int(tkfont.Font(font=theme.font(fs, True)).measure(title) / theme.S) + 18
             b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36, font_size=fs, width=bw)
             b.pack(side=tk.LEFT, padx=px(3) if len(self.SCREENS) <= 6 else px(1))
+            b.nav_menu = True
             self.nav_buttons[name] = b
         right = tk.Frame(top, bg=BG)
         right.pack(side=tk.RIGHT)
@@ -446,6 +449,13 @@ class Cockpit(tk.Tk):
         self.btn_sound.set_active(on)
         self.btn_sound.set_color(CYAN if on else MUTED)
 
+    def _tab_typing(self, e) -> bool:
+        """Tab во время полёта на мостике — клавиша печати, как раньше (выйти: Esc, потом Tab)."""
+        if self.current == "bridge" and self.screens["bridge"].state == "run":
+            self.screens["bridge"].on_key(e)
+            return True
+        return False
+
     def current_screen_is(self, scr) -> bool:
         return self.screens.get(self.current) is scr
 
@@ -476,6 +486,10 @@ class Cockpit(tk.Tk):
         self.screens["cargo"].load_initial(adapted, original)
         if saved is not None:
             self.resume_cargo()
+        elif not self.store.stats.get("runs"):
+            # новичок: сразу на мостик с первой миссией (домашний ряд) — нажмите любую клавишу и летите
+            self.start_mission(missions.missions_for("en")[0])
+            self.set_status("ДОБРО ПОЖАЛОВАТЬ НА БОРТ — первая миссия готова: печатайте F и J. F1 — инструкция", AMBER)
         else:
             self.show("missions")
 
@@ -485,6 +499,9 @@ class Cockpit(tk.Tk):
             self.switch_pilot()
             return
         if self.current == "bridge":
+            from stamina.hud import HudButton
+            if isinstance(self.focus_get(), HudButton):
+                self.focus_set()         # начали печатать с кнопки в фокусе — фокус обратно мостику
             self.screens["bridge"].on_key(e)
         elif self.current == english_hook.KEY:
             self.screens[english_hook.KEY].on_key(e)

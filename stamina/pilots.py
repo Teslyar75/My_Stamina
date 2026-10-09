@@ -30,9 +30,21 @@ DATA_FILES = ("settings.json", "stats.json", "session.json", "cargo.txt", "cargo
 DATA_DIRS = ("library",)
 
 
-def _root() -> Path:
+def default_root() -> Path:
+    """Корень данных: Windows — %APPDATA%\\Stamina; Linux — ~/.local/share/StarTyping
+    (или $XDG_DATA_HOME/StarTyping; прежняя папка ~/.stamina, если уже есть, остаётся)."""
     appdata = os.environ.get("APPDATA")
-    return Path(appdata) / "Stamina" if appdata else Path.home() / ".stamina"
+    if appdata:
+        return Path(appdata) / "Stamina"
+    old = Path.home() / ".stamina"
+    if old.exists():
+        return old
+    xdg = os.environ.get("XDG_DATA_HOME") or str(Path.home() / ".local" / "share")
+    return Path(xdg) / "StarTyping"
+
+
+def _root() -> Path:
+    return default_root()
 
 
 ROOT_DIR = _root()

@@ -1,5 +1,6 @@
 """Озвучка без интернета: голос Windows (System.Speech, например Microsoft Zira) через один
-фоновый процесс PowerShell. Без дополнительных библиотек. На других ОС — недоступна.
+фоновый процесс PowerShell. Без дополнительных библиотек.
+Linux: espeak-ng / espeak (или spd-say из speech-dispatcher), по процессу на фразу.
 
 Протокол (по строкам, UTF-8, конец строки только \\n):
   Python → PS:  SAY|<id>|<rate>|<base64 text>      STOP
@@ -16,7 +17,9 @@ from __future__ import annotations
 import base64
 import itertools
 import queue
+import shutil
 import subprocess
+import time
 import sys
 import threading
 
@@ -68,19 +71,33 @@ while ($true) {
 """
 
 
+def linux_engine() -> list[str] | None:
+    """Команда озвучки на Linux: espeak-ng → espeak → spd-say; None — нет ни одной."""
+    for exe, args in (("espeak-ng", ["-v", "en-us"]), ("espeak", ["-v", "en-us"]), ("spd-say", ["-w", "-l", "en"])):
+        path = shutil.which(exe)
+        if path:
+            return [path, *args]
+    return None
+
+
+LINUX_HINT = "sudo apt install espeak-ng   (Fedora: sudo dnf install espeak-ng · Arch: sudo pacman -S espeak-ng)"
+
+
 class TTS:
     def __init__(self) -> None:
         self.proc: subprocess.Popen | None = None
         self.voice = ""
         self.last_error = ""
-        self.available = sys.platform == "win32"
+        self.linux = None if sys.platform == "win32" else linux_engine()
+        self.available = sys.platform == "win32" or self.linux is not None
+        self._lproc: subprocess.Popen | None = None
         self.events: queue.Queue = queue.Queue()   # (kind, id, extra)
         self._ids = itertools.count(1)
         self._lock = threading.Lock()
 
     def why_unavailable(self) -> str:
         if sys.platform != "win32":
-            return "озвучка работает только в Windows"
+            return self.last_error or ("нет программы озвучки. Установите: " + LINUX_HINT)
         return self.last_error or "голос Windows не запустился"
 
     def _reader(self, proc: subprocess.Popen) -> None:
@@ -111,6 +128,8 @@ class TTS:
     def _ensure(self) -> bool:
         if not self.available:
             return False
+        if self.linux is not None:
+            return True
         if self.proc and self.proc.poll() is None:
             return True
         try:
@@ -126,6 +145,32 @@ class TTS:
             self.last_error = f"не удалось запустить PowerShell: {exc}"
             self.available = False
             return False
+
+    def _speak_linux(self, sid: int, text: str, rate: int) -> None:
+        cmd = list(self.linux)
+        if "spd-say" in cmd[0]:
+            cmd += ["-r", str(max(-100, min(100, rate * 10))), text]
+        else:
+            cmd += ["-s", str(max(80, min(400, 160 + rate * 15))), text]
+        if self._lproc and self._lproc.poll() is None:
+            self._lproc.terminate()
+        try:
+            t0 = time.monotonic()
+            proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError as exc:
+            self.last_error = f"не удалось запустить озвучку: {exc}"
+            self.events.put(("error", sid, self.last_error))
+            return
+        self._lproc = proc
+        self.events.put(("start", sid, ""))
+
+        def wait():
+            code = proc.wait()
+            if code == 0:
+                self.events.put(("done", sid, str(int((time.monotonic() - t0) * 1000))))
+            else:
+                self.events.put(("cancel", sid, ""))
+        threading.Thread(target=wait, daemon=True).start()
 
     def warm_up(self) -> None:
         threading.Thread(target=self._ensure, daemon=True).start()
@@ -150,6 +195,9 @@ class TTS:
                 self.events.put(("error", 0, self.why_unavailable()))
                 return 0
             sid = next(self._ids)
+            if self.linux is not None:
+                self._speak_linux(sid, text, rate)
+                return sid
             data = base64.b64encode(text.encode("utf-8")).decode("ascii")
             if not self._send(f"SAY|{sid}|{int(rate)}|{data}"):
                 # одна попытка перезапуска процесса
@@ -166,11 +214,15 @@ class TTS:
                 return out
 
     def stop(self) -> None:
+        if self._lproc and self._lproc.poll() is None:
+            self._lproc.terminate()
         with self._lock:
             if self.proc and self.proc.poll() is None:
                 self._send("STOP")
 
     def close(self) -> None:
+        if self._lproc and self._lproc.poll() is None:
+            self._lproc.terminate()
         if self.proc and self.proc.poll() is None:
             try:
                 self.proc.stdin.close()  # type: ignore[union-attr]

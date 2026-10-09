@@ -1,6 +1,6 @@
 """Сохранение и восстановление текущей сессии тренажёра.
 
-Состояние пишется в ``~/.stamina/session.json`` — это позволяет при
+Состояние пишется в ``~/.local/share/StarTyping/...`` (Linux) / ``%APPDATA%\\Stamina`` (Windows) — это позволяет при
 следующем запуске предложить пользователю продолжить упражнение.
 """
 
@@ -16,7 +16,7 @@ def _session_dir() -> Path:
 
     С версии 3.4 данные каждого пилота лежат в ``%APPDATA%/Stamina/pilots/<id>``
     (см. ``stamina.pilots``). Пока пилот не выбран (или реестра нет) — прежний
-    корень ``%APPDATA%/Stamina`` (вне Windows ``~/.stamina``).
+    корень ``%APPDATA%/Stamina`` (Linux — ``~/.local/share/StarTyping``).
     """
     from stamina import pilots
     return pilots.active_dir()

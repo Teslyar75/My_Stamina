@@ -1111,6 +1111,8 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
     root.bind("<Key>", lambda e: cur["page"] is not None and e.widget.winfo_toplevel() is root
               and not isinstance(e.widget, tk.Entry) and cur["page"].on_key(e))
     root.protocol("WM_DELETE_WINDOW", lambda: done(None))
+    from stamina import keynav
+    keynav.install(root)
     show_board() if initial_board else show_login()
     root.after(200, root.focus_force)
     root.mainloop()

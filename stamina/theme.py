@@ -64,11 +64,11 @@ def init(root: tk.Tk) -> None:
     except tk.TclError:
         S = 1.0
     families = set(tkfont.families(root))
-    for name in ("Bahnschrift", "Segoe UI", "DejaVu Sans", "Helvetica"):
+    for name in ("Bahnschrift", "Segoe UI", "Noto Sans", "DejaVu Sans", "Ubuntu", "Liberation Sans", "Cantarell", "Helvetica"):
         if name in families:
             HUD_FAMILY = name
             break
-    for name in ("Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Courier New"):
+    for name in ("Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Noto Sans Mono", "Ubuntu Mono", "Liberation Mono", "Courier New"):
         if name in families:
             MONO_FAMILY = name
             break

@@ -8,8 +8,11 @@ $ErrorActionPreference = "Stop"
 $root   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $mainPy = Join-Path $root "main.py"
 
-# pythonw.exe runs the GUI without a console window; fallback to python.exe
-$target = (Get-Command pythonw.exe -ErrorAction SilentlyContinue).Source
+# Prefer the project's .venv (made by install.bat); pythonw.exe runs the GUI without a console window
+$venvW = Join-Path $root ".venv\Scripts\pythonw.exe"
+$target = $null
+if (Test-Path $venvW) { $target = $venvW }
+if (-not $target) { $target = (Get-Command pythonw.exe -ErrorAction SilentlyContinue).Source }
 if (-not $target) {
     $target = (Get-Command python.exe -ErrorAction SilentlyContinue).Source
 }

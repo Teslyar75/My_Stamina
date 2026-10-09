@@ -125,7 +125,10 @@ class SoundBoard:
         self.enabled = enabled
         self.volume = volume if volume in VOLUMES else 3
         self._click_i = 0
-        self.available = winsound is not None
+        # Windows — winsound; Linux — paplay (PulseAudio/PipeWire) или aplay (ALSA), если есть
+        import shutil
+        self._player = None if winsound is not None else (shutil.which("paplay") or shutil.which("aplay"))
+        self.available = winsound is not None or self._player is not None
         if self.available:
             try:
                 if not (SOUND_DIR / "click1_v1.wav").exists():
@@ -137,6 +140,14 @@ class SoundBoard:
         if not (self.enabled and self.available):
             return
         path = SOUND_DIR / f"{name}_v{self.volume}.wav"
+        if self._player is not None:
+            import subprocess
+            try:
+                args = [self._player, str(path)] if self._player.endswith("paplay") else [self._player, "-q", str(path)]
+                subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except OSError:
+                pass
+            return
         try:
             winsound.PlaySound(
                 str(path),
