@@ -1,0 +1,57 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Гипердрайв — пауза</title><link rel="stylesheet" href="hud.css"><link rel="stylesheet" href="sr.css"><style>
+.grid{display:grid;grid-template-columns:1fr 330px;gap:12px}
+.ctx .in{background:var(--bg-2);padding:34px 40px 18px}
+.ctx p{font:13.5pt/1.5 var(--font-hud);color:var(--muted)}
+.ctx p.dim{color:var(--faint)}
+.cur{color:var(--text);background:color-mix(in srgb,var(--red) 18%,var(--bg));border-bottom:2px solid var(--red);padding:0 4px}
+.cur em{font-style:normal;color:var(--red)}
+.paused{font:700 11pt var(--font-hud);color:var(--amber);letter-spacing:.12em;text-align:center;margin:10px 0 12px}
+.spd{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px 0 4px}
+.spd .btn{width:52px;height:52px;font-size:16pt;padding:0}
+.spd .val{text-align:center}.spd .val b{display:block;font:700 34pt var(--font-mono);color:var(--cyan);line-height:1}.spd .val small{font:700 8pt var(--font-hud);color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;margin:6px 0}
+.fs{display:flex;align-items:center;gap:8px}.fs .btn{height:28px;padding:0 9px}
+.fs b{font:700 13pt var(--font-mono);color:var(--cyan);min-width:42px;text-align:center}
+.tog{display:inline-block;width:36px;height:16px;border:1px solid var(--green);background:var(--green-dim);position:relative}.tog::after{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;background:var(--green)}
+.tog.off{border-color:var(--line-hi);background:var(--bg-2)}.tog.off::after{left:2px;right:auto;background:var(--faint)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+</style></head><body>
+<div class="hdr">
+ <div class="logo"><div class="hex"><i>★</i></div><div><b>STAR TYPING</b><small>ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ</small></div></div>
+ <span class="btn"><span>Мостик</span></span><span class="btn"><span>Миссии</span></span><span class="btn"><span>Свой текст</span></span><span class="btn"><span>Бортжурнал</span></span><span class="btn"><span>Английский</span></span><span class="btn act"><span>Скорочтение</span></span><span class="btn"><span>Настройки</span></span>
+ <div class="sp"></div><div class="rank">★ МИЧМАН<br><span class="mono">404 / 700 XP</span></div><span class="btn amber"><span>? F1</span></span><span class="btn"><span>♪ Звук вкл</span></span><span class="clock">18:40</span>
+</div>
+<div class="hline"></div>
+<div class="subtabs"><span class="btn"><span>Обзор</span></span><span class="btn act"><span>Гипердрайв</span></span><span class="btn"><span>Тренажёры</span></span><span class="btn"><span>Библиотека</span></span><span class="btn"><span>Журнал</span></span><span class="btn"><span>Настройки</span></span></div>
+
+<div class="wrap"><div class="grid">
+ <div class="pnl ctx amber" style="height:560px"><span class="tl"></span><span class="br"></span><span class="ttl">Обзор контекста · пауза</span><span class="st muted">Свой текст · «1984» (рус.) · 13%</span><div class="in">
+  <p class="dim">…Уинстон Смит, прижав подбородок к груди и ёжась от омерзительного ветра, быстро шмыгнул в стеклянную дверь жилого дома «Победа», но всё же вихрь песка и пыли успел ворваться вместе с ним.</p>
+  <p style="margin-top:14px">В вестибюле пахло варёной капустой и старыми половиками. Против входа на стене висел цветной плакат, слишком большой для помещения.</p>
+  <div class="paused">❚❚ &nbsp;ПАУЗА · ОСТАНОВКА НА СЛОВЕ 1 248</div>
+  <p style="color:var(--text)">Был яркий <span class="cur">хо<em>л</em>одный</span> апрельский день, и часы пробили тринадцать.</p>
+  <p style="margin-top:14px">На плакате было изображено громадное, больше метра в ширину, лицо: лицо человека лет сорока пяти, с густыми чёрными усами, грубое, но по-мужски привлекательное.</p>
+  <p class="dim" style="margin-top:14px">Уинстон направился к лестнице. К лифту не стоило и подходить. Он даже в лучшие времена редко работал…</p>
+ </div></div>
+ <div style="display:grid;gap:12px;align-content:start">
+  <div class="pnl" style="height:170px"><span class="tl"></span><span class="br"></span><span class="ttl">Скорость</span><span class="st" style="color:var(--amber)">разгон вкл</span><div class="in">
+   <div class="spd"><span class="btn"><span>▼</span></span><div class="val"><b>450</b><small>СЛОВ / МИН</small></div><span class="btn act"><span>▲</span></span></div>
+   <div class="ramp" style="justify-content:center;margin-top:8px"><span>старт 300</span><span class="mono" style="color:var(--amber)">→ цель 600</span><span>· шаг ±25 <span class="kbd">↑</span><span class="kbd">↓</span></span></div>
+  </div></div>
+  <div class="pnl" style="height:252px"><span class="tl"></span><span class="br"></span><span class="ttl">Настройки полёта</span><div class="in">
+   <div class="row"><span class="lbl">Шрифт</span><div class="fs"><span class="btn"><span>A−</span></span><b>66</b><span class="btn"><span>A+</span></span></div></div>
+   <div class="row"><span class="lbl">Слов за кадр</span><div class="seg2"><span class="btn act"><span>1</span></span><span class="btn"><span>2</span></span><span class="btn"><span>3</span></span><span class="btn"><span>4</span></span><span class="btn"><span>5</span></span></div></div>
+   <div class="row"><span class="lbl">Красная буква (ORP)</span><span class="tog"></span></div>
+   <div class="row"><span class="lbl">Паузы на знаках препинания</span><span class="tog"></span></div>
+   <div class="row"><span class="lbl">Плавный разгон</span><span class="tog"></span></div>
+   <div class="row"><span class="lbl">Озвучка слов</span><span class="tog off"></span></div>
+  </div></div>
+  <div class="pnl dim" style="height:114px"><span class="tl"></span><span class="br"></span><span class="ttl">Телеметрия сессии</span><div class="in" style="padding-top:24px">
+   <div class="ro"><span class="l">Время в полёте</span><span class="v">02:51</span></div>
+   <div class="ro" style="--c:var(--amber)"><span class="l">Средняя скорость</span><span class="v">402</span></div>
+  </div></div>
+ </div>
+</div>
+<div class="acts" style="margin-top:0;flex-wrap:nowrap"><span class="btn amber big act"><span>▶ Продолжить</span><span class="k">Пробел</span></span><span class="btn big"><span>⟲ Назад</span><span class="k">←</span></span><span class="btn big"><span>⇤ В начало</span><span class="k">Home</span></span><span class="btn big green"><span>✓ Финиш + тест</span><span class="k">Enter</span></span><span class="btn big red"><span>Выход</span><span class="k">Esc</span></span></div>
+</div>
+<div class="note">Макет · отсек «СКОРОЧТЕНИЕ» · палитра и шрифты Star Typing</div></body></html>

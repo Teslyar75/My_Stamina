@@ -1,0 +1,29 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Код доступа</title><link rel="stylesheet" href="hud.css"><style>
+.logo small{white-space:nowrap}
+.av{--a:var(--cyan);position:relative;width:var(--s,84px);height:var(--s,84px);clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);background:var(--a);display:grid;place-items:center;flex:none}
+.av i{width:calc(100% - 4px);height:calc(100% - 4px);clip-path:inherit;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--a) 30%,var(--panel)) 0,var(--panel) 70%);display:grid;place-items:center;font-style:normal;color:var(--a);font-size:calc(var(--s,84px)*.45);font-family:"DejaVu Sans",sans-serif}
+.av.amber{--a:var(--amber)}.av.green{--a:var(--green)}.av.red{--a:var(--red)}.av.purple{--a:var(--purple)}
+.lbl{font:700 8pt var(--font-hud);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.bar{height:6px;background:var(--bg-2);border:1px solid var(--line)}.bar i{display:block;height:100%;background:var(--amber)}
+.kbd{font:700 8pt var(--font-mono);color:var(--muted)}
+
+.dim{position:absolute;inset:0;background:rgba(3,6,12,.78);z-index:5}
+.bgshot{position:absolute;inset:0;background:url(pilot-select.png) 0 0/1280px 800px no-repeat;filter:blur(1px)}
+.dlg{position:absolute;left:390px;top:100px;width:500px;height:615px;z-index:6}
+.dlg .in{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:34px}
+.pcs{display:flex;gap:10px;margin:14px 0 6px}
+.pc{width:52px;height:60px;display:grid;place-items:center;background:var(--bg-2);border:1px solid var(--line-hi);font:700 20pt var(--font-mono);color:var(--amber)}
+.pc.f{border-color:var(--amber)}.pc.cur{border:2px solid var(--amber);box-shadow:inset 0 -4px 0 var(--amber)}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;margin-top:12px}
+.key{height:46px;font:700 15pt var(--font-mono)}
+</style></head><body><div class="bgshot"></div><div class="dim"></div>
+<div class="pnl amber dlg"><span class="tl"></span><span class="br"></span><span class="ttl">🔒 Код доступа</span><span class="st muted">Esc — отмена</span><div class="in">
+ <div class="av" style="--s:84px"><i>★</i></div>
+ <div style="font:700 18pt var(--font-hud);letter-spacing:.04em;margin-top:10px">George Orwell</div><div class="mono" style="color:var(--cyan);font-size:12pt">1984</div>
+ <div class="lbl" style="margin-top:14px">Введите код доступа пилота</div>
+ <div class="pcs"><span class="pc f">●</span><span class="pc f">●</span><span class="pc cur"></span><span class="pc"></span></div>
+ <div class="lbl" style="color:var(--red)">✕ Код неверен · осталось попыток: 4</div>
+ <div class="pad"><span class="btn key"><span>1</span></span><span class="btn key"><span>2</span></span><span class="btn key"><span>3</span></span><span class="btn key"><span>4</span></span><span class="btn key"><span>5</span></span><span class="btn key"><span>6</span></span><span class="btn key"><span>7</span></span><span class="btn key"><span>8</span></span><span class="btn key"><span>9</span></span><span class="btn key"><span>⌫</span></span><span class="btn key"><span>0</span></span><span class="btn key"><span>✓</span></span></div>
+ <div style="display:flex;gap:10px;margin-top:16px"><span class="btn amber act"><span>✓ Войти</span><span class="k">Enter</span></span><span class="btn"><span>Отмена</span><span class="k">Esc</span></span></div>
+ <div style="margin-top:12px;font:700 8.5pt var(--font-hud);color:var(--cyan);text-decoration:underline;letter-spacing:.05em">ЗАБЫЛИ КОД? · СБРОС ЧЕРЕЗ ПОДТВЕРЖДЕНИЕ</div>
+</div></div><div class="note">Макет · код доступа пилота · хранится только солёный хэш</div></body></html>

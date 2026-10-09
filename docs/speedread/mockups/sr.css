@@ -1,0 +1,20 @@
+/* Star Typing shell (as in tab_overview.png) */
+.hdr .logo b{font-size:13pt}
+.subtabs{display:flex;gap:6px;align-items:center;padding:0 14px 10px}
+.subtabs .btn{height:28px;font-size:8.5pt;padding:0 11px}
+.kbd{font:700 8pt var(--font-mono);color:var(--muted);border:1px solid var(--line-hi);padding:1px 5px;margin-left:4px}
+.wrap{padding:0 14px;display:grid;gap:12px}
+/* RSVP stage */
+.stage{position:relative;height:100%;display:grid;place-items:center}
+.orp{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;width:100%;font:700 var(--fs,64pt) var(--font-mono);letter-spacing:.01em}
+.orp .l{text-align:right}.orp .c{color:var(--red);text-shadow:0 0 18px color-mix(in srgb,var(--red) 60%,transparent)}.orp .r{text-align:left}
+.tick{position:absolute;left:50%;width:2px;background:var(--cyan-dim);transform:translateX(-1px)}
+.hairline{position:absolute;left:8%;right:8%;height:1px;background:var(--line)}
+.ramp{display:flex;align-items:center;gap:8px;font:700 8pt var(--font-hud);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.bar{height:6px;background:var(--bg-2);border:1px solid var(--line)}.bar i{display:block;height:100%;background:var(--cyan)}
+.seg2{display:inline-flex;gap:0}.seg2 .btn{height:28px;padding:0 10px;font-size:9pt}
+.lbl{font:700 8pt var(--font-hud);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.logo small{white-space:nowrap}
+.wrap>*{min-width:0}
+.hdr .btn{padding:0 7px;font-size:8pt}.logo small{font-size:6.5pt}

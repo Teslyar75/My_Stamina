@@ -1,0 +1,46 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Тренажёр — таблица Шульте 5×5</title><link rel="stylesheet" href="hud.css"><link rel="stylesheet" href="sr.css"><style>
+.strip{display:flex;align-items:center;gap:12px;margin:0 14px 12px;padding-left:12px;border-left:5px solid var(--amber)}
+.strip h1{font:700 14pt var(--font-hud);text-transform:uppercase}
+.grid{display:grid;grid-template-columns:260px 1fr 260px;gap:12px}
+.board .in{display:grid;place-items:center;background:var(--bg-2)}
+.tbl{position:relative;display:grid;grid-template-columns:repeat(5,92px);grid-template-rows:repeat(5,92px);gap:4px}
+.cell{display:grid;place-items:center;font:700 30pt var(--font-mono);color:var(--text);background:var(--panel);border:1px solid var(--line-hi)}
+.cell.ok{color:var(--faint);border-color:var(--line)}
+.dot{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
+.target{text-align:center;margin-top:4px}.target b{display:block;font:700 54pt var(--font-mono);color:var(--amber);line-height:1}
+.timer{font:700 34pt var(--font-mono);color:var(--cyan);text-align:center;margin:6px 0}
+.lvl{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px}.lvl .btn{height:28px;padding:0;font-size:8.5pt}
+.rule{font:9.5pt/1.45 var(--font-hud);color:var(--muted)}
+</style></head><body>
+<div class="hdr">
+ <div class="logo"><div class="hex"><i>★</i></div><div><b>STAR TYPING</b><small>ПУЛЬТ ПИЛОТА · ТРЕНАЖЁР ПЕЧАТИ</small></div></div>
+ <span class="btn"><span>Мостик</span></span><span class="btn"><span>Миссии</span></span><span class="btn"><span>Свой текст</span></span><span class="btn"><span>Бортжурнал</span></span><span class="btn"><span>Английский</span></span><span class="btn act"><span>Скорочтение</span></span><span class="btn"><span>Настройки</span></span>
+ <div class="sp"></div><div class="rank">★ МИЧМАН<br><span class="mono">404 / 700 XP</span></div><span class="btn amber"><span>? F1</span></span><span class="btn"><span>♪ Звук вкл</span></span><span class="clock">18:40</span>
+</div>
+<div class="hline"></div>
+<div class="subtabs"><span class="btn"><span>Обзор</span></span><span class="btn"><span>Гипердрайв</span></span><span class="btn act"><span>Тренажёры</span></span><span class="btn"><span>Библиотека</span></span><span class="btn"><span>Журнал</span></span><span class="btn"><span>Настройки</span></span></div>
+
+<div class="strip"><div><h1>Тренажёр E-SHL · Таблица Шульте 5×5</h1><span class="muted" style="font-size:8pt">← тренажёры обзора · найди числа 1→25 по порядку, взгляд держи на красной точке в центре</span></div></div>
+<div class="wrap"><div class="grid">
+ <div style="display:grid;gap:12px;align-content:start">
+  <div class="pnl amber" style="height:230px"><span class="tl"></span><span class="br"></span><span class="ttl">Найди</span><div class="in"><div class="target"><b>9</b><span class="lbl">следующее: 10</span></div>
+   <div class="bar" style="margin-top:16px"><i style="width:32%;background:var(--amber)"></i></div><div class="ramp" style="margin-top:6px"><span>найдено</span><div class="sp"></div><span class="mono" style="color:var(--amber)">8 / 25</span></div></div></div>
+  <div class="pnl dim" style="height:250px"><span class="tl"></span><span class="br"></span><span class="ttl">Режим</span><div class="in">
+   <div class="lbl">Размер</div><div class="lvl"><span class="btn"><span>3×3</span></span><span class="btn"><span>4×4</span></span><span class="btn act"><span>5×5</span></span><span class="btn"><span>6×6</span></span><span class="btn"><span>7×7</span></span></div>
+   <div class="lbl" style="margin-top:12px">Символы</div><div class="lvl" style="grid-template-columns:repeat(3,1fr)"><span class="btn act"><span>1–25</span></span><span class="btn"><span>А–Я</span></span><span class="btn"><span>A–Z</span></span></div>
+   <div class="lbl" style="margin-top:12px">Вариант</div><div class="lvl" style="grid-template-columns:repeat(2,1fr)"><span class="btn act"><span>Классика</span></span><span class="btn red"><span>Горбов</span></span></div>
+  </div></div>
+ </div>
+ <div class="pnl board" style="height:530px"><span class="tl"></span><span class="br"></span><span class="ttl">Поле обзора</span><span class="st" style="color:var(--green)">● идёт · без ошибок</span><div class="in"><div class="tbl"><div class="cell">14</div><div class="cell">20</div><div class="cell ok">6</div><div class="cell">23</div><div class="cell">24</div><div class="cell">17</div><div class="cell ok">8</div><div class="cell">25</div><div class="cell">10</div><div class="cell ok">7</div><div class="cell">16</div><div class="cell ok">1</div><div class="cell">19</div><div class="cell">9</div><div class="cell">15</div><div class="cell">22</div><div class="cell">12</div><div class="cell ok">4</div><div class="cell">18</div><div class="cell ok">3</div><div class="cell ok">2</div><div class="cell">21</div><div class="cell">13</div><div class="cell ok">5</div><div class="cell">11</div><span class="dot"></span></div></div></div>
+ <div style="display:grid;gap:12px;align-content:start">
+  <div class="pnl" style="height:150px"><span class="tl"></span><span class="br"></span><span class="ttl">Таймер</span><div class="in"><div class="timer">00:12.4</div><div class="ramp" style="justify-content:center"><span>рекорд 5×5</span><span class="mono" style="color:var(--green)">00:31.8</span></div></div></div>
+  <div class="pnl dim" style="height:200px"><span class="tl"></span><span class="br"></span><span class="ttl">Телеметрия</span><div class="in">
+   <div class="ro" style="--c:var(--red)"><span class="l">Ошибки</span><span class="v">0</span></div>
+   <div class="ro" style="--c:var(--amber)"><span class="l">Темп, с / число</span><span class="v">1.55</span></div>
+   <div class="ro" style="--c:var(--green)"><span class="l">Норма ★★★</span><span class="v">≤ 35 с</span></div></div></div>
+  <div class="pnl dim" style="height:166px"><span class="tl"></span><span class="br"></span><span class="ttl">Правило</span><div class="in"><p class="rule">Смотри в центр. Находи числа периферийным зрением, щёлкай мышью или вводи с клавиатуры. Ошибка +2 с. Числа после нахождения гаснут (настройка).</p></div></div>
+ </div>
+</div>
+<div style="display:flex;gap:8px;justify-content:center"><span class="btn amber big"><span>⟲ Заново</span><span class="k">R</span></span><span class="btn big"><span>❚❚ Пауза</span><span class="k">Пробел</span></span><span class="btn big red"><span>Выход</span><span class="k">Esc</span></span></div>
+</div>
+<div class="note">Макет · отсек «СКОРОЧТЕНИЕ» · палитра и шрифты Star Typing</div></body></html>

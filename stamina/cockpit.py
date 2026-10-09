@@ -8,7 +8,7 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import APP_NAME, __version__, missions, theme
+from stamina import APP_NAME, __version__, english_hook, missions, theme
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -36,13 +36,17 @@ class Cockpit(tk.Tk):
         self._set_icon()
         self.configure(bg=BG)
         self._apply_geometry()
+        self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
+        if self._english_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(english_hook.KEY, english_hook.TITLE), ("settings", "НАСТРОЙКИ")]
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show(n))
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
-        self.bind("<F1>", lambda _e: self.show("help"))
+        self.bind("<F1>", lambda _e: self.open_help())
         self.bind("<FocusOut>", self._on_focus_out)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._clock_tick()
@@ -80,7 +84,8 @@ class Cockpit(tk.Tk):
         nav.pack(side=tk.LEFT, padx=px(10))
         self.nav_buttons: dict[str, HudButton] = {}
         for i, (name, title) in enumerate(self.SCREENS, 1):
-            b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36, font_size=10)
+            b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36,
+                          font_size=10 if len(self.SCREENS) <= 5 else 9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.nav_buttons[name] = b
         right = tk.Frame(top, bg=BG)
@@ -90,7 +95,7 @@ class Cockpit(tk.Tk):
         self.btn_sound = HudButton(right, "♪ ЗВУК ВЫКЛ", self.toggle_sound, height=36, font_size=9,
                                    width=116)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
-        self.btn_help = HudButton(right, "? F1", lambda: self.show("help"), height=36, font_size=9,
+        self.btn_help = HudButton(right, "? F1", self.open_help, height=36, font_size=9,
                                   width=60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
         self.rank_label = tk.Label(right, text="", bg=BG, fg=AMBER, font=theme.font(10, True),
@@ -112,7 +117,7 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text="ВСЕ СИСТЕМЫ В НОРМЕ", bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text="F1 справка · F5 заново · Esc пауза · F9 звук · Ctrl+1…5 разделы",
+        tk.Label(status, text=f"F1 справка · F5 заново · Esc пауза · F9 звук · Ctrl+1…{len(self.SCREENS)} разделы",
                  bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
@@ -123,6 +128,13 @@ class Cockpit(tk.Tk):
             "settings": SettingsScreen(self.content, self),
             "help": HelpScreen(self.content, self),
         }
+        if self._english_cls is not None:
+            eng = english_hook.create(self._english_cls, self.content, self)
+            if eng is not None:
+                self.screens[english_hook.KEY] = eng
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != english_hook.KEY]
+                self.nav_buttons.pop(english_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
@@ -173,6 +185,14 @@ class Cockpit(tk.Tk):
             c.create_line(x, px(1), x + px(5), px(1), fill=CYAN_DIM, width=2)
 
     # ------------------------------------------------------------------
+    def open_help(self) -> None:
+        """F1: справка; с вкладки «Английский» — сразу глава про неё."""
+        chapter = "АНГЛИЙСКИЙ" if self.current == english_hook.KEY else None
+        self.show("help")
+        scr = self.screens.get("help")
+        if scr is not None and hasattr(scr, "goto"):
+            scr.goto(chapter)
+
     def show(self, name: str) -> None:
         if name == self.current:
             return
@@ -328,6 +348,8 @@ class Cockpit(tk.Tk):
     def _on_key(self, e: tk.Event) -> None:
         if self.current == "bridge":
             self.screens["bridge"].on_key(e)
+        elif self.current == english_hook.KEY:
+            self.screens[english_hook.KEY].on_key(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():
@@ -357,6 +379,11 @@ class Cockpit(tk.Tk):
             self.screens["bridge"].leave_current()
         except Exception:
             pass
+        if english_hook.KEY in self.screens:
+            try:
+                self.screens[english_hook.KEY].close()
+            except Exception:
+                pass
         st = self.store.settings
         st["geometry"] = "zoomed" if self.state() == "zoomed" else self.geometry()
         self.store.save_settings()
