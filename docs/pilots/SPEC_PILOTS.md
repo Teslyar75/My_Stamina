@@ -1,6 +1,6 @@
 # Профили пилотов (несколько пользователей) — спецификация
 
-> Статус: **проект**, код не написан. План сборки — [CURSOR_TASK_PILOTS.md](CURSOR_TASK_PILOTS.md).
+> Статус: **реализовано в версии 3.4.0** (см. STATUS). План сборки — [CURSOR_TASK_PILOTS.md](CURSOR_TASK_PILOTS.md).
 > Касается всего Star Typing: печать и миссии, свой текст («1984»), вкладка «АНГЛИЙСКИЙ», будущий отсек «СКОРОЧТЕНИЕ» (`docs/speedread/`).
 > Макеты: `mockups/pilot-select.png`, `mockups/pilot-create.png` (PNG отрисованы на Linux шрифтом DejaVu, в Windows HTML покажут Bahnschrift / Cascadia Mono).
 

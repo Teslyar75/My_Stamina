@@ -45,3 +45,9 @@ english_error.log
 speedread.json
 speedread_error.log
 /library/
+
+# Экспорт пилотов (личные данные)
+*.stpilot
+pilots.json
+app.json
+/pilots/

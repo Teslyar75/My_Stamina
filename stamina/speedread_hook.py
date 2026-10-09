@@ -13,7 +13,7 @@ KEY, TITLE = "speedread", "СКОРОЧТЕНИЕ"
 
 def _log(text: str) -> None:
     try:
-        from stamina.storage import DATA_DIR
+        from stamina.pilots import ROOT_DIR as DATA_DIR  # логи общие для экипажа
         DATA_DIR.mkdir(parents=True, exist_ok=True)
         with open(DATA_DIR / "speedread_error.log", "a", encoding="utf-8") as f:
             f.write(f"--- {time.strftime('%Y-%m-%d %H:%M:%S')}\n{text}\n")
