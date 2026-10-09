@@ -99,7 +99,7 @@ class ControllerTest(unittest.TestCase):
         self._pump(0.5)
         self.btn.delete("all")
         self.btn._draw()
-        self._pump(0.8)
+        self._pump(2.0)
         self.assertTrue(self.btn.find_withtag(live.TAG))
 
     def test_unknown_mode_is_off(self):

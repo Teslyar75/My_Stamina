@@ -614,6 +614,11 @@ class SettingsScreen(tk.Frame):
             b = HudButton(ls, name, lambda k=key: self._set_living(k), width=96, height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.ls_btns[key] = b
+        from stamina import living_space as _ls
+        if not _ls.available():   # без Pillow — понятная подсказка вместо «ничего не происходит»
+            from stamina.deps import pillow_hint
+            tk.Label(ls, text=pillow_hint(), fg=AMBER, bg=PANEL, font=theme.font(8, True),
+                     wraplength=px(420), justify="left").pack(side=tk.LEFT, padx=px(8))
         self._toggle_row("keyboard", "Экранная клавиатура", "Подсветка следующей клавиши и пальца.")
         self._toggle_row("zones", "Цветные зоны пальцев", "Клавиши окрашены по пальцам, как в прежнем Stamina.")
         fs = self._row("Размер шрифта строки", "Размер букв в иллюминаторе.")
@@ -685,7 +690,11 @@ class SettingsScreen(tk.Frame):
     def _open_data(self) -> None:
         try:
             DATA_DIR.mkdir(parents=True, exist_ok=True)
-            os.startfile(str(DATA_DIR))  # type: ignore[attr-defined]
+            if hasattr(os, "startfile"):
+                os.startfile(str(DATA_DIR))  # type: ignore[attr-defined]
+            else:
+                import subprocess
+                subprocess.Popen(["xdg-open", str(DATA_DIR)])
         except (AttributeError, OSError):
             messagebox.showinfo("Данные", str(DATA_DIR), parent=self)
 

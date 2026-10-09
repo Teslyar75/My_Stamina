@@ -4,6 +4,65 @@
 
 *«Живой космос» (3.5): [полное видео MP4](docs/living_space/living_space.mp4) · подробнее — [ниже](#живой-космос-версия-35).*
 
+## 🚀 Быстрый старт для новичка
+
+**Ваша система:** [🪟 Windows](#windows--один-двойной-щелчок) · [🐧 Linux (Ubuntu и др.)](#linux-ubuntu--одна-команда)
+
+### Windows — один двойной щелчок
+1. Скачайте программу: зелёная кнопка **Code → Download ZIP**
+   ([прямая ссылка](https://github.com/Teslyar75/My_Stamina/archive/refs/heads/master.zip)) и распакуйте,
+   например, в `C:\StarTyping`. (Или `git clone https://github.com/Teslyar75/My_Stamina.git`.)
+2. Дважды щёлкните **`install.bat`**. Он сделает всё сам:
+   - нет Python — поставит Python 3.12 через `winget` (если winget нет, откроет python.org: при установке
+     поставьте галочку **«Add python.exe to PATH»** и запустите `install.bat` ещё раз);
+   - создаст папку `.venv`, поставит Pillow; спросит один раз (20 с, по умолчанию «нет») про проверку
+     произношения (vosk + модель ~40 МБ);
+   - создаст ярлык **«Star Typing»** на рабочем столе (это `create_shortcut.ps1`; вручную:
+     `powershell -ExecutionPolicy Bypass -File create_shortcut.ps1`) и запустит программу.
+3. Дальше — ярлык на рабочем столе или `Stamina.bat`. Если запустить `Stamina.bat` раньше `install.bat`,
+   он сам предложит установку.
+
+### Linux (Ubuntu) — одна команда
+1. Скачайте и распакуйте ZIP (как выше) или `git clone https://github.com/Teslyar75/My_Stamina.git`.
+2. В папке программы выполните:
+   ```bash
+   bash install.sh
+   ```
+   Скрипт спросит пароль sudo и поставит всё: `python3 python3-tk python3-venv python3-pip libportaudio2
+   espeak-ng alsa-utils` (apt; есть варианты для dnf, pacman, zypper), папку `.venv` с Pillow, vosk и
+   sounddevice, модель речи, ярлык в меню (`~/.local/share/applications/star-typing.desktop`) и на рабочем
+   столе — и запустит программу. Потом запуск: ярлык или `./run.sh`. Без проверки произношения:
+   `bash install.sh --no-voice`.
+
+   Совсем без ZIP, одной строкой (скачает в `~/StarTyping`):
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/Teslyar75/My_Stamina/master/install.sh | bash
+   ```
+
+### Что вы увидите
+| 1. Добро пожаловать на борт | 2. Создание пилота | 3. Мостик: первая миссия |
+|---|---|---|
+| ![](screenshots/quickstart/1_welcome.png) | ![](screenshots/quickstart/2_create_pilot.png) | ![](screenshots/quickstart/3_bridge.png) |
+
+1. **«ДОБРО ПОЖАЛОВАТЬ НА БОРТ»** — три шага о разделах и **проверка бортовых систем**: система
+   определяется сама (Windows / Linux, можно поправить), рядом — что установлено: Pillow, озвучка
+   (SAPI в Windows, espeak-ng в Linux), vosk + sounddevice, модель речи. Чего-то нет — одна кнопка
+   **«УСТАНОВИТЬ ВСЁ»** (pip; системные пакеты Linux — через окно пароля, или покажет команду `sudo apt …`).
+2. **«СОЗДАТЬ ПИЛОТА И НАЧАТЬ»** (Enter) — позывной, эмблема, цвет, код доступа по желанию.
+3. **Мостик** с первой миссией (клавиши F и J) — просто начните печатать. **F1** — инструкция.
+
+### Если что-то не так
+| Проблема | Решение |
+|---|---|
+| `python` не найден / «Python не установлен» (Windows) | запустите `install.bat`; если winget нет — поставьте Python с python.org с галочкой **Add python.exe to PATH**, перезапустите `install.bat` |
+| Открывается Microsoft Store вместо Python | Параметры → Приложения → Псевдонимы выполнения приложений → выключите `python.exe`/`python3.exe`, затем `install.bat` |
+| Нет фона «Живой космос», в настройках «Не установлен Pillow» | кнопка «УСТАНОВИТЬ ВСЁ» в приветствии или `install.bat` / `bash install.sh` |
+| Linux: `No module named tkinter` | `sudo apt install python3-tk` (или просто `bash install.sh`) |
+| Linux: `externally-managed-environment` при pip | ставьте через `bash install.sh` — он делает отдельную `.venv` |
+| Не слышно звуков / озвучки (Linux) | `sudo apt install alsa-utils espeak-ng`; проверьте: `espeak-ng "hello"` |
+| Микрофон не работает | Windows: Параметры → Конфиденциальность → Микрофон → разрешить приложениям; Linux: `sudo apt install libportaudio2`, выберите микрофон в настройках звука. Без микрофона «говорение» переходит на самооценку |
+| Данные | Windows: `%APPDATA%\Stamina`, Linux: `~/.local/share/StarTyping` |
+
 *Бывший **Stamina**.*
 
 Star Typing — настольная программа на Python (tkinter) в стиле **пульта
@@ -373,6 +432,14 @@ PhotoImage (`paste`). Подробно — [docs/living_space/SPEC.md](docs/livi
 | Ctrl+Shift+P | сменить пилота (экран «ВХОД В КАБИНУ») |
 | Скорочтение: Пробел / ↑ ↓ / ← → / 1–5 / S / Enter | пауза / скорость / по предложениям / слов в кадре / к месту печати / финиш и тест |
 | В отчёте: Enter / → / R / Esc | повторить / следующая миссия / ремонт / закрыть |
+| **Tab** | без мыши: прыжок в главное меню; ещё раз Tab — к кнопкам раздела |
+| **← → ↑ ↓** (кнопка в фокусе) | соседняя вкладка / подвкладка / кнопка |
+| **Enter / Пробел** (кнопка в фокусе) | нажать; **Esc** или **Shift+Tab** — убрать фокус |
+
+Кнопка в фокусе отмечена янтарными уголками. Во время полёта на мостике Tab и стрелки идут в печать:
+выйти к меню — **Esc**, затем **Tab**. Работает во всех разделах, на экранах приветствия и входа, в диалогах.
+
+![Навигация с клавиатуры: фокус на подвкладке](screenshots/quickstart/7_nav_content.png)
 
 ## Где хранятся данные
 `%APPDATA%\Stamina\` (на Linux `~/.stamina`). С версии 3.4 там лежат реестр экипажа `pilots.json`,
@@ -397,19 +464,19 @@ PhotoImage (`paste`). Подробно — [docs/living_space/SPEC.md](docs/livi
 Кэш переводов: `cache\translations.json` в папке программы.
 
 ## Установка и запуск
-```powershell
+Для новичка — [Быстрый старт](#-быстрый-старт-для-новичка) (`install.bat` / `bash install.sh`). Вручную:
+```bash
 git clone https://github.com/Teslyar75/My_Stamina.git
 cd My_Stamina
+python -m venv .venv          # Linux: python3 -m venv .venv
+.venv\Scripts\pip install -r requirements.txt    # Linux: .venv/bin/pip install -r requirements.txt
 python main.py
 ```
-Проверка произношения во вкладке «АНГЛИЙСКИЙ» (необязательно; модель Vosk ~40 МБ в git не хранится):
-```powershell
-pip install vosk sounddevice
-python scripts/download_vosk_model.py   # скачает модель в models/
-```
-- `Stamina.bat` — запуск двойным кликом без чёрного окна;
-- `create_shortcut.ps1` — создаёт ярлык «Star Typing» на рабочем столе со значком-звездой
-  (старый ярлык «Stamina» удаляется).
+Проверка произношения (необязательно; модель Vosk ~40 МБ в git не хранится):
+`pip install vosk sounddevice` и `python scripts/download_vosk_model.py`.
+- `install.bat` / `install.sh` — установка в один шаг; `Stamina.bat` / `run.sh` — запуск;
+- `create_shortcut.ps1` — ярлык «Star Typing» на рабочем столе Windows (из `.venv`, если есть);
+- данные: Windows `%APPDATA%\Stamina`, Linux `~/.local/share/StarTyping` (прежняя `~/.stamina` тоже читается).
 
 ## Тесты
 ```powershell

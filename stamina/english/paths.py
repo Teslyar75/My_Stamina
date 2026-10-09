@@ -31,8 +31,8 @@ def stamina_data_dir() -> Path:
         from stamina.storage import DATA_DIR as ST_DIR  # тот же каталог, что у Star Typing
         return Path(ST_DIR)
     except Exception:
-        appdata = os.environ.get("APPDATA")
-        return Path(appdata) / "Stamina" if appdata else Path.home() / ".stamina"
+        from stamina.pilots import default_root
+        return default_root()
 
 
 PROGRESS_PATH = stamina_data_dir() / "english.json"

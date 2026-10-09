@@ -51,3 +51,4 @@ speedread_error.log
 pilots.json
 app.json
 /pilots/
+.first_run_done

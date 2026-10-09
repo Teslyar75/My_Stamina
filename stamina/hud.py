@@ -42,8 +42,9 @@ class HudButton(tk.Canvas):
         measured = tkfont.Font(font=self._font).measure(text)
         w = px(width) if width else measured + px(30)
         super().__init__(master, width=w, height=px(height), bg=_bg_of(master),
-                         highlightthickness=0, bd=0, cursor="hand2")
+                         highlightthickness=0, bd=0, cursor="hand2", takefocus=1)
         self.command = command
+        self._focus = False
         self.color = color
         self._hover = False
         self._pressed = False
@@ -54,6 +55,18 @@ class HudButton(tk.Canvas):
         self.bind("<Leave>", lambda _e: self._set_hover(False))
         self.bind("<ButtonPress-1>", self._on_press)
         self.bind("<ButtonRelease-1>", self._on_release)
+        self.bind("<FocusIn>", lambda _e: self._set_focus(True))
+        self.bind("<FocusOut>", lambda _e: self._set_focus(False))
+        from stamina import keynav
+        keynav.attach(self)
+
+    def _set_focus(self, value: bool) -> None:
+        self._focus = value
+        self._draw()
+
+    def invoke(self) -> None:
+        if self._enabled and self.command:
+            self.command()
 
     def _set_hover(self, value: bool) -> None:
         self._hover = value
@@ -114,6 +127,10 @@ class HudButton(tk.Canvas):
         if self._enabled and (self._active or self._hover):
             self.create_line(1 + c, 1, 1 + c + px(14), 1, fill=col, width=3)
         self.create_text(w / 2, h / 2, text=self._text, fill=fg, font=self._font)
+        if self._focus:   # фокус клавиатуры: янтарные «скобки прицела» по углам
+            k = min(px(10), h // 2)
+            for (x0, y0, dx, dy) in ((2, 2, 1, 1), (w - 3, 2, -1, 1), (2, h - 3, 1, -1), (w - 3, h - 3, -1, -1)):
+                self.create_line(x0, y0 + dy * k, x0, y0, x0 + dx * k, y0, fill=AMBER, width=2)
 
 
 # ---------------------------------------------------------------------------
