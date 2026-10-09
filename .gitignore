@@ -42,3 +42,6 @@ english.json
 english_error.log
 *.log
 /data_user/
+speedread.json
+speedread_error.log
+/library/
