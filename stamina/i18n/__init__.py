@@ -24,7 +24,7 @@ _table: dict = {}
 
 def _config_path() -> Path:
     from stamina import pilots
-    return pilots.default_root() / "ui.json"
+    return Path(pilots.ROOT_DIR) / "ui.json"
 
 
 def saved_language() -> str:

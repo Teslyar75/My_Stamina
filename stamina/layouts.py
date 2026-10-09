@@ -7,20 +7,21 @@
 from __future__ import annotations
 
 from stamina import theme
+from stamina.i18n import t
 
 # Пальцы
 L_PINKY, L_RING, L_MIDDLE, L_INDEX, R_INDEX, R_MIDDLE, R_RING, R_PINKY, THUMB, MOD = range(10)
 
 FINGER_NAMES = {
-    L_PINKY: "левый мизинец",
-    L_RING: "левый безымянный",
-    L_MIDDLE: "левый средний",
-    L_INDEX: "левый указательный",
-    R_INDEX: "правый указательный",
-    R_MIDDLE: "правый средний",
-    R_RING: "правый безымянный",
-    R_PINKY: "правый мизинец",
-    THUMB: "большой палец",
+    L_PINKY: t("левый мизинец"),
+    L_RING: t("левый безымянный"),
+    L_MIDDLE: t("левый средний"),
+    L_INDEX: t("левый указательный"),
+    R_INDEX: t("правый указательный"),
+    R_MIDDLE: t("правый средний"),
+    R_RING: t("правый безымянный"),
+    R_PINKY: t("правый мизинец"),
+    THUMB: t("большой палец"),
     MOD: "",
 }
 

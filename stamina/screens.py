@@ -519,10 +519,12 @@ class LogScreen(tk.Frame):
         self.kb.pack(fill=tk.BOTH, expand=True)
         row = tk.Frame(heat.body, bg=PANEL)
         row.pack(fill=tk.X)
-        self.b_en = HudButton(row, "EN", lambda: self._heat_lang("en"), height=26, font_size=9)
-        self.b_en.pack(side=tk.LEFT)
-        self.b_ru = HudButton(row, "RU", lambda: self._heat_lang("ru"), height=26, font_size=9)
-        self.b_ru.pack(side=tk.LEFT, padx=px(6))
+        self.heat_btns = {}
+        for code in ("en", "de", "ru", "uk"):       # раскладка карты: QWERTY / QWERTZ / ЙЦУКЕН RU / ЙЦУКЕН UA
+            b = HudButton(row, code.upper().replace("UK", "UA"), lambda c=code: self._heat_lang(c),
+                          height=26, font_size=9, width=44)
+            b.pack(side=tk.LEFT, padx=(0, px(4)))
+            self.heat_btns[code] = b
         _label(row, _t("цифра на клавише — % ошибок; зелёный — хорошо, красный — нужен ремонт"),
                fg=MUTED, size=8).pack(side=tk.LEFT, padx=px(8))
 
@@ -570,8 +572,8 @@ class LogScreen(tk.Frame):
             val.configure(text=v, fg=col, font=theme.font(18 if len(v) < 12 else 12, True, mono=True))
             sub.configure(text=s)
         self.chart.set_runs(runs)
-        self.b_en.set_active(self.heat_lang == "en")
-        self.b_ru.set_active(self.heat_lang == "ru")
+        for code, b in self.heat_btns.items():
+            b.set_active(self.heat_lang == code)
         self.kb.set_lang(self.heat_lang)
         self.kb.set_heat(self.app.store.key_error_rates(min_total=5))
         weak = self.app.store.weakest_keys(self.heat_lang, count=8)
@@ -598,7 +600,11 @@ class SettingsScreen(tk.Frame):
         _label(top, _t("НАСТРОЙКИ БОРТОВЫХ СИСТЕМ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
         panel = HudPanel(self, _t("СИСТЕМЫ"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
-        self.body = panel.body
+        from stamina.speedread.ui import ScrollFrame
+        sf = ScrollFrame(panel.body, bg=PANEL)      # строк больше, чем помещается на ноутбуке — прокрутка
+        sf.pack(fill=tk.BOTH, expand=True)
+        sf.canvas.living_sharp = False
+        self.body = sf.inner
         self.toggles: dict[str, HudButton] = {}
         self._row_i = 0
         from stamina import i18n
@@ -659,7 +665,7 @@ class SettingsScreen(tk.Frame):
         left = tk.Frame(row, bg=PANEL)
         left.pack(side=tk.LEFT, fill=tk.X, expand=True)
         _label(left, title, size=11, bold=True).pack(anchor="w")
-        _label(left, desc, fg=MUTED, size=8, wraplength=px(650), justify="left").pack(anchor="w")
+        _label(left, desc, fg=MUTED, size=8, wraplength=px(760), justify="left").pack(anchor="w")
         right = tk.Frame(row, bg=PANEL)
         right.pack(side=tk.RIGHT)
         tk.Frame(self.body, bg=LINE, height=1).pack(fill=tk.X)

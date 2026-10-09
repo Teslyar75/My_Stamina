@@ -1,0 +1,179 @@
+PILOT ANLEGEN
+Rufzeichen, Emblem und (optional) ein Zugangscode. Jeder Pilot hat seinen eigenen Fortschritt — die ganze Familie kann an einem Computer lernen.
+BRÜCKE UND MISSIONEN
+Tippe den Text im Bullauge, ohne auf die Tastatur zu schauen: der Hinweis zeigt Taste und Finger. Missionen lehren die Tastatur Reihe für Reihe, Genauigkeit bringt Sterne und Dienstgrade.
+EIGENER TEXT · ENGLISCH · SCHNELLLESEN
+Lade ein Buch und tippe es mit UPLINK-Übersetzung, lerne Wörter und lies schneller. F1 — ausführliche Anleitung jederzeit.
+ERSTER START
+Version {0}
+SPRACHE:
+SCHRITT {0}
+BORDSYSTEME PRÜFEN
+DEIN SYSTEM:
+automatisch erkannt — {0}
+⇩ ALLES INSTALLIEREN
+Ohne die optionalen Punkte funktioniert alles: Tippen, Missionen, eigener Text, Englisch (ohne Mikrofon), Schnelllesen. Sie lassen sich auch später installieren — README, Abschnitt „Schnellstart“.
+► PILOT ANLEGEN UND STARTEN  ENTER
+⇩ ICH HABE EINE PILOTENDATEI (.stpilot)
+BEENDEN  ESC
+Programm läuft unter {0} — Befehle für {1}
+erforderlich
+bereit
+nein · 
+Alle Komponenten vorhanden.
+Installiere: 
+Fertig: Komponenten installiert.
+Nicht alles installiert: 
+WILLKOMMEN AN BORD
+Star Typing — Trainer für Zehnfingerschreiben, Englisch und Schnelllesen im Cockpit eines Raumschiffs. Drei Schritte, und du bist auf der Brücke.
+Star Typing — willkommen an Bord
+BRÜCKE
+MISSIONEN
+EIGENER TEXT
+LOGBUCH
+EINSTELLUNGEN
+♪ TON AUS
+ALLE SYSTEME NORMAL
+F1 Hilfe · F5 neu · Esc Pause · F9 Ton · Strg+1…{0} Bereiche
+PILOTENPULT
+PILOTENPULT · TIPPTRAINER
+ENGLISCH
+SCHNELLLESEN
+CREW
+Pause — du hast den Bereich gewechselt
+Pilot {0}
+Pilotenpult
+⇄  PILOT WECHSELN   Strg+Umschalt+P
+✎  PERSONALAKTE
+⇪  PILOT EXPORTIEREN
+★  EHRENTAFEL
+Pilot wechseln
+Programm konnte nicht neu gestartet werden:\n{0}
+MISSION GESPERRT — erst die vorherige abschließen
+Ziffern 0–9
+alle Buchstaben
+MISSION {0}-{1:02d} · {2}
+Sektor: {0} · neue Tasten: {1} · Ziel: {2} Z/min bei Genauigkeit ≥ {3:.0f}%
+Systemreparatur
+Noch zu wenige Fehlerdaten.\nFliege ein paar Missionen — der Bordcomputer findet deine schwachen Tasten.
+SYSTEMREPARATUR · SCHWACHE TASTEN
+Training: 
+ — die Übung besteht aus Wörtern mit diesen Buchstaben
+EIGENER TEXT · FRACHTLIEFERUNG
+„{0}“ · Fortschritt wird automatisch gespeichert, du kannst das Programm schließen
+ · mit Großbuchstaben
+Neu starten
+Diesen Text ganz von vorn beginnen?
+♪ TON AN
+WILLKOMMEN AN BORD — deine erste Mission ist bereit: tippe F und J. F1 — Anleitung
+Fenster hat den Fokus verloren — Flug pausiert
+WARTE AUF AUFTRAG
+Wähle eine Mission oder lade deinen eigenen Text
+ROUTENFORTSCHRITT
+TRIEBWERK
+TIPPRHYTHMUS
+FINGERNAVIGATION
+❚❚ PAUSE  Esc
+↻ NEU  F5
+WÄRMEKARTE
+TELEMETRIE
+PULT STARTKLAR
+Strg+2 — Missionen   ·   Strg+3 — eigener Text   ·   Strg+4 — Logbuch
+BEREITSCHAFT
+Fortsetzung: {0} von {1} ({2:.0f}%)
+STARTBEREIT
+TASTATURLAYOUT WECHSELN (Alt+Umschalt)
+ + Umschalt mit der anderen Hand
+● IM FLUG
+❚❚ PAUSE
+▶ WEITER  Esc
+MISSION ERFÜLLT
+MISSION NICHT ANERKANNT
+ZIEL
+FLUGBERICHT
+FRACHT GELIEFERT — TEXT ABGESCHLOSSEN
+Genauigkeit von mindestens {0:.0f}% nötig — versuch es noch einmal, ohne Eile.
+Ziel: {0} Z/min. ★★ — Genauigkeit ≥95% und Tempoziel, ★★★ — Genauigkeit ≥98% und Tempo 25% über dem Ziel.
+TEMPO
+Z/min
+GENAUIGKEIT
+FEHLER
+ZEIT
+RHYTHMUS
+BESTE SERIE
+ohne Fehler
+   ·   NEUER DIENSTGRAD: {0}!
+Die meisten Fehler bei: {0}
+↻ WIEDERHOLEN  Enter
+▶ WEITER: {0}  →
+⚙ REPARATUR  R
+✕ SCHLIESSEN  Esc
+FLUG BEENDET
+F5 — wiederholen   ·   Strg+2 — Missionen   ·   Strg+3 — eigener Text
+Fehlerquote je Taste (gesamt)
+✓ EMPFANGEN
+Übersetzung angefragt…
+◌ EMPFANG…
+Keine Internetverbindung — die Übersetzung erscheint, sobald das Netz zurück ist. Bereits übersetzte Sätze liegen im Cache.
+✕ KEIN SIGNAL
+FEHLER 0
+SERIE / BESTE
+VERBLEIBEND
+DURCHSCHN. {0:.0f} · ≈{1:.0f} WPM
+FEHLER {0}
+EINSTELLUNGEN DER BORDSYSTEME
+SYSTEME
+Sprache der Oberfläche
+Русский, українська, English, Deutsch. Es ändern sich nur die Beschriftungen; Übungstexte, Wörterbücher und Bücher bleiben unverändert. Die neue Sprache gilt nach einem Neustart — die Taste „NEU STARTEN“ erledigt das sofort (Fortschritt bleibt erhalten).
+⟳ NEU STARTEN
+Tastenklang
+Schreibmaschinenklick bei richtiger Taste, „Bzzt“ bei Fehlern, Glocke am Ende der Mission. Kurztaste F9.
+Lautstärke
+Die Klänge erzeugt das Programm selbst, sie liegen in stamina/sounds.
+TESTEN
+UPLINK-Übersetzer
+Übersetzt den aktuellen Satz deines Textes über das Internet (Google / MyMemory). Cache: Ordner cache neben dem Programm.
+UPLINK: übersetzen in
+Die Sprache des Buches wird automatisch erkannt (Deutsch, Englisch, Russisch, Ukrainisch…). Übersetzt wird in die gewählte Sprache; AUTO = Sprache der Oberfläche. Russischer oder ukrainischer Text wird ins Englische übersetzt. Benötigt Internet (Google / MyMemory); offline nur bereits übersetzte Sätze aus dem Cache.
+AUTO
+Sternenfeld
+Die Sterne im Bullauge fliegen schneller, wenn du schneller tippst. Ausschalten, wenn der Laptop warm wird.
+Lebendiger Kosmos
+In allen Bereichen ziehen hinter den Glasscheiben Sterne, Kometen, Planeten und Asteroiden vorbei. „Leicht“ (Standard) — weniger Objekte und Bilder, „Voll“ — flüssiger (bis 24 Bilder/s). Benötigt Pillow. Bei „Animationen reduzieren“ in Windows bleibt das Bild stehen.
+AUS
+LEICHT
+VOLL
+Bildschirmtastatur
+Hebt die nächste Taste und den Finger hervor.
+Farbige Fingerzonen
+Tasten sind nach Fingern eingefärbt, wie im alten Stamina.
+Schriftgröße der Zeile
+Buchstabengröße im Bullauge.
+KLEIN
+MITTEL
+GROSS
+Daten
+Statistik und Fortschritt: {0}
+ORDNER ÖFFNEN
+Kurztasten:  F1 — Hilfe  ·  F5 — neu  ·  Esc — Pause  ·  F9 — Ton  ·  Strg+1…5 — Bereiche  ·  im Bericht: Enter — wiederholen, → — nächste, R — Reparatur
+AN
+Ton
+Ton nicht verfügbar: unter Windows eingebaut, unter Linux wird aplay oder paplay benötigt (Paket alsa-utils).
+● AN
+○ AUS
+PDF öffnen
+Alle Dateien
+PDF-Import
+PDF-IMPORT
+Seiten von
+bis
+AKTUALISIEREN
+(leer — bis zum Ende)
+Text wird extrahiert…
+► IMPORTIEREN
+ABBRECHEN
+Der Text wird ein normales Buch der Bibliothek: Tippen, Schnelllesen, Übersetzung.
+PDF konnte nicht gelesen werden: {0}
+{0} · Seiten in der Datei: {1}
+Sieht nach einem Scan aus: das PDF hat keine Textebene.
+… (die Vorschau zeigt den Anfang, importiert wird alles)

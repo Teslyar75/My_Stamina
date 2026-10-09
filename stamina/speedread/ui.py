@@ -40,8 +40,18 @@ class ScrollFrame(tk.Frame):
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
         self.inner.bind("<Configure>", lambda _e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
-        self.bind("<Enter>", lambda _e: self.bind_all("<MouseWheel>", self._wheel))
-        self.bind("<Leave>", lambda _e: self.unbind_all("<MouseWheel>"))
+        self.bind("<Enter>", lambda _e: self._wheel_on(True))
+        self.bind("<Leave>", lambda _e: self._wheel_on(False))
+
+    def _wheel_on(self, on: bool) -> None:
+        # Windows/macOS: <MouseWheel>; Linux (X11): кнопки 4/5
+        for seq, fn in (("<MouseWheel>", self._wheel), ("<Button-4>", lambda e: self._step(-3)),
+                        ("<Button-5>", lambda e: self._step(3))):
+            self.bind_all(seq, fn) if on else self.unbind_all(seq)
+
+    def _step(self, n: int) -> None:
+        if self.inner.winfo_height() > self.canvas.winfo_height():
+            self.canvas.yview_scroll(n, "units")
 
     def _wheel(self, e) -> None:
         if self.inner.winfo_height() > self.canvas.winfo_height():

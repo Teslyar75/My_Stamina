@@ -1,0 +1,179 @@
+CREATE YOUR PILOT
+Callsign, emblem and (optionally) an access code. Every pilot has their own progress — the whole family can learn on one computer.
+BRIDGE AND MISSIONS
+Type the text in the viewport without looking at the keyboard: hints show the key and the finger. Missions teach the keyboard row by row; accuracy earns stars and ranks.
+OWN TEXT · ENGLISH · SPEED READING
+Load a book and type it with UPLINK translation, learn words and read faster. F1 opens the full manual at any time.
+FIRST LAUNCH
+version {0}
+LANGUAGE:
+STEP {0}
+ONBOARD SYSTEMS CHECK
+YOUR SYSTEM:
+detected automatically — {0}
+⇩ INSTALL ALL
+Everything works without the optional items: typing, missions, own text, English (without microphone), speed reading. You can install them later — see README, “Quick start”.
+► CREATE PILOT AND START  ENTER
+⇩ I HAVE A PILOT FILE (.stpilot)
+EXIT  ESC
+running on {0} — commands shown for {1}
+required
+ready
+no · 
+All components are in place.
+Installing: 
+Done: components installed.
+Not everything was installed: 
+WELCOME ABOARD
+Star Typing — a touch-typing, English and speed-reading trainer in a starship cockpit. Three steps and you are on the bridge.
+Star Typing — welcome aboard
+BRIDGE
+MISSIONS
+OWN TEXT
+LOGBOOK
+SETTINGS
+♪ SOUND OFF
+ALL SYSTEMS NOMINAL
+F1 help · F5 restart · Esc pause · F9 sound · Ctrl+1…{0} sections
+PILOT CONSOLE
+PILOT CONSOLE · TYPING TRAINER
+ENGLISH
+SPEED READING
+CREW
+Paused — you switched to another section
+pilot {0}
+pilot console
+⇄  SWITCH PILOT   Ctrl+Shift+P
+✎  PERSONAL FILE
+⇪  EXPORT PILOT
+★  HONOR BOARD
+Switch pilot
+Could not restart the program:\n{0}
+MISSION LOCKED — complete the previous one first
+digits 0–9
+all letters
+MISSION {0}-{1:02d} · {2}
+Sector: {0} · new keys: {1} · goal: {2} cpm at accuracy ≥ {3:.0f}%
+System repair
+Not enough error data yet.\nFly a couple of missions and the onboard computer will find your weak keys.
+SYSTEM REPAIR · WEAK KEYS
+Training: 
+ — the drill is built from words with these letters
+OWN TEXT · CARGO DELIVERY
+“{0}” · progress is saved automatically, you can close the program
+ · with capital letters
+Restart
+Start this text from the very beginning?
+♪ SOUND ON
+WELCOME ABOARD — your first mission is ready: type F and J. F1 — manual
+Window lost focus — flight paused
+AWAITING ORDERS
+Choose a mission or load your own text
+ROUTE PROGRESS
+ENGINE
+TYPING RHYTHM
+FINGER NAVIGATION
+❚❚ PAUSE  Esc
+↻ RESTART  F5
+HEAT MAP
+TELEMETRY
+CONSOLE READY FOR FLIGHT
+Ctrl+2 — missions   ·   Ctrl+3 — own text   ·   Ctrl+4 — logbook
+STANDBY
+Continuing: {0} of {1} ({2:.0f}%)
+READY FOR LAUNCH
+SWITCH KEYBOARD LAYOUT (Alt+Shift)
+ + Shift with the other hand
+● IN FLIGHT
+❚❚ PAUSED
+▶ RESUME  Esc
+MISSION ACCOMPLISHED
+MISSION FAILED
+FINISH
+FLIGHT REPORT
+CARGO DELIVERED — TEXT COMPLETE
+Accuracy must be at least {0:.0f}% — try again, take your time.
+Goal: {0} cpm. ★★ — accuracy ≥95% and the speed goal, ★★★ — accuracy ≥98% and speed 25% above the goal.
+SPEED
+cpm
+ACCURACY
+ERRORS
+TIME
+RHYTHM
+BEST STREAK
+without errors
+   ·   NEW RANK: {0}!
+Most errors on: {0}
+↻ REPEAT  Enter
+▶ NEXT: {0}  →
+⚙ REPAIR  R
+✕ CLOSE  Esc
+FLIGHT COMPLETE
+F5 — repeat   ·   Ctrl+2 — missions   ·   Ctrl+3 — own text
+error rate per key (all time)
+✓ RECEIVED
+Requesting translation…
+◌ RECEIVING…
+No internet connection — the translation will appear when the network is back. Phrases already translated are kept in the cache.
+✕ NO SIGNAL
+ERRORS 0
+STREAK / BEST
+REMAINING
+AVG {0:.0f} · ≈{1:.0f} WPM
+ERRORS {0}
+ONBOARD SYSTEMS SETTINGS
+SYSTEMS
+Interface language
+Русский, українська, English, Deutsch. Only the program's labels change; typing texts, dictionaries and books stay as they are. The new language takes effect after a restart — the “RESTART” button does it right away (progress is saved).
+⟳ RESTART
+Key sounds
+Typewriter click on a correct key, a “bzzt” on an error, a bell at the end of a mission. Hotkey F9.
+Volume
+Sounds are synthesized by the program and stored in stamina/sounds.
+TEST
+UPLINK translator
+Translates the current sentence of your own text via the internet (Google / MyMemory). Cache: the cache folder next to the program.
+UPLINK: translate into
+The book's language is detected automatically (German, English, Russian, Ukrainian…). The translation goes into the chosen language; AUTO = interface language. Russian or Ukrainian text is translated into English. Needs internet (Google / MyMemory); offline only cached phrases are available.
+AUTO
+Star field
+Stars in the viewport fly faster when you type faster. Turn off if the laptop gets hot.
+Living space
+In every section stars, comets, planets and asteroids drift behind the glass panels. “Light” (default) — fewer objects and frames, “Full” — smoother (up to 24 fps). Needs Pillow. With Windows “reduce motion” the picture is still.
+OFF
+LIGHT
+FULL
+On-screen keyboard
+Highlights the next key and finger.
+Colored finger zones
+Keys are colored by finger, as in the original Stamina.
+Line font size
+Letter size in the viewport.
+SMALL
+MEDIUM
+LARGE
+Data
+Statistics and progress: {0}
+OPEN FOLDER
+Hotkeys:  F1 — help  ·  F5 — restart  ·  Esc — pause  ·  F9 — sound  ·  Ctrl+1…5 — sections  ·  in the report: Enter — repeat, → — next, R — repair
+ON
+Sound
+Sound unavailable: built into Windows; on Linux aplay or paplay is needed (alsa-utils package).
+● ON
+○ OFF
+Open PDF
+All files
+PDF import
+PDF IMPORT
+Pages from
+to
+REFRESH
+(empty — to the end)
+Extracting text…
+► IMPORT
+CANCEL
+The text becomes a regular library book: typing, speed reading, translation.
+Could not read the PDF: {0}
+{0} · pages in file: {1}
+Looks like a scan: the PDF has no text layer.
+… (the preview shows the beginning; the whole text is imported)

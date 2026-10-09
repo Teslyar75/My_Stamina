@@ -83,11 +83,12 @@ def extract_pages(path: str | Path, first: int = 1, last: int | None = None) -> 
 
 def fix_chars(s: str) -> str:
     s = _LIG_RE.sub(lambda m: LIGATURES[m.group(0)], s)
-    return s.replace("\r\n", "\n").replace("\r", "\n").replace("\t", " ")
+    s = s.replace("\r\n", "\n").replace("\r", "\n").replace("\t", " ")
+    return re.sub(r"[\x00-\x08\x0b-\x1f\x7f]", "", s)       # управляющие символы вместо номеров страниц
 
 
 def _norm(line: str) -> str:
-    return re.sub(r"\d+", "#", line.strip().lower())
+    return re.sub(r"\s+", " ", re.sub(r"\d+", "", line.lower())).strip()     # номер страницы не в счёт
 
 
 def strip_headers(pages: list[list[str]], context: list[list[str]] | None = None
@@ -155,8 +156,8 @@ def to_paragraphs(lines: list[str]) -> str:
             continue
         if not cur:
             cur = ln
-        elif re.search(r"[A-Za-zА-Яа-яЁёІіЇїЄєÄÖÜäöüß]-$", cur) and ln[:1].islower():
-            cur = cur[:-1] + ln                                           # сло- / во → слово
+        elif re.search(r"[^\W\d_] ?[-\u00ad]$", cur) and ln[:1].islower():
+            cur = re.sub(r" ?[-\u00ad]$", "", cur) + ln                  # сло- / во → слово (и «сло -»)
         else:
             cur = cur + " " + ln
         if ln.endswith(SENT_END) and len(ln) < width * 0.75:
