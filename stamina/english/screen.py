@@ -21,8 +21,8 @@ from .ui import L, entry
 from .vocab import Vocab
 
 SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("ЗВЁЗДНЫЕ КАРТЫ")), ("scanner", t("СКАНЕР")),
-            ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("lists", t("ОТСЕКИ")),
-            ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
+            ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
+            ("lists", t("ОТСЕКИ")), ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
 
 
 class EnglishScreen(tk.Frame):
@@ -64,6 +64,7 @@ class EnglishScreen(tk.Frame):
         from .pages_learn import PracticePage, ReviewPage
         from .pages_main import OverviewPage, ScannerPage, SetsPage
         from .pages_misc import ListsPage, LogPage, SettingsPage
+        from .pages_warehouse import WarehousePage
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(12), pady=(px(8), px(2)))
         self.nav: dict[str, HudButton] = {}
@@ -90,8 +91,9 @@ class EnglishScreen(tk.Frame):
         self.pages = {
             "overview": OverviewPage(self.body, self), "sets": SetsPage(self.body, self),
             "scanner": ScannerPage(self.body, self), "practice": PracticePage(self.body, self),
-            "review": ReviewPage(self.body, self), "lists": ListsPage(self.body, self),
-            "log": LogPage(self.body, self), "settings": SettingsPage(self.body, self),
+            "review": ReviewPage(self.body, self), "warehouse": WarehousePage(self.body, self),
+            "lists": ListsPage(self.body, self), "log": LogPage(self.body, self),
+            "settings": SettingsPage(self.body, self),
         }
         for p in self.pages.values():
             p.grid(row=0, column=0, sticky="nsew")
@@ -121,6 +123,12 @@ class EnglishScreen(tk.Frame):
     def _update_nav(self) -> None:
         due = len(self.progress.due_cards())
         self.nav["review"].set_text(t("ПРОВЕРКА СИСТЕМ ({0})").format(due) if due else t("ПРОВЕРКА СИСТЕМ"))
+        try:
+            from . import warehouse as wh
+            n = wh.count_cards(self.progress, self.vocab)
+            self.nav["warehouse"].set_text(t("СКЛАД КАРТОЧЕК ({0})").format(n) if n else t("СКЛАД КАРТОЧЕК"))
+        except Exception:
+            pass
 
     def changed(self) -> None:
         self._update_nav()
