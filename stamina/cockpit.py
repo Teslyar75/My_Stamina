@@ -10,7 +10,7 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import APP_NAME, __version__, avatars, english_hook, missions, pilots, speedread_hook, theme
+from stamina import APP_NAME, __version__, avatars, english_hook, lounge_hook, missions, pilots, speedread_hook, theme
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -49,6 +49,10 @@ class Cockpit(tk.Tk):
         if self._speed_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(speedread_hook.KEY, speedread_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._lounge_cls = lounge_hook.load_class()  # вкладка «ОТДЫХ» (комната отдыха)
+        if self._lounge_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(lounge_hook.KEY, lounge_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
@@ -167,6 +171,13 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != speedread_hook.KEY]
                 self.nav_buttons.pop(speedread_hook.KEY).destroy()
+        if self._lounge_cls is not None:
+            lng = lounge_hook.create(self._lounge_cls, self.content, self)
+            if lng is not None:
+                self.screens[lounge_hook.KEY] = lng
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != lounge_hook.KEY]
+                self.nav_buttons.pop(lounge_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
@@ -221,7 +232,9 @@ class Cockpit(tk.Tk):
     def open_help(self) -> None:
         """F1: справка; с вкладки «Английский» — сразу глава про неё."""
         chapter = {english_hook.KEY: tr_("АНГЛИЙСКИЙ"),
-                   speedread_hook.KEY: tr_("СКОРОЧТЕНИЕ"), "honor": tr_("ЭКИПАЖ")}.get(self.current or "")
+                   speedread_hook.KEY: tr_("СКОРОЧТЕНИЕ"),
+                   lounge_hook.KEY: tr_("ОТДЫХ"),
+                   "honor": tr_("ЭКИПАЖ")}.get(self.current or "")
         self.show("help")
         scr = self.screens.get("help")
         if scr is not None and hasattr(scr, "goto"):
@@ -236,6 +249,11 @@ class Cockpit(tk.Tk):
         if self.current == speedread_hook.KEY and name != self.current:
             try:
                 self.screens[speedread_hook.KEY].on_leave()
+            except Exception:  # noqa: BLE001
+                pass
+        if self.current == lounge_hook.KEY and name != self.current:
+            try:
+                self.screens[lounge_hook.KEY].on_leave()
             except Exception:  # noqa: BLE001
                 pass
         if name == "honor" and self.current != "honor":
@@ -512,6 +530,8 @@ class Cockpit(tk.Tk):
             self.screens[english_hook.KEY].on_key(e)
         elif self.current == speedread_hook.KEY:
             self.screens[speedread_hook.KEY].on_key(e)
+        elif self.current == lounge_hook.KEY:
+            self.screens[lounge_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
 
@@ -547,7 +567,7 @@ class Cockpit(tk.Tk):
             self.screens["bridge"].leave_current()
         except Exception:
             pass
-        for key in (english_hook.KEY, speedread_hook.KEY):
+        for key in (english_hook.KEY, speedread_hook.KEY, lounge_hook.KEY):
             if key in self.screens:
                 try:
                     self.screens[key].close()
