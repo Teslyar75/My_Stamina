@@ -1,16 +1,19 @@
 """Склад карточек: выученные слова + все их примеры предложений.
 
 Карточка на складе, если слово «знаю»/выучено и есть хотя бы один пример.
-На вкладке: список предложений с чекбоксами (сложность = сколько отмечено),
-проверка микрофоном каждого отмеченного (≥ FLIP_OK), кнопка «ПОДСКАЗКА» озвучивает перевод.
+Прогон: слово + отмеченные предложения (≥ FLIP_OK), средняя ≥ PASS_QUALITY.
+Нужно N качественных прогонов → автоматически в «Отработано» (без ручной кнопки).
 """
 from __future__ import annotations
 
 from stamina.i18n import t as _t
 
 SENT_PASS = 60   # пример в СКАНЕРЕ (история; на складе не обязателен)
-FLIP_OK = 80     # порог зачёта предложения на складе
+FLIP_OK = 80     # порог зачёта слова/предложения в одном прогоне
+PASS_QUALITY = 85  # средняя точность прогона, чтобы он засчитался (★★ и выше)
 MAX_DIFF = 3
+PASS_CHOICES = (1, 2, 3, 5)
+DEFAULT_PASSES = 2
 
 
 def card_sentences(vocab, word: dict) -> list[dict]:
@@ -129,7 +132,8 @@ def ensure_stats(progress) -> dict:
     wh.setdefault("best", {})
     wh.setdefault("sel", {})  # slug → [bool, …] отмеченные предложения
     wh.setdefault("away", [])  # сняты со склада → снова в работу
-    wh.setdefault("cleared", {})  # slug → {stars, avg, scores, day}
+    wh.setdefault("cleared", {})  # slug → {stars, avg, scores, day, passes}
+    wh.setdefault("runs", {})  # slug → {goal, passes[], current{}}
     return wh
 
 
@@ -157,24 +161,84 @@ def stars_glyph(n: int) -> str:
     return "★" * n + "☆" * (3 - n)
 
 
-def load_scores(progress, slug: str, n_sents: int) -> dict[int, int]:
-    """Лучшие баллы слова и предложений (из best + cleared)."""
-    wh = ensure_stats(progress)
-    best = wh.get("best") or {}
+def default_passes(progress) -> int:
+    n = int(progress.settings.get("warehouse_passes", DEFAULT_PASSES) or DEFAULT_PASSES)
+    return max(1, min(5, n))
+
+
+def run_state(progress, slug: str) -> dict:
+    """Прогресс многократных прогонов карточки (до попадания в «Отработано»)."""
+    runs = ensure_stats(progress).setdefault("runs", {})
+    st = runs.get(slug)
+    if not isinstance(st, dict):
+        st = {"goal": default_passes(progress), "passes": [], "current": {}}
+        runs[slug] = st
+    st.setdefault("goal", default_passes(progress))
+    if not isinstance(st.get("passes"), list):
+        st["passes"] = []
+    if not isinstance(st.get("current"), dict):
+        st["current"] = {}
+    return st
+
+
+def set_run_goal(progress, slug: str, n: int) -> int:
+    st = run_state(progress, slug)
+    st["goal"] = max(1, min(5, int(n)))
+    progress.save()
+    return st["goal"]
+
+
+def passes_done(progress, slug: str) -> int:
+    return len(run_state(progress, slug).get("passes") or [])
+
+
+def passes_goal(progress, slug: str) -> int:
+    return int(run_state(progress, slug).get("goal") or default_passes(progress))
+
+
+def load_current_scores(progress, slug: str) -> dict[int, int]:
+    """Баллы текущего (ещё не засчитанного) прогона."""
     out: dict[int, int] = {}
-    for i in [WORD_KEY, *range(n_sents)]:
-        v = int(best.get(f"{slug}:{i}", 0) or 0)
-        if v:
-            out[i] = v
+    for k, v in (run_state(progress, slug).get("current") or {}).items():
+        try:
+            out[int(k)] = int(v or 0)
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def save_current_scores(progress, slug: str, scores: dict[int, int]) -> None:
+    st = run_state(progress, slug)
+    st["current"] = {str(k): int(v) for k, v in scores.items() if int(v or 0) > 0}
+    progress.save()
+
+
+def clear_run_progress(progress, slug: str) -> None:
+    """Сбросить прогоны и текущие баллы (возврат из «Отработано» или новый цикл)."""
+    wh = ensure_stats(progress)
+    wh.get("runs", {}).pop(slug, None)
+    best = wh.get("best") or {}
+    for k in list(best.keys()):
+        if k.startswith(f"{slug}:"):
+            del best[k]
+    progress.save()
+
+
+def load_scores(progress, slug: str, n_sents: int) -> dict[int, int]:
+    """Баллы текущего прогона; для отработанных — лучший сохранённый результат."""
+    cur = load_current_scores(progress, slug)
+    if cur:
+        return cur
     rec = card_record(progress, slug)
     if rec:
+        out: dict[int, int] = {}
         for k, v in (rec.get("scores") or {}).items():
             try:
-                ki = int(k)
+                out[int(k)] = int(v or 0)
             except (TypeError, ValueError):
                 continue
-            out[ki] = max(out.get(ki, 0), int(v or 0))
-    return out
+        return out
+    return {}
 
 
 def is_run_complete(scores: dict[int, int], sel: list[bool]) -> bool:
@@ -192,33 +256,27 @@ def run_average(scores: dict[int, int], sel: list[bool]) -> float:
     return round(sum(parts) / len(parts), 1) if parts else 0.0
 
 
-def complete_card(progress, slug: str, scores: dict[int, int], sel: list[bool]) -> tuple[int, float, int, bool]:
-    """Засчитать прохождение. Возвращает (stars, avg, xp, improved)."""
+def _move_to_cleared(progress, slug: str, stars: int, avg: float, score_map: dict,
+                     passes: list) -> tuple[int, float, int, bool]:
+    """Финальный перенос в «Отработано» после нужного числа качественных прогонов."""
     import datetime as dt
 
-    if not is_run_complete(scores, sel):
-        return 0, 0.0, 0, False
-    avg = run_average(scores, sel)
-    stars = stars_for_avg(avg)
     wh = ensure_stats(progress)
     cleared = wh.setdefault("cleared", {})
     prev = cleared.get(slug) if isinstance(cleared.get(slug), dict) else None
     prev_stars = int((prev or {}).get("stars", 0) or 0)
-    score_map = {str(WORD_KEY): int(scores.get(WORD_KEY, 0) or 0)}
-    for i, on in enumerate(sel):
-        if on:
-            score_map[str(i)] = int(scores.get(i, 0) or 0)
     first = prev is None
     cleared[slug] = {
         "stars": max(prev_stars, stars),
         "avg": max(float((prev or {}).get("avg", 0) or 0), avg),
         "scores": score_map,
         "day": dt.date.today().isoformat(),
+        "passes": len(passes),
     }
-    # с активного склада / «в работе» → отсек «отработанный материал»
     away = wh.setdefault("away", [])
     if slug in away:
         away.remove(slug)
+    wh.get("runs", {}).pop(slug, None)
     xp = 0
     improved = stars > prev_stars
     if improved:
@@ -231,6 +289,73 @@ def complete_card(progress, slug: str, scores: dict[int, int], sel: list[bool]) 
     return cleared[slug]["stars"], cleared[slug]["avg"], xp, improved or first
 
 
+def finish_pass(progress, slug: str, scores: dict[int, int], sel: list[bool]
+                ) -> dict:
+    """Завершить текущий прогон карточки.
+
+    Возвращает dict:
+      status: "incomplete" | "weak" | "pass" | "cleared"
+      + avg, stars, done, goal, xp (по ситуации)
+    """
+    import datetime as dt
+
+    if not is_run_complete(scores, sel):
+        save_current_scores(progress, slug, scores)
+        return {"status": "incomplete"}
+
+    avg = run_average(scores, sel)
+    stars = stars_for_avg(avg)
+    score_map = {str(WORD_KEY): int(scores.get(WORD_KEY, 0) or 0)}
+    for i, on in enumerate(sel):
+        if on:
+            score_map[str(i)] = int(scores.get(i, 0) or 0)
+
+    st = run_state(progress, slug)
+    # слабый прогон — не засчитываем, сбрасываем текущие баллы
+    if avg < PASS_QUALITY:
+        st["current"] = {}
+        progress.save()
+        return {"status": "weak", "avg": avg, "stars": stars,
+                "done": len(st["passes"]), "goal": int(st["goal"])}
+
+    st["passes"].append({
+        "avg": avg, "stars": stars, "scores": score_map,
+        "day": dt.date.today().isoformat(),
+    })
+    st["current"] = {}
+    done = len(st["passes"])
+    goal = int(st["goal"])
+    xp = 0
+    if progress.award_once(f"warehouse:pass:{slug}:{done}:{dt.date.today().isoformat()}", 2):
+        xp = 2
+
+    if done < goal:
+        progress.save()
+        return {"status": "pass", "avg": avg, "stars": stars,
+                "done": done, "goal": goal, "xp": xp}
+
+    # все прогоны набраны на хорошем уровне → автоматически в «Отработано»
+    avgs = [float(p.get("avg") or 0) for p in st["passes"]]
+    final_avg = round(sum(avgs) / len(avgs), 1) if avgs else avg
+    final_stars = max(int(p.get("stars") or 0) for p in st["passes"])
+    # берём scores последнего прогона
+    last_scores = st["passes"][-1].get("scores") or score_map
+    c_stars, c_avg, c_xp, improved = _move_to_cleared(
+        progress, slug, final_stars, final_avg, last_scores, st["passes"])
+    return {"status": "cleared", "avg": c_avg, "stars": c_stars,
+            "done": done, "goal": goal, "xp": xp + c_xp, "improved": improved}
+
+
+def complete_card(progress, slug: str, scores: dict[int, int], sel: list[bool]) -> tuple[int, float, int, bool]:
+    """Совместимость: один прогон с goal=1, затем в «Отработано»."""
+    st = run_state(progress, slug)
+    st["goal"] = 1
+    res = finish_pass(progress, slug, scores, sel)
+    if res["status"] == "cleared":
+        return int(res["stars"]), float(res["avg"]), int(res.get("xp") or 0), bool(res.get("improved"))
+    return 0, 0.0, 0, False
+
+
 def reopen_on_shelf(progress, slug: str) -> None:
     """Вернуть из «отработанного» снова на активный склад (сброс прохождения)."""
     wh = ensure_stats(progress)
@@ -238,62 +363,11 @@ def reopen_on_shelf(progress, slug: str) -> None:
     away = wh.setdefault("away", [])
     if slug in away:
         away.remove(slug)
+    clear_run_progress(progress, slug)
     if not progress.is_known(slug) and not progress.is_learned(slug):
         progress.set_known(slug, True)
     else:
         progress.save()
-
-
-def archive_to_done(progress, vocab, slug: str, scores: dict[int, int] | None = None
-                    ) -> tuple[int, float, int]:
-    """Вручную отправить карточку в «Отработано».
-
-    Звёзды — по лучшим баллам слова и всех примеров (если баллов нет — ★★ по умолчанию).
-    Возвращает (stars, avg, xp).
-    """
-    import datetime as dt
-
-    w = vocab.get(slug)
-    if not w:
-        return 0, 0.0, 0
-    n = len(card_sentences(vocab, w))
-    scores = dict(scores or load_scores(progress, slug, n))
-    sel = [True] * n if n else []
-    # если прогон полностью закрыт по правилам — обычное complete
-    if n and is_run_complete(scores, sel):
-        return complete_card(progress, slug, scores, sel)[:3]
-
-    parts = [int(scores.get(i, 0) or 0) for i in [WORD_KEY, *range(n)] if int(scores.get(i, 0) or 0) > 0]
-    if parts:
-        avg = round(sum(parts) / len(parts), 1)
-        stars = max(1, stars_for_avg(avg))
-    else:
-        avg = 80.0
-        stars = 2  # ручной перенос «хорошо проработанной» без замеров
-    wh = ensure_stats(progress)
-    cleared = wh.setdefault("cleared", {})
-    prev = cleared.get(slug) if isinstance(cleared.get(slug), dict) else None
-    prev_stars = int((prev or {}).get("stars", 0) or 0)
-    score_map = {str(i): int(scores.get(i, 0) or 0) for i in [WORD_KEY, *range(n)]
-                 if int(scores.get(i, 0) or 0) > 0}
-    cleared[slug] = {
-        "stars": max(prev_stars, stars),
-        "avg": max(float((prev or {}).get("avg", 0) or 0), avg),
-        "scores": score_map,
-        "day": dt.date.today().isoformat(),
-        "manual": True,
-    }
-    away = wh.setdefault("away", [])
-    if slug in away:
-        away.remove(slug)
-    xp = 0
-    final_stars = cleared[slug]["stars"]
-    if final_stars > prev_stars:
-        gain = 5 * (final_stars - prev_stars)
-        if progress.award_once(f"warehouse:archive:{slug}:{final_stars}", gain):
-            xp = gain
-    progress.save()
-    return final_stars, cleared[slug]["avg"], xp
 
 
 def return_to_work(progress, slug: str) -> None:

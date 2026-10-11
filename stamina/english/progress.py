@@ -15,6 +15,8 @@ DEFAULT_SETTINGS = {
     "rate": 0, "autoplay": True, "asr": True, "self_assess": True, "current_set": "top-1000",
     "daily_goal": 30, "new_per_day": 20, "reviews_per_day": 200, "session_len": 10,
     "reverse": False, "show_tr": False, "xp_to_rank": True,
+    # сколько полных прогонов карточки (слово + примеры) нужно до «Отработано»
+    "warehouse_passes": 2,
 }
 
 ACHIEVEMENTS = [

@@ -49,11 +49,14 @@ MONO_FAMILY = "Consolas"
 
 # Масштаб: 1.0 при 96 DPI, 1.25 при 120 DPI и т.д.
 S = 1.0
+# Масштаб интерфейса (шрифты + отступы): настройка «Размер интерфейса» в Настройках.
+UI = 1.0
+UI_PRESETS = {"S": 0.90, "M": 1.00, "L": 1.15, "XL": 1.35}
 
 
 def px(value: float) -> int:
-    """Пиксели с учётом масштаба экрана."""
-    return int(round(value * S))
+    """Пиксели с учётом DPI и размера интерфейса."""
+    return int(round(value * S * UI))
 
 
 def init(root: tk.Tk) -> None:
@@ -74,9 +77,20 @@ def init(root: tk.Tk) -> None:
             break
 
 
+def set_ui_scale(key: str) -> str:
+    """Установить размер интерфейса (S/M/L/XL). Возвращает применённый ключ."""
+    global UI
+    key = (key or "M").upper()
+    if key not in UI_PRESETS:
+        key = "M"
+    UI = UI_PRESETS[key]
+    return key
+
+
 def font(size: int, bold: bool = False, mono: bool = False) -> tuple:
     family = MONO_FAMILY if mono else HUD_FAMILY
-    return (family, size, "bold") if bold else (family, size)
+    scaled = max(6, int(round(size * UI)))
+    return (family, scaled, "bold") if bold else (family, scaled)
 
 
 def _rgb(color: str) -> tuple[int, int, int]:
