@@ -57,7 +57,8 @@ class Progress:
         base = {"version": 1, "settings": dict(DEFAULT_SETTINGS), "words": {}, "lists": [], "cards": {},
                 "xp": {"total": 0, "by_day": {}, "best_streak": 0, "awarded": {}},
                 "achievements": {}, "attempts": [], "review_done_days": [], "speech_best": {},
-                "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}}}
+                "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}},
+                "book_sentences": {"books": {}, "cards": {}, "stats": {"flips": 0, "ok": 0, "by_day": {}}}}
         for k, v in base.items():
             d.setdefault(k, v)
         for k, v in DEFAULT_SETTINGS.items():

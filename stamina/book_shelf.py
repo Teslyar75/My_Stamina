@@ -74,9 +74,11 @@ class BookCatalogPanel(tk.Frame):
         self._photos: list[tk.PhotoImage] = []
         self._lang = "en"
         self._page = 1
-        self._mode = "browse"
+        self._mode = "browse"  # browse | search | cefr
+        self._cefr: str | None = None
         self._next_url = None
         self._started = False
+        self._cefr_btns: dict[str, HudButton] = {}
 
         head = tk.Frame(self, bg=BG)
         head.pack(fill=tk.X, padx=px(12), pady=(px(8), 0))
@@ -88,8 +90,9 @@ class BookCatalogPanel(tk.Frame):
         tk.Label(head, text=_t("общественное достояние · обложки или заглушки"),
                  bg=BG, fg=MUTED, font=theme.font(8)).pack(side=tk.LEFT, padx=px(12))
 
-        L(self, _t("Поиск по названию и/или автору. Список — бесплатные книги в свободном доступе. "
-                   "С обложкой или без (заглушка). Авторские современные книги сюда не входят."),
+        L(self, _t("Поиск по названию/автору или «По категориям» (CEFR A1–C2). "
+                   "Каталог — Project Gutenberg (общественное достояние). "
+                   "Коммерческие адаптированные readers сюда не входят."),
           fg=MUTED, size=8, bg=BG, wraplength=px(1100), justify="left").pack(
             anchor="w", padx=px(14), pady=(px(2), 0))
 
@@ -120,8 +123,25 @@ class BookCatalogPanel(tk.Frame):
             side=tk.LEFT, padx=px(2))
         HudButton(btns, _t("★ СВОБОДНЫЕ"), self.browse_free, color=AMBER, height=30, font_size=9,
                   width=120).pack(side=tk.LEFT, padx=px(2))
+        HudButton(btns, _t("▤ ПО КАТЕГОРИЯМ"), self.toggle_cefr, color=GREEN, height=30, font_size=9,
+                  width=150).pack(side=tk.LEFT, padx=px(2))
         self.e_title.bind("<Return>", lambda _e: self.search())
         self.e_author.bind("<Return>", lambda _e: self.search())
+
+        self.cefr_bar = tk.Frame(self, bg=BG)
+        # скрыта, пока не нажали «ПО КАТЕГОРИЯМ»
+        cefr_inner = tk.Frame(self.cefr_bar, bg=BG)
+        cefr_inner.pack(fill=tk.X, padx=px(12), pady=(0, px(4)))
+        L(cefr_inner, _t("УРОВЕНЬ CEFR"), fg=MUTED, size=8, bold=True, bg=BG).pack(
+            side=tk.LEFT, padx=(0, px(8)))
+        for lv in catalog.cefr_levels():
+            b = HudButton(cefr_inner, lv, lambda c=lv: self.search_cefr(c), height=28, font_size=9,
+                          width=44)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self._cefr_btns[lv] = b
+        L(cefr_inner,
+          _t("подборка PD под уровень · не коммерческие graded readers"),
+          fg=MUTED, size=8, bg=BG).pack(side=tk.LEFT, padx=px(10))
 
         self.status = L(self, "", fg=MUTED, size=9, bg=BG)
         self.status.pack(anchor="w", padx=px(14))
@@ -161,9 +181,37 @@ class BookCatalogPanel(tk.Frame):
         if self._busy:
             return
         self._mode = "browse"
+        self._cefr = None
+        self._sync_cefr_btns()
         self._page = 1
         lang = None if self._lang == "" else (self._lang_param() or "en")
         self._run_fetch(lambda: catalog.list_free_books(page=1, languages=lang))
+
+    def toggle_cefr(self) -> None:
+        if self.cefr_bar.winfo_ismapped():
+            self.cefr_bar.pack_forget()
+            return
+        self.cefr_bar.pack(fill=tk.X, before=self.status)
+        if not self._cefr:
+            self.status.configure(
+                text=_t("Выберите уровень A1…C2 — книги общественного достояния под этот уровень."),
+                fg=CYAN)
+
+    def search_cefr(self, level: str) -> None:
+        if self._busy:
+            return
+        if not self.cefr_bar.winfo_ismapped():
+            self.cefr_bar.pack(fill=tk.X, before=self.status)
+        self._mode = "cefr"
+        self._cefr = level.upper()
+        self._sync_cefr_btns()
+        self._page = 1
+        lang = None if self._lang == "" else (self._lang_param() or "en")
+        self._run_fetch(lambda: catalog.list_by_cefr(self._cefr, page=1, languages=lang))
+
+    def _sync_cefr_btns(self) -> None:
+        for lv, b in self._cefr_btns.items():
+            b.set_active(lv == self._cefr)
 
     def search(self) -> None:
         if self._busy:
@@ -171,10 +219,12 @@ class BookCatalogPanel(tk.Frame):
         title = self.e_title.get().strip()
         author = self.e_author.get().strip()
         if not title and not author:
-            self.status.configure(text=_t("Введите название или автора — или откройте «Свободные»."),
+            self.status.configure(text=_t("Введите название или автора — или откройте «Свободные» / «По категориям»."),
                                   fg=AMBER)
             return
         self._mode = "search"
+        self._cefr = None
+        self._sync_cefr_btns()
         self._page = 1
         self._run_fetch(lambda: catalog.search_books(
             title=title, author=author, languages=self._lang_param(), page=1))
@@ -187,6 +237,10 @@ class BookCatalogPanel(tk.Frame):
             lang = None if self._lang == "" else (self._lang_param() or "en")
             self._run_fetch(lambda: catalog.list_free_books(page=self._page, languages=lang),
                             append=True)
+        elif self._mode == "cefr" and self._cefr:
+            lang = None if self._lang == "" else (self._lang_param() or "en")
+            self._run_fetch(lambda: catalog.list_by_cefr(
+                self._cefr, page=self._page, languages=lang), append=True)
         else:
             self._run_fetch(lambda: catalog.search_books(
                 title=self.e_title.get().strip(), author=self.e_author.get().strip(),
@@ -278,13 +332,19 @@ class BookCatalogPanel(tk.Frame):
             mid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(6), pady=px(6))
             langs = ", ".join((b.get("languages") or [])[:3]).upper() or "—"
             cover_note = _t("есть обложка") if b.get("has_cover") else _t("без обложки")
-            L(mid, b["title"], fg=TEXT, size=12, bold=True, bg=mid["bg"],
+            title_bits = b["title"]
+            if b.get("cefr"):
+                title_bits = f"[{b['cefr']}] {title_bits}"
+            L(mid, title_bits, fg=TEXT, size=12, bold=True, bg=mid["bg"],
               wraplength=px(720)).pack(anchor="w")
             L(mid, b.get("author") or _t("автор не указан"), fg=MUTED, size=9, bg=mid["bg"]).pack(
                 anchor="w")
-            L(mid, _t("{0} · {1} · скачиваний ≈ {2}").format(
-                langs, cover_note, b.get("download_count") or 0),
-              fg=CYAN if on else MUTED, size=8, bg=mid["bg"]).pack(anchor="w", pady=(px(2), 0))
+            meta = _t("{0} · {1} · скачиваний ≈ {2}").format(
+                langs, cover_note, b.get("download_count") or 0)
+            if b.get("cefr"):
+                meta = _t("уровень {0}").format(b["cefr"]) + " · " + meta
+            L(mid, meta, fg=CYAN if on else MUTED, size=8, bg=mid["bg"]).pack(
+                anchor="w", pady=(px(2), 0))
             for w in (row, mid, *mid.winfo_children()):
                 w.bind("<Button-1>", lambda _e, idx=i: self._pick(idx))
 
@@ -329,6 +389,7 @@ class BookCatalogPanel(tk.Frame):
                 "url": book.get("page_url"),
                 "text_url": book.get("text_url"),
                 "cover_url": book.get("cover_url"),
+                **({"cefr": book["cefr"]} if book.get("cefr") else {}),
             },
         )
         self.status.configure(text=_t("Сохранено на полку: «{0}»").format(m["title"]), fg=GREEN)

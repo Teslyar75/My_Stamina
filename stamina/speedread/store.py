@@ -9,6 +9,8 @@ DEFAULT_SETTINGS = {
     "wpm_start": 300, "wpm_target": 600, "ramp": "smooth", "ramp_step": 10, "ramp_every_s": 30,
     "chunk": 1, "chunk_max_chars": 24, "font_pt": 54, "orp": True, "punct_pauses": True,
     "guides": True, "quiz": "always", "quiz_words": 1000, "sync": "ask",
+    # перевод текущего слова/кадра под словом в гипердрайве + двуязычная пауза
+    "rsvp_translate": False,
     # обычная читалка «КНИГА» (не гипердрайв)
     "book_font_pt": 17, "book_line_space": 1.45, "book_theme": "paper",
     "book_columns": 2, "book_mode": "spread",

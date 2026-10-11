@@ -21,9 +21,39 @@ TIMEOUT = 25
 MAX_BYTES = 8 * 1024 * 1024  # защита от слишком больших файлов
 MAX_COVER_BYTES = 2 * 1024 * 1024
 
+# Уровни CEFR. Gutenberg не маркирует CEFR — ниже подборка PD-книг
+# «примерно под уровень» + topic-fallback. Коммерческие graded readers (Oxford и т.п.) —
+# под копирайтом, в открытый каталог не входят.
+CEFR_LEVELS = ("A1", "A2", "B1", "B2", "C1", "C2")
+CEFR_PAGE = 16
+
+# EN: Project Gutenberg id → ориентир для изучающих
+CEFR_IDS_EN: dict[str, list[int]] = {
+    "A1": [21, 113, 2591, 55, 301, 500, 14838, 1597],
+    "A2": [16, 11, 12, 46, 74, 35, 514, 47],
+    "B1": [120, 215, 76, 1661, 244, 2852, 308, 42],
+    "B2": [84, 1342, 1260, 174, 98, 345, 1400, 25344],
+    "C1": [2701, 36, 64317, 766, 730, 996, 4217, 25305],
+    "C2": [4300, 1727, 1497, 1232, 2600, 1399, 6130, 28054],
+}
+
+# Если ids закончились / другой язык — topic Gutendex (bookshelf/subject)
+CEFR_TOPICS: dict[str, str] = {
+    "A1": "children",
+    "A2": "juvenile",
+    "B1": "adventure",
+    "B2": "fiction",
+    "C1": "literature",
+    "C2": "philosophy",
+}
+
 
 class BookCatalogError(Exception):
     pass
+
+
+def cefr_levels() -> tuple[str, ...]:
+    return CEFR_LEVELS
 
 
 def covers_dir() -> Path:
@@ -170,6 +200,73 @@ def list_free_books(*, page: int = 1, languages: str | None = "en") -> dict:
         params["page"] = str(page)
     data = _get_json(GUTENDEX + "?" + urllib.parse.urlencode(params))
     return _pack_page(data, query=_t("свободные книги"))
+
+
+def _fetch_by_ids(ids: list[int], *, languages: str | None) -> list[dict]:
+    if not ids:
+        return []
+    params: dict[str, str] = {"ids": ",".join(str(i) for i in ids)}
+    if languages:
+        params["languages"] = languages
+    data = _get_json(GUTENDEX + "?" + urllib.parse.urlencode(params))
+    by_id = {}
+    for item in data.get("results") or []:
+        rec = _normalize_item(item)
+        if rec:
+            by_id[int(rec["id"])] = rec
+    # сохранить порядок подборки
+    return [by_id[i] for i in ids if i in by_id]
+
+
+def list_by_cefr(level: str, *, page: int = 1, languages: str | None = "en") -> dict:
+    """Книги по категории CEFR (A1…C2): сначала кураторская PD-полка, затем topic."""
+    lv = (level or "").strip().upper()
+    if lv not in CEFR_LEVELS:
+        raise BookCatalogError(_t("Неизвестный уровень: {0}").format(level))
+    page = max(1, int(page or 1))
+    lang = (languages or "").strip().lower() or None
+
+    ids = list(CEFR_IDS_EN.get(lv) or []) if (lang in (None, "", "en")) else []
+    id_pages = max(1, (len(ids) + CEFR_PAGE - 1) // CEFR_PAGE) if ids else 0
+
+    results: list[dict] = []
+    next_url = None
+    count = 0
+    query = _t("уровень {0}").format(lv)
+
+    if ids and page <= id_pages:
+        chunk = ids[(page - 1) * CEFR_PAGE: page * CEFR_PAGE]
+        results = _fetch_by_ids(chunk, languages=lang)
+        for r in results:
+            r["cefr"] = lv
+        count = len(ids)
+        if page < id_pages or CEFR_TOPICS.get(lv):
+            next_url = f"cefr:{lv}:{page + 1}"
+    else:
+        topic_page = page - id_pages if ids else page
+        topic = CEFR_TOPICS.get(lv) or "fiction"
+        params: dict[str, str] = {"topic": topic, "sort": "popular"}
+        if lang:
+            params["languages"] = lang
+        if topic_page > 1:
+            params["page"] = str(topic_page)
+        data = _get_json(GUTENDEX + "?" + urllib.parse.urlencode(params))
+        packed = _pack_page(data, query=query)
+        results = packed["results"]
+        for r in results:
+            r["cefr"] = lv
+        count = int(packed.get("count") or 0) + len(ids)
+        if packed.get("next"):
+            next_url = f"cefr:{lv}:{page + 1}"
+
+    return {
+        "count": count,
+        "next": next_url,
+        "previous": None,
+        "results": results,
+        "query": query,
+        "cefr": lv,
+    }
 
 
 def cover_cache_path(gutenberg_id: int) -> Path:

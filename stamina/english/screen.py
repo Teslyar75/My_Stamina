@@ -22,6 +22,7 @@ from .vocab import Vocab
 
 SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("ЗВЁЗДНЫЕ КАРТЫ")), ("scanner", t("СКАНЕР")),
             ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
+            ("book", t("ИЗ КНИГИ")),
             ("lists", t("ОТСЕКИ")), ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
 
 
@@ -61,6 +62,7 @@ class EnglishScreen(tk.Frame):
         self._build()
 
     def _build(self) -> None:
+        from .pages_book import BookCardsPage
         from .pages_learn import PracticePage, ReviewPage
         from .pages_main import OverviewPage, ScannerPage, SetsPage
         from .pages_misc import ListsPage, LogPage, SettingsPage
@@ -92,6 +94,7 @@ class EnglishScreen(tk.Frame):
             "overview": OverviewPage(self.body, self), "sets": SetsPage(self.body, self),
             "scanner": ScannerPage(self.body, self), "practice": PracticePage(self.body, self),
             "review": ReviewPage(self.body, self), "warehouse": WarehousePage(self.body, self),
+            "book": BookCardsPage(self.body, self),
             "lists": ListsPage(self.body, self), "log": LogPage(self.body, self),
             "settings": SettingsPage(self.body, self),
         }
@@ -129,6 +132,18 @@ class EnglishScreen(tk.Frame):
             self.nav["warehouse"].set_text(t("СКЛАД КАРТОЧЕК ({0})").format(n) if n else t("СКЛАД КАРТОЧЕК"))
         except Exception:
             pass
+        try:
+            from . import book_sentences as bs
+            n = bs.count_ready(self.progress)
+            due_b = bs.count_due(self.progress)
+            if due_b:
+                self.nav["book"].set_text(t("ИЗ КНИГИ ({0})").format(due_b))
+            elif n:
+                self.nav["book"].set_text(t("ИЗ КНИГИ ({0})").format(n))
+            else:
+                self.nav["book"].set_text(t("ИЗ КНИГИ"))
+        except Exception:
+            pass
 
     def changed(self) -> None:
         self._update_nav()
@@ -145,6 +160,16 @@ class EnglishScreen(tk.Frame):
     def start_review(self, slugs: list[str] | None = None) -> None:
         self.pages["review"].start(slugs)
         self.show("review")
+
+    def open_book_cards(self, tid: str | None = None) -> None:
+        """Открыть «ИЗ КНИГИ» и синхронизировать предложения из прочитанного."""
+        if not self._built:
+            return
+        page = self.pages.get("book")
+        if page is not None and hasattr(page, "focus_book"):
+            page.focus_book(tid)
+        else:
+            self.show("book")
 
     # -- озвучка с индикацией на кнопке ------------------------------------------------
     SPEAK_LABEL, ERR_LABEL = t("▶ ЧИТАЕТ…"), t("ОШИБКА ЗВУКА")

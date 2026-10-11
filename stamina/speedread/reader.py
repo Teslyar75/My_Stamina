@@ -4,6 +4,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import bisect
+import re
 import time
 import tkinter as tk
 import tkinter.font as tkfont
@@ -17,6 +18,13 @@ from .quiz import make_quiz
 from .ui import Choice, HudButton, HudPanel, L, Toggle
 
 WARMUP_FRAMES = 5
+_EDGE_PUNCT = re.compile(r"^[\W_]+|[\W_]+$", re.UNICODE)
+_SENT_SPLIT = re.compile(r"(?<=[.!?…])\s+")
+
+
+def _bare(token: str) -> str:
+    """Слово/фраза без краевой пунктуации — ключ для переводчика."""
+    return _EDGE_PUNCT.sub("", token).strip() or token.strip()
 
 
 class ReaderPage(tk.Frame):
@@ -37,6 +45,11 @@ class ReaderPage(tk.Frame):
         self._frame: list[int] = []
         self.sess = None
         self._quiz_from = 0
+        self._tr_key: str | None = None
+        self._tr_src: str = ""
+        self._tr_text: str = ""
+        self._tr_poll_job = None
+        self._tr_dir: tuple[str, str] = ("en", "ru")
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.run_view = tk.Canvas(self, bg=BG, highlightthickness=0, bd=0)
@@ -49,6 +62,25 @@ class ReaderPage(tk.Frame):
         self.quiz_view.grid(row=0, column=0, sticky="nsew")
         self._build_pause()
         tk.Misc.tkraise(self.run_view)
+
+    def _translate_on(self) -> bool:
+        return bool(self.st.get("rsvp_translate"))
+
+    def _refresh_tr_dir(self) -> None:
+        from stamina.translator import direction
+        lang = ""
+        if self.tid:
+            m = self.ctx.lib.meta(self.tid)
+            lang = (m or {}).get("lang") or ""
+        if not lang and self.text:
+            from stamina.langdetect import detect
+            lang = detect(self.text[:4000])
+        target = None
+        try:
+            target = self.ctx.app.store.settings.get("uplink_target")
+        except Exception:
+            pass
+        self._tr_dir = direction(lang or "en", target)
 
     # ------------------------------------------------------------------ settings
     @property
@@ -83,10 +115,12 @@ class ReaderPage(tk.Frame):
         self._quiz_from = self.pos
         self.state = "pause"
         self.sess = None
+        self._refresh_tr_dir()
         self._show_pause()
 
     def stop_session(self, save: bool = True) -> None:
         self._cancel()
+        self._stop_tr_poll()
         if self.tid and save:
             self._save_pos()
         if self.sess and self.sess["words"] >= 20:
@@ -99,6 +133,11 @@ class ReaderPage(tk.Frame):
             if self.ramp:
                 self.ctx.sstore.data.setdefault("last_wpm", {})[self.tid] = int(self.ramp.wpm)
                 self.ctx.sstore.save()
+            try:
+                from stamina.english.book_sentences import notify_reading
+                notify_reading(self.ctx.app, self.ctx.lib, self.tid)
+            except Exception:
+                pass
 
     def _cancel(self) -> None:
         if self._job is not None:
@@ -124,16 +163,19 @@ class ReaderPage(tk.Frame):
             self.sess = {"t0": time.time(), "secs": 0.0, "words": 0, "start": self.pos, "max": 0.0}
         self.state = "run"
         self.ctx.set_focus_mode(True)
+        self._refresh_tr_dir()
         tk.Misc.tkraise(self.run_view)
         self._warm = WARMUP_FRAMES
         self._next_t = time.perf_counter()
         self._draw_run(full=True)
+        self._start_tr_poll()
         self._step()
 
     def pause(self, reason: str = "") -> None:
         if self.state != "run":
             return
         self._cancel()
+        self._stop_tr_poll()
         self.state = "pause"
         self._save_pos()
         self.ctx.set_focus_mode(False)
@@ -175,7 +217,9 @@ class ReaderPage(tk.Frame):
     def _geom(self):
         c = self.run_view
         w, h = c.winfo_width(), c.winfo_height()
-        return w, h, w / 2, h * 0.44
+        # с переводом слово чуть выше — пара «слово + перевод» в центре
+        cy = h * (0.38 if self._translate_on() else 0.44)
+        return w, h, w / 2, cy
 
     def _draw_run(self, full: bool = False) -> None:
         c = self.run_view
@@ -190,21 +234,27 @@ class ReaderPage(tk.Frame):
         c.create_line(m + px(12), top, m + px(52), top, fill=LINE_HI, width=2)
         fs = int(self.st["font_pt"])
         half = self._font().metrics("linespace") / 2 + px(18)
+        tr_on = self._translate_on()
+        guide_bot = cy + half + (px(52) if tr_on else 0)
         if self.st.get("guides", True):
             c.create_line(w * 0.12, cy - half, w * 0.88, cy - half, fill=LINE)
-            c.create_line(w * 0.12, cy + half, w * 0.88, cy + half, fill=LINE)
+            c.create_line(w * 0.12, guide_bot, w * 0.88, guide_bot, fill=LINE)
             c.create_line(cx, cy - half - px(36), cx, cy - half - px(4), fill=CYAN, width=2)
-            c.create_line(cx, cy + half + px(4), cx, cy + half + px(36), fill=CYAN, width=2)
+            c.create_line(cx, guide_bot + px(4), cx, guide_bot + px(36), fill=CYAN, width=2)
+        mode = _t("С ПЕРЕВОДОМ") if tr_on else _t("РЕЖИМ ФОКУСА")
         c.create_text(px(46), px(22), text=_t("ГИПЕРДРАЙВ · {0}").format(self.title.upper()), anchor="w",
                       fill=blend(CYAN, BG, 0.35), font=theme.font(9, True))
-        c.create_text(w - px(46), px(22), text=_t("РЕЖИМ ФОКУСА · ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА"), anchor="e",
-                      fill=FAINT, font=theme.font(8, True))
+        c.create_text(w - px(46), px(22), text=f"{mode} · {_t('ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА')}", anchor="e",
+                      fill=AMBER if tr_on else FAINT, font=theme.font(8, True))
         c.create_text(cx, h - px(28), text=_t("ПРОБЕЛ — ПАУЗА · ↑ ↓ — СКОРОСТЬ · ← — НАЗАД НА ПРЕДЛОЖЕНИЕ · 1–5 — СЛОВ ЗА КАДР · + − ШРИФТ · ENTER — ФИНИШ · ESC — ВЫХОД"),
                       fill=FAINT, font=theme.font(8, True))
         f = self._font(fs)
         for tag, anchor in (("wl", "e"), ("wc", "center"), ("wr", "w")):
             c.create_text(cx, cy, text="", anchor=anchor, font=f, tags=tag,
                           fill=RED if tag == "wc" and self.st["orp"] else TEXT)
+        tr_sz = max(14, int(fs * 0.42))
+        c.create_text(cx, cy + half + px(8), text="", anchor="n", fill=CYAN,
+                      font=theme.font(tr_sz, True), tags="wtr")
         c.create_text(w - m - px(16), bot - px(42), text="", anchor="e", fill=CYAN,
                       font=theme.font(24, True, mono=True), tags="wpm")
         c.create_text(w - m - px(16), bot - px(18), text="", anchor="e", fill=MUTED,
@@ -238,6 +288,17 @@ class ReaderPage(tk.Frame):
         c.itemconfigure("wl", text=left)
         c.itemconfigure("wc", text=mid)
         c.itemconfigure("wr", text=right)
+        if self._translate_on():
+            self._request_word_tr()
+            # гипердрайв: не ждём и не мигаем «…» — пусто или готовый перевод
+            shown = self._tr_text if self._tr_text and self._tr_text not in ("…", "?") else ""
+            if len(shown) > 72:
+                shown = shown[:69].rstrip() + "…"
+            c.itemconfigure("wtr", text=shown)
+            half = f.metrics("linespace") / 2 + px(8)
+            c.coords("wtr", cx, cy + half)
+        else:
+            c.itemconfigure("wtr", text="")
 
     def _draw_hud(self) -> None:
         c = self.run_view
@@ -266,48 +327,66 @@ class ReaderPage(tk.Frame):
         pv = self.pause_view
         pv.grid_rowconfigure(0, weight=1)
         pv.grid_columnconfigure(0, weight=1)
-        left = HudPanel(pv, _t("ОБЗОР КОНТЕКСТА · ПАУЗА"), accent=AMBER)
-        left.grid(row=0, column=0, sticky="nsew", padx=(px(14), px(6)), pady=(px(6), px(6)))
+        pv.grid_columnconfigure(1, weight=1)
+        left = HudPanel(pv, _t("ОРИГИНАЛ · ПАУЗА"), accent=AMBER)
+        left.grid(row=0, column=0, sticky="nsew", padx=(px(14), px(4)), pady=(px(6), px(6)))
+        self.ctx_panel = left
         self.ctx_title = L(left.body, "", fg=MUTED, size=8, bold=True)
         self.ctx_title.pack(anchor="e")
-        self.ctx_text = tk.Text(left.body, wrap=tk.WORD, bg=BG2, fg=MUTED, relief=tk.FLAT, padx=px(22),
-                                pady=px(14), font=theme.font(13), highlightthickness=0, cursor="hand2",
+        self.ctx_text = tk.Text(left.body, wrap=tk.WORD, bg=BG2, fg=MUTED, relief=tk.FLAT, padx=px(18),
+                                pady=px(12), font=theme.font(12), highlightthickness=0, cursor="hand2",
                                 spacing1=px(2), spacing3=px(6))
         self.ctx_text.pack(fill=tk.BOTH, expand=True)
         t = self.ctx_text
-        t.tag_configure("far", foreground=FAINT)
-        t.tag_configure("near", foreground=MUTED)
-        t.tag_configure("sent", foreground=TEXT)
-        t.tag_configure("cur", foreground=TEXT, background=blend(RED, BG, 0.80), underline=True)
-        t.tag_configure("orp", foreground=RED)
-        t.tag_configure("mark", foreground=AMBER, font=theme.font(10, True), justify="center")
+        for tag, kw in (("far", {"foreground": FAINT}), ("near", {"foreground": MUTED}),
+                        ("sent", {"foreground": TEXT}),
+                        ("cur", {"foreground": TEXT, "background": blend(RED, BG, 0.80), "underline": True}),
+                        ("orp", {"foreground": RED}),
+                        ("mark", {"foreground": AMBER, "font": theme.font(10, True), "justify": "center"})):
+            t.tag_configure(tag, **kw)
         t.bind("<Button-1>", self._ctx_click)
         t.bind("<Key>", lambda _e: "break")
-        right = tk.Frame(pv, bg=BG, width=px(340))
-        right.grid(row=0, column=1, sticky="ns", padx=(px(6), px(14)), pady=(px(6), px(6)))
+
+        mid = HudPanel(pv, _t("ПЕРЕВОД"), accent=CYAN)
+        mid.grid(row=0, column=1, sticky="nsew", padx=(px(4), px(4)), pady=(px(6), px(6)))
+        self.tr_panel = mid
+        self.tr_title = L(mid.body, "", fg=MUTED, size=8, bold=True)
+        self.tr_title.pack(anchor="e")
+        self.tr_text = tk.Text(mid.body, wrap=tk.WORD, bg=BG2, fg=MUTED, relief=tk.FLAT, padx=px(18),
+                               pady=px(12), font=theme.font(12), highlightthickness=0,
+                               spacing1=px(2), spacing3=px(6))
+        self.tr_text.pack(fill=tk.BOTH, expand=True)
+        self.tr_text.tag_configure("body", foreground=TEXT)
+        self.tr_text.tag_configure("wait", foreground=AMBER)
+        self.tr_text.tag_configure("mark", foreground=CYAN, font=theme.font(10, True), justify="center")
+        self.tr_text.bind("<Key>", lambda _e: "break")
+
+        right = tk.Frame(pv, bg=BG, width=px(300))
+        right.grid(row=0, column=2, sticky="ns", padx=(px(4), px(14)), pady=(px(6), px(6)))
         right.grid_propagate(False)
+        self._pause_side = right
         sp = HudPanel(right, _t("СКОРОСТЬ"))
         sp.pack(fill=tk.X)
-        sp.configure(height=px(150))
+        sp.configure(height=px(140))
         sp.pack_propagate(False)
         row = tk.Frame(sp.body, bg=PANEL)
         row.pack(pady=(px(4), 0))
-        HudButton(row, "▼", lambda: self.speed(-25), width=54, height=50, font_size=16).pack(side=tk.LEFT)
-        mid = tk.Frame(row, bg=PANEL)
-        mid.pack(side=tk.LEFT, padx=px(14))
-        self.lbl_wpm = L(mid, "300", fg=CYAN, size=30, bold=True, mono=True)
+        HudButton(row, "▼", lambda: self.speed(-25), width=50, height=46, font_size=15).pack(side=tk.LEFT)
+        midf = tk.Frame(row, bg=PANEL)
+        midf.pack(side=tk.LEFT, padx=px(10))
+        self.lbl_wpm = L(midf, "300", fg=CYAN, size=28, bold=True, mono=True)
         self.lbl_wpm.pack()
-        L(mid, _t("СЛОВ / МИН"), fg=MUTED, size=8, bold=True).pack()
-        HudButton(row, "▲", lambda: self.speed(25), width=54, height=50, font_size=16).pack(side=tk.LEFT)
+        L(midf, _t("СЛОВ / МИН"), fg=MUTED, size=8, bold=True).pack()
+        HudButton(row, "▲", lambda: self.speed(25), width=50, height=46, font_size=15).pack(side=tk.LEFT)
         self.lbl_ramp = L(sp.body, "", fg=AMBER, size=8, bold=True)
-        self.lbl_ramp.pack(pady=(px(6), 0))
+        self.lbl_ramp.pack(pady=(px(4), 0))
         fp = HudPanel(right, _t("НАСТРОЙКИ ПОЛЁТА"))
-        fp.pack(fill=tk.X, pady=(px(10), 0))
+        fp.pack(fill=tk.X, pady=(px(8), 0))
         fb = fp.body
 
         def line(title):
             r = tk.Frame(fb, bg=PANEL)
-            r.pack(fill=tk.X, pady=px(3))
+            r.pack(fill=tk.X, pady=px(2))
             L(r, title, fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
             return r
         r = line(_t("ШРИФТ"))
@@ -323,18 +402,19 @@ class ReaderPage(tk.Frame):
             self.chunk_btns[n] = b
         self.toggles = {}
         for key, title in (("orp", _t("КРАСНАЯ БУКВА (ORP)")), ("punct_pauses", _t("ПАУЗЫ НА ЗНАКАХ")),
-                           ("ramp", _t("ПЛАВНЫЙ РАЗГОН")), ("guides", _t("ПРИЦЕЛ"))):
+                           ("ramp", _t("ПЛАВНЫЙ РАЗГОН")), ("guides", _t("ПРИЦЕЛ")),
+                           ("rsvp_translate", _t("ПЕРЕВОД ПОД СЛОВОМ"))):
             r = line(title)
-            val = self.st[key] != "off" if key == "ramp" else bool(self.st[key])
+            val = self.st[key] != "off" if key == "ramp" else bool(self.st.get(key))
             tg = Toggle(r, val, lambda v, k=key: self._toggle(k, v), width=70)
             tg.pack(side=tk.RIGHT)
             self.toggles[key] = tg
         tp = HudPanel(right, _t("ТЕЛЕМЕТРИЯ СЕССИИ"), accent=LINE_HI)
-        tp.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
-        self.lbl_tele = L(tp.body, "", fg=TEXT, size=10, mono=True, justify="left", anchor="nw")
+        tp.pack(fill=tk.BOTH, expand=True, pady=(px(8), 0))
+        self.lbl_tele = L(tp.body, "", fg=TEXT, size=9, mono=True, justify="left", anchor="nw")
         self.lbl_tele.pack(fill=tk.BOTH, expand=True)
         acts = tk.Frame(pv, bg=BG)
-        acts.grid(row=1, column=0, columnspan=2, sticky="w", padx=px(14), pady=(0, px(8)))
+        acts.grid(row=1, column=0, columnspan=3, sticky="w", padx=px(14), pady=(0, px(8)))
         self.btn_go = HudButton(acts, _t("▶ ПРОДОЛЖИТЬ  ·  ПРОБЕЛ"), self.resume, color=AMBER, height=42,
                                 font_size=11, active=True)
         self.btn_go.pack(side=tk.LEFT, padx=(0, px(6)))
@@ -347,19 +427,43 @@ class ReaderPage(tk.Frame):
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
         self.lbl_sync = L(acts, "", fg=AMBER, size=9, bold=True, bg=BG)
         self.lbl_sync.pack(side=tk.LEFT, padx=px(10))
+        self._layout_pause_panels()
+
+    def _layout_pause_panels(self) -> None:
+        """Один столбец контекста или оригинал | перевод."""
+        pv = self.pause_view
+        if self._translate_on():
+            pv.grid_columnconfigure(0, weight=1)
+            pv.grid_columnconfigure(1, weight=1)
+            self.ctx_panel.title = _t("ОРИГИНАЛ · ПАУЗА")
+            self.tr_panel.grid()
+        else:
+            pv.grid_columnconfigure(0, weight=1)
+            pv.grid_columnconfigure(1, weight=0)
+            self.ctx_panel.title = _t("ОБЗОР КОНТЕКСТА · ПАУЗА")
+            self.tr_panel.grid_remove()
+        self.ctx_panel._draw()
+        self.tr_panel._draw()
 
     def _show_pause(self, reason: str = "") -> None:
         self.state = "pause" if self.words else "idle"
+        self._layout_pause_panels()
         self.pause_view.tkraise()
         self._fill_context()
         self._update_controls()
         self._update_sync_hint()
+        if self._translate_on():
+            self._start_tr_poll()
+            self._fill_pause_translation()
+        else:
+            self._stop_tr_poll()
 
     def _fill_context(self) -> None:
         t = self.ctx_text
         t.configure(state=tk.NORMAL)
         t.delete("1.0", tk.END)
         self._ctx_base = 0
+        self._ctx_chunk = ""
         if not self.words:
             t.insert(tk.END, _t("Текст не выбран. Откройте БИБЛИОТЕКУ и нажмите «ЧИТАТЬ»."), "near")
             return
@@ -373,6 +477,7 @@ class ReaderPage(tk.Frame):
         sent_a = rsvp.sentence_start(self.words, i)
         sent_b = rsvp.next_sentence(self.words, i)
         chunk = self.text[s0:s1]
+        self._ctx_chunk = chunk
         t.insert(tk.END, chunk)
 
         def idx(ch):  # абсолютный символ → индекс Text
@@ -397,6 +502,8 @@ class ReaderPage(tk.Frame):
         n = len(self.words)
         self.ctx_title.configure(text=f"{self.title.upper()} · {self.pos / n * 100:.0f}%"
                                  + (_t("  · ⚠ БЕЗ ОРИГИНАЛА (текст без заглавных и знаков)") if self.no_original else ""))
+        if self._translate_on():
+            self._fill_pause_translation()
 
     def _ctx_click(self, e) -> str:
         if not self.words:
@@ -482,9 +589,145 @@ class ReaderPage(tk.Frame):
         else:
             self.st[key] = value
         self.ctx.sstore.save()
+        if key == "rsvp_translate":
+            self._refresh_tr_dir()
+            self._layout_pause_panels()
         self._draw_run(full=True)
         if self.state == "pause":
-            self._fill_context()
+            self._show_pause()
+
+    # ------------------------------------------------------------------ translation
+    def _translator(self):
+        try:
+            return self.ctx.app.get_translator()
+        except Exception:
+            return None
+
+    def _request_word_tr(self) -> None:
+        """Перевод текущего кадра (слово/фраза) — короткий ключ, успевает к следующему кадру."""
+        if not self._frame:
+            return
+        frame_text, _ = rsvp.frame_text(self.words, self._frame)
+        src = _bare(frame_text)
+        if not src:
+            return
+        tr = self._translator()
+        if tr is None:
+            self._tr_text = ""
+            return
+        sl, tl = self._tr_dir
+        # тот же кадр — только обновить из кэша
+        if src == self._tr_src:
+            hit = tr.cached(src, sl, tl)
+            if hit:
+                self._tr_text = hit
+            return
+        self._tr_src = src
+        self._tr_key = tr.key(src, sl, tl)
+        cached = tr.cached(src, sl, tl)
+        self._tr_text = cached or ""
+        # сначала срочный текущий кадр, потом prefetch — иначе cancel снесёт живое
+        if not cached:
+            tr.request(src, sl, tl, priority=0, group="rsvp")
+        keep = {self._tr_key}
+        pos = self._frame[-1] + 1
+        n = int(self.st.get("chunk") or 1)
+        max_ch = int(self.st.get("chunk_max_chars") or 24)
+        for pref_i in range(4):
+            if pos >= len(self.words):
+                break
+            nxt = rsvp.frame_at(self.words, pos, n, max_ch)
+            if not nxt:
+                break
+            nxt_src = _bare(rsvp.frame_text(self.words, nxt)[0])
+            if nxt_src:
+                keep.add(tr.key(nxt_src, sl, tl))
+                if not tr.cached(nxt_src, sl, tl):
+                    tr.request(nxt_src, sl, tl, priority=1 + pref_i, group="rsvp")
+            pos = nxt[-1] + 1
+        tr.cancel_group("rsvp", keep=keep)
+
+    def _show_word_tr(self, text: str) -> None:
+        if self.state != "run" or not text:
+            return
+        shown = text if len(text) <= 72 else text[:69].rstrip() + "…"
+        try:
+            self.run_view.itemconfigure("wtr", text=shown)
+        except tk.TclError:
+            pass
+
+    def _start_tr_poll(self) -> None:
+        self._stop_tr_poll()
+        if not self._translate_on():
+            return
+        self._tr_poll_tick()
+
+    def _stop_tr_poll(self) -> None:
+        if self._tr_poll_job is not None:
+            try:
+                self.after_cancel(self._tr_poll_job)
+            except tk.TclError:
+                pass
+            self._tr_poll_job = None
+
+    def _tr_poll_tick(self) -> None:
+        self._tr_poll_job = None
+        if not self._translate_on() or self.state not in ("run", "pause"):
+            return
+        tr = self._translator()
+        if tr is not None:
+            results = tr.poll()
+            if self._tr_src:
+                sl, tl = self._tr_dir
+                hit = tr.cached(self._tr_src, sl, tl)
+                if hit and hit != self._tr_text:
+                    self._tr_text = hit
+                    self._show_word_tr(hit)
+                elif not hit:
+                    for key, result in results:
+                        if key == self._tr_key and result:
+                            self._tr_text = result
+                            self._show_word_tr(result)
+                            break
+            if self.state == "pause" and results:
+                self._fill_pause_translation()
+        self._tr_poll_job = self.after(80, self._tr_poll_tick)
+
+    def _fill_pause_translation(self) -> None:
+        tt = self.tr_text
+        tt.configure(state=tk.NORMAL)
+        tt.delete("1.0", tk.END)
+        sl, tl = self._tr_dir
+        self.tr_title.configure(text=f"{sl.upper()} → {tl.upper()}")
+        chunk = getattr(self, "_ctx_chunk", "") or ""
+        if not chunk.strip():
+            tt.insert(tk.END, _t("Нет текста для перевода."), "wait")
+            return
+        tr = self._translator()
+        if tr is None:
+            tt.insert(tk.END, _t("Переводчик недоступен."), "wait")
+            return
+        parts = [p.strip() for p in _SENT_SPLIT.split(chunk.replace("\n", " ")) if p.strip()]
+        if not parts:
+            parts = [chunk.strip()]
+        waiting = False
+        lines = []
+        keep: set[str] = set()
+        for i, p in enumerate(parts[:24]):
+            src = p[:500]
+            keep.add(tr.key(src, sl, tl))
+            cached = tr.cached(src, sl, tl)
+            if cached:
+                lines.append(cached)
+            else:
+                tr.request(src, sl, tl, priority=(0 if i < 3 else 4), group="rsvp")
+                waiting = True
+                lines.append("…")
+        tr.cancel_group("rsvp", keep=keep)
+        tt.insert(tk.END, _t("❚❚  ПЕРЕВОД КОНТЕКСТА\n"), "mark")
+        tt.insert(tk.END, "\n\n".join(lines), "body" if not waiting else "wait")
+        if waiting:
+            tt.insert(tk.END, "\n\n" + _t("(идёт перевод — появится по сети или из кэша)"), "wait")
 
     def jump(self, kind: str, direction: int) -> None:
         if not self.words:

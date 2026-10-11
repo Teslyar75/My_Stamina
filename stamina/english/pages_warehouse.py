@@ -45,6 +45,7 @@ class WarehousePage(tk.Frame):
         self._active_ru = ""
         self._active_en = ""
         self._holding: int | None = None
+        self._hint_grab = None  # HudButton | None
 
         self.strip = Strip(self)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
@@ -202,9 +203,26 @@ class WarehousePage(tk.Frame):
     # -- подсказка: удержание ----------------------------------------------------
     def _bind_hint(self, btn: HudButton, key: int) -> None:
         btn.command = None  # не клик, а удержание
-        btn.bind("<ButtonPress-1>", lambda _e, k=key: self._hint_down(k), add="+")
-        btn.bind("<ButtonRelease-1>", lambda _e, k=key: self._hint_up(k), add="+")
-        btn.bind("<Leave>", lambda _e, k=key: self._hint_up(k), add="+")
+
+        def down(_e, k=key, b=btn) -> None:
+            self._hint_down(k, b)
+
+        def up(_e, k=key) -> None:
+            self._hint_up(k)
+
+        btn.bind("<ButtonPress-1>", down, add="+")
+        btn.bind("<ButtonRelease-1>", up, add="+")
+        # Leave не используем: смена текста двигает вёрстку и срывает удержание
+
+    def _release_hint_grab(self) -> None:
+        btn = self._hint_grab
+        self._hint_grab = None
+        if btn is None:
+            return
+        try:
+            btn.grab_release()
+        except tk.TclError:
+            pass
 
     def _en_for(self, key: int) -> str:
         face = self._faces.get(key)
@@ -230,7 +248,7 @@ class WarehousePage(tk.Frame):
                               height=28, font_size=8, width=70).pack(pady=(px(2), 0))
         return right
 
-    def _hint_down(self, key: int) -> None:
+    def _hint_down(self, key: int, btn: HudButton | None = None) -> None:
         face = self._faces.get(key)
         if not face:
             return
@@ -239,15 +257,20 @@ class WarehousePage(tk.Frame):
             self.ctx.status(_t("Нет английского образца"), AMBER)
             return
         self._holding = key
+        if btn is not None:
+            self._hint_grab = btn
+            try:
+                btn.grab_set()
+            except tk.TclError:
+                self._hint_grab = None
         try:
-            lab.configure(text=en, fg=CYAN, font=lab.cget("font"))  # цвет; шрифт ниже
             from stamina import theme
-            lab.configure(font=theme.font(size, True, mono=True), fg=CYAN)
+            lab.configure(text=en, fg=CYAN, font=theme.font(size, True))
         except tk.TclError:
             return
         if key == self.active_si and self._active_face is not None:
             try:
-                self._active_face.configure(text=en, fg=CYAN, font=theme.font(16, True, mono=True))
+                self._active_face.configure(text=en, fg=CYAN, font=theme.font(16, True))
             except tk.TclError:
                 pass
         self.ctx.status(_t("Подсказка (держи) · английский"), AMBER)
@@ -256,13 +279,14 @@ class WarehousePage(tk.Frame):
         if key is None or self._holding != key:
             return
         self._holding = None
+        self._release_hint_grab()
         face = self._faces.get(key)
         if not face:
             return
         lab, ru, _en, size = face
         try:
             from stamina import theme
-            lab.configure(text=ru, fg=TEXT, font=theme.font(size, True, mono=False))
+            lab.configure(text=ru, fg=TEXT, font=theme.font(size, True))
         except tk.TclError:
             return
         if key == self.active_si and self._active_face is not None:
@@ -272,6 +296,7 @@ class WarehousePage(tk.Frame):
                 pass
 
     def render(self) -> None:
+        self._release_hint_grab()
         self._holding = None
         _clear(self.body)
         _clear(self.btns)

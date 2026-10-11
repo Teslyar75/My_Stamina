@@ -779,6 +779,7 @@ class SettingsPage(tk.Frame):
         stepper(b.body, _t("РАЗМЕР ШРИФТА"), "font_pt", 4, 24, 120, "pt")
         toggle(b.body, _t("КРАСНАЯ БУКВА (ORP)"), "orp")
         toggle(b.body, _t("НАПРАВЛЯЮЩИЕ"), "guides")
+        toggle(b.body, _t("ПЕРЕВОД ПОД СЛОВОМ"), "rsvp_translate")
         choice(b.body, _t("ТЕСТ ПОНИМАНИЯ"), "quiz", [("always", _t("ВСЕГДА")), ("ask", _t("СПРОСИТЬ")), ("never", _t("НЕТ"))])
         stepper(b.body, _t("ТЕСТ КАЖДЫЕ"), "quiz_words", 250, 250, 5000, _t("слов"))
         choice(b.body, _t("СИНХРОНИЗАЦИЯ С ПЕЧАТЬЮ"), "sync", [("ask", _t("ПОДСКАЗКА")), ("off", _t("НЕТ"))])
@@ -787,8 +788,9 @@ class SettingsPage(tk.Frame):
         c.pack(fill=tk.X, pady=(px(10), 0))
         stepper(c.body, _t("РАЗМЕР ШРИФТА КНИГИ"), "book_font_pt", 1, 11, 36, "pt")
         choice(c.body, _t("ВИД КНИГИ"), "book_mode",
-               [("page", _t("1 СТР")), ("spread", _t("РАЗВОРОТ")), ("scroll", _t("ПРОКРУТКА"))])
+               [("page", _t("1 СТР")), ("spread", _t("РАЗВОРОТ")),
+                ("bilingual", _t("2 ЯЗЫКА")), ("scroll", _t("ПРОКРУТКА"))])
         choice(c.body, _t("ТЕМА КНИГИ"), "book_theme",
                [("paper", _t("БУМАГА")), ("night", _t("НОЧЬ")), ("sepia", _t("СЕПИЯ"))])
-        L(self.root, _t("Гипердрайв — RSVP по словам. «Книга» — обычное чтение с полки (страницы, шрифт, оглавление). Позиция общая. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
+        L(self.root, _t("Гипердрайв — RSVP; опция «перевод под словом». «Книга» — страницы; режим «2 ЯЗЫКА» — оригинал слева, перевод справа. Позиция общая. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
             anchor="w", pady=px(8))
