@@ -61,6 +61,14 @@ while ($true) {
         if ($s.State -eq 'Ready') { try { $s.SetOutputToDefaultAudioDevice() } catch { } }  # если сменили устройство вывода
         $s.Rate = [Math]::Max(-10, [Math]::Min(10, [int]$p[2]))
         $t = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($p[3]))
+        # Русский текст → голос ru-*, иначе en-* (английский голос «молчит» на кириллице)
+        $want = if ($t -match '[\u0400-\u04FF]') { 'ru-*' } else { 'en-*' }
+        $nv = $s.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -like $want } | Select-Object -First 1
+        if (-not $nv -and $want -eq 'ru-*') {
+          Out ('ERR|' + $p[1] + '|нет русского голоса Windows (Параметры → Время и язык → Речь)')
+          continue
+        }
+        if ($nv) { $s.SelectVoice($nv.VoiceInfo.Name) }
         $curId = $p[1]; $sw = [Diagnostics.Stopwatch]::StartNew()
         $cur = $s.SpeakAsync($t)
         Out ('START|' + $curId)
