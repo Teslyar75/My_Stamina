@@ -604,7 +604,6 @@
  "СВЯЗЬ: ГОЛОС И МИКРОФОН": "KOMMUNIKATION: STIMME UND MIKROFON",
  "СЕГОДНЯ": "HEUTE",
  "СЕКТОР {0} · {1} · ЗВЁЗДНАЯ КАРТА": "BEREICH {0} · {1} · STERNENKARTE",
- "СЕКТОРЫ · НАБОРЫ СЛОВ ПО ЧАСТОТЕ": "BEREICHE · TEXTFELDER NACH HÄUFIGKEIT",
  "СЕРИЯ": "SERIE",
  "СЕРИЯ / ЛУЧШАЯ": "SERIE / BESTE",
  "СЕРИЯ · 14 ДНЕЙ": "SERIE · 14 TAGE",
@@ -1094,5 +1093,7 @@
  "🔊 ОБРАЗЕЦ": "🔊 MODELL",
  "🔊 ТЕСТ": "🔊 PRÜFUNG",
  "🔒 КОД": "🔒 ANHANG",
- "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE"
+ "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE",
+ "СОБЕСЕДОВАНИЕ": "VORSTELLUNGSGESPRAECH",
+ "СЕКТОРЫ · НАБОРЫ СЛОВ": "SEKTOREN · WORTSAETZE"
 }

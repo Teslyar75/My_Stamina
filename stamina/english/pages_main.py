@@ -101,7 +101,7 @@ class OverviewPage(tk.Frame):
         # секторы
         sec = tk.Frame(grid, bg=BG)
         sec.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
-        L(sec, _t("СЕКТОРЫ · НАБОРЫ СЛОВ ПО ЧАСТОТЕ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
+        L(sec, _t("СЕКТОРЫ · НАБОРЫ СЛОВ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
         row = tk.Frame(sec, bg=BG)
         row.pack(fill=tk.X)
         self.cards = []
