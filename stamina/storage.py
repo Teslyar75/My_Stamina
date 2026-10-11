@@ -30,6 +30,7 @@ DEFAULT_SETTINGS = {
     "keyboard": True,
     "zones": True,
     "font": "M",
+    "ui_scale": "M",  # размер интерфейса всего приложения: S / M / L / XL
     "lang": "en",
     "translator": True,
     # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы

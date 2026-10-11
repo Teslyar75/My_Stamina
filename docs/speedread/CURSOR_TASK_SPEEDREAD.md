@@ -25,9 +25,10 @@ stamina/
   speedread_hook.py          # как english_hook.py: KEY="speedread", TITLE="СКОРОЧТЕНИЕ", load_class(), create(), лог
   speedread/
     __init__.py              # экспорт SpeedReadScreen
-    screen.py                # SpeedReadScreen(tk.Frame): подвкладки ОБЗОР/ГИПЕРДРАЙВ/ТРЕНАЖЁРЫ/БИБЛИОТЕКА/ЖУРНАЛ/НАСТРОЙКИ, on_key(e), close()
+    screen.py                # SpeedReadScreen(tk.Frame): подвкладки ОБЗОР/ГИПЕРДРАЙВ/КНИГА/ТРЕНАЖЁРЫ/БИБЛИОТЕКА/ЖУРНАЛ/НАСТРОЙКИ, on_key(e), close()
     rsvp.py                  # логика без GUI: токенизация, ORP, кадры N слов, тайминги, разгон (тестируется отдельно)
     reader.py                # экран гипердрайва: иллюминатор на Canvas, режим фокуса, пауза с контекстом
+    book_reader.py           # обычная читалка «КНИГА» (не RSVP): страницы, шрифт, темы, оглавление, общая позиция
     texts.py                 # экран библиотеки поверх stamina/library.py (общей для печати и чтения): вставка, .txt, позже .fb2/.epub, English
     quiz.py                  # дебрифинг: авто-вопросы + встроенные
     store.py                 # speedread.json: чтение/запись атомарно (tmp + replace), миграция версий

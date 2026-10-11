@@ -116,22 +116,6 @@ class WarehousePage(tk.Frame):
         self.ctx.sfx("click")
         self.set_list_mode("shelf")
 
-    def send_to_done(self, slug: str) -> None:
-        """Вручную в отсек «Отработано»."""
-        scores = None
-        if self.open_slug == slug and self.scores:
-            scores = self.scores
-        stars, avg, xp = wh.archive_to_done(self.ctx.progress, self.ctx.vocab, slug, scores)
-        msg = _t("«{0}» → ОТРАБОТАНО · {1} · ср. {2}%").format(slug, wh.stars_glyph(stars), avg)
-        if xp:
-            msg += f"  +{xp} XP"
-        self.ctx.status(msg, GREEN)
-        self.ctx.sfx("bell")
-        self.ctx.changed()
-        self.list_mode = "done"
-        self.open_slug = None
-        self.refresh()
-
     def set_filter(self, d: int | None) -> None:
         self.diff_filter = d
         self.refresh()
@@ -155,12 +139,18 @@ class WarehousePage(tk.Frame):
             return
         self.open_slug = slug
         card = next(c for c in self.cards if c["slug"] == slug)
-        self.scores = wh.load_scores(self.ctx.progress, slug, len(card["sentences"]))
+        # текущий прогон (не lifetime best) — каждый проход нужно пройти заново
+        self.scores = wh.load_current_scores(self.ctx.progress, slug)
         self.active_si = WORD_KEY
         self._holding = None
-        # если уже всё ≥80% в best, но ещё не в «Отработано» — засчитать сейчас
-        if self.list_mode == "shelf" and not wh.is_done(self.ctx.progress, slug):
-            self._maybe_complete(card)
+        self.render()
+
+    def set_pass_goal(self, n: int) -> None:
+        card = self._card()
+        if not card or wh.is_done(self.ctx.progress, card["slug"]):
+            return
+        wh.set_run_goal(self.ctx.progress, card["slug"], n)
+        self.ctx.status(_t("Нужно прогонов: {0} (каждый со ср. ≥ {1}%)").format(n, wh.PASS_QUALITY), CYAN)
         self.render()
 
     def close_card(self) -> None:
@@ -317,7 +307,8 @@ class WarehousePage(tk.Frame):
         else:
             self.strip.set(
                 _t("СКЛАД КАРТОЧЕК · {0}").format(n),
-                _t("Пройди слово и предложения ≥ 80% — карточка уйдёт в «Отработано» со звёздами."),
+                _t("Несколько прогонов слова и предложений (≥ {0}% ср.) — затем авто «Отработано».").format(
+                    wh.PASS_QUALITY),
                 (stats["ok"] / max(1, stats["flips"])) if stats["flips"] else 0.0,
                 _t("в работе {0} · отработано {1}").format(away_n, done_n),
             )
@@ -328,7 +319,7 @@ class WarehousePage(tk.Frame):
             elif self.list_mode == "done":
                 L(self.body, _t("ОТРАБОТАННЫХ КАРТОЧЕК ПОКА НЕТ"), fg=AMBER, size=20, bold=True).pack(
                     pady=(px(50), px(8)))
-                L(self.body, _t("Пройди карточку на складе (слово + предложения ≥ 80%)."),
+                L(self.body, _t("Пройди карточку на складе нужное число раз на хорошем уровне."),
                   fg=MUTED, size=11).pack()
             else:
                 L(self.body, _t("СКЛАД ПОКА ПУСТ"), fg=AMBER, size=22, bold=True).pack(pady=(px(50), px(8)))
@@ -359,6 +350,10 @@ class WarehousePage(tk.Frame):
                 wh.difficulty_text(n_on or card["difficulty"]), len(card["sentences"]))
             if card.get("passed"):
                 meta += _t(" · ПРОЙДЕНО · ср. {0}%").format(card.get("avg") or 0)
+            elif self.list_mode != "done":
+                pd = wh.passes_done(self.ctx.progress, card["slug"])
+                pg = wh.passes_goal(self.ctx.progress, card["slug"])
+                meta += _t(" · прогоны {0}/{1}").format(pd, pg)
             L(left, meta, fg=MUTED, size=8, mono=True, bg=PANEL).pack(anchor="w", pady=(px(2), 0))
             actions = tk.Frame(row, bg=PANEL)
             actions.pack(side=tk.RIGHT, padx=px(8))
@@ -368,16 +363,12 @@ class WarehousePage(tk.Frame):
             if self.list_mode == "away":
                 HudButton(actions, _t("НА СКЛАД"), lambda s=card["slug"]: self.restore_to_shelf(s),
                           color=AMBER, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
-                HudButton(actions, _t("В ОТРАБОТАНО"), lambda s=card["slug"]: self.send_to_done(s),
-                          color=GREEN, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
             elif self.list_mode == "done":
                 HudButton(actions, _t("НА СКЛАД"), lambda s=card["slug"]: self.reopen_done(s),
                           color=AMBER, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
             else:
                 HudButton(actions, _t("В РАБОТУ"), lambda s=card["slug"]: self.send_to_work(s),
                           color=AMBER, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
-                HudButton(actions, _t("В ОТРАБОТАНО"), lambda s=card["slug"]: self.send_to_done(s),
-                          color=GREEN, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
             HudButton(actions, _t("ОТКРЫТЬ"), lambda s=card["slug"]: self.open_card(s),
                       color=CYAN, height=30, font_size=8, width=120).pack(side=tk.TOP, pady=px(2))
             for wdg in (left, *left.winfo_children()):
@@ -423,11 +414,15 @@ class WarehousePage(tk.Frame):
         n_ok = sum(1 for i, on in enumerate(sel) if on and self.scores.get(i, 0) >= wh.FLIP_OK)
         word_ok = self.scores.get(WORD_KEY, 0) >= wh.FLIP_OK
 
+        pd = wh.passes_done(self.ctx.progress, card["slug"])
+        pg = wh.passes_goal(self.ctx.progress, card["slug"])
         self.strip.set(
             _t("КАРТОЧКА"),
-            _t("На экране русский → скажи английский (≥ {0}%). ПОДСКАЗКА (держи) = текст EN · 🔊 EN = озвучка. Затем микрофон.").format(wh.FLIP_OK),
+            _t("Русский → английский (≥ {0}%). Нужно {1} прогон(ов) со ср. ≥ {2}% — затем авто «Отработано».").format(
+                wh.FLIP_OK, pg, wh.PASS_QUALITY),
             (stats["ok"] / max(1, stats["flips"])) if stats["flips"] else 0.0,
-            _t("слово {0} · предл. {1}/{2}").format(_t("ок") if word_ok else "—", n_ok, max(1, n_on)),
+            _t("прогон {0}/{1} · слово {2} · предл. {3}/{4}").format(
+                min(pd + 1, pg), pg, _t("ок") if word_ok else "—", n_ok, max(1, n_on)),
         )
 
         top = tk.Frame(self.body, bg=PANEL)
@@ -439,17 +434,26 @@ class WarehousePage(tk.Frame):
         elif self.list_mode == "away" or wh.is_away(self.ctx.progress, card["slug"]):
             HudButton(top, _t("НА СКЛАД"), lambda s=card["slug"]: self.restore_to_shelf(s),
                       color=CYAN, height=30, font_size=9, width=110).pack(side=tk.LEFT, padx=px(4))
-            HudButton(top, _t("В ОТРАБОТАНО"), lambda s=card["slug"]: self.send_to_done(s),
-                      color=GREEN, height=30, font_size=9, width=130).pack(side=tk.LEFT, padx=px(4))
         else:
             HudButton(top, _t("В РАБОТУ"), lambda s=card["slug"]: self.send_to_work(s),
                       color=AMBER, height=30, font_size=9, width=110).pack(side=tk.LEFT, padx=px(4))
-            HudButton(top, _t("В ОТРАБОТАНО"), lambda s=card["slug"]: self.send_to_done(s),
-                      color=GREEN, height=30, font_size=9, width=130).pack(side=tk.LEFT, padx=px(4))
         L(top, _t("#{0} · {1} · отмечено {2}").format(
             card["rank"], POS_SHORT.get(card["pos"], (card["pos"] or "").upper()),
             wh.difficulty_text(n_on)),
           fg=MUTED, size=8, bold=True, mono=True, bg=PANEL).pack(side=tk.LEFT, padx=px(12))
+
+        if not (self.list_mode == "done" or wh.is_done(self.ctx.progress, card["slug"])):
+            goal_row = tk.Frame(self.body, bg=PANEL)
+            goal_row.pack(fill=tk.X, pady=(0, px(2)))
+            L(goal_row, _t("ПРОГОНОВ ДО «ОТРАБОТАНО»"), fg=MUTED, size=8, bold=True, bg=PANEL).pack(
+                side=tk.LEFT, padx=(0, px(8)))
+            for n in wh.PASS_CHOICES:
+                HudButton(goal_row, str(n), lambda k=n: self.set_pass_goal(k), height=26, font_size=9,
+                          width=40, active=(n == pg), color=GREEN if n == pg else CYAN).pack(
+                    side=tk.LEFT, padx=px(2))
+            L(goal_row, _t("засчитано {0} из {1} · каждый прогон: слово + примеры ≥ {2}%, ср. ≥ {3}%").format(
+                pd, pg, wh.FLIP_OK, wh.PASS_QUALITY),
+              fg=CYAN, size=8, bg=PANEL).pack(side=tk.LEFT, padx=px(12))
 
         sf = ScrollFrame(self.body, bg=PANEL)
         sf.pack(fill=tk.BOTH, expand=True, pady=px(4))
@@ -561,19 +565,24 @@ class WarehousePage(tk.Frame):
             self.fb.pack(anchor="w")
 
         done = wh.card_record(self.ctx.progress, card["slug"])
-        if word_ok and n_on and n_ok >= n_on:
-            st = int((done or {}).get("stars") or wh.stars_for_avg(wh.run_average(self.scores, sel)))
-            avg = float((done or {}).get("avg") or wh.run_average(self.scores, sel))
+        if done:
             banner = tk.Frame(self.body, bg=PANEL)
             banner.pack(fill=tk.X, pady=px(6))
-            L(banner, _t("✓ КАРТОЧКА ПРОЙДЕНА"), fg=GREEN, size=14, bold=True, bg=PANEL).pack()
-            L(banner, wh.stars_glyph(st), fg=AMBER, size=28, bold=True, bg=PANEL).pack()
-            L(banner, _t("средняя точность {0}% · ★≥60% · ★★≥80% · ★★★≥95%").format(avg),
+            L(banner, _t("✓ В ОТРАБОТАННОМ МАТЕРИАЛЕ"), fg=GREEN, size=14, bold=True, bg=PANEL).pack()
+            L(banner, wh.stars_glyph(int(done.get("stars") or 0)), fg=AMBER, size=28, bold=True, bg=PANEL).pack()
+            L(banner, _t("средняя точность {0}% · прогонов {1} · ★≥60% · ★★≥80% · ★★★≥95%").format(
+                done.get("avg", 0), done.get("passes") or pg),
               fg=MUTED, size=8, bg=PANEL).pack()
-        elif done:
+        elif word_ok and n_on and n_ok >= n_on:
+            avg = wh.run_average(self.scores, sel)
             L(self.body,
-              _t("Лучший результат: {0} · ср. {1}%").format(wh.stars_glyph(done.get("stars", 0)), done.get("avg", 0)),
-              fg=AMBER, size=11, bold=True).pack(pady=px(4))
+              _t("Прогон готов · ср. {0}% — засчитываем…").format(avg),
+              fg=CYAN, size=11, bold=True).pack(pady=px(4))
+        else:
+            L(self.body,
+              _t("Прогон {0} из {1}: закрой слово и все отмеченные предложения (≥ {2}%).").format(
+                  min(pd + 1, pg), pg, wh.FLIP_OK),
+              fg=MUTED, size=10).pack(pady=px(4))
 
         HudButton(self.btns, _t("← К СПИСКУ"), self.close_card, color=CYAN, height=36, width=140).pack(
             side=tk.LEFT, padx=px(4))
@@ -581,21 +590,48 @@ class WarehousePage(tk.Frame):
             side=tk.LEFT, padx=px(4))
 
     def _maybe_complete(self, card: dict) -> None:
-        sel = wh.selection(self.ctx.progress, card["slug"], len(card["sentences"]))
-        if not wh.is_run_complete(self.scores, sel):
+        if wh.is_done(self.ctx.progress, card["slug"]):
             return
-        stars, avg, xp, improved = wh.complete_card(self.ctx.progress, card["slug"], self.scores, sel)
-        if improved:
+        sel = wh.selection(self.ctx.progress, card["slug"], len(card["sentences"]))
+        res = wh.finish_pass(self.ctx.progress, card["slug"], self.scores, sel)
+        status = res.get("status")
+        if status == "incomplete":
+            return
+        if status == "weak":
+            self.scores = {}
+            self.active_si = WORD_KEY
+            self.ctx.sfx("error")
+            self.ctx.status(
+                _t("Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.").format(
+                    res.get("avg"), wh.PASS_QUALITY),
+                AMBER)
+            self.render()
+            return
+        if status == "pass":
+            self.scores = {}
+            self.active_si = WORD_KEY
+            self.ctx.sfx("click")
+            msg = _t("Прогон {0}/{1} засчитан · {2} · ср. {3}%").format(
+                res["done"], res["goal"], wh.stars_glyph(res["stars"]), res["avg"])
+            if res.get("xp"):
+                msg += f"  +{res['xp']} XP"
+            self.ctx.status(msg, CYAN)
+            self.ctx.changed()
+            self.render()
+            return
+        if status == "cleared":
+            self.scores = {}
             self.ctx.sfx("bell")
-            msg = _t("Пройдено → ОТРАБОТАНО · {0} · ср. {1}%").format(wh.stars_glyph(stars), avg)
-            if xp:
-                msg += f"  +{xp} XP"
+            msg = _t("Все прогоны готовы → ОТРАБОТАНО · {0} · ср. {1}%").format(
+                wh.stars_glyph(res["stars"]), res["avg"])
+            if res.get("xp"):
+                msg += f"  +{res['xp']} XP"
             self.ctx.status(msg, GREEN)
             self.ctx.changed()
-            # сразу в отсек отработанного материала
             self.list_mode = "done"
             self._reload_cards()
             self.open_slug = card["slug"]
+            self.render()
 
     def _open_next(self) -> None:
         if not self.cards or not self.open_slug:
@@ -625,6 +661,7 @@ class WarehousePage(tk.Frame):
                 score = score_word(card["word"], alts, w.get("sounds_like"))
                 heard = alts[0]
             self.scores[WORD_KEY] = max(self.scores.get(WORD_KEY, 0), score)
+            wh.save_current_scores(self.ctx.progress, card["slug"], self.scores)
             if self.match is not None:
                 self.match.set(score, None, heard, False, self_rated=self_score is not None)
             ok = score >= wh.FLIP_OK
@@ -662,6 +699,7 @@ class WarehousePage(tk.Frame):
             res = [(score_sentence(s["en"], a, w.get("word")), a) for a in alts]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.scores[si] = max(self.scores.get(si, 0), score)
+        wh.save_current_scores(self.ctx.progress, card["slug"], self.scores)
         if self.match is not None:
             self.match.set(score, marks, heard, bool(marks) and target_missed(marks, w.get("word") or ""),
                            self_rated=self_score is not None)

@@ -223,6 +223,8 @@ class CargoScreen(tk.Frame):
         tools = tk.Frame(self, bg=BG)
         tools.pack(fill=tk.X, padx=px(12), pady=px(8))
         for text, cmd, col in (
+            (_t("ПОЛКА КНИГ"), self._open_shelf, AMBER),
+            (_t("СВОБОДНЫЕ КНИГИ"), self._open_free_books, CYAN),
             (_t("ОТКРЫТЬ ФАЙЛ…"), self._open_file, CYAN),
             (_t("ОТКРЫТЬ PDF…"), self._open_pdf, CYAN),
             (_t("ВСТАВИТЬ ИЗ БУФЕРА"), self._paste, CYAN),
@@ -385,6 +387,28 @@ class CargoScreen(tk.Frame):
         lang = langdetect.name(langdetect.detect(self._original or adapted))
         self.preview_info.configure(text=_t("{0} знаков · {1} · ≈ {2}").format(fmt_int(len(adapted)), lang, eta))
         self.preview.configure(text=adapted[:260] + ("…" if len(adapted) > 260 else ""))
+
+    def _library(self):
+        from stamina import library as libmod
+        return libmod.Library()
+
+    def _open_shelf(self) -> None:
+        from stamina.book_shelf import ShelfDialog, start_typing_from_library
+        lib = self._library()
+        ShelfDialog(self, lib, opts=self._opts(),
+                    on_pick=lambda tid: start_typing_from_library(self.app, lib, tid, parent=self))
+
+    def _open_free_books(self) -> None:
+        from stamina.book_shelf import BookSearchDialog, start_typing_from_library
+        lib = self._library()
+
+        def after_add(tid: str) -> None:
+            if messagebox.askyesno(_t("Печать"),
+                                   _t("Книга на полке. Начать набор сейчас?"),
+                                   parent=self):
+                start_typing_from_library(self.app, lib, tid, parent=self)
+
+        BookSearchDialog(self, lib, opts=self._opts(), on_added=after_add)
 
     def _open_file(self) -> None:
         path = filedialog.askopenfilename(parent=self, title=_t("Открыть текст"),
@@ -653,6 +677,13 @@ class SettingsScreen(tk.Frame):
             b = HudButton(fs, name, lambda k=key: self._set_font(k), width=100, height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.font_btns[key] = b
+        ui = self._row(_t("Размер интерфейса"),
+                      _t("Шрифты и отступы во всём приложении. Новый размер полностью применится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» выше (прогресс сохранится)."))
+        self.ui_btns = {}
+        for key, name in (("S", _t("МЕЛКИЙ")), ("M", _t("ОБЫЧНЫЙ")), ("L", _t("КРУПНЫЙ")), ("XL", _t("ОЧЕНЬ КРУПНЫЙ"))):
+            b = HudButton(ui, name, lambda k=key: self._set_ui_scale(k), width=120, height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(3))
+            self.ui_btns[key] = b
         data = self._row(_t("Данные"), _t("Статистика и прогресс: {0}").format(DATA_DIR))
         HudButton(data, _t("ОТКРЫТЬ ПАПКУ"), self._open_data, height=30, font_size=9).pack(side=tk.LEFT)
         _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…5 — разделы  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
@@ -721,6 +752,14 @@ class SettingsScreen(tk.Frame):
         self.app.apply_settings()
         self.refresh()
 
+    def _set_ui_scale(self, key: str) -> None:
+        from stamina import theme as th
+        key = th.set_ui_scale(key)
+        self.app.store.settings["ui_scale"] = key
+        self.app.apply_settings()
+        self.refresh()
+        self.btn_restart.pack(side=tk.LEFT, padx=px(8))  # как при смене языка — нужен перезапуск
+
     def _test_sound(self) -> None:
         snd = self.app.sound
         if not snd.available:
@@ -756,6 +795,8 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("living_space", "light"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
+        for k, b in getattr(self, "ui_btns", {}).items():
+            b.set_active(st.get("ui_scale", "M") == k)
         for k, b in getattr(self, "up_btns", {}).items():
             b.set_active(k == (st.get("uplink_target") or ""))
         from stamina import i18n

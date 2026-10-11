@@ -30,6 +30,7 @@ class Cockpit(tk.Tk):
         theme.init(self)
         self.store = Store()
         st = self.store.settings
+        theme.set_ui_scale(st.get("ui_scale", "M"))
         self.sound = SoundBoard(bool(st["sound"]), int(st.get("volume", 3)))
         self.translator = None
         self.current: str | None = None
@@ -464,6 +465,7 @@ class Cockpit(tk.Tk):
 
     def apply_settings(self) -> None:
         st = self.store.settings
+        theme.set_ui_scale(st.get("ui_scale", "M"))
         self.sound.enabled = bool(st["sound"])
         self.sound.volume = int(st.get("volume", 3))
         self._update_sound_button()

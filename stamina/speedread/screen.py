@@ -16,13 +16,15 @@ from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MU
 
 from stamina import library as libmod
 
+from .book_reader import BookReaderPage
 from .exercises import CATALOG, FlashEx, PyramidEx, SchulteEx, best_text
 from .reader import ReaderPage
 from .store import SpeedStore
 from .ui import HudButton, HudPanel, L, ScrollFrame, Toggle, WpmChart, entry
 
-TABS = [("overview", _t("ОБЗОР")), ("reader", _t("ГИПЕРДРАЙВ")), ("exercises", _t("ТРЕНАЖЁРЫ")),
-        ("library", _t("БИБЛИОТЕКА")), ("journal", _t("ЖУРНАЛ")), ("settings", _t("НАСТРОЙКИ"))]
+TABS = [("overview", _t("ОБЗОР")), ("reader", _t("ГИПЕРДРАЙВ")), ("book", _t("КНИГА")),
+        ("exercises", _t("ТРЕНАЖЁРЫ")), ("library", _t("БИБЛИОТЕКА")), ("journal", _t("ЖУРНАЛ")),
+        ("settings", _t("НАСТРОЙКИ"))]
 
 STATUS_RU = {"full": (_t("ОРИГИНАЛ"), GREEN), "recovered": (_t("ОРИГИНАЛ ВОССТАНОВЛЕН"), CYAN),
              "missing": (_t("НЕТ ОРИГИНАЛА"), AMBER)}
@@ -66,6 +68,7 @@ class SpeedReadScreen(tk.Frame):
         self.pages = {
             "overview": OverviewPage(self.body, self),
             "reader": ReaderPage(self.body, self),
+            "book": BookReaderPage(self.body, self),
             "exercises": ExercisesPage(self.body, self),
             "library": LibraryPage(self.body, self),
             "journal": JournalPage(self.body, self),
@@ -113,6 +116,8 @@ class SpeedReadScreen(tk.Frame):
             rd: ReaderPage = self.pages["reader"]
             if rd.state == "run":
                 rd.pause()
+        if self.current == "book" and name != "book":
+            self.pages["book"].save_pos()
         if name == "reader":
             rd = self.pages["reader"]
             if rd.tid is None:
@@ -122,6 +127,15 @@ class SpeedReadScreen(tk.Frame):
                     name = "library"
                 else:
                     rd.open(tid)
+        if name == "book":
+            bk: BookReaderPage = self.pages["book"]
+            if bk.tid is None:
+                tid = self.lib.index.get("active_reading") or (self.lib.ids() or [None])[0]
+                if tid is None:
+                    self.app.set_status(_t("БИБЛИОТЕКА ПУСТА — добавьте текст"), AMBER)
+                    name = "library"
+                else:
+                    bk.open(tid)
         if name == "exercises":
             self.pages["exercises"].show_catalog()
         self.current = name
@@ -131,11 +145,20 @@ class SpeedReadScreen(tk.Frame):
         page.tkraise()
         for k, b in self.tab_btns.items():
             b.set_active(k == name)
-        self.app.focus_set()
+        if name == "book":
+            self.pages["book"].text_w.focus_set()
+        else:
+            self.app.focus_set()
 
     def read(self, tid: str, word: int | None = None) -> None:
+        """Открыть в гипердрайве (RSVP)."""
         self.pages["reader"].open(tid, word=word)
         self.show("reader")
+
+    def read_book(self, tid: str, word: int | None = None) -> None:
+        """Открыть в обычной читалке «КНИГА»."""
+        self.pages["book"].open(tid, word=word)
+        self.show("book")
 
     def set_focus_mode(self, on: bool) -> None:
         if on:
@@ -166,10 +189,15 @@ class SpeedReadScreen(tk.Frame):
         rd: ReaderPage = self.pages["reader"]
         if rd.state == "run":
             rd.pause()
+        try:
+            self.pages["book"].save_pos()
+        except Exception:
+            pass
 
     def close(self) -> None:
         try:
             self.pages["reader"].stop_session(save=True)
+            self.pages["book"].save_pos()
             self.pages["exercises"].stop()
         finally:
             self.sstore.save()
@@ -200,8 +228,10 @@ class OverviewPage(tk.Frame):
         self.lbl_pos.pack(anchor="w")
         row = tk.Frame(b, bg=PANEL)
         row.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
-        self.btn_go = HudButton(row, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.show("reader"), color=GREEN, height=40)
+        self.btn_go = HudButton(row, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.show("reader"), color=AMBER, height=40)
         self.btn_go.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        HudButton(row, _t("📖 КНИГА"), lambda: self.ctx.show("book"), color=GREEN, height=40, width=100).pack(
+            side=tk.LEFT, padx=(px(6), 0))
         HudButton(row, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=40, width=120).pack(
             side=tk.LEFT, padx=(px(6), 0))
         chart = HudPanel(top, _t("СКОРОСТЬ ПО СЕССИЯМ · СЛОВ/МИН (ЦИАН) · С ПОНИМАНИЕМ (ЗЕЛЁНЫЙ)"))
@@ -361,6 +391,12 @@ class LibraryPage(tk.Frame):
         left.pack_propagate(False)
         acts = tk.Frame(left.body, bg=PANEL)
         acts.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(6), 0))
+        net = tk.Frame(left.body, bg=PANEL)
+        net.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(4), 0))
+        HudButton(net, _t("★ СВОБОДНЫЕ КНИГИ"), self.open_free_catalog, color=AMBER, height=30,
+                  font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        HudButton(net, _t("🔍 ПОИСК"), self.open_book_search, color=CYAN, height=30, font_size=8).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
         HudButton(acts, _t("＋ ОТКРЫТЬ .TXT"), self.open_file, height=32, font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
         HudButton(acts, _t("＋ ОТКРЫТЬ PDF"), self.open_pdf, height=32, font_size=8).pack(
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
@@ -445,10 +481,12 @@ class LibraryPage(tk.Frame):
                 side=tk.LEFT, padx=px(6))
         acts = tk.Frame(b, bg=PANEL)
         acts.pack(side=tk.BOTTOM, fill=tk.X)
-        HudButton(acts, _t("▶ ЧИТАТЬ"), lambda: self.ctx.read(tid), color=GREEN, height=40).pack(
+        HudButton(acts, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.read(tid), color=AMBER, height=40).pack(
+            side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts, _t("📖 КНИГА"), lambda: self.ctx.read_book(tid), color=GREEN, height=40).pack(
             side=tk.LEFT, padx=(0, px(6)))
         if tw:
-            HudButton(acts, _t("ЧИТАТЬ С МЕСТА ПЕЧАТИ"), lambda: self.ctx.read(tid, tw), height=40).pack(
+            HudButton(acts, _t("ГИПЕРДРАЙВ С МЕСТА ПЕЧАТИ"), lambda: self.ctx.read(tid, tw), height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
         HudButton(acts, _t("⌨ ПЕЧАТАТЬ"), lambda: self.type_text(tid), color=CYAN, height=40).pack(
             side=tk.LEFT, padx=(0, px(6)))
@@ -461,6 +499,18 @@ class LibraryPage(tk.Frame):
     # -- действия -----------------------------------------------------------------------
     def _opts(self) -> dict:
         return dict(self.ctx.app.store.settings.get("cargo_opts") or {})
+
+    def open_free_catalog(self) -> None:
+        from stamina.book_shelf import BookSearchDialog
+
+        def added(tid: str) -> None:
+            self.sel = tid
+            self.refresh()
+
+        BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added)
+
+    def open_book_search(self) -> None:
+        self.open_free_catalog()
 
     def open_file(self) -> None:
         path = filedialog.askopenfilename(parent=self, title=_t("Текст для библиотеки"),
@@ -600,38 +650,8 @@ class LibraryPage(tk.Frame):
 
     def type_text(self, tid: str) -> None:
         """Отправить текст в «Свой текст» с сохранённой позицией печати."""
-        from stamina.session_storage import SessionState, load_session, save_session
-        app, lib = self.ctx.app, self.ctx.lib
-        m = lib.meta(tid)
-        prep, orig = lib.prepared(tid), lib.original(tid)
-        saved = load_session()
-        if saved is not None and libmod.sha(saved.text) == m["prepared"]["sha256"]:
-            app.resume_cargo()
-            return
-        if saved is not None:
-            if not messagebox.askyesno(_t("Печать"), _t("Переключить печать на «{0}»?\nПозиция текущего текста сохранится в библиотеке.").format(m['title']), parent=self):
-                return
-            try:
-                app.screens["bridge"].leave_current()
-            except Exception:  # noqa: BLE001
-                pass
-            saved = load_session()
-            cur = lib.find_by_prepared(saved.text) if saved else None
-            if cur is None and saved is not None:
-                cur = lib.upsert_from_cargo(saved.text, "", app.store.settings.get("cargo_opts"))
-            if cur and saved is not None:
-                lib.set_position(cur, "typing", saved.index)
-        lib.set_active("typing", tid)
-        pos = int(m["positions"]["typing"].get("char", 0))
-        good_orig = orig if orig and libmod.processor(m["prepared"]["opts"])(orig) == prep else ""
-        app.store.save_cargo(prep, good_orig)
-        app.screens["cargo"].load_initial(prep, good_orig)
-        if 0 < pos < len(prep):
-            save_session(SessionState(text=prep, index=pos,
-                                      case_sensitive=not m["prepared"]["opts"].get("lower", True)))
-            app.resume_cargo()
-        else:
-            app.start_cargo(prep, good_orig)
+        from stamina.book_shelf import start_typing_from_library
+        start_typing_from_library(self.ctx.app, self.ctx.lib, tid, parent=self)
 
 
 # ======================================================================================
@@ -747,5 +767,11 @@ class SettingsPage(tk.Frame):
         choice(b.body, _t("ТЕСТ ПОНИМАНИЯ"), "quiz", [("always", _t("ВСЕГДА")), ("ask", _t("СПРОСИТЬ")), ("never", _t("НЕТ"))])
         stepper(b.body, _t("ТЕСТ КАЖДЫЕ"), "quiz_words", 250, 250, 5000, _t("слов"))
         choice(b.body, _t("СИНХРОНИЗАЦИЯ С ПЕЧАТЬЮ"), "sync", [("ask", _t("ПОДСКАЗКА")), ("off", _t("НЕТ"))])
-        L(self.root, _t("Изменения применяются к следующему запуску гипердрайва. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
+
+        c = HudPanel(self.root, _t("ЧИТАЛКА «КНИГА»"), accent=GREEN)
+        c.pack(fill=tk.X, pady=(px(10), 0))
+        stepper(c.body, _t("РАЗМЕР ШРИФТА КНИГИ"), "book_font_pt", 1, 11, 36, "pt")
+        choice(c.body, _t("ТЕМА КНИГИ"), "book_theme",
+               [("dark", _t("ТЁМНАЯ")), ("paper", _t("БУМАГА")), ("sepia", _t("СЕПИЯ"))])
+        L(self.root, _t("Гипердрайв — RSVP по словам. «Книга» — обычное чтение с полки (страницы, шрифт, оглавление). Позиция общая. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
             anchor="w", pady=px(8))
