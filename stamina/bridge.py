@@ -244,6 +244,24 @@ class Bridge(tk.Frame):
     # ------------------------------------------------------------------
     # Клавиатура
     # ------------------------------------------------------------------
+    def _radio_duck_typing(self) -> None:
+        """Приглушить радио на время набора (если включено в радиорубке)."""
+        try:
+            from stamina.radio.engine import get_engine
+            eng = get_engine()
+            if not eng.data.get("duck_typing") or not eng.playing:
+                return
+            eng.duck(18)
+            job = getattr(self, "_radio_unduck_job", None)
+            if job:
+                try:
+                    self.after_cancel(job)
+                except tk.TclError:
+                    pass
+            self._radio_unduck_job = self.after(1800, lambda: eng.unduck())
+        except Exception:  # noqa: BLE001
+            pass
+
     def on_key(self, e: tk.Event) -> None:
         live = getattr(self.app, "living", None)
         if live is not None:
@@ -274,6 +292,7 @@ class Bridge(tk.Frame):
             return
         ok = res != ERROR
         self.app.store.record_key(expected, ok)
+        self._radio_duck_typing()
         if ok:
             self.app.sound.click()
         else:

@@ -36,10 +36,10 @@ echo "===================  STAR TYPING — УСТАНОВКА (Linux)  =========
 # --- менеджер пакетов
 PM=""; for p in apt-get dnf pacman zypper; do command -v "$p" >/dev/null 2>&1 && { PM="$p"; break; }; done
 case "$PM" in
-  apt-get) BASE="python3 python3-tk python3-venv python3-pip espeak-ng alsa-utils"; PA="libportaudio2"; INSTALL="apt-get install -y" ;;
-  dnf)     BASE="python3 python3-tkinter python3-pip espeak-ng"; PA="portaudio"; INSTALL="dnf install -y" ;;
-  pacman)  BASE="python tk python-pip espeak-ng"; PA="portaudio"; INSTALL="pacman -S --needed --noconfirm" ;;
-  zypper)  BASE="python3 python3-tk python3-pip espeak-ng"; PA="portaudio"; INSTALL="zypper --non-interactive install" ;;
+  apt-get) BASE="python3 python3-tk python3-venv python3-pip espeak-ng alsa-utils mpv"; PA="libportaudio2"; INSTALL="apt-get install -y" ;;
+  dnf)     BASE="python3 python3-tkinter python3-pip espeak-ng mpv"; PA="portaudio"; INSTALL="dnf install -y" ;;
+  pacman)  BASE="python tk python-pip espeak-ng mpv"; PA="portaudio"; INSTALL="pacman -S --needed --noconfirm" ;;
+  zypper)  BASE="python3 python3-tk python3-pip espeak-ng mpv"; PA="portaudio"; INSTALL="zypper --non-interactive install" ;;
   *)       BASE=""; PA=""; INSTALL="" ;;
 esac
 SUDO=""; [ "$(id -u)" -ne 0 ] && SUDO="sudo"

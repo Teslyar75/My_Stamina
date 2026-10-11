@@ -1,4 +1,4 @@
-"""UI: поиск книг в интернете (Project Gutenberg) и полка локальной библиотеки."""
+"""Полка книг и каталог Gutenberg — встроенные экраны (не модальные окна)."""
 from __future__ import annotations
 
 from stamina.i18n import t as _t
@@ -7,6 +7,7 @@ import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox
+from typing import Callable
 
 from stamina import book_catalog as catalog
 from stamina import library as libmod
@@ -37,18 +38,15 @@ def _cover_photo(path: Path | None, w: int = COVER_W, h: int = COVER_H) -> tk.Ph
     try:
         from PIL import Image, ImageTk
         im = Image.open(path).convert("RGB")
-        im.thumbnail((w, h), Image.LANCZOS)
-        # холст фиксированного размера
-        canvas = Image.new("RGB", (w, h), (8, 18, 33))
-        x = (w - im.width) // 2
-        y = (h - im.height) // 2
-        canvas.paste(im, (x, y))
-        return ImageTk.PhotoImage(canvas)
     except Exception:  # noqa: BLE001
         try:
             return tk.PhotoImage(file=str(path))
         except tk.TclError:
             return None
+    im.thumbnail((w, h), Image.LANCZOS)
+    canvas = Image.new("RGB", (w, h), (8, 18, 33))
+    canvas.paste(im, ((w - im.width) // 2, (h - im.height) // 2))
+    return ImageTk.PhotoImage(canvas)
 
 
 def _placeholder_cover(parent, w: int = COVER_W, h: int = COVER_H) -> tk.Canvas:
@@ -59,43 +57,52 @@ def _placeholder_cover(parent, w: int = COVER_W, h: int = COVER_H) -> tk.Canvas:
     return c
 
 
-class BookSearchDialog(tk.Toplevel):
-    """Поиск по названию/автору + лента свободных книг → скачать в библиотеку."""
+class BookCatalogPanel(tk.Frame):
+    """Каталог Gutenberg внутри основного окна (список + кнопки всегда внизу экрана)."""
 
     def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
-                 on_added=None) -> None:
+                 on_added: Callable[[str], None] | None = None,
+                 on_back: Callable[[], None] | None = None) -> None:
         super().__init__(master, bg=BG)
-        self.title(_t("Свободные книги · Project Gutenberg"))
-        self.transient(master.winfo_toplevel())
-        self.grab_set()
         self.lib = lib
         self.opts = opts or {}
         self.on_added = on_added
+        self.on_back = on_back
         self.results: list[dict] = []
         self.sel: int | None = None
         self._busy = False
-        self._photos: list[tk.PhotoImage] = []  # удержать ссылки
+        self._photos: list[tk.PhotoImage] = []
         self._lang = "en"
         self._page = 1
-        self._mode = "browse"  # browse | search
+        self._mode = "browse"
         self._next_url = None
+        self._started = False
 
-        self.geometry(f"{px(900)}x{px(620)}")
-        HudPanel(self, _t("PROJECT GUTENBERG · ОБЩЕСТВЕННОЕ ДОСТОЯНИЕ")).pack(
-            fill=tk.X, padx=px(12), pady=(px(10), 0))
+        head = tk.Frame(self, bg=BG)
+        head.pack(fill=tk.X, padx=px(12), pady=(px(8), 0))
+        if on_back:
+            HudButton(head, _t("← НАЗАД"), on_back, height=30, font_size=9, width=100).pack(
+                side=tk.LEFT, padx=(0, px(10)))
+        tk.Label(head, text=_t("СВОБОДНЫЕ КНИГИ · PROJECT GUTENBERG"), bg=BG, fg=AMBER,
+                 font=theme.font(14, True)).pack(side=tk.LEFT)
+        tk.Label(head, text=_t("общественное достояние · обложки или заглушки"),
+                 bg=BG, fg=MUTED, font=theme.font(8)).pack(side=tk.LEFT, padx=px(12))
+
         L(self, _t("Поиск по названию и/или автору. Список — бесплатные книги в свободном доступе. "
                    "С обложкой или без (заглушка). Авторские современные книги сюда не входят."),
-          fg=MUTED, size=8, bg=BG, wraplength=px(860), justify="left").pack(
-            anchor="w", padx=px(14), pady=(px(4), 0))
+          fg=MUTED, size=8, bg=BG, wraplength=px(1100), justify="left").pack(
+            anchor="w", padx=px(14), pady=(px(2), 0))
 
         form = tk.Frame(self, bg=BG)
-        form.pack(fill=tk.X, padx=px(14), pady=px(8))
+        form.pack(fill=tk.X, padx=px(12), pady=px(6))
         L(form, _t("НАЗВАНИЕ"), fg=MUTED, size=8, bold=True, bg=BG).grid(row=0, column=0, sticky="w")
-        L(form, _t("АВТОР"), fg=MUTED, size=8, bold=True, bg=BG).grid(row=0, column=1, sticky="w", padx=(px(8), 0))
-        L(form, _t("ЯЗЫК"), fg=MUTED, size=8, bold=True, bg=BG).grid(row=0, column=2, sticky="w", padx=(px(8), 0))
-        self.e_title = entry(form, width=32, size=11)
+        L(form, _t("АВТОР"), fg=MUTED, size=8, bold=True, bg=BG).grid(row=0, column=1, sticky="w",
+                                                                       padx=(px(8), 0))
+        L(form, _t("ЯЗЫК"), fg=MUTED, size=8, bold=True, bg=BG).grid(row=0, column=2, sticky="w",
+                                                                      padx=(px(8), 0))
+        self.e_title = entry(form, width=28, size=11)
         self.e_title.grid(row=1, column=0, sticky="ew", padx=(0, px(8)))
-        self.e_author = entry(form, width=24, size=11)
+        self.e_author = entry(form, width=22, size=11)
         self.e_author.grid(row=1, column=1, sticky="ew", padx=(0, px(8)))
         lang_fr = tk.Frame(form, bg=BG)
         lang_fr.grid(row=1, column=2, sticky="w")
@@ -119,21 +126,28 @@ class BookSearchDialog(tk.Toplevel):
         self.status = L(self, "", fg=MUTED, size=9, bg=BG)
         self.status.pack(anchor="w", padx=px(14))
 
-        body = tk.Frame(self, bg=BG)
-        body.pack(fill=tk.BOTH, expand=True, padx=px(12), pady=px(6))
-        self.list = ScrollFrame(body, bg=PANEL)
-        self.list.pack(fill=tk.BOTH, expand=True)
-
+        # низ: кнопки всегда видны (pack side=BOTTOM до expand-списка)
         bot = tk.Frame(self, bg=BG)
-        bot.pack(fill=tk.X, padx=px(12), pady=(0, px(12)))
-        self.btn_more = HudButton(bot, _t("ЕЩЁ…"), self.load_more, height=36, font_size=9, width=90)
+        bot.pack(fill=tk.X, side=tk.BOTTOM, padx=px(12), pady=(px(4), px(10)))
+        self.btn_more = HudButton(bot, _t("ЕЩЁ…"), self.load_more, height=38, font_size=9, width=90)
         self.btn_more.pack(side=tk.LEFT)
         self.btn_dl = HudButton(bot, _t("⇩ СКАЧАТЬ В БИБЛИОТЕКУ"), self.download, color=GREEN,
-                                height=36, font_size=10, width=220)
+                                height=38, font_size=11, width=240)
         self.btn_dl.pack(side=tk.LEFT, padx=px(8))
-        HudButton(bot, _t("ЗАКРЫТЬ"), self.destroy, height=36, font_size=9, width=110).pack(side=tk.RIGHT)
+        if on_back:
+            HudButton(bot, _t("← К ПОДГОТОВКЕ"), on_back, height=38, font_size=9, width=140).pack(
+                side=tk.RIGHT)
 
-        self.after(80, self.browse_free)
+        body = HudPanel(self, _t("КАТАЛОГ"), accent=CYAN)
+        body.pack(fill=tk.BOTH, expand=True, padx=px(12), pady=(px(4), 0))
+        self.list = ScrollFrame(body.body, bg=PANEL)
+        self.list.pack(fill=tk.BOTH, expand=True)
+
+    def activate(self) -> None:
+        """Показать панель и при первом заходе подгрузить ленту."""
+        if not self._started:
+            self._started = True
+            self.after(60, self.browse_free)
 
     def _set_lang(self, code: str) -> None:
         self._lang = code
@@ -148,10 +162,7 @@ class BookSearchDialog(tk.Toplevel):
             return
         self._mode = "browse"
         self._page = 1
-        # по умолчанию EN; «ВСЕ» — без фильтра языка
-        lang = self._lang_param() if self._lang_param() is not None else "en"
-        if self._lang == "":
-            lang = None
+        lang = None if self._lang == "" else (self._lang_param() or "en")
         self._run_fetch(lambda: catalog.list_free_books(page=1, languages=lang))
 
     def search(self) -> None:
@@ -160,7 +171,8 @@ class BookSearchDialog(tk.Toplevel):
         title = self.e_title.get().strip()
         author = self.e_author.get().strip()
         if not title and not author:
-            self.status.configure(text=_t("Введите название или автора — или откройте «Свободные»."), fg=AMBER)
+            self.status.configure(text=_t("Введите название или автора — или откройте «Свободные»."),
+                                  fg=AMBER)
             return
         self._mode = "search"
         self._page = 1
@@ -220,7 +232,6 @@ class BookSearchDialog(tk.Toplevel):
                     n, len(self.results), sum(1 for b in self.results if b.get("has_cover"))),
                 fg=GREEN)
         self._render_list()
-        # подтянуть обложки в фоне
         threading.Thread(target=self._prefetch_covers, daemon=True).start()
 
     def _prefetch_covers(self) -> None:
@@ -250,8 +261,8 @@ class BookSearchDialog(tk.Toplevel):
             cover_box.pack(side=tk.LEFT, padx=px(8), pady=px(6))
             cover_box.pack_propagate(False)
             path = catalog.cover_cache_path(b["id"]) if b.get("has_cover") else None
-            if path and not path.exists() and b.get("cover_url"):
-                path = None  # ещё качается
+            if path and not path.exists():
+                path = None
             photo = _cover_photo(path if path and path.exists() else None)
             if photo is not None:
                 self._photos.append(photo)
@@ -267,9 +278,12 @@ class BookSearchDialog(tk.Toplevel):
             mid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(6), pady=px(6))
             langs = ", ".join((b.get("languages") or [])[:3]).upper() or "—"
             cover_note = _t("есть обложка") if b.get("has_cover") else _t("без обложки")
-            L(mid, b["title"], fg=TEXT, size=12, bold=True, bg=mid["bg"], wraplength=px(620)).pack(anchor="w")
-            L(mid, b.get("author") or _t("автор не указан"), fg=MUTED, size=9, bg=mid["bg"]).pack(anchor="w")
-            L(mid, _t("{0} · {1} · скачиваний ≈ {2}").format(langs, cover_note, b.get("download_count") or 0),
+            L(mid, b["title"], fg=TEXT, size=12, bold=True, bg=mid["bg"],
+              wraplength=px(720)).pack(anchor="w")
+            L(mid, b.get("author") or _t("автор не указан"), fg=MUTED, size=9, bg=mid["bg"]).pack(
+                anchor="w")
+            L(mid, _t("{0} · {1} · скачиваний ≈ {2}").format(
+                langs, cover_note, b.get("download_count") or 0),
               fg=CYAN if on else MUTED, size=8, bg=mid["bg"]).pack(anchor="w", pady=(px(2), 0))
             for w in (row, mid, *mid.winfo_children()):
                 w.bind("<Button-1>", lambda _e, idx=i: self._pick(idx))
@@ -323,45 +337,52 @@ class BookSearchDialog(tk.Toplevel):
                 self.on_added(m["id"])
             except Exception:  # noqa: BLE001
                 pass
-        if messagebox.askyesno(_t("Книга загружена"),
-                               _t("«{0}» добавлена на полку.\nЗакрыть каталог?").format(m["title"]),
-                               parent=self):
-            self.destroy()
 
 
-class ShelfDialog(tk.Toplevel):
-    """Полка: выбрать книгу из локальной библиотеки для печати."""
+class ShelfPanel(tk.Frame):
+    """Локальная полка книг — встроенный экран выбора для печати."""
 
     def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
-                 on_pick=None) -> None:
+                 on_pick: Callable[[str], None] | None = None,
+                 on_back: Callable[[], None] | None = None,
+                 on_open_catalog: Callable[[], None] | None = None) -> None:
         super().__init__(master, bg=BG)
-        self.title(_t("Полка книг"))
-        self.transient(master.winfo_toplevel())
-        self.grab_set()
         self.lib = lib
         self.opts = opts or {}
         self.on_pick = on_pick
+        self.on_back = on_back
+        self.on_open_catalog = on_open_catalog
         self.sel: str | None = None
         self._photos: list[tk.PhotoImage] = []
-        self.geometry(f"{px(760)}x{px(520)}")
 
-        L(self, _t("ПОЛКА КНИГ · ВЫБОР ДЛЯ НАБОРА"), fg=TEXT, size=14, bold=True, bg=BG).pack(
-            anchor="w", padx=px(14), pady=(px(12), px(4)))
+        head = tk.Frame(self, bg=BG)
+        head.pack(fill=tk.X, padx=px(12), pady=(px(8), 0))
+        if on_back:
+            HudButton(head, _t("← НАЗАД"), on_back, height=30, font_size=9, width=100).pack(
+                side=tk.LEFT, padx=(0, px(10)))
+        tk.Label(head, text=_t("ПОЛКА КНИГ · ВЫБОР ДЛЯ НАБОРА"), bg=BG, fg=AMBER,
+                 font=theme.font(14, True)).pack(side=tk.LEFT)
+
         L(self, _t("Локальная библиотека. Можно искать свободные книги в интернете (Gutenberg) и скачать на полку."),
-          fg=MUTED, size=8, bg=BG, wraplength=px(720)).pack(anchor="w", padx=px(14))
-
-        self.list = ScrollFrame(self, bg=PANEL)
-        self.list.pack(fill=tk.BOTH, expand=True, padx=px(12), pady=px(8))
-        self._render()
+          fg=MUTED, size=8, bg=BG, wraplength=px(1100)).pack(anchor="w", padx=px(14), pady=(px(2), 0))
 
         bot = tk.Frame(self, bg=BG)
-        bot.pack(fill=tk.X, padx=px(12), pady=(0, px(12)))
-        HudButton(bot, _t("🔍 СВОБОДНЫЕ КНИГИ"), self._search_net, color=CYAN, height=34,
-                  font_size=9, width=180).pack(side=tk.LEFT)
-        HudButton(bot, _t("⌨ ПЕЧАТАТЬ"), self._use, color=GREEN, height=34, font_size=10,
-                  width=140).pack(side=tk.RIGHT)
-        HudButton(bot, _t("ЗАКРЫТЬ"), self.destroy, height=34, font_size=9, width=100).pack(
-            side=tk.RIGHT, padx=px(6))
+        bot.pack(fill=tk.X, side=tk.BOTTOM, padx=px(12), pady=(px(4), px(10)))
+        HudButton(bot, _t("🔍 СВОБОДНЫЕ КНИГИ"), self._search_net, color=CYAN, height=38,
+                  font_size=9, width=200).pack(side=tk.LEFT)
+        HudButton(bot, _t("⌨ ПЕЧАТАТЬ"), self._use, color=GREEN, height=38, font_size=11,
+                  width=160).pack(side=tk.RIGHT)
+        if on_back:
+            HudButton(bot, _t("← К ПОДГОТОВКЕ"), on_back, height=38, font_size=9, width=140).pack(
+                side=tk.RIGHT, padx=px(6))
+
+        body = HudPanel(self, _t("НА ПОЛКЕ"), accent=AMBER)
+        body.pack(fill=tk.BOTH, expand=True, padx=px(12), pady=(px(6), 0))
+        self.list = ScrollFrame(body.body, bg=PANEL)
+        self.list.pack(fill=tk.BOTH, expand=True)
+
+    def activate(self) -> None:
+        self._render()
 
     def _cover_for_meta(self, m: dict) -> Path | None:
         src = m.get("source") or {}
@@ -382,7 +403,7 @@ class ShelfDialog(tk.Toplevel):
         if not metas:
             L(self.list.inner,
               _t("Полка пуста. Нажмите «Свободные книги» или добавьте файл в Скорочтение → Библиотека."),
-              fg=MUTED, size=10, bg=PANEL, wraplength=px(640), justify="left").pack(
+              fg=MUTED, size=10, bg=PANEL, wraplength=px(720), justify="left").pack(
                 anchor="w", padx=px(12), pady=px(16))
             return
         if self.sel not in [m["id"] for m in metas]:
@@ -421,7 +442,8 @@ class ShelfDialog(tk.Toplevel):
         self._render()
 
     def _search_net(self) -> None:
-        BookSearchDialog(self, self.lib, opts=self.opts, on_added=lambda _t: self._render())
+        if self.on_open_catalog:
+            self.on_open_catalog()
 
     def _use(self) -> None:
         if not self.sel:
@@ -429,7 +451,73 @@ class ShelfDialog(tk.Toplevel):
             return
         if self.on_pick:
             self.on_pick(self.sel)
-        self.destroy()
+
+
+class BookSearchDialog(tk.Toplevel):
+    """Совместимость: модальное окно вокруг BookCatalogPanel (кнопки «Свободные книги»)."""
+
+    def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
+                 on_added: Callable[[str], None] | None = None) -> None:
+        super().__init__(master, bg=BG)
+        self.title(_t("Свободные книги · Project Gutenberg"))
+        self.transient(master.winfo_toplevel())
+        try:
+            self.grab_set()
+        except tk.TclError:
+            pass
+        sw = self.winfo_screenwidth()
+        sh = self.winfo_screenheight()
+        w, h = min(px(1100), int(sw * 0.92)), min(px(720), int(sh * 0.88))
+        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+        self.minsize(px(720), px(480))
+
+        def added(tid: str) -> None:
+            if on_added:
+                on_added(tid)
+
+        panel = BookCatalogPanel(self, lib, opts=opts, on_added=added, on_back=self.destroy)
+        panel.pack(fill=tk.BOTH, expand=True)
+        panel.activate()
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
+
+
+class ShelfDialog(tk.Toplevel):
+    """Совместимость: модальное окно вокруг ShelfPanel."""
+
+    def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
+                 on_pick: Callable[[str], None] | None = None) -> None:
+        super().__init__(master, bg=BG)
+        self.title(_t("Полка книг"))
+        self.transient(master.winfo_toplevel())
+        try:
+            self.grab_set()
+        except tk.TclError:
+            pass
+        sw = self.winfo_screenwidth()
+        sh = self.winfo_screenheight()
+        w, h = min(px(960), int(sw * 0.9)), min(px(640), int(sh * 0.85))
+        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+
+        def open_catalog() -> None:
+            def after_add(tid: str) -> None:
+                panel.activate()
+                if on_pick and messagebox.askyesno(
+                        _t("Печать"), _t("Книга на полке. Выбрать её для набора?"), parent=self):
+                    self.destroy()
+                    on_pick(tid)
+
+            BookSearchDialog(self, lib, opts=opts, on_added=after_add)
+
+        def picked(tid: str) -> None:
+            self.destroy()
+            if on_pick:
+                on_pick(tid)
+
+        panel = ShelfPanel(self, lib, opts=opts, on_pick=picked, on_back=self.destroy,
+                           on_open_catalog=open_catalog)
+        panel.pack(fill=tk.BOTH, expand=True)
+        panel.activate()
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
 
 
 def start_typing_from_library(app, lib: libmod.Library, tid: str, parent=None) -> None:

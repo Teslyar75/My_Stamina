@@ -110,6 +110,11 @@ class MicPanel(tk.Frame):
         asr.poll()  # очистить старые события
         self._silent = ""
         if asr.listen():
+            try:
+                from stamina.radio.engine import get_engine
+                get_engine().duck(8)
+            except Exception:  # noqa: BLE001
+                pass
             self.btn.set_text(_t("● СЛУШАЮ…"))
             self.btn.set_color(RED)
             self.btn.set_active(True)
@@ -154,6 +159,11 @@ class MicPanel(tk.Frame):
         if done or (not self.ctx.asr.listening and self.ctx.asr.events.empty()):
             self._polling = False
             self._btn_idle()
+            try:
+                from stamina.radio.engine import get_engine
+                get_engine().unduck()
+            except Exception:  # noqa: BLE001
+                pass
             return
         self.after(80, self._poll)
 

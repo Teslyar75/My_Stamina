@@ -117,7 +117,10 @@ class SpeedReadScreen(tk.Frame):
             if rd.state == "run":
                 rd.pause()
         if self.current == "book" and name != "book":
-            self.pages["book"].save_pos()
+            bk = self.pages["book"]
+            if getattr(bk, "_fullscreen", False):
+                bk.exit_fullscreen()
+            bk.save_pos()
         if name == "reader":
             rd = self.pages["reader"]
             if rd.tid is None:
@@ -146,7 +149,7 @@ class SpeedReadScreen(tk.Frame):
         for k, b in self.tab_btns.items():
             b.set_active(k == name)
         if name == "book":
-            self.pages["book"].text_w.focus_set()
+            self.pages["book"].focus_set()
         else:
             self.app.focus_set()
 
@@ -190,14 +193,20 @@ class SpeedReadScreen(tk.Frame):
         if rd.state == "run":
             rd.pause()
         try:
-            self.pages["book"].save_pos()
+            bk = self.pages["book"]
+            if getattr(bk, "_fullscreen", False):
+                bk.exit_fullscreen()
+            bk.save_pos()
         except Exception:
             pass
 
     def close(self) -> None:
         try:
             self.pages["reader"].stop_session(save=True)
-            self.pages["book"].save_pos()
+            bk = self.pages["book"]
+            if getattr(bk, "_fullscreen", False):
+                bk.exit_fullscreen()
+            bk.save_pos()
             self.pages["exercises"].stop()
         finally:
             self.sstore.save()
@@ -501,13 +510,19 @@ class LibraryPage(tk.Frame):
         return dict(self.ctx.app.store.settings.get("cargo_opts") or {})
 
     def open_free_catalog(self) -> None:
+        """Свободные книги Gutenberg — модальный каталог с загрузкой ленты."""
         from stamina.book_shelf import BookSearchDialog
 
         def added(tid: str) -> None:
             self.sel = tid
             self.refresh()
 
-        BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added)
+        try:
+            BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added)
+        except Exception as exc:  # noqa: BLE001
+            from tkinter import messagebox
+            messagebox.showerror(_t("Библиотека"), _t("Не удалось открыть каталог:\n{0}").format(exc),
+                                 parent=self)
 
     def open_book_search(self) -> None:
         self.open_free_catalog()
@@ -771,7 +786,9 @@ class SettingsPage(tk.Frame):
         c = HudPanel(self.root, _t("ЧИТАЛКА «КНИГА»"), accent=GREEN)
         c.pack(fill=tk.X, pady=(px(10), 0))
         stepper(c.body, _t("РАЗМЕР ШРИФТА КНИГИ"), "book_font_pt", 1, 11, 36, "pt")
+        choice(c.body, _t("ВИД КНИГИ"), "book_mode",
+               [("page", _t("1 СТР")), ("spread", _t("РАЗВОРОТ")), ("scroll", _t("ПРОКРУТКА"))])
         choice(c.body, _t("ТЕМА КНИГИ"), "book_theme",
-               [("dark", _t("ТЁМНАЯ")), ("paper", _t("БУМАГА")), ("sepia", _t("СЕПИЯ"))])
+               [("paper", _t("БУМАГА")), ("night", _t("НОЧЬ")), ("sepia", _t("СЕПИЯ"))])
         L(self.root, _t("Гипердрайв — RSVP по словам. «Книга» — обычное чтение с полки (страницы, шрифт, оглавление). Позиция общая. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
             anchor="w", pady=px(8))

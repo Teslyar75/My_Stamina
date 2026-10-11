@@ -10,7 +10,8 @@ DEFAULT_SETTINGS = {
     "chunk": 1, "chunk_max_chars": 24, "font_pt": 54, "orp": True, "punct_pauses": True,
     "guides": True, "quiz": "always", "quiz_words": 1000, "sync": "ask",
     # обычная читалка «КНИГА» (не гипердрайв)
-    "book_font_pt": 16, "book_line_space": 1.35, "book_theme": "dark",
+    "book_font_pt": 17, "book_line_space": 1.45, "book_theme": "paper",
+    "book_columns": 2, "book_mode": "spread",
 }
 
 MAX_SESSIONS = 500

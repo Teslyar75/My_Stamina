@@ -56,6 +56,14 @@ echo  [4/5] vosk + sounddevice + модель речи ...
 "%VPY%" -m pip install --disable-pip-version-check -q vosk sounddevice
 "%VPY%" "%ROOT%scripts\download_vosk_model.py"
 
+echo.
+echo  Радиорубка (онлайн-радио): нужен mpv. Если его нет — поставьте: winget install shinchiro.mpv
+where mpv >nul 2>&1
+if errorlevel 1 (
+    choice /C YN /T 15 /D N /M " Установить mpv через winget (через 15 с - нет)"
+    if not errorlevel 2 winget install -e --id shinchiro.mpv --accept-package-agreements --accept-source-agreements
+)
+
 :shortcut
 echo  [5/5] Ярлык "Star Typing" на рабочем столе ...
 if defined STAMINA_NO_SHORTCUT goto :done_shortcut
