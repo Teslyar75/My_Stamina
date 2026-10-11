@@ -113,16 +113,15 @@ def paper_photo(master: tk.Misc, w: int, h: int, variant: str = "paper") -> tk.P
         bw, bh = base.size
         scale = max(wk / bw, hk / bh)
         nw, nh = max(1, int(bw * scale)), max(1, int(bh * scale))
-        im = base.resize((nw, nh), Image.LANCZOS)
+        # BILINEAR быстрее LANCZOS; размер кэшируем по шагу 32
+        im = base.resize((nw, nh), Image.BILINEAR)
         x0 = max(0, (nw - wk) // 2)
         y0 = max(0, (nh - hk) // 2)
         im = im.crop((x0, y0, x0 + wk, y0 + hk))
         im = _tint(im, variant)
-    if im.size != (w, h):
-        im = im.resize((w, h), Image.BILINEAR)
+    # не растягивать до (w,h): разница ≤31px, края зальёт фон страницы
     photo = ImageTk.PhotoImage(im, master=master)
     _cache[key] = photo
-    # не раздувать кэш
     if len(_cache) > 12:
         for k in list(_cache.keys())[:4]:
             if k != key:

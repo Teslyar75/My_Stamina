@@ -453,6 +453,73 @@ class ShelfPanel(tk.Frame):
             self.on_pick(self.sel)
 
 
+class BookSearchDialog(tk.Toplevel):
+    """Совместимость: модальное окно вокруг BookCatalogPanel (кнопки «Свободные книги»)."""
+
+    def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
+                 on_added: Callable[[str], None] | None = None) -> None:
+        super().__init__(master, bg=BG)
+        self.title(_t("Свободные книги · Project Gutenberg"))
+        self.transient(master.winfo_toplevel())
+        try:
+            self.grab_set()
+        except tk.TclError:
+            pass
+        sw = self.winfo_screenwidth()
+        sh = self.winfo_screenheight()
+        w, h = min(px(1100), int(sw * 0.92)), min(px(720), int(sh * 0.88))
+        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+        self.minsize(px(720), px(480))
+
+        def added(tid: str) -> None:
+            if on_added:
+                on_added(tid)
+
+        panel = BookCatalogPanel(self, lib, opts=opts, on_added=added, on_back=self.destroy)
+        panel.pack(fill=tk.BOTH, expand=True)
+        panel.activate()
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
+
+
+class ShelfDialog(tk.Toplevel):
+    """Совместимость: модальное окно вокруг ShelfPanel."""
+
+    def __init__(self, master, lib: libmod.Library, *, opts: dict | None = None,
+                 on_pick: Callable[[str], None] | None = None) -> None:
+        super().__init__(master, bg=BG)
+        self.title(_t("Полка книг"))
+        self.transient(master.winfo_toplevel())
+        try:
+            self.grab_set()
+        except tk.TclError:
+            pass
+        sw = self.winfo_screenwidth()
+        sh = self.winfo_screenheight()
+        w, h = min(px(960), int(sw * 0.9)), min(px(640), int(sh * 0.85))
+        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+
+        def open_catalog() -> None:
+            def after_add(tid: str) -> None:
+                panel.activate()
+                if on_pick and messagebox.askyesno(
+                        _t("Печать"), _t("Книга на полке. Выбрать её для набора?"), parent=self):
+                    self.destroy()
+                    on_pick(tid)
+
+            BookSearchDialog(self, lib, opts=opts, on_added=after_add)
+
+        def picked(tid: str) -> None:
+            self.destroy()
+            if on_pick:
+                on_pick(tid)
+
+        panel = ShelfPanel(self, lib, opts=opts, on_pick=picked, on_back=self.destroy,
+                           on_open_catalog=open_catalog)
+        panel.pack(fill=tk.BOTH, expand=True)
+        panel.activate()
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
+
+
 def start_typing_from_library(app, lib: libmod.Library, tid: str, parent=None) -> None:
     """Передать книгу с полки в «Свой текст» (как LibraryPage.type_text)."""
     from stamina.session_storage import SessionState, load_session, save_session

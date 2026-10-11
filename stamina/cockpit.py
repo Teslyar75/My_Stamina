@@ -10,7 +10,8 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import APP_NAME, __version__, avatars, english_hook, lounge_hook, missions, pilots, speedread_hook, theme
+from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, missions,
+                     pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -53,6 +54,10 @@ class Cockpit(tk.Tk):
         if self._lounge_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(lounge_hook.KEY, lounge_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._radio_cls = radio_hook.load_class()  # вкладка «РАДИОРУБКА»
+        if self._radio_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(radio_hook.KEY, radio_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
@@ -119,6 +124,13 @@ class Cockpit(tk.Tk):
         right.pack(side=tk.RIGHT)
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
         self.clock.pack(side=tk.RIGHT, padx=(px(10), 0))
+        # мини-приёмник (появляется, когда эфир играет)
+        self._radio_mini = None
+        try:
+            from stamina.radio.minibark import RadioMiniBar
+            self._radio_mini = RadioMiniBar(right, self)
+        except Exception:  # noqa: BLE001
+            self._radio_mini = None
         self.btn_sound = HudButton(right, tr_("♪ ЗВУК ВЫКЛ"), self.toggle_sound, height=36, font_size=9,
                                    width=116 if len(self.SCREENS) <= 6 else 38)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
@@ -178,6 +190,13 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != lounge_hook.KEY]
                 self.nav_buttons.pop(lounge_hook.KEY).destroy()
+        if self._radio_cls is not None:
+            rad = radio_hook.create(self._radio_cls, self.content, self)
+            if rad is not None:
+                self.screens[radio_hook.KEY] = rad
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != radio_hook.KEY]
+                self.nav_buttons.pop(radio_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
@@ -234,6 +253,7 @@ class Cockpit(tk.Tk):
         chapter = {english_hook.KEY: tr_("АНГЛИЙСКИЙ"),
                    speedread_hook.KEY: tr_("СКОРОЧТЕНИЕ"),
                    lounge_hook.KEY: tr_("ОТДЫХ"),
+                   radio_hook.KEY: tr_("РАДИОРУБКА"),
                    "honor": tr_("ЭКИПАЖ")}.get(self.current or "")
         self.show("help")
         scr = self.screens.get("help")
@@ -254,6 +274,11 @@ class Cockpit(tk.Tk):
         if self.current == lounge_hook.KEY and name != self.current:
             try:
                 self.screens[lounge_hook.KEY].on_leave()
+            except Exception:  # noqa: BLE001
+                pass
+        if self.current == radio_hook.KEY and name != self.current:
+            try:
+                self.screens[radio_hook.KEY].on_leave()
             except Exception:  # noqa: BLE001
                 pass
         if name == "honor" and self.current != "honor":
@@ -532,6 +557,8 @@ class Cockpit(tk.Tk):
             self.screens[speedread_hook.KEY].on_key(e)
         elif self.current == lounge_hook.KEY:
             self.screens[lounge_hook.KEY].on_key(e)
+        elif self.current == radio_hook.KEY:
+            self.screens[radio_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
 
@@ -567,12 +594,17 @@ class Cockpit(tk.Tk):
             self.screens["bridge"].leave_current()
         except Exception:
             pass
-        for key in (english_hook.KEY, speedread_hook.KEY, lounge_hook.KEY):
+        for key in (english_hook.KEY, speedread_hook.KEY, lounge_hook.KEY, radio_hook.KEY):
             if key in self.screens:
                 try:
                     self.screens[key].close()
                 except Exception:
                     pass
+        try:
+            from stamina.radio.engine import get_engine
+            get_engine().close()
+        except Exception:
+            pass
         st = self.store.settings
         st["geometry"] = "zoomed" if self.state() == "zoomed" else self.geometry()
         self.store.save_settings()

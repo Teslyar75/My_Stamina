@@ -200,6 +200,11 @@ class TTS:
         причина в событии ('error', 0, текст))."""
         if not text:
             return 0
+        try:
+            from stamina.radio.engine import get_engine
+            get_engine().duck(10)
+        except Exception:  # noqa: BLE001
+            pass
         with self._lock:
             if not self._ensure():
                 self.events.put(("error", 0, self.why_unavailable()))
@@ -221,7 +226,14 @@ class TTS:
             try:
                 out.append(self.events.get_nowait())
             except queue.Empty:
-                return out
+                break
+        if any(ev[0] in ("done", "cancel", "error", "dead") for ev in out):
+            try:
+                from stamina.radio.engine import get_engine
+                get_engine().unduck()
+            except Exception:  # noqa: BLE001
+                pass
+        return out
 
     def stop(self) -> None:
         if self._lproc and self._lproc.poll() is None:
@@ -229,6 +241,11 @@ class TTS:
         with self._lock:
             if self.proc and self.proc.poll() is None:
                 self._send("STOP")
+        try:
+            from stamina.radio.engine import get_engine
+            get_engine().unduck()
+        except Exception:  # noqa: BLE001
+            pass
 
     def close(self) -> None:
         if self._lproc and self._lproc.poll() is None:

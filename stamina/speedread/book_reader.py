@@ -75,91 +75,115 @@ def _reading_font(pt: int) -> tuple:
     return (fam, pt)
 
 
-def _wrap_para(para: str, font: tkfont.Font, width: int, *, first_indent: int) -> list[str]:
-    """Перенос абзаца по реальной ширине (font.measure)."""
+def _measure_cached(font: tkfont.Font, s: str, cache: dict[str, int]) -> int:
+    """font.measure дорогой — кэш по строке (для одного шрифта на проход)."""
+    w = cache.get(s)
+    if w is None:
+        w = font.measure(s)
+        cache[s] = w
+    return w
+
+
+def _wrap_para(para: str, font: tkfont.Font, width: int, *, first_indent: int,
+               cache: dict[str, int] | None = None) -> list[str]:
+    """Перенос абзаца: накопление ширин слов, без measure всей строки."""
+    lines, _offs = _wrap_para_offs(para, font, width, first_indent=first_indent,
+                                   cache=cache, origin=0)
+    return lines
+
+
+def _wrap_para_offs(para: str, font: tkfont.Font, width: int, *, first_indent: int,
+                    cache: dict[str, int] | None = None,
+                    origin: int = 0) -> tuple[list[str], list[int]]:
+    """Строки абзаца + смещения начала каждой строки в полном тексте."""
     if width < 40:
         width = 40
-    words = para.split()
-    if not words:
-        return [""]
+    if cache is None:
+        cache = {}
+    spans = list(re.finditer(r"\S+", para))
+    if not spans:
+        return [""], [origin]
+    space_w = _measure_cached(font, " ", cache)
+    words = [m.group() for m in spans]
+    starts = [m.start() for m in spans]
+    widths = [_measure_cached(font, w, cache) for w in words]
+
     lines: list[str] = []
-    cur: list[str] = []
+    offsets: list[int] = []
+    i = 0
+    n = len(words)
     limit = max(40, width - first_indent)
-
-    def flush(indent_next: bool = False):
-        nonlocal cur, limit
-        if cur:
-            lines.append(" ".join(cur))
-            cur = []
-        limit = width  # после первой строки — полная ширина
-
-    for w in words:
-        trial = w if not cur else (" ".join(cur) + " " + w)
-        if font.measure(trial) <= limit:
-            cur.append(w)
-        else:
-            if not cur:
-                # очень длинное слово
+    while i < n:
+        used = 0
+        start = i
+        while i < n:
+            add = widths[i] if i == start else widths[i] + space_w
+            if i > start and used + add > limit:
+                break
+            used += add
+            i += 1
+            if i == start + 1 and used > limit:
+                # слишком длинное слово — режем по символам (редко)
+                w = words[start]
                 chunk = ""
-                for ch in w:
-                    if font.measure(chunk + ch) <= limit:
-                        chunk += ch
-                    else:
-                        if chunk:
-                            lines.append(chunk)
+                lines_long: list[str] = []
+                offs_long: list[int] = []
+                for ci, ch in enumerate(w):
+                    cw = _measure_cached(font, chunk + ch, cache)
+                    if chunk and cw > limit:
+                        lines_long.append(chunk)
+                        offs_long.append(origin + starts[start] + (ci - len(chunk)))
                         chunk = ch
                         limit = width
+                    else:
+                        chunk += ch
                 if chunk:
-                    cur = [chunk]
-            else:
-                flush()
-                cur = [w]
-    flush()
-    return lines or [""]
+                    lines_long.append(chunk)
+                    offs_long.append(origin + starts[start] + len(w) - len(chunk))
+                if lines_long:
+                    lines.extend(lines_long)
+                    offsets.extend(offs_long)
+                start = i  # уже i == start+1
+                break
+        if start < i:
+            lines.append(" ".join(words[start:i]))
+            offsets.append(origin + starts[start])
+        limit = width
+    return (lines or [""]), (offsets or [origin])
 
 
-def _layout_pages(paras: list[str], font: tkfont.Font, col_w: int, lines_per: int,
-                  columns: int, *, indent: int, line_h: int, para_gap: int) -> list[dict]:
-    """Страницы/развороты: каждая — список колонок со строками {(text, kind)}."""
-    # kind: "first" | "cont" | "blank"
-    all_lines: list[tuple[str, str, int]] = []  # text, kind, char_hint unused
-    for para in paras:
-        wrapped = _wrap_para(para, font, col_w, first_indent=indent)
-        for i, ln in enumerate(wrapped):
-            all_lines.append((ln, "first" if i == 0 else "cont"))
-        all_lines.append(("", "blank"))  # интервал между абзацами как пустая «полустрока»
-
-    # blank занимает меньше — моделируем как отдельный слот; при пагинации blank = 1 слот
-    # но рисуем gap. Для подсчёта строк blank считаем 0.5 → округлим: каждые 2 blank = 1 line
-    # Проще: blank не занимает строку в счётчике, а para_gap учитываем при отрисовке.
-    # Тогда lines_per — число текстовых строк. blank между абзацами не ест слот страницы,
-    # только вертикальный gap при paint. Уберём trailing blank.
-    while all_lines and all_lines[-1][1] == "blank":
-        all_lines.pop()
-
-    text_lines = [(t, k) for t, k in all_lines if k != "blank"]
-    # вставим маркеры границы абзаца для paint: после last "cont"/"first" before next "first"
-    # Храним flat list of text lines only; paragraph starts = kind first
-    columns = 2 if columns >= 2 else 1
-    per_page = max(1, lines_per) * columns
-    pages = []
+def _paginate_spread(flat: list[tuple[str, str]], *, cols: int, col_h: int,
+                     lh: int, para_gap: int) -> list[dict]:
+    """Разворот: сначала заполняется левая колонка сверху вниз, затем правая
+    (текст перетекает L→R), потом следующий разворот. Не две независимые страницы.
+    """
+    cols = 2 if cols >= 2 else 1
+    pages: list[dict] = []
     i = 0
-    n = len(text_lines)
-    # char offsets: approximate by joining
-    # rebuild with offsets from original joined text later in open()
+    n = len(flat)
     while i < n or not pages:
-        chunk = text_lines[i:i + per_page]
-        if not chunk and pages:
+        col_data: list[list[tuple[str, str]]] = []
+        start_line = i
+        for _c in range(cols):
+            used = 0
+            col_lines: list[tuple[str, str]] = []
+            while i < n:
+                text, kind = flat[i]
+                need = lh + (para_gap if kind == "first" and col_lines else 0)
+                if col_lines and used + need > col_h:
+                    break
+                if not col_lines and need > col_h:
+                    col_lines.append((text, kind))
+                    i += 1
+                    break
+                used += need
+                col_lines.append((text, kind))
+                i += 1
+            col_data.append(col_lines)
+        pages.append({"cols": col_data, "start_line": start_line})
+        if n == 0:
             break
-        cols = []
-        for c in range(columns):
-            part = chunk[c * lines_per:(c + 1) * lines_per]
-            cols.append(part)
-        pages.append({"cols": cols})
-        i += per_page
-        if not text_lines:
-            break
-    return pages or [{"cols": [[]] * columns}]
+    return pages
 
 
 class BookReaderPage(tk.Frame):
@@ -213,7 +237,7 @@ class BookReaderPage(tk.Frame):
                                 font=theme.font(9, True, mono=True))
         self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
         self.scale = tk.Scale(self.bot_bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th0["bar"], fg=th0["accent"], troughcolor=blend(th0["bar"], "#000", 0.3),
+                              bg=th0["bar"], fg=th0["accent"], troughcolor=blend(th0["bar"], "#000000", 0.3),
                               highlightthickness=0, activebackground=th0["accent"],
                               command=self._on_scale)
         self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
@@ -263,7 +287,14 @@ class BookReaderPage(tk.Frame):
         return v
 
     def _font_obj(self) -> tkfont.Font:
-        return tkfont.Font(font=_reading_font(self._font_pt()))
+        pt = self._font_pt()
+        spec = _reading_font(pt)
+        key = (spec[0], pt)
+        if getattr(self, "_font_cache_key", None) != key:
+            self._font_cache_key = key
+            self._font_cache = tkfont.Font(font=spec)
+            self._measure_cache: dict[str, int] = {}
+        return self._font_cache
 
     def _line_h(self) -> int:
         f = self._font_obj()
@@ -484,7 +515,7 @@ class BookReaderPage(tk.Frame):
             lab.configure(bg=th["bar"], fg=th["dim"] if lab is not self.lbl_pct else th["bar_fg"])
         self.lbl_title.configure(bg=th["bar"], fg=th["bar_fg"])
         self.scale.configure(bg=th["bar"], fg=th["accent"],
-                             troughcolor=blend(th["bar"], "#000", 0.3),
+                             troughcolor=blend(th["bar"], "#000000", 0.3),
                              activebackground=th["accent"])
         self.read_shell.configure(bg=th["desk"])
         host = self._page_host()
@@ -641,7 +672,7 @@ class BookReaderPage(tk.Frame):
             except tk.TclError:
                 pass
         char = self._page_start_char()
-        self._relayout_job = self.after(100, lambda: self._relayout(keep_char=char))
+        self._relayout_job = self.after(180, lambda: self._relayout(keep_char=char))
 
     def _relayout(self, keep_char: int | None = None) -> None:
         self._relayout_job = None
@@ -659,8 +690,11 @@ class BookReaderPage(tk.Frame):
             return
 
         font = self._font_obj()
+        cache = getattr(self, "_measure_cache", None)
+        if cache is None:
+            self._measure_cache = cache = {}
         lh = self._line_h()
-        indent = font.measure("    ")  # ~4 пробела — красная строка
+        indent = _measure_cached(font, "    ", cache)
         cols = 2 if self.mode == "spread" else 1
 
         # геометрия книги
@@ -674,88 +708,55 @@ class BookReaderPage(tk.Frame):
         pad_x = max(px(16), int(page_w * 0.07))
         pad_y = max(px(14), int(book_h * 0.045))
         # ограничить ширину одной страницы ~75 символов
-        avg = max(4.0, font.measure("abcdefghijklmnopqrstuvwxyz") / 26)
+        avg = max(4.0, _measure_cached(font, "abcdefghijklmnopqrstuvwxyz", cache) / 26)
         max_text = int(avg * 72)
         text_w = min(max(80, page_w - pad_x * 2), max_text if cols == 1 else max(80, page_w - pad_x * 2))
         if cols == 1:
-            # центрируем колонку
             text_w = min(text_w, max_text)
 
         col_h = max(40, book_h - pad_y * 2)
         para_gap = max(2, int(lh * 0.35))
+        space_w = _measure_cached(font, " ", cache)
 
         key = (text_w, col_h, cols, self._font_pt(), self._theme_key(), len(self.text), lh, para_gap)
+        geom = dict(outer=outer, top=top, book_w=book_w, book_h=book_h,
+                    page_w=page_w, spine=spine, pad_x=pad_x, pad_y=pad_y,
+                    text_w=text_w, lh=lh, indent=indent, para_gap=para_gap,
+                    cols=cols, col_h=col_h, space_w=space_w)
         if key == self._layout_key and self._pages:
-            self._geom = dict(outer=outer, top=top, book_w=book_w, book_h=book_h,
-                              page_w=page_w, spine=spine, pad_x=pad_x, pad_y=pad_y,
-                              text_w=text_w, lh=lh, indent=indent, para_gap=para_gap,
-                              cols=cols, col_h=col_h)
+            self._geom = geom
             self._goto_char(keep_char, save=False)
             return
         self._layout_key = key
-        self._geom = dict(outer=outer, top=top, book_w=book_w, book_h=book_h,
-                          page_w=page_w, spine=spine, pad_x=pad_x, pad_y=pad_y,
-                          text_w=text_w, lh=lh, indent=indent, para_gap=para_gap,
-                          cols=cols, col_h=col_h)
+        self._geom = geom
 
         if not self.paras:
-            self._pages = [{"cols": [[]] * cols, "start_line": 0}]
+            self._pages = [{"cols": [[] for _ in range(cols)], "start_line": 0}]
             self._line_starts = [0]
             self._page_i = 0
             self._show_page()
             return
 
+        # смещения абзацев одним проходом
+        para_origins: list[int] = []
+        pos = 0
+        for para in self.paras:
+            idx = self.text.find(para, pos)
+            if idx < 0:
+                idx = pos
+            para_origins.append(idx)
+            pos = idx + len(para)
+
         self._line_starts = []
         flat: list[tuple[str, str]] = []
-        search_from = 0
-        for para in self.paras:
-            pos = self.text.find(para, search_from)
-            if pos < 0:
-                pos = search_from
-            wrapped = _wrap_para(para, font, text_w, first_indent=indent)
-            cursor = 0
-            for i, ln in enumerate(wrapped):
-                idx = para.find(ln, cursor)
-                if idx < 0:
-                    idx = cursor
-                self._line_starts.append(pos + idx)
+        for para, origin in zip(self.paras, para_origins):
+            wrapped, offs = _wrap_para_offs(para, font, text_w, first_indent=indent,
+                                            cache=cache, origin=origin)
+            for i, (ln, off) in enumerate(zip(wrapped, offs)):
+                self._line_starts.append(off)
                 flat.append((ln, "first" if i == 0 else "cont"))
-                cursor = idx + len(ln)
-                while cursor < len(para) and para[cursor] == " ":
-                    cursor += 1
-            search_from = pos + len(para)
-            while search_from < len(self.text) and self.text[search_from] in "\n ":
-                search_from += 1
 
-        # пагинация по реальной высоте колонки (строка + gap перед first)
-        pages: list[dict] = []
-        i = 0
-        n = len(flat)
-        while i < n or not pages:
-            col_data: list[list] = []
-            start_line = i
-            for _c in range(cols):
-                used = 0
-                col_lines: list[tuple[str, str]] = []
-                while i < n:
-                    text, kind = flat[i]
-                    need = lh + (para_gap if kind == "first" and col_lines else 0)
-                    if col_lines and used + need > col_h:
-                        break
-                    if not col_lines and need > col_h:
-                        # хотя бы одна строка, даже если туго
-                        col_lines.append((text, kind))
-                        i += 1
-                        used = lh
-                        break
-                    used += need
-                    col_lines.append((text, kind))
-                    i += 1
-                col_data.append(col_lines)
-            pages.append({"cols": col_data, "start_line": start_line})
-            if n == 0:
-                break
-        self._pages = pages
+        self._pages = _paginate_spread(flat, cols=cols, col_h=col_h, lh=lh, para_gap=para_gap)
         self._goto_char(keep_char, save=False)
 
     def _fill_scroll(self) -> None:
@@ -768,9 +769,8 @@ class BookReaderPage(tk.Frame):
                     spacing1=0, spacing2=int(self._font_pt() * (self._line_space() - 1.0)),
                     spacing3=int(self._line_h() * 0.35))
         t.delete("1.0", tk.END)
-        # абзацы с отступом
-        for i, para in enumerate(self.paras):
-            t.insert(tk.END, "    " + para + ("\n\n" if i < len(self.paras) - 1 else ""))
+        if self.paras:
+            t.insert(tk.END, "\n\n".join("    " + p for p in self.paras))
         t.configure(state=tk.DISABLED)
         self._pages = [{"cols": [[]]}]
         self._line_starts = [0]
@@ -811,7 +811,9 @@ class BookReaderPage(tk.Frame):
         c.create_rectangle(bx + px(5), by + px(7), bx + book_w + px(3), by + book_h + px(5),
                            fill="#1A140E", outline="")
 
-        def paint_col2(x0, y0, pw, ph, lines: list[tuple[str, str]]):
+        def paint_col2(x0, y0, pw, ph, lines: list[tuple[str, str]], *,
+                       cont_from_prev: bool = False):
+            """cont_from_prev: первая строка — продолжение абзаца с левой страницы."""
             photo = paper_photo(c, pw, ph, th["variant"])
             if photo is not None:
                 self._paper_refs.append(photo)
@@ -822,24 +824,36 @@ class BookReaderPage(tk.Frame):
                                outline=blend(th["fg"], th["fallback"], 0.85), width=1)
             tx0 = x0 + max(pad_x, (pw - text_w) // 2)
             y = y0 + pad_y
-            max_y = y0 + ph - pad_y
+            # рисуем ВСЕ строки колонки (пагинация уже уложилась в col_h) — без break,
+            # иначе текст «прыгает» с левой на правую с пропуском
             for i, (text, kind) in enumerate(lines):
                 if kind == "first" and i > 0:
                     y += para_gap
-                if y + lh > max_y:
-                    break
                 x = tx0 + (indent if kind == "first" else 0)
                 width = text_w - (indent if kind == "first" else 0)
-                # последняя строка абзаца — без justify
-                is_last = (i + 1 >= len(lines)) or (lines[i + 1][1] == "first")
-                self._draw_justified(c, x, y, text, font, font_obj, width, th["fg"], last=is_last)
+                # конец абзаца: следующая строка — first, либо конец колонки и это не
+                # продолжение на соседней странице (для левой: смотрим is_last_in_para)
+                if i + 1 < len(lines):
+                    is_last = lines[i + 1][1] == "first"
+                else:
+                    # последняя строка колонки: если kind cont/first и абзац продолжается
+                    # на правой — не считаем last (для левой передаём флаг снаружи)
+                    is_last = not cont_from_prev
+                self._draw_justified(c, x, y, text, font, font_obj, width, th["fg"],
+                                     last=is_last, space_w=space_w, cache=cache)
                 y += lh
 
         col_lists = page["cols"]
+        space_w = int(g.get("space_w") or _measure_cached(font_obj, " ", getattr(self, "_measure_cache", {})))
+        cache = getattr(self, "_measure_cache", {})
         if cols == 2:
-            paint_col2(bx, by, page_w, book_h, col_lists[0] if col_lists else [])
+            left = col_lists[0] if col_lists else []
+            right = col_lists[1] if len(col_lists) > 1 else []
+            # абзац продолжается на правой, если правая начинается с cont
+            left_continues = bool(right) and right[0][1] == "cont"
+            paint_col2(bx, by, page_w, book_h, left, cont_from_prev=left_continues)
             rx = bx + page_w + spine
-            paint_col2(rx, by, page_w, book_h, col_lists[1] if len(col_lists) > 1 else [])
+            paint_col2(rx, by, page_w, book_h, right, cont_from_prev=False)
             mid = bx + page_w
             c.create_rectangle(mid, by, mid + spine, by + book_h, fill="#1E1810", outline="")
             c.create_line(mid + spine // 2, by + px(4), mid + spine // 2, by + book_h - px(4),
@@ -855,29 +869,34 @@ class BookReaderPage(tk.Frame):
             paint_col2(px0, by, pw, book_h, col_lists[0] if col_lists else [])
 
     def _draw_justified(self, c: tk.Canvas, x: int, y: int, text: str, font, font_obj: tkfont.Font,
-                        width: int, fill: str, *, last: bool) -> None:
+                        width: int, fill: str, *, last: bool,
+                        space_w: int = 0, cache: dict | None = None) -> None:
+        """Выключка одним create_text (лишние пробелы) — без сотен measure на страницу."""
         words = text.split()
         if not words:
             return
         if last or len(words) == 1:
             c.create_text(x, y, text=text, anchor="nw", fill=fill, font=font)
             return
-        natural = font_obj.measure(text)
+        cache = cache if cache is not None else getattr(self, "_measure_cache", {})
+        if space_w <= 0:
+            space_w = _measure_cached(font_obj, " ", cache)
+        widths = [_measure_cached(font_obj, w, cache) for w in words]
+        natural = sum(widths) + space_w * (len(words) - 1)
         extra = width - natural
-        if extra <= 0:
+        if extra < space_w:
             c.create_text(x, y, text=text, anchor="nw", fill=fill, font=font)
             return
+        # распределить целые пробелы по промежуткам (быстро и достаточно ровно)
         gaps = len(words) - 1
-        # распределить лишние пиксели по пробелам
-        base = extra // gaps
-        rem = extra % gaps
-        cx = x
-        space_w = font_obj.measure(" ")
+        add = extra // space_w
+        base, rem = divmod(add, gaps)
+        parts: list[str] = []
         for i, w in enumerate(words):
-            c.create_text(cx, y, text=w, anchor="nw", fill=fill, font=font)
-            cx += font_obj.measure(w)
+            parts.append(w)
             if i < gaps:
-                cx += space_w + base + (1 if i < rem else 0)
+                parts.append(" " * (1 + base + (1 if i < rem else 0)))
+        c.create_text(x, y, text="".join(parts), anchor="nw", fill=fill, font=font)
 
     def page_next(self) -> None:
         if self.mode == "scroll" and self.scroll_view is not None:
@@ -981,7 +1000,7 @@ class BookReaderPage(tk.Frame):
                                 font=theme.font(9, True, mono=True))
         self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
         self.scale = tk.Scale(self.bot_bar_fs, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000", 0.3),
+                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
                               highlightthickness=0, activebackground=th["accent"],
                               command=self._on_scale)
         self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
@@ -1039,7 +1058,7 @@ class BookReaderPage(tk.Frame):
                                 font=theme.font(9, True, mono=True))
         self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
         self.scale = tk.Scale(self.bot_bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000", 0.3),
+                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
                               highlightthickness=0, activebackground=th["accent"],
                               command=self._on_scale)
         self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))

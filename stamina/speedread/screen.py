@@ -510,13 +510,19 @@ class LibraryPage(tk.Frame):
         return dict(self.ctx.app.store.settings.get("cargo_opts") or {})
 
     def open_free_catalog(self) -> None:
+        """Свободные книги Gutenberg — модальный каталог с загрузкой ленты."""
         from stamina.book_shelf import BookSearchDialog
 
         def added(tid: str) -> None:
             self.sel = tid
             self.refresh()
 
-        BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added)
+        try:
+            BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added)
+        except Exception as exc:  # noqa: BLE001
+            from tkinter import messagebox
+            messagebox.showerror(_t("Библиотека"), _t("Не удалось открыть каталог:\n{0}").format(exc),
+                                 parent=self)
 
     def open_book_search(self) -> None:
         self.open_free_catalog()

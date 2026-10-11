@@ -108,6 +108,12 @@ def check(system: str | None = None) -> list[dict]:
          "sys": [] if system == "windows" or _portaudio_ok() else ["portaudio"]},
         {"key": "model", "name": t("Модель речи vosk"), "ok": paths.vosk_model_dir() is not None, "need": t("необязательно"),
          "what": t("проверка произношения, ≈ 40 МБ"), "pip": [], "sys": []},
+        {"key": "mpv", "name": "mpv / ffplay", "ok": bool(shutil.which("mpv") or shutil.which("ffplay")),
+         "need": t("необязательно"), "what": t("РАДИОРУБКА — онлайн-радио"),
+         "pip": [], "sys": [],
+         "how": ("winget install mpv" if system == "windows"
+                 else (f"{INSTALL_CMD.get(pm or '', 'sudo apt install -y')} mpv" if pm
+                       else "sudo apt install mpv"))},
     ]
     for it in items:
         if "how" not in it:
