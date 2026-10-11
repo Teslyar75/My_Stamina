@@ -1,6 +1,7 @@
-"""Читалка «КНИГА»: нормальный текст (без лесенок Gutenberg), 1 стр / разворот / прокрутка.
+"""Читалка «КНИГА»: нормальный текст (без лесенок Gutenberg), 1 стр / разворот / прокрутка / 2 языка.
 
 Образец режимов — Readest. Текст: оригинал из библиотеки + normalize_book_text.
+Двуязычный режим: слева страница оригинала, справа — перевод (тот же дизайн разворота).
 """
 from __future__ import annotations
 
@@ -36,10 +37,16 @@ THEMES = {
 # обратная совместимость ключа dark → night
 THEME_ALIASES = {"dark": "night"}
 
-MODES = ("page", "spread", "scroll")  # 1 стр / разворот / прокрутка
+MODES = ("page", "spread", "scroll", "bilingual")  # + двуязычная: оригинал | перевод
 DEFAULT_LINE_SPACE = 1.45
 DEFAULT_MODE = "spread"
 WPM_ESTIMATE = 230  # для «времени до конца»
+_SENT_SPLIT = re.compile(r"(?<=[.!?…])\s+")
+# куски для UPLINK: GET Google/MyMemory ломаются на длинных URL (особенно fullscreen-страницы)
+_TR_CHUNK = 800  # крупнее куски = меньше запросов = меньше 429
+_TR_BOOK_INFLIGHT = 8  # одновременно в сети (fullscreen-страница длиннее)
+_TR_PREFETCH_AHEAD = 2   # запас вперёд (текущая страница важнее prefetch)
+_TR_PREFETCH_BEHIND = 2  # запас назад — ← и возврат не сбрасывают перевод
 
 
 def _split_words(text: str) -> list[tuple[int, int]]:
@@ -209,6 +216,25 @@ class BookReaderPage(tk.Frame):
         self._chrome_visible = True
         self._hide_job = None
         self._line_starts: list[int] = []  # char offset каждой текстовой строки в self.text
+        # page_i -> (cache_key, lines, font_pt, indent_px)
+        self._page_tr_cache: dict = {}
+        self._tr_poll_job = None
+        self._tr_dir: tuple[str, str] = ("en", "ru")
+        self._tr_pending_pages: set[int] = set()
+        self._bilingual_right_pt: int | None = None
+        self._tr_wait_until: float = 0.0   # monotonic: ETA перевода страницы
+        self._tr_wait_missing: int = 0
+        self._tr_eta_job = None
+        self._tr_poll_busy = False
+        self._paint_busy = False
+        self._tr_last_drawn_missing: int = -1
+        self._size_relayout_job = None
+        # готовый перевод страницы по тексту оригинала (переживает fullscreen и ← →)
+        self._plain_tr_mem: dict[tuple[str, str, str], list[str]] = {}
+        # предложение → перевод (не зависит от нарезки страницы / fullscreen)
+        self._tr_sent_mem: dict[tuple[str, str, str], str] = {}
+        # после входа в FS не cancel_group и дольше debounce — иначе срывает UPLINK
+        self._tr_fs_guard_until: float = 0.0
 
         th0 = self._theme()
         self.chrome = tk.Frame(self, bg=BG)
@@ -233,20 +259,7 @@ class BookReaderPage(tk.Frame):
         self.bot_bar = tk.Frame(self.chrome, bg=th0["bar"], height=px(36))
         self.bot_bar.pack(fill=tk.X, side=tk.BOTTOM)
         self.bot_bar.pack_propagate(False)
-        self.lbl_pct = tk.Label(self.bot_bar, text="0%", bg=th0["bar"], fg=th0["bar_fg"],
-                                font=theme.font(9, True, mono=True))
-        self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
-        self.scale = tk.Scale(self.bot_bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th0["bar"], fg=th0["accent"], troughcolor=blend(th0["bar"], "#000000", 0.3),
-                              highlightthickness=0, activebackground=th0["accent"],
-                              command=self._on_scale)
-        self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
-        self.lbl_page = tk.Label(self.bot_bar, text="", bg=th0["bar"], fg=th0["dim"],
-                                 font=theme.font(9, True, mono=True))
-        self.lbl_page.pack(side=tk.LEFT, padx=px(8))
-        self.lbl_eta = tk.Label(self.bot_bar, text="", bg=th0["bar"], fg=th0["dim"],
-                                font=theme.font(9, True))
-        self.lbl_eta.pack(side=tk.RIGHT, padx=px(12))
+        self._build_bot_bar(self.bot_bar)
 
         self.read_shell.bind("<Configure>", self._on_area_configure)
         self.read_shell.bind("<Motion>", self._on_motion)
@@ -309,6 +322,29 @@ class BookReaderPage(tk.Frame):
 
         widget.bind("<Enter>", enter, add="+")
 
+    def _build_bot_bar(self, bar: tk.Frame) -> None:
+        th = self._theme()
+        for w in bar.winfo_children():
+            w.destroy()
+        self.lbl_pct = tk.Label(bar, text="0%", bg=th["bar"], fg=th["bar_fg"],
+                                font=theme.font(9, True, mono=True))
+        self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
+        cards = HudButton(bar, _t("СФОРМИРОВАТЬ КАРТОЧКИ"), self.to_book_cards,
+                          height=26, font_size=8, width=190, color=AMBER, active=True)
+        cards.pack(side=tk.LEFT, padx=(0, px(8)), pady=px(4))
+        self._tip(cards, _t("Собрать карточки из уже прочитанного текста и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ"))
+        self.scale = tk.Scale(bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
+                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
+                              highlightthickness=0, activebackground=th["accent"],
+                              command=self._on_scale)
+        self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
+        self.lbl_page = tk.Label(bar, text="", bg=th["bar"], fg=th["dim"],
+                                 font=theme.font(9, True, mono=True))
+        self.lbl_page.pack(side=tk.LEFT, padx=px(8))
+        self.lbl_eta = tk.Label(bar, text="", bg=th["bar"], fg=th["dim"],
+                                font=theme.font(9, True))
+        self.lbl_eta.pack(side=tk.RIGHT, padx=px(12))
+
     def _build_top_bar(self, bar: tk.Frame) -> None:
         th = self._theme()
         for w in bar.winfo_children():
@@ -318,24 +354,25 @@ class BookReaderPage(tk.Frame):
             b = HudButton(bar, text, cmd, height=30, font_size=8,
                           width=width or max(50, 10 + len(text) * 7),
                           color=color or th["accent"], active=active)
-            b.pack(side=tk.LEFT, padx=px(2), pady=px(6))
+            b.pack(side=tk.LEFT, padx=px(1), pady=px(6))
             self._tip(b, tip)
             return b
 
         btn(_t("← БИБЛИОТЕКА"), lambda: self._go_library(), _t("Вернуться в библиотеку"),
-            width=120)
-        btn("◀", self.page_prev, _t("Предыдущая страница (← / PgUp)"), width=36)
-        btn("▶", self.page_next, _t("Следующая страница (→ / PgDn)"), width=36)
-        btn("A−", lambda: self.font_delta(-1), _t("Мельче шрифт (−)"), width=36)
-        btn("A+", lambda: self.font_delta(+1), _t("Крупнее шрифт (+)"), width=36)
+            width=110)
+        btn("◀", self.page_prev, _t("Предыдущая страница (← / PgUp)"), width=34)
+        btn("▶", self.page_next, _t("Следующая страница (→ / PgDn)"), width=34)
+        btn("A−", lambda: self.font_delta(-1), _t("Мельче шрифт (−)"), width=34)
+        btn("A+", lambda: self.font_delta(+1), _t("Крупнее шрифт (+)"), width=34)
 
         self.mode_btns = {}
-        for key, lab, tip in (
-            ("page", _t("1 СТР"), _t("Одна страница по центру")),
-            ("spread", _t("РАЗВОРОТ"), _t("Две страницы, как открытая книга")),
-            ("scroll", _t("ПРОКРУТКА"), _t("Непрерывный текст")),
+        for key, lab, tip, w in (
+            ("page", _t("1 СТР"), _t("Одна страница по центру"), 64),
+            ("spread", _t("РАЗВОРОТ"), _t("Две страницы, как открытая книга"), 88),
+            ("bilingual", _t("2 ЯЗЫКА"), _t("Слева оригинал книги, справа перевод"), 80),
+            ("scroll", _t("ПРОКРУТКА"), _t("Непрерывный текст"), 88),
         ):
-            b = btn(lab, lambda k=key: self.set_mode(k), tip, width=100 if key != "page" else 70)
+            b = btn(lab, lambda k=key: self.set_mode(k), tip, width=w)
             self.mode_btns[key] = b
 
         self.theme_btns = {}
@@ -344,29 +381,29 @@ class BookReaderPage(tk.Frame):
             ("night", _t("НОЧЬ"), _t("Тёмная тема")),
             ("sepia", _t("СЕПИЯ"), _t("Тёплая сепия")),
         ):
-            b = btn(lab, lambda k=key: self.set_theme(k), tip, width=80)
+            b = btn(lab, lambda k=key: self.set_theme(k), tip, width=72)
             self.theme_btns[key] = b
 
-        btn(_t("ОГЛ."), self.show_toc, _t("Оглавление"), width=56)
+        btn(_t("ОГЛ."), self.show_toc, _t("Оглавление"), width=52)
         btn(_t("⚡ RSVP"), self.to_hyperdrive, _t("Открыть в гипердрайве с этого места"),
-            color=AMBER, width=80)
-
-        self.lbl_title = tk.Label(bar, text=_t("КНИГА"), bg=th["bar"], fg=th["bar_fg"],
-                                  font=theme.font(10, True))
-        self.lbl_title.pack(side=tk.LEFT, padx=px(10))
-
+            color=AMBER, width=72)
+        # Сразу после RSVP — иначе на узле/с DPI кнопка справа пропадала за краем.
         if self._fullscreen:
             btn(_t("✕"), self.exit_fullscreen, _t("Выйти из полного экрана (Esc)"),
-                color=AMBER, width=40).pack_forget()
-            b = HudButton(bar, _t("✕"), self.exit_fullscreen, height=30, font_size=9,
-                          width=40, color=AMBER)
-            b.pack(side=tk.RIGHT, padx=px(8), pady=px(6))
-            self._tip(b, _t("Выйти из полного экрана (Esc)"))
+                color=AMBER, width=40)
         else:
-            b = HudButton(bar, _t("⛶ ЭКРАН"), self.enter_fullscreen, height=30, font_size=8,
-                          width=90, color=GREEN)
-            b.pack(side=tk.RIGHT, padx=px(8), pady=px(6))
-            self._tip(b, _t("На весь экран (F11)"))
+            btn(_t("ЭКРАН"), self.enter_fullscreen, _t("На весь экран (F11)"),
+                color=GREEN, width=72)
+
+        # справа — нельзя пропустить: карточки из прочитанного
+        cards = HudButton(bar, _t("→ КАРТОЧКИ"), self.to_book_cards, height=30, font_size=9,
+                          width=120, color=AMBER, active=True)
+        cards.pack(side=tk.RIGHT, padx=px(8), pady=px(6))
+        self._tip(cards, _t("Собрать карточки из уже прочитанного текста и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ"))
+
+        self.lbl_title = tk.Label(bar, text=_t("КНИГА"), bg=th["bar"], fg=th["bar_fg"],
+                                  font=theme.font(9, True))
+        self.lbl_title.pack(side=tk.LEFT, padx=px(6))
 
     def _go_library(self) -> None:
         if self._fullscreen:
@@ -374,13 +411,62 @@ class BookReaderPage(tk.Frame):
         self.save_pos()
         self.ctx.show("library")
 
+    def to_book_cards(self) -> None:
+        """Синхронизировать прочитанное и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ."""
+        if self._fullscreen:
+            self.exit_fullscreen()
+        self.save_pos()
+        tid = self.tid
+        app = self.ctx.app
+        try:
+            app.set_status(_t("Формирую карточки из прочитанного…"), AMBER)
+        except Exception:
+            pass
+        try:
+            app.show("english")
+        except Exception:
+            try:
+                app.set_status(_t("Не удалось открыть АНГЛИЙСКИЙ"), AMBER)
+            except Exception:
+                pass
+            return
+
+        def go(attempt: int = 0) -> None:
+            eng = (getattr(app, "screens", None) or {}).get("english")
+            if eng is None:
+                try:
+                    app.set_status(_t("Вкладка АНГЛИЙСКИЙ недоступна"), AMBER)
+                except Exception:
+                    pass
+                return
+            if not getattr(eng, "_built", False):
+                if attempt < 50:
+                    self.after(200, lambda: go(attempt + 1))
+                else:
+                    try:
+                        app.set_status(_t("Словарь ещё загружается — нажмите «→ КАРТОЧКИ» снова"), AMBER)
+                    except Exception:
+                        pass
+                return
+            try:
+                eng.open_book_cards(tid)
+            except Exception:
+                try:
+                    eng.show("book")
+                    app.set_status(_t("Откройте вкладку ИЗ КНИГИ и нажмите «СФОРМИРОВАТЬ ИЗ ПРОЧИТАННОГО»"),
+                                   AMBER)
+                except Exception:
+                    pass
+
+        go()
+
     def _schedule_hide_chrome(self) -> None:
         if self._hide_job:
             try:
                 self.after_cancel(self._hide_job)
             except tk.TclError:
                 pass
-        if self.mode == "scroll":
+        if self.mode in ("scroll",):
             return
         self._hide_job = self.after(3500, self._hide_chrome)
 
@@ -438,6 +524,7 @@ class BookReaderPage(tk.Frame):
             t.bind("<Button-1>", lambda _e: self._show_chrome())
             self.scroll_view = t
         else:
+            # page / spread / bilingual — canvas-книга
             c = tk.Canvas(parent, bg=th["desk"], highlightthickness=0, bd=0, cursor="arrow")
             c.grid(row=0, column=0, sticky="nsew")
             c.bind("<Button-1>", self._click_turn)
@@ -480,9 +567,18 @@ class BookReaderPage(tk.Frame):
             return
         char = self._page_start_char()
         self.st["book_mode"] = mode
-        self.st["book_columns"] = 2 if mode == "spread" else 1
+        self.st["book_columns"] = 2 if mode in ("spread", "bilingual") else 1
         self.ctx.sstore.save()
         self._layout_key = None
+        self._page_tr_cache = {}
+        if mode != "bilingual":
+            self._stop_tr_timers()
+            self._tr_pending_pages.clear()
+            self._tr_wait_until = 0.0
+            self._tr_last_drawn_missing = -1
+        if mode == "bilingual":
+            self._refresh_tr_dir()
+            self._tr_last_drawn_missing = -1
         self._build_surface(self._page_host())
         self._build_top_bar(self.top_bar)
         self._sync_mode_btns()
@@ -559,6 +655,8 @@ class BookReaderPage(tk.Frame):
             word = int(m["positions"]["reading"].get("word", 0))
         char = self.words[word][0] if self.words and 0 <= word < len(self.words) else 0
         self._layout_key = None
+        self._page_tr_cache = {}
+        self._refresh_tr_dir()
         self._apply_theme()
         self.after(30, lambda: self._relayout(keep_char=char))
         self.focus_set()
@@ -583,6 +681,11 @@ class BookReaderPage(tk.Frame):
         if not self.tid or not self.words:
             return
         self.ctx.lib.set_position(self.tid, "reading", self.current_word())
+        try:
+            from stamina.english.book_sentences import notify_reading
+            notify_reading(self.ctx.app, self.ctx.lib, self.tid)
+        except Exception:
+            pass
 
     def current_word(self) -> int:
         if not self.words:
@@ -672,7 +775,9 @@ class BookReaderPage(tk.Frame):
             except tk.TclError:
                 pass
         char = self._page_start_char()
-        self._relayout_job = self.after(180, lambda: self._relayout(keep_char=char))
+        # при входе в fullscreen размер «прыгает» — не дёргать вёрстку каждые 180 мс
+        delay = 480 if time.monotonic() < self._tr_fs_guard_until else 180
+        self._relayout_job = self.after(delay, lambda: self._relayout(keep_char=char))
 
     def _relayout(self, keep_char: int | None = None) -> None:
         self._relayout_job = None
@@ -695,34 +800,37 @@ class BookReaderPage(tk.Frame):
             self._measure_cache = cache = {}
         lh = self._line_h()
         indent = _measure_cached(font, "    ", cache)
-        cols = 2 if self.mode == "spread" else 1
+        # bilingual: листаем по одной колонке оригинала, рисуем как разворот (оригинал|перевод)
+        paginate_cols = 2 if self.mode == "spread" else 1
+        draw_cols = 2 if self.mode in ("spread", "bilingual") else 1
 
         # геометрия книги
         outer = max(px(12), int(sw * 0.025))
         top = max(px(10), int(sh * 0.03))
         bottom = max(px(12), int(sh * 0.035))
-        spine = px(10) if cols == 2 else 0
+        spine = px(10) if draw_cols == 2 else 0
         book_w = max(160, sw - outer * 2)
         book_h = max(120, sh - top - bottom)
-        page_w = (book_w - spine) // cols
+        page_w = (book_w - spine) // draw_cols
         pad_x = max(px(16), int(page_w * 0.07))
         pad_y = max(px(14), int(book_h * 0.045))
         # ограничить ширину одной страницы ~75 символов
         avg = max(4.0, _measure_cached(font, "abcdefghijklmnopqrstuvwxyz", cache) / 26)
         max_text = int(avg * 72)
-        text_w = min(max(80, page_w - pad_x * 2), max_text if cols == 1 else max(80, page_w - pad_x * 2))
-        if cols == 1:
+        text_w = min(max(80, page_w - pad_x * 2), max_text if draw_cols == 1 else max(80, page_w - pad_x * 2))
+        if draw_cols == 1:
             text_w = min(text_w, max_text)
 
         col_h = max(40, book_h - pad_y * 2)
         para_gap = max(2, int(lh * 0.35))
         space_w = _measure_cached(font, " ", cache)
 
-        key = (text_w, col_h, cols, self._font_pt(), self._theme_key(), len(self.text), lh, para_gap)
+        key = (text_w, col_h, paginate_cols, draw_cols, self._font_pt(), self._theme_key(),
+               len(self.text), lh, para_gap, self.mode)
         geom = dict(outer=outer, top=top, book_w=book_w, book_h=book_h,
                     page_w=page_w, spine=spine, pad_x=pad_x, pad_y=pad_y,
                     text_w=text_w, lh=lh, indent=indent, para_gap=para_gap,
-                    cols=cols, col_h=col_h, space_w=space_w)
+                    cols=paginate_cols, draw_cols=draw_cols, col_h=col_h, space_w=space_w)
         if key == self._layout_key and self._pages:
             self._geom = geom
             self._goto_char(keep_char, save=False)
@@ -731,7 +839,7 @@ class BookReaderPage(tk.Frame):
         self._geom = geom
 
         if not self.paras:
-            self._pages = [{"cols": [[] for _ in range(cols)], "start_line": 0}]
+            self._pages = [{"cols": [[] for _ in range(paginate_cols)], "start_line": 0}]
             self._line_starts = [0]
             self._page_i = 0
             self._show_page()
@@ -756,7 +864,8 @@ class BookReaderPage(tk.Frame):
                 self._line_starts.append(off)
                 flat.append((ln, "first" if i == 0 else "cont"))
 
-        self._pages = _paginate_spread(flat, cols=cols, col_h=col_h, lh=lh, para_gap=para_gap)
+        self._pages = _paginate_spread(flat, cols=paginate_cols, col_h=col_h, lh=lh, para_gap=para_gap)
+        self._page_tr_cache = {}
         self._goto_char(keep_char, save=False)
 
     def _fill_scroll(self) -> None:
@@ -791,6 +900,25 @@ class BookReaderPage(tk.Frame):
         c = self.spread
         if c is None or not hasattr(self, "_geom"):
             return
+        if self._paint_busy:
+            return
+        self._paint_busy = True
+        try:
+            self._paint_book_impl(page)
+        except Exception:
+            # не оставлять чёрный холст после delete("all")
+            try:
+                if self.spread is not None:
+                    self.spread.create_text(
+                        40, 40, text=_t("Ошибка отрисовки страницы"),
+                        anchor="nw", fill="#C4A35A", font=theme.font(11, True))
+            except tk.TclError:
+                pass
+        finally:
+            self._paint_busy = False
+
+    def _paint_book_impl(self, page: dict) -> None:
+        c = self.spread
         c.update_idletasks()
         W, H = max(c.winfo_width(), 80), max(c.winfo_height(), 80)
         c.delete("all")
@@ -799,12 +927,29 @@ class BookReaderPage(tk.Frame):
         font = _reading_font(self._font_pt())
         font_obj = self._font_obj()
         g = self._geom
-        cols = g["cols"]
+        draw_cols = int(g.get("draw_cols") or g["cols"])
         book_w, book_h = g["book_w"], g["book_h"]
         page_w, spine = g["page_w"], g["spine"]
         pad_x, pad_y = g["pad_x"], g["pad_y"]
         lh, indent, para_gap = g["lh"], g["indent"], g["para_gap"]
         text_w = g["text_w"]
+
+        cache = getattr(self, "_measure_cache", {})
+        # fullscreen: холст может быть уже другого размера, чем при _relayout
+        if book_w > W - 2 or book_h > H - 2:
+            # холст ещё не готов (часто при входе в fullscreen) — не рисовать «в никуда»
+            book_w = max(160, min(book_w, W - 2))
+            book_h = max(120, min(book_h, H - 2))
+            page_w = max(80, (book_w - spine) // max(1, draw_cols))
+            text_w = min(text_w, max(40, page_w - pad_x * 2))
+            if W < 120 or H < 120:
+                c.create_text(W // 2, H // 2, text=_t("Загрузка…"),
+                              fill=th["dim"], font=theme.font(12, True))
+                if not getattr(self, "_size_relayout_job", None):
+                    char = self._page_start_char()
+                    self._size_relayout_job = self.after(
+                        150, lambda: self._deferred_size_relayout(char))
+                return
 
         bx = max(0, (W - book_w) // 2)
         by = max(0, (H - book_h) // 2)
@@ -812,8 +957,21 @@ class BookReaderPage(tk.Frame):
                            fill="#1A140E", outline="")
 
         def paint_col2(x0, y0, pw, ph, lines: list[tuple[str, str]], *,
-                       cont_from_prev: bool = False):
+                       cont_from_prev: bool = False, label: str = "",
+                       use_font=None, use_font_obj=None, use_lh=None, use_gap=None,
+                       use_indent=None, use_text_w=None, use_cache=None):
             """cont_from_prev: первая строка — продолжение абзаца с левой страницы."""
+            fnt = use_font if use_font is not None else font
+            fobj = use_font_obj if use_font_obj is not None else font_obj
+            line_h = use_lh if use_lh is not None else lh
+            gap = use_gap if use_gap is not None else para_gap
+            ind = use_indent if use_indent is not None else indent
+            # не шире бумаги: в fullscreen geom иногда обгоняет реальный pw
+            tw = min(use_text_w if use_text_w is not None else text_w,
+                     max(40, pw - pad_x * 2))
+            mcache = use_cache if use_cache is not None else cache
+            spw = _measure_cached(fobj, " ", mcache)
+
             photo = paper_photo(c, pw, ph, th["variant"])
             if photo is not None:
                 self._paper_refs.append(photo)
@@ -822,39 +980,28 @@ class BookReaderPage(tk.Frame):
                 c.create_rectangle(x0, y0, x0 + pw, y0 + ph, fill=th["fallback"], outline="")
             c.create_rectangle(x0, y0, x0 + pw - 1, y0 + ph - 1,
                                outline=blend(th["fg"], th["fallback"], 0.85), width=1)
-            tx0 = x0 + max(pad_x, (pw - text_w) // 2)
-            y = y0 + pad_y
-            # рисуем ВСЕ строки колонки (пагинация уже уложилась в col_h) — без break,
-            # иначе текст «прыгает» с левой на правую с пропуском
+            if label:
+                c.create_text(x0 + pad_x, y0 + px(6), text=label, anchor="nw",
+                              fill=th["dim"], font=theme.font(8, True))
+            tx0 = x0 + max(pad_x, (pw - tw) // 2)
+            y = y0 + pad_y + (px(14) if label else 0)
             for i, (text, kind) in enumerate(lines):
                 if kind == "first" and i > 0:
-                    y += para_gap
-                x = tx0 + (indent if kind == "first" else 0)
-                width = text_w - (indent if kind == "first" else 0)
-                # конец абзаца: следующая строка — first, либо конец колонки и это не
-                # продолжение на соседней странице (для левой: смотрим is_last_in_para)
+                    y += gap
+                x = tx0 + (ind if kind == "first" else 0)
+                width = tw - (ind if kind == "first" else 0)
                 if i + 1 < len(lines):
                     is_last = lines[i + 1][1] == "first"
                 else:
-                    # последняя строка колонки: если kind cont/first и абзац продолжается
-                    # на правой — не считаем last (для левой передаём флаг снаружи)
                     is_last = not cont_from_prev
-                self._draw_justified(c, x, y, text, font, font_obj, width, th["fg"],
-                                     last=is_last, space_w=space_w, cache=cache)
-                y += lh
+                self._draw_justified(c, x, y, text, fnt, fobj, width, th["fg"],
+                                     last=is_last, space_w=spw, cache=mcache)
+                y += line_h
 
         col_lists = page["cols"]
-        space_w = int(g.get("space_w") or _measure_cached(font_obj, " ", getattr(self, "_measure_cache", {})))
-        cache = getattr(self, "_measure_cache", {})
-        if cols == 2:
-            left = col_lists[0] if col_lists else []
-            right = col_lists[1] if len(col_lists) > 1 else []
-            # абзац продолжается на правой, если правая начинается с cont
-            left_continues = bool(right) and right[0][1] == "cont"
-            paint_col2(bx, by, page_w, book_h, left, cont_from_prev=left_continues)
-            rx = bx + page_w + spine
-            paint_col2(rx, by, page_w, book_h, right, cont_from_prev=False)
-            mid = bx + page_w
+        space_w = int(g.get("space_w") or _measure_cached(font_obj, " ", cache))
+
+        def draw_spine(mid: int) -> None:
             c.create_rectangle(mid, by, mid + spine, by + book_h, fill="#1E1810", outline="")
             c.create_line(mid + spine // 2, by + px(4), mid + spine // 2, by + book_h - px(4),
                           fill="#3A3020", width=max(2, spine // 3))
@@ -862,11 +1009,479 @@ class BookReaderPage(tk.Frame):
                 col = blend("#000000", th["fallback"], 0.93 + 0.01 * i)
                 c.create_line(mid - i, by, mid - i, by + book_h, fill=col)
                 c.create_line(mid + spine + i, by, mid + spine + i, by + book_h, fill=col)
+
+        if self.mode == "bilingual":
+            left = col_lists[0] if col_lists else []
+            # пересобираем перевод под фактическую ширину колонки (fullscreen/DPI)
+            col_text_w = max(40, page_w - pad_x * 2)
+            right, right_pt, right_indent = self._bilingual_right_lines(
+                left, text_w=col_text_w, col_h=max(40, book_h - pad_y * 2))
+            sl, tl = self._tr_dir
+            paint_col2(bx, by, page_w, book_h, left, label=_t("ОРИГИНАЛ · {0}").format(sl.upper()))
+            rx = bx + page_w + spine
+            r_spec = _reading_font(right_pt)
+            r_font_obj = tkfont.Font(font=r_spec)
+            r_lh = max(1, int(round(r_font_obj.metrics("linespace") * self._line_space())))
+            r_gap = max(1, int(r_lh * (0.35 if right_pt >= self._font_pt() - 2 else 0.2)))
+            # свой кэш ширин — общий _measure_cache от другого кегля ломает выключку/поля
+            paint_col2(rx, by, page_w, book_h, right,
+                       label=_t("ПЕРЕВОД · {0}").format(tl.upper()),
+                       use_font=r_spec, use_font_obj=r_font_obj, use_lh=r_lh, use_gap=r_gap,
+                       use_indent=right_indent, use_text_w=col_text_w, use_cache={})
+            self._paint_tr_countdown(c, rx, by, page_w, book_h, th)
+            draw_spine(bx + page_w)
+            self._ensure_tr_poll()
+            self._ensure_tr_eta_tick()
+        elif draw_cols == 2:
+            left = col_lists[0] if col_lists else []
+            right = col_lists[1] if len(col_lists) > 1 else []
+            left_continues = bool(right) and right[0][1] == "cont"
+            paint_col2(bx, by, page_w, book_h, left, cont_from_prev=left_continues)
+            rx = bx + page_w + spine
+            paint_col2(rx, by, page_w, book_h, right, cont_from_prev=False)
+            draw_spine(bx + page_w)
         else:
             # одна страница по центру
             pw = min(book_w, text_w + pad_x * 2 + px(8))
             px0 = bx + (book_w - pw) // 2
             paint_col2(px0, by, pw, book_h, col_lists[0] if col_lists else [])
+
+    # ------------------------------------------------------------------ bilingual
+    def _refresh_tr_dir(self) -> None:
+        from stamina.translator import direction
+        lang = ""
+        if self.tid:
+            m = self.ctx.lib.meta(self.tid)
+            lang = (m or {}).get("lang") or ""
+        if not lang and self.text:
+            from stamina.langdetect import detect
+            lang = detect(self.text[:4000])
+        target = None
+        try:
+            target = self.ctx.app.store.settings.get("uplink_target")
+        except Exception:
+            pass
+        self._tr_dir = direction(lang or "en", target)
+
+    @staticmethod
+    def _lines_to_plain(lines: list[tuple[str, str]]) -> str:
+        parts: list[str] = []
+        for text, kind in lines:
+            if not text:
+                continue
+            if kind == "first" and parts:
+                parts.append("\n\n")
+            elif parts:
+                parts.append(" ")
+            parts.append(text)
+        return "".join(parts)
+
+    @staticmethod
+    def _tr_chunks(src: str) -> list[str]:
+        """Одно предложение = один ключ кэша (дырки в переводе видны как «…», а не «съедаются»)."""
+        src = src.strip()
+        if not src:
+            return []
+        bits = [b.strip() for b in _SENT_SPLIT.split(src) if b.strip()] or [src]
+        chunks: list[str] = []
+        for b in bits:
+            if len(b) <= _TR_CHUNK:
+                chunks.append(b)
+            else:
+                for i in range(0, len(b), _TR_CHUNK):
+                    chunks.append(b[i:i + _TR_CHUNK])
+        return chunks
+
+    @staticmethod
+    def _tr_fuzzy_near(chunk: str, src: str) -> bool:
+        """Край страницы / старый ключ: короткий — префикс длинного, длины близки.
+
+        Иначе короткое предложение из кэша подставлялось вместо целого абзаца
+        (справа «пропадает» половина текста).
+        """
+        if not chunk or not src or chunk == src:
+            return bool(chunk and src)
+        short, long = (chunk, src) if len(chunk) <= len(src) else (src, chunk)
+        if len(short) < 24 or not long.startswith(short):
+            return False
+        delta = len(long) - len(short)
+        # край страницы: не хватает хвоста; абзац vs одно предложение — delta огромный
+        return delta <= max(48, int(0.25 * len(long)))
+
+    def _lookup_tr(self, tr, chunk: str, sl: str, tl: str, *, fuzzy: bool = True) -> str | None:
+        """Найти перевод куска: кэш UPLINK → локальный mem → нечёткий (край страницы)."""
+        chunk = (chunk or "").strip()
+        if not chunk:
+            return None
+        hit = tr.cached(chunk, sl, tl) if tr is not None else None
+        if hit:
+            self._tr_sent_mem[(sl, tl, chunk)] = hit
+            return hit
+        mem = self._tr_sent_mem.get((sl, tl, chunk))
+        if mem:
+            return mem
+        if not fuzzy or tr is None or len(chunk) < 24:
+            return None
+        prefix = f"{sl}|{tl}|"
+        try:
+            items = list(tr.cache.items())
+        except Exception:
+            return None
+        best_v, best_n = None, 0
+        for k, v in items:
+            if not v or not isinstance(k, str) or not k.startswith(prefix):
+                continue
+            src = k[len(prefix):]
+            if not src:
+                continue
+            if src == chunk:
+                self._tr_sent_mem[(sl, tl, chunk)] = v
+                return v
+            if self._tr_fuzzy_near(chunk, src) and len(src) > best_n:
+                best_v, best_n = v, len(src)
+        if best_v:
+            # в mem — только почти точная длина; иначе длинный ключ «прилипает» к короткому TR
+            if abs(best_n - len(chunk)) <= max(24, int(0.1 * max(len(chunk), 1))):
+                self._tr_sent_mem[(sl, tl, chunk)] = best_v
+            return best_v
+        return None
+
+    def _ingest_tr_results(self, results: list) -> None:
+        """Сложить ответы UPLINK в sentence-mem (нарезка страницы больше не важна)."""
+        if not results:
+            return
+        sl, tl = self._tr_dir
+        prefix = f"{sl}|{tl}|"
+        for k, result in results:
+            if not result or not isinstance(k, str) or not k.startswith(prefix):
+                continue
+            src = k[len(prefix):].strip()
+            if src:
+                self._tr_sent_mem[(sl, tl, src)] = result
+        if len(self._tr_sent_mem) > 400:
+            for old in list(self._tr_sent_mem.keys())[:80]:
+                self._tr_sent_mem.pop(old, None)
+
+    def _assemble_para_tr(self, tr, text: str, sl: str, tl: str) -> tuple[str, bool, int]:
+        """Собрать перевод абзаца из кэша (без новых HTTP). Частичный — с «…» на пропуски."""
+        text = (text or "").strip()
+        if not text:
+            return "", False, 0
+        # целиком абзац — только точный кэш (fuzzy/mem здесь съедали хвост абзаца)
+        whole = tr.cached(text, sl, tl) if tr is not None else None
+        if whole:
+            self._tr_sent_mem[(sl, tl, text)] = whole
+            return whole, False, 0
+        chunks = self._tr_chunks(text)
+        if not chunks:
+            return "", False, 0
+        out, missing = [], 0
+        for chunk in chunks:
+            hit = self._lookup_tr(tr, chunk, sl, tl, fuzzy=True)
+            if hit:
+                out.append(hit)
+            else:
+                missing += 1
+                out.append("…")
+        if missing == len(chunks):
+            return "", True, missing
+        return " ".join(out).strip(), missing > 0, missing
+
+    def _page_src_chunks(self, page_i: int) -> list[str]:
+        """Все куски оригинала страницы для UPLINK."""
+        if not self._pages or page_i < 0 or page_i >= len(self._pages):
+            return []
+        cols = self._pages[page_i].get("cols") or []
+        left = cols[0] if cols else []
+        plain = self._lines_to_plain(left)
+        if not plain.strip():
+            return []
+        paras = [p.strip() for p in plain.split("\n\n") if p.strip()] or [plain.strip()]
+        chunks: list[str] = []
+        for para in paras:
+            chunks.extend(self._tr_chunks(para))
+        return chunks
+
+    def _queue_book_window(self, tr, sl: str, tl: str) -> None:
+        """Окно: назад + текущая + вперёд. Текущую страницу ставим целиком (иначе FS «висит»)."""
+        if not self._pages:
+            return
+        cur = self._page_i
+        start = max(0, cur - _TR_PREFETCH_BEHIND)
+        end = min(len(self._pages), cur + 1 + _TR_PREFETCH_AHEAD)
+        keep: set[str] = set()
+        already = tr.inflight("book")
+        slots = max(0, _TR_BOOK_INFLIGHT - already)
+        guard = time.monotonic() < self._tr_fs_guard_until
+
+        def enqueue(page_i: int, priority: int, *, unlimited: bool = False) -> None:
+            nonlocal slots
+            for chunk in self._page_src_chunks(page_i):
+                k = tr.key(chunk, sl, tl)
+                keep.add(k)
+                if self._lookup_tr(tr, chunk, sl, tl):
+                    continue
+                if not unlimited and slots <= 0:
+                    continue
+                tr.request(chunk, sl, tl, priority=priority, group="book")
+                if not unlimited:
+                    slots -= 1
+
+        # текущая — все куски, приоритет 0 (fullscreen: длинная колонка)
+        enqueue(cur, 0, unlimited=True)
+        already = tr.inflight("book")
+        slots = max(0, _TR_BOOK_INFLIGHT - already)
+        for dist, pi in enumerate(range(cur - 1, start - 1, -1), start=1):
+            enqueue(pi, 1)
+        for dist, pi in enumerate(range(cur + 1, end), start=1):
+            enqueue(pi, 3 + dist)
+        # во время перехода FS не отменять — иначе рвёт уже идущие запросы
+        if not guard:
+            tr.cancel_group("book", keep=keep)
+
+    def _wrap_fit_column(self, paras: list[str], *, text_w: int, col_h: int
+                         ) -> tuple[list[tuple[str, str]], int, int]:
+        """Уместить весь перевод: кегль↓ при необходимости. Возврат (lines, pt, indent_px)."""
+        budget = max(40, col_h - px(20))
+        best: list[tuple[str, str]] = []
+        best_pt = self._font_pt()
+        best_ind = 0
+        for shrink in range(0, 12):
+            pt = max(9, self._font_pt() - shrink)
+            font = tkfont.Font(font=_reading_font(pt))
+            cache: dict[str, int] = {}
+            ind = _measure_cached(font, "    ", cache)
+            lh = max(1, int(round(font.metrics("linespace") * self._line_space())))
+            para_gap = max(1, int(lh * (0.35 if shrink < 3 else 0.2)))
+            flat: list[tuple[str, str]] = []
+            for para in paras:
+                if not para or para == "…":
+                    if para == "…":
+                        flat.append(("…", "first"))
+                    continue
+                wrapped = _wrap_para(para, font, text_w, first_indent=ind, cache=cache)
+                for i, ln in enumerate(wrapped):
+                    flat.append((ln, "first" if i == 0 else "cont"))
+            used = 0
+            for i, item in enumerate(flat):
+                used += lh + (para_gap if item[1] == "first" and i > 0 else 0)
+            best, best_pt, best_ind = flat, pt, ind
+            if used <= budget:
+                return flat, pt, ind
+        return best, best_pt, best_ind
+
+    def _bilingual_right_lines(self, left: list[tuple[str, str]], *,
+                               text_w: int | None = None,
+                               col_h: int | None = None
+                               ) -> tuple[list[tuple[str, str]], int, int]:
+        """Перевод текста левой колонки. (lines, font_pt, indent_px)."""
+        g = self._geom
+        tw = int(text_w if text_w is not None else g["text_w"])
+        ch = int(col_h if col_h is not None else g["col_h"])
+        pi = self._page_i
+        plain = self._lines_to_plain(left)
+        src_paras = [p.strip() for p in plain.split("\n\n") if p.strip()]
+        if not src_paras and plain.strip():
+            src_paras = [plain.strip()]
+
+        tr = None
+        try:
+            tr = self.ctx.app.get_translator()
+        except Exception:
+            pass
+        sl, tl = self._tr_dir
+
+        waiting = False
+        missing_total = 0
+        out_paras: list[str] = []
+        if not plain.strip():
+            empty: list[tuple[str, str]] = []
+            self._bilingual_right_pt = self._font_pt()
+            return empty, self._font_pt(), 0
+        mem_key = (sl, tl, plain)
+        if tr is None:
+            out_paras = [_t("Переводчик недоступен.")]
+        else:
+            self._queue_book_window(tr, sl, tl)
+            for para in src_paras:
+                piece, wait, miss = self._assemble_para_tr(tr, para, sl, tl)
+                waiting = waiting or wait
+                missing_total += miss
+                if piece:
+                    out_paras.append(piece)
+            # полный перевод этой страницы уже был — отдать сразу (← и смена экрана)
+            if waiting and mem_key in self._plain_tr_mem and not out_paras:
+                out_paras = list(self._plain_tr_mem[mem_key])
+            if not waiting and out_paras:
+                self._plain_tr_mem[mem_key] = list(out_paras)
+                # ограничить память ~80 страниц
+                if len(self._plain_tr_mem) > 80:
+                    for old in list(self._plain_tr_mem.keys())[:20]:
+                        self._plain_tr_mem.pop(old, None)
+            if waiting:
+                self._tr_pending_pages.add(pi)
+                self._tr_wait_missing = missing_total
+                eta = min(25.0, max(4.0, missing_total * 2.0 + 2.0))
+                now = time.monotonic()
+                if self._tr_wait_until < now or self._tr_wait_until > now + eta + 3:
+                    self._tr_wait_until = now + eta
+                if not out_paras:
+                    # частичный mem по тому же тексту
+                    if mem_key in self._plain_tr_mem:
+                        out_paras = list(self._plain_tr_mem[mem_key])
+                    else:
+                        out_paras = [_t("Загрузка перевода…")]
+            else:
+                self._tr_pending_pages.discard(pi)
+                self._tr_wait_until = 0.0
+                self._tr_wait_missing = 0
+
+        flat, pt, ind = self._wrap_fit_column(out_paras, text_w=tw, col_h=ch)
+        self._bilingual_right_pt = pt
+        return flat, pt, ind
+
+    def _paint_tr_countdown(self, c: tk.Canvas, x0: int, y0: int, pw: int, ph: int, th: dict) -> None:
+        """Плашка «перевод через N с» на правой странице, пока куски грузятся."""
+        if self._page_i not in self._tr_pending_pages or self._tr_wait_until <= 0:
+            return
+        left = int(self._tr_wait_until - time.monotonic() + 0.999)
+        online = True
+        try:
+            online = self.ctx.app.get_translator().online is not False
+        except Exception:
+            pass
+        if left <= 0:
+            self._tr_wait_until = time.monotonic() + 4.0
+            left = 4
+            if not online:
+                msg = _t("Сеть занята — повтор через {0} с").format(left)
+            else:
+                msg = _t("Перевод почти готов… {0} с").format(left)
+        else:
+            msg = _t("Перевод страницы через {0} с").format(left)
+        if self._tr_wait_missing:
+            msg = f"{msg} · {self._tr_wait_missing}"
+        pad = px(10)
+        c.create_rectangle(x0 + pad, y0 + ph - px(36), x0 + pw - pad, y0 + ph - pad,
+                           fill=blend(th["fallback"], "#000000", 0.12), outline=th["dim"],
+                           width=1, tags="tr_wait")
+        c.create_text(x0 + pw // 2, y0 + ph - px(23), text=msg, anchor="center",
+                      fill=th["dim"], font=theme.font(9, True), tags="tr_wait")
+
+    def _stop_tr_timers(self) -> None:
+        for attr in ("_tr_poll_job", "_tr_eta_job"):
+            job = getattr(self, attr, None)
+            if job is not None:
+                try:
+                    self.after_cancel(job)
+                except tk.TclError:
+                    pass
+                setattr(self, attr, None)
+
+    def _deferred_size_relayout(self, char: int) -> None:
+        self._size_relayout_job = None
+        self._layout_key = None
+        self._page_tr_cache.clear()
+        self._relayout(keep_char=char)
+
+    def _ensure_tr_eta_tick(self) -> None:
+        """Только планирует тик — никогда не вызывать синхронно из paint."""
+        if self.mode != "bilingual":
+            return
+        if self._tr_eta_job is not None:
+            return
+        if self._page_i not in self._tr_pending_pages:
+            return
+        self._tr_eta_job = self.after(450, self._tr_eta_tick)
+
+    def _tr_eta_tick(self) -> None:
+        self._tr_eta_job = None
+        if self.mode != "bilingual":
+            return
+        if self._page_i not in self._tr_pending_pages:
+            return
+        c = self.spread
+        if c is None:
+            self._tr_eta_job = self.after(450, self._tr_eta_tick)
+            return
+        try:
+            # если холст пуст (сбой/fullscreen) — не рисовать одну плашку на чёрном
+            if not c.find_all() and self._pages:
+                self._paint_book(self._pages[self._page_i])
+            else:
+                c.delete("tr_wait")
+                g = self._geom
+                W = max(c.winfo_width(), 80)
+                H = max(c.winfo_height(), 80)
+                book_w, book_h = g["book_w"], g["book_h"]
+                page_w, spine = g["page_w"], g["spine"]
+                book_w = min(book_w, max(160, W - 2))
+                book_h = min(book_h, max(120, H - 2))
+                page_w = max(80, (book_w - spine) // 2)
+                bx = max(0, (W - book_w) // 2)
+                by = max(0, (H - book_h) // 2)
+                self._paint_tr_countdown(c, bx + page_w + spine, by, page_w, book_h, self._theme())
+        except tk.TclError:
+            pass
+        if self._page_i in self._tr_pending_pages:
+            self._tr_eta_job = self.after(450, self._tr_eta_tick)
+
+    def _ensure_tr_poll(self) -> None:
+        """Только планирует poll — синхронный вызов из paint давал рекурсию и чёрный экран."""
+        if self.mode != "bilingual":
+            return
+        if self._tr_poll_job is not None:
+            return
+        self._tr_poll_job = self.after(300, self._tr_poll_tick)
+
+    def _tr_poll_tick(self) -> None:
+        """Слить UPLINK, дозапросить окно (текущая+3), перерисовать при прогрессе."""
+        self._tr_poll_job = None
+        if self.mode != "bilingual":
+            return
+        if self._tr_poll_busy or self._paint_busy:
+            self._tr_poll_job = self.after(350, self._tr_poll_tick)
+            return
+        self._tr_poll_busy = True
+        try:
+            tr = None
+            try:
+                tr = self.ctx.app.get_translator()
+            except Exception:
+                pass
+            results = tr.poll() if tr is not None else []
+            self._ingest_tr_results(results)
+            if tr is not None and self._pages:
+                sl, tl = self._tr_dir
+                self._queue_book_window(tr, sl, tl)
+            need_paint = bool(results)
+            if self._pages and (self._page_i in self._tr_pending_pages or results):
+                prev_m = self._tr_last_drawn_missing
+                page = self._pages[self._page_i]
+                left = page["cols"][0] if page.get("cols") else []
+                g = getattr(self, "_geom", None)
+                if g:
+                    self._bilingual_right_lines(
+                        left,
+                        text_w=max(40, int(g.get("page_w", 200)) - int(g["pad_x"]) * 2),
+                        col_h=max(40, int(g["book_h"]) - int(g["pad_y"]) * 2),
+                    )
+                missing = self._tr_wait_missing
+                done = self._page_i not in self._tr_pending_pages
+                if need_paint or done or prev_m < 0 or missing != prev_m:
+                    self._tr_last_drawn_missing = 0 if done else missing
+                    self._paint_book(self._pages[self._page_i])
+        finally:
+            self._tr_poll_busy = False
+        if self.mode == "bilingual":
+            # fullscreen / идёт загрузка — чаще; сразу после ЭКРАН ещё чаще
+            if time.monotonic() < self._tr_fs_guard_until:
+                delay = 200
+            elif self._fullscreen or self._tr_pending_pages:
+                delay = 280
+            else:
+                delay = 450
+            self._tr_poll_job = self.after(delay, self._tr_poll_tick)
 
     def _draw_justified(self, c: tk.Canvas, x: int, y: int, text: str, font, font_obj: tkfont.Font,
                         width: int, fill: str, *, last: bool,
@@ -875,8 +1490,10 @@ class BookReaderPage(tk.Frame):
         words = text.split()
         if not words:
             return
+        # один и тот же Font-объект для measure и draw — иначе в fullscreen плывут поля
+        draw_font = font_obj
         if last or len(words) == 1:
-            c.create_text(x, y, text=text, anchor="nw", fill=fill, font=font)
+            c.create_text(x, y, text=text, anchor="nw", fill=fill, font=draw_font)
             return
         cache = cache if cache is not None else getattr(self, "_measure_cache", {})
         if space_w <= 0:
@@ -884,10 +1501,9 @@ class BookReaderPage(tk.Frame):
         widths = [_measure_cached(font_obj, w, cache) for w in words]
         natural = sum(widths) + space_w * (len(words) - 1)
         extra = width - natural
-        if extra < space_w:
-            c.create_text(x, y, text=text, anchor="nw", fill=fill, font=font)
+        if extra < space_w or space_w <= 0:
+            c.create_text(x, y, text=text, anchor="nw", fill=fill, font=draw_font)
             return
-        # распределить целые пробелы по промежуткам (быстро и достаточно ровно)
         gaps = len(words) - 1
         add = extra // space_w
         base, rem = divmod(add, gaps)
@@ -896,7 +1512,7 @@ class BookReaderPage(tk.Frame):
             parts.append(w)
             if i < gaps:
                 parts.append(" " * (1 + base + (1 if i < rem else 0)))
-        c.create_text(x, y, text="".join(parts), anchor="nw", fill=fill, font=font)
+        c.create_text(x, y, text="".join(parts), anchor="nw", fill=fill, font=draw_font)
 
     def page_next(self) -> None:
         if self.mode == "scroll" and self.scroll_view is not None:
@@ -906,7 +1522,9 @@ class BookReaderPage(tk.Frame):
             return
         if self._page_i < len(self._pages) - 1:
             self._page_i += 1
+            self._tr_last_drawn_missing = -1
             self._show_page()
+            self._bump_book_window()
             self.save_pos()
 
     def page_prev(self) -> None:
@@ -917,8 +1535,24 @@ class BookReaderPage(tk.Frame):
             return
         if self._page_i > 0:
             self._page_i -= 1
+            self._tr_last_drawn_missing = -1
             self._show_page()
+            self._bump_book_window()
             self.save_pos()
+
+    def _bump_book_window(self) -> None:
+        """После листания сразу сдвинуть окно предзагрузки перевода."""
+        if self.mode != "bilingual":
+            return
+        try:
+            tr = self.ctx.app.get_translator()
+        except Exception:
+            return
+        if tr is None:
+            return
+        sl, tl = self._tr_dir
+        self._queue_book_window(tr, sl, tl)
+        self._ensure_tr_poll()
 
     def _on_scale(self, val) -> None:
         if self._applying or not self.text:
@@ -932,7 +1566,9 @@ class BookReaderPage(tk.Frame):
         if not self._pages:
             return
         self._page_i = int(round(frac * max(0, len(self._pages) - 1)))
+        self._tr_last_drawn_missing = -1
         self._show_page()
+        self._bump_book_window()
         self.save_pos()
 
     def _update_progress(self) -> None:
@@ -957,6 +1593,11 @@ class BookReaderPage(tk.Frame):
             left = self._page_i * 2 + 1
             total = len(self._pages) * 2
             self.lbl_page.configure(text=_t("{0}–{1} / {2}").format(left, left + 1, total))
+        elif self.mode == "bilingual":
+            sl, tl = self._tr_dir
+            self.lbl_page.configure(
+                text=_t("{0} / {1} · {2}→{3}").format(self._page_i + 1, len(self._pages),
+                                                       sl.upper(), tl.upper()))
         else:
             self.lbl_page.configure(text=_t("{0} / {1}").format(self._page_i + 1, len(self._pages)))
         left_words = max(0, n - w)
@@ -968,7 +1609,24 @@ class BookReaderPage(tk.Frame):
         if self._fullscreen:
             return
         self.save_pos()
+        # зафиксировать уже известные переводы текущей страницы до смены вёрстки
+        if self.mode == "bilingual" and self._pages:
+            try:
+                tr = self.ctx.app.get_translator()
+                sl, tl = self._tr_dir
+                if tr is not None:
+                    self._ingest_tr_results(tr.poll())
+                for chunk in self._page_src_chunks(self._page_i):
+                    self._lookup_tr(tr, chunk, sl, tl)
+            except Exception:
+                pass
         th = self._theme()
+        # остановить poll/eta — иначе рисуют в уничтожаемый canvas и гасят экран
+        self._stop_tr_timers()
+        self._page_tr_cache.clear()
+        self._tr_last_drawn_missing = -1
+        # mem предложений / Translator не трогаем — иначе FS теряет уже загруженный перевод
+        self._tr_fs_guard_until = time.monotonic() + 2.8
         self._fullscreen = True
         self.ctx.set_focus_mode(True)
         self._layout_key = None
@@ -979,8 +1637,6 @@ class BookReaderPage(tk.Frame):
         self.top_bar_fs = tk.Frame(self._fs, bg=th["bar"], height=px(44))
         self.top_bar_fs.pack(fill=tk.X)
         self.top_bar_fs.pack_propagate(False)
-        # временно подменить top_bar для builder
-        old_top, old_bot = self.top_bar, self.bot_bar
         self.top_bar = self.top_bar_fs
         self._build_top_bar(self.top_bar)
 
@@ -993,23 +1649,7 @@ class BookReaderPage(tk.Frame):
         self.bot_bar_fs = tk.Frame(self._fs, bg=th["bar"], height=px(36))
         self.bot_bar_fs.pack(fill=tk.X, side=tk.BOTTOM)
         self.bot_bar_fs.pack_propagate(False)
-        # перенести метки — проще пересоздать
-        for lab_attr, side in (("lbl_pct", tk.LEFT), ("lbl_page", tk.LEFT), ("lbl_eta", tk.RIGHT)):
-            pass
-        self.lbl_pct = tk.Label(self.bot_bar_fs, text="0%", bg=th["bar"], fg=th["bar_fg"],
-                                font=theme.font(9, True, mono=True))
-        self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
-        self.scale = tk.Scale(self.bot_bar_fs, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
-                              highlightthickness=0, activebackground=th["accent"],
-                              command=self._on_scale)
-        self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
-        self.lbl_page = tk.Label(self.bot_bar_fs, text="", bg=th["bar"], fg=th["dim"],
-                                 font=theme.font(9, True, mono=True))
-        self.lbl_page.pack(side=tk.LEFT, padx=px(8))
-        self.lbl_eta = tk.Label(self.bot_bar_fs, text="", bg=th["bar"], fg=th["dim"],
-                                font=theme.font(9, True))
-        self.lbl_eta.pack(side=tk.RIGHT, padx=px(12))
+        self._build_bot_bar(self.bot_bar_fs)
         self.bot_bar = self.bot_bar_fs
         self._chrome_visible = True
 
@@ -1019,14 +1659,78 @@ class BookReaderPage(tk.Frame):
         self._fs.focus_set()
         self._sync_mode_btns()
         char = self._page_start_char()
-        self.after(40, lambda: self._relayout(keep_char=char))
+        try:
+            self._fs.update_idletasks()
+            self._fs_area.update_idletasks()
+        except tk.TclError:
+            pass
+        # дождаться реального размера, потом одна стабильная вёрстка + перевод
+        self.after(280, lambda c=char: self._fullscreen_ready(c, tries=0))
         self._schedule_hide_chrome()
+
+    def _fullscreen_ready(self, char: int, tries: int = 0) -> None:
+        if not self._fullscreen:
+            return
+        try:
+            self._fs.update_idletasks()
+            self._fs_area.update_idletasks()
+            w = self._fs_area.winfo_width()
+            h = self._fs_area.winfo_height()
+        except (tk.TclError, AttributeError):
+            w = h = 0
+        # холст ещё крошечный — подождать, иначе перевод соберётся «в никуда»
+        if (w < 360 or h < 240) and tries < 8:
+            self.after(120, lambda: self._fullscreen_ready(char, tries + 1))
+            return
+        self._layout_key = None
+        self._page_tr_cache.clear()
+        self._relayout(keep_char=char)
+        if self.mode == "bilingual":
+            self._tr_last_drawn_missing = -1
+            self._tr_fs_guard_until = max(self._tr_fs_guard_until, time.monotonic() + 1.6)
+            self._bump_book_window()
+            self._ensure_tr_poll()
+            self._ensure_tr_eta_tick()
+            if self._pages:
+                self._paint_book(self._pages[self._page_i])
+                # второй проход — подтянуть то, что успело прийти из сети
+                self.after(400, self._fs_tr_refresh)
+
+    def _fs_tr_refresh(self) -> None:
+        if not self._fullscreen or self.mode != "bilingual" or not self._pages:
+            return
+        try:
+            tr = self.ctx.app.get_translator()
+            if tr is not None:
+                self._ingest_tr_results(tr.poll())
+                sl, tl = self._tr_dir
+                self._queue_book_window(tr, sl, tl)
+        except Exception:
+            pass
+        self._tr_last_drawn_missing = -1
+        self._paint_book(self._pages[self._page_i])
+        self._ensure_tr_poll()
 
     def exit_fullscreen(self) -> None:
         if not self._fullscreen:
             return
         self.save_pos()
         char = self._page_start_char()
+        # сохранить переводы FS-страницы перед сменой вёрстки
+        if self.mode == "bilingual" and self._pages:
+            try:
+                tr = self.ctx.app.get_translator()
+                sl, tl = self._tr_dir
+                if tr is not None:
+                    self._ingest_tr_results(tr.poll())
+                for chunk in self._page_src_chunks(self._page_i):
+                    self._lookup_tr(tr, chunk, sl, tl)
+            except Exception:
+                pass
+        self._stop_tr_timers()
+        self._page_tr_cache.clear()
+        self._tr_last_drawn_missing = -1
+        self._tr_fs_guard_until = time.monotonic() + 1.8
         if self._fs is not None:
             try:
                 self._fs.destroy()
@@ -1054,27 +1758,24 @@ class BookReaderPage(tk.Frame):
         self.bot_bar = tk.Frame(self.chrome, bg=th["bar"], height=px(36))
         self.bot_bar.pack(fill=tk.X, side=tk.BOTTOM)
         self.bot_bar.pack_propagate(False)
-        self.lbl_pct = tk.Label(self.bot_bar, text="0%", bg=th["bar"], fg=th["bar_fg"],
-                                font=theme.font(9, True, mono=True))
-        self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
-        self.scale = tk.Scale(self.bot_bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
-                              bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
-                              highlightthickness=0, activebackground=th["accent"],
-                              command=self._on_scale)
-        self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
-        self.lbl_page = tk.Label(self.bot_bar, text="", bg=th["bar"], fg=th["dim"],
-                                 font=theme.font(9, True, mono=True))
-        self.lbl_page.pack(side=tk.LEFT, padx=px(8))
-        self.lbl_eta = tk.Label(self.bot_bar, text="", bg=th["bar"], fg=th["dim"],
-                                font=theme.font(9, True))
-        self.lbl_eta.pack(side=tk.RIGHT, padx=px(12))
+        self._build_bot_bar(self.bot_bar)
         self.read_shell.bind("<Configure>", self._on_area_configure)
         self.read_shell.bind("<Motion>", self._on_motion)
         self._chrome_visible = True
         self._sync_mode_btns()
         self._apply_theme()
-        self.after(30, lambda: self._relayout(keep_char=char))
+        self.after(40, lambda c=char: self._after_exit_fs(c))
         self.focus_set()
+
+    def _after_exit_fs(self, char: int) -> None:
+        self._relayout(keep_char=char)
+        if self.mode == "bilingual":
+            self._tr_last_drawn_missing = -1
+            self._bump_book_window()
+            self._ensure_tr_poll()
+            self._ensure_tr_eta_tick()
+            if self._pages:
+                self.after(50, lambda: self._paint_book(self._pages[self._page_i]))
 
     # ------------------------------------------------------------------ toc / keys
     def show_toc(self) -> None:

@@ -97,10 +97,17 @@ class OverviewPage(tk.Frame):
                   font_size=11, width=230).pack(pady=px(4))
         HudButton(acts, _t("БЫСТРАЯ МИССИЯ · 10"), lambda: self.ctx.start_session("random", source="set"),
                   height=42, font_size=11, width=230).pack(pady=px(4))
-        L(acts, _t("сначала проверка систем, потом новые слова"), fg=MUTED, size=8).pack()
-        # секторы
-        sec = tk.Frame(grid, bg=BG)
-        sec.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
+        HudButton(acts, _t("ИЗ КНИГИ · КАРТОЧКИ"), lambda: self.ctx.open_book_cards(),
+                  color=CYAN, height=42, font_size=11, width=230).pack(pady=px(4))
+        L(acts, _t("слова из словаря · предложения из прочитанных книг"), fg=MUTED, size=8).pack()
+        # секторы + плашка книги
+        left_col = tk.Frame(grid, bg=BG)
+        left_col.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
+        left_col.grid_rowconfigure(1, weight=0)
+        left_col.grid_columnconfigure(0, weight=1)
+
+        sec = tk.Frame(left_col, bg=BG)
+        sec.pack(fill=tk.X)
         L(sec, _t("СЕКТОРЫ · НАБОРЫ СЛОВ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
         row = tk.Frame(sec, bg=BG)
         row.pack(fill=tk.X)
@@ -110,8 +117,34 @@ class OverviewPage(tk.Frame):
             c.grid(row=0, column=i, sticky="nsew", padx=px(3))
             row.grid_columnconfigure(i, weight=1, uniform="sec")
             self.cards.append(c)
-        L(sec, _t("Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются."),
+
+        # плашка: предложения из читаемой книги (под секторами)
+        self.book_panel = HudPanel(left_col, _t("ИЗ ЧИТАЕМОЙ КНИГИ · ПРЕДЛОЖЕНИЯ"), accent=CYAN)
+        self.book_panel.pack(fill=tk.X, pady=(px(10), 0))
+        bb = self.book_panel.body
+        book_row = tk.Frame(bb, bg=PANEL)
+        book_row.pack(fill=tk.X)
+        book_info = tk.Frame(book_row, bg=PANEL)
+        book_info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.book_title = L(book_info, _t("Книга не выбрана"), fg=TEXT, size=14, bold=True, bg=PANEL)
+        self.book_title.pack(anchor="w")
+        self.book_meta = L(book_info, "", fg=MUTED, size=9, bg=PANEL)
+        self.book_meta.pack(anchor="w", pady=(px(2), 0))
+        self.book_sample = L(book_info, "", fg=FAINT, size=9, bg=PANEL, wraplength=px(520), justify="left")
+        self.book_sample.pack(anchor="w", pady=(px(4), 0))
+        book_acts = tk.Frame(book_row, bg=PANEL)
+        book_acts.pack(side=tk.RIGHT, padx=(px(8), 0))
+        HudButton(book_acts, _t("СФОРМИРОВАТЬ"), self._sync_book_plate, color=CYAN, height=34,
+                  font_size=9, width=150).pack(pady=px(2))
+        HudButton(book_acts, _t("▶ ПРАКТИКА"), self._practice_book_plate, color=AMBER, height=34,
+                  font_size=9, width=150).pack(pady=px(2))
+        HudButton(book_acts, _t("ОТКРЫТЬ РАЗДЕЛ"), lambda: self.ctx.open_book_cards(self._book_tid),
+                  height=30, font_size=8, width=150).pack(pady=px(2))
+        self._book_tid: str | None = None
+
+        L(left_col, _t("Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются."),
           fg=FAINT, size=8, bg=BG).pack(anchor="w", pady=(px(8), 0))
+
         # телеметрия
         tel = HudPanel(grid, _t("ТЕЛЕМЕТРИЯ ПИЛОТА"))
         tel.grid(row=0, column=1, sticky="nsew", pady=(0, px(6)))
@@ -149,6 +182,108 @@ class OverviewPage(tk.Frame):
         HudButton(sb, _t("СКАНИРОВАТЬ"), lambda: self.ctx.open_word(self._wod), height=32).pack(anchor="w", pady=px(4))
         self._wod = None
 
+    def _active_book_info(self) -> dict | None:
+        """Текущая книга из библиотеки / уже синхронизированных карточек."""
+        from . import book_sentences as bs
+        try:
+            from stamina import library as libmod
+            lib = libmod.Library()
+        except Exception:
+            lib = None
+        tid = None
+        meta = None
+        if lib is not None:
+            tid = lib.index.get("active_reading")
+            if tid:
+                meta = lib.meta(tid)
+            if not meta:
+                # первая английская с позицией чтения
+                for m in lib.all():
+                    if (m.get("lang") or "").lower() not in ("", "en"):
+                        continue
+                    rw = int(m.get("positions", {}).get("reading", {}).get("word", 0) or 0)
+                    if rw > 0:
+                        tid, meta = m["id"], m
+                        break
+        books = {b["id"]: b for b in bs.list_books(self.ctx.progress)}
+        if tid and tid in books:
+            b = books[tid]
+            return {**b, "meta_title": (meta or {}).get("title") or b["title"]}
+        if tid and meta:
+            return {
+                "id": tid,
+                "title": meta.get("title") or _t("Без названия"),
+                "author": meta.get("author") or "",
+                "word_pos": int(meta.get("positions", {}).get("reading", {}).get("word", 0) or 0),
+                "total": 0, "ready": 0, "due": 0,
+                "meta_title": meta.get("title") or _t("Без названия"),
+            }
+        # любая уже синхронизированная
+        if books:
+            b = max(books.values(), key=lambda x: (x["ready"], x["total"], x["word_pos"]))
+            return {**b, "meta_title": b["title"]}
+        return None
+
+    def _refresh_book_plate(self) -> None:
+        from . import book_sentences as bs
+        info = self._active_book_info()
+        self._book_tid = info["id"] if info else None
+        if not info:
+            self.book_title.configure(text=_t("Книга не выбрана"))
+            self.book_meta.configure(
+                text=_t("Откройте английскую книгу в СКОРОЧТЕНИИ и полистайте — затем «СФОРМИРОВАТЬ»."))
+            self.book_sample.configure(text="")
+            return
+        title = info.get("meta_title") or info.get("title") or _t("Без названия")
+        if info.get("author"):
+            title = f"{title} — {info['author']}"
+        self.book_title.configure(text=title)
+        self.book_meta.configure(
+            text=_t("предложений из прочитанного: {0} · с переводом: {1} · к повтору: {2} · позиция слова: {3}").format(
+                info.get("total", 0), info.get("ready", 0), info.get("due", 0), info.get("word_pos", 0)))
+        sample = ""
+        for s in bs.ready_sentences(self.ctx.progress, info["id"])[:1]:
+            ru = (s.get("ru") or "").strip()
+            en = (s.get("en") or "").strip()
+            sample = f"«{ru}»" if ru else f"«{en}»"
+        if not sample and info.get("total"):
+            sample = _t("Есть предложения без перевода — ждём UPLINK или нажмите «СФОРМИРОВАТЬ».")
+        elif not sample:
+            sample = _t("Пока пусто: нажмите «СФОРМИРОВАТЬ», чтобы собрать карточки из прочитанного.")
+        self.book_sample.configure(text=sample)
+
+    def _sync_book_plate(self) -> None:
+        from . import book_sentences as bs
+        try:
+            from stamina import library as libmod
+            lib = libmod.Library()
+        except Exception:
+            self.ctx.status(_t("Библиотека недоступна"), AMBER)
+            return
+        tid = self._book_tid
+        if tid:
+            book = bs.sync_book(self.ctx.progress, lib, tid)
+            n = len((book or {}).get("sentences") or [])
+        else:
+            _bn, n = bs.sync_all(self.ctx.progress, lib)
+        try:
+            tr = self.ctx.app.get_translator()
+        except Exception:
+            tr = None
+        tl = bs.uplink_tl(self.ctx.app)
+        filled = bs.fill_ru_from_cache(self.ctx.progress, tr, tl)
+        bs.request_missing_ru(self.ctx.progress, tr, tl)
+        self.ctx.sfx("click")
+        self.ctx.status(
+            _t("Собрано {0} предложений из прочитанного").format(n) + (
+                _t(" · переводов из кэша: {0}").format(filled) if filled else ""),
+            GREEN if n else AMBER)
+        self._refresh_book_plate()
+        self.ctx.changed()
+
+    def _practice_book_plate(self) -> None:
+        self.ctx.open_book_cards(self._book_tid)
+
     def refresh(self) -> None:
         p, v = self.ctx.progress, self.ctx.vocab
         goal = p.settings["daily_goal"]
@@ -184,6 +319,7 @@ class OverviewPage(tk.Frame):
             self.sig_meta.configure(text=f"#{w['rank']} · {POS_SHORT.get(w['pos'], w['pos'].upper())}")
             self.sig_word.configure(text=w["word"])
             self.sig_def.configure(text=w.get("definition", ""))
+        self._refresh_book_plate()
 
 
 # =============================================================================
