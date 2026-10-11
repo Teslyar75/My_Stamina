@@ -16,8 +16,11 @@ SETS = [
     ("top-3000", 3000, "Core 3000", t("РАЗГОВОРНЫЙ"), "S-3000"),
     ("top-10000", 10000, "Advanced 10 000", t("СВОБОДНЫЙ"), "S-10K"),
     ("top-20000", 20000, "Master 20 000", t("КАК НОСИТЕЛЬ"), "S-20K"),
+    # тематический набор (не по частоте wordfreq) — IT-английский для собеседований
+    ("dev-interview", 0, "IT Interview", t("СОБЕСЕДОВАНИЕ"), "S-DEV"),
 ]
 SET_LIMIT = {s[0]: s[1] for s in SETS}
+THEMATIC_SETS = {"dev-interview"}  # выборка по полю sets[], а не по rank
 POS_NORM = {"adj": "adjective", "adv": "adverb", "prep": "preposition", "conj": "conjunction",
             "pron": "pronoun", "n": "noun", "v": "verb"}
 POS_FILTER = [("all", t("ВСЕ")), ("noun", t("СУЩ.")), ("verb", t("ГЛАГ.")), ("adjective", t("ПРИЛ.")),
@@ -60,26 +63,61 @@ class Vocab:
             for r in raw:
                 if not r.get("word") or not r.get("rank"):
                     continue
-                r["pos"] = POS_NORM.get((r.get("pos") or "").lower(), (r.get("pos") or "").lower())
-                r["pos_all"] = [POS_NORM.get(p, p) for p in (r.get("pos_all") or [r["pos"]]) if p]
-                r["slug"] = r.get("slug") or r["word"].lower()
-                r["difficulty"] = (r.get("difficulty") or "medium").lower()
+                self._normalize_rec(r)
                 words.append(r)
+            # тематический словарь IT / собеседования (отдельный файл)
+            dev_path = paths.DATA_DIR / "vocab_dev.json"
+            src = str(path)
+            if dev_path.exists():
+                try:
+                    dev = json.loads(dev_path.read_text(encoding="utf-8"))
+                    extra = dev.get("words", dev) if isinstance(dev, dict) else dev
+                    n_add = 0
+                    for r in extra:
+                        if not r.get("word") or not r.get("rank"):
+                            continue
+                        self._normalize_rec(r)
+                        r.setdefault("sets", ["dev-interview"])
+                        if "dev-interview" not in r["sets"]:
+                            r["sets"].append("dev-interview")
+                        words.append(r)
+                        n_add += 1
+                    if n_add:
+                        src = f"{path} + {dev_path.name} ({n_add})"
+                except Exception:
+                    pass
             words.sort(key=lambda w: w["rank"])
             with self._lock:
                 self.words = words
                 self.by_slug = {w["slug"]: w for w in words}
-                self.source = str(path)
+                self.source = src
                 self.ready = True
         except Exception as exc:  # noqa: BLE001
             self.error = f"{type(exc).__name__}: {exc}"
             self.ready = True
 
+    @staticmethod
+    def _normalize_rec(r: dict) -> None:
+        r["pos"] = POS_NORM.get((r.get("pos") or "").lower(), (r.get("pos") or "").lower())
+        r["pos_all"] = [POS_NORM.get(p, p) for p in (r.get("pos_all") or [r["pos"]]) if p]
+        r["slug"] = r.get("slug") or r["word"].lower()
+        r["difficulty"] = (r.get("difficulty") or "medium").lower()
+        if "sets" in r and not isinstance(r["sets"], list):
+            r["sets"] = list(r["sets"]) if r["sets"] else []
+
     # -- выборки -------------------------------------------------------------
     def in_set(self, set_id: str) -> list[dict]:
+        if set_id in THEMATIC_SETS:
+            return [
+                w for w in self.words
+                if set_id in (w.get("sets") or []) or w.get("level") == set_id
+            ]
         lim = SET_LIMIT.get(set_id, 1000)
         out = []
         for w in self.words:
+            # тематические IT-слова (rank > 20k) не попадают в частотные наборы
+            if w["rank"] > 20000:
+                continue
             if w["rank"] > lim:
                 break
             out.append(w)

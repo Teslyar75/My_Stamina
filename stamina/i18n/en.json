@@ -604,7 +604,6 @@
  "СВЯЗЬ: ГОЛОС И МИКРОФОН": "COMMUNICATIONS: VOICE AND MICROPHONE",
  "СЕГОДНЯ": "TODAY",
  "СЕКТОР {0} · {1} · ЗВЁЗДНАЯ КАРТА": "SECTOR {0} · {1} · STAR MAP",
- "СЕКТОРЫ · НАБОРЫ СЛОВ ПО ЧАСТОТЕ": "SECTORS · WORDBOXES BY FREQUENCY",
  "СЕРИЯ": "STREAK",
  "СЕРИЯ / ЛУЧШАЯ": "STREAK / BEST",
  "СЕРИЯ · 14 ДНЕЙ": "STREAK · 14 DAYS",
@@ -1094,5 +1093,7 @@
  "🔊 ОБРАЗЕЦ": "🔊 MODEL",
  "🔊 ТЕСТ": "🔊 TEST",
  "🔒 КОД": "🔒 CODE",
- "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED"
+ "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
+ "СОБЕСЕДОВАНИЕ": "INTERVIEW",
+ "СЕКТОРЫ · НАБОРЫ СЛОВ": "SECTORS · WORD SETS"
 }

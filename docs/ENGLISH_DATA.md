@@ -4,12 +4,15 @@
 
 ## Наборы
 
-| Набор | Ранги | Название |
+| Набор | Ранги / отбор | Название |
 |---|---|---|
 | `top-1000` | 1–1000 | Essential 1000 |
 | `top-3000` | 1–3000 | Core 3000 |
 | `top-10000` | 1–10 000 | Advanced 10 000 |
 | `top-20000` | 1–20 000 | Master 20 000 |
+| `dev-interview` | тематический (`sets`), файл `vocab_dev.json` | IT Interview (S-DEV) — английский для IT-собеседований |
+
+Тематический набор `dev-interview` не входит в частотные top-* по `rank`. Сборка: `python scripts/build_dev_vocab.py` (источник CodersLingo, CC BY 4.0).
 
 ## Поля записи
 
@@ -60,5 +63,6 @@ interface VocabRecord {
 | [FrequencyWords](https://github.com/hermitdave/FrequencyWords) | частоты русских слов для выбора перевода | CC BY-SA 4.0 |
 | [opus-mt-en-ru](https://huggingface.co/Helsinki-NLP/opus-mt-en-ru) | машинный перевод (часть `ru`, переводы сгенерированных примеров) | модель Apache 2.0 |
 | [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) | генерация простых примеров | модель Apache 2.0 |
+| [CodersLingo](https://coderslingo.com/glossary/) (JSON-дамп) | IT-термины для набора `dev-interview` (`vocab_dev.json`) | CC BY 4.0 |
 
-Так как в словаре есть данные Викисловаря и wordfreq (CC BY-SA 4.0), файл `vocab.json` распространяется на условиях **CC BY-SA 4.0** с указанием источников выше.
+Так как в словаре есть данные Викисловаря и wordfreq (CC BY-SA 4.0), файл `vocab.json` распространяется на условиях **CC BY-SA 4.0** с указанием источников выше. Файл `vocab_dev.json` — адаптация датасета CodersLingo (**CC BY 4.0**); при распространении указывайте CodersLingo.

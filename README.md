@@ -226,7 +226,7 @@ Star Typing — настольная программа на Python (tkinter) в
 Тренажёр английских слов прямо на борту — в том же стиле пульта, с теми же званиями и XP.
 Работает без интернета, без регистрации и без платных сервисов.
 
-- **20 000 слов** по частотности, четыре набора: Essential 1000, Core 3000, Advanced 10 000, Master 20 000.
+- **20 000 слов** по частотности (Essential 1000, Core 3000, Advanced 10 000, Master 20 000) плюс набор **IT Interview (S-DEV)** — ~580 IT-терминов для собеседований по программированию.
 - **Карточка слова (СКАНЕР):** определение, IPA, слоги и ударение, подсказки по трудным звукам,
   русский перевод (поле «МОЙ ПЕРЕВОД» заполнено заранее, свой вариант главнее), примеры
   предложений с переводом, озвучка обычной и медленной скоростью (голос Windows).
@@ -253,6 +253,23 @@ Star Typing — настольная программа на Python (tkinter) в
 | **Склад: отработано** | |
 | ![Склад отработано](screenshots/english/warehouse/03_done.png) | |
 
+### IT Interview (S-DEV) — собеседования по программированию
+
+Тематический набор (~580 IT-терминов) для подготовки к coding / IT interviews на английском.  
+Подробное описание: [docs/IT_INTERVIEW.md](docs/IT_INTERVIEW.md).
+
+| Обзор: сектор S-DEV | Звёздные карты: IT Interview |
+| --- | --- |
+| ![Обзор S-DEV](screenshots/english/it-interview/01_overview_sdev.png) | ![Звёздные карты S-DEV](screenshots/english/it-interview/02_starmaps_sdev.png) |
+
+**Как пользоваться:**
+
+1. Вкладка **Английский** → **Звёздные карты** → кнопка **S-DEV** (или в **Настройках** → текущий набор).
+2. Учите слова в **Сканере**, говорите в микрофон, затем гоняйте их на **Складе карточек** (RU → EN вслух).
+3. Миссии и «слово дня» тоже берутся из выбранного набора.
+
+В наборе: glossary, paradigms, design patterns, git, SQL, Docker/K8s, observability и др. Источник — [CodersLingo](https://coderslingo.com/glossary/) (CC BY 4.0).
+
 ### Наборы слов: объём и примеры
 
 Посчитано по `stamina/english/data/vocab.json`. Наборы вложены: Core 3000 включает Essential 1000 и т. д.
@@ -264,6 +281,8 @@ Star Typing — настольная программа на Python (tkinter) в
 | Advanced 10 000 | 10 000 | 7 000 | 24 138 | 24 138 | 38 731 | B2–C1 |
 | Master 20 000 | 20 000 | 10 000 | 15 236 | 15 233 | 53 967 | C2 / почти как носитель (пассивно) |
 | **Итого** | **20 000** | **20 000** | **53 967** | **53 964** | **53 967** | |
+
+Дополнительно: набор **IT Interview (S-DEV)** — отдельный файл `stamina/english/data/vocab_dev.json` (~580 терминов). Не входит в частотные top-* по рангу. Сборка: `scripts/build_dev_vocab.py`.
 
 Хотя бы один пример есть у 19 935 слов из 20 000. Соответствие CEFR примерное: это часто приводимые оценки по объёму словаря, а уровень зависит не только от количества слов (ещё грамматика, аудирование, речь, письмо).
 
@@ -566,8 +585,9 @@ stamina/                пакет программы (имя прежнее, ч
   english_hook.py       подключение вкладки «АНГЛИЙСКИЙ»
   english/              вкладка «АНГЛИЙСКИЙ»: экраны, словарь, прогресс, озвучка, распознавание речи
     data/vocab.json     словарь 20 000 слов (открытые источники, CC BY-SA 4.0)
+    data/vocab_dev.json IT Interview (~580 терминов, CodersLingo CC BY 4.0)
 docs/                   ENGLISH_TAB.md, ENGLISH_DESIGN.md, ENGLISH_DATA.md
-scripts/                download_vosk_model.py / .ps1 — скачать модель распознавания речи
+scripts/                download_vosk_model.py / .ps1; build_dev_vocab.py — IT-словарь
 tools/vocab_builder/    скрипты сборки словаря из открытых источников (для приложения не нужны)
 models/                 (не в git) модель Vosk
 tests/                  тесты адаптации, логики набора, миссий и переводчика
@@ -596,11 +616,13 @@ tests/                  тесты адаптации, логики набора
 | Частоты русских слов (выбор перевода) | [FrequencyWords](https://github.com/hermitdave/FrequencyWords) | CC BY-SA 4.0 |
 | Машинный перевод части слов и сгенерированных примеров | [Helsinki-NLP opus-mt-en-ru](https://huggingface.co/Helsinki-NLP/opus-mt-en-ru) | Apache 2.0 |
 | Генерация простых примеров (где нет Tatoeba) | [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) | Apache 2.0 |
+| IT-термины для набора S-DEV (`vocab_dev.json`) | [CodersLingo](https://coderslingo.com/glossary/) | CC BY 4.0 |
 | Распознавание речи (скачивается отдельно) | [Vosk](https://alphacephei.com/vosk/models) `vosk-model-small-en-us-0.15` | Apache 2.0 |
 
 Файл словаря `stamina/english/data/vocab.json` распространяется на условиях **CC BY-SA 4.0**
 (из-за данных Викисловаря и wordfreq). Предложения Tatoeba — CC BY 2.0 FR, номер предложения
 хранится в поле `tatoeba_id` (страница `https://tatoeba.org/sentences/show/<id>`).
+`vocab_dev.json` — адаптация CodersLingo (**CC BY 4.0**).
 
 ## История изменений
 Что нового в версии 3.0 «Пульт пилота», что удалено и почему, смотрите в [CHANGELOG.md](CHANGELOG.md).
