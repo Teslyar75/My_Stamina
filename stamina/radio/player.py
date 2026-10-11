@@ -16,11 +16,64 @@ from pathlib import Path
 from typing import Callable
 
 
+def _known_mpv_paths() -> list[Path]:
+    """Типичные места установки mpv на Windows (winget shinchiro.mpv и т.п.)."""
+    out: list[Path] = []
+    env = os.environ.get("MPV_PATH") or os.environ.get("STAMINA_MPV")
+    if env:
+        out.append(Path(env))
+    if sys.platform == "win32":
+        pf = os.environ.get("ProgramFiles", r"C:\Program Files")
+        pf86 = os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")
+        local = os.environ.get("LOCALAPPDATA", "")
+        home = Path.home()
+        candidates = [
+            Path(pf) / "MPV Player" / "mpv.exe",
+            Path(pf) / "mpv" / "mpv.exe",
+            Path(pf86) / "MPV Player" / "mpv.exe",
+            Path(pf86) / "mpv" / "mpv.exe",
+            Path(local) / "Programs" / "mpv" / "mpv.exe" if local else None,
+            home / "scoop" / "apps" / "mpv" / "current" / "mpv.exe",
+            Path(r"C:\mpv\mpv.exe"),
+        ]
+        out.extend(p for p in candidates if p is not None)
+    return out
+
+
+def resolve_mpv() -> str | None:
+    """Путь к mpv: PATH или известные каталоги установки."""
+    which = shutil.which("mpv")
+    if which:
+        return which
+    for p in _known_mpv_paths():
+        try:
+            if p.is_file():
+                return str(p)
+        except OSError:
+            continue
+    return None
+
+
+def resolve_ffplay() -> str | None:
+    return shutil.which("ffplay")
+
+
 def backend_name() -> str | None:
-    if shutil.which("mpv"):
+    if resolve_mpv():
         return "mpv"
-    if shutil.which("ffplay"):
+    if resolve_ffplay():
         return "ffplay"
+    return None
+
+
+def backend_cmd() -> list[str] | None:
+    """Команда запуска: ['mpv', ...] или полный путь."""
+    mpv = resolve_mpv()
+    if mpv:
+        return [mpv]
+    ff = resolve_ffplay()
+    if ff:
+        return [ff]
     return None
 
 
@@ -163,10 +216,13 @@ class StreamPlayer:
                     pass
         except OSError:
             pass
+        mpv = resolve_mpv()
+        if not mpv:
+            return False
         ipc = str(sock) if sys.platform != "win32" else r"\\.\pipe\stamina-radio-" + str(os.getpid())
         flags = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
         cmd = [
-            "mpv", "--no-video", "--quiet", "--no-terminal",
+            mpv, "--no-video", "--quiet", "--no-terminal",
             f"--volume={self._volume}",
             f"--input-ipc-server={ipc}",
             "--idle=yes",
@@ -250,10 +306,13 @@ class StreamPlayer:
 
     # ------------------------------------------------------------------ ffplay
     def _play_ffplay(self, url: str) -> bool:
+        ff = resolve_ffplay()
+        if not ff:
+            return False
         flags = getattr(subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
         # volume у ffplay: -volume 0..100
         cmd = [
-            "ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet",
+            ff, "-nodisp", "-autoexit", "-loglevel", "quiet",
             "-volume", str(self._volume), url,
         ]
         try:

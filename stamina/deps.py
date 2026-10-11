@@ -111,7 +111,7 @@ def check(system: str | None = None) -> list[dict]:
         {"key": "mpv", "name": "mpv / ffplay", "ok": bool(shutil.which("mpv") or shutil.which("ffplay")),
          "need": t("необязательно"), "what": t("РАДИОРУБКА — онлайн-радио"),
          "pip": [], "sys": [],
-         "how": ("winget install mpv" if system == "windows"
+         "how": ("winget install shinchiro.mpv" if system == "windows"
                  else (f"{INSTALL_CMD.get(pm or '', 'sudo apt install -y')} mpv" if pm
                        else "sudo apt install mpv"))},
     ]

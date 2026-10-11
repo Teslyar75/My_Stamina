@@ -1203,7 +1203,6 @@
  "Станции не найдены": "Keine Sender gefunden",
  "МОИ ВОЛНЫ обновлены": "Favoriten aktualisiert",
  "Установите mpv (или ffplay) для приёма эфира": "mpv (oder ffplay) für Radio installieren",
- "Нужен mpv: winget install mpv / sudo apt install mpv": "mpv nötig: winget install mpv / sudo apt install mpv",
  "В ЭФИРЕ · {0}": "ON AIR · {0}",
  "Не удалось открыть поток": "Stream konnte nicht geöffnet werden",
  "Нет станции": "Kein Sender",
@@ -1219,5 +1218,6 @@
  "приёмник: {0}": "Empfänger: {0}",
  "нет mpv/ffplay — установите mpv для эфира": "kein mpv/ffplay — mpv installieren",
  "РАДИОРУБКА — онлайн-радио": "FUNKRAUM — Online-Radio",
- "РАДИО": "RADIO"
+ "РАДИО": "RADIO",
+ "Нужен mpv: winget install shinchiro.mpv / sudo apt install mpv": "mpv nötig: winget install shinchiro.mpv / sudo apt install mpv"
 }

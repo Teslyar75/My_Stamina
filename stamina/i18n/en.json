@@ -1217,7 +1217,6 @@
  "Станции не найдены": "No stations found",
  "МОИ ВОЛНЫ обновлены": "Favorites updated",
  "Установите mpv (или ffplay) для приёма эфира": "Install mpv (or ffplay) to receive audio",
- "Нужен mpv: winget install mpv / sudo apt install mpv": "Need mpv: winget install mpv / sudo apt install mpv",
  "В ЭФИРЕ · {0}": "ON AIR · {0}",
  "Не удалось открыть поток": "Could not open stream",
  "Нет станции": "No station",
@@ -1233,5 +1232,6 @@
  "приёмник: {0}": "receiver: {0}",
  "нет mpv/ffplay — установите mpv для эфира": "no mpv/ffplay — install mpv for radio",
  "РАДИОРУБКА — онлайн-радио": "RADIO ROOM — online radio",
- "РАДИО": "RADIO"
+ "РАДИО": "RADIO",
+ "Нужен mpv: winget install shinchiro.mpv / sudo apt install mpv": "Need mpv: winget install shinchiro.mpv / sudo apt install mpv"
 }

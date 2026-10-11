@@ -311,7 +311,7 @@ class RadioScreen(tk.Frame):
         if not backend_ok():
             self.app.set_status(_t("Установите mpv (или ffplay) для приёма эфира"), AMBER)
             self.lbl_status.configure(
-                text=_t("Нужен mpv: winget install mpv / sudo apt install mpv"), fg=AMBER)
+                text=_t("Нужен mpv: winget install shinchiro.mpv / sudo apt install mpv"), fg=AMBER)
             return
         ok = self.eng.play_station(st)
         if ok:
