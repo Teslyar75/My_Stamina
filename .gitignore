@@ -1,3 +1,8 @@
+# Веб-версия — отдельный репозиторий (локальный клон с собственным .git)
+# https://github.com/Teslyar75/Wed_Star_Typing_Version
+web_star_typing/
+
+
 # Python
 __pycache__/
 *.py[cod]
@@ -52,3 +57,5 @@ pilots.json
 app.json
 /pilots/
 .first_run_done
+
+docs/skins/refs/
