@@ -307,6 +307,19 @@ class LivingSpace:
         self.warp = 1.0
         self._job = None
         self.stats = {"frames": 0, "render_ms": 0.0, "glass_paints": 0, "t0": time.monotonic()}
+        self._skin_key = None  # (theme_id, engine) — пересоздать сцену при смене скина
+        try:
+            from stamina import theme as th
+            th.on_change(self._on_theme)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _on_theme(self, _data: dict) -> None:
+        """Смена скина → новая сцена фона без перезапуска."""
+        self.scene = None
+        self._skin_key = None
+        self._photos.clear()
+        self._fs = None
 
     def key(self) -> None:
         """Нажатие клавиши: пока печатают, резкое окно обновляется вдвое реже."""
@@ -436,8 +449,23 @@ class LivingSpace:
         w, h = self.host.winfo_width(), self.host.winfo_height()
         if w < 100 or h < 100:
             return False
-        if self.scene is None or (self.scene.w, self.scene.h) != (w, h):
-            self.scene = Scene(w, h, self.mode)
+        try:
+            from stamina.backgrounds import engine_for_theme, make_scene
+            skin_key = (_theme.theme_id(), engine_for_theme())
+        except Exception:  # noqa: BLE001
+            skin_key = ("spaceship", "living_space")
+        need = (
+            self.scene is None
+            or (self.scene.w, self.scene.h) != (w, h)
+            or self._skin_key != skin_key
+        )
+        if need:
+            try:
+                from stamina.backgrounds import make_scene
+                self.scene = make_scene(w, h, self.mode)
+            except Exception:  # noqa: BLE001
+                self.scene = Scene(w, h, self.mode)
+            self._skin_key = skin_key
             self._photos.clear()
             self._fs = None
             self.scan()

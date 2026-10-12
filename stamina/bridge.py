@@ -295,8 +295,22 @@ class Bridge(tk.Frame):
         ok = res != ERROR
         self.app.store.record_key(expected, ok)
         self._radio_duck_typing()
+        live = getattr(self.app, "living", None)
+        if live is not None:
+            live.key()
         if ok:
             self.app.sound.click()
+            if live is not None:
+                sc = getattr(live, "scene", None)
+                if sc is not None and hasattr(sc, "ping"):
+                    try:
+                        sc.ping()  # эхо сонара (Батискаф)
+                    except Exception:  # noqa: BLE001
+                        pass
+                try:
+                    live.warp = min(2.5, max(0.6, eng.instant_cpm() / 180.0))
+                except Exception:  # noqa: BLE001
+                    pass
         else:
             self.app.sound.error()
             hint = ""
