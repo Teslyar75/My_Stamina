@@ -5,12 +5,12 @@
 | Артеfact | Путь |
 | --- | --- |
 | Спека и промпты | этот файл (`docs/skins/SKINS.md`) |
-| JSON тем (канон для web + sync в desktop) | `web_star_typing/packages/themes/<id>.json` |
-| Картинки | `docs/skins/images/<id>/` |
-| Десктоп (после S1) | `stamina/themes/<id>.json` — копия или symlink на `packages/themes` |
-| Веб | CSS-переменные через `frontend/src/theme/applyTheme.ts` |
+| JSON тем (канон для web + sync в desktop) | веб-репо `packages/themes/<id>.json` |
+| Картинки | `docs/skins/images/<id>/` (и копия в веб-репо) |
+| Десктоп (после S1) | `stamina/themes/<id>.json` |
+| Веб | [Wed_Star_Typing_Version](https://github.com/Teslyar75/Wed_Star_Typing_Version) — CSS через `applyTheme.ts` |
 
-План веб-версии и узкие места (2 языка, сегментация): [docs/web/WEB_PLAN.md](../web/WEB_PLAN.md).
+План веба: [docs/web/WEB_PLAN.md](../web/WEB_PLAN.md) · репозиторий: [Wed_Star_Typing_Version](https://github.com/Teslyar75/Wed_Star_Typing_Version).
 
 ## 1. Движок тем (десктоп)
 Сейчас цвета (`AMBER`, `GREEN` и др.), шрифты и рамки заданы константами в модулях (`hud.py`, `cockpit.py`, `english/ui.py`, `speedread/ui.py`), фон — `living_space.py`.
