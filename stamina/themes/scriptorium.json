@@ -1,0 +1,30 @@
+{
+  "id": "scriptorium",
+  "name": { "ru": "Скрипторий", "uk": "Скрипторій", "en": "Scriptorium", "de": "Skriptorium" },
+  "colors": {
+    "bg": "#2a1d12",
+    "bg2": "#352618",
+    "panel": "#efe0bd",
+    "panel_hi": "#f5ebd0",
+    "line": "#7a5230",
+    "line_hi": "#9a6a40",
+    "cyan": "#7a5230",
+    "cyan_dim": "#5a3a20",
+    "cyan_deep": "#3a2410",
+    "accent": "#9c1f1f",
+    "accent_dim": "#5a1010",
+    "error": "#8b1a1a",
+    "error_dim": "#4a1010",
+    "ok": "#3f6b2a",
+    "ok_dim": "#204018",
+    "purple": "#6b4050",
+    "text": "#2b1a0e",
+    "muted": "#6b5040",
+    "faint": "#a09070"
+  },
+  "fonts": { "ui": ["Georgia", "EB Garamond", "Segoe UI"], "title": ["Georgia", "Cormorant Garamond"], "typing": ["Georgia", "Times New Roman"] },
+  "frame": { "style": "scroll", "radius": 2, "border": 2, "corner_cuts": false },
+  "background": { "engine": "candles", "params": {} },
+  "assets": { "images": "docs/skins/images/scriptorium", "icon": "docs/skins/images/scriptorium/icon1.jpg" },
+  "ranks": ["Послушник", "Переписчик", "Книжник", "Хранитель", "Архивариус"]
+}

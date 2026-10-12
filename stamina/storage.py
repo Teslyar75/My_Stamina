@@ -37,6 +37,7 @@ DEFAULT_SETTINGS = {
     "cargo_opts": {"lower": True, "punct": True, "spaces": True},
     "geometry": "",
     "living_space": "light",  # «Живой космос» во всех разделах: off | light | full
+    "skin": "spaceship",  # скин UI: stamina/themes/<id>.json
 }
 
 MAX_RUNS = 500

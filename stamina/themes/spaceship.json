@@ -1,0 +1,42 @@
+{
+  "id": "spaceship",
+  "name": { "ru": "Звездолёт", "uk": "Зореліт", "en": "Starship", "de": "Raumschiff" },
+  "colors": {
+    "bg": "#03060C",
+    "bg2": "#060C17",
+    "panel": "#081221",
+    "panel_hi": "#0D1C33",
+    "line": "#15314D",
+    "line_hi": "#1F4F7A",
+    "cyan": "#00E5FF",
+    "cyan_dim": "#0B7285",
+    "cyan_deep": "#06303B",
+    "accent": "#FFB000",
+    "accent_dim": "#7A5300",
+    "error": "#FF3B5C",
+    "error_dim": "#5E1426",
+    "ok": "#3DFF8A",
+    "ok_dim": "#155E36",
+    "purple": "#B76BFF",
+    "text": "#D6F4FF",
+    "muted": "#6F90AB",
+    "faint": "#2B4762",
+    "zone_pinky": "#FF4FA3",
+    "zone_ring": "#FFD84A",
+    "zone_middle": "#4CFF8F",
+    "zone_l_index": "#2ED8FF",
+    "zone_r_index": "#B76BFF",
+    "zone_thumb": "#8FA6BF",
+    "zone_mod": "#4A6580"
+  },
+  "fonts": {
+    "ui": ["Bahnschrift", "Segoe UI"],
+    "title": ["Bahnschrift", "Segoe UI"],
+    "typing": ["Cascadia Mono", "Consolas"]
+  },
+  "frame": { "style": "neon", "radius": 6, "border": 2, "corner_cuts": true },
+  "button": { "shape": "bevel", "pad": [10, 4] },
+  "background": { "engine": "living_space", "params": {} },
+  "assets": { "images": "docs/skins/images/spaceship", "icon": "docs/skins/images/spaceship/icon1.jpg" },
+  "ranks": ["Кадет", "Пилот-стажёр", "Мичман", "Лейтенант", "Капитан-лейтенант", "Капитан", "Коммодор", "Адмирал флота"]
+}

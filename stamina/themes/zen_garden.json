@@ -1,0 +1,30 @@
+{
+  "id": "zen_garden",
+  "name": { "ru": "Сад дзен", "uk": "Сад дзен", "en": "Zen Garden", "de": "Zen-Garten" },
+  "colors": {
+    "bg": "#f4efe6",
+    "bg2": "#ebe4d8",
+    "panel": "#ffffff",
+    "panel_hi": "#f8f5f0",
+    "line": "#3b3b3b",
+    "line_hi": "#5a5a5a",
+    "cyan": "#5b7f4a",
+    "cyan_dim": "#3a5530",
+    "cyan_deep": "#2a3a20",
+    "accent": "#c0392b",
+    "accent_dim": "#702018",
+    "error": "#c0392b",
+    "error_dim": "#702018",
+    "ok": "#5b7f4a",
+    "ok_dim": "#3a5530",
+    "purple": "#6b6070",
+    "text": "#2b2b2b",
+    "muted": "#6b6b6b",
+    "faint": "#b0a898"
+  },
+  "fonts": { "ui": ["Segoe UI", "Noto Serif JP"], "title": ["Segoe UI", "Noto Serif JP"], "typing": ["Segoe UI", "Consolas"] },
+  "frame": { "style": "minimal", "radius": 8, "border": 1, "corner_cuts": false },
+  "background": { "engine": "zen", "params": {} },
+  "assets": { "images": "docs/skins/images/zen_garden", "icon": "docs/skins/images/zen_garden/icon1.jpg" },
+  "ranks": ["Ученик", "Садовник", "Мастер", "Сэнсэй", "Просветлённый"]
+}

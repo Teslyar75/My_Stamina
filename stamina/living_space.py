@@ -29,7 +29,8 @@ try:
 except ImportError:  # без Pillow режим недоступен, всё работает как раньше
     Image = None
 
-from stamina.theme import BG, CYAN, PANEL
+from stamina import theme as _theme
+from stamina.theme import BG, CYAN, PANEL  # совместимость; в горячих местах — _theme.BG
 
 MODES = ("off", "light", "full")
 MODE_TITLES = {"off": _t("ВЫКЛ"), "light": _t("ЛЁГКИЙ"), "full": _t("ПОЛНЫЙ")}
@@ -97,14 +98,14 @@ class Scene:
 
     # -- заготовки
     def _base(self):
-        small = Image.new("RGB", (max(8, self.w // 8), max(8, self.h // 8)), _rgb(BG))
+        small = Image.new("RGB", (max(8, self.w // 8), max(8, self.h // 8)), _rgb(_theme.BG))
         d = ImageDraw.Draw(small)
         sw, sh = small.size
         for (fx, fy, fr, col) in ((0.3, 0.35, 0.45, (20, 40, 80)), (0.75, 0.7, 0.35, (45, 20, 60))):
             for k in range(6, 0, -1):
                 rr = fr * sw * k / 6
                 a = (7 - k) / 7
-                c = tuple(int(_rgb(BG)[j] + (col[j] - _rgb(BG)[j]) * a * 0.5) for j in range(3))
+                c = tuple(int(_rgb(_theme.BG)[j] + (col[j] - _rgb(_theme.BG)[j]) * a * 0.5) for j in range(3))
                 d.ellipse((fx * sw - rr, fy * sh - rr * 0.6, fx * sw + rr, fy * sh + rr * 0.6), fill=c)
         return small.filter(ImageFilter.GaussianBlur(3)).resize((self.w, self.h), Image.BILINEAR)
 
@@ -235,7 +236,7 @@ class Scene:
         """Стекло в 1/FS размера: кэш статичного стекла + размытые пятна комет и астероидов (без пересчёта блюра)."""
         fs = self.frost_static().copy()
         d = ImageDraw.Draw(fs)
-        tint = _rgb(PANEL)
+        tint = _rgb(_theme.PANEL)
         mix = lambda c, a: tuple(int(tint[j] + (c[j] - tint[j]) * a) for j in range(3))  # noqa: E731
         for x, y, _sp, _dr, tail in self.comets:
             hx, hy = x / FS, y / FS
@@ -340,7 +341,7 @@ class LivingSpace:
             return
         bg = self._bgs.get(str(screen))
         if bg is None or not bg.winfo_exists():
-            bg = tk.Canvas(screen, highlightthickness=0, bd=0, bg=BG)
+            bg = tk.Canvas(screen, highlightthickness=0, bd=0, bg=_theme.BG)
             bg.living_gap = True
             self._bgs[str(screen)] = bg
         bg.place(x=0, y=0, relwidth=1, relheight=1)

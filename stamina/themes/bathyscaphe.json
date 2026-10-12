@@ -1,0 +1,30 @@
+{
+  "id": "bathyscaphe",
+  "name": { "ru": "Батискаф", "uk": "Батискаф", "en": "Bathyscaphe", "de": "Tauchboot" },
+  "colors": {
+    "bg": "#021219",
+    "bg2": "#031820",
+    "panel": "#06303a",
+    "panel_hi": "#0a4550",
+    "line": "#2ee6c5",
+    "line_hi": "#5af0d5",
+    "cyan": "#2ee6c5",
+    "cyan_dim": "#0a6b5c",
+    "cyan_deep": "#043a35",
+    "accent": "#ffcf4a",
+    "accent_dim": "#7a6200",
+    "error": "#ff5a4e",
+    "error_dim": "#6e2018",
+    "ok": "#5dffb0",
+    "ok_dim": "#1a5e45",
+    "purple": "#6bb8ff",
+    "text": "#bff7ee",
+    "muted": "#5a9090",
+    "faint": "#2a5050"
+  },
+  "fonts": { "ui": ["Share Tech Mono", "Consolas", "Segoe UI"], "title": ["Exo 2", "Segoe UI"], "typing": ["Share Tech Mono", "Consolas"] },
+  "frame": { "style": "porthole", "radius": 12, "border": 2, "corner_cuts": false },
+  "background": { "engine": "sonar", "params": {} },
+  "assets": { "images": "docs/skins/images/bathyscaphe", "icon": "docs/skins/images/bathyscaphe/icon1.jpg" },
+  "ranks": ["Юнга", "Акустик", "Штурман", "Старпом", "Командир глубин"]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "neon_city",
+  "name": { "ru": "Неон-Сити", "uk": "Неон-Сіті", "en": "Neon City", "de": "Neon-Stadt" },
+  "colors": {
+    "bg": "#0a0612",
+    "bg2": "#120a1c",
+    "panel": "#170c26",
+    "panel_hi": "#241438",
+    "line": "#ff2bd6",
+    "line_hi": "#ff6ae0",
+    "cyan": "#00f0ff",
+    "cyan_dim": "#0a7080",
+    "cyan_deep": "#053040",
+    "accent": "#faff00",
+    "accent_dim": "#808000",
+    "error": "#ff3355",
+    "error_dim": "#6e1528",
+    "ok": "#39ff88",
+    "ok_dim": "#155e36",
+    "purple": "#ff2bd6",
+    "text": "#e6e0ff",
+    "muted": "#8a7aa0",
+    "faint": "#3a3050"
+  },
+  "fonts": { "ui": ["Rajdhani", "Segoe UI"], "title": ["Orbitron", "Segoe UI"], "typing": ["Consolas", "Cascadia Mono"] },
+  "frame": { "style": "cyber", "radius": 0, "border": 2, "corner_cuts": true },
+  "background": { "engine": "city_rain", "params": {} },
+  "assets": { "images": "docs/skins/images/neon_city", "icon": "docs/skins/images/neon_city/icon1.jpg" },
+  "ranks": ["Раннер", "Хакер", "Нетраннер", "Фиксер", "Легенда сети"]
+}

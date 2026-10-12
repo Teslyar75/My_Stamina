@@ -32,6 +32,7 @@ class Cockpit(tk.Tk):
         self.store = Store()
         st = self.store.settings
         theme.set_ui_scale(st.get("ui_scale", "M"))
+        theme.load_theme(st.get("skin", "spaceship"), apply_ui=False, root=self)
         self.sound = SoundBoard(bool(st["sound"]), int(st.get("volume", 3)))
         self.translator = None
         self.current: str | None = None
@@ -502,6 +503,13 @@ class Cockpit(tk.Tk):
     def apply_settings(self) -> None:
         st = self.store.settings
         theme.set_ui_scale(st.get("ui_scale", "M"))
+        skin = st.get("skin", "spaceship")
+        if theme.theme_id() != skin:
+            theme.load_theme(skin, apply_ui=True, root=self)
+            try:
+                self.configure(bg=theme.BG)
+            except tk.TclError:
+                pass
         self.sound.enabled = bool(st["sound"])
         self.sound.volume = int(st.get("volume", 3))
         self._update_sound_button()
@@ -513,6 +521,9 @@ class Cockpit(tk.Tk):
             app = pilots.load_app()
             if app.get("living_space") != mode:
                 app["living_space"] = mode
+                pilots.save_app(app)
+            if app.get("skin") != skin:
+                app["skin"] = skin
                 pilots.save_app(app)
         except Exception:  # noqa: BLE001
             pass

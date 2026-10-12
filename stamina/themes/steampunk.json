@@ -1,0 +1,30 @@
+{
+  "id": "steampunk",
+  "name": { "ru": "Стимпанк-мастерская", "uk": "Стимпанк", "en": "Steampunk Workshop", "de": "Steampunk-Werkstatt" },
+  "colors": {
+    "bg": "#1b120b",
+    "bg2": "#24180f",
+    "panel": "#3a2616",
+    "panel_hi": "#4a3220",
+    "line": "#c8963e",
+    "line_hi": "#e0b060",
+    "cyan": "#c8963e",
+    "cyan_dim": "#6a4a1e",
+    "cyan_deep": "#3a2810",
+    "accent": "#e0a83b",
+    "accent_dim": "#7a5810",
+    "error": "#b23a2a",
+    "error_dim": "#5e1e16",
+    "ok": "#7fb069",
+    "ok_dim": "#3a5530",
+    "purple": "#a07050",
+    "text": "#f3e2c3",
+    "muted": "#a08060",
+    "faint": "#5a4030"
+  },
+  "fonts": { "ui": ["Georgia", "Segoe UI"], "title": ["IM Fell English", "Georgia"], "typing": ["Courier New", "Consolas"] },
+  "frame": { "style": "brass", "radius": 4, "border": 3, "corner_cuts": false },
+  "background": { "engine": "gears", "params": {} },
+  "assets": { "images": "docs/skins/images/steampunk", "icon": "docs/skins/images/steampunk/icon1.jpg" },
+  "ranks": ["Подмастерье", "Механик", "Мастер", "Инженер", "Великий изобретатель"]
+}

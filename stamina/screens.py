@@ -668,6 +668,14 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(3))
             self.up_btns[code] = b
         self._toggle_row("stars", _t("Звёздное поле"), _t("Звёзды в иллюминаторе летят быстрее, когда вы печатаете быстрее. Выключите, если ноутбук греется."))
+        sk = self._row(_t("Скин пульта"), _t("Оформление всего корабля: цвета, рамки, настроение. Тот же выбор — на экране «ВХОД В КАБИНУ». Сохраняется у пилота."))
+        self.skin_btns: dict[str, HudButton] = {}
+        for tmeta in theme.list_themes():
+            tid = tmeta["id"]
+            label = theme.theme_display_name(tmeta["data"])
+            b = HudButton(sk, label, lambda k=tid: self._set_skin(k), height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
+            self.skin_btns[tid] = b
         ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
         for key, name in (("off", _t("ВЫКЛ")), ("light", _t("ЛЁГКИЙ")), ("full", _t("ПОЛНЫЙ"))):
@@ -738,6 +746,13 @@ class SettingsScreen(tk.Frame):
         for k, b in self.ls_btns.items():
             b.set_active(k == key)
 
+    def _set_skin(self, key: str) -> None:
+        self.app.store.settings["skin"] = key
+        self.app.apply_settings()
+        self.refresh()
+        for k, b in getattr(self, "skin_btns", {}).items():
+            b.set_active(k == key)
+
     def _set_uplink(self, code: str) -> None:
         self.app.store.settings["uplink_target"] = code
         self.app.store.save_settings()
@@ -804,6 +819,8 @@ class SettingsScreen(tk.Frame):
             b.set_active(st.get("volume") == lvl)
         for k, b in getattr(self, "ls_btns", {}).items():
             b.set_active(k == st.get("living_space", "light"))
+        for k, b in getattr(self, "skin_btns", {}).items():
+            b.set_active(k == st.get("skin", "spaceship"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
         for k, b in getattr(self, "ui_btns", {}).items():

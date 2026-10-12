@@ -664,6 +664,21 @@ class LoginScreen(tk.Frame):
         L(self, tr_("ВЫБЕРИТЕ ПИЛОТА"), fg=AMBER, size=12, bold=True, bg=BG).pack(anchor="w", padx=px(20))
         L(self, tr_("← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · Del — списать"),
           fg=MUTED, size=8, bg=BG).pack(anchor="w", padx=px(20))
+        # Скины (S0): предпросмотр окна + сохранение в профиль при входе
+        skin_bar = tk.Frame(self, bg=BG)
+        skin_bar.pack(fill=tk.X, padx=px(20), pady=(px(6), px(2)))
+        L(skin_bar, tr_("СКИН"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(8)))
+        self._skin_id = theme.theme_id()
+        self._skin_btns: dict[str, HudButton] = {}
+        for tmeta in theme.list_themes():
+            tid = tmeta["id"]
+            label = theme.theme_display_name(tmeta["data"])
+            b = HudButton(skin_bar, label, lambda k=tid: self._preview_skin(k),
+                          height=28, font_size=8, color=CYAN)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self._skin_btns[tid] = b
+        L(self, tr_("← → по пилотам · скин подхватывается из профиля; смена иконки — живой предпросмотр"),
+          fg=FAINT, size=7, bg=BG).pack(anchor="w", padx=px(20))
         wrap = tk.Frame(self, bg=BG)
         wrap.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
         self.canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0)
@@ -691,7 +706,34 @@ class LoginScreen(tk.Frame):
         HudButton(bottom, tr_("ВЫХОД  ESC"), self.on_exit, height=40, font_size=9).pack(side=tk.RIGHT, padx=px(8))
         self.cards: list = []
         self.refresh()
+        self._sync_skin_buttons()
         self._tick()
+
+    def _pilot_settings(self, pid: str) -> dict:
+        return pilots.read_json(pilots.pilot_dir(pid) / "settings.json") or {}
+
+    def _save_pilot_skin(self, pid: str, skin: str) -> None:
+        path = pilots.pilot_dir(pid) / "settings.json"
+        data = pilots.read_json(path) or {}
+        data["skin"] = skin
+        pilots.write_json(path, data)
+
+    def _preview_skin(self, tid: str, *, save_sel: bool = True) -> None:
+        """Живой предпросмотр скина на всём окне входа."""
+        if save_sel:
+            self._skin_id = tid
+        root = self.winfo_toplevel()
+        theme.load_theme(tid, apply_ui=True, root=root)
+        try:
+            root.configure(bg=theme.BG)
+            self.configure(bg=theme.BG)
+        except tk.TclError:
+            pass
+        self._sync_skin_buttons()
+
+    def _sync_skin_buttons(self) -> None:
+        for k, b in getattr(self, "_skin_btns", {}).items():
+            b.set_active(k == self._skin_id)
 
     def _tick(self) -> None:
         if self.winfo_exists():
@@ -712,7 +754,10 @@ class LoginScreen(tk.Frame):
         self.stats = {p["id"]: pilot_stats(p["id"]) for p in self.plist}
         n = len(self.plist)
         self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, 'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'))
+        if self.sel:
+            self._skin_id = self._pilot_settings(self.sel).get("skin") or "spaceship"
         self._layout()
+        self._preview_skin(self._skin_id, save_sel=False)
 
     def _layout(self) -> None:
         for w in self.inner.winfo_children():
@@ -733,7 +778,10 @@ class LoginScreen(tk.Frame):
 
     def select(self, pid: str) -> None:
         self.sel = pid
+        skin = (self._pilot_settings(pid).get("skin") if pid else None) or "spaceship"
+        self._skin_id = skin
         self._layout()
+        self._preview_skin(skin, save_sel=False)
 
     def move(self, d: int) -> None:
         ids = [p["id"] for p in self.plist]
@@ -751,6 +799,14 @@ class LoginScreen(tk.Frame):
             return
         if not ask_pin(self, p, tr_("ВХОД В КАБИНУ")):
             return
+        # сохранить выбранный скин в профиль пилота
+        try:
+            self._save_pilot_skin(p["id"], self._skin_id)
+            app = pilots.load_app()
+            app["skin"] = self._skin_id
+            pilots.save_app(app)
+        except Exception:  # noqa: BLE001
+            pass
         self.on_enter(p["id"])
 
     def add(self) -> None:

@@ -71,6 +71,12 @@ def choose_pilot(argv: list[str]) -> str | None:
     from stamina import __version__, pilot_pin, pilot_screens, theme
     root = tk.Tk()
     theme.init(root)
+    try:
+        from stamina import pilots as _pilots
+        skin = (_pilots.load_app() or {}).get("skin") or "spaceship"
+        theme.load_theme(skin, apply_ui=False, root=root)
+    except Exception:  # noqa: BLE001
+        theme.load_theme("spaceship", apply_ui=False, root=root)
     root.configure(bg=theme.BG)
     try:
         from pathlib import Path
