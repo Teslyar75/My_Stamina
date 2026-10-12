@@ -1,6 +1,11 @@
 {
   "id": "neon_city",
-  "name": { "ru": "Неон-Сити", "uk": "Неон-Сіті", "en": "Neon City", "de": "Neon-Stadt" },
+  "name": {
+    "ru": "Неон-Сити",
+    "uk": "Неон-Сіті",
+    "en": "Neon City",
+    "de": "Neon-Stadt"
+  },
   "colors": {
     "bg": "#0a0612",
     "bg2": "#120a1c",
@@ -22,9 +27,45 @@
     "muted": "#8a7aa0",
     "faint": "#3a3050"
   },
-  "fonts": { "ui": ["Rajdhani", "Segoe UI"], "title": ["Orbitron", "Segoe UI"], "typing": ["Consolas", "Cascadia Mono"] },
-  "frame": { "style": "cyber", "radius": 0, "border": 2, "corner_cuts": true },
-  "background": { "engine": "city_rain", "params": {} },
-  "assets": { "images": "docs/skins/images/neon_city", "icon": "docs/skins/images/neon_city/icon1.jpg" },
-  "ranks": ["Раннер", "Хакер", "Нетраннер", "Фиксер", "Легенда сети"]
+  "fonts": {
+    "ui": [
+      "Rajdhani",
+      "Segoe UI"
+    ],
+    "title": [
+      "Orbitron",
+      "Segoe UI"
+    ],
+    "typing": [
+      "Consolas",
+      "Cascadia Mono"
+    ]
+  },
+  "frame": {
+    "style": "cyber",
+    "radius": 0,
+    "border": 2,
+    "corner_cuts": true
+  },
+  "background": {
+    "engine": "city_rain",
+    "params": {}
+  },
+  "assets": {
+    "images": "docs/skins/images/neon_city",
+    "icon": "docs/skins/images/neon_city/icon1.jpg"
+  },
+  "ranks": [
+    "Раннер",
+    "Хакер",
+    "Нетраннер",
+    "Фиксер",
+    "Легенда сети"
+  ],
+  "sounds": {
+    "click": "sounds/skins/neon_city/click.wav",
+    "error": "sounds/skins/neon_city/error.wav",
+    "bell": "sounds/skins/neon_city/bell.wav",
+    "start": "sounds/skins/neon_city/start.wav"
+  }
 }

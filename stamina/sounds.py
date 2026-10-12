@@ -138,10 +138,41 @@ class SoundBoard:
             except OSError:
                 self.available = False
 
+    def _skin_path(self, logical: str) -> Path | None:
+        """Per-skin файл из theme.sounds (click/error/bell/start)."""
+        try:
+            from stamina import theme as th
+
+            pack = (th.current() or {}).get("sounds") or {}
+        except Exception:  # noqa: BLE001
+            return None
+        key = logical
+        if logical.startswith("click"):
+            key = "click"
+        rel = pack.get(key)
+        if not rel:
+            return None
+        # пути в JSON относительно пакета stamina/
+        root = Path(__file__).resolve().parent
+        cand = (root / rel) if not Path(rel).is_absolute() else Path(rel)
+        if cand.is_file():
+            return cand
+        # запас: sounds/skins/<id>/<key>.wav
+        tid = ""
+        try:
+            tid = th.theme_id()
+        except Exception:  # noqa: BLE001
+            pass
+        alt = SOUND_DIR / "skins" / tid / f"{key}.wav"
+        return alt if alt.is_file() else None
+
     def _play(self, name: str) -> None:
         if not (self.enabled and self.available):
             return
-        path = SOUND_DIR / f"{name}_v{self.volume}.wav"
+        skin = self._skin_path(name)
+        path = skin if skin is not None else SOUND_DIR / f"{name}_v{self.volume}.wav"
+        if not path.is_file():
+            return
         if self._player is not None:
             import subprocess
             try:

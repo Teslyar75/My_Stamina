@@ -1,6 +1,11 @@
 {
   "id": "scriptorium",
-  "name": { "ru": "Скрипторий", "uk": "Скрипторій", "en": "Scriptorium", "de": "Skriptorium" },
+  "name": {
+    "ru": "Скрипторий",
+    "uk": "Скрипторій",
+    "en": "Scriptorium",
+    "de": "Skriptorium"
+  },
   "colors": {
     "bg": "#2a1d12",
     "bg2": "#352618",
@@ -22,9 +27,46 @@
     "muted": "#6b5040",
     "faint": "#a09070"
   },
-  "fonts": { "ui": ["Georgia", "EB Garamond", "Segoe UI"], "title": ["Georgia", "Cormorant Garamond"], "typing": ["Georgia", "Times New Roman"] },
-  "frame": { "style": "scroll", "radius": 2, "border": 2, "corner_cuts": false },
-  "background": { "engine": "candles", "params": {} },
-  "assets": { "images": "docs/skins/images/scriptorium", "icon": "docs/skins/images/scriptorium/icon1.jpg" },
-  "ranks": ["Послушник", "Переписчик", "Книжник", "Хранитель", "Архивариус"]
+  "fonts": {
+    "ui": [
+      "Georgia",
+      "EB Garamond",
+      "Segoe UI"
+    ],
+    "title": [
+      "Georgia",
+      "Cormorant Garamond"
+    ],
+    "typing": [
+      "Georgia",
+      "Times New Roman"
+    ]
+  },
+  "frame": {
+    "style": "scroll",
+    "radius": 2,
+    "border": 2,
+    "corner_cuts": false
+  },
+  "background": {
+    "engine": "candles",
+    "params": {}
+  },
+  "assets": {
+    "images": "docs/skins/images/scriptorium",
+    "icon": "docs/skins/images/scriptorium/icon1.jpg"
+  },
+  "ranks": [
+    "Послушник",
+    "Переписчик",
+    "Книжник",
+    "Хранитель",
+    "Архивариус"
+  ],
+  "sounds": {
+    "click": "sounds/skins/scriptorium/click.wav",
+    "error": "sounds/skins/scriptorium/error.wav",
+    "bell": "sounds/skins/scriptorium/bell.wav",
+    "start": "sounds/skins/scriptorium/start.wav"
+  }
 }

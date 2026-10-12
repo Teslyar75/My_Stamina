@@ -1,6 +1,11 @@
 {
   "id": "bathyscaphe",
-  "name": { "ru": "Батискаф", "uk": "Батискаф", "en": "Bathyscaphe", "de": "Tauchboot" },
+  "name": {
+    "ru": "Батискаф",
+    "uk": "Батискаф",
+    "en": "Bathyscaphe",
+    "de": "Tauchboot"
+  },
   "colors": {
     "bg": "#021219",
     "bg2": "#031820",
@@ -22,9 +27,46 @@
     "muted": "#5a9090",
     "faint": "#2a5050"
   },
-  "fonts": { "ui": ["Share Tech Mono", "Consolas", "Segoe UI"], "title": ["Exo 2", "Segoe UI"], "typing": ["Share Tech Mono", "Consolas"] },
-  "frame": { "style": "porthole", "radius": 12, "border": 2, "corner_cuts": false },
-  "background": { "engine": "sonar", "params": {} },
-  "assets": { "images": "docs/skins/images/bathyscaphe", "icon": "docs/skins/images/bathyscaphe/icon1.jpg" },
-  "ranks": ["Юнга", "Акустик", "Штурман", "Старпом", "Командир глубин"]
+  "fonts": {
+    "ui": [
+      "Share Tech Mono",
+      "Consolas",
+      "Segoe UI"
+    ],
+    "title": [
+      "Exo 2",
+      "Segoe UI"
+    ],
+    "typing": [
+      "Share Tech Mono",
+      "Consolas"
+    ]
+  },
+  "frame": {
+    "style": "porthole",
+    "radius": 12,
+    "border": 2,
+    "corner_cuts": false
+  },
+  "background": {
+    "engine": "sonar",
+    "params": {}
+  },
+  "assets": {
+    "images": "docs/skins/images/bathyscaphe",
+    "icon": "docs/skins/images/bathyscaphe/icon1.jpg"
+  },
+  "ranks": [
+    "Юнга",
+    "Акустик",
+    "Штурман",
+    "Старпом",
+    "Командир глубин"
+  ],
+  "sounds": {
+    "click": "sounds/skins/bathyscaphe/click.wav",
+    "error": "sounds/skins/bathyscaphe/error.wav",
+    "bell": "sounds/skins/bathyscaphe/bell.wav",
+    "start": "sounds/skins/bathyscaphe/start.wav"
+  }
 }

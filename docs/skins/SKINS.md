@@ -19,6 +19,7 @@
 | **S1** движок тем | сделано: `stamina/theme.py` (`load_theme` / `c` / `on_change`), JSON в `stamina/themes/`, выбор в **Настройки**, живая перекраска |
 | **S0** выбор на «ВХОД В КАБИНУ» | сделано: ряд скинов, предпросмотр, сохранение в `settings.json` пилота |
 | **S2–S6** палитры + фоны | сделано: JSON + `backgrounds/scenes.py` (sonar / gears / candles / city_rain / zen), LivingSpace переключает сцену при смене скина; эхо сонара на верную клавишу |
+| **S7** per-skin звуки + web backdrop | сделано: `theme.sounds` → `stamina/sounds/skins/<id>/` и веб `/sounds/skins/<id>/`; веб `SkinBackdrop` + `/skins/<id>/bg1.jpg` (image cover + FX) |
 
 ## 1. Движок тем (десктоп)
 Цвета (`AMBER`, `GREEN` и др.) загружаются из JSON; модульные имена обновляются при смене скина.

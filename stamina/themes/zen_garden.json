@@ -1,6 +1,11 @@
 {
   "id": "zen_garden",
-  "name": { "ru": "Сад дзен", "uk": "Сад дзен", "en": "Zen Garden", "de": "Zen-Garten" },
+  "name": {
+    "ru": "Сад дзен",
+    "uk": "Сад дзен",
+    "en": "Zen Garden",
+    "de": "Zen-Garten"
+  },
   "colors": {
     "bg": "#f4efe6",
     "bg2": "#ebe4d8",
@@ -22,9 +27,45 @@
     "muted": "#6b6b6b",
     "faint": "#b0a898"
   },
-  "fonts": { "ui": ["Segoe UI", "Noto Serif JP"], "title": ["Segoe UI", "Noto Serif JP"], "typing": ["Segoe UI", "Consolas"] },
-  "frame": { "style": "minimal", "radius": 8, "border": 1, "corner_cuts": false },
-  "background": { "engine": "zen", "params": {} },
-  "assets": { "images": "docs/skins/images/zen_garden", "icon": "docs/skins/images/zen_garden/icon1.jpg" },
-  "ranks": ["Ученик", "Садовник", "Мастер", "Сэнсэй", "Просветлённый"]
+  "fonts": {
+    "ui": [
+      "Segoe UI",
+      "Noto Serif JP"
+    ],
+    "title": [
+      "Segoe UI",
+      "Noto Serif JP"
+    ],
+    "typing": [
+      "Segoe UI",
+      "Consolas"
+    ]
+  },
+  "frame": {
+    "style": "minimal",
+    "radius": 8,
+    "border": 1,
+    "corner_cuts": false
+  },
+  "background": {
+    "engine": "zen",
+    "params": {}
+  },
+  "assets": {
+    "images": "docs/skins/images/zen_garden",
+    "icon": "docs/skins/images/zen_garden/icon1.jpg"
+  },
+  "ranks": [
+    "Ученик",
+    "Садовник",
+    "Мастер",
+    "Сэнсэй",
+    "Просветлённый"
+  ],
+  "sounds": {
+    "click": "sounds/skins/zen_garden/click.wav",
+    "error": "sounds/skins/zen_garden/error.wav",
+    "bell": "sounds/skins/zen_garden/bell.wav",
+    "start": "sounds/skins/zen_garden/start.wav"
+  }
 }

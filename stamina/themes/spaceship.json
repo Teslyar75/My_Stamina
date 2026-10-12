@@ -1,6 +1,11 @@
 {
   "id": "spaceship",
-  "name": { "ru": "Звездолёт", "uk": "Зореліт", "en": "Starship", "de": "Raumschiff" },
+  "name": {
+    "ru": "Звездолёт",
+    "uk": "Зореліт",
+    "en": "Starship",
+    "de": "Raumschiff"
+  },
   "colors": {
     "bg": "#03060C",
     "bg2": "#060C17",
@@ -30,13 +35,54 @@
     "zone_mod": "#4A6580"
   },
   "fonts": {
-    "ui": ["Bahnschrift", "Segoe UI"],
-    "title": ["Bahnschrift", "Segoe UI"],
-    "typing": ["Cascadia Mono", "Consolas"]
+    "ui": [
+      "Bahnschrift",
+      "Segoe UI"
+    ],
+    "title": [
+      "Bahnschrift",
+      "Segoe UI"
+    ],
+    "typing": [
+      "Cascadia Mono",
+      "Consolas"
+    ]
   },
-  "frame": { "style": "neon", "radius": 6, "border": 2, "corner_cuts": true },
-  "button": { "shape": "bevel", "pad": [10, 4] },
-  "background": { "engine": "living_space", "params": {} },
-  "assets": { "images": "docs/skins/images/spaceship", "icon": "docs/skins/images/spaceship/icon1.jpg" },
-  "ranks": ["Кадет", "Пилот-стажёр", "Мичман", "Лейтенант", "Капитан-лейтенант", "Капитан", "Коммодор", "Адмирал флота"]
+  "frame": {
+    "style": "neon",
+    "radius": 6,
+    "border": 2,
+    "corner_cuts": true
+  },
+  "button": {
+    "shape": "bevel",
+    "pad": [
+      10,
+      4
+    ]
+  },
+  "background": {
+    "engine": "living_space",
+    "params": {}
+  },
+  "assets": {
+    "images": "docs/skins/images/spaceship",
+    "icon": "docs/skins/images/spaceship/icon1.jpg"
+  },
+  "ranks": [
+    "Кадет",
+    "Пилот-стажёр",
+    "Мичман",
+    "Лейтенант",
+    "Капитан-лейтенант",
+    "Капитан",
+    "Коммодор",
+    "Адмирал флота"
+  ],
+  "sounds": {
+    "click": "sounds/skins/spaceship/click.wav",
+    "error": "sounds/skins/spaceship/error.wav",
+    "bell": "sounds/skins/spaceship/bell.wav",
+    "start": "sounds/skins/spaceship/start.wav"
+  }
 }
