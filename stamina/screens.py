@@ -830,7 +830,7 @@ class HelpScreen(tk.Frame):
     def __init__(self, master, app: "Cockpit") -> None:
         super().__init__(master, bg=BG)
         self.app = app
-        panel = HudPanel(self, _t("СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ STAR TYPING  (F1)"))
+        panel = HudPanel(self, _t("СПРАВКА — ИНСТРУКЦИЯ ПО УПРАВЛЕНИЮ КОСМОЛЁТОМ STAR TYPING"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(10))
         sb = ttk.Scrollbar(panel.body, orient=tk.VERTICAL, style="Hud.Vertical.TScrollbar")
         sb.pack(side=tk.RIGHT, fill=tk.Y)
