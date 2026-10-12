@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 
+import queue
 import threading
 import tkinter as tk
 from tkinter import ttk
@@ -17,14 +18,21 @@ from .player import backend_ok, backend_name
 
 
 class RadioScreen(tk.Frame):
+    def page_help_key(self) -> str:
+        return f"radio.{self.current or 'air'}"
+
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
         self.app = app
         self.eng = get_engine()
+        self.eng.bind_ui(self.winfo_toplevel())
         self.eng.reload_store()
         self._stations: list[dict] = []
         self._pulse = 0
         self._eq_job = None
+        self._ui_q: queue.SimpleQueue = queue.SimpleQueue()
+        self._catalog_booted = False
+        self.after(50, self._drain_ui)
 
         bar = tk.Frame(self, bg=BG)
         bar.pack(fill=tk.X, padx=px(14), pady=(px(8), px(4)))
@@ -35,6 +43,8 @@ class RadioScreen(tk.Frame):
             b = HudButton(bar, title, lambda k=key: self.show(k), height=30, font_size=9, width=110)
             b.pack(side=tk.LEFT, padx=px(4))
             self.tab_btns[key] = b
+        HudButton(bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT, padx=(px(8), 0))
         self.lbl_backend = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(8))
         self.lbl_backend.pack(side=tk.RIGHT)
 
@@ -52,7 +62,6 @@ class RadioScreen(tk.Frame):
         self.current = "air"
         self.show("air")
         self.eng.subscribe(self._on_engine)
-        self.after(80, self._boot_catalog)
         self.after(200, self._tick_eq)
 
     # ------------------------------------------------------------------ lifecycle
@@ -97,10 +106,22 @@ class RadioScreen(tk.Frame):
             self._refresh_receiver()
         self._update_backend_label()
 
+    def refresh(self) -> None:
+        """Вызывается пультом при открытии вкладки «РАДИОРУБКА»."""
+        self._update_backend_label()
+        if not self._catalog_booted:
+            self._catalog_booted = True
+            self.after(40, self._boot_catalog)
+        if self.current == "receiver":
+            self._refresh_receiver()
+
     def _on_engine(self) -> None:
+        # вызывается уже из главного потока (RadioEngine._drain_ui)
         try:
-            self.after(0, self._refresh_receiver)
-            self.after(0, self._paint_list)
+            if self.winfo_exists():
+                self._refresh_receiver()
+                if self.current == "air":
+                    self._paint_list()
         except tk.TclError:
             pass
 
@@ -171,10 +192,28 @@ class RadioScreen(tk.Frame):
         return fr
 
     def _safe_after(self, fn) -> None:
+        """Поставить UI-колбэк в очередь. Нельзя звать Tk из фонового потока — зависает Windows."""
         try:
-            if self.winfo_exists():
-                self.after(0, fn)
-        except (tk.TclError, RuntimeError):
+            self._ui_q.put(fn)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _drain_ui(self) -> None:
+        try:
+            while True:
+                fn = self._ui_q.get_nowait()
+                try:
+                    if self.winfo_exists():
+                        fn()
+                except tk.TclError:
+                    pass
+                except Exception:  # noqa: BLE001
+                    pass
+        except queue.Empty:
+            pass
+        try:
+            self.after(50, self._drain_ui)
+        except tk.TclError:
             pass
 
     def _on_list_cfg(self, e) -> None:

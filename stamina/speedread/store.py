@@ -11,6 +11,7 @@ DEFAULT_SETTINGS = {
     "guides": True, "quiz": "always", "quiz_words": 1000, "sync": "ask",
     # перевод текущего слова/кадра под словом в гипердрайве + двуязычная пауза
     "rsvp_translate": False,
+    "rsvp_bilingual_stream": "a",  # a=оригинал, b=перевод (kind=bilingual)
     # обычная читалка «КНИГА» (не гипердрайв)
     "book_font_pt": 17, "book_line_space": 1.45, "book_theme": "paper",
     "book_columns": 2, "book_mode": "spread",

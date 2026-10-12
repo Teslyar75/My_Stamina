@@ -157,7 +157,7 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=tr_("F1 справка · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
+        tk.Label(status, text=tr_("F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
                  bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
@@ -249,16 +249,9 @@ class Cockpit(tk.Tk):
 
     # ------------------------------------------------------------------
     def open_help(self) -> None:
-        """F1: справка; с вкладки «Английский» — сразу глава про неё."""
-        chapter = {english_hook.KEY: tr_("АНГЛИЙСКИЙ"),
-                   speedread_hook.KEY: tr_("СКОРОЧТЕНИЕ"),
-                   lounge_hook.KEY: tr_("ОТДЫХ"),
-                   radio_hook.KEY: tr_("РАДИОРУБКА"),
-                   "honor": tr_("ЭКИПАЖ")}.get(self.current or "")
-        self.show("help")
-        scr = self.screens.get("help")
-        if scr is not None and hasattr(scr, "goto"):
-            scr.goto(chapter)
+        """F1 / «?»: модалка «как работает эта страница»; полная инструкция — из модалки."""
+        from stamina.page_help import open_page_help
+        open_page_help(self)
 
     def show(self, name: str) -> None:
         if name == self.current:
@@ -299,7 +292,7 @@ class Cockpit(tk.Tk):
             self.after(30, lambda s_=scr: self.current_screen_is(s_) and self.living.attach(s_))
         for n, b in self.nav_buttons.items():
             b.set_active(n == name)
-        self.btn_help.set_active(name == "help")
+        self.btn_help.set_active(False)
         if name == "cargo":
             scr.text.focus_set()
         else:

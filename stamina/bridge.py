@@ -146,6 +146,8 @@ class Bridge(tk.Frame):
         self.btn_pause = HudButton(bar, t("❚❚ ПАУЗА  Esc"), self.toggle_pause, height=28, font_size=9,
                                    width=180)
         self.btn_pause.pack(side=tk.LEFT)
+        HudButton(bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         HudButton(bar, t("↻ ЗАНОВО  F5"), self.app.restart_current, height=28,
                   font_size=9).pack(side=tk.LEFT, padx=px(6))
         self.btn_heat = HudButton(bar, t("ТЕПЛОВАЯ КАРТА"), self.toggle_heat, height=28,

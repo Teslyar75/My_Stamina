@@ -30,6 +30,86 @@ PROCESSOR = "text_processing v1"
 MAX_CANDIDATE_BYTES = 20 * 1024 * 1024
 ORWELL_HEAD = "part one chapter 1 it was a bright cold day in april"
 
+# kind=text — обычная; kind=bilingual — готовый перевод, без правки/печати/UPLINK-2ЯЗЫКА
+BOOK_KIND_TEXT = "text"
+BOOK_KIND_BILINGUAL = "bilingual"
+BILINGUAL_SOURCES = ("pd", "mt", "mixed")
+
+
+def normalize_book_meta(meta: dict | None) -> dict | None:
+    """Дописать поля kind/locked/modes для старых записей (на месте)."""
+    if not meta:
+        return meta
+    kind = meta.get("kind") or BOOK_KIND_TEXT
+    if kind not in (BOOK_KIND_TEXT, BOOK_KIND_BILINGUAL):
+        kind = BOOK_KIND_TEXT
+    meta["kind"] = kind
+    if kind == BOOK_KIND_BILINGUAL:
+        meta["locked"] = True
+        modes = list(meta.get("modes") or [])
+        if not modes:
+            modes = ["book", "hyperdrive"]
+        meta["modes"] = [m for m in modes if m in ("book", "hyperdrive")]
+        bi = meta.get("bilingual") if isinstance(meta.get("bilingual"), dict) else {}
+        bi.setdefault("source", "mt")
+        if bi.get("source") not in BILINGUAL_SOURCES:
+            bi["source"] = "mt"
+        bi.setdefault("lang_a", meta.get("lang") or "en")
+        bi.setdefault("lang_b", "ru")
+        bi.setdefault("align", "paragraph")
+        meta["bilingual"] = bi
+    else:
+        meta.setdefault("locked", False)
+        meta.setdefault("modes", ["book", "hyperdrive", "print"])
+        meta.setdefault("bilingual", None)
+    return meta
+
+
+def is_bilingual(meta: dict | None) -> bool:
+    if not meta:
+        return False
+    normalize_book_meta(meta)
+    return meta.get("kind") == BOOK_KIND_BILINGUAL
+
+
+def allows_print(meta: dict | None) -> bool:
+    if not meta:
+        return False
+    normalize_book_meta(meta)
+    return "print" in (meta.get("modes") or []) and not meta.get("locked")
+
+
+def allows_edit(meta: dict | None) -> bool:
+    if not meta:
+        return False
+    normalize_book_meta(meta)
+    return not bool(meta.get("locked"))
+
+
+def allows_uplink_bilingual(meta: dict | None) -> bool:
+    """Режим «2 ЯЗЫКА» через UPLINK — только для обычных книг."""
+    return not is_bilingual(meta)
+
+
+def allows_rsvp_word_tr(meta: dict | None) -> bool:
+    """Перевод под словом в гипердрайве — не для готовых двуязычных."""
+    return not is_bilingual(meta)
+
+
+def book_badges(meta: dict | None) -> list[tuple[str, str]]:
+    """Значки для UI: (код, цвет-ключ)."""
+    if not meta:
+        return []
+    normalize_book_meta(meta)
+    out: list[tuple[str, str]] = []
+    if is_bilingual(meta):
+        out.append(("2ЯЗ", "green"))
+        src = (meta.get("bilingual") or {}).get("source") or "mt"
+        out.append(({"pd": "PD", "mt": "MT", "mixed": "PD+MT"}.get(src, "MT"), "cyan"))
+        out.append(("⌀ред.", "amber"))
+        out.append(("⌀печ.", "amber"))
+    return out
+
 
 def _now() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -126,16 +206,19 @@ class Library:
 
     def meta(self, tid: str) -> dict | None:
         try:
-            return json.loads((self._dir(tid) / "meta.json").read_text(encoding="utf-8"))
+            data = json.loads((self._dir(tid) / "meta.json").read_text(encoding="utf-8"))
         except (OSError, ValueError):
             return None
+        return normalize_book_meta(data)
 
     def save_meta(self, meta: dict) -> None:
+        normalize_book_meta(meta)
         meta["updated"] = _now()
         _write_atomic(self._dir(meta["id"]) / "meta.json", json.dumps(meta, ensure_ascii=False, indent=1))
         with self.lock:
             row = {"id": meta["id"], "title": meta["title"], "author": meta.get("author", ""),
-                   "lang": meta.get("lang", ""), "updated": meta["updated"]}
+                   "lang": meta.get("lang", ""), "kind": meta.get("kind", BOOK_KIND_TEXT),
+                   "updated": meta["updated"]}
             for i, t in enumerate(self.index["texts"]):
                 if t["id"] == meta["id"]:
                     self.index["texts"][i] = row
@@ -164,8 +247,18 @@ class Library:
         except OSError:
             return ""
 
-    def reading_text(self, tid: str) -> str:
-        """Текст для гипердрайва: оригинал, если есть, иначе подготовленная версия."""
+    def translation(self, tid: str) -> str:
+        """Готовый перевод (translation.txt) для kind=bilingual."""
+        try:
+            return (self._dir(tid) / "translation.txt").read_text(encoding="utf-8")
+        except OSError:
+            return ""
+
+    def reading_text(self, tid: str, *, stream: str = "a") -> str:
+        """Текст для гипердрайва/читалки. stream=a|b — для двуязычных (оригинал|перевод)."""
+        m = self.meta(tid)
+        if is_bilingual(m) and stream == "b":
+            return self.translation(tid) or self.original(tid) or self.prepared(tid)
         return self.original(tid) or self.prepared(tid)
 
     # -- добавление -----------------------------------------------------------------
@@ -210,6 +303,8 @@ class Library:
         meta = {
             "id": tid, "title": title, "author": author, "lang": detect_lang(base),
             "source": source or {"kind": "paste"}, "created": _now(), "updated": _now(),
+            "kind": BOOK_KIND_TEXT, "locked": False,
+            "modes": ["book", "hyperdrive", "print"], "bilingual": None,
             "original": {"status": status if original else "missing", "chars": len(original),
                          "words": len(original.split()), "sha256": sha(original) if original else "",
                          "note": note},
@@ -220,6 +315,69 @@ class Library:
         }
         self.save_meta(meta)
         return meta
+
+    def add_bilingual(self, original: str, translation: str, *, title: str = "", author: str = "",
+                      lang_a: str = "", lang_b: str = "ru", source_kind: str = "mt",
+                      source: dict | None = None) -> dict:
+        """Добавить книгу с готовым переводом (без печати/правки/UPLINK-2ЯЗЫКА)."""
+        original = (original or "").replace("\r\n", "\n").strip() + "\n"
+        translation = (translation or "").replace("\r\n", "\n").strip() + "\n"
+        if not original.strip() or not translation.strip():
+            raise ValueError(_t("Нужны оба текста: оригинал и перевод."))
+        src_kind = source_kind if source_kind in BILINGUAL_SOURCES else "mt"
+        la = (lang_a or detect_lang(original) or "en").strip().lower()
+        lb = (lang_b or detect_lang(translation) or "").strip().lower()
+        if not lb:
+            lb = detect_lang(translation) or "ru"
+        if la == lb:
+            # переопределить по тексту, если в метаданных ошибочно один язык
+            da, db = detect_lang(original), detect_lang(translation)
+            if da and db and da != db:
+                la, lb = da, db
+            else:
+                raise ValueError(
+                    _t("Оригинал и перевод на одном языке ({0}). "
+                       "Нужна пара разных языков (например EN→DE), не два английских текста.").format(
+                        la.upper()))
+        m = self.add(original, title=title, author=author,
+                     source=source or {"kind": "bilingual", "bilingual_source": src_kind},
+                     prepared=original)  # prepared = оригинал; печать всё равно закрыта
+        tid = m["id"]
+        _write_atomic(self._dir(tid) / "translation.txt", translation)
+        m = self.meta(tid) or m
+        m["kind"] = BOOK_KIND_BILINGUAL
+        m["locked"] = True
+        m["modes"] = ["book", "hyperdrive"]
+        m["lang"] = la
+        m["bilingual"] = {
+            "source": src_kind, "lang_a": la, "lang_b": lb, "align": "paragraph",
+            "translation_chars": len(translation), "translation_words": len(translation.split()),
+        }
+        self.save_meta(m)
+        return m
+
+    def mark_bilingual(self, tid: str, translation: str, *, lang_b: str = "",
+                       source_kind: str = "mt") -> dict | None:
+        """Пометить существующий текст как двуязычный и записать translation.txt."""
+        m = self.meta(tid)
+        if not m:
+            return None
+        translation = (translation or "").replace("\r\n", "\n").strip() + "\n"
+        if not translation.strip():
+            return None
+        _write_atomic(self._dir(tid) / "translation.txt", translation)
+        m["kind"] = BOOK_KIND_BILINGUAL
+        m["locked"] = True
+        m["modes"] = ["book", "hyperdrive"]
+        la = m.get("lang") or detect_lang(self.original(tid) or self.prepared(tid))
+        lb = lang_b or detect_lang(translation) or "ru"
+        src_kind = source_kind if source_kind in BILINGUAL_SOURCES else "mt"
+        m["bilingual"] = {
+            "source": src_kind, "lang_a": la, "lang_b": lb, "align": "paragraph",
+            "translation_chars": len(translation), "translation_words": len(translation.split()),
+        }
+        self.save_meta(m)
+        return m
 
     def delete(self, tid: str) -> None:
         d = self._dir(tid)
@@ -272,6 +430,8 @@ class Library:
     def regenerate(self, tid: str, opts: dict) -> tuple[str, int] | None:
         """Пересоздать подготовленную версию по новым опциям. → (новый текст, перенесённая позиция)."""
         m = self.meta(tid)
+        if m and not allows_edit(m):
+            return None
         orig = self.original(tid)
         if not m or not orig:
             return None

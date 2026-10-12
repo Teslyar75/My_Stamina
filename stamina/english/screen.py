@@ -61,6 +61,10 @@ class EnglishScreen(tk.Frame):
             return
         self._build()
 
+    def page_help_key(self) -> str:
+        sub = self.current or "overview"
+        return f"english.{sub}"
+
     def _build(self) -> None:
         from .pages_book import BookCardsPage
         from .pages_learn import PracticePage, ReviewPage
@@ -71,14 +75,16 @@ class EnglishScreen(tk.Frame):
         top.pack(fill=tk.X, padx=px(12), pady=(px(8), px(2)))
         self.nav: dict[str, HudButton] = {}
         for name, title in SUBPAGES:
-            b = HudButton(top, title, lambda n=name: self.show(n), height=30, font_size=9)
+            b = HudButton(top, title, lambda n=name: self.show(n), height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.nav[name] = b
         sbox = tk.Frame(top, bg=BG)
         sbox.pack(side=tk.RIGHT)
         L(sbox, "⌕", fg=CYAN, size=13, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(4)))
-        self.search = entry(sbox, width=22, size=10)
+        self.search = entry(sbox, width=18, size=10)
         self.search.pack(side=tk.LEFT, ipady=px(4))
+        HudButton(sbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.LEFT, padx=(px(6), 0))
         self._ph = t("СКАНИРОВАТЬ СЛОВО…")
         self._placeholder(True)
         self.search.bind("<FocusIn>", lambda _e: self._placeholder(False))

@@ -43,6 +43,9 @@ GAMES = [
 
 
 class LoungeScreen(tk.Frame):
+    def page_help_key(self) -> str:
+        return "lounge"
+
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
         self.app = app
@@ -56,6 +59,8 @@ class LoungeScreen(tk.Frame):
         head.pack(fill=tk.X, padx=px(16), pady=(px(10), px(4)))
         tk.Label(head, text=_t("КОМНАТА ОТДЫХА ЭКИПАЖА"), bg=BG, fg=AMBER,
                  font=theme.font(16, True)).pack(side=tk.LEFT)
+        HudButton(head, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         tk.Label(head, text=_t("короткий перерыв между полётами · рекорды сохраняются на борту"),
                  bg=BG, fg=MUTED, font=theme.font(9)).pack(side=tk.LEFT, padx=px(14))
 
@@ -72,7 +77,7 @@ class LoungeScreen(tk.Frame):
             body = card.body
             tk.Label(body, text=g["title"], bg=PANEL, fg=g["color"],
                      font=theme.font(18, True)).pack(anchor="w", pady=(px(4), px(2)))
-            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(260),
+            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(220),
                      justify="left", font=theme.font(10)).pack(anchor="w", pady=(0, px(10)))
             rec = tk.Label(body, text="", bg=PANEL, fg=MUTED, font=theme.font(10, True, mono=True))
             rec.pack(anchor="w")

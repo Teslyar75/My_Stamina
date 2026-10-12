@@ -1,7 +1,9 @@
 """Глобальный приёмник: играет в фоне между отсеками."""
 from __future__ import annotations
 
+import queue
 import threading
+import tkinter as tk
 from typing import Callable
 
 from . import browser, store
@@ -28,6 +30,42 @@ class RadioEngine:
         self._listeners: list[Callable] = []
         self.player.set_volume(int(self.data.get("volume") or 70))
         self.player.set_meta_callback(self._on_meta)
+        # Уведомления с потока плеера → очередь → главный поток Tk (иначе Windows зависает)
+        self._ui_q: queue.SimpleQueue = queue.SimpleQueue()
+        self._ui_root: tk.Misc | None = None
+        self._drain_job: str | None = None
+
+    def bind_ui(self, root: tk.Misc) -> None:
+        """Привязать окно Tk; вызывать один раз из главного потока."""
+        self._ui_root = root
+        if self._drain_job is None:
+            try:
+                self._drain_job = root.after(40, self._drain_ui)
+            except tk.TclError:
+                self._drain_job = None
+
+    def _drain_ui(self) -> None:
+        self._drain_job = None
+        root = self._ui_root
+        if root is None:
+            return
+        dirty = False
+        try:
+            while True:
+                self._ui_q.get_nowait()
+                dirty = True
+        except queue.Empty:
+            pass
+        if dirty:
+            for cb in list(self._listeners):
+                try:
+                    cb()
+                except Exception:  # noqa: BLE001
+                    pass
+        try:
+            self._drain_job = root.after(40, self._drain_ui)
+        except tk.TclError:
+            self._drain_job = None
 
     def reload_store(self) -> None:
         self.data = store.load()
@@ -41,6 +79,12 @@ class RadioEngine:
             self._listeners.remove(cb)
 
     def _notify(self) -> None:
+        if self._ui_root is not None:
+            try:
+                self._ui_q.put(True)
+            except Exception:  # noqa: BLE001
+                pass
+            return
         for cb in list(self._listeners):
             try:
                 cb()
@@ -136,3 +180,5 @@ class RadioEngine:
 
     def close(self) -> None:
         self.player.stop()
+        self._ui_root = None
+        self._drain_job = None

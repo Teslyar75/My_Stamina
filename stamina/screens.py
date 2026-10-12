@@ -124,11 +124,14 @@ class MissionsScreen(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
         _label(top, _t("ЗВЁЗДНАЯ КАРТА МИССИЙ"), fg=TEXT, size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        HudButton(top, "?", lambda: self.app.open_help(), height=32, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         self.btn_ru = HudButton(top, _t("РУССКИЙ  ЙЦУКЕН"), lambda: self.set_lang("ru"), height=32)
-        self.btn_ru.pack(side=tk.RIGHT)
+        self.btn_ru.pack(side=tk.RIGHT, padx=(0, px(8)))
         self.btn_en = HudButton(top, "ENGLISH  QWERTY", lambda: self.set_lang("en"), height=32)
         self.btn_en.pack(side=tk.RIGHT, padx=px(8))
-        _label(self, _t("Каждая миссия добавляет новые клавиши. Пройдите с точностью от {0:.0f}%, чтобы открыть следующую. Звёзды дают за точность и скорость.").format(missions.PASS_ACCURACY), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(16))
+        _label(self, _t("Каждая миссия добавляет новые клавиши. Пройдите с точностью от {0:.0f}%, чтобы открыть следующую. Звёзды дают за точность и скорость.").format(missions.PASS_ACCURACY),
+               fg=MUTED, size=9, bg=BG, wraplength=px(900)).pack(anchor="w", padx=px(16))
         self.grid_frame = tk.Frame(self, bg=BG)
         self.grid_frame.pack(fill=tk.BOTH, expand=True, padx=px(10), pady=px(8))
         special = tk.Frame(self, bg=BG)
@@ -136,14 +139,14 @@ class MissionsScreen(tk.Frame):
         self.repair_panel = HudPanel(special, _t("РЕМОНТ СИСТЕМ — АДАПТИВНАЯ ТРЕНИРОВКА"), accent=AMBER)
         self.repair_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(4), px(6)))
         self.repair_info = _label(self.repair_panel.body, "", fg=TEXT, size=10, justify="left",
-                                  anchor="w")
+                                  anchor="w", wraplength=px(360))
         self.repair_info.pack(side=tk.LEFT, fill=tk.X, expand=True)
         HudButton(self.repair_panel.body, _t("⚙ ЗАПУСТИТЬ"), lambda: self.app.start_repair(self.lang),
                   color=AMBER).pack(side=tk.RIGHT)
         self.cargo_panel = HudPanel(special, _t("СВОЙ ТЕКСТ — ГРУЗ НА БОРТУ"))
         self.cargo_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(6), px(4)))
         self.cargo_info = _label(self.cargo_panel.body, "", fg=TEXT, size=10, justify="left",
-                                 anchor="w")
+                                 anchor="w", wraplength=px(360))
         self.cargo_info.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.btn_cargo = HudButton(self.cargo_panel.body, _t("▶ ПРОДОЛЖИТЬ"), self.app.resume_cargo,
                                    color=GREEN)
@@ -217,10 +220,13 @@ class CargoScreen(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(2)))
         _label(top, _t("ПОДГОТОВКА ТЕКСТА — ЗАГРУЗКА ГРУЗА"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        HudButton(top, "?", lambda: self.app.open_help(), height=30, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         _label(self, _t("1) Откройте файл или вставьте текст  →  2) выберите обработку справа  →  3) проверьте предпросмотр  →  4) «Сохранить на борт» или «Старт». Оригинал текста сохраняется: по нему работает переводчик UPLINK."),
-               fg=MUTED, size=9, bg=BG, wraplength=px(1150), justify="left").pack(anchor="w", padx=px(16))
+               fg=MUTED, size=9, bg=BG, wraplength=px(900), justify="left").pack(anchor="w", padx=px(16))
+        from stamina.adapt import FlowFrame
 
-        tools = tk.Frame(self, bg=BG)
+        tools = FlowFrame(self, bg=BG, padx=6, pady=4)
         tools.pack(fill=tk.X, padx=px(12), pady=px(8))
         for text, cmd, col in (
             (_t("ПОЛКА КНИГ"), self._open_shelf, AMBER),
@@ -230,12 +236,11 @@ class CargoScreen(tk.Frame):
             (_t("ВСТАВИТЬ ИЗ БУФЕРА"), self._paste, CYAN),
             (_t("ОЧИСТИТЬ"), self._clear, MUTED),
         ):
-            HudButton(tools, text, cmd, color=col, height=32, font_size=9).pack(side=tk.LEFT, padx=(0, px(6)))
+            tools.add(HudButton(tools, text, cmd, color=col, height=32, font_size=9))
         self.btn_ro = HudButton(tools, _t("ЗАЩИТА ОТ ПРАВКИ: ВЫКЛ"), self._toggle_readonly, color=MUTED,
                                 height=32, font_size=9, width=210)
-        self.btn_ro.pack(side=tk.LEFT, padx=(px(10), 0))
-        HudButton(tools, _t("ЭКСПОРТ .TXT"), self._export, color=MUTED, height=32,
-                  font_size=9).pack(side=tk.RIGHT)
+        tools.add(self.btn_ro)
+        tools.add(HudButton(tools, _t("ЭКСПОРТ .TXT"), self._export, color=MUTED, height=32, font_size=9))
 
         bottom = tk.Frame(self, bg=BG)
         bottom.pack(fill=tk.X, side=tk.BOTTOM, padx=px(12), pady=px(8))
@@ -514,7 +519,10 @@ class LogScreen(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
         _label(top, _t("БОРТЖУРНАЛ — СТАТИСТИКА ПОЛЁТОВ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
-        HudButton(top, _t("★ ДОСКА ПОЧЁТА"), lambda: app.show("honor"), color=AMBER, height=34).pack(side=tk.RIGHT)
+        HudButton(top, "?", lambda: self.app.open_help(), height=32, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
+        HudButton(top, _t("★ ДОСКА ПОЧЁТА"), lambda: app.show("honor"), color=AMBER, height=34).pack(
+            side=tk.RIGHT, padx=(0, px(8)))
         self.summary = tk.Frame(self, bg=BG)
         self.summary.pack(fill=tk.X, padx=px(10))
         self.cells = []
@@ -622,6 +630,8 @@ class SettingsScreen(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
         _label(top, _t("НАСТРОЙКИ БОРТОВЫХ СИСТЕМ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
+        HudButton(top, "?", lambda: self.app.open_help(), height=30, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         panel = HudPanel(self, _t("СИСТЕМЫ"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
         from stamina.speedread.ui import ScrollFrame
@@ -661,14 +671,14 @@ class SettingsScreen(tk.Frame):
         ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
         for key, name in (("off", _t("ВЫКЛ")), ("light", _t("ЛЁГКИЙ")), ("full", _t("ПОЛНЫЙ"))):
-            b = HudButton(ls, name, lambda k=key: self._set_living(k), width=96, height=30, font_size=9)
-            b.pack(side=tk.LEFT, padx=px(3))
+            b = HudButton(ls, name, lambda k=key: self._set_living(k), width=72, height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(2))
             self.ls_btns[key] = b
         from stamina import living_space as _ls
         if not _ls.available():   # без Pillow — понятная подсказка вместо «ничего не происходит»
             from stamina.deps import pillow_hint
             tk.Label(ls, text=pillow_hint(), fg=AMBER, bg=PANEL, font=theme.font(8, True),
-                     wraplength=px(420), justify="left").pack(side=tk.LEFT, padx=px(8))
+                     wraplength=px(280), justify="left").pack(side=tk.LEFT, padx=px(6))
         self._toggle_row("keyboard", _t("Экранная клавиатура"), _t("Подсветка следующей клавиши и пальца."))
         self._toggle_row("zones", _t("Цветные зоны пальцев"), _t("Клавиши окрашены по пальцам, как в прежнем Stamina."))
         fs = self._row(_t("Размер шрифта строки"), _t("Размер букв в иллюминаторе."))
@@ -681,8 +691,8 @@ class SettingsScreen(tk.Frame):
                       _t("Шрифты и отступы во всём приложении. Новый размер полностью применится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» выше (прогресс сохранится)."))
         self.ui_btns = {}
         for key, name in (("S", _t("МЕЛКИЙ")), ("M", _t("ОБЫЧНЫЙ")), ("L", _t("КРУПНЫЙ")), ("XL", _t("ОЧЕНЬ КРУПНЫЙ"))):
-            b = HudButton(ui, name, lambda k=key: self._set_ui_scale(k), width=120, height=30, font_size=9)
-            b.pack(side=tk.LEFT, padx=px(3))
+            b = HudButton(ui, name, lambda k=key: self._set_ui_scale(k), height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
             self.ui_btns[key] = b
         data = self._row(_t("Данные"), _t("Статистика и прогресс: {0}").format(DATA_DIR))
         HudButton(data, _t("ОТКРЫТЬ ПАПКУ"), self._open_data, height=30, font_size=9).pack(side=tk.LEFT)
@@ -693,12 +703,13 @@ class SettingsScreen(tk.Frame):
     def _row(self, title: str, desc: str) -> tk.Frame:
         row = tk.Frame(self.body, bg=PANEL)
         row.pack(fill=tk.X, pady=px(5))
+        row.columnconfigure(0, weight=1, minsize=px(160))
         left = tk.Frame(row, bg=PANEL)
-        left.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        left.grid(row=0, column=0, sticky="nsew")
         _label(left, title, size=11, bold=True).pack(anchor="w")
-        _label(left, desc, fg=MUTED, size=8, wraplength=px(760), justify="left").pack(anchor="w")
+        _label(left, desc, fg=MUTED, size=8, wraplength=px(520), justify="left").pack(anchor="w")
         right = tk.Frame(row, bg=PANEL)
-        right.pack(side=tk.RIGHT)
+        right.grid(row=0, column=1, sticky="ne", padx=(px(10), 0))
         tk.Frame(self.body, bg=LINE, height=1).pack(fill=tk.X)
         return right
 

@@ -31,8 +31,9 @@ class ScrollFrame(tk.Frame):
 
     def __init__(self, master, bg=BG, **kw) -> None:
         super().__init__(master, bg=bg, **kw)
+        from stamina.adapt import make_vscroll
         self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0)
-        self.bar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview, width=px(12))
+        self.bar = make_vscroll(self, command=self.canvas.yview)
         self.inner = tk.Frame(self.canvas, bg=bg)
         self._win = self.canvas.create_window(0, 0, window=self.inner, anchor="nw")
         self.canvas.configure(yscrollcommand=self.bar.set)
