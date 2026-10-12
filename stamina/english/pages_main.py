@@ -533,12 +533,12 @@ class ScannerPage(tk.Frame):
             bt = HudButton(tabs, title, lambda k=key: self.set_ptab(k), height=26, font_size=8)
             bt.pack(side=tk.LEFT, padx=px(2))
             self.ptabs[key] = bt
-        self.ptext = L(pb, "", fg=TEXT, size=11, wraplength=px(480), justify="left")
+        self.ptext = L(pb, "", fg=TEXT, size=11, wraplength=px(420), justify="left")
         self.ptext.pack(anchor="w", pady=px(4))
         da = HudPanel(cols, _t("ДАННЫЕ ОБЪЕКТА"))
         da.grid(row=0, column=1, sticky="nsew", padx=(px(4), 0))
         db = da.body
-        self.defn = L(db, "", fg=TEXT, size=12, wraplength=px(480), justify="left")
+        self.defn = L(db, "", fg=TEXT, size=12, wraplength=px(420), justify="left")
         self.defn.pack(anchor="w")
         self.example = tk.Text(db, height=2, bg=PANEL, fg=MUTED, relief="flat", wrap="word", bd=0,
                                font=theme.font(10), highlightthickness=0, cursor="arrow")
@@ -547,24 +547,25 @@ class ScannerPage(tk.Frame):
         trr = tk.Frame(db, bg=PANEL)
         trr.pack(fill=tk.X, pady=px(2))
         L(trr, _t("МОЙ ПЕРЕВОД"), fg=MUTED, size=8, bold=True).pack(side=tk.LEFT)
-        self.tr = entry(trr, width=26, size=11)
+        self.tr = entry(trr, width=16, size=11)
         self.tr.pack(side=tk.LEFT, padx=px(6), fill=tk.X, expand=True, ipady=px(3))
         self.tr.bind("<FocusOut>", lambda _e: self._save_tr())
         self.tr.bind("<Return>", lambda _e: (self._save_tr(), self.focus_set()))
         acts = tk.Frame(db, bg=PANEL)
         acts.pack(fill=tk.X, pady=px(6))
-        self.btn_known = HudButton(acts, _t("✓ ЗНАЮ"), self.toggle_known, color=GREEN, height=30, font_size=9, width=120)
-        self.btn_known.pack(side=tk.LEFT, padx=(0, px(4)))
+        self.btn_known = HudButton(acts, _t("✓ ЗНАЮ"), self.toggle_known, color=GREEN, height=30, font_size=8)
+        self.btn_known.pack(side=tk.LEFT, padx=(0, px(3)))
         self.btn_list = HudButton(acts, _t("⊞ В ОТСЕК"), lambda: self.ctx.list_menu(self.btn_list, self.slug, None, self.refresh),
-                                  height=30, font_size=9, width=150)
-        self.btn_list.pack(side=tk.LEFT, padx=px(4))
-        self.btn_card = HudButton(acts, _t("В ПРОВЕРКУ СИСТЕМ"), self.add_card, color=AMBER, height=30, font_size=9, width=190)
-        self.btn_card.pack(side=tk.LEFT, padx=px(4))
+                                  height=30, font_size=8)
+        self.btn_list.pack(side=tk.LEFT, padx=px(3))
+        self.btn_card = HudButton(acts, _t("В ПРОВЕРКУ"), self.add_card, color=AMBER, height=30, font_size=8)
+        self.btn_card.pack(side=tk.LEFT, padx=(px(3), 0))
         # миссии по слову
         mrow = tk.Frame(root, bg=BG)
         mrow.pack(pady=px(6))
         for mode, icon in (("random", "⤨"), ("speaking", "🎤"), ("reading", "▤"), ("questions", "?")):
-            HudButton(mrow, f"{icon} {tasks.MODES[mode][0]}", lambda m=mode: self.ctx.start_session(m, single=self.slug),
+            HudButton(mrow, f"{icon} {tasks.MODES[mode][0]}",
+                      lambda m=mode: self.ctx.start_session(m, single=self.slug),
                       height=32, font_size=9).pack(side=tk.LEFT, padx=px(4))
         # канал связи — практика предложений
         self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"))
@@ -581,9 +582,9 @@ class ScannerPage(tk.Frame):
         self.sent.tag_configure("ok", foreground=GREEN)
         self.sent.tag_configure("bad", foreground=RED, underline=True)
         self.sent.pack(fill=tk.X)
-        self.str_ = L(left, "", fg=MUTED, size=11, wraplength=px(700), justify="left")
+        self.str_ = L(left, "", fg=MUTED, size=11, wraplength=px(560), justify="left")
         self.str_.pack(anchor="w")
-        self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(700), justify="left")
+        self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(560), justify="left")
         self.hint.pack(anchor="w")
         sbtn = tk.Frame(left, bg=PANEL)
         sbtn.pack(anchor="w", pady=px(6))
@@ -671,14 +672,14 @@ class ScannerPage(tk.Frame):
         self.btn_known.set_active(known)
         self.btn_known.set_color(GREEN if known else MUTED)
         inl = p.lists_of(self.slug)
-        self.btn_list.set_text(_t("⊞ В ОТСЕКАХ: {0}").format(len(inl)) if inl else _t("⊞ В ОТСЕК"))
+        self.btn_list.set_text(_t("⊞ {0}").format(len(inl)) if inl else _t("⊞ В ОТСЕК"))
         c = p.card(self.slug)
         if c and c.get("reps", 0) > 0:
             self.btn_card.set_text(_t("ПОВТОР {0}").format(c['due']))
         elif c:
-            self.btn_card.set_text(_t("В ОЧЕРЕДИ ПРОВЕРКИ"))
+            self.btn_card.set_text(_t("В ОЧЕРЕДИ"))
         else:
-            self.btn_card.set_text(_t("В ПРОВЕРКУ СИСТЕМ"))
+            self.btn_card.set_text(_t("В ПРОВЕРКУ"))
         self.render_sentence()
         self.mic.reset()
         if p.settings.get("autoplay"):

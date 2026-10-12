@@ -202,6 +202,284 @@ def list_free_books(*, page: int = 1, languages: str | None = "en") -> dict:
     return _pack_page(data, query=_t("свободные книги"))
 
 
+# Кураторские пары PD. Каждый id_b обязан быть на lang_b (проверяется is_language_pair + сходство названия).
+# RU-пары НЕ зашиваем: у классики в Gutenberg почти нет русских текстов, ложные id давали EN→EN.
+BILINGUAL_SEED: list[dict[str, Any]] = [
+    {"lang_a": "en", "id_a": 5200, "lang_b": "de", "id_b": 22367},   # Metamorphosis / Verwandlung
+    {"lang_a": "en", "id_a": 11, "lang_b": "de", "id_b": 19778},      # Alice
+    {"lang_a": "en", "id_a": 12, "lang_b": "de", "id_b": 28881},      # Looking-Glass
+    {"lang_a": "en", "id_a": 1342, "lang_b": "de", "id_b": 10765},    # Pride and Prejudice
+    {"lang_a": "en", "id_a": 84, "lang_b": "de", "id_b": 10166},      # Frankenstein
+    {"lang_a": "en", "id_a": 345, "lang_b": "de", "id_b": 10066},     # Dracula
+    {"lang_a": "en", "id_a": 98, "lang_b": "fr", "id_b": 13951},      # Two Cities / FR
+    {"lang_a": "en", "id_a": 103, "lang_b": "fr", "id_b": 46501},     # Around the World
+    {"lang_a": "en", "id_a": 164, "lang_b": "fr", "id_b": 50916},     # 20 000 Leagues
+    {"lang_a": "en", "id_a": 1184, "lang_b": "fr", "id_b": 17989},    # Monte Cristo
+    {"lang_a": "en", "id_a": 996, "lang_b": "es", "id_b": 2000},      # Don Quixote
+    {"lang_a": "en", "id_a": 500, "lang_b": "it", "id_b": 19717},     # Pinocchio
+]
+
+_TITLE_STOP = {
+    "the", "a", "an", "of", "and", "in", "to", "for", "on", "by", "or", "with",
+    "der", "die", "das", "und", "ein", "eine", "le", "la", "les", "des", "du",
+    "el", "los", "las", "и", "в", "на", "к", "по", "из", "о",
+}
+
+
+def _title_tokens(s: str) -> set[str]:
+    s = re.sub(r"[^\w\s]", " ", (s or "").lower(), flags=re.UNICODE)
+    return {w for w in s.split() if len(w) > 2 and w not in _TITLE_STOP}
+
+
+def _score_title_pair(a: str, b: str) -> float:
+    ta, tb = _title_tokens(a), _title_tokens(b)
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / max(len(ta), len(tb))
+
+
+def _author_surname(author: str) -> str:
+    author = (author or "").replace(",", " ").strip()
+    if not author:
+        return ""
+    parts = [p for p in author.split() if p]
+    return parts[-1] if parts else ""
+
+
+def fetch_book(gid: int) -> dict | None:
+    """Одна книга Gutenberg по id (или None)."""
+    found = _fetch_by_ids([int(gid)], languages=None)
+    return found[0] if found else None
+
+
+def book_langs(book: dict | None) -> set[str]:
+    if not book:
+        return set()
+    return {str(x).lower() for x in (book.get("languages") or []) if x}
+
+
+def primary_lang(book: dict | None, default: str = "") -> str:
+    langs = list(book_langs(book))
+    raw = (book.get("languages") or []) if book else []
+    if raw:
+        return str(raw[0]).lower()
+    return default
+
+
+def is_language_pair(book_a: dict | None, book_b: dict | None, lang_b: str,
+                     *, require_title_overlap: bool = True) -> bool:
+    """True, если book_b — перевод на lang_b (не второй EN-текст и не чужая книга)."""
+    if not book_a or not book_b:
+        return False
+    if int(book_a.get("id") or 0) == int(book_b.get("id") or 0):
+        return False
+    lb = (lang_b or "").strip().lower()
+    if not lb:
+        return False
+    langs_b = book_langs(book_b)
+    langs_a = book_langs(book_a)
+    if not langs_a or not langs_b:
+        return False
+    # перевод ОБЯЗАН быть на запрошенном языке; primary — тоже он
+    if lb not in langs_b or primary_lang(book_b) != lb:
+        return False
+    # оригинал не должен совпадать с языком перевода
+    if primary_lang(book_a) == lb or primary_lang(book_a) == primary_lang(book_b):
+        return False
+    if langs_a == langs_b:
+        return False
+    # отсечь «Карамазовы → Secret Garden»: либо общий автор, либо похожие названия
+    if require_title_overlap:
+        score = _score_title_pair(book_a.get("title") or "", book_b.get("title") or "")
+        sa = _author_surname(book_a.get("author") or "")
+        sb = _author_surname(book_b.get("author") or "")
+        same_author = bool(sa and sb and sa.lower() == sb.lower())
+        if same_author:
+            return True
+        if score < 0.22:
+            return False
+    return True
+
+
+def find_translation(book: dict, lang_b: str, *, min_score: float = 0.34) -> dict | None:
+    """Найти PD-перевод той же книги на lang_b в Gutenberg (или None)."""
+    if not book or not lang_b:
+        return None
+    lang_b = lang_b.strip().lower()
+    langs = book_langs(book)
+    if lang_b in langs:
+        return None
+    gid = int(book.get("id") or 0)
+    for seed in BILINGUAL_SEED:
+        tr = None
+        if seed["id_a"] == gid and seed["lang_b"] == lang_b:
+            tr = fetch_book(seed["id_b"])
+        elif seed["id_b"] == gid and seed["lang_a"] == lang_b:
+            tr = fetch_book(seed["id_a"])
+        if tr and is_language_pair(book, tr, lang_b):
+            return tr
+
+    title = book.get("title") or ""
+    surname = _author_surname(book.get("author") or "")
+    queries: list[str] = []
+    if surname:
+        queries.append(surname)
+    words = list(_title_tokens(title))[:4]
+    if words:
+        queries.append(" ".join(words[:3]))
+    best: dict | None = None
+    best_score = 0.0
+    seen_q: set[str] = set()
+    for q in queries:
+        q = q.strip()
+        if not q or q in seen_q:
+            continue
+        seen_q.add(q)
+        try:
+            page = search_books(query=q, languages=lang_b, page=1)
+        except BookCatalogError:
+            continue
+        for cand in (page.get("results") or [])[:16]:
+            if int(cand.get("id") or 0) == gid:
+                continue
+            if not is_language_pair(book, cand, lang_b):
+                continue
+            score = _score_title_pair(title, cand.get("title") or "")
+            if surname and surname.lower() in (cand.get("author") or "").lower():
+                score += 0.28
+            if score > best_score:
+                best, best_score = cand, score
+    if best and best_score >= min_score:
+        return best
+    return None
+
+
+def _attach_translation(book: dict, tr: dict, lang_b: str) -> dict | None:
+    if not is_language_pair(book, tr, lang_b):
+        return None
+    rec = dict(book)
+    rec["translation"] = tr
+    rec["lang_b"] = lang_b
+    rec["bilingual"] = True
+    return rec
+
+
+def list_bilingual_seed(*, lang_a: str = "en", lang_b: str = "ru", page: int = 1) -> dict:
+    """Кураторская полка пар PD (быстрый старт каталога 2ЯЗ)."""
+    lang_a = (lang_a or "en").strip().lower()
+    lang_b = (lang_b or "ru").strip().lower()
+    page = max(1, int(page or 1))
+    seeds = [s for s in BILINGUAL_SEED if s["lang_a"] == lang_a and s["lang_b"] == lang_b]
+    per = CEFR_PAGE
+    chunk = seeds[(page - 1) * per: page * per]
+    results: list[dict] = []
+    for s in chunk:
+        books = _fetch_by_ids([s["id_a"], s["id_b"]], languages=None)
+        by_id = {int(b["id"]): b for b in books}
+        a, b = by_id.get(s["id_a"]), by_id.get(s["id_b"])
+        if a and b:
+            rec = _attach_translation(a, b, lang_b)
+            if rec:
+                results.append(rec)
+    next_url = f"biseed:{lang_a}:{lang_b}:{page + 1}" if page * per < len(seeds) else None
+    return {
+        "count": len(seeds),
+        "next": next_url,
+        "previous": None,
+        "results": results,
+        "query": _t("свободные · 2 языка ({0}→{1})").format(lang_a.upper(), lang_b.upper()),
+        "bilingual": True,
+    }
+
+
+def list_bilingual_free(*, lang_a: str = "en", lang_b: str = "ru", page: int = 1,
+                        popular_page: int | None = None) -> dict:
+    """Кураторские пары, затем популярные lang_a с найденным PD-переводом на lang_b."""
+    lang_a = (lang_a or "en").strip().lower()
+    lang_b = (lang_b or "ru").strip().lower()
+    page = max(1, int(page or 1))
+    # page=1 — кураторская полка; popular_page — добор из ленты Gutenberg
+    if popular_page is None and page == 1:
+        seeded = list_bilingual_seed(lang_a=lang_a, lang_b=lang_b, page=1)
+        if seeded.get("results"):
+            if not seeded.get("next"):
+                seeded["next"] = f"bifree:{lang_a}:{lang_b}:1"
+            return seeded
+        popular_page = 1
+    elif popular_page is None:
+        popular_page = page
+    free = list_free_books(page=popular_page, languages=lang_a)
+    out: list[dict] = []
+    for book in free.get("results") or []:
+        tr = find_translation(book, lang_b)
+        if tr:
+            rec = _attach_translation(book, tr, lang_b)
+            if rec:
+                out.append(rec)
+    next_url = None
+    if free.get("next"):
+        next_url = f"bifree:{lang_a}:{lang_b}:{int(popular_page) + 1}"
+    return {
+        "count": int(free.get("count") or 0),
+        "next": next_url,
+        "previous": None,
+        "results": out,
+        "query": _t("свободные · 2 языка ({0}→{1})").format(lang_a.upper(), lang_b.upper()),
+        "bilingual": True,
+    }
+
+
+def search_bilingual(*, title: str = "", author: str = "", lang_a: str = "en",
+                     lang_b: str = "ru", page: int = 1) -> dict:
+    """Поиск как обычно, в выдаче только книги с найденным PD-переводом."""
+    lang_a = (lang_a or "").strip().lower() or None
+    lang_b = (lang_b or "ru").strip().lower()
+    packed = search_books(title=title, author=author, languages=lang_a, page=page)
+    out: list[dict] = []
+    for book in packed.get("results") or []:
+        tr = find_translation(book, lang_b)
+        if tr:
+            rec = _attach_translation(book, tr, lang_b)
+            if rec:
+                out.append(rec)
+    next_url = None
+    if packed.get("next"):
+        next_url = packed["next"]
+    return {
+        "count": int(packed.get("count") or 0),
+        "next": next_url,
+        "previous": packed.get("previous"),
+        "results": out,
+        "query": packed.get("query") or "",
+        "bilingual": True,
+    }
+
+
+def list_bilingual_by_cefr(level: str, *, lang_a: str = "en", lang_b: str = "ru",
+                           page: int = 1) -> dict:
+    """CEFR-полка: только те книги уровня, для которых есть PD-перевод."""
+    packed = list_by_cefr(level, page=page, languages=lang_a or "en")
+    lang_b = (lang_b or "ru").strip().lower()
+    out: list[dict] = []
+    for book in packed.get("results") or []:
+        tr = find_translation(book, lang_b)
+        if tr:
+            rec = _attach_translation(book, tr, lang_b)
+            if rec:
+                if book.get("cefr"):
+                    rec["cefr"] = book["cefr"]
+                out.append(rec)
+    return {
+        "count": int(packed.get("count") or 0),
+        "next": packed.get("next"),
+        "previous": packed.get("previous"),
+        "results": out,
+        "query": packed.get("query") or "",
+        "cefr": packed.get("cefr"),
+        "bilingual": True,
+    }
+
+
 def _fetch_by_ids(ids: list[int], *, languages: str | None) -> list[dict]:
     if not ids:
         return []

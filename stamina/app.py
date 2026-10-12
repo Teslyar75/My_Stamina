@@ -133,8 +133,14 @@ def run_app(argv: list[str] | None = None) -> None:
     if pid:
         from stamina import pilots
         pilots.activate(pid)
-    from stamina.cockpit import Cockpit
-    Cockpit().mainloop()
+    try:
+        from stamina.cockpit import Cockpit
+        Cockpit().mainloop()
+    except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
+        import traceback
+        from stamina import pilots
+        pilots.log_error(t("Ошибка пульта:\n") + traceback.format_exc(), "cockpit_error.log")
+        raise
 
 
 def relaunch() -> bool:

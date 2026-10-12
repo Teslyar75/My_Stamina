@@ -44,9 +44,13 @@ WPM_ESTIMATE = 230  # для «времени до конца»
 _SENT_SPLIT = re.compile(r"(?<=[.!?…])\s+")
 # куски для UPLINK: GET Google/MyMemory ломаются на длинных URL (особенно fullscreen-страницы)
 _TR_CHUNK = 800  # крупнее куски = меньше запросов = меньше 429
-_TR_BOOK_INFLIGHT = 8  # одновременно в сети (fullscreen-страница длиннее)
-_TR_PREFETCH_AHEAD = 2   # запас вперёд (текущая страница важнее prefetch)
-_TR_PREFETCH_BEHIND = 2  # запас назад — ← и возврат не сбрасывают перевод
+_TR_BOOK_INFLIGHT = 10  # одновременно в сети (fullscreen-страница длиннее)
+_TR_PREFETCH_AHEAD = 2   # запас страниц вперёд (текущая вёрстка)
+_TR_PREFETCH_BEHIND = 2  # запас страниц назад
+# запас по символам текста — переживает смену окна ↔ FS (страницы «перекраиваются»)
+_TR_SPAN_AHEAD = 14000
+_TR_SPAN_BEHIND = 4000
+_TR_WARM_MAX = 400  # предложений при фоновом прогреве книги
 
 
 def _split_words(text: str) -> list[tuple[int, int]]:
@@ -191,6 +195,106 @@ def _paginate_spread(flat: list[tuple[str, str]], *, cols: int, col_h: int,
         if n == 0:
             break
     return pages
+
+
+def _sentence_spans(para: str, origin: int) -> list[tuple[int, str]]:
+    """Абсолютные смещения предложений внутри абзаца."""
+    para_s = para.strip()
+    if not para_s:
+        return []
+    bits = [b.strip() for b in _SENT_SPLIT.split(para_s) if b.strip()] or [para_s]
+    out: list[tuple[int, str]] = []
+    pos = 0
+    # ищем в исходном para (с возможными пробелами в начале)
+    base = para
+    for b in bits:
+        idx = base.find(b, pos)
+        if idx < 0:
+            idx = pos
+        out.append((origin + idx, b))
+        pos = idx + len(b)
+    return out
+
+
+def _paginate_bilingual_sentences(
+    paras: list[str],
+    para_origins: list[int],
+    *,
+    font: tkfont.Font,
+    text_w: int,
+    indent: int,
+    col_h: int,
+    lh: int,
+    para_gap: int,
+    cache: dict,
+) -> tuple[list[dict], list[int]]:
+    """Страницы 2 ЯЗЫКА: колонка не режет предложение посередине (если оно влезает целиком).
+
+    Слева и справа — один и тот же смысловой объём; UPLINK-ключи стабильны при смене FS.
+    """
+    # unit: lines [(text, kind)], offs [...], height с учётом para_gap в начале
+    units: list[dict] = []
+    for para, origin in zip(paras, para_origins):
+        spans = _sentence_spans(para, origin)
+        for si, (s_origin, sent) in enumerate(spans):
+            first_indent = indent if si == 0 else 0
+            wrapped, offs = _wrap_para_offs(
+                sent, font, text_w, first_indent=first_indent, cache=cache, origin=s_origin)
+            lines: list[tuple[str, str]] = []
+            for i, ln in enumerate(wrapped):
+                if si == 0 and i == 0:
+                    kind = "first"
+                else:
+                    kind = "cont"
+                lines.append((ln, kind))
+            h = 0
+            for i, (_ln, kind) in enumerate(lines):
+                h += lh + (para_gap if kind == "first" and i == 0 else 0)
+            h_no_gap = h - (para_gap if lines and lines[0][1] == "first" else 0)
+            units.append({
+                "lines": lines,
+                "offs": list(offs),
+                "height": h,
+                "height_no_gap": max(lh, h_no_gap),
+                "para_start": si == 0,
+            })
+
+    pages: list[dict] = []
+    line_starts: list[int] = []
+    i = 0
+    n = len(units)
+    while i < n or not pages:
+        col_lines: list[tuple[str, str]] = []
+        used = 0
+        start_line = len(line_starts)
+        while i < n:
+            u = units[i]
+            need = u["height"] if (col_lines and u["para_start"]) else u["height_no_gap"]
+            if not col_lines:
+                need = u["height"] if u["para_start"] else u["height_no_gap"]
+            if col_lines and used + need > col_h:
+                break
+            if not col_lines and need > col_h:
+                # одно гигантское предложение — режем по строкам (редко)
+                for (ln, kind), off in zip(u["lines"], u["offs"]):
+                    row_need = lh + (para_gap if kind == "first" and col_lines else 0)
+                    if col_lines and used + row_need > col_h:
+                        pages.append({"cols": [col_lines], "start_line": start_line})
+                        col_lines, used, start_line = [], 0, len(line_starts)
+                    used += row_need
+                    col_lines.append((ln, kind))
+                    line_starts.append(off)
+                i += 1
+                continue
+            used += need
+            for (ln, kind), off in zip(u["lines"], u["offs"]):
+                col_lines.append((ln, kind))
+                line_starts.append(off)
+            i += 1
+        pages.append({"cols": [col_lines], "start_line": start_line})
+        if n == 0:
+            break
+    return pages, line_starts
 
 
 class BookReaderPage(tk.Frame):
@@ -366,10 +470,12 @@ class BookReaderPage(tk.Frame):
         btn("A+", lambda: self.font_delta(+1), _t("Крупнее шрифт (+)"), width=34)
 
         self.mode_btns = {}
+        bi_tip = _t("Слева оригинал, справа готовый перевод книги") if self._fixed_bilingual() else (
+            _t("Слева оригинал книги, справа перевод UPLINK"))
         for key, lab, tip, w in (
             ("page", _t("1 СТР"), _t("Одна страница по центру"), 64),
             ("spread", _t("РАЗВОРОТ"), _t("Две страницы, как открытая книга"), 88),
-            ("bilingual", _t("2 ЯЗЫКА"), _t("Слева оригинал книги, справа перевод"), 80),
+            ("bilingual", _t("2 ЯЗЫКА"), bi_tip, 80),
             ("scroll", _t("ПРОКРУТКА"), _t("Непрерывный текст"), 88),
         ):
             b = btn(lab, lambda k=key: self.set_mode(k), tip, width=w)
@@ -579,6 +685,8 @@ class BookReaderPage(tk.Frame):
         if mode == "bilingual":
             self._refresh_tr_dir()
             self._tr_last_drawn_missing = -1
+            if not self._fixed_bilingual():
+                self.after(400, self._warm_book_translation)
         self._build_surface(self._page_host())
         self._build_top_bar(self.top_bar)
         self._sync_mode_btns()
@@ -660,6 +768,19 @@ class BookReaderPage(tk.Frame):
         self._apply_theme()
         self.after(30, lambda: self._relayout(keep_char=char))
         self.focus_set()
+        # фоновый UPLINK только для обычных книг; у bilingual перевод уже в файле
+        if self.mode == "bilingual" and not self._fixed_bilingual():
+            self.after(600, self._warm_book_translation)
+
+    def _book_meta(self) -> dict | None:
+        return self.ctx.lib.meta(self.tid) if self.tid else None
+
+    def _fixed_bilingual(self) -> bool:
+        """Книга с готовым translation.txt — без UPLINK."""
+        from stamina.library import is_bilingual
+        if not is_bilingual(self._book_meta()):
+            return False
+        return bool(self.ctx.lib.translation(self.tid or ""))
 
     def refresh(self) -> None:
         if self.tid is None:
@@ -855,16 +976,22 @@ class BookReaderPage(tk.Frame):
             para_origins.append(idx)
             pos = idx + len(para)
 
-        self._line_starts = []
-        flat: list[tuple[str, str]] = []
-        for para, origin in zip(self.paras, para_origins):
-            wrapped, offs = _wrap_para_offs(para, font, text_w, first_indent=indent,
-                                            cache=cache, origin=origin)
-            for i, (ln, off) in enumerate(zip(wrapped, offs)):
-                self._line_starts.append(off)
-                flat.append((ln, "first" if i == 0 else "cont"))
-
-        self._pages = _paginate_spread(flat, cols=paginate_cols, col_h=col_h, lh=lh, para_gap=para_gap)
+        if self.mode == "bilingual":
+            # целые предложения на странице — стабильные ключи TR при смене окна/FS
+            self._pages, self._line_starts = _paginate_bilingual_sentences(
+                self.paras, para_origins, font=font, text_w=text_w, indent=indent,
+                col_h=col_h, lh=lh, para_gap=para_gap, cache=cache)
+        else:
+            self._line_starts = []
+            flat: list[tuple[str, str]] = []
+            for para, origin in zip(self.paras, para_origins):
+                wrapped, offs = _wrap_para_offs(para, font, text_w, first_indent=indent,
+                                                cache=cache, origin=origin)
+                for i, (ln, off) in enumerate(zip(wrapped, offs)):
+                    self._line_starts.append(off)
+                    flat.append((ln, "first" if i == 0 else "cont"))
+            self._pages = _paginate_spread(flat, cols=paginate_cols, col_h=col_h, lh=lh,
+                                          para_gap=para_gap)
         self._page_tr_cache = {}
         self._goto_char(keep_char, save=False)
 
@@ -959,8 +1086,11 @@ class BookReaderPage(tk.Frame):
         def paint_col2(x0, y0, pw, ph, lines: list[tuple[str, str]], *,
                        cont_from_prev: bool = False, label: str = "",
                        use_font=None, use_font_obj=None, use_lh=None, use_gap=None,
-                       use_indent=None, use_text_w=None, use_cache=None):
-            """cont_from_prev: первая строка — продолжение абзаца с левой страницы."""
+                       use_indent=None, use_text_w=None, use_cache=None,
+                       justify: bool = True):
+            """cont_from_prev: первая строка — продолжение абзаца с левой страницы.
+            justify=False — без растягивания пробелов (режим 2 ЯЗЫКА: важен смысл, не «залить» лист).
+            """
             fnt = use_font if use_font is not None else font
             fobj = use_font_obj if use_font_obj is not None else font_obj
             line_h = use_lh if use_lh is not None else lh
@@ -990,7 +1120,9 @@ class BookReaderPage(tk.Frame):
                     y += gap
                 x = tx0 + (ind if kind == "first" else 0)
                 width = tw - (ind if kind == "first" else 0)
-                if i + 1 < len(lines):
+                if not justify:
+                    is_last = True
+                elif i + 1 < len(lines):
                     is_last = lines[i + 1][1] == "first"
                 else:
                     is_last = not cont_from_prev
@@ -1017,21 +1149,24 @@ class BookReaderPage(tk.Frame):
             right, right_pt, right_indent = self._bilingual_right_lines(
                 left, text_w=col_text_w, col_h=max(40, book_h - pad_y * 2))
             sl, tl = self._tr_dir
-            paint_col2(bx, by, page_w, book_h, left, label=_t("ОРИГИНАЛ · {0}").format(sl.upper()))
+            # без выключки: одинаковое число предложений важнее «заливки» листа
+            paint_col2(bx, by, page_w, book_h, left,
+                       label=_t("ОРИГИНАЛ · {0}").format(sl.upper()), justify=False)
             rx = bx + page_w + spine
             r_spec = _reading_font(right_pt)
             r_font_obj = tkfont.Font(font=r_spec)
             r_lh = max(1, int(round(r_font_obj.metrics("linespace") * self._line_space())))
             r_gap = max(1, int(r_lh * (0.35 if right_pt >= self._font_pt() - 2 else 0.2)))
-            # свой кэш ширин — общий _measure_cache от другого кегля ломает выключку/поля
             paint_col2(rx, by, page_w, book_h, right,
                        label=_t("ПЕРЕВОД · {0}").format(tl.upper()),
                        use_font=r_spec, use_font_obj=r_font_obj, use_lh=r_lh, use_gap=r_gap,
-                       use_indent=right_indent, use_text_w=col_text_w, use_cache={})
-            self._paint_tr_countdown(c, rx, by, page_w, book_h, th)
+                       use_indent=right_indent, use_text_w=col_text_w, use_cache={},
+                       justify=False)
+            if not self._fixed_bilingual():
+                self._paint_tr_countdown(c, rx, by, page_w, book_h, th)
+                self._ensure_tr_poll()
+                self._ensure_tr_eta_tick()
             draw_spine(bx + page_w)
-            self._ensure_tr_poll()
-            self._ensure_tr_eta_tick()
         elif draw_cols == 2:
             left = col_lists[0] if col_lists else []
             right = col_lists[1] if len(col_lists) > 1 else []
@@ -1202,8 +1337,22 @@ class BookReaderPage(tk.Frame):
             chunks.extend(self._tr_chunks(para))
         return chunks
 
+    def _span_src_chunks(self, start_char: int, end_char: int) -> list[str]:
+        """Предложения из диапазона символов книги (не зависят от текущей вёрстки)."""
+        if not self.text:
+            return []
+        a = max(0, min(int(start_char), len(self.text)))
+        b = max(a, min(int(end_char), len(self.text)))
+        snippet = self.text[a:b].strip()
+        if not snippet:
+            return []
+        chunks: list[str] = []
+        for para in ([p.strip() for p in snippet.split("\n\n") if p.strip()] or [snippet]):
+            chunks.extend(self._tr_chunks(para))
+        return chunks
+
     def _queue_book_window(self, tr, sl: str, tl: str) -> None:
-        """Окно: назад + текущая + вперёд. Текущую страницу ставим целиком (иначе FS «висит»)."""
+        """Текущая страница + соседние + запас по символам (для перехода окно↔FS)."""
         if not self._pages:
             return
         cur = self._page_i
@@ -1214,9 +1363,9 @@ class BookReaderPage(tk.Frame):
         slots = max(0, _TR_BOOK_INFLIGHT - already)
         guard = time.monotonic() < self._tr_fs_guard_until
 
-        def enqueue(page_i: int, priority: int, *, unlimited: bool = False) -> None:
+        def enqueue_chunks(chunks: list[str], priority: int, *, unlimited: bool = False) -> None:
             nonlocal slots
-            for chunk in self._page_src_chunks(page_i):
+            for chunk in chunks:
                 k = tr.key(chunk, sl, tl)
                 keep.add(k)
                 if self._lookup_tr(tr, chunk, sl, tl):
@@ -1227,17 +1376,49 @@ class BookReaderPage(tk.Frame):
                 if not unlimited:
                     slots -= 1
 
+        def enqueue_page(page_i: int, priority: int, *, unlimited: bool = False) -> None:
+            enqueue_chunks(self._page_src_chunks(page_i), priority, unlimited=unlimited)
+
         # текущая — все куски, приоритет 0 (fullscreen: длинная колонка)
-        enqueue(cur, 0, unlimited=True)
+        enqueue_page(cur, 0, unlimited=True)
+        # запас по тексту вокруг позиции — покрывает FS, где «страница» длиннее
+        try:
+            anchor = self._page_start_char()
+        except Exception:
+            anchor = 0
+        span_chunks = self._span_src_chunks(anchor - _TR_SPAN_BEHIND, anchor + _TR_SPAN_AHEAD)
+        enqueue_chunks(span_chunks, 1, unlimited=True)
         already = tr.inflight("book")
         slots = max(0, _TR_BOOK_INFLIGHT - already)
         for dist, pi in enumerate(range(cur - 1, start - 1, -1), start=1):
-            enqueue(pi, 1)
+            enqueue_page(pi, 2)
         for dist, pi in enumerate(range(cur + 1, end), start=1):
-            enqueue(pi, 3 + dist)
+            enqueue_page(pi, 3 + dist)
         # во время перехода FS не отменять — иначе рвёт уже идущие запросы
+        # book_warm не трогаем — фоновый прогрев книги
         if not guard:
             tr.cancel_group("book", keep=keep)
+
+    def _warm_book_translation(self) -> None:
+        """Фоновый прогрев: предложения книги в кэш UPLINK (низкий приоритет)."""
+        if self.mode != "bilingual" or not self.text.strip() or self._fixed_bilingual():
+            return
+        try:
+            tr = self.ctx.app.get_translator()
+        except Exception:
+            return
+        if tr is None:
+            return
+        sl, tl = self._tr_dir
+        n = 0
+        for para in self.paras or [self.text]:
+            for chunk in self._tr_chunks(para):
+                if self._lookup_tr(tr, chunk, sl, tl, fuzzy=False):
+                    continue
+                tr.request(chunk, sl, tl, priority=8, group="book_warm")
+                n += 1
+                if n >= _TR_WARM_MAX:
+                    return
 
     def _wrap_fit_column(self, paras: list[str], *, text_w: int, col_h: int
                          ) -> tuple[list[tuple[str, str]], int, int]:
@@ -1270,6 +1451,31 @@ class BookReaderPage(tk.Frame):
                 return flat, pt, ind
         return best, best_pt, best_ind
 
+    def _fixed_bilingual_paras(self, left_plain: str) -> list[str]:
+        """Сопоставить абзацы оригинала на странице с translation.txt (по индексу)."""
+        from stamina.speedread.text_norm import paragraphs as _paras
+        tr_text = self.ctx.lib.translation(self.tid or "") if self.tid else ""
+        if not tr_text.strip():
+            return [_t("(нет файла перевода)")]
+        orig_paras = [p.strip() for p in (self.paras or _paras(self.text)) if p.strip()]
+        tr_paras = [p.strip() for p in _paras(tr_text) if p.strip()]
+        if not orig_paras or not tr_paras:
+            return tr_paras[:3] or [_t("(пустой перевод)")]
+        left_paras = [p.strip() for p in left_plain.split("\n\n") if p.strip()] or [left_plain.strip()]
+        # индекс первого абзаца страницы в книге
+        start = 0
+        head = " ".join((left_paras[0] or "").split())[:48]
+        if head:
+            for i, p in enumerate(orig_paras):
+                if " ".join(p.split()).startswith(head[:32]) or head[:32] in " ".join(p.split()):
+                    start = i
+                    break
+        n = max(1, len(left_paras))
+        chunk = tr_paras[start:start + n]
+        if not chunk and start < len(tr_paras):
+            chunk = tr_paras[start:start + 1]
+        return chunk or [_t("(нет абзаца перевода)")]
+
     def _bilingual_right_lines(self, left: list[tuple[str, str]], *,
                                text_w: int | None = None,
                                col_h: int | None = None
@@ -1284,6 +1490,21 @@ class BookReaderPage(tk.Frame):
         if not src_paras and plain.strip():
             src_paras = [plain.strip()]
 
+        if not plain.strip():
+            empty: list[tuple[str, str]] = []
+            self._bilingual_right_pt = self._font_pt()
+            return empty, self._font_pt(), 0
+
+        # готовая двуязычная книга — без UPLINK
+        if self._fixed_bilingual():
+            self._tr_pending_pages.discard(pi)
+            self._tr_wait_until = 0.0
+            self._tr_wait_missing = 0
+            out_paras = self._fixed_bilingual_paras(plain)
+            flat, pt, ind = self._wrap_fit_column(out_paras, text_w=tw, col_h=ch)
+            self._bilingual_right_pt = pt
+            return flat, pt, ind
+
         tr = None
         try:
             tr = self.ctx.app.get_translator()
@@ -1294,10 +1515,6 @@ class BookReaderPage(tk.Frame):
         waiting = False
         missing_total = 0
         out_paras: list[str] = []
-        if not plain.strip():
-            empty: list[tuple[str, str]] = []
-            self._bilingual_right_pt = self._font_pt()
-            return empty, self._font_pt(), 0
         mem_key = (sl, tl, plain)
         if tr is None:
             out_paras = [_t("Переводчик недоступен.")]
@@ -1626,7 +1843,7 @@ class BookReaderPage(tk.Frame):
         self._page_tr_cache.clear()
         self._tr_last_drawn_missing = -1
         # mem предложений / Translator не трогаем — иначе FS теряет уже загруженный перевод
-        self._tr_fs_guard_until = time.monotonic() + 2.8
+        self._tr_fs_guard_until = time.monotonic() + 4.5
         self._fullscreen = True
         self.ctx.set_focus_mode(True)
         self._layout_key = None

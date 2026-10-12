@@ -18,6 +18,7 @@ class RadioMiniBar(tk.Frame):
                          highlightthickness=1, highlightbackground=blend(BG, CYAN, 0.35))
         self.app = app
         self.eng = get_engine()
+        self.eng.bind_ui(app)
         self._packed = False
 
         self.lbl = tk.Label(self, text="", bg=self["bg"], fg=CYAN,
@@ -50,8 +51,10 @@ class RadioMiniBar(tk.Frame):
                 scr.show("receiver")
 
     def _on_eng(self) -> None:
+        # главный поток (RadioEngine); after из фона плеера на Windows зависает
         try:
-            self.after(0, self._refresh)
+            if self.winfo_exists():
+                self._refresh()
         except tk.TclError:
             pass
 

@@ -15,12 +15,15 @@ from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MU
                            TEXT, blend, px)
 
 from stamina import library as libmod
+from stamina.library import allows_edit, allows_print, book_badges, is_bilingual
 
 from .book_reader import BookReaderPage
 from .exercises import CATALOG, FlashEx, PyramidEx, SchulteEx, best_text
 from .reader import ReaderPage
 from .store import SpeedStore
 from .ui import HudButton, HudPanel, L, ScrollFrame, Toggle, WpmChart, entry
+
+_BADGE_COL = {"green": GREEN, "cyan": CYAN, "amber": AMBER, "red": RED, "muted": MUTED}
 
 TABS = [("overview", _t("ОБЗОР")), ("reader", _t("ГИПЕРДРАЙВ")), ("book", _t("КНИГА")),
         ("exercises", _t("ТРЕНАЖЁРЫ")), ("library", _t("БИБЛИОТЕКА")), ("journal", _t("ЖУРНАЛ")),
@@ -44,6 +47,10 @@ def pct(a: int, b: int) -> str:
 
 
 class SpeedReadScreen(tk.Frame):
+    def page_help_key(self) -> str:
+        sub = self.current or "overview"
+        return f"speedread.{sub}"
+
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
         self.app = app
@@ -53,14 +60,20 @@ class SpeedReadScreen(tk.Frame):
         self.migration_report: dict | None = None
         self.bar = tk.Frame(self, bg=BG)
         self.bar.pack(fill=tk.X, padx=px(14), pady=(px(8), px(6)))
-        L(self.bar, _t("СКОРОЧТЕНИЕ"), fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(14)))
+        L(self.bar, _t("СКОРОЧТЕНИЕ"), fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(10)))
+        HudButton(self.bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
+        self.lbl_info = L(self.bar, "", fg=MUTED, size=8, bold=True, bg=BG)
+        self.lbl_info.pack(side=tk.RIGHT, padx=px(8))
         self.tab_btns: dict[str, HudButton] = {}
         for key, title in TABS:
-            b = HudButton(self.bar, title, lambda k=key: self.show(k), height=30, font_size=9)
+            if key == "book":
+                # вкладка «КНИГА» = та же книга, что в гипердрайве (не «чужой» tid в читалке)
+                b = HudButton(self.bar, title, self.open_current_book, height=30, font_size=9)
+            else:
+                b = HudButton(self.bar, title, lambda k=key: self.show(k), height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(2))
             self.tab_btns[key] = b
-        self.lbl_info = L(self.bar, "", fg=MUTED, size=8, bold=True, bg=BG)
-        self.lbl_info.pack(side=tk.RIGHT)
         self.body = tk.Frame(self, bg=BG)
         self.body.pack(fill=tk.BOTH, expand=True)
         self.body.grid_rowconfigure(0, weight=1)
@@ -133,12 +146,15 @@ class SpeedReadScreen(tk.Frame):
         if name == "book":
             bk: BookReaderPage = self.pages["book"]
             if bk.tid is None:
-                tid = self.lib.index.get("active_reading") or (self.lib.ids() or [None])[0]
+                # явный read_book() уже выставил tid; иначе — гипердрайв / active
+                rd = self.pages["reader"]
+                tid = rd.tid or self.lib.index.get("active_reading") or (self.lib.ids() or [None])[0]
                 if tid is None:
                     self.app.set_status(_t("БИБЛИОТЕКА ПУСТА — добавьте текст"), AMBER)
                     name = "library"
                 else:
-                    bk.open(tid)
+                    word = rd.pos if rd.tid == tid else None
+                    bk.open(tid, word=word)
         if name == "exercises":
             self.pages["exercises"].show_catalog()
         self.current = name
@@ -159,9 +175,31 @@ class SpeedReadScreen(tk.Frame):
         self.show("reader")
 
     def read_book(self, tid: str, word: int | None = None) -> None:
-        """Открыть в обычной читалке «КНИГА»."""
+        """Открыть конкретный текст в обычной читалке «КНИГА»."""
         self.pages["book"].open(tid, word=word)
         self.show("book")
+
+    def open_current_book(self) -> None:
+        """Читалка «КНИГА» для книги, над которой работа в гипердрайве (позиция та же)."""
+        rd: ReaderPage = self.pages["reader"]
+        if self.current == "reader" and rd.state == "run":
+            rd.pause()
+        tid = rd.tid or self.lib.index.get("active_reading") or (self.lib.ids() or [None])[0]
+        if tid is None:
+            self.app.set_status(_t("БИБЛИОТЕКА ПУСТА — добавьте текст"), AMBER)
+            self.show("library")
+            return
+        word = None
+        if rd.tid == tid:
+            try:
+                rd._save_pos()
+            except Exception:
+                pass
+            word = int(getattr(rd, "pos", 0) or 0)
+        self.read_book(tid, word=word)
+        m = self.lib.meta(tid) or {}
+        title = (m.get("title") or tid)[:48]
+        self.app.set_status(_t("Книга из гипердрайва: {0}").format(title), GREEN)
 
     def set_focus_mode(self, on: bool) -> None:
         if on:
@@ -239,8 +277,8 @@ class OverviewPage(tk.Frame):
         row.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
         self.btn_go = HudButton(row, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.show("reader"), color=AMBER, height=40)
         self.btn_go.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        HudButton(row, _t("📖 КНИГА"), lambda: self.ctx.show("book"), color=GREEN, height=40, width=100).pack(
-            side=tk.LEFT, padx=(px(6), 0))
+        HudButton(row, _t("📖 КНИГА"), lambda: self.ctx.open_current_book(), color=GREEN, height=40,
+                  width=100).pack(side=tk.LEFT, padx=(px(6), 0))
         HudButton(row, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=40, width=120).pack(
             side=tk.LEFT, padx=(px(6), 0))
         chart = HudPanel(top, _t("СКОРОСТЬ ПО СЕССИЯМ · СЛОВ/МИН (ЦИАН) · С ПОНИМАНИЕМ (ЗЕЛЁНЫЙ)"))
@@ -400,17 +438,25 @@ class LibraryPage(tk.Frame):
         left.pack_propagate(False)
         acts = tk.Frame(left.body, bg=PANEL)
         acts.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(6), 0))
+        bi_row = tk.Frame(left.body, bg=PANEL)
+        bi_row.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(4), 0))
         net = tk.Frame(left.body, bg=PANEL)
         net.pack(fill=tk.X, side=tk.BOTTOM, pady=(px(4), 0))
         HudButton(net, _t("★ СВОБОДНЫЕ КНИГИ"), self.open_free_catalog, color=AMBER, height=30,
                   font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
         HudButton(net, _t("🔍 ПОИСК"), self.open_book_search, color=CYAN, height=30, font_size=8).pack(
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
+        HudButton(bi_row, _t("＋ 2 ЯЗЫКА"), self.bilingual_dialog, color=GREEN, height=30,
+                  font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
         HudButton(acts, _t("＋ ОТКРЫТЬ .TXT"), self.open_file, height=32, font_size=8).pack(side=tk.LEFT, fill=tk.X, expand=True)
         HudButton(acts, _t("＋ ОТКРЫТЬ PDF"), self.open_pdf, height=32, font_size=8).pack(
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
         HudButton(acts, _t("＋ ВСТАВИТЬ"), self.paste_dialog, height=32, font_size=8).pack(
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
+        legend = L(left.body,
+                   _t("Значки: 2ЯЗ — готовый перевод · ⌀ред. — без правки · ⌀печ. — не в набор · PD/MT — источник"),
+                   fg=MUTED, size=7, bg=PANEL, wraplength=px(340), justify="left", anchor="w")
+        legend.pack(fill=tk.X, pady=(px(4), px(2)))
         self.list = ScrollFrame(left.body, bg=PANEL)
         self.list.pack(fill=tk.BOTH, expand=True)
         self.detail = HudPanel(self, _t("ПАСПОРТ ТЕКСТА"), accent=AMBER)
@@ -427,14 +473,25 @@ class LibraryPage(tk.Frame):
             row = tk.Frame(self.list.inner, bg=blend(CYAN, BG, 0.8) if on else PANEL, cursor="hand2")
             row.pack(fill=tk.X, pady=1)
             s, col = STATUS_RU.get(m["original"]["status"], ("", MUTED))
-            t = L(row, m["title"], fg=TEXT, size=10, bold=True, bg=row["bg"], anchor="w")
-            t.pack(fill=tk.X, padx=px(8), pady=(px(4), 0))
+            title_fr = tk.Frame(row, bg=row["bg"])
+            title_fr.pack(fill=tk.X, padx=px(8), pady=(px(4), 0))
+            t = L(title_fr, m["title"], fg=TEXT, size=10, bold=True, bg=row["bg"], anchor="w")
+            t.pack(side=tk.LEFT, fill=tk.X, expand=True)
+            badge_fr = tk.Frame(title_fr, bg=row["bg"])
+            badge_fr.pack(side=tk.RIGHT)
+            clickable = [row, title_fr, t, badge_fr]
+            for code, ck in book_badges(m):
+                bc = _BADGE_COL.get(ck, MUTED)
+                bl = L(badge_fr, f" {code} ", fg=bc, size=7, bold=True, bg=blend(bc, BG, 0.82))
+                bl.pack(side=tk.LEFT, padx=px(1))
+                clickable.append(bl)
             sub = _t("{0} · {1} · {2} сл.").format(m.get('author') or '—', m['lang'].upper(), m['original']['words'] or '?')
             a = L(row, sub, fg=MUTED, size=8, bg=row["bg"], anchor="w")
             a.pack(fill=tk.X, padx=px(8))
             c = L(row, "● " + s, fg=col, size=7, bold=True, bg=row["bg"], anchor="w")
             c.pack(fill=tk.X, padx=px(8), pady=(0, px(4)))
-            for w in (row, t, a, c):
+            clickable.extend([a, c])
+            for w in clickable:
                 w.bind("<Button-1>", lambda _e, i=m["id"]: self.select(i))
         if not metas:
             L(self.list.inner, _t("Пусто. Добавьте текст: «Открыть .txt» или «Вставить».\nТексты из «Своего текста» попадают сюда сами."), fg=MUTED, size=9,
@@ -460,24 +517,55 @@ class LibraryPage(tk.Frame):
         chips = tk.Frame(b, bg=PANEL)
         chips.pack(anchor="w", pady=px(8))
         s, col = STATUS_RU.get(m["original"]["status"], ("", MUTED))
-        for text, c in ((s, col), (m["lang"].upper(), CYAN),
-                        (_t("ПЕЧАТЬ: ") + (_t("без заглавных") if m["prepared"]["opts"].get("lower") else _t("с заглавными")), MUTED)):
-            L(chips, f" {text} ", fg=c, size=8, bold=True, bg=blend(c, BG, 0.82)).pack(side=tk.LEFT, padx=(0, px(6)))
+        chip_items = [(s, col), (m["lang"].upper(), CYAN)]
+        for code, ck in book_badges(m):
+            chip_items.append((code, _BADGE_COL.get(ck, MUTED)))
+        if allows_print(m):
+            chip_items.append(
+                (_t("ПЕЧАТЬ: ") + (_t("без заглавных") if m["prepared"]["opts"].get("lower") else _t("с заглавными")),
+                 MUTED))
+        else:
+            chip_items.append((_t("ПЕЧАТЬ ЗАКРЫТА"), AMBER))
+        for text, c in chip_items:
+            if not text:
+                continue
+            L(chips, f" {text} ", fg=c, size=8, bold=True, bg=blend(c, BG, 0.82)).pack(
+                side=tk.LEFT, padx=(0, px(6)))
+        if is_bilingual(m):
+            bi = m.get("bilingual") or {}
+            la = (bi.get("lang_a") or "?").upper()
+            lb = (bi.get("lang_b") or "?").upper()
+            L(b, _t("Готовый перевод ({0}→{1}, {2}). Без правки текста, без печати, без UPLINK «2 ЯЗЫКА». "
+                    "Гипердрайв — выбор языка потока, без перевода под словом.").format(
+                        la, lb,
+                        {"pd": "PD", "mt": "MT", "mixed": "PD+MT"}.get(bi.get("source"), "?")),
+              fg=GREEN, size=9, wraplength=px(560), justify="left", anchor="w").pack(
+                fill=tk.X, pady=(0, px(6)))
+            if la == lb:
+                L(b, _t("⚠ Оба потока помечены одним языком — похоже, скачались два текста на одном языке "
+                        "(не перевод). Удалите книгу и скачайте снова с языком перевода DE/FR/…"),
+                  fg=AMBER, size=9, wraplength=px(560), justify="left", anchor="w").pack(
+                    fill=tk.X, pady=(0, px(6)))
         words = m["original"]["words"] or len(lib.prepared(tid).split())
         rw = m["positions"]["reading"].get("word", 0)
-        tw = lib.typing_word(tid)
-        tp = lib.typing_position(tid)
-        info = (_t("ВЕРСИЯ ДЛЯ ЧТЕНИЯ   {0:,} зн. · {1:,} слов\nВЕРСИЯ ДЛЯ ПЕЧАТИ   {2:,} зн.\nЧТЕНИЕ              слово {3:,} ({4})\nПЕЧАТЬ              знак {5:,} ({6})").format(m['original']['chars'], words, m['prepared']['chars'], rw, pct(rw, words), tp, pct(tp, m['prepared']['chars']))
-                + (_t(" ≈ слово {0:,}").format(tw) if tw else "")).replace(",", " ")
+        tw = lib.typing_word(tid) if allows_print(m) else 0
+        tp = lib.typing_position(tid) if allows_print(m) else 0
+        if is_bilingual(m):
+            tr_words = (m.get("bilingual") or {}).get("translation_words") or len(lib.translation(tid).split())
+            info = (_t("ОРИГИНАЛ   {0:,} зн. · {1:,} слов\nПЕРЕВОД    {2:,} слов\nЧТЕНИЕ     слово {3:,} ({4})").format(
+                m["original"]["chars"], words, tr_words, rw, pct(rw, words))).replace(",", " ")
+        else:
+            info = (_t("ВЕРСИЯ ДЛЯ ЧТЕНИЯ   {0:,} зн. · {1:,} слов\nВЕРСИЯ ДЛЯ ПЕЧАТИ   {2:,} зн.\nЧТЕНИЕ              слово {3:,} ({4})\nПЕЧАТЬ              знак {5:,} ({6})").format(m['original']['chars'], words, m['prepared']['chars'], rw, pct(rw, words), tp, pct(tp, m['prepared']['chars']))
+                    + (_t(" ≈ слово {0:,}").format(tw) if tw else "")).replace(",", " ")
         L(b, info, fg=TEXT, size=10, mono=True, justify="left", anchor="w").pack(fill=tk.X)
         if m["original"].get("note"):
             L(b, m["original"]["note"], fg=MUTED, size=8, anchor="w", wraplength=px(560),
               justify="left").pack(fill=tk.X, pady=(px(4), 0))
-        if m["original"]["status"] == "missing":
+        if m["original"]["status"] == "missing" and allows_edit(m):
             L(b, _t("Оригинал не найден: гипердрайв покажет подготовленный текст (без заглавных и знаков). Привяжите файл с оригиналом — позиции сохранятся."), fg=AMBER, size=9,
               wraplength=px(560), justify="left", anchor="w").pack(fill=tk.X, pady=(px(6), 0))
         offer = m.get("full_source_offer")
-        if offer and not offer.get("asked"):
+        if offer and not offer.get("asked") and allows_edit(m):
             box = tk.Frame(b, bg=blend(GREEN, BG, 0.85), padx=px(10), pady=px(8))
             box.pack(fill=tk.X, pady=(px(10), 0))
             L(box, _t("Найден полный файл книги. Печатаете вы фрагмент — а читать можно всю книгу целиком (отдельной записью; печать не изменится)."), fg=TEXT, size=9, bg=box["bg"],
@@ -494,12 +582,13 @@ class LibraryPage(tk.Frame):
             side=tk.LEFT, padx=(0, px(6)))
         HudButton(acts, _t("📖 КНИГА"), lambda: self.ctx.read_book(tid), color=GREEN, height=40).pack(
             side=tk.LEFT, padx=(0, px(6)))
-        if tw:
+        if tw and allows_print(m):
             HudButton(acts, _t("ГИПЕРДРАЙВ С МЕСТА ПЕЧАТИ"), lambda: self.ctx.read(tid, tw), height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, _t("⌨ ПЕЧАТАТЬ"), lambda: self.type_text(tid), color=CYAN, height=40).pack(
-            side=tk.LEFT, padx=(0, px(6)))
-        if m["original"]["status"] == "missing":
+        if allows_print(m):
+            HudButton(acts, _t("⌨ ПЕЧАТАТЬ"), lambda: self.type_text(tid), color=CYAN, height=40).pack(
+                side=tk.LEFT, padx=(0, px(6)))
+        if m["original"]["status"] == "missing" and allows_edit(m):
             HudButton(acts, _t("ПРИВЯЗАТЬ ОРИГИНАЛ"), lambda: self.attach(tid), color=AMBER, height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
         HudButton(acts, _t("ПЕРЕИМЕНОВАТЬ"), lambda: self.rename(tid), height=40).pack(side=tk.LEFT, padx=(0, px(6)))
@@ -588,6 +677,29 @@ class LibraryPage(tk.Frame):
         HudButton(dlg, _t("СОХРАНИТЬ В БИБЛИОТЕКУ"), ok, color=GREEN, height=36).pack(pady=(0, px(10)))
         e.focus_set()
 
+    def bilingual_dialog(self) -> None:
+        """Каталог свободных книг 2ЯЗ (как «Свободные книги») или ручной импорт."""
+        from stamina.book_shelf import BookSearchDialog
+
+        def added(tid: str) -> None:
+            self.sel = tid
+            self.refresh()
+            m = self.ctx.lib.meta(tid) or {}
+            self.ctx.app.set_status(
+                _t("2ЯЗ: «{0}» — чтение и гипердрайв, печать закрыта").format(
+                    m.get("title") or tid),
+                GREEN)
+
+        def manual() -> None:
+            from stamina.bilingual_dialog import import_bilingual
+            m = import_bilingual(self, self.ctx.lib)
+            if not m:
+                return
+            added(m["id"])
+
+        BookSearchDialog(self, self.ctx.lib, opts=self._opts(), on_added=added,
+                         bilingual=True, on_manual=manual)
+
     def attach(self, tid: str) -> None:
         path = filedialog.askopenfilename(parent=self, title=_t("Файл с оригиналом"),
                                           filetypes=[(_t("Текст"), "*.txt"), (_t("Все файлы"), "*.*")])
@@ -665,6 +777,13 @@ class LibraryPage(tk.Frame):
 
     def type_text(self, tid: str) -> None:
         """Отправить текст в «Свой текст» с сохранённой позицией печати."""
+        m = self.ctx.lib.meta(tid)
+        if not allows_print(m):
+            messagebox.showinfo(
+                _t("Печать"),
+                _t("Эта книга с готовым переводом — в набор не отдаётся.\nОткройте её в «Книга» или гипердрайве."),
+                parent=self)
+            return
         from stamina.book_shelf import start_typing_from_library
         start_typing_from_library(self.ctx.app, self.ctx.lib, tid, parent=self)
 

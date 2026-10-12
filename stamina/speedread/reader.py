@@ -63,15 +63,36 @@ class ReaderPage(tk.Frame):
         self._build_pause()
         tk.Misc.tkraise(self.run_view)
 
+    def _book_meta(self) -> dict | None:
+        return self.ctx.lib.meta(self.tid) if self.tid else None
+
+    def _is_bilingual_book(self) -> bool:
+        from stamina.library import is_bilingual
+        return is_bilingual(self._book_meta())
+
     def _translate_on(self) -> bool:
+        from stamina.library import allows_rsvp_word_tr
+        if not allows_rsvp_word_tr(self._book_meta()):
+            return False
         return bool(self.st.get("rsvp_translate"))
+
+    def _rsvp_stream(self) -> str:
+        """a = оригинал, b = готовый перевод (только kind=bilingual)."""
+        if not self._is_bilingual_book():
+            return "a"
+        s = self.st.get("rsvp_bilingual_stream") or "a"
+        return "b" if s == "b" else "a"
 
     def _refresh_tr_dir(self) -> None:
         from stamina.translator import direction
         lang = ""
         if self.tid:
-            m = self.ctx.lib.meta(self.tid)
-            lang = (m or {}).get("lang") or ""
+            m = self.ctx.lib.meta(self.tid) or {}
+            if self._is_bilingual_book():
+                bi = m.get("bilingual") or {}
+                lang = bi.get("lang_b" if self._rsvp_stream() == "b" else "lang_a") or m.get("lang") or ""
+            else:
+                lang = m.get("lang") or ""
         if not lang and self.text:
             from stamina.langdetect import detect
             lang = detect(self.text[:4000])
@@ -99,7 +120,7 @@ class ReaderPage(tk.Frame):
             return
         self.tid = tid
         self.title = f"{m['title']}" + (f" · {m['author']}" if m.get("author") else "")
-        self.text = lib.reading_text(tid)
+        self.text = lib.reading_text(tid, stream=self._rsvp_stream())
         self.no_original = not lib.original(tid)
         self.words = rsvp.tokenize(self.text)
         self.starts = [w.start for w in self.words]
@@ -116,6 +137,10 @@ class ReaderPage(tk.Frame):
         self.state = "pause"
         self.sess = None
         self._refresh_tr_dir()
+        # панель паузы зависит от kind книги (поток языка / перевод под словом)
+        for w in self.pause_view.winfo_children():
+            w.destroy()
+        self._build_pause()
         self._show_pause()
 
     def stop_session(self, save: bool = True) -> None:
@@ -401,14 +426,33 @@ class ReaderPage(tk.Frame):
             b.pack(side=tk.RIGHT, padx=1)
             self.chunk_btns[n] = b
         self.toggles = {}
-        for key, title in (("orp", _t("КРАСНАЯ БУКВА (ORP)")), ("punct_pauses", _t("ПАУЗЫ НА ЗНАКАХ")),
-                           ("ramp", _t("ПЛАВНЫЙ РАЗГОН")), ("guides", _t("ПРИЦЕЛ")),
-                           ("rsvp_translate", _t("ПЕРЕВОД ПОД СЛОВОМ"))):
+        self._stream_btns = {}
+        toggle_keys = [("orp", _t("КРАСНАЯ БУКВА (ORP)")), ("punct_pauses", _t("ПАУЗЫ НА ЗНАКАХ")),
+                       ("ramp", _t("ПЛАВНЫЙ РАЗГОН")), ("guides", _t("ПРИЦЕЛ"))]
+        if not self._is_bilingual_book():
+            toggle_keys.append(("rsvp_translate", _t("ПЕРЕВОД ПОД СЛОВОМ")))
+        for key, title in toggle_keys:
             r = line(title)
             val = self.st[key] != "off" if key == "ramp" else bool(self.st.get(key))
             tg = Toggle(r, val, lambda v, k=key: self._toggle(k, v), width=70)
             tg.pack(side=tk.RIGHT)
             self.toggles[key] = tg
+        if self._is_bilingual_book():
+            r = line(_t("ЯЗЫК ПОТОКА"))
+            m = self._book_meta() or {}
+            bi = m.get("bilingual") or {}
+            la = (bi.get("lang_a") or "A").upper()
+            lb = (bi.get("lang_b") or "B").upper()
+            # если в метаданных ошибочно один код — подписи «ОРИГ / ПЕР», чтобы потоки различались
+            if la == lb:
+                lab_a, lab_b = _t("ОРИГ"), _t("ПЕР")
+            else:
+                lab_a, lab_b = la, lb
+            for stream, lab in (("a", lab_a), ("b", lab_b)):
+                b = HudButton(r, lab, lambda s=stream: self._set_rsvp_stream(s), height=26,
+                              font_size=9, width=48, active=(self._rsvp_stream() == stream))
+                b.pack(side=tk.RIGHT, padx=1)
+                self._stream_btns[stream] = b
         tp = HudPanel(right, _t("ТЕЛЕМЕТРИЯ СЕССИИ"), accent=LINE_HI)
         tp.pack(fill=tk.BOTH, expand=True, pady=(px(8), 0))
         self.lbl_tele = L(tp.body, "", fg=TEXT, size=9, mono=True, justify="left", anchor="nw")
@@ -422,6 +466,8 @@ class ReaderPage(tk.Frame):
         HudButton(acts, _t("⇤ В НАЧАЛО ГЛАВЫ  HOME"), lambda: self.jump("chapter", -1), height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
         HudButton(acts, _t("✓ ФИНИШ + ТЕСТ  ENTER"), lambda: self.finish(end=False), color=GREEN, height=42,
+                  font_size=10).pack(side=tk.LEFT, padx=px(3))
+        HudButton(acts, _t("📖 КНИГА"), lambda: self.ctx.open_current_book(), color=GREEN, height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
         HudButton(acts, _t("БИБЛИОТЕКА"), lambda: self.ctx.show("library"), height=42,
                   font_size=10).pack(side=tk.LEFT, padx=px(3))
@@ -595,6 +641,19 @@ class ReaderPage(tk.Frame):
         self._draw_run(full=True)
         if self.state == "pause":
             self._show_pause()
+
+    def _set_rsvp_stream(self, stream: str) -> None:
+        """Переключить язык потока для двуязычной книги (перезагрузка текста)."""
+        stream = "b" if stream == "b" else "a"
+        if self.st.get("rsvp_bilingual_stream") == stream and self.tid:
+            for s, b in getattr(self, "_stream_btns", {}).items():
+                b.set_active(s == stream)
+            return
+        self.st["rsvp_bilingual_stream"] = stream
+        self.ctx.sstore.save()
+        if self.tid:
+            pos = self.pos
+            self.open(self.tid, word=pos)
 
     # ------------------------------------------------------------------ translation
     def _translator(self):
