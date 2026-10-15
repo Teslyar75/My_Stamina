@@ -93,6 +93,8 @@ class Cockpit(tk.Tk):
         keynav.install(self, current_menu=lambda: self.nav_buttons.get(nav.zone_of(self.current) or ""), before_tab=self._tab_typing)
         from stamina.living_space import LivingSpace, DEFAULT_MODE
         self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
+        from stamina.idle.overlay import IdleController
+        self.idle = IdleController(self)   # слайдшоу простоя — только у скинов со slideshow
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
 
@@ -430,12 +432,14 @@ class Cockpit(tk.Tk):
         return HonorBoard(self.content, on_back=lambda: self.show(self._prev_screen or "bridge"),
                           active=self.pilot["id"] if self.pilot else None)
 
-    def set_status(self, text: str, color: str = MUTED) -> None:
-        self.status.configure(text=text, fg=color)
+    def set_status(self, text: str, color: str | None = None) -> None:
+        self.status.configure(text=text, fg=color or theme.MUTED)
 
     def update_rank(self) -> None:
         xp = self.store.stats["xp"]
         rank, lo, hi = missions.rank_for(xp)
+        from stamina import theme as _th
+        rank = _th.skin_rank(rank)
         tail = f"{xp} / {hi} XP" if hi else f"{xp} XP"
         c = self.rank_label
         c.delete("all")

@@ -122,9 +122,10 @@ def pilot_stats(pid: str, period: str = "all", now: float | None = None) -> dict
     sbd = (sr.get("xp") or {}).get("by_day", {}) or {}
     xp_week += sum(int(n) for day, n in sbd.items() if day in week_days)
     rank, lo, hi = rank_for(xp_total)
-    out = {
+    out: dict = {
         "id": pid, "xp": xp_total, "xp_week": xp_week, "rank": rank, "rank_lo": lo, "rank_hi": hi,
         "rank_idx": next(i for i, (t, n) in enumerate(RANKS) if n == rank),
+        "rank_base": rank,
         "best_cpm": round(best.get("cpm", 0)) if best else 0,
         "best_acc": round(best.get("acc", 0), 1) if best else 0.0,
         "last_cpm": round(runs[-1].get("cpm", 0)) if runs else 0,
@@ -143,6 +144,8 @@ def pilot_stats(pid: str, period: str = "all", now: float | None = None) -> dict
     out["ach_done"] = sum(1 for _n, ok in ach if ok)
     out["ach_total"] = len(ach)
     out["achievements"] = ach
+    from stamina import theme as _th
+    out["rank"] = _th.skin_rank(rank)       # звание в мире скина (у «Звездолёта» — как есть)
     return out
 
 

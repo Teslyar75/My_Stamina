@@ -603,6 +603,7 @@ class LogScreen(tk.Frame):
         avg_acc = sum(r.get("acc", 0) for r in last10) / len(last10) if last10 else 0
         avg_cpm = sum(r.get("cpm", 0) for r in last10) / len(last10) if last10 else 0
         rank, lo, hi = missions.rank_for(st["xp"])
+        rank = theme.skin_rank(rank)
         done = sum(1 for v in st["missions"].values() if v.get("stars"))
         stars = sum(v.get("stars", 0) for v in st["missions"].values())
         data = [
@@ -734,6 +735,29 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
+        from stamina.idle import IDLE_MINUTES
+        idl = self._row(_t("Простой: слайдшоу и радио"),
+                        _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
+        self.idle_btns = {}
+        for m in IDLE_MINUTES:
+            b = HudButton(idl, _t("ВЫКЛ") if m == 0 else _t("{0} мин").format(m),
+                          lambda k=m: self._set_idle("idle_minutes", k), width=56, height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.idle_btns[m] = b
+        HudButton(idl, _t("▶ ПОКАЗАТЬ СЕЙЧАС"), self._idle_now, height=30, font_size=8,
+                  color=AMBER).pack(side=tk.LEFT, padx=px(6))
+        irr = self._row(_t("Радио под скин"),
+                        _t("Станция подбирается по жанрам скина, громкость плавно растёт до ~30 %. Если радио уже играет — его не трогаем."))
+        self.idle_radio_btn = HudButton(irr, _t("ВКЛ"), lambda: self._set_idle("idle_radio", None),
+                                        width=90, height=30, font_size=8)
+        self.idle_radio_btn.pack(side=tk.LEFT, padx=px(2))
+        tk.Label(irr, text=_t("После закрытия") + ":", bg=PANEL, fg=MUTED,
+                 font=theme.font(8)).pack(side=tk.LEFT, padx=(px(8), px(2)))
+        self.idle_after_btns = {}
+        for k, name in (("stop", _t("ВЫКЛЮЧИТЬ РАДИО")), ("keep", _t("ОСТАВИТЬ РАДИО"))):
+            b = HudButton(irr, name, lambda v=k: self._set_idle("idle_after", v), height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.idle_after_btns[k] = b
         self.body = self.tabs["more"][1]
         ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
@@ -834,6 +858,23 @@ class SettingsScreen(tk.Frame):
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == key)
 
+    def _set_idle(self, key: str, val) -> None:
+        st = self.app.store.settings
+        st[key] = (not st.get(key, True)) if val is None else val
+        self.app.store.save_settings()
+        self.refresh()
+
+    def _idle_now(self) -> None:
+        ctl = getattr(self.app, "idle", None)
+        if ctl is None:
+            return
+        from stamina.idle.overlay import skin_slideshow
+        if not skin_slideshow():
+            messagebox.showinfo(_t("Простой: слайдшоу и радио"),
+                                _t("У этого скина нет слайдшоу — выберите «Старую Англию»."), parent=self)
+            return
+        self.after(150, ctl.open)
+
     def _set_uplink(self, code: str) -> None:
         self.app.store.settings["uplink_target"] = code
         self.app.store.save_settings()
@@ -903,6 +944,16 @@ class SettingsScreen(tk.Frame):
             b.set_active(st.get("ui_scale", "M") == k)
         for k, b in getattr(self, "up_btns", {}).items():
             b.set_active(k == (st.get("uplink_target") or ""))
+        from stamina.idle import settings_of
+        idl = settings_of(st)
+        for k, b in getattr(self, "idle_btns", {}).items():
+            b.set_active(k == idl["idle_minutes"])
+        if hasattr(self, "idle_radio_btn"):
+            on = bool(idl["idle_radio"])
+            self.idle_radio_btn.set_text(_t("● ВКЛ") if on else _t("○ ВЫКЛ"))
+            self.idle_radio_btn.set_active(on)
+        for k, b in getattr(self, "idle_after_btns", {}).items():
+            b.set_active(k == idl["idle_after"])
         from stamina import i18n
         chosen = i18n.saved_language() or i18n.language()
         for k, b in getattr(self, "lang_btns", {}).items():

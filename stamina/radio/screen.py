@@ -90,6 +90,10 @@ class RadioScreen(tk.Frame):
             self.eng.set_volume(max(0, self.eng.volume - 5))
             self.vol.set(self.eng.volume)
             return "break"
+        if k == "F7":
+            self.show("air")
+            self._show_skin_waves()
+            return "break"
         if k == "Right":
             self.eng.next_favorite()
             return "break"
@@ -163,6 +167,9 @@ class RadioScreen(tk.Frame):
         HudButton(b, _t("🔍 ИСКАТЬ"), self._do_search, color=CYAN, height=34).pack(fill=tk.X, pady=px(4))
         HudButton(b, _t("★ МОИ ВОЛНЫ"), self._show_favorites, color=AMBER, height=32).pack(fill=tk.X, pady=px(2))
         HudButton(b, _t("ТОП ЭФИРА"), self._boot_catalog, color=GREEN, height=32).pack(fill=tk.X, pady=px(2))
+        if (theme.current().get("radio") or {}).get("tags"):   # волны скина (у «Звездолёта» нет)
+            HudButton(b, _t("♫ ВОЛНЫ СКИНА  F7"), self._show_skin_waves, color=AMBER,
+                      height=32).pack(fill=tk.X, pady=px(2))
 
         self.lbl_status = tk.Label(b, text="", bg=PANEL, fg=MUTED, wraplength=px(200),
                                    justify="left", font=theme.font(8))
@@ -226,6 +233,7 @@ class RadioScreen(tk.Frame):
         self.list_canvas.yview_scroll(-1 if e.delta > 0 else 1, "units")
 
     def _boot_catalog(self) -> None:
+        self._skin_mode = False
         self.lbl_status.configure(text=_t("Загрузка частот…"), fg=AMBER)
         box: dict = {}
 
@@ -250,6 +258,8 @@ class RadioScreen(tk.Frame):
             self.cmb_lang.current(0)
             self.cmb_tag["values"] = [_t("(все жанры)")] + list(box.get("tags") or [])
             self.cmb_tag.current(0)
+            if getattr(self, "_skin_mode", False):   # пока грузился топ, пилот уже открыл волны скина
+                return
             self._stations = box.get("items") or []
             err = box.get("err")
             if err == "cache":
@@ -289,6 +299,30 @@ class RadioScreen(tk.Frame):
                 self.lbl_status.configure(text=_t("Нет связи с эфиром: {0}").format(err), fg=RED)
             else:
                 self.lbl_status.configure(text=_t("Найдено: {0}").format(len(self._stations)), fg=MUTED)
+            self._paint_list()
+
+        threading.Thread(target=lambda: (work(), self._safe_after(done)), daemon=True).start()
+
+    def _show_skin_waves(self) -> None:
+        conf = theme.current().get("radio") or {}
+        if not conf.get("tags"):
+            return
+        self._skin_mode = True
+        self.lbl_status.configure(text=_t("Поиск…"), fg=AMBER)
+        box: dict = {}
+
+        def work():
+            box["items"], box["err"] = browser.skin_stations(conf)
+
+        def done():
+            if not self.winfo_exists():
+                return
+            self._stations = box.get("items") or []
+            err = box.get("err")
+            if err:
+                self.lbl_status.configure(text=_t("Нет связи с эфиром: {0}").format(err), fg=RED)
+            else:
+                self.lbl_status.configure(text=_t("Волны скина: {0}").format(len(self._stations)), fg=AMBER)
             self._paint_list()
 
         threading.Thread(target=lambda: (work(), self._safe_after(done)), daemon=True).start()

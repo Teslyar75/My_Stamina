@@ -305,6 +305,8 @@ class OverviewPage(tk.Frame):
         try:
             xp = self.ctx.app.store.stats["xp"]
             rank, _lo, nxt = missions.rank_for(xp)
+            from stamina import theme as _th
+            rank = _th.skin_rank(rank)
             self.rank_txt.configure(text=_t("★ {0} · общий XP Star Typing {1}").format(rank.upper(), xp) + (f" / {nxt}" if nxt else ""))
         except Exception:
             self.rank_txt.configure(text="")
