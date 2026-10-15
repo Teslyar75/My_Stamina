@@ -8,7 +8,7 @@
 
 from __future__ import annotations
 
-IDLE_MINUTES = (0, 1, 3, 5, 10, 15)
+IDLE_MINUTES = (0, 1, 3, 5)
 IDLE_DEFAULTS = {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"}
 SLIDE_MS = 12_000
 FADE_MS = 1_500
@@ -38,6 +38,11 @@ def pick_station(stations: list[dict], pinned: list[str] | None = None) -> dict 
 
 def settings_of(st: dict) -> dict:
     out = {k: st.get(k, v) for k, v in IDLE_DEFAULTS.items()}
+    try:
+        m = int(out["idle_minutes"])
+    except (TypeError, ValueError):
+        m = IDLE_DEFAULTS["idle_minutes"]
+    out["idle_minutes"] = 5 if m > 5 else m  # старые 10/15 мин → 5
     if out["idle_minutes"] not in IDLE_MINUTES:
         out["idle_minutes"] = IDLE_DEFAULTS["idle_minutes"]
     return out

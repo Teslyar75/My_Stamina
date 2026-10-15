@@ -97,7 +97,7 @@ class IdleLogicTest(unittest.TestCase):
         from stamina.idle import IDLE_MINUTES, settings_of
         self.assertEqual(IDLE_MINUTES, (0, 1, 3, 5, 10, 15))
         s = settings_of({"idle_minutes": 7})
-        self.assertEqual(s, {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"})
+        self.assertEqual(s, {"idle_minutes": 5, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"})
 
     def test_only_skins_with_slideshow(self) -> None:
         from stamina.idle.overlay import skin_slideshow

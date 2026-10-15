@@ -123,6 +123,13 @@ class RadioPickerTest(unittest.TestCase):
         self.assertEqual(station_genre({"tags": "jazz, swing,big band"}), "jazz, swing")
         self.assertEqual(station_genre({}), "")
 
+    def test_idle_minutes_options_and_migration(self):
+        from stamina.idle import IDLE_MINUTES, settings_of
+        self.assertEqual(IDLE_MINUTES, (0, 1, 3, 5))
+        for old in (10, 15):
+            self.assertEqual(settings_of({"idle_minutes": old})["idle_minutes"], 5)
+        self.assertEqual(settings_of({"idle_minutes": 0})["idle_minutes"], 0)
+
     def test_fade_is_quick(self):
         from stamina.idle import FADE_MS, RADIO_TARGET
         self.assertLessEqual(FADE_MS, 2000)
