@@ -37,8 +37,9 @@ class HudButton(tk.Canvas):
     """Плоская неоновая кнопка со срезанными углами."""
 
     def __init__(self, master: tk.Misc, text: str, command: Callable[[], None] | None = None,
-                 *, color: str = CYAN, width: int | None = None, height: int = 34,
+                 *, color: str | None = None, width: int | None = None, height: int = 34,
                  font_size: int = 10, bold: bool = True, active: bool = False) -> None:
+        color = color or theme.CYAN   # не значение по умолчанию: оно «замерзает» на цвете первого скина
         self._font = theme.font(font_size, bold)
         self._text = text
         measured = tkfont.Font(font=self._font).measure(text)
@@ -142,8 +143,9 @@ class HudButton(tk.Canvas):
 class HudPanel(tk.Canvas):
     """Рамка со срезанными углами; содержимое кладите в ``.body``."""
 
-    def __init__(self, master: tk.Misc, title: str = "", *, accent: str = CYAN,
+    def __init__(self, master: tk.Misc, title: str = "", *, accent: str | None = None,
                  pad: int = 10) -> None:
+        accent = accent or theme.CYAN
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0)
         self.title = title
         self.accent = accent
@@ -352,7 +354,8 @@ class RingGauge(tk.Canvas):
 
 class SegmentBar(tk.Canvas):
     def __init__(self, master: tk.Misc, title: str, *, segments: int = 16,
-                 color: str = CYAN, height: int = 44) -> None:
+                 color: str | None = None, height: int = 44) -> None:
+        color = color or theme.CYAN
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          height=px(height), width=px(200))
         self.title, self.segments, self.color = title, segments, color

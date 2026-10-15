@@ -1639,5 +1639,21 @@
  "Tab, стрелки, Enter — выбор станции и кнопок": "Tab, Pfeile, Enter — Sender und Knöpfe wählen",
  "Alt+1…4 или Ctrl+Tab — вкладки СИСТЕМЫ / ЕЩЁ / СКИНЫ / ЭКИПАЖ · Tab, стрелки — по кнопкам · Enter/пробел — нажать": "Alt+1…4 oder Strg+Tab — Reiter SYSTEME / MEHR / SKINS / CREW · Tab, Pfeile — zwischen Knöpfen · Enter/Leertaste — drücken",
  "Alt+1…4 или Ctrl+Tab — вкладки ПРИЦЕЛ / НАБОР / ЦВЕТА / ОКОШКО · Tab, стрелки — по кнопкам · Enter/пробел — нажать · Esc — назад на мостик": "Alt+1…4 oder Strg+Tab — Reiter ZIELRAHMEN / TIPPEN / FARBEN / FENSTER · Tab, Pfeile — zwischen Knöpfen · Enter/Leertaste — drücken · Esc — zurück zur Brücke",
- "Ctrl+1…6 — зоны · Ctrl+F1…F5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика (из любой зоны) · F1 — эта справка · F9 — звук · F11 — ЭКРАН (выход Esc) · Ctrl+Shift+P — сменить пилота": "Strg+1…6 — Zonen · Strg+F1…F5 — Flug, Missionen, Eigener Text, Logbuch, Brücken-Einstellungen (aus jeder Zone) · F1 — diese Hilfe · F9 — Ton · F11 — BILDSCHIRM (Ende Esc) · Strg+Umschalt+P — Pilot wechseln"
+ "Ctrl+1…6 — зоны · Ctrl+F1…F5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика (из любой зоны) · F1 — эта справка · F9 — звук · F11 — ЭКРАН (выход Esc) · Ctrl+Shift+P — сменить пилота": "Strg+1…6 — Zonen · Strg+F1…F5 — Flug, Missionen, Eigener Text, Logbuch, Brücken-Einstellungen (aus jeder Zone) · F1 — diese Hilfe · F9 — Ton · F11 — BILDSCHIRM (Ende Esc) · Strg+Umschalt+P — Pilot wechseln",
+ "Простой: слайдшоу и радио": "Leerlauf: Diashow & Radio",
+ "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in Skins mit Diashow («Altes England»); Bilder von Wikimedia Commons, offline — das Skinfoto.",
+ "{0} мин": "{0} Min",
+ "▶ ПОКАЗАТЬ СЕЙЧАС": "▶ JETZT ZEIGEN",
+ "Радио под скин": "Skin-Radio",
+ "Станция подбирается по жанрам скина, громкость плавно растёт до ~30 %. Если радио уже играет — его не трогаем.": "Ein Sender wird nach den Genres des Skins gewählt; die Lautstärke steigt sanft auf ~30 %. Läuft schon Radio, bleibt es unangetastet.",
+ "После закрытия": "Nach dem Schließen",
+ "ВЫКЛЮЧИТЬ РАДИО": "RADIO STOPPEN",
+ "ОСТАВИТЬ РАДИО": "RADIO WEITERLAUFEN",
+ "У этого скина нет слайдшоу — выберите «Старую Англию».": "Dieser Skin hat keine Diashow — wählen Sie «Altes England».",
+ "Фото": "Foto",
+ "Любая клавиша — вернуться": "Beliebige Taste — zurück",
+ "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN-SENDER  F7",
+ "Волны скина: {0}": "Skin-Sender: {0}",
+ "• F7 — волны скина: станции по жанрам и стране скина («Старая Англия» — джаз, свинг, BBC).": "• F7 — Skin-Sender: Sender nach Genres und Land des Skins («Altes England» — Jazz, Swing, BBC).",
+ "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren."
 }

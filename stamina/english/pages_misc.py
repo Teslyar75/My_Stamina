@@ -227,6 +227,8 @@ class LogPage(tk.Frame):
             if rank_for:
                 r = rank_for(self.ctx.app.store.stats["xp"])
                 rank = r[0] if isinstance(r, tuple) else str(r)
+                from stamina import theme as _th
+                rank = _th.skin_rank(rank)
         except Exception:  # noqa: BLE001
             pass
         ro.set([(_t("УРОВЕНЬ"), str(lvl), CYAN), (_t("XP АНГЛИЙСКИЙ"), str(p.xp_total), AMBER),

@@ -191,3 +191,27 @@ def register_click(uuid: str) -> str | None:
     except (ConnectionError, OSError, ValueError):
         pass
     return None
+
+
+def skin_stations(cfg: dict, limit: int = 40) -> tuple[list[dict], str | None]:
+    """Волны скина (theme.radio): закреплённые по имени — первыми, затем по жанрам и стране."""
+    seen: set[str] = set()
+    out: list[dict] = []
+    err: str | None = None
+    country = str(cfg.get("country") or "")
+    for tag in list(cfg.get("tags") or [])[:4]:
+        items, e = search_stations(tag=tag, country=country, limit=25)
+        err = err or e
+        for s in items:
+            key = s.get("uuid") or s.get("url")
+            if key and key not in seen:
+                seen.add(key)
+                out.append(s)
+    pinned = [p.lower() for p in cfg.get("pinned") or []]
+
+    def rank(s: dict) -> int:
+        n = str(s.get("name", "")).lower()
+        return next((i for i, p in enumerate(pinned) if p in n), len(pinned))
+
+    out.sort(key=rank)
+    return out[:limit], (err if not out else None)
