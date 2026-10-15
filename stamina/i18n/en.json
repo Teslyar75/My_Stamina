@@ -1444,7 +1444,7 @@
  "ЩИТ ПРОБИТ\nEsc / ЗАНОВО": "SHIELD'S GONNA BREAK.\nEsc / WARN",
  "ПРОБЕЛ — ПУСК": "SPACE - LAUNCH",
  "ЗМЕЙКА · НАВИГАЦИОННЫЙ ШНУР": "SNAKE · NAVIGATION CORD",
- "← ↑ → ↓ или WASD · Esc пауза · R заново": "← ↑ → ↓ or WASD · Esc Pause · R Again",
+ "← ↑ → ↓ или WASD · Esc пауза / заново · R заново": "← ↑ → ↓ or WASD · Esc Pause / Again · R Again",
  "ШНУР ОБОРВАН\nEsc / ЗАНОВО": "THE SHOE IS TORN OFF.\nEsc / WARN",
  "длина {0}": "length {0}",
  "ТЕТРИС · СТЫКОВКА БЛОКОВ": "TETRIS · COUPLING OF BLOCKS",
