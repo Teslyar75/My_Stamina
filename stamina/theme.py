@@ -174,6 +174,14 @@ def chamfer(x1: float, y1: float, x2: float, y2: float, c: float) -> list[float]
     return [x1 + c, y1, x2, y1, x2, y2 - c, x2 - c, y2, x1, y2, x1, y1 + c]
 
 
+HEAT_FULL = 0.25   # 25 % ошибок и выше — полностью красная клавиша
+
+
+def heat_fill(error_rate: float) -> str:
+    """Цвет клавиши по доле ошибок 0..1: зелёный → янтарь (12 %) → красный (≥25 %)."""
+    return heat_color(min(1.0, max(0.0, error_rate) / HEAT_FULL))
+
+
 def heat_color(rate: float) -> str:
     if rate <= 0:
         return blend(PANEL, GREEN_DIM, 0.6)
