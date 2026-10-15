@@ -1,0 +1,26 @@
+---
+description: Glass UI for Star Typing web — windows, buttons, targets
+globs: web_star_typing/frontend/**/*.{css,tsx}
+alwaysApply: false
+---
+
+# Стекло и приборы (веб)
+
+Эталон: десктоп `screenshots/living_space/`, `theme.py` (PANEL поверх космоса).
+
+## Окна и кнопки
+
+- Все панели/кнопки с контуром — **стекло**: `--st-frame-fill` ~8–14% + `backdrop-filter: blur(8px)`.
+- `background: transparent !important` на хосте; заливка только через `::after` / `--st-frame-fill`.
+- Контур — **полое кольцо** (`::before` + mask-composite), не сплошная заливка цветом линии (иначе cyan-плита).
+- Небесные тела видны сквозь UI, слегка размыто и приглушённо. Запрещены заливки `panel 70–90%` / `#000`.
+- Скос TL+BR (`--st-clip` / `--st-clip-btn`), линия и по диагонали.
+
+## Прицел и клавиатура
+
+- Прицел (`.cursor.sight-crosshair`): тёмный fill, **белая** буква, двойная янтарная рамка + треугольники (как `hud.py` Viewport).
+- Виртуальная клавиатура: **янтарём** подсвечивается клавиша **которую нужно нажать** (`engine.current`), не вспышка после успеха.
+
+## Не ломать
+
+- Контент над `::before/::after` (z-index). Glow Off реально гасит bloom (`--st-glow-filter: none`).

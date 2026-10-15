@@ -5,12 +5,15 @@
 | Артеfact | Путь |
 | --- | --- |
 | Спека и промпты | этот файл (`docs/skins/SKINS.md`) |
+| **Глубокая переработка (на будущее)** | [`SKINS_DEEP.md`](./SKINS_DEEP.md) — формы UI, нарратив/роли, voice pack (эпик S8) |
 | JSON тем (канон для web + sync в desktop) | веб-репо `packages/themes/<id>.json` |
 | Картинки | `docs/skins/images/<id>/` (и копия в веб-репо) |
 | Десктоп (после S1) | `stamina/themes/<id>.json` |
 | Веб | [Wed_Star_Typing_Version](https://github.com/Teslyar75/Wed_Star_Typing_Version) — CSS через `applyTheme.ts` |
 
 План веба: [docs/web/WEB_PLAN.md](../web/WEB_PLAN.md) · репозиторий: [Wed_Star_Typing_Version](https://github.com/Teslyar75/Wed_Star_Typing_Version).
+
+> **Позже:** не только палитра — свои кнопки/формы и своя идея мира на скин (напр. дзен = наставник и монах-послушник, не «экипаж звездолёта»). См. [`SKINS_DEEP.md`](./SKINS_DEEP.md).
 
 ## Статус (десктоп)
 
