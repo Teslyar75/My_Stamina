@@ -1654,5 +1654,8 @@
  "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN-SENDER  F7",
  "Волны скина: {0}": "Skin-Sender: {0}",
  "• F7 — волны скина: станции по жанрам и стране скина («Старая Англия» — джаз, свинг, BBC).": "• F7 — Skin-Sender: Sender nach Genres und Land des Skins («Altes England» — Jazz, Swing, BBC).",
- "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren."
+ "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren.",
+ "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "Keine Paare {0}→{1} in bilinguis. Versuche EN→RU oder EN→UK.",
+ "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "Keine Paare {0}→{1} in Gutenberg. Für RU/UK wähle eine RU- oder UK-Übersetzung (bilinguis) oder «＋ MANUELL».",
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Schwacher Durchlauf (Ø {0}%) — nötig ≥ {1}%. Wiederhole alle Aufgaben."
 }
