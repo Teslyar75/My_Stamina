@@ -450,7 +450,30 @@ class LondonFogScene(SkinScene):
         self.lamps = [(f, 0.62 + 0.06 * (i % 2)) for i, f in enumerate((0.08, 0.34, 0.66, 0.92))]
         self.bus = [-120.0, self.h * 0.86, 60.0]
         self.bus_wait = 6.0
+        self._grain = None
         self.clear = 0.0          # 0..1 — туман редеет (серия верных нажатий)
+
+    def frost_static(self):
+        """Карточки «газетные»: тёплая бумага-сепия + зерно печати (theme.card)."""
+        st = self.static()
+        if st is None:
+            return None
+        if self._frost is None or self.t - self._frost_t >= FROST_REFRESH:
+            card = (_theme.current().get("card") or {})
+            fs = frost_small(st, card.get("tint") or _theme.PANEL, float(card.get("amount", 0.8)))
+            grain = float(card.get("grain", 0.0))
+            if grain > 0:
+                if self._grain is None or self._grain.size != fs.size:
+                    rnd = random.Random(11)
+                    g = Image.new("L", fs.size)
+                    g.putdata([rnd.randint(0, 255) for _ in range(fs.size[0] * fs.size[1])])
+                    self._grain = g
+                ink = Image.new("RGB", fs.size, _rgb(card.get("ink") or "#000000"))
+                fs = Image.composite(ink, fs, self._grain.point(lambda v: int(v * grain)))
+            self._frost = fs
+            self._frost_t = self.t
+            self.frost_gen += 1
+        return self._frost
 
     def _init_particles(self) -> None:
         self.particles = []
@@ -478,25 +501,38 @@ class LondonFogScene(SkinScene):
         return boxes
 
     def _draw_static(self, im) -> None:
+        # общий туман: снизу гуще (градиентная маска), полупрозрачный — фото остаётся видно
+        mist = Image.new("RGB", im.size, _blend_rgb(_rgb(_theme.MUTED), _rgb(_theme.BG), 0.35))
+        grad = Image.linear_gradient("L").resize(im.size)
+        mask = grad.point(lambda v: int(30 + v * 0.45))
+        im.paste(Image.composite(mist, im, mask))
         d = ImageDraw.Draw(im)
         warm = _rgb(_theme.AMBER)
         bg = _rgb(_theme.BG)
+        halo = Image.new("L", im.size, 0)
+        hd = ImageDraw.Draw(halo)
         for fx, fy in self.lamps:
             cx, cy = fx * self.w, fy * self.h
-            for k in range(6, 0, -1):
-                rr = 7 * k
-                d.ellipse((cx - rr, cy - rr, cx + rr, cy + rr), fill=_blend_rgb(bg, warm, 0.05 * (7 - k)))
+            hd.ellipse((cx - 46, cy - 46, cx + 46, cy + 46), fill=120)
+        halo = halo.filter(ImageFilter.GaussianBlur(22))
+        im.paste(Image.composite(Image.new("RGB", im.size, warm), im, halo))
+        d = ImageDraw.Draw(im)
+        for fx, fy in self.lamps:
+            cx, cy = fx * self.w, fy * self.h
             d.line((cx, cy + 6, cx, self.h), fill=_blend_rgb(bg, (20, 20, 20), 0.6), width=3)
             d.ellipse((cx - 4, cy - 4, cx + 4, cy + 4), fill=warm)
 
     def _draw_fx(self, im, x1, y1, x2, y2) -> None:
+        mist = _blend_rgb(_rgb(_theme.MUTED), (220, 220, 215), 0.3)
+        alpha = int(70 * (1.0 - 0.7 * self.clear))
+        mask = Image.new("L", im.size, 0)
+        md = ImageDraw.Draw(mask)
+        for fx, fy, _sp, a in self.fog:
+            md.ellipse((fx - x1, fy - y1 - 18, fx - x1 + self.w * 0.6, fy - y1 + 18), fill=int(alpha * a))
+        mask = mask.filter(ImageFilter.GaussianBlur(12))
+        im.paste(Image.composite(Image.new("RGB", im.size, mist), im, mask))
         d = ImageDraw.Draw(im)
         bg = _rgb(_theme.BG)
-        mist = _rgb(_theme.MUTED)
-        dens = 0.22 * (1.0 - 0.7 * self.clear)
-        for fx, fy, _sp, a in self.fog:
-            col = _blend_rgb(bg, mist, dens * a)
-            d.rounded_rectangle((fx - x1, fy - y1 - 22, fx - x1 + self.w * 0.6, fy - y1 + 22), radius=22, fill=col)
         if self.bus_wait <= 0:
             bx, by = self.bus[0] - x1, self.bus[1] - y1
             red = (178, 24, 36)

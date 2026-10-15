@@ -51,7 +51,11 @@ DEFAULT_SETTINGS = {
     "cargo_opts": {"lower": True, "punct": True, "spaces": True},
     "geometry": "",
     "living_space": "light",  # «Живой космос» во всех разделах: off | light | full
-    "skin": "spaceship",  # скин UI: stamina/themes/<id>.json
+    "skin": "spaceship",
+    "idle_minutes": 3,  # простой: слайдшоу + радио скина (только скины со slideshow)
+    "idle_radio": True,
+    "idle_after": "stop",
+    "idle_provider": "auto",  # скин UI: stamina/themes/<id>.json
 }
 
 MAX_RUNS = 500

@@ -74,3 +74,59 @@ class OldEnglandTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class IdleLogicTest(unittest.TestCase):
+    def test_is_idle_and_fade(self) -> None:
+        from stamina.idle import fade_volume, is_idle
+        self.assertFalse(is_idle(0, 10_000, 0))
+        self.assertTrue(is_idle(0, 180, 3))
+        self.assertFalse(is_idle(0, 179, 3))
+        self.assertEqual(fade_volume(0, 6000, 30), 0)
+        self.assertEqual(fade_volume(3000, 6000, 30), 15)
+        self.assertEqual(fade_volume(9000, 6000, 30), 30)
+
+    def test_pick_station_pinned_first(self) -> None:
+        from stamina.idle import pick_station
+        st = [{"name": "Jazz 24"}, {"name": "BBC Radio 3 HQ"}]
+        self.assertEqual(pick_station(st, ["BBC Radio 3"])["name"], "BBC Radio 3 HQ")
+        self.assertEqual(pick_station(st, ["nope"])["name"], "Jazz 24")
+        self.assertIsNone(pick_station([], ["x"]))
+
+    def test_settings_defaults_like_web(self) -> None:
+        from stamina.idle import IDLE_MINUTES, settings_of
+        self.assertEqual(IDLE_MINUTES, (0, 1, 3, 5, 10, 15))
+        s = settings_of({"idle_minutes": 7})
+        self.assertEqual(s, {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"})
+
+    def test_only_skins_with_slideshow(self) -> None:
+        from stamina.idle.overlay import skin_slideshow
+        theme.load_theme("spaceship", apply_ui=False)
+        self.assertIsNone(skin_slideshow())
+        theme.load_theme("old_england", apply_ui=False)
+        self.assertTrue(skin_slideshow()["wikimedia"])
+        theme.load_theme("spaceship", apply_ui=False)
+
+    def test_fallback_images_offline(self) -> None:
+        from stamina.idle.images import skin_fallback
+        self.assertTrue(skin_fallback("old_england"))
+
+
+class FogSceneRenderTest(unittest.TestCase):
+    def tearDown(self) -> None:
+        theme.load_theme("spaceship", apply_ui=False)
+
+    def test_fog_and_newsprint_cards_render(self) -> None:
+        try:
+            from PIL import Image  # noqa: F401
+        except ImportError:
+            self.skipTest("no Pillow")
+        from stamina.backgrounds.scenes import LondonFogScene
+        theme.load_theme("old_england", apply_ui=False)
+        s = LondonFogScene(400, 300, mode="light", theme_id="old_england")
+        s.step(0.5)
+        im = s.render()
+        self.assertEqual(im.size, (400, 300))
+        fs = s.frost_static()
+        self.assertIsNotNone(fs)
+        self.assertGreater(len(fs.getcolors(1 << 20) or []), 50)   # зерно печати — не плоская заливка
