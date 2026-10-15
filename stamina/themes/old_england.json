@@ -141,12 +141,46 @@
  },
  "slideshow": {
   "wikimedia": [
-   "Category:K6 telephone kiosks",
-   "Category:AEC Routemaster",
+   "Category:Tower Bridge",
    "Category:Elizabeth Tower",
-   "Category:London in fog",
-   "Category:Hackney carriages in London",
-   "Category:Tower Bridge at night"
+   "Category:Westminster Abbey",
+   "Category:Tower of London",
+   "Category:St Paul's Cathedral",
+   "Category:London in fog"
+  ],
+  "topics": [
+   "Tower Bridge London",
+   "Big Ben Westminster",
+   "Westminster Abbey",
+   "Tower of London",
+   "St Paul's Cathedral London",
+   "River Thames London",
+   "London Bridge",
+   "Victorian London street",
+   "Baker Street London",
+   "Oxford college",
+   "Cambridge King's College",
+   "Cotswolds cottage",
+   "English countryside village",
+   "Bath Royal Crescent",
+   "Stonehenge",
+   "London fog",
+   "red telephone box London",
+   "English afternoon tea table",
+   "cobblestone street England",
+   "rain London street",
+   "rainy English village",
+   "Victorian London photograph",
+   "Edwardian England street",
+   "Sherlock Holmes Museum Baker Street",
+   "Routemaster bus"
+  ],
+  "per_topic": 3,
+  "minor": [
+   "Routemaster bus"
+  ],
+  "gifs": [
+   "File:London Underground Tube Train approaching.gif"
   ],
   "queries": [
    "red telephone box london",

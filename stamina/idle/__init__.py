@@ -12,6 +12,9 @@ IDLE_MINUTES = (0, 1, 3, 5, 10, 15)
 IDLE_DEFAULTS = {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"}
 SLIDE_MS = 12_000
 FADE_MS = 6_000
+XFADE_MS = 1_200      # плавная смена слайдов
+XFADE_STEPS = 18     # ~15 кадров/с, кадры смешиваются в потоке
+GIF_MAX_FRAMES = 60  # анимированный GIF — не больше 60 кадров
 RADIO_TARGET = 0.3
 
 
