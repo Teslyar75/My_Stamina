@@ -557,14 +557,24 @@ class LogScreen(tk.Frame):
                           height=26, font_size=9, width=44)
             b.pack(side=tk.LEFT, padx=(0, px(4)))
             self.heat_btns[code] = b
-        _label(row, _t("цифра на клавише — % ошибок; зелёный — хорошо, красный — нужен ремонт"),
-               fg=MUTED, size=8).pack(side=tk.LEFT, padx=px(8))
+        # шкала как в веб-версии: цвет вместо цифр на клавишах
+        _label(row, "0%", fg=MUTED, size=8).pack(side=tk.LEFT, padx=(px(8), px(2)))
+        legend = tk.Canvas(row, bg=PANEL, highlightthickness=0, width=px(160), height=px(12))
+        legend.pack(side=tk.LEFT)
+        steps = 32
+        for i in range(steps):
+            x0 = i * px(160) / steps
+            legend.create_rectangle(x0, 0, x0 + px(160) / steps + 1, px(12), outline="",
+                                    fill=theme.heat_color(i / (steps - 1)))
+        _label(row, "≥25%", fg=MUTED, size=8).pack(side=tk.LEFT, padx=(px(2), px(8)))
+        _label(row, _t("зелёный — хорошо, янтарный — внимание, красный — нужен ремонт"),
+               fg=MUTED, size=8).pack(side=tk.LEFT)
 
         side = HudPanel(bottom, _t("СЛАБЫЕ КЛАВИШИ"))
         side.pack(side=tk.LEFT, fill=tk.BOTH, padx=px(4))
         # Порт из веб-версии: мини-клавиши с цветом тепловой карты, 2 колонки, до 12 клавиш
         self.weak_canvas = tk.Canvas(side.body, bg=PANEL, highlightthickness=0, bd=0,
-                                     width=px(300), height=px(200))
+                                     width=px(300), height=px(60))
         self.weak_canvas.pack(fill=tk.BOTH, expand=True)
         self.weak_canvas.bind("<Configure>", lambda _e: self._draw_weak())
         self._weak_rows: list[tuple[str, float, int, int]] = []
@@ -631,10 +641,13 @@ class LogScreen(tk.Frame):
         col_w = w / 2
         key, gap = px(30), px(8)
         for i, (ch, r, misses, total) in enumerate(self._weak_rows):
-            col, row = i // 6, i % 6       # сначала левая колонка, потом правая
+            per_col = max(1, int((c.winfo_height() - px(4)) / (key + gap)))  # без обрезки и прокрутки
+            if i >= per_col * 2:
+                break
+            col, row = i // per_col, i % per_col       # сначала левая колонка, потом правая
             x = col * col_w + px(2)
             y = row * (key + gap) + px(2)
-            fill = theme.heat_color(min(1.0, r * 4))
+            fill = theme.heat_fill(r)
             c.create_polygon(theme.chamfer(x, y, x + key, y + key, px(5)), fill=fill,
                              outline=blend(fill, "#FFFFFF", 0.35))
             c.create_text(x + key / 2, y + key / 2, text="␣" if ch == " " else ch.upper(),
@@ -658,13 +671,30 @@ class SettingsScreen(tk.Frame):
         _label(top, _t("НАСТРОЙКИ БОРТОВЫХ СИСТЕМ"), size=16, bold=True, bg=BG).pack(side=tk.LEFT)
         HudButton(top, "?", lambda: self.app.open_help(), height=30, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
-        panel = HudPanel(self, _t("СИСТЕМЫ"))
-        panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
-        from stamina.speedread.ui import ScrollFrame
-        sf = ScrollFrame(panel.body, bg=PANEL)      # строк больше, чем помещается на ноутбуке — прокрутка
-        sf.pack(fill=tk.BOTH, expand=True)
-        sf.canvas.living_sharp = False
-        self.body = sf.inner
+        # без прокрутки, как в веб-версии: вкладки СИСТЕМЫ / ЕЩЁ / СКИНЫ / ЭКИПАЖ
+        self.tabbar = tk.Frame(self, bg=BG)
+        self.tabbar.pack(fill=tk.X, padx=px(14), pady=(px(4), 0))
+        host = tk.Frame(self, bg=BG)
+        host.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
+        host.grid_rowconfigure(0, weight=1)
+        host.grid_columnconfigure(0, weight=1)
+        self.tabs: dict[str, tk.Misc] = {}
+        self.tab_btns: dict[str, HudButton] = {}
+        for key, title in (("systems", _t("СИСТЕМЫ")), ("more", _t("ЕЩЁ")), ("skins", _t("СКИНЫ")),
+                           ("crew", _t("ЭКИПАЖ"))):
+            pnl = HudPanel(host, title)
+            pnl.grid(row=0, column=0, sticky="nsew")
+            inner = tk.Frame(pnl.body, bg=PANEL)
+            inner.pack(fill=tk.BOTH, expand=True)
+            self.tabs[key] = (pnl, inner)
+            b = HudButton(self.tabbar, f"{title} · Alt+{len(self.tabs)}", lambda k=key: self.show_tab(k),
+                          height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(3))
+            b.nav_menu = True
+            self.tab_btns[key] = b
+        _label(self.tabbar, _t("Ctrl+Tab — следующая вкладка · Tab, стрелки — по кнопкам · Enter/пробел — нажать"),
+               fg=MUTED, size=8, bg=BG).pack(side=tk.RIGHT)
+        self.body = self.tabs["systems"][1]
         self.toggles: dict[str, HudButton] = {}
         self._row_i = 0
         from stamina import i18n
@@ -694,6 +724,7 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(3))
             self.up_btns[code] = b
         self._toggle_row("stars", _t("Звёздное поле"), _t("Звёзды в иллюминаторе летят быстрее, когда вы печатаете быстрее. Выключите, если ноутбук греется."))
+        self.body = self.tabs["skins"][1]
         sk = self._row(_t("Скин пульта"), _t("Оформление всего корабля: цвета, рамки, настроение. Тот же выбор — на экране «ВХОД В КАБИНУ». Сохраняется у пилота."))
         self.skin_btns: dict[str, HudButton] = {}
         for tmeta in theme.list_themes():
@@ -702,6 +733,8 @@ class SettingsScreen(tk.Frame):
             b = HudButton(sk, label, lambda k=tid: self._set_skin(k), height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
+        sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
+        self.body = self.tabs["more"][1]
         ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
         for key, name in (("off", _t("ВЫКЛ")), ("light", _t("ЛЁГКИЙ")), ("full", _t("ПОЛНЫЙ"))):
@@ -713,21 +746,11 @@ class SettingsScreen(tk.Frame):
             from stamina.deps import pillow_hint
             tk.Label(ls, text=pillow_hint(), fg=AMBER, bg=PANEL, font=theme.font(8, True),
                      wraplength=px(280), justify="left").pack(side=tk.LEFT, padx=px(6))
-        self._toggle_row("keyboard", _t("Экранная клавиатура"), _t("Подсветка следующей клавиши и пальца."))
-        self._toggle_row("zones", _t("Цветные зоны пальцев"), _t("Клавиши окрашены по пальцам, как в прежнем Stamina."))
-        fs = self._row(_t("Размер шрифта строки"), _t("Размер букв в иллюминаторе."))
+        typ = self._row(_t("Набор на мостике"),
+                        _t("Прицел, мигание буквы, клавиатура, зоны пальцев, размеры, шрифты и цвета строки набора переехали в «МОСТИК → НАСТРОЙКИ»."))
+        HudButton(typ, _t("⚙ МОСТИК → НАСТРОЙКИ"), lambda: self.app.show("bridge_settings"), height=30,
+                  font_size=9, color=AMBER).pack(side=tk.LEFT)
         self.font_btns = {}
-        for key, name in (("S", _t("МЕЛКИЙ")), ("M", _t("СРЕДНИЙ")), ("L", _t("КРУПНЫЙ"))):
-            b = HudButton(fs, name, lambda k=key: self._set_font(k), width=100, height=30, font_size=9)
-            b.pack(side=tk.LEFT, padx=px(3))
-            self.font_btns[key] = b
-        bl = self._row(_t("Мигание целевой буквы"),
-                       _t("Буква в прицеле мигает, чтобы глаз не терял место. «Быстрое» — чаще, «Выкл» — буква горит ровно."))
-        self.blink_btns = {}
-        for key, name in (("off", _t("ВЫКЛ")), ("on", _t("ВКЛ")), ("fast", _t("БЫСТРОЕ"))):
-            b = HudButton(bl, name, lambda k=key: self._set_blink(k), width=100, height=30, font_size=9)
-            b.pack(side=tk.LEFT, padx=px(3))
-            self.blink_btns[key] = b
         ui = self._row(_t("Размер интерфейса"),
                       _t("Шрифты и отступы во всём приложении. Новый размер полностью применится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» выше (прогресс сохранится)."))
         self.ui_btns = {}
@@ -737,9 +760,34 @@ class SettingsScreen(tk.Frame):
             self.ui_btns[key] = b
         data = self._row(_t("Данные"), _t("Статистика и прогресс: {0}").format(DATA_DIR))
         HudButton(data, _t("ОТКРЫТЬ ПАПКУ"), self._open_data, height=30, font_size=9).pack(side=tk.LEFT)
-        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…5 — разделы  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
+        self.body = self.tabs["crew"][1]
+        cr = self._row(_t("Пилот"), _t("Смена пилота, личное дело, экспорт и доска почёта — то же меню, что по клику на звание в шапке."))
+        HudButton(cr, _t("⇄  СМЕНИТЬ ПИЛОТА   Ctrl+Shift+P"), lambda: self.app.switch_pilot(), height=30,
+                  font_size=9).pack(side=tk.LEFT, padx=px(2))
+        HudButton(cr, _t("✎  ЛИЧНОЕ ДЕЛО"), lambda: self.app.edit_pilot(), height=30,
+                  font_size=9).pack(side=tk.LEFT, padx=px(2))
+        cr2 = self._row(_t("Экспорт и почёт"), _t("Файл пилота для переноса на другой компьютер; таблица рекордов экипажа."))
+        HudButton(cr2, _t("⇪  ЭКСПОРТ ПИЛОТА"), lambda: self.app.export_pilot(), height=30,
+                  font_size=9).pack(side=tk.LEFT, padx=px(2))
+        HudButton(cr2, _t("★  ДОСКА ПОЧЁТА"), lambda: self.app.show("honor"), height=30,
+                  font_size=9, color=AMBER).pack(side=tk.LEFT, padx=px(2))
+        self.body = self.tabs["more"][1]
+        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…6 — разделы · F11 — экран  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
+        self.show_tab("systems")
         self.refresh()
+
+    def page_help_key(self) -> str:
+        return "settings." + getattr(self, "current_tab", "systems")
+
+    def tab_keys(self) -> list[str]:
+        return list(self.tabs)
+
+    def show_tab(self, key: str) -> None:
+        self.current_tab = key
+        tk.Misc.tkraise(self.tabs[key][0])
+        for k, b in self.tab_btns.items():
+            b.set_active(k == key)
 
     def _row(self, title: str, desc: str) -> tk.Frame:
         row = tk.Frame(self.body, bg=PANEL)
@@ -748,7 +796,7 @@ class SettingsScreen(tk.Frame):
         left = tk.Frame(row, bg=PANEL)
         left.grid(row=0, column=0, sticky="nsew")
         _label(left, title, size=11, bold=True).pack(anchor="w")
-        _label(left, desc, fg=MUTED, size=8, wraplength=px(520), justify="left").pack(anchor="w")
+        _label(left, desc, fg=MUTED, size=8, wraplength=px(640), justify="left").pack(anchor="w")
         right = tk.Frame(row, bg=PANEL)
         right.grid(row=0, column=1, sticky="ne", padx=(px(10), 0))
         tk.Frame(self.body, bg=LINE, height=1).pack(fill=tk.X)
@@ -806,16 +854,6 @@ class SettingsScreen(tk.Frame):
         if relaunch():
             self.app.destroy()
 
-    def _set_font(self, key: str) -> None:
-        self.app.store.settings["font"] = key
-        self.app.apply_settings()
-        self.refresh()
-
-    def _set_blink(self, key: str) -> None:
-        self.app.store.settings["cursor_blink"] = key
-        self.app.apply_settings()
-        self.refresh()
-
     def _set_ui_scale(self, key: str) -> None:
         from stamina import theme as th
         key = th.set_ui_scale(key)
@@ -861,8 +899,6 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("skin", "spaceship"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
-        for k, b in getattr(self, "blink_btns", {}).items():
-            b.set_active(st.get("cursor_blink", "on") == k)
         for k, b in getattr(self, "ui_btns", {}).items():
             b.set_active(st.get("ui_scale", "M") == k)
         for k, b in getattr(self, "up_btns", {}).items():
