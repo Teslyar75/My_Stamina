@@ -30,6 +30,20 @@ DEFAULT_SETTINGS = {
     "keyboard": True,
     "zones": True,
     "font": "M",
+    "cursor_blink": "on",  # мигание целевой буквы в прицеле: off | on | fast (порт из веб-версии)
+    # «Мостик → Настройки» (порт из веб-версии): прицел, строка набора, цвета, окошко прицела.
+    # Пустая строка = «как основной размер / как в скине».
+    "sight": True,
+    "cursor_font": "",
+    "cursor_color": "",
+    "typed_font": "",
+    "ahead_font": "",
+    "typing_face": "mono",
+    "typed_color": "",
+    "ahead_color": "",
+    "sight_box_font": "L",
+    "sight_box_face": "mono",
+    "sight_on_color": "",
     "ui_scale": "M",  # размер интерфейса всего приложения: S / M / L / XL
     "lang": "en",
     "translator": True,

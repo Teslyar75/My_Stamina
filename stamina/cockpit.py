@@ -10,9 +10,10 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, missions,
+from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, missions, nav,
                      pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
+from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
 from stamina.session_storage import clear_session, load_session
@@ -59,10 +60,28 @@ class Cockpit(tk.Tk):
         if self._radio_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(radio_hook.KEY, radio_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        # шесть зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        loaded = {s[0] for s in self.SCREENS}
+        self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
+        self._last_bridge = "bridge"
+        self._fullscreen = False
         self._build()
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
-            self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show(n))
+            self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
+        self.bind("<F11>", lambda _e: self.toggle_fullscreen())
+        # подвкладки с клавиатуры: Ctrl+Tab / Ctrl+Shift+Tab и Alt+1…9
+        self.bind("<Control-Tab>", lambda _e: self.cycle_subtab(1) or "break")
+        for seq in ("<Control-Shift-Tab>", "<Control-ISO_Left_Tab>"):
+            try:
+                self.bind(seq, lambda _e: self.cycle_subtab(-1) or "break")
+            except tk.TclError:
+                pass
+        # подменю Мостика одним нажатием из любой зоны: Ctrl+F1…F5
+        for i, (leaf, _tt) in enumerate(nav.BRIDGE_LEAVES, 1):
+            self.bind(f"<Control-F{i}>", lambda _e, k=leaf: self.show(k) or "break")
+        for i in range(1, 10):
+            self.bind(f"<Alt-Key-{i}>", lambda _e, n=i: self.goto_subtab(n - 1) or "break")
         self.bind("<Control-Shift-P>", lambda _e: self.switch_pilot())
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
@@ -71,7 +90,7 @@ class Cockpit(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._clock_tick()
         from stamina import keynav
-        keynav.install(self, current_menu=lambda: self.nav_buttons.get(self.current), before_tab=self._tab_typing)
+        keynav.install(self, current_menu=lambda: self.nav_buttons.get(nav.zone_of(self.current) or ""), before_tab=self._tab_typing)
         from stamina.living_space import LivingSpace, DEFAULT_MODE
         self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
         self.after(60, self._bootstrap)
@@ -103,13 +122,13 @@ class Cockpit(tk.Tk):
     def _build(self) -> None:
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(10), pady=(px(8), 0))
-        self._compact = len(self.SCREENS) > 6  # много разделов — шапка поуже
+        self._compact = len(self.SCREENS) >= 6  # много разделов — шапка поуже
         logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(200 if self._compact else 250),
                          height=px(44))
         logo.pack(side=tk.LEFT)
         self._draw_logo(logo)
-        nav = tk.Frame(top, bg=BG)
-        nav.pack(side=tk.LEFT, padx=px(4 if self._compact else 10))
+        navf = tk.Frame(top, bg=BG)
+        navf.pack(side=tk.LEFT, padx=px(4 if self._compact else 10))
         self.nav_buttons: dict[str, HudButton] = {}
         for i, (name, title) in enumerate(self.SCREENS, 1):
             fs = 10 if len(self.SCREENS) <= 5 else 9 if len(self.SCREENS) <= 6 else 8
@@ -117,7 +136,9 @@ class Cockpit(tk.Tk):
             if self._compact:  # узкие поля у кнопок, чтобы всё влезло в 1260 px
                 import tkinter.font as tkfont
                 bw = int(tkfont.Font(font=theme.font(fs, True)).measure(title) / theme.S) + 18
-            b = HudButton(nav, f"{title}", lambda n=name: self.show(n), height=36, font_size=fs, width=bw)
+            b = HudButton(navf, f"{title}", lambda n=name: self.show_zone(n), height=36, font_size=fs, width=bw)
+            if name == "bridge":
+                b.bind("<Button-3>", lambda _e: self.bridge_menu())
             b.pack(side=tk.LEFT, padx=px(3) if len(self.SCREENS) <= 6 else px(1))
             b.nav_menu = True
             self.nav_buttons[name] = b
@@ -133,8 +154,11 @@ class Cockpit(tk.Tk):
         except Exception:  # noqa: BLE001
             self._radio_mini = None
         self.btn_sound = HudButton(right, tr_("♪ ЗВУК ВЫКЛ"), self.toggle_sound, height=36, font_size=9,
-                                   width=116 if len(self.SCREENS) <= 6 else 38)
+                                   width=116 if len(self.SCREENS) < 6 else 38)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
+        self.btn_screen = HudButton(right, tr_("⛶ ЭКРАН"), self.toggle_fullscreen, height=36, font_size=9,
+                                    width=104, color=CYAN)
+        self.btn_screen.pack(side=tk.RIGHT, padx=px(4))
         self.btn_help = HudButton(right, "?" if self._compact else "? F1", self.open_help, height=36,
                                   font_size=9, width=36 if self._compact else 60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
@@ -146,19 +170,33 @@ class Cockpit(tk.Tk):
         line.pack(fill=tk.X, padx=px(10), pady=(px(4), 0))
         line.bind("<Configure>", lambda e: self._draw_line(line))
 
+        # строка пути «МОСТИК › БОРТЖУРНАЛ» + подменю Мостика
+        self.crumbs = tk.Frame(self, bg=BG)
+        self.crumbs.pack(fill=tk.X, padx=px(14), pady=(px(2), 0))
+        self.crumb_path = tk.Frame(self.crumbs, bg=BG)
+        self.crumb_path.pack(side=tk.LEFT)
+        self.subnav = tk.Frame(self.crumbs, bg=BG)
+        self.subnav.pack(side=tk.RIGHT)
+        self.subnav_buttons: dict[str, HudButton] = {}
+        for i, (key, title) in enumerate(nav.BRIDGE_LEAVES, 1):
+            b = HudButton(self.subnav, f"{tr_(title)} · Ctrl+F{i}", lambda k=key: self.show(k), height=26, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            b.nav_menu = True
+            self.subnav_buttons[key] = b
+
         self.content = tk.Frame(self, bg=BG)
         self.content.pack(fill=tk.BOTH, expand=True)
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
 
         status = tk.Frame(self, bg=blend(BG, CYAN, 0.04))
-        status.pack(fill=tk.X, side=tk.BOTTOM)
+        status.pack(fill=tk.X, side=tk.BOTTOM, before=self.content)  # статус-строка не выдавливается контентом
         self.status_dot = tk.Label(status, text="●", bg=status["bg"], fg=GREEN, font=theme.font(9))
         self.status_dot.pack(side=tk.LEFT, padx=(px(10), px(4)))
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=tr_("F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
+        tk.Label(status, text=tr_("F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · F11 экран · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
                  bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
@@ -167,6 +205,7 @@ class Cockpit(tk.Tk):
             "cargo": CargoScreen(self.content, self),
             "log": LogScreen(self.content, self),
             "settings": SettingsScreen(self.content, self),
+            "bridge_settings": BridgeSettingsScreen(self.content, self),
             "help": HelpScreen(self.content, self),
             "honor": self._make_honor(),
         }
@@ -291,13 +330,100 @@ class Cockpit(tk.Tk):
         scr.tkraise()
         if hasattr(self, "living"):
             self.after(30, lambda s_=scr: self.current_screen_is(s_) and self.living.attach(s_))
+        zone = nav.zone_of(name)
+        if zone == "bridge":
+            self._last_bridge = name
         for n, b in self.nav_buttons.items():
-            b.set_active(n == name)
+            b.set_active(n == zone)
+        self._update_crumbs()
         self.btn_help.set_active(False)
         if name == "cargo":
             scr.text.focus_set()
         else:
             self.focus_set()
+
+    def show_zone(self, zone: str) -> None:
+        """Кнопка зоны в шапке / Ctrl+1…6. Мостик из другой зоны — туда, где были в нём последний раз."""
+        if zone == "bridge":
+            in_bridge = nav.zone_of(self.current) == "bridge"
+            self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))
+        else:
+            self.show(zone)
+
+    def subtabs(self):
+        """Подвкладки текущего экрана: (ключи, текущий, показать) — для Ctrl+Tab и Alt+1…9.
+
+        Экран со своими вкладками (НАСТРОЙКИ, НАСТРОЙКИ МОСТИКА) — его вкладки,
+        иначе в зоне Мостика — подменю Мостика."""
+        scr = self.screens.get(self.current)
+        if scr is not None and hasattr(scr, "tab_keys") and hasattr(scr, "show_tab"):
+            return scr.tab_keys(), scr.current_tab, scr.show_tab
+        if nav.zone_of(self.current) == "bridge":
+            return [k for k, _ in nav.BRIDGE_LEAVES], self.current, self.show
+        return None
+
+    def cycle_subtab(self, step: int) -> None:
+        st = self.subtabs()
+        if not st:
+            return
+        keys, cur, show = st
+        i = keys.index(cur) if cur in keys else -step
+        show(keys[(i + step) % len(keys)])
+
+    def goto_subtab(self, idx: int) -> None:
+        st = self.subtabs()
+        if st and 0 <= idx < len(st[0]):
+            st[2](st[0][idx])
+
+    def bridge_menu(self) -> None:
+        """Правый клик по «МОСТИК» — выпадающее подменю."""
+        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=blend(PANEL, AMBER, 0.2),
+                    activeforeground=TEXT, font=theme.font(10, True))
+        for key, title in nav.BRIDGE_LEAVES:
+            m.add_command(label=tr_(title), command=lambda k=key: self.show(k))
+        b = self.nav_buttons["bridge"]
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+
+    def _update_crumbs(self) -> None:
+        for w in self.crumb_path.winfo_children():
+            w.destroy()
+        segs = nav.path(self.current)
+        for i, (label, target) in enumerate(segs):
+            last = i == len(segs) - 1
+            if i:
+                tk.Label(self.crumb_path, text="›", bg=BG, fg=MUTED,
+                         font=theme.font(10, True)).pack(side=tk.LEFT, padx=px(4))
+            lb = tk.Label(self.crumb_path, text=label, bg=BG, fg=AMBER if last else CYAN,
+                          font=theme.font(9, True, mono=False), cursor="arrow" if last else "hand2")
+            lb.pack(side=tk.LEFT)
+            if not last:
+                lb.bind("<Button-1>", lambda _e, tg=target: self.show(tg))
+                lb.bind("<Enter>", lambda _e, w=lb: w.configure(fg=TEXT))
+                lb.bind("<Leave>", lambda _e, w=lb: w.configure(fg=CYAN))
+        in_bridge = nav.zone_of(self.current) == "bridge"
+        if in_bridge:
+            if not self.subnav.winfo_ismapped():
+                self.subnav.pack(side=tk.RIGHT)
+            for k, b in self.subnav_buttons.items():
+                b.set_active(k == self.current)
+        else:
+            self.subnav.pack_forget()
+
+    def toggle_fullscreen(self, on: bool | None = None) -> None:
+        """ЭКРАН: полный экран для любого раздела (F11; выход — Esc, F11 или «✕ ЭКРАН»)."""
+        on = (not self._fullscreen) if on is None else on
+        try:
+            self.attributes("-fullscreen", on)
+        except tk.TclError:
+            return
+        self._fullscreen = on
+        self.btn_screen.set_text(tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН"))
+        self.btn_screen.set_active(on)
+        self.btn_screen.set_color(AMBER if on else CYAN)
+
+    def _esc_fullscreen(self, _e=None) -> None:
+        if self._fullscreen:
+            self.toggle_fullscreen(False)
 
     def _make_honor(self):
         from stamina.pilot_screens import HonorBoard
@@ -483,7 +609,7 @@ class Cockpit(tk.Tk):
 
     def _update_sound_button(self) -> None:
         on = self.store.settings["sound"]
-        if len(self.SCREENS) > 6:  # много разделов — компактная кнопка
+        if len(self.SCREENS) >= 6:  # шесть зон + ЭКРАН — компактная кнопка
             self.btn_sound.set_text("♪" if on else "♪̸")
         else:
             self.btn_sound.set_text(tr_("♪ ЗВУК ВКЛ") if on else tr_("♪ ЗВУК ВЫКЛ"))
@@ -546,6 +672,13 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _on_key(self, e: tk.Event) -> None:
+        if e.keysym == "Escape" and self._fullscreen:
+            self.toggle_fullscreen(False)     # Esc выходит из ЭКРАНА (и дальше работает как обычно)
+        elif e.keysym == "Escape" and self.current == "bridge_settings":
+            from stamina.hud import HudButton
+            if not isinstance(self.focus_get(), HudButton):
+                self.show("bridge")               # Esc — назад на мостик
+                return
         # Ctrl+Shift+P в любой раскладке (Windows: код клавиши P = 80)
         if (e.state & 0x4) and (e.state & 0x1) and (e.keycode == 80 or e.keysym in ("P", "p")):
             self.switch_pilot()

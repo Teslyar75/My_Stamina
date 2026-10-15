@@ -447,14 +447,41 @@ class Viewport(tk.Canvas):
         self._err_text = ""
         self._err_shown = False
         self._stars: list[list] = []
+        self.blink = "on"           # мигание целевой буквы: off | on | fast
+        self._blink_phase = True
+        self.sight = True           # рамка-прицел; False — только подчёркивание буквы
         self.bind("<Configure>", lambda _e: self._rebuild())
 
     def set_font_size(self, size: int) -> None:
-        self._font = theme.font(size, mono=True)
-        self._font_b = theme.font(size, True, mono=True)
-        f = tkfont.Font(font=self._font)
+        self.set_style({"_size": size})
+
+    def set_style(self, st: dict) -> None:
+        """Шрифты, размеры и цвета строки набора («Мостик → Настройки»)."""
+        from stamina import typing_style as ts
+        base = st.get("_size") or ts.size_for(st, "font")
+
+        def sz(key: str) -> int:
+            return ts.size_for(st, key) if st.get(key) else base
+
+        def mk(face_id: str, size_pt: int, bold: bool = False) -> tuple:
+            fam = ts.family_for(face_id, theme.HUD_FAMILY, theme.MONO_FAMILY)
+            scaled = max(6, int(round(size_pt * theme.UI)))
+            return (fam, scaled, "bold") if bold else (fam, scaled)
+
+        face_id = ts.face(st.get("typing_face", "mono"))
+        self._font = mk(face_id, base)
+        self._font_typed = mk(face_id, sz("typed_font"))
+        self._font_ahead = mk(face_id, sz("ahead_font"))
+        self._font_b = mk(face_id, sz("cursor_font"), True)
+        self.sight = bool(st.get("sight", True))
+        self.col_typed = ts.color(st, "typed_color", CYAN_DIM)
+        self.col_ahead = ts.color(st, "ahead_color", TEXT)
+        self.col_cursor = ts.color(st, "cursor_color", "#FFFFFF")
+        f = tkfont.Font(font=self._font_b)
         self._cw = max(f.measure("m"), 1)
-        self._lh = f.metrics("linespace")
+        self._lh = max(f.metrics("linespace"), tkfont.Font(font=self._font_typed).metrics("linespace"),
+                       tkfont.Font(font=self._font_ahead).metrics("linespace"))
+        self._cw_typed = max(tkfont.Font(font=self._font_typed).measure("m"), 1)
         if self.winfo_width() > 10:
             self.redraw()
 
@@ -517,9 +544,27 @@ class Viewport(tk.Canvas):
             self._stars.append([x, y, layer, item])
         self.redraw()
 
+    BLINK_PERIOD = {"on": 1.0, "fast": 0.35}
+
+    def set_blink(self, mode: str) -> None:
+        self.blink = mode if mode in ("off", "on", "fast") else "on"
+        self._blink_phase = True
+        self.redraw()
+
+    def _blink_tick(self, now: float) -> None:
+        period = self.BLINK_PERIOD.get(self.blink)
+        if not period or self.mode not in ("ready", "run"):
+            phase = True
+        else:
+            phase = (now % period) < period * 0.6
+        if phase != self._blink_phase:
+            self._blink_phase = phase
+            self.redraw()
+
     def tick(self, warp: float, animate: bool) -> None:
         """Сдвинуть звёзды. warp — множитель скорости (зависит от темпа печати)."""
         now = time.monotonic()
+        self._blink_tick(now)
         if self._err_shown and now > getattr(self, "_err_text_until", 0):
             self._err_shown = False
             self.redraw()
@@ -573,46 +618,60 @@ class Viewport(tk.Canvas):
                                  font=theme.font(10), tags=T)
             return
 
-        n_side = max(2, int((w / 2 - px(24)) / cw))
+        n_side = max(2, int((w / 2 - px(24)) / max(1, min(cw, getattr(self, "_cw_typed", cw)))))
         i = self.index
         typed = self.text[max(0, i - n_side):i]
         cur = self.text[i] if i < len(self.text) else ""
         rest = self.text[i + 1:i + 1 + n_side]
         left_edge = cx - cw / 2
         right_edge = cx + cw / 2
+        f_typed = getattr(self, "_font_typed", self._font)
+        f_ahead = getattr(self, "_font_ahead", self._font)
+        c_typed = getattr(self, "col_typed", CYAN_DIM)
+        c_ahead = getattr(self, "col_ahead", TEXT)
         recent, older = typed[-10:], typed[:-10]
         if recent:
-            self.create_text(left_edge, cy, text=recent, anchor="e", fill=CYAN_DIM,
-                             font=self._font, tags=T)
+            self.create_text(left_edge - px(4), cy, text=recent, anchor="e", fill=c_typed,
+                             font=f_typed, tags=T)
         if older:
-            self.create_text(left_edge - len(recent) * cw, cy, text=older, anchor="e",
-                             fill=blend(CYAN_DIM, BG, 0.5), font=self._font, tags=T)
+            rw = tkfont.Font(font=f_typed).measure(recent)
+            self.create_text(left_edge - px(4) - rw, cy, text=older, anchor="e",
+                             fill=blend(c_typed, BG, 0.5), font=f_typed, tags=T)
         near, far = rest[:14], rest[14:]
         if near:
-            self.create_text(right_edge, cy, text=near, anchor="w", fill=TEXT,
-                             font=self._font, tags=T)
+            self.create_text(right_edge + px(4), cy, text=near, anchor="w", fill=c_ahead,
+                             font=f_ahead, tags=T)
         if far:
-            self.create_text(right_edge + len(near) * cw, cy, text=far, anchor="w",
-                             fill=blend(TEXT, BG, 0.45), font=self._font, tags=T)
-        # прицел на текущем символе
+            nw = tkfont.Font(font=f_ahead).measure(near)
+            self.create_text(right_edge + px(4) + nw, cy, text=far, anchor="w",
+                             fill=blend(c_ahead, BG, 0.45), font=f_ahead, tags=T)
+        # прицел на текущем символе (или только подчёркивание, если прицел выключен)
         err = time.monotonic() < self._err_until
         col = RED if err else AMBER
         top, bot = cy - lh / 2 - px(5), cy + lh / 2 + px(5)
-        self.create_rectangle(left_edge - px(3), top, right_edge + px(3), bot,
-                              fill=RED_DIM if err else blend(AMBER, BG, 0.85),
-                              outline=blend(col, BG, 0.4), width=px(5), tags=T)
-        self.create_rectangle(left_edge - px(3), top, right_edge + px(3), bot,
-                              outline=col, width=1, tags=T)
-        tri = px(6)
-        self.create_polygon(cx - tri, top - px(9), cx + tri, top - px(9), cx, top - px(2),
-                            fill=col, outline="", tags=T)
-        self.create_polygon(cx - tri, bot + px(9), cx + tri, bot + px(9), cx, bot + px(2),
-                            fill=col, outline="", tags=T)
+        if getattr(self, "sight", True):
+            self.create_rectangle(left_edge - px(3), top, right_edge + px(3), bot,
+                                  fill=RED_DIM if err else blend(AMBER, BG, 0.85),
+                                  outline=blend(col, BG, 0.4), width=px(5), tags=T)
+            self.create_rectangle(left_edge - px(3), top, right_edge + px(3), bot,
+                                  outline=col, width=1, tags=T)
+            tri = px(6)
+            self.create_polygon(cx - tri, top - px(9), cx + tri, top - px(9), cx, top - px(2),
+                                fill=col, outline="", tags=T)
+            self.create_polygon(cx - tri, bot + px(9), cx + tri, bot + px(9), cx, bot + px(2),
+                                fill=col, outline="", tags=T)
+        elif cur != " ":
+            self.create_line(left_edge, bot - px(4), right_edge, bot - px(4), fill=col,
+                             width=px(3), tags=T)
+        c_cur = getattr(self, "col_cursor", "#FFFFFF")
         if cur == " ":
             self.create_line(left_edge + px(3), cy + lh * 0.30, right_edge - px(3), cy + lh * 0.30,
-                             fill=col, width=px(3), tags=T)
+                             fill=col if (self._blink_phase or err) else blend(col, BG, 0.7),
+                             width=px(3), tags=T)
         elif cur:
-            self.create_text(cx, cy, text=cur, fill="#FFFFFF" if not err else RED,
+            dim = not self._blink_phase and not err
+            self.create_text(cx, cy, text=cur,
+                             fill=RED if err else (blend(c_cur, BG, 0.7) if dim else c_cur),
                              font=self._font_b, tags=T)
         if self.finger and self.mode != "pause":
             name, color = self.finger
@@ -742,7 +801,7 @@ class HudKeyboard(tk.Canvas):
                 fill, outline = PANEL, LINE
                 fg = FAINT if is_mod else MUTED
             else:
-                fill = theme.heat_color(min(1.0, heat * 4))
+                fill = theme.heat_fill(heat)
                 outline = blend(fill, TEXT, 0.3)
         elif self.zones and not is_mod:
             fill, outline = blend(PANEL, zone, 0.13), blend(zone, BG, 0.35)
@@ -770,10 +829,7 @@ class HudKeyboard(tk.Canvas):
             cx = (x1 + x2) / 2
             self.create_line(cx - kh * 0.14, y2 - kh * 0.13, cx + kh * 0.14, y2 - kh * 0.13,
                              fill=fg, width=2, tags=tag)
-        if heat is not None and not hl and heat > 0:
-            self.create_text(x1 + kh * 0.10, y2 - kh * 0.16, text=f"{heat * 100:.0f}",
-                             anchor="w", fill=TEXT, font=theme.font(max(6, int(size * 0.5))),
-                             tags=tag)
+        # проценты на клавишах убраны (как в веб-версии): цвет говорит сам — зелёный → янтарь → красный
 
 
 # ---------------------------------------------------------------------------
@@ -868,8 +924,17 @@ class TranslatorPanel(tk.Canvas):
         self._f_tr = theme.font(18)             # перевод всего предложения — крупно
         self._f_src = theme.font(8)
         self._f_word = theme.font(22, True)     # оригинал слова слева (EN)
+        self.col_on = RED                        # текущая буква слова в окошке прицела
         self._f_word_tr = theme.font(26, True)  # перевод слова справа
         self.bind("<Configure>", lambda _e: self.redraw())
+
+    def set_style(self, st: dict) -> None:
+        """Окошко прицела: размер/шрифт слова и цвет текущей буквы («Мостик → Настройки»)."""
+        from stamina import typing_style as ts
+        fam = ts.family_for(st.get("sight_box_face", "mono"), theme.HUD_FAMILY, theme.MONO_FAMILY)
+        self._f_word = (fam, max(6, int(round(ts.box_size(st) * theme.UI))), "bold")
+        self.col_on = ts.color(st, "sight_on_color", RED)
+        self.redraw()
 
     def set(self, *, direction: str | None = None, source: str | None = None,
             translation: str | None = None, word: str | None = None,
@@ -978,7 +1043,7 @@ class TranslatorPanel(tk.Canvas):
         x = left_x
         cursor = self.word_cursor
         for i, ch in enumerate(word_src):
-            color = RED if i == cursor else CYAN
+            color = self.col_on if i == cursor else CYAN
             # уже набранные буквы слова — чуть приглушённые
             if 0 <= cursor and i < cursor:
                 color = blend(CYAN, PANEL, 0.45)
