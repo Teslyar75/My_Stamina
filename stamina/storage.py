@@ -30,6 +30,7 @@ DEFAULT_SETTINGS = {
     "keyboard": True,
     "zones": True,
     "font": "M",
+    "cursor_blink": "on",  # мигание целевой буквы в прицеле: off | on | fast (порт из веб-версии)
     "ui_scale": "M",  # размер интерфейса всего приложения: S / M / L / XL
     "lang": "en",
     "translator": True,
