@@ -20,7 +20,7 @@ class SnakeGame(GameShell):
 
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
-        self.set_hint(_t("← ↑ → ↓ или WASD · Esc пауза · R заново"))
+        self.set_hint(_t("← ↑ → ↓ или WASD · Esc пауза / заново · R заново"))
         self.reset()
 
     def tick_ms(self) -> int:

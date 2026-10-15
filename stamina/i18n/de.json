@@ -1353,7 +1353,6 @@
  "Книга на полке. Выбрать её для набора?": "Das Buch steht auf dem Regal.?",
  "Отклонено: оба файла на языке {0} (не перевод).": "Abgelehnt: beide Dateien in {0} (nicht übersetzt).",
  "В каталоге: {0} · на экране: {1} · с обложкой: {2}": "Katalognummer: {0} · Bildschirm: {1} · Abgedeckt: {2}",
- "F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы": "F1 / ? — Diese Seite · F5 Fortsetzung · Esc Pause · F9 Klang · Strg+1. {0} Abschnitte",
  "(нет перевода)": "(Keine Übersetzung)",
  "Подсказка (держи) · английский": "Ein Hinweis.) · Englisch",
  "Нет английского образца": "Keine englische Stichprobe",
@@ -1444,7 +1443,7 @@
  "короткий перерыв между полётами · рекорды сохраняются на борту": "Kurze Unterbrechung zwischen den Flügen · Die Aufzeichnungen sind an Bord.",
  "Esc — пауза в игре · R — заново · выход в лобби — кнопка «← В ЛОББИ»": "Esc ist eine Pause im Spiel. · R — Wiederaufleben · Die Lobby ist ein Knopf \" im LOBIBY\"»",
  "ЗМЕЙКА · НАВИГАЦИОННЫЙ ШНУР": "SCHLANGE · NAVIGATIONSKABEL",
- "← ↑ → ↓ или WASD · Esc пауза · R заново": "← ↑ → ↓ oder WASD · Esc Pause · R Wieder",
+ "← ↑ → ↓ или WASD · Esc пауза / заново · R заново": "← ↑ → ↓ oder WASD · Esc Pause / Wieder · R Wieder",
  "ШНУР ОБОРВАН\nEsc / ЗАНОВО": "DER SCHUH IST ABGERISSEN.\nEsc/WARN",
  "длина {0}": "Länge {0}",
  "ТЕТРИС · СТЫКОВКА БЛОКОВ": "TETRIS · ANKOPPLUNG VON BLÖCKEN",
@@ -1655,5 +1654,8 @@
  "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN-SENDER  F7",
  "Волны скина: {0}": "Skin-Sender: {0}",
  "• F7 — волны скина: станции по жанрам и стране скина («Старая Англия» — джаз, свинг, BBC).": "• F7 — Skin-Sender: Sender nach Genres und Land des Skins («Altes England» — Jazz, Swing, BBC).",
- "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren."
+ "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren.",
+ "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "Keine Paare {0}→{1} in bilinguis. Versuche EN→RU oder EN→UK.",
+ "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "Keine Paare {0}→{1} in Gutenberg. Für RU/UK wähle eine RU- oder UK-Übersetzung (bilinguis) oder «＋ MANUELL».",
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Schwacher Durchlauf (Ø {0}%) — nötig ≥ {1}%. Wiederhole alle Aufgaben."
 }

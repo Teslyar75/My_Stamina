@@ -160,7 +160,12 @@ class GameShell(tk.Frame):
     def on_key(self, e: tk.Event) -> None:
         k = e.keysym
         if k in ("Escape", "p", "P"):
-            self.toggle_pause()
+            # после поражения Esc должен перезапускать (оверлей «Esc / ЗАНОВО»),
+            # а не молча игнорировать — иначе кнопка «не работает»
+            if self.over:
+                self.restart()
+            else:
+                self.toggle_pause()
         elif k in ("r", "R"):
             self.restart()
 

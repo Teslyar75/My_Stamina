@@ -1,5 +1,7 @@
 # Star Typing — браузерная версия: план и промпты для Cursor
 
+> **Паритет с десктопом (пробелы после MVP):** см. [`PARITY_PLAN.md`](./PARITY_PLAN.md) — эпики P1–P8.
+
 ## 1. Стек
 - **Фронтенд:** TypeScript + React + Vite, Zustand (состояние), i18next (переиспользуем словари `stamina/i18n` → JSON).
 - **Бэкенд:** Python FastAPI. Переносим логику из `stamina/` почти без изменений: `english/vocab.py`, `sm2.py`, `progress.py`, `textutil.py`, `library.py`, `pdf_import.py`, `langdetect.py`, `book_catalog.py`, `bilinguis_catalog.py`.
@@ -56,6 +58,16 @@
 | 6 | СКОРОЧТЕНИЕ: RSVP, Шульте ✅ |
 | 7 | Живой космос, темы/скины, звуки, радио ✅ |
 | 8 | i18n, PWA/офлайн, деплой, перенос данных с ПК (`pilot_migrate.py` → импорт JSON) ✅ |
+
+### Углубление (после фаз)
+- Читалка: paginate + режимы bi/screen1/screen2, sync набор↔чтение по `sentence_id` (Zustand) ✅
+- Docker Compose: Postgres + backend + static frontend + Caddy :80/:443 ✅
+- Migrate: `POST /api/migrate/pilot`, `/api/migrate/bundle` ✅
+- Speedread quiz (seen yes/no) после RSVP ✅
+- Vosk модель в IndexedDB; UI-ключи i18n; импорт JSON пилота в Экипаже ✅
+- Космос light@8fps + freeze reduced-motion; радиорубка/минибар/избранное; Web Audio; Caddy DOMAIN HTTPS ✅
+- Gale–Church ≥90% на bilinguis-фрагменте; ICY nowplaying API; frost-профиль космоса ✅
+- Паритет P1: drills ★★★, ремонт, heatmap, онбординг кабины — см. [`PARITY_PLAN.md`](./PARITY_PLAN.md) ✅ |
 
 ## 5. Промпты для Cursor (копировать по одному)
 

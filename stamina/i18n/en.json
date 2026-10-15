@@ -1365,7 +1365,6 @@
  "Книга на полке. Выбрать её для набора?": "The book is on the shelf.?",
  "Отклонено: оба файла на языке {0} (не перевод).": "Rejected: both files in {0} (not translated).",
  "В каталоге: {0} · на экране: {1} · с обложкой: {2}": "Catalogue: {0} · screen: {1} · Covered: {2}",
- "F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · Ctrl+1…{0} разделы": "F1 / ? — This page · F5 Resume · Esc Pause · F9 Sound · Ctrl+1. {0} sections",
  "(нет перевода)": "(No translation)",
  "Подсказка (держи) · английский": "A clue.) · English",
  "Нет английского образца": "No English sample",
@@ -1444,7 +1443,7 @@
  "ЩИТ ПРОБИТ\nEsc / ЗАНОВО": "SHIELD'S GONNA BREAK.\nEsc / WARN",
  "ПРОБЕЛ — ПУСК": "SPACE - LAUNCH",
  "ЗМЕЙКА · НАВИГАЦИОННЫЙ ШНУР": "SNAKE · NAVIGATION CORD",
- "← ↑ → ↓ или WASD · Esc пауза · R заново": "← ↑ → ↓ or WASD · Esc Pause · R Again",
+ "← ↑ → ↓ или WASD · Esc пауза / заново · R заново": "← ↑ → ↓ or WASD · Esc Pause / Again · R Again",
  "ШНУР ОБОРВАН\nEsc / ЗАНОВО": "THE SHOE IS TORN OFF.\nEsc / WARN",
  "длина {0}": "length {0}",
  "ТЕТРИС · СТЫКОВКА БЛОКОВ": "TETRIS · COUPLING OF BLOCKS",
@@ -1657,5 +1656,8 @@
  "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN WAVES  F7",
  "Волны скина: {0}": "Skin waves: {0}",
  "• F7 — волны скина: станции по жанрам и стране скина («Старая Англия» — джаз, свинг, BBC).": "• F7 — skin waves: stations by the skin's genres and country («Old England» — jazz, swing, BBC).",
- "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Idle: after N minutes without the keyboard a skin-themed slideshow and radio start. Any key closes it; that keypress is not typed. Images: Wikimedia Commons, author and licence in the corner. «▶ SHOW NOW» — try it."
+ "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Idle: after N minutes without the keyboard a skin-themed slideshow and radio start. Any key closes it; that keypress is not typed. Images: Wikimedia Commons, author and licence in the corner. «▶ SHOW NOW» — try it.",
+ "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "No {0}→{1} pairs in bilinguis. Try EN→RU or EN→UK.",
+ "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "No {0}→{1} pairs in Gutenberg. For RU/UK pick an RU or UK translation (bilinguis), or «＋ MANUAL».",
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Weak run (avg {0}%) — need ≥ {1}%. Repeat all tasks."
 }
