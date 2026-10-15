@@ -4,7 +4,7 @@ from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk
 
-from stamina.theme import BG2, CYAN, PANEL, PANEL_HI, px
+from stamina.theme import BG2, CYAN, CYAN_DIM, LINE_HI, PANEL, PANEL_HI, TEXT, blend, px
 
 
 def bind_wraplength(label: tk.Label, host: tk.Misc | None = None, *, margin: int = 16) -> None:
@@ -57,6 +57,28 @@ def ensure_hud_scrollbar_style(widget: tk.Misc) -> str:
     style.configure(name, background=PANEL_HI, troughcolor=BG2, bordercolor=PANEL,
                     arrowcolor=CYAN, lightcolor=PANEL_HI, darkcolor=PANEL_HI,
                     arrowsize=px(12))
+    return name
+
+
+def ensure_hud_combo_style(widget: tk.Misc) -> str:
+    """Стиль ttk.Combobox под тёмный HUD (без белого системного поля)."""
+    name = "Hud.TCombobox"
+    style = ttk.Style(widget)
+    try:
+        style.theme_use("clam")
+    except tk.TclError:
+        pass
+    field = blend(PANEL, CYAN, 0.08)
+    style.configure(name, fieldbackground=field, background=PANEL_HI, foreground=TEXT,
+                    arrowcolor=CYAN, bordercolor=LINE_HI, lightcolor=PANEL_HI, darkcolor=PANEL_HI,
+                    selectbackground=field, selectforeground=TEXT)
+    style.map(name, fieldbackground=[("readonly", field)], foreground=[("readonly", TEXT)],
+              selectbackground=[("readonly", field)], selectforeground=[("readonly", TEXT)])
+    # выпадающий список — обычный tk.Listbox, красим через option database
+    widget.option_add("*TCombobox*Listbox.background", PANEL)
+    widget.option_add("*TCombobox*Listbox.foreground", TEXT)
+    widget.option_add("*TCombobox*Listbox.selectBackground", CYAN_DIM)
+    widget.option_add("*TCombobox*Listbox.selectForeground", "#FFFFFF")
     return name
 
 
