@@ -737,7 +737,7 @@ class SettingsScreen(tk.Frame):
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
         from stamina.idle import IDLE_MINUTES
         idl = self._row(_t("Простой: слайдшоу и радио"),
-                        _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
+                        _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
         self.idle_btns = {}
         for m in IDLE_MINUTES:
             b = HudButton(idl, _t("ВЫКЛ") if m == 0 else _t("{0} мин").format(m),
@@ -871,7 +871,7 @@ class SettingsScreen(tk.Frame):
         from stamina.idle.overlay import skin_slideshow
         if not skin_slideshow():
             messagebox.showinfo(_t("Простой: слайдшоу и радио"),
-                                _t("У этого скина нет слайдшоу — выберите «Старую Англию»."), parent=self)
+                                _t("У этого скина нет слайдшоу — выберите «Звездолёт» или «Старую Англию»."), parent=self)
             return
         self.after(150, ctl.open)
 

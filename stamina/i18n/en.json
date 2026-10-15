@@ -1642,13 +1642,11 @@
  "Alt+1…4 или Ctrl+Tab — вкладки ПРИЦЕЛ / НАБОР / ЦВЕТА / ОКОШКО · Tab, стрелки — по кнопкам · Enter/пробел — нажать · Esc — назад на мостик": "Alt+1…4 or Ctrl+Tab — tabs SIGHT / TYPING / COLORS / BOX · Tab, arrows — between buttons · Enter/Space — press · Esc — back to the bridge",
  "Ctrl+1…6 — зоны · Ctrl+F1…F5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика (из любой зоны) · F1 — эта справка · F9 — звук · F11 — ЭКРАН (выход Esc) · Ctrl+Shift+P — сменить пилота": "Ctrl+1…6 — zones · Ctrl+F1…F5 — Flight, Missions, Own text, Logbook, Bridge settings (from any zone) · F1 — this help · F9 — sound · F11 — SCREEN (exit Esc) · Ctrl+Shift+P — switch pilot",
  "Простой: слайдшоу и радио": "Idle: slideshow & radio",
- "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "If the keyboard is idle for a while, a skin-themed slideshow and matching radio start. The first keypress closes it and is not counted as typing. Works in skins with a slideshow («Old England»); images from Wikimedia Commons, offline — the skin photo.",
  "{0} мин": "{0} min",
  "Радио под скин": "Skin radio",
  "После закрытия": "After closing",
  "ВЫКЛЮЧИТЬ РАДИО": "STOP RADIO",
  "ОСТАВИТЬ РАДИО": "KEEP RADIO",
- "У этого скина нет слайдшоу — выберите «Старую Англию».": "This skin has no slideshow — choose «Old England».",
  "Фото": "Photo",
  "Любая клавиша — вернуться": "Any key — back",
  "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN WAVES  F7",
@@ -1662,5 +1660,7 @@
  "без звука": "muted",
  "Стрелки ← → — волна · ↑ ↓ — громкость · M — звук": "Arrows ← → — station · ↑ ↓ — volume · M — sound",
  "Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем.": "A station is picked by the skin's genres; volume quickly fades in to ~40%. In the slideshow: ← → — station, ↑ ↓ — volume, M — sound. If radio is already playing, it is left alone.",
- "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ SHOW NOW  F8"
+ "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ SHOW NOW  F8",
+ "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "If the keyboard is idle for a while, a skin-themed slideshow and matching radio start. The first keypress closes it and is not counted as typing. Works in skins with a slideshow («Starship», «Old England»); images from Wikimedia Commons, offline — the skin photo.",
+ "У этого скина нет слайдшоу — выберите «Звездолёт» или «Старую Англию».": "This skin has no slideshow — choose «Starship» or «Old England»."
 }
