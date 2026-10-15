@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from stamina import theme
+from stamina.adapt import ensure_hud_combo_style, make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, RED, TEXT, blend, px
 
@@ -148,15 +149,15 @@ class RadioScreen(tk.Frame):
         self.ent_q.bind("<Return>", lambda _e: self._do_search())
 
         tk.Label(b, text=_t("СТРАНА"), bg=PANEL, fg=MUTED, font=theme.font(8, True)).pack(anchor="w")
-        self.cmb_country = ttk.Combobox(b, state="readonly", width=28)
+        self.cmb_country = ttk.Combobox(b, state="readonly", width=28, style=ensure_hud_combo_style(b))
         self.cmb_country.pack(fill=tk.X, pady=(px(2), px(8)))
 
         tk.Label(b, text=_t("ЯЗЫК"), bg=PANEL, fg=MUTED, font=theme.font(8, True)).pack(anchor="w")
-        self.cmb_lang = ttk.Combobox(b, state="readonly", width=28)
+        self.cmb_lang = ttk.Combobox(b, state="readonly", width=28, style=ensure_hud_combo_style(b))
         self.cmb_lang.pack(fill=tk.X, pady=(px(2), px(8)))
 
         tk.Label(b, text=_t("ЖАНР"), bg=PANEL, fg=MUTED, font=theme.font(8, True)).pack(anchor="w")
-        self.cmb_tag = ttk.Combobox(b, state="readonly", width=28)
+        self.cmb_tag = ttk.Combobox(b, state="readonly", width=28, style=ensure_hud_combo_style(b))
         self.cmb_tag.pack(fill=tk.X, pady=(px(2), px(8)))
 
         HudButton(b, _t("🔍 ИСКАТЬ"), self._do_search, color=CYAN, height=34).pack(fill=tk.X, pady=px(4))
@@ -177,7 +178,7 @@ class RadioScreen(tk.Frame):
 
         wrap = tk.Frame(right, bg=BG)
         wrap.pack(fill=tk.BOTH, expand=True, pady=(px(4), 0))
-        sb = tk.Scrollbar(wrap)
+        sb = make_vscroll(wrap)
         sb.pack(side=tk.RIGHT, fill=tk.Y)
         self.list_canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0, yscrollcommand=sb.set)
         self.list_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
