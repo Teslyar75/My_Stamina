@@ -1644,9 +1644,7 @@
  "Простой: слайдшоу и радио": "Idle: slideshow & radio",
  "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "If the keyboard is idle for a while, a skin-themed slideshow and matching radio start. The first keypress closes it and is not counted as typing. Works in skins with a slideshow («Old England»); images from Wikimedia Commons, offline — the skin photo.",
  "{0} мин": "{0} min",
- "▶ ПОКАЗАТЬ СЕЙЧАС": "▶ SHOW NOW",
  "Радио под скин": "Skin radio",
- "Станция подбирается по жанрам скина, громкость плавно растёт до ~30 %. Если радио уже играет — его не трогаем.": "A station is picked by the skin's genres; volume fades in to ~30%. If radio is already playing, it is left alone.",
  "После закрытия": "After closing",
  "ВЫКЛЮЧИТЬ РАДИО": "STOP RADIO",
  "ОСТАВИТЬ РАДИО": "KEEP RADIO",
@@ -1659,5 +1657,10 @@
  "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Idle: after N minutes without the keyboard a skin-themed slideshow and radio start. Any key closes it; that keypress is not typed. Images: Wikimedia Commons, author and licence in the corner. «▶ SHOW NOW» — try it.",
  "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "No {0}→{1} pairs in bilinguis. Try EN→RU or EN→UK.",
  "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "No {0}→{1} pairs in Gutenberg. For RU/UK pick an RU or UK translation (bilinguis), or «＋ MANUAL».",
- "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Weak run (avg {0}%) — need ≥ {1}%. Repeat all tasks."
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Weak run (avg {0}%) — need ≥ {1}%. Repeat all tasks.",
+ "нет связи с волной": "station unavailable",
+ "без звука": "muted",
+ "Стрелки ← → — волна · ↑ ↓ — громкость · M — звук": "Arrows ← → — station · ↑ ↓ — volume · M — sound",
+ "Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем.": "A station is picked by the skin's genres; volume quickly fades in to ~40%. In the slideshow: ← → — station, ↑ ↓ — volume, M — sound. If radio is already playing, it is left alone.",
+ "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ SHOW NOW  F8"
 }

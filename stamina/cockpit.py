@@ -95,6 +95,7 @@ class Cockpit(tk.Tk):
         self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
         from stamina.idle.overlay import IdleController
         self.idle = IdleController(self)   # слайдшоу простоя — только у скинов со slideshow
+        self.bind("<F8>", lambda _e: self.idle.open() or "break")  # показать слайдшоу сейчас
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
 

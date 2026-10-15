@@ -1642,9 +1642,7 @@
  "Простой: слайдшоу и радио": "Leerlauf: Diashow & Radio",
  "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in Skins mit Diashow («Altes England»); Bilder von Wikimedia Commons, offline — das Skinfoto.",
  "{0} мин": "{0} Min",
- "▶ ПОКАЗАТЬ СЕЙЧАС": "▶ JETZT ZEIGEN",
  "Радио под скин": "Skin-Radio",
- "Станция подбирается по жанрам скина, громкость плавно растёт до ~30 %. Если радио уже играет — его не трогаем.": "Ein Sender wird nach den Genres des Skins gewählt; die Lautstärke steigt sanft auf ~30 %. Läuft schon Radio, bleibt es unangetastet.",
  "После закрытия": "Nach dem Schließen",
  "ВЫКЛЮЧИТЬ РАДИО": "RADIO STOPPEN",
  "ОСТАВИТЬ РАДИО": "RADIO WEITERLAUFEN",
@@ -1657,5 +1655,10 @@
  "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Leerlauf: nach N Minuten ohne Tastatur starten eine Diashow im Stil des Skins und passendes Radio. Jede Taste schließt sie; dieser Tastendruck wird nicht getippt. Bilder: Wikimedia Commons, Autor und Lizenz in der Ecke. «▶ JETZT ZEIGEN» — ausprobieren.",
  "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "Keine Paare {0}→{1} in bilinguis. Versuche EN→RU oder EN→UK.",
  "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "Keine Paare {0}→{1} in Gutenberg. Für RU/UK wähle eine RU- oder UK-Übersetzung (bilinguis) oder «＋ MANUELL».",
- "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Schwacher Durchlauf (Ø {0}%) — nötig ≥ {1}%. Wiederhole alle Aufgaben."
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Schwacher Durchlauf (Ø {0}%) — nötig ≥ {1}%. Wiederhole alle Aufgaben.",
+ "нет связи с волной": "Sender nicht erreichbar",
+ "без звука": "stumm",
+ "Стрелки ← → — волна · ↑ ↓ — громкость · M — звук": "Pfeile ← → — Sender · ↑ ↓ — Lautstärke · M — Ton",
+ "Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем.": "Ein Sender wird nach den Genres des Skins gewählt, die Lautstärke steigt schnell auf ~40 %. In der Diashow: ← → — Sender, ↑ ↓ — Lautstärke, M — Ton. Läuft schon Radio, bleibt es unverändert.",
+ "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ JETZT ZEIGEN  F8"
 }

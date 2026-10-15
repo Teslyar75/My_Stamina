@@ -744,10 +744,10 @@ class SettingsScreen(tk.Frame):
                           lambda k=m: self._set_idle("idle_minutes", k), width=56, height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.idle_btns[m] = b
-        HudButton(idl, _t("▶ ПОКАЗАТЬ СЕЙЧАС"), self._idle_now, height=30, font_size=8,
+        HudButton(idl, _t("▶ ПОКАЗАТЬ СЕЙЧАС  F8"), self._idle_now, height=30, font_size=8,
                   color=AMBER).pack(side=tk.LEFT, padx=px(6))
         irr = self._row(_t("Радио под скин"),
-                        _t("Станция подбирается по жанрам скина, громкость плавно растёт до ~30 %. Если радио уже играет — его не трогаем."))
+                        _t("Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем."))
         self.idle_radio_btn = HudButton(irr, _t("ВКЛ"), lambda: self._set_idle("idle_radio", None),
                                         width=90, height=30, font_size=8)
         self.idle_radio_btn.pack(side=tk.LEFT, padx=px(2))
