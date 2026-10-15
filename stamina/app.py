@@ -149,8 +149,8 @@ def run_app(argv: list[str] | None = None) -> None:
         raise
 
 
-def relaunch() -> bool:
-    """Запустить программу заново тем же Python и с теми же аргументами (смена языка интерфейса)."""
+def relaunch(extra_env: dict | None = None) -> bool:
+    """Запустить программу заново тем же Python и с теми же аргументами (смена языка, скина)."""
     import subprocess
     try:
         from stamina import pilots
@@ -158,6 +158,7 @@ def relaunch() -> bool:
         cur = pilots.active()
         if cur:
             env["STAMINA_PILOT"] = cur["id"]          # вернуться в кабину того же пилота
+        env.update(extra_env or {})
         subprocess.Popen([sys.executable] + sys.argv, cwd=os.getcwd(), close_fds=True, env=env)
     except OSError:
         return False

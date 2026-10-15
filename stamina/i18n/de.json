@@ -1640,13 +1640,11 @@
  "Alt+1…4 или Ctrl+Tab — вкладки ПРИЦЕЛ / НАБОР / ЦВЕТА / ОКОШКО · Tab, стрелки — по кнопкам · Enter/пробел — нажать · Esc — назад на мостик": "Alt+1…4 oder Strg+Tab — Reiter ZIELRAHMEN / TIPPEN / FARBEN / FENSTER · Tab, Pfeile — zwischen Knöpfen · Enter/Leertaste — drücken · Esc — zurück zur Brücke",
  "Ctrl+1…6 — зоны · Ctrl+F1…F5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика (из любой зоны) · F1 — эта справка · F9 — звук · F11 — ЭКРАН (выход Esc) · Ctrl+Shift+P — сменить пилота": "Strg+1…6 — Zonen · Strg+F1…F5 — Flug, Missionen, Eigener Text, Logbuch, Brücken-Einstellungen (aus jeder Zone) · F1 — diese Hilfe · F9 — Ton · F11 — BILDSCHIRM (Ende Esc) · Strg+Umschalt+P — Pilot wechseln",
  "Простой: слайдшоу и радио": "Leerlauf: Diashow & Radio",
- "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in Skins mit Diashow («Altes England»); Bilder von Wikimedia Commons, offline — das Skinfoto.",
  "{0} мин": "{0} Min",
  "Радио под скин": "Skin-Radio",
  "После закрытия": "Nach dem Schließen",
  "ВЫКЛЮЧИТЬ РАДИО": "RADIO STOPPEN",
  "ОСТАВИТЬ РАДИО": "RADIO WEITERLAUFEN",
- "У этого скина нет слайдшоу — выберите «Старую Англию».": "Dieser Skin hat keine Diashow — wählen Sie «Altes England».",
  "Фото": "Foto",
  "Любая клавиша — вернуться": "Beliebige Taste — zurück",
  "♫ ВОЛНЫ СКИНА  F7": "♫ SKIN-SENDER  F7",
@@ -1660,5 +1658,7 @@
  "без звука": "stumm",
  "Стрелки ← → — волна · ↑ ↓ — громкость · M — звук": "Pfeile ← → — Sender · ↑ ↓ — Lautstärke · M — Ton",
  "Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем.": "Ein Sender wird nach den Genres des Skins gewählt, die Lautstärke steigt schnell auf ~40 %. In der Diashow: ← → — Sender, ↑ ↓ — Lautstärke, M — Ton. Läuft schon Radio, bleibt es unverändert.",
- "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ JETZT ZEIGEN  F8"
+ "▶ ПОКАЗАТЬ СЕЙЧАС  F8": "▶ JETZT ZEIGEN  F8",
+ "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in Skins mit Diashow («Raumschiff», «Altes England»); Bilder von Wikimedia Commons, offline — das Skinfoto.",
+ "У этого скина нет слайдшоу — выберите «Звездолёт» или «Старую Англию».": "Dieser Skin hat keine Diashow — wählen Sie «Raumschiff» oder «Altes England»."
 }

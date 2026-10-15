@@ -102,7 +102,10 @@ class IdleLogicTest(unittest.TestCase):
     def test_only_skins_with_slideshow(self) -> None:
         from stamina.idle.overlay import skin_slideshow
         theme.load_theme("spaceship", apply_ui=False)
-        self.assertIsNone(skin_slideshow())
+        ship = skin_slideshow()
+        self.assertTrue(ship["topics"])
+        self.assertTrue(any("nebula" in x.lower() for x in ship["topics"]))
+        self.assertIn("Groove Salad", theme.current()["radio"]["pinned"])
         theme.load_theme("old_england", apply_ui=False)
         self.assertTrue(skin_slideshow()["wikimedia"])
         theme.load_theme("spaceship", apply_ui=False)

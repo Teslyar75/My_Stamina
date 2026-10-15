@@ -5,6 +5,7 @@ from __future__ import annotations
 from stamina.i18n import t as tr_
 
 import time
+import os
 import tkinter as tk
 from tkinter import messagebox
 
@@ -662,6 +663,13 @@ class Cockpit(tk.Tk):
 
     # ------------------------------------------------------------------
     def _bootstrap(self) -> None:
+        self._bootstrap_main()
+        start = os.environ.pop("STAMINA_START", "")
+        if start == "settings:skins":  # после смены скина — обратно в Настройки → Скины
+            self.show("settings")
+            self.after(200, lambda: self.goto_subtab(2))
+
+    def _bootstrap_main(self) -> None:
         saved = load_session()
         adapted, original = self.store.load_cargo()
         if not adapted and saved:
