@@ -84,5 +84,41 @@
     "error": "sounds/skins/spaceship/error.wav",
     "bell": "sounds/skins/spaceship/bell.wav",
     "start": "sounds/skins/spaceship/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "Hubble nebula",
+      "James Webb Space Telescope image",
+      "spiral galaxy Hubble",
+      "Carina Nebula",
+      "Orion Nebula",
+      "Jupiter planet",
+      "Saturn Cassini",
+      "Mars surface rover",
+      "Moon surface Apollo",
+      "International Space Station orbit",
+      "Earth from ISS",
+      "aurora from space ISS",
+      "rocket launch night",
+      "Space Shuttle launch",
+      "Milky Way night sky"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "ambient",
+      "chillout",
+      "lofi",
+      "synthwave"
+    ],
+    "pinned": [
+      "Groove Salad",
+      "Deep Space One",
+      "Space Station Soma",
+      "DEF CON",
+      "Drone Zone",
+      "Lofi"
+    ]
   }
 }
