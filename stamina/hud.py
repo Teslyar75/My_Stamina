@@ -447,6 +447,8 @@ class Viewport(tk.Canvas):
         self._err_text = ""
         self._err_shown = False
         self._stars: list[list] = []
+        self.blink = "on"           # мигание целевой буквы: off | on | fast
+        self._blink_phase = True
         self.bind("<Configure>", lambda _e: self._rebuild())
 
     def set_font_size(self, size: int) -> None:
@@ -517,9 +519,27 @@ class Viewport(tk.Canvas):
             self._stars.append([x, y, layer, item])
         self.redraw()
 
+    BLINK_PERIOD = {"on": 1.0, "fast": 0.35}
+
+    def set_blink(self, mode: str) -> None:
+        self.blink = mode if mode in ("off", "on", "fast") else "on"
+        self._blink_phase = True
+        self.redraw()
+
+    def _blink_tick(self, now: float) -> None:
+        period = self.BLINK_PERIOD.get(self.blink)
+        if not period or self.mode not in ("ready", "run"):
+            phase = True
+        else:
+            phase = (now % period) < period * 0.6
+        if phase != self._blink_phase:
+            self._blink_phase = phase
+            self.redraw()
+
     def tick(self, warp: float, animate: bool) -> None:
         """Сдвинуть звёзды. warp — множитель скорости (зависит от темпа печати)."""
         now = time.monotonic()
+        self._blink_tick(now)
         if self._err_shown and now > getattr(self, "_err_text_until", 0):
             self._err_shown = False
             self.redraw()
@@ -610,9 +630,12 @@ class Viewport(tk.Canvas):
                             fill=col, outline="", tags=T)
         if cur == " ":
             self.create_line(left_edge + px(3), cy + lh * 0.30, right_edge - px(3), cy + lh * 0.30,
-                             fill=col, width=px(3), tags=T)
+                             fill=col if (self._blink_phase or err) else blend(col, BG, 0.7),
+                             width=px(3), tags=T)
         elif cur:
-            self.create_text(cx, cy, text=cur, fill="#FFFFFF" if not err else RED,
+            dim = not self._blink_phase and not err
+            self.create_text(cx, cy, text=cur,
+                             fill=RED if err else (blend("#FFFFFF", BG, 0.7) if dim else "#FFFFFF"),
                              font=self._font_b, tags=T)
         if self.finger and self.mode != "pause":
             name, color = self.finger

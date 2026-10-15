@@ -1341,5 +1341,9 @@
  "🔊 ТЕСТ": "🔊 TEST",
  "🔍 ИСКАТЬ": "🔍 SEARCH",
  "🔒 КОД": "🔒 CODE",
- "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED"
+ "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
+ "Мигание целевой буквы": "Target letter blink",
+ "Буква в прицеле мигает, чтобы глаз не терял место. «Быстрое» — чаще, «Выкл» — буква горит ровно.": "The letter in the sight blinks so your eye keeps its place. “Fast” blinks more often, “Off” keeps it steady.",
+ "БЫСТРОЕ": "FAST",
+ "({0} из {1})": "({0} of {1})"
 }

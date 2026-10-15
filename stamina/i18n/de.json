@@ -1327,5 +1327,9 @@
  "🔊 ТЕСТ": "🔊 PRÜFUNG",
  "🔍 ИСКАТЬ": "🔍 SUCHEN",
  "🔒 КОД": "🔒 ANHANG",
- "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE"
+ "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE",
+ "Мигание целевой буквы": "Blinken des Zielbuchstabens",
+ "Буква в прицеле мигает, чтобы глаз не терял место. «Быстрое» — чаще, «Выкл» — буква горит ровно.": "Der Buchstabe im Visier blinkt, damit das Auge die Stelle nicht verliert. „Schnell“ blinkt öfter, „Aus“ leuchtet gleichmäßig.",
+ "БЫСТРОЕ": "SCHNELL",
+ "({0} из {1})": "({0} von {1})"
 }

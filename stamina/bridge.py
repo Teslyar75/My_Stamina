@@ -536,6 +536,7 @@ class Bridge(tk.Frame):
         st = self.app.store.settings
         self.viewport.set_font_size(FONT_SIZES.get(st["font"], 26))
         self.viewport.set_stars_visible(st["stars"])
+        self.viewport.set_blink(st.get("cursor_blink", "on"))
         self.keyboard.set_zones(st["zones"])
         if st["keyboard"]:
             if not self.keyboard.winfo_ismapped():
@@ -730,6 +731,8 @@ class Bridge(tk.Frame):
         self.viewport.tick(warp, stars_on)
         self.keyboard.tick()
         moving = self.speed.animate()
+        if self.viewport.blink == "fast" and self.state in ("run", "ready"):
+            moving = True    # быстрому миганию (0,35 с) не хватает медленного таймера 200 мс
         if time.monotonic() - self._last_stats > 0.25 and self.state in ("run", "ready"):
             self.refresh_stats()
         self.persist()
