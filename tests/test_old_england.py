@@ -95,7 +95,7 @@ class IdleLogicTest(unittest.TestCase):
 
     def test_settings_defaults_like_web(self) -> None:
         from stamina.idle import IDLE_MINUTES, settings_of
-        self.assertEqual(IDLE_MINUTES, (0, 1, 3, 5, 10, 15))
+        self.assertEqual(IDLE_MINUTES, (0, 1, 3, 5))
         s = settings_of({"idle_minutes": 7})
         self.assertEqual(s, {"idle_minutes": 5, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"})
 

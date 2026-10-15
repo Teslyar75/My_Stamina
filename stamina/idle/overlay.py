@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import queue
+import random
 import threading
 import time
 import tkinter as tk
 
 from stamina import theme
 from stamina.i18n import t as _t
-from stamina.idle import FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
+from stamina.idle import DRIFT, FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
 
 try:
     from PIL import Image, ImageTk
@@ -72,6 +74,8 @@ class Slideshow(tk.Frame):
         self._fade_img_job = None
         self._anim_job = None
         self._resize_job = None
+        self._drift_job = None
+        self._pos = (0.0, 0.0)
         self._radio_started = False
         self.stations: list[dict] = []
         self.st_i = 0
@@ -143,6 +147,7 @@ class Slideshow(tk.Frame):
 
     def _frames(self, it: dict, w: int, h: int) -> tuple[list, list[int]]:
         """Кадры слайда: один для фото, несколько для анимированного GIF (с ограничением)."""
+        w, h = int(w * DRIFT), int(h * DRIFT)  # чуть больше экрана — для медленного «проплыва»
         src = Image.open(it["path"])
         n = getattr(src, "n_frames", 1)
         if n <= 1:
@@ -167,23 +172,26 @@ class Slideshow(tk.Frame):
             return
         self._busy = True
         prev = self._last_img
+        q: queue.Queue = queue.Queue(maxsize=3)  # кадры наложения по одному — память не растёт
 
         def work():
             try:
                 frames, durs = self._frames(nxt, w, h)
-                steps = []
-                if prev is not None and prev.size == frames[0].size:
-                    steps = [Image.blend(prev, frames[0], (k + 1) / (XFADE_STEPS + 1)) for k in range(XFADE_STEPS)]
             except Exception:  # noqa: BLE001 — битый файл: просто пропускаем
-                frames, durs, steps = [], [], []
+                frames, durs = [], []
+            fade = bool(frames) and prev is not None and prev.size == frames[0].size
             try:
-                self.after(0, lambda: self._crossfade(nxt, steps, frames, durs))
+                self.after(0, lambda: self._crossfade(nxt, q if fade else None, frames, durs))
             except (tk.TclError, RuntimeError):
-                pass
+                return
+            if fade:
+                for k in range(XFADE_STEPS):
+                    q.put(Image.blend(prev, frames[0], (k + 1) / (XFADE_STEPS + 1)))
+                q.put(None)
 
         threading.Thread(target=work, daemon=True).start()
 
-    def _crossfade(self, it: dict, steps: list, frames: list, durs: list[int]) -> None:
+    def _crossfade(self, it: dict, q, frames: list, durs: list[int]) -> None:
         if not self.winfo_exists():
             return
         if not frames:
@@ -191,27 +199,70 @@ class Slideshow(tk.Frame):
             self._job = self.after(1000, self._next)
             return
         self._stop_anim()
+        dt = XFADE_MS // max(1, XFADE_STEPS)
 
-        def step(k: int) -> None:
-            if not self.winfo_exists():
-                return
-            if k < len(steps):
-                self._set_image(steps[k])
-                self._fade_img_job = self.after(XFADE_MS // max(1, len(steps)), lambda: step(k + 1))
-                return
+        def done() -> None:
             self._fade_img_job = None
             self.cur = it
             self._busy = False
             self._show(it, frames, durs)
             total = sum(durs) if len(frames) > 1 else 0
-            self._job = self.after(max(SLIDE_MS, total * 2), self._next)
+            dur = max(SLIDE_MS, total * 2)
+            self._start_drift(dur + XFADE_MS)
+            self._job = self.after(dur, self._next)
 
-        step(0)
+        def step() -> None:
+            if not self.winfo_exists():
+                return
+            try:
+                img = q.get_nowait() if q is not None else None
+            except queue.Empty:
+                self._fade_img_job = self.after(15, step)
+                return
+            if img is None:
+                done()
+                return
+            self._set_image(img)
+            self._fade_img_job = self.after(dt, step)
+
+        step()
+
+    # -- медленный проплыв кадра (Ken Burns без пересчёта картинки: двигаем её по холсту)
+    def _start_drift(self, dur_ms: int) -> None:
+        self._stop_drift()
+        w, h = self._size()
+        mx, my = -(int(w * DRIFT) - w), -(int(h * DRIFT) - h)
+        x0, y0 = self._pos
+        x1, y1 = random.choice(((0, 0), (mx, 0), (0, my), (mx, my)))
+        if (x1, y1) == (round(x0), round(y0)):
+            x1, y1 = mx - x1, my - y1
+        t0 = time.time()
+
+        def step() -> None:
+            if not self.winfo_exists() or self._img_id is None:
+                return
+            k = min(1.0, (time.time() - t0) * 1000 / max(1, dur_ms))
+            e = k * k * (3 - 2 * k)  # плавный старт и финиш
+            self._pos = (x0 + (x1 - x0) * e, y0 + (y1 - y0) * e)
+            self.cv.coords(self._img_id, int(self._pos[0]), int(self._pos[1]))
+            if k < 1.0:
+                self._drift_job = self.after(50, step)
+
+        step()
+
+    def _stop_drift(self) -> None:
+        if self._drift_job:
+            try:
+                self.after_cancel(self._drift_job)
+            except tk.TclError:
+                pass
+            self._drift_job = None
 
     def _set_image(self, img) -> None:
         self._photo = ImageTk.PhotoImage(img)
         if self._img_id is None:
-            self._img_id = self.cv.create_image(0, 0, anchor="nw", image=self._photo)
+            self._img_id = self.cv.create_image(int(self._pos[0]), int(self._pos[1]), anchor="nw",
+                                                image=self._photo)
             self.cv.tag_lower(self._img_id)
         else:
             self.cv.itemconfigure(self._img_id, image=self._photo)
@@ -267,6 +318,7 @@ class Slideshow(tk.Frame):
         self.cv.delete("loading")
         self._stop_anim()
         self._show(self.cur, frames, durs)
+        self._start_drift(SLIDE_MS + XFADE_MS)
 
     # -- радио скина: переключатель волн на плашке (← → волна, ↑ ↓ громкость, M — тише/громче)
     def _engine(self):
@@ -451,7 +503,7 @@ class Slideshow(tk.Frame):
         return "break"
 
     def close(self) -> None:
-        for j in (self._job, self._fade_job, self._fade_img_job, self._anim_job, self._resize_job):
+        for j in (self._job, self._fade_job, self._fade_img_job, self._anim_job, self._resize_job, self._drift_job):
             if j:
                 try:
                     self.after_cancel(j)
