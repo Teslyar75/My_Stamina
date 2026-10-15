@@ -297,6 +297,9 @@ class Slideshow(tk.Frame):
         self.cv.delete("cap")
         cap = " · ".join(x for x in (it.get("title", "")[:60], it.get("author", ""), it.get("license", ""),
                                      it.get("source", "")) if x and x != "skin")
+        lim = max(24, w // 8 - 34)  # не наезжать на «Любая клавиша — вернуться»
+        if len(cap) > lim:
+            cap = cap[:lim - 1].rstrip() + "…"
         f = theme.font(9)
         if cap:
             self.cv.create_rectangle(0, h - 30, w, h, fill="#000000", outline="", stipple="gray50", tags="cap")
