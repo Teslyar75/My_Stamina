@@ -562,8 +562,12 @@ class LogScreen(tk.Frame):
 
         side = HudPanel(bottom, _t("СЛАБЫЕ КЛАВИШИ"))
         side.pack(side=tk.LEFT, fill=tk.BOTH, padx=px(4))
-        self.weak_label = _label(side.body, "", fg=TEXT, size=11, mono=True, justify="left", anchor="nw")
-        self.weak_label.pack(fill=tk.BOTH, expand=True)
+        # Порт из веб-версии: мини-клавиши с цветом тепловой карты, 2 колонки, до 12 клавиш
+        self.weak_canvas = tk.Canvas(side.body, bg=PANEL, highlightthickness=0, bd=0,
+                                     width=px(300), height=px(200))
+        self.weak_canvas.pack(fill=tk.BOTH, expand=True)
+        self.weak_canvas.bind("<Configure>", lambda _e: self._draw_weak())
+        self._weak_rows: list[tuple[str, float, int, int]] = []
         HudButton(side.body, _t("⚙ РЕМОНТ СЛАБЫХ КЛАВИШ"), lambda: self.app.start_repair(self.heat_lang),
                   color=AMBER).pack(fill=tk.X, pady=(px(6), 0))
         HudButton(side.body, _t("СБРОСИТЬ СТАТИСТИКУ"), self._reset, color=RED, height=28,
@@ -608,15 +612,37 @@ class LogScreen(tk.Frame):
             b.set_active(self.heat_lang == code)
         self.kb.set_lang(self.heat_lang)
         self.kb.set_heat(self.app.store.key_error_rates(min_total=5))
-        weak = self.app.store.weakest_keys(self.heat_lang, count=8)
-        if weak:
-            lines = []
-            for ch, r in weak:
-                hits, misses = st["keys"].get(ch, [0, 0])
-                lines.append(_t("«{0}»  {1:4.1f}%  ({2} из {3})").format(ch, r * 100, misses, hits + misses))
-            self.weak_label.configure(text="\n".join(lines))
-        else:
-            self.weak_label.configure(text=_t("Данных пока мало.\nПечатайте —\nкомпьютер считает\nошибки по каждой\nклавише."))
+        weak = self.app.store.weakest_keys(self.heat_lang, count=12)
+        self._weak_rows = []
+        for ch, r in weak:
+            hits, misses = st["keys"].get(ch, [0, 0])
+            self._weak_rows.append((ch, r, misses, hits + misses))
+        self._draw_weak()
+
+    def _draw_weak(self) -> None:
+        c = self.weak_canvas
+        c.delete("all")
+        w = max(c.winfo_width(), px(200))
+        if not self._weak_rows:
+            c.create_text(px(4), px(4), anchor="nw", fill=MUTED, font=theme.font(10),
+                          width=w - px(8),
+                          text=_t("Данных пока мало.\nПечатайте —\nкомпьютер считает\nошибки по каждой\nклавише."))
+            return
+        col_w = w / 2
+        key, gap = px(30), px(8)
+        for i, (ch, r, misses, total) in enumerate(self._weak_rows):
+            col, row = i // 6, i % 6       # сначала левая колонка, потом правая
+            x = col * col_w + px(2)
+            y = row * (key + gap) + px(2)
+            fill = theme.heat_color(min(1.0, r * 4))
+            c.create_polygon(theme.chamfer(x, y, x + key, y + key, px(5)), fill=fill,
+                             outline=blend(fill, "#FFFFFF", 0.35))
+            c.create_text(x + key / 2, y + key / 2, text="␣" if ch == " " else ch.upper(),
+                          fill="#FFFFFF", font=theme.font(11, True, mono=True))
+            c.create_text(x + key + px(6), y + key * 0.32, anchor="w", fill=TEXT,
+                          font=theme.font(10, True, mono=True), text=f"{r * 100:.0f}%")
+            c.create_text(x + key + px(6), y + key * 0.76, anchor="w", fill=MUTED,
+                          font=theme.font(8), text=_t("({0} из {1})").format(misses, total))
 
 
 # ===========================================================================
@@ -695,6 +721,13 @@ class SettingsScreen(tk.Frame):
             b = HudButton(fs, name, lambda k=key: self._set_font(k), width=100, height=30, font_size=9)
             b.pack(side=tk.LEFT, padx=px(3))
             self.font_btns[key] = b
+        bl = self._row(_t("Мигание целевой буквы"),
+                       _t("Буква в прицеле мигает, чтобы глаз не терял место. «Быстрое» — чаще, «Выкл» — буква горит ровно."))
+        self.blink_btns = {}
+        for key, name in (("off", _t("ВЫКЛ")), ("on", _t("ВКЛ")), ("fast", _t("БЫСТРОЕ"))):
+            b = HudButton(bl, name, lambda k=key: self._set_blink(k), width=100, height=30, font_size=9)
+            b.pack(side=tk.LEFT, padx=px(3))
+            self.blink_btns[key] = b
         ui = self._row(_t("Размер интерфейса"),
                       _t("Шрифты и отступы во всём приложении. Новый размер полностью применится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» выше (прогресс сохранится)."))
         self.ui_btns = {}
@@ -778,6 +811,11 @@ class SettingsScreen(tk.Frame):
         self.app.apply_settings()
         self.refresh()
 
+    def _set_blink(self, key: str) -> None:
+        self.app.store.settings["cursor_blink"] = key
+        self.app.apply_settings()
+        self.refresh()
+
     def _set_ui_scale(self, key: str) -> None:
         from stamina import theme as th
         key = th.set_ui_scale(key)
@@ -823,6 +861,8 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("skin", "spaceship"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
+        for k, b in getattr(self, "blink_btns", {}).items():
+            b.set_active(st.get("cursor_blink", "on") == k)
         for k, b in getattr(self, "ui_btns", {}).items():
             b.set_active(st.get("ui_scale", "M") == k)
         for k, b in getattr(self, "up_btns", {}).items():
