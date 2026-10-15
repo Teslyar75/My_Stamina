@@ -852,8 +852,18 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == key)
 
     def _set_skin(self, key: str) -> None:
+        from stamina import theme as th
+        changed = th.theme_id() != key
         self.app.store.settings["skin"] = key
         self.app.apply_settings()
+        if changed:
+            # Скин красит и переименовывает весь пульт: чтобы не осталось кусков старого скина,
+            # пересобираем интерфейс заново (прогресс сохраняется) и возвращаемся на эту вкладку.
+            from stamina.app import relaunch
+            self.app._save_all()
+            if relaunch({"STAMINA_START": "settings:skins"}):
+                self.app.destroy()
+                return
         self.refresh()
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == key)
