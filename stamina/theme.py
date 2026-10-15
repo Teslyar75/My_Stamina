@@ -293,6 +293,12 @@ def load_theme(theme_id_: str, *, apply_ui: bool = True, root: tk.Misc | None = 
         data = {"id": DEFAULT_THEME_ID, "colors": {}}
 
     old = _snapshot()
+    _register_font_files(data)
+    try:
+        from stamina import i18n as _i18n
+        _i18n.set_voice(data.get("voice"))
+    except Exception:  # noqa: BLE001
+        pass
     colors = dict(data.get("colors") or {})
     if colors:
         _apply_colors(colors)
@@ -340,6 +346,62 @@ def _sync_imported_aliases() -> None:
                         setattr(mod, attr, g[attr])
                 except Exception:  # noqa: BLE001
                     pass
+
+
+_registered_fonts: set[str] = set()
+
+
+def _register_font_files(data: dict) -> None:
+    """OFL-шрифты скина (fonts.files) — в процесс без установки в систему (Windows: AddFontResourceEx)."""
+    files = (data.get("fonts") or {}).get("files") or []
+    if not files:
+        return
+    import sys
+    root = Path(__file__).resolve().parents[1]
+    for rel in files:
+        path = root / str(rel)
+        key = str(path)
+        if key in _registered_fonts or not path.is_file():
+            continue
+        _registered_fonts.add(key)
+        if sys.platform.startswith("win"):
+            try:
+                import ctypes
+                FR_PRIVATE = 0x10
+                ctypes.windll.gdi32.AddFontResourceExW(key, FR_PRIVATE, 0)
+            except Exception:  # noqa: BLE001
+                pass
+
+
+def skin_rank(rank: str) -> str:
+    """Звание в мире скина: базовое (переведённое) звание → ranks_i18n[lang][i]; иначе как есть."""
+    if not rank:
+        return rank
+    data = _current
+    by_lang = data.get("ranks_i18n") or {}
+    base = data.get("base_ranks") or []
+    if not by_lang or not base:
+        return rank
+    try:
+        from stamina import i18n as _i18n
+        lang = _i18n.language()
+        tr = _i18n._table  # noqa: SLF001
+    except Exception:  # noqa: BLE001
+        lang, tr = "ru", {}
+    for i, b in enumerate(base):
+        if rank in (b, tr.get(b, b)):
+            lst = by_lang.get(lang) or by_lang.get("en") or by_lang.get("ru") or []
+            return lst[i] if i < len(lst) else rank
+    return rank
+
+
+def skin_sound_dir() -> Path | None:
+    """Папка звуков скина (sounds.dir) или None — тогда звуки «Звездолёта»."""
+    rel = ((_current.get("sounds") or {}).get("dir")) or ""
+    if not rel:
+        return None
+    path = Path(__file__).resolve().parents[1] / rel
+    return path if path.is_dir() else None
 
 
 def theme_display_name(data: dict | None = None, lang: str = "ru") -> str:

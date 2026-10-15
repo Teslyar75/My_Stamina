@@ -431,12 +431,91 @@ class ZenScene(SkinScene):
                 d.polygon(pts, fill=petal)
 
 
+class LondonFogScene(SkinScene):
+    """Старая Англия: туман над Лондоном, газовые фонари, изредка красный автобус.
+
+    Лёгкая для Tk: 3–5 полос тумана, 4 фонаря, 1 автобус; фото-фон из docs/skins/images/old_england.
+    """
+
+    engine = "london_fog"
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        n = 5 if self.mode == "full" else 3
+        self.fog = [
+            [self.rng.uniform(-self.w * 0.5, self.w), self.h * self.rng.uniform(0.35, 0.9),
+             self.rng.uniform(8, 18) * self.rng.choice((-1, 1)), self.rng.uniform(0.6, 1.0)]
+            for _ in range(n)
+        ]
+        self.lamps = [(f, 0.62 + 0.06 * (i % 2)) for i, f in enumerate((0.08, 0.34, 0.66, 0.92))]
+        self.bus = [-120.0, self.h * 0.86, 60.0]
+        self.bus_wait = 6.0
+        self.clear = 0.0          # 0..1 — туман редеет (серия верных нажатий)
+
+    def _init_particles(self) -> None:
+        self.particles = []
+
+    def step(self, dt: float, warp: float = 1.0) -> None:
+        self.t += dt
+        for f in self.fog:
+            f[0] += f[2] * dt
+            if f[0] > self.w + 40:
+                f[0] = -self.w * 0.6
+            elif f[0] < -self.w * 0.7:
+                f[0] = self.w
+        if self.bus_wait > 0:
+            self.bus_wait -= dt
+        else:
+            self.bus[0] += self.bus[2] * dt * (0.8 + 0.4 * warp)
+            if self.bus[0] > self.w + 120:
+                self.bus[0] = -120.0
+                self.bus_wait = self.rng.uniform(18, 40)
+
+    def moving_boxes(self):
+        boxes = [(self.bus[0] - 50, self.bus[1] - 30, self.bus[0] + 50, self.bus[1] + 6)]
+        for f in self.fog:
+            boxes.append((f[0], f[1] - 30, f[0] + self.w * 0.6, f[1] + 30))
+        return boxes
+
+    def _draw_static(self, im) -> None:
+        d = ImageDraw.Draw(im)
+        warm = _rgb(_theme.AMBER)
+        bg = _rgb(_theme.BG)
+        for fx, fy in self.lamps:
+            cx, cy = fx * self.w, fy * self.h
+            for k in range(6, 0, -1):
+                rr = 7 * k
+                d.ellipse((cx - rr, cy - rr, cx + rr, cy + rr), fill=_blend_rgb(bg, warm, 0.05 * (7 - k)))
+            d.line((cx, cy + 6, cx, self.h), fill=_blend_rgb(bg, (20, 20, 20), 0.6), width=3)
+            d.ellipse((cx - 4, cy - 4, cx + 4, cy + 4), fill=warm)
+
+    def _draw_fx(self, im, x1, y1, x2, y2) -> None:
+        d = ImageDraw.Draw(im)
+        bg = _rgb(_theme.BG)
+        mist = _rgb(_theme.MUTED)
+        dens = 0.22 * (1.0 - 0.7 * self.clear)
+        for fx, fy, _sp, a in self.fog:
+            col = _blend_rgb(bg, mist, dens * a)
+            d.rounded_rectangle((fx - x1, fy - y1 - 22, fx - x1 + self.w * 0.6, fy - y1 + 22), radius=22, fill=col)
+        if self.bus_wait <= 0:
+            bx, by = self.bus[0] - x1, self.bus[1] - y1
+            red = (178, 24, 36)
+            d.rounded_rectangle((bx - 44, by - 28, bx + 44, by), radius=6, fill=red)
+            win = _blend_rgb(_rgb(_theme.AMBER), bg, 0.35)
+            for i in range(5):
+                d.rectangle((bx - 38 + i * 16, by - 24, bx - 28 + i * 16, by - 17), fill=win)
+                d.rectangle((bx - 38 + i * 16, by - 13, bx - 28 + i * 16, by - 6), fill=win)
+            d.ellipse((bx - 32, by - 4, bx - 22, by + 6), fill=(20, 20, 20))
+            d.ellipse((bx + 22, by - 4, bx + 32, by + 6), fill=(20, 20, 20))
+
+
 ENGINES = {
     "sonar": SonarScene,
     "gears": GearsScene,
     "candles": CandlesScene,
     "city_rain": CityRainScene,
     "zen": ZenScene,
+    "london_fog": LondonFogScene,
 }
 
 

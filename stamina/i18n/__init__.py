@@ -20,6 +20,7 @@ DEFAULT = "ru"
 
 _lang = DEFAULT
 _table: dict = {}
+_voice: dict = {}      # voice pack скина: {lang: {русский ключ: строка}}; пусто у «Звездолёта»
 
 
 def _config_path() -> Path:
@@ -68,8 +69,23 @@ def language() -> str:
     return _lang
 
 
+def set_voice(voice: dict | None) -> None:
+    """Подключить словарь скина поверх перевода (None/{} — без скина)."""
+    global _voice
+    _voice = voice if isinstance(voice, dict) else {}
+
+
+def voice_lookup(key: str, lang: str | None = None) -> str | None:
+    v = (_voice.get(lang or _lang) or {}).get(key)
+    return v if isinstance(v, str) and v else None
+
+
 def t(key: str) -> str:
-    """Перевод фразы интерфейса; нет перевода → исходная (русская) фраза."""
+    """Перевод фразы интерфейса; сначала voice pack скина, нет перевода → исходная (русская) фраза."""
+    if _voice:
+        v = voice_lookup(key)
+        if v is not None:
+            return v
     return _table.get(key, key)
 
 

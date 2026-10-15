@@ -399,6 +399,9 @@ class Bridge(tk.Frame):
         old_rank = missions.rank_for(self.app.store.stats["xp"])[0]
         xp = self._record_run(seg, stars)
         new_rank = missions.rank_for(self.app.store.stats["xp"])[0]
+        if new_rank != old_rank:
+            from stamina import theme as _th
+            old_rank, new_rank = _th.skin_rank(old_rank), _th.skin_rank(new_rank)
         if self.meta.get("mode") == "cargo":
             clear_session()
             self._session_dirty = False

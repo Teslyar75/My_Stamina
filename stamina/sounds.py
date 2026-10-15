@@ -142,6 +142,16 @@ class SoundBoard:
         if not (self.enabled and self.available):
             return
         path = SOUND_DIR / f"{name}_v{self.volume}.wav"
+        try:
+            from stamina import theme as _theme
+            sdir = _theme.skin_sound_dir()
+        except Exception:  # noqa: BLE001
+            sdir = None
+        if sdir is not None:
+            base = "click" if name.startswith("click") else name
+            alt = sdir / f"{base}.wav"
+            if alt.is_file():
+                path = alt
         if self._player is not None:
             import subprocess
             try:

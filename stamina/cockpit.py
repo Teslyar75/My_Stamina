@@ -436,6 +436,8 @@ class Cockpit(tk.Tk):
     def update_rank(self) -> None:
         xp = self.store.stats["xp"]
         rank, lo, hi = missions.rank_for(xp)
+        from stamina import theme as _th
+        rank = _th.skin_rank(rank)
         tail = f"{xp} / {hi} XP" if hi else f"{xp} XP"
         c = self.rank_label
         c.delete("all")

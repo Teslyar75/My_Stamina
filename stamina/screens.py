@@ -603,6 +603,7 @@ class LogScreen(tk.Frame):
         avg_acc = sum(r.get("acc", 0) for r in last10) / len(last10) if last10 else 0
         avg_cpm = sum(r.get("cpm", 0) for r in last10) / len(last10) if last10 else 0
         rank, lo, hi = missions.rank_for(st["xp"])
+        rank = theme.skin_rank(rank)
         done = sum(1 for v in st["missions"].values() if v.get("stars"))
         stars = sum(v.get("stars", 0) for v in st["missions"].values())
         data = [
