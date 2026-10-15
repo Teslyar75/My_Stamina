@@ -47,7 +47,10 @@
 
 При работе над вебом опирайтесь на:
 
-1. **[WEB_NEXT.md](./WEB_NEXT.md)** — что делать дальше (не изобретать новый backlog);
-2. [DESKTOP_STRUCTURE.md](./DESKTOP_STRUCTURE.md) + скины + скрин окна;
-3. живой код `stamina/` ([My_Stamina](https://github.com/Teslyar75/My_Stamina));
-4. `ИНСТРУКЦИЯ.md`, `docs/CAPABILITIES.md` — поведение продукта.
+1. **[JOURNAL.md](./JOURNAL.md)** — что уже сделано по дням (не терять контекст);
+2. **[WEB_NEXT.md](./WEB_NEXT.md)** — что делать дальше (не изобретать новый backlog);
+3. [DESKTOP_STRUCTURE.md](./DESKTOP_STRUCTURE.md) + скины + скрин окна;
+4. живой код `stamina/` ([My_Stamina](https://github.com/Teslyar75/My_Stamina));
+5. `ИНСТРУКЦИЯ.md`, `docs/CAPABILITIES.md` — поведение продукта.
+
+В конце дня: дописать `SESSION_YYYY-MM-DD.md` и строку в JOURNAL.
