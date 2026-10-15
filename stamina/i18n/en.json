@@ -1659,5 +1659,8 @@
  "• Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает — это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия — в углу. «▶ ПОКАЗАТЬ СЕЙЧАС» — проверить.": "• Idle: after N minutes without the keyboard a skin-themed slideshow and radio start. Any key closes it; that keypress is not typed. Images: Wikimedia Commons, author and licence in the corner. «▶ SHOW NOW» — try it.",
  "В bilinguis нет пар {0}→{1}. Попробуйте EN→RU или EN→UK.": "No {0}→{1} pairs in bilinguis. Try EN→RU or EN→UK.",
  "Пар {0}→{1} в Gutenberg нет. Для RU/UK выберите перевод RU или UK (bilinguis), либо «＋ ВРУЧНУЮ».": "No {0}→{1} pairs in Gutenberg. For RU/UK pick an RU or UK translation (bilinguis), or «＋ MANUAL».",
- "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Weak run (avg {0}%) — need ≥ {1}%. Repeat all tasks."
+ "Прогон слабый (ср. {0}%) — нужно ≥ {1}%. Повтори все задания.": "Weak run (avg {0}%) — need ≥ {1}%. Repeat all tasks.",
+ "нет связи с волной": "station unavailable",
+ "без звука": "muted",
+ "Стрелки ← → — волна · ↑ ↓ — громкость · M — звук": "Arrows ← → — station · ↑ ↓ — volume · M — sound"
 }

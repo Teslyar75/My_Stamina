@@ -11,11 +11,11 @@ from __future__ import annotations
 IDLE_MINUTES = (0, 1, 3, 5, 10, 15)
 IDLE_DEFAULTS = {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"}
 SLIDE_MS = 12_000
-FADE_MS = 6_000
+FADE_MS = 1_500
 XFADE_MS = 1_200      # плавная смена слайдов
 XFADE_STEPS = 18     # ~15 кадров/с, кадры смешиваются в потоке
 GIF_MAX_FRAMES = 60  # анимированный GIF — не больше 60 кадров
-RADIO_TARGET = 0.3
+RADIO_TARGET = 0.4
 
 
 def is_idle(last: float, now: float, minutes: int) -> bool:
@@ -41,3 +41,22 @@ def settings_of(st: dict) -> dict:
     if out["idle_minutes"] not in IDLE_MINUTES:
         out["idle_minutes"] = IDLE_DEFAULTS["idle_minutes"]
     return out
+
+
+def order_stations(stations: list[dict], saved: str | None = None, pinned: list[str] | None = None) -> list[dict]:
+    """Порядок волн для переключателя: выбранная в прошлый раз — первой, затем закреплённые скином."""
+    prefs = ([saved] if saved else []) + list(pinned or [])
+    prefs = [p.lower() for p in prefs if p]
+
+    def rank(s: dict) -> int:
+        n = str(s.get("name", "")).lower()
+        if saved and n == saved.lower():
+            return -1
+        return next((i for i, p in enumerate(prefs) if p in n), len(prefs))
+
+    return sorted(stations, key=rank)
+
+
+def station_genre(st: dict) -> str:
+    tags = [t.strip() for t in str(st.get("tags") or "").split(",") if t.strip()]
+    return ", ".join(tags[:2])

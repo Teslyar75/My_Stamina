@@ -8,7 +8,7 @@ import tkinter as tk
 
 from stamina import theme
 from stamina.i18n import t as _t
-from stamina.idle import FADE_MS, GIF_MAX_FRAMES, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
+from stamina.idle import FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
 
 try:
     from PIL import Image, ImageTk
@@ -73,6 +73,9 @@ class Slideshow(tk.Frame):
         self._anim_job = None
         self._resize_job = None
         self._radio_started = False
+        self.stations: list[dict] = []
+        self.st_i = 0
+        self._muted = False
         self.place(x=0, y=0, relwidth=1, relheight=1)
         self.lift()
         self.cv = tk.Canvas(self, bg="#000000", highlightthickness=0)
@@ -250,6 +253,7 @@ class Slideshow(tk.Frame):
                                 tags="cap")
         self.cv.create_text(w - 12, h - 15, anchor="e", text=_t("Любая клавиша — вернуться"),
                             fill="#e8c766", font=f, tags="cap")
+        self._plate()
 
     def _paint(self) -> None:
         """Перерисовать текущий слайд без перехода (старт, смена размера окна)."""
@@ -264,52 +268,154 @@ class Slideshow(tk.Frame):
         self._stop_anim()
         self._show(self.cur, frames, durs)
 
-    # -- радио скина
-    def _start_radio(self) -> None:
-        conf = theme.current().get("radio") or {}
-        if not conf.get("tags"):
-            return
+    # -- радио скина: переключатель волн на плашке (← → волна, ↑ ↓ громкость, M — тише/громче)
+    def _engine(self):
         try:
             from stamina.radio import get_engine
             eng = get_engine()
         except Exception:  # noqa: BLE001
+            return None
+        return eng if eng.ready() else None
+
+    def _start_radio(self) -> None:
+        conf = theme.current().get("radio") or {}
+        if not conf.get("tags"):
             return
-        if eng.playing or not eng.ready():
+        eng = self._engine()
+        if eng is None:
             return
+        autoplay = not eng.playing
+        saved = (self.app.store.settings.get("idle_station") or {}).get(theme.theme_id())
 
         def work():
             from stamina.radio import browser
             items, _err = browser.skin_stations(conf)
-            st = pick_station(items, conf.get("pinned"))
-            if st:
-                try:
-                    self.after(0, lambda: self._play(eng, st))
-                except (tk.TclError, RuntimeError):
-                    pass
+            items = order_stations(items, saved, conf.get("pinned"))
+            try:
+                self.after(0, lambda: self._got_stations(eng, items, autoplay))
+            except (tk.TclError, RuntimeError):
+                pass
 
         threading.Thread(target=work, daemon=True).start()
+
+    def _got_stations(self, eng, items: list[dict], autoplay: bool) -> None:
+        if not self.winfo_exists() or not items:
+            return
+        self.stations = items
+        self.st_i = 0
+        if autoplay:
+            self._play(eng, items[0])
+        self._plate()
 
     def _play(self, eng, st: dict) -> None:
         if not self.winfo_exists():
             return
-        full = int(eng.volume)
-        target = min(full, int(RADIO_TARGET * 100))  # плавный вход до ~30 %
+        if not self._radio_started:
+            self._radio_full = int(eng.volume)
+        full = self._radio_full
+        target = min(full, int(RADIO_TARGET * 100))
+        self._stop_fade()
+        try:
+            eng.player.set_volume(0)
+        except Exception:  # noqa: BLE001
+            pass
         if not eng.play_station(st):
+            self._plate(_t("нет связи с волной"))
             return
         self._radio_started = True
-        self._radio_full = full
+        self._muted = False
+        self._target = target
         t0 = time.time()
 
         def step():
             el = (time.time() - t0) * 1000
             try:
-                eng.player.set_volume(int(fade_volume(el, FADE_MS, target)))
+                eng.player.set_volume(int(fade_volume(el, FADE_MS, self._target)))
             except Exception:  # noqa: BLE001
                 return
             if el < FADE_MS and self.winfo_exists():
-                self._fade_job = self.after(150, step)
+                self._fade_job = self.after(60, step)
+            else:
+                self._fade_job = None
 
         step()
+
+    def _stop_fade(self) -> None:
+        if self._fade_job:
+            try:
+                self.after_cancel(self._fade_job)
+            except tk.TclError:
+                pass
+            self._fade_job = None
+
+    def switch_station(self, delta: int) -> None:
+        eng = self._engine()
+        if eng is None or not self.stations:
+            return
+        self.st_i = (self.st_i + delta) % len(self.stations)
+        st = self.stations[self.st_i]
+        self._remember(st)
+        self._play(eng, st)
+        self._plate()
+
+    def _remember(self, st: dict) -> None:
+        store = self.app.store
+        saved = dict(store.settings.get("idle_station") or {})
+        saved[theme.theme_id()] = str(st.get("name", ""))
+        store.settings["idle_station"] = saved
+        try:
+            store.save_settings()
+        except Exception:  # noqa: BLE001
+            pass
+
+    def change_volume(self, delta: int) -> None:
+        eng = self._engine()
+        if eng is None or not self._radio_started:
+            return
+        self._stop_fade()
+        self._target = max(0, min(100, getattr(self, "_target", 40) + delta))
+        self._muted = False
+        try:
+            eng.player.set_volume(self._target)
+        except Exception:  # noqa: BLE001
+            pass
+        self._plate()
+
+    def toggle_mute(self) -> None:
+        eng = self._engine()
+        if eng is None or not self._radio_started:
+            return
+        self._stop_fade()
+        self._muted = not self._muted
+        try:
+            eng.player.set_volume(0 if self._muted else getattr(self, "_target", 40))
+        except Exception:  # noqa: BLE001
+            pass
+        self._plate()
+
+    def _plate(self, note: str | None = None) -> None:
+        """Плашка волны в стиле скина: имя станции, жанр, громкость и подсказка."""
+        self.cv.delete("plate")
+        if not self.stations:
+            return
+        w, h = self._size()
+        st = self.stations[self.st_i]
+        c = theme.current().get("colors") or {}
+        paper = c.get("panel") or "#1b1712"
+        gold = c.get("accent") or "#e8c766"
+        ink = c.get("text") or "#e8e2d0"
+        name = str(st.get("name", "")).strip()[:48] or "—"
+        genre = station_genre(st)
+        vol = _t("без звука") if self._muted else f"{getattr(self, '_target', 40)}%"
+        line1 = f"♪ {name}" + (f"  ·  {genre}" if genre else "")
+        line2 = note or (_t("Стрелки ← → — волна · ↑ ↓ — громкость · M — звук") + f"   [{self.st_i + 1}/{len(self.stations)} · {vol}]")
+        pw = min(w - 40, max(420, int(w * 0.46)))
+        x0, y1 = (w - pw) // 2, h - 40
+        y0 = y1 - 54
+        self.cv.create_rectangle(x0, y0, x0 + pw, y1, fill=paper, outline=gold, width=2, tags="plate")
+        self.cv.create_rectangle(x0 + 4, y0 + 4, x0 + pw - 4, y1 - 4, outline=gold, width=1, tags="plate")
+        self.cv.create_text(w // 2, y0 + 18, text=line1, fill=gold, font=theme.font(11, True), tags="plate")
+        self.cv.create_text(w // 2, y0 + 38, text=line2, fill=ink, font=theme.font(9), tags="plate")
 
     def _stop_radio(self) -> None:
         if not self._radio_started:
@@ -324,8 +430,22 @@ class Slideshow(tk.Frame):
             pass
 
     # -- закрытие: первое нажатие глотаем
+    RADIO_KEYS = {"Left": ("switch", -1), "Right": ("switch", 1), "Up": ("vol", 10), "Down": ("vol", -10),
+                  "m": ("mute", 0), "M": ("mute", 0), "Cyrillic_softsign": ("mute", 0),
+                  "Cyrillic_SOFTSIGN": ("mute", 0)}
+
     def _key(self, e) -> str:
         if getattr(e, "type", "") in ("3", tk.EventType.KeyRelease):
+            return "break"
+        act = self.RADIO_KEYS.get(getattr(e, "keysym", "")) if self.stations else None
+        if act:
+            kind, n = act
+            if kind == "switch":
+                self.switch_station(n)
+            elif kind == "vol":
+                self.change_volume(n)
+            else:
+                self.toggle_mute()
             return "break"
         self.close()
         return "break"

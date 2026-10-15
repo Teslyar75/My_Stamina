@@ -111,5 +111,41 @@ class CrossfadeTest(unittest.TestCase):
         self.assertTrue(100 < mid[0] < 160 and 100 < mid[2] < 160)
 
 
+class RadioPickerTest(unittest.TestCase):
+    def test_saved_station_first_then_pinned(self):
+        from stamina.idle import order_stations
+        st = [{"name": "Other"}, {"name": "BBC Radio 3"}, {"name": "Jazz FM"}]
+        self.assertEqual(order_stations(st, None, ["Jazz FM"])[0]["name"], "Jazz FM")
+        self.assertEqual(order_stations(st, "BBC Radio 3", ["Jazz FM"])[0]["name"], "BBC Radio 3")
+
+    def test_genre(self):
+        from stamina.idle import station_genre
+        self.assertEqual(station_genre({"tags": "jazz, swing,big band"}), "jazz, swing")
+        self.assertEqual(station_genre({}), "")
+
+    def test_fade_is_quick(self):
+        from stamina.idle import FADE_MS, RADIO_TARGET
+        self.assertLessEqual(FADE_MS, 2000)
+        self.assertGreaterEqual(RADIO_TARGET, 0.4)
+
+    def test_arrows_switch_other_keys_close(self):
+        from stamina.idle.overlay import Slideshow
+        calls = []
+        fake = mock.Mock(stations=[{"name": "a"}, {"name": "b"}], RADIO_KEYS=Slideshow.RADIO_KEYS)
+        fake.switch_station.side_effect = lambda n: calls.append(("sw", n))
+        fake.change_volume.side_effect = lambda n: calls.append(("vol", n))
+        fake.toggle_mute.side_effect = lambda: calls.append(("mute",))
+        fake.close.side_effect = lambda: calls.append(("close",))
+        for k in ("Right", "Left", "Up", "m", "Cyrillic_softsign", "space"):
+            Slideshow._key(fake, mock.Mock(type="2", keysym=k))
+        self.assertEqual(calls, [("sw", 1), ("sw", -1), ("vol", 10), ("mute",), ("mute",), ("close",)])
+
+    def test_arrows_close_when_no_radio(self):
+        from stamina.idle.overlay import Slideshow
+        fake = mock.Mock(stations=[], RADIO_KEYS=Slideshow.RADIO_KEYS)
+        Slideshow._key(fake, mock.Mock(type="2", keysym="Right"))
+        fake.close.assert_called_once()
+
+
 if __name__ == "__main__":
     unittest.main()
