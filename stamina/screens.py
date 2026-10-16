@@ -737,7 +737,7 @@ class SettingsScreen(tk.Frame):
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
         from stamina.idle import IDLE_MINUTES
         idl = self._row(_t("Простой: слайдшоу и радио"),
-                        _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
+                        _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
         self.idle_btns = {}
         for m in IDLE_MINUTES:
             b = HudButton(idl, _t("ВЫКЛ") if m == 0 else _t("{0} мин").format(m),
@@ -852,8 +852,18 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == key)
 
     def _set_skin(self, key: str) -> None:
+        from stamina import theme as th
+        changed = th.theme_id() != key
         self.app.store.settings["skin"] = key
         self.app.apply_settings()
+        if changed:
+            # Скин красит и переименовывает весь пульт: чтобы не осталось кусков старого скина,
+            # пересобираем интерфейс заново (прогресс сохраняется) и возвращаемся на эту вкладку.
+            from stamina.app import relaunch
+            self.app._save_all()
+            if relaunch({"STAMINA_START": "settings:skins"}):
+                self.app.destroy()
+                return
         self.refresh()
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == key)
@@ -871,7 +881,7 @@ class SettingsScreen(tk.Frame):
         from stamina.idle.overlay import skin_slideshow
         if not skin_slideshow():
             messagebox.showinfo(_t("Простой: слайдшоу и радио"),
-                                _t("У этого скина нет слайдшоу — выберите «Старую Англию»."), parent=self)
+                                _t("У этого скина нет слайдшоу — выберите «Звездолёт» или «Старую Англию»."), parent=self)
             return
         self.after(150, ctl.open)
 
