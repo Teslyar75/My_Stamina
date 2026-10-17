@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract changelog notes
+        id: notes
+        run: |
+          python tools/changelog_notes.py --tag "${GITHUB_REF_NAME}" > /tmp/notes.md
+          echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Check __version__ matches tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VER=$(python -c "import re,pathlib; t=pathlib.Path('stamina/__init__.py').read_text(encoding='utf-8'); m=re.search(r\"__version__\\s*=\\s*['\\\"]([^'\\\"]+)\", t); print(m.group(1) if m else '')")
+          if [ "$VER" != "$TAG" ]; then
+            echo "::warning::stamina.__version__=$VER does not match tag $TAG"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "Star Typing ${GITHUB_REF_NAME}" \
+            --notes-file /tmp/notes.md \
+            --verify-tag

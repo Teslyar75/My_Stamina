@@ -4,6 +4,24 @@
 
 *«Живой космос» (3.5): [полное видео MP4](docs/living_space/living_space.mp4) · подробнее — [ниже](#живой-космос-версия-35).*
 
+## Обновления (GitHub Releases)
+
+С версии **3.7.0** программа сама проверяет [Releases](https://github.com/Teslyar75/My_Stamina/releases):
+
+- при входе — диалог, если есть новая версия;
+- **НАСТРОЙКИ → ЕЩЁ → Обновления**: «Проверить», changelog, **«Обновить сейчас»** (скачает ZIP тега, обновит файлы, сохранит пилотов / `.venv` / `models` / `cache`, перезапустит).
+
+Как выпустить релиз разработчику: обновите `CHANGELOG.md` и `stamina/__init__.py` → `__version__`, затем:
+
+```bash
+git tag v3.7.0
+git push origin v3.7.0
+```
+
+GitHub Actions создаст Release с notes из changelog.
+
+---
+
 ## 🚀 Быстрый старт для новичка
 
 **Ваша система:** [🪟 Windows](#windows--один-двойной-щелчок) · [🐧 Linux (Ubuntu и др.)](#linux-ubuntu--одна-команда)
