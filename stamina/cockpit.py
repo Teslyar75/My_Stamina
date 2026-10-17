@@ -15,7 +15,7 @@ from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, 
                      pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina.bridge_settings import BridgeSettingsScreen
-from stamina.hud import HudButton
+from stamina.hud import HScrollStrip, HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
 from stamina.session_storage import clear_session, load_session
 from stamina.sounds import SoundBoard
@@ -127,25 +127,11 @@ class Cockpit(tk.Tk):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(10), pady=(px(8), 0))
         self._compact = len(self.SCREENS) >= 6  # много разделов — шапка поуже
-        logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(200 if self._compact else 250),
+        logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(160 if self._compact else 220),
                          height=px(44))
         logo.pack(side=tk.LEFT)
         self._draw_logo(logo)
-        navf = tk.Frame(top, bg=BG)
-        navf.pack(side=tk.LEFT, padx=px(4 if self._compact else 10))
-        self.nav_buttons: dict[str, HudButton] = {}
-        for i, (name, title) in enumerate(self.SCREENS, 1):
-            fs = 10 if len(self.SCREENS) <= 5 else 9 if len(self.SCREENS) <= 6 else 8
-            bw = None
-            if self._compact:  # узкие поля у кнопок, чтобы всё влезло в 1260 px
-                import tkinter.font as tkfont
-                bw = int(tkfont.Font(font=theme.font(fs, True)).measure(title) / theme.S) + 18
-            b = HudButton(navf, f"{title}", lambda n=name: self.show_zone(n), height=36, font_size=fs, width=bw)
-            if name == "bridge":
-                b.bind("<Button-3>", lambda _e: self.bridge_menu())
-            b.pack(side=tk.LEFT, padx=px(3) if len(self.SCREENS) <= 6 else px(1))
-            b.nav_menu = True
-            self.nav_buttons[name] = b
+        # справа сначала — чтобы середина (навигация) могла сжиматься и скроллиться
         right = tk.Frame(top, bg=BG)
         right.pack(side=tk.RIGHT)
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
@@ -167,9 +153,25 @@ class Cockpit(tk.Tk):
                                   font_size=9, width=36 if self._compact else 60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
         self.rank_label = tk.Canvas(right, bg=BG, highlightthickness=0, height=px(44),
-                                    width=px(170 if self._compact else 230), cursor="hand2")
+                                    width=px(140 if self._compact else 200), cursor="hand2")
         self.rank_label.pack(side=tk.RIGHT, padx=px(6))
         self.rank_label.bind("<Button-1>", lambda _e: self.pilot_menu())
+        # навигация зон — горизонтальный скролл колёсиком (кнопки не «пропадают» при крупном UI)
+        self.nav_strip = HScrollStrip(top, height=44, bg=BG)
+        self.nav_strip.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(4 if self._compact else 10))
+        navf = self.nav_strip.inner
+        self.nav_buttons: dict[str, HudButton] = {}
+        for i, (name, title) in enumerate(self.SCREENS, 1):
+            fs = 10 if len(self.SCREENS) <= 5 else 9 if len(self.SCREENS) <= 6 else 8
+            # ширина по тексту (без ручного /S — иначе при крупном UI кнопки раздуваются и вылезают)
+            b = HudButton(navf, f"{title}", lambda n=name: self.show_zone(n), height=36, font_size=fs)
+            if name == "bridge":
+                b.bind("<Button-3>", lambda _e: self.bridge_menu())
+            b.pack(side=tk.LEFT, padx=px(2))
+            b.nav_menu = True
+            self.nav_buttons[name] = b
+            self.nav_strip.wire(b)
+        self.after_idle(self.nav_strip._sync)
         line = tk.Canvas(self, bg=BG, highlightthickness=0, height=px(6))
         line.pack(fill=tk.X, padx=px(10), pady=(px(4), 0))
         line.bind("<Configure>", lambda e: self._draw_line(line))

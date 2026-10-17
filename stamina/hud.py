@@ -137,6 +137,81 @@ class HudButton(tk.Canvas):
 
 
 # ---------------------------------------------------------------------------
+# Горизонтальная лента (шапка навигации)
+# ---------------------------------------------------------------------------
+
+class HScrollStrip(tk.Frame):
+    """Лента кнопок: если не влезают — прокрутка колёсиком, пока курсор над лентой."""
+
+    def __init__(self, master: tk.Misc, *, height: int = 44, bg: str | None = None) -> None:
+        bg = bg if bg is not None else _bg_of(master)
+        super().__init__(master, bg=bg)
+        self._bg = bg
+        self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0, height=px(height))
+        self.canvas.living_skip = True  # не красить Living Space — иначе дрожь при скролле шапки
+        self.inner = tk.Frame(self.canvas, bg=bg)
+        self._win = self.canvas.create_window((0, 0), window=self.inner, anchor="nw")
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.inner.bind("<Configure>", self._sync)
+        self.canvas.bind("<Configure>", self._on_canvas)
+        self._wire_wheel(self)
+        self._wire_wheel(self.canvas)
+        self._wire_wheel(self.inner)
+
+    def _on_canvas(self, e: tk.Event) -> None:
+        try:
+            self.canvas.itemconfigure(self._win, height=max(1, int(e.height)))
+        except tk.TclError:
+            pass
+        self._sync()
+
+    def _sync(self, _e=None) -> None:
+        try:
+            self.canvas.update_idletasks()
+            bbox = self.canvas.bbox("all")
+            if bbox:
+                self.canvas.configure(scrollregion=bbox)
+                content_w = bbox[2] - bbox[0]
+                view_w = max(self.canvas.winfo_width(), 1)
+                if content_w <= view_w:
+                    self.canvas.xview_moveto(0)
+        except tk.TclError:
+            pass
+
+    def wire(self, widget: tk.Misc) -> None:
+        """Подключить колёсико к кнопке (и её потомкам)."""
+        self._wire_wheel(widget)
+        try:
+            for ch in widget.winfo_children():
+                self.wire(ch)
+        except tk.TclError:
+            pass
+
+    def _wire_wheel(self, widget: tk.Misc) -> None:
+        widget.bind("<MouseWheel>", self._on_wheel, add="+")
+        widget.bind("<Button-4>", lambda _e: self._step(-3), add="+")
+        widget.bind("<Button-5>", lambda _e: self._step(3), add="+")
+
+    def _on_wheel(self, e: tk.Event):
+        delta = int(getattr(e, "delta", 0) or 0)
+        if delta == 0:
+            return "break"
+        # Windows: ±120 на щелчок; на тачпадах бывает меньше
+        steps = -1 if delta > 0 else 1
+        if abs(delta) >= 120:
+            steps = int(-delta / 120)
+        self._step(steps)
+        return "break"
+
+    def _step(self, n: int):
+        try:
+            self.canvas.xview_scroll(int(n), "units")
+        except tk.TclError:
+            pass
+        return "break"
+
+
+# ---------------------------------------------------------------------------
 # Панель-контейнер
 # ---------------------------------------------------------------------------
 
