@@ -668,6 +668,45 @@ class Cockpit(tk.Tk):
         if start == "settings:skins":  # после смены скина — обратно в Настройки → Скины
             self.show("settings")
             self.after(200, lambda: self.goto_subtab(2))
+        elif start == "settings:more":
+            self.show("settings")
+            self.after(200, lambda: self.goto_subtab(1))  # ЕЩЁ
+        self.after(2500, self._check_updates_bg)
+
+    def _check_updates_bg(self) -> None:
+        """Фоновая проверка GitHub Releases — ненавязчивый диалог при новой версии."""
+        import threading
+        from stamina import __version__
+        from stamina.i18n import t as _t
+        from stamina.updater import check_error_message, fetch_latest
+
+        def work() -> None:
+            try:
+                info = fetch_latest()
+            except Exception as exc:  # noqa: BLE001
+                check_error_message(exc)
+                return
+            if not info.is_newer:
+                return
+
+            def ask() -> None:
+                from tkinter import messagebox
+                if messagebox.askyesno(
+                    _t("Обновления"),
+                    _t("Доступна версия {0} (сейчас {1}).\nОткрыть НАСТРОЙКИ → ЕЩЁ?").format(
+                        info.version, __version__
+                    ),
+                    parent=self,
+                ):
+                    self.show("settings")
+                    self.after(150, lambda: self.goto_subtab(1))
+                    scr = self.screens.get("settings")
+                    if scr is not None and hasattr(scr, "_apply_upd_info"):
+                        scr._apply_upd_info(info)
+
+            self.after(0, ask)
+
+        threading.Thread(target=work, daemon=True).start()
 
     def _bootstrap_main(self) -> None:
         saved = load_session()

@@ -796,10 +796,29 @@ class SettingsScreen(tk.Frame):
         HudButton(cr2, _t("★  ДОСКА ПОЧЁТА"), lambda: self.app.show("honor"), height=30,
                   font_size=9, color=AMBER).pack(side=tk.LEFT, padx=px(2))
         self.body = self.tabs["more"][1]
+        from stamina import __version__ as _app_ver
+        upd = self._row(
+            _t("Обновления"),
+            _t("Текущая версия {0}. Проверка GitHub Releases; «Обновить сейчас» скачает ZIP, "
+               "сохранит пилотов / .venv / models и перезапустит программу.").format(_app_ver),
+        )
+        self.upd_status = tk.Label(upd, text=_t("не проверено"), bg=PANEL, fg=MUTED, font=theme.font(8),
+                                   wraplength=px(280), justify="left")
+        self.upd_status.pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(upd, _t("ПРОВЕРИТЬ"), self._check_update, height=30, font_size=8).pack(side=tk.LEFT, padx=px(2))
+        self.btn_do_update = HudButton(upd, _t("ОБНОВИТЬ СЕЙЧАС"), self._do_update, height=30, font_size=8,
+                                       color=AMBER)
+        self.btn_do_update.pack(side=tk.LEFT, padx=px(2))
+        HudButton(upd, _t("НА GITHUB"), self._open_release_page, height=30, font_size=8).pack(side=tk.LEFT, padx=px(2))
+        self.upd_notes = tk.Label(self.body, text="", bg=PANEL, fg=MUTED, font=theme.font(8),
+                                  wraplength=px(720), justify="left", anchor="w")
+        self.upd_notes.pack(fill=tk.X, pady=(0, px(6)))
+        self._upd_info = None
         _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…6 — разделы · F11 — экран  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.show_tab("systems")
         self.refresh()
+        self.after(800, lambda: self._check_update(silent=True))
 
     def page_help_key(self) -> str:
         return "settings." + getattr(self, "current_tab", "systems")
@@ -934,6 +953,97 @@ class SettingsScreen(tk.Frame):
                 subprocess.Popen(["xdg-open", str(DATA_DIR)])
         except (AttributeError, OSError):
             messagebox.showinfo(_t("Данные"), str(DATA_DIR), parent=self)
+
+    def _set_upd_status(self, text: str, color: str = MUTED) -> None:
+        if getattr(self, "upd_status", None) is None:
+            return
+        self.upd_status.configure(text=text, fg=color)
+
+    def _apply_upd_info(self, info, err: str | None = None) -> None:
+        from stamina import __version__
+        from stamina.updater import markdown_to_plain
+        self._upd_info = info
+        if err:
+            self._set_upd_status(err, AMBER)
+            self.upd_notes.configure(text="")
+            return
+        if info is None:
+            self._set_upd_status(_t("не проверено"))
+            return
+        if info.is_newer:
+            self._set_upd_status(_t("доступна {0} (сейчас {1})").format(info.version, __version__), AMBER)
+            self.upd_notes.configure(text=markdown_to_plain(info.body))
+        else:
+            self._set_upd_status(_t("актуально ({0})").format(__version__), GREEN)
+            self.upd_notes.configure(text=markdown_to_plain(info.body) if info.body else "")
+
+    def _check_update(self, silent: bool = False) -> None:
+        import threading
+        from stamina.updater import check_error_message, fetch_latest
+
+        if not silent:
+            self._set_upd_status(_t("проверка…"))
+
+        def work() -> None:
+            try:
+                info = fetch_latest()
+                self.after(0, lambda: self._apply_upd_info(info))
+            except Exception as exc:  # noqa: BLE001
+                msg = check_error_message(exc)
+                self.after(0, lambda: self._apply_upd_info(None, err=msg if not silent else _t("не удалось проверить")))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _open_release_page(self) -> None:
+        from stamina.updater import open_releases_page
+        open_releases_page(self._upd_info)
+
+    def _do_update(self) -> None:
+        import threading
+        from stamina.updater import check_error_message, download_and_apply, fetch_latest, maybe_pip_install
+
+        if not messagebox.askyesno(
+            _t("Обновления"),
+            _t("Скачать последнюю версию с GitHub, обновить файлы программы и перезапустить?\n"
+               "Пилоты, .venv, models и cache сохранятся."),
+            parent=self,
+        ):
+            return
+
+        self._set_upd_status(_t("обновление…"), AMBER)
+
+        def work() -> None:
+            try:
+                info = self._upd_info
+                if info is None or not getattr(info, "is_newer", False):
+                    info = fetch_latest()
+                if not info.is_newer:
+                    self.after(0, lambda: self._set_upd_status(_t("уже актуальная версия"), GREEN))
+                    return
+
+                def prog(msg: str) -> None:
+                    self.after(0, lambda m=msg: self._set_upd_status(m, AMBER))
+
+                download_and_apply(info, progress=prog)
+                maybe_pip_install(progress=prog)
+                self.after(0, lambda: self._finish_update())
+            except Exception as exc:  # noqa: BLE001
+                msg = check_error_message(exc)
+
+                def fail(m=msg) -> None:
+                    messagebox.showerror(_t("Обновления"), m, parent=self)
+                    self._set_upd_status(m, AMBER)
+
+                self.after(0, fail)
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _finish_update(self) -> None:
+        from stamina.app import relaunch
+        self._set_upd_status(_t("готово — перезапуск…"), GREEN)
+        self.app._save_all()
+        if relaunch({"STAMINA_START": "settings:more"}):
+            self.app.destroy()
 
     def refresh(self) -> None:
         st = self.app.store.settings

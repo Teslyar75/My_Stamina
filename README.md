@@ -4,6 +4,24 @@
 
 *«Живой космос» (3.5): [полное видео MP4](docs/living_space/living_space.mp4) · подробнее — [ниже](#живой-космос-версия-35).*
 
+## Обновления (GitHub Releases)
+
+С версии **3.7.0** программа сама проверяет [Releases](https://github.com/Teslyar75/My_Stamina/releases):
+
+- при входе — диалог, если есть новая версия;
+- **НАСТРОЙКИ → ЕЩЁ → Обновления**: «Проверить», changelog, **«Обновить сейчас»** (скачает ZIP тега, обновит файлы, сохранит пилотов / `.venv` / `models` / `cache`, перезапустит).
+
+Как выпустить релиз разработчику: обновите `CHANGELOG.md` и `stamina/__init__.py` → `__version__`, затем:
+
+```bash
+git tag v3.7.0
+git push origin v3.7.0
+```
+
+GitHub Actions создаст Release с notes из changelog.
+
+---
+
 ## 🚀 Быстрый старт для новичка
 
 **Ваша система:** [🪟 Windows](#windows--один-двойной-щелчок) · [🐧 Linux (Ubuntu и др.)](#linux-ubuntu--одна-команда)
@@ -105,12 +123,13 @@ Star Typing — настольная программа на Python (tkinter) в
 
 - **Скин «Старая Англия»** — туман, слайдшоу, радио (F7), 357 строк своей лексики; Звездолёт по умолчанию.
 - **Звуки скинов** и **Esc-перезапуск змейки** (PR #19).
+- **Гид ОРИОН** — на десктопе **в планах** (порт с веба); в [веб-версии](https://github.com/Teslyar75/Wed_Star_Typing_Version) уже есть. Видение: [docs/ORION_VISION.md](docs/ORION_VISION.md).
 
 | Мостик в скине | Слайдшоу |
 | --- | --- |
 | ![Мостик](docs/showcase_new/02_bridge_ru.jpg) | ![Слайдшоу](docs/showcase_new/06_slideshow.jpg) |
 
-Подробно: [docs/FEATURES_2026-10.md](docs/FEATURES_2026-10.md) · все скриншоты: [docs/showcase_new/](docs/showcase_new/)
+Подробно: [docs/FEATURES_2026-10.md](docs/FEATURES_2026-10.md) · Орион: [docs/ORION_VISION.md](docs/ORION_VISION.md) · скриншоты: [docs/showcase_new/](docs/showcase_new/)
 
 ## Читалка · Радиорубка · Отдых
 
