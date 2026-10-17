@@ -44,7 +44,7 @@ DEFAULT_SETTINGS = {
     "sight_box_font": "L",
     "sight_box_face": "mono",
     "sight_on_color": "",
-    "ui_scale": "M",  # размер интерфейса всего приложения: S / M / L / XL
+    "ui_scale": "L",  # размер интерфейса всего приложения: S / M / L / XL
     "lang": "en",
     "translator": True,
     # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы

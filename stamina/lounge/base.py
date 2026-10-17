@@ -32,31 +32,42 @@ class GameShell(tk.Frame):
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(12), pady=(px(6), px(4)))
         self.lbl_title = tk.Label(top, text=self.title, bg=BG, fg=AMBER,
-                                  font=theme.font(13, True))
+                                  font=theme.font(15, True))
         self.lbl_title.pack(side=tk.LEFT)
         self.lbl_score = tk.Label(top, text="", bg=BG, fg=CYAN,
-                                  font=theme.font(11, True, mono=True))
+                                  font=theme.font(13, True, mono=True))
         self.lbl_score.pack(side=tk.RIGHT)
         self.lbl_best = tk.Label(top, text="", bg=BG, fg=MUTED,
-                                 font=theme.font(9, True, mono=True))
+                                 font=theme.font(11, True, mono=True))
         self.lbl_best.pack(side=tk.RIGHT, padx=(0, px(16)))
 
         bar = tk.Frame(self, bg=BG)
         bar.pack(fill=tk.X, padx=px(12), pady=(0, px(4)))
-        self.btn_pause = HudButton(bar, _t("ПАУЗА"), self.toggle_pause, height=30, font_size=8, width=90)
+        self.btn_pause = HudButton(bar, _t("ПАУЗА"), self.toggle_pause, height=34, font_size=10, width=100)
         self.btn_pause.pack(side=tk.LEFT, padx=(0, px(4)))
-        HudButton(bar, _t("ЗАНОВО"), self.restart, height=30, font_size=8, width=90, color=AMBER).pack(
+        HudButton(bar, _t("ЗАНОВО"), self.restart, height=34, font_size=10, width=100, color=AMBER).pack(
             side=tk.LEFT, padx=(0, px(4)))
-        HudButton(bar, _t("← В ЛОББИ"), self._back, height=30, font_size=8, width=110).pack(side=tk.LEFT)
-        self.lbl_hint = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(8))
+        HudButton(bar, _t("← В ЛОББИ"), self._back, height=34, font_size=10, width=120).pack(side=tk.LEFT)
+        self.lbl_hint = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(10))
         self.lbl_hint.pack(side=tk.RIGHT)
 
         panel = HudPanel(self, _t("ИГРОВОЕ ПОЛЕ"), accent=CYAN)
         panel.pack(fill=tk.BOTH, expand=True, padx=px(12), pady=(0, px(10)))
         self.canvas = tk.Canvas(panel.body, bg=PANEL, highlightthickness=0, bd=0)
+        # Не участвует в Living Space «стекле»: иначе каждый delete("all") в tick
+        # срывает ls_bg, фон космоса снова красится → дрожь/мерцание за игрой.
+        self.canvas.living_skip = True
         self.canvas.pack(fill=tk.BOTH, expand=True)
-        self.canvas.bind("<Configure>", lambda _e: self.redraw())
+        self._canvas_size = (0, 0)
+        self.canvas.bind("<Configure>", self._on_canvas_configure)
         self._update_labels()
+
+    def _on_canvas_configure(self, e: tk.Event) -> None:
+        size = (int(e.width), int(e.height))
+        if size == self._canvas_size or size[0] < 4 or size[1] < 4:
+            return
+        self._canvas_size = size
+        self.redraw()
 
     def set_hint(self, text: str) -> None:
         self.lbl_hint.configure(text=text)
@@ -173,5 +184,5 @@ class GameShell(tk.Frame):
         c = self.canvas
         w, h = max(c.winfo_width(), 10), max(c.winfo_height(), 10)
         c.create_rectangle(0, 0, w, h, fill=BG, stipple="gray50", outline="")
-        c.create_text(w // 2, h // 2, text=msg, fill=AMBER, font=theme.font(18, True),
-                      justify="center")
+        c.create_text(w // 2, h // 2, text=msg, fill=AMBER, font=theme.font(20, True),
+                      justify="center", tags="overlay")

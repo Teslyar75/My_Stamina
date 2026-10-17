@@ -96,7 +96,7 @@ class SnakeGame(GameShell):
                                ox + (x + 1) * cell - 1, oy + (y + 1) * cell - 1,
                                fill=color, outline=blend(color, PANEL, 0.4))
         c.create_text(ox + gw // 2, oy - px(10), text=_t("длина {0}").format(len(self.snake)),
-                      fill=TEXT, font=theme.font(9, True, mono=True))
+                      fill=TEXT, font=theme.font(11, True, mono=True))
         if self.over:
             self.draw_overlay(_t("ШНУР ОБОРВАН\nEsc / ЗАНОВО"))
         elif self.paused:

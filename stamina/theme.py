@@ -50,7 +50,8 @@ MONO_FAMILY = "Consolas"
 
 S = 1.0
 UI = 1.0
-UI_PRESETS = {"S": 0.90, "M": 1.00, "L": 1.15, "XL": 1.35}
+# Ступени крупнее прежних на ~1–1.5 шага (было 0.90 / 1.00 / 1.15 / 1.35)
+UI_PRESETS = {"S": 1.05, "M": 1.22, "L": 1.42, "XL": 1.65}
 
 THEMES_DIR = Path(__file__).resolve().parent / "themes"
 DEFAULT_THEME_ID = "spaceship"
