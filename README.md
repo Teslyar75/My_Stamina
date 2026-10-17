@@ -105,12 +105,13 @@ Star Typing — настольная программа на Python (tkinter) в
 
 - **Скин «Старая Англия»** — туман, слайдшоу, радио (F7), 357 строк своей лексики; Звездолёт по умолчанию.
 - **Звуки скинов** и **Esc-перезапуск змейки** (PR #19).
+- **Гид ОРИОН** — на десктопе **в планах** (порт с веба); в [веб-версии](https://github.com/Teslyar75/Wed_Star_Typing_Version) уже есть. Видение: [docs/ORION_VISION.md](docs/ORION_VISION.md).
 
 | Мостик в скине | Слайдшоу |
 | --- | --- |
 | ![Мостик](docs/showcase_new/02_bridge_ru.jpg) | ![Слайдшоу](docs/showcase_new/06_slideshow.jpg) |
 
-Подробно: [docs/FEATURES_2026-10.md](docs/FEATURES_2026-10.md) · все скриншоты: [docs/showcase_new/](docs/showcase_new/)
+Подробно: [docs/FEATURES_2026-10.md](docs/FEATURES_2026-10.md) · Орион: [docs/ORION_VISION.md](docs/ORION_VISION.md) · скриншоты: [docs/showcase_new/](docs/showcase_new/)
 
 ## Читалка · Радиорубка · Отдых
 
