@@ -776,7 +776,7 @@ class SettingsScreen(tk.Frame):
                   font_size=9, color=AMBER).pack(side=tk.LEFT)
         self.font_btns = {}
         ui = self._row(_t("Размер интерфейса"),
-                      _t("Шрифты и отступы во всём приложении. Новый размер полностью применится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» выше (прогресс сохранится)."))
+                      _t("Шрифты и отступы во всём приложении. Применяется сразу (кабина мягко перезапускается, прогресс сохраняется). Если кнопки зон не влезли в шапку — прокрутите их колёсиком мыши, наведя курсор на ряд кнопок."))
         self.ui_btns = {}
         for key, name in (("S", _t("МЕЛКИЙ")), ("M", _t("ОБЫЧНЫЙ")), ("L", _t("КРУПНЫЙ")), ("XL", _t("ОЧЕНЬ КРУПНЫЙ"))):
             b = HudButton(ui, name, lambda k=key: self._set_ui_scale(k), height=30, font_size=8)
@@ -926,11 +926,18 @@ class SettingsScreen(tk.Frame):
 
     def _set_ui_scale(self, key: str) -> None:
         from stamina import theme as th
+        from stamina.app import relaunch
         key = th.set_ui_scale(key)
+        prev = self.app.store.settings.get("ui_scale")
         self.app.store.settings["ui_scale"] = key
-        self.app.apply_settings()
+        self.app.store.save_settings()
         self.refresh()
-        self.btn_restart.pack(side=tk.LEFT, padx=px(8))  # как при смене языка — нужен перезапуск
+        if prev == key:
+            return
+        # Сразу применяем весь UI (шрифты/отступы завязаны на старте) — как смена скина.
+        self.app._save_all()
+        if relaunch({"STAMINA_START": "settings:more"}):
+            self.app.destroy()
 
     def _test_sound(self) -> None:
         snd = self.app.sound
