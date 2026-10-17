@@ -58,11 +58,11 @@ class LoungeScreen(tk.Frame):
         head = tk.Frame(self.lobby, bg=BG)
         head.pack(fill=tk.X, padx=px(16), pady=(px(10), px(4)))
         tk.Label(head, text=_t("КОМНАТА ОТДЫХА ЭКИПАЖА"), bg=BG, fg=AMBER,
-                 font=theme.font(16, True)).pack(side=tk.LEFT)
-        HudButton(head, "?", lambda: self.app.open_help(), height=28, font_size=10,
-                  width=32, color=AMBER).pack(side=tk.RIGHT)
+                 font=theme.font(18, True)).pack(side=tk.LEFT)
+        HudButton(head, "?", lambda: self.app.open_help(), height=32, font_size=12,
+                  width=36, color=AMBER).pack(side=tk.RIGHT)
         tk.Label(head, text=_t("короткий перерыв между полётами · рекорды сохраняются на борту"),
-                 bg=BG, fg=MUTED, font=theme.font(9)).pack(side=tk.LEFT, padx=px(14))
+                 bg=BG, fg=MUTED, font=theme.font(11)).pack(side=tk.LEFT, padx=px(14))
 
         grid = tk.Frame(self.lobby, bg=BG)
         grid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
@@ -76,17 +76,18 @@ class LoungeScreen(tk.Frame):
             card.grid(row=0, column=i, sticky="nsew", padx=px(6), pady=px(4))
             body = card.body
             tk.Label(body, text=g["title"], bg=PANEL, fg=g["color"],
-                     font=theme.font(18, True)).pack(anchor="w", pady=(px(4), px(2)))
-            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(220),
-                     justify="left", font=theme.font(10)).pack(anchor="w", pady=(0, px(10)))
-            rec = tk.Label(body, text="", bg=PANEL, fg=MUTED, font=theme.font(10, True, mono=True))
+                     font=theme.font(20, True)).pack(anchor="w", pady=(px(4), px(2)))
+            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(240),
+                     justify="left", font=theme.font(12)).pack(anchor="w", pady=(0, px(10)))
+            rec = tk.Label(body, text="", bg=PANEL, fg=MUTED, font=theme.font(12, True, mono=True))
             rec.pack(anchor="w")
             HudButton(body, _t("▶ ИГРАТЬ"), lambda gid=g["id"]: self.launch(gid),
-                      color=g["color"], height=40, font_size=11).pack(
+                      color=g["color"], height=44, font_size=13).pack(
                 side=tk.BOTTOM, fill=tk.X, pady=(px(12), px(4)))
-            # мини-превью на canvas
+            # мини-превью на canvas (без Living Space — иначе превью тоже «дрожит»)
             prev = tk.Canvas(body, bg=blend(PANEL, g["color"], 0.12), highlightthickness=0,
                              height=px(90))
+            prev.living_skip = True
             prev.pack(fill=tk.X, pady=px(8))
             self.cards.append({"id": g["id"], "rec": rec, "prev": prev, "color": g["color"]})
             self._draw_preview(prev, g["id"], g["color"])
@@ -94,7 +95,7 @@ class LoungeScreen(tk.Frame):
         foot = tk.Frame(self.lobby, bg=BG)
         foot.pack(fill=tk.X, padx=px(16), pady=(0, px(10)))
         tk.Label(foot, text=_t("Esc — пауза в игре · R — заново · выход в лобби — кнопка «← В ЛОББИ»"),
-                 bg=BG, fg=MUTED, font=theme.font(8)).pack(side=tk.LEFT)
+                 bg=BG, fg=MUTED, font=theme.font(10)).pack(side=tk.LEFT)
 
     def _draw_preview(self, c: tk.Canvas, gid: str, color: str) -> None:
         c.delete("all")
@@ -151,6 +152,13 @@ class LoungeScreen(tk.Frame):
         self.game = meta["cls"](self.game_host, on_back=self.show_lobby, app=self.app)
         self.game.pack(fill=tk.BOTH, expand=True)
         self.game.start()
+        # Перескан Living Space: игровой холст с living_skip не должен попасть в «стекло»
+        living = getattr(self.app, "living", None)
+        if living is not None:
+            try:
+                living.scan()
+            except Exception:
+                pass
         self.app.set_status(_t("КОМНАТА ОТДЫХА · {0}").format(meta["title"]), CYAN)
         self.focus_set()
 
