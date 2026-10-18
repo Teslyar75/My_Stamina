@@ -927,6 +927,70 @@ def english_due_cards(*, limit: int = 20) -> list[dict]:
         return []
 
 
+# -- доступ к радиорубке для Ориона -------------------------------------------
+def radio_stations() -> list[dict]:
+    """Список избранных станций радиорубки для Ориона."""
+    try:
+        from stamina.radio import get_engine
+        eng = get_engine()
+        return list(eng.data.get("favorites") or [])
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def radio_current() -> dict:
+    """Текущая станция радиорубки."""
+    try:
+        from stamina.radio import get_engine
+        eng = get_engine()
+        return {
+            "station": eng.station,
+            "playing": eng.playing,
+            "volume": eng.volume,
+            "favorites": list(eng.data.get("favorites") or []),
+        }
+    except Exception:  # noqa: BLE001
+        return {"station": None, "playing": False, "volume": 0, "favorites": []}
+
+
+def radio_play(station_id: str = "") -> tuple[bool, str]:
+    """Включить станцию по ID (или следующую избранную)."""
+    try:
+        from stamina.radio import get_engine
+        eng = get_engine()
+        if station_id:
+            favs = eng.data.get("favorites") or []
+            st = next((f for f in favs if f.get("uuid") == station_id), None)
+            if st and eng.play_station(st):
+                return True, st.get("name") or ""
+        # Без ID — следующая избранная
+        eng.next_favorite()
+        return eng.playing, (eng.station or {}).get("name") or ""
+    except Exception as exc:  # noqa: BLE001
+        return False, str(exc)
+
+
+def radio_stop() -> tuple[bool, str]:
+    """Остановить радио."""
+    try:
+        from stamina.radio import get_engine
+        get_engine().stop()
+        return True, ""
+    except Exception as exc:  # noqa: BLE001
+        return False, str(exc)
+
+
+def radio_volume(vol: int) -> tuple[bool, str]:
+    """Изменить громкость радио."""
+    try:
+        from stamina.radio import get_engine
+        eng = get_engine()
+        eng.set_volume(max(0, min(100, int(vol))))
+        return True, ""
+    except Exception as exc:  # noqa: BLE001
+        return False, str(exc)
+
+
 # -- чтение книг вслух ---------------------------------------------------------
 def library_books() -> list[dict]:
     """Список книг библиотеки для Ориона-чтеца."""

@@ -102,6 +102,22 @@ class OrionDataTest(unittest.TestCase):
         self.assertTrue(code.isupper())
         self.assertNotEqual(code, orion.make_boarding_code())
 
+    # -- радио и библиотека ---------------------------------------------------
+    def test_radio_functions(self):
+        """Орион имеет доступ к радиорубке."""
+        stations = orion.radio_stations()
+        self.assertIsInstance(stations, list)
+        current = orion.radio_current()
+        self.assertIn("station", current)
+        self.assertIn("playing", current)
+
+    def test_library_functions(self):
+        """Орион имеет доступ к библиотеке."""
+        books = orion.library_books()
+        self.assertIsInstance(books, list)
+        words = orion.english_words()
+        self.assertIsInstance(words, list)
+
     def test_save_binding_trims_and_limits(self):
         orion.upsert({"name": "Сова", "access": "crew"})
         long_token = "x" * 300

@@ -322,6 +322,7 @@ class OrionScreen(tk.Frame):
         self.text.tag_configure("time", foreground=MUTED, font=theme.font(8))
         self.text.tag_configure("body", foreground=TEXT, font=theme.font(10))
         self.text.tag_configure("hint", foreground=MUTED, font=theme.font(10))
+        self.text.tag_configure("separator", foreground=LINE, font=theme.font(8))
 
     # -- вкладка АГЕНТЫ ----------------------------------------------------
     def _build_agents(self, page: tk.Frame) -> None:
@@ -537,21 +538,26 @@ class OrionScreen(tk.Frame):
                                         "Установите opencode и перезапустите корабль.") + "\n", "hint")
         if not msgs:
             self.text.insert(tk.END, _t("Канал свободен. Скажите Ориону первое слово — "
-                                        "письменно или голосом.") + "\n", "hint")
+                                        "письменно 或 голосом.") + "\n", "hint")
         for m in msgs:
             when = time.strftime("%H:%M", time.localtime(float(m.get("ts", 0.0))))
             role = m.get("role", "orion")
             if role == "pilot":
                 tag, name = "pilot", _t("ПИЛОТ")
+                prefix = "▸ "
             elif role == "orion":
                 tag, name = "orion", str(rec.get("name") or _t("ОРИОН")).upper()
+                prefix = "◂ "
             else:
                 tag, name = "system", _t("КОРАБЛЬ")
+                prefix = ""
             if m.get("kind") == "task":
                 name = "📌 " + name
-            self.text.insert(tk.END, name, tag)
+            # Визуальное разделение реплик
+            self.text.insert(tk.END, "─" * 40 + "\n", "separator")
+            self.text.insert(tk.END, prefix + name, tag)
             self.text.insert(tk.END, f"  {when}\n", "time")
-            self.text.insert(tk.END, f"{m.get('text', '')}\n\n", "body")
+            self.text.insert(tk.END, f"{m.get('text', '')}\n", "body")
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
         self._render_strip(msgs, rec)
