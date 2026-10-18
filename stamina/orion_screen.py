@@ -104,6 +104,54 @@ class _OwnerCodeDialog(Modal):
         self.pad.clear(RED)
 
 
+class _GitHubAccessDialog(Modal):
+    """Проверка GitHub-доступа для прав Командира.
+
+    Агент спрашивает у локального агента (OpenCode CLI), есть ли доступ к
+    аккаунту разработчика на GitHub. Если да — проверяем токен через API.
+    """
+
+    def __init__(self, master) -> None:
+        super().__init__(master, tr_("ДОСТУП К GITHUB"), GREEN)
+        L(self.body, tr_("Есть ли у тебя доступ к аккаунту разработчика на GitHub?\n"
+                        "Можешь ли ты отправлять обновления и изменять состояние проекта?"),
+          fg=MUTED, size=10).pack(anchor="w", pady=(px(4), px(8)))
+        self.token_entry = tk.Entry(self.body, bg=BG2, fg=TEXT, insertbackground=CYAN,
+                                    relief=tk.FLAT, font=theme.font(10),
+                                    highlightthickness=1, highlightbackground=LINE,
+                                    highlightcolor=CYAN, show="*")
+        self.token_entry.pack(fill=tk.X, ipady=px(4))
+        L(self.body, tr_("Токен GitHub (ghp_... или github_pat_...)"),
+          fg=MUTED, size=8).pack(anchor="w", pady=(px(4), px(8)))
+        self.msg = L(self.body, "", fg=RED, size=9, bold=True)
+        self.msg.pack(anchor="w")
+        btns = tk.Frame(self.body, bg=PANEL)
+        btns.pack(fill=tk.X, pady=(px(8), 0))
+        HudButton(btns, tr_("ПРОВЕРИТЬ"), self.check, color=GREEN, height=36,
+                  font_size=10).pack(side=tk.LEFT)
+        HudButton(btns, tr_("ПРОПУСТИТЬ"), self.skip, height=36, font_size=9).pack(side=tk.LEFT, padx=px(6))
+        self.result = False
+
+    def check(self) -> None:
+        from stamina import orion
+        token = self.token_entry.get().strip()
+        if not token:
+            self.msg.configure(text=tr_("Введите токен GitHub"))
+            return
+        self.msg.configure(text=tr_("Проверяю токен…"), fg=AMBER)
+        self.update_idletasks()
+        ok, err = orion.check_github_access(token)
+        if ok:
+            self.result = True
+            self.destroy()
+        else:
+            self.msg.configure(text=tr_("Ошибка: {0}").format(err), fg=RED)
+
+    def skip(self) -> None:
+        self.result = False
+        self.destroy()
+
+
 class OrionScreen(tk.Frame):
     """Чат с бортовым разумом и интерфейс заселения агентов."""
 
@@ -181,6 +229,8 @@ class OrionScreen(tk.Frame):
         self.board_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
         HudButton(bar, _t("ОЧИСТИТЬ"), self._clear, height=30, font_size=9,
                   color=AMBER).pack(side=tk.RIGHT, padx=(px(4), 0))
+        self.mic_indicator = _label(bar, "", fg=MUTED, size=10, bold=True, bg=BG)
+        self.mic_indicator.pack(side=tk.RIGHT, padx=(px(6), 0))
         HudButton(bar, _t("ЧИТАТЬ КНИГУ"), self._read_book, height=30, font_size=9,
                   color=GREEN).pack(side=tk.RIGHT, padx=(px(4), 0))
 
@@ -541,6 +591,8 @@ class OrionScreen(tk.Frame):
             self.mic.start()
 
     def _mic_status(self, text: str, color=MUTED) -> None:
+        """Индикатор микрофона: показывает что микрофон работает."""
+        self.mic_indicator.configure(text=("🎤 " + text) if text else "", fg=color)
         self._hint(text, color)
 
     # -- переводы подписей -------------------------------------------------
@@ -919,18 +971,24 @@ class OrionScreen(tk.Frame):
         self.enabled_btn.set_color(GREEN if self._enabled else MUTED)
 
     def _pick_access(self, access: str) -> None:
-        """Права выбираются на входе. Командир — только по коду владельца корабля."""
+        """Права выбираются на входе. Командир — по коду владельца + GitHub-доступ."""
         if not self._is_new:
             self._hint(_t("Права выдаёт владелец корабля на входе. Здесь их не меняют — "
                           "только новое заселение."), AMBER)
             self.show_tab("agents")
             return
         access = access if access in orion.ACCESSES else "crew"
-        if access == "commander" and not _OwnerCodeDialog(self, self.name_var.get()).run():
-            self._hint(_t("Права Командира не выданы"), MUTED)
-            self.show_tab("agents")
-            return
         if access == "commander":
+            # Шаг 1: код владельца корабля
+            if not _OwnerCodeDialog(self, self.name_var.get()).run():
+                self._hint(_t("Права Командира не выданы"), MUTED)
+                self.show_tab("agents")
+                return
+            # Шаг 2: проверка GitHub-доступа (спрашиваем у локального агента)
+            if not _GitHubAccessDialog(self).run():
+                self._hint(_t("Права Командира не выданы: нужен доступ к GitHub"), MUTED)
+                self.show_tab("agents")
+                return
             self._hint(_t("Права Командира выданы"), GREEN)
         self._access = access
         self._paint_form()
@@ -1184,11 +1242,87 @@ class OrionScreen(tk.Frame):
         except Exception:  # noqa: BLE001
             return ""
 
+    def _read_book(self) -> None:
+        """Орион читает вслух книгу из библиотеки."""
+        rec = self._rec()
+        from stamina.voice import tts
+        if not tts.available():
+            self._hint(_t("Озвучка не доступна"), RED)
+            return
+        books = orion.library_books()
+        if not books:
+            self._hint(_t("Библиотека пуста"), MUTED)
+            return
+        book = books[0]
+        chunks = orion.book_text_for_reading(book["id"])
+        if not chunks:
+            self._hint(_t("Книга пуста"), MUTED)
+            return
+        self._hint(_t("Читаю: {0}").format(book["title"]), GREEN)
+        for chunk in chunks[:3]:
+            tts.speak(chunk)
+            time.sleep(0.5)
+
+    def _read_book(self) -> None:
+        """Орион читает вслух книгу из библиотеки."""
+        rec = self._rec()
+        from stamina.voice import tts
+        if not tts.available():
+            self._hint(_t("Озвучка не доступна"), RED)
+            return
+        books = orion.library_books()
+        if not books:
+            self._hint(_t("Библиотека пуста"), MUTED)
+            return
+        book = books[0]
+        chunks = orion.book_text_for_reading(book["id"])
+        if not chunks:
+            self._hint(_t("Книга пуста"), MUTED)
+            return
+        self._hint(_t("Читаю: {0}").format(book["title"]), GREEN)
+        for chunk in chunks[:3]:
+            tts.speak(chunk)
+            time.sleep(0.5)
+
     def _exit_master_mode(self) -> None:
         """Выйти из режима мастера."""
         self._master_mode = False
         self._last_mouse_pos = None
         self._hint(_t("Режим мастера выключен"), MUTED)
+
+    def on_show(self) -> None:
+        """Орион приветствует пилота при входе в зону."""
+        rec = self._rec()
+        name = str(rec.get("name") or "ОРИОН").upper()
+        greeting = _t("{0} на связи. Готов к общению, пилот.").format(name)
+        self._hint(greeting, GREEN)
+        from stamina.voice import tts
+        if self._answer_voice and tts.available():
+            tts.speak(greeting)
+
+    def on_zone_enter(self, zone: str, subtab: str = "") -> None:
+        """Орион — гид: при входе в любой отсек рассказывает что происходит.
+
+        Использует page_help.py для получения описания отсека.
+        """
+        from stamina import page_help
+        from stamina.voice import tts
+        rec = self._rec()
+        name = str(rec.get("name") or "ОРИОН").upper()
+        # Получаем описание отсека из page_help
+        key = zone
+        if subtab:
+            key = f"{zone}.{subtab}"
+        info = page_help.PAGES.get(zone) or page_help.PAGES.get(key)
+        if info:
+            title, text = info
+            summary = text.split("\n")[0] if text else title
+            greeting = _t("{0}: {1}").format(name, summary)
+        else:
+            greeting = _t("{0}: открыт раздел «{1}»").format(name, zone)
+        self._hint(greeting, CYAN)
+        if self._answer_voice and tts.available():
+            tts.speak(greeting)
 
     # -- эволюция характера ---------------------------------------------------
     def _refresh_evolution(self) -> None:

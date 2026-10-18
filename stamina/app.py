@@ -142,10 +142,12 @@ def run_app(argv: list[str] | None = None) -> None:
     try:
         from stamina.cockpit import Cockpit
         cockpit = Cockpit()
-        # Показать диалог выбора агента после входа пилота
-        from stamina.pilot_screens import AgentChoiceDialog
-        dialog = AgentChoiceDialog(cockpit, on_done=None)
-        dialog.run()
+        # Показать диалог выбора агента после входа пилота — после инициализации окна
+        def _show_agent_dialog(cp):
+            from stamina.pilot_screens import AgentChoiceDialog
+            dialog = AgentChoiceDialog(cp, on_done=None)
+            dialog.run()
+        cockpit.after(100, lambda: _show_agent_dialog(cockpit))
         cockpit.mainloop()
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback

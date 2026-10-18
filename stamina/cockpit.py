@@ -392,7 +392,20 @@ class Cockpit(tk.Tk):
             scr.focus_input()
         elif name == orion_hook.KEY and hasattr(scr, "focus_input"):
             scr.focus_input()
+            if hasattr(scr, "on_show"):
+                scr.on_show()
         else:
+            # Орион — гид: при входе в любой отсек рассказывает что происходит
+            orion_scr = self.screens.get(orion_hook.KEY)
+            if orion_scr is not None and hasattr(orion_scr, "on_zone_enter"):
+                from stamina import nav
+                zone = nav.zone_of(name)
+                sub = ""
+                scr_obj = self.screens.get(name)
+                if scr_obj is not None and hasattr(scr_obj, "current_tab"):
+                    titles = dict(getattr(scr_obj, "TABS", ()))
+                    sub = titles.get(scr_obj.current_tab, "")
+                orion_scr.on_zone_enter(zone or name, sub)
             self.focus_set()
 
     def update_comm_badge(self) -> None:
@@ -796,6 +809,12 @@ class Cockpit(tk.Tk):
         scr = self.screens.get(orion_hook.KEY)
         if scr is not None and hasattr(scr, "show_tab"):
             scr.show_tab("agents")
+
+    def _greet_orion(self) -> None:
+        """Орион приветствует пилота при входе в зону."""
+        scr = self.screens.get(orion_hook.KEY)
+        if scr is not None and hasattr(scr, "on_show"):
+            scr.on_show()
 
     def _chrome_hotkey(self, e: tk.Event) -> bool:
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
