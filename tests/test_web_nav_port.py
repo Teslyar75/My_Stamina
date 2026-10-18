@@ -6,10 +6,15 @@ from stamina.storage import DEFAULT_SETTINGS
 
 
 class NavTest(unittest.TestCase):
-    def test_six_zones_in_order(self):
-        self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "settings"])
+    def test_seven_zones_in_order(self):
+        self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
+                                       "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
         self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
+        # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
+        self.assertEqual(nav.zones({"comm"}), ["bridge", "comm", "settings"])
+        self.assertEqual(nav.zone_of("comm"), "comm")
+        self.assertEqual(nav.path("comm"), [("ЭФИР", "comm")])
 
     def test_bridge_submenu_belongs_to_bridge(self):
         for leaf, _title in nav.BRIDGE_LEAVES:
@@ -155,7 +160,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 6)
+        self.assertEqual(len(a.SCREENS), 7)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")
@@ -224,7 +229,7 @@ class PageHelpCoverageTest(CockpitKeyboardTest):
         dlg = ph.PageHelpDialog(a)
         a.update()
         self.assertEqual(dlg.key, "bridge_settings.sight")
-        self.assertIn("Ctrl+1…6", dlg.text.get("1.0", "end"))
+        self.assertIn("Ctrl+1…7", dlg.text.get("1.0", "end"))
         dlg.next_topic(1)
         self.assertNotEqual(dlg.key, "bridge_settings.sight")
         dlg.destroy()
@@ -241,3 +246,53 @@ class BridgeHotkeysTest(CockpitKeyboardTest):
         for i, (leaf, _t) in enumerate(nav.BRIDGE_LEAVES, 1):
             self.assertTrue(a.bind(f"<Control-F{i}>"), leaf)
         self.assertIn("Ctrl+F1", a.subnav_buttons["bridge"]._text if hasattr(a.subnav_buttons["bridge"], "_text") else "Ctrl+F1")
+
+
+class ChromeHotkeyTest(CockpitKeyboardTest):
+    """Home → Орион, PgUp → слайды, PgDn → экран (порт горячих клавиш веб-версии)."""
+
+    @staticmethod
+    def _ev(keysym, state=0):
+        import tkinter as tk
+        e = tk.Event()
+        e.keysym = keysym
+        e.state = state
+        return e
+
+    def test_home_calls_orion(self):
+        a = self.app
+        self.assertTrue(a._chrome_hotkey(self._ev("Home")))
+        self.assertIn("Орион", a.status.cget("text"))
+
+    def test_pgup_opens_slides(self):
+        a = self.app
+        called = []
+        a.idle.open = lambda: called.append(True)
+        self.assertTrue(a._chrome_hotkey(self._ev("Prior")))
+        self.assertEqual(called, [True])
+
+    def test_pgdn_toggles_fullscreen(self):
+        a = self.app
+        before = a._fullscreen
+        self.assertTrue(a._chrome_hotkey(self._ev("Next")))
+        self.assertEqual(a._fullscreen, not before)
+
+    def test_modifiers_are_ignored(self):
+        a = self.app
+        for mod in (0x4, 0x8, 0x1):     # Ctrl / Alt / Shift
+            self.assertFalse(a._chrome_hotkey(self._ev("Home", mod)))
+
+    def test_main_key_consumes_chrome(self):
+        a = self.app
+        a.idle.open = lambda: None
+        self.assertEqual(a._on_key(self._ev("Home")), "break")   # не дублируется через bind_all
+
+    def test_button_focus_routes_chrome(self):
+        from stamina import keynav
+        a = self.app
+        called = []
+        a._call_orion = lambda: called.append(True)
+        e = self._ev("Home")
+        e.widget = a.btn_orion
+        self.assertEqual(keynav._on_button_key(e), "break")
+        self.assertEqual(called, [True])

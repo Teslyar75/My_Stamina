@@ -11,8 +11,8 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, missions, nav,
-                     pilots, radio_hook, speedread_hook, theme)
+from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
+                     missions, nav, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HScrollStrip, HudButton
@@ -61,7 +61,11 @@ class Cockpit(tk.Tk):
         if self._radio_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(radio_hook.KEY, radio_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
-        # шесть зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        self._comm_cls = comm_hook.load_class()  # вкладка «ЭФИР» — лента сообщений экипажа
+        if self._comm_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(comm_hook.KEY, comm_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        # семь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
@@ -70,7 +74,19 @@ class Cockpit(tk.Tk):
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
-        self.bind("<F11>", lambda _e: self.toggle_fullscreen())
+        # Home — Орион, Prior (PgUp) — слайды, Next (PgDn) — экран (как на вебе)
+        def _all_chrome(e, want: tuple[str, ...]):
+            if e.keysym not in want:
+                return None
+            try:
+                if e.widget.winfo_toplevel() is not self:
+                    return None
+            except tk.TclError:
+                return None
+            return "break" if self._chrome_hotkey(e) else None
+        self.bind_all("<KeyPress-Home>", lambda e: _all_chrome(e, ("Home",)))
+        self.bind_all("<KeyPress-Prior>", lambda e: _all_chrome(e, ("Prior",)))
+        self.bind_all("<KeyPress-Next>", lambda e: _all_chrome(e, ("Next",)))
         # подвкладки с клавиатуры: Ctrl+Tab / Ctrl+Shift+Tab и Alt+1…9
         self.bind("<Control-Tab>", lambda _e: self.cycle_subtab(1) or "break")
         for seq in ("<Control-Shift-Tab>", "<Control-ISO_Left_Tab>"):
@@ -96,7 +112,6 @@ class Cockpit(tk.Tk):
         self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
         from stamina.idle.overlay import IdleController
         self.idle = IdleController(self)   # слайдшоу простоя — только у скинов со slideshow
-        self.bind("<F8>", lambda _e: self.idle.open() or "break")  # показать слайдшоу сейчас
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
 
@@ -149,6 +164,13 @@ class Cockpit(tk.Tk):
         self.btn_screen = HudButton(right, tr_("⛶ ЭКРАН"), self.toggle_fullscreen, height=36, font_size=9,
                                     width=104, color=CYAN)
         self.btn_screen.pack(side=tk.RIGHT, padx=px(4))
+        self.btn_slides = HudButton(right, tr_("СЛАЙДЫ"), lambda: self.idle.open(), height=36, font_size=9,
+                                    width=90, color=CYAN)
+        self.btn_slides.pack(side=tk.RIGHT, padx=px(4))
+        # Орион на десктопе — в планах; кнопка-заглушка, хоткей Home (как на вебе)
+        self.btn_orion = HudButton(right, tr_("ОРИОН"), self._call_orion, height=36, font_size=9,
+                                   width=90, color=GREEN)
+        self.btn_orion.pack(side=tk.RIGHT, padx=px(4))
         self.btn_help = HudButton(right, "?" if self._compact else "? F1", self.open_help, height=36,
                                   font_size=9, width=36 if self._compact else 60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
@@ -202,7 +224,7 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=tr_("F1 / ? — эта страница · F5 заново · Esc пауза · F9 звук · F11 экран · Ctrl+1…{0} разделы").format(len(self.SCREENS)),
+        tk.Label(status, text=tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
                  bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
@@ -243,10 +265,18 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != radio_hook.KEY]
                 self.nav_buttons.pop(radio_hook.KEY).destroy()
+        if self._comm_cls is not None:
+            com = comm_hook.create(self._comm_cls, self.content, self)
+            if com is not None:
+                self.screens[comm_hook.KEY] = com
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != comm_hook.KEY]
+                self.nav_buttons.pop(comm_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
         self._update_sound_button()
+        self.update_comm_badge()
 
     def _set_icon(self) -> None:
         """Иконка окна и панели задач: звезда в шестиграннике (stamina/assets)."""
@@ -342,14 +372,28 @@ class Cockpit(tk.Tk):
         for n, b in self.nav_buttons.items():
             b.set_active(n == zone)
         self._update_crumbs()
+        self.update_comm_badge()
         self.btn_help.set_active(False)
         if name == "cargo":
             scr.text.focus_set()
+        elif name == comm_hook.KEY and hasattr(scr, "focus_input"):
+            scr.focus_input()
         else:
             self.focus_set()
 
+    def update_comm_badge(self) -> None:
+        """Эфир: если есть непрочитанные сообщения, кнопка раздела подсвечена янтарным."""
+        b = self.nav_buttons.get(comm_hook.KEY)
+        if b is None:
+            return
+        try:
+            n = 0 if self.current == comm_hook.KEY else comm.unread((self.pilot or {}).get("id", ""))
+        except Exception:  # noqa: BLE001
+            n = 0
+        b.set_color(AMBER if n else CYAN)
+
     def show_zone(self, zone: str) -> None:
-        """Кнопка зоны в шапке / Ctrl+1…6. Мостик из другой зоны — туда, где были в нём последний раз."""
+        """Кнопка зоны в шапке / Ctrl+1…7. Мостик из другой зоны — туда, где были в нём последний раз."""
         if zone == "bridge":
             in_bridge = nav.zone_of(self.current) == "bridge"
             self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))
@@ -416,7 +460,7 @@ class Cockpit(tk.Tk):
             self.subnav.pack_forget()
 
     def toggle_fullscreen(self, on: bool | None = None) -> None:
-        """ЭКРАН: полный экран для любого раздела (F11; выход — Esc, F11 или «✕ ЭКРАН»)."""
+        """ЭКРАН: полный экран для любого раздела (PgDn; выход — Esc/Del или «✕ ЭКРАН»)."""
         on = (not self._fullscreen) if on is None else on
         try:
             self.attributes("-fullscreen", on)
@@ -725,10 +769,41 @@ class Cockpit(tk.Tk):
         else:
             self.show("missions")
 
-    def _on_key(self, e: tk.Event) -> None:
-        if e.keysym == "Escape" and self._fullscreen:
-            self.toggle_fullscreen(False)     # Esc выходит из ЭКРАНА (и дальше работает как обычно)
-        elif e.keysym == "Escape" and self.current == "bridge_settings":
+    def _call_orion(self) -> None:
+        """Порт веб-Ориона на десктопе ещё в планах — подсказка пилоту."""
+        self.set_status(tr_("Орион: голосовой вызов пока на веб-версии (Home)"), AMBER)
+
+    def _chrome_hotkey(self, e: tk.Event) -> bool:
+        """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
+        if e.state & 0x4 or e.state & 0x8 or e.state & 0x1:  # Ctrl / Alt / Shift
+            return False
+        ks = e.keysym
+        # Не перебиваем локальную навигацию по карточкам в английской зоне:
+        # там PgUp/PgDn листают страницы, как и раньше.
+        if self.current == "english" and ks in ("Prior", "Next"):
+            return False
+        if ks == "Home":
+            self._call_orion()
+            return True
+        if ks == "Prior":
+            try:
+                self.idle.open()
+            except Exception:  # noqa: BLE001
+                pass
+            return True
+        if ks == "Next":
+            self.toggle_fullscreen()
+            return True
+        return False
+
+    def _on_key(self, e: tk.Event) -> str | None:
+        if e.keysym in ("Escape", "Delete") and self._fullscreen:
+            self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
+            # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
+            if self.current == "bridge" and self.screens["bridge"].state == "pause":
+                self.screens["bridge"].resume()
+            return
+        if e.keysym == "Escape" and self.current == "bridge_settings":
             from stamina.hud import HudButton
             if not isinstance(self.focus_get(), HudButton):
                 self.show("bridge")               # Esc — назад на мостик
@@ -737,6 +812,8 @@ class Cockpit(tk.Tk):
         if (e.state & 0x4) and (e.state & 0x1) and (e.keycode == 80 or e.keysym in ("P", "p")):
             self.switch_pilot()
             return
+        if self._chrome_hotkey(e):
+            return "break"      # не даём тому же хоткею сработать ещё раз через bind_all
         if self.current == "bridge":
             from stamina.hud import HudButton
             if isinstance(self.focus_get(), HudButton):
@@ -750,6 +827,8 @@ class Cockpit(tk.Tk):
             self.screens[lounge_hook.KEY].on_key(e)
         elif self.current == radio_hook.KEY:
             self.screens[radio_hook.KEY].on_key(e)
+        elif self.current == comm_hook.KEY:
+            self.screens[comm_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
 
