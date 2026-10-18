@@ -151,3 +151,4 @@
 | [IT_INTERVIEW.md](IT_INTERVIEW.md) | Набор S-DEV для IT-собеседований |
 | [WAREHOUSE_CARDS.md](WAREHOUSE_CARDS.md) | Склад карточек |
 | [ENGLISH_TAB.md](ENGLISH_TAB.md) | Устройство вкладки «Английский» |
+| [COMM_ETHER.md](COMM_ETHER.md) | Раздел «ЭФИР»: канал связи экипажа и путь к онлайн-чату |

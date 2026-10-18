@@ -564,11 +564,12 @@ pytest
 | 1 | **`docs/PROJECT_CONTEXT.md`** (этот) | текущие решения, границы, план, процесс |
 | 2 | `docs/DEVELOPMENT_PLAN.md` | разбор идей и развилок (аналитика) |
 | 3 | `docs/PRODUCT_IDEAS.md` | замысел продукта I-001…I-010 |
-| 4 | `docs/web/SESSION_YYYY-MM-DD.md` | что сделано по дням |
-| 5 | `docs/web/JOURNAL.md` | хронология |
-| 6 | `docs/web/STATUS.md` | что уже в веб-проде |
-| 7 | `docs/web/WEB_NEXT.md` | очередь веб-задач |
-| 8 | `README.md`, `CHANGELOG.md` | пользовательское лицо |
+| 4 | `docs/COMM_ETHER.md` | «ЭФИР»: что сделано, устройство, путь к онлайн-чату |
+| 5 | `docs/web/SESSION_YYYY-MM-DD.md` | что сделано по дням |
+| 6 | `docs/web/JOURNAL.md` | хронология |
+| 7 | `docs/web/STATUS.md` | что уже в веб-проде |
+| 8 | `docs/web/WEB_NEXT.md` | очередь веб-задач |
+| 9 | `README.md`, `CHANGELOG.md` | пользовательское лицо |
 
 **Правило:** старые сессии не переписываем, только дописываем. Противоречия фиксируем в этом файле.
 
