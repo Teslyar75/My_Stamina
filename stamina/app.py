@@ -141,7 +141,12 @@ def run_app(argv: list[str] | None = None) -> None:
         pilots.activate(pid)
     try:
         from stamina.cockpit import Cockpit
-        Cockpit().mainloop()
+        cockpit = Cockpit()
+        # Показать диалог выбора агента после входа пилота
+        from stamina.pilot_screens import AgentChoiceDialog
+        dialog = AgentChoiceDialog(cockpit, on_done=None)
+        dialog.run()
+        cockpit.mainloop()
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback
         from stamina import pilots

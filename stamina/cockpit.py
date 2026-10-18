@@ -790,6 +790,13 @@ class Cockpit(tk.Tk):
         if scr is not None and hasattr(scr, "listen"):
             scr.listen()
 
+    def show_orion_agents(self) -> None:
+        """Открыть зону Ориона с вкладкой «АГЕНТЫ» (для заселения с экрана входа)."""
+        self.show(orion_hook.KEY)
+        scr = self.screens.get(orion_hook.KEY)
+        if scr is not None and hasattr(scr, "show_tab"):
+            scr.show_tab("agents")
+
     def _chrome_hotkey(self, e: tk.Event) -> bool:
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
         if e.state & 0x4 or e.state & 0x8 or e.state & 0x1:  # Ctrl / Alt / Shift

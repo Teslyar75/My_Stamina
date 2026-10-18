@@ -89,6 +89,52 @@ class Modal(tk.Toplevel):
         self.destroy()
 
 
+# ===================================================================== заселение агента
+class AgentChoiceDialog(Modal):
+    """Выбор агента после входа пилота. Сохраняет активного агента."""
+
+    def __init__(self, master, *, on_done) -> None:
+        super().__init__(master, tr_("ВЫБОР АГЕНТА"), GREEN)
+        self.on_done = on_done
+        from stamina import orion
+        reg = orion.registry()
+        self.agents = reg["agents"]
+        self.active_id = reg["active"]
+        self.choice = self.active_id
+        self.var = tk.StringVar(value=self.choice)
+        L(self.body, tr_("Выберите агента для работы на борте. Можно изменить позже."),
+          fg=MUTED, size=9).pack(anchor="w", pady=(px(4), px(8)))
+        for a in self.agents:
+            rid = a["id"]
+            name = a.get("name") or rid
+            access = a.get("access", "crew")
+            color = GREEN if rid == self.active_id else CYAN
+            row = tk.Frame(self.body, bg=PANEL)
+            row.pack(fill=tk.X, pady=px(2))
+            tk.Radiobutton(row, variable=self.var, value=rid, bg=PANEL, fg=color,
+                           selectcolor=BG2, activebackground=PANEL, activeforeground=color,
+                           font=theme.font(10, True)).pack(side=tk.LEFT)
+            L(row, name, fg=color, size=10, bold=(rid == self.active_id), bg=PANEL).pack(side=tk.LEFT, padx=px(8))
+            L(row, access, fg=MUTED, size=8, bg=PANEL).pack(side=tk.RIGHT)
+        # Кнопки
+        btns = tk.Frame(self.body, bg=PANEL)
+        btns.pack(fill=tk.X, pady=(px(12), 0))
+        HudButton(btns, tr_("СОХРАНИТЬ"), self.save, color=GREEN, height=36,
+                  font_size=10).pack(side=tk.LEFT)
+        HudButton(btns, tr_("ОТМЕНА"), self.cancel, height=36, font_size=9).pack(side=tk.LEFT, padx=px(6))
+        self.result = None
+
+    def save(self) -> None:
+        choice = self.var.get()
+        if choice and choice != self.active_id:
+            from stamina import orion
+            orion.set_active(choice)
+        self.result = choice
+        self.destroy()
+        if self.on_done:
+            self.on_done(choice)
+
+
 # ===================================================================== код доступа
 class PinPad(tk.Frame):
     """Ячейки-точки + цифровая клавиатура."""
@@ -640,9 +686,9 @@ class AddCard(tk.Canvas):
 class LoginScreen(tk.Frame):
     """«ВХОД В КАБИНУ». on_enter(pid) вызывается после проверки кода."""
 
-    def __init__(self, master, *, on_enter, on_exit, on_board, active: str | None = None, app_version="") -> None:
+    def __init__(self, master, *, on_enter, on_exit, on_board=None, active: str | None = None, app_version="") -> None:
         super().__init__(master, bg=BG)
-        self.on_enter, self.on_exit, self.on_board = on_enter, on_exit, on_board
+        self.on_enter, self.on_exit, self.on_board = on_enter, on_exit, on_board or (lambda: None)
         self.active = active
         self.app_version = app_version
         reg = pilots.load_registry() or {}
@@ -697,7 +743,8 @@ class LoginScreen(tk.Frame):
         self.enter_box.pack(side=tk.LEFT)
         self.btn_enter = None
         for t, f, c in ((tr_("✎ ЛИЧНОЕ ДЕЛО  F2"), self.edit, CYAN), (tr_("⇪ ЭКСПОРТ"), self.export, CYAN),
-                        (tr_("✕ СПИСАТЬ  DEL"), self.delete, RED)):
+                        (tr_("✕ СПИСАТЬ  DEL"), self.delete, RED),
+                        (tr_("🤖 ЗАСЕЛИТЬ АГЕНТА"), self.board_agent, GREEN)):
             HudButton(bottom, t, f, color=c, height=40, font_size=9).pack(side=tk.LEFT, padx=px(3))
         self.ask = tk.BooleanVar(value=bool(reg.get("ask_on_start", True)))
         tk.Checkbutton(bottom, text=tr_("СПРАШИВАТЬ ПРИ ЗАПУСКЕ"), variable=self.ask, command=self._ask_changed,
@@ -831,6 +878,10 @@ class LoginScreen(tk.Frame):
         if pid:
             self.sel = pid
             self.refresh()
+
+    def board_agent(self) -> None:
+        """Перейти к заселению агента (зона ОРИОН → АГЕНТЫ)."""
+        self.on_board()
 
     def delete(self) -> None:
         p = pilots.get(self.sel) if self.sel else None
@@ -1149,7 +1200,7 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
         _swap(board)
 
     def show_login():
-        login = LoginScreen(holder, on_enter=done, on_exit=lambda: done(None), on_board=show_board,
+        login = LoginScreen(holder, on_enter=done, on_exit=lambda: done(None), on_board=done,
                             app_version=app_version)
         login.grid(row=0, column=0, sticky="nsew")
         _swap(login)
