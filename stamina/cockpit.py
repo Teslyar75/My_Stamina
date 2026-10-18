@@ -11,8 +11,8 @@ from tkinter import messagebox
 
 from pathlib import Path
 
-from stamina import (APP_NAME, __version__, avatars, english_hook, lounge_hook, missions, nav,
-                     pilots, radio_hook, speedread_hook, theme)
+from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
+                     missions, nav, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HScrollStrip, HudButton
@@ -61,7 +61,11 @@ class Cockpit(tk.Tk):
         if self._radio_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(radio_hook.KEY, radio_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
-        # шесть зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        self._comm_cls = comm_hook.load_class()  # вкладка «ЭФИР» — лента сообщений экипажа
+        if self._comm_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(comm_hook.KEY, comm_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        # семь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
@@ -261,10 +265,18 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != radio_hook.KEY]
                 self.nav_buttons.pop(radio_hook.KEY).destroy()
+        if self._comm_cls is not None:
+            com = comm_hook.create(self._comm_cls, self.content, self)
+            if com is not None:
+                self.screens[comm_hook.KEY] = com
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != comm_hook.KEY]
+                self.nav_buttons.pop(comm_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
         self._update_sound_button()
+        self.update_comm_badge()
 
     def _set_icon(self) -> None:
         """Иконка окна и панели задач: звезда в шестиграннике (stamina/assets)."""
@@ -360,14 +372,28 @@ class Cockpit(tk.Tk):
         for n, b in self.nav_buttons.items():
             b.set_active(n == zone)
         self._update_crumbs()
+        self.update_comm_badge()
         self.btn_help.set_active(False)
         if name == "cargo":
             scr.text.focus_set()
+        elif name == comm_hook.KEY and hasattr(scr, "focus_input"):
+            scr.focus_input()
         else:
             self.focus_set()
 
+    def update_comm_badge(self) -> None:
+        """Эфир: если есть непрочитанные сообщения, кнопка раздела подсвечена янтарным."""
+        b = self.nav_buttons.get(comm_hook.KEY)
+        if b is None:
+            return
+        try:
+            n = 0 if self.current == comm_hook.KEY else comm.unread((self.pilot or {}).get("id", ""))
+        except Exception:  # noqa: BLE001
+            n = 0
+        b.set_color(AMBER if n else CYAN)
+
     def show_zone(self, zone: str) -> None:
-        """Кнопка зоны в шапке / Ctrl+1…6. Мостик из другой зоны — туда, где были в нём последний раз."""
+        """Кнопка зоны в шапке / Ctrl+1…7. Мостик из другой зоны — туда, где были в нём последний раз."""
         if zone == "bridge":
             in_bridge = nav.zone_of(self.current) == "bridge"
             self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))
@@ -801,6 +827,8 @@ class Cockpit(tk.Tk):
             self.screens[lounge_hook.KEY].on_key(e)
         elif self.current == radio_hook.KEY:
             self.screens[radio_hook.KEY].on_key(e)
+        elif self.current == comm_hook.KEY:
+            self.screens[comm_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
 

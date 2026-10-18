@@ -1,6 +1,6 @@
 """Навигация по зонам (порт web shell/zones.ts + routes.ts).
 
-Шесть зон в шапке: МОСТИК, АНГЛИЙСКИЙ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, НАСТРОЙКИ.
+Семь зон в шапке: МОСТИК, АНГЛИЙСКИЙ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, ЭФИР, НАСТРОЙКИ.
 Миссии, Свой текст, Бортжурнал и Настройки мостика — подменю Мостика.
 Под шапкой — строка пути «МОСТИК › БОРТЖУРНАЛ» с кликабельными частями.
 Модуль без Tk — его проверяют тесты.
@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from stamina.i18n import t
 
-ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "settings")
+ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "settings")
 
 # подменю Мостика: (экран, подпись)
 BRIDGE_LEAVES = (
@@ -27,6 +27,7 @@ ZONE_TITLES = {
     "speedread": "СКОРОЧТЕНИЕ",
     "lounge": "ОТДЫХ",
     "radio": "РАДИОРУБКА",
+    "comm": "ЭФИР",
     "settings": "НАСТРОЙКИ",
 }
 

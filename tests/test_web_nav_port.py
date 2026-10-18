@@ -6,10 +6,15 @@ from stamina.storage import DEFAULT_SETTINGS
 
 
 class NavTest(unittest.TestCase):
-    def test_six_zones_in_order(self):
-        self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "settings"])
+    def test_seven_zones_in_order(self):
+        self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
+                                       "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
         self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
+        # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
+        self.assertEqual(nav.zones({"comm"}), ["bridge", "comm", "settings"])
+        self.assertEqual(nav.zone_of("comm"), "comm")
+        self.assertEqual(nav.path("comm"), [("ЭФИР", "comm")])
 
     def test_bridge_submenu_belongs_to_bridge(self):
         for leaf, _title in nav.BRIDGE_LEAVES:
@@ -155,7 +160,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 6)
+        self.assertEqual(len(a.SCREENS), 7)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")
@@ -224,7 +229,7 @@ class PageHelpCoverageTest(CockpitKeyboardTest):
         dlg = ph.PageHelpDialog(a)
         a.update()
         self.assertEqual(dlg.key, "bridge_settings.sight")
-        self.assertIn("Ctrl+1…6", dlg.text.get("1.0", "end"))
+        self.assertIn("Ctrl+1…7", dlg.text.get("1.0", "end"))
         dlg.next_topic(1)
         self.assertNotEqual(dlg.key, "bridge_settings.sight")
         dlg.destroy()
