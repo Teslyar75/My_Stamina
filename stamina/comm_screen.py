@@ -16,6 +16,7 @@ from stamina import comm, pilots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, LINE, MUTED, PANEL, TEXT, px
+from stamina.voice.mic import MicControl
 
 # позывной красим цветом «акцента» пилота из реестра экипажа (сами цвета берём у скина)
 ACCENTS = ("cyan", "amber", "green", "red", "purple")
@@ -56,6 +57,14 @@ class CommScreen(tk.Frame):
         self.entry.bind("<KP_Enter>", self._on_return)
         self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
         self.send_btn.pack(side=tk.LEFT)
+        # голос пилота прямо в эфир: сказал — проверил текст — Enter
+        self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
+                              label=_t("ГОЛОС"), height=36, font_size=10)
+        self.mic.button.pack(side=tk.LEFT, padx=(px(8), 0))
+        self.mic_hint = _label(self, "", fg=MUTED, size=9, bg=BG, anchor="w", justify="left",
+                               wraplength=px(900))
+        self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X, padx=px(14))
+        self.after(160, self._tick_mic)
 
         panel = HudPanel(self, title=_t("ОБЩИЙ КАНАЛ"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(4))
@@ -151,6 +160,25 @@ class CommScreen(tk.Frame):
             self.entry.delete(0, tk.END)
             self.refresh()
             self.app.after(30, self._refresh_chrome)
+
+    def _insert_text(self, text: str) -> None:
+        """Распознанная речь — в поле ввода (пилот проверит и нажмёт Enter)."""
+        if not text:
+            return
+        tail = self.entry.get()
+        self.entry.insert(tk.END, (" " if tail and not tail.endswith(" ") else "") + text)
+        self.entry.focus_set()
+
+    def _mic_status(self, text: str, color=MUTED) -> None:
+        self.mic_hint.configure(text=text, fg=color)
+
+    def _tick_mic(self) -> None:
+        """Микрофон пишет в отдельном потоке — забираем события в интерфейс."""
+        try:
+            self.mic.poll()
+        except Exception:  # noqa: BLE001
+            pass
+        self.after(160, self._tick_mic)
 
     def _refresh_chrome(self) -> None:
         """Обновить счётчик непрочитанного на кнопке раздела."""

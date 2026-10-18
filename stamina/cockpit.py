@@ -12,7 +12,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, pilots, radio_hook, speedread_hook, theme)
+                     missions, nav, orion_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HScrollStrip, HudButton
@@ -65,7 +65,11 @@ class Cockpit(tk.Tk):
         if self._comm_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(comm_hook.KEY, comm_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
-        # семь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        self._orion_cls = orion_hook.load_class()  # вкладка «ОРИОН» — бортовой разум
+        if self._orion_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(orion_hook.KEY, orion_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
@@ -167,7 +171,7 @@ class Cockpit(tk.Tk):
         self.btn_slides = HudButton(right, tr_("СЛАЙДЫ"), lambda: self.idle.open(), height=36, font_size=9,
                                     width=90, color=CYAN)
         self.btn_slides.pack(side=tk.RIGHT, padx=px(4))
-        # Орион на десктопе — в планах; кнопка-заглушка, хоткей Home (как на вебе)
+        # Орион на десктопе: кнопка открывает зону «ОРИОН» и включает микрофон, хоткей Home
         self.btn_orion = HudButton(right, tr_("ОРИОН"), self._call_orion, height=36, font_size=9,
                                    width=90, color=GREEN)
         self.btn_orion.pack(side=tk.RIGHT, padx=px(4))
@@ -272,6 +276,13 @@ class Cockpit(tk.Tk):
             else:
                 self.SCREENS = [s for s in self.SCREENS if s[0] != comm_hook.KEY]
                 self.nav_buttons.pop(comm_hook.KEY).destroy()
+        if self._orion_cls is not None:
+            ori = orion_hook.create(self._orion_cls, self.content, self)
+            if ori is not None:
+                self.screens[orion_hook.KEY] = ori
+            else:
+                self.SCREENS = [s for s in self.SCREENS if s[0] != orion_hook.KEY]
+                self.nav_buttons.pop(orion_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         self.update_rank()
@@ -351,7 +362,6 @@ class Cockpit(tk.Tk):
             except Exception:  # noqa: BLE001
                 pass
         if name == "honor" and self.current != "honor":
-            self._prev_screen = self.current
             try:
                 from stamina.pilot_stats import summary
                 self.store.save_stats()
@@ -359,6 +369,8 @@ class Cockpit(tk.Tk):
                     pilots.update_pilot(self.pilot["id"], summary=summary(self.pilot["id"]))
             except Exception:  # noqa: BLE001
                 pass
+        # куда вернуться (Бортжурнал) и откуда пилот позвал Ориона — прежний раздел
+        self._prev_screen = self.current
         self.current = name
         scr = self.screens[name]
         if hasattr(scr, "refresh"):
@@ -378,6 +390,8 @@ class Cockpit(tk.Tk):
             scr.text.focus_set()
         elif name == comm_hook.KEY and hasattr(scr, "focus_input"):
             scr.focus_input()
+        elif name == orion_hook.KEY and hasattr(scr, "focus_input"):
+            scr.focus_input()
         else:
             self.focus_set()
 
@@ -393,7 +407,7 @@ class Cockpit(tk.Tk):
         b.set_color(AMBER if n else CYAN)
 
     def show_zone(self, zone: str) -> None:
-        """Кнопка зоны в шапке / Ctrl+1…7. Мостик из другой зоны — туда, где были в нём последний раз."""
+        """Кнопка зоны в шапке / Ctrl+1…8. Мостик из другой зоны — туда, где были в нём последний раз."""
         if zone == "bridge":
             in_bridge = nav.zone_of(self.current) == "bridge"
             self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))
@@ -770,8 +784,11 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _call_orion(self) -> None:
-        """Порт веб-Ориона на десктопе ещё в планах — подсказка пилоту."""
-        self.set_status(tr_("Орион: голосовой вызов пока на веб-версии (Home)"), AMBER)
+        """Орион на связи: открыть зону и сразу слушать пилота (голос → текст)."""
+        self.show(orion_hook.KEY)
+        scr = self.screens.get(orion_hook.KEY)
+        if scr is not None and hasattr(scr, "listen"):
+            scr.listen()
 
     def _chrome_hotkey(self, e: tk.Event) -> bool:
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
@@ -829,6 +846,8 @@ class Cockpit(tk.Tk):
             self.screens[radio_hook.KEY].on_key(e)
         elif self.current == comm_hook.KEY:
             self.screens[comm_hook.KEY].on_key(e)
+        elif self.current == orion_hook.KEY:
+            self.screens[orion_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
 

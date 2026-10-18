@@ -6,15 +6,20 @@ from stamina.storage import DEFAULT_SETTINGS
 
 
 class NavTest(unittest.TestCase):
-    def test_seven_zones_in_order(self):
+    def test_eight_zones_in_order(self):
         self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
-                                       "settings"])
+                                       "orion", "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
         self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
         # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
         self.assertEqual(nav.zones({"comm"}), ["bridge", "comm", "settings"])
         self.assertEqual(nav.zone_of("comm"), "comm")
         self.assertEqual(nav.path("comm"), [("ЭФИР", "comm")])
+        # «ОРИОН» — бортовой разум и заселение агентов (порт веб-Ориона на десктоп)
+        self.assertEqual(nav.zones({"orion"}), ["bridge", "orion", "settings"])
+        self.assertEqual(nav.zone_of("orion"), "orion")
+        self.assertEqual(nav.path("orion"), [("ОРИОН", "orion")])
+        self.assertLess(nav.ZONE_ORDER.index("orion"), nav.ZONE_ORDER.index("settings"))
 
     def test_bridge_submenu_belongs_to_bridge(self):
         for leaf, _title in nav.BRIDGE_LEAVES:
@@ -160,7 +165,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 7)
+        self.assertEqual(len(a.SCREENS), 8)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")
@@ -229,7 +234,7 @@ class PageHelpCoverageTest(CockpitKeyboardTest):
         dlg = ph.PageHelpDialog(a)
         a.update()
         self.assertEqual(dlg.key, "bridge_settings.sight")
-        self.assertIn("Ctrl+1…7", dlg.text.get("1.0", "end"))
+        self.assertIn("Ctrl+1…8", dlg.text.get("1.0", "end"))
         dlg.next_topic(1)
         self.assertNotEqual(dlg.key, "bridge_settings.sight")
         dlg.destroy()
@@ -260,9 +265,15 @@ class ChromeHotkeyTest(CockpitKeyboardTest):
         return e
 
     def test_home_calls_orion(self):
+        """Home (и кнопка ОРИОН) открывают раздел ОРИОН и включают микрофон."""
         a = self.app
+        if "orion" not in a.screens:
+            self.skipTest("раздел ОРИОН не загрузился")
+        started = []
+        a.screens["orion"].listen = lambda: started.append(True)
         self.assertTrue(a._chrome_hotkey(self._ev("Home")))
-        self.assertIn("Орион", a.status.cget("text"))
+        self.assertEqual(a.current, "orion")
+        self.assertEqual(started, [True])
 
     def test_pgup_opens_slides(self):
         a = self.app
