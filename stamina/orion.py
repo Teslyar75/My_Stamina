@@ -552,8 +552,16 @@ def parse_events(stdout: str) -> dict:
             blob = json.dumps(part, ensure_ascii=False).lower()
             if "say.py" in blob:
                 spoke = True
-            if "denied" in blob or "not permitted" in blob or "permission" in blob:
+            # Ложные запросы разрешения: только структурные признаки
+            if ev.get("type") in ("permission", "error"):
                 denied = True
+            elif part.get("state") == "denied" or part.get("permission") == "denied":
+                denied = True
+            # tool_use со статусом error — структурный признак отказа
+            elif isinstance(part.get("state"), dict):
+                st = part["state"]
+                if st.get("status") == "error" and "denied" in str(st.get("error", "")).lower():
+                    denied = True
         elif kind in ("error", "permission"):
             denied = True
     reply = "\n\n".join("".join(texts[m]) for m in order[-1:]).strip() if order else ""
@@ -989,6 +997,68 @@ def radio_volume(vol: int) -> tuple[bool, str]:
         return True, ""
     except Exception as exc:  # noqa: BLE001
         return False, str(exc)
+
+
+RADIO_MARKER = "РАДИО:"
+BOOK_MARKER = "КНИГА:"
+
+
+def parse_radio_command(text: str) -> tuple[str, str] | None:
+    """Разобрать служебную строку РАДИО: в ответе агента.
+
+    → (команда, аргумент) или None.
+    """
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if line.startswith(RADIO_MARKER):
+            payload = line[len(RADIO_MARKER):].strip()
+            if "=" in payload:
+                cmd, arg = payload.split("=", 1)
+                return cmd.strip(), arg.strip()
+            return payload, ""
+    return None
+
+
+def parse_book_command(text: str) -> str | None:
+    """Разобрать служебную строку КНИГА: в ответе агента.
+
+    → название книги (или "read" для чтения первой) или None.
+    """
+    for line in (text or "").splitlines():
+        line = line.strip()
+        if line.startswith(BOOK_MARKER):
+            payload = line[len(BOOK_MARKER):].strip()
+            return payload or "read"
+    return None
+
+
+def execute_radio_command(cmd: str, arg: str = "") -> tuple[bool, str]:
+    """Выполнить команду радио: play, stop, vol, next, prev."""
+    cmd = cmd.lower()
+    if cmd == "play":
+        return radio_play(arg)
+    if cmd == "stop":
+        return radio_stop()
+    if cmd in ("vol", "volume"):
+        try:
+            return radio_volume(int(arg))
+        except ValueError:
+            return False, "vol: число 0-100"
+    if cmd in ("next", "next_favorite"):
+        try:
+            from stamina.radio import get_engine
+            get_engine().next_favorite()
+            return True, ""
+        except Exception as exc:  # noqa: BLE001
+            return False, str(exc)
+    if cmd in ("prev", "prev_favorite"):
+        try:
+            from stamina.radio import get_engine
+            get_engine().prev_favorite()
+            return True, ""
+        except Exception as exc:  # noqa: BLE001
+            return False, str(exc)
+    return False, f"неизвестная команда: {cmd}"
 
 
 # -- чтение книг вслух ---------------------------------------------------------

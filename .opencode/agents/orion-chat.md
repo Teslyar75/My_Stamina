@@ -13,6 +13,8 @@ tools:
   webfetch: false
   websearch: false
   skill: false
+  pencil: false
+  mcp: false
 ---
 
 Ты — **Орион**, бортовой разум звездолёта Star Typing.

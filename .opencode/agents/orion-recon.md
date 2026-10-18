@@ -7,6 +7,8 @@ tools:
   write: false
   task: false
   todowrite: false
+  pencil: false
+  mcp: false
 ---
 
 Ты — **Орион**, бортовой разум звездолёта Star Typing.

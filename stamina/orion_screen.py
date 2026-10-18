@@ -19,6 +19,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import queue
+import re
 import threading
 import time
 import tkinter as tk
@@ -251,6 +252,14 @@ class OrionScreen(tk.Frame):
             w.bind("<MouseWheel>", self._wheel)
             w.bind("<Button-4>", lambda _e: self.text.yview_scroll(-3, "units"))
             w.bind("<Button-5>", lambda _e: self.text.yview_scroll(3, "units"))
+        # Копирование текста из чата — правый клик или Ctrl+C
+        self.text.bind("<Button-3>", self._copy_text)
+        self.text.bind("<Control-c>", self._copy_text)
+        # Разрешаем выделение текста
+        self.text.configure(state=tk.NORMAL)
+        self.text.bind("<Button-1>", self._select_text)
+        self.text.bind("<B1-Motion>", self._select_text)
+        self.text.configure(state=tk.DISABLED)
 
         # Живая линия — вместо доски: последняя реплика пилота и ответ Ориона
         self.strip = HudPanel(page, title=_t("ЖИВАЯ ЛИНИЯ"), accent=GREEN)
@@ -313,6 +322,22 @@ class OrionScreen(tk.Frame):
 
     def _wheel(self, e) -> str:
         self.text.yview_scroll(int(-e.delta / 120) * 3, "units")
+        return "break"
+
+    def _select_text(self, e) -> str:
+        """Разрешить выделение текста в чате."""
+        return None
+
+    def _copy_text(self, _e) -> str:
+        """Копировать выделенный текст из чата в буфер обмена."""
+        try:
+            selected = self.text.get(tk.SEL_FIRST, tk.SEL_LAST)
+            if selected:
+                self.clipboard_clear()
+                self.clipboard_append(selected)
+                self._hint(_t("Текст скопирован"), GREEN)
+        except tk.TclError:
+            pass
         return "break"
 
     def _apply_tags(self) -> None:
@@ -754,6 +779,9 @@ class OrionScreen(tk.Frame):
             self._hide_permission()
         self._hint(_t("Орион думает…"), AMBER)
         ctx = self._context()
+        # При втором проходе — передаём разрешение в промпт
+        if second:
+            text = _t("РАЗРЕШЕНИЕ: Командир разрешил изменения. Выполни работу целиком.") + "\n\n" + text
         session = orion.last_session(rec["id"])
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
@@ -852,6 +880,33 @@ class OrionScreen(tk.Frame):
             return
         orion.remember(rec["id"], "orion", res.reply, session=res.session)
         self._render_feed()
+        # Разбор служебных команд радио и книг
+        radio_cmd = orion.parse_radio_command(res.reply)
+        if radio_cmd:
+            cmd, arg = radio_cmd
+            ok, err = orion.execute_radio_command(cmd, arg)
+            if ok:
+                self._hint(_t("Радио: {0} выполнено").format(cmd), GREEN)
+            else:
+                self._hint(_t("Радио: ошибка — {0}").format(err), RED)
+        book_cmd = orion.parse_book_command(res.reply)
+        if book_cmd:
+            if book_cmd.lower() == "read":
+                self._read_book()
+            else:
+                books = orion.library_books()
+                found = next((b for b in books if book_cmd.lower() in b.get("title", "").lower()), None)
+                if found:
+                    chunks = orion.book_text_for_reading(found["id"])
+                    if chunks:
+                        from stamina.voice import tts
+                        if tts.available():
+                            tts.speak(_t("Читаю: {0}").format(found["title"]))
+                        self._hint(_t("Читаю: {0}").format(found["title"]), GREEN)
+                    else:
+                        self._hint(_t("Книга пуста"), MUTED)
+                else:
+                    self._hint(_t("Книга не найдена: {0}").format(book_cmd), RED)
         if res.needs_permission and not second:
             self._show_permission(res.request or _t("Нужно ваше разрешение на изменения"))
             self._hint(_t("Орион просит разрешение: нажмите «ВЫПОЛНИТЬ» — он сделает работу"),
