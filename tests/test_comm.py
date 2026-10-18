@@ -157,6 +157,43 @@ class CommScreenTest(unittest.TestCase):
         self.assertEqual(self.scr.page_help_key(), "comm")
 
 
+class CommLayoutTest(unittest.TestCase):
+    """Строка ввода видна и на низком окне: лента не должна её вытеснять."""
+
+    def setUp(self):
+        import tkinter as tk
+        from stamina import theme
+        self._tmp = tempfile.mkdtemp()
+        pilots.reset_root(Path(self._tmp))
+        i18n.set_language("ru")
+        try:
+            self.root = tk.Tk()
+        except tk.TclError:
+            pilots.reset_root()
+            self.skipTest("нет дисплея")
+        self.root.geometry("900x360+0+0")     # окно заведомо ниже запроса экрана
+        theme.init(self.root)
+        app = CommScreenTest._App()
+        app.pilot = pilots.create("Комета")
+        from stamina.comm_screen import CommScreen
+        self.scr = CommScreen(self.root, app)
+        self.scr.pack(fill="both", expand=True)
+        self.root.update()
+
+    def tearDown(self):
+        self.root.destroy()
+        i18n.set_language("ru")
+        pilots.reset_root()
+
+    def test_input_row_is_visible(self):
+        e = self.scr.entry
+        self.assertTrue(e.winfo_ismapped(), "поле ввода не показано")
+        self.assertGreater(e.winfo_height(), 5)
+        self.assertTrue(self.scr.send_btn.winfo_ismapped(), "кнопка «ОТПРАВИТЬ» не показана")
+        bottom = e.winfo_rooty() + e.winfo_height()
+        self.assertLessEqual(bottom, self.root.winfo_rooty() + self.root.winfo_height())
+
+
 class CommZoneIntegrationTest(unittest.TestCase):
     """«ЭФИР» в настоящем пульте: раздел загружен, непрочитанное красит кнопку шапки."""
 

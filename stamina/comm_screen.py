@@ -43,13 +43,27 @@ class CommScreen(tk.Frame):
         HudButton(top, _t("ОБНОВИТЬ"), self.refresh, height=32, font_size=10,
                   color=CYAN).pack(side=tk.RIGHT, padx=(0, px(8)))
 
+        # Строку ввода пакуем к низу и ДО ленты: лента расширяемая (expand) и,
+        # если упаковать её первой, на низком окне она съедает место — строка
+        # ввода уезжает за край и «окна для ответа» не видно.
+        row = tk.Frame(self, bg=BG)
+        row.pack(side=tk.BOTTOM, fill=tk.X, padx=px(14), pady=(px(6), px(10)))
+        self.entry = tk.Entry(row, bg=BG2, fg=TEXT, insertbackground=CYAN, relief=tk.FLAT,
+                              font=theme.font(11), highlightthickness=1, highlightbackground=LINE,
+                              highlightcolor=CYAN, selectbackground=CYAN, selectforeground=BG)
+        self.entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
+        self.entry.bind("<Return>", self._on_return)
+        self.entry.bind("<KP_Enter>", self._on_return)
+        self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
+        self.send_btn.pack(side=tk.LEFT)
+
         panel = HudPanel(self, title=_t("ОБЩИЙ КАНАЛ"))
         panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(4))
         sb = make_vscroll(panel.body)
         sb.pack(side=tk.RIGHT, fill=tk.Y)
         self.text = tk.Text(panel.body, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
                             font=theme.font(10), padx=px(8), pady=px(6), cursor="arrow",
-                            state=tk.DISABLED, highlightthickness=0, bd=0,
+                            height=6, state=tk.DISABLED, highlightthickness=0, bd=0,
                             yscrollcommand=sb.set)
         self.text.pack(fill=tk.BOTH, expand=True)
         sb.configure(command=self.text.yview)
@@ -59,17 +73,6 @@ class CommScreen(tk.Frame):
             w.bind("<MouseWheel>", self._wheel)
             w.bind("<Button-4>", lambda _e: self.text.yview_scroll(-3, "units"))
             w.bind("<Button-5>", lambda _e: self.text.yview_scroll(3, "units"))
-
-        row = tk.Frame(self, bg=BG)
-        row.pack(fill=tk.X, padx=px(14), pady=(px(6), px(10)))
-        self.entry = tk.Entry(row, bg=BG2, fg=TEXT, insertbackground=CYAN, relief=tk.FLAT,
-                              font=theme.font(11), highlightthickness=1, highlightbackground=LINE,
-                              highlightcolor=CYAN, selectbackground=CYAN, selectforeground=BG)
-        self.entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
-        self.entry.bind("<Return>", self._on_return)
-        self.entry.bind("<KP_Enter>", self._on_return)
-        self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
-        self.send_btn.pack(side=tk.LEFT)
 
     # -- данные -------------------------------------------------------------
     def _pid(self) -> str:
