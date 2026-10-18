@@ -311,6 +311,9 @@ class OrionScreen(tk.Frame):
         self.entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
         self.entry.bind("<Return>", lambda _e: (self._send(), "break")[1])
         self.entry.bind("<KP_Enter>", lambda _e: (self._send(), "break")[1])
+        self.entry.bind("<Control-v>", self._paste_text)
+        self.entry.bind("<Control-V>", self._paste_text)
+        self.entry.bind("<Button-3>", self._context_menu)
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11)
         self.mic.button.pack(side=tk.LEFT)
@@ -327,6 +330,46 @@ class OrionScreen(tk.Frame):
     def _select_text(self, e) -> str:
         """Разрешить выделение текста в чате."""
         return None
+
+    def _paste_text(self, _e) -> str:
+        """Вставить текст из буфера обмена в строку сообщения."""
+        try:
+            text = self.clipboard_get()
+            if text:
+                self.entry.insert(tk.INSERT, text)
+                self.entry.focus_set()
+        except tk.TclError:
+            pass
+        return "break"
+
+    def _context_menu(self, _e) -> str:
+        """Контекстное меню для строки сообщения: Вставить."""
+        menu = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT,
+                       activebackground=CYAN, activeforeground=BG)
+        menu.add_command(label=_t("Вставить"), command=self._paste_from_menu)
+        menu.add_command(label=_t("Копировать"), command=self._copy_from_menu)
+        try:
+            menu.tk_popup(_e.x_root, _e.y_root)
+        finally:
+            menu.grab_release()
+        return "break"
+
+    def _paste_from_menu(self) -> None:
+        try:
+            text = self.clipboard_get()
+            if text:
+                self.entry.insert(tk.INSERT, text)
+        except tk.TclError:
+            pass
+
+    def _copy_from_menu(self) -> None:
+        try:
+            selected = self.entry.get(tk.SEL_FIRST, tk.SEL_LAST)
+            if selected:
+                self.clipboard_clear()
+                self.clipboard_append(selected)
+        except tk.TclError:
+            pass
 
     def _copy_text(self, _e) -> str:
         """Копировать выделенный текст из чата в буфер обмена."""
