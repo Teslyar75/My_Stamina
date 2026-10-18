@@ -797,7 +797,13 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _call_orion(self) -> None:
-        """Орион на связи: открыть зону и сразу слушать пилота (голос → текст)."""
+        """Кнопка Ориона: если говорит — остановить речь; иначе открыть чат."""
+        from stamina.voice import tts
+        if tts.speaking():
+            tts.stop()
+            self.btn_orion.set_text(tr_("ОРИОН"))
+            self.btn_orion.set_color(GREEN)
+            return
         self.show(orion_hook.KEY)
         scr = self.screens.get(orion_hook.KEY)
         if scr is not None and hasattr(scr, "listen"):
