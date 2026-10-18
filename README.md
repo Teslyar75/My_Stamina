@@ -131,6 +131,8 @@ Star Typing — настольная программа на Python (tkinter) в
 
 Подробно: [docs/FEATURES_2026-10.md](docs/FEATURES_2026-10.md) · Орион: [docs/ORION_VISION.md](docs/ORION_VISION.md) · скриншоты: [docs/showcase_new/](docs/showcase_new/)
 
+**Контекст для разработки и план работ:** [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
+
 ## Читалка · Радиорубка · Отдых
 
 | Читалка «Книга» | Радиорубка | Комната отдыха |
