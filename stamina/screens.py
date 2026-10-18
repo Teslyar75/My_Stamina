@@ -744,7 +744,7 @@ class SettingsScreen(tk.Frame):
                           lambda k=m: self._set_idle("idle_minutes", k), width=56, height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.idle_btns[m] = b
-        HudButton(idl, _t("▶ ПОКАЗАТЬ СЕЙЧАС  F8"), self._idle_now, height=30, font_size=8,
+        HudButton(idl, _t("▶ ПОКАЗАТЬ СЕЙЧАС  PgUp"), self._idle_now, height=30, font_size=8,
                   color=AMBER).pack(side=tk.LEFT, padx=px(6))
         irr = self._row(_t("Радио под скин"),
                         _t("Станция подбирается по жанрам скина, громкость быстро растёт до ~40 %. В слайдшоу: ← → — волна, ↑ ↓ — громкость, M — звук. Если радио уже играет — его не трогаем."))
@@ -814,7 +814,7 @@ class SettingsScreen(tk.Frame):
                                   wraplength=px(720), justify="left", anchor="w")
         self.upd_notes.pack(fill=tk.X, pady=(0, px(6)))
         self._upd_info = None
-        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc — пауза  ·  F9 — звук  ·  Ctrl+1…6 — разделы · F11 — экран  ·  в отчёте: Enter — повторить, → — следующая, R — ремонт"),
+        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc/Del — пауза  ·  F9 — звук  ·  Home — Орион  ·  PgUp — слайды  ·  PgDn — экран  ·  Ctrl+1…6 — разделы"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.show_tab("systems")
         self.refresh()

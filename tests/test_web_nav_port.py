@@ -241,3 +241,53 @@ class BridgeHotkeysTest(CockpitKeyboardTest):
         for i, (leaf, _t) in enumerate(nav.BRIDGE_LEAVES, 1):
             self.assertTrue(a.bind(f"<Control-F{i}>"), leaf)
         self.assertIn("Ctrl+F1", a.subnav_buttons["bridge"]._text if hasattr(a.subnav_buttons["bridge"], "_text") else "Ctrl+F1")
+
+
+class ChromeHotkeyTest(CockpitKeyboardTest):
+    """Home → Орион, PgUp → слайды, PgDn → экран (порт горячих клавиш веб-версии)."""
+
+    @staticmethod
+    def _ev(keysym, state=0):
+        import tkinter as tk
+        e = tk.Event()
+        e.keysym = keysym
+        e.state = state
+        return e
+
+    def test_home_calls_orion(self):
+        a = self.app
+        self.assertTrue(a._chrome_hotkey(self._ev("Home")))
+        self.assertIn("Орион", a.status.cget("text"))
+
+    def test_pgup_opens_slides(self):
+        a = self.app
+        called = []
+        a.idle.open = lambda: called.append(True)
+        self.assertTrue(a._chrome_hotkey(self._ev("Prior")))
+        self.assertEqual(called, [True])
+
+    def test_pgdn_toggles_fullscreen(self):
+        a = self.app
+        before = a._fullscreen
+        self.assertTrue(a._chrome_hotkey(self._ev("Next")))
+        self.assertEqual(a._fullscreen, not before)
+
+    def test_modifiers_are_ignored(self):
+        a = self.app
+        for mod in (0x4, 0x8, 0x1):     # Ctrl / Alt / Shift
+            self.assertFalse(a._chrome_hotkey(self._ev("Home", mod)))
+
+    def test_main_key_consumes_chrome(self):
+        a = self.app
+        a.idle.open = lambda: None
+        self.assertEqual(a._on_key(self._ev("Home")), "break")   # не дублируется через bind_all
+
+    def test_button_focus_routes_chrome(self):
+        from stamina import keynav
+        a = self.app
+        called = []
+        a._call_orion = lambda: called.append(True)
+        e = self._ev("Home")
+        e.widget = a.btn_orion
+        self.assertEqual(keynav._on_button_key(e), "break")
+        self.assertEqual(called, [True])

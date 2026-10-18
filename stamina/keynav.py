@@ -90,9 +90,31 @@ def _on_button_key(e):
         except tk.TclError:
             pass
         return "break"
-    if k == "Escape":
-        b.winfo_toplevel().focus_set()
+    if k in ("Escape", "Delete"):
+        top = b.winfo_toplevel()
+        top.focus_set()
+        # Мостик: Esc/Del с кнопки HUD раньше только снимали фокус («break») —
+        # снятие паузы не срабатывало, пока фокус не на окне. Передаём в toggle.
+        try:
+            if getattr(top, "current", None) == "bridge":
+                bridge = getattr(top, "screens", {}).get("bridge")
+                if bridge is not None and getattr(bridge, "state", None) in (
+                    "run", "ready", "pause",
+                ):
+                    bridge.toggle_pause()
+        except Exception:  # noqa: BLE001
+            pass
         return "break"
+    # Home / PgUp / PgDn с фокуса на кнопке иначе не доходят до cockpit.bind("<Key>")
+    if k in ("Home", "Prior", "Next"):
+        top = b.winfo_toplevel()
+        try:
+            fn = getattr(top, "_chrome_hotkey", None)
+            if callable(fn) and fn(e):
+                return "break"
+        except Exception:  # noqa: BLE001
+            pass
+        return None
     if k in ("Tab", "ISO_Left_Tab"):
         top = b.winfo_toplevel()
         if getattr(top, "_keynav_main", False):

@@ -145,8 +145,8 @@ class Bridge(tk.Frame):
         self.keyboard.set_zones(st["zones"])
         bar = tk.Canvas(center.body, bg=PANEL, highlightthickness=0, bd=0, height=px(28))
         bar.pack(fill=tk.X, pady=(px(4), 0))
-        self.btn_pause = HudButton(bar, t("❚❚ ПАУЗА  Esc"), self.toggle_pause, height=28, font_size=9,
-                                   width=180)
+        self.btn_pause = HudButton(bar, t("❚❚ ПАУЗА  Esc/Del"), self.toggle_pause, height=28, font_size=9,
+                                   width=200)
         self.btn_pause.pack(side=tk.LEFT)
         HudButton(bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
@@ -275,13 +275,13 @@ class Bridge(tk.Frame):
             return
         ks = e.keysym
         eng = self.engine
-        if ks == "Escape":
+        if ks in ("Escape", "Delete"):
             self.toggle_pause()
             return
         if eng is None or eng.finished:
             return
         if self.state == "pause":
-            if ks in ("space", "Return"):
+            if ks in ("space", "Return", "Delete", "Escape"):
                 self.resume()
             return
         if e.state & 0x4:      # Ctrl+что-то — не печать
@@ -370,9 +370,14 @@ class Bridge(tk.Frame):
         self.state = "pause"
         self.viewport.set_state(sub_message=sub)
         self._update_cursor()
-        self.btn_pause.set_text(t("▶ ПРОДОЛЖИТЬ  Esc"))
+        self.btn_pause.set_text(t("▶ ПРОДОЛЖИТЬ  Esc/Del"))
         self.persist(force=True)
         self.refresh_stats()
+        # фокус обратно на кабину — иначе Esc уходит в keynav кнопки и «не снимает паузу»
+        try:
+            self.app.focus_set()
+        except tk.TclError:
+            pass
 
     def resume(self) -> None:
         if self.engine is None or self.state != "pause":
@@ -380,7 +385,7 @@ class Bridge(tk.Frame):
         self.engine.resume()
         self.state = getattr(self, "_prev_state", "run")
         self.viewport.set_state(sub_message="")
-        self.btn_pause.set_text(t("❚❚ ПАУЗА  Esc"))
+        self.btn_pause.set_text(t("❚❚ ПАУЗА  Esc/Del"))
         self._update_cursor()
         self.app.focus_set()
 
