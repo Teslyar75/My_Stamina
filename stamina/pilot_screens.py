@@ -15,7 +15,7 @@ from tkinter import filedialog, messagebox
 from stamina import avatars, pilot_pin, pilots, theme
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_stats import pilot_stats
-from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, LINE, LINE_HI, MUTED, PANEL,
+from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
                            RED, TEXT, blend, chamfer, px)
 
 SILVER, BRONZE = "#C9D6E3", "#D08A4E"
