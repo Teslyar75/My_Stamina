@@ -206,6 +206,8 @@ class CargoScreen(tk.Frame):
          _t("Точки, запятые, кавычки, тире и другие знаки удаляются.")),
         ("spaces", _t("Один пробел между словами"),
          _t("Лишние пробелы, табуляции и переводы строк схлопываются в один пробел.")),
+        ("glue", _t("Не оставлять срощенные слова"),
+         _t("«ивот» → «и вот», «непонял» → «не понял». Чинятся только уверенные находки; остальные покажет проверка.")),
         ("yo", _t("Ё → Е"),
          _t("«Ёлка» → «елка», если привычнее печатать без буквы ё. По умолчанию выкл.")),
         ("translit", _t("Без умлаутов: ä ö ü ß → ae oe ue ss"),
@@ -273,6 +275,8 @@ class CargoScreen(tk.Frame):
             _label(txt, desc, fg=MUTED, size=8, wraplength=px(240), justify="left").pack(anchor="w")
             self.opt_btns[key] = b
         HudButton(sb_body, _t("✦ ПРИМЕНИТЬ К ТЕКСТУ В ПОЛЕ"), self._apply_to_field, color=AMBER,
+                  height=32, font_size=9).pack(fill=tk.X, pady=(0, px(6)))
+        HudButton(sb_body, _t("✦ НАЙТИ СРАЩИВАНИЯ"), self._check_glue, color=CYAN,
                   height=32, font_size=9).pack(fill=tk.X, pady=(0, px(10)))
         tk.Frame(sb_body, bg=LINE, height=1).pack(fill=tk.X)
         _label(sb_body, _t("ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА"), fg=blend(CYAN, TEXT, 0.3), size=9,
@@ -311,6 +315,7 @@ class CargoScreen(tk.Frame):
             opts.setdefault(k, True)
         opts.setdefault("translit", False)
         opts.setdefault("yo", False)
+        opts.setdefault("glue", False)
         return opts
 
     def _toggle_opt(self, key: str) -> None:
@@ -330,7 +335,21 @@ class CargoScreen(tk.Frame):
 
     def _process(self, text: str) -> str:
         o = self._opts()
-        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"], translit=o["translit"], yo=o["yo"])
+        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                            translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
+
+    def _check_glue(self) -> None:
+        """Отчёт о срощенных словах. Текст не меняется — только список находок."""
+        from stamina.text_processing import find_glued_words
+        found = find_glued_words(self._process(self.text.get("1.0", "end")), max_report=40)
+        if not found:
+            self.preview_info.configure(text=_t("Сращиваний не найдено"), fg=GREEN)
+            return
+        sure = sum(1 for g in found if g.confident)
+        lines = [_t("Найдено сращиваний: {0}, уверенных: {1}").format(len(found), sure)]
+        lines += ["• " + g.token + " → " + g.split + ("" if g.confident else _t(" (проверьте)"))
+                  for g in found[:10]]
+        self.preview_info.configure(text="\n".join(lines), fg=AMBER)
 
     def _toggle_readonly(self) -> None:
         self._readonly = not self._readonly

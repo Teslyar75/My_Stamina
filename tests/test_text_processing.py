@@ -4,9 +4,12 @@ import unittest
 
 from stamina.text_processing import (
     adapt_for_typing,
+    find_glued_words,
     is_valid_practice_text,
     normalize_spaces,
+    process_text,
     remove_punctuation,
+    repair_glued_words,
     to_lowercase,
 )
 
@@ -41,6 +44,90 @@ class RemovePunctuationTests(unittest.TestCase):
         # стоял между пробелами, — их потом схлопнет normalize_spaces.
         self.assertEqual(remove_punctuation("a ,b"), "a b")
         self.assertEqual(remove_punctuation("a , b"), "a  b")
+
+    def test_sign_between_words_becomes_space(self):
+        # Главное правило: знак между словами не сращивает их.
+        self.assertEqual(remove_punctuation("слово—слово"), "слово слово")
+        self.assertEqual(remove_punctuation("как/то"), "как то")
+        self.assertEqual(remove_punctuation("текст…дальше"), "текст дальше")
+        self.assertEqual(remove_punctuation("Привет,мир"), "Привет мир")
+
+    def test_hyphen_and_apostrophe_inside_word_stay(self):
+        self.assertEqual(remove_punctuation("что-то и don't"), "что-то и don't")
+        self.assertEqual(remove_punctuation("м'ясо, п'ять"), "м'ясо п'ять")
+        self.assertEqual(remove_punctuation("по-моему"), "по-моему")
+
+    def test_numbers_keep_separators(self):
+        self.assertEqual(remove_punctuation("1.5 и 1,5"), "1.5 и 1,5")
+        self.assertEqual(remove_punctuation("1990-1995"), "1990-1995")
+        self.assertEqual(remove_punctuation("1/2 стакана"), "1/2 стакана")
+
+    def test_no_gluing_in_adapted_text(self):
+        # Ни одно слово не должно слипнуться: пробелов столько же, сколько было разделителей.
+        self.assertEqual(adapt_for_typing("Он сказал: «не могу — некогда»."), "он сказал не могу некогда")
+
+
+class GluedWordsTests(unittest.TestCase):
+    """Сращивания, пришедшие из самого текста: «ивот» → «и вот»."""
+
+    def test_confident_finds(self):
+        found = {g.token: (g.split, g.confident)
+                 for g in find_glued_words("Мыпришли и вот некто ивот")}
+        self.assertEqual(found.get("Мыпришли"), ("мы пришли", True))
+        self.assertEqual(found.get("ивот"), ("и вот", True))
+        self.assertEqual(found.get("вот"), None)
+
+    def test_short_targets_after_one_letter(self):
+        # Однобуквенное слово расщепляем только перед «вот / все / всё».
+        self.assertEqual([g.token for g in find_glued_words("ивот ивсё")], ["ивот", "ивсё"])
+        self.assertEqual(find_glued_words("узнал услышал увидел увижу"), [])
+
+    def test_real_words_are_not_touched(self):
+        for word in ("дорога", "человек", "погода", "подруга", "забыл", "поможет",
+                     "придумал", "задел", "послов", "вконец"):
+            self.assertEqual(find_glued_words(word), [], word)
+
+    def test_word_is_not_touched_without_reason(self):
+        self.assertEqual(find_glued_words("город книга время"), [])
+
+    def test_known_words_are_skipped(self):
+        self.assertEqual(find_glued_words("ивот", known_words=["ивот"]), [])
+
+    def test_confident_only(self):
+        found = find_glued_words("дорогадомой", confident_only=True)
+        self.assertEqual(found, [])
+        lazy = find_glued_words("дорогадомой", confident_only=False)
+        self.assertEqual(len(lazy), 1)
+        self.assertFalse(lazy[0].confident)
+
+    def test_repair_only_confident(self):
+        self.assertEqual(repair_glued_words("мыпришли ивот домой"), "мы пришли и вот домой")
+        self.assertEqual(repair_glued_words("дорогадомой"), "дорогадомой")
+        self.assertEqual(repair_glued_words("придумал всё сам"), "придумал всё сам")
+
+    def test_repair_keeps_offsets_and_text(self):
+        # Обычный текст с пробелами не должен портиться.
+        src = "ивот так и живём"
+        self.assertEqual(repair_glued_words(src), "и вот так и живём")
+
+    def test_english(self):
+        self.assertEqual(repair_glued_words("thebook is here"), "the book is here")
+        for word in ("nothing", "into", "another", "tonight", "sometime"):
+            self.assertEqual(find_glued_words(word), [], word)
+
+
+class ProcessTextGlueTests(unittest.TestCase):
+    def test_glue_off_by_default(self):
+        self.assertEqual(process_text("ивот"), "ивот")
+
+    def test_glue_on_splits(self):
+        self.assertEqual(process_text("ивот", glue=True), "и вот")
+        self.assertEqual(process_text("Мыпришли домой!", glue=True), "мы пришли домой")
+
+    def test_three_basic_options_match_adapt(self):
+        src = "«Привет,   мир!»"
+        self.assertEqual(process_text(src), adapt_for_typing(src))
+        self.assertEqual(process_text(src, glue=True), adapt_for_typing(src))
 
 
 class LowercaseTests(unittest.TestCase):

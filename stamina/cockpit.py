@@ -625,7 +625,9 @@ class Cockpit(tk.Tk):
         opts = dict(self.store.settings.get("cargo_opts") or {})
         lower, punct, spaces = (bool(opts.get(k, True)) for k in ("lower", "punct", "spaces"))
         translit, yo = bool(opts.get("translit", False)), bool(opts.get("yo", False))
-        return lambda t: process_text(t, lower=lower, punct=punct, spaces=spaces, translit=translit, yo=yo)
+        glue = bool(opts.get("glue", False))
+        return lambda t: process_text(t, lower=lower, punct=punct, spaces=spaces, translit=translit,
+                                      yo=yo, glue=glue)
 
     def start_cargo(self, adapted: str, original: str, switch: bool = True) -> None:
         self.store.save_cargo(adapted, original)

@@ -1809,5 +1809,11 @@
  "🔍 СВОБОДНЫЕ КНИГИ": "🔍 FREE BOOKS",
  "🔒 КОД": "🔒 CODE",
  "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
- "🔒 Права Командира — только по коду владельца": "🔒 Commander rights — only with the owner code"
+ "🔒 Права Командира — только по коду владельца": "🔒 Commander rights — only with the owner code",
+ " (проверьте)": " (check)",
+ "«ивот» → «и вот», «непонял» → «не понял». Чинятся только уверенные находки; остальные покажет проверка.": "«ивот» → «и вот», «непонял» → «не понял». Only confident finds are fixed; the check lists the rest.",
+ "Найдено сращиваний: {0}, уверенных: {1}": "Fused words found: {0}, confident: {1}",
+ "Не оставлять срощенные слова": "Don't leave fused words",
+ "Сращиваний не найдено": "No fused words found",
+ "✦ НАЙТИ СРАЩИВАНИЯ": "✦ FIND FUSED WORDS"
 }

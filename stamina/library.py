@@ -25,7 +25,8 @@ from typing import Callable
 from stamina.text_processing import process_text
 from stamina.textmap import TextMap, fragment_of
 
-DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True, "translit": False, "yo": False}
+DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True, "translit": False, "yo": False,
+                "glue": False}
 PROCESSOR = "text_processing v1"
 MAX_CANDIDATE_BYTES = 20 * 1024 * 1024
 ORWELL_HEAD = "part one chapter 1 it was a bright cold day in april"
@@ -128,7 +129,7 @@ def norm_opts(opts: dict | None) -> dict:
 def processor(opts: dict | None) -> Callable[[str], str]:
     o = norm_opts(opts)
     return lambda t: process_text(t, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
-                                  translit=o["translit"], yo=o["yo"])
+                                  translit=o["translit"], yo=o["yo"], glue=o["glue"])
 
 
 def read_text_file(path: str | Path) -> tuple[str, str]:

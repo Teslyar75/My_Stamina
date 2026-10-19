@@ -48,7 +48,8 @@ DEFAULT_SETTINGS = {
     "lang": "en",
     "translator": True,
     # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы
-    "cargo_opts": {"lower": True, "punct": True, "spaces": True},
+    # (glue — разделять сращивания слов: «ивот» → «и вот»)
+    "cargo_opts": {"lower": True, "punct": True, "spaces": True, "glue": False},
     "geometry": "",
     "living_space": "light",  # «Живой космос» во всех разделах: off | light | full
     "skin": "spaceship",

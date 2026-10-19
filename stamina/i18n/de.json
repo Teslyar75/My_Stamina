@@ -1807,5 +1807,11 @@
  "🔍 СВОБОДНЫЕ КНИГИ": "🔍 KOSTENLOSE BÜCHER",
  "🔒 КОД": "🔒 ANHANG",
  "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE",
- "🔒 Права Командира — только по коду владельца": "🔒 Kommandanten-Rechte — nur mit dem Eigentümer-Code"
+ "🔒 Права Командира — только по коду владельца": "🔒 Kommandanten-Rechte — nur mit dem Eigentümer-Code",
+ " (проверьте)": " (prüfen)",
+ "«ивот» → «и вот», «непонял» → «не понял». Чинятся только уверенные находки; остальные покажет проверка.": "«ивот» → «и вот», «непонял» → «не понял». Nur sichere Funde werden korrigiert; der Bericht zeigt den Rest.",
+ "Найдено сращиваний: {0}, уверенных: {1}": "Verwachsene Wörter: {0}, sicher: {1}",
+ "Не оставлять срощенные слова": "Verwachsene Wörter nicht lassen",
+ "Сращиваний не найдено": "Keine verwachsenen Wörter gefunden",
+ "✦ НАЙТИ СРАЩИВАНИЯ": "✦ VERWACHSENE WÖRTER FINDEN"
 }
