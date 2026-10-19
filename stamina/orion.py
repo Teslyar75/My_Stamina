@@ -270,22 +270,33 @@ def profiles(record: dict) -> tuple[str, str | None]:
 def history(agent_id: str) -> dict:
     data = _read_json(history_path(agent_id), {})
     msgs = [m for m in (data.get("messages") or []) if isinstance(m, dict)]
-    return {"version": 1, "session": str(data.get("session") or ""), "messages": msgs}
+    return {"version": 1, "session": str(data.get("session") or ""), "messages": msgs,
+            "sessions": data.get("sessions") or {}}
 
 
 def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
              kind: str = "") -> dict:
-    """Дописать реплику: role — pilot | orion | system."""
+    """Дописать реплику: role — pilot | orion | system. Сессия хранится по профилям."""
     data = _read_json(history_path(agent_id), {"version": 1, "session": "", "messages": []})
     data.setdefault("messages", [])
     if session:
         data["session"] = session
+        # Сохраняем сессию по профилю — иначе смена профиля ломает инструменты
+        data.setdefault("sessions", {})["orion-recon"] = session
+        data["sessions"]["orion-commander"] = session
     msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(),
            "text": " ".join((text or "").split())[:MAX_TEXT], "kind": kind}
     data["messages"].append(msg)
     if len(data["messages"]) > MAX_MESSAGES:
         data["messages"] = data["messages"][-MAX_MESSAGES:]
     _write_json(history_path(agent_id), data)
+
+
+def profile_session(agent_id: str, profile: str) -> str:
+    """Сессия конкретного профиля (recon/commander)."""
+    data = _read_json(history_path(agent_id), {})
+    sessions = data.get("sessions") or {}
+    return str(sessions.get(profile) or "")
     return msg
 
 

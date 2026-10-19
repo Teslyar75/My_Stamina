@@ -914,7 +914,11 @@ class OrionScreen(tk.Frame):
 
     def _run(self, rec: dict, text: str, *, second: bool) -> None:
         first, follow = orion.profiles(rec)
-        profile = (follow or first) if second else first
+        # Капитан (commander) — сразу полные права, без запроса разрешения
+        if rec.get("access") == "commander" and not second:
+            profile = follow or first
+        else:
+            profile = (follow or first) if second else first
         self._busy = True
         self.send_btn.set_enabled(False)
         self.stop_btn.set_enabled(True)
@@ -926,7 +930,11 @@ class OrionScreen(tk.Frame):
         # При втором проходе — передаём разрешение в промпт
         if second:
             text = _t("РАЗРЕШЕНИЕ: Командир разрешил изменения. Выполни работу целиком.") + "\n\n" + text
-        session = orion.last_session(rec["id"])
+        # Первый проход — сессия профиля recon, второй проход — новая сессия профиля commander
+        if second:
+            session = ""  # Новую сессию для профиля Командира
+        else:
+            session = orion.profile_session(rec["id"], "orion-recon") or orion.last_session(rec["id"])
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
 
@@ -1132,7 +1140,8 @@ class OrionScreen(tk.Frame):
                         self._hint(_t("Книга пуста"), MUTED)
                 else:
                     self._hint(_t("Книга не найдена: {0}").format(book_cmd), RED)
-        if res.needs_permission and not second:
+        # Капитан (commander) — полные права сразу, без запроса разрешения
+        if res.needs_permission and not second and rec.get("access") != "commander":
             self._show_permission(res.request or _t("Нужно ваше разрешение на изменения"))
             self._hint(_t("Орион просит разрешение: нажмите «ВЫПОЛНИТЬ» — он сделает работу"),
                        AMBER)
@@ -1168,9 +1177,12 @@ class OrionScreen(tk.Frame):
         if self._pending is None or self._busy:
             return
         rec, text = self._pending
+        # Сохраняем сессию первого прохода — второй должен её продолжать
+        first_session = orion.last_session(rec["id"])
         orion.remember(rec["id"], "system", _t("Командир разрешил действия"))
         self._render_feed()
-        self._run(rec, text, second=True)
+        # Второй проход: тот же текст, та же сессия, профиль Командира
+        self._run(rec, text, second=True, session=first_session)
 
     def _deny(self) -> None:
         self._hide_permission()
