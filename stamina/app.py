@@ -142,12 +142,38 @@ def run_app(argv: list[str] | None = None) -> None:
     try:
         from stamina.cockpit import Cockpit
         cockpit = Cockpit()
-        # Показать диалог выбора агента после входа пилота — после инициализации окна
-        def _show_agent_dialog(cp):
-            from stamina.pilot_screens import AgentChoiceDialog
-            dialog = AgentChoiceDialog(cp, on_done=None)
-            dialog.run()
-        cockpit.after(100, lambda: _show_agent_dialog(cockpit))
+        # Автоматическая проверка и восстановление связи с OpenCode
+        def _ensure_connection(cp):
+            """Проверить привязку; если потеряна — восстановить автоматически."""
+            import json
+            from pathlib import Path
+            from stamina import orion
+            rec = orion.active()
+            status = orion.binding_status(rec["id"])
+            if status["access_ok"]:
+                return  # связь есть — ничего делаем
+            # Токен OpenCode из service.json
+            oc_token = ""
+            try:
+                svc = Path.home() / ".config" / "opencode" / "service.json"
+                if svc.exists():
+                    oc_token = (json.loads(svc.read_text(encoding="utf-8")).get("password") or "")
+            except Exception:
+                pass
+            # Токен GitHub через gh auth token
+            gh_token = ""
+            try:
+                import subprocess
+                r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=10)
+                gh_token = r.stdout.strip() if r.returncode == 0 else ""
+            except Exception:
+                pass
+            if oc_token or gh_token:
+                orion.save_binding(rec["id"], opencode_token=oc_token, github_token=gh_token)
+                cp.set_status("Связь с OpenCode восстановлена автоматически", "green")
+            else:
+                cp.set_status("Нет связи с OpenCode — войди в opencode auth login", "red")
+        cockpit.after(100, lambda: _ensure_connection(cockpit))
         cockpit.mainloop()
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback

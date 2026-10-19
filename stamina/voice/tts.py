@@ -1,10 +1,14 @@
-"""Текст → голос: Орион говорит голосами Windows (System.Speech), без интернета.
+"""Текст → голос: Орион и гид говорят голосами Windows, без интернета.
 
 Озвучка идёт в отдельном процессе PowerShell (`say.ps1` рядом с этим файлом), поэтому
 интерфейс не замирает на время речи. Если пилот задал новую фразу, пока звучит прежняя,
 прежняя обрывается — Орион не говорит сам с собой.
 
-Голос по умолчанию — русский из системы (Microsoft Pavel). Список: `voices()`.
+Голос берётся из хранилища OneCore (`Windows.Media.SpeechSynthesis`): там лежат современные
+голоса, и для русского там есть мужской — Microsoft Pavel. Старое System.Speech таких голосов
+не видит вообще (только Irina и Zira, обе женские) — потому корабль раньше и говорил женским
+машинным голосом. Если OneCore недоступен, `say.ps1` сам уходит на System.Speech.
+Список голосов обоих хранилищ: `voices()`.
 """
 
 from __future__ import annotations
@@ -17,12 +21,16 @@ import tempfile
 import threading
 from pathlib import Path
 
+from stamina.voice.engine import guess_lang
+
 HERE = Path(__file__).resolve().parent
 SAY_PS1 = HERE / "say.ps1"
 
 _proc: subprocess.Popen | None = None
 _lock = threading.Lock()
-SPEECH_LIMIT = 420          # символов на озвучку: длинный отчёт читать вслух утомительно
+#: Символов на озвучку. Лимита у движка нет — это забота о пилоте: длинный отчёт
+#: вслух утомляет, поэтому длинный текст режется по границе предложения.
+SPEECH_LIMIT = 1200
 
 
 def say_script() -> Path:
@@ -65,12 +73,18 @@ def speech_text(text: str, limit: int = SPEECH_LIMIT) -> str:
     return cut.rstrip() + "…"
 
 
-def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100) -> bool:
-    """Произнести текст. Не блокирует: речь идёт в отдельном процессе."""
+def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
+          lang: str = "") -> bool:
+    """Произнести текст. Не блокирует: речь идёт в отдельном процессе.
+
+    `lang` — язык текста (`ru`, `en`): по нему выбирается голос, иначе определяется сам.
+    """
     global _proc
     phrase = speech_text(text)
     if not phrase or not available():
         return False
+    if not lang:
+        lang = guess_lang(phrase)
     stop()
     tmp = Path(tempfile.gettempdir()) / f"orion_say_{os.getpid()}_{abs(hash(phrase)) % 10 ** 8}.txt"
     try:
@@ -78,7 +92,7 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100) -> bo
     except OSError:
         return False
     cmd = [powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(say_script()),
-           "-Path", str(tmp), "-Rate", str(rate), "-Volume", str(volume)]
+           "-Path", str(tmp), "-Rate", str(rate), "-Volume", str(volume), "-Lang", lang]
     if voice:
         cmd += ["-Voice", voice]
     flags = 0x08000000 if sys.platform == "win32" else 0     # CREATE_NO_WINDOW
@@ -109,7 +123,7 @@ def speaking() -> bool:
 
 
 def voices() -> list[str]:
-    """Установленные голоса Windows: «Имя|язык»."""
+    """Голоса системы: «хранилище|имя|язык|пол» — OneCore первым, затем System.Speech."""
     if not available():
         return []
     try:
@@ -120,3 +134,42 @@ def voices() -> list[str]:
         return []
     text = out.stdout.decode("utf-8", "replace")
     return [line.strip() for line in text.splitlines() if "|" in line]
+
+
+def voice_rows() -> list[tuple[str, str, str, str]]:
+    """Голоса обоих хранилищ: [(хранилище, имя, язык, пол)] — OneCore первым."""
+    rows = []
+    for line in voices():
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) >= 4:
+            rows.append((parts[0], parts[1], parts[2], parts[3]))
+    return rows
+
+
+def preferred_voice(lang: str = "ru") -> str:
+    """Голос под язык текста: мужской из OneCore, иначе первый подходящий по языку.
+
+    Для английского мужского в OneCore может не быть (пока не поставили английский
+    голос в системе) — тогда берём любой английский, а не русский: английскую книгу
+    Павел читать не должен.
+    """
+    code = (lang or "").split("-")[0].lower()
+    rows = voice_rows()
+    core = [r for r in rows if r[0].lower() == "onecore"]
+    pool = [r for r in (core or rows) if r[2].lower().startswith(code)] if code else list(rows)
+    if not pool:
+        pool = [r for r in rows if r[2].lower().startswith(code)] if code else list(rows)
+    if not pool:
+        return ""
+    for row in pool:
+        if row[3].lower() == "male":
+            return row[1]
+    return pool[0][1]
+
+
+def male_voice() -> str:
+    """Мужской русский голос для речи Ориона (Павел, иначе русский из System.Speech)."""
+    for row in voice_rows():
+        if row[0].lower() == "onecore" and row[3].lower() == "male" and row[2].lower().startswith("ru"):
+            return row[1]
+    return preferred_voice("ru")

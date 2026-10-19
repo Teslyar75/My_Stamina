@@ -340,6 +340,13 @@ class BookReaderPage(tk.Frame):
         # после входа в FS не cancel_group и дольше debounce — иначе срывает UPLINK
         self._tr_fs_guard_until: float = 0.0
 
+        # ---- чтение вслух ----------------------------------------------------
+        self.tts = None                     # ReaderQueue (создаётся лениво)
+        self._tts_job = None                # опрос событий движка
+        self._hl_span: tuple[int, int] | None = None   # границы читаемой фразы
+        self._line_boxes: list[tuple[int, int, int, int, int]] = []  # строки страницы
+        self._aa_frame: tk.Frame | None = None         # панель «Aa»
+
         th0 = self._theme()
         self.chrome = tk.Frame(self, bg=BG)
         self.chrome.pack(fill=tk.BOTH, expand=True)
@@ -368,6 +375,8 @@ class BookReaderPage(tk.Frame):
         self.read_shell.bind("<Configure>", self._on_area_configure)
         self.read_shell.bind("<Motion>", self._on_motion)
         self.bind_all("<Escape>", self._esc_global, add="+")
+        self.bind("<Destroy>", self._on_destroy_speech, add="+")
+        self._bind_speech_keys()
         self._sync_mode_btns()
         self._apply_theme()
         self._schedule_hide_chrome()
@@ -433,21 +442,44 @@ class BookReaderPage(tk.Frame):
         self.lbl_pct = tk.Label(bar, text="0%", bg=th["bar"], fg=th["bar_fg"],
                                 font=theme.font(9, True, mono=True))
         self.lbl_pct.pack(side=tk.LEFT, padx=px(12))
-        cards = HudButton(bar, _t("СФОРМИРОВАТЬ КАРТОЧКИ"), self.to_book_cards,
-                          height=26, font_size=8, width=190, color=AMBER, active=True)
-        cards.pack(side=tk.LEFT, padx=(0, px(8)), pady=px(4))
-        self._tip(cards, _t("Собрать карточки из уже прочитанного текста и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ"))
+        # чтение вслух: одна кнопка-переключатель + стоп + скорость
+        self.btn_read = HudButton(bar, _t("▶ ЧИТАТЬ"), self.speech_toggle, height=26,
+                                  font_size=8, width=96, color=GREEN)
+        self.btn_read.pack(side=tk.LEFT, padx=(0, px(3)), pady=px(4))
+        self._tip(self.btn_read, _t("Читать вслух с этого места (пробел — пауза)"))
+        self.btn_stop = HudButton(bar, "■", self.speech_stop, height=26, font_size=8,
+                                  width=26, color=th["accent"])
+        self.btn_stop.pack(side=tk.LEFT, padx=px(1), pady=px(4))
+        self._tip(self.btn_stop, _t("Остановить чтение (Esc)"))
+        self.btn_slow = HudButton(bar, "−", lambda: self.speech_rate_delta(-1), height=26,
+                                  font_size=8, width=24, color=th["accent"])
+        self.btn_slow.pack(side=tk.LEFT, padx=px(1), pady=px(4))
+        self._tip(self.btn_slow, _t("Голос медленнее"))
+        self.btn_fast = HudButton(bar, "+", lambda: self.speech_rate_delta(+1), height=26,
+                                  font_size=8, width=24, color=th["accent"])
+        self.btn_fast.pack(side=tk.LEFT, padx=px(1), pady=px(4))
+        self._tip(self.btn_fast, _t("Голос быстрее"))
+        # выбор чтеца: «по языку текста» → голоса OneCore → голоса SAPI
+        self.btn_voice = HudButton(bar, self._voice_btn_text(), self.speech_voice_cycle,
+                                   height=26, font_size=8, width=94, color=th["accent"])
+        self.btn_voice.pack(side=tk.LEFT, padx=px(1), pady=px(4))
+        self._tip(self.btn_voice, _t("Голос чтеца: следующий в списке"))
+        # «СФОРМИРОВАТЬ КАРТОЧКИ» убрана: та же кнопка есть в верхней панели («→ КАРТОЧКИ»)
         self.scale = tk.Scale(bar, from_=0, to=100, orient=tk.HORIZONTAL, showvalue=0,
                               bg=th["bar"], fg=th["accent"], troughcolor=blend(th["bar"], "#000000", 0.3),
                               highlightthickness=0, activebackground=th["accent"],
                               command=self._on_scale)
         self.scale.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(8), pady=px(6))
+        self.lbl_speech = tk.Label(bar, text="", bg=th["bar"], fg=th["dim"],
+                                   font=theme.font(8, True, mono=True))
+        self.lbl_speech.pack(side=tk.LEFT, padx=px(6))
         self.lbl_page = tk.Label(bar, text="", bg=th["bar"], fg=th["dim"],
                                  font=theme.font(9, True, mono=True))
         self.lbl_page.pack(side=tk.LEFT, padx=px(8))
         self.lbl_eta = tk.Label(bar, text="", bg=th["bar"], fg=th["dim"],
                                 font=theme.font(9, True))
         self.lbl_eta.pack(side=tk.RIGHT, padx=px(12))
+        self._speech_status()
 
     def _build_top_bar(self, bar: tk.Frame) -> None:
         th = self._theme()
@@ -466,8 +498,7 @@ class BookReaderPage(tk.Frame):
             width=110)
         btn("◀", self.page_prev, _t("Предыдущая страница (← / PgUp)"), width=34)
         btn("▶", self.page_next, _t("Следующая страница (→ / PgDn)"), width=34)
-        btn("A−", lambda: self.font_delta(-1), _t("Мельче шрифт (−)"), width=34)
-        btn("A+", lambda: self.font_delta(+1), _t("Крупнее шрифт (+)"), width=34)
+        btn(_t("Aa"), self.toggle_aa, _t("Шрифт, интерлиньяж, тема, чтение вслух"), width=40)
 
         self.mode_btns = {}
         bi_tip = _t("Слева оригинал, справа готовый перевод книги") if self._fixed_bilingual() else (
@@ -481,15 +512,7 @@ class BookReaderPage(tk.Frame):
             b = btn(lab, lambda k=key: self.set_mode(k), tip, width=w)
             self.mode_btns[key] = b
 
-        self.theme_btns = {}
-        for key, lab, tip in (
-            ("paper", _t("БУМАГА"), _t("Светлая бумага")),
-            ("night", _t("НОЧЬ"), _t("Тёмная тема")),
-            ("sepia", _t("СЕПИЯ"), _t("Тёплая сепия")),
-        ):
-            b = btn(lab, lambda k=key: self.set_theme(k), tip, width=72)
-            self.theme_btns[key] = b
-
+        # темы и шрифт живут в панели «Aa» (верхняя панель иначе не влезает на узком окне)
         btn(_t("ОГЛ."), self.show_toc, _t("Оглавление"), width=52)
         btn(_t("⚡ RSVP"), self.to_hyperdrive, _t("Открыть в гипердрайве с этого места"),
             color=AMBER, width=72)
@@ -514,6 +537,7 @@ class BookReaderPage(tk.Frame):
     def _go_library(self) -> None:
         if self._fullscreen:
             self.exit_fullscreen()
+        self.speech_stop()
         self.save_pos()
         self.ctx.show("library")
 
@@ -666,7 +690,10 @@ class BookReaderPage(tk.Frame):
         for k, b in getattr(self, "mode_btns", {}).items():
             b.set_active(k == self.mode)
         for k, b in getattr(self, "theme_btns", {}).items():
-            b.set_active(k == self._theme_key())
+            try:
+                b.set_active(k == self._theme_key())
+            except tk.TclError:
+                pass  # панель «Aa» закрыта — кнопки уже уничтожены
 
     def set_mode(self, mode: str) -> None:
         if mode not in MODES:
@@ -708,6 +735,8 @@ class BookReaderPage(tk.Frame):
         char = self._page_start_char()
         self.st["book_font_pt"] = max(12, min(28, self._font_pt() + d))
         self.ctx.sstore.save()
+        if getattr(self, "lbl_aa_font", None) is not None and self.lbl_aa_font.winfo_exists():
+            self.lbl_aa_font.configure(text=str(self._font_pt()))
         self._layout_key = None
         self.after(20, lambda: self._relayout(keep_char=char))
 
@@ -715,7 +744,7 @@ class BookReaderPage(tk.Frame):
         th = self._theme()
         self.top_bar.configure(bg=th["bar"])
         self.bot_bar.configure(bg=th["bar"])
-        for lab in (self.lbl_pct, self.lbl_page, self.lbl_eta):
+        for lab in (self.lbl_pct, self.lbl_page, self.lbl_eta, self.lbl_speech):
             lab.configure(bg=th["bar"], fg=th["dim"] if lab is not self.lbl_pct else th["bar_fg"])
         self.lbl_title.configure(bg=th["bar"], fg=th["bar_fg"])
         self.scale.configure(bg=th["bar"], fg=th["accent"],
@@ -731,6 +760,11 @@ class BookReaderPage(tk.Frame):
                                        font=_reading_font(self._font_pt()))
         if self._fs is not None:
             self._fs.configure(bg=th["desk"])
+        if self._aa_frame is not None:
+            if self._aa_visible():
+                self._aa_build()
+            else:
+                self._aa_frame.configure(bg=th["bar"])
 
     def _page_host(self) -> tk.Frame:
         if self._fullscreen and self._fs is not None and hasattr(self, "_fs_page"):
@@ -749,6 +783,7 @@ class BookReaderPage(tk.Frame):
         if not m:
             return
         self.save_pos()
+        self.speech_stop()
         self.tid = tid
         self.title = m["title"] + (f" · {m['author']}" if m.get("author") else "")
         self.lbl_title.configure(text=self.title[:72])
@@ -758,6 +793,7 @@ class BookReaderPage(tk.Frame):
         self.paras = paragraphs(self.text)
         self.words = _split_words(self.text)
         self.chapters = _detect_chapters(self.text)
+        self._hl_span = None
         lib.set_active("reading", tid)
         if word is None:
             word = int(m["positions"]["reading"].get("word", 0))
@@ -766,6 +802,10 @@ class BookReaderPage(tk.Frame):
         self._page_tr_cache = {}
         self._refresh_tr_dir()
         self._apply_theme()
+        self._bind_speech_keys()
+        if self.tts is not None:
+            self.tts.set_lang(self._speech_lang())
+            self.tts.load(self.text, char)
         self.after(30, lambda: self._relayout(keep_char=char))
         self.focus_set()
         # фоновый UPLINK только для обычных книг; у bilingual перевод уже в файле
@@ -880,6 +920,392 @@ class BookReaderPage(tk.Frame):
                 return f"{i + 1}.{rem}"
             rem -= len(line) + 1
         return "end"
+
+    # ------------------------------------------------------ чтение вслух
+    RATE_MIN, RATE_MAX = -4, 6
+
+    # -- настройки ---------------------------------------------------------
+    def speech_rate(self) -> int:
+        try:
+            v = int(self.st.get("book_speech_rate", 0))
+        except (TypeError, ValueError):
+            v = 0
+        return max(self.RATE_MIN, min(self.RATE_MAX, v))
+
+    @staticmethod
+    def _rate_word(rate: int) -> str:
+        return f"×{1 + int(rate) * 0.15:.2f}".replace(".", ",")
+
+    def _speech_minutes(self, chars: int) -> int:
+        cpm = max(200, 1000 + self.speech_rate() * 120)
+        return int(round(max(0, chars) / cpm))
+
+    def _speech_auto_turn(self) -> bool:
+        return bool(self.st.get("book_speech_auto_turn", True))
+
+    def _speech_lang(self) -> str:
+        v = str(self.st.get("book_speech_lang", "") or "")
+        if v:
+            return v
+        lang = (self._tr_dir or ("", ""))[0]
+        if lang:
+            return lang
+        try:
+            from stamina.voice.engine import guess_lang
+            return guess_lang(self.text[:4000])
+        except Exception:  # noqa: BLE001
+            return ""
+
+    def _speech_voice(self) -> str:
+        """Выбор пилота: `хранилище:имя` или пусто — голос по языку текста."""
+        return str(self.st.get("book_speech_voice", "") or "")
+
+    @staticmethod
+    def _voice_short(spec: str) -> str:
+        name = spec.split(":", 1)[-1] if ":" in spec else ""
+        return name.split()[-1] if name else ""
+
+    def _voice_btn_text(self) -> str:
+        short = self._voice_short(self._speech_voice())
+        return _t("ГОЛОС: {0}").format(short.upper()) if short else _t("ГОЛОС: ЯЗЫК")
+
+    # -- запуск движка ------------------------------------------------------
+    def _ensure_tts(self):
+        if self.tts is not None:
+            if self.tts.text != self.text:
+                self.tts.load(self.text, self._page_start_char())
+            return self.tts
+        try:
+            from stamina.voice.engine import make_engine_for
+            from stamina.voice.reader_tts import ReaderQueue
+        except Exception as exc:  # noqa: BLE001
+            self._speech_status(_t("Озвучка недоступна: {0}").format(exc))
+            return None
+        eng, voice = make_engine_for(self._speech_voice())
+        if not getattr(eng, "available", False):
+            self._speech_status(eng.why_unavailable() or _t("Движок озвучки недоступен"))
+            return None
+        self.tts = ReaderQueue(eng, self.text, rate=self.speech_rate(),
+                               lang=self._speech_lang(), voice=voice or "",
+                               duck_radio=bool(self.st.get("book_speech_duck_radio", True)))
+        return self.tts
+
+    # -- команды интерфейса --------------------------------------------------
+    def speech_toggle(self) -> None:
+        q = self._ensure_tts()
+        if q is None:
+            return
+        if q.state == "playing":
+            q.pause()
+        elif q.state == "paused":
+            q.resume()
+        else:
+            start = self._page_start_char()
+            if q.text != self.text:
+                q.load(self.text, start)
+            q.play(from_char=start)
+            self._ensure_tts_tick()
+        self._sync_speech_btn()
+        self._speech_status()
+
+    def speech_stop(self) -> None:
+        if self.tts is None:
+            self._speech_status()
+            return
+        self.tts.stop()
+        self._hl_span = None
+        self._paint_speech_marks()
+        self.save_pos()
+        self._sync_speech_btn()
+        self._speech_status()
+
+    def speech_rate_delta(self, d: int) -> None:
+        self.st["book_speech_rate"] = max(self.RATE_MIN, min(self.RATE_MAX, self.speech_rate() + d))
+        self.ctx.sstore.save()
+        if self.tts is not None:
+            self.tts.set_rate(self.speech_rate())
+            if self.tts.state == "playing":
+                self.tts.step(0)  # перечитать текущую фразу новым темпом
+        if getattr(self, "lbl_aa_rate", None) is not None and self.lbl_aa_rate.winfo_exists():
+            self.lbl_aa_rate.configure(text=self._rate_word(self.speech_rate()))
+        self._speech_status()
+
+    def speech_voice_cycle(self) -> None:
+        """Перебрать голоса чтеца: «по языку текста» → OneCore → SAPI. Выбор запоминается."""
+        try:
+            from stamina.voice.engine import voice_options
+            opts = voice_options()
+        except Exception as exc:  # noqa: BLE001
+            self._speech_status(_t("Голоса недоступны: {0}").format(exc))
+            return
+        if not opts:
+            return
+        specs = [spec for _label, spec in opts]
+        cur = self._speech_voice()
+        spec = specs[(specs.index(cur) + 1) % len(specs)] if cur in specs else specs[1 % len(specs)]
+        self.st["book_speech_voice"] = spec
+        self.ctx.sstore.save()
+        if self.tts is not None:
+            self.speech_stop()      # остановиться по-честному, запомнив место
+            self.tts = None         # новый голос — новый движок
+        if getattr(self, "btn_voice", None) is not None and self.btn_voice.winfo_exists():
+            self.btn_voice.set_text(self._voice_btn_text())
+        label = dict((s, l) for l, s in opts).get(spec, spec)
+        self._speech_status(_t("Голос: {0}").format(label))
+
+    def _sync_speech_btn(self) -> None:
+        if getattr(self, "btn_read", None) is None or not self.btn_read.winfo_exists():
+            return
+        state = self.tts.state if self.tts is not None else "idle"
+        if state == "playing":
+            self.btn_read.set_text(_t("❚❚ ПАУЗА"))
+        elif state == "paused":
+            self.btn_read.set_text(_t("▶ ДАЛЬШЕ"))
+        else:
+            self.btn_read.set_text(_t("▶ ЧИТАТЬ"))
+        self.btn_read.set_active(state == "playing")
+
+    def _speech_status(self, extra: str = "") -> None:
+        lbl = getattr(self, "lbl_speech", None)
+        if lbl is None or not lbl.winfo_exists():
+            return
+        q = self.tts
+        state = q.state if q is not None else "idle"
+        if extra:
+            txt = extra
+        elif q is None or state == "idle":
+            txt = _t("вслух выкл · {0}").format(self._rate_word(self.speech_rate()))
+        else:
+            done, total = q.progress()
+            pct = int(100 * done / total) if total else 0
+            left = self._speech_minutes(total - done)
+            key = _t("пауза · {0}% · ≈ {1} мин") if state == "paused" else _t("вслух · {0}% · ≈ {1} мин")
+            txt = key.format(pct, left)
+        lbl.configure(text=txt)
+
+    # -- события очереди -----------------------------------------------------
+    def _ensure_tts_tick(self) -> None:
+        if self._tts_job is None:
+            self._tts_job = self.after(250, self._tts_tick)
+
+    def _tts_tick(self) -> None:
+        self._tts_job = None
+        q = self.tts
+        if q is None:
+            return
+        for kind, payload in q.poll():
+            if kind == "segment" and payload is not None:
+                self._on_speech_segment(payload)
+            elif kind == "finished":
+                self._hl_span = None
+                self._paint_speech_marks()
+                self.save_pos()
+                self._speech_status(_t("Книга прочитана"))
+            elif kind == "error" and payload:
+                self._speech_status(str(payload)[:48])
+        self._sync_speech_btn()
+        self._speech_status()
+        if q.state != "idle":
+            self._tts_job = self.after(250, self._tts_tick)
+
+    def _on_speech_segment(self, seg) -> None:
+        self._hl_span = (int(seg.start), int(seg.end))
+        if self.mode == "scroll":
+            if self.scroll_view is not None:
+                try:
+                    self.scroll_view.see(self._char_to_tk(seg.start))
+                except tk.TclError:
+                    pass
+        elif self._speech_auto_turn():
+            start, end = self._page_range()
+            if not (start <= seg.start < end):
+                self._goto_char(seg.start, save=False)
+        self._paint_speech_marks()
+
+    # -- подсветка -----------------------------------------------------------
+    def _page_range(self) -> tuple[int, int]:
+        """[первый символ страницы, первый символ следующей) — для автоперевода."""
+        if not self._pages or not self._line_starts:
+            return 0, len(self.text)
+        i = max(0, min(self._page_i, len(self._pages) - 1))
+        sl = int(self._pages[i].get("start_line", 0))
+        start = self._line_starts[sl] if 0 <= sl < len(self._line_starts) else 0
+        nsl = int(self._pages[i + 1].get("start_line", 0)) if i + 1 < len(self._pages) else -1
+        end = self._line_starts[nsl] if 0 <= nsl < len(self._line_starts) else len(self.text)
+        return start, end
+
+    def _hl_lines(self) -> set[int]:
+        span = self._hl_span
+        starts = self._line_starts
+        if not span or not starts:
+            return set()
+        start, end = span
+        out = set()
+        for i, sc in enumerate(starts):
+            nxt = starts[i + 1] if i + 1 < len(starts) else len(self.text) + 1
+            if sc < end and nxt > start:
+                out.add(i)
+        return out
+
+    def _paint_speech_marks(self) -> None:
+        """Подсветка читаемой фразы: поверх текста, штриховкой — буквы остаются видны."""
+        th = self._theme()
+        span = self._hl_span
+        if self.mode == "scroll":
+            view = self.scroll_view
+            if view is None:
+                return
+            try:
+                view.tag_remove("speech", "1.0", "end")
+                if span:
+                    view.tag_configure("speech",
+                                       background=blend(th["accent"], th["fallback"], 0.55))
+                    view.tag_add("speech", self._char_to_tk(span[0]), self._char_to_tk(span[1]))
+            except tk.TclError:
+                pass
+            return
+        c = self.spread
+        if c is None:
+            return
+        try:
+            c.delete("speech")
+        except tk.TclError:
+            return
+        lines = self._hl_lines()
+        if not lines or not self._line_boxes:
+            return
+        over = blend(th["accent"], th["fallback"], 0.55)
+        for ln, x0, y0, x1, y1 in self._line_boxes:
+            if ln not in lines:
+                continue
+            c.create_rectangle(x0 - px(3), y0 - px(1) - 1, x1 + px(3), y1 - 2,
+                               fill=over, outline="", stipple="gray25", tags="speech")
+            c.create_rectangle(x0 - px(6), y0 - 1, x0 - px(4), y1 - 2,
+                               fill=th["accent"], outline="", tags="speech")
+
+    # -- горячие клавиши -----------------------------------------------------
+    def _bind_speech_keys(self) -> None:
+        for w in (self, self.spread, self.scroll_view):
+            if w is None or getattr(w, "_speech_keys", False):
+                continue
+            try:
+                w._speech_keys = True  # type: ignore[attr-defined]
+                w.bind("<space>", self._on_space, add="+")
+                w.bind("<Escape>", self._on_esc_speech, add="+")
+            except tk.TclError:
+                pass
+
+    def _on_space(self, _e=None):
+        if self._aa_visible():
+            self._aa_hide()
+            return "break"
+        self.speech_toggle()
+        return "break"
+
+    def _on_esc_speech(self, _e=None):
+        if self._aa_visible():
+            self._aa_hide()
+            return "break"
+        if self.tts is not None and self.tts.state != "idle":
+            self.speech_stop()
+            return "break"
+        return None
+
+    def _on_destroy_speech(self, e=None) -> None:
+        if e is not None and getattr(e, "widget", None) is not self:
+            return
+        if self._tts_job is not None:
+            try:
+                self.after_cancel(self._tts_job)
+            except tk.TclError:
+                pass
+            self._tts_job = None
+        if self.tts is not None:
+            try:
+                self.tts.stop()
+                self.tts.engine.close()
+            except Exception:  # noqa: BLE001
+                pass
+            self.tts = None
+
+    # -- панель «Aa» ---------------------------------------------------------
+    def _aa_visible(self) -> bool:
+        return bool(self._aa_frame is not None and self._aa_frame.winfo_ismapped())
+
+    def toggle_aa(self) -> None:
+        if self._aa_visible():
+            self._aa_hide()
+        else:
+            self._aa_show()
+
+    def _aa_show(self) -> None:
+        self._aa_build()
+        if self._aa_frame is not None:
+            self._aa_frame.place(relx=1.0, rely=0.0, x=-px(16), y=px(50), anchor="ne")
+            self._aa_frame.lift()
+
+    def _aa_hide(self) -> None:
+        if self._aa_frame is not None:
+            self._aa_frame.place_forget()
+
+    def _aa_build(self) -> None:
+        if self._aa_frame is None:
+            self._aa_frame = tk.Frame(self.read_shell, bd=0, highlightthickness=1)
+        f = self._aa_frame
+        for w in f.winfo_children():
+            w.destroy()
+        th = self._theme()
+        f.configure(bg=th["bar"], highlightbackground=th["accent"], highlightcolor=th["accent"])
+
+        def row(label: str) -> tk.Frame:
+            fr = tk.Frame(f, bg=th["bar"])
+            fr.pack(fill=tk.X, padx=px(10), pady=px(3))
+            tk.Label(fr, text=label, bg=th["bar"], fg=th["dim"],
+                     font=theme.font(8, True)).pack(side=tk.LEFT, padx=(0, px(8)))
+            return fr
+
+        def small(parent, text, cmd, tip, width=30, color=None) -> HudButton:
+            b = HudButton(parent, text, cmd, height=24, font_size=8, width=width,
+                          color=color or th["accent"])
+            b.pack(side=tk.LEFT, padx=px(1))
+            self._tip(b, tip)
+            return b
+
+        r = row(_t("AA ШРИФТ"))
+        small(r, "A−", lambda: self.font_delta(-1), _t("Мельче шрифт (−)"))
+        small(r, "A+", lambda: self.font_delta(+1), _t("Крупнее шрифт (+)"))
+        self.lbl_aa_font = tk.Label(r, text=str(self._font_pt()), bg=th["bar"], fg=th["bar_fg"],
+                                    font=theme.font(8, True, mono=True))
+        self.lbl_aa_font.pack(side=tk.LEFT, padx=px(4))
+        r = row(_t("ИНТЕРЛИНЬЯЖ"))
+        small(r, "−", lambda: self.line_delta(-0.05), _t("Плотнее строки"))
+        small(r, "+", lambda: self.line_delta(+0.05), _t("Просторнее строки"))
+        r = row(_t("ТЕМА"))
+        self.theme_btns = {}
+        for key, lab, tip in (
+            ("paper", _t("БУМАГА"), _t("Светлая бумага")),
+            ("sepia", _t("СЕПИЯ"), _t("Тёплая сепия")),
+            ("night", _t("НОЧЬ"), _t("Тёмная тема")),
+        ):
+            self.theme_btns[key] = small(r, lab, lambda k=key: self.set_theme(k), tip, width=68)
+        r = row(_t("ВСЛУХ"))
+        small(r, "−", lambda: self.speech_rate_delta(-1), _t("Голос медленнее"))
+        self.lbl_aa_rate = tk.Label(r, text=self._rate_word(self.speech_rate()), bg=th["bar"],
+                                    fg=th["bar_fg"], font=theme.font(8, True, mono=True))
+        self.lbl_aa_rate.pack(side=tk.LEFT, padx=px(4))
+        small(r, "+", lambda: self.speech_rate_delta(+1), _t("Голос быстрее"))
+        small(r, _t("▶/❚❚"), self.speech_toggle, _t("Читать вслух / пауза"), width=46, color=GREEN)
+        small(r, "■", self.speech_stop, _t("Остановить чтение"), width=26)
+        r = row(_t("ПАНЕЛЬ"))
+        small(r, _t("✕"), self._aa_hide, _t("Скрыть панель (Esc)"), width=26, color=AMBER)
+        self._sync_mode_btns()
+
+    def line_delta(self, d: float) -> None:
+        char = self._page_start_char()
+        self.st["book_line_space"] = round(max(1.3, min(1.7, self._line_space() + d)), 2)
+        self.ctx.sstore.save()
+        self._layout_key = None
+        self.after(20, lambda: self._relayout(keep_char=char))
 
     # ------------------------------------------------------------------ layout
     def _on_area_configure(self, _e=None) -> None:
@@ -1012,8 +1438,10 @@ class BookReaderPage(tk.Frame):
         self._line_starts = [0]
 
     def _show_page(self) -> None:
+        self._bind_speech_keys()
         if self.mode == "scroll":
             self._update_progress()
+            self._paint_speech_marks()
             return
         if not self._pages:
             return
@@ -1022,6 +1450,7 @@ class BookReaderPage(tk.Frame):
             self._build_surface(self._page_host())
         self._paint_book(self._pages[self._page_i])
         self._update_progress()
+        self._paint_speech_marks()
 
     def _paint_book(self, page: dict) -> None:
         c = self.spread
@@ -1050,6 +1479,8 @@ class BookReaderPage(tk.Frame):
         W, H = max(c.winfo_width(), 80), max(c.winfo_height(), 80)
         c.delete("all")
         self._paper_refs.clear()
+        self._line_boxes.clear()
+        line_base0 = int(page.get("start_line", 0))
         th = self._theme()
         font = _reading_font(self._font_pt())
         font_obj = self._font_obj()
@@ -1087,7 +1518,7 @@ class BookReaderPage(tk.Frame):
                        cont_from_prev: bool = False, label: str = "",
                        use_font=None, use_font_obj=None, use_lh=None, use_gap=None,
                        use_indent=None, use_text_w=None, use_cache=None,
-                       justify: bool = True):
+                       justify: bool = True, line_base: int = -1):
             """cont_from_prev: первая строка — продолжение абзаца с левой страницы.
             justify=False — без растягивания пробелов (режим 2 ЯЗЫКА: важен смысл, не «залить» лист).
             """
@@ -1126,6 +1557,9 @@ class BookReaderPage(tk.Frame):
                     is_last = lines[i + 1][1] == "first"
                 else:
                     is_last = not cont_from_prev
+                if line_base >= 0:
+                    # геометрия строки — по ней рисуется подсветка читаемой фразы
+                    self._line_boxes.append((line_base + i, x, y, x + width, y + line_h))
                 self._draw_justified(c, x, y, text, fnt, fobj, width, th["fg"],
                                      last=is_last, space_w=spw, cache=mcache)
                 y += line_h
@@ -1150,7 +1584,7 @@ class BookReaderPage(tk.Frame):
                 left, text_w=col_text_w, col_h=max(40, book_h - pad_y * 2))
             sl, tl = self._tr_dir
             # без выключки: одинаковое число предложений важнее «заливки» листа
-            paint_col2(bx, by, page_w, book_h, left,
+            paint_col2(bx, by, page_w, book_h, left, line_base=line_base0,
                        label=_t("ОРИГИНАЛ · {0}").format(sl.upper()), justify=False)
             rx = bx + page_w + spine
             r_spec = _reading_font(right_pt)
@@ -1171,15 +1605,18 @@ class BookReaderPage(tk.Frame):
             left = col_lists[0] if col_lists else []
             right = col_lists[1] if len(col_lists) > 1 else []
             left_continues = bool(right) and right[0][1] == "cont"
-            paint_col2(bx, by, page_w, book_h, left, cont_from_prev=left_continues)
+            paint_col2(bx, by, page_w, book_h, left, cont_from_prev=left_continues,
+                       line_base=line_base0)
             rx = bx + page_w + spine
-            paint_col2(rx, by, page_w, book_h, right, cont_from_prev=False)
+            paint_col2(rx, by, page_w, book_h, right, cont_from_prev=False,
+                       line_base=line_base0 + len(left))
             draw_spine(bx + page_w)
         else:
             # одна страница по центру
             pw = min(book_w, text_w + pad_x * 2 + px(8))
             px0 = bx + (book_w - pw) // 2
-            paint_col2(px0, by, pw, book_h, col_lists[0] if col_lists else [])
+            paint_col2(px0, by, pw, book_h, col_lists[0] if col_lists else [],
+                       line_base=line_base0)
 
     # ------------------------------------------------------------------ bilingual
     def _refresh_tr_dir(self) -> None:

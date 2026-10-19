@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from stamina import i18n, orion, owner_key, pilots
 
@@ -475,21 +476,31 @@ class OrionDataTest(unittest.TestCase):
         seen = {}
 
         class _Proc:
+            pid = 777
             returncode = 0
             stdout = b""
             stderr = b""
 
-        def _run(cmd, **_kw):
-            seen["cmd"] = cmd
-            return _Proc()
+            def __init__(self, cmd, **_kw):
+                seen["cmd"] = cmd
 
-        real_run, real_cli = orion.subprocess.run, orion.find_cli
-        orion.subprocess.run = _run
+            def communicate(self, timeout=None):
+                return b"", b""
+
+            def poll(self):
+                return 0
+
+            def wait(self, timeout=None):
+                return 0
+
+        real_popen, real_cli = orion.subprocess.Popen, orion.find_cli
+        orion.subprocess.Popen = _Proc
         orion.find_cli = lambda: "opencode.exe"
         try:
             orion.run_profile(rec, "Как дела?", profile="orion-chat")
         finally:
-            orion.subprocess.run, orion.find_cli = real_run, real_cli
+            orion.subprocess.Popen, orion.find_cli = real_popen, real_cli
+            orion._RUNS.clear()
         prompt = seen["cmd"][-1]
         self.assertTrue(prompt.startswith("[МАНЕРЫ АГЕНТА]\nПервое.\nВторое."))
         self.assertTrue(prompt.endswith("Как дела?"))
@@ -722,8 +733,8 @@ class OrionScreenTest(unittest.TestCase):
         self.assertEqual(orion.tasks()[0]["text"], "починить эфир")
         self.assertEqual(scr._pending_task, "")
 
-    def _grant_commander(self, scr, allow=True):
-        """Выдать (или не выдать) права Командира, подменив окно кода владельца."""
+    def _grant_commander(self, scr, allow=True, github=True):
+        """Выдать (или не выдать) права Командира: два шага — код владельца, доступ к GitHub."""
         from stamina import orion_screen
 
         class _Stub:
@@ -733,12 +744,22 @@ class OrionScreenTest(unittest.TestCase):
             def run(self):
                 return allow
 
+        class _GitHubStub:
+            def __init__(self, *_a, **_kw):
+                pass
+
+            def run(self):
+                return github
+
         real = orion_screen._OwnerCodeDialog
+        real_gh = orion_screen._GitHubAccessDialog
         orion_screen._OwnerCodeDialog = _Stub
+        orion_screen._GitHubAccessDialog = _GitHubStub
         try:
             scr._pick_access("commander")
         finally:
             orion_screen._OwnerCodeDialog = real
+            orion_screen._GitHubAccessDialog = real_gh
 
     def test_boarding_new_agent(self):
         self.app.show("orion")
@@ -758,6 +779,22 @@ class OrionScreenTest(unittest.TestCase):
         self.assertEqual(orion.active()["name"], "Сова")
         # в списке пассажиров на каждого: кнопка имени + подпись уровня
         self.assertEqual(len(scr.crew_box.winfo_children()), 4)
+
+    def test_commander_needs_github_access(self):
+        """Отказ в доступе к GitHub — прав Командира нет, это второй шаг заселения."""
+        scr = self._screen()
+        scr._new_agent()
+        scr.name_var.set("Сова")
+        self._grant_commander(scr, github=False)
+        self.assertEqual(scr._access, "crew")
+
+    def test_commander_needs_owner_code(self):
+        """Отказ по коду владельца — дальше GitHub уже не спрашивают."""
+        scr = self._screen()
+        scr._new_agent()
+        scr.name_var.set("Сова")
+        self._grant_commander(scr, allow=False)
+        self.assertEqual(scr._access, "crew")
 
     def test_boarding_needs_name(self):
         scr = self._screen()
@@ -884,6 +921,143 @@ class OrionI18nTest(unittest.TestCase):
             i18n.set_language("en")
             for key in ("ЖИВАЯ ЛИНИЯ", "КАРТОЧКА ПАССАЖИРА", "ДОСКА: СКРЫТА", "СЛУШАЮ… говорите"):
                 self.assertNotEqual(i18n.t(key), key, key)
+        finally:
+            i18n.set_language("ru")
+
+
+class OrionStopTest(unittest.TestCase):
+    """Квадратик «стоп»: агента можно оборвать, а сессию сохранить для уточнений."""
+
+    def setUp(self):
+        import subprocess
+
+        from stamina import orion
+        self.orion = orion
+        self.subprocess = subprocess
+        self.killed = []
+        self._kill = orion._kill
+        self._popen = subprocess.Popen
+        self._cli = orion.find_cli
+        orion._kill = lambda proc: self.killed.append(proc.pid)
+        orion.find_cli = lambda: "opencode.exe"
+
+    def tearDown(self):
+        self.subprocess.Popen = self._popen
+        self.orion._kill = self._kill
+        self.orion.find_cli = self._cli
+        self.orion._RUNS.clear()
+        self.orion._STOPPED.clear()
+        self.killed.clear()
+
+    def _fake_popen(self, payload: bytes, stop_inside: bool):
+        orion = self.orion
+
+        class _Proc:
+            pid = 4242
+            returncode = 1
+
+            def __init__(self, cmd, **kw):
+                self.cmd = cmd
+
+            def communicate(self, timeout=None):
+                if stop_inside:
+                    orion.stop_run("orion")
+                return payload, b""
+
+        return _Proc
+
+    def test_stop_all_kills_everything(self):
+        """Закрыли корабль — гасим всех: ни один агент не остаётся сиротой."""
+        self.orion._remember_run("orion", SimpleNamespace(pid=11))
+        self.orion._remember_run("sova", SimpleNamespace(pid=22))
+        self.assertEqual(self.orion.stop_all(), 2)
+        self.assertEqual(sorted(self.killed), [11, 22])
+        self.assertEqual(self.orion.stop_all(), 0)      # повторно гасить нечего
+        self.assertFalse(self.orion.running())
+
+    def test_stop_all_leaves_no_trace(self):
+        """После гашения счётчик живых пуст, иначе кнопка «стоп» осталась бы горящей."""
+        self.orion._remember_run("orion", SimpleNamespace(pid=33))
+        self.orion._RUNS.clear()                        # процесс завершился сам
+        self.assertEqual(self.orion.stop_all(), 0)
+        self.assertEqual(self.killed, [])
+
+    def test_stop_without_work(self):
+        self.assertFalse(self.orion.stop_run())
+        self.assertFalse(self.orion.running())
+
+    def test_stopped_run_keeps_partial_reply_and_session(self):
+        payload = (b'{"type":"text","sessionID":"ses_7",'
+                   b'"part":{"messageID":"m1","text":"\\u041d\\u0430\\u0447\\u0430\\u043b '
+                   b'\\u043f\\u0440\\u0430\\u0432\\u043a\\u0443"}}\n')
+        self.subprocess.Popen = self._fake_popen(payload, stop_inside=True)
+        res = self.orion.run_profile({"id": "orion"}, "починить", profile="orion-recon")
+        self.assertEqual(res.error, "stopped")
+        self.assertEqual(res.session, "ses_7")
+        self.assertIn("Начал", res.reply)
+        self.assertEqual(self.killed, [4242])          # процесс действительно погасили
+        self.assertFalse(self.orion.running())         # и сняли с учёта
+
+    def test_run_without_stop_is_normal(self):
+        payload = (b'{"type":"text","sessionID":"ses_8",'
+                   b'"part":{"messageID":"m1","text":"\\u0413\\u043e\\u0442\\u043e\\u0432\\u043e"}}\n')
+        self.subprocess.Popen = self._fake_popen(payload, stop_inside=False)
+        res = self.orion.run_profile({"id": "orion"}, "привет", profile="orion-recon")
+        self.assertEqual(res.error, "")
+        self.assertEqual(res.reply, "Готово")
+        self.assertEqual(self.killed, [])
+
+    def test_running_sees_live_agent(self):
+        proc = SimpleNamespace(pid=777)
+        self.orion._remember_run("orion", proc)
+        self.assertTrue(self.orion.running())
+        self.assertTrue(self.orion.running("orion"))
+        self.assertFalse(self.orion.running("other"))
+        self.assertTrue(self.orion.stop_run("orion"))
+        self.assertEqual(self.killed, [777])
+        self.assertTrue(self.orion._forget_run(proc))
+
+
+class OrionTokenHelpTest(unittest.TestCase):
+    """Справка «где взять токен GitHub» — для пилота, который не знаток GitHub."""
+
+    def test_help_explains_steps(self):
+        from stamina import orion_screen
+        text = orion_screen.github_token_help()
+        self.assertIn("Settings", text)
+        self.assertIn("Developer settings", text)
+        self.assertIn("Tokens (classic)", text)
+        self.assertIn("repo", text)
+        self.assertIn("ghp_", text)
+
+    def test_help_covers_another_computer(self):
+        from stamina import orion_screen
+        self.assertIn("другом компьютере", orion_screen.github_token_help())
+
+    def test_tokens_page_url(self):
+        from stamina import orion_screen
+        self.assertTrue(orion_screen.GITHUB_TOKENS_URL.startswith("https://github.com/"))
+
+    def test_help_is_translated(self):
+        from stamina import i18n, orion_screen
+        keys = [line for line in orion_screen.github_token_help().splitlines() if line]
+        try:
+            ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
+            for key in keys[:8]:
+                self.assertIn(key, ru, ("ru", key))
+        finally:
+            i18n.set_language("ru")
+
+
+class OrionUiModeTest(unittest.TestCase):
+    """Вид чата — выбор пилота: «Чат» или «Ремонтный отсек»."""
+
+    def test_modes_are_translated(self):
+        from stamina import i18n
+        try:
+            ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
+            for key in ("РЕЖИМ: ЧАТ", "РЕЖИМ: ПРО", "РЕМОНТНЫЙ ОТСЕК", "ЧАТ"):
+                self.assertIn(key, ru, key)
         finally:
             i18n.set_language("ru")
 

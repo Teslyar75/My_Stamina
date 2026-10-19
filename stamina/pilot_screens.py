@@ -706,6 +706,15 @@ class LoginScreen(tk.Frame):
         HudButton(top, tr_("★ ДОСКА ПОЧЁТА"), self.on_board, color=AMBER, height=36).pack(side=tk.RIGHT, padx=px(10))
         self.crew = L(top, "", fg=MUTED, size=10, bold=True, bg=BG)
         self.crew.pack(side=tk.RIGHT, padx=px(10))
+        # Код заселения — виден всем пилотам при входе
+        from stamina import orion as _orion
+        self.boarding_code = _orion.make_boarding_code()
+        code_frame = tk.Frame(self, bg=BG)
+        code_frame.pack(fill=tk.X, padx=px(20), pady=(px(8), 0))
+        L(code_frame, tr_("КОД ДЛЯ ЗАСЕЛЕНИЯ АГЕНТА"), fg=MUTED, size=9, bold=True).pack(anchor="w")
+        L(code_frame, self.boarding_code, fg=GREEN, size=20, bold=True).pack(anchor="w")
+        L(code_frame, tr_("Введите этот код в OpenCode CLI при заселении агента."),
+          fg=MUTED, size=8).pack(anchor="w")
         tk.Frame(self, bg=LINE, height=1).pack(fill=tk.X, padx=px(16), pady=px(6))
         L(self, tr_("ВЫБЕРИТЕ ПИЛОТА"), fg=AMBER, size=12, bold=True, bg=BG).pack(anchor="w", padx=px(20))
         L(self, tr_("← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · Del — списать"),

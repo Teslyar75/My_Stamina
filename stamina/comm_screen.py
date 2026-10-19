@@ -15,6 +15,8 @@ import tkinter as tk
 from stamina import comm, pilots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
+from stamina.prompt_box import PromptBox, hud_colors
+from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import AMBER, BG, BG2, CYAN, LINE, MUTED, PANEL, TEXT, px
 from stamina.voice.mic import MicControl
 
@@ -49,18 +51,21 @@ class CommScreen(tk.Frame):
         # ввода уезжает за край и «окна для ответа» не видно.
         row = tk.Frame(self, bg=BG)
         row.pack(side=tk.BOTTOM, fill=tk.X, padx=px(14), pady=(px(6), px(10)))
-        self.entry = tk.Entry(row, bg=BG2, fg=TEXT, insertbackground=CYAN, relief=tk.FLAT,
-                              font=theme.font(11), highlightthickness=1, highlightbackground=LINE,
-                              highlightcolor=CYAN, selectbackground=CYAN, selectforeground=BG)
-        self.entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
-        self.entry.bind("<Return>", self._on_return)
-        self.entry.bind("<KP_Enter>", self._on_return)
+        self.suggester = Suggester()
+        self._suggest_seen = -1
+        self.entry = PromptBox(row, on_send=self._send, font=theme.font(11),
+                               colors=hud_colors(), suggester=self.suggester)
+        self.entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, px(8)))
         self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
         self.send_btn.pack(side=tk.LEFT)
         # голос пилота прямо в эфир: сказал — проверил текст — Enter
+        store = getattr(self.app, "store", None)      # у облегчённых «кораблей» его нет
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
-                              label=_t("ГОЛОС"), height=36, font_size=10)
+                              label=_t("ГОЛОС"), height=36, font_size=10,
+                              settings=getattr(store, "settings", None),
+                              save=getattr(store, "save_settings", None))
         self.mic.button.pack(side=tk.LEFT, padx=(px(8), 0))
+        self.mic.hold_button.pack(side=tk.LEFT, padx=(px(6), 0))
         self.mic_hint = _label(self, "", fg=MUTED, size=9, bg=BG, anchor="w", justify="left",
                                wraplength=px(900))
         self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X, padx=px(14))
@@ -117,8 +122,20 @@ class CommScreen(tk.Frame):
         tail = f" · {_t('Новых: {0}').format(fresh)}" if fresh else ""
         self.info.configure(text=_t("Сообщений: {0}").format(total) + tail)
         has_pilot = bool(pid)
-        self.entry.configure(state=tk.NORMAL if has_pilot else tk.DISABLED)
+        self.entry.set_enabled(has_pilot)
         self.send_btn.set_active(has_pilot)
+        self._refresh_suggest()
+
+    def _refresh_suggest(self) -> None:
+        """Пульт учится на эфире: подсказки из того, что экипаж уже писал."""
+        msgs = comm.messages()
+        if len(msgs) == self._suggest_seen:
+            return
+        self._suggest_seen = len(msgs)
+        texts = [str(m.get("text") or "") for m in msgs[-300:]]
+        texts += [str(p.get("callsign") or "") for p in pilots.pilots()]
+        self.suggester = Suggester(dictionary_from(texts))
+        self.entry.set_suggester(self.suggester)
 
     def _render(self) -> None:
         msgs = comm.messages()
@@ -145,19 +162,18 @@ class CommScreen(tk.Frame):
     # -- ввод ---------------------------------------------------------------
     def focus_input(self) -> None:
         """Фокус в поле ввода (при входе в раздел)."""
-        if str(self.entry.cget("state")) != tk.DISABLED:
+        if self.entry.state() != "disabled":
             self.entry.focus_set()
-
-    def _on_return(self, _e) -> str:
-        self._send()
-        return "break"
 
     def _send(self) -> None:
         pid = self._pid()
         if not pid:
             return
-        if comm.send(pid, self._callsign(), self.entry.get()) is not None:
-            self.entry.delete(0, tk.END)
+        text = " ".join(self.entry.get().split())
+        if not text:
+            return
+        if comm.send(pid, self._callsign(), text) is not None:
+            self.entry.clear()
             self.refresh()
             self.app.after(30, self._refresh_chrome)
 
@@ -165,9 +181,7 @@ class CommScreen(tk.Frame):
         """Распознанная речь — в поле ввода (пилот проверит и нажмёт Enter)."""
         if not text:
             return
-        tail = self.entry.get()
-        self.entry.insert(tk.END, (" " if tail and not tail.endswith(" ") else "") + text)
-        self.entry.focus_set()
+        self.entry.insert_text(text)
 
     def _mic_status(self, text: str, color=MUTED) -> None:
         self.mic_hint.configure(text=text, fg=color)

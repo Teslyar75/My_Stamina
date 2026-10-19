@@ -398,7 +398,6 @@ class Cockpit(tk.Tk):
             # Орион — гид: при входе в любой отсек рассказывает что происходит
             orion_scr = self.screens.get(orion_hook.KEY)
             if orion_scr is not None and hasattr(orion_scr, "on_zone_enter"):
-                from stamina import nav
                 zone = nav.zone_of(name)
                 sub = ""
                 scr_obj = self.screens.get(name)
@@ -909,8 +908,17 @@ class Cockpit(tk.Tk):
         self.after(33 if smooth else 200, self._tick)
 
     def _on_close(self) -> None:
+        self._stop_agents()
         self._save_all()
         self.destroy()
+
+    def _stop_agents(self) -> None:
+        """Закрыли корабль — гасим живых агентов: сирота доделает работу в пустоту."""
+        try:
+            from stamina import orion
+            orion.stop_all()
+        except Exception:
+            pass
 
     def _save_all(self) -> None:
         try:

@@ -107,17 +107,26 @@ class PhraseSplitter:
 
     Чистая логика: feed() получает распознанный частичный текст, громкость и
     длительность блока. Возвращает True, когда запись пора заканчивать.
+
+    Заминка посреди речи — не конец фразы. После `soft_sec` тишины пилот получает
+    предупреждение (`self.paused`), а запись закрывается только после `silence_sec`.
+    `silence_sec = 0` — не рвать по тишине совсем (говорите, пока не нажмёте СТОП).
+    `self.reason` объясняет, почему фраза закрыта: silence / max / idle / key.
     """
 
-    def __init__(self, silence_sec: float = 1.5, max_sec: float = 12.0,
-                 idle_sec: float = 6.0, rms_gate: float = 0.003) -> None:
+    def __init__(self, silence_sec: float = 2.5, max_sec: float = 120.0,
+                 idle_sec: float = 12.0, rms_gate: float = 0.003,
+                 soft_sec: float = 0.7) -> None:
         self.silence_sec = silence_sec
         self.max_sec = max_sec
         self.idle_sec = idle_sec
         self.rms_gate = rms_gate
+        self.soft_sec = soft_sec
         self.elapsed = 0.0
         self.silence = 0.0
         self.heard = False
+        self.paused = False          # тянется тишина: «…пауза 1,2 с»
+        self.reason = ""             # почему закрыли фразу
 
     def feed(self, partial: str, rms: float, dt: float) -> bool:
         self.elapsed += dt
@@ -127,13 +136,37 @@ class PhraseSplitter:
             self.silence = 0.0
         else:
             self.silence += dt
+        self.paused = bool(self.heard and self.soft_sec > 0 and self.silence >= self.soft_sec)
         if self.elapsed >= self.max_sec:
+            self.reason = "max"
             return True
-        if self.heard and self.silence >= self.silence_sec:
+        if self.heard and self.silence_sec > 0 and self.silence >= self.silence_sec:
+            self.reason = "silence"
             return True
         if not self.heard and self.elapsed >= self.idle_sec:
+            self.reason = "idle"
             return True
         return False
+
+    def live_start(self) -> None:
+        """Vosk услышал паузу и закрыл кусок сам: это ещё не конец фразы."""
+        self.heard = True
+        self.silence = 0.0
+        self.paused = False
+
+
+CAL_BLOCKS = 6        # блоков на замер фона перед первой фразой (~1,5 с)
+
+
+def noise_gate(levels: list[float], base: float = 0.003, cap: float = 0.02) -> float:
+    """Порог тишины по замерам фона: шумная комната — выше, тихая — как в настройках.
+
+    Берём самый тихий блок (речь его не занижает) и поднимаем порог не более чем
+    в 2,5 раза, но не выше `cap`: иначе своё же эхо начнёт рвать фразу.
+    """
+    if not levels:
+        return base
+    return max(base, min(cap, min(levels) * 2.5))
 
 
 def clean(text: str) -> str:
@@ -176,14 +209,16 @@ class Listener:
     """
 
     def __init__(self, *, model_path: Path | None = None, device: int | None = None,
-                 silence_sec: float = 1.3, max_sec: float = 30.0, idle_sec: float = 8.0,
-                 rms_gate: float = 0.003) -> None:
+                 silence_sec: float = 2.5, max_sec: float = 120.0, idle_sec: float = 12.0,
+                 rms_gate: float = 0.003, soft_sec: float = 0.7) -> None:
         self.model_path = model_path
         self.device = device
         self.silence_sec = silence_sec
         self.max_sec = max_sec
         self.idle_sec = idle_sec
         self.rms_gate = rms_gate
+        self.soft_sec = soft_sec
+        self.reason = ""             # чем закончилась фраза: silence / max / idle / key
         self.events: queue.Queue = queue.Queue()
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
@@ -237,7 +272,8 @@ class Listener:
 
             rec = vosk.KaldiRecognizer(model, SAMPLE_RATE)
             splitter = PhraseSplitter(silence_sec=self.silence_sec, max_sec=self.max_sec,
-                                      idle_sec=self.idle_sec, rms_gate=self.rms_gate)
+                                      idle_sec=self.idle_sec, rms_gate=self.rms_gate,
+                                      soft_sec=self.soft_sec)
             audio: queue.Queue = queue.Queue()
             step = BLOCK / SAMPLE_RATE
 
@@ -245,6 +281,8 @@ class Listener:
                 audio.put(bytes(indata))
 
             parts: list[str] = []
+            cal: list[float] = []
+            ticks = 0
             with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=BLOCK, dtype="int16",
                                    channels=1, device=self.device, callback=callback):
                 self._push(("status", "listening"))
@@ -255,21 +293,38 @@ class Listener:
                         if splitter.feed("", 0.0, step):
                             break
                         continue
-                    if rec.AcceptWaveform(data):          # Vosk сам заметил паузу
+                    level = rms_of(data)
+                    if len(cal) < CAL_BLOCKS:      # замер фона: тихий голос не выпадает из речи
+                        cal.append(level)
+                        if len(cal) == CAL_BLOCKS:
+                            splitter.rms_gate = noise_gate(cal, self.rms_gate)
+                    if rec.AcceptWaveform(data):   # Vosk заметил паузу — фразу не закрываем
                         text = clean(json.loads(rec.Result()).get("text", ""))
                         if text:
                             parts.append(text)
-                        break
+                            splitter.live_start()
+                        if splitter.feed("", level, step):
+                            break
+                        continue
                     partial = json.loads(rec.PartialResult()).get("partial", "")
-                    level = rms_of(data)
                     self._push(("level", level))
                     if partial.strip():
                         self._push(("partial", clean(partial)))
                     if splitter.feed(partial, level, step):
                         break
+                    ticks += 1
+                    if ticks % 2 == 0:             # раз в 0,5 с — время записи и «пауза»
+                        self._push(("elapsed", round(splitter.elapsed, 1)))
+                        if splitter.paused:
+                            self._push(("pause", round(splitter.silence, 1)))
                 tail = clean(json.loads(rec.FinalResult()).get("text", ""))
             if tail:
                 parts.append(tail)
+            if not splitter.reason and self._stop.is_set():
+                splitter.reason = "key"
+            self.reason = splitter.reason
+            if splitter.reason:
+                self._push(("stop", splitter.reason))
             self._push(("final", clean(" ".join(parts))))
         except Exception as exc:  # noqa: BLE001
             self.error = str(exc)

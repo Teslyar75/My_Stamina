@@ -10,6 +10,10 @@
 
 Это вспомогательная утилита для диалога с ассистентом, а не часть Star Typing.
 Подробности — tools/voice_input/README.md
+
+Заминка посреди речи фразу не закрывает: пауза от Vosk копится в общий текст, конец
+фразы определяет PhraseSplitter — тишина 2,5 с (настраивается `--silence`), лимит
+времени или клавиша. `--hold` вообще не рвёт фразу по тишине.
 """
 from __future__ import annotations
 
@@ -72,17 +76,26 @@ class PhraseSplitter:
 
     Чистая логика: feed() получает распознанный частичный текст, громкость и
     длительность блока. Возвращает True, когда запись пора заканчивать.
+
+    Заминка посреди речи — не конец фразы. После `soft_sec` тишины пилот получает
+    предупреждение (`self.paused`), а запись закрывается только после `silence_sec`.
+    `silence_sec = 0` — не рвать по тишине совсем (режим «говорите, пока не нажму СТОП»).
+    `self.reason` объясняет, почему фраза закрыта: silence / max / idle / key.
     """
 
-    def __init__(self, silence_sec: float = 1.5, max_sec: float = 12.0,
-                 idle_sec: float = 6.0, rms_gate: float = 0.003) -> None:
+    def __init__(self, silence_sec: float = 2.5, max_sec: float = 120.0,
+                 idle_sec: float = 12.0, rms_gate: float = 0.003,
+                 soft_sec: float = 0.7) -> None:
         self.silence_sec = silence_sec
         self.max_sec = max_sec
         self.idle_sec = idle_sec
         self.rms_gate = rms_gate
+        self.soft_sec = soft_sec
         self.elapsed = 0.0
         self.silence = 0.0
         self.heard = False
+        self.paused = False          # тянется тишина: «…пауза 1,2 с»
+        self.reason = ""             # почему закрыли фразу
 
     def feed(self, partial: str, rms: float, dt: float) -> bool:
         self.elapsed += dt
@@ -92,13 +105,37 @@ class PhraseSplitter:
             self.silence = 0.0
         else:
             self.silence += dt
+        self.paused = bool(self.heard and self.soft_sec > 0 and self.silence >= self.soft_sec)
         if self.elapsed >= self.max_sec:
+            self.reason = "max"
             return True
-        if self.heard and self.silence >= self.silence_sec:
+        if self.heard and self.silence_sec > 0 and self.silence >= self.silence_sec:
+            self.reason = "silence"
             return True
         if not self.heard and self.elapsed >= self.idle_sec:
+            self.reason = "idle"
             return True
         return False
+
+    def live_start(self) -> None:
+        """Vosk услышал паузу и закрыл кусок сам: это ещё не конец фразы."""
+        self.heard = True
+        self.silence = 0.0
+        self.paused = False
+
+
+CAL_BLOCKS = 6        # блоков на замер фона перед первой фразой (~1,5 с)
+
+
+def noise_gate(levels: list[float], base: float = 0.003, cap: float = 0.02) -> float:
+    """Порог тишины по замерам фона: шумная комната — выше, тихая — как в настройках.
+
+    Берём самый тихий блок (речь его не занижает) и поднимаем порог не более чем
+    в 2,5 раза, но не выше `cap`: иначе своё же эхо начнёт рвать фразу.
+    """
+    if not levels:
+        return base
+    return max(base, min(cap, min(levels) * 2.5))
 
 
 def clean(text: str) -> str:
@@ -391,32 +428,63 @@ def self_test() -> int:
 
 
 def capture_phrase(mic: Mic, rec, splitter: PhraseSplitter, *, abort_key: bool = False,
-                   on_partial=None) -> str:
-    """Записать одну фразу до тишины, лимита времени или нажатой клавиши."""
+                   on_partial=None, on_pause=None) -> str:
+    """Записать одну фразу до тишины, лимита времени или нажатой клавиши.
+
+    Пауза от Vosk (`AcceptWaveform`) фразу **не** закрывает: распознанный кусок
+    добавляется к общей фразе, а решение о конце принимает `splitter`.
+    """
     parts: list[str] = []
+    step = BLOCK / SAMPLE_RATE
+    cal: list[float] = []
     while True:
         data = mic.read()
         if abort_key and key_pressed():
             print()
+            splitter.reason = splitter.reason or "key"
             break
         if data is None:
-            if splitter.feed("", 0.0, BLOCK / SAMPLE_RATE):
+            if splitter.feed("", 0.0, step):
                 break
             continue
-        if rec.AcceptWaveform(data):                 # Vosk сам заметил паузу
+        level = rms_of(data)
+        if len(cal) < CAL_BLOCKS:                    # замер фона: тихий голос не должен выпадать
+            cal.append(level)
+            if len(cal) == CAL_BLOCKS:
+                splitter.rms_gate = noise_gate(cal, splitter.rms_gate)
+        if rec.AcceptWaveform(data):                 # Vosk заметил паузу — но фразу продолжаем
             text = clean(json.loads(rec.Result()).get("text", ""))
             if text:
                 parts.append(text)
-            break
+                splitter.live_start()
+            if splitter.feed("", level, step):
+                break
+            continue
         partial = json.loads(rec.PartialResult()).get("partial", "")
         if partial and on_partial:
             on_partial(partial)
-        if splitter.feed(partial, rms_of(data), BLOCK / SAMPLE_RATE):
+        if splitter.feed(partial, level, step):
             break
+        if splitter.paused and on_pause:
+            on_pause(splitter.silence)
     tail = clean(json.loads(rec.FinalResult()).get("text", ""))
     if tail:
         parts.append(tail)
     return clean(" ".join(parts))
+
+
+STOP_WORDS = {"silence": "тишина", "max": "лимит времени",
+              "idle": "речи не было", "key": "клавиша"}
+
+
+def stop_reason(splitter: PhraseSplitter) -> str:
+    """Человеческая причина: почему фраза закрылась (видно в консоли)."""
+    word = STOP_WORDS.get(splitter.reason)
+    if not word:
+        return ""
+    if splitter.reason == "silence":
+        return f"{word} {splitter.silence_sec:g} с"
+    return word
 
 
 # -- вывод ----------------------------------------------------------------------
@@ -478,10 +546,13 @@ def run(args) -> int:
 
     accumulated: list[str] = []
     if args.once:                                  # одна фраза: удобно для ярлыка и проверок
+        sp = new_splitter(args)
         try:
-            text = capture_phrase(mic, rec, new_splitter(args))
+            text = capture_phrase(mic, rec, sp, on_pause=None if args.quiet else show_pause)
         finally:
             mic.close()
+        if not args.quiet and stop_reason(sp):
+            print(f"  (фраза закрыта: {stop_reason(sp)})")
         handle(text, args, accumulated)
         return 0
     try:
@@ -489,7 +560,10 @@ def run(args) -> int:
             print("Непрерывный режим: говорите, фразы сами попадают в буфер обмена.")
             print("Enter — начать новую порцию текста (буфер очистится).\n")
             while True:
-                text = capture_phrase(mic, rec, new_splitter(args))
+                sp = new_splitter(args)
+                text = capture_phrase(mic, rec, sp, on_pause=None if args.quiet else show_pause)
+                if not args.quiet and stop_reason(sp):
+                    print(f"  (фраза закрыта: {stop_reason(sp)})")
                 handle(text, args, accumulated)
                 if key_pressed():
                     sys.stdin.read(1)
@@ -504,8 +578,12 @@ def run(args) -> int:
                 except EOFError:
                     break
                 mic.flush()
-                text = capture_phrase(mic, rec, new_splitter(args), abort_key=True,
-                                      on_partial=None if args.quiet else show_partial)
+                sp = new_splitter(args)
+                text = capture_phrase(mic, rec, sp, abort_key=True,
+                                      on_partial=None if args.quiet else show_partial,
+                                      on_pause=None if args.quiet else show_pause)
+                if not args.quiet and stop_reason(sp):
+                    print(f"  (фраза закрыта: {stop_reason(sp)})")
                 handle(text, args, accumulated)
                 rec = vosk.KaldiRecognizer(model, SAMPLE_RATE)
     except KeyboardInterrupt:
@@ -516,12 +594,20 @@ def run(args) -> int:
 
 
 def new_splitter(args) -> PhraseSplitter:
-    return PhraseSplitter(silence_sec=args.silence, max_sec=args.max_sec,
-                          idle_sec=args.idle, rms_gate=args.gate)
+    """Разделитель фраз по аргументам. `--hold`: по тишине не рвём вовсе."""
+    silence = 0.0 if getattr(args, "hold", False) else args.silence
+    return PhraseSplitter(silence_sec=silence, max_sec=args.max_sec,
+                          idle_sec=args.idle, rms_gate=args.gate,
+                          soft_sec=getattr(args, "soft", 0.7))
 
 
 def show_partial(text: str) -> None:
     print("\r… " + text[:100] + " " * 10, end="", flush=True)
+
+
+def show_pause(silence: float) -> None:
+    """Тишина тянется: сказать пилоту, что фраза ещё пишется и не закроется сразу."""
+    print(f"\r… пауза {silence:.1f} с — говорите, не закрываю " + " " * 6, end="", flush=True)
 
 
 # -- аргументы -------------------------------------------------------------------
@@ -545,9 +631,14 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--self-test", action="store_true",
                    help="проверить библиотеки, модель, буфер обмена и набор текста (без микрофона)")
     p.add_argument("--model", default=None, help="путь к папке модели Vosk")
-    p.add_argument("--silence", type=float, default=1.5, help="тишина в конце фразы, с")
-    p.add_argument("--max-sec", type=float, default=12.0, help="самая длинная фраза, с")
-    p.add_argument("--idle", type=float, default=6.0, help="ждать речи не дольше, с")
+    p.add_argument("--silence", type=float, default=2.5,
+                   help="тишина в конце фразы, с (заминка короче — фраза продолжается)")
+    p.add_argument("--soft", type=float, default=0.7,
+                   help="после какой тишины подсказывать «…пауза», с")
+    p.add_argument("--hold", action="store_true",
+                   help="не рвать фразу по тишине: только клавиша или лимит времени")
+    p.add_argument("--max-sec", type=float, default=120.0, help="самая длинная фраза, с")
+    p.add_argument("--idle", type=float, default=12.0, help="ждать речи не дольше, с")
     p.add_argument("--gate", type=float, default=0.003, help="порог тишины (0…1): ниже него — пауза")
     p.add_argument("--no-copy", dest="copy", action="store_false", help="не трогать буфер обмена")
     p.add_argument("--quiet", action="store_true", help="не показывать распознавание на лету")

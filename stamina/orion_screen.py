@@ -17,18 +17,22 @@
 from __future__ import annotations
 
 from stamina.i18n import t as _t
+from stamina.i18n import t as tr_          # окно доступа к GitHub исторически зовёт так
 
 import queue
 import re
 import threading
 import time
 import tkinter as tk
+import webbrowser
 from tkinter import messagebox
 
 from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_screens import Modal, PinPad
+from stamina.prompt_box import PromptBox, hud_colors
+from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import (AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT,
                            blend, px)
 from stamina.voice import stt, tts
@@ -37,6 +41,37 @@ from stamina.voice.mic import MicControl
 
 def _label(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw):
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
+
+
+# -- справка «где взять токен GitHub» ------------------------------------------
+GITHUB_TOKENS_URL = "https://github.com/settings/tokens"
+
+
+def github_token_help() -> str:
+    """Пошаговая справка для пилота, который не каждый день в GitHub.
+
+    Отдельно — про другой компьютер: там корабль не подскажет автоматически,
+    токен придётся получить заново (или взять прежний, если срок не истёк).
+    """
+    steps = [
+        _t("1. Войдите на github.com под своим аккаунтом."),
+        _t("2. Справа вверху — аватар → Settings."),
+        _t("3. Внизу левого столбца — Developer settings."),
+        _t("4. Personal access tokens → Tokens (classic) → Generate new token (classic)."),
+        _t("5. Имя: Star Typing. Срок: 90 дней (или без срока, если корабль только ваш)."),
+        _t("6. Поставьте галочку repo — этого хватает для обновлений корабля."),
+        _t("7. Generate token и скопируйте ghp_… — показывается он один раз."),
+        _t("8. Вставьте токен сюда и нажмите «ПРОВЕРИТЬ»."),
+    ]
+    notes = [
+        _t("Придирчивым: Personal access tokens → Fine-grained tokens, доступ только к "
+           "репозиторию Teslyar75/My_Stamina, Contents: Read and write."),
+        _t("Токен — как ключ от шлюза: никому его не пересылайте. Корабль хранит его "
+           "только на этом компьютере."),
+        _t("На другом компьютере токен придётся получить заново тем же путём — "
+           "или взять прежний, если срок ещё не истёк."),
+    ]
+    return "\n".join(steps + [""] + notes)
 
 
 class _OwnerCodeDialog(Modal):
@@ -114,7 +149,7 @@ class _GitHubAccessDialog(Modal):
 
     def __init__(self, master) -> None:
         super().__init__(master, tr_("ДОСТУП К GITHUB"), GREEN)
-        L(self.body, tr_("Есть ли у тебя доступ к аккаунту разработчика на GitHub?\n"
+        _label(self.body, tr_("Есть ли у тебя доступ к аккаунту разработчика на GitHub?\n"
                         "Можешь ли ты отправлять обновления и изменять состояние проекта?"),
           fg=MUTED, size=10).pack(anchor="w", pady=(px(4), px(8)))
         self.token_entry = tk.Entry(self.body, bg=BG2, fg=TEXT, insertbackground=CYAN,
@@ -122,16 +157,40 @@ class _GitHubAccessDialog(Modal):
                                     highlightthickness=1, highlightbackground=LINE,
                                     highlightcolor=CYAN, show="*")
         self.token_entry.pack(fill=tk.X, ipady=px(4))
-        L(self.body, tr_("Токен GitHub (ghp_... или github_pat_...)"),
+        _label(self.body, tr_("Токен GitHub (ghp_... или github_pat_...)"),
           fg=MUTED, size=8).pack(anchor="w", pady=(px(4), px(8)))
-        self.msg = L(self.body, "", fg=RED, size=9, bold=True)
+        self.msg = _label(self.body, "", fg=RED, size=9, bold=True)
         self.msg.pack(anchor="w")
         btns = tk.Frame(self.body, bg=PANEL)
         btns.pack(fill=tk.X, pady=(px(8), 0))
         HudButton(btns, tr_("ПРОВЕРИТЬ"), self.check, color=GREEN, height=36,
                   font_size=10).pack(side=tk.LEFT)
         HudButton(btns, tr_("ПРОПУСТИТЬ"), self.skip, height=36, font_size=9).pack(side=tk.LEFT, padx=px(6))
+        HudButton(btns, tr_("КАК ПОЛУЧИТЬ ТОКЕН"), self.toggle_help, height=36, font_size=9,
+                  color=AMBER).pack(side=tk.LEFT, padx=px(6))
+        HudButton(btns, tr_("ОТКРЫТЬ GITHUB"), self.open_tokens_page, height=36, font_size=9,
+                  color=CYAN).pack(side=tk.LEFT, padx=px(6))
+        # справка для тех, кто не каждый день в GitHub: показывается по кнопке
+        self.help_label = _label(self.body, github_token_help(), fg=MUTED, size=9, justify="left",
+                                 anchor="w", wraplength=px(620))
+        self.help_shown = False
         self.result = False
+
+    def toggle_help(self) -> None:
+        """Справка «где взять токен» — по шагам, для не-знатока GitHub."""
+        if self.help_shown:
+            self.help_label.pack_forget()
+        else:
+            self.help_label.pack(anchor="w", pady=(px(8), 0))
+        self.help_shown = not self.help_shown
+
+    def open_tokens_page(self) -> None:
+        """Открыть в браузере страницу создания токена — искать её глазами не надо."""
+        try:
+            webbrowser.open(GITHUB_TOKENS_URL)
+        except Exception:  # noqa: BLE001
+            self.msg.configure(text=tr_("Откройте вручную: {0}").format(GITHUB_TOKENS_URL),
+                               fg=AMBER)
 
     def check(self) -> None:
         from stamina import orion
@@ -174,6 +233,9 @@ class OrionScreen(tk.Frame):
         self._draft_id = orion.DEFAULT_AGENT["id"]      # карточка, которую правим
         self._is_new = False               # True — заселяем нового (права выбираются здесь)
         self._access = "crew"
+        store = getattr(self.app, "store", None)
+        self.ui_mode = str(getattr(store, "settings", {}).get("orion_ui") or "chat")
+        self._sent_log: list[str] = []     # что уже отправляли — для истории по ↑
         self._voice_mode = "ship"
         self._enabled = True
         self.board_visible = False         # доска чата скрыта, разговор идёт как контекст
@@ -234,6 +296,10 @@ class OrionScreen(tk.Frame):
         self.mic_indicator.pack(side=tk.RIGHT, padx=(px(6), 0))
         HudButton(bar, _t("ЧИТАТЬ КНИГУ"), self._read_book, height=30, font_size=9,
                   color=GREEN).pack(side=tk.RIGHT, padx=(px(4), 0))
+        # вид чата: «Чат» для разговора, «Ремонтный отсек» — для работы руками
+        self.mode_btn = HudButton(bar, self._mode_title(), self._toggle_mode, height=30,
+                                  font_size=9, color=CYAN)
+        self.mode_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
 
         # Доска — вся переписка. По умолчанию скрыта: Орион ведёт запись как контекст
         # и открывает доску сам, когда пилот диктует задание в документ.
@@ -305,20 +371,32 @@ class OrionScreen(tk.Frame):
 
         row = tk.Frame(bottom, bg=BG)
         row.pack(fill=tk.X, pady=(px(4), 0))
-        self.entry = tk.Entry(row, bg=BG2, fg=TEXT, insertbackground=CYAN, relief=tk.FLAT,
-                              font=theme.font(11), highlightthickness=1, highlightbackground=LINE,
-                              highlightcolor=CYAN, selectbackground=CYAN, selectforeground=BG)
-        self.entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
-        self.entry.bind("<Return>", lambda _e: (self._send(), "break")[1])
-        self.entry.bind("<KP_Enter>", lambda _e: (self._send(), "break")[1])
-        self.entry.bind("<Control-v>", self._paste_text)
-        self.entry.bind("<Control-V>", self._paste_text)
-        self.entry.bind("<Button-3>", self._context_menu)
+        self.input_row = row
+        self.suggester = Suggester()
+        self._suggest_seen = -1
+        self._draft_text = ""
+        self.entry = PromptBox(row, on_send=self._send, font=theme.font(11),
+                               colors=hud_colors(), suggester=self.suggester,
+                               on_draft=self._draft_note)
+        self.entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, px(8)))
+        self.entry.bind_text("<Control-v>", self._paste_text)
+        self.entry.bind_text("<Control-V>", self._paste_text)
+        self.entry.bind_text("<Button-3>", self._context_menu)
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
-                              label=_t("ГОЛОС"), height=36, font_size=11)
+                              label=_t("ГОЛОС"), height=36, font_size=11,
+                              settings=self.app.store.settings,
+                              save=self.app.store.save_settings)
         self.mic.button.pack(side=tk.LEFT)
+        self.mic.hold_button.pack(side=tk.LEFT, padx=(px(6), 0))
         self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
         self.send_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        # квадратик «стоп»: пилот прерывает работу, чтобы уточнить задачу до конца правок
+        self.stop_btn = HudButton(row, "■", self._stop_work, height=36, font_size=11,
+                                  width=36, color=RED)
+        self.stop_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        self.stop_btn.set_enabled(False)
+        # Простая панель общения: микрофон, ввод, отправка
+        self._apply_mode()
 
         self._apply_tags()
         self._set_board(False)
@@ -336,7 +414,7 @@ class OrionScreen(tk.Frame):
         try:
             text = self.clipboard_get()
             if text:
-                self.entry.insert(tk.INSERT, text)
+                self.entry.paste(text)
                 self.entry.focus_set()
         except tk.TclError:
             pass
@@ -358,13 +436,13 @@ class OrionScreen(tk.Frame):
         try:
             text = self.clipboard_get()
             if text:
-                self.entry.insert(tk.INSERT, text)
+                self.entry.paste(text)
         except tk.TclError:
             pass
 
     def _copy_from_menu(self) -> None:
         try:
-            selected = self.entry.get(tk.SEL_FIRST, tk.SEL_LAST)
+            selected = self.entry.selected()
             if selected:
                 self.clipboard_clear()
                 self.clipboard_append(selected)
@@ -442,8 +520,8 @@ class OrionScreen(tk.Frame):
         self.access_hint.pack(fill=tk.X)
 
         _label(form, _t("ГОЛОС"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(8), 0))
-        self.voice_mode_btn = HudButton(form, "", self._cycle_voice, height=32, font_size=10,
-                                        color=GREEN)
+        self.voice_mode_btn = HudButton(form, "", self._cycle_voice, height=38, font_size=12,
+                                        color=GREEN, width=140)
         self.voice_mode_btn.pack(anchor="w")
         self.voice_hint = _label(form, "", fg=MUTED, size=8, anchor="w", justify="left",
                                  wraplength=px(620))
@@ -464,19 +542,19 @@ class OrionScreen(tk.Frame):
 
         # ПРИВЯЗКА К OPENCODY: код для заселения, токен, статус связи
         bp = HudPanel(form, title=_t("ПРИВЯЗКА К OPENCODY"), accent=GREEN)
-        bp.pack(fill=tk.X, pady=(px(10), 0))
+        bp.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
         bbody = tk.Frame(bp.body, bg=PANEL)
-        bbody.pack(fill=tk.X)
+        bbody.pack(fill=tk.BOTH, expand=True)
 
         self.boarding_code = orion.make_boarding_code()
         code_row = tk.Frame(bbody, bg=PANEL)
-        code_row.pack(fill=tk.X, pady=(px(6), 0))
-        _label(code_row, _t("КОД ДЛЯ ЗАСЕЛЕНИЯ"), fg=MUTED, size=9, bold=True).pack(anchor="w")
-        self.code_label = _label(code_row, self.boarding_code, fg=GREEN, size=16, bold=True, bg=PANEL)
-        self.code_label.pack(anchor="w")
+        code_row.pack(fill=tk.X, pady=(px(10), 0))
+        _label(code_row, _t("КОД ДЛЯ ЗАСЕЛЕНИЯ"), fg=MUTED, size=11, bold=True).pack(anchor="w")
+        self.code_label = _label(code_row, self.boarding_code, fg=GREEN, size=28, bold=True, bg=PANEL)
+        self.code_label.pack(anchor="w", pady=(px(6), 0))
         _label(code_row, _t("Введите этот код в OpenCode CLI при заселении агента."),
-               fg=MUTED, size=8, anchor="w", justify="left",
-               wraplength=px(620)).pack(anchor="w")
+               fg=MUTED, size=10, anchor="w", justify="left",
+               wraplength=px(800)).pack(anchor="w")
 
         oc_row = tk.Frame(bbody, bg=PANEL)
         oc_row.pack(fill=tk.X, pady=(px(8), 0))
@@ -567,7 +645,7 @@ class OrionScreen(tk.Frame):
         """Клавиши раздела: поле ввода само принимает набор и Enter."""
 
     def focus_input(self) -> None:
-        if str(self.entry.cget("state")) != tk.DISABLED:
+        if self.entry.state() != "disabled":
             self.entry.focus_set()
 
     # -- данные ------------------------------------------------------------
@@ -606,7 +684,7 @@ class OrionScreen(tk.Frame):
                                         "Установите opencode и перезапустите корабль.") + "\n", "hint")
         if not msgs:
             self.text.insert(tk.END, _t("Канал свободен. Скажите Ориону первое слово — "
-                                        "письменно 或 голосом.") + "\n", "hint")
+                                        "письменно или голосом.") + "\n", "hint")
         for m in msgs:
             when = time.strftime("%H:%M", time.localtime(float(m.get("ts", 0.0))))
             role = m.get("role", "orion")
@@ -629,6 +707,21 @@ class OrionScreen(tk.Frame):
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
         self._render_strip(msgs, rec)
+        self._refresh_suggest(msgs)
+
+    def _refresh_suggest(self, msgs: list[dict] | None = None) -> None:
+        """Пульт учится на переписке: подсказки из того, что пилот уже писал."""
+        if not hasattr(self, "entry"):
+            return
+        if msgs is None:
+            msgs = orion.history(self._rec()["id"])["messages"]
+        if len(msgs) == self._suggest_seen:
+            return
+        self._suggest_seen = len(msgs)
+        texts = [str(m.get("text") or "") for m in msgs[-400:] if m.get("role") == "pilot"]
+        texts += [str(t.get("text") or "") for t in orion.tasks()[-100:]]
+        self.suggester = Suggester(dictionary_from(texts))
+        self.entry.set_suggester(self.suggester)
 
     def _render_strip(self, msgs: list[dict], rec: dict) -> None:
         """Живая линия: последняя реплика пилота и последний ответ Ориона."""
@@ -720,17 +813,20 @@ class OrionScreen(tk.Frame):
         if orion.detect_master_call(text):
             self._enter_master_mode()
             return
-        tail = self.entry.get()
-        self.entry.insert(tk.END, (" " if tail and not tail.endswith(" ") else "") + text)
-        self.entry.focus_set()
+        self.entry.insert_text(text)
         self.send_btn.set_enabled(True)
+
+    def _draft_note(self, text: str) -> None:
+        """Пилот на минуту замолчал — запомнить черновик (для «Орион видит черновик»)."""
+        self._draft_text = text
 
     def _send(self) -> None:
         rec = self._rec()
         text = " ".join(self.entry.get().split())
         if not text or self._busy:
             return
-        self.entry.delete(0, tk.END)
+        self.entry.clear()
+        self._draft_text = ""
         # короткий разговор о записи задания — «да»/«нет» или сам текст задания
         if self._await_task:
             self._take_task(text)
@@ -746,6 +842,10 @@ class OrionScreen(tk.Frame):
             self._hint(_t("OpenCode не найден: установите opencode и перезапустите корабль."), RED)
             return
         orion.remember(rec["id"], "pilot", text)
+        self._sent_log.append(text)
+        if len(self._sent_log) > 50:
+            del self._sent_log[:-50]
+        self.entry.set_history(self._sent_log)
         self._render_feed()
         found, task = orion.detect_task(text)
         if found:
@@ -779,7 +879,7 @@ class OrionScreen(tk.Frame):
         self._pending_task = task
         self.ask_label.configure(text=_t("Записать в документ заданий: «{0}»?").format(task[:200]))
         if not self.ask_row.winfo_manager():
-            self.ask_row.pack(side=tk.TOP, fill=tk.X, pady=(px(4), 0), before=self.entry.master)
+            self.ask_row.pack(side=tk.TOP, fill=tk.X, pady=(px(4), 0), before=self.input_row)
         self._hint(_t("Подтвердите: «да» голосом или кнопкой «ДА, ЗАПИСАТЬ»"), GREEN)
         if self._answer_voice and tts.available():
             tts.speak(_t("Вы хотите, чтобы я записал это в документ?"))
@@ -817,10 +917,11 @@ class OrionScreen(tk.Frame):
         profile = (follow or first) if second else first
         self._busy = True
         self.send_btn.set_enabled(False)
+        self.stop_btn.set_enabled(True)
         self._pending = (rec, text)
         if second:
             self._hide_permission()
-        self._hint(_t("Орион думает…"), AMBER)
+        self._hint(_t("Орион думает… (■ остановит его, чтобы вы уточнили задачу)"), AMBER)
         ctx = self._context()
         # При втором проходе — передаём разрешение в промпт
         if second:
@@ -829,6 +930,54 @@ class OrionScreen(tk.Frame):
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
 
+    def _stop_work(self) -> None:
+        """Квадратик «стоп»: оборвать агента на середине — пилот хочет уточнить задачу."""
+        rec = self._rec()
+        if orion.stop_run(rec["id"]):
+            self._hint(_t("Останавливаю… сейчас можно дописать уточнение"), AMBER)
+            self.entry.focus_set()
+        else:
+            self.stop_btn.set_enabled(False)
+            self._hint(_t("Орион уже не работает"), MUTED)
+
+    # -- вид чата: разговор или ремонтный отсек ------------------------------
+    def _mode_title(self) -> str:
+        return _t("РЕЖИМ: ПРО") if getattr(self, "ui_mode", "chat") == "pro" else _t("РЕЖИМ: ЧАТ")
+
+    def _toggle_mode(self) -> None:
+        """Пилот выбирает вид: разговорный чат или «ремонтный отсек» для работы руками."""
+        self.ui_mode = "pro" if self.ui_mode == "chat" else "chat"
+        self._apply_mode()
+        store = getattr(self.app, "store", None)
+        if store is not None:
+            try:
+                store.settings["orion_ui"] = self.ui_mode
+                store.save_settings()
+            except Exception:  # noqa: BLE001
+                pass
+        self._hint(_t("Вид: {0}").format(_t("РЕМОНТНЫЙ ОТСЕК") if self.ui_mode == "pro"
+                                         else _t("ЧАТ")), CYAN)
+
+    def _apply_mode(self) -> None:
+        """Ремонтный отсек: моноширинный вывод, `Ctrl+Enter`, история по `↑`."""
+        if not hasattr(self, "mode_btn"):
+            return
+        pro = self.ui_mode == "pro"
+        self.mode_btn.set_text(self._mode_title())
+        mono = ("Consolas", 10) if pro else theme.font(10)
+        for widget, tags in ((self.text, ("body", "orion", "pilot", "system", "hint")),):
+            try:
+                widget.configure(font=mono)
+                for tag in tags:
+                    widget.tag_configure(tag, font=mono)
+            except tk.TclError:
+                pass
+        try:
+            self.entry.set_ctrl_enter(pro)
+            self.entry.set_history(self._sent_log)
+        except tk.TclError:
+            pass
+
     def _worker(self, rec: dict, text: str, profile: str, session: str, ctx: str,
                 second: bool) -> None:
         try:
@@ -836,6 +985,28 @@ class OrionScreen(tk.Frame):
         except Exception as exc:  # noqa: BLE001
             res = orion.Result(error="spawn", detail=str(exc), profile=profile)
         self._queue.put(("answer", res, rec, second))
+
+    def _stop_thinking(self) -> None:
+        """Остановить зависший поток Орина."""
+        self._busy = False
+        self.send_btn.set_enabled(True)
+        self._hide_permission()
+        self._hint(_t("Орион остановлен. Пopробуйте ещё раз."), MUTED)
+
+    def _emergency_call(self) -> None:
+        """Экстренная связь: остановить зависший процесс и уведомить агента."""
+        rec = self._rec()
+        self._busy = False
+        self.send_btn.set_enabled(True)
+        self._hide_permission()
+        # Останавливаем зависший процесс
+        orion.stop_run(rec["id"])
+        self._hint(_t("Экстренная связь: Орион уведомлён, что вы ждёте ответа"), AMBER)
+        # Отправляем короткий сигнал агента
+        emergency = _t("ЭКСТРЕННАЯ СВЯЗЬ: Капитан ждёт ответа. Доложи что ты делаешь.")
+        orion.remember(rec["id"], "system", emergency)
+        self._render_feed()
+        self._run(rec, emergency, second=False)
 
     def _context(self) -> str:
         """Отметка корабля для агента: где пилот и что было открыто до Ориона."""
@@ -915,6 +1086,17 @@ class OrionScreen(tk.Frame):
     def _on_answer(self, res, rec: dict, second: bool) -> None:
         self._busy = False
         self.send_btn.set_enabled(True)
+        self.stop_btn.set_enabled(False)
+        if res.error == "stopped":
+            # остаток ответа не выбрасываем: пилот увидит, на чём Орион остановился
+            if res.reply:
+                orion.remember(rec["id"], "orion", res.reply, session=res.session)
+            note = _t("Остановлено пилотом — уточните задачу, разговор продолжится с того же места")
+            orion.remember(rec["id"], "system", note)
+            self._render_feed()
+            self._hint(note, AMBER)
+            self.entry.focus_set()
+            return
         if res.error:
             note = self._error_text(res)
             orion.remember(rec["id"], "system", note)
@@ -975,7 +1157,7 @@ class OrionScreen(tk.Frame):
     def _show_permission(self, note: str) -> None:
         self.perm_label.configure(text=_t("Орион просит разрешение: {0}").format(note))
         if not self.perm_row.winfo_manager():
-            self.perm_row.pack(side=tk.TOP, fill=tk.X, pady=(px(4), 0), before=self.entry.master)
+            self.perm_row.pack(side=tk.TOP, fill=tk.X, pady=(px(4), 0), before=self.input_row)
 
     def _hide_permission(self) -> None:
         if self.perm_row.winfo_manager():

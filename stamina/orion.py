@@ -37,6 +37,7 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -49,10 +50,10 @@ HISTORY_DIR = "orion"
 CHARACTER_DIR = "orion"      # документы манер лежат рядом с историей диалога
 CHARACTER_SUFFIX = ".character.md"
 TASKS_FILE = "orion_tasks.json"
-MAX_MESSAGES = 200          # сколько реплик диалога храним
+MAX_MESSAGES = 500          # сколько реплик диалога храним
 MAX_TEXT = 6000             # знаков в одной реплике
 MAX_CHARACTER = 4000        # знаков в документе манер агента
-TIMEOUT = 600.0             # секунд на ответ агента (модель может думать долго)
+TIMEOUT = 120.0             # секунд на ответ агента (рабочая версия)
 MARKER = "⟦ТРЕБУЕТСЯ РАЗРЕШЕНИЕ⟧"
 
 ACCESSES = ("commander", "observer", "crew")
@@ -596,6 +597,89 @@ class Result:
     profile: str = ""
 
 
+# -- живой агент: его можно остановить квадратиком «стоп» ----------------------
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+_RUNS: dict[int, tuple[str, "subprocess.Popen"]] = {}
+_RUNS_LOCK = threading.Lock()
+_STOPPED: set[int] = set()
+
+
+def _kill(proc: "subprocess.Popen") -> None:
+    """Погасить агента вместе с потомками."""
+    try:
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                           capture_output=True, creationflags=_NO_WINDOW)
+        else:
+            proc.kill()
+    except OSError:
+        pass
+    # Принудительное завершение — если taskkill не помог
+    try:
+        proc.kill()
+    except OSError:
+        pass
+
+
+def running(agent_id: str = "") -> bool:
+    """Работает ли сейчас агент: пока да — квадратик «стоп» живой."""
+    with _RUNS_LOCK:
+        if not agent_id:
+            return bool(_RUNS)
+        return any(aid == agent_id for aid, _proc in _RUNS.values())
+
+
+def stop_run(agent_id: str = "") -> bool:
+    """Остановить работающего агента — пилот хочет уточнить задачу до конца работы.
+
+    Сессия при этом не теряется: следующий вопрос уйдёт тому же агенту в тот же
+    разговор, поэтому уточнение выходит продолжением, а не новой беседой.
+    """
+    with _RUNS_LOCK:
+        victims = [(pid, proc) for pid, (aid, proc) in _RUNS.items()
+                   if not agent_id or aid == agent_id]
+        for pid, _proc in victims:
+            _STOPPED.add(pid)
+    for _pid, proc in victims:
+        _kill(proc)
+    return bool(victims)
+
+
+def stop_all() -> int:
+    """Погасить всех живых агентов — вызывается на выходе из корабля.
+
+    Иначе закрытие окна посреди работы оставляет сироту: процесс доделывает
+    задачу в пустоту, и в бортжурнал это уже не попадёт.
+    """
+    with _RUNS_LOCK:
+        victims = list(_RUNS.items())
+        agents = sorted({aid for aid, _proc in victims})
+        for pid, _item in victims:
+            _STOPPED.add(pid)
+            _RUNS.pop(pid, None)      # сразу снимаем с учёта: корабль уже уходит
+    if not agents:
+        return 0
+    for _pid, (_aid, proc) in victims:
+        _kill(proc)
+    return len(agents)
+
+
+def _remember_run(agent_id: str, proc: "subprocess.Popen") -> None:
+    with _RUNS_LOCK:
+        # Система может переиспользовать pid: новый запуск не должен считаться остановленным.
+        _STOPPED.discard(proc.pid)
+        _RUNS[proc.pid] = (agent_id, proc)
+
+
+def _forget_run(proc: "subprocess.Popen") -> bool:
+    """Убрать агента из списка живых. True — его гасили кнопкой «стоп»."""
+    with _RUNS_LOCK:
+        _RUNS.pop(proc.pid, None)
+        stopped = proc.pid in _STOPPED
+        _STOPPED.discard(proc.pid)
+    return stopped
+
+
 def ask(record: dict, text: str, *, context: str = "", profile: str = "",
         session: str = "", timeout: float = TIMEOUT) -> Result:
     """Спросить агента (первый проход). Разрешение на изменения корабль спросит сам."""
@@ -607,11 +691,7 @@ def ask(record: dict, text: str, *, context: str = "", profile: str = "",
 def run_profile(record: dict, text: str, *, profile: str, context: str = "",
                 session: str = "", timeout: float = TIMEOUT,
                 character: str | None = None) -> Result:
-    """Запустить конкретный профиль агента и вернуть ответ (синхронно — звать из потока).
-
-    `character` — блок манер (документ, который пилот правит на борту). None —
-    взять документ манер агента из борта.
-    """
+    """Запустить агента и вернуть ответ (манеры, контекст, эволюция)."""
     if not (text or "").strip():
         return Result(error="empty", profile=profile)
     exe = find_cli()
@@ -621,12 +701,12 @@ def run_profile(record: dict, text: str, *, profile: str, context: str = "",
         character = character_block(str(record.get("id") or DEFAULT_AGENT["id"]))
     prompt = "\n\n".join(part for part in (character, context, text.strip()) if part)
     if Path(exe).suffix.lower() in SHIMS:
-        prompt = flatten(prompt)          # обёртка cmd.exe не пропустит переводы строк
+        prompt = flatten(prompt)
     cmd = build_command(exe, profile, prompt, session=session, model=str(record.get("model") or ""))
     started = time.time()
     try:
         proc = subprocess.run(cmd, capture_output=True, timeout=timeout,
-                              cwd=str(PROJECT_DIR))
+                               cwd=str(PROJECT_DIR))
     except subprocess.TimeoutExpired:
         return Result(error="timeout", profile=profile, seconds=time.time() - started)
     except OSError as exc:
