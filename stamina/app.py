@@ -241,6 +241,33 @@ def run_app(argv: list[str] | None = None) -> None:
             _journal(f"снимок {tag}: grab={grab} focus={focus} окно={view} "
                      f"экран={getattr(cockpit, 'current', '?')} "
                      f"переднее окно Windows={fg} прочие окна={tops}")
+            # Ширины: если требуемая ширина больше окна, шапка и клавиатура не влезают,
+            # и раскладка может зациклиться (окно встаёт при живом главном потоке).
+            try:
+                parts = [f"окно={cockpit.winfo_width()}", f"нужно={cockpit.winfo_reqwidth()}"]
+                for name in ("nav_strip", "subnav", "_mini_row", "content"):
+                    w = getattr(cockpit, name, None)
+                    if w is not None:
+                        parts.append(f"{name}={w.winfo_reqwidth()}/{w.winfo_width()}")
+                _journal("ширины: " + " ".join(parts))
+            except Exception as e:  # noqa: BLE001
+                _journal(f"ширины: err {e}")
+            # Кто именно просит лишнюю ширину: строки окна и каждый экран
+            try:
+                rows = []
+                for ch in cockpit.winfo_children():
+                    rows.append(f"{ch.winfo_class()}#{str(ch).split('.')[-1]}="
+                                f"{ch.winfo_reqwidth()}/{ch.winfo_width()}")
+                _journal("строки: " + " ".join(rows))
+                scr = []
+                for name, s in (getattr(cockpit, "screens", {}) or {}).items():
+                    try:
+                        scr.append(f"{name}={s.winfo_reqwidth()}")
+                    except Exception:  # noqa: BLE001
+                        pass
+                _journal("экраны: " + " ".join(scr))
+            except Exception as e:  # noqa: BLE001
+                _journal(f"строки: err {e}")
 
         for _t in (1000, 2000, 3500, 6000, 12000):
             cockpit.after(_t, lambda tag=_t: _snap(f"{tag} мс"))

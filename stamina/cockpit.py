@@ -317,6 +317,11 @@ class Cockpit(tk.Tk):
         self.content.pack(fill=tk.BOTH, expand=True)
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
+        # Экран не должен «растягивать» окно под себя: все экраны лежат в одной ячейке,
+        # и самый широкий из них (например, «Скорочтение», 2601 px) задавал ширину
+        # всему окну. Из-за этого шапка и клавиатура уезжали за край, а Tk бесконечно
+        # пересчитывал раскладку — окно уходило в 100 % CPU и не отвечало.
+        self.content.grid_propagate(False)
 
         status = tk.Frame(self, bg=blend(BG, CYAN, 0.04))
         status.pack(fill=tk.X, side=tk.BOTTOM, before=self.content)  # статус-строка не выдавливается контентом
@@ -437,8 +442,27 @@ class Cockpit(tk.Tk):
         from stamina.page_help import open_page_help
         open_page_help(self)
 
+    def _only_screen(self, name: str) -> None:
+        """Оставить в раскладке только текущий экран.
+
+        Все экраны лежали друг на друге в одной ячейке, и Tk перерисовывал их все —
+        включая невидимые, а внутри них большие тексты (книга в «Скорочтении», лента
+        Ориона). Из-за этого главный поток уходил в 100 % CPU, окно вставало и кнопки
+        не нажимались. Замер: с убранными невидимыми экранами 1.25 с CPU за 5 с вместо 5.
+        """
+        for key, scr in (getattr(self, "screens", None) or {}).items():
+            try:
+                if key == name:
+                    if not scr.winfo_ismapped():
+                        scr.grid(row=0, column=0, sticky="nsew")
+                elif scr.winfo_ismapped():
+                    scr.grid_remove()
+            except tk.TclError:
+                pass
+
     def show(self, name: str) -> None:
         if name == self.current:
+            self._only_screen(name)      # экран уже открыт — просто убираем чужие
             return
         bridge: Bridge = self.screens["bridge"]
         if self.current == "bridge" and bridge.state in ("run", "ready") and name != "bridge":
@@ -470,9 +494,10 @@ class Cockpit(tk.Tk):
         self._prev_screen = self.current
         self.current = name
         scr = self.screens[name]
+        self._only_screen(name)          # невидимые экраны не рисуем (см. _only_screen)
+        scr.tkraise()
         if hasattr(scr, "refresh"):
             scr.refresh()
-        scr.tkraise()
         if hasattr(self, "living"):
             self.after(30, lambda s_=scr: self.current_screen_is(s_) and self.living.attach(s_))
         zone = nav.zone_of(name)
