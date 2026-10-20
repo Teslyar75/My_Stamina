@@ -688,7 +688,7 @@ class OrionScreenTest(unittest.TestCase):
         self.app.show("orion")
         scr = self._screen()
         self.assertEqual(self.app.current, "orion")
-        self.assertEqual(scr.tab_keys(), ["chat", "agents"])
+        self.assertEqual(scr.tab_keys(), ["chat", "agents", "archive"])
         scr.show_tab("agents")
         self.assertEqual(scr.current_tab, "agents")
         self.assertEqual(scr.page_help_key(), "orion.agents")  # у каждой подвкладки своя справка
