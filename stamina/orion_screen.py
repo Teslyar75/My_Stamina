@@ -639,14 +639,14 @@ class OrionScreen(tk.Frame):
         self.access_hint.pack(fill=tk.X)
 
         _label(form, _t("ГОЛОС"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(8), 0))
-        self.voice_mode_btn = HudButton(form, "", self._cycle_voice, height=38, font_size=12,
-                                        color=GREEN, width=140)
+        self.voice_mode_btn = HudButton(form, "—", self._cycle_voice, height=38, font_size=12,
+                                        color=GREEN)
         self.voice_mode_btn.pack(anchor="w")
         self.voice_hint = _label(form, "", fg=MUTED, size=8, anchor="w", justify="left",
                                  wraplength=px(620))
         self.voice_hint.pack(fill=tk.X)
 
-        self.enabled_btn = HudButton(form, "", self._toggle_enabled, height=32, font_size=10,
+        self.enabled_btn = HudButton(form, "—", self._toggle_enabled, height=32, font_size=10,
                                      color=GREEN)
         self.enabled_btn.pack(anchor="w", pady=(px(10), 0))
 

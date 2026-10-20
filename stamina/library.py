@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Callable
 
 from stamina.text_processing import process_text
-from stamina.textmap import TextMap, fragment_of
+from stamina.textmap import INITIAL_WORDS, TextMap, fragment_of, load_pace_wpm
 
 DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True, "translit": False, "yo": False,
                 "glue": False}
@@ -436,7 +436,7 @@ class Library:
         orig = self.original(tid)
         if not m or not orig:
             return None
-        old_map = self.textmap(tid)
+        old_map = self.textmap(tid, need_char=m["positions"]["typing"]["char"])
         old_pos = m["positions"]["typing"]["char"]
         word = old_map.prep_to_orig(old_pos) if old_map and old_pos else 0
         opts = norm_opts(opts)
@@ -451,7 +451,19 @@ class Library:
         self.save_meta(m)
         return new, pos
 
-    def textmap(self, tid: str) -> TextMap | None:
+    def typing_speed_wpm(self, tid: str) -> float:
+        """Скорость набора пилота на этом тексте, слов в минуту (0 — ещё не печатал)."""
+        from stamina.session_storage import load_session
+        m = self.meta(tid)
+        if not m:
+            return 0.0
+        s = load_session()
+        if s is None or not s.elapsed or sha(s.text) != m["prepared"]["sha256"]:
+            return 0.0
+        return float(s.typed) / 5.0 / (s.elapsed / 60.0)
+
+    def textmap(self, tid: str, need_char: int | None = None,
+                pace_wpm: float | None = None) -> TextMap | None:
         m = self.meta(tid)
         if not m:
             return None
@@ -459,12 +471,19 @@ class Library:
         key = sha(orig) + sha(prep)
         cached = self._maps.get(tid)
         if cached and cached[0] == key:
-            return cached[1]
-        if not orig:
-            tm = TextMap(prep, prep, lambda s: s)
+            tm = cached[1]
         else:
-            tm = TextMap(orig, prep, processor(m["prepared"]["opts"]))
-        self._maps[tid] = (key, tm)
+            if not orig:
+                tm = TextMap(prep, prep, lambda s: s, limit_words=INITIAL_WORDS)
+            else:
+                tm = TextMap(orig, prep, processor(m["prepared"]["opts"]),
+                             limit_words=INITIAL_WORDS)
+            self._maps[tid] = (key, tm)
+        # Подгрузка порциями: скорость набора пилота плюс 100 слов в минуту.
+        if need_char or pace_wpm is None:
+            if pace_wpm is None:
+                pace_wpm = load_pace_wpm(self.typing_speed_wpm(tid))
+            tm.ensure(int(need_char or 0), pace_wpm)
         return tm
 
     # -- позиции ------------------------------------------------------------------------
@@ -487,12 +506,12 @@ class Library:
             return s.index
         return int(m["positions"]["typing"].get("char", 0))
 
-    def typing_word(self, tid: str) -> int | None:
+    def typing_word(self, tid: str, pace_wpm: float | None = None) -> int | None:
         """Позиция печати в словах оригинала (None — по тексту не печатали)."""
         pos = self.typing_position(tid)
         if not pos:
             return None
-        tm = self.textmap(tid)
+        tm = self.textmap(tid, need_char=pos, pace_wpm=pace_wpm)
         return tm.prep_to_orig(pos) if tm else None
 
     def set_active(self, kind: str, tid: str | None) -> None:
@@ -634,7 +653,7 @@ def migrate(lib: Library, store, *, search: bool = True,
                 report["original"] = "missing"
         if saved is not None:
             lib.set_position(tid, "typing", saved.index)
-            tm = lib.textmap(tid)
+            tm = lib.textmap(tid, need_char=saved.index)
             if tm is not None:
                 lib.set_position(tid, "reading", tm.prep_to_orig(saved.index))
         lib.set_active("typing", tid)

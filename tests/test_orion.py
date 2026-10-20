@@ -1172,5 +1172,43 @@ class OrionWorkBarKeysTest(unittest.TestCase):
             i18n.set_language("ru")
 
 
+class HudButtonSizeTest(unittest.TestCase):
+    """Кнопка не обрезает текст: «НА БОРТУ: ДА» превращалось в огрызок «ОРТ»."""
+
+    def setUp(self):
+        import tkinter as tk
+        try:
+            self.root = tk.Tk()
+        except tk.TclError:
+            self.skipTest("нет дисплея")
+        self.root.withdraw()
+
+    def tearDown(self):
+        self.root.destroy()
+
+    def test_auto_width_grows_with_text(self):
+        from stamina.hud import HudButton
+        from stamina.theme import px
+        btn = HudButton(self.root, "")
+        narrow = int(btn.cget("width"))
+        btn.set_text("НА БОРТУ: ДА")
+        self.assertGreater(int(btn.cget("width")), narrow)
+        self.assertGreater(int(btn.cget("width")), px(80))
+
+    def test_explicit_width_is_kept(self):
+        from stamina.hud import HudButton
+        from stamina.theme import px
+        btn = HudButton(self.root, "", width=140)
+        btn.set_text("НА БОРТУ: ДА")
+        self.assertEqual(int(btn.cget("width")), px(140))
+
+    def test_placeholder_then_label(self):
+        # В карточке пассажира кнопки создаются до данных, текст приходит позже.
+        from stamina.hud import HudButton
+        btn = HudButton(self.root, "—")
+        btn.set_text("ГОЛОС: КОРАБЛЬ")
+        self.assertGreater(int(btn.cget("width")), 100)
+
+
 if __name__ == "__main__":
     unittest.main()
