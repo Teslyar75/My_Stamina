@@ -565,6 +565,80 @@ def archive(query: str = "", *, agent_id: str = "", limit: int = 400,
     return rows[:limit] if limit else rows
 
 
+# -- проверка книги агентом (склейки и опечатки) --------------------------------
+#: Сколько знаков книги отдаём агенту за один заход: промпт не должен разрастаться.
+CHECK_CHUNK = 6000
+
+
+def check_prompt(chunk: str, *, what: str = "") -> str:
+    """Запрос агенту: найти в куске книги склейки и вернуть правки строгим JSON.
+
+    Корабль не просит «переписать красиво»: только склейки («nineteenthcentury»,
+    «ивот») и явные опечатки внутри них. Всё найденное пилот увидит до применения.
+    """
+    return "\n".join([
+        _t("Ты корректор бортовой библиотеки. В тексте ниже слова иногда слиплись:"),
+        _t("«nineteenthcentury» вместо «nineteenth century», «ивот» вместо «и вот»."),
+        _t("Найди только такие склейки и явные опечатки внутри них. Смысл не меняй,"),
+        _t("стиль не правь, целые предложения не переписывай."),
+        _t('Ответь одним JSON-массивом без пояснений: [{"bad": "как в тексте", '
+           '"good": "как должно быть"}]. Если правок нет — ответь [].'),
+        "",
+        what or _t("Книга для слепого набора"),
+        "",
+        _t("ТЕКСТ:"),
+        chunk,
+    ])
+
+
+_JSON_ARRAY = re.compile(r"\[[\s\S]*\]")
+_FIX_ARROWS = ("->", "→", "=>", "—")
+
+
+def _clean_fixes(items) -> list[tuple[str, str]]:
+    """Оставить только пары «было → стало»: пустое, одинаковое и мусор отбрасываем."""
+    out: list[tuple[str, str]] = []
+    for item in items:
+        bad = good = ""
+        if isinstance(item, dict):
+            bad, good = item.get("bad"), item.get("good")
+        elif isinstance(item, str):
+            for sep in _FIX_ARROWS:
+                if sep in item:
+                    bad, good = item.split(sep, 1)
+                    break
+        bad = str(bad or "").strip().strip("\"'«»`").strip()
+        good = str(good or "").strip().strip("\"'«»`").strip()
+        if bad and good and bad != good:
+            out.append((bad, good))
+    return out[:500]
+
+
+def parse_fixes(reply: str) -> list[tuple[str, str]]:
+    """Разобрать ответ агента: JSON-массив правок или строки «было → стало»."""
+    text = (reply or "").strip()
+    found = _JSON_ARRAY.search(text)
+    if found:
+        try:
+            data = json.loads(found.group(0))
+        except ValueError:
+            data = None
+        if isinstance(data, list):
+            return _clean_fixes(data)
+    return _clean_fixes(text.splitlines())
+
+
+def apply_fixes(text: str, fixes) -> str:
+    """Заменить найденное, не задевая части других слов: «ивот» не внутри «живот»."""
+    out = text or ""
+    for bad, good in fixes or ():
+        if not bad:
+            continue
+        pattern = re.compile(r"(?<!\w)" + re.escape(bad) + r"(?!\w)", re.IGNORECASE)
+        out = pattern.sub(good, out)
+    return out
+
+
 def clear_history(agent_id: str) -> None:
     """Начать разговор заново (и новый сеанс у агента: прежний контекст забыт)."""
     _write_json(history_path(agent_id), {"version": 1, "session": "", "messages": []})

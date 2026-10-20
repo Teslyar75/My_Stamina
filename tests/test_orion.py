@@ -1295,5 +1295,43 @@ class OrionArchiveTest(unittest.TestCase):
         self.assertEqual(len(orion.archive("", limit=2)), 2)
 
 
+class OrionBookCheckTest(unittest.TestCase):
+    """Проверка книги агентом: запрос, разбор ответа, аккуратная замена."""
+
+    def test_prompt_carries_text_and_format(self):
+        prompt = orion.check_prompt("nineteenthcentury век", what="Книга «XIX век»")
+        self.assertIn("nineteenthcentury век", prompt)
+        self.assertIn("Книга «XIX век»", prompt)
+        self.assertIn("JSON", prompt)
+
+    def test_parse_json_from_fenced_reply(self):
+        reply = '```json\n[{"bad": "nineteenthcentury", "good": "nineteenth century"}]\n```'
+        self.assertEqual(orion.parse_fixes(reply),
+                         [("nineteenthcentury", "nineteenth century")])
+
+    def test_parse_empty_array(self):
+        self.assertEqual(orion.parse_fixes("[]"), [])
+        self.assertEqual(orion.parse_fixes(""), [])
+        self.assertEqual(orion.parse_fixes("правок нет"), [])
+
+    def test_parse_arrow_lines(self):
+        reply = "ивот → и вот\nthebook -> the book\nмусор без стрелки"
+        self.assertEqual(orion.parse_fixes(reply),
+                         [("ивот", "и вот"), ("thebook", "the book")])
+
+    def test_parse_skips_equal_and_empty(self):
+        reply = '[{"bad": "дом", "good": "дом"}, {"bad": "", "good": "x"}, {"bad": "a", "good": 5}]'
+        self.assertEqual(orion.parse_fixes(reply), [("a", "5")])
+
+    def test_apply_keeps_word_boundaries(self):
+        text = "живот и ивот, ещё nineteenthcentury"
+        fixed = orion.apply_fixes(text, [("ивот", "и вот"), ("nineteenthcentury", "nineteenth century")])
+        self.assertEqual(fixed, "живот и и вот, ещё nineteenth century")
+
+    def test_apply_is_case_insensitive_and_repeats(self):
+        self.assertEqual(orion.apply_fixes("Thebook, THEBOOK", [("thebook", "the book")]),
+                         "the book, the book")
+
+
 if __name__ == "__main__":
     unittest.main()
