@@ -145,7 +145,8 @@ def _write_json(path: Path, data: dict) -> None:
 
 def _read_json(path: Path, fallback: dict) -> dict:
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        # utf-8-sig: PowerShell в русской Windows пишет BOM, обычный utf-8 на нём падает
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
     except (OSError, ValueError):
         return fallback
     return data if isinstance(data, dict) else fallback
