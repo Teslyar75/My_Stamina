@@ -166,6 +166,10 @@ def choose_pilot(argv: list[str]) -> str | None:
 
 def run_app(argv: list[str] | None = None) -> None:
     argv = sys.argv[1:] if argv is None else list(argv)
+    from stamina import safe_mode
+
+    if safe_mode.flag_in(argv):
+        safe_mode.set_enabled(True)
     _safe_streams()
     _journal(f"=== ЗАПУСК argv={argv} exe={sys.executable} cwd={os.getcwd()}")
     # Ошибку в обратном вызове Tk пишем в журнал: под pythonw её больше некуда девать
@@ -412,7 +416,8 @@ def run_app(argv: list[str] | None = None) -> None:
                 cp.set_status("Связь с OpenCode восстановлена автоматически", "green")
             else:
                 cp.set_status("Нет связи с OpenCode — войди в opencode auth login", "red")
-        cockpit.after(100, lambda: _ensure_connection(cockpit))
+        if not safe_mode.enabled():
+            cockpit.after(100, lambda: _ensure_connection(cockpit))
         _journal("mainloop старт")
         # Суточная резервная копия данных пилота — в фоне: git вернёт код,
         # а прогресс, книги и переписку вернуть неоткуда.

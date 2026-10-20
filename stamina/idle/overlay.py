@@ -9,6 +9,7 @@ import time
 import tkinter as tk
 
 from stamina import theme
+from stamina import safe_mode
 from stamina.i18n import t as _t
 from stamina.idle import DRIFT, FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
 
@@ -35,13 +36,9 @@ class IdleController:
 
     def touch(self, _e=None) -> None:
         self.last = time.time()
-        # Любая клавиша или клик закрывает слайдшоу (раньше это делал grab,
-        # который ломал переключение раскладки в системе).
-        if self.show is not None:
-            try:
-                self.show.close()
-            except tk.TclError:
-                pass
+        # Слайдшоу закрывает само себя (Esc, правая кнопка мыши). Раньше здесь
+        # стояло «любая клавиша закрывает» — из-за этого стрелка «волна вправо»
+        # выбрасывала из кадра, а через раз не срабатывала вовсе.
 
     def _tick(self) -> None:
         try:
@@ -54,7 +51,7 @@ class IdleController:
             pass
 
     def open(self) -> None:
-        if self.show is not None or not skin_slideshow():
+        if safe_mode.enabled() or self.show is not None or not skin_slideshow():
             return
         self.show = Slideshow(self.app, on_close=self._closed)
 
@@ -95,7 +92,12 @@ class Slideshow(tk.Frame):
         for seq in ("<KeyPress>", "<KeyRelease>"):
             self.bind(seq, self._key)
             self.cv.bind(seq, self._key)
-        self.cv.bind("<ButtonPress>", self._key)
+        self.cv.bind("<ButtonPress>", self._click)
+        self.cv.bind("<Button-3>", lambda _e: self.close())
+        self._app_bind = self.app.bind("<KeyPress>", self._key, add="+")
+        # Клавиатура — на холст слайдшоу: иначе буквы уходят в поле набора,
+        # а стрелки срабатывают через раз (было: любая клавиша закрывала кадр).
+        self.after(60, self._grab_focus)
         # Захват клавиатуры и focus_force НЕ ставим: глобальный grab отбирает
         # клавиши у всей системы (перестаёт переключаться раскладка), а окно
         # выглядит зависшим. Слайдшоу закрывается по любой клавише/клику через
@@ -107,6 +109,18 @@ class Slideshow(tk.Frame):
         threading.Thread(target=self._load, args=(skin, ss), daemon=True).start()
         if self.cfg["idle_radio"]:
             self._start_radio()
+
+    def _grab_focus(self) -> None:
+        try:
+            self.cv.focus_set()
+        except tk.TclError:
+            pass
+
+    def _click(self, e) -> str:
+        """Щелчок по кадру: левая — следующая волна, если радио есть, иначе тишина."""
+        if self.stations:
+            self.switch_station(1)
+        return "break"
 
     def _on_resize(self) -> None:
         if self._resize_job:
@@ -469,7 +483,7 @@ class Slideshow(tk.Frame):
         genre = station_genre(st)
         vol = _t("без звука") if self._muted else f"{getattr(self, '_target', 40)}%"
         line1 = f"♪ {name}" + (f"  ·  {genre}" if genre else "")
-        line2 = note or (_t("Стрелки ← → — волна · ↑ ↓ — громкость · M — звук") + f"   [{self.st_i + 1}/{len(self.stations)} · {vol}]")
+        line2 = note or (_t("← → — волна · ↑ ↓ — громкость · M — звук · Esc — выйти") + f"   [{self.st_i + 1}/{len(self.stations)} · {vol}]")
         pw = min(w - 40, max(420, int(w * 0.46)))
         x0, y1 = (w - pw) // 2, h - 40
         y0 = y1 - 54
@@ -498,7 +512,11 @@ class Slideshow(tk.Frame):
     def _key(self, e) -> str:
         if getattr(e, "type", "") in ("3", tk.EventType.KeyRelease):
             return "break"
-        act = self.RADIO_KEYS.get(getattr(e, "keysym", "")) if self.stations else None
+        key = getattr(e, "keysym", "")
+        if key in ("Escape", "q", "Q", "Cyrillic_shorti", "Cyrillic_SHORTI"):
+            self.close()
+            return "break"
+        act = self.RADIO_KEYS.get(key) if self.stations else None
         if act:
             kind, n = act
             if kind == "switch":
@@ -507,8 +525,7 @@ class Slideshow(tk.Frame):
                 self.change_volume(n)
             else:
                 self.toggle_mute()
-            return "break"
-        self.close()
+        # Остальные клавиши глотаем, но кадр не закрываем: выход — Esc или правая кнопка мыши.
         return "break"
 
     def close(self) -> None:
@@ -521,6 +538,11 @@ class Slideshow(tk.Frame):
         self._stop_radio()
         try:
             self.grab_release()
+        except tk.TclError:
+            pass
+        try:
+            if getattr(self, "_app_bind", None):
+                self.app.unbind("<KeyPress>", self._app_bind)
         except tk.TclError:
             pass
         cb = self.on_close

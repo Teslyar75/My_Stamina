@@ -14,6 +14,7 @@ from pathlib import Path
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
                      missions, nav, orion_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
+from stamina import safe_mode
 from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HScrollStrip, HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -35,7 +36,7 @@ class Cockpit(tk.Tk):
         st = self.store.settings
         theme.set_ui_scale(st.get("ui_scale", "M"))
         theme.load_theme(st.get("skin", "spaceship"), apply_ui=False, root=self)
-        self.sound = SoundBoard(bool(st["sound"]), int(st.get("volume", 3)))
+        self.sound = SoundBoard(False if safe_mode.enabled() else bool(st["sound"]), int(st.get("volume", 3)))
         self.translator = None
         self.current: str | None = None
         self._prev_screen: str | None = None
@@ -116,9 +117,9 @@ class Cockpit(tk.Tk):
         from stamina import keynav
         keynav.install(self, current_menu=lambda: self.nav_buttons.get(nav.zone_of(self.current) or ""), before_tab=self._tab_typing)
         from stamina.living_space import LivingSpace, DEFAULT_MODE
-        self.living = LivingSpace(self, self.content, self.store.settings.get("living_space", DEFAULT_MODE))
+        self.living = LivingSpace(self, self.content, "off" if safe_mode.enabled() else self.store.settings.get("living_space", DEFAULT_MODE))
         from stamina.idle.overlay import IdleController
-        self.idle = IdleController(self)   # слайдшоу простоя — только у скинов со slideshow
+        self.idle = IdleController(self)  # слайдшоу простоя — только у скинов со slideshow
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
         # Кабина создаётся уже после окна входа: Windows не отдаёт ей клавиатуру
@@ -456,6 +457,8 @@ class Cockpit(tk.Tk):
 
     def _build_pending(self) -> None:
         """Собирать отложенные отсеки по одному между кадрами: окно остаётся живым."""
+        if safe_mode.enabled():
+            return  # безопасный режим: отсек собирается только когда в него зашли
         while self._factories:
             name = next(iter(self._factories))
             try:
@@ -909,7 +912,10 @@ class Cockpit(tk.Tk):
         elif start == "settings:more":
             self.show("settings")
             self.after(200, lambda: self.goto_subtab(1))  # ЕЩЁ
-        self.after(2500, self._check_updates_bg)
+        if not safe_mode.enabled():
+            self.after(2500, self._check_updates_bg)
+        else:
+            self.set_status(tr_("Безопасный режим: без звука, сети и живого космоса"), AMBER)
 
     def _check_updates_bg(self) -> None:
         """Фоновая проверка GitHub Releases — ненавязчивый диалог при новой версии."""
