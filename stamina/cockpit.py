@@ -343,53 +343,23 @@ class Cockpit(tk.Tk):
             "help": HelpScreen(self.content, self),
             "honor": self._make_honor(),
         }
-        if self._english_cls is not None:
-            eng = english_hook.create(self._english_cls, self.content, self)
-            if eng is not None:
-                self.screens[english_hook.KEY] = eng
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != english_hook.KEY]
-                self.nav_buttons.pop(english_hook.KEY).destroy()
-        if self._speed_cls is not None:
-            spd = speedread_hook.create(self._speed_cls, self.content, self)
-            if spd is not None:
-                self.screens[speedread_hook.KEY] = spd
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != speedread_hook.KEY]
-                self.nav_buttons.pop(speedread_hook.KEY).destroy()
-        if self._lounge_cls is not None:
-            lng = lounge_hook.create(self._lounge_cls, self.content, self)
-            if lng is not None:
-                self.screens[lounge_hook.KEY] = lng
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != lounge_hook.KEY]
-                self.nav_buttons.pop(lounge_hook.KEY).destroy()
-        if self._radio_cls is not None:
-            rad = radio_hook.create(self._radio_cls, self.content, self)
-            if rad is not None:
-                self.screens[radio_hook.KEY] = rad
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != radio_hook.KEY]
-                self.nav_buttons.pop(radio_hook.KEY).destroy()
-        if self._comm_cls is not None:
-            com = comm_hook.create(self._comm_cls, self.content, self)
-            if com is not None:
-                self.screens[comm_hook.KEY] = com
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != comm_hook.KEY]
-                self.nav_buttons.pop(comm_hook.KEY).destroy()
-        if self._orion_cls is not None:
-            ori = orion_hook.create(self._orion_cls, self.content, self)
-            if ori is not None:
-                self.screens[orion_hook.KEY] = ori
-            else:
-                self.SCREENS = [s for s in self.SCREENS if s[0] != orion_hook.KEY]
-                self.nav_buttons.pop(orion_hook.KEY).destroy()
+        # Тяжёлые отсеки (книги, переписка, тексты «Английского») собираем после
+        # первого кадра: их построение — это сотни миллисекунд процессорного времени,
+        # и держать перед ними мёртвое окно нельзя. Отсек собирается по требованию
+        # (show) или в фоне по одному между кадрами.
+        self._factories: dict[str, object] = {}
+        self._lazy(english_hook, self._english_cls)
+        self._lazy(speedread_hook, self._speed_cls)
+        self._lazy(lounge_hook, self._lounge_cls)
+        self._lazy(radio_hook, self._radio_cls)
+        self._lazy(comm_hook, self._comm_cls)
+        self._lazy(orion_hook, self._orion_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,
         # а внутри них большие тексты — окно уходило в 100 % CPU (см. _only_screen).
         self._only_screen(self.current or "bridge")
+        self.after(120, self._build_pending)
         self.update_rank()
         self._update_sound_button()
         self.update_comm_badge()
@@ -445,6 +415,57 @@ class Cockpit(tk.Tk):
         from stamina.page_help import open_page_help
         open_page_help(self)
 
+    # ------------------------------------------------------------------
+    def _lazy(self, hook, cls) -> None:
+        """Запомнить, как собрать отсек, вместо немедленной сборки."""
+        if cls is None:
+            return
+
+        def build(hook=hook, cls=cls):
+            return hook.create(cls, self.content, self)
+
+        self._factories[hook.KEY] = build
+
+    def _ensure_screen(self, name: str):
+        """Вернуть экран, собрав его по требованию (отложенная сборка)."""
+        scr = self.screens.get(name)
+        if scr is not None:
+            return scr
+        build = self._factories.pop(name, None)
+        if build is None:
+            return None
+        scr = build()
+        if scr is None:
+            self._drop_zone(name)
+            return None
+        self.screens[name] = scr
+        scr.grid(row=0, column=0, sticky="nsew")
+        if name != self.current:
+            scr.grid_remove()
+        return scr
+
+    def _drop_zone(self, name: str) -> None:
+        """Отсек не собрался (не установлен модуль) — убрать его из навигации."""
+        self.SCREENS = [s for s in self.SCREENS if s[0] != name]
+        btn = self.nav_buttons.pop(name, None)
+        if btn is not None:
+            try:
+                btn.destroy()
+            except tk.TclError:
+                pass
+
+    def _build_pending(self) -> None:
+        """Собирать отложенные отсеки по одному между кадрами: окно остаётся живым."""
+        while self._factories:
+            name = next(iter(self._factories))
+            try:
+                if self._ensure_screen(name) is not None:
+                    break
+            except Exception:  # noqa: BLE001
+                self._drop_zone(name)
+        if self._factories:
+            self.after(80, self._build_pending)
+
     def _only_screen(self, name: str) -> None:
         """Оставить в раскладке только текущий экран.
 
@@ -499,7 +520,10 @@ class Cockpit(tk.Tk):
         # куда вернуться (Бортжурнал) и откуда пилот позвал Ориона — прежний раздел
         self._prev_screen = self.current
         self.current = name
-        scr = self.screens[name]
+        scr = self._ensure_screen(name)
+        if scr is None:
+            self.current = self._prev_screen
+            return
         self._only_screen(name)          # невидимые экраны не рисуем (см. _only_screen)
         scr.tkraise()
         if hasattr(scr, "refresh"):
