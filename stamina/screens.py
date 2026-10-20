@@ -339,9 +339,10 @@ class CargoScreen(tk.Frame):
                             translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
 
     def _check_glue(self) -> None:
-        """Отчёт о срощенных словах. Текст не меняется — только список находок."""
-        from stamina.text_processing import find_glued_words
-        found = find_glued_words(self._process(self.text.get("1.0", "end")), max_report=40)
+        """Поиск сращиваний слов. Ничего не меняем - только список находок."""
+        from stamina.text_processing import book_words, find_glued_words
+        prepared = self._process(self.text.get("1.0", "end"))
+        found = find_glued_words(prepared, known_words=book_words(prepared), max_report=40)
         if not found:
             self.preview_info.configure(text=_t("Сращиваний не найдено"), fg=GREEN)
             return

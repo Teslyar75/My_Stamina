@@ -4,6 +4,7 @@ import unittest
 
 from stamina.text_processing import (
     adapt_for_typing,
+    book_words,
     find_glued_words,
     is_valid_practice_text,
     normalize_spaces,
@@ -115,6 +116,35 @@ class GluedWordsTests(unittest.TestCase):
         for word in ("nothing", "into", "another", "tonight", "sometime"):
             self.assertEqual(find_glued_words(word), [], word)
 
+    def test_dictionary_split_of_two_content_words(self):
+        # «nineteenthcentury» старыми правилами не находилось: разрез на 10-м знаке,
+        # а правила смотрели только после короткого служебного слова.
+        book = {"nineteenth": 5, "century": 8, "the": 40, "and": 30}
+        found = find_glued_words("в nineteenthcentury веке", known_words=book)
+        self.assertEqual([(g.token, g.split, g.confident) for g in found],
+                         [("nineteenthcentury", "nineteenth century", True)])
+
+    def test_rare_word_is_not_trusted_in_a_book(self):
+        # Половины встретились по разу в большой книге — статистики нет, не трогаем.
+        book = {f"word{i}": 3 for i in range(50)}
+        book.update({"nineteenth": 1, "century": 1})
+        self.assertEqual(find_glued_words("nineteenthcentury", known_words=book), [])
+
+    def test_word_seen_twice_is_real(self):
+        book = {"nineteenth": 5, "century": 8, "waterfall": 2, "water": 9, "fall": 7}
+        self.assertEqual(find_glued_words("waterfall", known_words=book), [])
+
+    def test_merge_rarer_than_its_halves(self):
+        book = {f"word{i}": 3 for i in range(50)}
+        book.update({"nineteenth": 4, "century": 6, "nineteenthcentury": 1})
+        found = find_glued_words("текст nineteenthcentury здесь", known_words=book)
+        self.assertEqual([g.split for g in found], ["nineteenth century"])
+
+    def test_book_words_counts(self):
+        words = book_words("nineteenth century and nineteenth century")
+        self.assertEqual(words.get("nineteenth"), 2)
+        self.assertEqual(words.get("century"), 2)
+
 
 class ProcessTextGlueTests(unittest.TestCase):
     def test_glue_off_by_default(self):
@@ -128,6 +158,12 @@ class ProcessTextGlueTests(unittest.TestCase):
         src = "«Привет,   мир!»"
         self.assertEqual(process_text(src), adapt_for_typing(src))
         self.assertEqual(process_text(src, glue=True), adapt_for_typing(src))
+
+    def test_glue_on_splits_two_content_words_from_the_book(self):
+        # Ровно случай пилота: книга сама даёт частоты, склейка — редкая.
+        src = "nineteenth century and nineteenth century and nineteenthcentury"
+        self.assertEqual(process_text(src, glue=True),
+                         "nineteenth century and nineteenth century and nineteenth century")
 
 
 class LowercaseTests(unittest.TestCase):

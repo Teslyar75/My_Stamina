@@ -20,14 +20,16 @@ from stamina.i18n import t as _t
 from stamina.i18n import t as tr_          # окно доступа к GitHub исторически зовёт так
 
 import queue
+import math
 import re
 import threading
 import time
 import tkinter as tk
 import webbrowser
 from tkinter import messagebox
+from pathlib import Path
 
-from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, theme
+from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, shots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_screens import Modal, PinPad
@@ -45,6 +47,9 @@ def _label(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw):
 
 # -- справка «где взять токен GitHub» ------------------------------------------
 GITHUB_TOKENS_URL = "https://github.com/settings/tokens"
+
+#: Сколько секунд держать на пульте надпись «задача выполнена» после доклада агента.
+REPORT_KEEP = 900
 
 
 def github_token_help() -> str:
@@ -215,7 +220,7 @@ class _GitHubAccessDialog(Modal):
 class OrionScreen(tk.Frame):
     """Чат с бортовым разумом и интерфейс заселения агентов."""
 
-    TABS = (("chat", "ЧАТ"), ("agents", "АГЕНТЫ"))
+    TABS = (("chat", "ЧАТ"), ("agents", "АГЕНТЫ"), ("archive", "АРХИВ"))
 
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
@@ -236,6 +241,11 @@ class OrionScreen(tk.Frame):
         store = getattr(self.app, "store", None)
         self.ui_mode = str(getattr(store, "settings", {}).get("orion_ui") or "chat")
         self._sent_log: list[str] = []     # что уже отправляли — для истории по ↑
+        self._pending_quotes: list[str] = []   # темы из архива, ждущие отправки
+        self._archive_rows: list[dict] = []
+        self._archive_picked: list[str] = []
+        self._archive_tag_ids: dict[str, str] = {}
+        self._archive_images: list = []
         self._voice_mode = "ship"
         self._enabled = True
         self.board_visible = False         # доска чата скрыта, разговор идёт как контекст
@@ -275,6 +285,7 @@ class OrionScreen(tk.Frame):
             self.tabs[key] = (page, self.tab_btns[key])
         self._build_chat(self.tabs["chat"][0])
         self._build_agents(self.tabs["agents"][0])
+        self._build_archive(self.tabs["archive"][0])
 
     # -- вкладка ЧАТ -------------------------------------------------------
     def _build_chat(self, page: tk.Frame) -> None:
@@ -349,6 +360,9 @@ class OrionScreen(tk.Frame):
                            wraplength=px(900))
         self.hint.pack(fill=tk.X)
 
+        # Шкала занятости: видно, что Орион работает, а не молчит
+        self._build_activity(bottom)
+
         # «Записать задание в документ?» — спрашивает корабль голосом Ориона
         self.ask_row = tk.Frame(bottom, bg=BG)
         self.ask_label = _label(self.ask_row, "", fg=GREEN, size=10, bold=True, bg=BG,
@@ -369,6 +383,21 @@ class OrionScreen(tk.Frame):
         HudButton(self.perm_row, _t("ОТМЕНА"), self._deny, height=34, font_size=9,
                   color=MUTED).pack(side=tk.RIGHT, padx=(px(6), 0))
 
+        # Приложенный снимок экрана: виден до отправки, снимается крестиком.
+        # Пилот хочет обсуждать картинку, а не имя файла, — потому миниатюра, не путь.
+        self.shot_row = tk.Frame(bottom, bg=BG)
+        self.shot_icon = tk.Label(self.shot_row, bg=BG, bd=0, cursor="hand2")
+        self.shot_icon.pack(side=tk.LEFT)
+        self.shot_icon.bind("<Button-1>", lambda _e: self._open_shot(
+            self._pending_shots[0] if self._pending_shots else ""))
+        self.shot_label = _label(self.shot_row, "", fg=CYAN, size=9, bg=BG, anchor="w",
+                                 justify="left", wraplength=px(760))
+        self.shot_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(10), 0))
+        HudButton(self.shot_row, "✕", self._clear_shots, height=28, font_size=10,
+                  width=28, color=MUTED).pack(side=tk.RIGHT, padx=(px(6), 0))
+        self._pending_shots: list[str] = []
+        self._shot_previews: list = []          # Tk не держит ссылки на картинки сам
+
         row = tk.Frame(bottom, bg=BG)
         row.pack(fill=tk.X, pady=(px(4), 0))
         self.input_row = row
@@ -381,6 +410,9 @@ class OrionScreen(tk.Frame):
         self.entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, px(8)))
         self.entry.bind_text("<Control-v>", self._paste_text)
         self.entry.bind_text("<Control-V>", self._paste_text)
+        # Снимок без кнопки: Ctrl+Shift+S — активное окно в поле набора
+        self.entry.bind_text("<Control-Shift-S>", self._grab_window_shot)
+        self.entry.bind_text("<Control-Shift-s>", self._grab_window_shot)
         self.entry.bind_text("<Button-3>", self._context_menu)
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
@@ -410,7 +442,9 @@ class OrionScreen(tk.Frame):
         return None
 
     def _paste_text(self, _e) -> str:
-        """Вставить текст из буфера обмена в строку сообщения."""
+        """Вставить из буфера: сначала снимок экрана, потом текст."""
+        if self._grab_clipboard_shot():
+            return "break"
         try:
             text = self.clipboard_get()
             if text:
@@ -418,6 +452,91 @@ class OrionScreen(tk.Frame):
                 self.entry.focus_set()
         except tk.TclError:
             pass
+        return "break"
+
+    # -- снимки экрана -------------------------------------------------------
+    def _grab_clipboard_shot(self) -> bool:
+        """Картинка из буфера обмена (Win+Shift+S или файл из Проводника) → к сообщению."""
+        if not shots.available():
+            self._hint(_t("Снимки недоступны: нет Pillow (pip install Pillow)"), RED)
+            return False
+        image = shots.grab_clipboard()
+        if image is None:
+            return False
+        return self._attach_image(image, _t("снимок из буфера"))
+
+    def _grab_window_shot(self, _e=None) -> str:
+        """Ctrl+Shift+S: снять активное окно прямо в поле набора. Отдельной кнопки нет — пилот её не захотел."""
+        if not shots.available():
+            self._hint(_t("Снимки недоступны: нет Pillow (pip install Pillow)"), RED)
+            return "break"
+        image = shots.grab_active_window() or shots.grab_screen()
+        if image is None:
+            self._hint(_t("Снять не удалось. Нажмите Win+Shift+S, затем Ctrl+V здесь."), RED)
+            return "break"
+        self._attach_image(image, _t("снимок окна"))
+        return "break"
+
+    def _attach_image(self, image, source: str) -> bool:
+        """Сохранить снимок на борт и показать его в строке приложенного."""
+        try:
+            path = shots.save_image(image)
+        except Exception as exc:  # noqa: BLE001
+            self._hint(_t("Снимок не сохранился: {0}").format(exc), RED)
+            return False
+        self._pending_shots.append(str(path))
+        self._refresh_shot_row()
+        self._hint(_t("Снимок приложен ({0}). Орион увидит его вместе с сообщением.")
+                   .format(source), CYAN)
+        return True
+
+    def _refresh_shot_row(self) -> None:
+        """Строка приложенного снимка над полем ввода: миниатюра, имя, крестик."""
+        if not hasattr(self, "shot_row"):
+            return
+        if self._pending_shots:
+            names = ", ".join(Path(p).name for p in self._pending_shots)
+            self.shot_label.configure(
+                text=_t("📷 Приложено: {0}").format(names) + "\n"
+                     + _t("Этот снимок уйдёт Ориону вместе с сообщением."))
+            self._draw_shot_preview(self._pending_shots[0])
+            self.shot_row.pack(fill=tk.X, pady=(px(4), 0), before=self.input_row)
+        else:
+            self.shot_label.configure(text="")
+            self._draw_shot_preview("")
+            self.shot_row.pack_forget()
+
+    def _draw_shot_preview(self, path: str) -> None:
+        """Миниатюра снимка перед отправкой — пилот видит картинку, а не только имя."""
+        self._shot_previews = []
+        if not path:
+            self.shot_icon.configure(image="", width=0, height=0)
+            return
+        pic = shots.thumbnail(Path(path), size=84)
+        if pic is None:
+            self.shot_icon.configure(image="", width=0, height=0,
+                                     text=_t("📷 снимок не открылся: {0}").format(Path(path).name))
+            return
+        try:
+            from PIL import ImageTk
+            photo = ImageTk.PhotoImage(pic, master=self.shot_icon)
+        except Exception:  # noqa: BLE001
+            return
+        self._shot_previews.append(photo)
+        self.shot_icon.configure(image=photo, text="", width=pic.width, height=pic.height)
+
+    def _clear_shots(self) -> None:
+        """Убрать снимок из сообщения, файл на борту оставить (история уже его знает)."""
+        self._pending_shots.clear()
+        self._refresh_shot_row()
+        self._hint(_t("Снимок снят с сообщения"), MUTED)
+
+    def _open_shot(self, path: str) -> str:
+        """Клик по миниатюре — открыть снимок целиком."""
+        if not path or not Path(path).is_file():
+            return "break"
+        if not shots.open_file(Path(path)):
+            self._hint(_t("Не удалось открыть снимок: {0}").format(Path(path).name), RED)
         return "break"
 
     def _context_menu(self, _e) -> str:
@@ -625,6 +744,196 @@ class OrionScreen(tk.Frame):
         HudButton(mp.body, _t("СОХРАНИТЬ МАНЕРЫ"), self._save_character, height=32,
                   font_size=10, color=CYAN).pack(anchor="w")
 
+    # -- вкладка АРХИВ -----------------------------------------------------
+    def _build_archive(self, page: tk.Frame) -> None:
+        """Архив: вся переписка борта, поиск по дате, времени и словам, перенос тем в чат."""
+        bar = tk.Frame(page, bg=BG)
+        bar.pack(fill=tk.X, pady=(0, px(4)))
+        _label(bar, _t("АРХИВ — ПОИСК ПО ПЕРЕПИСКЕ"), fg=CYAN, size=11, bold=True,
+               bg=BG).pack(side=tk.LEFT)
+        self.arch_found = _label(bar, "", fg=MUTED, size=9, bg=BG)
+        self.arch_found.pack(side=tk.RIGHT)
+
+        row = tk.Frame(page, bg=BG)
+        row.pack(fill=tk.X)
+        self.arch_entry = tk.Entry(row, bg=PANEL, fg=TEXT, relief=tk.FLAT, font=theme.font(11),
+                                   insertbackground=CYAN, highlightthickness=1,
+                                   highlightbackground=LINE, highlightcolor=CYAN)
+        self.arch_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(6), padx=(0, px(8)))
+        self.arch_entry.bind("<Return>", lambda _e: self._archive_search())
+        HudButton(row, _t("НАЙТИ"), self._archive_search, height=36, font_size=10,
+                  color=CYAN).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(row, _t("СБРОС"), self._archive_reset, height=36, font_size=10,
+                  color=MUTED).pack(side=tk.LEFT)
+
+        acts = tk.Frame(page, bg=BG)
+        acts.pack(fill=tk.X, pady=(px(6), px(4)))
+        HudButton(acts, _t("ПЕРЕНЕСТИ В ЧАТ"), self._archive_to_chat, height=32, font_size=9,
+                  color=GREEN).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts, _t("В ПОЛЕ ВВОДА"), self._archive_to_input, height=32, font_size=9,
+                  color=CYAN).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts, _t("ВЫДЕЛИТЬ ВСЁ"), self._archive_pick_all, height=32, font_size=9,
+                  color=MUTED).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts, _t("СНЯТЬ ВЫДЕЛЕНИЕ"), self._archive_unpick, height=32, font_size=9,
+                  color=MUTED).pack(side=tk.LEFT)
+
+        _label(page, _t("Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по "
+                        "сообщению — выделить; выделенное переносится в чат."),
+               fg=MUTED, size=9, bg=BG, anchor="w", justify="left",
+               wraplength=px(900)).pack(fill=tk.X, pady=(0, px(4)))
+
+        self.arch = HudPanel(page, title=_t("НАЙДЕННЫЕ СООБЩЕНИЯ"))
+        abody = tk.Frame(self.arch.body, bg=PANEL)
+        abody.pack(fill=tk.BOTH, expand=True)
+        asb = make_vscroll(abody)
+        asb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.arch_text = tk.Text(abody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
+                                 font=theme.font(10), padx=px(8), pady=px(6), cursor="arrow",
+                                 state=tk.DISABLED, highlightthickness=0, bd=0,
+                                 yscrollcommand=asb.set)
+        self.arch_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        asb.configure(command=self.arch_text.yview)
+        for w in (self.arch_text, abody):
+            w.bind("<MouseWheel>", lambda e: self._wheel_in(self.arch_text, e))
+        for tag, color in (("when", MUTED), ("who", CYAN), ("body", TEXT), ("shot", AMBER)):
+            self.arch_text.tag_configure(tag, foreground=color)
+
+    def _wheel_in(self, widget: tk.Text, e) -> str:
+        widget.yview_scroll(int(-e.delta / 120) * 3, "units")
+        return "break"
+
+    def _archive_search(self) -> None:
+        """Найти в переписке: пустой запрос — показать последние сообщения борта."""
+        query = self.arch_entry.get().strip()
+        self._archive_rows = orion.archive(query, limit=500)
+        self._archive_picked = []
+        self._archive_tags = {}
+        self._archive_tag_ids = {}
+        self._render_archive()
+        self._hint(_t("Найдено: {0}").format(len(self._archive_rows)) if self._archive_rows
+                   else _t("Ничего не найдено — попробуйте другие слова или дату."),
+                   CYAN if self._archive_rows else MUTED)
+
+    def _archive_reset(self) -> None:
+        self.arch_entry.delete(0, tk.END)
+        self._archive_search()
+
+    def _render_archive(self) -> None:
+        self.arch_text.configure(state=tk.NORMAL)
+        self.arch_text.delete("1.0", tk.END)
+        self._archive_images = []
+        if not self._archive_rows:
+            self.arch_text.insert(tk.END, _t("Ничего не найдено — попробуйте другие слова "
+                                             "или дату.") + "\n", "when")
+        for idx, msg in enumerate(self._archive_rows):
+            tag = f"pick{idx}"
+            self._archive_tag_ids[tag] = str(msg.get("id") or f"_{idx}")
+            when = orion.when_text(float(msg.get("ts") or 0.0))
+            who = orion.role_name(str(msg.get("role") or "")).upper()
+            self.arch_text.insert(tk.END, "─" * 40 + "\n", "when")
+            self.arch_text.insert(tk.END, f"{when}  ·  {who}", tag)
+            agent_name = str(msg.get("agent_name") or "")
+            if agent_name:
+                self.arch_text.insert(tk.END, f"  ·  {agent_name.upper()}", "who")
+            self.arch_text.insert(tk.END, "\n", tag)
+            if str(msg.get("kind") or "") == "quote":
+                self.arch_text.insert(tk.END, "📎 ", tag)
+            self.arch_text.insert(tk.END, f"{msg.get('text', '')}\n", tag)
+            if msg.get("shot"):
+                self._archive_shot(str(msg["shot"]), tag)
+            self.arch_text.tag_bind(tag, "<Button-1>", lambda _e, t=tag: self._archive_toggle(t))
+        self.arch_text.configure(state=tk.DISABLED)
+        self._archive_highlight()
+        self.arch_found.configure(text=_t("Найдено: {0}").format(len(self._archive_rows)))
+
+    def _archive_shot(self, path: str, tag: str) -> None:
+        """Миниатюра снимка в найденном сообщении: клик открывает картинку целиком."""
+        pic_path = Path(path)
+        pic = shots.thumbnail(pic_path, size=72) if pic_path.is_file() else None
+        if pic is None:
+            self.arch_text.insert(tk.END, _t("📷 снимок не открылся: {0}")
+                                  .format(pic_path.name) + "\n", "shot")
+            return
+        try:
+            from PIL import ImageTk
+            photo = ImageTk.PhotoImage(pic, master=self.arch_text)
+        except Exception:  # noqa: BLE001
+            return
+        self._archive_images.append(photo)
+        name = self.arch_text.image_create(tk.END, image=photo, padx=px(4), pady=px(4),
+                                           align="bottom")
+        self.arch_text.insert(tk.END, "\n")
+        self.arch_text.tag_add(name, tag)
+        self.arch_text.tag_bind(name, "<Button-1>", lambda _e, p=str(pic_path): self._open_shot(p))
+
+    def _archive_toggle(self, tag: str) -> str:
+        """Клик по сообщению — взять его в перенос или снять с переноса."""
+        mid = self._archive_tag_ids.get(tag, "")
+        if not mid:
+            return "break"
+        if mid in self._archive_picked:
+            self._archive_picked.remove(mid)
+        else:
+            self._archive_picked.append(mid)
+        self._archive_highlight()
+        return "break"
+
+    def _archive_highlight(self) -> None:
+        picked = set(self._archive_picked)
+        for tag, mid in self._archive_tag_ids.items():
+            self.arch_text.tag_configure(tag, background=BG2 if mid in picked else PANEL)
+        label = _t("Найдено: {0}").format(len(self._archive_rows))
+        if picked:
+            label += " · " + _t("Выделено: {0}").format(len(picked))
+        self.arch_found.configure(text=label)
+
+    def _archive_pick_all(self) -> None:
+        self._archive_picked = [str(m.get("id") or "") for m in self._archive_rows
+                                if m.get("id")]
+        self._archive_highlight()
+
+    def _archive_unpick(self) -> None:
+        self._archive_picked = []
+        self._archive_highlight()
+
+    def _archive_picked_rows(self) -> list[dict]:
+        """Выделенные сообщения в том порядке, как они шли в разговоре."""
+        if not self._archive_picked:
+            return []
+        wanted = set(self._archive_picked)
+        return [m for m in reversed(self._archive_rows) if str(m.get("id") or "") in wanted]
+
+    def _quote_text(self, msg: dict) -> str:
+        """Строка цитаты из архива: бортовое время, автор, текст."""
+        return (f"{orion.when_text(float(msg.get('ts') or 0.0))} · "
+                f"{orion.role_name(str(msg.get('role') or ''))}: {msg.get('text', '')}")
+
+    def _archive_to_chat(self) -> None:
+        """Перенести выделенное в чат: реплики встают в разговор и уходят Ориону."""
+        rows = self._archive_picked_rows()
+        if not rows:
+            self._hint(_t("Сначала выделите сообщения в архиве — щёлкните по ним"), AMBER)
+            return
+        rec = self._rec()
+        quotes = [self._quote_text(m) for m in rows]
+        for quote in quotes:
+            orion.remember(rec["id"], "system", quote, kind="quote")
+        self._pending_quotes = quotes
+        self._render_feed()
+        self.show_tab("chat")
+        self._hint(_t("Из архива перенесено сообщений: {0}. Напишите, что с ними делать.")
+                   .format(len(rows)), GREEN)
+
+    def _archive_to_input(self) -> None:
+        """Скопировать выделенное в поле ввода — править и отправлять как своё."""
+        rows = self._archive_picked_rows()
+        if not rows:
+            self._hint(_t("Сначала выделите сообщения в архиве — щёлкните по ним"), AMBER)
+            return
+        self.entry.set("\n\n".join(self._quote_text(m) for m in rows))
+        self.show_tab("chat")
+        self._hint(_t("Текст из архива — в поле ввода: правьте и отправляйте"), CYAN)
+
     # -- подвкладки --------------------------------------------------------
     def tab_keys(self) -> list[str]:
         return [k for k, _ in self.TABS]
@@ -637,6 +946,8 @@ class OrionScreen(tk.Frame):
         page.tkraise()
         for k, b in self.tab_btns.items():
             b.set_active(k == key)
+        if key == "archive" and not self._archive_rows:
+            self._archive_search()        # архив открыли — сразу показываем свежее
 
     def page_help_key(self) -> str:
         return "orion." + getattr(self, "current_tab", "chat")
@@ -679,6 +990,7 @@ class OrionScreen(tk.Frame):
         ok, _exe = orion.available()
         self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
+        self._feed_images = []          # Tk не держит ссылки на картинки сам
         if not ok:
             self.text.insert(tk.END, _t("OpenCode не найден: Орион на связи не будет. "
                                         "Установите opencode и перезапустите корабль.") + "\n", "hint")
@@ -686,7 +998,7 @@ class OrionScreen(tk.Frame):
             self.text.insert(tk.END, _t("Канал свободен. Скажите Ориону первое слово — "
                                         "письменно или голосом.") + "\n", "hint")
         for m in msgs:
-            when = time.strftime("%H:%M", time.localtime(float(m.get("ts", 0.0))))
+            when = orion.when_text(float(m.get("ts", 0.0)))
             role = m.get("role", "orion")
             if role == "pilot":
                 tag, name = "pilot", _t("ПИЛОТ")
@@ -704,10 +1016,35 @@ class OrionScreen(tk.Frame):
             self.text.insert(tk.END, prefix + name, tag)
             self.text.insert(tk.END, f"  {when}\n", "time")
             self.text.insert(tk.END, f"{m.get('text', '')}\n", "body")
+            self._insert_shot(m.get("shot"))
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
         self._render_strip(msgs, rec)
         self._refresh_suggest(msgs)
+
+    def _insert_shot(self, path: str | None) -> None:
+        """Миниатюра снимка под репликой. Клик — открыть снимок целиком."""
+        if not path:
+            return
+        pic_path = Path(path)
+        if not pic_path.is_file():
+            self.text.insert(tk.END, _t("📷 снимок потерян: {0}").format(pic_path.name) + "\n",
+                             "time")
+            return
+        pic = shots.thumbnail(pic_path)
+        if pic is None:
+            self.text.insert(tk.END, _t("📷 снимок не открылся: {0}").format(pic_path.name) + "\n",
+                             "time")
+            return
+        try:
+            from PIL import ImageTk
+            photo = ImageTk.PhotoImage(pic, master=self.text)
+        except Exception:  # noqa: BLE001
+            return
+        self._feed_images.append(photo)
+        name = self.text.image_create(tk.END, image=photo, padx=px(4), pady=px(6), align="bottom")
+        self.text.insert(tk.END, "\n")
+        self.text.tag_bind(name, "<Button-1>", lambda _e, p=str(pic_path): self._open_shot(p))
 
     def _refresh_suggest(self, msgs: list[dict] | None = None) -> None:
         """Пульт учится на переписке: подсказки из того, что пилот уже писал."""
@@ -792,6 +1129,99 @@ class OrionScreen(tk.Frame):
         return _t("Корабль читает ответ агента вслух голосом Windows.")
 
     # -- чат ---------------------------------------------------------------
+    # -- шкала работы --------------------------------------------------------
+    def _build_activity(self, parent) -> None:
+        """Полоска работы: доклад агента («чем занят») или честная оценка по времени.
+
+        Проценты берём из доклада самого агента (`_orion/progress.json`): сколько
+        шагов закрыто из списка, который агент же и написал. Процентов «из ниоткуда»
+        корабль не рисует: если доклада нет — показываем ход по времени и замираем
+        у 97, потому что сто значило бы «готово».
+        """
+        self.work_row = tk.Frame(parent, bg=BG)
+        self.work_label = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w")
+        self.work_label.pack(side=tk.LEFT)
+        self.work_bar = tk.Canvas(self.work_row, width=px(170), height=px(10), bg=BG,
+                                  highlightthickness=0, bd=0)
+        self.work_bar.pack(side=tk.LEFT, padx=(px(8), px(8)))
+        self.work_pct = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w", width=4)
+        self.work_pct.pack(side=tk.LEFT)
+        self.work_row.pack(fill=tk.X, pady=(px(2), 0))
+        self._work_started = 0.0
+        self._work_tick = 0
+        self._report: dict = {}          # доклад агента (читаем не чаще раза в секунду)
+        self._report_read = 0.0
+        self._tick_activity()
+
+    def _report_view(self) -> dict:
+        """Доклад агента о работе. Файл на диске — читаем не чаще раза в секунду."""
+        now = time.time()
+        if now - self._report_read >= 1.0:
+            self._report_read = now
+            try:
+                self._report = orion.progress_view(now)
+            except OSError:               # диск отвлёкся — показываем, что было
+                self._report = {}
+        return self._report
+
+    def _time_percent(self) -> int:
+        """Оценка хода по времени — когда агент не оставил доклада."""
+        spent = max(0.0, time.time() - self._work_started)
+        return min(97, int(99 * (1 - math.exp(-spent / 40.0))) + 1)
+
+    def _tick_activity(self) -> None:
+        """Шаг шкалы: доклад «что делаю и сколько осталось», оценка или «свободен»."""
+        try:
+            view = self._report_view()
+            if getattr(self, "_busy", False):
+                if not self._work_started:
+                    self._work_started = time.time()
+                spin = "⣾⣽⣻⢿⡿⣟⣯⣷"[self._work_tick % 8]
+                if str(view.get("task") or "") and view.get("state") == "working":
+                    task = str(view["task"])
+                    if view.get("total"):
+                        task += " · " + _t("шаг {0} из {1}").format(view["done"], view["total"])
+                    if view.get("stale"):     # агент молчит — пилоту честно об этом
+                        self.work_label.configure(
+                            text="⚠ " + task + " · " + _t("доклад не обновлялся"), fg=AMBER)
+                        color = AMBER
+                    else:
+                        self.work_label.configure(text=f"{spin} " + task, fg=CYAN)
+                        color = CYAN
+                    pct = int(view.get("percent") or 0)
+                else:
+                    self.work_label.configure(text=f"{spin} " + _t("ОРИОН РАБОТАЕТ"), fg=CYAN)
+                    pct = self._time_percent()
+                    color = CYAN
+                self.work_pct.configure(text=f"{pct}%", fg=color)
+                self._draw_work_bar(pct, color)
+                self._work_tick += 1
+            else:
+                self._work_started = 0.0
+                task = str(view.get("task") or "")
+                if task and view.get("state") == "done" and float(view.get("age") or 0) <= REPORT_KEEP:
+                    self.work_label.configure(
+                        text="✓ " + _t("ЗАДАЧА ВЫПОЛНЕНА: {0}").format(task), fg=GREEN)
+                    self.work_pct.configure(text="100%", fg=GREEN)
+                    self._draw_work_bar(100, GREEN)
+                else:
+                    self.work_label.configure(text="○ " + _t("ОРИОН СВОБОДЕН — можно обращаться"),
+                                              fg=GREEN)
+                    self.work_pct.configure(text="")
+                    self._draw_work_bar(0, LINE)
+        except tk.TclError:          # окно закрыли — шкале больше некуда рисовать
+            return
+        self.after(140, self._tick_activity)
+
+    def _draw_work_bar(self, pct: int, color: str) -> None:
+        w = self.work_bar.winfo_width() or px(170)
+        h = self.work_bar.winfo_height() or px(10)
+        self.work_bar.delete("all")
+        self.work_bar.create_rectangle(0, 0, w, h, fill=BG2, outline=LINE)
+        fill = int((w - 2) * max(0, min(100, pct)) / 100)
+        if fill > 0:
+            self.work_bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
+
     def _hint(self, text: str, color=MUTED) -> None:
         self.hint.configure(text=text, fg=color)
 
@@ -816,6 +1246,13 @@ class OrionScreen(tk.Frame):
         self.entry.insert_text(text)
         self.send_btn.set_enabled(True)
 
+    def _clear_input(self) -> None:
+        """Опустошить поле набора и снять приложенные снимки — только после отправки."""
+        self.entry.clear()
+        self._draft_text = ""
+        self._pending_shots.clear()
+        self._refresh_shot_row()
+
     def _draft_note(self, text: str) -> None:
         """Пилот на минуту замолчал — запомнить черновик (для «Орион видит черновик»)."""
         self._draft_text = text
@@ -823,25 +1260,44 @@ class OrionScreen(tk.Frame):
     def _send(self) -> None:
         rec = self._rec()
         text = " ".join(self.entry.get().split())
-        if not text or self._busy:
+        shot_paths = list(getattr(self, "_pending_shots", []))
+        if not text and shot_paths:
+            text = _t("Посмотри снимок.")
+        # Пилот написал путь к снимку словами — забираем файл внутрь корабля,
+        # иначе агент не имеет права читать чужую папку (OneDrive, рабочий стол)
+        typed = shots.image_paths_in(text)
+        if typed:
+            for taken in shots.adopt(typed):
+                if str(taken) not in shot_paths:
+                    shot_paths.append(str(taken))
+        if self._busy:
+            self._hint(_t("Орион ещё думает — дождитесь ответа или нажмите ■"), AMBER)
             return
-        self.entry.clear()
-        self._draft_text = ""
+        if not text:
+            return
         # короткий разговор о записи задания — «да»/«нет» или сам текст задания
         if self._await_task:
+            self._clear_input()
             self._take_task(text)
             return
         if self._pending_task and orion.is_yes(text):
+            self._clear_input()
             self._confirm_task(True)
             return
         if self._pending_task and orion.is_no(text):
+            self._clear_input()
             self._confirm_task(False)
             return
+        # Связь проверяем ДО того, как стереть поле: иначе при отсутствии OpenCode
+        # набранный текст исчезал впустую (жалоба «куда делся текст из окна»)
         ok, _exe = orion.available()
         if not ok:
-            self._hint(_t("OpenCode не найден: установите opencode и перезапустите корабль."), RED)
+            self._hint(_t("OpenCode не найден: установите opencode и перезапустите корабль.")
+                       + " " + _t("Текст остался в поле."), RED)
             return
-        orion.remember(rec["id"], "pilot", text)
+        self._clear_input()
+        orion.remember(rec["id"], "pilot", text,
+                       shot=shot_paths[0] if shot_paths else "")
         self._sent_log.append(text)
         if len(self._sent_log) > 50:
             del self._sent_log[:-50]
@@ -859,7 +1315,7 @@ class OrionScreen(tk.Frame):
                 if not self.mic.busy:
                     self.mic.start()
             return
-        self._run(rec, text, second=False)
+        self._run(rec, text, second=False, shot=shot_paths)
 
     # -- задание в документ ------------------------------------------------
     def _take_task(self, text: str) -> None:
@@ -912,7 +1368,8 @@ class OrionScreen(tk.Frame):
         if not self._busy:
             self._run(rec, task, second=False)
 
-    def _run(self, rec: dict, text: str, *, second: bool) -> None:
+    def _run(self, rec: dict, text: str, *, second: bool, shot: list[str] | None = None,
+             session: str = "") -> None:
         first, follow = orion.profiles(rec)
         # Капитан (commander) — сразу полные права, без запроса разрешения
         if rec.get("access") == "commander" and not second:
@@ -920,6 +1377,7 @@ class OrionScreen(tk.Frame):
         else:
             profile = (follow or first) if second else first
         self._busy = True
+        self._work_started = time.time()
         self.send_btn.set_enabled(False)
         self.stop_btn.set_enabled(True)
         self._pending = (rec, text)
@@ -930,10 +1388,12 @@ class OrionScreen(tk.Frame):
         # При втором проходе — передаём разрешение в промпт
         if second:
             text = _t("РАЗРЕШЕНИЕ: Командир разрешил изменения. Выполни работу целиком.") + "\n\n" + text
-        # Первый проход — сессия профиля recon, второй проход — новая сессия профиля commander
-        if second:
-            session = ""  # Новую сессию для профиля Командира
-        else:
+        # Снимки пилота: путь в запросе — агент читает файл своим инструментом
+        notes = "\n".join(orion.shot_note(p) for p in (shot or []) if p)
+        if notes:
+            text = notes + "\n\n" + text
+        # Первый проход — сессия профиля recon, второй — сессия Командира
+        if not session and not second:
             session = orion.profile_session(rec["id"], "orion-recon") or orion.last_session(rec["id"])
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
@@ -1177,11 +1637,10 @@ class OrionScreen(tk.Frame):
         if self._pending is None or self._busy:
             return
         rec, text = self._pending
-        # Сохраняем сессию первого прохода — второй должен её продолжать
+        # Второй проход продолжает ту же сессию, но профилем Командира
         first_session = orion.last_session(rec["id"])
         orion.remember(rec["id"], "system", _t("Командир разрешил действия"))
         self._render_feed()
-        # Второй проход: тот же текст, та же сессия, профиль Командира
         self._run(rec, text, second=True, session=first_session)
 
     def _deny(self) -> None:

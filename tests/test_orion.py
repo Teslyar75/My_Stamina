@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -196,6 +197,20 @@ class OrionDataTest(unittest.TestCase):
         self.assertEqual(h["messages"][0]["kind"], "")
         self.assertEqual(h["session"], "ses_1")
         self.assertEqual(orion.last_session("orion"), "ses_1")
+
+    def test_history_keeps_screenshot_path(self):
+        orion.remember("orion", "pilot", "Смотри снимок.", shot=r"C:\shots\1.png")
+        self.assertEqual(orion.history("orion")["messages"][0]["shot"], r"C:\shots\1.png")
+
+    def test_history_hides_empty_screenshot(self):
+        orion.remember("orion", "pilot", "без картинки")
+        self.assertNotIn("shot", orion.history("orion")["messages"][0])
+
+    def test_shot_note_points_to_file(self):
+        note = orion.shot_note(r"C:\shots\1.png")
+        self.assertIn("СНИМОК ПИЛОТА:", note)
+        self.assertIn(r"C:\shots\1.png", note)
+        self.assertEqual(orion.shot_note(""), "")
 
     def test_history_is_capped(self):
         for i in range(orion.MAX_MESSAGES + 5):
@@ -483,8 +498,9 @@ class OrionDataTest(unittest.TestCase):
 
             def __init__(self, cmd, **_kw):
                 seen["cmd"] = cmd
+                self.args = cmd
 
-            def communicate(self, timeout=None):
+            def communicate(self, input=None, timeout=None):
                 return b"", b""
 
             def poll(self):
@@ -492,6 +508,15 @@ class OrionDataTest(unittest.TestCase):
 
             def wait(self, timeout=None):
                 return 0
+
+            def kill(self):
+                self.returncode = -9
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_exc):
+                return False
 
         real_popen, real_cli = orion.subprocess.Popen, orion.find_cli
         orion.subprocess.Popen = _Proc
@@ -958,11 +983,27 @@ class OrionStopTest(unittest.TestCase):
 
             def __init__(self, cmd, **kw):
                 self.cmd = cmd
+                self.args = cmd
 
-            def communicate(self, timeout=None):
+            def communicate(self, input=None, timeout=None):
                 if stop_inside:
                     orion.stop_run("orion")
                 return payload, b""
+
+            def poll(self):
+                return self.returncode
+
+            def wait(self, timeout=None):
+                return self.returncode
+
+            def kill(self):
+                self.returncode = -9
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_exc):
+                return False
 
         return _Proc
 
@@ -1058,6 +1099,75 @@ class OrionUiModeTest(unittest.TestCase):
             ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
             for key in ("РЕЖИМ: ЧАТ", "РЕЖИМ: ПРО", "РЕМОНТНЫЙ ОТСЕК", "ЧАТ"):
                 self.assertIn(key, ru, key)
+        finally:
+            i18n.set_language("ru")
+
+
+class OrionProgressTest(unittest.TestCase):
+    """Доклад агента о работе: «чем занят Орион» на пульте (название, шаг, процент)."""
+
+    def setUp(self):
+        self._tmp = tempfile.mkdtemp()
+        self._old = os.environ.get("STAR_TYPING_PROGRESS_FILE")
+        os.environ["STAR_TYPING_PROGRESS_FILE"] = str(Path(self._tmp) / "progress.json")
+
+    def tearDown(self):
+        if self._old is None:
+            os.environ.pop("STAR_TYPING_PROGRESS_FILE", None)
+        else:
+            os.environ["STAR_TYPING_PROGRESS_FILE"] = self._old
+
+    def test_empty_report(self):
+        self.assertEqual(orion.read_progress(), {})
+        self.assertEqual(orion.progress_view(), {})
+
+    def test_percent_from_steps(self):
+        orion.write_progress("Починка склейки", ["найти причину", "правило словаря", "тесты"], done=1)
+        view = orion.progress_view()
+        self.assertEqual(view["task"], "Починка склейки")
+        self.assertEqual((view["done"], view["total"], view["percent"]), (1, 3, 33))
+        self.assertEqual(view["state"], "working")
+        self.assertFalse(view["stale"])
+
+    def test_done_state_is_hundred(self):
+        orion.write_progress("Индикатор", ["код", "тесты"], done=2, state="done")
+        self.assertEqual(orion.progress_view()["percent"], 100)
+
+    def test_done_clamped_to_steps(self):
+        orion.write_progress("Индикатор", ["код"], done=7)
+        view = orion.progress_view()
+        self.assertEqual((view["done"], view["percent"]), (1, 100))
+
+    def test_stale_report(self):
+        orion.write_progress("Долгая задача", ["шаг"], done=0)
+        later = time.time() + orion.PROGRESS_STALE + 5
+        self.assertTrue(orion.progress_view(later)["stale"])
+        self.assertFalse(orion.progress_view(time.time())["stale"])
+
+    def test_no_steps_means_no_percent(self):
+        orion.write_progress("Просто работа", [])
+        view = orion.progress_view()
+        self.assertEqual(view["total"], 0)
+        self.assertEqual(view["percent"], 0)
+        self.assertTrue(view["task"])
+
+    def test_broken_file_is_silent(self):
+        Path(os.environ["STAR_TYPING_PROGRESS_FILE"]).write_text("{ ой", encoding="utf-8")
+        self.assertEqual(orion.progress_view(), {})
+
+
+class OrionWorkBarKeysTest(unittest.TestCase):
+    """Строки шкалы работы есть в словарях (русский — с проверкой значения)."""
+
+    def test_keys_exist(self):
+        from stamina import i18n
+        keys = ("ОРИОН СВОБОДЕН — можно обращаться", "шаг {0} из {1}",
+                "доклад не обновлялся", "ЗАДАЧА ВЫПОЛНЕНА: {0}")
+        try:
+            ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
+            for key in keys:
+                self.assertIn(key, ru, key)
+                self.assertEqual(ru[key], key, key)
         finally:
             i18n.set_language("ru")
 

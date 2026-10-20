@@ -34,6 +34,7 @@ from stamina.i18n import t as _t
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -112,6 +113,15 @@ def history_path(agent_id: str) -> Path:
     return _root() / HISTORY_DIR / f"{_safe_id(agent_id)}.json"
 
 
+def archive_path(agent_id: str) -> Path:
+    """Журнал всей переписки: одна реплика — одна строка.
+
+    Доска чата держит последние ``MAX_MESSAGES`` реплик и старые теряет. Журнал не
+    теряет ничего: он и есть бортовой архив, из которого пилот поднимает прошлые темы.
+    """
+    return _root() / HISTORY_DIR / f"{_safe_id(agent_id)}.archive.jsonl"
+
+
 def character_path(agent_id: str) -> Path:
     """Документ манер агента на борту: пилот правит его сам (зона ОРИОН → АГЕНТЫ)."""
     return _root() / CHARACTER_DIR / f"{_safe_id(agent_id)}{CHARACTER_SUFFIX}"
@@ -136,6 +146,67 @@ def _read_json(path: Path, fallback: dict) -> dict:
     except (OSError, ValueError):
         return fallback
     return data if isinstance(data, dict) else fallback
+
+
+# -- доклад агента о работе («чем занят Орион») --------------------------------
+#: Где лежит доклад: пилот видит его на пульте ОРИОНА, пока агент работает.
+PROGRESS_REL = ("_orion", "progress.json")
+
+#: Сколько секунд без обновления доклада — и он считается устаревшим.
+PROGRESS_STALE = 120
+
+
+def progress_path() -> Path:
+    """Путь к докладу агента. Тесты подменяют его через ``STAR_TYPING_PROGRESS_FILE``."""
+    override = os.environ.get("STAR_TYPING_PROGRESS_FILE", "").strip()
+    if override:
+        return Path(override)
+    return PROJECT_DIR.joinpath(*PROGRESS_REL)
+
+
+def _as_int(value, fallback: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return fallback
+
+
+def read_progress() -> dict:
+    """Прочитать доклад: что агент делает сейчас. Пусто — доклада нет."""
+    return _read_json(progress_path(), {})
+
+
+def write_progress(task: str, steps=(), done: int = 0, state: str = "working") -> dict:
+    """Записать доклад о работе: задача, шаги, сколько уже закрыто.
+
+    Агент ведёт это сам (см. документ манер): корабль показывает доклад пилоту,
+    чтобы тот видел ход работы и знал, когда можно обратиться. Ничего не выдумываем:
+    процент — это закрытые шаги из этого же списка.
+    """
+    names = [str(s).strip() for s in steps]
+    names = [s for s in names if s]
+    closed = max(0, min(_as_int(done), len(names)))
+    data = {"version": 1, "task": str(task).strip()[:200], "steps": names, "done": closed,
+            "state": str(state or "working"), "updated": time.time()}
+    _write_json(progress_path(), data)
+    return data
+
+
+def progress_view(now: float | None = None) -> dict:
+    """Доклад плюс вычисленные поля: процент, возраст, признак устаревания."""
+    now = time.time() if now is None else now
+    data = read_progress()
+    if not str(data.get("task") or "").strip():
+        return {}
+    total = len(data.get("steps") or [])
+    done = max(0, min(_as_int(data.get("done")), total))
+    state = str(data.get("state") or "working")
+    percent = 100 if state == "done" else (int(round(done * 100.0 / total)) if total else 0)
+    age = max(0.0, now - float(data.get("updated") or 0.0))
+    view = dict(data)
+    view.update({"total": total, "done": done, "state": state, "percent": percent,
+                 "age": age, "stale": age > PROGRESS_STALE})
+    return view
 
 
 # -- реестр агентов -------------------------------------------------------------
@@ -275,8 +346,11 @@ def history(agent_id: str) -> dict:
 
 
 def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
-             kind: str = "") -> dict:
-    """Дописать реплику: role — pilot | orion | system. Сессия хранится по профилям."""
+             kind: str = "", shot: str = "") -> dict:
+    """Дописать реплику: role — pilot | orion | system.
+
+    `shot` — путь к снимку экрана, если пилот приложил картинку к сообщению.
+    """
     data = _read_json(history_path(agent_id), {"version": 1, "session": "", "messages": []})
     data.setdefault("messages", [])
     if session:
@@ -286,10 +360,53 @@ def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
         data["sessions"]["orion-commander"] = session
     msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(),
            "text": " ".join((text or "").split())[:MAX_TEXT], "kind": kind}
+    if shot:
+        msg["shot"] = str(shot)
     data["messages"].append(msg)
     if len(data["messages"]) > MAX_MESSAGES:
         data["messages"] = data["messages"][-MAX_MESSAGES:]
     _write_json(history_path(agent_id), data)
+    _archive_append(agent_id, msg)
+    return msg
+
+
+def _archive_append(agent_id: str, msg: dict) -> None:
+    """Дописать реплику в журнал архива. Не вышло — молчим: разговор важнее журнала."""
+    try:
+        path = archive_path(agent_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(msg, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def archive_messages(agent_id: str) -> list[dict]:
+    """Вся переписка агента из журнала. Журнала нет — берём доску (старые записи)."""
+    path = archive_path(agent_id)
+    if not path.is_file():
+        return list(history(agent_id).get("messages", []))
+    out: list[dict] = []
+    seen: set[str] = set()
+    try:
+        with path.open(encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    msg = json.loads(line)
+                except ValueError:
+                    continue                      # битую строку пропускаем, архив целее
+                key = str(msg.get("id") or "")
+                if key and key in seen:
+                    continue
+                if key:
+                    seen.add(key)
+                out.append(msg)
+    except OSError:
+        return list(history(agent_id).get("messages", []))
+    return out
 
 
 def profile_session(agent_id: str, profile: str) -> str:
@@ -297,7 +414,155 @@ def profile_session(agent_id: str, profile: str) -> str:
     data = _read_json(history_path(agent_id), {})
     sessions = data.get("sessions") or {}
     return str(sessions.get(profile) or "")
-    return msg
+
+
+SHOT_MARKER = "СНИМОК ПИЛОТА:"
+
+
+def shot_note(path: str) -> str:
+    """Строка запроса, по которой агент находит картинку пилота.
+
+    Корабль не умеет показывать изображения агенту — он отдаёт **путь**, а агент
+    читает файл своим инструментом чтения (в OpenCode картинка приходит вложением).
+    """
+    return f"{SHOT_MARKER} {path}" if path else ""
+
+
+# -- бортовой архив переписки ----------------------------------------------------
+WHEN_FMT = "%d.%m.%Y %H:%M"
+ROLE_NAMES = {"pilot": "пилот", "orion": "орион", "system": "корабль"}
+
+
+def when_text(ts: float) -> str:
+    """Бортовое время реплики: дата и часы с минутами (пилот просил и то, и другое)."""
+    return time.strftime(WHEN_FMT, time.localtime(float(ts or 0.0)))
+
+
+def role_name(role: str) -> str:
+    """Имя роли по-русски — для поиска в архиве и подписей на доске."""
+    return ROLE_NAMES.get(role, role)
+
+
+_DATE_PATTERNS = (
+    (re.compile(r"^(\d{1,2})\.(\d{1,2})\.(\d{4})$"), "dmy"),
+    (re.compile(r"^(\d{1,2})\.(\d{1,2})\.(\d{2})$"), "dmy2"),
+    (re.compile(r"^(\d{1,2})\.(\d{1,2})$"), "dm"),
+    (re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$"), "dmy"),
+    (re.compile(r"^(\d{4})-(\d{1,2})-(\d{1,2})$"), "iso"),
+)
+_TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})$")
+_DAY_WORDS = {"сегодня": 0, "вчера": -1, "today": 0, "yesterday": -1}
+
+
+@dataclass(frozen=True)
+class ArchiveQuery:
+    """Что пилот попросил найти: отрезок времени и слова."""
+
+    from_ts: float = 0.0
+    to_ts: float = 0.0
+    hour: int = -1
+    minute: int = -1
+    words: tuple[str, ...] = ()
+
+    def matches(self, msg: dict, agent_name: str = "") -> bool:
+        ts = float(msg.get("ts") or 0.0)
+        if self.from_ts and not (self.from_ts <= ts <= self.to_ts):
+            return False
+        if self.hour >= 0:
+            local = time.localtime(ts)
+            if local.tm_hour != self.hour:
+                return False
+            if self.minute >= 0 and local.tm_min != self.minute:
+                return False
+        if self.words:
+            hay = " ".join((str(msg.get("text") or ""), agent_name,
+                            role_name(str(msg.get("role") or "")))).lower()
+            if any(word not in hay for word in self.words):
+                return False
+        return True
+
+
+def _day_bounds(day: float) -> tuple[float, float]:
+    """Границы суток, в которые попало это время."""
+    local = time.localtime(day)
+    start = time.mktime((local.tm_year, local.tm_mon, local.tm_mday, 0, 0, 0, 0, 0, -1))
+    return start, start + 86400 - 1
+
+
+def _parse_date(token: str, now: float) -> float | None:
+    """Дата из токена: 19.10.2026, 19.10, 2026-10-19. None — это не дата."""
+    for pattern, kind in _DATE_PATTERNS:
+        found = pattern.match(token)
+        if not found:
+            continue
+        parts = [int(g) for g in found.groups()]
+        today = time.localtime(now)
+        if kind == "iso":
+            year, month, day = parts
+        elif kind == "dmy":
+            day, month, year = parts
+        elif kind == "dmy2":
+            day, month, year = parts[0], parts[1], 2000 + parts[2]
+        else:                                        # dm — год текущий
+            day, month, year = parts[0], parts[1], today.tm_year
+        if not (1 <= month <= 12 and 1 <= day <= 31):
+            return None
+        return time.mktime((year, month, day, 12, 0, 0, 0, 0, -1))
+    return None
+
+
+def parse_query(text: str, *, now: float | None = None) -> ArchiveQuery:
+    """Разобрать запрос пилота: дата, время и слова — всё в одном поле.
+
+    «19.10.2026» — тот день целиком, «22:15» — эта минута, «снимок архив» — обе подстроки.
+    Слова без цифр считаются словами: пилот не обязан помнить формат.
+    """
+    now = time.time() if now is None else now
+    from_ts = to_ts = 0.0
+    hour = minute = -1
+    words: list[str] = []
+    for raw in (text or "").replace(",", " ").split():
+        token = raw.strip()
+        if not token:
+            continue
+        low = token.lower()
+        if low in _DAY_WORDS:
+            from_ts, to_ts = _day_bounds(now + _DAY_WORDS[low] * 86400)
+            continue
+        found_time = _TIME_RE.match(token)
+        if found_time:
+            hour, minute = int(found_time.group(1)), int(found_time.group(2))
+            continue
+        stamp = _parse_date(token, now)
+        if stamp is not None:
+            from_ts, to_ts = _day_bounds(stamp)
+            continue
+        words.append(low)
+    return ArchiveQuery(from_ts, to_ts, hour, minute, tuple(words))
+
+
+def archive(query: str = "", *, agent_id: str = "", limit: int = 400,
+            now: float | None = None) -> list[dict]:
+    """Найти реплики в переписке корабля — по дате, времени и словам.
+
+    Ищем по всем заселённым агентам: пилот думает «в архиве борта», а не «в истории
+    конкретного пассажира». Свежие реплики — сверху.
+    """
+    wanted = parse_query(query, now=now)
+    rows: list[dict] = []
+    for rec in registry()["agents"]:
+        if agent_id and str(rec.get("id")) != agent_id:
+            continue
+        name = str(rec.get("name") or rec.get("id") or "")
+        for msg in archive_messages(str(rec.get("id"))):
+            if not wanted.matches(msg, name):
+                continue
+            row = dict(msg)
+            row["agent"] = str(rec.get("id") or "")
+            row["agent_name"] = name
+            rows.append(row)
+    rows.sort(key=lambda m: float(m.get("ts") or 0.0), reverse=True)
+    return rows[:limit] if limit else rows
 
 
 def clear_history(agent_id: str) -> None:
@@ -716,19 +981,33 @@ def run_profile(record: dict, text: str, *, profile: str, context: str = "",
     cmd = build_command(exe, profile, prompt, session=session, model=str(record.get("model") or ""))
     started = time.time()
     try:
-        proc = subprocess.run(cmd, capture_output=True, timeout=timeout,
-                               cwd=str(PROJECT_DIR))
-    except subprocess.TimeoutExpired:
-        return Result(error="timeout", profile=profile, seconds=time.time() - started)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                cwd=str(PROJECT_DIR))
     except OSError as exc:
         return Result(error="spawn", detail=str(exc), profile=profile,
                       seconds=time.time() - started)
-    out = (proc.stdout or b"").decode("utf-8", "replace")
+    # Берём процесс на учёт: без этого кнопка «стоп» его не найдёт и не погасит
+    _remember_run(str(record.get("id") or DEFAULT_AGENT["id"]), proc)
+    try:
+        out_b, err_b = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        _kill(proc)
+        out_b, err_b = proc.communicate()
+        _forget_run(proc)
+        return Result(error="timeout", profile=profile, seconds=time.time() - started)
+    stopped = _forget_run(proc)
+    out = (out_b or b"").decode("utf-8", "replace")
     parsed = parse_events(out)
     reply, request = strip_marker(parsed["reply"])
     needs = bool(request) or parsed["denied"]
+    # Пилот нажал «стоп»: что успело прийти — оставляем, уточнение продолжит разговор
+    if stopped:
+        return Result(reply=reply, session=parsed["session"], tools=parsed["tools"],
+                      error="stopped", needs_permission=needs, request=request,
+                      spoke=parsed["spoke"], profile=profile,
+                      seconds=time.time() - started)
     if not reply and proc.returncode != 0:
-        tail = (proc.stderr or b"").decode("utf-8", "replace").strip().splitlines()
+        tail = (err_b or b"").decode("utf-8", "replace").strip().splitlines()
         return Result(error="spawn", detail=(tail[-1] if tail else ""), session=parsed["session"],
                       profile=profile, seconds=time.time() - started)
     return Result(reply=reply, session=parsed["session"], tools=parsed["tools"],

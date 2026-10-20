@@ -200,10 +200,38 @@ def _has_vowel(word: str) -> bool:
     return any(ch in _VOWELS for ch in word.lower())
 
 
-def _best_split(low: str) -> tuple[str, str, bool] | None:
-    """Где разделить слипшееся слово. → (левая часть, правая часть, уверенно)."""
+def _dict_split(low: str, known) -> tuple[str, str] | None:
+    """Разрез, где обе половины — слова книги: «nineteenth» + «century».
+
+    Именно этого не хватало: старые правила искали разрез только после короткого
+    служебного слова (не длиннее четырёх букв), поэтому «nineteenthcentury» для
+    них не существовало. Берём самый ровный из подходящих разрезов.
+    """
+    if not known:
+        return None
+    best: tuple[str, str] | None = None
+    for i in range(3, len(low) - 2):
+        left, right = low[:i], low[i:]
+        if left in known and right in known:
+            if best is None or min(len(left), len(right)) > min(len(best[0]), len(best[1])):
+                best = (left, right)
+    return best
+
+
+def _best_split(low: str, known=frozenset(), counts=None,
+                own: int | None = None) -> tuple[str, str, bool] | None:
+    """Где разделить слипшееся слово. → (левая часть, правая часть, уверенно).
+
+    ``counts`` — счётчики слов книги (слово → сколько раз). Склейку узнаём по ним:
+    её половинки встречаются чаще, чем она сама.
+    """
     if low in _RU_SAFE or low in _EN_SAFE:
         return None
+    by_dict = _dict_split(low, known)          # обе половины — слова книги: верим
+    if by_dict is not None:
+        left, right = by_dict
+        if counts is None or own is None or own < min(counts.get(left, 0), counts.get(right, 0)):
+            return left, right, True
     fallback: tuple[str, str, bool] | None = None
     for i in range(1, min(4, len(low) - 3) + 1):
         prefix, rest = low[:i], low[i:]
@@ -220,22 +248,66 @@ def _best_split(low: str) -> tuple[str, str, bool] | None:
     return fallback
 
 
+def _counts_of(known_words) -> dict | None:
+    """Счётчики слов книги (или None, если передан просто набор слов)."""
+    if not hasattr(known_words, "items"):
+        return None
+    return {str(w).lower(): int(c) for w, c in known_words.items() if str(w).strip()}
+
+
+def _known_words(known_words, trust: int | None = None) -> frozenset:
+    """Словарь книги → множество доверенных слов.
+
+    Со счётчиками: в большой книге верим слову, встреченному дважды; в коротком
+    тексте статистики нет — верим любому слову словаря.
+    """
+    if not known_words:
+        return frozenset()
+    if hasattr(known_words, "items"):
+        counts = _counts_of(known_words) or {}
+        need = (2 if len(counts) >= 40 else 1) if trust is None else max(1, int(trust))
+        return frozenset(w for w, c in counts.items() if c >= need)
+    return frozenset(str(w).lower() for w in known_words)
+
+
+def book_words(text: str, limit: int = 200_000) -> dict:
+    """Словарь самой книги: слово → сколько раз встретилось.
+
+    Нужен, чтобы отличать настоящие слова от склеек: «nineteenth» и «century»
+    встречаются много раз, а «nineteenthcentury» — один. Считаем по первым
+    ``limit`` знакам: для частот этого хватает, а превью в редакторе не тормозит.
+    """
+    from stamina.suggest import dictionary_from
+    return dict(dictionary_from([text[:limit]]).words)
+
+
 def find_glued_words(text: str, *, known_words=None, confident_only: bool = False,
-                     max_report: int = 100, min_len: int = 7) -> list[GluedWord]:
+                     max_report: int = 100, min_len: int = 7,
+                     trust: int | None = None) -> list[GluedWord]:
     """Ищет слова, слипшиеся без пробела.
 
     * ``known_words``   — словарь известных слов: если слово в нём, оно не проверяется;
+                          можно передать счётчики (см. :func:`book_words`), тогда слово,
+                          встреченное в книге дважды и чаще, считается настоящим;
     * ``confident_only``— вернуть только уверенные находки (их можно чинить молча);
-    * ``min_len``       — с какой длины проверять неуверенные находки (уверенные — с 4 букв).
+    * ``min_len``       — с какой длины проверять неуверенные находки (уверенные — с 4 букв);
+    * ``trust``         — сколько раз слово должно встретиться, чтобы ему верить.
     """
-    known = {str(w).lower() for w in known_words} if known_words else frozenset()
+    known = _known_words(known_words, trust)
+    counts = _counts_of(known_words)
     found: list[GluedWord] = []
     for m in _LETTERS_ONLY.finditer(text):
         token = m.group(0)
         low = token.lower()
-        if len(low) < 4 or low in known:
+        if len(low) < 4:
             continue
-        cand = _best_split(low)
+        own = counts.get(low, 0) if counts is not None else 0
+        if counts is not None:
+            if own >= 2:              # встретилось дважды — это настоящее слово
+                continue
+        elif low in known:
+            continue
+        cand = _best_split(low, known, counts, own if counts is not None else None)
         if cand is None:
             continue
         prefix, rest, confident = cand
@@ -293,5 +365,6 @@ def process_text(text: str, *, lower: bool = True, punct: bool = True,
     if spaces:
         text = normalize_spaces(text)
     if glue:
-        text = normalize_spaces(repair_glued_words(text))
+        # Словарь берём из самого текста: склейка — редкое слово, её половины — частые.
+        text = normalize_spaces(repair_glued_words(text, known_words=book_words(text)))
     return text.strip()
