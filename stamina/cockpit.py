@@ -387,6 +387,9 @@ class Cockpit(tk.Tk):
                 self.nav_buttons.pop(orion_hook.KEY).destroy()
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
+        # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,
+        # а внутри них большие тексты — окно уходило в 100 % CPU (см. _only_screen).
+        self._only_screen(self.current or "bridge")
         self.update_rank()
         self._update_sound_button()
         self.update_comm_badge()
@@ -452,10 +455,13 @@ class Cockpit(tk.Tk):
         """
         for key, scr in (getattr(self, "screens", None) or {}).items():
             try:
+                # Признак именно «лежит в раскладке» (grid), а не «виден на экране»:
+                # на старте окно ещё не отрисовано, winfo_ismapped() = 0 у всех,
+                # и лишние экраны оставались в раскладке — окно уходило в 100 % CPU.
                 if key == name:
-                    if not scr.winfo_ismapped():
+                    if scr.winfo_manager() != "grid":
                         scr.grid(row=0, column=0, sticky="nsew")
-                elif scr.winfo_ismapped():
+                elif scr.winfo_manager() == "grid":
                     scr.grid_remove()
             except tk.TclError:
                 pass

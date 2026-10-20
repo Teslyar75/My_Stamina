@@ -266,6 +266,9 @@ def run_app(argv: list[str] | None = None) -> None:
                     except Exception:  # noqa: BLE001
                         pass
                 _journal("экраны: " + " ".join(scr))
+                mapped = [k for k, s in (getattr(cockpit, "screens", {}) or {}).items()
+                          if s.winfo_ismapped()]
+                _journal(f"видимые экраны: {mapped}")
             except Exception as e:  # noqa: BLE001
                 _journal(f"строки: err {e}")
 
