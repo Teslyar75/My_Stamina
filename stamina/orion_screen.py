@@ -1358,8 +1358,8 @@ class OrionScreen(tk.Frame):
             self._render_feed()
             self._hint(_t("Задание не записано"), MUTED)
             return
-        orion.add_task(task, author=str((self.app.pilot or {}).get("callsign") or ""),
-                       agent=rec["id"])
+        row = orion.add_task(task, author=str((self.app.pilot or {}).get("callsign") or ""),
+                             agent=rec["id"])
         orion.remember(rec["id"], "system", _t("📌 ЗАДАНИЕ В ДОКУМЕНТ: {0}").format(task),
                        kind="task")
         self._set_board(True)          # доска чата открывается — пилот видит запись
@@ -1369,10 +1369,63 @@ class OrionScreen(tk.Frame):
         if self._answer_voice and tts.available():
             tts.speak(_t("Записал в документ заданий"))
         if not self._busy:
-            # Пожелание пилота + карта места → ТЗ → подчинённому исполнителю
+            # Пожелание пилота + карта места → ТЗ → подчинённому исполнителю (в фон)
             brief = self._task_brief_for(task)
             self._marks_sent = marks.last_id()
-            self._run(rec, brief, second=False, profile_hint=orion.EXECUTOR_PROFILE)
+            self._dispatch(rec, brief, str(row.get("id") or ""))
+
+    def _dispatch(self, rec: dict, brief: str, task_id: str = "") -> None:
+        """Отдать ТЗ исполнителю в фоне: он работает, а мы с пилотом разговариваем."""
+        if getattr(self, "_job_busy", False):
+            self._hint(_t("Исполнитель ещё работает — дождитесь его доклада"), AMBER)
+            return
+        self._job_busy = True
+        ctx = self._context()
+        session = orion.profile_session(rec["id"], orion.EXECUTOR_PROFILE) or ""
+        threading.Thread(target=self._executor_worker,
+                         args=(rec, brief, session, ctx, task_id), daemon=True).start()
+        self._hint(_t("Исполнитель взял ТЗ. Разговариваем дальше — доложу, когда закончит."), GREEN)
+
+    def _executor_worker(self, rec: dict, brief: str, session: str, ctx: str,
+                         task_id: str) -> None:
+        try:
+            res = orion.run_profile(rec, brief, profile=orion.EXECUTOR_PROFILE,
+                                    context=ctx, session=session)
+        except Exception as exc:  # noqa: BLE001
+            res = orion.Result(error="spawn", detail=str(exc), profile=orion.EXECUTOR_PROFILE)
+        self._queue.put(("executor", res, rec, task_id))
+
+    def _on_executor(self, res, rec: dict, task_id: str) -> None:
+        """Доклад исполнителя: пришёл отдельным событием, чат при этом не запирался."""
+        self._job_busy = False
+        if res.error == "stopped":
+            note = _t("Исполнитель остановлен — задание осталось открытым")
+            orion.remember(rec["id"], "system", note)
+            self._render_feed()
+            self._hint(note, AMBER)
+            return
+        if res.error:
+            note = self._error_text(res)
+            orion.remember(rec["id"], "system", note)
+            self._render_feed()
+            self._hint(note, RED)
+            return
+        if res.reply:
+            orion.remember(rec["id"], "orion", res.reply, kind="executor")
+        if task_id:
+            orion.close_task(task_id, status="done")
+        head = (res.reply or "").strip().splitlines()
+        short = head[0][:160] if head else _t("без отчёта")
+        note = _t("Исполнитель закончил: {0}").format(short)
+        orion.remember(rec["id"], "system", note)
+        self._render_feed()
+        self._hint(note, GREEN)
+        if self._answer_voice and tts.available():
+            tts.speak(_t("Исполнитель закончил работу"))
+        try:
+            self.app.set_status(note, GREEN)
+        except Exception:  # noqa: BLE001
+            pass
 
     def _task_brief_for(self, wish: str) -> str:
         """Собрать ТЗ для исполнителя: отсек, подвкладка, пометки мышью."""
@@ -2150,6 +2203,8 @@ class OrionScreen(tk.Frame):
                 ev = self._queue.get_nowait()
                 if ev[0] == "answer":
                     self._on_answer(ev[1], ev[2], ev[3])
+                elif ev[0] == "executor":
+                    self._on_executor(ev[1], ev[2], ev[3])
         except queue.Empty:
             pass
         try:
