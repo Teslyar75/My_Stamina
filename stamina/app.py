@@ -265,6 +265,35 @@ def run_app(argv: list[str] | None = None) -> None:
 
         _pulse_start = time.time()
         cockpit.after(50, _pulse)
+
+        # Диагностика: пишем в журнал обратные вызовы, которые держат главный поток долго.
+        # Нужно, чтобы найти виновника вечной перерисовки — по имени функции, а не догадками.
+        def _install_slow_log(limit: float = 0.20) -> None:
+            import tkinter
+            orig = tkinter.Misc.after
+
+            def after(self, ms, func=None, *args):
+                if func is None:
+                    return orig(self, ms, func, *args)
+                name = getattr(func, "__qualname__", None) or repr(func)
+
+                def wrapper(*a, **k):
+                    t0 = time.perf_counter()
+                    try:
+                        return func(*a, **k)
+                    finally:
+                        dt = time.perf_counter() - t0
+                        if dt > limit:
+                            _journal(f"ДОЛГИЙ ВЫЗОВ {name}: {dt:.2f} с")
+                return orig(self, ms, wrapper, *args)
+
+            tkinter.Misc.after = after
+
+        try:
+            _install_slow_log()
+            _journal("журнал долгих вызовов включён")
+        except Exception:  # noqa: BLE001
+            pass
         # Автоматическая проверка и восстановление связи с OpenCode
         def _ensure_connection(cp):
             """Проверить привязку; если потеряна — восстановить автоматически."""

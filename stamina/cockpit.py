@@ -201,11 +201,12 @@ class Cockpit(tk.Tk):
         except tk.TclError:
             return
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
-        need = min(req_w + px(8), int(sw * 0.98))
+        # окно шире экрана = обрезанные шапка и клавиатура, поэтому жёсткий предел по экрану
+        need = min(req_w + px(8), sw - px(20))
         if need <= cur_w:
             return
         try:
-            self.geometry(f"{need}x{min(cur_h, sh)}"
+            self.geometry(f"{need}x{min(cur_h, sh - px(60))}"
                           f"+{max(0, (sw - need) // 2)}+{max(0, self.winfo_y())}")
         except tk.TclError:
             pass
@@ -224,14 +225,16 @@ class Cockpit(tk.Tk):
             try:
                 size, x, y = geo.replace("+", " +").split(" ")[0], *geo.split("+")[1:3]
                 w, h = (int(v) for v in size.split("x"))
-                if 0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100 and w <= sw and h <= sh:
+                # сохранённая раскладка годится, только если окно целиком влезает в экран
+                if (0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100
+                        and px(600) <= w <= sw - px(20) and px(400) <= h <= sh - px(60)):
                     self.geometry(geo)
                     return
             except (ValueError, TypeError):
                 pass
-        w = min(px(1500), int(sw * 0.94))
-        h = min(px(860), int(sh * 0.90))
-        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(0, (sh - h) // 2 - 20)}")
+        w = min(px(1500), sw - px(20))
+        h = min(px(860), sh - px(60))
+        self.geometry(f"{w}x{h}+{max(0, (sw - w) // 2)}+{max(0, (sh - h) // 2 - px(20))}")
 
     def _build(self) -> None:
         top = tk.Frame(self, bg=BG)
