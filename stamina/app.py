@@ -42,6 +42,38 @@ def _arg(argv: list[str], name: str) -> str | None:
     return None
 
 
+def _journal(msg: str) -> None:
+    """Журнал запуска: пишем в %APPDATA%\\Stamina\\start.log.
+
+    Нужен, чтобы увидеть путь запуска и ошибки даже под pythonw, где нет консоли.
+    """
+    try:
+        from stamina import pilots
+        pilots.log_error(msg, "start.log")
+    except Exception:  # noqa: BLE001 — журнал не должен мешать полётам
+        pass
+
+
+def _safe_streams() -> None:
+    """Под pythonw.exe sys.stdout/sys.stderr = None.
+
+    Любая печать (в том числе трейсбек из обработчика Tk) в таком процессе падает,
+    и окно остаётся «живым», но не отвечает. Поэтому направляем вывод в файл.
+    """
+    if sys.stdout is not None and sys.stderr is not None:
+        return
+    try:
+        from stamina import pilots
+        pilots.ROOT_DIR.mkdir(parents=True, exist_ok=True)
+        f = open(pilots.ROOT_DIR / "startup_out.log", "a", encoding="utf-8", buffering=1)
+    except Exception:  # noqa: BLE001
+        return
+    if sys.stdout is None:
+        sys.stdout = f
+    if sys.stderr is None:
+        sys.stderr = f
+
+
 def _center(root, w: int, h: int) -> None:
     sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
     w, h = min(w, int(sw * 0.94)), min(h, int(sh * 0.9))
@@ -65,6 +97,8 @@ def choose_pilot(argv: list[str]) -> str | None:
     first_run = "--welcome" in argv or (not plist and p is None and "--select" not in argv and "--board" not in argv)
     need_login = "--select" in argv or "--board" in argv or (
         p is None and (not plist or (len(plist) >= 2 and (reg or {}).get("ask_on_start", True))))
+    _journal(f"choose_pilot argv={argv} want={want} pilots={[x.get('id') for x in plist]} "
+             f"found={getattr(p, 'get', lambda *_: None)('id')} first_run={first_run} need_login={need_login}")
     if p is None and not need_login:
         p = pilots.get((reg or {}).get("last_pilot") or "") or plist[0]
     import tkinter as tk
@@ -104,7 +138,14 @@ def choose_pilot(argv: list[str]) -> str | None:
                 root.title(t("Star Typing — код доступа"))
                 _center(root, theme.px(520), theme.px(560))
                 root.update_idletasks()
-                if not pilot_screens.ask_pin(root, p, t("ВХОД В КАБИНУ")):
+                ok_pin = pilot_screens.ask_pin(root, p, t("ВХОД В КАБИНУ"))
+                try:
+                    grab = root.grab_current()
+                except tk.TclError:
+                    grab = "?"
+                _journal(f"ask_pin -> {ok_pin}, grab после диалога: {grab}, "
+                         f"root viewable: {root.winfo_viewable()}")
+                if not ok_pin:
                     return None
             pid = p["id"]
         p = pilots.get(pid) or p
@@ -124,6 +165,19 @@ def choose_pilot(argv: list[str]) -> str | None:
 
 def run_app(argv: list[str] | None = None) -> None:
     argv = sys.argv[1:] if argv is None else list(argv)
+    _safe_streams()
+    _journal(f"=== ЗАПУСК argv={argv} exe={sys.executable} cwd={os.getcwd()}")
+    # Ошибку в обратном вызове Tk пишем в журнал: под pythonw её больше некуда девать
+    try:
+        import tkinter as _tk
+
+        def _cb_exc(_self, exc, val, tb):
+            import traceback
+            _journal("Ошибка в обратном вызове Tk:\n" + "".join(traceback.format_exception(exc, val, tb)))
+
+        _tk.Tk.report_callback_exception = _cb_exc
+    except Exception:  # noqa: BLE001
+        pass
     _enable_dpi_awareness()
     _set_app_id()
     try:
@@ -131,9 +185,12 @@ def run_app(argv: list[str] | None = None) -> None:
     except Exception:  # noqa: BLE001 — экипаж не должен мешать полётам
         import traceback
         from stamina import pilots
-        pilots.log_error(t("Ошибка выбора пилота:\n") + traceback.format_exc())
+        text = t("Ошибка выбора пилота:\n") + traceback.format_exc()
+        pilots.log_error(text)
+        _journal(text)
         # с реестром нельзя молча работать «по-старому» (корень уже пуст) — выходим, ошибка в логе
         pid = None if pilots.load_registry() is not None else ""
+    _journal(f"choose_pilot -> {pid}")
     if pid is None:
         return
     if pid:
@@ -142,6 +199,28 @@ def run_app(argv: list[str] | None = None) -> None:
     try:
         from stamina.cockpit import Cockpit
         cockpit = Cockpit()
+        _journal("Cockpit создан")
+
+        # Снимки состояния окна первые 12 секунд: видно, если окно «живое», но не отвечает
+        def _snap(tag: str) -> None:
+            try:
+                grab = cockpit.grab_current()
+            except Exception as e:  # noqa: BLE001
+                grab = f"err {e}"
+            try:
+                focus = cockpit.focus_get()
+            except Exception as e:  # noqa: BLE001
+                focus = f"err {e}"
+            try:
+                view = (cockpit.winfo_viewable(), cockpit.winfo_ismapped(),
+                        cockpit.winfo_width(), cockpit.winfo_height())
+            except Exception as e:  # noqa: BLE001
+                view = f"err {e}"
+            _journal(f"снимок {tag}: grab={grab} focus={focus} окно={view} "
+                     f"экран={getattr(cockpit, 'current', '?')}")
+
+        for _t in (1000, 2000, 3500, 6000, 12000):
+            cockpit.after(_t, lambda tag=_t: _snap(f"{tag} мс"))
         # Автоматическая проверка и восстановление связи с OpenCode
         def _ensure_connection(cp):
             """Проверить привязку; если потеряна — восстановить автоматически."""
@@ -174,11 +253,15 @@ def run_app(argv: list[str] | None = None) -> None:
             else:
                 cp.set_status("Нет связи с OpenCode — войди в opencode auth login", "red")
         cockpit.after(100, lambda: _ensure_connection(cockpit))
+        _journal("mainloop старт")
         cockpit.mainloop()
+        _journal("mainloop завершён")
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback
         from stamina import pilots
-        pilots.log_error(t("Ошибка пульта:\n") + traceback.format_exc(), "cockpit_error.log")
+        text = t("Ошибка пульта:\n") + traceback.format_exc()
+        pilots.log_error(text, "cockpit_error.log")
+        _journal(text)
         raise
 
 

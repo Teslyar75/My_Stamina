@@ -35,6 +35,13 @@ class IdleController:
 
     def touch(self, _e=None) -> None:
         self.last = time.time()
+        # Любая клавиша или клик закрывает слайдшоу (раньше это делал grab,
+        # который ломал переключение раскладки в системе).
+        if self.show is not None:
+            try:
+                self.show.close()
+            except tk.TclError:
+                pass
 
     def _tick(self) -> None:
         try:
@@ -89,11 +96,10 @@ class Slideshow(tk.Frame):
             self.bind(seq, self._key)
             self.cv.bind(seq, self._key)
         self.cv.bind("<ButtonPress>", self._key)
-        self.focus_force()
-        try:
-            self.grab_set()
-        except tk.TclError:
-            pass
+        # Захват клавиатуры и focus_force НЕ ставим: глобальный grab отбирает
+        # клавиши у всей системы (перестаёт переключаться раскладка), а окно
+        # выглядит зависшим. Слайдшоу закрывается по любой клавише/клику через
+        # IdleController.touch (bind_all на главном окне).
         self.cv.create_text(20, 20, anchor="nw", text=_t("Загрузка…"), fill=theme.MUTED, font=theme.font(12),
                             tags="loading")
         skin = theme.theme_id()
