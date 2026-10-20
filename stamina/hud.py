@@ -172,6 +172,9 @@ class HScrollStrip(tk.Frame):
         bg = bg if bg is not None else _bg_of(master)
         super().__init__(master, bg=bg)
         self._bg = bg
+        self._syncing = False   # защита от шторма событий: Configure → _sync → Configure
+        self._win_h = 0         # высота окна: меняем только при реальном изменении
+        self._region = None     # последняя область прокрутки: меняем только при изменении
         self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0, height=px(height))
         self.canvas.living_skip = True  # не красить Living Space — иначе дрожь при скролле шапки
         self.inner = tk.Frame(self.canvas, bg=bg)
@@ -184,24 +187,42 @@ class HScrollStrip(tk.Frame):
         self._wire_wheel(self.inner)
 
     def _on_canvas(self, e: tk.Event) -> None:
+        # Высоту окна задаём ТОЛЬКО при изменении: иначе itemconfigure порождает
+        # новый Configure → снова itemconfigure → бесконечная перерисовка шапки.
         try:
-            self.canvas.itemconfigure(self._win, height=max(1, int(e.height)))
+            h = max(1, int(e.height))
+            if h != self._win_h:
+                self._win_h = h
+                self.canvas.itemconfigure(self._win, height=h)
         except tk.TclError:
             pass
         self._sync()
 
     def _sync(self, _e=None) -> None:
+        # Полосу прокрутки обновляем по содержимому.
+        # update_idletasks() НЕ зовём: он прокачивает очередь событий Tk, а вместе
+        # с ней Configure → _sync → снова Configure: шторм событий, CPU 100 %,
+        # окно перестаёт отвечать (и система не переключает раскладку).
+        if self._syncing:
+            return
+        self._syncing = True
         try:
-            self.canvas.update_idletasks()
             bbox = self.canvas.bbox("all")
             if bbox:
-                self.canvas.configure(scrollregion=bbox)
+                region = (bbox[0], bbox[1], bbox[2], bbox[3])
+                # Меняем область только при реальном изменении: configure(scrollregion)
+                # сам вызывает Configure — без проверки шапка зацикливается.
+                if region != self._region:
+                    self._region = region
+                    self.canvas.configure(scrollregion=region)
                 content_w = bbox[2] - bbox[0]
                 view_w = max(self.canvas.winfo_width(), 1)
                 if content_w <= view_w:
                     self.canvas.xview_moveto(0)
         except tk.TclError:
             pass
+        finally:
+            self._syncing = False
 
     def wire(self, widget: tk.Misc) -> None:
         """Подключить колёсико к кнопке (и её потомкам)."""

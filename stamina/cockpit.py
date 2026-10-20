@@ -75,6 +75,9 @@ class Cockpit(tk.Tk):
         self._last_bridge = "bridge"
         self._fullscreen = False
         self._build()
+        # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
+        self.after(0, self._fit_to_content)
+        self.after(600, self._fit_to_content)   # повторно: к этому моменту размеры уже настоящие
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
@@ -131,6 +134,30 @@ class Cockpit(tk.Tk):
         except tk.TclError:
             pass
 
+    def _fit_to_content(self) -> None:
+        """Расширить окно до ширины содержимого (в пределах экрана).
+
+        Иначе при крупном интерфейсе шапка и клавиатура не влезают и выглядят
+        «сломанными»: текст обрезан, кнопки наезжают.
+        """
+        try:
+            self.update_idletasks()
+            if self.state() == "zoomed":
+                return                      # развёрнутое окно уже во весь экран
+            req_w = self.winfo_reqwidth()
+            cur_w, cur_h = self.winfo_width(), self.winfo_height()
+        except tk.TclError:
+            return
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        need = min(req_w + px(8), int(sw * 0.98))
+        if need <= cur_w:
+            return
+        try:
+            self.geometry(f"{need}x{min(cur_h, sh)}"
+                          f"+{max(0, (sw - need) // 2)}+{max(0, self.winfo_y())}")
+        except tk.TclError:
+            pass
+
     # ------------------------------------------------------------------
     def _apply_geometry(self) -> None:
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
@@ -150,8 +177,8 @@ class Cockpit(tk.Tk):
                     return
             except (ValueError, TypeError):
                 pass
-        w = min(px(1260), int(sw * 0.94))
-        h = min(px(800), int(sh * 0.90))
+        w = min(px(1500), int(sw * 0.94))
+        h = min(px(860), int(sh * 0.90))
         self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(0, (sh - h) // 2 - 20)}")
 
     def _build(self) -> None:
@@ -167,13 +194,6 @@ class Cockpit(tk.Tk):
         right.pack(side=tk.RIGHT)
         self.clock = tk.Label(right, text="", bg=BG, fg=CYAN, font=theme.font(14, True, mono=True))
         self.clock.pack(side=tk.RIGHT, padx=(px(10), 0))
-        # мини-приёмник (появляется, когда эфир играет)
-        self._radio_mini = None
-        try:
-            from stamina.radio.minibark import RadioMiniBar
-            self._radio_mini = RadioMiniBar(right, self)
-        except Exception:  # noqa: BLE001
-            self._radio_mini = None
         self.btn_sound = HudButton(right, tr_("♪ ЗВУК ВЫКЛ"), self.toggle_sound, height=36, font_size=9,
                                    width=116 if len(self.SCREENS) < 6 else 38)
         self.btn_sound.pack(side=tk.RIGHT, padx=px(4))
@@ -194,6 +214,24 @@ class Cockpit(tk.Tk):
                                     width=px(180 if self._compact else 220), cursor="hand2")
         self.rank_label.pack(side=tk.RIGHT, padx=px(6))
         self.rank_label.bind("<Button-1>", lambda _e: self.pilot_menu())
+        # мини-приёмник — отдельной строкой под шапкой: в самой шапке ему не хватало места
+        self._radio_mini = None
+        self._mini_row = tk.Frame(self, bg=BG)
+        self._mini_row.pack(fill=tk.X, padx=px(10))
+        # подменю Мостика живёт в этой же строке: кнопки слева, приёмник справа
+        self.subnav = tk.Frame(self._mini_row, bg=BG)
+        self.subnav.pack(side=tk.LEFT)
+        self.subnav_buttons: dict[str, HudButton] = {}
+        for i, (key, title) in enumerate(nav.BRIDGE_LEAVES, 1):
+            b = HudButton(self.subnav, f"{tr_(title)} · Ctrl+F{i}", lambda k=key: self.show(k), height=26, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            b.nav_menu = True
+            self.subnav_buttons[key] = b
+        try:
+            from stamina.radio.minibark import RadioMiniBar
+            self._radio_mini = RadioMiniBar(self._mini_row, self)
+        except Exception:  # noqa: BLE001
+            self._radio_mini = None
         # навигация зон — горизонтальный скролл колёсиком (кнопки не «пропадают» при крупном UI)
         self.nav_strip = HScrollStrip(top, height=44, bg=BG)
         self.nav_strip.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(4 if self._compact else 10))
@@ -219,14 +257,6 @@ class Cockpit(tk.Tk):
         self.crumbs.pack(fill=tk.X, padx=px(14), pady=(px(2), 0))
         self.crumb_path = tk.Frame(self.crumbs, bg=BG)
         self.crumb_path.pack(side=tk.LEFT)
-        self.subnav = tk.Frame(self.crumbs, bg=BG)
-        self.subnav.pack(side=tk.RIGHT)
-        self.subnav_buttons: dict[str, HudButton] = {}
-        for i, (key, title) in enumerate(nav.BRIDGE_LEAVES, 1):
-            b = HudButton(self.subnav, f"{tr_(title)} · Ctrl+F{i}", lambda k=key: self.show(k), height=26, font_size=8)
-            b.pack(side=tk.LEFT, padx=px(2))
-            b.nav_menu = True
-            self.subnav_buttons[key] = b
 
         self.content = tk.Frame(self, bg=BG)
         self.content.pack(fill=tk.BOTH, expand=True)
@@ -491,7 +521,8 @@ class Cockpit(tk.Tk):
         in_bridge = nav.zone_of(self.current) == "bridge"
         if in_bridge:
             if not self.subnav.winfo_ismapped():
-                self.subnav.pack(side=tk.RIGHT)
+                # кнопки — слева; приёмник, если уже показан, остаётся справа
+                self.subnav.pack(side=tk.LEFT)
             for k, b in self.subnav_buttons.items():
                 b.set_active(k == self.current)
         else:

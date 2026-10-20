@@ -6,6 +6,7 @@ from stamina.i18n import t
 
 import os
 import sys
+import time
 
 
 def _enable_dpi_awareness() -> None:
@@ -243,6 +244,27 @@ def run_app(argv: list[str] | None = None) -> None:
 
         for _t in (1000, 2000, 3500, 6000, 12000):
             cockpit.after(_t, lambda tag=_t: _snap(f"{tag} мс"))
+
+        # Пульс главного потока: если окно «замерло», видно, когда и на сколько
+        _beat = {"last": time.time()}
+
+        def _pulse() -> None:
+            now = time.time()
+            gap = now - _beat["last"]
+            _beat["last"] = now
+            if gap > 0.3:
+                pending = "?"
+                try:  # сколько таймеров висит: если растёт — кто-то плодит after()
+                    pending = len(cockpit.tk.call("after", "info").split())
+                except Exception:  # noqa: BLE001
+                    pass
+                _journal(f"ГЛАВНЫЙ ПОТОК ЗАМИРАЛ на {gap:.2f} с "
+                         f"(экран={getattr(cockpit, 'current', '?')}, таймеров={pending})")
+            if now - _pulse_start < 25:
+                cockpit.after(50, _pulse)
+
+        _pulse_start = time.time()
+        cockpit.after(50, _pulse)
         # Автоматическая проверка и восстановление связи с OpenCode
         def _ensure_connection(cp):
             """Проверить привязку; если потеряна — восстановить автоматически."""

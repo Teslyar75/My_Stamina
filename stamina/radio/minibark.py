@@ -25,7 +25,11 @@ class RadioMiniBar(tk.Frame):
         self._packed = False
         self._full_text = ""
         self._fit_job = None
-        app.bind("<Configure>", self._on_resize, add="+")
+        self._last_row_w = None      # последняя ширина строки: без изменений не перерисовываем
+        self._last_view = None       # последний текст: одинаковый не перерисовываем
+        # слушаем ТОЛЬКО свою строку, а не всё окно: иначе каждое изменение размера
+        # любой кнопки вызывало пересчёт приёмника (тысячи событий в секунду)
+        self.master.bind("<Configure>", self._on_resize, add="+")
 
         self.lbl = tk.Label(self, text="", bg=self["bg"], fg=CYAN,
                             font=theme.font(9, True), cursor="hand2")
@@ -78,54 +82,67 @@ class RadioMiniBar(tk.Frame):
         if track:
             text += f" — {track}"
         text += f"  {mark}  🔊{self.eng.volume}"
+        view = (text, self.eng.playing)
+        if view == self._last_view and self._packed:
+            return                      # ничего не изменилось — не трогаем экран
+        self._last_view = view
         self._full_text = text
         self.lbl.configure(text=text, fg=GREEN if self.eng.playing else MUTED)
         self._show()
         self._fit()
 
     def _fit(self) -> None:
-        """Подпись станции ужимается с «…» под свободное место шапки — окно не растёт, «ЭКРАН» не уезжает."""
+        """Подпись станции ужимается с «…» под ширину строки — без update_idletasks и лишних перерисовок."""
         import tkinter.font as tkfont
         text = getattr(self, "_full_text", "")
         if not text or not self._packed:
             return
         try:
-            top = self.master.master            # строка шапки: логотип · зоны · правый блок
-            win = self.winfo_toplevel().winfo_width()
-            if win < 50:
+            row_w = self.master.winfo_width()
+            if row_w < px(120):
                 return
-            self.lbl.configure(text="")
-            self.update_idletasks()
-            avail = win - top.winfo_reqwidth() - px(24)
+            # место, занятое соседями строки (кнопки Мостика слева)
+            used = 0
+            for ch in self.master.winfo_children():
+                if ch is self or not ch.winfo_ismapped():
+                    continue
+                used += ch.winfo_width() + px(8)
+            # кнопки «▮▮ − + ✕» занимают фиксированное место справа — подпись не должна на них наезжать
+            avail = row_w - used - px(16) - px(150)
             f = tkfont.Font(font=self.lbl.cget("font"))
-            cap = min(avail, px(MAX_LABEL_PX))
-            if cap < px(40):
-                # места нет даже под название — прячем мини-приёмник целиком, «ЭКРАН» важнее
-                self.lbl.configure(text="📻")
-                self.update_idletasks()
-                if top.winfo_reqwidth() > win:
-                    self.pack_forget()
-                    self._packed = False
-                return
+            cap = max(px(30), min(avail, px(MAX_LABEL_PX)))
             if f.measure(text) > cap:
-                while text and f.measure(text + "…") > cap:
-                    text = text[:-1]
-                text = text.rstrip() + "…"
+                trimmed = text
+                while trimmed and f.measure(trimmed + "…") > cap:
+                    trimmed = trimmed[:-1]
+                text = trimmed.rstrip() + "…"
             self.lbl.configure(text=text)
         except tk.TclError:
             pass
 
     def _show(self) -> None:
         if not self._packed:
-            self.pack(side=tk.RIGHT, padx=px(6))
+            # справа от кнопок Мостика: кнопки слева, приёмник справа
+            self.pack(side=tk.RIGHT, padx=px(6), pady=(px(2), px(2)))
             self._packed = True
+            self._last_row_w = None
+            # один повторный пересчёт, когда строка уже разложилась с кнопками-соседями
+            if self._fit_job:
+                self.after_cancel(self._fit_job)
+            self._fit_job = self.after(300, self._fit)
 
     def _on_resize(self, e) -> None:
+        # Реагируем только на реальное изменение ширины строки: иначе каждое событие
+        # раскладки снова запускало пересчёт и перерисовку подписи.
         try:
-            if not self.winfo_exists() or e.widget is not self.winfo_toplevel() or not self._packed:
+            if not self.winfo_exists() or not self._packed:
                 return
+            w = int(getattr(e, "width", 0) or 0)
         except tk.TclError:
             return
+        if w and w == self._last_row_w:
+            return
+        self._last_row_w = w
         if self._fit_job:
             self.after_cancel(self._fit_job)
         self._fit_job = self.after(120, self._fit)
