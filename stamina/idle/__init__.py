@@ -9,7 +9,7 @@
 from __future__ import annotations
 
 IDLE_MINUTES = (0, 1, 3, 5)
-IDLE_DEFAULTS = {"idle_minutes": 3, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"}
+IDLE_DEFAULTS = {"idle_minutes": 1, "idle_radio": True, "idle_after": "stop", "idle_provider": "auto"}
 SLIDE_MS = 12_000
 FADE_MS = 1_500
 XFADE_MS = 1_200      # плавная смена слайдов

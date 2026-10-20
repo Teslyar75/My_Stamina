@@ -34,7 +34,7 @@ from stamina.theme import BG, CYAN, PANEL  # совместимость; в го
 
 MODES = ("off", "light", "full")
 MODE_TITLES = {"off": _t("ВЫКЛ"), "light": _t("ЛЁГКИЙ"), "full": _t("ПОЛНЫЙ")}
-DEFAULT_MODE = "light"
+DEFAULT_MODE = "off"
 PROFILE = {
     # к/с резкого окна, к/с просветов, к/с стекла, бюджет стекла на кадр (мс), объекты
     "light": dict(fps=12, gap_fps=3, glass_fps=2, glass_ms=4, stars=90, comets=1, rocks=3, planets=1),

@@ -789,7 +789,9 @@ class Cockpit(tk.Tk):
             adapted = saved.text
         self.screens["cargo"].load_initial(adapted, original)
         if saved is not None:
-            self.resume_cargo()
+            # Книгу на мостик при старте не выгружаем: тяжёлый текст тормозит вход.
+            # Пилот сам открывает «СВОЙ ТЕКСТ» и продолжает там.
+            self.set_status(tr_("Сохранённый груз ждёт в разделе «СВОЙ ТЕКСТ»"), MUTED)
         elif not self.store.stats.get("runs"):
             # новичок: сразу на мостик с первой миссией (домашний ряд) — нажмите любую клавишу и летите
             self.start_mission(missions.missions_for("en")[0])

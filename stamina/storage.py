@@ -51,9 +51,9 @@ DEFAULT_SETTINGS = {
     # (glue — разделять сращивания слов: «ивот» → «и вот»)
     "cargo_opts": {"lower": True, "punct": True, "spaces": True, "glue": False},
     "geometry": "",
-    "living_space": "light",  # «Живой космос» во всех разделах: off | light | full
+    "living_space": "off",  # «Живой космос» во всех разделах: off | light | full
     "skin": "spaceship",
-    "idle_minutes": 3,  # простой: слайдшоу + радио скина (только скины со slideshow)
+    "idle_minutes": 1,  # простой: слайдшоу + радио скина (только скины со slideshow)
     "idle_radio": True,
     "idle_after": "stop",
     "idle_provider": "auto",  # скин UI: stamina/themes/<id>.json
