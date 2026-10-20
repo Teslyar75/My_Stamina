@@ -255,16 +255,16 @@ def run_app(argv: list[str] | None = None) -> None:
             if gap > 0.3:
                 pending = "?"
                 try:  # сколько таймеров висит: если растёт — кто-то плодит after()
-                    pending = len(cockpit.tk.call("after", "info").split())
+                    pending = len(cockpit.tk.splitlist(cockpit.tk.call("after", "info")))
                 except Exception:  # noqa: BLE001
                     pass
                 _journal(f"ГЛАВНЫЙ ПОТОК ЗАМИРАЛ на {gap:.2f} с "
                          f"(экран={getattr(cockpit, 'current', '?')}, таймеров={pending})")
-            if now - _pulse_start < 25:
-                cockpit.after(50, _pulse)
+            # пульс живёт всё время работы: без него сторож замираний считает
+            # «замиранием» сам факт остановки пульса и врёт в журнал
+            cockpit.after(250, _pulse)
 
-        _pulse_start = time.time()
-        cockpit.after(50, _pulse)
+        cockpit.after(250, _pulse)
 
         # Диагностика: пишем в журнал обратные вызовы, которые держат главный поток долго.
         # Нужно, чтобы найти виновника вечной перерисовки — по имени функции, а не догадками.
@@ -292,6 +292,60 @@ def run_app(argv: list[str] | None = None) -> None:
         try:
             _install_slow_log()
             _journal("журнал долгих вызовов включён")
+        except Exception:  # noqa: BLE001
+            pass
+
+        # Сторож петель раскладки: шапка умеет уходить в петлю «Configure → рисовать →
+        # Configure» — тысячи перерисовок в секунду, окно встаёт. Считаем события по
+        # виджетам и, если виджет зашкалил, снимаем с него обработчик и пишем в журнал.
+        def _install_layout_guard(root) -> None:
+            import tkinter
+            per_widget: dict[str, int] = {}
+            hooked: set[str] = set()
+
+            def on_cfg(_e, key: str, widget) -> None:
+                n = per_widget.get(key, 0) + 1
+                per_widget[key] = n
+                if n == 300:
+                    _journal(f"ПЕТЛЯ РАСКЛАДКИ: {widget.winfo_class()} {key} — "
+                             f"{n} событий, снимаю обработчик")
+                    try:
+                        widget.unbind("<Configure>")
+                    except Exception:  # noqa: BLE001
+                        pass
+
+            def hook(widget) -> None:
+                key = str(widget)
+                if key in hooked:
+                    return
+                try:
+                    hooked.add(key)
+                    widget.bind("<Configure>", lambda e, k=key, w=widget: on_cfg(e, k, w), add="+")
+                except Exception:  # noqa: BLE001
+                    pass
+
+            def walk(widget) -> None:
+                hook(widget)
+                try:
+                    children = widget.winfo_children()
+                except Exception:  # noqa: BLE001
+                    return
+                for ch in children:
+                    walk(ch)
+
+            def sweep() -> None:
+                per_widget.clear()
+                try:
+                    walk(root)
+                    root.after(1000, sweep)
+                except Exception:  # noqa: BLE001
+                    pass
+
+            root.after(1000, sweep)
+
+        try:
+            _install_layout_guard(cockpit)
+            _journal("сторож петель раскладки включён")
         except Exception:  # noqa: BLE001
             pass
         # Автоматическая проверка и восстановление связи с OpenCode
