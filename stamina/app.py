@@ -414,6 +414,27 @@ def run_app(argv: list[str] | None = None) -> None:
                 cp.set_status("Нет связи с OpenCode — войди в opencode auth login", "red")
         cockpit.after(100, lambda: _ensure_connection(cockpit))
         _journal("mainloop старт")
+        # Суточная резервная копия данных пилота — в фоне: git вернёт код,
+        # а прогресс, книги и переписку вернуть неоткуда.
+        def _backup_bg() -> None:
+            import threading
+            from stamina import backups
+
+            def work() -> None:
+                try:
+                    done = backups.make_backup()
+                    if done is not None:
+                        _journal(f"backup: {done.name}")
+                except Exception:  # noqa: BLE001
+                    pass
+
+            threading.Thread(target=work, daemon=True, name="backup").start()
+
+        try:
+            _backup_bg()
+        except Exception:  # noqa: BLE001
+            pass
+
         cockpit.mainloop()
         _journal("mainloop завершён")
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
