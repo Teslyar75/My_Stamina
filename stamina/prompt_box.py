@@ -286,10 +286,20 @@ class PromptBox(tk.Frame):
 
     def _on_scroll(self, first, last) -> None:
         self.bar.set(first, last)
-        if float(first) <= 0.0 and float(last) >= 1.0:
-            self.bar.pack_forget()
-        elif not self.bar.winfo_ismapped():
-            self.bar.pack(side=tk.RIGHT, fill=tk.Y, before=self.text)
+        # Показываем/прячем полосу ТОЛЬКО при смене состояния: pack/pack_forget меняет
+        # геометрию текстового поля, а это снова вызывает yscrollcommand — и так по кругу
+        # (окно уходило в 100 % CPU и переставало отвечать).
+        need = not (float(first) <= 0.0 and float(last) >= 1.0)
+        if need == getattr(self, "_bar_visible", True):
+            return
+        self._bar_visible = need
+        try:
+            if need:
+                self.bar.pack(side=tk.RIGHT, fill=tk.Y, before=self.text)
+            else:
+                self.bar.pack_forget()
+        except tk.TclError:
+            pass
 
     def _after_change(self, _event=None) -> None:
         self._drop_ghost()
