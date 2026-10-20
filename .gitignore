@@ -77,3 +77,13 @@ _orion/
 _w*.py
 _w*.txt
 _w*.log
+
+# отладочные файлы замеров
+_count.txt
+_bis*.txt
+_cpu*.txt
+_check.txt
+_hide.txt
+_prof.txt
+_*.ps1
+
