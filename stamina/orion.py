@@ -67,6 +67,9 @@ PROFILES: dict[str, tuple[str, str | None]] = {
     "crew": ("orion-chat", None),
 }
 
+# Исполнитель — подчинённый агент: получает от Ориона готовое ТЗ и делает работу руками.
+EXECUTOR_PROFILE = "orion-executor"
+
 DEFAULT_AGENT = {
     "id": "orion",
     "name": "Орион",
@@ -718,16 +721,61 @@ def tasks(*, status: str = "") -> list[dict]:
     return sorted(rows, key=lambda t: float(t.get("ts") or 0.0), reverse=True)
 
 
-def add_task(text: str, *, author: str = "", agent: str = "") -> dict:
-    """Записать задание в документ борта (по подтверждению командира)."""
+def add_task(text: str, *, author: str = "", agent: str = "", brief: str = "") -> dict:
+    """Записать задание в документ борта (по подтверждению командира).
+
+    `text` — пожелание пилота словами, `brief` — готовое ТЗ для исполнителя
+    (место на экране, что сделать, по чему считать готовым).
+    """
     data = _read_json(tasks_path(), {"version": 1, "tasks": []})
     data.setdefault("tasks", [])
     row = {"id": uuid.uuid4().hex[:12], "ts": time.time(),
            "text": " ".join((text or "").split())[:MAX_TEXT],
            "author": author, "agent": agent or DEFAULT_AGENT["id"], "status": "open"}
+    if brief:
+        row["brief"] = brief.strip()[:20000]
     data["tasks"].append(row)
     _write_json(tasks_path(), data)
     return row
+
+
+def task_brief(text: str, *, marks_block: str = "", zone: str = "", subtab: str = "",
+               author: str = "") -> str:
+    """ТЗ для подчинённого исполнителя: пожелание пилота + карта места + критерии.
+
+    Пилот говорит словами и показывает мышью; исполнитель не видит ни окна, ни
+    разговора — ему нужен адрес и признак готовности.
+    """
+    wish = " ".join((text or "").split())
+    where = " / ".join(p for p in (zone, subtab) if p) or "не указано"
+    lines = [
+        "ТЗ ДЛЯ ИСПОЛНИТЕЛЯ (составил Орион по словам пилота)",
+        f"Пилот: {author or 'George Orwell'} (Командир)",
+        "",
+        "1. ЧЕГО ХОЧЕТ ПИЛОТ",
+        wish or "(пожелание не записано)",
+        "",
+        "2. ГДЕ СМОТРЕТЬ",
+        where,
+    ]
+    if marks_block:
+        lines += ["", "3. КАРТА МЕСТА (пилот показал правой кнопкой мыши)", marks_block]
+    else:
+        lines += ["", "3. КАРТА МЕСТА", "пометок нет — найти по названию отсека и подписи"]
+    lines += [
+        "",
+        "4. ЧТО СДЕЛАТЬ",
+        "— найти в коде место, о котором говорит пилот;",
+        "— внести правку так, как принято на борту (русские подписи, цвета токенами скина);",
+        "— добавить или поправить тест на новое поведение;",
+        "— прогнать проверки и закоммитить (без push).",
+        "",
+        "5. ГОТОВО, КОГДА",
+        "— правка видна там, куда указывал пилот;",
+        "— тесты по затронутым файлам зелёные;",
+        "— в отчёте есть: что сделано, какие файлы, какие проверки, что осталось.",
+    ]
+    return "\n".join(lines)
 
 
 def close_task(task_id: str, *, status: str = "done") -> bool:

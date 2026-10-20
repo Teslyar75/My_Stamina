@@ -111,6 +111,7 @@ class Cockpit(tk.Tk):
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
         self.bind("<F1>", lambda _e: self.open_help())
+        self.bind("<Button-3>", self._mark_point, add="+")
         self.bind("<FocusOut>", self._on_focus_out)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._clock_tick()
@@ -661,6 +662,63 @@ class Cockpit(tk.Tk):
         from stamina.pilot_screens import HonorBoard
         return HonorBoard(self.content, on_back=lambda: self.show(self._prev_screen or "bridge"),
                           active=self.pilot["id"] if self.pilot else None)
+
+    def _zone_title(self, name: str | None) -> str:
+        """Русское имя отсека по ключу — для пометок и подсказок."""
+        for key, title in getattr(self, "SCREENS", []):
+            if key == name:
+                return title
+        return name or ""
+
+    @staticmethod
+    def _widget_label(w) -> str:
+        """Подпись виджета под курсором: «HudButton «ПЕЧАТЬ»», «Text», «Label «Ранг»»."""
+        if w is None:
+            return ""
+        try:
+            kind = w.winfo_class()
+        except tk.TclError:
+            return ""
+        label = getattr(w, "text", "")
+        if not isinstance(label, str) or not label:
+            try:
+                got = w.cget("text")
+                label = got if isinstance(got, str) else ""
+            except Exception:  # noqa: BLE001
+                label = ""
+        label = label.strip()
+        if label:
+            return f"{kind} «{label}»"
+        return kind
+
+    def _mark_point(self, e) -> None:
+        """Правая кнопка мыши: запомнить место, о котором говорит пилот.
+
+        Пометка уходит в «Орион» вместе с пожеланием — подчинённый агент получает
+        не «где-то в интерфейсе», а отсек, подвкладку и точку в координатах окна.
+        """
+        try:
+            from stamina import marks
+
+            zone = self._zone_title(self.current)
+            scr = self.screens.get(self.current or "")
+            subtab = getattr(scr, "current_tab", "") if scr is not None else ""
+            under = self.winfo_containing(e.x_root, e.y_root)
+            mark = marks.add(
+                e.x_root - self.winfo_rootx(),
+                e.y_root - self.winfo_rooty(),
+                zone,
+                str(subtab or ""),
+                self._widget_label(under),
+                root=(self.winfo_width(), self.winfo_height()),
+            )
+            self.set_status("⊕ " + marks.describe(mark), GREEN)
+            try:
+                self.sound.click()
+            except Exception:  # noqa: BLE001
+                pass
+        except Exception:  # noqa: BLE001
+            pass
 
     def set_status(self, text: str, color: str | None = None) -> None:
         self.status.configure(text=text, fg=color or theme.MUTED)

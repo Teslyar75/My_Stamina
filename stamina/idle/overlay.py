@@ -93,7 +93,7 @@ class Slideshow(tk.Frame):
             self.bind(seq, self._key)
             self.cv.bind(seq, self._key)
         self.cv.bind("<ButtonPress>", self._click)
-        self.cv.bind("<Button-3>", lambda _e: self.close())
+        self.cv.bind("<Button-3>", lambda _e: (self.close(), "break")[1])
         self._app_bind = self.app.bind("<KeyPress>", self._key, add="+")
         # Клавиатура — на холст слайдшоу: иначе буквы уходят в поле набора,
         # а стрелки срабатывают через раз (было: любая клавиша закрывала кадр).

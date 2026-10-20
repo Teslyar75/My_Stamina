@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 from stamina.i18n import t as tr_          # окно доступа к GitHub исторически зовёт так
+from stamina import marks
 
 import queue
 import math
@@ -1368,13 +1369,38 @@ class OrionScreen(tk.Frame):
         if self._answer_voice and tts.available():
             tts.speak(_t("Записал в документ заданий"))
         if not self._busy:
-            self._run(rec, task, second=False)
+            # Пожелание пилота + карта места → ТЗ → подчинённому исполнителю
+            brief = self._task_brief_for(task)
+            self._marks_sent = marks.last_id()
+            self._run(rec, brief, second=False, profile_hint=orion.EXECUTOR_PROFILE)
+
+    def _task_brief_for(self, wish: str) -> str:
+        """Собрать ТЗ для исполнителя: отсек, подвкладка, пометки мышью."""
+        zone = ""
+        try:
+            zone = self.app._zone_title(getattr(self.app, "current", ""))
+        except Exception:  # noqa: BLE001
+            zone = str(getattr(self.app, "current", "") or "")
+        brief = orion.task_brief(
+            wish,
+            marks_block=marks.context_block(0),
+            zone=zone,
+            subtab=str(getattr(self, "current_tab", "") or ""),
+            author=str((self.app.pilot or {}).get("callsign") or ""),
+        )
+        rec = self._rec()
+        orion.remember(rec["id"], "system",
+                       _t("📐 ТЗ для исполнителя: {0}").format(brief.splitlines()[0]),
+                       kind="task")
+        return brief
 
     def _run(self, rec: dict, text: str, *, second: bool, shot: list[str] | None = None,
-             session: str = "") -> None:
+             session: str = "", profile_hint: str = "") -> None:
         first, follow = orion.profiles(rec)
         # Капитан (commander) — сразу полные права, без запроса разрешения
-        if rec.get("access") == "commander" and not second:
+        if profile_hint:
+            profile = profile_hint           # явно: задание уходит исполнителю
+        elif rec.get("access") == "commander" and not second:
             profile = follow or first
         else:
             profile = (follow or first) if second else first
@@ -1401,7 +1427,8 @@ class OrionScreen(tk.Frame):
             self._pending_quotes = []
         # Первый проход — сессия профиля recon, второй — сессия Командира
         if not session and not second:
-            session = orion.profile_session(rec["id"], "orion-recon") or orion.last_session(rec["id"])
+            base = profile if profile_hint else "orion-recon"
+            session = orion.profile_session(rec["id"], base) or orion.last_session(rec["id"])
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
 
@@ -1964,7 +1991,13 @@ class OrionScreen(tk.Frame):
             self._last_hint_time = now
             rec = self._rec()
             mouse_ctx = orion.mouse_position_text(x, y, screen_name)
-            ctx = self._context()
+        ctx = self._context()
+        # Места, которые пилот показал правой кнопкой мыши: агенту нужен адрес,
+        # а не «где-то в интерфейсе». Отдаём только новые пометки — прежние уже в истории.
+        mark_block = marks.context_block(getattr(self, "_marks_sent", 0))
+        if mark_block:
+            ctx = (ctx + "\n\n" + mark_block) if ctx else mark_block
+            self._marks_sent = marks.last_id()
             prompt = (f"Пилот позвал мастера. Режим активного ока.\n"
                       f"{mouse_ctx}\n"
                       f"Элемент под курсором: {element or 'неизвестно'}\n"
