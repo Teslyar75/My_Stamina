@@ -1011,6 +1011,8 @@ class OrionScreen(tk.Frame):
                 prefix = ""
             if m.get("kind") == "task":
                 name = "📌 " + name
+            elif m.get("kind") == "quote":
+                name = "📎 " + name
             # Визуальное разделение реплик
             self.text.insert(tk.END, "─" * 40 + "\n", "separator")
             self.text.insert(tk.END, prefix + name, tag)
@@ -1392,6 +1394,11 @@ class OrionScreen(tk.Frame):
         notes = "\n".join(orion.shot_note(p) for p in (shot or []) if p)
         if notes:
             text = notes + "\n\n" + text
+        # Реплики из архива: агент видит их как прошлые сообщения борта, а не как задание
+        if self._pending_quotes:
+            text = (_t("ИЗ АРХИВА — прошлые сообщения борта:") + "\n"
+                    + "\n".join(self._pending_quotes) + "\n\n" + text)
+            self._pending_quotes = []
         # Первый проход — сессия профиля recon, второй — сессия Командира
         if not session and not second:
             session = orion.profile_session(rec["id"], "orion-recon") or orion.last_session(rec["id"])

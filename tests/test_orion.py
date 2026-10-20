@@ -1210,5 +1210,90 @@ class HudButtonSizeTest(unittest.TestCase):
         self.assertGreater(int(btn.cget("width")), 100)
 
 
+class OrionArchiveTest(unittest.TestCase):
+    """Бортовой архив: время с датой, разбор запроса, поиск по всем пассажирам."""
+
+    def setUp(self):
+        self._tmp = tempfile.mkdtemp()
+        pilots.reset_root(Path(self._tmp))
+
+    def tearDown(self):
+        pilots.reset_root()
+
+    def test_when_text_has_date_and_time(self):
+        ts = time.mktime((2026, 10, 19, 22, 15, 0, 0, 0, -1))
+        self.assertEqual(orion.when_text(ts), "19.10.2026 22:15")
+
+    def test_role_names(self):
+        self.assertEqual(orion.role_name("pilot"), "пилот")
+        self.assertEqual(orion.role_name("orion"), "орион")
+        self.assertEqual(orion.role_name("system"), "корабль")
+
+    def test_parse_date_is_whole_day(self):
+        now = time.mktime((2026, 10, 20, 12, 0, 0, 0, 0, -1))
+        query = orion.parse_query("19.10.2026", now=now)
+        self.assertEqual(query.words, ())
+        self.assertEqual(orion.when_text(query.from_ts)[:10], "19.10.2026")
+        self.assertAlmostEqual(query.to_ts - query.from_ts, 86399, delta=1)
+
+    def test_parse_short_date_uses_current_year(self):
+        now = time.mktime((2026, 10, 20, 12, 0, 0, 0, 0, -1))
+        self.assertEqual(orion.when_text(orion.parse_query("19.10", now=now).from_ts)[:10],
+                         "19.10.2026")
+
+    def test_parse_time_and_words(self):
+        query = orion.parse_query("22:15 снимок архив")
+        self.assertEqual((query.hour, query.minute), (22, 15))
+        self.assertEqual(query.words, ("снимок", "архив"))
+
+    def test_parse_today_and_yesterday(self):
+        now = time.mktime((2026, 10, 20, 12, 0, 0, 0, 0, -1))
+        today = orion.parse_query("сегодня", now=now)
+        self.assertEqual(orion.when_text(today.from_ts)[:10], "20.10.2026")
+        yesterday = orion.parse_query("вчера", now=now)
+        self.assertEqual(orion.when_text(yesterday.from_ts)[:10], "19.10.2026")
+
+    def test_archive_finds_by_word(self):
+        orion.remember("orion", "pilot", "Посмотри архив за октябрь")
+        orion.remember("orion", "orion", "Смотрю склейки слов")
+        rows = orion.archive("склейки")
+        self.assertEqual([m["text"] for m in rows], ["Смотрю склейки слов"])
+
+    def test_archive_all_words_must_match(self):
+        orion.remember("orion", "pilot", "архив и книги")
+        orion.remember("orion", "pilot", "архив и снимки")
+        self.assertEqual(len(orion.archive("архив книги")), 1)
+
+    def test_archive_newest_first(self):
+        for word in ("первое", "второе", "третье"):
+            orion.remember("orion", "pilot", word)
+        self.assertEqual([m["text"] for m in orion.archive("")], ["третье", "второе", "первое"])
+
+    def test_archive_by_day_and_minute(self):
+        msg = orion.remember("orion", "pilot", "бортовое время")
+        day = orion.when_text(msg["ts"])[:10]
+        self.assertEqual([m["id"] for m in orion.archive(day)], [msg["id"]])
+        minute = time.strftime("%H:%M", time.localtime(msg["ts"]))
+        self.assertEqual([m["id"] for m in orion.archive(minute)], [msg["id"]])
+
+    def test_archive_covers_all_passengers(self):
+        orion.upsert({"id": "sova", "name": "Сова"})
+        orion.remember("orion", "pilot", "реплика ориона")
+        orion.remember("sova", "pilot", "реплика совы")
+        texts = {m["text"]: m["agent_name"] for m in orion.archive("реплика")}
+        self.assertEqual(texts.get("реплика совы"), "Сова")
+
+    def test_archive_survives_history_clear(self):
+        orion.remember("orion", "pilot", "это должно остаться")
+        orion.clear_history("orion")
+        self.assertEqual([m["text"] for m in orion.archive("остаться")],
+                         ["это должно остаться"])
+
+    def test_archive_limit(self):
+        for i in range(5):
+            orion.remember("orion", "pilot", f"строка {i}")
+        self.assertEqual(len(orion.archive("", limit=2)), 2)
+
+
 if __name__ == "__main__":
     unittest.main()
