@@ -135,6 +135,7 @@ class HudButton(_LazyDraw, tk.Canvas):
         color = color or theme.CYAN   # не значение по умолчанию: оно «замерзает» на цвете первого скина
         self._font = theme.font(font_size, bold)
         self._text = text
+        self._auto_width = width is None      # ширину задали мы — значит, и растим её сами
         measured = _measure_px(self._font, text)
         w = px(width) if width else measured + px(30)
         super().__init__(master, width=w, height=px(height), bg=_bg_of(master),
@@ -186,6 +187,13 @@ class HudButton(_LazyDraw, tk.Canvas):
 
     def set_text(self, text: str) -> None:
         self._text = text
+        # Кнопка, которой ширину не задавали, обязана вырасти под новый текст:
+        # иначе «НА БОРТУ: ДА» превращается в огрызок «ОРТ».
+        if getattr(self, "_auto_width", False):
+            try:
+                self.configure(width=_measure_px(self._font, text) + px(30))
+            except tk.TclError:
+                pass
         self._request_draw()
 
     def set_active(self, value: bool) -> None:
