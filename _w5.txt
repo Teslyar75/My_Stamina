@@ -1,0 +1,30 @@
+07:34:18 === ЗАМИРАНИЕ 1.03 с (экран=None) ===
+07:34:18 ---
+  File "D:\My_New_Stamina\stamina\cockpit.py", line 77, in __init__
+    self._build()
+  File "D:\My_New_Stamina\stamina\cockpit.py", line 330, in _build
+    self.update_rank()
+  File "D:\My_New_Stamina\stamina\hud.py", line 88, in __init__
+    keynav.attach(self)
+  File "C:\Users\mi\AppData\Local\Programs\Python\Python314\Lib\tkinter\font.py", line 170, in measure
+    return self._tk.getint(self._call("font", "measure", self.name, *args))
+07:34:20 === ЗАМИРАНИЕ 2.76 с (экран=bridge) ===
+07:34:20 ---
+  File "D:\My_New_Stamina\stamina\english\pages_main.py", line 604, in __init__
+    self.mic.grid(row=0, column=1, sticky="n", padx=px(10))
+  File "D:\My_New_Stamina\stamina\english\mic.py", line 73, in __init__
+    self.refresh_mode()
+  File "D:\My_New_Stamina\stamina\hud.py", line 88, in __init__
+    keynav.attach(self)
+  File "C:\Users\mi\AppData\Local\Programs\Python\Python314\Lib\tkinter\font.py", line 170, in measure
+    return self._tk.getint(self._call("font", "measure", self.name, *args))
+07:34:20 ---
+  File "C:\Users\mi\AppData\Local\Programs\Python\Python314\Lib\tkinter\__init__.py", line 2114, in __call__
+    return self.func(*args)
+  File "C:\Users\mi\AppData\Local\Programs\Python\Python314\Lib\tkinter\__init__.py", line 888, in callit
+    self.deletecommand(name)
+  File "D:\My_New_Stamina\stamina\cockpit.py", line 146, in _fit_to_content
+    return                      # развёрнутое окно уже во весь экран
+  File "C:\Users\mi\AppData\Local\Programs\Python\Python314\Lib\tkinter\__init__.py", line 1499, in update_idletasks
+    self.tk.call('update', 'idletasks')
+07:34:43 конец

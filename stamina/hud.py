@@ -33,12 +33,31 @@ def _bg_of(widget: tk.Misc) -> str:
 # Кнопка
 # ---------------------------------------------------------------------------
 
+_FIT_CACHE: dict[tuple, str] = {}
+
+
+
 def fit_text(font_spec, text: str, max_px: int) -> str:
     """Обрезать текст с «…», чтобы он не вылезал за рамку кнопки или панели.
 
     Canvas не обрезает текст: если он шире рамки, он рисуется поверх соседей —
     отсюда «наезжающие» надписи в шапке.
+
+    Результат запоминается: measure() — это вызов Tcl, а в шапке fit_text
+    вызывается на каждую перерисовку кнопок, и без кеша это заметно тормозит.
     """
+    key = (str(font_spec), text, int(max_px))
+    cached = _FIT_CACHE.get(key)
+    if cached is not None:
+        return cached
+    result = _fit_text_uncached(font_spec, text, max_px)
+    if len(_FIT_CACHE) > 600:
+        _FIT_CACHE.clear()
+    _FIT_CACHE[key] = result
+    return result
+
+
+def _fit_text_uncached(font_spec, text: str, max_px: int) -> str:
     try:
         f = tkfont.Font(font=font_spec)
     except tk.TclError:
