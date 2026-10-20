@@ -33,6 +33,30 @@ def _bg_of(widget: tk.Misc) -> str:
 # Кнопка
 # ---------------------------------------------------------------------------
 
+def fit_text(font_spec, text: str, max_px: int) -> str:
+    """Обрезать текст с «…», чтобы он не вылезал за рамку кнопки или панели.
+
+    Canvas не обрезает текст: если он шире рамки, он рисуется поверх соседей —
+    отсюда «наезжающие» надписи в шапке.
+    """
+    try:
+        f = tkfont.Font(font=font_spec)
+    except tk.TclError:
+        return text
+    if max_px <= 0:
+        return ""
+    try:
+        if f.measure(text) <= max_px:
+            return text
+    except tk.TclError:
+        return text
+    ell = "…"
+    out = text
+    while out and f.measure(out + ell) > max_px:
+        out = out[:-1]
+    return (out.rstrip() + ell) if out else ""
+
+
 class HudButton(tk.Canvas):
     """Плоская неоновая кнопка со срезанными углами."""
 
@@ -129,7 +153,8 @@ class HudButton(tk.Canvas):
                             width=2 if self._active else 1)
         if self._enabled and (self._active or self._hover):
             self.create_line(1 + c, 1, 1 + c + px(14), 1, fill=col, width=3)
-        self.create_text(w / 2, h / 2, text=self._text, fill=fg, font=self._font)
+        self.create_text(w / 2, h / 2, text=fit_text(self._font, self._text, w - px(14)),
+                         fill=fg, font=self._font)
         if self._focus:   # фокус клавиатуры: янтарные «скобки прицела» по углам
             k = min(px(10), h // 2)
             for (x0, y0, dx, dy) in ((2, 2, 1, 1), (w - 3, 2, -1, 1), (2, h - 3, 1, -1), (w - 3, h - 3, -1, -1)):

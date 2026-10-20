@@ -118,6 +118,18 @@ class Cockpit(tk.Tk):
         self.idle = IdleController(self)   # слайдшоу простоя — только у скинов со slideshow
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
+        # Кабина создаётся уже после окна входа: Windows не отдаёт ей клавиатуру
+        # сама, и «клавиши не работают». Забираем фокус дважды — сразу и чуть позже.
+        self.after(120, self._take_focus)
+        self.after(900, self._take_focus)
+
+    def _take_focus(self) -> None:
+        """Сделать окно кабины активным и вернуть клавиатуру пульту."""
+        try:
+            self.lift()
+            self.focus_force()
+        except tk.TclError:
+            pass
 
     # ------------------------------------------------------------------
     def _apply_geometry(self) -> None:
@@ -179,7 +191,7 @@ class Cockpit(tk.Tk):
                                   font_size=9, width=36 if self._compact else 60, color=AMBER)
         self.btn_help.pack(side=tk.RIGHT, padx=px(4))
         self.rank_label = tk.Canvas(right, bg=BG, highlightthickness=0, height=px(44),
-                                    width=px(140 if self._compact else 200), cursor="hand2")
+                                    width=px(180 if self._compact else 220), cursor="hand2")
         self.rank_label.pack(side=tk.RIGHT, padx=px(6))
         self.rank_label.bind("<Button-1>", lambda _e: self.pilot_menu())
         # навигация зон — горизонтальный скролл колёсиком (кнопки не «пропадают» при крупном UI)
@@ -519,18 +531,29 @@ class Cockpit(tk.Tk):
         c.delete("all")
         w = int(c.cget("width"))
         x = w - px(2)
+        from stamina.hud import fit_text
         if self.pilot is not None:
             avatars.draw(c, w - px(18), px(22), px(34), self.pilot, bg=BG)
             x = w - px(42)
             name = self.pilot["callsign"]
             if len(name) > 13:
                 name = name[:12] + "…"
-            c.create_text(x, px(9), text=f"{name.upper()} ▾", anchor="e", fill=TEXT, font=theme.font(8, True))
-            c.create_text(x, px(24), text=f"★ {rank.upper()}", anchor="e", fill=AMBER, font=theme.font(7, True))
-            c.create_text(x, px(37), text=tail, anchor="e", fill=MUTED, font=theme.font(7, True))
+            room = max(px(20), x - px(2))
+            f_name = theme.font(8, True)
+            f_rank = theme.font(7, True)
+            f_tail = theme.font(7, True)
+            c.create_text(x, px(9), text=fit_text(f_name, f"{name.upper()} ▾", room), anchor="e",
+                          fill=TEXT, font=f_name)
+            c.create_text(x, px(24), text=fit_text(f_rank, f"★ {rank.upper()}", room), anchor="e",
+                          fill=AMBER, font=f_rank)
+            c.create_text(x, px(37), text=fit_text(f_tail, tail, room), anchor="e",
+                          fill=MUTED, font=f_tail)
         else:
-            c.create_text(x, px(13), text=f"★ {rank.upper()}", anchor="e", fill=AMBER, font=theme.font(10, True))
-            c.create_text(x, px(32), text=tail, anchor="e", fill=AMBER, font=theme.font(9, True))
+            room = max(px(20), x - px(2))
+            c.create_text(x, px(13), text=fit_text(theme.font(10, True), f"★ {rank.upper()}", room),
+                          anchor="e", fill=AMBER, font=theme.font(10, True))
+            c.create_text(x, px(32), text=fit_text(theme.font(9, True), tail, room), anchor="e",
+                          fill=AMBER, font=theme.font(9, True))
 
     # ------------------------------------------------------------------
     # Экипаж

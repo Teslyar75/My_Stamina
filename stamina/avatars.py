@@ -39,10 +39,23 @@ def hex_points(cx: float, cy: float, r: float) -> list[float]:
 _img_cache: dict[tuple, tk.PhotoImage] = {}
 
 
+def _interp() -> int:
+    """Какое окно Tk сейчас главное: кеш картинок нельзя переносить в новое окно.
+
+    Экран входа — отдельное окно Tk; после него создаётся кабина. Картинки,
+    сделанные в старом окне, в новом уже недействительны (шапка рисуется криво).
+    """
+    root = getattr(tk, "_default_root", None)
+    try:
+        return id(root.tk) if root is not None else 0
+    except Exception:  # noqa: BLE001
+        return 0
+
+
 def _photo(path: Path, size: int) -> tk.PhotoImage | None:
     """avatar.png → PhotoImage нужного размера (Pillow при наличии, иначе subsample)."""
     try:
-        key = (str(path), path.stat().st_mtime, size)
+        key = (str(path), path.stat().st_mtime, size, _interp())
     except OSError:
         return None
     if key in _img_cache:

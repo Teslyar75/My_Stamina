@@ -216,8 +216,30 @@ def run_app(argv: list[str] | None = None) -> None:
                         cockpit.winfo_width(), cockpit.winfo_height())
             except Exception as e:  # noqa: BLE001
                 view = f"err {e}"
+            # Какое окно реально впереди на уровне Windows
+            fg = "?"
+            try:
+                import ctypes
+                h = ctypes.windll.user32.GetForegroundWindow()
+                buf = ctypes.create_unicode_buffer(256)
+                ctypes.windll.user32.GetWindowTextW(h, buf, 256)
+                fg = f"{buf.value!r} (hwnd={h})"
+            except Exception as e:  # noqa: BLE001
+                fg = f"err {e}"
+            # Какие ещё окна Tk открыты
+            tops = []
+            try:
+                def walk(w):
+                    for ch in w.winfo_children():
+                        if isinstance(ch, __import__("tkinter").Toplevel):
+                            tops.append((ch.title(), bool(ch.winfo_viewable())))
+                        walk(ch)
+                walk(cockpit)
+            except Exception as e:  # noqa: BLE001
+                tops = [f"err {e}"]
             _journal(f"снимок {tag}: grab={grab} focus={focus} окно={view} "
-                     f"экран={getattr(cockpit, 'current', '?')}")
+                     f"экран={getattr(cockpit, 'current', '?')} "
+                     f"переднее окно Windows={fg} прочие окна={tops}")
 
         for _t in (1000, 2000, 3500, 6000, 12000):
             cockpit.after(_t, lambda tag=_t: _snap(f"{tag} мс"))
@@ -243,7 +265,10 @@ def run_app(argv: list[str] | None = None) -> None:
             gh_token = ""
             try:
                 import subprocess
-                r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=10)
+                # Без CREATE_NO_WINDOW консоль gh мелькает и забирает фокус у кабины
+                flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+                r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True,
+                                   timeout=10, creationflags=flags)
                 gh_token = r.stdout.strip() if r.returncode == 0 else ""
             except Exception:
                 pass
