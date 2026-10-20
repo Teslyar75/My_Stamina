@@ -75,6 +75,7 @@ class Cockpit(tk.Tk):
         self._last_bridge = "bridge"
         self._fullscreen = False
         self._build()
+        self._start_stall_watch()
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
@@ -132,6 +133,59 @@ class Cockpit(tk.Tk):
             self.focus_force()
         except tk.TclError:
             pass
+
+    def _start_stall_watch(self) -> None:
+        """Сторож главного потока: замерло дольше 1.5 с — пишем стек в журнал.
+
+        Замирания зависят от пути входа: через экран логина событий раскладки
+        в разы больше. Без журнала причину приходится угадывать, поэтому сторож
+        всегда на борту и стоит копейки — один пульс раз в 100 мс.
+        """
+        import sys
+        import threading
+        import traceback
+
+        pulse = [time.time()]
+        stop = threading.Event()
+        self._stall_stop = stop
+        main_id = threading.main_thread().ident
+        folder = os.path.join(os.environ.get("APPDATA") or os.path.expanduser("~"),
+                              "Stamina")
+        path = os.path.join(folder, "stall.log")
+
+        def beat() -> None:
+            if stop.is_set():
+                return
+            pulse[0] = time.time()
+            try:
+                self.after(100, beat)
+            except tk.TclError:
+                pass
+
+        def watch() -> None:
+            while not stop.is_set():
+                time.sleep(0.1)
+                gap = time.time() - pulse[0]
+                if gap < 1.5:
+                    continue
+                frame = sys._current_frames().get(main_id)
+                lines = ["--- %.2f c  %s" % (gap, time.strftime("%H:%M:%S"))]
+                try:
+                    for fs in traceback.extract_stack(frame)[-12:]:
+                        lines.append("%s:%s %s" % (os.path.basename(fs.filename),
+                                                   fs.lineno, (fs.line or "")[:100]))
+                except Exception:  # noqa: BLE001
+                    lines.append("стек не снялся")
+                try:
+                    os.makedirs(folder, exist_ok=True)
+                    with open(path, "a", encoding="utf-8") as f:
+                        f.write("\n".join(lines) + "\n")
+                except OSError:
+                    pass
+                pulse[0] = time.time()
+
+        self.after(200, beat)
+        threading.Thread(target=watch, daemon=True, name="stall-watch").start()
 
     def _fit_to_content(self) -> None:
         """Расширить окно до ширины содержимого (в пределах экрана).

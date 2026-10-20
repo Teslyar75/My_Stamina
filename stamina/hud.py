@@ -34,6 +34,23 @@ def _bg_of(widget: tk.Misc) -> str:
 # ---------------------------------------------------------------------------
 
 _FIT_CACHE: dict[tuple, str] = {}
+_MEASURE_CACHE: dict[tuple, int] = {}
+
+
+def _measure_px(font_spec, text: str) -> int:
+    """Ширина текста в пикселях, с кешем: measure() — вызов Tcl, а кнопок на борту сотни."""
+    key = (str(font_spec), text)
+    cached = _MEASURE_CACHE.get(key)
+    if cached is not None:
+        return cached
+    try:
+        value = tkfont.Font(font=font_spec).measure(text)
+    except tk.TclError:
+        return 0
+    if len(_MEASURE_CACHE) > 1200:
+        _MEASURE_CACHE.clear()
+    _MEASURE_CACHE[key] = value
+    return value
 
 
 
@@ -76,7 +93,40 @@ def _fit_text_uncached(font_spec, text: str, max_px: int) -> str:
     return (out.rstrip() + ell) if out else ""
 
 
-class HudButton(tk.Canvas):
+class _LazyDraw:
+    """Копить перерисовки: раскладка шлёт <Configure> пачками, рисовать — один раз.
+
+    Каждая отрисовка канваса — это delete, полигоны и measure текста через Tcl.
+    На каждое событие их делать нельзя: при входе через логин событий в разы
+    больше, и окно замирает на секунды.
+    """
+
+    _draw_job = None
+
+    def _request_draw(self) -> None:
+        if self._draw_job is not None:
+            return
+        try:
+            self._draw_job = self.after_idle(self._flush_draw)
+        except tk.TclError:
+            self._draw_job = None
+            self._draw()
+
+    def _flush_draw(self) -> None:
+        self._draw_job = None
+        self._draw()
+
+    def destroy(self) -> None:
+        if self._draw_job is not None:
+            try:
+                self.after_cancel(self._draw_job)
+            except tk.TclError:
+                pass
+            self._draw_job = None
+        super().destroy()
+
+
+class HudButton(_LazyDraw, tk.Canvas):
     """Плоская неоновая кнопка со срезанными углами."""
 
     def __init__(self, master: tk.Misc, text: str, command: Callable[[], None] | None = None,
@@ -85,7 +135,7 @@ class HudButton(tk.Canvas):
         color = color or theme.CYAN   # не значение по умолчанию: оно «замерзает» на цвете первого скина
         self._font = theme.font(font_size, bold)
         self._text = text
-        measured = tkfont.Font(font=self._font).measure(text)
+        measured = _measure_px(self._font, text)
         w = px(width) if width else measured + px(30)
         super().__init__(master, width=w, height=px(height), bg=_bg_of(master),
                          highlightthickness=0, bd=0, cursor="hand2", takefocus=1)
@@ -96,7 +146,8 @@ class HudButton(tk.Canvas):
         self._pressed = False
         self._active = active
         self._enabled = True
-        self.bind("<Configure>", lambda _e: self._draw())
+        self._draw_job = None
+        self.bind("<Configure>", lambda _e: self._request_draw())
         self.bind("<Enter>", lambda _e: self._set_hover(True))
         self.bind("<Leave>", lambda _e: self._set_hover(False))
         self.bind("<ButtonPress-1>", self._on_press)
@@ -108,7 +159,7 @@ class HudButton(tk.Canvas):
 
     def _set_focus(self, value: bool) -> None:
         self._focus = value
-        self._draw()
+        self._request_draw()
 
     def invoke(self) -> None:
         if self._enabled and self.command:
@@ -118,37 +169,37 @@ class HudButton(tk.Canvas):
         self._hover = value
         if not value:
             self._pressed = False
-        self._draw()
+        self._request_draw()
 
     def _on_press(self, _e) -> None:
         if self._enabled:
             self._pressed = True
-            self._draw()
+            self._request_draw()
 
     def _on_release(self, e) -> None:
         was = self._pressed
         self._pressed = False
-        self._draw()
+        self._request_draw()
         inside = 0 <= e.x <= self.winfo_width() and 0 <= e.y <= self.winfo_height()
         if was and inside and self._enabled and self.command:
             self.command()
 
     def set_text(self, text: str) -> None:
         self._text = text
-        self._draw()
+        self._request_draw()
 
     def set_active(self, value: bool) -> None:
         self._active = value
-        self._draw()
+        self._request_draw()
 
     def set_enabled(self, value: bool) -> None:
         self._enabled = value
         self.configure(cursor="hand2" if value else "arrow")
-        self._draw()
+        self._request_draw()
 
     def set_color(self, color: str) -> None:
         self.color = color
-        self._draw()
+        self._request_draw()
 
     def _draw(self) -> None:
         w, h = self.winfo_width(), self.winfo_height()
@@ -288,7 +339,7 @@ class HScrollStrip(tk.Frame):
 # Панель-контейнер
 # ---------------------------------------------------------------------------
 
-class HudPanel(tk.Canvas):
+class HudPanel(_LazyDraw, tk.Canvas):
     """Рамка со срезанными углами; содержимое кладите в ``.body``."""
 
     def __init__(self, master: tk.Misc, title: str = "", *, accent: str | None = None,
@@ -301,7 +352,8 @@ class HudPanel(tk.Canvas):
         self.body = tk.Canvas(self, bg=PANEL, highlightthickness=0, bd=0)
         top = px(26) if title else px(pad)
         self.body.pack(fill=tk.BOTH, expand=True, padx=px(pad), pady=(top, px(pad)))
-        self.bind("<Configure>", lambda _e: self._draw())
+        self._draw_job = None
+        self.bind("<Configure>", lambda _e: self._request_draw())
 
     def _draw(self) -> None:
         self.delete("frame")
@@ -445,20 +497,21 @@ class SpeedGauge(tk.Canvas):
 # Кольцевой индикатор
 # ---------------------------------------------------------------------------
 
-class RingGauge(tk.Canvas):
+class RingGauge(_LazyDraw, tk.Canvas):
     def __init__(self, master: tk.Misc, *, title: str = _t("ТОЧНОСТЬ")) -> None:
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(200), height=px(170))
         self.title = title
         self.value: float | None = None
         self.sub = ""
-        self.bind("<Configure>", lambda _e: self._draw())
+        self._draw_job = None
+        self.bind("<Configure>", lambda _e: self._request_draw())
 
     def set(self, value: float | None, sub: str = "") -> None:
         if value == self.value and sub == self.sub:
             return
         self.value, self.sub = value, sub
-        self._draw()
+        self._request_draw()
 
     def _draw(self) -> None:
         self.delete("all")
@@ -500,7 +553,7 @@ class RingGauge(tk.Canvas):
 # Сегментная шкала и цифровые табло
 # ---------------------------------------------------------------------------
 
-class SegmentBar(tk.Canvas):
+class SegmentBar(_LazyDraw, tk.Canvas):
     def __init__(self, master: tk.Misc, title: str, *, segments: int = 16,
                  color: str | None = None, height: int = 44) -> None:
         color = color or theme.CYAN
@@ -509,13 +562,14 @@ class SegmentBar(tk.Canvas):
         self.title, self.segments, self.color = title, segments, color
         self.value: float | None = None
         self.text = "—"
-        self.bind("<Configure>", lambda _e: self._draw())
+        self._draw_job = None
+        self.bind("<Configure>", lambda _e: self._request_draw())
 
     def set(self, value: float | None, text: str) -> None:
         if value == self.value and text == self.text:
             return
         self.value, self.text = value, text
-        self._draw()
+        self._request_draw()
 
     def _draw(self) -> None:
         self.delete("all")
@@ -542,20 +596,21 @@ class SegmentBar(tk.Canvas):
                 self.create_rectangle(x1, y1, x1 + sw, y2, fill=BG2, outline=LINE)
 
 
-class Readouts(tk.Canvas):
+class Readouts(_LazyDraw, tk.Canvas):
     """Колонка цифровых табло: (подпись, значение, цвет)."""
 
     def __init__(self, master: tk.Misc, rows: int = 4) -> None:
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(200), height=px(rows * 46))
         self.rows: list[tuple[str, str, str]] = []
-        self.bind("<Configure>", lambda _e: self._draw())
+        self._draw_job = None
+        self.bind("<Configure>", lambda _e: self._request_draw())
 
     def set(self, rows: list[tuple[str, str, str]]) -> None:
         if rows == self.rows:
             return
         self.rows = rows
-        self._draw()
+        self._request_draw()
 
     def _draw(self) -> None:
         self.delete("all")

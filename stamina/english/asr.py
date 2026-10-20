@@ -7,6 +7,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import array
+import importlib.util
 import json
 import math
 import queue
@@ -14,6 +15,17 @@ import threading
 import time
 
 from . import paths
+
+#: Кеш проверки библиотек: import sounddevice поднимает PortAudio и на слабых
+#: машинах стоит секунды, а спрашивают о нём при каждом построении экрана.
+_LIBS_OK: bool | None = None
+
+
+def _module_present(name: str) -> bool:
+    try:
+        return importlib.util.find_spec(name) is not None
+    except (ImportError, ValueError):
+        return False
 
 
 class ASR:
@@ -27,12 +39,11 @@ class ASR:
 
     # -- доступность ---------------------------------------------------------
     def libs_ok(self) -> bool:
-        try:
-            import sounddevice  # noqa: F401
-            import vosk  # noqa: F401
-            return True
-        except Exception:
-            return False
+        """Есть ли библиотеки? Смотрим через find_spec: импорт PortAudio держим до записи."""
+        global _LIBS_OK
+        if _LIBS_OK is None:
+            _LIBS_OK = _module_present("sounddevice") and _module_present("vosk")
+        return _LIBS_OK
 
     def available(self) -> bool:
         return self.libs_ok() and paths.vosk_model_dir() is not None
