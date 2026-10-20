@@ -25,6 +25,17 @@ def _session_dir() -> Path:
 SESSION_PATH = _session_dir() / "session.json"
 
 
+def reset_path() -> None:
+    """Пересчитать путь сессии под активного пилота.
+
+    Путь считается при импорте, а модуль может загрузиться раньше, чем выбран пилот:
+    тогда прогресс печати уходил в общую папку, и новый запуск не находил место
+    остановки. Вызывается при активации пилота (``pilots.activate``).
+    """
+    global SESSION_PATH
+    SESSION_PATH = _session_dir() / "session.json"
+
+
 @dataclass
 class SessionState:
     """Минимально необходимый снимок сессии для продолжения позже."""

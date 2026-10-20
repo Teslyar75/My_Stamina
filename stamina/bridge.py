@@ -88,11 +88,19 @@ class MissionStrip(tk.Canvas):
 
 
 class Bridge(tk.Frame):
+    # Сколько текста держим в памяти вокруг курсора. Набранное, ушедшее с экрана,
+    # отпускается: книга в 100 000 слов не висит в памяти целиком, а позиция
+    # остановки помнится отдельно (offset + индекс в окне).
+    TEXT_WINDOW = 20_000
+    TEXT_WINDOW_BACK = 2_000      # сколько набранного остаётся позади курсора
+
     def __init__(self, master: tk.Misc, app: "Cockpit") -> None:
         super().__init__(master, bg=BG)
         self.app = app
         self.engine: TypingEngine | None = None
         self.meta: dict = {}
+        self._full_text = ""       # весь текст, а в памяти — окно вокруг курсора
+        self._offset = 0           # на сколько символов окно отступило от начала
         self.state = "idle"        # idle | ready | run | pause | done
         self._session_dirty = False
         self._last_persist = 0.0
@@ -181,17 +189,67 @@ class Bridge(tk.Frame):
                                 status=t("ОЖИДАНИЕ"), status_color=MUTED, finger="")
         self.keyboard.highlight(None)
 
+    def _window(self, full: str, index: int) -> tuple[int, str, int]:
+        """Окно текста вокруг курсора → (смещение, кусок текста, индекс внутри куска).
+
+        Набранное, ушедшее с экрана, в памяти не держим — отпускаем сразу.
+        """
+        if len(full) <= self.TEXT_WINDOW:
+            return 0, full, max(0, min(index, len(full)))
+        off = max(0, min(int(index) - self.TEXT_WINDOW_BACK, len(full) - self.TEXT_WINDOW))
+        return off, full[off:off + self.TEXT_WINDOW], int(index) - off
+
+    def _slide(self) -> None:
+        """Сдвинуть окно вперёд, когда курсор подошёл к его краю.
+
+        Счётчики (набрано, ошибки, время) переносим — прогресс не теряется.
+        """
+        eng = self.engine
+        if eng is None or len(self._full_text) <= self.TEXT_WINDOW:
+            return
+        if eng.index < self.TEXT_WINDOW * 0.75:
+            return
+        full_index = self._offset + eng.index
+        off, text, index = self._window(self._full_text, full_index)
+        if off == self._offset:
+            return
+        from stamina.engine import TypingEngine
+        moved = off - self._offset
+        new = TypingEngine(text, index=index, typed=eng.typed, errors=eng.errors,
+                           elapsed=eng.elapsed(time.perf_counter()),
+                           case_sensitive=eng.case_sensitive)
+        new.paused = eng.paused
+        new.streak, new.best_streak = eng.streak, eng.best_streak
+        new.key_stats = eng.key_stats
+        new.start_index = max(0, eng.start_index - moved)
+        new.start_typed, new.start_errors = eng.start_typed, eng.start_errors
+        new.start_elapsed = eng.start_elapsed
+        self.engine = new
+        self._offset = off
+        self.viewport.set_state(text=text, index=new.index)
+
+    def _full_index(self) -> int:
+        """Абсолютная позиция в полном тексте (окно + индекс внутри окна)."""
+        eng = self.engine
+        return self._offset + (eng.index if eng is not None else 0)
+
     def start(self, text: str, *, mode: str, title: str, subtitle: str,
               mission: dict | None = None, resume: SessionState | None = None,
               original: str = "", case_sensitive: bool = False, process=None) -> None:
         self.leave_current()
         self.hide_debrief()
+        # В памяти держим окно вокруг курсора, а не весь текст: прогресс считается
+        # по абсолютной позиции (смещение окна + индекс), поэтому не теряется.
+        full = text
+        start_at = resume.index if resume is not None else 0
+        self._full_text = full
+        self._offset, text, start_at = self._window(full, start_at)
         if resume is not None:
-            self.engine = TypingEngine(text, index=resume.index, typed=resume.typed,
+            self.engine = TypingEngine(text, index=start_at, typed=resume.typed,
                                        errors=resume.errors, elapsed=resume.elapsed,
                                        case_sensitive=case_sensitive)
         else:
-            self.engine = TypingEngine(text, case_sensitive=case_sensitive)
+            self.engine = TypingEngine(text, index=start_at, case_sensitive=case_sensitive)
         lang = missions.detect_lang(text)
         self.meta = {"mode": mode, "title": title, "subtitle": subtitle,
                      "mission": mission, "lang": lang, "original": original,
@@ -215,7 +273,9 @@ class Bridge(tk.Frame):
         self._setup_uplink()
         sub = ""
         if resume is not None:
-            sub = (t("Продолжение: {0} из {1} ({2:.0f}%)").format(fmt_int(resume.index), fmt_int(len(text)), resume.index / max(1, len(text)) * 100))
+            abs_index = self._offset + start_at
+            sub = (t("Продолжение: {0} из {1} ({2:.0f}%)").format(
+                fmt_int(abs_index), fmt_int(len(full)), abs_index / max(1, len(full)) * 100))
         self.viewport.set_state(text=text, index=self.engine.index, mode="ready",
                                 sub_message=sub, status=t("К ЗАПУСКУ ГОТОВ"), status_color=AMBER)
         self.strip.set(title=title, subtitle=subtitle)
@@ -326,6 +386,12 @@ class Bridge(tk.Frame):
         if self.meta.get("mode") == "cargo":
             self._session_dirty = True
         if res == DONE:
+            # «Текст закончился» может означать конец окна — тогда просто едем дальше
+            if self._full_index() < len(self._full_text):
+                self._slide()
+                self._update_cursor()
+                self.refresh_stats()
+                return
             self.finish()
             return
         if ok:
@@ -336,6 +402,8 @@ class Bridge(tk.Frame):
         eng = self.engine
         if eng is None:
             return
+        self._slide()      # набранное, ушедшее с экрана, отпускаем
+        eng = self.engine
         cur = eng.current
         lang = self.meta.get("lang", "en")
         finger = layouts.finger_for_char(cur, lang)
@@ -523,8 +591,8 @@ class Bridge(tk.Frame):
         now = time.perf_counter()
         if not force and (not self._session_dirty or now - self._last_persist < 3.0):
             return
-        save_session(SessionState(text=eng.text, index=eng.index, typed=eng.typed,
-                                  errors=eng.errors, elapsed=eng.elapsed(now),
+        save_session(SessionState(text=self._full_text or eng.text, index=self._full_index(),
+                                  typed=eng.typed, errors=eng.errors, elapsed=eng.elapsed(now),
                                   case_sensitive=eng.case_sensitive))
         self._session_dirty = False
         self._last_persist = now
@@ -713,7 +781,9 @@ class Bridge(tk.Frame):
         self.ring.set(acc, t("ОШИБОК {0}").format(eng.errors))
         r = eng.rhythm
         self.rhythm.set(None if r is None else r / 100, "—" if r is None else f"{r:.0f}%")
-        left = len(eng.text) - eng.index
+        total = len(self._full_text) or len(eng.text)
+        done = self._full_index()
+        left = max(0, total - done)
         eta = f"≈{fmt_time(left / avg * 60)}" if avg > 10 and left else fmt_int(left)
         self.readouts.set([
             (t("ВРЕМЯ"), fmt_time(eng.elapsed(now)), CYAN),
@@ -721,9 +791,9 @@ class Bridge(tk.Frame):
             (t("СЕРИЯ / ЛУЧШАЯ"), f"{eng.streak} / {eng.best_streak}", AMBER),
             (t("ОСТАЛОСЬ"), eta, TEXT),
         ])
-        self.strip.set(progress=eng.progress,
-                       progress_text=f"{fmt_int(eng.index)} / {fmt_int(len(eng.text))} · "
-                                     f"{eng.progress * 100:.0f}%")
+        self.strip.set(progress=done / max(1, total),
+                       progress_text=f"{fmt_int(done)} / {fmt_int(total)} · "
+                                     f"{done / max(1, total) * 100:.0f}%")
 
     def tick(self, visible: bool) -> bool:
         """Вызывается таймером окна. Возвращает True, если нужна плавная анимация."""

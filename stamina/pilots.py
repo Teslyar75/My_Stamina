@@ -279,6 +279,12 @@ def activate(pid: str) -> Path:
     reg["last_pilot"] = pid
     save_registry(reg)
     _active = dict(p)
+    # пути данных зависят от пилота: модули могли загрузиться раньше выбора — пересчитываем
+    try:
+        from stamina import storage
+        storage.reset_paths()
+    except Exception:  # noqa: BLE001
+        pass
     return pilot_dir(pid)
 
 

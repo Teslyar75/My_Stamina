@@ -946,16 +946,42 @@ class Cockpit(tk.Tk):
 
         threading.Thread(target=work, daemon=True).start()
 
+    def _original_for(self, text: str, cargo_original: str) -> str:
+        """Оригинал для продолженного текста: из груза или из библиотеки (по совпадению)."""
+        try:
+            if cargo_original and self.cargo_process()(cargo_original) == text:
+                return cargo_original
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            from stamina.library import Library
+            from stamina.library import sha as _sha
+            lib = Library()
+            key = _sha(text)
+            for tid in lib.ids():
+                m = lib.meta(tid)
+                if m and m.get("prepared", {}).get("sha256") == key:
+                    return lib.original(tid)
+        except Exception:  # noqa: BLE001
+            pass
+        return ""
+
     def _bootstrap_main(self) -> None:
         saved = load_session()
         adapted, original = self.store.load_cargo()
         if not adapted and saved:
             adapted = saved.text
         self.screens["cargo"].load_initial(adapted, original)
-        if saved is not None:
-            # Книгу на мостик при старте не выгружаем: тяжёлый текст тормозит вход.
-            # Пилот сам открывает «СВОЙ ТЕКСТ» и продолжает там.
-            # Мостик показываем обязательно — иначе после входа пустое окно.
+        if saved is not None and saved.is_unfinished:
+            # Продолжаем ровно там, где пилот остановился: набранный фрагмент книги
+            # остаётся в работе на мостике. Позиция хранится в session.json и пишется
+            # во время набора, поэтому прогресс не теряется ни при переходе в другой
+            # раздел, ни при закрытии программы.
+            self._start_cargo_engine(saved.text, self._original_for(saved.text, original), saved)
+            done = len(saved.text[:saved.index].split())
+            total = len(saved.text.split())
+            self.set_status(tr_("ПРОДОЛЖАЕМ С МЕСТА ОСТАНОВКИ — слово {0:,} из {1:,}").format(done, total), CYAN)
+        elif saved is not None:
             self.show("bridge")
             self.set_status(tr_("Сохранённый груз ждёт в разделе «СВОЙ ТЕКСТ»"), MUTED)
         elif not self.store.stats.get("runs"):

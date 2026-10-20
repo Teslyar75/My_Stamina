@@ -23,6 +23,23 @@ CARGO_RAW_PATH = DATA_DIR / "cargo_original.txt"
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 CACHE_DIR = PROJECT_DIR / "cache"
 
+
+def reset_paths() -> None:
+    """Пересчитать пути данных под активного пилота.
+
+    Пути считаются при импорте, а модуль может загрузиться раньше, чем выбран пилот:
+    тогда сессия, настройки и груз уходили в общую папку, и программа не помнила
+    место остановки печати. Вызывается при активации пилота (``pilots.activate``).
+    """
+    global DATA_DIR, SETTINGS_PATH, STATS_PATH, CARGO_PATH, CARGO_RAW_PATH
+    from stamina import session_storage
+    session_storage.reset_path()
+    DATA_DIR = session_storage.SESSION_PATH.parent
+    SETTINGS_PATH = DATA_DIR / "settings.json"
+    STATS_PATH = DATA_DIR / "stats.json"
+    CARGO_PATH = DATA_DIR / "cargo.txt"
+    CARGO_RAW_PATH = DATA_DIR / "cargo_original.txt"
+
 DEFAULT_SETTINGS = {
     "sound": True,
     "volume": 3,
