@@ -151,9 +151,16 @@ class HudButton(tk.Canvas):
         self._draw()
 
     def _draw(self) -> None:
-        self.delete("all")
         w, h = self.winfo_width(), self.winfo_height()
+        # Повторная перерисовка тем же составом не нужна: Configure приходит в шапку
+        # сотнями раз, а каждый _draw — это delete + polygon + measure текста.
+        state = (w, h, self._text, self._enabled, self._pressed, self._active,
+                 self._hover, self._focus, self.color, getattr(self, "glass", False))
+        if state == getattr(self, "_last_draw", None) and self.find_all():
+            return
+        self.delete("all")
         if w < 4 or h < 4:
+            self._last_draw = None
             return
         c = min(px(8), h // 3)
         col = self.color
@@ -178,6 +185,7 @@ class HudButton(tk.Canvas):
             k = min(px(10), h // 2)
             for (x0, y0, dx, dy) in ((2, 2, 1, 1), (w - 3, 2, -1, 1), (2, h - 3, 1, -1), (w - 3, h - 3, -1, -1)):
                 self.create_line(x0, y0 + dy * k, x0, y0, x0 + dx * k, y0, fill=AMBER, width=2)
+        self._last_draw = state
 
 
 # ---------------------------------------------------------------------------

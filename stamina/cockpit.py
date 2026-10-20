@@ -76,8 +76,7 @@ class Cockpit(tk.Tk):
         self._fullscreen = False
         self._build()
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
-        self.after(0, self._fit_to_content)
-        self.after(600, self._fit_to_content)   # повторно: к этому моменту размеры уже настоящие
+        self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
@@ -141,7 +140,6 @@ class Cockpit(tk.Tk):
         «сломанными»: текст обрезан, кнопки наезжают.
         """
         try:
-            self.update_idletasks()
             if self.state() == "zoomed":
                 return                      # развёрнутое окно уже во весь экран
             req_w = self.winfo_reqwidth()
