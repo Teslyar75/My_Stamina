@@ -46,6 +46,7 @@
 | [ORION_VISION.md](ORION_VISION.md) | Замысел и границы | актуально |
 | [ORION_PROPOSALS_2026-10-20.md](ORION_PROPOSALS_2026-10-20.md) | Предложения по развитию | актуально |
 | [COMM_ETHER.md](COMM_ETHER.md) | «Эфир» — лента экипажа | актуально |
+| [ARCHIVE_GUIDE.md](ARCHIVE_GUIDE.md) | **Инструкция: архив переписки** — поиск, выделение, перенос в чат | актуально |
 | [../.opencode/agents/orion-commander.md](../.opencode/agents/orion-commander.md) | Устав агента с полными правами | актуально |
 | [../.opencode/agents/orion-recon.md](../.opencode/agents/orion-recon.md) | Устав разведчика (только доклад) | актуально |
 | [../.opencode/agents/context.md](../.opencode/agents/context.md) | Конспект: где остановились | актуально |
