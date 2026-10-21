@@ -277,7 +277,10 @@ class CargoScreen(tk.Frame):
         HudButton(sb_body, _t("✦ ПРИМЕНИТЬ К ТЕКСТУ В ПОЛЕ"), self._apply_to_field, color=AMBER,
                   height=32, font_size=9).pack(fill=tk.X, pady=(0, px(6)))
         HudButton(sb_body, _t("✦ НАЙТИ СРАЩИВАНИЯ"), self._check_glue, color=CYAN,
-                  height=32, font_size=9).pack(fill=tk.X, pady=(0, px(10)))
+                  height=32, font_size=9).pack(fill=tk.X, pady=(0, px(6)))
+        self.btn_orion_check = HudButton(sb_body, _t("✦ ПРОВЕРИТЬ У ОРИОНА"), self._check_orion,
+                                         color=AMBER, height=32, font_size=9)
+        self.btn_orion_check.pack(fill=tk.X, pady=(0, px(10)))
         tk.Frame(sb_body, bg=LINE, height=1).pack(fill=tk.X)
         _label(sb_body, _t("ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА"), fg=blend(CYAN, TEXT, 0.3), size=9,
                bold=True).pack(anchor="w", pady=(px(8), px(2)))
@@ -351,6 +354,48 @@ class CargoScreen(tk.Frame):
         lines += ["• " + g.token + " → " + g.split + ("" if g.confident else _t(" (проверьте)"))
                   for g in found[:10]]
         self.preview_info.configure(text="\n".join(lines), fg=AMBER)
+
+    def _check_orion(self) -> None:
+        """Проверка книги у Ориона: агент ищет склейки, пилот выбирает правки галочками."""
+        from stamina import book_check, orion
+
+        raw = self.text.get("1.0", "end-1c")
+        if len(raw.strip()) < 40:
+            self.preview_info.configure(text=_t("Сначала введите текст"), fg=AMBER)
+            return
+        ok, _exe = orion.available()
+        if not ok:
+            self.preview_info.configure(
+                text=_t("Орион недоступен: не найдена связь с OpenCode"), fg=RED)
+            return
+        rec = orion.active()
+        self.btn_orion_check.set_enabled(False)
+        self.preview_info.configure(text=_t("Проверяю у Ориона…"), fg=CYAN)
+        book_check.check_in_background(
+            self.app, raw, rec,
+            on_done=lambda fixes: self._orion_fixes(raw, fixes),
+            on_progress=lambda i, n: self.preview_info.configure(
+                text=_t("Проверяю кусок {0} из {1}").format(i, n), fg=CYAN),
+        )
+
+    def _orion_fixes(self, raw: str, fixes) -> None:
+        """Ответ Ориона: пусто — так и скажем, иначе окно с галочками."""
+        from stamina import book_check, orion
+
+        self.btn_orion_check.set_enabled(True)
+        if not fixes:
+            self.preview_info.configure(text=_t("Орион не нашёл правок — текст чистый"), fg=GREEN)
+            return
+        self.preview_info.configure(
+            text=_t("Орион нашёл правок: {0}").format(len(fixes)), fg=AMBER)
+
+        def apply(chosen) -> None:
+            new_text = orion.apply_fixes(self.text.get("1.0", "end-1c"), chosen)
+            self._set(new_text)
+            self.preview_info.configure(
+                text=_t("Применено правок: {0}").format(len(chosen)), fg=GREEN)
+
+        book_check.FixesWindow(self.app, fixes, apply)
 
     def _toggle_readonly(self) -> None:
         self._readonly = not self._readonly
