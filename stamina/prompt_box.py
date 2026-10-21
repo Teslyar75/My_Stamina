@@ -66,6 +66,8 @@ class PromptBox(tk.Frame):
         self._history: list[str] = []        # что уже отправляли — по стрелке вверх
         self._hist_pos = 0
         self._browsing = False
+        self._draft_stash = ""      # набранное до листания истории: вернём, когда дойдём до низа
+        self._stashed = False
 
         self.text = tk.Text(self, height=self._rows, wrap="word", undo=True,
                             relief=tk.FLAT, bd=0, padx=px(8), pady=px(6),
@@ -119,6 +121,9 @@ class PromptBox(tk.Frame):
 
     def clear(self) -> None:
         self.text.delete("1.0", tk.END)
+        self._browsing = False
+        self._stashed = False
+        self._draft_stash = ""
         self._after_change()
 
     def insert_text(self, text: str) -> None:
@@ -247,22 +252,39 @@ class PromptBox(tk.Frame):
         return None
 
     def _history_allowed(self, delta: int) -> bool:
-        """История — только там, где стрелка не двигает курсор внутри набранного."""
+        """История — только там, где стрелка не двигает курсор внутри набранного.
+
+        Вверх листаем историю лишь из самого начала пульта: если курсор стоит где-то
+        в тексте (даже в конце длинной перенесённой строки), `↑` должен двигать курсор,
+        а не подменять черновик прошлым сообщением.
+        """
         if not self._history:
             return False
         if self._browsing:
             return True
         if delta < 0:
-            return self.text.index(tk.INSERT).startswith("1.")
+            if self.text.tag_ranges("sel"):
+                return False
+            return self.text.index(tk.INSERT) == "1.0"
         return False
 
     def _history_step(self, delta: int) -> bool:
         if not self._history_allowed(delta):
             return False
+        if not self._browsing:
+            # не теряем набранное: спрячем черновик и вернём его на выходе из истории
+            self._drop_ghost()
+            self._draft_stash = self.get()
+            self._stashed = True
         self._browsing = True
         self._hist_pos = max(0, min(len(self._history), self._hist_pos + delta))
-        text = "" if self._hist_pos >= len(self._history) else self._history[self._hist_pos]
-        self._drop_ghost()
+        if self._hist_pos >= len(self._history):
+            text = self._draft_stash if self._stashed else ""
+            self._browsing = False
+            self._stashed = False
+            self._draft_stash = ""
+        else:
+            text = self._history[self._hist_pos]
         self.text.delete("1.0", tk.END)
         if text:
             self.text.insert("1.0", text)
@@ -282,6 +304,8 @@ class PromptBox(tk.Frame):
         """Перед вставкой символа убрать призрак: иначе буква встанет посреди него."""
         self._drop_ghost()
         self._browsing = False
+        self._stashed = False
+        self._draft_stash = ""
         return None
 
     def _on_scroll(self, first, last) -> None:
