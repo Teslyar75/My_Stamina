@@ -604,6 +604,11 @@ class OrionScreen(tk.Frame):
         self.crew_box.pack(fill=tk.BOTH, expand=True)
         HudButton(lp.body, _t("＋ ЗАСЕЛИТЬ НОВОГО"), self._new_agent, height=32,
                   font_size=10, color=GREEN).pack(fill=tk.X, pady=(px(6), 0))
+        # Подчинённый агент — не пассажир: он не заселяется отдельно, а работает
+        # по ТЗ, которое Орион составляет из слов пилота и пометок мышью.
+        _label(lp.body,
+               _t("ПОДЧИНЁННЫЙ: {0} — ТЗ ему даю я").format(_t("ИСПОЛНИТЕЛЬ")),
+               fg=MUTED, size=8, anchor="w", justify="left").pack(fill=tk.X, pady=(px(6), 0))
 
         rp = HudPanel(right, title=_t("КАРТОЧКА ПАССАЖИРА"))
         rp.pack(fill=tk.X)
