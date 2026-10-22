@@ -60,6 +60,8 @@ def main() -> None:
              "title_right": t.winfo_rootx() + t.winfo_width() - ax,
              "x": b.winfo_rootx() - ax, "y": b.winfo_rooty() - ay, "w": b.winfo_width()}
         d["gap"] = d["x"] - d["title_right"]
+        fill, _ol, fg = b.colors()
+        d["contrast"] = round(alt_ui.contrast(fg, fill), 2)
         d["in_window"] = d["x"] >= 0 and d["x"] + d["w"] <= aw
         ents = alt_ui.overview_entries(app)
         d["entries"] = [e[0] for e in ents]
@@ -73,6 +75,31 @@ def main() -> None:
             dl.destroy()
             alt_ui.DropList.current = None
         pump(0.2)
+        if os.environ.get("HD_CLICK") == "1":
+            # щелчок по каждому пункту меню: экран открылся, ✓ переехал на него, без ошибок
+            d["clicks"] = []
+            for i, (label, obj, _act, ok) in enumerate(ents):
+                if obj is None or not ok:
+                    continue
+                if app.current != name:
+                    app.show(name)
+                    pump(0.8)
+                rc = app._alt_slot_owner
+                cur = rc.entries() if rc is not None else []
+                hit = next((e for e in cur if e[0] == label), None)
+                if hit is None:
+                    d["clicks"].append({"entry": label, "ok": False, "why": "пункт пропал"})
+                    continue
+                try:
+                    rc._run(hit[1])
+                except Exception as ex:  # noqa: BLE001
+                    errors.append(repr(ex))
+                pump(0.8)
+                rc2 = app._alt_slot_owner
+                now = [e[0] for e in (rc2.entries() if rc2 is not None else []) if e[2]]
+                left = app.current != name
+                d["clicks"].append({"entry": label, "ok": label in now or left, "checked": now,
+                                    "screen": app.current})
         d["errors"] = list(errors)
         errors.clear()
         rows.append(d)

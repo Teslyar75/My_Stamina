@@ -15,6 +15,7 @@ TOL = 3
 class HeaderRulesTest(unittest.TestCase):
     def test_overview_everywhere(self):
         out = Path(tempfile.mkdtemp())
+        os.environ["HD_CLICK"] = "1"
         for skin in ("spaceship", "steampunk"):
             for size in ("800x700", "1280x720", "1920x1080"):
                 subprocess.run([sys.executable, str(ROOT / "tools" / "header_audit.py"), skin, str(out), size],
@@ -28,8 +29,11 @@ class HeaderRulesTest(unittest.TestCase):
                         self.assertTrue(d["in_window"], d)
                         self.assertLessEqual(abs(d["gap"] - res["gap_px"]), TOL, d)
                         self.assertTrue(d["menu_open"])
+                        self.assertGreaterEqual(d["contrast"], 4.5, d)
                         self.assertEqual(len(d["checked"]), 1, d["entries"])
                         self.assertEqual(d["errors"], [])
+                        for c in d.get("clicks", []):
+                            self.assertTrue(c["ok"], c)
                         ys.append(d["y"])
                 self.assertLessEqual(max(ys) - min(ys), TOL, ys)
 

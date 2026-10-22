@@ -99,6 +99,51 @@ def glyph(profile: str, zone: str) -> str:
     return PROFILES.get(profile, PROFILES["generic"])["glyphs"].get(zone, "•")
 
 
+def _lum(c: str) -> float:
+    c = c.lstrip("#")
+    v = [int(c[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    v = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in v]
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]
+
+
+def contrast(a: str, b: str) -> float:
+    la, lb = sorted((_lum(a), _lum(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+class OverviewButton(HudButton):
+    """«ОБЗОР ▾» - своя мягкая заливка акцентом скина (не как текст заголовка),
+    скруглённые углы, тонкая рамка; текст ≥ 4.5:1 к заливке."""
+
+    def colors(self) -> tuple[str, str, str]:
+        k = 0.46 if self._pressed else 0.36 if (self._hover or self._focus) else 0.26
+        fill = blend(theme.PANEL, self.color, k)
+        outline = blend(self.color, theme.PANEL, 0.35)
+        fg = max((theme.TEXT, "#FFFFFF", theme.BG), key=lambda c: contrast(c, fill))
+        return fill, outline, fg
+
+    def _draw(self) -> None:
+        w, h = self.winfo_width(), self.winfo_height()
+        state = (w, h, self._text, self._pressed, self._hover, self._focus, self.color, "ov")
+        if state == getattr(self, "_last_draw", None) and self.find_all():
+            return
+        self.delete("all")
+        if w < 4 or h < 4:
+            self._last_draw = None
+            return
+        fill, outline, fg = self.colors()
+        r = min(px(9), h // 2 - 1)
+        x0, y0, x1, y1 = 1, 1, w - 2, h - 2
+        pts = []
+        for cx, cy, a0 in ((x1 - r, y0 + r, 270), (x1 - r, y1 - r, 0), (x0 + r, y1 - r, 90), (x0 + r, y0 + r, 180)):
+            for i in range(7):
+                a = math.radians(a0 + i * 15)
+                pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
+        self.create_polygon(pts, fill=fill, outline=outline, width=1, smooth=False)
+        self.create_text(w / 2, h / 2, text=fit_text(self._font, self._text, w - px(14)), fill=fg, font=self._font)
+        self._last_draw = state
+
+
 # ---------------------------------------------------------------------------
 # Кнопка дока отсеков
 # ---------------------------------------------------------------------------
@@ -1899,6 +1944,7 @@ def refresh_screen(app) -> None:
             if _shrink_overflow(scr, skip):
                 _later(app, 80)       # пересчитать после того, как Tk разложит ужатые ряды
             compact(scr, prof, skip)
+            tune_hud(scr)
         if getattr(app, "subnav", None) is not None:
             compact(app.crumbs, prof)
         sync_slot(app, scr, prof)
@@ -1907,6 +1953,25 @@ def refresh_screen(app) -> None:
     vp = getattr(app, "_alt_view", None)
     if vp is not None:
         vp.relayout()
+
+
+def tune_hud(root) -> None:
+    """alt: табло без наложения подписи на цифру, дорожка кольца видна на любом скине
+    (через атрибуты виджетов hud, классика их не включает)."""
+    from stamina.hud import Readouts, RingGauge
+    q = [root]
+    while q:
+        w = q.pop()
+        try:
+            q.extend(w.winfo_children())
+        except tk.TclError:
+            continue
+        if isinstance(w, Readouts) and not w.stack:
+            w.stack = True
+            w._request_draw()
+        elif isinstance(w, RingGauge) and w.track is None:
+            w.track = blend(theme.PANEL, theme.MUTED, 0.75)
+            w._request_draw()
 
 
 def _section_rows(app, scr) -> list:
@@ -2072,8 +2137,8 @@ def build_chrome(app) -> tk.Frame:
     app._alt_slot = tk.Frame(trow, bg=head_bg)
     app._alt_slot.pack(side=tk.LEFT, padx=(px(SLOT_GAP), 0))
     app._alt_slot_owner = None
-    app._alt_slot_btn = HB(app._alt_slot, overview_label(), lambda: _slot_popup(app), height=30, font_size=8,
-                           color=theme.AMBER)
+    app._alt_slot_btn = OverviewButton(app._alt_slot, overview_label(), lambda: _slot_popup(app), height=30,
+                                       font_size=9, color=theme.AMBER)
     app._alt_slot_btn._alt_more = True
     app._alt_slot_btn._alt_kind = "section"
     app._alt_slot_btn.pack(side=tk.LEFT)
@@ -2195,6 +2260,13 @@ def build_chrome(app) -> tk.Frame:
 HEAD_LEVELS = (1700, 1400, 1150)   # логическая ширина окна (до px), ниже которой шапка ужимается
 
 
+def _logo_text(c, show: bool) -> None:
+    """Узкая шапка: только эмблема, без обрезанной надписи."""
+    for i in c.find_all():
+        if c.type(i) == "text":
+            c.itemconfigure(i, state="normal" if show else "hidden")
+
+
 def _fit_head(app, e) -> None:
     """Шапка без обрезки на 1024×768 / 1280×720: по мере сужения окна — короткая
     подпись «☰ F8», без звания (оно на полке «ПРИБОРЫ» → «ПИЛОТ»), без часов и
@@ -2214,7 +2286,8 @@ def _fit_head(app, e) -> None:
         if level >= 3:
             app.clock.pack_forget()
             app.btn_help.pack_forget()          # F1 и «? СПРАВКА» на полке остаются
-            app._alt_logo.configure(width=px(100))
+            app._alt_logo.configure(width=px(52))
+            _logo_text(app._alt_logo, False)
             app._alt_title.configure(font=theme.font(11, True))
         else:
             if not app.btn_help.winfo_manager():
@@ -2223,6 +2296,7 @@ def _fit_head(app, e) -> None:
             if not app.clock.winfo_manager():
                 app.clock.pack(side=tk.RIGHT, padx=(px(10), 0), before=app.rank_label if app.rank_label.winfo_manager() else app.btn_tools)
             app._alt_logo.configure(width=px(200))
+            _logo_text(app._alt_logo, True)
         hint = getattr(app, "_status_hint", None)
         if hint is not None:
             if level >= 2:
