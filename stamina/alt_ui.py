@@ -1106,7 +1106,9 @@ class ScrollViewport(tk.Frame):
         одно winfo_reqheight, перестройка только при изменении."""
         try:
             scr = self._current()
-            if scr is not None and bool(working_page(scr)) != bool(getattr(self.app, "_alt_working", False)):
+            if getattr(self.app, "_alt_pressing", False):
+                pass           # между нажатием и отпусканием экран не трогаем (иначе кнопка уезжает)
+            elif scr is not None and bool(working_page(scr)) != bool(getattr(self.app, "_alt_working", False)):
                 refresh_screen(self.app)   # страницу сменили без щелчка (клавиша, программно)
             elif self.required() != self.need:
                 self.relayout()
@@ -1142,6 +1144,8 @@ class ScrollViewport(tk.Frame):
         w = e.widget
         if not isinstance(w, tk.Misc) or not self.overflow or not self._inside(w):
             return
+        if getattr(self.app, "_alt_pressing", False):
+            return     # фокус от щелчка мышью: кнопка уже видна, прокрутка увела бы её из-под курсора
         self.see(w)
 
     def see(self, w) -> None:
@@ -1829,8 +1833,8 @@ def apply_working(app, scr) -> bool:
 
 def refresh_screen(app) -> None:
     """Свернуть строки кнопок текущего экрана и подменю, пересчитать прокрутку."""
-    if DropList.current is not None:
-        _later(app)            # открыт список: не трогаем экран (иначе он теряет фокус и закрывается)
+    if DropList.current is not None or getattr(app, "_alt_pressing", False):
+        _later(app)            # открыт список или кнопка мыши зажата: не трогаем экран (иначе он теряет фокус и закрывается)
         return
     prof = getattr(app, "_alt_profile", "generic")
     scr = (getattr(app, "screens", None) or {}).get(getattr(app, "current", None))
@@ -1877,7 +1881,16 @@ def make_content(app, host) -> tk.Frame:
     app._alt_view = vp
     app._alt_page_hook = lambda: _later(app, 1)   # экран сменил внутреннюю страницу
     # после любого щелчка экран мог дорисовать кнопки (вкладка, список) — свернуть их
-    app.bind_all("<ButtonRelease-1>", lambda _e: _later(app), add="+")
+    app._alt_pressing = False
+
+    def _press(_e):
+        app._alt_pressing = True
+
+    def _release(_e):
+        app._alt_pressing = False
+        _later(app)
+    app.bind_all("<ButtonPress-1>", _press, add="+")
+    app.bind_all("<ButtonRelease-1>", _release, add="+")
     return vp.inner
 
 
