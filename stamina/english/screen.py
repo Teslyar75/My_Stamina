@@ -124,6 +124,18 @@ class EnglishScreen(tk.Frame):
         for n, b in self.nav.items():
             b.set_active(n == name)
         self._update_nav()
+        hook = getattr(self.app, "_alt_page_hook", None)   # есть только в alt-оболочке
+        if hook is not None:
+            hook()
+
+    # рабочие страницы и их предельная ширина (для alt-оболочки; классика не вызывает)
+    WORK_PAGES = {"review": 840, "book": 820, "practice": 1040}
+
+    def alt_working(self):
+        """(страница, макс. ширина) — если открыт сеанс карточек/миссия/«из книги»."""
+        if not self._built or self.current not in self.WORK_PAGES:
+            return None
+        return self.pages[self.current], self.WORK_PAGES[self.current]
 
     def refresh(self) -> None:  # вызывается Star Typing при открытии вкладки
         if self._built and self.current:
@@ -273,7 +285,8 @@ class EnglishScreen(tk.Frame):
         else:
             self._tts_polling = False
 
-    def status(self, text: str, color=MUTED) -> None:
+    def status(self, text: str, color=None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         try:
             self.app.set_status(text, color)
         except Exception:

@@ -253,13 +253,15 @@ class Scene:
 FS = 2   # масштаб стекла: 1/2 — растягиваем «ближайшим» (в 1,5–3 раза быстрее сглаживающего), блоки 2×2 не видны
 
 
-def frost_small(im, tint: str = PANEL, amount: float = 0.76):
+def frost_small(im, tint: str | None= None, amount: float = 0.76):
     """Матовое стекло в 1/FS размера: reduce + два box-размытия (≈ гаусс) + подкраска в цвет панели."""
+    tint = PANEL if tint is None else tint  # токен скина — в момент вызова, не при импорте
     small = im.reduce(FS).filter(ImageFilter.BoxBlur(12 // FS)).filter(ImageFilter.BoxBlur(12 // FS))
     return Image.blend(small, Image.new("RGB", small.size, _rgb(tint)), amount)
 
 
-def frost(im, tint: str = PANEL, amount: float = 0.76):
+def frost(im, tint: str | None= None, amount: float = 0.76):
+    tint = PANEL if tint is None else tint  # токен скина — в момент вызова, не при импорте
     return frost_small(im, tint, amount).resize(im.size, Image.BILINEAR)
 
 

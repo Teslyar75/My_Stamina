@@ -24,7 +24,9 @@ if TYPE_CHECKING:
     from stamina.cockpit import Cockpit
 
 
-def _label(master, text, *, fg=TEXT, size=10, bold=False, mono=False, bg=PANEL, **kw):
+def _label(master, text, *, fg=None, size=10, bold=False, mono=False, bg=None, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold, mono), **kw)
 
 
@@ -807,10 +809,11 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2))
             self.layout_btns[key] = b
         from stamina import alt_ui as _alt
-        wsl = self._row(_t("Слайдшоу обоев отсеков"),
-                        _t("Только для вида «Пульт-кабина» (Звездолёт, Стимпанк): у каждого отсека несколько картинок, они сменяются плавным наплывом через выбранный интервал."))
         self.wall_btns = {}
-        for sec in _alt.WALL_INTERVALS:
+        # Слайдшоу обоев есть только во вселенной «Пульт-кабина»: в классике строки нет
+        wsl = None if _alt.layout_of(app.store.settings) != "alt" else self._row(_t("Слайдшоу обоев отсеков"),
+                        _t("Только для вида «Пульт-кабина» (Звездолёт, Стимпанк): у каждого отсека несколько картинок, они сменяются плавным наплывом через выбранный интервал."))
+        for sec in (_alt.WALL_INTERVALS if wsl is not None else ()):
             name = _t("ВЫКЛ") if sec == 0 else _t("{0} С").format(sec)
             b = HudButton(wsl, name, lambda v=sec: self._set_wall(v), width=72, height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
@@ -1067,7 +1070,8 @@ class SettingsScreen(tk.Frame):
         except (AttributeError, OSError):
             messagebox.showinfo(_t("Данные"), str(DATA_DIR), parent=self)
 
-    def _set_upd_status(self, text: str, color: str = MUTED) -> None:
+    def _set_upd_status(self, text: str, color: str | None= None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         if getattr(self, "upd_status", None) is None:
             return
         self.upd_status.configure(text=text, fg=color)

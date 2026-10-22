@@ -18,29 +18,41 @@ pid = pilots.pilots()[0]["id"]
 root = tk.Tk()
 theme.load_theme("spaceship", apply_ui=True, root=root)
 root.geometry(f"{size}+10+10")
-root.grid_rowconfigure(0, weight=1); root.grid_columnconfigure(0, weight=1)
-login = LoginScreen(root, on_enter=lambda p: None, on_exit=lambda: None)
-login.grid(row=0, column=0, sticky="nsew")
 os.makedirs("screenshots", exist_ok=True)
-combos = [("spaceship", "classic"), ("spaceship", "alt"), ("steampunk", "classic"), ("steampunk", "alt")]
+combos = [("spaceship", "classic"), ("spaceship", "alt"), ("steampunk", "classic"), ("steampunk", "alt"),
+          ("spaceship", "classic")]   # последний — назад со Стимпанка: проверка, что не осталось кусков
+
+
+def page():
+    return next(w for w in _walk(root) if isinstance(w, LoginScreen))
+
+
+def _walk(w):
+    yield w
+    for c in w.winfo_children():
+        yield from _walk(c)
 
 
 def step(i=0):
     if i >= len(combos):
         print("LOGIN SHOTS OK"); os._exit(0)
     sk, lay = combos[i]
-    login._pick_layout(lay)
-    login._preview_skin(sk)
+    page()._pick_layout(lay)
+    root.update()
+    page()._preview_skin(sk)
 
     def shot():
         root.update()
         x, y = root.winfo_rootx(), root.winfo_rooty()
+        tail = "_back" if i == len(combos) - 1 else ""
         ImageGrab.grab((x, y, x + root.winfo_width(), y + root.winfo_height()), all_screens=True).save(
-            f"screenshots/login_{sk}_{lay}_{size}.png")
+            f"screenshots/login_{sk}_{lay}_{size}{tail}.png")
         root.after(200, lambda: step(i + 1))
     root.after(1800, shot)
 
 
+# Тот же путь, что у ярлыка: настоящий run_login (с пересборкой окна при смене скина)
+from stamina.pilot_screens import run_login  # noqa: E402
 root.after(1500, step)
 root.after(60000, lambda: os._exit(3))
-root.mainloop()
+run_login(root)

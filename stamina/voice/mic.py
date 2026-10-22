@@ -213,6 +213,7 @@ class MicControl:
         self.button.set_text(_t(self._label))
         self.button.set_color(GREEN)
 
-    def _say(self, text: str, color=MUTED) -> None:
+    def _say(self, text: str, color=None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         if self._on_status is not None:
             self._on_status(text, color)

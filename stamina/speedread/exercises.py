@@ -125,7 +125,8 @@ class ExerciseBase(tk.Frame):
         if e.keysym == "Escape":
             self.exit()
 
-    def result_banner(self, parent, text: str, color=GREEN) -> None:
+    def result_banner(self, parent, text: str, color=None) -> None:
+        color = GREEN if color is None else color  # токен скина — в момент вызова, не при импорте
         L(parent, text, fg=color, size=12, bold=True).pack(pady=px(6))
 
 

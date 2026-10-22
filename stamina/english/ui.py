@@ -14,7 +14,8 @@ from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, L
 DIFF_COLOR = {"easy": GREEN, "medium": CYAN, "tricky": AMBER}
 
 
-def L(master, text="", *, fg=TEXT, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
+def L(master, text="", *, fg=None, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
     if bg is None:
         try:
             bg = master.cget("bg")
@@ -23,13 +24,15 @@ def L(master, text="", *, fg=TEXT, size=10, bold=False, mono=False, bg=None, **k
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold, mono), **kw)
 
 
-def chip(master, text, color=MUTED, bg=None, size=8) -> tk.Label:
+def chip(master, text, color=None, bg=None, size=8) -> tk.Label:
+    color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
     bg = bg or master.cget("bg")
     return tk.Label(master, text=f" {text} ", fg=color, bg=bg, font=theme.font(size, True),
                     highlightthickness=1, highlightbackground=blend(color, BG, 0.35), bd=0, padx=px(4))
 
 
-def hline(master, color=LINE) -> tk.Frame:
+def hline(master, color=None) -> tk.Frame:
+    color = LINE if color is None else color  # токен скина — в момент вызова, не при импорте
     f = tk.Frame(master, bg=color, height=1)
     f.pack(fill=tk.X, pady=px(4))
     return f
@@ -44,7 +47,8 @@ def entry(master, width=30, size=11, mono=False) -> tk.Entry:
 class ScrollFrame(tk.Frame):
     """Вертикальная прокрутка колесом мыши; содержимое — в .inner."""
 
-    def __init__(self, master, bg=BG, **kw) -> None:
+    def __init__(self, master, bg=None, **kw) -> None:
+        bg = BG if bg is None else bg  # токен скина — в момент вызова, не при импорте
         super().__init__(master, bg=bg, **kw)
         from stamina.adapt import make_vscroll
         self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0)
@@ -198,7 +202,8 @@ class Tile(tk.Canvas):
 class Bar(tk.Canvas):
     """Тонкая полоса прогресса (как «ПРОГРЕСС МАРШРУТА» в MissionStrip)."""
 
-    def __init__(self, master, color=CYAN, height=8, width=200) -> None:
+    def __init__(self, master, color=None, height=8, width=200) -> None:
+        color = CYAN if color is None else color  # токен скина — в момент вызова, не при импорте
         super().__init__(master, bg=master.cget("bg"), highlightthickness=0, bd=0, height=px(height),
                          width=px(width))
         self.color, self.frac = color, 0.0

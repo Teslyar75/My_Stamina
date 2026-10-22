@@ -114,7 +114,14 @@ class _LazyDraw:
 
     def _flush_draw(self) -> None:
         self._draw_job = None
-        self._draw()
+        # родителя могли уничтожить раньше (destroy() потомка Tk тогда не вызывает):
+        # отложенная перерисовка мёртвого виджета — тихо пропустить
+        try:
+            if not self.winfo_exists():
+                return
+            self._draw()
+        except tk.TclError:
+            pass
 
     def destroy(self) -> None:
         if self._draw_job is not None:

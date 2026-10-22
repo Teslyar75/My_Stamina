@@ -15,7 +15,8 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, RED, TEXT, px
 PREVIEW_CHARS = 6000
 
 
-def _label(master, text="", fg=TEXT, size=10, bold=False):
+def _label(master, text="", fg=None, size=10, bold=False):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=BG, font=theme.font(size, bold), anchor="w", justify="left")
 
 

@@ -402,7 +402,7 @@ class PracticePage(tk.Frame):
         L(self.tb, TYPE_TITLE[t["type"]], fg=AMBER, size=10, bold=True).pack(anchor="w")
         self.fb = None
         getattr(self, f"_t_{t['type']}")(t, w)
-        self.fb = L(self.tb, "", fg=MUTED, size=11, bold=True, wraplength=px(700), justify="left")
+        self.fb = L(self.tb, "", fg=MUTED, size=11, bold=True, wraplength=self._wrap(700), justify="left")
         self.fb.pack(anchor="w", pady=(px(8), 0))
 
     # ---- задания с выбором ----------------------------------------------------------
@@ -415,8 +415,14 @@ class PracticePage(tk.Frame):
             c.pack(fill=tk.X, pady=px(3))
             self.choice_w.append(c)
 
-    def _big(self, text, size=26, mono=True, fg=TEXT) -> None:
-        L(self.tb, text, fg=fg, size=size, bold=True, mono=mono, wraplength=px(760), justify="left").pack(
+    def _wrap(self, base: int) -> int:
+        """?????? ???????? ?????? ??????: ?? ???? ??????? (????? ????, ?????????????? ???)."""
+        avail = self.tb.winfo_width() - px(24)
+        return min(px(base), avail) if avail > px(300) else px(base)
+
+    def _big(self, text, size=26, mono=True, fg=None) -> None:
+        fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+        L(self.tb, text, fg=fg, size=size, bold=True, mono=mono, wraplength=self._wrap(760), justify="left").pack(
             anchor="w", pady=px(8))
 
     def _t_R1(self, t, w) -> None:

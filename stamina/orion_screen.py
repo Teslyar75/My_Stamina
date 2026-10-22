@@ -42,7 +42,9 @@ from stamina.voice import stt, tts
 from stamina.voice.mic import MicControl
 
 
-def _label(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw):
+def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
@@ -1102,8 +1104,9 @@ class OrionScreen(tk.Frame):
         if not self.mic.busy:
             self.mic.start()
 
-    def _mic_status(self, text: str, color=MUTED) -> None:
+    def _mic_status(self, text: str, color=None) -> None:
         """Индикатор микрофона: показывает что микрофон работает."""
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         self.mic_indicator.configure(text=("🎤 " + text) if text else "", fg=color)
         self._hint(text, color)
 
@@ -1230,7 +1233,8 @@ class OrionScreen(tk.Frame):
         if fill > 0:
             self.work_bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
 
-    def _hint(self, text: str, color=MUTED) -> None:
+    def _hint(self, text: str, color=None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         self.hint.configure(text=text, fg=color)
 
     def _insert_text(self, text: str) -> None:
