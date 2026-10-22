@@ -185,6 +185,8 @@ def main() -> None:
                                 d["on_monitor"] = monitors.on_some_monitor(cx, cy) is not False
                                 d["items"] = len(dl.items)
                                 d["below"] = dl.winfo_rooty() >= more.winfo_rooty() + more.winfo_height() - 2
+                                d["above"] = dl.winfo_rooty() + dl.winfo_height() <= more.winfo_rooty() + 2
+                                d["in_window"] = dl.winfo_rooty() + dl.winfo_height() <= app.winfo_rooty() + app.winfo_height() + 2
                                 d["same_monitor"] = monitors.on_some_monitor(cx, cy) == monitors.on_some_monitor(
                                     more.winfo_rootx() + 2, more.winfo_rooty() + 2)
                                 dl.lift()

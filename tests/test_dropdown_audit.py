@@ -39,7 +39,7 @@ class DropdownAuditTest(unittest.TestCase):
                         msg = f'{skin}/{r["zone"]}: {d.get("text")} {d.get("trace", "")}'
                         self.assertTrue(d["shared"], msg)            # только общий RowCompactor+DropList
                         self.assertTrue(d["popup_ok"], msg)          # щелчок открыл список
-                        self.assertTrue(d.get("below"), msg)         # под кнопкой
+                        self.assertTrue(d.get("below") or d.get("above"), msg)  # под кнопкой или (не влез) над ней
                         self.assertTrue(d.get("same_monitor"), msg)  # на том же мониторе
                         self.assertTrue(d.get("on_monitor"), msg)
                         self.assertTrue(d.get("on_top"), msg)        # реально виден (не под окном)

@@ -1586,8 +1586,28 @@ class DropList(tk.Toplevel):
 
     def _clamp(self) -> None:
         try:
-            x, y = monitors.below_pos(self.anchor_w, self.winfo_reqwidth(), self.winfo_reqheight())
-            self.geometry(f"+{x}+{y}")
+            w, h = self.winfo_reqwidth(), self.winfo_reqheight()
+            x, y = monitors.below_pos(self.anchor_w, w, h)
+            # список не вылезает за окно программы: не влез вниз - открываем вверх
+            top = self._top
+            win_bottom = top.winfo_rooty() + top.winfo_height()
+            a_top = self.anchor_w.winfo_rooty()
+            win_top = top.winfo_rooty()
+            below_room = win_bottom - y
+            above_room = a_top - win_top
+            if h > below_room and h > above_room and not getattr(self, "_compact", False):
+                # не влез ни вниз, ни вверх - сначала плотнее строки
+                self._compact = True
+                for lab, _b, _en in self.items:
+                    lab.configure(pady=px(1))
+                self.update_idletasks()
+                return self._clamp()
+            if h > below_room and above_room > below_room:
+                y = max(win_top, a_top - h)
+                h = min(h, above_room)
+            else:
+                h = min(h, max(below_room, px(80)))
+            self.geometry(f"{w}x{h}+{x}+{y}")
         except tk.TclError:
             pass
 
