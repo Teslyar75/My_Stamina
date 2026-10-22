@@ -71,7 +71,10 @@ class SpeedReadScreen(tk.Frame):
         self.bar = tk.Frame(self, bg=BG)
         self.bar.pack(fill=tk.X, padx=px(14), pady=(px(8), px(6)))
         L(self.bar, _t("СКОРОЧТЕНИЕ"), fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(10)))
-        HudButton(self.bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
+        # справка в своей рамке: иначе alt-шапка считает её вкладкой («?» в списке ОБЗОР)
+        hbox = tk.Frame(self.bar, bg=BG)
+        hbox.pack(side=tk.RIGHT)
+        HudButton(hbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         self.lbl_info = L(self.bar, "", fg=MUTED, size=8, bold=True, bg=BG)
         self.lbl_info.pack(side=tk.RIGHT, padx=px(8))
@@ -178,6 +181,9 @@ class SpeedReadScreen(tk.Frame):
             self.pages["book"].focus_set()
         else:
             self.app.focus_set()
+        hook = getattr(self.app, "_alt_page_hook", None)   # только в alt-оболочке
+        if hook is not None:
+            hook()
 
     def read(self, tid: str, word: int | None = None) -> None:
         """Открыть в гипердрайве (RSVP)."""

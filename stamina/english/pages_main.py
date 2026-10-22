@@ -39,15 +39,18 @@ class SectorCard(tk.Canvas):
         self.hover = v
         self.redraw()
 
-    def redraw(self) -> None:
+    def redraw(self, fresh: bool = False) -> None:
         self.delete("all")
         w, h = self.winfo_width(), self.winfo_height()
         if w < 50:
             return
         sid, lim, name, sub, code = self.s
-        words = self.ctx.vocab.in_set(sid)
-        total = len(words)
-        known = self.ctx.progress.known_or_learned([x["slug"] for x in words])
+        # счёт сектора дорогой (in_set + known_or_learned): <Configure>/hover берут кеш, refresh() - свежий
+        st = None if fresh else getattr(self, "_stats", None)
+        if st is None:
+            words = self.ctx.vocab.in_set(sid)
+            st = self._stats = (len(words), self.ctx.progress.known_or_learned([x["slug"] for x in words]))
+        total, known = st
         frac = known / total if total else 0
         col = GREEN if frac >= 1 else (AMBER if known else (CYAN if self.hover else LINE_HI))
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, px(12)), fill=PANEL_HI if self.hover else PANEL,
@@ -297,7 +300,7 @@ class OverviewPage(tk.Frame):
         self.ro.set([(_t("К ПОВТОРЕНИЮ"), str(due), CYAN), (_t("НОВЫХ ДОСТУПНО"), str(min(new_left, avail)), GREEN),
                      (_t("СЕРИЯ ДНЕЙ / ЛУЧШАЯ"), f"{st} / {max(st, p.data['xp'].get('best_streak', 0))}", AMBER)])
         for c in self.cards:
-            c.redraw()
+            c.redraw(fresh=True)
         lvl, lo, hi = p.level()
         self.lvl.configure(text=str(lvl))
         self.lvl_txt.configure(text=_t("УРОВЕНЬ · {0} XP · ДО {1}: {2} XP").format(p.xp_total, lvl + 1, hi - p.xp_total))

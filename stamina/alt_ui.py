@@ -2396,13 +2396,16 @@ def on_screen(app) -> None:
 
 def _sub_path(app) -> list:
     """Внутренняя страница экрана (Английский) как последний сегмент пути."""
-    if app.current != "english":
+    if app.current not in ("english", "speedread"):
         return []
-    scr = getattr(app, "screens", {}).get("english")
+    scr = getattr(app, "screens", {}).get(app.current)
     cur = getattr(scr, "current", None)
     if not cur or cur == "overview":
         return []
     try:
+        if app.current == "speedread":
+            b = getattr(scr, "tab_btns", {}).get(cur)
+            return [(b._text if b is not None else cur, "speedread")]
         from stamina.english.screen import SUBPAGES
         return [(dict(SUBPAGES).get(cur, cur), "english")]
     except Exception:  # noqa: BLE001
@@ -2411,9 +2414,9 @@ def _sub_path(app) -> list:
 
 def _crumb_go(app, target: str) -> None:
     """Клик по крошке: свой же экран — на его первую страницу, иначе app.show."""
-    if target == app.current == "english":
-        scr = getattr(app, "screens", {}).get("english")
-        if scr is not None and getattr(scr, "_built", False):
+    if target == app.current and target in ("english", "speedread"):
+        scr = getattr(app, "screens", {}).get(target)
+        if scr is not None and getattr(scr, "_built", True):
             scr.show("overview")
         return
     app.show(target)
