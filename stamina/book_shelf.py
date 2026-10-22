@@ -13,6 +13,7 @@ from stamina import bilinguis_catalog as bilinguis
 from stamina import book_catalog as catalog
 from stamina import library as libmod
 from stamina import theme
+from stamina import monitors
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT, blend, px
 
@@ -800,10 +801,9 @@ class BookSearchDialog(tk.Toplevel):
             self.grab_set()
         except tk.TclError:
             pass
-        sw = self.winfo_screenwidth()
-        sh = self.winfo_screenheight()
+        sw, sh = monitors.area_size(master)       # монитор окна программы, не основной
         w, h = min(px(1100), int(sw * 0.92)), min(px(720), int(sh * 0.88))
-        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+        self.geometry(monitors.center_geometry(master, w, h))
         self.minsize(px(720), px(480))
 
         def added(tid: str) -> None:
@@ -835,10 +835,9 @@ class ShelfDialog(tk.Toplevel):
             self.grab_set()
         except tk.TclError:
             pass
-        sw = self.winfo_screenwidth()
-        sh = self.winfo_screenheight()
+        sw, sh = monitors.area_size(master)       # монитор окна программы, не основной
         w, h = min(px(960), int(sw * 0.9)), min(px(640), int(sh * 0.85))
-        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{max(20, (sh - h) // 2 - 20)}")
+        self.geometry(monitors.center_geometry(master, w, h))
 
         def open_catalog() -> None:
             def after_add(tid: str) -> None:

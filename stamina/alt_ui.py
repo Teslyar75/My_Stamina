@@ -30,6 +30,8 @@ from __future__ import annotations
 import math
 import random
 import tkinter as tk
+
+from stamina import monitors
 from pathlib import Path
 
 from stamina import nav, theme
@@ -1188,6 +1190,16 @@ class LoginStage(tk.Frame):
         self._job = self.after(LOGIN_SLIDE_MS, self._next)
         return True
 
+    def dispose(self) -> None:
+        """Снять таймеры слайдшоу и отпустить картинку — сцена больше не нужна."""
+        self._cancel()
+        self.photo = None
+        self.paths = []
+
+    def destroy(self) -> None:
+        self.dispose()
+        super().destroy()
+
     def _cancel(self) -> None:
         for a in ("_job", "_paint_job"):
             j = getattr(self, a)
@@ -1476,6 +1488,10 @@ class DropList(tk.Toplevel):
         super().__init__(anchor)
         DropList.current = self
         self.overrideredirect(True)
+        try:
+            self.transient(anchor.winfo_toplevel())
+        except tk.TclError:
+            pass
         self.run = run
         acc = theme.AMBER if profile == "steampunk" else theme.CYAN
         self.configure(bg=acc)
@@ -1493,7 +1509,9 @@ class DropList(tk.Toplevel):
                 lab.bind("<Button-1>", lambda _e, b=b: self.pick(b))
                 lab.bind("<Enter>", lambda _e, k=k: self.hi(k))
             self.items.append((lab, b, enabled))
-        self.geometry(f"+{anchor.winfo_rootx()}+{anchor.winfo_rooty() + anchor.winfo_height()}")
+        self.anchor_w = anchor
+        # позиция — в момент щелчка, от якоря, в пределах ЕГО монитора (окно могли перетащить)
+        monitors.place_below(self, anchor)
         for seq, fn in (("<Escape>", lambda _e: self.close()), ("<Up>", lambda _e: self.step(-1)),
                         ("<Down>", lambda _e: self.step(1)), ("<Return>", lambda _e: self.enter()),
                         ("<space>", lambda _e: self.enter())):
@@ -1505,10 +1523,8 @@ class DropList(tk.Toplevel):
 
     def _clamp(self) -> None:
         try:
-            w, h = self.winfo_reqwidth(), self.winfo_reqheight()
-            x, y = self.winfo_x(), self.winfo_y()
-            sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
-            self.geometry(f"+{max(0, min(x, sw - w))}+{max(0, min(y, sh - h))}")
+            x, y = monitors.below_pos(self.anchor_w, self.winfo_reqwidth(), self.winfo_reqheight())
+            self.geometry(f"+{x}+{y}")
         except tk.TclError:
             pass
 
@@ -1839,7 +1855,8 @@ def build_chrome(app) -> tk.Frame:
     app._alt_body = body   # статус-строка кабины встаёт ниже этой рамки
     app._alt_wall = Wallpaper(body, prof, float(st.get("alt_wallpaper_dim", WALL_DIM)), wall_interval(st))
     # поля: широкие на большом экране (видны обои), узкие на маленьком — экран важнее
-    small = app.winfo_screenwidth() <= 1366 or app.winfo_screenheight() <= 800
+    _mw, _mh = monitors.area_size(app)
+    small = _mw <= 1366 or _mh <= 800
     gap = px(10 if small else 22)   # щедрые поля: обои видны вокруг панелей
     rail_bg = blend(BG, theme.AMBER, 0.05) if prof == "steampunk" else blend(BG, theme.CYAN, 0.03)
     rail_box = wrap(body, prof, bg=rail_bg, title=tr_(pdata["rail"]) if prof != "generic" else "", edge=10)

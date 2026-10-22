@@ -13,6 +13,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import theme
+from stamina import monitors
 from stamina.hud import HudButton
 from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, blend, px
 
@@ -2441,7 +2442,7 @@ class BookReaderPage(tk.Frame):
         dlg = tk.Toplevel(parent, bg=th["fallback"])
         dlg.title(_t("Оглавление"))
         dlg.transient(self.winfo_toplevel())
-        dlg.geometry(f"{px(440)}x{px(400)}")
+        dlg.geometry(monitors.center_geometry(self, px(440), px(400)))
         tk.Label(dlg, text=_t("ОГЛАВЛЕНИЕ"), bg=th["fallback"], fg=th["accent"],
                  font=theme.font(12, True)).pack(anchor="w", padx=px(12), pady=px(8))
         fr = tk.Frame(dlg, bg=th["bar"])

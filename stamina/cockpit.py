@@ -208,14 +208,16 @@ class Cockpit(tk.Tk):
             cur_w, cur_h = self.winfo_width(), self.winfo_height()
         except tk.TclError:
             return
-        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        from stamina import monitors
+        l, t, r, b = monitors.work_area(self)     # монитор, где окно стоит СЕЙЧАС
+        sw, sh = r - l, b - t
         # окно шире экрана = обрезанные шапка и клавиатура, поэтому жёсткий предел по экрану
         need = min(req_w + px(8), sw - px(20))
         if need <= cur_w:
             return
         try:
             self.geometry(f"{need}x{min(cur_h, sh - px(60))}"
-                          f"+{max(0, (sw - need) // 2)}+{max(0, self.winfo_y())}")
+                          f"+{l + max(0, (sw - need) // 2)}+{max(t, self.winfo_y())}")
         except tk.TclError:
             pass
 
@@ -239,8 +241,10 @@ class Cockpit(tk.Tk):
                 size, x, y = geo.replace("+", " +").split(" ")[0], *geo.split("+")[1:3]
                 w, h = (int(v) for v in size.split("x"))
                 # сохранённая раскладка годится, только если окно целиком влезает в экран
-                if (0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100
-                        and px(600) <= w <= sw - px(20) and px(400) <= h <= sh - px(60)):
+                from stamina import monitors
+                on = monitors.on_some_monitor(int(x) + 100, int(y) + 50)   # второй монитор, x<0
+                inside = on if on is not None else (0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100)
+                if inside and px(600) <= w <= sw * 3 and px(400) <= h <= sh * 3:
                     self.geometry(geo)
                     return
             except (ValueError, TypeError):
