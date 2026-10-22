@@ -84,7 +84,34 @@ def reading_word(lib, tid: str) -> int:
     return int(m.get("positions", {}).get("reading", {}).get("word", 0) or 0)
 
 
-def sync_book(progress, lib, tid: str) -> dict | None:
+# tid -> (позиция, длина текста, хэш начала): книга не менялась - не пересобираем
+_SYNC_MEMO: dict[str, tuple] = {}
+
+
+def warm_up(lib) -> None:
+    """Тяжёлая часть sync_all без записи в прогресс: извлечь предложения всех книг
+    в кэш _EXTRACT (можно звать из фонового потока)."""
+    for m in lib.all():
+        try:
+            tid = m["id"]
+            lang = (m.get("lang") or "").lower()
+            if lang and lang != "en":
+                continue
+            text = lib.reading_text(tid)
+            if not text or not text.strip():
+                continue
+            pos = reading_word(lib, tid)
+            key = (tid, pos, len(text), hash(text[:512]))
+            if key not in _EXTRACT:
+                _EXTRACT[key] = extract_sentences(text, pos)
+        except Exception:  # noqa: BLE001 - прогрев не обязателен
+            pass
+
+
+_EXTRACT: dict[tuple, list] = {}
+
+
+def sync_book(progress, lib, tid: str, *, save: bool = True, changed: list | None = None) -> dict | None:
     """Обновить список предложений книги по позиции чтения. Возвращает запись книги."""
     m = lib.meta(tid)
     if not m:
@@ -102,8 +129,13 @@ def sync_book(progress, lib, tid: str) -> dict | None:
             return None
 
     pos = reading_word(lib, tid)
-    extracted = extract_sentences(text, pos)
     store = ensure_store(progress)
+    sig = (pos, len(text), hash(text[:512]))
+    if _SYNC_MEMO.get(tid) == sig and tid in store["books"]:
+        return store["books"][tid]
+    extracted = _EXTRACT.pop((tid,) + sig, None)
+    if extracted is None:
+        extracted = extract_sentences(text, pos)
     old = store["books"].get(tid) or {}
     old_by_w0 = {int(s["w0"]): s for s in old.get("sentences") or [] if "w0" in s}
 
@@ -130,19 +162,26 @@ def sync_book(progress, lib, tid: str) -> dict | None:
         "sentences": sentences,
     }
     store["books"][tid] = book
-    progress.save()
+    if save:
+        progress.save()
+    elif changed is not None:
+        changed.append(tid)
+    _SYNC_MEMO[tid] = sig
     return book
 
 
 def sync_all(progress, lib) -> tuple[int, int]:
     """Синхронизировать все английские книги. → (книг, предложений)."""
     books_n = sent_n = 0
+    changed: list = []
     for m in lib.all():
         tid = m["id"]
-        book = sync_book(progress, lib, tid)
+        book = sync_book(progress, lib, tid, save=False, changed=changed)
         if book:
             books_n += 1
             sent_n += len(book["sentences"])
+    if changed:
+        progress.save()       # одна запись на всю синхронизацию, а не по книге
     return books_n, sent_n
 
 

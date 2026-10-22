@@ -43,6 +43,14 @@ class IdleController:
     def _tick(self) -> None:
         try:
             s = settings_of(self.app.store.settings)
+            # виджеты с "break" (списки, крошки, кнопки) не доходят до bind_all -
+            # добираем активность по системному простою ввода (tk inactive)
+            try:
+                ms = int(self.app.tk.call("tk", "inactive"))
+                if ms >= 0:
+                    self.last = max(self.last, time.time() - ms / 1000)
+            except (tk.TclError, ValueError):
+                pass
             if (self.show is None and skin_slideshow() and self.app.focus_displayof() is not None
                     and is_idle(self.last, time.time(), s["idle_minutes"])):
                 self.open()

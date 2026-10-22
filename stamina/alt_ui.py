@@ -2091,7 +2091,7 @@ def make_content(app, host) -> tk.Frame:
     vp = ScrollViewport(host, app, theme.BG, getattr(app, "_alt_profile", "generic"))
     vp.pack(fill=tk.BOTH, expand=True)
     app._alt_view = vp
-    app._alt_page_hook = lambda: _later(app, 1)   # экран сменил внутреннюю страницу
+    app._alt_page_hook = lambda: (_later(app, 1), _sync_title(app))   # экран сменил внутреннюю страницу
     # после любого щелчка экран мог дорисовать кнопки (вкладка, список) — свернуть их
     app._alt_pressing = False
 
@@ -2391,10 +2391,39 @@ def on_screen(app) -> None:
     wall = getattr(app, "_alt_wall", None)
     if wall is not None:
         wall.set_zone(nav.zone_of(app.current))
+    _sync_title(app)
+
+
+def _sub_path(app) -> list:
+    """Внутренняя страница экрана (Английский) как последний сегмент пути."""
+    if app.current != "english":
+        return []
+    scr = getattr(app, "screens", {}).get("english")
+    cur = getattr(scr, "current", None)
+    if not cur or cur == "overview":
+        return []
+    try:
+        from stamina.english.screen import SUBPAGES
+        return [(dict(SUBPAGES).get(cur, cur), "english")]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def _crumb_go(app, target: str) -> None:
+    """Клик по крошке: свой же экран — на его первую страницу, иначе app.show."""
+    if target == app.current == "english":
+        scr = getattr(app, "screens", {}).get("english")
+        if scr is not None and getattr(scr, "_built", False):
+            scr.show("overview")
+        return
+    app.show(target)
+
+
+def _sync_title(app) -> None:
     lbl = getattr(app, "_alt_title", None)
     if lbl is None:
         return
-    segs = nav.path(app.current)
+    segs = nav.path(app.current) + _sub_path(app)
     g = glyph(app._alt_profile, nav.zone_of(app.current) or "")
     _sync_crumbs(app, segs[:-1], g)
     last = segs[-1][0] if segs else ""
@@ -2429,7 +2458,7 @@ def _sync_crumbs(app, anc: list, g: str) -> None:
         text = (f"{g}  " if i == 0 else "") + title
         c = tk.Label(fr, text=text, bg=bg, fg=theme.AMBER, font=font, cursor="hand2")
         c._alt_crumb = target
-        c.bind("<Button-1>", lambda _e, k=target: app.show(k))
+        c.bind("<Button-1>", lambda _e, k=target: _crumb_go(app, k))
         c.bind("<Enter>", lambda _e, w=c: w.configure(fg=theme.TEXT))
         c.bind("<Leave>", lambda _e, w=c: w.configure(fg=theme.AMBER))
         c.pack(side=tk.LEFT)

@@ -102,18 +102,62 @@ class BookCardsPage(tk.Frame):
             pass
         n = bs.fill_ru_from_cache(self.ctx.progress, tr, self._tl())
         if n and self.mode == "hub":
-            self.render()
-            self.ctx.changed()
+            self._render_soon()
         if tr.inflight("book_cards") > 0:
             self._schedule_poll()
         elif n:
             self.ctx.status(_t("Переводы предложений обновлены"), GREEN)
 
+    def _sync_later(self) -> None:
+        """Извлечение предложений (секунды на большой библиотеке) - в потоке;
+        запись в прогресс и перерисовка - здесь же, в главном потоке, по готовности."""
+        if getattr(self, "_warm", None) is not None:
+            return
+        import threading
+        th = threading.Thread(target=bs.warm_up, args=(self._lib(),), name="book-cards-sync", daemon=True)
+        self._warm = th
+        th.start()
+
+        def wait() -> None:
+            if th.is_alive():
+                self.after(60, wait)
+                return
+            self._warm = None
+            self._sync_apply()
+
+        self.after(60, wait)
+
+    def _sync_apply(self) -> None:
+        before = (bs.count_ready(self.ctx.progress), len(bs.list_books(self.ctx.progress)))
+        self._sync(request=True)
+        if self.mode == "hub" and before != (bs.count_ready(self.ctx.progress),
+                                              len(bs.list_books(self.ctx.progress))):
+            self._render_soon()
+
+    def _render_soon(self) -> None:
+        """Склейка пересборок хаба: переводы приходят порциями каждые 400 мс -
+        пересобираем не чаще раза в 1.5 с, в простое и не под нажатой кнопкой мыши."""
+        if getattr(self, "_render_job", None) is not None:
+            return
+
+        def run() -> None:
+            self._render_job = None
+            if self.mode != "hub":
+                return
+            if getattr(self.ctx.app, "_alt_pressing", False):
+                self._render_job = self.after(300, run)
+                return
+            self.render()
+            self.ctx.changed()
+
+        self._render_job = self.after(1500, lambda: self.after_idle(run))
+
     # -- navigation -----------------------------------------------------------
     def refresh(self) -> None:
         if self.mode == "hub":
-            self._sync(request=True)
+            # сначала рисуем из сохранённого, синхронизация с библиотекой - в простое
             self.render()
+            self.after_idle(self._sync_later)
         elif self.mode == "drill" and not self.queue:
             self.mode = "hub"
             self.render()

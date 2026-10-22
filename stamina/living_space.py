@@ -461,12 +461,48 @@ class LivingSpace:
             or (self.scene.w, self.scene.h) != (w, h)
             or self._skin_key != skin_key
         )
+        if need and self.scene is not None and self._skin_key == skin_key:
+            # размер ещё «ездит» (перекладка страницы) - строим сцену один раз,
+            # когда он простоит 250 мс; до тех пор старый кадр остаётся на месте
+            now = time.monotonic()
+            if getattr(self, "_pend_size", None) != (w, h):
+                self._pend_size, self._pend_t = (w, h), now
+                return False
+            if now - self._pend_t < 0.25:
+                return False
         if need:
-            try:
-                from stamina.backgrounds import make_scene
-                self.scene = make_scene(w, h, self.mode)
-            except Exception:  # noqa: BLE001
-                self.scene = Scene(w, h, self.mode)
+            self._pend_size = None
+            # рабочие страницы меняют ширину туда-обратно: держим 3 последние сцены
+            cache = self.__dict__.setdefault("_scene_cache", {})
+            ck = (w, h, skin_key, self.mode)
+            sc = cache.pop(ck, None)
+            if sc is None and self.scene is not None:
+                # cover/blur is slow (0.3-0.5 s): build in a thread, keep the old scene meanwhile
+                bg = self.__dict__.setdefault("_bg_build", {})
+                if ck not in bg:
+                    import threading
+                    def _job(ck=ck, w=w, h=h, mode=self.mode):
+                        try:
+                            from stamina.backgrounds import make_scene
+                            bg[ck] = make_scene(w, h, mode)
+                        except Exception:  # noqa: BLE001
+                            bg[ck] = Scene(w, h, mode)
+                    bg[ck] = None
+                    threading.Thread(target=_job, name="scene-build", daemon=True).start()
+                sc = bg.get(ck)
+                if sc is None:
+                    return True
+                bg.pop(ck, None)
+            if sc is None:
+                try:
+                    from stamina.backgrounds import make_scene
+                    sc = make_scene(w, h, self.mode)
+                except Exception:  # noqa: BLE001
+                    sc = Scene(w, h, self.mode)
+            cache[ck] = sc
+            while len(cache) > 3:
+                cache.pop(next(iter(cache)))
+            self.scene = sc
             self._skin_key = skin_key
             self._photos.clear()
             self._fs = None
