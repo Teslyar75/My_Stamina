@@ -800,12 +800,21 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
-        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, звук, экран и слайды на полке «ПРИБОРЫ» (F8), антураж скина. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется."))
+        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, кнопка «СЛАЙДЫ» в шапке, звук и экран на полке «ПРИБОРЫ» (F8), обои отсеков меняются слайдшоу, длинные ряды кнопок свёрнуты в «ещё», экран прокручивается. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется."))
         self.layout_btns = {}
         for key, name in (("classic", _t("КЛАССИЧЕСКИЙ")), ("alt", _t("АЛЬТЕРНАТИВНЫЙ"))):
             b = HudButton(lay, name, lambda k=key: self._set_layout(k), height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.layout_btns[key] = b
+        from stamina import alt_ui as _alt
+        wsl = self._row(_t("Слайдшоу обоев отсеков"),
+                        _t("Только для вида «Пульт-кабина» (Звездолёт, Стимпанк): у каждого отсека несколько картинок, они сменяются плавным наплывом через выбранный интервал."))
+        self.wall_btns = {}
+        for sec in _alt.WALL_INTERVALS:
+            name = _t("ВЫКЛ") if sec == 0 else _t("{0} С").format(sec)
+            b = HudButton(wsl, name, lambda v=sec: self._set_wall(v), width=72, height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.wall_btns[sec] = b
         from stamina.idle import IDLE_MINUTES
         idl = self._row(_t("Простой: слайдшоу и радио"),
                         _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
@@ -973,6 +982,14 @@ class SettingsScreen(tk.Frame):
         self.refresh()
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == key)
+
+    def _set_wall(self, sec: int) -> None:
+        self.app.store.settings["alt_wall_interval"] = int(sec)
+        self.app.store.save_settings()
+        wall = getattr(self.app, "_alt_wall", None)
+        if wall is not None:
+            wall.set_interval(int(sec))
+        self.refresh()
 
     def _set_idle(self, key: str, val) -> None:
         st = self.app.store.settings
@@ -1154,6 +1171,10 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("skin", "spaceship"))
         for k, b in getattr(self, "layout_btns", {}).items():
             b.set_active(k == (st.get("ui_layout") or "classic"))
+        if getattr(self, "wall_btns", None):
+            from stamina import alt_ui as _alt
+            for k, b in self.wall_btns.items():
+                b.set_active(k == _alt.wall_interval(st))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
         for k, b in getattr(self, "ui_btns", {}).items():

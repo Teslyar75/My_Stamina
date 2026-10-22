@@ -194,9 +194,13 @@ class Cockpit(tk.Tk):
     def _fit_to_content(self) -> None:
         """Расширить окно до ширины содержимого (в пределах экрана).
 
+        В alt («Пульт-кабина») не нужно: экран прокручивается, ряды кнопок свёрнуты.
+
         Иначе при крупном интерфейсе шапка и клавиатура не влезают и выглядят
         «сломанными»: текст обрезан, кнопки наезжают.
         """
+        if getattr(self, "_layout", "classic") == "alt":
+            return
         try:
             if self.state() == "zoomed":
                 return                      # развёрнутое окно уже во весь экран
@@ -218,7 +222,12 @@ class Cockpit(tk.Tk):
     # ------------------------------------------------------------------
     def _apply_geometry(self) -> None:
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
-        self.minsize(min(px(1000), sw - 40), min(px(660), sh - 80))
+        from stamina import alt_ui
+        if alt_ui.layout_of(self.store.settings) == "alt":
+            # «Пульт-кабина» прокручивается: окно можно сузить до 1024×768 и 1280×720 при любом DPI
+            self.minsize(min(1000, sw - 40), min(600, sh - 80))
+        else:
+            self.minsize(min(px(1000), sw - 40), min(px(660), sh - 80))
         geo = self.store.settings.get("geometry") or ""
         if self.pilot is not None:
             geo = pilots.load_app().get("geometry") or geo  # окно — общее для экипажа
@@ -334,8 +343,12 @@ class Cockpit(tk.Tk):
     def _build_body(self, host) -> None:
         """Область экранов и статус-строка (общая часть обоих видов)."""
         from stamina import alt_ui
-        self.content = tk.Frame(host, bg=BG)
-        self.content.pack(fill=tk.BOTH, expand=True)
+        if self._layout == "alt":
+            # alt: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
+            self.content = alt_ui.make_content(self, host)
+        else:
+            self.content = tk.Frame(host, bg=BG)
+            self.content.pack(fill=tk.BOTH, expand=True)
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
         # Экран не должен «растягивать» окно под себя: все экраны лежат в одной ячейке,
@@ -351,8 +364,9 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
-                 bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
+        self._status_hint = tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
+                 bg=status["bg"], fg=MUTED, font=theme.font(8))
+        self._status_hint.pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
             "bridge": Bridge(self.content, self),

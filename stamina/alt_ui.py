@@ -502,19 +502,43 @@ WALL_DIR = Path(__file__).resolve().parent / "assets" / "alt_wallpapers"
 WALL_DIM = 0.35
 
 
-def wallpaper_path(profile: str, zone: str | None) -> Path | None:
+def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:
+    """Набор обоев отсека для слайдшоу: ``<zone>.jpg``, ``<zone>_2.jpg``, ``<zone>_3.jpg``…"""
     if not zone:
-        return None
+        return []
+    d = WALL_DIR / profile
+    out: list[Path] = []
     for ext in ("jpg", "png"):
-        p = WALL_DIR / profile / f"{zone}.{ext}"
+        p = d / f"{zone}.{ext}"
         if p.is_file():
-            return p
-    return None
+            out.append(p)
+    try:
+        extra = sorted(q for q in d.glob(f"{zone}_*.*") if q.suffix.lower() in (".jpg", ".png"))
+    except OSError:
+        extra = []
+    return out + extra
 
 
-def _wall_image(profile, zone, w, h, dim):
+def wallpaper_path(profile: str, zone: str | None) -> Path | None:
+    ps = wallpaper_paths(profile, zone)
+    return ps[0] if ps else None
+
+
+WALL_INTERVALS = (0, 15, 30, 60)   # секунды смены обоев; 0 — слайдшоу выключено
+WALL_INTERVAL = 30
+
+
+def wall_interval(settings: dict | None) -> int:
+    try:
+        v = int((settings or {}).get("alt_wall_interval", WALL_INTERVAL))
+    except (TypeError, ValueError):
+        v = WALL_INTERVAL
+    return v if v in WALL_INTERVALS else WALL_INTERVAL
+
+
+def _wall_image(profile, zone, w, h, dim, path: Path | None = None):
     """PIL-картинка cover под размер (w, h) с затемнением токеном BG; None — нет."""
-    p = wallpaper_path(profile, zone)
+    p = path or wallpaper_path(profile, zone)
     if p is None or w < 8 or h < 8:
         return None
     try:
@@ -535,24 +559,35 @@ def _wall_image(profile, zone, w, h, dim):
 class Wallpaper:
     """Обои за доком и окном: Label во всю площадь body, опущен под панели.
 
-    Перерисовка — только при смене отсека или размера (с задержкой 150 мс,
-    без update_idletasks — см. docs/HANG_100_CPU_2026-10-20.md)."""
+    Слайдшоу: у отсека 3–5 картинок, раз в ``alt_wall_interval`` секунд они
+    сменяются плавным наплывом (константы наплыва — те же, что у слайдшоу простоя,
+    ``stamina/idle``). Перерисовка — только при смене отсека, размера или кадра
+    (без update_idletasks — см. docs/HANG_100_CPU_2026-10-20.md)."""
 
-    def __init__(self, body: tk.Frame, profile: str, dim: float = WALL_DIM) -> None:
+    def __init__(self, body: tk.Frame, profile: str, dim: float = WALL_DIM, interval: int = WALL_INTERVAL) -> None:
         self.body, self.profile, self.dim = body, profile, max(0.0, min(0.9, dim))
+        self.interval = interval
         self.zone: str | None = None
+        self.index = 0
         self.size = (0, 0)
         self.photo = None
+        self.current = None      # PIL-кадр на экране (для наплыва)
         self.label = tk.Label(body, bg=body.cget("bg"), bd=0, highlightthickness=0)
         self.label.living_skip = True
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         self.label.lower()
         self._job = None
+        self._timer = None
+        self._fade = None
         body.bind("<Configure>", self._on_size, add="+")
 
     @property
     def available(self) -> bool:
         return wallpaper_path(self.profile, self.zone) is not None
+
+    @property
+    def paths(self) -> list[Path]:
+        return wallpaper_paths(self.profile, self.zone)
 
     def _on_size(self, e) -> None:
         if e.widget is not self.body:
@@ -565,34 +600,99 @@ class Wallpaper:
     def set_zone(self, zone: str | None) -> None:
         if zone != self.zone:
             self.zone = zone
+            self.index = 0
             self._schedule(0)
 
-    def _schedule(self, delay: int = 150) -> None:
-        if self._job is not None:
+    def set_interval(self, sec: int) -> None:
+        self.interval = sec
+        self._arm()
+
+    def _cancel(self, attr: str) -> None:
+        job = getattr(self, attr)
+        if job is not None:
             try:
-                self.body.after_cancel(self._job)
+                self.body.after_cancel(job)
             except tk.TclError:
                 pass
+        setattr(self, attr, None)
+
+    def _schedule(self, delay: int = 150) -> None:
+        self._cancel("_job")
         try:
             self._job = self.body.after(delay, self._paint)
         except tk.TclError:
             self._job = None
 
+    def _arm(self) -> None:
+        """Взвести таймер следующей картинки (если слайдшоу включено и картинок > 1)."""
+        self._cancel("_timer")
+        if self.interval > 0 and len(self.paths) > 1:
+            try:
+                self._timer = self.body.after(self.interval * 1000, self.next)
+            except tk.TclError:
+                self._timer = None
+
+    def _frame(self):
+        ps = self.paths
+        if not ps:
+            return None
+        return _wall_image(self.profile, self.zone, *self.size, self.dim, ps[self.index % len(ps)])
+
+    def _set(self, im) -> None:
+        from PIL import ImageTk
+        self.photo = ImageTk.PhotoImage(im, master=self.body)
+        self.label.configure(image=self.photo)
+        self.label.lower()
+
     def _paint(self) -> None:
         self._job = None
-        im = _wall_image(self.profile, self.zone, *self.size, self.dim)
+        self._cancel("_fade")
+        im = self._frame()
         try:
             if im is None:
-                self.photo = None
+                self.photo = self.current = None
                 self.label.configure(image="")
                 return
-            from PIL import ImageTk
-            self.photo = ImageTk.PhotoImage(im, master=self.body)
-            self.label.configure(image=self.photo)
-            self.label.lower()
+            self.current = im
+            self._set(im)
         except Exception:  # noqa: BLE001
-            self.photo = None
+            self.photo = self.current = None
+        self._arm()
 
+    def next(self) -> None:
+        """Следующая картинка отсека с наплывом."""
+        self._timer = None
+        ps = self.paths
+        if len(ps) < 2:
+            return
+        self.index = (self.index + 1) % len(ps)
+        new = self._frame()
+        old = self.current
+        if new is None:
+            return
+        if old is None or old.size != new.size:
+            self.current = new
+            self._schedule(0)
+            return
+        try:
+            from stamina.idle import XFADE_MS
+        except Exception:  # noqa: BLE001
+            XFADE_MS = 1200
+        steps = 8      # меньше кадров, чем у простоя: обои под рабочим экраном
+        self._step_fade(old, new, 1, steps, max(30, XFADE_MS // steps))
+
+    def _step_fade(self, old, new, k, steps, dt) -> None:
+        self._fade = None
+        try:
+            from PIL import Image
+            self._set(Image.blend(old, new, k / steps) if k < steps else new)
+        except Exception:  # noqa: BLE001
+            return
+        if k < steps:
+            self._fade = self.body.after(dt, lambda: self._step_fade(old, new, k + 1, steps, dt))
+        else:
+            self.current = new
+            self._arm()
 
 
 class CompartmentBanner(tk.Canvas):
@@ -868,6 +968,366 @@ class AltRail(tk.Frame):
 
 
 # ---------------------------------------------------------------------------
+# Окно с прокруткой: экран никогда не обрезается — если он выше окна,
+# появляется тонкая полоса прокрутки в стиле скина (колесо, перетаскивание,
+# фокус с клавиатуры прокручивает к кнопке).
+# ---------------------------------------------------------------------------
+
+class SlimBar(tk.Canvas):
+    """Тонкая полоса прокрутки, нарисованная токенами скина."""
+
+    def __init__(self, master, view: "ScrollViewport", bg: str) -> None:
+        super().__init__(master, bg=bg, highlightthickness=0, width=px(10), cursor="hand2")
+        self.view = view
+        self.first, self.last = 0.0, 1.0
+        self.bind("<Configure>", lambda _e: self._draw())
+        self.bind("<Button-1>", self._press)
+        self.bind("<B1-Motion>", self._drag)
+        self._grab = None
+
+    def set(self, first, last) -> None:
+        self.first, self.last = float(first), float(last)
+        self._draw()
+
+    def _draw(self) -> None:
+        self.delete("all")
+        h, w = self.winfo_height(), self.winfo_width()
+        if self.last - self.first >= 0.999 or h < 4:
+            return
+        y0, y1 = self.first * h, max(self.first * h + px(18), self.last * h)
+        self.create_rectangle(w // 2 - 1, 0, w // 2 + 1, h, fill=blend(theme.BG, theme.CYAN, 0.15), outline="")
+        self.create_rectangle(1, y0, w - 1, y1, fill=blend(theme.BG, theme.AMBER if self.view.profile == "steampunk"
+                                                           else theme.CYAN, 0.6), outline="")
+
+    def _press(self, e) -> None:
+        h = max(1, self.winfo_height())
+        f = e.y / h
+        if self.first <= f <= self.last:
+            self._grab = f - self.first
+        else:
+            self._grab = (self.last - self.first) / 2
+            self.view.canvas.yview_moveto(f - self._grab)
+
+    def _drag(self, e) -> None:
+        if self._grab is not None:
+            self.view.canvas.yview_moveto(e.y / max(1, self.winfo_height()) - self._grab)
+
+
+class ScrollViewport(tk.Frame):
+    """Рамка, в которой лежат экраны кабины (``app.content`` = ``inner``)."""
+
+    def __init__(self, master, app, bg: str, profile: str = "generic") -> None:
+        super().__init__(master, bg=bg)
+        self.app, self.profile = app, profile
+        self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0, yscrollincrement=px(24))
+        self.bar = SlimBar(self, self, bg)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.inner = tk.Frame(self.canvas, bg=bg)
+        self.win = self.canvas.create_window(0, 0, anchor="nw", window=self.inner)
+        self.canvas.configure(yscrollcommand=self.bar.set)
+        self.canvas.bind("<Configure>", lambda _e: self.relayout())
+        self.need = 0
+        self._bar_on = False
+        app.bind_all("<MouseWheel>", self._wheel, add="+")
+        app.bind_all("<Button-4>", self._wheel, add="+")
+        app.bind_all("<Button-5>", self._wheel, add="+")
+        app.bind_all("<FocusIn>", self._focus, add="+")
+        self.after(1000, self._watch)
+
+    def _current(self):
+        return (getattr(self.app, "screens", None) or {}).get(getattr(self.app, "current", None))
+
+    def required(self) -> int:
+        scr = self._current()
+        try:
+            return int(scr.winfo_reqheight()) if scr is not None else 0
+        except tk.TclError:
+            return 0
+
+    def relayout(self) -> None:
+        try:
+            w, h = self.canvas.winfo_width(), self.canvas.winfo_height()
+        except tk.TclError:
+            return
+        if w < 4 or h < 4:
+            return
+        need = self.required()
+        self.need = need
+        full = max(h, need)
+        self.canvas.itemconfigure(self.win, width=w, height=full)
+        self.canvas.configure(scrollregion=(0, 0, w, full))
+        over = need > h + 1
+        if over != self._bar_on:
+            self._bar_on = over
+            if over:
+                self.bar.pack(side=tk.RIGHT, fill=tk.Y, before=self.canvas)
+            else:
+                self.bar.pack_forget()
+        if not over:
+            self.canvas.yview_moveto(0)
+
+    @property
+    def overflow(self) -> bool:
+        try:
+            return self.need > self.canvas.winfo_height() + 1
+        except tk.TclError:
+            return False
+
+    def _watch(self) -> None:
+        """Раз в секунду: не вырос ли экран (вкладка, раскрытый список). Дёшево:
+        одно winfo_reqheight, перестройка только при изменении."""
+        try:
+            if self.required() != self.need:
+                self.relayout()
+            self.after(1000, self._watch)
+        except tk.TclError:
+            pass
+
+    def _inside(self, w) -> bool:
+        try:
+            return str(w).startswith(str(self.inner))
+        except Exception:  # noqa: BLE001
+            return False
+
+    def _wheel(self, e):
+        w = e.widget
+        if not self.overflow or not self._inside(w):
+            return None
+        # у списков и текстов — своя прокрутка
+        x = w
+        while x is not None and x is not self.inner:
+            try:
+                if x.winfo_class() in ("Text", "Listbox") or (
+                        x.winfo_class() == "Canvas" and x is not self.canvas and str(x.cget("yscrollcommand"))):
+                    return None
+            except tk.TclError:
+                return None
+            x = getattr(x, "master", None)
+        step = -1 if (getattr(e, "num", 0) == 4 or getattr(e, "delta", 0) > 0) else 1
+        self.canvas.yview_scroll(step * 2, "units")
+        return None
+
+    def _focus(self, e) -> None:
+        w = e.widget
+        if not isinstance(w, tk.Misc) or not self.overflow or not self._inside(w):
+            return
+        self.see(w)
+
+    def see(self, w) -> None:
+        try:
+            y = w.winfo_rooty() - self.inner.winfo_rooty()
+            hh = w.winfo_height()
+            top = self.canvas.canvasy(0)
+            vh = self.canvas.winfo_height()
+            full = max(1, self.need)
+            if y < top:
+                self.canvas.yview_moveto(max(0, y - px(10)) / full)
+            elif y + hh > top + vh:
+                self.canvas.yview_moveto(max(0, y + hh + px(10) - vh) / full)
+        except tk.TclError:
+            pass
+
+
+# ---------------------------------------------------------------------------
+# «Меньше кнопок на каждом уровне»: в строке кнопок экрана остаются видимыми не
+# больше ROW_MAX (активные — всегда), остальные убираются в кнопку «⋯ ЕЩЁ» —
+# список команд в стиле скина. Сами кнопки не пересоздаются: список вызывает
+# их invoke(), поэтому функции и состояния те же, что в классическом виде.
+# ---------------------------------------------------------------------------
+ROW_MAX = 4
+MORE_LABEL = {"starship": "⋯ КОНСОЛЬ", "steampunk": "⚙ ЯЩИК", "generic": "⋯ ЕЩЁ"}
+
+
+def _is_cmd(w) -> bool:
+    return isinstance(w, HudButton) and not isinstance(w, AltNavButton) and not getattr(w, "_alt_more", False)
+
+
+class RowCompactor:
+    """Состояние одной свёрнутой строки кнопок."""
+
+    def __init__(self, row: tk.Misc, buttons: list, profile: str) -> None:
+        self.row, self.buttons, self.profile = row, buttons, profile
+        self.info = {}
+        for b in buttons:
+            i = dict(b.pack_info())
+            i.pop("in", None)
+            self.info[b] = i
+        side = self.info[buttons[-1]].get("side", "left")
+        self.more = HudButton(row, f"{tr_(MORE_LABEL.get(profile, MORE_LABEL['generic']))} · {0}", self.popup,
+                              height=30, font_size=8, color=theme.AMBER)
+        self.more._alt_more = True
+        self.more.pack(side=side, padx=px(3), after=buttons[-1])
+        row._alt_row = self
+        self.hidden: list = []
+        self.apply()
+
+    def alive(self) -> list:
+        out = []
+        for b in self.buttons:
+            try:
+                if b.winfo_exists():
+                    out.append(b)
+            except tk.TclError:
+                pass
+        self.buttons = out
+        return out
+
+    def apply(self) -> None:
+        bs = self.alive()
+        actives = [b for b in bs if getattr(b, "_active", False)]
+        # ряд-выбор (одна активная из ≥3) → выпадающий список «текущее ▾»: место под обои
+        choice = len(bs) >= 3 and len(actives) == 1
+        if choice:
+            keep = set()
+        elif len(bs) <= ROW_MAX:
+            keep = set(bs)
+        else:
+            keep = [b for b in bs if getattr(b, "_active", False)]
+            for b in bs:
+                if len(keep) >= ROW_MAX - 1:
+                    break
+                if b not in keep:
+                    keep.append(b)
+            keep = set(keep)
+        for b in bs:
+            b.pack_forget()
+        for b in bs:
+            if b in keep:
+                b.pack(**self.info[b], before=self.more)
+        self.hidden = [b for b in bs if b not in keep]
+        try:
+            if choice:
+                self.more.set_text(f"{actives[0]._text}  ▾")
+                if self.more.winfo_manager() != "pack":
+                    self.more.pack(side=self.info[bs[-1]].get("side", "left"), padx=px(3))
+            elif self.hidden:
+                self.more.set_text(f"{tr_(MORE_LABEL.get(self.profile, MORE_LABEL['generic']))} · {len(self.hidden)}")
+                if self.more.winfo_manager() != "pack":
+                    self.more.pack(side=self.info[bs[-1]].get("side", "left"), padx=px(3))
+            else:
+                self.more.pack_forget()
+        except tk.TclError:
+            pass
+
+    def entries(self) -> list[tuple[str, object, bool, bool]]:
+        """(подпись, кнопка, активна, доступна) — для меню и для теста паритета."""
+        return [(b._text, b, bool(getattr(b, "_active", False)), bool(getattr(b, "_enabled", True)))
+                for b in self.hidden]
+
+    def popup(self) -> None:
+        m = tk.Menu(self.row, tearoff=0, bg=theme.PANEL, fg=theme.TEXT, activebackground=blend(theme.PANEL, theme.AMBER, 0.25),
+                    activeforeground=theme.TEXT, disabledforeground=theme.FAINT, font=theme.font(10, True))
+        for text, b, active, enabled in self.entries():
+            m.add_command(label=("✓ " if active else "   ") + text, state="normal" if enabled else "disabled",
+                          command=lambda b=b: self._run(b))
+        try:
+            m.tk_popup(self.more.winfo_rootx(), self.more.winfo_rooty() + self.more.winfo_height())
+        finally:
+            m.grab_release()
+
+    def _run(self, b) -> None:
+        b.invoke()
+        try:
+            self.row.after(50, self.apply)
+        except tk.TclError:
+            pass
+
+
+def _pack_side(w) -> str:
+    try:
+        return str(w.pack_info().get("side", ""))
+    except tk.TclError:
+        return ""
+
+
+def compact(root, profile: str = "generic") -> int:
+    """Пройти по дереву ``root`` и свернуть длинные строки кнопок. Возвращает число строк."""
+    n = 0
+    stack = [root]
+    while stack:
+        w = stack.pop()
+        try:
+            kids = w.winfo_children()
+        except tk.TclError:
+            continue
+        rc = getattr(w, "_alt_row", None)
+        if rc is not None:
+            new = [k for k in kids if _is_cmd(k) and k not in rc.buttons and k.winfo_manager() == "pack"
+                   and _pack_side(k) in ("left", "right")]
+            if new:   # экран дорисовал кнопки — пересобрать строку
+                for b in new:
+                    i = dict(b.pack_info()); i.pop("in", None)
+                    rc.info[b] = i
+                rc.buttons = [k for k in kids if k in rc.info]
+            rc.apply()
+            n += 1
+        else:
+            btns = [k for k in kids if _is_cmd(k) and k.winfo_manager() == "pack" and _pack_side(k) in ("left", "right")]
+            nact = sum(1 for b in btns if getattr(b, "_active", False))
+            if len(btns) > ROW_MAX or (len(btns) >= 3 and nact == 1):
+                RowCompactor(w, btns, profile)
+                n += 1
+        stack.extend(k for k in kids if not isinstance(k, (tk.Text, tk.Listbox)))
+    return n
+
+
+def hidden_commands(root) -> list[tuple[str, object]]:
+    """Все команды, убранные в «⋯ ЕЩЁ» под ``root``: (подпись, кнопка)."""
+    out = []
+    stack = [root]
+    while stack:
+        w = stack.pop()
+        rc = getattr(w, "_alt_row", None)
+        if rc is not None:
+            out += [(t, b) for t, b, _a, _e in rc.entries()]
+        try:
+            stack.extend(w.winfo_children())
+        except tk.TclError:
+            pass
+    return out
+
+
+def refresh_screen(app) -> None:
+    """Свернуть строки кнопок текущего экрана и подменю, пересчитать прокрутку."""
+    prof = getattr(app, "_alt_profile", "generic")
+    scr = (getattr(app, "screens", None) or {}).get(getattr(app, "current", None))
+    try:
+        if scr is not None:
+            compact(scr, prof)
+        if getattr(app, "subnav", None) is not None:
+            compact(app.crumbs, prof)
+    except tk.TclError:
+        pass
+    vp = getattr(app, "_alt_view", None)
+    if vp is not None:
+        vp.relayout()
+
+
+def _later(app, delay: int = 250) -> None:
+    job = getattr(app, "_alt_refresh_job", None)
+    if job is not None:
+        try:
+            app.after_cancel(job)
+        except tk.TclError:
+            pass
+
+    def run():
+        app._alt_refresh_job = None
+        refresh_screen(app)
+    app._alt_refresh_job = app.after(delay, run)
+
+
+def make_content(app, host) -> tk.Frame:
+    """``app.content`` для alt: внутренняя рамка окна с прокруткой."""
+    vp = ScrollViewport(host, app, theme.BG, getattr(app, "_alt_profile", "generic"))
+    vp.pack(fill=tk.BOTH, expand=True)
+    app._alt_view = vp
+    # после любого щелчка экран мог дорисовать кнопки (вкладка, список) — свернуть их
+    app.bind_all("<ButtonRelease-1>", lambda _e: _later(app), add="+")
+    return vp.inner
+
+
+# ---------------------------------------------------------------------------
 # Сборка рамы
 # ---------------------------------------------------------------------------
 
@@ -901,6 +1361,10 @@ def build_chrome(app) -> tk.Frame:
     app.btn_tools = HB(right, f"☰ {tr_(pdata['drawer'])} · F8", lambda: toggle_drawer(app), height=36,
                        font_size=9, color=theme.CYAN)
     app.btn_tools.pack(side=tk.RIGHT, padx=px(4))
+    # СЛАЙДЫ — прямо в шапке: запуск слайдшоу не прячется в полку (PgUp — то же)
+    app.btn_slides = HB(right, tr_("СЛАЙДЫ"), lambda: app.idle.open(), height=36, font_size=9, width=90,
+                        color=theme.CYAN)
+    app.btn_slides.pack(side=tk.RIGHT, padx=px(4))
     app.btn_help = HB(right, "? F1", app.open_help, height=36, font_size=9, width=60, color=theme.AMBER)
     app.btn_help.pack(side=tk.RIGHT, padx=px(4))
     app.btn_orion = HB(right, tr_("ОРИОН"), app._call_orion, height=36, font_size=9, width=90,
@@ -911,8 +1375,20 @@ def build_chrome(app) -> tk.Frame:
     mid.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(16))
     app._alt_title = tk.Label(mid, text="", bg=head_bg, fg=theme.TEXT, font=theme.font(16, True), anchor="w")
     app._alt_title.pack(side=tk.TOP, anchor="w")
-    tk.Label(mid, text=tr_(pdata["subtitle"]), bg=head_bg, fg=theme.CYAN_DIM, font=theme.font(7, True),
-             anchor="w").pack(side=tk.TOP, anchor="w")
+    # подзаголовок переносится по словам, а не обрезается (узкая шапка, шрифт с засечками)
+    sub = tk.Label(mid, text=tr_(pdata["subtitle"]), bg=head_bg, fg=theme.CYAN_DIM, font=theme.font(7, True),
+                   anchor="w", justify="left", wraplength=px(260))
+    sub.pack(side=tk.TOP, anchor="w", fill=tk.X)
+    app._alt_subtitle = sub
+    app._alt_logo = logo
+    app._alt_head_level = 0
+    app.bind("<Configure>", lambda e: _fit_head(app, e) if e.widget is app else None, add="+")
+
+    def _wrap_sub(e, lbl=sub):
+        wl = max(px(80), int(e.width) - px(4))
+        if abs(int(lbl.cget("wraplength")) - wl) > 4:
+            lbl.configure(wraplength=wl)
+    mid.bind("<Configure>", _wrap_sub)
 
     # «ПРИБОРЫ» — выдвижная полка (по умолчанию спрятана, F8)
     app._mini_row = tk.Frame(app, bg=blend(BG, theme.CYAN, 0.05))
@@ -925,10 +1401,12 @@ def build_chrome(app) -> tk.Frame:
     app.btn_screen = HB(app._mini_row, tr_("⛶ ЭКРАН"), app.toggle_fullscreen, height=32, font_size=9, width=104,
                         color=theme.CYAN)
     app.btn_screen.pack(side=tk.LEFT, padx=px(3))
-    app.btn_slides = HB(app._mini_row, tr_("СЛАЙДЫ"), lambda: app.idle.open(), height=32, font_size=9, width=90,
-                        color=theme.CYAN)
-    app.btn_slides.pack(side=tk.LEFT, padx=px(3))
-    tk.Label(app._mini_row, text=tr_("F9 звук · PgDn экран · PgUp слайды"), bg=drawer_bg, fg=theme.MUTED,
+    HB(app._mini_row, tr_("? СПРАВКА"), app.open_help, height=32, font_size=9, width=104,
+       color=theme.AMBER).pack(side=tk.LEFT, padx=px(3))
+    # звание в узкой шапке скрывается — меню пилота всегда есть здесь
+    HB(app._mini_row, tr_("★ ПИЛОТ"), lambda: app.pilot_menu(), height=32, font_size=9, width=104,
+       color=theme.AMBER).pack(side=tk.LEFT, padx=px(3))
+    tk.Label(app._mini_row, text=tr_("F9 звук · PgDn экран"), bg=drawer_bg, fg=theme.MUTED,
              font=theme.font(8)).pack(side=tk.LEFT, padx=px(8))
     app._radio_mini = None
     try:
@@ -942,8 +1420,10 @@ def build_chrome(app) -> tk.Frame:
     body = tk.Frame(app, bg=BG)
     body.pack(fill=tk.BOTH, expand=True)
     app._alt_body = body   # статус-строка кабины встаёт ниже этой рамки
-    app._alt_wall = Wallpaper(body, prof, float(st.get("alt_wallpaper_dim", WALL_DIM)))
-    gap = px(26)   # щедрые поля: обои видны вокруг панелей
+    app._alt_wall = Wallpaper(body, prof, float(st.get("alt_wallpaper_dim", WALL_DIM)), wall_interval(st))
+    # поля: широкие на большом экране (видны обои), узкие на маленьком — экран важнее
+    small = app.winfo_screenwidth() <= 1366 or app.winfo_screenheight() <= 800
+    gap = px(10 if small else 22)   # щедрые поля: обои видны вокруг панелей
     rail_bg = blend(BG, theme.AMBER, 0.05) if prof == "steampunk" else blend(BG, theme.CYAN, 0.03)
     rail_box = wrap(body, prof, bg=rail_bg, title=tr_(pdata["rail"]) if prof != "generic" else "", edge=10)
     rail_box.pack(side=tk.LEFT, fill=tk.Y, padx=(gap, 0), pady=gap)
@@ -1007,6 +1487,47 @@ def build_chrome(app) -> tk.Frame:
     return col
 
 
+HEAD_LEVELS = (1700, 1400, 1150)   # логическая ширина окна (до px), ниже которой шапка ужимается
+
+
+def _fit_head(app, e) -> None:
+    """Шапка без обрезки на 1024×768 / 1280×720: по мере сужения окна — короткая
+    подпись «☰ F8», без звания (оно на полке «ПРИБОРЫ» → «ПИЛОТ»), без часов и
+    подсказки в статус-строке, узкий логотип. Только pack/forget — без update_idletasks."""
+    w = int(e.width) / max(0.01, px(100) / 100)
+    level = sum(1 for t in HEAD_LEVELS if w < t)
+    if level == getattr(app, "_alt_head_level", 0):
+        return
+    app._alt_head_level = level
+    pdata = PROFILES[getattr(app, "_alt_profile", "generic")]
+    try:
+        app.btn_tools.set_text(f"☰ {tr_(pdata['drawer'])} · F8" if level < 1 else "☰ F8")
+        if level >= 2:
+            app.rank_label.pack_forget()
+        elif not app.rank_label.winfo_manager():
+            app.rank_label.pack(side=tk.RIGHT, padx=px(6), before=app.btn_tools)
+        if level >= 3:
+            app.clock.pack_forget()
+            app.btn_help.pack_forget()          # F1 и «? СПРАВКА» на полке остаются
+            app._alt_logo.configure(width=px(100))
+            app._alt_title.configure(font=theme.font(11, True))
+        else:
+            if not app.btn_help.winfo_manager():
+                app.btn_help.pack(side=tk.RIGHT, padx=px(4), before=app.btn_orion)
+            app._alt_title.configure(font=theme.font(16, True))
+            if not app.clock.winfo_manager():
+                app.clock.pack(side=tk.RIGHT, padx=(px(10), 0), before=app.rank_label if app.rank_label.winfo_manager() else app.btn_tools)
+            app._alt_logo.configure(width=px(200))
+        hint = getattr(app, "_status_hint", None)
+        if hint is not None:
+            if level >= 2:
+                hint.pack_forget()
+            elif not hint.winfo_manager():
+                hint.pack(side=tk.RIGHT, padx=px(10))
+    except tk.TclError:
+        pass
+
+
 def toggle_drawer(app, open_: bool | None = None) -> None:
     """Показать / спрятать полку «ПРИБОРЫ» (звук, экран, слайды, приёмник)."""
     want = (not getattr(app, "_alt_drawer_open", False)) if open_ is None else open_
@@ -1058,6 +1579,7 @@ def on_screen(app) -> None:
     ban = getattr(app, "_alt_banner", None)
     if ban is not None:
         ban.set_zone(nav.zone_of(app.current))
+    _later(app, 60)
     wall = getattr(app, "_alt_wall", None)
     if wall is not None:
         wall.set_zone(nav.zone_of(app.current))
@@ -1081,7 +1603,7 @@ def status_hint(n: int) -> str:
 def _i18n_keys() -> None:  # pragma: no cover
     tr_("БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ"); tr_("МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА")
     tr_("ПУЛЬТ ПИЛОТА"); tr_("ОТСЕКИ"); tr_("РЫЧАГИ"); tr_("ПРИБОРЫ"); tr_("МАНОМЕТРЫ")
-    tr_("РАДАР"); tr_("ДАВЛЕНИЕ")
+    tr_("РАДАР"); tr_("ДАВЛЕНИЕ"); tr_("⋯ КОНСОЛЬ"); tr_("⚙ ЯЩИК"); tr_("⋯ ЕЩЁ"); tr_("★ ПИЛОТ"); tr_("? СПРАВКА")
     for prof in COMPARTMENTS.values():
         for title, _tok in prof.values():
             tr_(title)

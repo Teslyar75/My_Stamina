@@ -732,6 +732,15 @@ class LoginScreen(tk.Frame):
                           height=28, font_size=8, color=CYAN)
             b.pack(side=tk.LEFT, padx=px(2))
             self._skin_btns[tid] = b
+        # Вид интерфейса — как скин: хранится в settings.json пилота (ключ ui_layout),
+        # тот же, что переключатель «Вид интерфейса» в Настройках.
+        L(skin_bar, tr_("ВИД"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(px(16), px(8)))
+        self._layout_id = "classic"
+        self._layout_btns: dict[str, HudButton] = {}
+        for lid, label in (("classic", tr_("КЛАССИКА")), ("alt", tr_("ПУЛЬТ-КАБИНА"))):
+            b = HudButton(skin_bar, label, lambda k=lid: self._pick_layout(k), height=28, font_size=8, color=AMBER)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self._layout_btns[lid] = b
         L(self, tr_("← → по пилотам · скин подхватывается из профиля; смена иконки — живой предпросмотр"),
           fg=FAINT, size=7, bg=BG).pack(anchor="w", padx=px(20))
         wrap = tk.Frame(self, bg=BG)
@@ -790,6 +799,22 @@ class LoginScreen(tk.Frame):
     def _sync_skin_buttons(self) -> None:
         for k, b in getattr(self, "_skin_btns", {}).items():
             b.set_active(k == self._skin_id)
+        for k, b in getattr(self, "_layout_btns", {}).items():
+            b.set_active(k == getattr(self, "_layout_id", "classic"))
+
+    def _load_layout(self, pid) -> None:
+        from stamina import alt_ui
+        self._layout_id = alt_ui.layout_of(self._pilot_settings(pid) if pid else {})
+
+    def _pick_layout(self, lid: str) -> None:
+        self._layout_id = lid
+        self._sync_skin_buttons()
+
+    def _save_pilot_layout(self, pid: str, lid: str) -> None:
+        path = pilots.pilot_dir(pid) / "settings.json"
+        data = pilots.read_json(path) or {}
+        data["ui_layout"] = lid
+        pilots.write_json(path, data)
 
     def _tick(self) -> None:
         if self.winfo_exists():
@@ -812,6 +837,7 @@ class LoginScreen(tk.Frame):
         self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, 'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'))
         if self.sel:
             self._skin_id = self._pilot_settings(self.sel).get("skin") or "spaceship"
+        self._load_layout(self.sel)
         self._layout()
         self._preview_skin(self._skin_id, save_sel=False)
 
@@ -836,6 +862,7 @@ class LoginScreen(tk.Frame):
         self.sel = pid
         skin = (self._pilot_settings(pid).get("skin") if pid else None) or "spaceship"
         self._skin_id = skin
+        self._load_layout(pid)
         self._layout()
         self._preview_skin(skin, save_sel=False)
 
@@ -858,6 +885,7 @@ class LoginScreen(tk.Frame):
         # сохранить выбранный скин в профиль пилота
         try:
             self._save_pilot_skin(p["id"], self._skin_id)
+            self._save_pilot_layout(p["id"], self._layout_id)
             app = pilots.load_app()
             app["skin"] = self._skin_id
             pilots.save_app(app)
