@@ -151,7 +151,7 @@ def main() -> None:
                     if c is not None and c not in comps:
                         comps.append(c)
                 for c in comps:
-                    more = getattr(c, "more", None)
+                    more = c.button() if hasattr(c, "button") else getattr(c, "more", None)
                     d = {"hidden": len(getattr(c, "hidden", []) or []), "more_visible": bool(more and visible(more))}
                     if d["more_visible"]:
                         # кнопка видна, только если щелчок по её центру попадает именно в неё
@@ -164,6 +164,7 @@ def main() -> None:
                         txt = str(getattr(more, "_text", ""))
                         d["kind"] = "section" if txt.rstrip().endswith("▾") else "more"
                         d["text"] = txt
+                        d["slot"] = more is getattr(app, "_alt_slot_btn", None)
                         d["shared"] = bool(getattr(more, "_alt_more", False)) and isinstance(c, alt_ui.RowCompactor)
                         d["x_rel"] = more.winfo_rootx() - app.winfo_rootx()
                         d["y_rel"] = more.winfo_rooty() - app.winfo_rooty()

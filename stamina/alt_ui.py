@@ -1411,7 +1411,12 @@ class RowCompactor:
         self.more.pack(side=side, padx=px(3), after=buttons[-1])
         row._alt_row = self
         self.hidden: list = []
+        self.slot_btn = None      # кнопка в слоте строки заголовка, если этот ряд там показан
         self.apply()
+
+    def button(self):
+        """Видимая кнопка списка: в слоте заголовка или своя в ряду."""
+        return self.slot_btn if self.slot_btn is not None else self.more
 
     def alive(self) -> list:
         out = []
@@ -1458,6 +1463,7 @@ class RowCompactor:
                 self.more.set_text(f"{actives[0]._text}  ▾")
                 self._place("left")
             elif self.hidden:
+                self.slot_btn = None
                 self.more.set_text(f"{tr_(MORE_LABEL.get(self.profile, MORE_LABEL['generic']))} · {len(self.hidden)}")
                 self._place("right")
             else:
@@ -1469,6 +1475,10 @@ class RowCompactor:
         """Единое место во всех отсеках: список раздела - первым слева в своём ряду,
         «⋯ ещё» - у правого края ряда."""
         m = self.more
+        if side == "left" and self.slot_btn is not None:
+            m.pack_forget()          # показан в слоте заголовка; текст обновит sync_slot
+            m._alt_kind = "slotted"
+            return
         if side == "left":
             first = next((k for k in self.row.pack_slaves() if k is not m), None)
             if first is not None:
@@ -1517,6 +1527,8 @@ class RowCompactor:
         b.invoke()
         try:
             self.row.after(50, self.apply)
+            if self.slot_btn is not None:   # подпись в слоте заголовка - после пересборки ряда
+                _later(self.row.winfo_toplevel(), 80)
         except tk.TclError:
             pass
 
@@ -1889,11 +1901,72 @@ def refresh_screen(app) -> None:
             compact(scr, prof, skip)
         if getattr(app, "subnav", None) is not None:
             compact(app.crumbs, prof)
+        sync_slot(app, scr, prof)
     except tk.TclError:
         pass
     vp = getattr(app, "_alt_view", None)
     if vp is not None:
         vp.relayout()
+
+
+def _section_rows(app, scr) -> list:
+    """Ряды-выбор («раздел ▾») текущего экрана (сначала подменю мостика), по порядку дерева."""
+    out = []
+    sub = getattr(app, "subnav", None)
+    # подменю мостика упаковано только на мостике (до отрисовки окна ismapped ещё 0)
+    crumbs = getattr(app, "crumbs", None) if sub is not None and sub.winfo_manager() else None
+    roots = [r for r in (crumbs, scr) if r is not None]
+    for root in roots:
+        q = [root]
+        while q:
+            w = q.pop(0)
+            rc = getattr(w, "_alt_row", None)
+            if rc is not None and getattr(rc.more, "_alt_kind", "") in ("section", "slotted"):
+                out.append(rc)
+            try:
+                q.extend(w.winfo_children())
+            except tk.TclError:
+                pass
+    return out
+
+
+def sync_slot(app, scr, prof: str) -> None:
+    """Первый ряд-выбор экрана показывается в слоте строки заголовка (одно место везде);
+    его кнопка в ряду прячется. Остальные ряды-выбор остаются в своих рядах."""
+    slot = getattr(app, "_alt_slot", None)
+    if slot is None:
+        return
+    old = getattr(app, "_alt_slot_owner", None)
+    rows = _section_rows(app, scr) if scr is not None else []
+    rc = rows[0] if rows else None
+    if old is not None and old is not rc:
+        old.slot_btn = None
+    btn = app._alt_slot_btn
+    if rc is None:
+        if btn is not None and btn.winfo_manager():
+            btn.pack_forget()
+        app._alt_slot_owner = None
+        return
+    text = rc.more._text
+    if btn is None:
+        btn = HudButton(slot, text, lambda: _slot_popup(app), height=30, font_size=8, color=theme.AMBER)
+        btn._alt_more = True
+        btn._alt_kind = "section"
+        app._alt_slot_btn = btn
+    elif btn._text != text:
+        btn.set_text(text)
+    if not btn.winfo_manager():
+        btn.pack(side=tk.LEFT)
+    rc.more.pack_forget()
+    rc.more._alt_kind = "slotted"
+    rc.slot_btn = btn
+    app._alt_slot_owner = rc
+
+
+def _slot_popup(app) -> None:
+    rc = getattr(app, "_alt_slot_owner", None)
+    if rc is not None:
+        DropList(app._alt_slot_btn, rc.entries(), rc._run, rc.profile)
 
 
 def _later(app, delay: int = 250) -> None:
@@ -1981,22 +2054,30 @@ def build_chrome(app) -> tk.Frame:
 
     mid = tk.Frame(head, bg=head_bg)
     mid.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(16))
+    # шапка отсека одна для всех: строка 1 - заголовок, строка 2 - слот «раздел ▾» (всегда
+    # у левого края, под заголовком) и подзаголовок. Так «▾» стоит в одной точке во всех отсеках.
     app._alt_title = tk.Label(mid, text="", bg=head_bg, fg=theme.TEXT, font=theme.font(16, True), anchor="w")
     app._alt_title.pack(side=tk.TOP, anchor="w")
+    srow = tk.Frame(mid, bg=head_bg)
+    srow.pack(side=tk.TOP, anchor="w", fill=tk.X)
+    app._alt_slot = tk.Frame(srow, bg=head_bg)
+    app._alt_slot.pack(side=tk.LEFT)
+    app._alt_slot_btn = None
+    app._alt_slot_owner = None
     # подзаголовок переносится по словам, а не обрезается (узкая шапка, шрифт с засечками)
-    sub = tk.Label(mid, text=tr_(pdata["subtitle"]), bg=head_bg, fg=theme.CYAN_DIM, font=theme.font(7, True),
+    sub = tk.Label(srow, text=tr_(pdata["subtitle"]), bg=head_bg, fg=theme.CYAN_DIM, font=theme.font(7, True),
                    anchor="w", justify="left", wraplength=px(260))
-    sub.pack(side=tk.TOP, anchor="w", fill=tk.X)
+    sub.pack(side=tk.LEFT, anchor="w", fill=tk.X, expand=True, padx=(px(8), 0))
     app._alt_subtitle = sub
     app._alt_logo = logo
     app._alt_head_level = 0
     app.bind("<Configure>", lambda e: _fit_head(app, e) if e.widget is app else None, add="+")
 
     def _wrap_sub(e, lbl=sub):
-        wl = max(px(80), int(e.width) - px(4))
+        wl = max(px(80), int(e.width) - app._alt_slot.winfo_width() - px(12))
         if abs(int(lbl.cget("wraplength")) - wl) > 4:
             lbl.configure(wraplength=wl)
-    mid.bind("<Configure>", _wrap_sub)
+    srow.bind("<Configure>", _wrap_sub)
 
     # «ПРИБОРЫ» — выдвижная полка (по умолчанию спрятана, F8)
     app._mini_row = tk.Frame(app, bg=blend(BG, theme.CYAN, 0.05))

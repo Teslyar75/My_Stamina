@@ -8,9 +8,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-# мостик: «ПОЛЁТ ▾» живёт в панели пульта, а не в шапке отсека (задокументированное исключение)
-OWN_PLACE = {"bridge"}
 X_TOL = 12
+Y_TOL = 4
 
 
 @unittest.skipUnless(sys.platform == "win32" and os.environ.get("STAMINA_SLOW_TESTS"),
@@ -43,12 +42,17 @@ class DropdownAuditTest(unittest.TestCase):
                         self.assertTrue(d.get("same_monitor"), msg)  # на том же мониторе
                         self.assertTrue(d.get("on_monitor"), msg)
                         self.assertTrue(d.get("on_top"), msg)        # реально виден (не под окном)
-                        if d["kind"] == "section" and r["zone"] not in OWN_PLACE:
-                            xs[r["zone"]] = d["x_rel"]
+                        self.assertTrue(d.get("in_window"), msg)     # список не вылезает за окно
+                        if d.get("slot"):
+                            xs[r["zone"]] = (d["x_rel"], d["y_rel"])
                 eng = next(r for r in data["rows"] if r["zone"] == "english")
-                self.assertTrue(any(d.get("kind") == "section" for d in eng["dropdowns"]))
-                # список раздела - в одном и том же месте (левый край шапки) во всех отсеках
-                self.assertLessEqual(max(xs.values()) - min(xs.values()), X_TOL, xs)
+                self.assertTrue(any(d.get("slot") for d in eng["dropdowns"]))
+                # «раздел ▾» - в слоте строки заголовка: одна точка (x и y) во всех отсеках
+                x = [v[0] for v in xs.values()]
+                y = [v[1] for v in xs.values()]
+                self.assertGreaterEqual(len(xs), 4, xs)
+                self.assertLessEqual(max(x) - min(x), X_TOL, xs)
+                self.assertLessEqual(max(y) - min(y), Y_TOL, xs)
 
 
 if __name__ == "__main__":
