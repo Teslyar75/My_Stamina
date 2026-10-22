@@ -198,6 +198,27 @@ class MissionsScreen(tk.Frame):
 # Свой текст
 # ===========================================================================
 
+SOFT_LINE = 2000
+
+
+def soft_chunks(text: str, limit: int = SOFT_LINE):
+    """Режет строки длиннее limit на куски по пробелу: [(кусок, мягкий_перенос_после)].
+    Пробел на месте разреза съедается (он вернётся из _get как пробел); настоящие \n не трогаем."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        nl = text.find("\n", i, i + limit + 1)
+        if nl != -1 or n - i <= limit:
+            end = n if nl == -1 else nl + 1
+            out.append((text[i:end], False)); i = end; continue
+        sp = text.rfind(" ", i + 1, i + limit + 1)
+        if sp == -1:
+            sp = text.find(" ", i + limit)
+            if sp == -1:
+                out.append((text[i:], False)); break
+        out.append((text[i:sp], True)); i = sp + 1
+    return out
+
+
 class CargoScreen(tk.Frame):
     """Подготовка своего текста: загрузка, опции обработки, предпросмотр, старт."""
 
@@ -346,7 +367,7 @@ class CargoScreen(tk.Frame):
     def _check_glue(self) -> None:
         """Поиск сращиваний слов. Ничего не меняем - только список находок."""
         from stamina.text_processing import book_words, find_glued_words
-        prepared = self._process(self.text.get("1.0", "end"))
+        prepared = self._process(self._get())
         found = find_glued_words(prepared, known_words=book_words(prepared), max_report=40)
         if not found:
             self.preview_info.configure(text=_t("Сращиваний не найдено"), fg=GREEN)
@@ -361,7 +382,7 @@ class CargoScreen(tk.Frame):
         """Проверка книги у Ориона: агент ищет склейки, пилот выбирает правки галочками."""
         from stamina import book_check, orion
 
-        raw = self.text.get("1.0", "end-1c")
+        raw = self._get()
         if len(raw.strip()) < 40:
             self.preview_info.configure(text=_t("Сначала введите текст"), fg=AMBER)
             return
@@ -392,7 +413,7 @@ class CargoScreen(tk.Frame):
             text=_t("Орион нашёл правок: {0}").format(len(fixes)), fg=AMBER)
 
         def apply(chosen) -> None:
-            new_text = orion.apply_fixes(self.text.get("1.0", "end-1c"), chosen)
+            new_text = orion.apply_fixes(self._get(), chosen)
             self._set(new_text)
             self.preview_info.configure(
                 text=_t("Применено правок: {0}").format(len(chosen)), fg=GREEN)
@@ -421,14 +442,28 @@ class CargoScreen(tk.Frame):
         if ro:
             self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
-        self.text.insert("1.0", text)
+        # Tk Text: одна строка в сотни тысяч символов (книга после normalize_spaces) вешает
+        # разметку на десятки секунд. Показываем кусками: пробел на границе куска заменён
+        # «мягким» переносом с тегом softnl; _get() возвращает его обратно как пробел.
+        for chunk, soft in soft_chunks(text):
+            self.text.insert(tk.END, chunk)
+            if soft:
+                self.text.insert(tk.END, "\n", "softnl")
         self.text.edit_modified(False)
         if ro:
             self.text.configure(state=tk.DISABLED)
         self._update_preview()
 
     def _get(self) -> str:
-        return self.text.get("1.0", "end-1c")
+        """Текст поля как есть, но мягкие переносы (softnl) - обратно пробелы."""
+        r = self.text.tag_ranges("softnl")
+        if not r:
+            return self.text.get("1.0", "end-1c")
+        out, pos = [], "1.0"
+        for a, b in zip(r[::2], r[1::2]):
+            out.append(self.text.get(pos, a)); out.append(" " * len(self.text.get(a, b))); pos = b
+        out.append(self.text.get(pos, "end-1c"))
+        return "".join(out)
 
     def _on_modified(self, _e=None) -> None:
         if self.text.edit_modified():
