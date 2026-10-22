@@ -732,19 +732,25 @@ class LoginScreen(tk.Frame):
                           height=28, font_size=8, color=CYAN)
             b.pack(side=tk.LEFT, padx=px(2))
             self._skin_btns[tid] = b
-        # Вид интерфейса — как скин: хранится в settings.json пилота (ключ ui_layout),
-        # тот же, что переключатель «Вид интерфейса» в Настройках.
-        L(skin_bar, tr_("ВИД"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(px(16), px(8)))
+        # Вариант скина (вид интерфейса): пара «скин + вариант» хранится в settings.json
+        # пилота (ключи skin и ui_layout) — тот же ключ, что «Вид интерфейса» в Настройках.
+        L(skin_bar, tr_("ВАРИАНТ"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(px(16), px(8)))
         self._layout_id = "classic"
         self._layout_btns: dict[str, HudButton] = {}
         for lid, label in (("classic", tr_("КЛАССИКА")), ("alt", tr_("ПУЛЬТ-КАБИНА"))):
             b = HudButton(skin_bar, label, lambda k=lid: self._pick_layout(k), height=28, font_size=8, color=AMBER)
             b.pack(side=tk.LEFT, padx=px(2))
             self._layout_btns[lid] = b
+        self._pair = L(top, "", fg=TEXT, size=9, bold=True, bg=BG)   # «скин · вариант» — в шапке, не режется
+        self._pair.pack(side=tk.RIGHT, padx=px(10))
         L(self, tr_("← → по пилотам · скин подхватывается из профиля; смена иконки — живой предпросмотр"),
           fg=FAINT, size=7, bg=BG).pack(anchor="w", padx=px(20))
         wrap = tk.Frame(self, bg=BG)
         wrap.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
+        self._cards_wrap = wrap
+        from stamina import alt_ui
+        self._stage = alt_ui.LoginStage(self)   # сцена варианта «Пульт-кабина»: шлюз / мастерская
+        self._stage_key = None
         self.canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0)
         self.bar = tk.Scrollbar(wrap, orient="vertical", command=self.canvas.yview)
         self.inner = tk.Canvas(self.canvas, bg=BG, highlightthickness=0, bd=0)   # холст: «Живой космос» между карточками
@@ -801,6 +807,33 @@ class LoginScreen(tk.Frame):
             b.set_active(k == self._skin_id)
         for k, b in getattr(self, "_layout_btns", {}).items():
             b.set_active(k == getattr(self, "_layout_id", "classic"))
+        self._update_stage()
+
+    def pair_text(self) -> str:
+        """«Скин + вариант» для подписи: «Звездолёт · ПУЛЬТ-КАБИНА»."""
+        name = next((theme.theme_display_name(m["data"]) for m in theme.list_themes()
+                     if m["id"] == getattr(self, "_skin_id", None)), getattr(self, "_skin_id", ""))
+        var = tr_("ПУЛЬТ-КАБИНА") if getattr(self, "_layout_id", "classic") == "alt" else tr_("КЛАССИКА")
+        return f"{name} · {var}"
+
+    def _update_stage(self) -> None:
+        """Живой предпросмотр пары «скин + вариант»: подпись и сцена шлюза / мастерской."""
+        if not hasattr(self, "_stage"):
+            return
+        from stamina import alt_ui
+        pair = self.pair_text()
+        try:
+            self._pair.configure(text=tr_("СКИН + ВАРИАНТ") + ": " + pair, bg=theme.BG, fg=theme.TEXT)
+        except tk.TclError:
+            pass
+        key = (self._skin_id, self._layout_id)
+        if key == self._stage_key:
+            return
+        self._stage_key = key
+        if self._stage.set(alt_ui.profile_id(self._skin_id), self._layout_id, pair):
+            self._stage.pack(fill=tk.X, padx=px(16), pady=(px(6), 0), before=self._cards_wrap)
+        else:
+            self._stage.pack_forget()
 
     def _load_layout(self, pid) -> None:
         from stamina import alt_ui

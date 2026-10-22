@@ -1129,6 +1129,152 @@ class ScrollViewport(tk.Frame):
 
 
 # ---------------------------------------------------------------------------
+# Окно входа, вариант «Пульт-кабина»: сцена над карточками пилотов.
+# Звездолёт — шлюз / терминал посадки (створки, табло, слайдшоу обоев космоса),
+# Стимпанк — вход в мастерскую / реестр изобретателя в рамке ар-нуво.
+# Живой предпросмотр: сцена перестраивается при каждом выборе скина или варианта.
+# ---------------------------------------------------------------------------
+LOGIN_STAGE = {
+    "starship": ("ШЛЮЗ · ТЕРМИНАЛ ПОСАДКИ", "Выберите пилота — створки шлюза откроются", "CYAN"),
+    "steampunk": ("МАСТЕРСКАЯ · РЕЕСТР ИЗОБРЕТАТЕЛЯ", "Распишитесь в реестре — мастерская ждёт", "AMBER"),
+}
+LOGIN_SLIDE_MS = 7000
+
+
+def login_wallpapers(profile: str) -> list[Path]:
+    d = WALL_DIR / profile
+    try:
+        return sorted(q for q in d.glob("*.*") if q.suffix.lower() in (".jpg", ".png"))
+    except OSError:
+        return []
+
+
+class LoginStage(tk.Frame):
+    """Сцена окна входа. ``set(profile, variant, pair)`` — показать/спрятать и перерисовать."""
+
+    def __init__(self, master, height: int = 130) -> None:
+        super().__init__(master, bg=theme.BG)
+        self.h = height
+        self.profile = None
+        self.shown = False
+        self.pair = ""
+        self.paths: list[Path] = []
+        self.i = 0
+        self.photo = None
+        self.cv = None
+        self._job = None
+        self._paint_job = None
+
+    def set(self, profile: str, variant: str, pair: str = "") -> bool:
+        show = variant == "alt" and profile in LOGIN_STAGE
+        self.pair = pair
+        self._cancel()
+        for w in self.winfo_children():
+            w.destroy()
+        self.cv = None
+        self.configure(bg=theme.BG)
+        self.shown = show
+        if not show:
+            return False
+        self.profile = profile
+        self.paths = login_wallpapers(profile)
+        random.Random(len(self.paths)).shuffle(self.paths)
+        frame = wrap(self, profile, edge=10)
+        frame.pack(fill=tk.BOTH, expand=True)
+        self.cv = tk.Canvas(frame.inner, height=px(self.h), bg=theme.BG2, highlightthickness=0, bd=0)
+        self.cv.living_skip = True
+        self.cv.pack(fill=tk.BOTH, expand=True)
+        self.cv.bind("<Configure>", lambda _e: self._schedule())
+        self._job = self.after(LOGIN_SLIDE_MS, self._next)
+        return True
+
+    def _cancel(self) -> None:
+        for a in ("_job", "_paint_job"):
+            j = getattr(self, a)
+            if j is not None:
+                try:
+                    self.after_cancel(j)
+                except tk.TclError:
+                    pass
+                setattr(self, a, None)
+
+    def _schedule(self) -> None:
+        if self._paint_job is not None:
+            try:
+                self.after_cancel(self._paint_job)
+            except tk.TclError:
+                pass
+        self._paint_job = self.after(60, self._paint)
+
+    def _next(self) -> None:
+        self._job = None
+        if not self.shown or not self.winfo_exists():
+            return
+        if self.paths:
+            self.i = (self.i + 1) % len(self.paths)
+            self._paint()
+        self._job = self.after(LOGIN_SLIDE_MS, self._next)
+
+    def _paint(self) -> None:
+        self._paint_job = None
+        cv = self.cv
+        if cv is None or not cv.winfo_exists():
+            return
+        w, h = cv.winfo_width(), cv.winfo_height()
+        if w < 20 or h < 20:
+            return
+        cv.delete("all")
+        prof = self.profile
+        title, sub, tok = LOGIN_STAGE[prof]
+        acc = getattr(theme, tok, theme.CYAN)
+        if self.paths:
+            im = _wall_image(prof, None, w, h, 0.45, self.paths[self.i % len(self.paths)])
+            if im is not None:
+                from PIL import ImageTk
+                self.photo = ImageTk.PhotoImage(im, master=cv)
+                cv.create_image(0, 0, image=self.photo, anchor="nw")
+        if prof == "starship":
+            self._airlock(cv, w, h, acc)
+        else:
+            self._nouveau(cv, w, h, acc)
+        cx = w // 2
+        cv.create_text(cx, h // 2 - px(16), text=tr_(title), fill=acc, font=theme.font(15, True))
+        cv.create_text(cx, h // 2 + px(10), text=tr_(sub), fill=theme.TEXT, font=theme.font(9))
+        if self.pair:
+            cv.create_text(cx, h - px(14), text=self.pair, fill=theme.MUTED, font=theme.font(8, True))
+        if len(self.paths) > 1:
+            cv.create_text(w - px(84), px(14), anchor="e", fill=acc, font=theme.font(8, True),
+                           text=f"◆ {self.i % len(self.paths) + 1} / {len(self.paths)}")
+
+    def _airlock(self, cv, w, h, acc) -> None:
+        """Створки шлюза: скошенные панели по краям, жёлто-чёрная разметка, табло."""
+        d = min(w // 5, px(170))
+        for side in (0, 1):
+            x0 = 0 if side == 0 else w
+            sgn = 1 if side == 0 else -1
+            pts = [x0, 0, x0 + sgn * d, 0, x0 + sgn * (d - px(26)), h // 2, x0 + sgn * d, h, x0, h]
+            cv.create_polygon(*pts, fill=theme.BG2, outline=acc, width=2, stipple="gray50")
+            for k in range(6):
+                y = px(8) + k * (h - px(16)) // 6
+                cv.create_line(x0 + sgn * px(6), y, x0 + sgn * px(22), y + px(10), fill=theme.AMBER, width=px(3))
+        cv.create_rectangle(w // 2 - px(110), px(6), w // 2 + px(110), px(24), outline=acc)
+        cv.create_text(w // 2, px(15), text=tr_("ДОК 7 · ДАВЛЕНИЕ НОРМА"), fill=theme.GREEN, font=theme.font(7, True))
+
+    def _nouveau(self, cv, w, h, acc) -> None:
+        """Ар-нуво: изогнутые латунные стебли и завитки по углам, шестерня-печать реестра."""
+        col = theme.AMBER
+        r = min(h // 2, px(60))
+        for (x, y, a0) in ((0, 0, 270), (w, 0, 180), (0, h, 0), (w, h, 90)):
+            for k in (1.0, 0.72, 0.46):
+                rr = int(r * k)
+                cv.create_arc(x - rr, y - rr, x + rr, y + rr, start=a0, extent=90, style="arc", outline=col, width=2)
+        cv.create_line(px(70), h - px(26), w // 2 - px(130), h - px(26), fill=col, width=2, smooth=True)
+        cv.create_line(w // 2 + px(130), h - px(26), w - px(70), h - px(26), fill=col, width=2)
+        draw_gear(cv, w - px(70), h // 2, px(22), 10, theme.BG2, col)
+        cv.create_text(w - px(70), h // 2, text="№", fill=acc, font=theme.font(10, True))
+
+
+# ---------------------------------------------------------------------------
 # Настройки в «Пульт-кабине»: вместо вкладок — все группы одна под другой в
 # прокрутке, каждая сворачивается заголовком «▾ / ▸». Свёрнутые запоминаются
 # у пилота (alt_settings_closed). Кнопки вкладок остаются: раскрывают группу и
@@ -1308,20 +1454,99 @@ class RowCompactor:
                 for b in self.hidden]
 
     def popup(self) -> None:
-        m = tk.Menu(self.row, tearoff=0, bg=theme.PANEL, fg=theme.TEXT, activebackground=blend(theme.PANEL, theme.AMBER, 0.25),
-                    activeforeground=theme.TEXT, disabledforeground=theme.FAINT, font=theme.font(10, True))
-        for text, b, active, enabled in self.entries():
-            m.add_command(label=("✓ " if active else "   ") + text, state="normal" if enabled else "disabled",
-                          command=lambda b=b: self._run(b))
-        try:
-            m.tk_popup(self.more.winfo_rootx(), self.more.winfo_rooty() + self.more.winfo_height())
-        finally:
-            m.grab_release()
+        DropList(self.more, self.entries(), self._run, self.profile)
 
     def _run(self, b) -> None:
         b.invoke()
         try:
             self.row.after(50, self.apply)
+        except tk.TclError:
+            pass
+
+
+class DropList(tk.Toplevel):
+    """Выпадающий список в стиле скина (вместо системного меню): рамка акцентного
+    цвета, ✓ у активного пункта. Мышь, ↑ ↓ Enter, Esc и щелчок мимо — закрыть."""
+
+    current: "DropList | None" = None
+
+    def __init__(self, anchor, entries, run, profile: str = "generic") -> None:
+        if DropList.current is not None:
+            DropList.current.close()
+        super().__init__(anchor)
+        DropList.current = self
+        self.overrideredirect(True)
+        self.run = run
+        acc = theme.AMBER if profile == "steampunk" else theme.CYAN
+        self.configure(bg=acc)
+        box = tk.Frame(self, bg=theme.PANEL)
+        box.pack(padx=px(2), pady=px(2))
+        self.items: list = []
+        self.cur = -1
+        for text, b, active, enabled in entries:
+            lab = tk.Label(box, text=("✓ " if active else "    ") + text, anchor="w", bg=theme.PANEL,
+                           fg=(acc if active else theme.TEXT) if enabled else theme.FAINT,
+                           font=theme.font(10, True), padx=px(12), pady=px(5), cursor="hand2")
+            lab.pack(fill=tk.X)
+            k = len(self.items)
+            if enabled:
+                lab.bind("<Button-1>", lambda _e, b=b: self.pick(b))
+                lab.bind("<Enter>", lambda _e, k=k: self.hi(k))
+            self.items.append((lab, b, enabled))
+        self.geometry(f"+{anchor.winfo_rootx()}+{anchor.winfo_rooty() + anchor.winfo_height()}")
+        for seq, fn in (("<Escape>", lambda _e: self.close()), ("<Up>", lambda _e: self.step(-1)),
+                        ("<Down>", lambda _e: self.step(1)), ("<Return>", lambda _e: self.enter()),
+                        ("<space>", lambda _e: self.enter())):
+            self.bind(seq, fn)
+        self.bind("<FocusOut>", lambda _e: self.after(150, self._check_focus))
+        self.after(1, self._clamp)
+        self.focus_force()
+        self.step(1)
+
+    def _clamp(self) -> None:
+        try:
+            w, h = self.winfo_reqwidth(), self.winfo_reqheight()
+            x, y = self.winfo_x(), self.winfo_y()
+            sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+            self.geometry(f"+{max(0, min(x, sw - w))}+{max(0, min(y, sh - h))}")
+        except tk.TclError:
+            pass
+
+    def _check_focus(self) -> None:
+        try:
+            f = self.focus_get()
+        except (tk.TclError, KeyError):
+            f = None
+        if f is None or f.winfo_toplevel() is not self:
+            self.close()
+
+    def hi(self, k: int) -> None:
+        for n, (lab, _b, _en) in enumerate(self.items):
+            lab.configure(bg=blend(theme.PANEL, theme.AMBER, 0.25) if n == k else theme.PANEL)
+        self.cur = k
+
+    def step(self, d: int) -> None:
+        ok = [n for n, it in enumerate(self.items) if it[2]]
+        if not ok:
+            return
+        if self.cur not in ok:
+            self.hi(ok[0] if d > 0 else ok[-1])
+        else:
+            self.hi(ok[(ok.index(self.cur) + d) % len(ok)])
+
+    def enter(self) -> None:
+        if 0 <= self.cur < len(self.items) and self.items[self.cur][2]:
+            self.pick(self.items[self.cur][1])
+
+    def pick(self, b) -> None:
+        self.close()
+        self.run(b)
+
+    def close(self) -> None:
+        if DropList.current is self:
+            DropList.current = None
+        try:
+            self.destroy()
         except tk.TclError:
             pass
 

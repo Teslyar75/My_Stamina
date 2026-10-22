@@ -58,3 +58,16 @@ def test_sections_collapse_and_remember(root):
     scr.show_tab("more")
     assert pnl.winfo_manager() == "grid" and scr.app.store.settings[alt_ui.SECTION_KEY] == []
     assert scr.tabs["systems"][0].winfo_manager() == "grid"
+
+
+def test_droplist_keyboard(root):
+    btn = HudButton(root, "X")
+    btn.pack()
+    got = []
+    dl = alt_ui.DropList(btn, [("A", "a", False, True), ("B", "b", True, False), ("C", "c", False, True)],
+                         got.append)
+    assert alt_ui.DropList.current is dl and dl.cur == 0
+    dl.step(1)
+    assert dl.cur == 2          # недоступный пункт пропущен
+    dl.enter()
+    assert got == ["c"] and alt_ui.DropList.current is None

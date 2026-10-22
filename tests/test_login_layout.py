@@ -29,3 +29,17 @@ def test_layout_saved_per_pilot(tmp_path: Path, monkeypatch):
 def test_login_has_layout_toggle():
     src = Path(__file__).resolve().parents[1].joinpath("stamina", "pilot_screens.py").read_text(encoding="utf-8")
     assert "_layout_btns" in src and '"ui_layout"' in src
+
+
+def test_login_variant_pair_and_stage():
+    src = Path(__file__).resolve().parents[1].joinpath("stamina", "pilot_screens.py").read_text(encoding="utf-8")
+    assert 'tr_("ВАРИАНТ")' in src and 'tr_("ВИД")' not in src
+    assert set(alt_ui.LOGIN_STAGE) == {"starship", "steampunk"}
+
+    class _P:
+        pair_text = LoginScreen.pair_text
+    p = _P()
+    p._skin_id, p._layout_id = "steampunk", "alt"
+    assert p.pair_text().endswith("· ПУЛЬТ-КАБИНА")
+    p._layout_id = "classic"
+    assert p.pair_text().endswith("· КЛАССИКА")
