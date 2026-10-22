@@ -6,6 +6,9 @@
     "en": "Starship",
     "de": "Raumschiff"
   },
+  "alt_ui": {
+    "profile": "starship"
+  },
   "colors": {
     "bg": "#03060C",
     "bg2": "#060C17",

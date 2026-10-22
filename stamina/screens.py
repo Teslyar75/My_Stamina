@@ -800,6 +800,12 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
+        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, звук, экран и слайды на полке «ПРИБОРЫ» (F8), антураж скина. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется."))
+        self.layout_btns = {}
+        for key, name in (("classic", _t("КЛАССИЧЕСКИЙ")), ("alt", _t("АЛЬТЕРНАТИВНЫЙ"))):
+            b = HudButton(lay, name, lambda k=key: self._set_layout(k), height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.layout_btns[key] = b
         from stamina.idle import IDLE_MINUTES
         idl = self._row(_t("Простой: слайдшоу и радио"),
                         _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
@@ -934,6 +940,22 @@ class SettingsScreen(tk.Frame):
         self.refresh()
         for k, b in self.ls_btns.items():
             b.set_active(k == key)
+
+    def _set_layout(self, key: str) -> None:
+        """Вид интерфейса: классический / альтернативный (stamina/alt_ui.py)."""
+        from stamina import alt_ui
+        key = key if key in alt_ui.LAYOUTS else alt_ui.DEFAULT_LAYOUT
+        prev = alt_ui.layout_of(self.app.store.settings)
+        self.app.store.settings["ui_layout"] = key
+        self.app.store.save_settings()
+        self.refresh()
+        if prev == key:
+            return
+        # Рама собирается при старте кабины — перезапускаем мягко, как при смене скина.
+        from stamina.app import relaunch
+        self.app._save_all()
+        if relaunch({"STAMINA_START": "settings:skins"}):
+            self.app.destroy()
 
     def _set_skin(self, key: str) -> None:
         from stamina import theme as th
@@ -1130,6 +1152,8 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("living_space", "light"))
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == st.get("skin", "spaceship"))
+        for k, b in getattr(self, "layout_btns", {}).items():
+            b.set_active(k == (st.get("ui_layout") or "classic"))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
         for k, b in getattr(self, "ui_btns", {}).items():

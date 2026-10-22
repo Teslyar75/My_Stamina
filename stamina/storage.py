@@ -70,6 +70,9 @@ DEFAULT_SETTINGS = {
     "geometry": "",
     "living_space": "off",  # «Живой космос» во всех разделах: off | light | full
     "skin": "spaceship",
+    "ui_layout": "classic",  # вид интерфейса: classic | alt («Пульт-кабина», stamina/alt_ui.py)
+    "alt_rail_narrow": True,  # alt: док отсеков свёрнут до значков
+    "alt_wallpaper_dim": 0.35,  # alt: затемнение обоев отсеков 0..0.9
     "idle_minutes": 1,  # простой: слайдшоу + радио скина (только скины со slideshow)
     "idle_radio": True,
     "idle_after": "stop",

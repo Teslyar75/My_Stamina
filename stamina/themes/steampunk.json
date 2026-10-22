@@ -6,6 +6,9 @@
     "en": "Steampunk Workshop",
     "de": "Steampunk-Werkstatt"
   },
+  "alt_ui": {
+    "profile": "steampunk"
+  },
   "colors": {
     "bg": "#1b120b",
     "bg2": "#24180f",
