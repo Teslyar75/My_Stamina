@@ -1174,6 +1174,8 @@ class RowCompactor:
 
     def apply(self) -> None:
         bs = self.alive()
+        if not bs:
+            return
         actives = [b for b in bs if getattr(b, "_active", False)]
         # ряд-выбор (одна активная из ≥3) → выпадающий список «текущее ▾»: место под обои
         choice = len(bs) >= 3 and len(actives) == 1
@@ -1189,8 +1191,12 @@ class RowCompactor:
                 if b not in keep:
                     keep.append(b)
             keep = set(keep)
+        keep = self._fit_width(bs, keep)
         for b in bs:
             b.pack_forget()
+        # «ещё» должна быть упакована, иначе pack(before=…) падает и кнопки теряются
+        if self.more.winfo_manager() != "pack":
+            self.more.pack(side=self.info[bs[-1]].get("side", "left"), padx=px(3))
         for b in bs:
             if b in keep:
                 b.pack(**self.info[b], before=self.more)
@@ -1208,6 +1214,32 @@ class RowCompactor:
                 self.more.pack_forget()
         except tk.TclError:
             pass
+
+    def _fit_width(self, bs: list, keep: set) -> set:
+        """Сколько кнопок реально влезает в ширину ряда (без update_idletasks:
+        берём уже посчитанную ширину; 1 px — ряд ещё не разложен)."""
+        avail = _avail(self.row)
+        if avail <= 1:
+            return keep
+        pad = px(8)
+        others = 0
+        for k in self.row.winfo_children():
+            try:
+                if k not in bs and k is not self.more and k.winfo_manager() == "pack" \
+                        and _pack_side(k) in ("left", "right"):
+                    others += k.winfo_reqwidth() + pad
+            except tk.TclError:
+                pass
+
+        def need(ks):
+            n = others + sum(b.winfo_reqwidth() + pad for b in bs if b in ks)
+            return n + (self.more.winfo_reqwidth() + pad if len(ks) < len(bs) else 0)
+        order = [b for b in reversed(bs) if not getattr(b, "_active", False)]
+        keep = set(keep)
+        while keep and need(keep) > avail and order:
+            b = order.pop(0)
+            keep.discard(b)
+        return keep
 
     def entries(self) -> list[tuple[str, object, bool, bool]]:
         """(подпись, кнопка, активна, доступна) — для меню и для теста паритета."""
@@ -1240,6 +1272,97 @@ def _pack_side(w) -> str:
         return ""
 
 
+def _avail(w) -> int:
+    """Ширина, которую ряд реально может занять: своя, но не дальше правого края
+    прокручиваемой области экрана (ряд может быть шире родителя и «уезжать» вправо)."""
+    try:
+        own = w.winfo_width()
+        vp = getattr(w.winfo_toplevel(), "_alt_view", None)
+        if vp is None or own <= 1:
+            return own
+        right = vp.canvas.winfo_rootx() + vp.canvas.winfo_width() - px(6)
+        return max(1, min(own, right - w.winfo_rootx()))
+    except tk.TclError:
+        return 1
+
+
+def _stack_panels(w, kids) -> bool:
+    """Ряд крупных панелей бок о бок не влезает — переставить их столбиком (side=top)."""
+    packed = [k for k in kids if k.winfo_manager() == "pack"]
+    big = [k for k in packed if k.winfo_reqwidth() > px(180) and k.winfo_class() in ("Frame", "Canvas")
+           and k.winfo_children()]
+    starved = [k for k in packed if k.winfo_width() <= 1 and k.winfo_reqwidth() > px(40)
+               and _pack_side(k) in ("left", "right") and not _is_cmd(k)]
+    if starved:   # сосед-панель «съела» ширину: всё боковое — столбиком
+        for k in packed:
+            if _pack_side(k) in ("left", "right"):
+                k.pack_configure(side=tk.TOP, anchor="w")
+        return True
+    if len(big) < 2 or any(_pack_side(k) not in ("left", "right") for k in big):
+        return False
+    for k in big:
+        k.pack_configure(side=tk.TOP, fill=tk.X, expand=False)
+    return True
+
+
+def _stack_grid(w) -> bool:
+    """Сетка из нескольких колонок крупных панелей не влезает по ширине (первые колонки
+    съедают всё, последние получают 1 px) — перестроить в одну колонку, сверху вниз."""
+    slaves = w.grid_slaves()
+    if len(slaves) < 2 or getattr(w, "_alt_stacked", False):
+        return False
+    info = [(k, k.grid_info()) for k in slaves]
+    cols = {int(i.get("column", 0)) for _k, i in info}
+    if len(cols) < 2 or not any(k.winfo_reqwidth() > px(180) for k, _i in info):
+        return False
+    info.sort(key=lambda t: (int(t[1].get("row", 0)), int(t[1].get("column", 0))))
+    ncol, nrow = max(cols) + 1, max(int(i.get("row", 0)) + int(i.get("rowspan", 1)) for _k, i in info)
+    for c in range(ncol):
+        w.grid_columnconfigure(c, weight=1 if c == 0 else 0, minsize=0, uniform="")
+    for r in range(max(nrow, len(info))):
+        w.grid_rowconfigure(r, weight=0, minsize=0, uniform="")
+    for n, (k, i) in enumerate(info):
+        k.grid_configure(row=n, column=0, columnspan=1, rowspan=1, sticky="nsew")
+    w._alt_stacked = True
+    return True
+
+
+def _shrink_overflow(root) -> int:
+    """Ряды, которые в узком окне шире своего места: pack отдаёт последним кнопкам 0 px
+    и они пропадают. Ужимаем «резиновых» соседей — поля ввода (они всё равно растянутся
+    fill/expand) и длинные подписи (перенос строк). Только конфигурация, без update_idletasks."""
+    n = 0
+    stack = [root]
+    while stack:
+        w = stack.pop()
+        try:
+            kids = w.winfo_children()
+            over = w.winfo_width() > 1 and w.winfo_reqwidth() > _avail(w) + 2
+        except tk.TclError:
+            continue
+        stack.extend(k for k in kids if not isinstance(k, (tk.Text, tk.Listbox)))
+        if not over:
+            continue
+        try:
+            if _stack_grid(w) or _stack_panels(w, kids):
+                n += 1
+                continue
+        except tk.TclError:
+            pass
+        for k in kids:
+            try:
+                cls = k.winfo_class()
+                if cls in ("Entry", "TEntry", "Spinbox", "TCombobox") and int(k.cget("width")) > 10:
+                    k.configure(width=10); n += 1
+                elif cls == "Text" and int(k.cget("width")) > 20:
+                    k.configure(width=20); n += 1
+                elif cls == "Label" and len(str(k.cget("text"))) > 16 and not int(k.cget("wraplength") or 0):
+                    k.configure(wraplength=max(px(160), w.winfo_width() // 3)); n += 1
+            except (tk.TclError, ValueError):
+                pass
+    return n
+
+
 def compact(root, profile: str = "generic") -> int:
     """Пройти по дереву ``root`` и свернуть длинные строки кнопок. Возвращает число строк."""
     n = 0
@@ -1264,7 +1387,13 @@ def compact(root, profile: str = "generic") -> int:
         else:
             btns = [k for k in kids if _is_cmd(k) and k.winfo_manager() == "pack" and _pack_side(k) in ("left", "right")]
             nact = sum(1 for b in btns if getattr(b, "_active", False))
-            if len(btns) > ROW_MAX or (len(btns) >= 3 and nact == 1):
+            try:
+                side_kids = [k for k in kids if k.winfo_manager() == "pack" and _pack_side(k) in ("left", "right")]
+                over = len(btns) >= 2 and w.winfo_width() > 1 and \
+                    sum(k.winfo_reqwidth() + px(8) for k in side_kids) > _avail(w)
+            except tk.TclError:
+                over = False
+            if len(btns) > ROW_MAX or (len(btns) >= 3 and nact == 1) or over:
                 RowCompactor(w, btns, profile)
                 n += 1
         stack.extend(k for k in kids if not isinstance(k, (tk.Text, tk.Listbox)))
@@ -1293,6 +1422,8 @@ def refresh_screen(app) -> None:
     scr = (getattr(app, "screens", None) or {}).get(getattr(app, "current", None))
     try:
         if scr is not None:
+            if _shrink_overflow(scr):
+                _later(app, 80)       # пересчитать после того, как Tk разложит ужатые ряды
             compact(scr, prof)
         if getattr(app, "subnav", None) is not None:
             compact(app.crumbs, prof)

@@ -106,8 +106,9 @@ def collect_one(layout: str, skin: str, size: str) -> dict:
                 scr.show_tab(tab)
             app.update()
             if layout == "alt":
-                alt_ui.refresh_screen(app)
-                app.update()
+                for _ in range(3):
+                    alt_ui.refresh_screen(app)
+                    app.update()
             hidden = {id(b) for _t, b in alt_ui.hidden_commands(scr)} if layout == "alt" else set()
             cont = view.canvas if view is not None else app.content
             inner = view.inner if view is not None else app.content
@@ -144,6 +145,8 @@ def collect_one(layout: str, skin: str, size: str) -> dict:
                     ry = x.winfo_rooty() - inner.winfo_rooty()
                     inside = rx >= -1 and rx + x.winfo_width() <= cw + 1 and ry >= -1 and ry + x.winfo_height() <= ch + 1
                     vis = x.winfo_width() > 2 and x.winfo_height() > 2
+                    if not (inside and vis):
+                        rec["path"] = str(x)
                     rec.update(ok=inside and vis, why="виден" if inside and vis else f"обрезан ({rx},{ry} {x.winfo_width()}x{x.winfo_height()} в {cw}x{ch})")
                 out["controls"].append(rec)
         out["controls"].extend(r for i, r in unseen.items() if i not in seen)
@@ -184,12 +187,16 @@ def _key(r):
 
 def parity(classic: dict, alt: dict) -> dict:
     from collections import Counter
-    c = Counter(_key(r) for r in classic["controls"])
+    # Сравниваем только то, что в классике видно сразу: кнопки, скрытые по состоянию
+    # (идёт занятие, открыт диалог Ориона, нет обновления), скрыты и в классике.
+    c = Counter(_key(r) for r in classic["controls"] if r.get("why") != "скрыт")
     a = Counter(_key(r) for r in alt["controls"] if r["ok"])
     missing = [k for k in c if a[k] < c[k]]
-    cut = [r for r in alt["controls"] if not r["ok"]]
+    hidden_c = {_key(r) for r in classic["controls"] if r.get("why") == "скрыт"}
+    cut = [r for r in alt["controls"] if not r["ok"] and _key(r) not in hidden_c]
     return {"classic": sum(c.values()), "alt_ok": sum(min(c[k], a[k]) for k in c), "missing": missing, "cut": cut,
             "more": sum(1 for r in alt["controls"] if r.get("why") == "ещё"),
+            "state_hidden": sorted({" / ".join(k) for k in hidden_c}),
             "classic_cut": sum(1 for r in classic["controls"] if not r["ok"])}
 
 
