@@ -18,14 +18,14 @@
   "cyan_deep": "#2a2410",
   "accent": "#d4af37",
   "accent_dim": "#7a6420",
-  "error": "#e0475c",
+  "error": "#e0495e",
   "error_dim": "#5a1420",
   "ok": "#5fa872",
   "ok_dim": "#2a4a32",
   "purple": "#6f8fb0",
   "text": "#ece4d0",
-  "muted": "#a39a86",
-  "faint": "#55524a"
+  "muted": "#a79e8b",
+  "faint": "#5c5951"
  },
  "paper": {
   "paper": "#efe7d4",

@@ -7,8 +7,8 @@
     "de": "Skriptorium"
   },
   "colors": {
-    "bg": "#2a1d12",
-    "bg2": "#352618",
+    "bg": "#d8c49c",
+    "bg2": "#e2d0a8",
     "panel": "#efe0bd",
     "panel_hi": "#f5ebd0",
     "line": "#7a5230",
@@ -24,8 +24,8 @@
     "ok_dim": "#204018",
     "purple": "#6b4050",
     "text": "#2b1a0e",
-    "muted": "#6b5040",
-    "faint": "#a09070"
+    "muted": "#674d3d",
+    "faint": "#98896a"
   },
   "fonts": {
     "ui": [
