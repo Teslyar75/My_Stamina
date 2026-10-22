@@ -1094,6 +1094,34 @@ class SettingsScreen(tk.Frame):
             self._set_upd_status(_t("актуально ({0})").format(__version__), GREEN)
             self.upd_notes.configure(text=markdown_to_plain(info.body) if info.body else "")
 
+    def _ui_call(self, fn) -> None:
+        """Из рабочего потока: Tk нельзя трогать вне главного - кладём в очередь."""
+        self._ui_q.put(fn)
+
+    def _start_ui_pump(self) -> None:
+        """Главный поток раз в 100 мс выполняет то, что прислали рабочие потоки."""
+        import queue
+        if getattr(self, "_ui_q", None) is None:
+            self._ui_q = queue.Queue()
+            self._pump_ui()
+
+    def _pump_ui(self) -> None:
+        import queue
+        while True:
+            try:
+                fn = self._ui_q.get_nowait()
+            except queue.Empty:
+                break
+            try:
+                fn()
+            except tk.TclError:
+                import logging
+                logging.getLogger(__name__).debug("ui-call after destroy", exc_info=True)
+        try:
+            self.after(100, self._pump_ui)
+        except tk.TclError:
+            pass
+
     def _check_update(self, silent: bool = False) -> None:
         import threading
         from stamina.updater import check_error_message, fetch_latest
@@ -1104,11 +1132,12 @@ class SettingsScreen(tk.Frame):
         def work() -> None:
             try:
                 info = fetch_latest()
-                self.after(0, lambda: self._apply_upd_info(info))
+                self._ui_call(lambda: self._apply_upd_info(info))
             except Exception as exc:  # noqa: BLE001
                 msg = check_error_message(exc)
-                self.after(0, lambda: self._apply_upd_info(None, err=msg if not silent else _t("не удалось проверить")))
+                self._ui_call(lambda: self._apply_upd_info(None, err=msg if not silent else _t("не удалось проверить")))
 
+        self._start_ui_pump()
         threading.Thread(target=work, daemon=True).start()
 
     def _open_release_page(self) -> None:
@@ -1135,15 +1164,15 @@ class SettingsScreen(tk.Frame):
                 if info is None or not getattr(info, "is_newer", False):
                     info = fetch_latest()
                 if not info.is_newer:
-                    self.after(0, lambda: self._set_upd_status(_t("уже актуальная версия"), GREEN))
+                    self._ui_call(lambda: self._set_upd_status(_t("уже актуальная версия"), GREEN))
                     return
 
                 def prog(msg: str) -> None:
-                    self.after(0, lambda m=msg: self._set_upd_status(m, AMBER))
+                    self._ui_call(lambda m=msg: self._set_upd_status(m, AMBER))
 
                 download_and_apply(info, progress=prog)
                 maybe_pip_install(progress=prog)
-                self.after(0, lambda: self._finish_update())
+                self._ui_call(lambda: self._finish_update())
             except Exception as exc:  # noqa: BLE001
                 msg = check_error_message(exc)
 
@@ -1151,8 +1180,9 @@ class SettingsScreen(tk.Frame):
                     messagebox.showerror(_t("Обновления"), m, parent=self)
                     self._set_upd_status(m, AMBER)
 
-                self.after(0, fail)
+                self._ui_call(fail)
 
+        self._start_ui_pump()
         threading.Thread(target=work, daemon=True).start()
 
     def _finish_update(self) -> None:
