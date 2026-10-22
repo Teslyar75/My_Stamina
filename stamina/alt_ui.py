@@ -2132,6 +2132,10 @@ def build_chrome(app) -> tk.Frame:
     # подзаголовок. Шапка вне прокрутки - кнопка не уезжает и не сворачивается.
     trow = tk.Frame(mid, bg=head_bg)
     trow.pack(side=tk.TOP, anchor="w", fill=tk.X)
+    # хлебные крошки: предки текущего экрана (кликабельны) › заголовок › ОБЗОР ▾
+    app._alt_crumbs = tk.Frame(trow, bg=head_bg)
+    app._alt_crumbs.pack(side=tk.LEFT, anchor="w")
+    app._alt_crumbs_key = None
     app._alt_title = tk.Label(trow, text="", bg=head_bg, fg=theme.TEXT, font=theme.font(16, True), anchor="w")
     app._alt_title.pack(side=tk.LEFT, anchor="w")
     app._alt_slot = tk.Frame(trow, bg=head_bg)
@@ -2288,11 +2292,11 @@ def _fit_head(app, e) -> None:
             app.btn_help.pack_forget()          # F1 и «? СПРАВКА» на полке остаются
             app._alt_logo.configure(width=px(52))
             _logo_text(app._alt_logo, False)
-            app._alt_title.configure(font=theme.font(11, True))
+            _title_font(app, 11)
         else:
             if not app.btn_help.winfo_manager():
                 app.btn_help.pack(side=tk.RIGHT, padx=px(4), before=app.btn_orion)
-            app._alt_title.configure(font=theme.font(16, True))
+            _title_font(app, 16)
             if not app.clock.winfo_manager():
                 app.clock.pack(side=tk.RIGHT, padx=(px(10), 0), before=app.rank_label if app.rank_label.winfo_manager() else app.btn_tools)
             app._alt_logo.configure(width=px(200))
@@ -2366,11 +2370,54 @@ def on_screen(app) -> None:
     if lbl is None:
         return
     segs = nav.path(app.current)
-    text = " › ".join(s for s, _ in segs) if segs else ""
+    g = glyph(app._alt_profile, nav.zone_of(app.current) or "")
+    _sync_crumbs(app, segs[:-1], g)
+    last = segs[-1][0] if segs else ""
+    lead = "" if len(segs) > 1 else f"{g}  "
     try:
-        lbl.configure(text=f"{glyph(app._alt_profile, nav.zone_of(app.current) or '')}  {text}" if text else "")
+        lbl.configure(text=f"{lead}{last}" if last else "")
     except tk.TclError:
         pass
+
+
+CRUMB_SEP = "  \u203a  "
+
+
+def _sync_crumbs(app, anc: list, g: str) -> None:
+    """Предки пути (одна модель - nav.path) кликабельны и ведут на свой уровень через app.show.
+    Перестраиваем только при смене пути: без штормов перерисовки."""
+    fr = getattr(app, "_alt_crumbs", None)
+    if fr is None:
+        return
+    key = (tuple(anc), g, getattr(app, "_alt_profile", ""))
+    if key == app._alt_crumbs_key:
+        return
+    app._alt_crumbs_key = key
+    for w in fr.winfo_children():
+        w.destroy()
+    if not anc:
+        fr.pack_forget()
+        return
+    font = app._alt_title.cget("font")
+    bg = fr.cget("bg")
+    for i, (title, target) in enumerate(anc):
+        text = (f"{g}  " if i == 0 else "") + title
+        c = tk.Label(fr, text=text, bg=bg, fg=theme.AMBER, font=font, cursor="hand2")
+        c._alt_crumb = target
+        c.bind("<Button-1>", lambda _e, k=target: app.show(k))
+        c.bind("<Enter>", lambda _e, w=c: w.configure(fg=theme.TEXT))
+        c.bind("<Leave>", lambda _e, w=c: w.configure(fg=theme.AMBER))
+        c.pack(side=tk.LEFT)
+        tk.Label(fr, text=CRUMB_SEP, bg=bg, fg=theme.MUTED, font=font).pack(side=tk.LEFT)
+    if not fr.winfo_manager():
+        fr.pack(side=tk.LEFT, anchor="w", before=app._alt_title)
+
+
+def _title_font(app, size: int) -> None:
+    f = theme.font(size, True)
+    app._alt_title.configure(font=f)
+    for w in app._alt_crumbs.winfo_children():
+        w.configure(font=f)
 
 
 def status_hint(n: int) -> str:
