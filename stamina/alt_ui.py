@@ -1041,6 +1041,15 @@ class ScrollViewport(tk.Frame):
 
     def required(self) -> int:
         scr = self._current()
+        wp = working_page(scr) if scr is not None else None
+        if wp:
+            # рабочая страница: высота — её собственная (а не самой высокой страницы
+            # в общей ячейке grid), прокрутка — только если карточка правда не влезает
+            try:
+                page = wp[0]
+                return int(scr.winfo_reqheight() - page.master.winfo_reqheight() + page.winfo_reqheight())
+            except tk.TclError:
+                return 0
         try:
             return int(scr.winfo_reqheight()) if scr is not None else 0
         except tk.TclError:
@@ -1067,6 +1076,23 @@ class ScrollViewport(tk.Frame):
                 self.bar.pack_forget()
         if not over:
             self.canvas.yview_moveto(0)
+            self._work_seen = None
+            return
+        # вошли в рабочую страницу, а она не влезает — прокрутить к ней (карточка сразу
+        # на виду, навигация отсека выше — колесом/полосой)
+        scr = self._current()
+        wp = working_page(scr) if scr is not None else None
+        key = (id(scr), id(wp[0])) if wp else None
+        if key is not None and key != getattr(self, "_work_seen", None):
+            self._work_seen = key
+            try:
+                focus = getattr(wp[0], "panel", None) or wp[0]   # сама карточка, если есть
+                top = focus.winfo_rooty() - self.inner.winfo_rooty()
+                self.canvas.yview_moveto(max(0, top - px(6)) / max(1, full))
+            except tk.TclError:
+                pass
+        elif key is None:
+            self._work_seen = None
 
     @property
     def overflow(self) -> bool:
@@ -1079,7 +1105,10 @@ class ScrollViewport(tk.Frame):
         """Раз в секунду: не вырос ли экран (вкладка, раскрытый список). Дёшево:
         одно winfo_reqheight, перестройка только при изменении."""
         try:
-            if self.required() != self.need:
+            scr = self._current()
+            if scr is not None and bool(working_page(scr)) != bool(getattr(self.app, "_alt_working", False)):
+                refresh_screen(self.app)   # страницу сменили без щелчка (клавиша, программно)
+            elif self.required() != self.need:
                 self.relayout()
             self.after(1000, self._watch)
         except tk.TclError:
@@ -1485,7 +1514,8 @@ class DropList(tk.Toplevel):
     def __init__(self, anchor, entries, run, profile: str = "generic") -> None:
         if DropList.current is not None:
             DropList.current.close()
-        super().__init__(anchor)
+        # родитель - окно, а не кнопка: перестройка ряда не должна убивать список
+        super().__init__(anchor.winfo_toplevel())
         DropList.current = self
         self.overrideredirect(True)
         try:
@@ -1629,7 +1659,7 @@ def _stack_grid(w) -> bool:
     return True
 
 
-def _shrink_overflow(root) -> int:
+def _shrink_overflow(root, skip=None) -> int:
     """Ряды, которые в узком окне шире своего места: pack отдаёт последним кнопкам 0 px
     и они пропадают. Ужимаем «резиновых» соседей — поля ввода (они всё равно растянутся
     fill/expand) и длинные подписи (перенос строк). Только конфигурация, без update_idletasks."""
@@ -1637,6 +1667,8 @@ def _shrink_overflow(root) -> int:
     stack = [root]
     while stack:
         w = stack.pop()
+        if skip is not None and w is skip:
+            continue
         try:
             kids = w.winfo_children()
             over = w.winfo_width() > 1 and w.winfo_reqwidth() > _avail(w) + 2
@@ -1665,12 +1697,15 @@ def _shrink_overflow(root) -> int:
     return n
 
 
-def compact(root, profile: str = "generic") -> int:
-    """Пройти по дереву ``root`` и свернуть длинные строки кнопок. Возвращает число строк."""
+def compact(root, profile: str = "generic", skip=None) -> int:
+    """Пройти по дереву ``root`` и свернуть длинные строки кнопок. Возвращает число строк.
+    ``skip`` — рабочая страница: её не трогаем (правило «глубинных окон»)."""
     n = 0
     stack = [root]
     while stack:
         w = stack.pop()
+        if skip is not None and w is skip:
+            continue
         try:
             kids = w.winfo_children()
         except tk.TclError:
@@ -1718,15 +1753,64 @@ def hidden_commands(root) -> list[tuple[str, object]]:
     return out
 
 
+# ---------------------------------------------------------------------------
+# Правило «глубинных окон»: рабочая страница (сеанс карточек, урок, читалка) видна
+# целиком, как в классике — без прокрутки поверх, без баннера, без сворачивания её
+# кнопок в «ещё»; ширина ограничена и по центру. Экран сообщает о ней методом
+# ``alt_working() -> (страница, макс. ширина px) | None``. Классика этот метод не вызывает.
+# ---------------------------------------------------------------------------
+
+def working_page(scr):
+    fn = getattr(scr, "alt_working", None)
+    if fn is None:
+        return None
+    try:
+        return fn()
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def card_width(avail: int, maxw: int) -> int:
+    """Ширина рабочей страницы: не шире maxw; в узком окне — всё окно (минимум не режем)."""
+    return max(0, min(avail, maxw))
+
+
+def apply_working(app, scr) -> bool:
+    wp = working_page(scr)
+    ban = getattr(app, "_alt_banner", None)
+    if ban is not None:
+        try:
+            if not hasattr(ban, "_alt_h"):
+                ban._alt_h = int(ban.cget("height"))
+            ban.configure(height=1 if wp else ban._alt_h)
+        except tk.TclError:
+            pass
+    app._alt_working = wp is not None
+    if wp:
+        page, maxw = wp
+        try:
+            avail = page.master.winfo_width()
+            if avail > 4:
+                pad = max(0, (avail - card_width(avail, px(maxw))) // 2)
+                if page.grid_info() and int(str(page.grid_info().get("padx", 0)).split()[0]) != pad:
+                    page.grid_configure(padx=pad)
+        except (tk.TclError, ValueError):
+            pass
+    return wp is not None
+
+
 def refresh_screen(app) -> None:
     """Свернуть строки кнопок текущего экрана и подменю, пересчитать прокрутку."""
     prof = getattr(app, "_alt_profile", "generic")
     scr = (getattr(app, "screens", None) or {}).get(getattr(app, "current", None))
     try:
         if scr is not None:
-            if _shrink_overflow(scr):
+            apply_working(app, scr)
+            wp = working_page(scr)
+            skip = wp[0] if wp else None
+            if _shrink_overflow(scr, skip):
                 _later(app, 80)       # пересчитать после того, как Tk разложит ужатые ряды
-            compact(scr, prof)
+            compact(scr, prof, skip)
         if getattr(app, "subnav", None) is not None:
             compact(app.crumbs, prof)
     except tk.TclError:
@@ -1746,6 +1830,11 @@ def _later(app, delay: int = 250) -> None:
 
     def run():
         app._alt_refresh_job = None
+        if DropList.current is not None:
+            # список открыт: пересборка экрана отняла бы фокус и закрыла его -
+            # откладываем до закрытия
+            app._alt_refresh_job = app.after(delay, run)
+            return
         refresh_screen(app)
     app._alt_refresh_job = app.after(delay, run)
 
@@ -1755,6 +1844,7 @@ def make_content(app, host) -> tk.Frame:
     vp = ScrollViewport(host, app, theme.BG, getattr(app, "_alt_profile", "generic"))
     vp.pack(fill=tk.BOTH, expand=True)
     app._alt_view = vp
+    app._alt_page_hook = lambda: _later(app, 1)   # экран сменил внутреннюю страницу
     # после любого щелчка экран мог дорисовать кнопки (вкладка, список) — свернуть их
     app.bind_all("<ButtonRelease-1>", lambda _e: _later(app), add="+")
     return vp.inner
