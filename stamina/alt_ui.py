@@ -1129,6 +1129,67 @@ class ScrollViewport(tk.Frame):
 
 
 # ---------------------------------------------------------------------------
+# Настройки в «Пульт-кабине»: вместо вкладок — все группы одна под другой в
+# прокрутке, каждая сворачивается заголовком «▾ / ▸». Свёрнутые запоминаются
+# у пилота (alt_settings_closed). Кнопки вкладок остаются: раскрывают группу и
+# прокручивают к ней — горячие клавиши Alt+1…4 / Ctrl+Tab работают как раньше.
+# ---------------------------------------------------------------------------
+SECTION_KEY = "alt_settings_closed"
+
+
+def settings_sections(scr) -> None:
+    pnl0 = scr.tabs[next(iter(scr.tabs))][0]
+    host = pnl0.master
+    host.grid_rowconfigure(0, weight=0)
+    st = scr.app.store.settings
+    closed = set(st.get(SECTION_KEY) or [])
+    scr._alt_sections = {}
+
+    def title(key):
+        return scr.tab_btns[key]._text.split(" · ")[0]
+
+    def set_open(key, open_, save=True):
+        pnl, head = scr._alt_sections[key]
+        head.set_text(("▾ " if open_ else "▸ ") + title(key))
+        head.set_active(open_)
+        if open_:
+            pnl.grid()
+            closed.discard(key)
+        else:
+            pnl.grid_remove()
+            closed.add(key)
+        if save:
+            st[SECTION_KEY] = sorted(closed)
+            try:
+                scr.app.store.save_settings()
+            except Exception:  # noqa: BLE001 — сохранение свёрток не критично
+                pass
+        _later(scr.app, 60)
+
+    for i, (key, (pnl, _inner)) in enumerate(scr.tabs.items()):
+        head = HudButton(host, "▾ " + title(key), lambda k=key: set_open(k, k in closed),
+                         height=28, font_size=10, color=theme.AMBER)
+        head.grid(row=2 * i, column=0, sticky="w", pady=(px(8) if i else 0, px(2)))
+        pnl.grid(row=2 * i + 1, column=0, sticky="nsew")
+        scr._alt_sections[key] = (pnl, head)
+        if key in closed:
+            set_open(key, False, save=False)
+
+    def show_tab(key):
+        scr.current_tab = key
+        for k, b in scr.tab_btns.items():
+            b.set_active(k == key)
+        if key in closed:
+            set_open(key, True)
+        vp = getattr(scr.app, "_alt_view", None)
+        if vp is not None:
+            scr.after(80, lambda: vp.see(scr._alt_sections[key][1]))
+
+    scr.show_tab = show_tab
+    scr._alt_set_open = set_open
+
+
+# ---------------------------------------------------------------------------
 # «Меньше кнопок на каждом уровне»: в строке кнопок экрана остаются видимыми не
 # больше ROW_MAX (активные — всегда), остальные убираются в кнопку «⋯ ЕЩЁ» —
 # список команд в стиле скина. Сами кнопки не пересоздаются: список вызывает

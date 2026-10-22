@@ -897,6 +897,8 @@ class SettingsScreen(tk.Frame):
         _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc/Del — пауза  ·  F9 — звук  ·  Home — Орион  ·  PgUp — слайды  ·  PgDn — экран  ·  Ctrl+1…8 — разделы"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.show_tab("systems")
+        if getattr(app, "_alt_view", None) is not None:   # «Пульт-кабина»: все вкладки разом, секциями
+            _alt.settings_sections(self)
         self.refresh()
         self.after(800, lambda: self._check_update(silent=True))
 
