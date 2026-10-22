@@ -1595,7 +1595,7 @@ class DropList(tk.Toplevel):
         DropList.current = self
         self.overrideredirect(True)
         try:
-            self.transient(anchor.winfo_toplevel())
+            # без transient(): в Tk 9 на Windows overrideredirect+transient не показывается
             # поверх всего: иначе окно программы с -topmost (или чужое) закрывает список,
             # и он «открыт», но невидим. Список закрывается при уходе фокуса - не мешает.
             self.attributes("-topmost", True)
