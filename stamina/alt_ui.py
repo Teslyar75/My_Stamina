@@ -1930,11 +1930,18 @@ def _section_rows(app, scr) -> list:
     return out
 
 
+SLOT_GAP = 14
+
+
+def overview_label() -> str:
+    """Подпись единой кнопки шапки - одна во всех отсеках и скинах."""
+    return f"{tr_('ОБЗОР')}  ▾"
+
+
 def sync_slot(app, scr, prof: str) -> None:
-    """Первый ряд-выбор экрана показывается в слоте строки заголовка (одно место везде);
-    его кнопка в ряду прячется. Остальные ряды-выбор остаются в своих рядах."""
-    slot = getattr(app, "_alt_slot", None)
-    if slot is None:
+    """Первый ряд-выбор экрана уходит в меню «ОБЗОР ▾» шапки (его кнопка в ряду прячется);
+    кнопка «ОБЗОР ▾» есть всегда, даже если у отсека один экран."""
+    if getattr(app, "_alt_slot", None) is None:
         return
     old = getattr(app, "_alt_slot_owner", None)
     rows = _section_rows(app, scr) if scr is not None else []
@@ -1942,31 +1949,32 @@ def sync_slot(app, scr, prof: str) -> None:
     if old is not None and old is not rc:
         old.slot_btn = None
     btn = app._alt_slot_btn
-    if rc is None:
-        if btn is not None and btn.winfo_manager():
-            btn.pack_forget()
-        app._alt_slot_owner = None
-        return
-    text = rc.more._text
-    if btn is None:
-        btn = HudButton(slot, text, lambda: _slot_popup(app), height=30, font_size=8, color=theme.AMBER)
-        btn._alt_more = True
-        btn._alt_kind = "section"
-        app._alt_slot_btn = btn
-    elif btn._text != text:
-        btn.set_text(text)
+    if btn._text != overview_label():
+        btn.set_text(overview_label())
     if not btn.winfo_manager():
         btn.pack(side=tk.LEFT)
+    app._alt_slot_owner = rc
+    if rc is None:
+        return
     rc.more.pack_forget()
     rc.more._alt_kind = "slotted"
     rc.slot_btn = btn
-    app._alt_slot_owner = rc
+
+
+def overview_entries(app) -> list:
+    """Пункты «ОБЗОР ▾»: все экраны отсека, ✓ у текущего. Без ряда-выбора - один пункт (текущий)."""
+    rc = getattr(app, "_alt_slot_owner", None)
+    if rc is not None:
+        return rc.entries()
+    title = getattr(app, "_alt_title", None)
+    text = title.cget("text").strip() if title is not None else ""
+    return [(text or overview_label(), None, True, True)]
 
 
 def _slot_popup(app) -> None:
     rc = getattr(app, "_alt_slot_owner", None)
-    if rc is not None:
-        DropList(app._alt_slot_btn, rc.entries(), rc._run, rc.profile)
+    run = rc._run if rc is not None else (lambda _b: None)
+    DropList(app._alt_slot_btn, overview_entries(app), run, getattr(app, "_alt_profile", "generic"))
 
 
 def _later(app, delay: int = 250) -> None:
@@ -2054,16 +2062,23 @@ def build_chrome(app) -> tk.Frame:
 
     mid = tk.Frame(head, bg=head_bg)
     mid.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(16))
-    # шапка отсека одна для всех: строка 1 - заголовок, строка 2 - слот «раздел ▾» (всегда
-    # у левого края, под заголовком) и подзаголовок. Так «▾» стоит в одной точке во всех отсеках.
-    app._alt_title = tk.Label(mid, text="", bg=head_bg, fg=theme.TEXT, font=theme.font(16, True), anchor="w")
-    app._alt_title.pack(side=tk.TOP, anchor="w")
+    # шапка отсека одна для всех (ПРАВИЛА НАВИГАЦИИ, docs/ALT_UI.md): строка 1 - заголовок
+    # и сразу справа от него «ОБЗОР ▾» (всегда, в каждом отсеке, тот же отступ); строка 2 -
+    # подзаголовок. Шапка вне прокрутки - кнопка не уезжает и не сворачивается.
+    trow = tk.Frame(mid, bg=head_bg)
+    trow.pack(side=tk.TOP, anchor="w", fill=tk.X)
+    app._alt_title = tk.Label(trow, text="", bg=head_bg, fg=theme.TEXT, font=theme.font(16, True), anchor="w")
+    app._alt_title.pack(side=tk.LEFT, anchor="w")
+    app._alt_slot = tk.Frame(trow, bg=head_bg)
+    app._alt_slot.pack(side=tk.LEFT, padx=(px(SLOT_GAP), 0))
+    app._alt_slot_owner = None
+    app._alt_slot_btn = HB(app._alt_slot, overview_label(), lambda: _slot_popup(app), height=30, font_size=8,
+                           color=theme.AMBER)
+    app._alt_slot_btn._alt_more = True
+    app._alt_slot_btn._alt_kind = "section"
+    app._alt_slot_btn.pack(side=tk.LEFT)
     srow = tk.Frame(mid, bg=head_bg)
     srow.pack(side=tk.TOP, anchor="w", fill=tk.X)
-    app._alt_slot = tk.Frame(srow, bg=head_bg)
-    app._alt_slot.pack(side=tk.LEFT)
-    app._alt_slot_btn = None
-    app._alt_slot_owner = None
     # подзаголовок переносится по словам, а не обрезается (узкая шапка, шрифт с засечками)
     sub = tk.Label(srow, text=tr_(pdata["subtitle"]), bg=head_bg, fg=theme.CYAN_DIM, font=theme.font(7, True),
                    anchor="w", justify="left", wraplength=px(260))
@@ -2074,7 +2089,7 @@ def build_chrome(app) -> tk.Frame:
     app.bind("<Configure>", lambda e: _fit_head(app, e) if e.widget is app else None, add="+")
 
     def _wrap_sub(e, lbl=sub):
-        wl = max(px(80), int(e.width) - app._alt_slot.winfo_width() - px(12))
+        wl = max(px(80), int(e.width) - px(12))
         if abs(int(lbl.cget("wraplength")) - wl) > 4:
             lbl.configure(wraplength=wl)
     srow.bind("<Configure>", _wrap_sub)
@@ -2293,7 +2308,7 @@ def status_hint(n: int) -> str:
 def _i18n_keys() -> None:  # pragma: no cover
     tr_("БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ"); tr_("МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА")
     tr_("ПУЛЬТ ПИЛОТА"); tr_("ОТСЕКИ"); tr_("РЫЧАГИ"); tr_("ПРИБОРЫ"); tr_("МАНОМЕТРЫ")
-    tr_("РАДАР"); tr_("ДАВЛЕНИЕ"); tr_("⋯ КОНСОЛЬ"); tr_("⚙ ЯЩИК"); tr_("⋯ ЕЩЁ"); tr_("★ ПИЛОТ"); tr_("? СПРАВКА")
+    tr_("РАДАР"); tr_("ДАВЛЕНИЕ"); tr_("⋯ КОНСОЛЬ"); tr_("⚙ ЯЩИК"); tr_("⋯ ЕЩЁ"); tr_("★ ПИЛОТ"); tr_("? СПРАВКА"); tr_("ОБЗОР")
     for prof in COMPARTMENTS.values():
         for title, _tok in prof.values():
             tr_(title)
