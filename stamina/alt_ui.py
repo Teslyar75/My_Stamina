@@ -1456,16 +1456,28 @@ class RowCompactor:
         try:
             if choice:
                 self.more.set_text(f"{actives[0]._text}  ▾")
-                if self.more.winfo_manager() != "pack":
-                    self.more.pack(side=self.info[bs[-1]].get("side", "left"), padx=px(3))
+                self._place("left")
             elif self.hidden:
                 self.more.set_text(f"{tr_(MORE_LABEL.get(self.profile, MORE_LABEL['generic']))} · {len(self.hidden)}")
-                if self.more.winfo_manager() != "pack":
-                    self.more.pack(side=self.info[bs[-1]].get("side", "left"), padx=px(3))
+                self._place("right")
             else:
                 self.more.pack_forget()
         except tk.TclError:
             pass
+
+    def _place(self, side: str) -> None:
+        """Единое место во всех отсеках: список раздела - первым слева в своём ряду,
+        «⋯ ещё» - у правого края ряда."""
+        m = self.more
+        if side == "left":
+            first = next((k for k in self.row.pack_slaves() if k is not m), None)
+            if first is not None:
+                m.pack(side="left", padx=px(3), before=first)
+            else:
+                m.pack(side="left", padx=px(3))
+        else:
+            m.pack(side="right", padx=px(3))
+        m._alt_kind = "section" if side == "left" else "more"
 
     def _fit_width(self, bs: list, keep: set) -> set:
         """Сколько кнопок реально влезает в ширину ряда (без update_idletasks:
@@ -1527,6 +1539,9 @@ class DropList(tk.Toplevel):
         self.overrideredirect(True)
         try:
             self.transient(anchor.winfo_toplevel())
+            # поверх всего: иначе окно программы с -topmost (или чужое) закрывает список,
+            # и он «открыт», но невидим. Список закрывается при уходе фокуса - не мешает.
+            self.attributes("-topmost", True)
         except tk.TclError:
             pass
         self.run = run
@@ -1553,6 +1568,12 @@ class DropList(tk.Toplevel):
                         ("<Down>", lambda _e: self.step(1)), ("<Return>", lambda _e: self.enter()),
                         ("<space>", lambda _e: self.enter())):
             self.bind(seq, fn)
+        # колесо мыши - по пунктам (Windows: delta, Linux: Button-4/5)
+        self.bind("<MouseWheel>", lambda e: self.step(-1 if e.delta > 0 else 1))
+        self.bind("<Button-4>", lambda _e: self.step(-1))
+        self.bind("<Button-5>", lambda _e: self.step(1))
+        for lab, _b, _en in self.items:
+            lab.bind("<MouseWheel>", lambda e: self.step(-1 if e.delta > 0 else 1))
         # Закрытие не через <FocusOut>: на Windows фокус у overrideredirect-окна ненадёжен,
         # и список закрывался сам сразу после щелчка. Закрываем щелчком мимо, Esc, уходом
         # из программы (опрос), выбором пункта.

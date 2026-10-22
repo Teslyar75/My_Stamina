@@ -143,6 +143,8 @@ def main() -> None:
                 ImageGrab.grab((app.winfo_rootx(), app.winfo_rooty(), app.winfo_rootx() + app.winfo_width(),
                                 app.winfo_rooty() + app.winfo_height())).save(out / f"dd_{layout}_{skin}_{name}.png")
                 rec["max_nav"] = nav_runs(scr)
+                # чужие выпадающие списки (системное меню, OptionMenu, Combobox) - запрещены в alt
+                rec["foreign"] = [str(w) for w in walk(scr) if w.winfo_class() in ("Menubutton", "TCombobox", "TMenubutton")]
                 comps = []
                 for w in [app, *walk(app)]:
                     c = getattr(w, "_alt_row", None)
@@ -158,6 +160,15 @@ def main() -> None:
                         my = more.winfo_rooty() + more.winfo_height() // 2
                         d["more_visible"] = app.winfo_containing(mx, my) is more
                     if more is not None and d["more_visible"]:
+                        # геометрия и стиль - для проверки единообразия между отсеками
+                        txt = str(getattr(more, "_text", ""))
+                        d["kind"] = "section" if txt.rstrip().endswith("▾") else "more"
+                        d["text"] = txt
+                        d["shared"] = bool(getattr(more, "_alt_more", False)) and isinstance(c, alt_ui.RowCompactor)
+                        d["x_rel"] = more.winfo_rootx() - app.winfo_rootx()
+                        d["y_rel"] = more.winfo_rooty() - app.winfo_rooty()
+                        d["right_gap"] = (c.row.winfo_rootx() + c.row.winfo_width()) - (more.winfo_rootx() + more.winfo_width())
+                        d["h"] = more.winfo_height()
                         try:
                             trace.clear()
                             real_click(more)            # настоящий щелчок мыши, как у пилота
@@ -173,6 +184,29 @@ def main() -> None:
                                 cx, cy = dl.winfo_rootx() + 5, dl.winfo_rooty() + 5
                                 d["on_monitor"] = monitors.on_some_monitor(cx, cy) is not False
                                 d["items"] = len(dl.items)
+                                d["below"] = dl.winfo_rooty() >= more.winfo_rooty() + more.winfo_height() - 2
+                                d["same_monitor"] = monitors.on_some_monitor(cx, cy) == monitors.on_some_monitor(
+                                    more.winfo_rootx() + 2, more.winfo_rooty() + 2)
+                                dl.lift()
+                                dl.update()
+                                time.sleep(0.3)
+                                d["dl_geom"] = (dl.winfo_rootx(), dl.winfo_rooty(), dl.winfo_width(), dl.winfo_height())
+                                gx0, gy0 = dl.winfo_rootx(), dl.winfo_rooty()
+                                ImageGrab.grab((gx0, gy0, gx0 + dl.winfo_width(), gy0 + dl.winfo_height()),
+                                               all_screens=True).save(out / f"dd_{layout}_{skin}_{name}_list{len(rec['dropdowns'])}.png")
+                                d["vroot"] = (app.winfo_vrootx(), app.winfo_vrooty(), app.winfo_rootx(), app.winfo_rooty())
+                                try:
+                                    import ctypes
+                                    u = ctypes.windll.user32
+                                    gx, gy = dl.winfo_rootx() + dl.winfo_width() // 2, dl.winfo_rooty() + dl.winfo_height() // 2
+                                    h = u.WindowFromPoint(ctypes.wintypes.POINT(gx, gy)) if hasattr(ctypes, "wintypes") else None
+                                    import ctypes.wintypes as wt
+                                    h = u.WindowFromPoint(wt.POINT(gx, gy))
+                                    root_h = u.GetAncestor(h, 2)
+                                    d["on_top"] = int(root_h) == int(u.GetAncestor(int(dl.wm_frame(), 16), 2) or int(dl.wm_frame(), 16))
+                                    d["dbg_top"] = [hex(root_h or 0), dl.wm_frame(), dl.attributes("-topmost"), app.attributes("-topmost")]
+                                except Exception:  # noqa: BLE001
+                                    d["on_top_err"] = traceback.format_exc()[-200:]
                                 ImageGrab.grab(all_screens=True).crop((app.winfo_rootx(), app.winfo_rooty(),
                                     app.winfo_rootx() + app.winfo_width(), app.winfo_rooty() + app.winfo_height())
                                 ).save(out / f"dd_{layout}_{skin}_{name}_open{len(rec['dropdowns'])}.png")
