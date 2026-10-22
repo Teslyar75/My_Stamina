@@ -273,6 +273,26 @@ def set_active(agent_id: str) -> bool:
     return True
 
 
+def split_mention(text: str) -> tuple[str, str]:
+    """`@grok, что думаешь?` → ("grok-bot", "что думаешь?"). Без упоминания — ("", текст).
+
+    Зовём гостя по имени или по id: `@grok`, `@Grok Bot`, `@grok-bot`. Если такого
+    пассажира нет — строка остаётся как есть, чтобы обращение не пропало.
+    """
+    raw = text or ""
+    found = re.match(r"^\s*@([\w\-]+)[,:;]?\s*", raw, re.UNICODE)
+    if not found:
+        return "", raw
+    key = found.group(1).lower()
+    target = "".join(ch for ch in key if ch.isalnum())
+    for a in agents():
+        names = [str(a.get("id") or "").lower(), str(a.get("name") or "").lower()]
+        flat = {name for name in ("".join(ch for ch in n if ch.isalnum()) for n in names) if name}
+        if key in names or target in flat or (target and any(name.startswith(target) for name in flat)):
+            return str(a["id"]), raw[found.end():].strip()
+    return "", raw
+
+
 def upsert(record: dict) -> dict:
     """Заселить нового агента или сохранить изменения существующего."""
     data = registry()

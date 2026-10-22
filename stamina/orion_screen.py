@@ -1283,6 +1283,15 @@ class OrionScreen(tk.Frame):
             return
         if not text:
             return
+        # «@grok, что думаешь?» — зовём гостя по имени, не переключая вкладки руками
+        who, rest = orion.split_mention(text)
+        if who and who != rec["id"] and orion.set_active(who):
+            self.refresh()
+            rec = self._rec()
+            text = rest
+            self._hint(_t("Обращаюсь к {0}").format(str(rec.get("name") or who).upper()), CYAN)
+            if not text:
+                return
         # короткий разговор о записи задания — «да»/«нет» или сам текст задания
         if self._await_task:
             self._clear_input()
