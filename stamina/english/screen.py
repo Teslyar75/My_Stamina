@@ -81,7 +81,9 @@ class EnglishScreen(tk.Frame):
         sbox = tk.Frame(top, bg=BG)
         sbox.pack(side=tk.RIGHT)
         L(sbox, "⌕", fg=CYAN, size=13, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(4)))
-        self.search = entry(sbox, width=18, size=10)
+        # alt: поле шире, чтобы подсказка <СКАНИРОВАТЬ СЛОВО:> не обрезалась; классика - как была
+        alt = getattr(self.app, "_alt_view", None) is not None
+        self.search = entry(sbox, width=24 if alt else 18, size=10)
         self.search.pack(side=tk.LEFT, ipady=px(4))
         HudButton(sbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.LEFT, padx=(px(6), 0))

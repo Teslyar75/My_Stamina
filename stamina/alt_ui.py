@@ -1505,6 +1505,9 @@ class RowCompactor:
             pass
 
 
+POLL_MS = 300
+
+
 class DropList(tk.Toplevel):
     """Выпадающий список в стиле скина (вместо системного меню): рамка акцентного
     цвета, ✓ у активного пункта. Мышь, ↑ ↓ Enter, Esc и щелчок мимо — закрыть."""
@@ -1546,10 +1549,15 @@ class DropList(tk.Toplevel):
                         ("<Down>", lambda _e: self.step(1)), ("<Return>", lambda _e: self.enter()),
                         ("<space>", lambda _e: self.enter())):
             self.bind(seq, fn)
-        self.bind("<FocusOut>", lambda _e: self.after(150, self._check_focus))
+        # Закрытие не через <FocusOut>: на Windows фокус у overrideredirect-окна ненадёжен,
+        # и список закрывался сам сразу после щелчка. Закрываем щелчком мимо, Esc, уходом
+        # из программы (опрос), выбором пункта.
+        self._top = anchor.winfo_toplevel()
+        self._click_id = self._top.bind("<Button-1>", self._outside, add="+")
         self.after(1, self._clamp)
         self.focus_force()
         self.step(1)
+        self.after(POLL_MS, self._check_focus)
 
     def _clamp(self) -> None:
         try:
@@ -1558,12 +1566,21 @@ class DropList(tk.Toplevel):
         except tk.TclError:
             pass
 
+    def _outside(self, e) -> None:
+        """Щелчок в окне программы (не в списке): закрыть; по своей кнопке - откроется заново."""
+        if e.widget is not self.anchor_w:
+            self.close()
+
     def _check_focus(self) -> None:
+        """Программа ушла в фон (Alt+Tab, другое окно) - список закрываем."""
+        if DropList.current is not self:
+            return
         try:
-            f = self.focus_get()
+            if self._top.focus_displayof() is None and self.focus_displayof() is None:
+                self.close()
+                return
+            self.after(POLL_MS, self._check_focus)
         except (tk.TclError, KeyError):
-            f = None
-        if f is None or f.winfo_toplevel() is not self:
             self.close()
 
     def hi(self, k: int) -> None:
@@ -1591,6 +1608,10 @@ class DropList(tk.Toplevel):
     def close(self) -> None:
         if DropList.current is self:
             DropList.current = None
+        try:
+            self._top.unbind("<Button-1>", self._click_id)
+        except (tk.TclError, AttributeError):
+            pass
         try:
             self.destroy()
         except tk.TclError:
@@ -1625,6 +1646,8 @@ def _stack_panels(w, kids) -> bool:
            and k.winfo_children()]
     starved = [k for k in packed if k.winfo_width() <= 1 and k.winfo_reqwidth() > px(40)
                and _pack_side(k) in ("left", "right") and not _is_cmd(k)]
+    if starved and sum(1 for k in packed if _is_cmd(k)) >= 3:
+        return False  # ряд вкладок не ставим столбцом: его свернёт compact() в <текущее ▾>
     if starved:   # сосед-панель «съела» ширину: всё боковое — столбиком
         for k in packed:
             if _pack_side(k) in ("left", "right"):
@@ -1686,8 +1709,8 @@ def _shrink_overflow(root, skip=None) -> int:
         for k in kids:
             try:
                 cls = k.winfo_class()
-                if cls in ("Entry", "TEntry", "Spinbox", "TCombobox") and int(k.cget("width")) > 10:
-                    k.configure(width=10); n += 1
+                if cls in ("Entry", "TEntry", "Spinbox", "TCombobox") and int(k.cget("width")) > ENTRY_MIN:
+                    k.configure(width=ENTRY_MIN); n += 1
                 elif cls == "Text" and int(k.cget("width")) > 20:
                     k.configure(width=20); n += 1
                 elif cls == "Label" and len(str(k.cget("text"))) > 16 and not int(k.cget("wraplength") or 0):
@@ -1695,6 +1718,10 @@ def _shrink_overflow(root, skip=None) -> int:
             except (tk.TclError, ValueError):
                 pass
     return n
+
+
+NAV_SIDES = ("left", "right", "top", "bottom")
+ENTRY_MIN = 20          # поле ввода не уже 20 знаков: подсказка (<СКАНИРОВАТЬ СЛОВО>) видна целиком
 
 
 def compact(root, profile: str = "generic", skip=None) -> int:
@@ -1713,7 +1740,7 @@ def compact(root, profile: str = "generic", skip=None) -> int:
         rc = getattr(w, "_alt_row", None)
         if rc is not None:
             new = [k for k in kids if _is_cmd(k) and k not in rc.buttons and k.winfo_manager() == "pack"
-                   and _pack_side(k) in ("left", "right")]
+                   and _pack_side(k) in NAV_SIDES]
             if new:   # экран дорисовал кнопки — пересобрать строку
                 for b in new:
                     i = dict(b.pack_info()); i.pop("in", None)
@@ -1722,7 +1749,8 @@ def compact(root, profile: str = "generic", skip=None) -> int:
             rc.apply()
             n += 1
         else:
-            btns = [k for k in kids if _is_cmd(k) and k.winfo_manager() == "pack" and _pack_side(k) in ("left", "right")]
+            # ряд (left/right) или столбец (top/bottom) вкладок - сворачиваются одинаково
+            btns = [k for k in kids if _is_cmd(k) and k.winfo_manager() == "pack" and _pack_side(k) in NAV_SIDES]
             nact = sum(1 for b in btns if getattr(b, "_active", False))
             try:
                 side_kids = [k for k in kids if k.winfo_manager() == "pack" and _pack_side(k) in ("left", "right")]
@@ -1801,6 +1829,9 @@ def apply_working(app, scr) -> bool:
 
 def refresh_screen(app) -> None:
     """Свернуть строки кнопок текущего экрана и подменю, пересчитать прокрутку."""
+    if DropList.current is not None:
+        _later(app)            # открыт список: не трогаем экран (иначе он теряет фокус и закрывается)
+        return
     prof = getattr(app, "_alt_profile", "generic")
     scr = (getattr(app, "screens", None) or {}).get(getattr(app, "current", None))
     try:

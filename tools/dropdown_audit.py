@@ -77,9 +77,34 @@ def main() -> None:
         return best
 
     trace: list = []
+    _init, _close = alt_ui.DropList.__init__, alt_ui.DropList.close
+
+    def init_spy(self, *a, **k):
+        trace.append("INIT")
+        _init(self, *a, **k)
+
+    def close_spy(self):
+        trace.append("CLOSE<" + "/".join(f.name for f in traceback.extract_stack()[-4:-1]) + ">")
+        _close(self)
+    alt_ui.DropList.__init__, alt_ui.DropList.close = init_spy, close_spy
+    _press, _rel = HudButton._on_press, HudButton._on_release
+
+    def press_spy(self, e):
+        trace.append(f"P{'m' if getattr(self, '_alt_more', False) else '?'}")
+        _press(self, e)
+
+    def rel_spy(self, e):
+        trace.append(f"R{'m' if getattr(self, '_alt_more', False) else '?'}:{self._pressed}:{e.x},{e.y}/{self.winfo_width()}x{self.winfo_height()}")
+        _rel(self, e)
+    HudButton._on_press, HudButton._on_release = press_spy, rel_spy
+    _rs = alt_ui.refresh_screen
+
+    def rs_spy(a):
+        trace.append("REFRESH")
+        _rs(a)
+    alt_ui.refresh_screen = rs_spy
 
     def real_click(w) -> None:
-        nonlocal trace
         import ctypes
         x = w.winfo_rootx() + w.winfo_width() // 2
         y = w.winfo_rooty() + w.winfo_height() // 2
@@ -126,9 +151,15 @@ def main() -> None:
                 for c in comps:
                     more = getattr(c, "more", None)
                     d = {"hidden": len(getattr(c, "hidden", []) or []), "more_visible": bool(more and visible(more))}
+                    if d["more_visible"]:
+                        # кнопка видна, только если щелчок по её центру попадает именно в неё
+                        # (не закрыта соседней страницей, не прокручена за край)
+                        mx = more.winfo_rootx() + more.winfo_width() // 2
+                        my = more.winfo_rooty() + more.winfo_height() // 2
+                        d["more_visible"] = app.winfo_containing(mx, my) is more
                     if more is not None and d["more_visible"]:
                         try:
-                            trace = []
+                            trace.clear()
                             real_click(more)            # настоящий щелчок мыши, как у пилота
                             d["trace"] = " ".join(trace)
                         except Exception:  # noqa: BLE001
@@ -142,6 +173,9 @@ def main() -> None:
                                 cx, cy = dl.winfo_rootx() + 5, dl.winfo_rooty() + 5
                                 d["on_monitor"] = monitors.on_some_monitor(cx, cy) is not False
                                 d["items"] = len(dl.items)
+                                ImageGrab.grab(all_screens=True).crop((app.winfo_rootx(), app.winfo_rooty(),
+                                    app.winfo_rootx() + app.winfo_width(), app.winfo_rooty() + app.winfo_height())
+                                ).save(out / f"dd_{layout}_{skin}_{name}_open{len(rec['dropdowns'])}.png")
                                 dl.close()
                             except Exception:  # noqa: BLE001
                                 d["dl_error"] = traceback.format_exc()[-300:]
