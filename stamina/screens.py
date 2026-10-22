@@ -201,6 +201,9 @@ class MissionsScreen(tk.Frame):
 SOFT_LINE = 2000
 
 
+ASYNC_MIN = 50_000  # знаков: длиннее - обработка в фоне
+
+
 def soft_chunks(text: str, limit: int = SOFT_LINE):
     """Режет строки длиннее limit на куски по пробелу: [(кусок, мягкий_перенос_после)].
     Пробел на месте разреза съедается (он вернётся из _get как пробел); настоящие \n не трогаем."""
@@ -360,9 +363,52 @@ class CargoScreen(tk.Frame):
             b.set_active(on)
 
     def _process(self, text: str) -> str:
+        """process_text с памятью на последний результат: на книге это ~1 с, а вызывают
+        его при каждом показе экрана и на каждую проверку."""
         o = self._opts()
-        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
-                            translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
+        key = (text, tuple(sorted(o.items())))
+        memo = getattr(self, "_proc_memo", None)
+        if memo is not None and memo[0] == key:
+            return memo[1]
+        out = process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                           translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
+        self._proc_memo = (key, out)
+        return out
+
+    def _process_async(self, text: str, done) -> None:
+        """Длинный текст обрабатываем в фоне, чтобы клик по экрану не терялся; результат
+        забираем в главном потоке опросом after (Tk из чужого потока не трогаем)."""
+        o = self._opts()
+        key = (text, tuple(sorted(o.items())))
+        memo = getattr(self, "_proc_memo", None)
+        if (memo is not None and memo[0] == key) or len(text) < ASYNC_MIN:
+            done(self._process(text))
+            return
+        import threading
+        self._proc_gen = getattr(self, "_proc_gen", 0) + 1
+        gen, box = self._proc_gen, []
+
+        def work() -> None:
+            try:
+                box.append(process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                                        translit=o["translit"], yo=o["yo"], glue=o.get("glue", False)))
+            except Exception as e:  # noqa: BLE001 - покажем как пустой результат ниже
+                box.append(e)
+
+        def poll() -> None:
+            if gen != self._proc_gen:
+                return
+            if not box:
+                self.after(40, poll)
+                return
+            res = box[0]
+            if isinstance(res, Exception):
+                raise res
+            self._proc_memo = (key, res)
+            done(res)
+
+        threading.Thread(target=work, daemon=True, name="cargo-process").start()
+        self.after(40, poll)
 
     def _check_glue(self) -> None:
         """Поиск сращиваний слов. Ничего не меняем - только список находок."""
@@ -471,7 +517,9 @@ class CargoScreen(tk.Frame):
             self.after_idle(self._update_preview)
 
     def _update_preview(self) -> None:
-        adapted = self._process(self._get())
+        self._process_async(self._get(), self._show_preview)
+
+    def _show_preview(self, adapted: str) -> None:
         saved = load_session()
         same = bool(saved) and saved.text == adapted
         self.btn_resume.set_enabled(same)

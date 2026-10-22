@@ -29,6 +29,8 @@ from __future__ import annotations
 
 import math
 import random
+import sys
+import os
 import tkinter as tk
 
 from stamina import monitors
@@ -1581,6 +1583,24 @@ class RowCompactor:
 POLL_MS = 300
 
 
+def _app_in_background(top) -> bool:
+    """Программа в фоне? На Windows - по владельцу активного окна ОС (focus_displayof у Tk
+    там врёт: блокировка переднего плана, тосты); иначе - по фокусу Tk."""
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            u = ctypes.windll.user32
+            hwnd = u.GetForegroundWindow()
+            if not hwnd:
+                return False
+            pid = ctypes.c_ulong()
+            u.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+            return pid.value != os.getpid()
+        except Exception:  # noqa: BLE001 - запасной путь ниже
+            pass
+    return top.focus_displayof() is None
+
+
 class DropList(tk.Toplevel):
     """Выпадающий список в стиле скина (вместо системного меню): рамка акцентного
     цвета, ✓ у активного пункта. Мышь, ↑ ↓ Enter, Esc и щелчок мимо — закрыть."""
@@ -1678,9 +1698,14 @@ class DropList(tk.Toplevel):
         if DropList.current is not self:
             return
         try:
-            if self._top.focus_displayof() is None and self.focus_displayof() is None:
-                self.close()
-                return
+            if _app_in_background(self._top) and self.focus_displayof() is None:
+                # два опроса подряд: Windows на миг отдаёт фокус уведомлениям и т.п.
+                self._bg_hits = getattr(self, "_bg_hits", 0) + 1
+                if self._bg_hits >= 2:
+                    self.close()
+                    return
+            else:
+                self._bg_hits = 0
             self.after(POLL_MS, self._check_focus)
         except (tk.TclError, KeyError):
             self.close()

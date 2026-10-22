@@ -32,7 +32,23 @@ def _blend_rgb(a, b, t: float):
     return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
+_COVER_CACHE: dict = {}
+
+
 def _load_cover(theme_id: str, w: int, h: int):
+    """Фото-фон отсека. Кэш по (скин, размер, цвет фона): раньше каждый переход между экранами
+    заново открывал JPEG, масштабировал и размывал его (~200 мс в главном потоке)."""
+    key = (theme_id, w, h, _theme.BG)
+    im = _COVER_CACHE.get(key)
+    if im is None:
+        im = _load_cover_raw(theme_id, w, h)
+        if len(_COVER_CACHE) > 8:
+            _COVER_CACHE.clear()
+        _COVER_CACHE[key] = im
+    return im.copy() if im is not None else None
+
+
+def _load_cover_raw(theme_id: str, w: int, h: int):
     if Image is None:
         return None
     root = Path(__file__).resolve().parents[2]
