@@ -925,6 +925,8 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2))
             self.idle_after_btns[k] = b
         self.body = self.tabs["more"][1]
+        from stamina import guide_settings
+        guide_settings.build(self)
         ls = self._row(_t("Живой космос"), _t("Во всех разделах за стеклянными панелями летят звёзды, кометы, планеты и астероиды. «Лёгкий» (по умолчанию) — меньше объектов и кадров, «Полный» — плавнее (до 24 к/с). Нужен Pillow. При «уменьшении движения» Windows картинка неподвижна."))
         self.ls_btns = {}
         for key, name in (("off", _t("ВЫКЛ")), ("light", _t("ЛЁГКИЙ")), ("full", _t("ПОЛНЫЙ"))):

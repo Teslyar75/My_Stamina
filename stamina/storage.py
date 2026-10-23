@@ -74,6 +74,9 @@ DEFAULT_SETTINGS = {
     "alt_rail_narrow": True,  # alt: док отсеков свёрнут до значков
     "alt_wallpaper_dim": 0.35,  # alt: затемнение обоев отсеков 0..0.9
     "alt_wall_interval": 30,  # alt: слайдшоу обоев отсеков, секунды (0 — выкл; 15/30/60)
+    "guide_enabled": True,  # бортовой гид: шутки и факты раз в guide_interval минут
+    "guide_interval": "10-20",
+    "guide_voice": "male",  # male — Павел, female — Ирина
     "idle_minutes": 1,  # простой: слайдшоу + радио скина (только скины со slideshow)
     "idle_radio": True,
     "idle_after": "stop",
