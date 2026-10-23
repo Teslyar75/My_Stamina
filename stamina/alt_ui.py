@@ -1434,6 +1434,69 @@ class SlimBar(tk.Canvas):
             self.view.canvas.yview_moveto(e.y / max(1, self.winfo_height()) - self._grab)
 
 
+def _expands(w) -> bool:
+    try:
+        m = w.winfo_manager()
+        if m == "pack":
+            return str(w.pack_info().get("expand")) not in ("0", "False")
+        if m == "grid":
+            st = str(w.grid_info().get("sticky", ""))
+            return "n" in st and "s" in st
+    except tk.TclError:
+        pass
+    return False
+
+
+def _inner_scroller(root, depth: int = 7):
+    """Растягиваемая внутренняя прокрутка (ScrollFrame / Text|Listbox|Canvas со Scrollbar) в ``root``."""
+    stack = [(root, 0)]
+    while stack:
+        w, d = stack.pop()
+        try:
+            kids = w.winfo_children()
+        except tk.TclError:
+            continue
+        for c in kids:
+            try:
+                if c.winfo_manager() == "":
+                    continue
+                if hasattr(c, "canvas") and hasattr(c, "bar") and not isinstance(c, ScrollViewport) and _expands(c):
+                    return c
+                if c.winfo_class() in ("Scrollbar", "TScrollbar") and _expands(w) or (
+                        c.winfo_class() in ("Text", "Listbox") and _expands(c) and
+                        any(k.winfo_class() in ("Scrollbar", "TScrollbar") for k in w.winfo_children())):
+                    return w if c.winfo_class() in ("Scrollbar", "TScrollbar") else c
+            except tk.TclError:
+                continue
+            if d < depth and _expands(c):
+                stack.append((c, d + 1))
+    return None
+
+
+def _self_scrolls(page) -> bool:
+    """Страница со своей растягиваемой прокруткой — вписываем в окно, иначе двойная прокрутка
+    и панели вытягиваются на высоту самой длинной страницы."""
+    return _inner_scroller(page) is not None
+
+
+def _fit_height(page, own: int, h: int) -> int:
+    """Высота для страницы со своей прокруткой: по окну, но не меньше, чем нужно её
+    постоянной части (кнопки/шапка) + 120 px на сам список."""
+    sc = _inner_scroller(page)
+    if sc is None:
+        return own
+    try:
+        fixed = own - sc.winfo_reqheight() + px(120)
+    except tk.TclError:
+        return own
+    return min(own, max(h, fixed))
+
+
+# экраны без страниц, где вся высота — один список со своей прокруткой (вписываем в окно);
+# в остальных (трюм, скорочтение) соседняя колонка выше списка — там остаётся одна внешняя прокрутка
+ALT_FIT_SCREENS = {"help"}
+
+
 class ScrollViewport(tk.Frame):
     """Рамка, в которой лежат экраны кабины (``app.content`` = ``inner``)."""
 
@@ -1468,6 +1531,20 @@ class ScrollViewport(tk.Frame):
                 return int(scr.winfo_reqheight() - page.master.winfo_reqheight() + page.winfo_reqheight())
             except tk.TclError:
                 return 0
+        try:
+            pages, cur = getattr(scr, "pages", None), getattr(scr, "current", None)
+            page = pages.get(cur) if isinstance(pages, dict) and cur else None
+            if page is not None and page.winfo_manager() == "grid" and getattr(self.app, "current", None) == "english":
+                # страницы лежат в общей ячейке grid: считаем высоту текущей, а не самой высокой
+                own = int(scr.winfo_reqheight() - page.master.winfo_reqheight() + page.winfo_reqheight())
+                if (getattr(self.app, "current", None) in ALT_FIT_SCREENS | {"english"}) and _self_scrolls(page):
+                    return _fit_height(page, own, self.canvas.winfo_height())   # своя прокрутка — по окну
+                return own
+            if page is None and scr is not None and getattr(self.app, "current", None) in ALT_FIT_SCREENS \
+                    and _self_scrolls(scr):
+                return _fit_height(scr, int(scr.winfo_reqheight()), self.canvas.winfo_height())
+        except tk.TclError:
+            pass
         try:
             return int(scr.winfo_reqheight()) if scr is not None else 0
         except tk.TclError:
@@ -2290,6 +2367,9 @@ def card_width(avail: int, maxw: int) -> int:
     return max(0, min(avail, maxw))
 
 
+BANNER_MIN_WIN_H = 900   # ниже — декоративный баннер сворачивается (контролы влезают в экран)
+
+
 def apply_working(app, scr) -> bool:
     wp = working_page(scr)
     ban = getattr(app, "_alt_banner", None)
@@ -2297,7 +2377,11 @@ def apply_working(app, scr) -> bool:
         try:
             if not hasattr(ban, "_alt_h"):
                 ban._alt_h = int(ban.cget("height"))
-            ban.configure(height=1 if wp else ban._alt_h)
+            try:
+                short = app.winfo_height() < BANNER_MIN_WIN_H    # низкое окно: баннер прячем ради содержимого
+            except tk.TclError:
+                short = False
+            ban.configure(height=1 if (wp or short) else ban._alt_h)
         except tk.TclError:
             pass
     app._alt_working = wp is not None
