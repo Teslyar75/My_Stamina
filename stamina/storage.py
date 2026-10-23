@@ -83,7 +83,8 @@ DEFAULT_SETTINGS = {
     "idle_provider": "auto",
     "zen_mode": False,  # «Слепая печать» в дзен-виде (Ctrl+M), stamina/zen.py
     "zen_palette": "serika", "zen_mt_mode": "words", "zen_mt_counts": {}, "zen_punct": False,
-    "zen_numbers": False, "zen_acct_src": "all", "mt_prompt_done": False,  # дзен: skin — цвета скина, serika — как Monkeytype «serika dark»
+    "zen_numbers": False, "zen_acct_src": "all", "mt_prompt_done": False,
+    "zen_caret": "underline",  # каретка портала: underline / line / block  # дзен: skin — цвета скина, serika — как Monkeytype «serika dark»
     "mt_username": "",  # Monkeytype: имя для публичного профиля (импорт, только чтение)
     "mt_apekey": "",    # Monkeytype ApeKey (необязательно) — только локально, в settings.json  # скин UI: stamina/themes/<id>.json
 }

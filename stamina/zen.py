@@ -26,6 +26,7 @@ SERIKA_DARK = {   # палитра «serika dark»
     "bg": "#323437", "sub": "#646669", "subalt": "#2c2e31", "text": "#d1d0c5",
     "main": "#e2b714", "caret": "#e2b714", "error": "#ca4754", "extra": "#7e2a33",
 }
+CARET_STYLES = ("underline", "line", "block")
 PALETTES = ("serika", "skin")
 FONT_FILE = "stamina/assets/fonts/roboto_mono/RobotoMono-VariableFont_wght.ttf"
 FALLBACK_WORDS = ("the of and to in is you that it he was for on are as with his they at be this have "
@@ -89,6 +90,7 @@ class ZenOverlay(tk.Frame):
         self.words.tag_configure("incorrect", foreground=p["error"])
         self.words.tag_configure("extra", foreground=p["extra"])
         self.words.tag_configure("untyped", foreground=p["sub"])
+        self.words.tag_configure("caretblock", background=p["caret"], foreground=p["bg"])
         self.words.tag_configure("errword", underline=True)
         self.caret = tk.Frame(self, bg=p["caret"], width=3, height=30)
         self.result = tk.Canvas(self, bg=p["bg"], highlightthickness=0, bd=0)
@@ -106,7 +108,7 @@ class ZenOverlay(tk.Frame):
         self.focus_mode = False
         self.tab_armed = False
         self._caret_x = self._caret_y = None
-        self._caret_target = (0, 0)
+        self._caret_target = (0, 0, 3, 3)
         self._caret_job = None
         self._loop_job = None
         self._last_key = 0.0
@@ -248,7 +250,6 @@ class ZenOverlay(tk.Frame):
         self.words.configure(spacing3=int(lh * 0.25))
         self.words_y = int(H * 0.435)
         self.words.place(x=self.col0, y=self.words_y, width=self.colw, height=int(lh * 1.25 * 3))
-        self.caret.configure(width=max(2, int(lh * 0.08)), height=int(lh * 0.95))
         self._draw_chrome()
         self.render()
         if self.account is not None:
@@ -550,19 +551,38 @@ class ZenOverlay(tk.Frame):
                 return
         self._place_caret()
 
+    def caret_style(self) -> str:
+        v = self.st.get("zen_caret", "underline")
+        return v if v in CARET_STYLES else "underline"
+
     def _place_caret(self, animate: bool = True) -> None:
+        """Каретка: underline (по умолчанию) — черта под следующим символом, в т.ч. под пробелом;
+        line — вертикальная черта перед ним; block — подсветка символа."""
         tx = self.words
+        idx = f"1.0+{self._caret_index}c"
         try:
-            bb = tx.bbox(f"1.0+{self._caret_index}c")
+            bb = tx.bbox(idx)
         except tk.TclError:
             bb = None
+        tx.tag_remove("caretblock", "1.0", "end")
         if not bb:
             self.caret.place_forget()
             return
         lh = self.f_words.metrics("linespace")
-        x = tx.winfo_x() + bb[0] - 1
-        y = tx.winfo_y() + bb[1] + int(lh * 0.05)
-        self._caret_target = (x, y)
+        cw = bb[2] if bb[2] > 1 else self.f_words.measure("m")
+        style = self.caret_style()
+        x, y = tx.winfo_x() + bb[0], tx.winfo_y() + bb[1]
+        if style == "line":
+            x, y, w, h = x - 1, y + int(lh * 0.05), max(2, int(lh * 0.08)), int(lh * 0.95)
+        elif style == "block":
+            tx.tag_add("caretblock", idx)
+            tx.tag_raise("caretblock")
+            self.caret.place_forget()
+            return
+        else:   # underline
+            h = max(2, int(lh * 0.08))
+            x, y, w = x + 1, y + int(lh * 0.98) - h, max(4, cw - 2)
+        self._caret_target = (x, y, w, h)
         if self._caret_x is None or not animate or abs(y - (self._caret_y or y)) > lh * 2:
             self._caret_x, self._caret_y = x, y
         if self._caret_job is None:
@@ -570,14 +590,15 @@ class ZenOverlay(tk.Frame):
 
     def _caret_step(self) -> None:
         self._caret_job = None
-        tx_, ty_ = self._caret_target
+        tx_, ty_, w, h = self._caret_target
         cx, cy = self._caret_x, self._caret_y
         cx += (tx_ - cx) * 0.55
         cy += (ty_ - cy) * 0.55
         if abs(tx_ - cx) < 1 and abs(ty_ - cy) < 1:
             cx, cy = tx_, ty_
         self._caret_x, self._caret_y = cx, cy
-        if self._blink and self.result.winfo_ismapped() is False and self.account is None:
+        if self._blink and not self.result.winfo_ismapped() and self.account is None:
+            self.caret.configure(width=w, height=h)
             self.caret.place(x=int(cx), y=int(cy))
             self.caret.lift()
         if (cx, cy) != (tx_, ty_):

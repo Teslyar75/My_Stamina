@@ -90,6 +90,29 @@ class ZenCockpitTest(unittest.TestCase):
         a._on_key(key("Tab"))                                   # следующий тест
         self.assertFalse(ov.test.finished)
 
+    def test_underline_caret_under_next_char_and_space(self):
+        a = self.app
+        a.show("bridge")
+        a.zen.toggle(True)
+        ov = a.zen.overlay
+        self.assertEqual(ov.caret_style(), "underline")
+        w0 = ov.test.words[0]
+        for ch in w0[:1]:
+            a._on_key(key("x", char=ch))
+        t0 = time.time()
+        while time.time() - t0 < 0.3:
+            a.update()
+        bb = ov.words.bbox("1.0+1c")
+        lh = ov.f_words.metrics("linespace")
+        x, y, w, h = ov._caret_target
+        self.assertEqual(x, ov.words.winfo_x() + bb[0] + 1)
+        self.assertGreater(y, ov.words.winfo_y() + bb[1] + lh * 0.6)   # под буквой
+        self.assertGreater(w, h)
+        self.assertEqual((round(ov._caret_x), round(ov._caret_y)), (x, y))   # доехала плавно
+        for ch in w0[1:]:
+            a._on_key(key("x", char=ch))
+        self.assertEqual(ov.words.get(f"1.0+{ov._caret_index}c"), " ")              # под пробелом
+
     def test_single_esc_restarts_and_other_zones_hide(self):
         a = self.app
         a.show("bridge")
