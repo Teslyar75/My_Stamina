@@ -1789,6 +1789,15 @@
     "female": "female/help.speedread.library.mp3"
    }
   },
+  "help.speedread.books": {
+   "kind": "help",
+   "hash": "cc758fdcdbd0",
+   "text": "Скорочтение · Все книги. Полный перечень текстов и книг таблицей. Поиск по названию и автору; щелчок по заголовку - сортировка. Двойной щелчок или Энтер - читать в тренажёре. «Книга» - режим книги, «Печатать» - отправить в слепую печать.",
+   "files": {
+    "male": "male/help.speedread.books.mp3",
+    "female": "female/help.speedread.books.mp3"
+   }
+  },
   "help.speedread.journal": {
    "kind": "help",
    "hash": "4fc678bf4bb9",
