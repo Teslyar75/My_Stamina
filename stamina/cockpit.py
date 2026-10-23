@@ -125,7 +125,10 @@ class Cockpit(tk.Tk):
         from stamina.idle.overlay import IdleController
         self.idle = IdleController(self)  # слайдшоу простоя — только у скинов со slideshow
         from stamina.guide_idle import GuideController
-        self.guide = GuideController(self)  # бортовой гид: шутки/факты и голосовая справка (офлайн)
+        self.guide = GuideController(self)
+        from stamina.zen import ZenController
+        self.zen = ZenController(self)   # минималистичный набор: Ctrl+M / Esc
+        self.after(200, self.zen.apply)  # бортовой гид: шутки/факты и голосовая справка (офлайн)
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
         # Кабина создаётся уже после окна входа: Windows не отдаёт ей клавиатуру
@@ -588,6 +591,8 @@ class Cockpit(tk.Tk):
         self._update_crumbs()
         self.update_comm_badge()
         self.btn_help.set_active(False)
+        if getattr(self, "zen", None) is not None:
+            self.zen.apply()             # дзен-режим виден только на «Полёте»
         if name == "cargo":
             scr.text.focus_set()
         elif name == comm_hook.KEY and hasattr(scr, "focus_input"):
@@ -1154,6 +1159,9 @@ class Cockpit(tk.Tk):
         return False
 
     def _on_key(self, e: tk.Event) -> str | None:
+        zen = getattr(self, "zen", None)
+        if zen is not None and zen.handle_key(e):
+            return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
@@ -1176,6 +1184,8 @@ class Cockpit(tk.Tk):
             if isinstance(self.focus_get(), HudButton):
                 self.focus_set()         # начали печатать с кнопки в фокусе — фокус обратно мостику
             self.screens["bridge"].on_key(e)
+            if zen is not None:
+                zen.after_key()
         elif self.current == english_hook.KEY:
             self.screens[english_hook.KEY].on_key(e)
         elif self.current == speedread_hook.KEY:

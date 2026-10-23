@@ -688,6 +688,12 @@ class LogScreen(tk.Frame):
             sub.pack(anchor="w")
             self.cells.append((cap, val, sub))
 
+        try:   # Monkeytype — импорт своего прогресса (только чтение), stamina/mt_panel.py
+            from stamina.mt_panel import MonkeytypePanel
+            self.mt_panel = MonkeytypePanel(self, app)
+            self.mt_panel.pack(fill=tk.X, padx=px(14), pady=px(4))
+        except Exception:  # noqa: BLE001
+            self.mt_panel = None
         mid = HudPanel(self, _t("ДИНАМИКА — ПОСЛЕДНИЕ 30 ПОЛЁТОВ"))
         mid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(4))
         self.chart = LineChart(mid.body)

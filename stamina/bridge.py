@@ -160,6 +160,9 @@ class Bridge(tk.Frame):
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         HudButton(bar, t("↻ ЗАНОВО  F5"), self.app.restart_current, height=28,
                   font_size=9).pack(side=tk.LEFT, padx=px(6))
+        self.btn_zen = HudButton(bar, t("◯ ДЗЕН  Ctrl+M"), lambda: self.app.zen.toggle(), height=28,
+                                 font_size=9)
+        self.btn_zen.pack(side=tk.LEFT, padx=(0, px(6)))
         self.btn_heat = HudButton(bar, t("ТЕПЛОВАЯ КАРТА"), self.toggle_heat, height=28,
                                   font_size=9, color=AMBER)
         self.btn_heat.pack(side=tk.RIGHT)

@@ -80,7 +80,11 @@ DEFAULT_SETTINGS = {
     "idle_minutes": 1,  # простой: слайдшоу + радио скина (только скины со slideshow)
     "idle_radio": True,
     "idle_after": "stop",
-    "idle_provider": "auto",  # скин UI: stamina/themes/<id>.json
+    "idle_provider": "auto",
+    "zen_mode": False,  # «Слепая печать» в дзен-виде (Ctrl+M), stamina/zen.py
+    "zen_palette": "skin",  # дзен: skin — цвета скина, serika — как Monkeytype «serika dark»
+    "mt_username": "",  # Monkeytype: имя для публичного профиля (импорт, только чтение)
+    "mt_apekey": "",    # Monkeytype ApeKey (необязательно) — только локально, в settings.json  # скин UI: stamina/themes/<id>.json
 }
 
 MAX_RUNS = 500
