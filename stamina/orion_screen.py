@@ -332,14 +332,16 @@ class OrionScreen(tk.Frame):
             w.bind("<MouseWheel>", self._wheel)
             w.bind("<Button-4>", lambda _e: self.text.yview_scroll(-3, "units"))
             w.bind("<Button-5>", lambda _e: self.text.yview_scroll(3, "units"))
-        # Копирование текста из чата — правый клик или Ctrl+C
-        self.text.bind("<Button-3>", self._copy_text)
-        self.text.bind("<Control-c>", self._copy_text)
-        # Разрешаем выделение текста
-        self.text.configure(state=tk.NORMAL)
+        # Лента только для чтения, но текст выделяется мышью и копируется:
+        # Ctrl+C (в любой раскладке), Ctrl+A, правый клик — меню «Копировать».
+        self.text.configure(cursor="xterm", exportselection=True,
+                            selectbackground=CYAN, selectforeground=BG,
+                            inactiveselectbackground=LINE)
+        self.text.bind("<Button-3>", self._feed_menu)
+        self.text.bind("<Control-KeyPress>", self._feed_key)
+        self.text.bind("<<Copy>>", self._copy_text)
         self.text.bind("<Button-1>", self._select_text)
-        self.text.bind("<B1-Motion>", self._select_text)
-        self.text.configure(state=tk.DISABLED)
+        self._msg_texts: list[str] = []
 
         # Живая линия — вместо доски: последняя реплика пилота и ответ Ориона
         self.strip = HudPanel(page, title=_t("ЖИВАЯ ЛИНИЯ"), accent=GREEN)
@@ -447,9 +449,66 @@ class OrionScreen(tk.Frame):
         self.text.yview_scroll(int(-e.delta / 120) * 3, "units")
         return "break"
 
-    def _select_text(self, e) -> str:
-        """Разрешить выделение текста в чате."""
+    def _select_text(self, e) -> None:
+        """Клик в ленте: фокус в ленту (иначе Ctrl+C не дойдёт), выделение — штатное Tk."""
+        try:
+            self.text.focus_set()
+        except tk.TclError:
+            pass
         return None
+
+    def _feed_key(self, e) -> str | None:
+        """Ctrl+C / Ctrl+A по коду клавиши — работает и в русской раскладке."""
+        code = getattr(e, "keycode", 0)
+        key = (getattr(e, "keysym", "") or "").lower()
+        if code == 67 or key in ("c", "cyrillic_es"):
+            return self._copy_text(e)
+        if code == 65 or key in ("a", "cyrillic_ef"):
+            return self._select_all_feed()
+        return None
+
+    def _select_all_feed(self) -> str:
+        self.text.tag_remove(tk.SEL, "1.0", tk.END)
+        self.text.tag_add(tk.SEL, "1.0", "end-1c")
+        return "break"
+
+    def _msg_at(self, index: str) -> str:
+        """Текст реплики под курсором (по меткам msgN), пусто — если не на реплике."""
+        for tag in self.text.tag_names(index):
+            if tag.startswith("msg") and tag[3:].isdigit():
+                n = int(tag[3:])
+                if n < len(self._msg_texts):
+                    return self._msg_texts[n]
+        return ""
+
+    def _feed_menu(self, e) -> str:
+        """Правый клик по ленте: Копировать / Копировать сообщение / Выделить всё."""
+        idx = self.text.index(f"@{e.x},{e.y}")
+        has_sel = bool(self.text.tag_ranges(tk.SEL))
+        msg = self._msg_at(idx)
+        menu = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT,
+                       activebackground=CYAN, activeforeground=BG)
+        menu.add_command(label=_t("Копировать"), accelerator="Ctrl+C",
+                         command=lambda: self._copy_text(None),
+                         state=tk.NORMAL if has_sel else tk.DISABLED)
+        menu.add_command(label=_t("Копировать сообщение"),
+                         command=lambda m=msg: self._copy_plain(m),
+                         state=tk.NORMAL if msg else tk.DISABLED)
+        menu.add_command(label=_t("Выделить всё"), accelerator="Ctrl+A",
+                         command=self._select_all_feed)
+        self._feed_menu_widget = menu
+        try:
+            menu.tk_popup(e.x_root, e.y_root)
+        finally:
+            menu.grab_release()
+        return "break"
+
+    def _copy_plain(self, text: str) -> None:
+        if not text:
+            return
+        self.clipboard_clear()
+        self.clipboard_append(text)
+        self._hint(_t("Текст скопирован"), GREEN)
 
     def _paste_text(self, _e) -> str:
         """Вставить из буфера: сначала снимок экрана, потом текст."""
@@ -1020,6 +1079,7 @@ class OrionScreen(tk.Frame):
         if not msgs:
             self.text.insert(tk.END, _t("Канал свободен. Скажите Ориону первое слово — "
                                         "письменно или голосом.") + "\n", "hint")
+        self._msg_texts = []
         for m in msgs:
             when = orion.when_text(float(m.get("ts", 0.0)))
             role = m.get("role", "orion")
@@ -1040,7 +1100,9 @@ class OrionScreen(tk.Frame):
             self.text.insert(tk.END, "─" * 40 + "\n", "separator")
             self.text.insert(tk.END, prefix + name, tag)
             self.text.insert(tk.END, f"  {when}\n", "time")
-            self.text.insert(tk.END, f"{m.get('text', '')}\n", "body")
+            mtag = f"msg{len(self._msg_texts)}"
+            self._msg_texts.append(str(m.get("text", "")))
+            self.text.insert(tk.END, f"{m.get('text', '')}\n", ("body", mtag))
             self._insert_shot(m.get("shot"))
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
