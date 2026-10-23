@@ -44,8 +44,11 @@ class RadioScreen(tk.Frame):
             b = HudButton(bar, title, lambda k=key: self.show(k), height=30, font_size=9, width=110)
             b.pack(side=tk.LEFT, padx=px(4))
             self.tab_btns[key] = b
-        HudButton(bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
-                  width=32, color=AMBER).pack(side=tk.RIGHT, padx=(px(8), 0))
+        # справка в своей рамке: иначе alt-шапка считает её вкладкой («?» в списке ОБЗОР)
+        hbox = tk.Frame(bar, bg=BG)
+        hbox.pack(side=tk.RIGHT, padx=(px(8), 0))
+        HudButton(hbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
+                  width=32, color=AMBER).pack(side=tk.RIGHT)
         self.lbl_backend = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(8))
         self.lbl_backend.pack(side=tk.RIGHT)
 
@@ -110,6 +113,9 @@ class RadioScreen(tk.Frame):
         if name == "receiver":
             self._refresh_receiver()
         self._update_backend_label()
+        hook = getattr(self.app, "_alt_page_hook", None)   # только в alt-оболочке
+        if hook is not None:
+            hook()
 
     def refresh(self) -> None:
         """Вызывается пультом при открытии вкладки «РАДИОРУБКА»."""
@@ -354,20 +360,34 @@ class RadioScreen(tk.Frame):
             self._draw_antenna(logo)
             info = tk.Frame(row, bg=row["bg"])
             info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=px(6))
-            tk.Label(info, text=st.get("name", "—")[:48], bg=row["bg"], fg=TEXT,
+            # width=1: длинное имя не раздвигает ряд и не выталкивает кнопки
+            tk.Label(info, text=st.get("name", "—")[:48], bg=row["bg"], fg=TEXT, width=1,
                      font=theme.font(11, True), anchor="w").pack(fill=tk.X)
             sub = " · ".join(x for x in (
                 st.get("country") or st.get("countrycode"),
                 (st.get("tags") or "")[:40],
                 f"{st['bitrate']} kbps" if st.get("bitrate") else "",
             ) if x)
-            tk.Label(info, text=sub or "—", bg=row["bg"], fg=MUTED, font=theme.font(8),
+            tk.Label(info, text=sub or "—", bg=row["bg"], fg=MUTED, font=theme.font(8), width=1,
                      anchor="w").pack(fill=tk.X)
             star = "★" if st.get("uuid") in fav_uuids else "☆"
             HudButton(row, star, lambda s=st: self._toggle_fav(s), height=30, font_size=12,
-                      width=40, color=AMBER).pack(side=tk.RIGHT, padx=px(4))
+                      width=40, color=AMBER).pack(side=tk.RIGHT, padx=px(4), before=info)
             HudButton(row, _t("▶"), lambda s=st: self._play(s), height=30, font_size=11,
-                      width=44, color=GREEN).pack(side=tk.RIGHT, padx=px(4))
+                      width=44, color=GREEN).pack(side=tk.RIGHT, padx=px(4), before=info)
+
+    def _set_rx_name(self, text: str) -> None:
+        self._rx_full = text
+        self._fit_rx_name()
+
+    def _fit_rx_name(self) -> None:
+        """Имя станции в приёмнике - одна строка 16pt: длинное режем «…» по ширине."""
+        from stamina.hud import fit_text
+        full = getattr(self, "_rx_full", "")
+        w = self.rx_name.master.winfo_width()
+        txt = fit_text(theme.font(16, True), full, w - px(4)) if w > 20 else full
+        if self.rx_name.cget("text") != txt:
+            self.rx_name.configure(text=txt)
 
     def _draw_antenna(self, c: tk.Canvas) -> None:
         w, h = px(44), px(44)
@@ -411,9 +431,11 @@ class RadioScreen(tk.Frame):
 
         meta = tk.Frame(top, bg=PANEL)
         meta.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(10))
-        self.rx_name = tk.Label(meta, text=_t("Нет станции"), bg=PANEL, fg=TEXT,
+        self.rx_name = tk.Label(meta, text=_t("Нет станции"), bg=PANEL, fg=TEXT, width=1,
                                 font=theme.font(16, True), anchor="w")
         self.rx_name.pack(fill=tk.X)
+        self._rx_full = self.rx_name.cget("text")
+        meta.bind("<Configure>", lambda _e: self._fit_rx_name(), add="+")
         self.rx_track = tk.Label(meta, text="", bg=PANEL, fg=CYAN, font=theme.font(12),
                                  anchor="w", wraplength=px(520), justify="left")
         self.rx_track.pack(fill=tk.X, pady=(px(6), 0))
@@ -483,9 +505,9 @@ class RadioScreen(tk.Frame):
     def _refresh_receiver(self) -> None:
         st = self.eng.station
         if st:
-            self.rx_name.configure(text=st.get("name", "—")[:60])
+            self._set_rx_name(st.get("name", "—")[:60])
         else:
-            self.rx_name.configure(text=_t("Нет станции"))
+            self._set_rx_name(_t("Нет станции"))
         track = self.eng.track or (st.get("tags", "") if st else "")
         self.rx_track.configure(text=track or _t("ожидание метаданных эфира…"))
         if self.eng.playing:

@@ -2394,18 +2394,23 @@ def on_screen(app) -> None:
     _sync_title(app)
 
 
+# корневая страница экранов с вкладками (крошка на экран ведёт туда)
+_SUB_ROOT = {"english": "overview", "speedread": "overview", "radio": "air"}
+
+
 def _sub_path(app) -> list:
     """Внутренняя страница экрана (Английский) как последний сегмент пути."""
-    if app.current not in ("english", "speedread"):
+    root = _SUB_ROOT.get(app.current)
+    if root is None:
         return []
     scr = getattr(app, "screens", {}).get(app.current)
     cur = getattr(scr, "current", None)
-    if not cur or cur == "overview":
+    if not cur or cur == root:
         return []
     try:
-        if app.current == "speedread":
+        if app.current != "english":
             b = getattr(scr, "tab_btns", {}).get(cur)
-            return [(b._text if b is not None else cur, "speedread")]
+            return [(b._text if b is not None else cur, app.current)]
         from stamina.english.screen import SUBPAGES
         return [(dict(SUBPAGES).get(cur, cur), "english")]
     except Exception:  # noqa: BLE001
@@ -2414,10 +2419,10 @@ def _sub_path(app) -> list:
 
 def _crumb_go(app, target: str) -> None:
     """Клик по крошке: свой же экран — на его первую страницу, иначе app.show."""
-    if target == app.current and target in ("english", "speedread"):
+    if target == app.current and target in _SUB_ROOT:
         scr = getattr(app, "screens", {}).get(target)
         if scr is not None and getattr(scr, "_built", True):
-            scr.show("overview")
+            scr.show(_SUB_ROOT[target])
         return
     app.show(target)
 
