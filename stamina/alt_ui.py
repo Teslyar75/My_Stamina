@@ -2724,6 +2724,15 @@ def build_chrome(app) -> tk.Frame:
         b.nav_menu = True
         app.subnav_buttons[key] = b
 
+    # плавающая панель радио справа (вид по скину, логика — плашки классики)
+    app._alt_radio = None
+    try:
+        from stamina.radio.altpanel import AltRadioPanel
+        app._alt_radio = AltRadioPanel(app, body, prof)
+        body.bind("<Destroy>", lambda e, p=app._alt_radio: p.eng.unsubscribe(p._on_eng) if e.widget is body else None,
+                  add="+")
+    except Exception:  # noqa: BLE001
+        app._alt_radio = None
     app.bind("<F8>", lambda _e: toggle_drawer(app) or "break")
     if st.get("alt_rail_narrow", True):
         toggle_rail(app, narrow=True, save=False)

@@ -2105,5 +2105,12 @@
  "Главный тренажёр печати.\n\n• Печатайте строку в иллюминаторе — корабль летит вперёд.\n• Esc — пауза; F5 — начать упражнение заново.\n• Зелёные/красные зоны на клавиатуре подсказывают пальцы.\n• После миссии смотрите отчёт: скорость, точность, слабые клавиши.\n• Ctrl+M или «◯ ДЗЕН» — минималистичный режим в духе Monkeytype: только строка текста, курсор, скорость, точность и таймер. Палитра — цвета скина или «serika dark». Esc — заново, двойной Esc, Ctrl+M или «⟵ на борт» в углу — назад к кораблю. Выбор запоминается.": "Chef-Druck-Trainer.\n\n• Drucken Sie die Zeile im Fenster; das Schiff fliegt nach vorne.\n• Esc ist eine Pause; F5 ist eine Probe.\n• Grün/rote Bereiche auf der Tastatur zeigen Finger an.\n• Nach der Mission, Blick auf den Bericht: Geschwindigkeit, Genauigkeit, schwache Schlüssel.\n• Strg+M oder «◯ ZEN» — minimaler Modus im Monkeytype-Stil: nur Textzeile, Cursor, Tempo, Genauigkeit und Timer. Palette — Skin-Farben oder «serika dark». Esc — neu; doppeltes Esc, Strg+M oder «⟵ an Bord» in der Ecke — zurück zum Schiff. Die Wahl wird gespeichert.",
  "Ctrl+M — дзен-режим (выход Esc Esc) · Esc/Del — пауза · F5 — заново · Enter/→/R в отчёте — повтор/следующая/ремонт · Alt+1…5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика · Ctrl+Tab — следующая подвкладка": "Strg+M — Zen-Modus (Ende Esc Esc) · Esc/Del — Pause · F5 — neu · Enter/→/R im Bericht — Wiederholen/Weiter/Reparatur · Alt+1…5 — Flug, Missionen, Eigener Text, Logbuch, Brücken-Einstellungen · Strg+Tab — nächster Unterreiter",
  "Укажите имя пользователя Monkeytype — данные подтянутся сами.": "Monkeytype-Benutzernamen eingeben — Daten werden automatisch geladen.",
- "лимит Monkeytype — повтор через {0} мин": "Monkeytype-Limit — erneut in {0} Min."
+ "лимит Monkeytype — повтор через {0} мин": "Monkeytype-Limit — erneut in {0} Min.",
+ "АНТЕННЫЙ ОТСЕК": "ANTENNENDECK",
+ "ГРАММОФОН": "GRAMMOFON",
+ "ГИДРОФОН": "HYDROFON",
+ "RADIO · FM": "RADIO · FM",
+ "WIRELESS": "WIRELESS",
+ "ПЕСНОПЕНИЯ": "GESÄNGE",
+ "ЗВУКИ САДА": "GARTENKLÄNGE"
 }

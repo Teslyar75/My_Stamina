@@ -2107,5 +2107,12 @@
  "Главный тренажёр печати.\n\n• Печатайте строку в иллюминаторе — корабль летит вперёд.\n• Esc — пауза; F5 — начать упражнение заново.\n• Зелёные/красные зоны на клавиатуре подсказывают пальцы.\n• После миссии смотрите отчёт: скорость, точность, слабые клавиши.\n• Ctrl+M или «◯ ДЗЕН» — минималистичный режим в духе Monkeytype: только строка текста, курсор, скорость, точность и таймер. Палитра — цвета скина или «serika dark». Esc — заново, двойной Esc, Ctrl+M или «⟵ на борт» в углу — назад к кораблю. Выбор запоминается.": "Chief Print Coach.\n\n• Print the row in the window; the ship flies forward.\n• Esc is a pause; F5 is a rehearsal.\n• Green/red areas on the keyboard indicate fingers.\n• After the mission, look at the report: speed, accuracy, weak keys.\n• Ctrl+M or «◯ ZEN» — Monkeytype-style minimal mode: only the text line, caret, speed, accuracy and timer. Palette — skin colours or «serika dark». Esc — restart; double Esc, Ctrl+M or «⟵ aboard» in the corner — back to the ship. The choice is remembered.",
  "Ctrl+M — дзен-режим (выход Esc Esc) · Esc/Del — пауза · F5 — заново · Enter/→/R в отчёте — повтор/следующая/ремонт · Alt+1…5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика · Ctrl+Tab — следующая подвкладка": "Ctrl+M — zen mode (exit Esc Esc) · Esc/Del — pause · F5 — restart · Enter/→/R in the report — repeat/next/repair · Alt+1…5 — Flight, Missions, Own text, Logbook, Bridge settings · Ctrl+Tab — next subtab",
  "Укажите имя пользователя Monkeytype — данные подтянутся сами.": "Enter your Monkeytype username — data will load automatically.",
- "лимит Monkeytype — повтор через {0} мин": "Monkeytype rate limit — retry in {0} min"
+ "лимит Monkeytype — повтор через {0} мин": "Monkeytype rate limit — retry in {0} min",
+ "АНТЕННЫЙ ОТСЕК": "ANTENNA BAY",
+ "ГРАММОФОН": "GRAMOPHONE",
+ "ГИДРОФОН": "HYDROPHONE",
+ "RADIO · FM": "RADIO · FM",
+ "WIRELESS": "WIRELESS",
+ "ПЕСНОПЕНИЯ": "CANTICLES",
+ "ЗВУКИ САДА": "GARDEN SOUNDS"
 }
