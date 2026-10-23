@@ -2395,7 +2395,7 @@ def on_screen(app) -> None:
 
 
 # корневая страница экранов с вкладками (крошка на экран ведёт туда)
-_SUB_ROOT = {"english": "overview", "speedread": "overview", "radio": "air"}
+_SUB_ROOT = {"english": "overview", "speedread": "overview", "radio": "air", "orion": "chat"}
 
 
 def _sub_path(app) -> list:
@@ -2404,7 +2404,7 @@ def _sub_path(app) -> list:
     if root is None:
         return []
     scr = getattr(app, "screens", {}).get(app.current)
-    cur = getattr(scr, "current", None)
+    cur = getattr(scr, "current", None) or getattr(scr, "current_tab", None)
     if not cur or cur == root:
         return []
     try:
@@ -2422,7 +2422,7 @@ def _crumb_go(app, target: str) -> None:
     if target == app.current and target in _SUB_ROOT:
         scr = getattr(app, "screens", {}).get(target)
         if scr is not None and getattr(scr, "_built", True):
-            scr.show(_SUB_ROOT[target])
+            (getattr(scr, "show_tab", None) or scr.show)(_SUB_ROOT[target])
         return
     app.show(target)
 

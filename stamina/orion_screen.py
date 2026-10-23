@@ -355,6 +355,13 @@ class OrionScreen(tk.Frame):
                          "или нажмите «ДОСКА»."), fg=MUTED, size=8, bg=PANEL, anchor="w",
                justify="left", wraplength=px(880)).pack(fill=tk.X, pady=(px(10), 0))
 
+        def _wrap_strip(e, box=sbody) -> None:
+            wl = max(px(120), e.width - px(8))
+            for w in box.winfo_children():
+                if isinstance(w, tk.Label) and int(w.cget("wraplength") or 0) != wl:
+                    w.configure(wraplength=wl)
+        sbody.bind("<Configure>", _wrap_strip, add="+")
+
         bottom = tk.Frame(page, bg=BG)
         bottom.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
         self.bottom = bottom
@@ -871,7 +878,7 @@ class OrionScreen(tk.Frame):
         name = self.arch_text.image_create(tk.END, image=photo, padx=px(4), pady=px(4),
                                            align="bottom")
         self.arch_text.insert(tk.END, "\n")
-        self.arch_text.tag_add(name, tag)
+        self.arch_text.tag_add(tag, name)
         self.arch_text.tag_bind(name, "<Button-1>", lambda _e, p=str(pic_path): self._open_shot(p))
 
     def _archive_toggle(self, tag: str) -> str:
@@ -951,9 +958,17 @@ class OrionScreen(tk.Frame):
             key = self.tabs and next(iter(self.tabs))
         self.current_tab = key
         page, btn = self.tabs[key]
+        # в ячейке только текущая вкладка: высота отсека = её высота, а не самой высокой
+        for k, (p, _b) in self.tabs.items():
+            if k != key:
+                p.grid_remove()
+        page.grid()
         page.tkraise()
         for k, b in self.tab_btns.items():
             b.set_active(k == key)
+        hook = getattr(self.app, "_alt_page_hook", None)
+        if callable(hook):
+            hook()
         if key == "archive" and not self._archive_rows:
             self._archive_search()        # архив открыли — сразу показываем свежее
 
@@ -1075,9 +1090,12 @@ class OrionScreen(tk.Frame):
         last_pilot = next((m for m in reversed(msgs) if m.get("role") == "pilot"), None)
         last_orion = next((m for m in reversed(msgs) if m.get("role") == "orion"), None)
         name = str(rec.get("name") or "ОРИОН").upper()
-        self.strip_pilot.configure(text=(_t("ПИЛОТ: {0}").format(last_pilot["text"])
+        def _clip(t: str, n: int = 280) -> str:
+            t = " ".join(str(t).split())
+            return t if len(t) <= n else t[:n - 1].rstrip() + "…"
+        self.strip_pilot.configure(text=(_t("ПИЛОТ: {0}").format(_clip(last_pilot["text"]))
                                          if last_pilot else _t("ПИЛОТ: —")))
-        self.strip_orion.configure(text=(f"{name}: {last_orion['text']}" if last_orion
+        self.strip_orion.configure(text=(f"{name}: {_clip(last_orion['text'])}" if last_orion
                                          else _t("{0}: слушаю, пилот").format(name)))
 
     # -- доска: скрыта или открыта -----------------------------------------
@@ -1086,12 +1104,12 @@ class OrionScreen(tk.Frame):
         self.board_visible = visible
         if visible:
             self.strip.pack_forget()
-            self.board.pack(fill=tk.BOTH, expand=True, before=self.bottom)
+            self.board.pack(fill=tk.BOTH, expand=True, after=self.bottom)
             self.board_btn.set_text(_t("ДОСКА: ОТКРЫТА"))
             self.board_btn.set_color(GREEN)
         else:
             self.board.pack_forget()
-            self.strip.pack(fill=tk.BOTH, expand=True, before=self.bottom)
+            self.strip.pack(fill=tk.BOTH, expand=True, after=self.bottom)
             self.board_btn.set_text(_t("ДОСКА: СКРЫТА"))
             self.board_btn.set_color(AMBER)
 

@@ -40,6 +40,12 @@ def hud_colors() -> dict:
             "ghost": MUTED, "insert": CYAN, "sel_bg": CYAN, "sel_fg": BG}
 
 
+def _short(text: str, n: int = 48) -> str:
+    """Подсказка Tab в одну строку: длинное слово режем с «…»."""
+    text = str(text)
+    return text if len(text) <= n else text[:n - 1] + "…"
+
+
 class PromptBox(tk.Frame):
     """Многострочное поле набора с подсказками. API похож на Entry: get/set/clear."""
 
@@ -418,7 +424,7 @@ class PromptBox(tk.Frame):
         cycle["tail"] = item.tail
         self.text.see(tk.INSERT)
         self._fit_rows()
-        label = _t("Tab: {0}").format(item.label)
+        label = _t("Tab: {0}").format(_short(item.label))
         if len(cycle["hints"]) > 1:
             label += " · " + _t("ещё {0}").format(len(cycle["hints"]) - 1)
             label += " · " + _t("↑↓ выбор")
@@ -438,7 +444,7 @@ class PromptBox(tk.Frame):
             self._render_ghost("")
             self.hint.configure(text="")
             return
-        label = _t("Tab: {0}").format(items[0].label)
+        label = _t("Tab: {0}").format(_short(items[0].label))
         if len(items) > 1:
             label += " · " + _t("ещё {0}").format(len(items) - 1) + " · " + _t("↑↓ выбор")
         self.hint.configure(text=label)
