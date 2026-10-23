@@ -306,7 +306,10 @@ class CargoScreen(tk.Frame):
                   height=32, font_size=9).pack(fill=tk.X, pady=(0, px(6)))
         self.btn_orion_check = HudButton(sb_body, _t("✦ ПРОВЕРИТЬ У ОРИОНА"), self._check_orion,
                                          color=AMBER, height=32, font_size=9)
-        self.btn_orion_check.pack(fill=tk.X, pady=(0, px(10)))
+        self.btn_orion_check.pack(fill=tk.X, pady=(0, px(6)))
+        self.btn_ai_check = HudButton(sb_body, _t("✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)"), self._check_ai,
+                                      color=GREEN, height=32, font_size=9)
+        self.btn_ai_check.pack(fill=tk.X, pady=(0, px(10)))
         tk.Frame(sb_body, bg=LINE, height=1).pack(fill=tk.X)
         _label(sb_body, _t("ПРЕДПРОСМОТР ДЛЯ ТРЕНАЖЁРА"), fg=blend(CYAN, TEXT, 0.3), size=9,
                bold=True).pack(anchor="w", pady=(px(8), px(2)))
@@ -344,7 +347,7 @@ class CargoScreen(tk.Frame):
             opts.setdefault(k, True)
         opts.setdefault("translit", False)
         opts.setdefault("yo", False)
-        opts.setdefault("glue", False)
+        opts.setdefault("glue", True)
         return opts
 
     def _toggle_opt(self, key: str) -> None:
@@ -423,6 +426,11 @@ class CargoScreen(tk.Frame):
         lines += ["• " + g.token + " → " + g.split + ("" if g.confident else _t(" (проверьте)"))
                   for g in found[:10]]
         self.preview_info.configure(text="\n".join(lines), fg=AMBER)
+
+    def _check_ai(self) -> None:
+        """Склейки в подготовленной книге на борту: разделить и сохранить поверх."""
+        from stamina.bridge_settings import run_glue_check
+        run_glue_check(self.app, self, self.btn_ai_check, self.preview_info)
 
     def _check_orion(self) -> None:
         """Проверка книги у Ориона: агент ищет склейки, пилот выбирает правки галочками."""

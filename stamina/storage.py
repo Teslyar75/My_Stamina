@@ -66,7 +66,7 @@ DEFAULT_SETTINGS = {
     "translator": True,
     # Подготовка своего текста: убрать заглавные, знаки препинания, лишние пробелы
     # (glue — разделять сращивания слов: «ивот» → «и вот»)
-    "cargo_opts": {"lower": True, "punct": True, "spaces": True, "glue": False},
+    "cargo_opts": {"lower": True, "punct": True, "spaces": True, "glue": True},
     "geometry": "",
     "living_space": "off",  # «Живой космос» во всех разделах: off | light | full
     "skin": "spaceship",
@@ -130,6 +130,11 @@ class Store:
     def __init__(self) -> None:
         self.settings = dict(DEFAULT_SETTINGS)
         self.settings.update(_read_json(SETTINGS_PATH) or {})
+        if not self.settings.get("glue_v2"):  # склейки чиним всегда: включаем опцию и у старых профилей
+            co = dict(self.settings.get("cargo_opts") or {})
+            co["glue"] = True
+            self.settings["cargo_opts"] = co
+            self.settings["glue_v2"] = True
         stats = _read_json(STATS_PATH) or {}
         self.stats = {
             "version": 1,

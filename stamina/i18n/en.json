@@ -2107,5 +2107,13 @@
  "Главный тренажёр печати.\n\n• Печатайте строку в иллюминаторе — корабль летит вперёд.\n• Esc — пауза; F5 — начать упражнение заново.\n• Зелёные/красные зоны на клавиатуре подсказывают пальцы.\n• После миссии смотрите отчёт: скорость, точность, слабые клавиши.\n• Ctrl+M или «◯ ДЗЕН» — минималистичный режим в духе Monkeytype: только строка текста, курсор, скорость, точность и таймер. Палитра — цвета скина или «serika dark». Esc — заново, двойной Esc, Ctrl+M или «⟵ на борт» в углу — назад к кораблю. Выбор запоминается.": "Chief Print Coach.\n\n• Print the row in the window; the ship flies forward.\n• Esc is a pause; F5 is a rehearsal.\n• Green/red areas on the keyboard indicate fingers.\n• After the mission, look at the report: speed, accuracy, weak keys.\n• Ctrl+M or «◯ ZEN» — Monkeytype-style minimal mode: only the text line, caret, speed, accuracy and timer. Palette — skin colours or «serika dark». Esc — restart; double Esc, Ctrl+M or «⟵ aboard» in the corner — back to the ship. The choice is remembered.",
  "Ctrl+M — дзен-режим (выход Esc Esc) · Esc/Del — пауза · F5 — заново · Enter/→/R в отчёте — повтор/следующая/ремонт · Alt+1…5 — Полёт, Миссии, Свой текст, Бортжурнал, Настройки мостика · Ctrl+Tab — следующая подвкладка": "Ctrl+M — zen mode (exit Esc Esc) · Esc/Del — pause · F5 — restart · Enter/→/R in the report — repeat/next/repair · Alt+1…5 — Flight, Missions, Own text, Logbook, Bridge settings · Ctrl+Tab — next subtab",
  "Укажите имя пользователя Monkeytype — данные подтянутся сами.": "Enter your Monkeytype username — data will load automatically.",
- "лимит Monkeytype — повтор через {0} мин": "Monkeytype rate limit — retry in {0} min"
+ "лимит Monkeytype — повтор через {0} мин": "Monkeytype rate limit — retry in {0} min",
+ "Исправлено склеек: {0}. Файл сохранён.": "Glued words fixed: {0}. File saved.",
+ "Ошибка проверки: {0}": "Check error: {0}",
+ "После фильтров (заглавные, знаки, пробелы) ищет слова без пробела между ними — «distastethis», «nineteenthcentury», «1984was» — разделяет по смыслу и сохраняет исправленную книгу поверх подготовленной.": "After the filters (capitals, punctuation, spaces) finds words with no space between them — «distastethis», «nineteenthcentury», «1984was» — splits them by meaning and saves the fixed book over the prepared one.",
+ "Проверить ИИ: сросшиеся слова": "Check (AI): glued words",
+ "Проверяю текст…": "Checking text…",
+ "Сросшихся слов нет — текст чистый": "No glued words — the text is clean",
+ "✦ ПРОВЕРИТЬ ИИ": "✦ AI CHECK",
+ "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ AI CHECK (BOOK ON BOARD)"
 }

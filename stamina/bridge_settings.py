@@ -88,6 +88,15 @@ class BridgeSettingsScreen(tk.Frame):
         self._chips(typ, "typed_font", _t("Размер набранного"), [(k, font_label(k)) for k in ("",) + ts.FONT_KEYS])
         self._chips(typ, "ahead_font", _t("Размер текста впереди"), [(k, font_label(k)) for k in ("",) + ts.FONT_KEYS])
         self._chips(typ, "typing_face", _t("Шрифт строки набора"), [(k, _t(v)) for k, v in FACE_LABELS])
+        row = self._row(typ, _t("Проверить ИИ: сросшиеся слова"),
+                        _t("После фильтров (заглавные, знаки, пробелы) ищет слова без пробела между ними — "
+                           "«distastethis», «nineteenthcentury», «1984was» — разделяет по смыслу и сохраняет "
+                           "исправленную книгу поверх подготовленной."))
+        self.btn_ai = HudButton(row, _t("✦ ПРОВЕРИТЬ ИИ"), self.check_ai, height=28, font_size=8,
+                                color=AMBER, width=150)
+        self.btn_ai.pack(side=tk.LEFT)
+        self.ai_info = _label(row, "", fg=MUTED, size=8, wraplength=px(320), justify="left")
+        self.ai_info.pack(side=tk.LEFT, padx=(px(8), 0))
 
         col = self._panel(grid, _t("ЦВЕТА"), "ЦВЕТА")
         self._color(col, "typed_color", _t("Цвет набранного"), CYAN_DIM)
@@ -101,6 +110,10 @@ class BridgeSettingsScreen(tk.Frame):
         self._color(box, "sight_on_color", _t("Цвет текущей буквы"), RED)
         self.show_tab("ПРИЦЕЛ")
         self.refresh()
+
+    def check_ai(self) -> None:
+        """«Проверить ИИ»: починка склеек в книге на борту (в фоне), отчёт рядом с кнопкой."""
+        run_glue_check(self.app, self, self.btn_ai, self.ai_info)
 
     HELP_IDS = {"ПРИЦЕЛ": "sight", "НАБОР": "typing", "ЦВЕТА": "colors", "ОКОШКО ПРИЦЕЛА": "box"}
 
@@ -225,3 +238,45 @@ class BridgeSettingsScreen(tk.Frame):
         self.preview_box.set_style(st)
         self.preview_box.set(direction="EN → RU", source=PREVIEW_TEXT, translation="быстрая бурая лиса прыгает через ленивую собаку",
                              word="fox", word_tr="лиса", word_cursor=0, status="✓", status_color=GREEN)
+
+
+def run_glue_check(app, widget, button, info) -> None:
+    """Общая логика кнопки «Проверить ИИ» (мостик и подготовка текста)."""
+    import threading
+
+    from stamina import glue_fix
+
+    lib = None
+    try:
+        from stamina import speedread_hook
+        spd = app.screens.get(speedread_hook.KEY)
+        lib = getattr(spd, "lib", None)
+    except Exception:  # noqa: BLE001
+        lib = None
+    button.set_enabled(False)
+    info.configure(text=_t("Проверяю текст…"), fg=theme.CYAN)
+    box: list = []
+
+    def work() -> None:
+        try:
+            box.append(glue_fix.fix_stored(app.store, lib))
+        except Exception as e:  # noqa: BLE001
+            box.append(e)
+
+    def poll() -> None:
+        if not box:
+            widget.after(60, poll)
+            return
+        button.set_enabled(True)
+        rep = box[0]
+        if isinstance(rep, Exception):
+            info.configure(text=_t("Ошибка проверки: {0}").format(rep), fg=RED)
+            return
+        if not rep.count:
+            info.configure(text=_t("Сросшихся слов нет — текст чистый"), fg=GREEN)
+            return
+        info.configure(text=_t("Исправлено склеек: {0}. Файл сохранён.").format(rep.count) + "\n"
+                       + "; ".join(rep.examples(4)), fg=GREEN)
+
+    threading.Thread(target=work, daemon=True, name="glue-check").start()
+    widget.after(60, poll)
