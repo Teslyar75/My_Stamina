@@ -131,7 +131,7 @@ class EnglishScreen(tk.Frame):
             hook()
 
     # рабочие страницы и их предельная ширина (для alt-оболочки; классика не вызывает)
-    WORK_PAGES = {"review": 840, "book": 820, "practice": 1040}
+    WORK_PAGES = {"review": 840, "book": 820, "practice": 1040, "sets": 4000}  # sets: альт — без баннера, 24 карты в окно
 
     def alt_working(self):
         """(страница, макс. ширина) — если открыт сеанс карточек/миссия/«из книги»."""

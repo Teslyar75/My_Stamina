@@ -2218,8 +2218,8 @@ def compact(root, profile: str = "generic", skip=None) -> int:
     stack = [root]
     while stack:
         w = stack.pop()
-        if skip is not None and w is skip:
-            continue
+        if (skip is not None and w is skip) or getattr(w, "_alt_nocompact", False):
+            continue      # _alt_nocompact: блок разложен как в классике (не сворачивать в «КОНСОЛЬ»)
         try:
             kids = w.winfo_children()
         except tk.TclError:

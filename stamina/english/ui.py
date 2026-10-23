@@ -162,6 +162,10 @@ class Tile(tk.Canvas):
             txt = (tr + " — " if tr else "") + d
             self.create_text(w / 2, px(52), text=txt, width=w - px(18), fill=TEXT, font=theme.font(8),
                              justify="center", tags="open")
+        elif h < px(96):
+            # низкая плитка (альт-вид подгоняет 24 карты под окно): слово без меток
+            self.create_text(w / 2, max(px(22), (h - px(28)) / 2 + px(6)), text=self.w["word"], fill=TEXT,
+                             font=theme.font(12 if h >= px(64) else 10, True), tags="open")
         else:
             self.create_text(w / 2, px(38), text=self.w["word"], fill=TEXT, font=theme.font(14, True),
                              tags="open")

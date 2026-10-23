@@ -370,6 +370,8 @@ class SetsPage(tk.Frame):
         self._group(r2, "diff", _t("СЛОЖНОСТЬ"), [("all", _t("ВСЕ")), ("easy", _t("ЛЁГК.")), ("medium", _t("СРЕД.")), ("tricky", _t("ТРУД."))])
         r3 = tk.Frame(b, bg=PANEL)
         r3.pack(fill=tk.X, pady=(px(6), 0))
+        self._frows = (r2, r3)          # альт: свёрнуты под кнопкой «ФИЛЬТРЫ», чтобы 24 карты влезли в окно
+        self._fopen = False
         self._group(r3, "sort", _t("СОРТИРОВКА"), [("random", _t("СЛУЧАЙНО")), ("freq", _t("ЧАСТОТА")), ("alpha", "A→Z"),
                                                ("difficulty", _t("СЛОЖНОСТЬ"))])
         self._group(r3, "pos", _t("ЧАСТЬ РЕЧИ"), POS_FILTER)
@@ -401,16 +403,15 @@ class SetsPage(tk.Frame):
         self._bot = bot
         self.alt_grid = tk.Frame(self, bg=BG)
         self.alt_grid.bind("<Configure>", self._reflow, add="+")
-        self.alt_more = tk.Frame(self, bg=BG)
-        self.btn_more = HudButton(self.alt_more, _t("ПОКАЗАТЬ ЕЩЁ 24"), self.load_more, color=AMBER,
-                                  height=30, font_size=9)
-        self.btn_more.pack(side=tk.LEFT, padx=px(4))
-        self.btn_all = HudButton(self.alt_more, _t("ПОКАЗАТЬ ВСЕ"), self.load_all, height=30, font_size=8)
-        self.btn_all.pack(side=tk.LEFT, padx=px(4))
-        HudButton(self.alt_more, _t("⤨ СЛУЧАЙНЫЕ 24"), self.random24, height=30, font_size=8).pack(
-            side=tk.LEFT, padx=px(4))
-        self.shown_lbl = L(self.alt_more, "", fg=CYAN, size=9, bold=True, mono=True, bg=BG)
-        self.shown_lbl.pack(side=tk.LEFT, padx=px(10))
+        # кнопки альта — в той же нижней строке, что ◀ ▶ (одна строка, без лишней высоты)
+        self._next_btn = bot.winfo_children()[2]
+        self.btn_more = HudButton(bot, _t("ЕЩЁ 24"), self.load_more, color=AMBER, height=30, font_size=8)
+        self.btn_all = HudButton(bot, _t("ВСЕ"), self.load_all, height=30, font_size=8)
+        self.btn_rnd = HudButton(bot, _t("⤨ СЛУЧАЙНЫЕ 24"), self.random24, height=30, font_size=8)
+        self.btn_flt = HudButton(bot, _t("ФИЛЬТРЫ ▾"), self.toggle_filters, height=30, font_size=8)
+        self.shown_lbl = L(bot, "", fg=CYAN, size=8, bold=True, mono=True, bg=BG)
+        self._alt_btns = (self.btn_more, self.btn_all, self.btn_rnd, self.btn_flt, self.shown_lbl)
+        self._tile_h = 0
         self.shown = self.COLS * self.ROWS
         self._alt_on = False
         self._busy = False
@@ -507,16 +508,44 @@ class SetsPage(tk.Frame):
         if on:
             self.gridf.pack_forget()
             self._bot.pack_forget()
-            self._bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(4)))     # ◀ ▶ — над лентой
-            self.alt_grid.pack(fill=tk.X, padx=px(10))
-            self.alt_more.pack(fill=tk.X, padx=px(12), pady=(px(4), px(8)))
+            # без растягивающегося пустого поля: сетка 24, сразу под ней строка управления
+            self.alt_grid.pack(fill=tk.X, anchor="n", padx=px(10))
+            self._bot.pack(fill=tk.X, anchor="n", padx=px(12), pady=(px(4), px(2)))
+            self.tip.pack_forget()
+            self._show_frows(self._fopen)
+            prev = self._next_btn
+            for wdg in self._alt_btns:
+                wdg.pack(side=tk.LEFT, padx=px(3), after=prev)
+                prev = wdg
             self.after(400, self._watch_bottom)
         else:
             self.alt_grid.pack_forget()
-            self.alt_more.pack_forget()
+            for wdg in self._alt_btns:
+                wdg.pack_forget()
+            self.tip.pack(side=tk.LEFT, padx=px(14), after=self._next_btn)
+            self._show_frows(True)
             self._bot.pack_forget()
             self.gridf.pack(fill=tk.BOTH, expand=True, padx=px(10))
             self._bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
+
+    def _show_frows(self, on: bool) -> None:
+        for r in self._frows:
+            if on and not r.winfo_manager():
+                r.pack(fill=tk.X, pady=(px(6), 0))
+            elif not on and r.winfo_manager():
+                r.pack_forget()
+
+    def toggle_filters(self) -> None:
+        self._fopen = not self._fopen
+        self._show_frows(self._fopen)
+        self._tile_h = 0
+        self.after_idle(self._fit_tiles)
+
+    def _alt_tile(self, w: dict) -> Tile:
+        t = Tile(self.alt_grid, self.ctx, w)
+        if self._tile_h:
+            t.configure(height=self._tile_h)
+        return t
 
     def _alt_bounds(self) -> tuple[int, int]:
         start = self.page * self.COLS * self.ROWS
@@ -532,7 +561,7 @@ class SetsPage(tk.Frame):
         self.page = min(self.page, pages - 1)
         a, b = self._alt_bounds()
         for w in self.items[a:b]:
-            self.tiles.append(Tile(self.alt_grid, self.ctx, w))
+            self.tiles.append(self._alt_tile(w))
         self._place()
         self._arm = False
         vp = self._viewport()
@@ -548,6 +577,33 @@ class SetsPage(tk.Frame):
         self.shown_lbl.configure(text=_t("ПОКАЗАНО {0}–{1} ИЗ {2}").format(a + 1 if b > a else 0, b, n))
         self.btn_more.set_enabled(b < n)
         self.btn_all.set_enabled(b < n)
+        self.after_idle(self._fit_tiles)
+        self._viewport_relayout()
+
+    def _fit_tiles(self) -> None:
+        """Альт: высота плиток по окну — первые 24 карты и строка управления без прокрутки."""
+        vp = self._viewport()
+        if vp is None or not self.tiles:
+            return
+        try:
+            self.update_idletasks()
+            n = max(1, self._ncols)
+            rows_first = -(-min(len(self.tiles), self.COLS * self.ROWS) // n)
+            cur = self._tile_h or px(Tile.H)
+            grid_h = self.alt_grid.winfo_reqheight()
+            overhead = vp.required() - grid_h
+            pad = px(6)
+            avail = vp.canvas.winfo_height() - overhead - 2
+            h = int(avail / max(1, rows_first)) - pad
+            h = max(px(44), min(px(Tile.H), h))
+        except tk.TclError:
+            return
+        if abs(h - cur) <= 1 and self._tile_h:
+            return
+        self._tile_h = h
+        for t in self.tiles:
+            t.configure(height=h)
+        self._place()
         self._viewport_relayout()
 
     def _viewport_relayout(self) -> None:
@@ -575,7 +631,7 @@ class SetsPage(tk.Frame):
             self.shown += n or self.COLS * self.ROWS
             _a, nb = self._alt_bounds()
             for w in self.items[b:nb]:
-                self.tiles.append(Tile(self.alt_grid, self.ctx, w))
+                self.tiles.append(self._alt_tile(w))
             self._place()
             self._alt_status()
         finally:
@@ -618,13 +674,16 @@ class SetsPage(tk.Frame):
         """Сколько плиток в ряд: в классике — всегда COLS, в альт-режиме — по ширине."""
         if not self._alt() or width <= 1:
             return self.COLS
-        return max(2, min(self.COLS, (width + px(6)) // px(int(Tile.W * 0.8) + 6)))
+        return max(2, min(self.COLS, (width + px(6)) // px(int(Tile.W * 0.6) + 6)))
 
     def _reflow(self, e) -> None:
         n = self.cols_for(e.width)
         if n != self._ncols:
             self._ncols = n
             self._place()
+            if self._alt_on:
+                self._tile_h = 0
+                self.after_idle(self._fit_tiles)
 
     def _place(self) -> None:
         """Разложить уже созданные плитки по сетке (без пересоздания — дёшево)."""
@@ -636,7 +695,8 @@ class SetsPage(tk.Frame):
         if self._alt():
             rows = -(-len(self.tiles) // max(1, n)) if self._alt_on else -(-self.COLS * self.ROWS // 2)
             for r in range(rows):
-                g.grid_rowconfigure(r, weight=0, uniform="", minsize=px(Tile.H))
+                g.grid_rowconfigure(r, weight=0, uniform="",
+                                    minsize=(self._tile_h or px(Tile.H)) if self._alt_on else px(Tile.H))
         for i, t in enumerate(self.tiles):
             t.grid(row=i // n, column=i % n, sticky="nsew", padx=px(3), pady=px(3))
 
@@ -748,6 +808,7 @@ class ScannerPage(tk.Frame):
         # канал связи — практика предложений
         self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"))
         self.chan.pack(fill=tk.X, padx=px(12), pady=(px(2), px(10)))
+        self.chan._alt_nocompact = True   # альт: кнопки канала — в ряд, как в классике
         cb = self.chan.body
         cb.grid_columnconfigure(0, weight=1)
         left = tk.Frame(cb, bg=PANEL)
@@ -778,6 +839,30 @@ class ScannerPage(tk.Frame):
         self.match.pack(fill=tk.X, pady=(px(4), 0))
         self.mic = MicPanel(cb, ctx, self.on_speech)
         self.mic.grid(row=0, column=1, sticky="n", padx=px(10))
+        root.bind("<Configure>", lambda _e: self._alt_unnest(), add="+")
+
+    def _alt_unnest(self) -> None:
+        """Альт: без вложенной прокрутки — канал связи виден целиком, листает внешний вьюпорт."""
+        try:
+            alt = bool(getattr(self.winfo_toplevel(), "_alt_view", None))
+            if not alt:
+                if self.sf.pack_info().get("expand") in (0, "0", False):
+                    self.sf.pack_configure(fill=tk.BOTH, expand=True)
+                if not self.sf.bar.winfo_manager():
+                    self.sf.bar.pack(side=tk.RIGHT, fill=tk.Y)
+                return
+            if self.sf.bar.winfo_manager():
+                self.sf.bar.pack_forget()
+            if self.sf.pack_info().get("expand") not in (0, "0", False):
+                self.sf.pack_configure(fill=tk.X, expand=False, anchor="n")
+            h = self.sf.inner.winfo_reqheight()
+            if getattr(self, "_unh", None) != h:
+                self._unh = h
+                self.sf.canvas.configure(height=h)
+                self.sf.canvas.yview_moveto(0)
+            self.chan.pack_configure(pady=(px(2), px(4)))
+        except tk.TclError:
+            pass
 
     # -- данные -------------------------------------------------------------------
     def _cur_word(self) -> dict:
