@@ -62,6 +62,14 @@ PROFILES: dict[str, dict] = {
         "drawer": "МАНОМЕТРЫ",
         "gauge": "ДАВЛЕНИЕ",
     },
+    "bathyscaphe": {
+        "glyphs": {"bridge": "⚓", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
+                   "radio": "◉", "comm": "✉", "orion": "✦", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -72,7 +80,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -180,7 +188,10 @@ class AltNavButton(HudButton):
             return
         col = self.color
         lit = self._active or self._hover or self._pressed
-        if self.profile == "starship":
+        nav_fn = getattr(self, f"_nav_{self.profile}", None)   # свой рисунок скина (батискаф, неон…)
+        if nav_fn is not None:
+            fg, x0 = nav_fn(w, h, col, lit)
+        elif self.profile == "starship":
             c = min(px(10), h // 3)
             fill = blend(theme.PANEL, col, 0.22 if self._active else 0.10 if self._hover else 0.0)
             self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=fill,
@@ -224,6 +235,23 @@ class AltNavButton(HudButton):
                 self.create_line(x, y + dy * k, x, y, x + dx * k, y, fill=theme.AMBER, width=2)
         self._last_draw = state
 
+
+    def _nav_bathyscaphe(self, w, h, col, lit):
+        """Батискаф: скруглённая панель с заклёпками и иллюминатором отсека слева."""
+        fill = blend(theme.PANEL, col, 0.24 if self._active else 0.12 if self._hover else 0.0)
+        brass = blend(theme.PANEL, theme.AMBER, 0.55)
+        rrect(self, 1, 1, w - 2, h - 2, px(9), fill=fill, outline=col if lit else theme.CYAN_DIM,
+              width=2 if self._active else 1)
+        rr = max(1, px(1))
+        for (x, y) in ((px(6), px(5)), (w - px(7), px(5)), (px(6), h - px(6)), (w - px(7), h - px(6))):
+            self.create_oval(x - rr, y - rr, x + rr, y + rr, fill=brass, outline="")
+        r, cx, cy = px(8), px(16), h / 2
+        self.create_oval(cx - r, cy - r, cx + r, cy + r, fill=blend(theme.BG, col, 0.5 if self._active else 0.15),
+                         outline=brass, width=2)
+        if self._active:
+            self.create_arc(cx - r * 0.6, cy - r * 0.6, cx + r * 0.6, cy + r * 0.6, start=100, extent=70,
+                            style="arc", outline=theme.TEXT)
+        return (theme.TEXT if lit else blend(col, theme.TEXT, 0.5)), px(28)
 
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
@@ -302,6 +330,44 @@ class OrnamentBand(tk.Canvas):
                 self.create_oval(x - rr, y - rr, x + rr, y + rr, outline=theme.RED, width=2)
 
 
+    def _draw_bathyscaphe(self, w: int, h: int) -> None:
+        """Батискаф: сверху клёпаный борт с пузырьками, снизу трубопровод балласта."""
+        hull = blend(theme.BG, theme.PANEL, 0.8)
+        brass = blend(theme.PANEL, theme.AMBER, 0.5)
+        rnd = random.Random(5 if self.kind == "top" else 9)
+        if self.kind == "top":
+            self.create_rectangle(0, 0, w, h, fill=hull, outline="")
+            self.create_line(0, h - 1, w, h - 1, fill=brass, width=2)
+            r = max(2, px(2))
+            for x in range(px(12), w, px(30)):
+                self.create_oval(x - r, h / 2 - r, x + r, h / 2 + r, fill=brass, outline=theme.BG)
+            for _ in range(max(6, w // 60)):   # пузырьки
+                x, y, b = rnd.randrange(0, max(1, w)), rnd.randrange(1, max(2, h - 2)), rnd.choice((1, 2, 2, 3))
+                self.create_oval(x - b, y - b, x + b, y + b, outline=blend(theme.CYAN, hull, 0.4))
+        else:
+            y = h / 2
+            self.create_line(0, y, w, y, fill=blend(theme.BG, theme.CYAN, 0.35), width=max(3, px(5)))
+            self.create_line(0, y - px(2), w, y - px(2), fill=theme.CYAN)
+            for x in range(px(120), w, px(240)):   # вентили-штурвалы
+                rr = px(5)
+                self.create_oval(x - rr, y - rr, x + rr, y + rr, outline=brass, width=2)
+                self.create_line(x - rr, y, x + rr, y, fill=brass)
+                self.create_line(x, y - rr, x, y + rr, fill=brass)
+
+def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
+    """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
+    r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
+    pts = [x0 + r, y0, x1 - r, y0, x1, y0, x1, y0 + r, x1, y1 - r, x1, y1, x1 - r, y1, x0 + r, y1,
+           x0, y1, x0, y1 - r, x0, y0 + r, x0, y0]
+    return c.create_polygon(pts, smooth=True, **kw)
+
+
+def glow_line(c: tk.Canvas, coords, col: str, width: int = 2) -> None:
+    """Неоновая линия: широкий тусклый ореол, средний слой, яркая сердцевина."""
+    for k, wd in ((0.22, width + px(5)), (0.5, width + px(2)), (1.0, width)):
+        c.create_line(*coords, fill=blend(theme.BG, col, k), width=wd, capstyle="round")
+
+
 def draw_gear(c: tk.Canvas, cx: float, cy: float, r: float, teeth: int, fill: str, outline: str,
               angle: float = 0.0) -> None:
     pts = []
@@ -375,8 +441,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -497,6 +563,44 @@ class SkinFrame(tk.Frame):
             for y in range(e * 2, h - e, px(26)):
                 cv.create_oval(w / 2 - r, y - r, w / 2 + r, y + r, fill=theme.LINE_HI, outline=theme.BG)
 
+
+    def _edge_porthole(self, cv, side, w, h) -> None:
+        """Батискаф: клёпаный корпус, латунный кант, иллюминаторы в углах, метки сонара."""
+        e = self.edge
+        hull = blend(theme.BG, theme.PANEL, 0.85)
+        brass = blend(theme.PANEL, theme.AMBER, 0.55)
+        horiz = side in ("top", "bottom")
+        cv.create_rectangle(0, 0, w, h, fill=hull, outline="")
+        r = max(2, e // 6)
+        if horiz:
+            yo = 0 if side == "top" else h - 1
+            yi = h - 2 if side == "top" else 1
+            cv.create_line(0, yo, w, yo, fill=brass, width=2)
+            cv.create_line(e, yi, w - e, yi, fill=theme.CYAN, width=1)
+            for x in range(e * 3, w - e * 3, px(22)):   # заклёпки корпуса
+                cv.create_oval(x - r, h / 2 - r, x + r, h / 2 + r, fill=brass, outline=theme.BG)
+            for x in (e, w - e):   # иллюминаторы в углах
+                rr = e * 0.9
+                cv.create_oval(x - rr, h / 2 - rr, x + rr, h / 2 + rr, fill=brass, outline=theme.BG)
+                gi = rr * 0.62
+                cv.create_oval(x - gi, h / 2 - gi, x + gi, h / 2 + gi, fill=blend(theme.BG, theme.CYAN, 0.35),
+                               outline=theme.CYAN)
+                cv.create_arc(x - gi * 0.7, h / 2 - gi * 0.7, x + gi * 0.7, h / 2 + gi * 0.7, start=100, extent=70,
+                              style="arc", outline=theme.TEXT)
+            if side == "top":
+                if self.title:
+                    cv.create_text(e * 3, h / 2, anchor="w", text=self.title, fill=theme.CYAN, font=theme.font(7, True))
+                sx = w - e * 4   # импульс сонара
+                for k in (1, 2, 3):
+                    cv.create_arc(sx - e * k * 0.6, h / 2 - e * k * 0.6, sx + e * k * 0.6, h / 2 + e * k * 0.6,
+                                  start=-35, extent=70, style="arc", outline=blend(theme.CYAN, hull, 0.25 * k))
+        else:
+            xo = 0 if side == "left" else w - 1
+            xi = w - 2 if side == "left" else 1
+            cv.create_line(xo, 0, xo, h, fill=brass, width=2)
+            cv.create_line(xi, 0, xi, h, fill=theme.CYAN)
+            for y in range(e * 2, h - e, px(22)):
+                cv.create_oval(w / 2 - r, y - r, w / 2 + r, y + r, fill=brass, outline=theme.BG)
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""

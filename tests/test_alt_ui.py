@@ -7,6 +7,8 @@ from pathlib import Path
 from stamina import alt_ui, nav, storage
 
 ROOT = Path(__file__).resolve().parents[1]
+# Скины со своим профилем ALT UI: id скина -> стиль рамки (профиль = id скина).
+NEW_SKINS: dict[str, str] = {"bathyscaphe": "porthole"}
 
 
 class TestAltSettings(unittest.TestCase):
@@ -19,7 +21,7 @@ class TestAltSettings(unittest.TestCase):
     def test_profiles(self):
         self.assertEqual(alt_ui.profile_id("spaceship", {}), "starship")
         self.assertEqual(alt_ui.profile_id("steampunk", {}), "steampunk")
-        self.assertEqual(alt_ui.profile_id("zen_garden", {}), "generic")
+        self.assertEqual(alt_ui.profile_id("no_such_skin", {}), "generic")
         self.assertEqual(alt_ui.profile_id(None, {"id": "x", "alt_ui": {"profile": "steampunk"}}), "steampunk")
         for tid, prof in (("spaceship", "starship"), ("steampunk", "steampunk")):
             data = json.loads((ROOT / "stamina" / "themes" / f"{tid}.json").read_text(encoding="utf-8"))
@@ -117,6 +119,28 @@ class TestAltWallpapers(unittest.TestCase):
             self.assertTrue(wp2.available)
         finally:
             root.destroy()
+
+class TestSkinAltProfiles(unittest.TestCase):
+    """Каждый скин со своим профилем: своя рамка и обои-слайдшоу в каждом отсеке."""
+
+    def test_profile_and_frame(self):
+        for skin, style in NEW_SKINS.items():
+            self.assertTrue((ROOT / "stamina" / "themes" / f"{skin}.json").is_file(), skin)
+            self.assertEqual(alt_ui.profile_id(skin, {}), skin)
+            self.assertEqual(alt_ui.frame_style(skin, {}), style)
+            self.assertIn(style, alt_ui.FRAME_STYLES)
+            self.assertTrue(hasattr(alt_ui.SkinFrame, f"_edge_{style}"), style)
+            self.assertTrue(hasattr(alt_ui.OrnamentBand, f"_draw_{skin}"), skin)
+            self.assertTrue(hasattr(alt_ui.AltNavButton, f"_nav_{skin}"), skin)
+
+    def test_every_zone_has_wallpapers(self):
+        attr = (ROOT / "stamina" / "assets" / "alt_wallpapers" / "ATTRIBUTION.md").read_text(encoding="utf-8")
+        for skin in NEW_SKINS:
+            for z in nav.ZONE_ORDER:
+                ps = alt_ui.wallpaper_paths(skin, z)
+                self.assertGreaterEqual(len(ps), 2, (skin, z))   # слайдшоу: несколько кадров
+                for p in ps:
+                    self.assertIn(f"`{skin}/{p.name}`", attr, p)
 
 
 if __name__ == "__main__":

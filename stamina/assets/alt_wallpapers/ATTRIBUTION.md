@@ -77,3 +77,34 @@
 | `steampunk/speedread_5.jpg` | [A view of Paris through the clock face of the Musée d'Orsay.jpg](https://commons.wikimedia.org/wiki/File:A_view_of_Paris_through_the_clock_face_of_the_Mus%C3%A9e_d%27Orsay.jpg) | Ввласенко | CC BY 4.0 |
 
 Материалы NASA — общественное достояние (NASA Media Usage Guidelines); логотипы NASA не используются.
+
+## Батискаф (`bathyscaphe/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `bathyscaphe/bridge.jpg` | [Bathyscaphe Trieste.jpg](https://commons.wikimedia.org/wiki/File:Bathyscaphe_Trieste.jpg) | Unknown authorUnknown author | Public domain |
+| `bathyscaphe/bridge_2.jpg` | [The Control Room Looking Forward, Hm Submarine Art.IWMART922.jpg](https://commons.wikimedia.org/wiki/File:The_Control_Room_Looking_Forward,_Hm_Submarine_Art.IWMART922.jpg) | Francis Dodd | Public domain |
+| `bathyscaphe/bridge_3.jpg` | [ALVIN Panorama.jpg](https://commons.wikimedia.org/wiki/File:ALVIN_Panorama.jpg) | Taollan82 | CC BY 3.0 |
+| `bathyscaphe/english.jpg` | [B-39 emergency escape hatch 1.JPG](https://commons.wikimedia.org/wiki/File:B-39_emergency_escape_hatch_1.JPG) | BrokenSphere | CC BY-SA 3.0 |
+| `bathyscaphe/english_2.jpg` | [Site Shipwreck underwater archaeology.jpg](https://commons.wikimedia.org/wiki/File:Site_Shipwreck_underwater_archaeology.jpg) | Dwi sumaiyyah makmur | CC BY-SA 4.0 |
+| `bathyscaphe/english_3.jpg` | [Coral Outcrop Flynn Reef.jpg](https://commons.wikimedia.org/wiki/File:Coral_Outcrop_Flynn_Reef.jpg) | Toby Hudson | CC BY-SA 3.0 |
+| `bathyscaphe/speedread.jpg` | [School of fish seen from Underwater Tunnel Atlantis.jpg](https://commons.wikimedia.org/wiki/File:School_of_fish_seen_from_Underwater_Tunnel_Atlantis.jpg) | Fred Hsu (Wikipedia:User:Fredhsu on en.wikipedia) | CC BY-SA 3.0 |
+| `bathyscaphe/speedread_2.jpg` | [Sardine run over seafloor in Moalboal 03.jpg](https://commons.wikimedia.org/wiki/File:Sardine_run_over_seafloor_in_Moalboal_03.jpg) | Iampjanz | CC BY-SA 4.0 |
+| `bathyscaphe/speedread_3.jpg` | [Giant Manta AdF.jpg](https://commons.wikimedia.org/wiki/File:Giant_Manta_AdF.jpg) | Arturo de Frias Marques | CC BY-SA 4.0 |
+| `bathyscaphe/lounge.jpg` | [Georgia Aquarium - Ocean Voyager Tunnel Jan 2006.jpg](https://commons.wikimedia.org/wiki/File:Georgia_Aquarium_-_Ocean_Voyager_Tunnel_Jan_2006.jpg) | Diliff | CC BY 2.5 |
+| `bathyscaphe/lounge_2.jpg` | [Parque Nacional Marinho de Fernando de Noronha - João Paulo Marques DAndretta 12.jpg](https://commons.wikimedia.org/wiki/File:Parque_Nacional_Marinho_de_Fernando_de_Noronha_-_Jo%C3%A3o_Paulo_Marques_DAndretta_12.jpg) | João D'Andretta | CC BY-SA 4.0 |
+| `bathyscaphe/lounge_3.jpg` | [Blacktip reef shark (Carcharhinus melanopterus) Moorea.jpg](https://commons.wikimedia.org/wiki/File:Blacktip_reef_shark_(Carcharhinus_melanopterus)_Moorea.jpg) | Charles J. Sharp | CC BY-SA 4.0 |
+| `bathyscaphe/radio.jpg` | [Pink Jellyfish (43101678440).jpg](https://commons.wikimedia.org/wiki/File:Pink_Jellyfish_(43101678440).jpg) | National Marine Sanctuaries | Public domain |
+| `bathyscaphe/radio_2.jpg` | [Submarine Monument Surabaya sonar room.JPG](https://commons.wikimedia.org/wiki/File:Submarine_Monument_Surabaya_sonar_room.JPG) | Midori | CC BY 3.0 |
+| `bathyscaphe/radio_3.jpg` | [Eilat Dolphin Reef (3).jpg](https://commons.wikimedia.org/wiki/File:Eilat_Dolphin_Reef_(3).jpg) | טל שמע | CC BY-SA 4.0 |
+| `bathyscaphe/comm.jpg` | [Diving bell on the set of What Women Love.jpg](https://commons.wikimedia.org/wiki/File:Diving_bell_on_the_set_of_What_Women_Love.jpg) | Sol Lesser Productions | Public domain |
+| `bathyscaphe/comm_2.jpg` | [Diving helmets (3).jpg](https://commons.wikimedia.org/wiki/File:Diving_helmets_(3).jpg) | Reise Reise | CC BY-SA 4.0 |
+| `bathyscaphe/comm_3.jpg` | [SS Godetia wreck banner diver over boiler.jpg](https://commons.wikimedia.org/wiki/File:SS_Godetia_wreck_banner_diver_over_boiler.jpg) | Peter Southwood | CC BY-SA 4.0 |
+| `bathyscaphe/orion.jpg` | [MARUM Schwarzer Raucher.jpg](https://commons.wikimedia.org/wiki/File:MARUM_Schwarzer_Raucher.jpg) | MARUM − Zentrum für Marine Umweltwissenschaften, Universität Bremen | CC BY 4.0 |
+| `bathyscaphe/orion_2.jpg` | [Small jellyfishes in aquarium.jpg](https://commons.wikimedia.org/wiki/File:Small_jellyfishes_in_aquarium.jpg) | Vincent Niochet | CC BY-SA 4.0 |
+| `bathyscaphe/orion_3.jpg` | [Soleil à travers un paysage sous-marin de Bretagne (Ifremer 00378-48922 - 913).jpg](https://commons.wikimedia.org/wiki/File:Soleil_%C3%A0_travers_un_paysage_sous-marin_de_Bretagne_(Ifremer_00378-48922_-_913).jpg) | Olivier Dugornay | CC BY 4.0 |
+| `bathyscaphe/settings.jpg` | [Submarine Monument Surabaya engine room.JPG](https://commons.wikimedia.org/wiki/File:Submarine_Monument_Surabaya_engine_room.JPG) | Midori | CC BY 3.0 |
+| `bathyscaphe/settings_2.jpg` | [USS Cavalla - aft torpedo room 2.jpg](https://commons.wikimedia.org/wiki/File:USS_Cavalla_-_aft_torpedo_room_2.jpg) | Eric Polk | CC BY-SA 4.0 |
+| `bathyscaphe/settings_3.jpg` | [2020-09-16 165855 Soviet submarine B-515.jpg](https://commons.wikimedia.org/wiki/File:2020-09-16_165855_Soviet_submarine_B-515.jpg) | Tim Rademacher | CC BY-SA 4.0 |
