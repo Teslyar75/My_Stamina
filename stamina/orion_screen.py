@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 from stamina.i18n import t as tr_          # окно доступа к GitHub исторически зовёт так
+from stamina import archive_view
 from stamina import marks
 
 import queue
@@ -896,73 +897,306 @@ class OrionScreen(tk.Frame):
                   color=MUTED).pack(side=tk.LEFT)
 
         _label(page, _t("Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по "
-                        "сообщению — выделить; выделенное переносится в чат."),
+                        "находке — сообщение целиком; ☐ — отметить для переноса в чат."),
                fg=MUTED, size=9, bg=BG, anchor="w", justify="left",
                wraplength=px(900)).pack(fill=tk.X, pady=(0, px(4)))
 
         self.arch = HudPanel(page, title=_t("НАЙДЕННЫЕ СООБЩЕНИЯ"))
+        self.arch.pack(fill=tk.BOTH, expand=True)        # раньше панель не вставала — находки были не видны
+        # подробный вид: панель навигации над тем же местом, где список
+        self.arch_nav = tk.Frame(self.arch.body, bg=PANEL)
+        HudButton(self.arch_nav, _t("← К СПИСКУ"), self._archive_back, height=30, font_size=9,
+                  color=CYAN).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(self.arch_nav, "◀", lambda: self._archive_step(-1), height=30, font_size=10,
+                  color=MUTED).pack(side=tk.LEFT, padx=(0, px(4)))
+        HudButton(self.arch_nav, "▶", lambda: self._archive_step(1), height=30, font_size=10,
+                  color=MUTED).pack(side=tk.LEFT, padx=(0, px(8)))
+        self.arch_pos = _label(self.arch_nav, "", fg=MUTED, size=9, bg=PANEL)
+        self.arch_pos.pack(side=tk.LEFT)
+        self.arch_pick_btn = HudButton(self.arch_nav, _t("ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА"),
+                                       self._archive_detail_pick, height=30, font_size=9,
+                                       color=GREEN)
+        self.arch_pick_btn.pack(side=tk.RIGHT)
         abody = tk.Frame(self.arch.body, bg=PANEL)
         abody.pack(fill=tk.BOTH, expand=True)
+        self.arch_abody = abody
         asb = make_vscroll(abody)
         asb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.arch_sb = asb
         self.arch_text = tk.Text(abody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
                                  font=theme.font(10), padx=px(8), pady=px(6), cursor="arrow",
                                  state=tk.DISABLED, highlightthickness=0, bd=0,
-                                 yscrollcommand=asb.set)
+                                 yscrollcommand=asb.set, spacing1=px(1), spacing3=px(1))
         self.arch_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        asb.configure(command=self.arch_text.yview)
-        for w in (self.arch_text, abody):
-            w.bind("<MouseWheel>", lambda e: self._wheel_in(self.arch_text, e))
-        for tag, color in (("when", MUTED), ("who", CYAN), ("body", TEXT), ("shot", AMBER)):
-            self.arch_text.tag_configure(tag, foreground=color)
+        self.arch_detail = tk.Text(abody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
+                                   font=theme.font(10), padx=px(10), pady=px(8),
+                                   cursor="xterm", state=tk.DISABLED, highlightthickness=0,
+                                   bd=0, yscrollcommand=asb.set, spacing3=px(2),
+                                   selectbackground=CYAN, selectforeground=BG,
+                                   inactiveselectbackground=LINE)
+        asb.configure(command=self._archive_yview)
+        for w in (self.arch_text, self.arch_detail, abody):
+            w.bind("<MouseWheel>", lambda e: self._wheel_in(self._archive_view(), e))
+        for t in (self.arch_text, self.arch_detail):
+            for tag, color in (("when", MUTED), ("who", CYAN), ("body", TEXT), ("shot", AMBER),
+                               ("dim", MUTED), ("chk", GREEN)):
+                t.tag_configure(tag, foreground=color)
+            t.tag_configure("hit", background=AMBER, foreground=BG)
+            t.tag_raise("hit")
+        self.arch_text.tag_configure("snip", lmargin1=px(22), lmargin2=px(22))
+        self.arch_detail.tag_configure("focus", lmargin1=px(10), lmargin2=px(10),
+                                       background=BG2)
+        self.arch_detail.tag_configure("hitcur", background=GREEN, foreground=BG)
+        self.arch_detail.tag_raise("hitcur")
+        self.arch_detail.bind("<Escape>", lambda _e: self._archive_back())
+        self.arch_detail.bind("<Left>", lambda _e: self._archive_step(-1))
+        self.arch_detail.bind("<Right>", lambda _e: self._archive_step(1))
+        self.arch_detail.bind("<Button-1>", lambda _e: self.arch_detail.focus_set())
+        self.arch_detail.bind("<Control-KeyPress>", self._archive_detail_key)
+        self._archive_detail_idx = -1
 
     def _wheel_in(self, widget: tk.Text, e) -> str:
         widget.yview_scroll(int(-e.delta / 120) * 3, "units")
         return "break"
 
     def _archive_search(self) -> None:
-        """Найти в переписке: пустой запрос — показать последние сообщения борта."""
+        """Найти в переписке в фоне: пустой запрос — последние сообщения борта.
+
+        Большой архив читается в потоке; экран не замирает. Пришёл ответ на старый
+        запрос (пилот уже ищет другое) — выбрасываем.
+        """
         query = self.arch_entry.get().strip()
-        self._archive_rows = orion.archive(query, limit=500)
+        self._arch_gen = getattr(self, "_arch_gen", 0) + 1
+        gen = self._arch_gen
+        self._arch_words = tuple(orion.parse_query(query).words)
+        self._arch_started = time.perf_counter()
+        self.arch_found.configure(text=_t("Ищу…"))
+        box: dict = {}
+
+        def work() -> None:
+            try:
+                rows = orion.archive(query, limit=500)
+                box["rows"] = rows
+                box["snips"] = archive_view.prepare(rows, self._arch_words)
+            except Exception as exc:  # noqa: BLE001
+                box["error"] = exc
+            box["done"] = True                       # последним: ответ собран целиком
+
+        threading.Thread(target=work, name="orion-archive", daemon=True).start()
+        self._archive_poll(gen, box)
+
+    def _archive_poll(self, gen: int, box: dict) -> None:
+        if gen != getattr(self, "_arch_gen", 0):
+            return                                   # запрос устарел
+        if "done" not in box:
+            self.after(20, lambda: self._archive_poll(gen, box))
+            return
+        if "error" in box:
+            self._hint(_t("Архив не прочитался: {0}").format(box["error"]), AMBER)
+            box = {"rows": [], "snips": [], "done": True}
+        self._archive_rows = box["rows"]
+        self._archive_snips = box["snips"]
         self._archive_picked = []
         self._archive_tags = {}
         self._archive_tag_ids = {}
+        self._archive_ctx = {}
+        self._archive_back()
         self._render_archive()
+        self._archive_prefetch(gen)
+        self._archive_ms = (time.perf_counter() - self._arch_started) * 1000
         self._hint(_t("Найдено: {0}").format(len(self._archive_rows)) if self._archive_rows
                    else _t("Ничего не найдено — попробуйте другие слова или дату."),
                    CYAN if self._archive_rows else MUTED)
+
+    def _archive_prefetch(self, gen: int) -> None:
+        """Соседей для подробного вида читаем в фоне, когда список уже на экране."""
+        cache = self._archive_ctx
+        agents = list(dict.fromkeys(str(m.get("agent") or "") for m in self._archive_rows))
+
+        def work() -> None:
+            for agent in agents:
+                if not agent or agent in cache or gen != getattr(self, "_arch_gen", 0):
+                    continue
+                try:
+                    cache[agent] = orion.archive_messages(agent)
+                except Exception:  # noqa: BLE001
+                    pass
+
+        threading.Thread(target=work, name="orion-archive-ctx", daemon=True).start()
 
     def _archive_reset(self) -> None:
         self.arch_entry.delete(0, tk.END)
         self._archive_search()
 
     def _render_archive(self) -> None:
-        self.arch_text.configure(state=tk.NORMAL)
-        self.arch_text.delete("1.0", tk.END)
+        """Список находок: шапка и фрагмент вокруг совпадения, слово подсвечено."""
+        t = self.arch_text
+        t.configure(state=tk.NORMAL)
+        t.delete("1.0", tk.END)
         self._archive_images = []
         if not self._archive_rows:
-            self.arch_text.insert(tk.END, _t("Ничего не найдено — попробуйте другие слова "
-                                             "или дату.") + "\n", "when")
+            t.insert(tk.END, _t("Ничего не найдено — попробуйте другие слова или дату.")
+                     + "\n", "when")
+        snips = getattr(self, "_archive_snips", None) or archive_view.prepare(
+            self._archive_rows, getattr(self, "_arch_words", ()))
         for idx, msg in enumerate(self._archive_rows):
             tag = f"pick{idx}"
             self._archive_tag_ids[tag] = str(msg.get("id") or f"_{idx}")
             when = orion.when_text(float(msg.get("ts") or 0.0))
             who = orion.role_name(str(msg.get("role") or "")).upper()
-            self.arch_text.insert(tk.END, "─" * 40 + "\n", "when")
-            self.arch_text.insert(tk.END, f"{when}  ·  {who}", tag)
+            t.mark_set(f"chk{idx}", tk.END + "-1c")
+            t.mark_gravity(f"chk{idx}", tk.LEFT)
+            t.insert(tk.END, "☐ ", ("chk", f"box{idx}"))
+            t.insert(tk.END, f"{when}  ·  {who}", ("when", tag))
             agent_name = str(msg.get("agent_name") or "")
             if agent_name:
-                self.arch_text.insert(tk.END, f"  ·  {agent_name.upper()}", "who")
-            self.arch_text.insert(tk.END, "\n", tag)
-            if str(msg.get("kind") or "") == "quote":
-                self.arch_text.insert(tk.END, "📎 ", tag)
-            self.arch_text.insert(tk.END, f"{msg.get('text', '')}\n", tag)
+                t.insert(tk.END, f"  ·  {agent_name.upper()}", ("who", tag))
             if msg.get("shot"):
-                self._archive_shot(str(msg["shot"]), tag)
-            self.arch_text.tag_bind(tag, "<Button-1>", lambda _e, t=tag: self._archive_toggle(t))
-        self.arch_text.configure(state=tk.DISABLED)
+                t.insert(tk.END, "  📷", ("shot", tag))
+            t.insert(tk.END, "\n", tag)
+            text, spans = snips[idx]
+            if str(msg.get("kind") or "") == "quote":
+                text = "📎 " + text
+                spans = [(a + 2, b + 2) for a, b in spans]
+            start = t.index(tk.END + "-1c")
+            t.insert(tk.END, text, ("body", "snip", tag))
+            for a, b in spans:
+                t.tag_add("hit", f"{start}+{a}c", f"{start}+{b}c")
+            t.insert(tk.END, "\n\n", tag)
+            t.tag_bind(tag, "<Button-1>", lambda _e, i=idx: self._archive_open(i))
+            t.tag_bind(f"box{idx}", "<Button-1>",
+                       lambda _e, tg=tag: self._archive_toggle(tg))
+            t.tag_bind(tag, "<Enter>", lambda _e: t.configure(cursor="hand2"))
+            t.tag_bind(tag, "<Leave>", lambda _e: t.configure(cursor="arrow"))
+        t.tag_raise("hit")                           # подсветка поверх фона выделения
+        t.configure(state=tk.DISABLED)
         self._archive_highlight()
-        self.arch_found.configure(text=_t("Найдено: {0}").format(len(self._archive_rows)))
+
+    # -- подробный вид находки ----------------------------------------------
+    def _archive_view(self) -> tk.Text:
+        return self.arch_detail if self._archive_detail_idx >= 0 else self.arch_text
+
+    def _archive_yview(self, *args) -> None:
+        self._archive_view().yview(*args)
+
+    def _archive_messages(self, agent: str) -> list[dict]:
+        cache = getattr(self, "_archive_ctx", None)
+        if cache is None:
+            cache = self._archive_ctx = {}
+        if agent not in cache:
+            try:
+                cache[agent] = orion.archive_messages(agent)
+            except Exception:  # noqa: BLE001
+                cache[agent] = []
+        return cache[agent]
+
+    def _archive_open(self, idx: int) -> str:
+        """Клик по находке: сообщение целиком в разговоре, слово подсвечено."""
+        if not (0 <= idx < len(self._archive_rows)):
+            return "break"
+        if self._archive_detail_idx < 0:
+            self._archive_list_y = self.arch_text.yview()[0]
+            self.arch_text.pack_forget()
+            self.arch_nav.pack(fill=tk.X, before=self.arch_abody, pady=(0, px(4)))
+            self.arch_detail.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self._archive_detail_idx = idx
+        msg = self._archive_rows[idx]
+        mid = str(msg.get("id") or "")
+        window, pos = archive_view.context(self._archive_messages(str(msg.get("agent") or "")),
+                                           mid) if mid else ([], -1)
+        if pos < 0:
+            window, pos = [msg], 0
+        d = self.arch_detail
+        d.configure(state=tk.NORMAL)
+        d.delete("1.0", tk.END)
+        self._archive_images = []
+        first_hit = None
+        for n, m in enumerate(window):
+            own = n == pos
+            when = orion.when_text(float(m.get("ts") or 0.0))
+            who = orion.role_name(str(m.get("role") or "")).upper()
+            d.insert(tk.END, f"{when}  ·  {who}\n", ("who" if own else "dim",)
+                     + (("focus",) if own else ()))
+            text = str(m.get("text") or "")
+            start = d.index(tk.END + "-1c")
+            d.insert(tk.END, text + "\n", ("body", "focus") if own else ("dim",))
+            if own:
+                for a, b in archive_view.hit_spans(text, getattr(self, "_arch_words", ())):
+                    d.tag_add("hit", f"{start}+{a}c", f"{start}+{b}c")
+                    if first_hit is None:
+                        first_hit = f"{start}+{a}c"
+                        d.tag_add("hitcur", f"{start}+{a}c", f"{start}+{b}c")
+                if m.get("shot"):
+                    self._archive_detail_shot(str(m["shot"]))
+                anchor = start
+            d.insert(tk.END, "\n")
+        d.tag_raise("hit")
+        d.tag_raise("hitcur")
+        d.configure(state=tk.DISABLED)
+        d.see(first_hit or anchor)
+        d.focus_set()
+        self.arch_pos.configure(text=_t("Находка {0} из {1}").format(
+            idx + 1, len(self._archive_rows)))
+        self._archive_detail_mark()
+        return "break"
+
+    def _archive_detail_shot(self, path: str) -> None:
+        pic_path = Path(path)
+        pic = shots.thumbnail(pic_path, size=160) if pic_path.is_file() else None
+        if pic is None:
+            return
+        try:
+            from PIL import ImageTk
+            photo = ImageTk.PhotoImage(pic, master=self.arch_detail)
+        except Exception:  # noqa: BLE001
+            return
+        self._archive_images.append(photo)
+        name = self.arch_detail.image_create(tk.END, image=photo, padx=px(10), pady=px(4))
+        self.arch_detail.insert(tk.END, "\n")
+        self.arch_detail.tag_bind(name, "<Button-1>",
+                                  lambda _e, p=str(pic_path): self._open_shot(p))
+
+    def _archive_step(self, delta: int) -> str:
+        if self._archive_detail_idx >= 0 and self._archive_rows:
+            nxt = self._archive_detail_idx + delta
+            if 0 <= nxt < len(self._archive_rows):
+                self._archive_open(nxt)
+        return "break"
+
+    def _archive_back(self) -> str:
+        if getattr(self, "_archive_detail_idx", -1) < 0:
+            return "break"
+        self._archive_detail_idx = -1
+        self.arch_detail.pack_forget()
+        self.arch_nav.pack_forget()
+        self.arch_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.arch_text.yview_moveto(getattr(self, "_archive_list_y", 0.0))
+        return "break"
+
+    def _archive_detail_pick(self) -> None:
+        if self._archive_detail_idx >= 0:
+            self._archive_toggle(f"pick{self._archive_detail_idx}")
+            self._archive_detail_mark()
+
+    def _archive_detail_mark(self) -> None:
+        mid = self._archive_tag_ids.get(f"pick{self._archive_detail_idx}", "")
+        on = mid in self._archive_picked
+        try:
+            self.arch_pick_btn.set_text(_t("✓ ОТМЕЧЕНО") if on else _t("ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА"))
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _archive_detail_key(self, e) -> str | None:
+        key = str(getattr(e, "keysym", "")).lower()
+        if getattr(e, "keycode", 0) == 67 or key in ("c", "cyrillic_es"):
+            try:
+                text = self.arch_detail.get(tk.SEL_FIRST, tk.SEL_LAST)
+            except tk.TclError:
+                return "break"
+            self.clipboard_clear()
+            self.clipboard_append(text)
+            return "break"
+        return None
 
     def _archive_shot(self, path: str, tag: str) -> None:
         """Миниатюра снимка в найденном сообщении: клик открывает картинку целиком."""
@@ -998,8 +1232,16 @@ class OrionScreen(tk.Frame):
 
     def _archive_highlight(self) -> None:
         picked = set(self._archive_picked)
+        t = self.arch_text
+        t.configure(state=tk.NORMAL)
         for tag, mid in self._archive_tag_ids.items():
-            self.arch_text.tag_configure(tag, background=BG2 if mid in picked else PANEL)
+            on = mid in picked
+            t.tag_configure(tag, background=BG2 if on else PANEL)
+            mark = "chk" + tag[4:]
+            if mark in t.mark_names() and t.get(mark) != ("☑" if on else "☐"):
+                t.delete(mark)
+                t.insert(mark, "☑" if on else "☐", ("chk", "box" + tag[4:]))
+        t.configure(state=tk.DISABLED)
         label = _t("Найдено: {0}").format(len(self._archive_rows))
         if picked:
             label += " · " + _t("Выделено: {0}").format(len(picked))

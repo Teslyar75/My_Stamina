@@ -2058,5 +2058,11 @@
  "Картинки уйдут Ориону вместе с сообщением.": "The images will go to Orion with the message.",
  "Вписать": "Fit",
  "Открыть в системе": "Open in system viewer",
- "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Wheel — zoom · drag — pan · double-click — fit · Esc — close"
+ "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Wheel — zoom · drag — pan · double-click — fit · Esc — close",
+ "ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА": "MARK FOR TRANSFER",
+ "✓ ОТМЕЧЕНО": "✓ MARKED",
+ "Ищу…": "Searching…",
+ "Архив не прочитался: {0}": "Archive could not be read: {0}",
+ "Находка {0} из {1}": "Match {0} of {1}",
+ "Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по находке — сообщение целиком; ☐ — отметить для переноса в чат.": "Search by date (19.10.2026), time (22:15) or words. Click a match to see the whole message; ☐ marks it for transfer to the chat."
 }

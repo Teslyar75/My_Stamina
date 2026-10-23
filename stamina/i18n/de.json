@@ -2056,5 +2056,11 @@
  "Картинки уйдут Ориону вместе с сообщением.": "Die Bilder gehen mit der Nachricht an Orion.",
  "Вписать": "Einpassen",
  "Открыть в системе": "Im System öffnen",
- "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Mausrad — Zoom · Ziehen — Verschieben · Doppelklick — Einpassen · Esc — Schließen"
+ "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Mausrad — Zoom · Ziehen — Verschieben · Doppelklick — Einpassen · Esc — Schließen",
+ "ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА": "ZUR ÜBERNAHME MARKIEREN",
+ "✓ ОТМЕЧЕНО": "✓ MARKIERT",
+ "Ищу…": "Suche…",
+ "Архив не прочитался: {0}": "Archiv nicht lesbar: {0}",
+ "Находка {0} из {1}": "Treffer {0} von {1}",
+ "Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по находке — сообщение целиком; ☐ — отметить для переноса в чат.": "Suche nach Datum (19.10.2026), Uhrzeit (22:15) oder Wörtern. Klick auf einen Treffer zeigt die ganze Nachricht; ☐ markiert sie für den Chat."
 }
