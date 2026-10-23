@@ -139,3 +139,34 @@
 | `neon_city/settings.jpg` | [Krakow neon Merkury.jpg](https://commons.wikimedia.org/wiki/File:Krakow_neon_Merkury.jpg) | Andrzej Otrębski | CC BY-SA 4.0 |
 | `neon_city/settings_2.jpg` | [DFC 0505 Neon-lit city street at night reflected in a rain puddle colorful signs and lights mirrored on the wet pavement.jpg](https://commons.wikimedia.org/wiki/File:DFC_0505_Neon-lit_city_street_at_night_reflected_in_a_rain_puddle_colorful_signs_and_lights_mirrored_on_the_wet_pavement.jpg) | PattayaPatrol | CC BY-SA 4.0 |
 | `neon_city/settings_3.jpg` | [Neon.JPG](https://commons.wikimedia.org/wiki/File:Neon.JPG) | Lestat (Jan Mehlich) | CC BY-SA 3.0 |
+
+## Старая Англия (`old_england/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `old_england/bridge.jpg` | [Tower Bridge London Feb 2006.jpg](https://commons.wikimedia.org/wiki/File:Tower_Bridge_London_Feb_2006.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/bridge_2.jpg` | [Palace of Westminster, London - Feb 2007.jpg](https://commons.wikimedia.org/wiki/File:Palace_of_Westminster,_London_-_Feb_2007.jpg) | Diliff | CC BY-SA 2.5 |
+| `old_england/bridge_3.jpg` | [Big Ben at sunset - 2014-10-27 17-30.jpg](https://commons.wikimedia.org/wiki/File:Big_Ben_at_sunset_-_2014-10-27_17-30.jpg) | Colin | CC BY-SA 4.0 |
+| `old_england/english.jpg` | [Radcliffe Camera Oxford Roof Detail 2018.jpg](https://commons.wikimedia.org/wiki/File:Radcliffe_Camera_Oxford_Roof_Detail_2018.jpg) | Julian Herzog (Website) | CC BY 4.0 |
+| `old_england/english_2.jpg` | [Oxford - Bodleian Library 1602 - Bodleian Bookshop 04.jpg](https://commons.wikimedia.org/wiki/File:Oxford_-_Bodleian_Library_1602_-_Bodleian_Bookshop_04.jpg) | Txllxt TxllxT | CC BY-SA 4.0 |
+| `old_england/english_3.jpg` | [20130808 Kings College Chapel 01.jpg](https://commons.wikimedia.org/wiki/File:20130808_Kings_College_Chapel_01.jpg) | Dmitry Tonkonog | CC BY-SA 3.0 |
+| `old_england/speedread.jpg` | [Duke Humfrey's Library Interior 6, Bodleian Library, Oxford, UK - Diliff.jpg](https://commons.wikimedia.org/wiki/File:Duke_Humfrey's_Library_Interior_6,_Bodleian_Library,_Oxford,_UK_-_Diliff.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/speedread_2.jpg` | [Routemaster Bus on London Bridge.jpg](https://commons.wikimedia.org/wiki/File:Routemaster_Bus_on_London_Bridge.jpg) | sebastiandoe5 | CC BY-SA 2.0 |
+| `old_england/speedread_3.jpg` | [London - Black Cab - geograph.org.uk - 7762020.jpg](https://commons.wikimedia.org/wiki/File:London_-_Black_Cab_-_geograph.org.uk_-_7762020.jpg) | Colin Smith | CC BY-SA 2.0 |
+| `old_england/lounge.jpg` | [Scones and tea.jpg](https://commons.wikimedia.org/wiki/File:Scones_and_tea.jpg) | AlphaLemur | CC BY-SA 4.0 |
+| `old_england/lounge_2.jpg` | [The Sherlock Holmes pub in London.jpg](https://commons.wikimedia.org/wiki/File:The_Sherlock_Holmes_pub_in_London.jpg) | Breznay András | Public domain |
+| `old_england/lounge_3.jpg` | [The Cotswold Way (Broadway) - geograph.org.uk - 7939973.jpg](https://commons.wikimedia.org/wiki/File:The_Cotswold_Way_(Broadway)_-_geograph.org.uk_-_7939973.jpg) | Fabian Musto | CC BY-SA 2.0 |
+| `old_england/radio.jpg` | [BBC Broadcasting House - geograph.org.uk - 5867280.jpg](https://commons.wikimedia.org/wiki/File:BBC_Broadcasting_House_-_geograph.org.uk_-_5867280.jpg) | Les Hull | CC BY-SA 2.0 |
+| `old_england/radio_2.jpg` | [Beatles' zebra crossing on Abbey Road - geograph.org.uk - 6395253.jpg](https://commons.wikimedia.org/wiki/File:Beatles'_zebra_crossing_on_Abbey_Road_-_geograph.org.uk_-_6395253.jpg) | Eirian Evans | CC BY-SA 2.0 |
+| `old_england/radio_3.jpg` | [Royal Albert Hall, London - Nov 2012.jpg](https://commons.wikimedia.org/wiki/File:Royal_Albert_Hall,_London_-_Nov_2012.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/comm.jpg` | [Five classic red K6 telephone boxes on a pavement in London.jpg](https://commons.wikimedia.org/wiki/File:Five_classic_red_K6_telephone_boxes_on_a_pavement_in_London.jpg) | Oleg Yunakov | CC BY-SA 4.0 |
+| `old_england/comm_2.jpg` | [Hillside Avenue Postbox ^ Royal Mail Dump Box - geograph.org.uk - 3853669.jpg](https://commons.wikimedia.org/wiki/File:Hillside_Avenue_Postbox_%5E_Royal_Mail_Dump_Box_-_geograph.org.uk_-_3853669.jpg) | Geographer | CC BY-SA 2.0 |
+| `old_england/comm_3.jpg` | [Trafalgar Square, London 2 - Jun 2009.jpg](https://commons.wikimedia.org/wiki/File:Trafalgar_Square,_London_2_-_Jun_2009.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/orion.jpg` | [View of the Royal Observatory Greenwich from One Tree Hill in Greenwich Park, London, 20260719 0940 4508.jpg](https://commons.wikimedia.org/wiki/File:View_of_the_Royal_Observatory_Greenwich_from_One_Tree_Hill_in_Greenwich_Park,_London,_20260719_0940_4508.jpg) | Jakub Hałun | CC BY 4.0 |
+| `old_england/orion_2.jpg` | [St Paul's Cathedral West Facade Night 2020.jpg](https://commons.wikimedia.org/wiki/File:St_Paul's_Cathedral_West_Facade_Night_2020.jpg) | Julian Herzog (Website) | CC BY 4.0 |
+| `old_england/orion_3.jpg` | [Stonehenge, Condado de Wiltshire, Inglaterra, 2014-08-12, DD 09.JPG](https://commons.wikimedia.org/wiki/File:Stonehenge,_Condado_de_Wiltshire,_Inglaterra,_2014-08-12,_DD_09.JPG) | Diego Delso | CC BY-SA 4.0 |
+| `old_england/settings.jpg` | [Tower of London viewed from the River Thames.jpg](https://commons.wikimedia.org/wiki/File:Tower_of_London_viewed_from_the_River_Thames.jpg) | Bob Collowan | CC BY-SA 3.0 |
+| `old_england/settings_2.jpg` | [Guard of Buckingham Palace - 01.jpg](https://commons.wikimedia.org/wiki/File:Guard_of_Buckingham_Palace_-_01.jpg) | Carlos Delgado | CC BY-SA 3.0 |
+| `old_england/settings_3.jpg` | [Westminster Abbey (Interior) 01.jpg](https://commons.wikimedia.org/wiki/File:Westminster_Abbey_(Interior)_01.jpg) | Maksim Sokolov (maxergon.com) | CC BY-SA 4.0 |

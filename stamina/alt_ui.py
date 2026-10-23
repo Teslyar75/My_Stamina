@@ -78,6 +78,14 @@ PROFILES: dict[str, dict] = {
         "drawer": "ПРИБОРЫ",
         "gauge": "",
     },
+    "old_england": {
+        "glyphs": {"bridge": "♔", "english": "Æ", "speedread": "§", "lounge": "☕",
+                   "radio": "☎", "comm": "✉", "orion": "✠", "settings": "⚒"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -88,7 +96,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -275,6 +283,18 @@ class AltNavButton(HudButton):
         self.create_line(cx, cy - px(7), cx, cy + px(7), fill=theme.AMBER if self._active else tube, width=2)
         return (theme.TEXT if lit else blend(theme.CYAN, theme.TEXT, 0.4)), px(24)
 
+    def _nav_old_england(self, w, h, col, lit):
+        """Старая Англия: плашка цвета бутылочного сукна с золотой гравировкой;
+        активная — гвардейский красный с золотым кантом и короной-ромбом."""
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        fill = red if self._active else blend(theme.BG, navy, 0.55 if lit else 0.35)
+        self.create_rectangle(px(3), px(3), w - px(4), h - px(4), fill=fill,
+                              outline=gold if (self._active or lit) else blend(theme.BG, gold, 0.5))
+        self.create_rectangle(px(5), px(5), w - px(6), h - px(6), fill="", outline=blend(fill, gold, 0.4))
+        cx, cy, r = px(14), h / 2, px(5)
+        self.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy, fill=gold, outline="")
+        return ("white" if self._active else gold if lit else blend(theme.TEXT, gold, 0.4)), px(24)
+
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
 # ---------------------------------------------------------------------------
@@ -395,6 +415,17 @@ class OrnamentBand(tk.Canvas):
             glow_line(self, (0, h * 0.35, w, h * 0.35), theme.LINE, 2)
             glow_line(self, (0, h * 0.8, w, h * 0.8), theme.CYAN, 1)
 
+    def _draw_old_england(self, w: int, h: int) -> None:
+        """Старая Англия: полковая лента (синий-красный-синий) с золотой каймой и розетками."""
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        t = h / 3
+        self.create_rectangle(0, 0, w, h, fill=navy, outline="")
+        self.create_rectangle(0, t, w, h - t, fill=red, outline="")
+        self.create_line(0, 1, w, 1, fill=gold)
+        self.create_line(0, h - 1, w, h - 1, fill=gold)
+        for x in range(px(40), w, px(160)):
+            self.create_oval(x - t, h / 2 - t, x + t, h / 2 + t, fill=gold, outline=navy)
+
 def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
     """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
     r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
@@ -482,8 +513,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "porthole", "neon", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -673,6 +704,39 @@ class SkinFrame(tk.Frame):
             for i, y in enumerate(range(e * 2, h - e, px(34))):   # бегущие огни
                 col = (theme.AMBER, cy_, mag)[i % 3]
                 cv.create_rectangle(w / 2 - 1, y, w / 2 + 1, y + px(8), fill=col, outline="")
+
+    def _edge_engraved(self, cv, side, w, h) -> None:
+        """Старая Англия: гравированная рама — двойная золотая линейка, красная лента
+        «королевской гвардии» с синей окантовкой, по углам мини-Юнион Джек, на сторонах розетки."""
+        e = self.edge
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, navy, 0.35), outline="")
+        horiz = side in ("top", "bottom")
+        if horiz:
+            for y, col, wd in ((1, gold, 1), (e * 0.5, red, max(2, e // 3)), (h - 2, gold, 1)):
+                cv.create_line(0, y, w, y, fill=col, width=wd)
+            cv.create_line(0, e * 0.5 - e // 5, w, e * 0.5 - e // 5, fill=navy, width=1)
+            for x in range(int(e * 5), int(w - e * 4), px(90)):     # розетки
+                cv.create_oval(x - 3, e * 0.5 - 3, x + 3, e * 0.5 + 3, fill=gold, outline=red)
+            for x0 in (0, w - e * 2):                               # Юнион Джек
+                x1, y0, y1 = x0 + e * 2, 1, h - 1
+                cv.create_rectangle(x0, y0, x1, y1, fill=navy, outline=gold)
+                cv.create_line(x0, y0, x1, y1, fill="white", width=2)
+                cv.create_line(x0, y1, x1, y0, fill="white", width=2)
+                cv.create_line((x0 + x1) / 2, y0, (x0 + x1) / 2, y1, fill="white", width=4)
+                cv.create_line(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2, fill="white", width=4)
+                cv.create_line((x0 + x1) / 2, y0, (x0 + x1) / 2, y1, fill=red, width=2)
+                cv.create_line(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2, fill=red, width=2)
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, navy, 0.35), outline=gold)
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=gold, font=theme.font(7, True))
+        else:
+            for x, col, wd in ((1, gold, 1), (w * 0.5, red, max(2, e // 3)), (w - 2, gold, 1)):
+                cv.create_line(x, 0, x, h, fill=col, width=wd)
+            for y in range(e * 3, h - e * 2, px(90)):
+                cv.create_oval(w / 2 - 3, y - 3, w / 2 + 3, y + 3, fill=gold, outline=red)
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""

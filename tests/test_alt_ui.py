@@ -8,7 +8,7 @@ from stamina import alt_ui, nav, storage
 
 ROOT = Path(__file__).resolve().parents[1]
 # Скины со своим профилем ALT UI: id скина -> стиль рамки (профиль = id скина).
-NEW_SKINS: dict[str, str] = {"neon_city": "neon", "bathyscaphe": "porthole"}
+NEW_SKINS: dict[str, str] = {"old_england": "engraved", "neon_city": "neon", "bathyscaphe": "porthole"}
 
 
 class TestAltSettings(unittest.TestCase):
