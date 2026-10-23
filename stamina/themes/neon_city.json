@@ -67,5 +67,45 @@
     "error": "sounds/skins/neon_city/error.wav",
     "bell": "sounds/skins/neon_city/bell.wav",
     "start": "sounds/skins/neon_city/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "neon signs night",
+      "Tokyo night street",
+      "Shinjuku night",
+      "Hong Kong neon",
+      "Times Square night",
+      "Shibuya crossing night",
+      "city skyline night",
+      "rain night street lights",
+      "Akihabara night",
+      "light trails long exposure",
+      "Las Vegas Strip night",
+      "Seoul night street",
+      "Shanghai skyline night",
+      "night market lights",
+      "arcade game center",
+      "LED screen city",
+      "Dotonbori night",
+      "Kowloon night",
+      "cyberpunk city night",
+      "Taipei night"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "synthwave",
+      "retrowave",
+      "vaporwave",
+      "city pop"
+    ],
+    "pinned": [
+      "Nightride FM",
+      "Nightwave Plaza",
+      "Vaporwaves",
+      "Retrowave",
+      "Japan City Pop"
+    ]
   }
 }

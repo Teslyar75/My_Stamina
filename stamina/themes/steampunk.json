@@ -70,5 +70,44 @@
     "error": "sounds/skins/steampunk/error.wav",
     "bell": "sounds/skins/steampunk/bell.wav",
     "start": "sounds/skins/steampunk/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "steam locomotive",
+      "traction engine",
+      "Victorian steam engine",
+      "beam engine pumping station",
+      "brass clockwork mechanism",
+      "pocket watch movement",
+      "airship zeppelin",
+      "hot air balloon festival",
+      "Victorian railway station",
+      "cast iron bridge",
+      "Crystal Palace",
+      "Industrial Revolution factory",
+      "steamboat paddle",
+      "brass telescope",
+      "antique scientific instrument",
+      "gears machinery",
+      "Jules Verne illustration",
+      "steampunk costume",
+      "pressure gauge brass",
+      "Victorian lighthouse"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "electro swing",
+      "swing",
+      "steampunk",
+      "jazz"
+    ],
+    "pinned": [
+      "Electro Swing",
+      "Steampunk",
+      "Classic Vinyl",
+      "Jazz Radio"
+    ]
   }
 }

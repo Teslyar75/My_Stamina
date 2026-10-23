@@ -420,7 +420,7 @@
  "ЕЩЁ": "MEHR",
  "ЕЩЁ РАЗ": "NOCH EINMAL",
  "ЕЩЁ…": "MEHR…",
- "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in Skins mit Diashow («Raumschiff», «Altes England»); Bilder von Wikimedia Commons, offline — das Skinfoto.",
+ "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает во всех скинах; картинки — Wikimedia Commons, без сети — офлайн-набор фото скина.": "Bleibt die Tastatur eine Weile unberührt, starten eine Diashow im Stil des Skins und passendes Radio. Der erste Tastendruck schließt sie und zählt nicht als Eingabe. Funktioniert in allen Skins; Bilder von Wikimedia Commons, offline — die mitgelieferten Skinfotos.",
  "Есть ли у тебя доступ к аккаунту разработчика на GitHub?\nМожешь ли ты отправлять обновления и изменять состояние проекта?": "Hast du Zugang zum Entwicklerkonto auf GitHub?\nKannst du Updates senden und den Zustand des Projekts ändern?",
  "Есть предложения без перевода — ждём UPLINK или нажмите «СФОРМИРОВАТЬ».": "Sätze ohne Übersetzung — UPLINK abwarten oder ERSTELLEN.",
  "Ещё раз: {0}%": "Noch einmal: {0}%",

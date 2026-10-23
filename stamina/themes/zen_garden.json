@@ -67,5 +67,44 @@
     "error": "sounds/skins/zen_garden/error.wav",
     "bell": "sounds/skins/zen_garden/bell.wav",
     "start": "sounds/skins/zen_garden/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "Ryoan-ji rock garden",
+      "Japanese garden",
+      "Zen garden raked gravel",
+      "Kyoto temple garden",
+      "bamboo forest Arashiyama",
+      "koi pond",
+      "moss garden",
+      "Japanese maple autumn",
+      "cherry blossom",
+      "torii gate",
+      "bonsai",
+      "stone lantern garden",
+      "tea house Japan",
+      "Fushimi Inari",
+      "Kinkaku-ji",
+      "Mount Fuji",
+      "pagoda Japan",
+      "tsukubai",
+      "Japanese bridge garden",
+      "misty mountains Japan"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "zen",
+      "meditation",
+      "japanese",
+      "new age"
+    ],
+    "pinned": [
+      "Costa del Mar - Zen",
+      "Jazz Sakura",
+      "Yoga Chill",
+      "Ambient Sleeping Pill"
+    ]
   }
 }

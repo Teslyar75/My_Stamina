@@ -68,5 +68,44 @@
     "error": "sounds/skins/bathyscaphe/error.wav",
     "bell": "sounds/skins/bathyscaphe/bell.wav",
     "start": "sounds/skins/bathyscaphe/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "bathyscaphe Trieste",
+      "deep sea creature",
+      "jellyfish",
+      "coral reef",
+      "underwater kelp forest",
+      "manta ray",
+      "whale shark",
+      "humpback whale underwater",
+      "octopus",
+      "bioluminescence",
+      "submarine",
+      "diving bell",
+      "hydrothermal vent",
+      "sea turtle underwater",
+      "school of fish",
+      "shipwreck underwater",
+      "anglerfish",
+      "nautilus",
+      "sea anemone",
+      "underwater cave diving"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "ambient",
+      "dark ambient",
+      "chillout",
+      "new age"
+    ],
+    "pinned": [
+      "Cryosleep",
+      "Drone Zone",
+      "Ambient Sleeping Pill",
+      "Deep Space One"
+    ]
   }
 }

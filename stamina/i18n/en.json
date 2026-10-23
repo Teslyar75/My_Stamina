@@ -421,7 +421,7 @@
  "ЕЩЁ": "MORE",
  "ЕЩЁ РАЗ": "ONE MORE TIME",
  "ЕЩЁ…": "MORE…",
- "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина.": "If the keyboard is idle for a while, a skin-themed slideshow and matching radio start. The first keypress closes it and is not counted as typing. Works in skins with a slideshow («Starship», «Old England»); images from Wikimedia Commons, offline — the skin photo.",
+ "Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает во всех скинах; картинки — Wikimedia Commons, без сети — офлайн-набор фото скина.": "If the keyboard is idle for a while, a skin-themed slideshow and matching radio start. The first keypress closes it and is not counted as typing. Works in every skin; images from Wikimedia Commons, offline — the skin's built-in photo set.",
  "Есть ли у тебя доступ к аккаунту разработчика на GitHub?\nМожешь ли ты отправлять обновления и изменять состояние проекта?": "Do you have access to the developer account on GitHub?\nCan you send updates and change the state of the project?",
  "Есть предложения без перевода — ждём UPLINK или нажмите «СФОРМИРОВАТЬ».": "Sentences without translation — wait for UPLINK or press BUILD.",
  "Ещё раз: {0}%": "Again: {0}%",

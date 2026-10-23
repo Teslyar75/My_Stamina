@@ -27,10 +27,30 @@ def _strip(s: str) -> str:
     return re.sub(r"<[^>]+>", "", s or "").strip()
 
 
+ASSETS = ROOT / "stamina" / "assets"
+
+
+def _local_credits(skin: str) -> list[dict]:
+    """Офлайн-набор: stamina/assets/idle_photos/<skin>/credits.json (пути — от stamina/assets)."""
+    try:
+        rows = json.loads((ASSETS / "idle_photos" / skin / "credits.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    out: list[dict] = []
+    for r in rows if isinstance(rows, list) else []:
+        p = ASSETS / str(r.get("file", ""))
+        if r.get("file") and p.is_file():
+            out.append({"path": str(p), "author": _strip(str(r.get("author", ""))),
+                        "license": str(r.get("license", "")), "source": "skin",
+                        "title": str(r.get("title", skin))})
+    return out
+
+
 def skin_fallback(skin: str) -> list[dict]:
     folder = ROOT / "docs" / "skins" / "images" / skin
-    return [{"path": str(p), "author": "Star Typing", "license": "", "source": "skin", "title": skin}
-            for p in sorted(folder.glob("bg*.jpg"))]
+    own = [{"path": str(p), "author": "Star Typing", "license": "", "source": "skin", "title": skin}
+           for p in sorted(folder.glob("bg*.jpg"))]
+    return own + _local_credits(skin)
 
 
 def fetch_wikimedia(categories: list[str], per_cat: int = 6, timeout: float = 10.0) -> list[dict]:
@@ -197,6 +217,11 @@ def load_images(skin: str, cfg: dict, limit: int = POOL_MAX, rng: random.Random 
     ts, cached = _read_index(d)
     if cached and on_add:
         on_add(list(cached))
+    local: list[dict] | None = None
+    if not cached and on_add:  # первый показ без кэша: сразу офлайн-набор скина, пока качается сеть
+        local = skin_fallback(skin)
+        if local:
+            on_add(list(local))
     plan = plan_topics(cfg)
     rng.shuffle(plan)
     full = not (cached and time.time() - ts < TTL)
@@ -226,9 +251,12 @@ def load_images(skin: str, cfg: dict, limit: int = POOL_MAX, rng: random.Random 
     if fresh:
         _write_index(d, items)
     if not items:
-        items = skin_fallback(skin)
-        if on_add:
-            on_add(items)
+        if local is None:
+            items = skin_fallback(skin)
+            if on_add:
+                on_add(items)
+        else:
+            items = local
     return items
 
 
