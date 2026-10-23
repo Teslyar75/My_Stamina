@@ -77,3 +77,158 @@
 | `steampunk/speedread_5.jpg` | [A view of Paris through the clock face of the Musée d'Orsay.jpg](https://commons.wikimedia.org/wiki/File:A_view_of_Paris_through_the_clock_face_of_the_Mus%C3%A9e_d%27Orsay.jpg) | Ввласенко | CC BY 4.0 |
 
 Материалы NASA — общественное достояние (NASA Media Usage Guidelines); логотипы NASA не используются.
+
+## Батискаф (`bathyscaphe/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `bathyscaphe/bridge.jpg` | [Bathyscaphe Trieste.jpg](https://commons.wikimedia.org/wiki/File:Bathyscaphe_Trieste.jpg) | Unknown authorUnknown author | Public domain |
+| `bathyscaphe/bridge_2.jpg` | [The Control Room Looking Forward, Hm Submarine Art.IWMART922.jpg](https://commons.wikimedia.org/wiki/File:The_Control_Room_Looking_Forward,_Hm_Submarine_Art.IWMART922.jpg) | Francis Dodd | Public domain |
+| `bathyscaphe/bridge_3.jpg` | [ALVIN Panorama.jpg](https://commons.wikimedia.org/wiki/File:ALVIN_Panorama.jpg) | Taollan82 | CC BY 3.0 |
+| `bathyscaphe/english.jpg` | [B-39 emergency escape hatch 1.JPG](https://commons.wikimedia.org/wiki/File:B-39_emergency_escape_hatch_1.JPG) | BrokenSphere | CC BY-SA 3.0 |
+| `bathyscaphe/english_2.jpg` | [Site Shipwreck underwater archaeology.jpg](https://commons.wikimedia.org/wiki/File:Site_Shipwreck_underwater_archaeology.jpg) | Dwi sumaiyyah makmur | CC BY-SA 4.0 |
+| `bathyscaphe/english_3.jpg` | [Coral Outcrop Flynn Reef.jpg](https://commons.wikimedia.org/wiki/File:Coral_Outcrop_Flynn_Reef.jpg) | Toby Hudson | CC BY-SA 3.0 |
+| `bathyscaphe/speedread.jpg` | [School of fish seen from Underwater Tunnel Atlantis.jpg](https://commons.wikimedia.org/wiki/File:School_of_fish_seen_from_Underwater_Tunnel_Atlantis.jpg) | Fred Hsu (Wikipedia:User:Fredhsu on en.wikipedia) | CC BY-SA 3.0 |
+| `bathyscaphe/speedread_2.jpg` | [Sardine run over seafloor in Moalboal 03.jpg](https://commons.wikimedia.org/wiki/File:Sardine_run_over_seafloor_in_Moalboal_03.jpg) | Iampjanz | CC BY-SA 4.0 |
+| `bathyscaphe/speedread_3.jpg` | [Giant Manta AdF.jpg](https://commons.wikimedia.org/wiki/File:Giant_Manta_AdF.jpg) | Arturo de Frias Marques | CC BY-SA 4.0 |
+| `bathyscaphe/lounge.jpg` | [Georgia Aquarium - Ocean Voyager Tunnel Jan 2006.jpg](https://commons.wikimedia.org/wiki/File:Georgia_Aquarium_-_Ocean_Voyager_Tunnel_Jan_2006.jpg) | Diliff | CC BY 2.5 |
+| `bathyscaphe/lounge_2.jpg` | [Parque Nacional Marinho de Fernando de Noronha - João Paulo Marques DAndretta 12.jpg](https://commons.wikimedia.org/wiki/File:Parque_Nacional_Marinho_de_Fernando_de_Noronha_-_Jo%C3%A3o_Paulo_Marques_DAndretta_12.jpg) | João D'Andretta | CC BY-SA 4.0 |
+| `bathyscaphe/lounge_3.jpg` | [Blacktip reef shark (Carcharhinus melanopterus) Moorea.jpg](https://commons.wikimedia.org/wiki/File:Blacktip_reef_shark_(Carcharhinus_melanopterus)_Moorea.jpg) | Charles J. Sharp | CC BY-SA 4.0 |
+| `bathyscaphe/radio.jpg` | [Pink Jellyfish (43101678440).jpg](https://commons.wikimedia.org/wiki/File:Pink_Jellyfish_(43101678440).jpg) | National Marine Sanctuaries | Public domain |
+| `bathyscaphe/radio_2.jpg` | [Submarine Monument Surabaya sonar room.JPG](https://commons.wikimedia.org/wiki/File:Submarine_Monument_Surabaya_sonar_room.JPG) | Midori | CC BY 3.0 |
+| `bathyscaphe/radio_3.jpg` | [Eilat Dolphin Reef (3).jpg](https://commons.wikimedia.org/wiki/File:Eilat_Dolphin_Reef_(3).jpg) | טל שמע | CC BY-SA 4.0 |
+| `bathyscaphe/comm.jpg` | [Diving bell on the set of What Women Love.jpg](https://commons.wikimedia.org/wiki/File:Diving_bell_on_the_set_of_What_Women_Love.jpg) | Sol Lesser Productions | Public domain |
+| `bathyscaphe/comm_2.jpg` | [Diving helmets (3).jpg](https://commons.wikimedia.org/wiki/File:Diving_helmets_(3).jpg) | Reise Reise | CC BY-SA 4.0 |
+| `bathyscaphe/comm_3.jpg` | [SS Godetia wreck banner diver over boiler.jpg](https://commons.wikimedia.org/wiki/File:SS_Godetia_wreck_banner_diver_over_boiler.jpg) | Peter Southwood | CC BY-SA 4.0 |
+| `bathyscaphe/orion.jpg` | [MARUM Schwarzer Raucher.jpg](https://commons.wikimedia.org/wiki/File:MARUM_Schwarzer_Raucher.jpg) | MARUM − Zentrum für Marine Umweltwissenschaften, Universität Bremen | CC BY 4.0 |
+| `bathyscaphe/orion_2.jpg` | [Small jellyfishes in aquarium.jpg](https://commons.wikimedia.org/wiki/File:Small_jellyfishes_in_aquarium.jpg) | Vincent Niochet | CC BY-SA 4.0 |
+| `bathyscaphe/orion_3.jpg` | [Soleil à travers un paysage sous-marin de Bretagne (Ifremer 00378-48922 - 913).jpg](https://commons.wikimedia.org/wiki/File:Soleil_%C3%A0_travers_un_paysage_sous-marin_de_Bretagne_(Ifremer_00378-48922_-_913).jpg) | Olivier Dugornay | CC BY 4.0 |
+| `bathyscaphe/settings.jpg` | [Submarine Monument Surabaya engine room.JPG](https://commons.wikimedia.org/wiki/File:Submarine_Monument_Surabaya_engine_room.JPG) | Midori | CC BY 3.0 |
+| `bathyscaphe/settings_2.jpg` | [USS Cavalla - aft torpedo room 2.jpg](https://commons.wikimedia.org/wiki/File:USS_Cavalla_-_aft_torpedo_room_2.jpg) | Eric Polk | CC BY-SA 4.0 |
+| `bathyscaphe/settings_3.jpg` | [2020-09-16 165855 Soviet submarine B-515.jpg](https://commons.wikimedia.org/wiki/File:2020-09-16_165855_Soviet_submarine_B-515.jpg) | Tim Rademacher | CC BY-SA 4.0 |
+
+## Неон-Сити (`neon_city/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `neon_city/bridge.jpg` | [Colorful neon street signs in Kabukichō, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Colorful_neon_street_signs_in_Kabukich%C5%8D,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/bridge_2.jpg` | [廟街永鴻麻雀館, Hong Kong ~ Kowloon Neon ~ Near Temple Street Night Market.jpg](https://commons.wikimedia.org/wiki/File:%E5%BB%9F%E8%A1%97%E6%B0%B8%E9%B4%BB%E9%BA%BB%E9%9B%80%E9%A4%A8,_Hong_Kong_~_Kowloon_Neon_~_Near_Temple_Street_Night_Market.jpg) | VasenkaPhotography | CC BY 2.0 |
+| `neon_city/bridge_3.jpg` | [Osaka Lights - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Osaka_Lights_-_panoramio.jpg) | AudaCity3371 | CC BY-SA 3.0 |
+| `neon_city/english.jpg` | [Mong Kok Neon Signs Night (48127904386).jpg](https://commons.wikimedia.org/wiki/File:Mong_Kok_Neon_Signs_Night_(48127904386).jpg) | Benh LIEU SONG from Torcy, France | CC BY-SA 2.0 |
+| `neon_city/english_2.jpg` | [Night in Akihabara 2015-07-05.jpg](https://commons.wikimedia.org/wiki/File:Night_in_Akihabara_2015-07-05.jpg) | Stephen Kelly | CC BY 2.0 |
+| `neon_city/english_3.jpg` | [Dotonbori river night.jpg](https://commons.wikimedia.org/wiki/File:Dotonbori_river_night.jpg) | Emma0mb | CC BY 4.0 |
+| `neon_city/speedread.jpg` | [Neon light trails in Munich (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Neon_light_trails_in_Munich_(Unsplash).jpg) | Emre Karatas emrekaratas | CC0 |
+| `neon_city/speedread_2.jpg` | [筲箕灣東大街 Shau Kei Wan Main Street East 電車總站 Tram Terminus 八珍甜醋 Pat Chun 霓虹燈招牌 Neon Sign, 2020.jpg](https://commons.wikimedia.org/wiki/File:%E7%AD%B2%E7%AE%95%E7%81%A3%E6%9D%B1%E5%A4%A7%E8%A1%97_Shau_Kei_Wan_Main_Street_East_%E9%9B%BB%E8%BB%8A%E7%B8%BD%E7%AB%99_Tram_Terminus_%E5%85%AB%E7%8F%8D%E7%94%9C%E9%86%8B_Pat_Chun_%E9%9C%93%E8%99%B9%E7%87%88%E6%8B%9B%E7%89%8C_Neon_Sign,_2020.jpg) | Lord Jaraxxus | CC BY-SA 4.0 |
+| `neon_city/speedread_3.jpg` | [Tokyo Shibuya Scramble Crossing 2018-10-09.jpg](https://commons.wikimedia.org/wiki/File:Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg) | Benh LIEU SONG (Flickr) | CC BY-SA 2.0 |
+| `neon_city/lounge.jpg` | [DFC 0512 Dimly lit bar interior with neon signs and rows of taps glowing under red and purple lighting ready for the night crowd.jpg](https://commons.wikimedia.org/wiki/File:DFC_0512_Dimly_lit_bar_interior_with_neon_signs_and_rows_of_taps_glowing_under_red_and_purple_lighting_ready_for_the_night_crowd.jpg) | PattayaPatrol | CC BY-SA 4.0 |
+| `neon_city/lounge_2.jpg` | [2024-10-20 Shinjuku Golden Gai at night.jpg](https://commons.wikimedia.org/wiki/File:2024-10-20_Shinjuku_Golden_Gai_at_night.jpg) | Alexkom000 | CC BY 4.0 |
+| `neon_city/lounge_3.jpg` | [Magnolia Cafe neon sign at night.jpg](https://commons.wikimedia.org/wiki/File:Magnolia_Cafe_neon_sign_at_night.jpg) | Nhfruchter | CC BY-SA 4.0 |
+| `neon_city/radio.jpg` | [Buildings with colorful neon street signs at blue hour, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Buildings_with_colorful_neon_street_signs_at_blue_hour,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/radio_2.jpg` | [Las Vegas (Nevada, USA), The Strip -- 2012 -- 6232.jpg](https://commons.wikimedia.org/wiki/File:Las_Vegas_(Nevada,_USA),_The_Strip_--_2012_--_6232.jpg) | Dietmar Rabich | CC BY-SA 4.0 |
+| `neon_city/radio_3.jpg` | [大角咀 Tai Kok Tsui 塘尾道 Tong Mi Road 新城卡拉OK夜總會 New City Karaoke Night Club 霓虹燈招牌 Neon Sign, 2020 (1).jpg](https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E8%A7%92%E5%92%80_Tai_Kok_Tsui_%E5%A1%98%E5%B0%BE%E9%81%93_Tong_Mi_Road_%E6%96%B0%E5%9F%8E%E5%8D%A1%E6%8B%89OK%E5%A4%9C%E7%B8%BD%E6%9C%83_New_City_Karaoke_Night_Club_%E9%9C%93%E8%99%B9%E7%87%88%E6%8B%9B%E7%89%8C_Neon_Sign,_2020_(1).jpg) | Lord Jaraxxus | CC BY-SA 4.0 |
+| `neon_city/comm.jpg` | [Seoul at Night.jpg](https://commons.wikimedia.org/wiki/File:Seoul_at_Night.jpg) | Philippe Teuwen | CC BY-SA 2.0 |
+| `neon_city/comm_2.jpg` | [Neon signs Osaka Japan.jpg](https://commons.wikimedia.org/wiki/File:Neon_signs_Osaka_Japan.jpg) | Flickr user: Joop Amsterdam, Netherlands https://www.flickr.com/people/joopdorre | CC BY 2.0 |
+| `neon_city/comm_3.jpg` | [Colorful illuminated facades of buildings at night, with green, blue and pink lights, Kabukicho, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Colorful_illuminated_facades_of_buildings_at_night,_with_green,_blue_and_pink_lights,_Kabukicho,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/orion.jpg` | [Tokyo Tower, Minato City.jpg](https://commons.wikimedia.org/wiki/File:Tokyo_Tower,_Minato_City.jpg) | David Kernan | CC BY 4.0 |
+| `neon_city/orion_2.jpg` | [Skyline of Shanghai at night, Aug 10 2023.jpg](https://commons.wikimedia.org/wiki/File:Skyline_of_Shanghai_at_night,_Aug_10_2023.jpg) | A Chinese ID | CC BY-SA 4.0 |
+| `neon_city/orion_3.jpg` | [Hong Kong skyscrapers in a night of typhoon.jpg](https://commons.wikimedia.org/wiki/File:Hong_Kong_skyscrapers_in_a_night_of_typhoon.jpg) | Wilfredor | CC0 |
+| `neon_city/settings.jpg` | [Krakow neon Merkury.jpg](https://commons.wikimedia.org/wiki/File:Krakow_neon_Merkury.jpg) | Andrzej Otrębski | CC BY-SA 4.0 |
+| `neon_city/settings_2.jpg` | [DFC 0505 Neon-lit city street at night reflected in a rain puddle colorful signs and lights mirrored on the wet pavement.jpg](https://commons.wikimedia.org/wiki/File:DFC_0505_Neon-lit_city_street_at_night_reflected_in_a_rain_puddle_colorful_signs_and_lights_mirrored_on_the_wet_pavement.jpg) | PattayaPatrol | CC BY-SA 4.0 |
+| `neon_city/settings_3.jpg` | [Neon.JPG](https://commons.wikimedia.org/wiki/File:Neon.JPG) | Lestat (Jan Mehlich) | CC BY-SA 3.0 |
+
+## Старая Англия (`old_england/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `old_england/bridge.jpg` | [Tower Bridge London Feb 2006.jpg](https://commons.wikimedia.org/wiki/File:Tower_Bridge_London_Feb_2006.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/bridge_2.jpg` | [Palace of Westminster, London - Feb 2007.jpg](https://commons.wikimedia.org/wiki/File:Palace_of_Westminster,_London_-_Feb_2007.jpg) | Diliff | CC BY-SA 2.5 |
+| `old_england/bridge_3.jpg` | [Big Ben at sunset - 2014-10-27 17-30.jpg](https://commons.wikimedia.org/wiki/File:Big_Ben_at_sunset_-_2014-10-27_17-30.jpg) | Colin | CC BY-SA 4.0 |
+| `old_england/english.jpg` | [Radcliffe Camera Oxford Roof Detail 2018.jpg](https://commons.wikimedia.org/wiki/File:Radcliffe_Camera_Oxford_Roof_Detail_2018.jpg) | Julian Herzog (Website) | CC BY 4.0 |
+| `old_england/english_2.jpg` | [Oxford - Bodleian Library 1602 - Bodleian Bookshop 04.jpg](https://commons.wikimedia.org/wiki/File:Oxford_-_Bodleian_Library_1602_-_Bodleian_Bookshop_04.jpg) | Txllxt TxllxT | CC BY-SA 4.0 |
+| `old_england/english_3.jpg` | [20130808 Kings College Chapel 01.jpg](https://commons.wikimedia.org/wiki/File:20130808_Kings_College_Chapel_01.jpg) | Dmitry Tonkonog | CC BY-SA 3.0 |
+| `old_england/speedread.jpg` | [Duke Humfrey's Library Interior 6, Bodleian Library, Oxford, UK - Diliff.jpg](https://commons.wikimedia.org/wiki/File:Duke_Humfrey's_Library_Interior_6,_Bodleian_Library,_Oxford,_UK_-_Diliff.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/speedread_2.jpg` | [Routemaster Bus on London Bridge.jpg](https://commons.wikimedia.org/wiki/File:Routemaster_Bus_on_London_Bridge.jpg) | sebastiandoe5 | CC BY-SA 2.0 |
+| `old_england/speedread_3.jpg` | [London - Black Cab - geograph.org.uk - 7762020.jpg](https://commons.wikimedia.org/wiki/File:London_-_Black_Cab_-_geograph.org.uk_-_7762020.jpg) | Colin Smith | CC BY-SA 2.0 |
+| `old_england/lounge.jpg` | [Scones and tea.jpg](https://commons.wikimedia.org/wiki/File:Scones_and_tea.jpg) | AlphaLemur | CC BY-SA 4.0 |
+| `old_england/lounge_2.jpg` | [The Sherlock Holmes pub in London.jpg](https://commons.wikimedia.org/wiki/File:The_Sherlock_Holmes_pub_in_London.jpg) | Breznay András | Public domain |
+| `old_england/lounge_3.jpg` | [The Cotswold Way (Broadway) - geograph.org.uk - 7939973.jpg](https://commons.wikimedia.org/wiki/File:The_Cotswold_Way_(Broadway)_-_geograph.org.uk_-_7939973.jpg) | Fabian Musto | CC BY-SA 2.0 |
+| `old_england/radio.jpg` | [BBC Broadcasting House - geograph.org.uk - 5867280.jpg](https://commons.wikimedia.org/wiki/File:BBC_Broadcasting_House_-_geograph.org.uk_-_5867280.jpg) | Les Hull | CC BY-SA 2.0 |
+| `old_england/radio_2.jpg` | [Beatles' zebra crossing on Abbey Road - geograph.org.uk - 6395253.jpg](https://commons.wikimedia.org/wiki/File:Beatles'_zebra_crossing_on_Abbey_Road_-_geograph.org.uk_-_6395253.jpg) | Eirian Evans | CC BY-SA 2.0 |
+| `old_england/radio_3.jpg` | [Royal Albert Hall, London - Nov 2012.jpg](https://commons.wikimedia.org/wiki/File:Royal_Albert_Hall,_London_-_Nov_2012.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/comm.jpg` | [Five classic red K6 telephone boxes on a pavement in London.jpg](https://commons.wikimedia.org/wiki/File:Five_classic_red_K6_telephone_boxes_on_a_pavement_in_London.jpg) | Oleg Yunakov | CC BY-SA 4.0 |
+| `old_england/comm_2.jpg` | [Hillside Avenue Postbox ^ Royal Mail Dump Box - geograph.org.uk - 3853669.jpg](https://commons.wikimedia.org/wiki/File:Hillside_Avenue_Postbox_%5E_Royal_Mail_Dump_Box_-_geograph.org.uk_-_3853669.jpg) | Geographer | CC BY-SA 2.0 |
+| `old_england/comm_3.jpg` | [Trafalgar Square, London 2 - Jun 2009.jpg](https://commons.wikimedia.org/wiki/File:Trafalgar_Square,_London_2_-_Jun_2009.jpg) | Diliff | CC BY-SA 3.0 |
+| `old_england/orion.jpg` | [View of the Royal Observatory Greenwich from One Tree Hill in Greenwich Park, London, 20260719 0940 4508.jpg](https://commons.wikimedia.org/wiki/File:View_of_the_Royal_Observatory_Greenwich_from_One_Tree_Hill_in_Greenwich_Park,_London,_20260719_0940_4508.jpg) | Jakub Hałun | CC BY 4.0 |
+| `old_england/orion_2.jpg` | [St Paul's Cathedral West Facade Night 2020.jpg](https://commons.wikimedia.org/wiki/File:St_Paul's_Cathedral_West_Facade_Night_2020.jpg) | Julian Herzog (Website) | CC BY 4.0 |
+| `old_england/orion_3.jpg` | [Stonehenge, Condado de Wiltshire, Inglaterra, 2014-08-12, DD 09.JPG](https://commons.wikimedia.org/wiki/File:Stonehenge,_Condado_de_Wiltshire,_Inglaterra,_2014-08-12,_DD_09.JPG) | Diego Delso | CC BY-SA 4.0 |
+| `old_england/settings.jpg` | [Tower of London viewed from the River Thames.jpg](https://commons.wikimedia.org/wiki/File:Tower_of_London_viewed_from_the_River_Thames.jpg) | Bob Collowan | CC BY-SA 3.0 |
+| `old_england/settings_2.jpg` | [Guard of Buckingham Palace - 01.jpg](https://commons.wikimedia.org/wiki/File:Guard_of_Buckingham_Palace_-_01.jpg) | Carlos Delgado | CC BY-SA 3.0 |
+| `old_england/settings_3.jpg` | [Westminster Abbey (Interior) 01.jpg](https://commons.wikimedia.org/wiki/File:Westminster_Abbey_(Interior)_01.jpg) | Maksim Sokolov (maxergon.com) | CC BY-SA 4.0 |
+
+## Скрипторий (`scriptorium/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `scriptorium/bridge.jpg` | [Franciscan Monastery, Hvar - Cloister .jpg](https://commons.wikimedia.org/wiki/File:Franciscan_Monastery,_Hvar_-_Cloister_.jpg) | Bernard Gagnon | CC BY-SA 4.0 |
+| `scriptorium/bridge_2.jpg` | [Stift melk bibliothek.jpg](https://commons.wikimedia.org/wiki/File:Stift_melk_bibliothek.jpg) | см. страницу файла | CC BY-SA 2.0 |
+| `scriptorium/bridge_3.jpg` | [Medieval Franciscan monastery, Zrin, Croatia.jpg](https://commons.wikimedia.org/wiki/File:Medieval_Franciscan_monastery,_Zrin,_Croatia.jpg) | Glosator | CC BY-SA 4.0 |
+| `scriptorium/english.jpg` | [The book of Kells library interior 1.jpg](https://commons.wikimedia.org/wiki/File:The_book_of_Kells_library_interior_1.jpg) | Rene Cortin | CC BY-SA 4.0 |
+| `scriptorium/english_2.jpg` | [Manuscript Leaf Cutting Probably from a Missal with an Illuminated Initial S and King David Receiving the Holy Bread from Ahimelech the Priest. MET tem2321-12.jpg](https://commons.wikimedia.org/wiki/File:Manuscript_Leaf_Cutting_Probably_from_a_Missal_with_an_Illuminated_Initial_S_and_King_David_Receiving_the_Holy_Bread_from_Ahimelech_the_Priest._MET_tem2321-12.jpg) | см. страницу файла | CC0 |
+| `scriptorium/english_3.jpg` | [The Chained Library, Hereford Cathedral - geograph.org.uk - 8173044.jpg](https://commons.wikimedia.org/wiki/File:The_Chained_Library,_Hereford_Cathedral_-_geograph.org.uk_-_8173044.jpg) | Stuart Wilding | CC BY-SA 2.0 |
+| `scriptorium/speedread.jpg` | [The Chained Library, Hereford Cathedral - geograph.org.uk - 8173040.jpg](https://commons.wikimedia.org/wiki/File:The_Chained_Library,_Hereford_Cathedral_-_geograph.org.uk_-_8173040.jpg) | Stuart Wilding | CC BY-SA 2.0 |
+| `scriptorium/speedread_2.jpg` | [Old-books-on-the-open-access-shelves. Ataide Municipal Library, Mapusa, Goa, India.jpg](https://commons.wikimedia.org/wiki/File:Old-books-on-the-open-access-shelves._Ataide_Municipal_Library,_Mapusa,_Goa,_India.jpg) | Fredericknoronha | CC BY-SA 4.0 |
+| `scriptorium/speedread_3.jpg` | [Strahov knihovna Teolog 2.jpg](https://commons.wikimedia.org/wiki/File:Strahov_knihovna_Teolog_2.jpg) | VitVit | CC BY-SA 4.0 |
+| `scriptorium/lounge.jpg` | [Abbaye Saint-Michel de Cuxa - Cloister 01.jpg](https://commons.wikimedia.org/wiki/File:Abbaye_Saint-Michel_de_Cuxa_-_Cloister_01.jpg) | H. Zell | CC BY-SA 3.0 |
+| `scriptorium/lounge_2.jpg` | [Newstead Abbey, cloister garth.jpg](https://commons.wikimedia.org/wiki/File:Newstead_Abbey,_cloister_garth.jpg) | Tony Grist | Public domain |
+| `scriptorium/lounge_3.jpg` | [Abbaye Fontenay eglise facade.jpg](https://commons.wikimedia.org/wiki/File:Abbaye_Fontenay_eglise_facade.jpg) | Myrabella | CC BY-SA 4.0 |
+| `scriptorium/radio.jpg` | [Gregoriaans1.JPG](https://commons.wikimedia.org/wiki/File:Gregoriaans1.JPG) | Wasily | Public domain |
+| `scriptorium/radio_2.jpg` | [Organ Pipes, Rye Church - geograph.org.uk - 2596095.jpg](https://commons.wikimedia.org/wiki/File:Organ_Pipes,_Rye_Church_-_geograph.org.uk_-_2596095.jpg) | Julian P Guffogg | CC BY-SA 2.0 |
+| `scriptorium/radio_3.jpg` | [Neumes - Medieval musical notes by Serbian composer Kir Stefan Srbin.jpg](https://commons.wikimedia.org/wiki/File:Neumes_-_Medieval_musical_notes_by_Serbian_composer_Kir_Stefan_Srbin.jpg) | This image was made by Sadko.  Please credit this with: "Sadko, Wikipedia" in th | CC BY-SA 4.0 |
+| `scriptorium/comm.jpg` | [Bird Feather Feather Paper pen Bird feather made into dipping pen, inkwell, paper, handwritten letter, inkblots, etc. 2505306 Edited 2020.jpg](https://commons.wikimedia.org/wiki/File:Bird_Feather_Feather_Paper_pen_Bird_feather_made_into_dipping_pen,_inkwell,_paper,_handwritten_letter,_inkblots,_etc._2505306_Edited_2020.jpg) | Tool Dude8mm | CC BY 2.0 |
+| `scriptorium/comm_2.jpg` | [The Scribe at Work.jpg](https://commons.wikimedia.org/wiki/File:The_Scribe_at_Work.jpg) | Jean Le Tavernier | Public domain |
+| `scriptorium/comm_3.jpg` | [Wax seal with impression of uppercase letter A.jpg](https://commons.wikimedia.org/wiki/File:Wax_seal_with_impression_of_uppercase_letter_A.jpg) | en:User:Contrafool | CC BY-SA 3.0 |
+| `scriptorium/orion.jpg` | [Czech-2013-Prague-Astronomical clock face.jpg](https://commons.wikimedia.org/wiki/File:Czech-2013-Prague-Astronomical_clock_face.jpg) | Godot13 | CC BY-SA 4.0 |
+| `scriptorium/orion_2.jpg` | [Astrolabe from the Mughal period in India.JPG](https://commons.wikimedia.org/wiki/File:Astrolabe_from_the_Mughal_period_in_India.JPG) | Rohini | CC BY-SA 3.0 |
+| `scriptorium/orion_3.jpg` | [Lascar Old Town square and the Prague Astronomical Clock (4501537747).jpg](https://commons.wikimedia.org/wiki/File:Lascar_Old_Town_square_and_the_Prague_Astronomical_Clock_(4501537747).jpg) | Jorge Láscar from Australia | CC BY 2.0 |
+| `scriptorium/settings.jpg` | [Paschal Candles - Annunciation, Toronto.jpg](https://commons.wikimedia.org/wiki/File:Paschal_Candles_-_Annunciation,_Toronto.jpg) | ΙΣΧΣΝΙΚΑ-888 | CC BY-SA 3.0 |
+| `scriptorium/settings_2.jpg` | [Letter-writing at a portable desk with quill, inkwell, seal and an open book bound with clasps on a reading stand ... and a clock and bell (Antwerp, 19th c.) (8065271671).jpg](https://commons.wikimedia.org/wiki/File:Letter-writing_at_a_portable_desk_with_quill,_inkwell,_seal_and_an_open_book_bound_with_clasps_on_a_reading_stand_..._and_a_clock_and_bell_(Antwerp,_19th_c.)_(8065271671).jpg) | takomabibelot | CC BY 2.0 |
+| `scriptorium/settings_3.jpg` | [Manuscript Leaf Cutting Probably from a Missal with an Illuminated Initial S and King David Receiving the Holy Bread from Ahimelech the Priest. MET sf23-21-12s2.jpg](https://commons.wikimedia.org/wiki/File:Manuscript_Leaf_Cutting_Probably_from_a_Missal_with_an_Illuminated_Initial_S_and_King_David_Receiving_the_Holy_Bread_from_Ahimelech_the_Priest._MET_sf23-21-12s2.jpg) | см. страницу файла | CC0 |
+
+## Сад дзен (`zen_garden/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `zen_garden/bridge.jpg` | [RyoanJi-Dry garden.jpg](https://commons.wikimedia.org/wiki/File:RyoanJi-Dry_garden.jpg) | Stephane D'Alu | CC BY-SA 3.0 |
+| `zen_garden/bridge_2.jpg` | [Fort Worth Japanese Garden October 2019 03 (Karesansui Dry Landscape Garden).jpg](https://commons.wikimedia.org/wiki/File:Fort_Worth_Japanese_Garden_October_2019_03_(Karesansui_Dry_Landscape_Garden).jpg) | Michael Barera | CC BY-SA 4.0 |
+| `zen_garden/bridge_3.jpg` | [Raked gravel as flowing water, Japanese garden at Kew - geograph.org.uk - 2711289.jpg](https://commons.wikimedia.org/wiki/File:Raked_gravel_as_flowing_water,_Japanese_garden_at_Kew_-_geograph.org.uk_-_2711289.jpg) | David Hawgood | CC BY-SA 2.0 |
+| `zen_garden/english.jpg` | [Portland Japanese Garden October 2019 005.jpg](https://commons.wikimedia.org/wiki/File:Portland_Japanese_Garden_October_2019_005.jpg) | King of Hearts | CC BY-SA 4.0 |
+| `zen_garden/english_2.jpg` | [20190705 Kenroku-en-7.jpg](https://commons.wikimedia.org/wiki/File:20190705_Kenroku-en-7.jpg) | Balon Greyjoy | CC0 |
+| `zen_garden/english_3.jpg` | [Ritsurin.JPG](https://commons.wikimedia.org/wiki/File:Ritsurin.JPG) | Leela Soden | CC BY-SA 3.0 |
+| `zen_garden/speedread.jpg` | [Bamboo Forest, Arashiyama, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_Forest,_Arashiyama,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/speedread_2.jpg` | [Bamboo grove (phyllostachys viridiglaucescens) in the Botanical Garden of the University of Vienna in Vienna, Austria-stems PNr°1051.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_grove_(phyllostachys_viridiglaucescens)_in_the_Botanical_Garden_of_the_University_of_Vienna_in_Vienna,_Austria-stems_PNr%C2%B01051.jpg) | D-Kuru | CC BY-SA 4.0 |
+| `zen_garden/speedread_3.jpg` | [Arashiyama-Bamboo-Grove-Sunset.jpg](https://commons.wikimedia.org/wiki/File:Arashiyama-Bamboo-Grove-Sunset.jpg) | Bjørn Christian Tørrissen | CC BY-SA 4.0 |
+| `zen_garden/lounge.jpg` | [Japanese tea house - Toulouse - 2013-12-21.jpg](https://commons.wikimedia.org/wiki/File:Japanese_tea_house_-_Toulouse_-_2013-12-21.jpg) | PierreSelim | CC BY 3.0 |
+| `zen_garden/lounge_2.jpg` | [Shinsei-en-Chashitsu-Koma20190727.jpg](https://commons.wikimedia.org/wiki/File:Shinsei-en-Chashitsu-Koma20190727.jpg) | Miya | CC BY-SA 4.0 |
+| `zen_garden/lounge_3.jpg` | [Tea ceremony room of Ryokusuitei Keisui.jpg](https://commons.wikimedia.org/wiki/File:Tea_ceremony_room_of_Ryokusuitei_Keisui.jpg) | 掬茶 | CC BY-SA 4.0 |
+| `zen_garden/radio.jpg` | [Koi in a garden pond in Tuntorp 3.jpg](https://commons.wikimedia.org/wiki/File:Koi_in_a_garden_pond_in_Tuntorp_3.jpg) | W.carter | CC BY-SA 4.0 |
+| `zen_garden/radio_2.jpg` | [Fushimi Inari-taisha Tsukubai animal.jpg](https://commons.wikimedia.org/wiki/File:Fushimi_Inari-taisha_Tsukubai_animal.jpg) | Hyppolyte de Saint-Rambert | CC BY-SA 4.0 |
+| `zen_garden/radio_3.jpg` | [Shishi-odoshi at the Japanese Garden.jpg](https://commons.wikimedia.org/wiki/File:Shishi-odoshi_at_the_Japanese_Garden.jpg) | Holly Cheng | CC BY-SA 4.0 |
+| `zen_garden/comm.jpg` | [Seattle Japanese Garden pond and lantern, 21 June 2026.jpg](https://commons.wikimedia.org/wiki/File:Seattle_Japanese_Garden_pond_and_lantern,_21_June_2026.jpg) | Guywelch2000 | CC BY 4.0 |
+| `zen_garden/comm_2.jpg` | [Torii path with lantern at Fushimi Inari Taisha Shrine, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/comm_3.jpg` | [Moss lawn in Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Moss_lawn_in_Kyoto,_Japan.jpg) | cylonfingers on flickr: https://flickr.com/photos/65097875@N07/ | CC BY-SA 2.0 |
+| `zen_garden/orion.jpg` | [Japan, maple in autumn.jpg](https://commons.wikimedia.org/wiki/File:Japan,_maple_in_autumn.jpg) | Marie-Sophie Mejan | CC BY 4.0 |
+| `zen_garden/orion_2.jpg` | [Water reflection of Kinkaku-ji Temple a sunny day, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Water_reflection_of_Kinkaku-ji_Temple_a_sunny_day,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/orion_3.jpg` | [Lake Kawaguchiko Sakura Mount Fuji 4.JPG](https://commons.wikimedia.org/wiki/File:Lake_Kawaguchiko_Sakura_Mount_Fuji_4.JPG) | Midori | CC BY 3.0 |
+| `zen_garden/settings.jpg` | [Kyoto Tofuku-ji Garten 6.jpg](https://commons.wikimedia.org/wiki/File:Kyoto_Tofuku-ji_Garten_6.jpg) | Zairon | CC BY-SA 4.0 |
+| `zen_garden/settings_2.jpg` | [Moss types at the Ginkakuji garden, Kyoto, Japan (Paul Mannix).jpg](https://commons.wikimedia.org/wiki/File:Moss_types_at_the_Ginkakuji_garden,_Kyoto,_Japan_(Paul_Mannix).jpg) | Paul Mannix | CC BY-SA 2.0 |
+| `zen_garden/settings_3.jpg` | [Sabutsutei garden of Oubai-in, Daitoku-ji 20260921.jpg](https://commons.wikimedia.org/wiki/File:Sabutsutei_garden_of_Oubai-in,_Daitoku-ji_20260921.jpg) | 掬茶 | CC BY-SA 4.0 |

@@ -62,6 +62,46 @@ PROFILES: dict[str, dict] = {
         "drawer": "МАНОМЕТРЫ",
         "gauge": "ДАВЛЕНИЕ",
     },
+    "bathyscaphe": {
+        "glyphs": {"bridge": "⚓", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
+                   "radio": "◉", "comm": "✉", "orion": "✦", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
+    "neon_city": {
+        "glyphs": {"bridge": "◢", "english": "Ⓐ", "speedread": "⚡", "lounge": "☾",
+                   "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
+    "old_england": {
+        "glyphs": {"bridge": "♔", "english": "Æ", "speedread": "§", "lounge": "☕",
+                   "radio": "☎", "comm": "✉", "orion": "✠", "settings": "⚒"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
+    "scriptorium": {
+        "glyphs": {"bridge": "✠", "english": "Ⓐ", "speedread": "¶", "lounge": "❦",
+                   "radio": "♪", "comm": "✒", "orion": "☩", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
+    "zen_garden": {
+        "glyphs": {"bridge": "◯", "english": "Ⓐ", "speedread": "»", "lounge": "☯",
+                   "radio": "≋", "comm": "✉", "orion": "✿", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -72,7 +112,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england", "scriptorium": "scriptorium", "zen_garden": "zen_garden"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -180,7 +220,10 @@ class AltNavButton(HudButton):
             return
         col = self.color
         lit = self._active or self._hover or self._pressed
-        if self.profile == "starship":
+        nav_fn = getattr(self, f"_nav_{self.profile}", None)   # свой рисунок скина (батискаф, неон…)
+        if nav_fn is not None:
+            fg, x0 = nav_fn(w, h, col, lit)
+        elif self.profile == "starship":
             c = min(px(10), h // 3)
             fill = blend(theme.PANEL, col, 0.22 if self._active else 0.10 if self._hover else 0.0)
             self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=fill,
@@ -224,6 +267,75 @@ class AltNavButton(HudButton):
                 self.create_line(x, y + dy * k, x, y, x + dx * k, y, fill=theme.AMBER, width=2)
         self._last_draw = state
 
+
+    def _nav_bathyscaphe(self, w, h, col, lit):
+        """Батискаф: скруглённая панель с заклёпками и иллюминатором отсека слева."""
+        fill = blend(theme.PANEL, col, 0.24 if self._active else 0.12 if self._hover else 0.0)
+        brass = blend(theme.PANEL, theme.AMBER, 0.55)
+        rrect(self, 1, 1, w - 2, h - 2, px(9), fill=fill, outline=col if lit else theme.CYAN_DIM,
+              width=2 if self._active else 1)
+        rr = max(1, px(1))
+        for (x, y) in ((px(6), px(5)), (w - px(7), px(5)), (px(6), h - px(6)), (w - px(7), h - px(6))):
+            self.create_oval(x - rr, y - rr, x + rr, y + rr, fill=brass, outline="")
+        r, cx, cy = px(8), px(16), h / 2
+        self.create_oval(cx - r, cy - r, cx + r, cy + r, fill=blend(theme.BG, col, 0.5 if self._active else 0.15),
+                         outline=brass, width=2)
+        if self._active:
+            self.create_arc(cx - r * 0.6, cy - r * 0.6, cx + r * 0.6, cy + r * 0.6, start=100, extent=70,
+                            style="arc", outline=theme.TEXT)
+        return (theme.TEXT if lit else blend(col, theme.TEXT, 0.5)), px(28)
+
+    def _nav_neon_city(self, w, h, col, lit):
+        """Неон-Сити: тёмная плашка со срезами, контур — светящаяся трубка; активная горит маджентой."""
+        c = min(px(10), h // 3)
+        pts = chamfer(px(3), px(3), w - px(4), h - px(4), c)
+        tube = theme.LINE if self._active else theme.CYAN if lit else blend(theme.BG, theme.CYAN, 0.45)
+        self.create_polygon(pts, fill=blend(theme.BG, tube, 0.12 if self._active else 0.04), outline="")
+        for k, wd in ((0.25, px(5)), (0.55, px(3)), (1.0, 1)):
+            if k < 1.0 and not (self._active or lit):
+                continue
+            self.create_polygon(pts, fill="", outline=blend(theme.BG, tube, k), width=wd)
+        cx, cy = px(14), h / 2
+        self.create_line(cx, cy - px(7), cx, cy + px(7), fill=theme.AMBER if self._active else tube, width=2)
+        return (theme.TEXT if lit else blend(theme.CYAN, theme.TEXT, 0.4)), px(24)
+
+    def _nav_old_england(self, w, h, col, lit):
+        """Старая Англия: плашка цвета бутылочного сукна с золотой гравировкой;
+        активная — гвардейский красный с золотым кантом и короной-ромбом."""
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        fill = red if self._active else blend(theme.BG, navy, 0.55 if lit else 0.35)
+        self.create_rectangle(px(3), px(3), w - px(4), h - px(4), fill=fill,
+                              outline=gold if (self._active or lit) else blend(theme.BG, gold, 0.5))
+        self.create_rectangle(px(5), px(5), w - px(6), h - px(6), fill="", outline=blend(fill, gold, 0.4))
+        cx, cy, r = px(14), h / 2, px(5)
+        self.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy, fill=gold, outline="")
+        return ("white" if self._active else gold if lit else blend(theme.TEXT, gold, 0.4)), px(24)
+
+    def _nav_scriptorium(self, w, h, col, lit):
+        """Скрипторий: строка рукописи — пергаментная плашка, красная рубрика-буквица слева;
+        активная — с золотой рамкой."""
+        parch, ink, red, gold = "#d9c69a", "#3a2a1a", "#9b2226", "#c8a040"
+        fill = blend(theme.BG, parch, 0.28 if self._active else 0.16 if lit else 0.08)
+        self.create_rectangle(px(3), px(3), w - px(4), h - px(4), fill=fill,
+                              outline=gold if self._active else blend(theme.BG, ink if not lit else gold, 0.6))
+        s = min(h - px(10), px(18))
+        self.create_rectangle(px(6), h / 2 - s / 2, px(6) + s, h / 2 + s / 2,
+                              fill=red if (self._active or lit) else blend(theme.BG, red, 0.5), outline=gold)
+        return (theme.TEXT if lit else blend(theme.TEXT, parch, 0.3)), px(10) + s
+
+    def _nav_zen_garden(self, w, h, col, lit):
+        """Сад дзен: скруглённая плашка рисовой бумаги; слева круг-энсо, активная — с красной печатью."""
+        paper = blend(theme.BG, "#e8e0cc", 0.25 if self._active else 0.14 if lit else 0.07)
+        rrect(self, px(3), px(3), w - px(4), h - px(4), px(8), fill=paper,
+              outline=blend(theme.BG, "#1c1c1a" if not lit else theme.TEXT, 0.5))
+        r = min(px(7), h / 3)
+        cx, cy = px(14), h / 2
+        if self._active:
+            self.create_rectangle(cx - r, cy - r, cx + r, cy + r, fill="#b5302a", outline="")
+        else:
+            self.create_arc(cx - r, cy - r, cx + r, cy + r, start=100, extent=310, style="arc",
+                            outline=theme.TEXT if lit else blend(theme.BG, theme.TEXT, 0.5), width=2)
+        return (theme.TEXT if lit else blend(theme.BG, theme.TEXT, 0.7)), px(26)
 
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
@@ -302,6 +414,107 @@ class OrnamentBand(tk.Canvas):
                 self.create_oval(x - rr, y - rr, x + rr, y + rr, outline=theme.RED, width=2)
 
 
+    def _draw_bathyscaphe(self, w: int, h: int) -> None:
+        """Батискаф: сверху клёпаный борт с пузырьками, снизу трубопровод балласта."""
+        hull = blend(theme.BG, theme.PANEL, 0.8)
+        brass = blend(theme.PANEL, theme.AMBER, 0.5)
+        rnd = random.Random(5 if self.kind == "top" else 9)
+        if self.kind == "top":
+            self.create_rectangle(0, 0, w, h, fill=hull, outline="")
+            self.create_line(0, h - 1, w, h - 1, fill=brass, width=2)
+            r = max(2, px(2))
+            for x in range(px(12), w, px(30)):
+                self.create_oval(x - r, h / 2 - r, x + r, h / 2 + r, fill=brass, outline=theme.BG)
+            for _ in range(max(6, w // 60)):   # пузырьки
+                x, y, b = rnd.randrange(0, max(1, w)), rnd.randrange(1, max(2, h - 2)), rnd.choice((1, 2, 2, 3))
+                self.create_oval(x - b, y - b, x + b, y + b, outline=blend(theme.CYAN, hull, 0.4))
+        else:
+            y = h / 2
+            self.create_line(0, y, w, y, fill=blend(theme.BG, theme.CYAN, 0.35), width=max(3, px(5)))
+            self.create_line(0, y - px(2), w, y - px(2), fill=theme.CYAN)
+            for x in range(px(120), w, px(240)):   # вентили-штурвалы
+                rr = px(5)
+                self.create_oval(x - rr, y - rr, x + rr, y + rr, outline=brass, width=2)
+                self.create_line(x - rr, y, x + rr, y, fill=brass)
+                self.create_line(x, y - rr, x, y + rr, fill=brass)
+
+    def _draw_neon_city(self, w: int, h: int) -> None:
+        """Неон-Сити: сверху силуэт ночных крыш с огнями окон, снизу двойная неоновая трубка."""
+        rnd = random.Random(13 if self.kind == "top" else 17)
+        if self.kind == "top":
+            x = 0
+            while x < w:
+                bw, bh = rnd.randint(px(18), px(60)), rnd.randint(max(2, h // 3), max(3, h - 2))
+                self.create_rectangle(x, h - bh, x + bw, h, fill=blend(theme.BG, theme.PANEL, 0.9), outline="")
+                for _ in range(rnd.randint(0, 3)):
+                    wx = x + rnd.randint(2, max(3, bw - 4))
+                    wy = h - rnd.randint(2, max(3, bh - 1))
+                    self.create_rectangle(wx, wy, wx + 2, wy + 1, fill=rnd.choice((theme.CYAN, theme.LINE, theme.AMBER)),
+                                          outline="")
+                x += bw + rnd.randint(0, px(4))
+            glow_line(self, (0, h - 1, w, h - 1), theme.LINE, 1)
+        else:
+            glow_line(self, (0, h * 0.35, w, h * 0.35), theme.LINE, 2)
+            glow_line(self, (0, h * 0.8, w, h * 0.8), theme.CYAN, 1)
+
+    def _draw_old_england(self, w: int, h: int) -> None:
+        """Старая Англия: полковая лента (синий-красный-синий) с золотой каймой и розетками."""
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        t = h / 3
+        self.create_rectangle(0, 0, w, h, fill=navy, outline="")
+        self.create_rectangle(0, t, w, h - t, fill=red, outline="")
+        self.create_line(0, 1, w, 1, fill=gold)
+        self.create_line(0, h - 1, w, h - 1, fill=gold)
+        for x in range(px(40), w, px(160)):
+            self.create_oval(x - t, h / 2 - t, x + t, h / 2 + t, fill=gold, outline=navy)
+
+    def _draw_scriptorium(self, w: int, h: int) -> None:
+        """Скрипторий: виноградная лоза — волнистый стебель с листьями и золотыми ягодами."""
+        ink, red, gold, leaf = "#3a2a1a", "#9b2226", "#c8a040", "#5a7a3a"
+        self.create_rectangle(0, 0, w, h, fill=blend(theme.BG, "#d9c69a", 0.12), outline="")
+        pts = []
+        for x in range(0, w + px(8), px(8)):
+            pts += [x, h / 2 + math.sin(x / px(22)) * h * 0.25]
+        if len(pts) >= 4:
+            self.create_line(pts, fill=blend(ink, gold, 0.4), width=2, smooth=True)
+        for i, x in enumerate(range(px(20), w, px(44))):
+            y = h / 2 + math.sin(x / px(22)) * h * 0.25
+            if i % 3 == 2:
+                self.create_oval(x - 2, y - 2, x + 2, y + 2, fill=gold, outline=red)
+            else:
+                d = -1 if i % 2 else 1
+                self.create_oval(x - 3, y + d * 2, x + 4, y + d * 6, fill=leaf, outline="")
+
+    def _draw_zen_garden(self, w: int, h: int) -> None:
+        """Сад дзен: граблями расчёсанный песок — волнистые параллельные линии, камень и энсо."""
+        sand = blend(theme.BG, "#d8cfb8", 0.25)
+        self.create_rectangle(0, 0, w, h, fill=sand, outline="")
+        for k in range(1, 4):
+            y0 = h * k / 4
+            pts = []
+            for x in range(0, w + px(10), px(10)):
+                pts += [x, y0 + math.sin(x / px(40)) * h * 0.06]
+            if len(pts) >= 4:
+                self.create_line(pts, fill=blend(sand, "#ffffff", 0.35), smooth=True)
+        r = h * 0.4
+        for cx in range(px(120), w, px(420)):
+            self.create_arc(cx - r, h / 2 - r, cx + r, h / 2 + r, start=110, extent=320, style="arc",
+                            outline=blend(sand, "#1c1c1a", 0.7), width=max(2, int(h / 8)))
+
+def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
+    """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
+    r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
+    pts = [x0 + r, y0, x1 - r, y0, x1, y0, x1, y0 + r, x1, y1 - r, x1, y1, x1 - r, y1, x0 + r, y1,
+           x0, y1, x0, y1 - r, x0, y0 + r, x0, y0]
+    return c.create_polygon(pts, smooth=True, **kw)
+
+
+def glow_line(c: tk.Canvas, coords, col: str, width: int = 2) -> None:
+    """Неоновая линия: широкий тусклый ореол, средний слой, яркая сердцевина."""
+    for k, wd in ((0.22, width + px(5)), (0.5, width + px(2)), (1.0, width)):
+        c.create_line(*coords, fill=blend(theme.BG, col, k), width=wd, capstyle="round")
+
+
 def draw_gear(c: tk.Canvas, cx: float, cy: float, r: float, teeth: int, fill: str, outline: str,
               angle: float = 0.0) -> None:
     pts = []
@@ -375,8 +588,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "scriptorium": "illumin", "zen_garden": "brush", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "illumin", "brush", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -497,6 +710,169 @@ class SkinFrame(tk.Frame):
             for y in range(e * 2, h - e, px(26)):
                 cv.create_oval(w / 2 - r, y - r, w / 2 + r, y + r, fill=theme.LINE_HI, outline=theme.BG)
 
+
+    def _edge_porthole(self, cv, side, w, h) -> None:
+        """Батискаф: клёпаный корпус, латунный кант, иллюминаторы в углах, метки сонара."""
+        e = self.edge
+        hull = blend(theme.BG, theme.PANEL, 0.85)
+        brass = blend(theme.PANEL, theme.AMBER, 0.55)
+        horiz = side in ("top", "bottom")
+        cv.create_rectangle(0, 0, w, h, fill=hull, outline="")
+        r = max(2, e // 6)
+        if horiz:
+            yo = 0 if side == "top" else h - 1
+            yi = h - 2 if side == "top" else 1
+            cv.create_line(0, yo, w, yo, fill=brass, width=2)
+            cv.create_line(e, yi, w - e, yi, fill=theme.CYAN, width=1)
+            for x in range(e * 3, w - e * 3, px(22)):   # заклёпки корпуса
+                cv.create_oval(x - r, h / 2 - r, x + r, h / 2 + r, fill=brass, outline=theme.BG)
+            for x in (e, w - e):   # иллюминаторы в углах
+                rr = e * 0.9
+                cv.create_oval(x - rr, h / 2 - rr, x + rr, h / 2 + rr, fill=brass, outline=theme.BG)
+                gi = rr * 0.62
+                cv.create_oval(x - gi, h / 2 - gi, x + gi, h / 2 + gi, fill=blend(theme.BG, theme.CYAN, 0.35),
+                               outline=theme.CYAN)
+                cv.create_arc(x - gi * 0.7, h / 2 - gi * 0.7, x + gi * 0.7, h / 2 + gi * 0.7, start=100, extent=70,
+                              style="arc", outline=theme.TEXT)
+            if side == "top":
+                if self.title:
+                    cv.create_text(e * 3, h / 2, anchor="w", text=self.title, fill=theme.CYAN, font=theme.font(7, True))
+                sx = w - e * 4   # импульс сонара
+                for k in (1, 2, 3):
+                    cv.create_arc(sx - e * k * 0.6, h / 2 - e * k * 0.6, sx + e * k * 0.6, h / 2 + e * k * 0.6,
+                                  start=-35, extent=70, style="arc", outline=blend(theme.CYAN, hull, 0.25 * k))
+        else:
+            xo = 0 if side == "left" else w - 1
+            xi = w - 2 if side == "left" else 1
+            cv.create_line(xo, 0, xo, h, fill=brass, width=2)
+            cv.create_line(xi, 0, xi, h, fill=theme.CYAN)
+            for y in range(e * 2, h - e, px(22)):
+                cv.create_oval(w / 2 - r, y - r, w / 2 + r, y + r, fill=brass, outline=theme.BG)
+
+    def _edge_neon(self, cv, side, w, h) -> None:
+        """Неон-Сити: две светящиеся трубки (маджента снаружи, циан внутри), срезанные углы,
+        жёлтые штрихи «вывески» и бегущие огни."""
+        e = self.edge
+        cv.create_rectangle(0, 0, w, h, fill=theme.BG, outline="")
+        horiz = side in ("top", "bottom")
+        mag, cy_ = theme.LINE, theme.CYAN
+        if horiz:
+            yo = e * 0.3 if side == "top" else h - e * 0.3
+            yi = h - 2 if side == "top" else 2
+            # внешняя трубка со срезанными углами
+            c = e * 1.6
+            yc = h if side == "top" else 0
+            glow_line(cv, (0, yc, c * 0.6, yo, w - c * 0.6, yo, w, yc), mag, 2)
+            glow_line(cv, (c, yi, w - c, yi), cy_, 1)
+            for x in range(int(e * 6), int(w - e * 6), px(46)):   # штрихи вывески
+                cv.create_line(x, yo, x + px(14), yo, fill=theme.AMBER, width=2)
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1, fill=theme.BG,
+                                    outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=mag, font=theme.font(7, True))
+        else:
+            xo = e * 0.3 if side == "left" else w - e * 0.3
+            xi = w - 2 if side == "left" else 2
+            glow_line(cv, (xo, 0, xo, h), mag, 2)
+            glow_line(cv, (xi, 0, xi, h), cy_, 1)
+            for i, y in enumerate(range(e * 2, h - e, px(34))):   # бегущие огни
+                col = (theme.AMBER, cy_, mag)[i % 3]
+                cv.create_rectangle(w / 2 - 1, y, w / 2 + 1, y + px(8), fill=col, outline="")
+
+    def _edge_engraved(self, cv, side, w, h) -> None:
+        """Старая Англия: гравированная рама — двойная золотая линейка, красная лента
+        «королевской гвардии» с синей окантовкой, по углам мини-Юнион Джек, на сторонах розетки."""
+        e = self.edge
+        gold, red, navy = "#c9a24a", "#b3202c", "#1f2c66"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, navy, 0.35), outline="")
+        horiz = side in ("top", "bottom")
+        if horiz:
+            for y, col, wd in ((1, gold, 1), (e * 0.5, red, max(2, e // 3)), (h - 2, gold, 1)):
+                cv.create_line(0, y, w, y, fill=col, width=wd)
+            cv.create_line(0, e * 0.5 - e // 5, w, e * 0.5 - e // 5, fill=navy, width=1)
+            for x in range(int(e * 5), int(w - e * 4), px(90)):     # розетки
+                cv.create_oval(x - 3, e * 0.5 - 3, x + 3, e * 0.5 + 3, fill=gold, outline=red)
+            for x0 in (0, w - e * 2):                               # Юнион Джек
+                x1, y0, y1 = x0 + e * 2, 1, h - 1
+                cv.create_rectangle(x0, y0, x1, y1, fill=navy, outline=gold)
+                cv.create_line(x0, y0, x1, y1, fill="white", width=2)
+                cv.create_line(x0, y1, x1, y0, fill="white", width=2)
+                cv.create_line((x0 + x1) / 2, y0, (x0 + x1) / 2, y1, fill="white", width=4)
+                cv.create_line(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2, fill="white", width=4)
+                cv.create_line((x0 + x1) / 2, y0, (x0 + x1) / 2, y1, fill=red, width=2)
+                cv.create_line(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2, fill=red, width=2)
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, navy, 0.35), outline=gold)
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=gold, font=theme.font(7, True))
+        else:
+            for x, col, wd in ((1, gold, 1), (w * 0.5, red, max(2, e // 3)), (w - 2, gold, 1)):
+                cv.create_line(x, 0, x, h, fill=col, width=wd)
+            for y in range(e * 3, h - e * 2, px(90)):
+                cv.create_oval(w / 2 - 3, y - 3, w / 2 + 3, y + 3, fill=gold, outline=red)
+
+    def _edge_illumin(self, cv, side, w, h) -> None:
+        """Скрипторий: пергаментная кайма, двойная чернильная линейка, красно-золотая
+        ромбовая плетёнка и иллюминированные квадраты по углам."""
+        e = self.edge
+        parch, ink, red, gold = "#d9c69a", "#3a2a1a", "#9b2226", "#c8a040"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, parch, 0.22), outline="")
+        horiz = side in ("top", "bottom")
+        L = w if horiz else h
+        m = (h if horiz else w) / 2
+        def ln(a, b, p, **kw):
+            if horiz:
+                cv.create_line(a, p, b, p, **kw)
+            else:
+                cv.create_line(p, a, p, b, **kw)
+        ln(0, L, 1, fill=ink, width=1)
+        ln(0, L, (h if horiz else w) - 2, fill=ink, width=1)
+        step, r = px(14), max(2, int(m * 0.55))
+        for i, a in enumerate(range(int(e * 2.5), int(L - e * 2), step)):
+            col = red if i % 2 else gold
+            pts = (a, m - r, a + step / 2, m, a, m + r, a - step / 2, m) if horiz else                   (m - r, a, m, a + step / 2, m + r, a, m, a - step / 2)
+            cv.create_polygon(pts, fill="", outline=col, width=1)
+        if horiz:
+            for x0 in (0, w - e * 2):
+                cv.create_rectangle(x0 + 1, 1, x0 + e * 2 - 1, h - 1, fill=red, outline=gold, width=2)
+                cv.create_oval(x0 + e * 0.6, h * 0.3, x0 + e * 1.4, h * 0.7, fill=gold, outline="")
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, parch, 0.22), outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=red, font=theme.font(7, True))
+
+    def _edge_brush(self, cv, side, w, h) -> None:
+        """Сад дзен: мазок туши переменной толщины, бамбуковые узлы на боковинах,
+        красная печать-ханко в углах верхней кромки."""
+        e = self.edge
+        ink, seal, bamboo = "#1c1c1a", "#b5302a", "#7a8f4a"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, "#e8e0cc", 0.18), outline="")
+        horiz = side in ("top", "bottom")
+        L = w if horiz else h
+        m = (h if horiz else w) / 2
+        rnd = random.Random(hash(side) & 0xFFFF)
+        seg = px(24)
+        for a in range(0, int(L), seg):
+            wd = max(1, int(m * (0.35 + 0.5 * abs(math.sin(a / px(70))))) + rnd.randint(-1, 1))
+            if horiz:
+                cv.create_line(a, m, a + seg + 1, m, fill=blend(theme.BG, ink, 0.85), width=wd, capstyle="round")
+            else:
+                cv.create_line(m, a, m, a + seg + 1, fill=blend(bamboo, ink, 0.3), width=max(2, int(m)))
+        if not horiz:
+            for y in range(e * 3, h, px(70)):                     # узлы бамбука
+                cv.create_line(1, y, w - 1, y, fill=blend(bamboo, "#ffffff", 0.35), width=2)
+        elif side == "top":
+            s = h - 2
+            cv.create_rectangle(w - e * 2 - s, 1, w - e * 2, 1 + s, fill=seal, outline="")
+            cv.create_text(w - e * 2 - s / 2, h / 2, text="禅", fill="white", font=theme.font(max(6, int(s * 0.45)), True))
+            if self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, "#e8e0cc", 0.18), outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=theme.TEXT, font=theme.font(7, True))
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""
