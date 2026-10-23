@@ -2049,5 +2049,14 @@
  "🔒 КОД": "🔒 CODE",
  "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
  "🔒 Права Командира — только по коду владельца": "🔒 Commander rights — only with the owner code",
- "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 BOARD AN AGENT"
+ "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 BOARD AN AGENT",
+ "Копировать сообщение": "Copy message",
+ "Выделить всё": "Select all",
+ "Приложить картинки": "Attach images",
+ "Это не картинка (png, jpg, gif, bmp, webp)": "Not an image (png, jpg, gif, bmp, webp)",
+ "Приложено картинок: {0}. Орион увидит их вместе с сообщением.": "Images attached: {0}. Orion will see them with the message.",
+ "Картинки уйдут Ориону вместе с сообщением.": "The images will go to Orion with the message.",
+ "Вписать": "Fit",
+ "Открыть в системе": "Open in system viewer",
+ "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Wheel — zoom · drag — pan · double-click — fit · Esc — close"
 }

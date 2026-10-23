@@ -2047,5 +2047,14 @@
  "🔒 КОД": "🔒 ANHANG",
  "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE",
  "🔒 Права Командира — только по коду владельца": "🔒 Kommandanten-Rechte — nur mit dem Eigentümer-Code",
- "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN"
+ "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN",
+ "Копировать сообщение": "Nachricht kopieren",
+ "Выделить всё": "Alles auswählen",
+ "Приложить картинки": "Bilder anhängen",
+ "Это не картинка (png, jpg, gif, bmp, webp)": "Kein Bild (png, jpg, gif, bmp, webp)",
+ "Приложено картинок: {0}. Орион увидит их вместе с сообщением.": "Angehängte Bilder: {0}. Orion sieht sie zusammen mit der Nachricht.",
+ "Картинки уйдут Ориону вместе с сообщением.": "Die Bilder gehen mit der Nachricht an Orion.",
+ "Вписать": "Einpassen",
+ "Открыть в системе": "Im System öffnen",
+ "Колесо — масштаб · перетаскивание — сдвиг · двойной клик — вписать · Esc — закрыть": "Mausrad — Zoom · Ziehen — Verschieben · Doppelklick — Einpassen · Esc — Schließen"
 }

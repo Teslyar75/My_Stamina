@@ -398,10 +398,9 @@ class OrionScreen(tk.Frame):
         # Приложенный снимок экрана: виден до отправки, снимается крестиком.
         # Пилот хочет обсуждать картинку, а не имя файла, — потому миниатюра, не путь.
         self.shot_row = tk.Frame(bottom, bg=BG)
-        self.shot_icon = tk.Label(self.shot_row, bg=BG, bd=0, cursor="hand2")
+        # миниатюры всех приложенных картинок: клик — посмотреть, ✕ — снять одну
+        self.shot_icon = tk.Frame(self.shot_row, bg=BG, bd=0)
         self.shot_icon.pack(side=tk.LEFT)
-        self.shot_icon.bind("<Button-1>", lambda _e: self._open_shot(
-            self._pending_shots[0] if self._pending_shots else ""))
         self.shot_label = _label(self.shot_row, "", fg=CYAN, size=9, bg=BG, anchor="w",
                                  justify="left", wraplength=px(760))
         self.shot_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(10), 0))
@@ -426,6 +425,10 @@ class OrionScreen(tk.Frame):
         self.entry.bind_text("<Control-Shift-S>", self._grab_window_shot)
         self.entry.bind_text("<Control-Shift-s>", self._grab_window_shot)
         self.entry.bind_text("<Button-3>", self._context_menu)
+        # 📎 — приложить картинки с диска (как в чатах ИИ); Ctrl+V — из буфера
+        self.attach_btn = HudButton(row, "📎", self._pick_images, height=36, font_size=11,
+                                    width=36, color=CYAN)
+        self.attach_btn.pack(side=tk.LEFT, padx=(0, px(6)))
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
                               settings=self.app.store.settings,
@@ -559,40 +562,80 @@ class OrionScreen(tk.Frame):
                    .format(source), CYAN)
         return True
 
+    IMAGE_TYPES = (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
+
+    def _pick_images(self) -> None:
+        """Кнопка 📎: выбрать одну или несколько картинок — копии уходят на борт."""
+        from tkinter import filedialog
+        names = filedialog.askopenfilenames(
+            parent=self, title=_t("Приложить картинки"),
+            filetypes=[(_t("Картинки"), " ".join("*" + e for e in self.IMAGE_TYPES)),
+                       (_t("Все файлы"), "*.*")])
+        self.attach_paths(names)
+
+    def attach_paths(self, names) -> int:
+        """Приложить файлы-картинки к сообщению. → сколько приложено."""
+        pics = [Path(n) for n in names or () if Path(n).suffix.lower() in self.IMAGE_TYPES]
+        added = 0
+        for taken in shots.adopt(pics):
+            if str(taken) not in self._pending_shots:
+                self._pending_shots.append(str(taken))
+                added += 1
+        if added:
+            self._refresh_shot_row()
+            self._hint(_t("Приложено картинок: {0}. Орион увидит их вместе с сообщением.")
+                       .format(added), CYAN)
+        elif names:
+            self._hint(_t("Это не картинка (png, jpg, gif, bmp, webp)"), AMBER)
+        return added
+
     def _refresh_shot_row(self) -> None:
         """Строка приложенного снимка над полем ввода: миниатюра, имя, крестик."""
         if not hasattr(self, "shot_row"):
             return
         if self._pending_shots:
-            names = ", ".join(Path(p).name for p in self._pending_shots)
+            n = len(self._pending_shots)
             self.shot_label.configure(
-                text=_t("📷 Приложено: {0}").format(names) + "\n"
-                     + _t("Этот снимок уйдёт Ориону вместе с сообщением."))
-            self._draw_shot_preview(self._pending_shots[0])
+                text=_t("📷 Приложено: {0}").format(n) + "\n"
+                     + _t("Картинки уйдут Ориону вместе с сообщением."))
+            self._draw_shot_preview(self._pending_shots)
             self.shot_row.pack(fill=tk.X, pady=(px(4), 0), before=self.input_row)
         else:
             self.shot_label.configure(text="")
-            self._draw_shot_preview("")
+            self._draw_shot_preview([])
             self.shot_row.pack_forget()
 
-    def _draw_shot_preview(self, path: str) -> None:
-        """Миниатюра снимка перед отправкой — пилот видит картинку, а не только имя."""
+    def _draw_shot_preview(self, paths) -> None:
+        """Миниатюры приложенного перед отправкой — пилот видит картинки, а не имена."""
+        for w in self.shot_icon.winfo_children():
+            w.destroy()
         self._shot_previews = []
-        if not path:
-            self.shot_icon.configure(image="", width=0, height=0)
-            return
-        pic = shots.thumbnail(Path(path), size=84)
-        if pic is None:
-            self.shot_icon.configure(image="", width=0, height=0,
-                                     text=_t("📷 снимок не открылся: {0}").format(Path(path).name))
-            return
         try:
             from PIL import ImageTk
-            photo = ImageTk.PhotoImage(pic, master=self.shot_icon)
         except Exception:  # noqa: BLE001
-            return
-        self._shot_previews.append(photo)
-        self.shot_icon.configure(image=photo, text="", width=pic.width, height=pic.height)
+            ImageTk = None
+        for path in list(paths)[:8]:
+            cell = tk.Frame(self.shot_icon, bg=BG)
+            cell.pack(side=tk.LEFT, padx=(0, px(6)))
+            pic = shots.thumbnail(Path(path), size=72)
+            if pic is None or ImageTk is None:
+                lab = tk.Label(cell, text="📷 " + Path(path).name[:18], bg=BG, fg=MUTED,
+                               font=theme.font(8), cursor="hand2")
+            else:
+                photo = ImageTk.PhotoImage(pic, master=cell)
+                self._shot_previews.append(photo)
+                lab = tk.Label(cell, image=photo, bg=BG, bd=1, relief=tk.SOLID, cursor="hand2")
+            lab.pack()
+            lab.bind("<Button-1>", lambda _e, p=path: self._open_shot(p))
+            x = tk.Label(cell, text="✕", bg=BG, fg=MUTED, font=theme.font(8, True), cursor="hand2")
+            x.place(relx=1.0, x=-1, y=1, anchor="ne")
+            x.bind("<Button-1>", lambda _e, p=path: self._drop_shot(p))
+
+    def _drop_shot(self, path: str) -> str:
+        if path in self._pending_shots:
+            self._pending_shots.remove(path)
+        self._refresh_shot_row()
+        return "break"
 
     def _clear_shots(self) -> None:
         """Убрать снимок из сообщения, файл на борту оставить (история уже его знает)."""
@@ -604,7 +647,8 @@ class OrionScreen(tk.Frame):
         """Клик по миниатюре — открыть снимок целиком."""
         if not path or not Path(path).is_file():
             return "break"
-        if not shots.open_file(Path(path)):
+        from stamina import image_viewer
+        if image_viewer.show(self, path) is None and not shots.open_file(Path(path)):
             self._hint(_t("Не удалось открыть снимок: {0}").format(Path(path).name), RED)
         return "break"
 
