@@ -2114,5 +2114,7 @@
  "ПЕСНОПЕНИЯ": "GESÄNGE",
  "ЗВУКИ САДА": "GARTENKLÄNGE",
  "Поверх всех окон": "Immer im Vordergrund",
- "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "Das Programmfenster bleibt über anderen Fenstern: Konsolen und Pop-ups verdecken es nicht. Strg+Umschalt+T schaltet es um."
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "Das Programmfenster bleibt über anderen Fenstern: Konsolen und Pop-ups verdecken es nicht. Strg+Umschalt+T schaltet es um.",
+ "⌨ НА МОСТИК": "⌨ ZUR BRÜCKE",
+ "Отправить эту книгу в слепую печать на мостике (через фильтры подготовки)": "Dieses Buch zum Blindschreiben auf die Brücke schicken (über die Vorbereitungsfilter)"
 }

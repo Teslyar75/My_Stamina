@@ -530,6 +530,10 @@ class BookReaderPage(tk.Frame):
                           width=120, color=AMBER, active=True)
         cards.pack(side=tk.RIGHT, padx=px(8), pady=px(6))
         self._tip(cards, _t("Собрать карточки из уже прочитанного текста и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ"))
+        bridge = HudButton(bar, _t("⌨ НА МОСТИК"), self.to_bridge, height=30, font_size=9,
+                           width=120, color=CYAN)
+        bridge.pack(side=tk.RIGHT, padx=px(2), pady=px(6))
+        self._tip(bridge, _t("Отправить эту книгу в слепую печать на мостике (через фильтры подготовки)"))
 
         self.lbl_title = tk.Label(bar, text=_t("КНИГА"), bg=th["bar"], fg=th["bar_fg"],
                                   font=theme.font(9, True))
@@ -541,6 +545,16 @@ class BookReaderPage(tk.Frame):
         self.speech_stop()
         self.save_pos()
         self.ctx.show("library")
+
+    def to_bridge(self) -> None:
+        """Отправить открытую книгу в слепую печать (как «⌨ ПЕЧАТАТЬ» в библиотеке)."""
+        if not self.tid:
+            return
+        if self._fullscreen:
+            self.exit_fullscreen()
+        self.speech_stop()
+        self.save_pos()
+        self.ctx.pages["library"].type_text(self.tid)
 
     def to_book_cards(self) -> None:
         """Синхронизировать прочитанное и открыть АНГЛИЙСКИЙ → ИЗ КНИГИ."""

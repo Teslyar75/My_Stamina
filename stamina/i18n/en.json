@@ -2116,5 +2116,7 @@
  "ПЕСНОПЕНИЯ": "CANTICLES",
  "ЗВУКИ САДА": "GARDEN SOUNDS",
  "Поверх всех окон": "Always on top",
- "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "The program window stays above other windows: consoles and pop-ups won't cover it. Ctrl+Shift+T toggles it."
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "The program window stays above other windows: consoles and pop-ups won't cover it. Ctrl+Shift+T toggles it.",
+ "⌨ НА МОСТИК": "⌨ TO BRIDGE",
+ "Отправить эту книгу в слепую печать на мостике (через фильтры подготовки)": "Send this book to touch typing on the bridge (through the prep filters)"
 }
