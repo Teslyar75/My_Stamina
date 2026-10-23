@@ -28,7 +28,9 @@ def steps():
     )
 
 
-def L(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw) -> tk.Label:
+def L(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw) -> tk.Label:
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), justify="left", **kw)
 
 

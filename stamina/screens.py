@@ -24,7 +24,9 @@ if TYPE_CHECKING:
     from stamina.cockpit import Cockpit
 
 
-def _label(master, text, *, fg=TEXT, size=10, bold=False, mono=False, bg=PANEL, **kw):
+def _label(master, text, *, fg=None, size=10, bold=False, mono=False, bg=None, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold, mono), **kw)
 
 
@@ -196,6 +198,30 @@ class MissionsScreen(tk.Frame):
 # Свой текст
 # ===========================================================================
 
+SOFT_LINE = 2000
+
+
+ASYNC_MIN = 50_000  # знаков: длиннее - обработка в фоне
+
+
+def soft_chunks(text: str, limit: int = SOFT_LINE):
+    """Режет строки длиннее limit на куски по пробелу: [(кусок, мягкий_перенос_после)].
+    Пробел на месте разреза съедается (он вернётся из _get как пробел); настоящие \n не трогаем."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        nl = text.find("\n", i, i + limit + 1)
+        if nl != -1 or n - i <= limit:
+            end = n if nl == -1 else nl + 1
+            out.append((text[i:end], False)); i = end; continue
+        sp = text.rfind(" ", i + 1, i + limit + 1)
+        if sp == -1:
+            sp = text.find(" ", i + limit)
+            if sp == -1:
+                out.append((text[i:], False)); break
+        out.append((text[i:sp], True)); i = sp + 1
+    return out
+
+
 class CargoScreen(tk.Frame):
     """Подготовка своего текста: загрузка, опции обработки, предпросмотр, старт."""
 
@@ -337,14 +363,57 @@ class CargoScreen(tk.Frame):
             b.set_active(on)
 
     def _process(self, text: str) -> str:
+        """process_text с памятью на последний результат: на книге это ~1 с, а вызывают
+        его при каждом показе экрана и на каждую проверку."""
         o = self._opts()
-        return process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
-                            translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
+        key = (text, tuple(sorted(o.items())))
+        memo = getattr(self, "_proc_memo", None)
+        if memo is not None and memo[0] == key:
+            return memo[1]
+        out = process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                           translit=o["translit"], yo=o["yo"], glue=o.get("glue", False))
+        self._proc_memo = (key, out)
+        return out
+
+    def _process_async(self, text: str, done) -> None:
+        """Длинный текст обрабатываем в фоне, чтобы клик по экрану не терялся; результат
+        забираем в главном потоке опросом after (Tk из чужого потока не трогаем)."""
+        o = self._opts()
+        key = (text, tuple(sorted(o.items())))
+        memo = getattr(self, "_proc_memo", None)
+        if (memo is not None and memo[0] == key) or len(text) < ASYNC_MIN:
+            done(self._process(text))
+            return
+        import threading
+        self._proc_gen = getattr(self, "_proc_gen", 0) + 1
+        gen, box = self._proc_gen, []
+
+        def work() -> None:
+            try:
+                box.append(process_text(text, lower=o["lower"], punct=o["punct"], spaces=o["spaces"],
+                                        translit=o["translit"], yo=o["yo"], glue=o.get("glue", False)))
+            except Exception as e:  # noqa: BLE001 - покажем как пустой результат ниже
+                box.append(e)
+
+        def poll() -> None:
+            if gen != self._proc_gen:
+                return
+            if not box:
+                self.after(40, poll)
+                return
+            res = box[0]
+            if isinstance(res, Exception):
+                raise res
+            self._proc_memo = (key, res)
+            done(res)
+
+        threading.Thread(target=work, daemon=True, name="cargo-process").start()
+        self.after(40, poll)
 
     def _check_glue(self) -> None:
         """Поиск сращиваний слов. Ничего не меняем - только список находок."""
         from stamina.text_processing import book_words, find_glued_words
-        prepared = self._process(self.text.get("1.0", "end"))
+        prepared = self._process(self._get())
         found = find_glued_words(prepared, known_words=book_words(prepared), max_report=40)
         if not found:
             self.preview_info.configure(text=_t("Сращиваний не найдено"), fg=GREEN)
@@ -359,7 +428,7 @@ class CargoScreen(tk.Frame):
         """Проверка книги у Ориона: агент ищет склейки, пилот выбирает правки галочками."""
         from stamina import book_check, orion
 
-        raw = self.text.get("1.0", "end-1c")
+        raw = self._get()
         if len(raw.strip()) < 40:
             self.preview_info.configure(text=_t("Сначала введите текст"), fg=AMBER)
             return
@@ -390,7 +459,7 @@ class CargoScreen(tk.Frame):
             text=_t("Орион нашёл правок: {0}").format(len(fixes)), fg=AMBER)
 
         def apply(chosen) -> None:
-            new_text = orion.apply_fixes(self.text.get("1.0", "end-1c"), chosen)
+            new_text = orion.apply_fixes(self._get(), chosen)
             self._set(new_text)
             self.preview_info.configure(
                 text=_t("Применено правок: {0}").format(len(chosen)), fg=GREEN)
@@ -419,14 +488,28 @@ class CargoScreen(tk.Frame):
         if ro:
             self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
-        self.text.insert("1.0", text)
+        # Tk Text: одна строка в сотни тысяч символов (книга после normalize_spaces) вешает
+        # разметку на десятки секунд. Показываем кусками: пробел на границе куска заменён
+        # «мягким» переносом с тегом softnl; _get() возвращает его обратно как пробел.
+        for chunk, soft in soft_chunks(text):
+            self.text.insert(tk.END, chunk)
+            if soft:
+                self.text.insert(tk.END, "\n", "softnl")
         self.text.edit_modified(False)
         if ro:
             self.text.configure(state=tk.DISABLED)
         self._update_preview()
 
     def _get(self) -> str:
-        return self.text.get("1.0", "end-1c")
+        """Текст поля как есть, но мягкие переносы (softnl) - обратно пробелы."""
+        r = self.text.tag_ranges("softnl")
+        if not r:
+            return self.text.get("1.0", "end-1c")
+        out, pos = [], "1.0"
+        for a, b in zip(r[::2], r[1::2]):
+            out.append(self.text.get(pos, a)); out.append(" " * len(self.text.get(a, b))); pos = b
+        out.append(self.text.get(pos, "end-1c"))
+        return "".join(out)
 
     def _on_modified(self, _e=None) -> None:
         if self.text.edit_modified():
@@ -434,7 +517,9 @@ class CargoScreen(tk.Frame):
             self.after_idle(self._update_preview)
 
     def _update_preview(self) -> None:
-        adapted = self._process(self._get())
+        self._process_async(self._get(), self._show_preview)
+
+    def _show_preview(self, adapted: str) -> None:
         saved = load_session()
         same = bool(saved) and saved.text == adapted
         self.btn_resume.set_enabled(same)
@@ -800,6 +885,22 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
+        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, кнопка «СЛАЙДЫ» в шапке, звук и экран на полке «ПРИБОРЫ» (F8), обои отсеков меняются слайдшоу, длинные ряды кнопок свёрнуты в «ещё», экран прокручивается. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется."))
+        self.layout_btns = {}
+        for key, name in (("classic", _t("КЛАССИЧЕСКИЙ")), ("alt", _t("АЛЬТЕРНАТИВНЫЙ"))):
+            b = HudButton(lay, name, lambda k=key: self._set_layout(k), height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.layout_btns[key] = b
+        from stamina import alt_ui as _alt
+        self.wall_btns = {}
+        # Слайдшоу обоев есть только во вселенной «Пульт-кабина»: в классике строки нет
+        wsl = None if _alt.layout_of(app.store.settings) != "alt" else self._row(_t("Слайдшоу обоев отсеков"),
+                        _t("Только для вида «Пульт-кабина» (Звездолёт, Стимпанк): у каждого отсека несколько картинок, они сменяются плавным наплывом через выбранный интервал."))
+        for sec in (_alt.WALL_INTERVALS if wsl is not None else ()):
+            name = _t("ВЫКЛ") if sec == 0 else _t("{0} С").format(sec)
+            b = HudButton(wsl, name, lambda v=sec: self._set_wall(v), width=72, height=30, font_size=8)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.wall_btns[sec] = b
         from stamina.idle import IDLE_MINUTES
         idl = self._row(_t("Простой: слайдшоу и радио"),
                         _t("Если долго не трогать клавиатуру, включается слайдшоу в стиле скина и радио той же тематики. Первое нажатие закрывает его и не засчитывается в набор. Работает в скинах со слайдшоу («Звездолёт», «Старая Англия»); картинки — Wikimedia Commons, без сети — фото скина."))
@@ -882,6 +983,8 @@ class SettingsScreen(tk.Frame):
         _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc/Del — пауза  ·  F9 — звук  ·  Home — Орион  ·  PgUp — слайды  ·  PgDn — экран  ·  Ctrl+1…8 — разделы"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.show_tab("systems")
+        if getattr(app, "_alt_view", None) is not None:   # «Пульт-кабина»: все вкладки разом, секциями
+            _alt.settings_sections(self)
         self.refresh()
         self.after(800, lambda: self._check_update(silent=True))
 
@@ -935,6 +1038,22 @@ class SettingsScreen(tk.Frame):
         for k, b in self.ls_btns.items():
             b.set_active(k == key)
 
+    def _set_layout(self, key: str) -> None:
+        """Вид интерфейса: классический / альтернативный (stamina/alt_ui.py)."""
+        from stamina import alt_ui
+        key = key if key in alt_ui.LAYOUTS else alt_ui.DEFAULT_LAYOUT
+        prev = alt_ui.layout_of(self.app.store.settings)
+        self.app.store.settings["ui_layout"] = key
+        self.app.store.save_settings()
+        self.refresh()
+        if prev == key:
+            return
+        # Рама собирается при старте кабины — перезапускаем мягко, как при смене скина.
+        from stamina.app import relaunch
+        self.app._save_all()
+        if relaunch({"STAMINA_START": "settings:skins"}):
+            self.app.destroy()
+
     def _set_skin(self, key: str) -> None:
         from stamina import theme as th
         changed = th.theme_id() != key
@@ -951,6 +1070,14 @@ class SettingsScreen(tk.Frame):
         self.refresh()
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == key)
+
+    def _set_wall(self, sec: int) -> None:
+        self.app.store.settings["alt_wall_interval"] = int(sec)
+        self.app.store.save_settings()
+        wall = getattr(self.app, "_alt_wall", None)
+        if wall is not None:
+            wall.set_interval(int(sec))
+        self.refresh()
 
     def _set_idle(self, key: str, val) -> None:
         st = self.app.store.settings
@@ -1026,9 +1153,13 @@ class SettingsScreen(tk.Frame):
         except (AttributeError, OSError):
             messagebox.showinfo(_t("Данные"), str(DATA_DIR), parent=self)
 
-    def _set_upd_status(self, text: str, color: str = MUTED) -> None:
+    def _set_upd_status(self, text: str, color: str | None= None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         if getattr(self, "upd_status", None) is None:
             return
+        text = str(text)
+        if len(text) > 240:
+            text = text[:239].rstrip() + "…"
         self.upd_status.configure(text=text, fg=color)
 
     def _apply_upd_info(self, info, err: str | None = None) -> None:
@@ -1049,6 +1180,34 @@ class SettingsScreen(tk.Frame):
             self._set_upd_status(_t("актуально ({0})").format(__version__), GREEN)
             self.upd_notes.configure(text=markdown_to_plain(info.body) if info.body else "")
 
+    def _ui_call(self, fn) -> None:
+        """Из рабочего потока: Tk нельзя трогать вне главного - кладём в очередь."""
+        self._ui_q.put(fn)
+
+    def _start_ui_pump(self) -> None:
+        """Главный поток раз в 100 мс выполняет то, что прислали рабочие потоки."""
+        import queue
+        if getattr(self, "_ui_q", None) is None:
+            self._ui_q = queue.Queue()
+            self._pump_ui()
+
+    def _pump_ui(self) -> None:
+        import queue
+        while True:
+            try:
+                fn = self._ui_q.get_nowait()
+            except queue.Empty:
+                break
+            try:
+                fn()
+            except tk.TclError:
+                import logging
+                logging.getLogger(__name__).debug("ui-call after destroy", exc_info=True)
+        try:
+            self.after(100, self._pump_ui)
+        except tk.TclError:
+            pass
+
     def _check_update(self, silent: bool = False) -> None:
         import threading
         from stamina.updater import check_error_message, fetch_latest
@@ -1059,11 +1218,12 @@ class SettingsScreen(tk.Frame):
         def work() -> None:
             try:
                 info = fetch_latest()
-                self.after(0, lambda: self._apply_upd_info(info))
+                self._ui_call(lambda: self._apply_upd_info(info))
             except Exception as exc:  # noqa: BLE001
                 msg = check_error_message(exc)
-                self.after(0, lambda: self._apply_upd_info(None, err=msg if not silent else _t("не удалось проверить")))
+                self._ui_call(lambda: self._apply_upd_info(None, err=msg if not silent else _t("не удалось проверить")))
 
+        self._start_ui_pump()
         threading.Thread(target=work, daemon=True).start()
 
     def _open_release_page(self) -> None:
@@ -1090,15 +1250,15 @@ class SettingsScreen(tk.Frame):
                 if info is None or not getattr(info, "is_newer", False):
                     info = fetch_latest()
                 if not info.is_newer:
-                    self.after(0, lambda: self._set_upd_status(_t("уже актуальная версия"), GREEN))
+                    self._ui_call(lambda: self._set_upd_status(_t("уже актуальная версия"), GREEN))
                     return
 
                 def prog(msg: str) -> None:
-                    self.after(0, lambda m=msg: self._set_upd_status(m, AMBER))
+                    self._ui_call(lambda m=msg: self._set_upd_status(m, AMBER))
 
                 download_and_apply(info, progress=prog)
                 maybe_pip_install(progress=prog)
-                self.after(0, lambda: self._finish_update())
+                self._ui_call(lambda: self._finish_update())
             except Exception as exc:  # noqa: BLE001
                 msg = check_error_message(exc)
 
@@ -1106,8 +1266,9 @@ class SettingsScreen(tk.Frame):
                     messagebox.showerror(_t("Обновления"), m, parent=self)
                     self._set_upd_status(m, AMBER)
 
-                self.after(0, fail)
+                self._ui_call(fail)
 
+        self._start_ui_pump()
         threading.Thread(target=work, daemon=True).start()
 
     def _finish_update(self) -> None:
@@ -1130,6 +1291,12 @@ class SettingsScreen(tk.Frame):
             b.set_active(k == st.get("living_space", "light"))
         for k, b in getattr(self, "skin_btns", {}).items():
             b.set_active(k == st.get("skin", "spaceship"))
+        for k, b in getattr(self, "layout_btns", {}).items():
+            b.set_active(k == (st.get("ui_layout") or "classic"))
+        if getattr(self, "wall_btns", None):
+            from stamina import alt_ui as _alt
+            for k, b in self.wall_btns.items():
+                b.set_active(k == _alt.wall_interval(st))
         for k, b in self.font_btns.items():
             b.set_active(st.get("font") == k)
         for k, b in getattr(self, "ui_btns", {}).items():

@@ -7,13 +7,15 @@ from tkinter import filedialog, messagebox
 
 from stamina import library as libmod
 from stamina import theme
+from stamina import monitors
 from stamina.hud import HudButton
 from stamina.i18n import t
 from stamina.library import BILINGUAL_SOURCES, Library
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE_HI, MUTED, TEXT, px
 
 
-def _label(master, text="", fg=TEXT, size=10, bold=False, **kw):
+def _label(master, text="", fg=None, size=10, bold=False, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=BG, font=theme.font(size, bold),
                     anchor="w", justify="left", **kw)
 
@@ -98,7 +100,7 @@ class BilingualImportDialog(tk.Toplevel):
         self.bind("<Escape>", lambda _e: self.destroy())
         self.protocol("WM_DELETE_WINDOW", self.destroy)
         try:
-            self.geometry(f"{px(900)}x{px(620)}")
+            self.geometry(monitors.center_geometry(parent, px(900), px(620)))
         except tk.TclError:
             pass
         self.e_title.focus_set()

@@ -13,6 +13,7 @@ from pathlib import Path
 from tkinter import filedialog, messagebox
 
 from stamina import avatars, pilot_pin, pilots, theme
+from stamina import monitors
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_stats import pilot_stats
 from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
@@ -22,12 +23,14 @@ SILVER, BRONZE = "#C9D6E3", "#D08A4E"
 MEDALS = (AMBER, SILVER, BRONZE)
 
 
-def L(master, text="", *, fg=TEXT, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
+def L(master, text="", *, fg=None, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
     if bg is None:
         try:
             bg = master.cget("bg")
         except tk.TclError:
             bg = PANEL
+    if fg is None:      # цвет берём в момент вызова: умолчание в сигнатуре застывает на скине запуска
+        fg = theme.TEXT
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold, mono), **kw)
 
 
@@ -55,7 +58,8 @@ def when(day: str | None) -> str:
 class Modal(tk.Toplevel):
     """Модальное окно в стиле пульта."""
 
-    def __init__(self, master, title: str, accent=AMBER) -> None:
+    def __init__(self, master, title: str, accent=None) -> None:
+        accent = AMBER if accent is None else accent  # токен скина — в момент вызова, не при импорте
         super().__init__(master, bg=BG)
         self.title(title)
         self.transient(master.winfo_toplevel())
@@ -71,9 +75,12 @@ class Modal(tk.Toplevel):
         self.update_idletasks()
         m = self.master.winfo_toplevel()
         try:
-            x = m.winfo_rootx() + (m.winfo_width() - self.winfo_reqwidth()) // 2
-            y = m.winfo_rooty() + (m.winfo_height() - self.winfo_reqheight()) // 3
-            self.geometry(f"+{max(0, x)}+{max(0, y)}")
+            w, h = self.winfo_reqwidth(), self.winfo_reqheight()
+            x = m.winfo_rootx() + (m.winfo_width() - w) // 2
+            y = m.winfo_rooty() + (m.winfo_height() - h) // 3
+            # монитор окна программы (координаты могут быть отрицательными)
+            x, y = monitors.fit(x, y, w, h, monitors.work_area(m))
+            self.geometry(f"+{x}+{y}")
         except tk.TclError:
             pass
         try:
@@ -686,13 +693,21 @@ class AddCard(tk.Canvas):
 class LoginScreen(tk.Frame):
     """«ВХОД В КАБИНУ». on_enter(pid) вызывается после проверки кода."""
 
-    def __init__(self, master, *, on_enter, on_exit, on_board=None, active: str | None = None, app_version="") -> None:
+    def __init__(self, master, *, on_enter, on_exit, on_board=None, active: str | None = None, app_version="",
+                 on_rebuild=None, state: dict | None = None) -> None:
         super().__init__(master, bg=BG)
         self.on_enter, self.on_exit, self.on_board = on_enter, on_exit, on_board or (lambda: None)
         self.active = active
         self.app_version = app_version
         reg = pilots.load_registry() or {}
         self.sel = reg.get("last_pilot")
+        # Смена скина или варианта = окно входа пересобирается целиком (on_rebuild):
+        # иначе куски прежнего скина (цвета, рамки, обои, таймеры слайдшоу) остаются на экране.
+        self.on_rebuild = on_rebuild
+        self._state = dict(state or {})
+        if self._state.get("sel"):
+            self.sel = self._state["sel"]
+        self._jobs: list = []
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(16), pady=(px(10), 0))
         logo = tk.Canvas(top, bg=BG, highlightthickness=0, width=px(260), height=px(44))
@@ -732,10 +747,28 @@ class LoginScreen(tk.Frame):
                           height=28, font_size=8, color=CYAN)
             b.pack(side=tk.LEFT, padx=px(2))
             self._skin_btns[tid] = b
+        # Вариант скина (вид интерфейса): пара «скин + вариант» хранится в settings.json
+        # пилота (ключи skin и ui_layout) — тот же ключ, что «Вид интерфейса» в Настройках.
+        # Отдельная строка сразу под скинами: в одной строке с 7 скинами она уезжала за край окна.
+        var_bar = tk.Frame(self, bg=BG)
+        var_bar.pack(fill=tk.X, padx=px(20), pady=(px(2), px(2)))
+        L(var_bar, tr_("ВАРИАНТ"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(8)))
+        self._layout_id = "classic"
+        self._layout_btns: dict[str, HudButton] = {}
+        for lid, label in (("classic", tr_("КЛАССИКА")), ("alt", tr_("ПУЛЬТ-КАБИНА"))):
+            b = HudButton(var_bar, label, lambda k=lid: self._pick_layout(k), height=28, font_size=8, color=AMBER)
+            b.pack(side=tk.LEFT, padx=px(2))
+            self._layout_btns[lid] = b
+        self._pair = L(var_bar, "", fg=TEXT, size=9, bold=True, bg=BG)   # «скин + вариант» рядом с выбором
+        self._pair.pack(side=tk.LEFT, padx=(px(16), 0))
         L(self, tr_("← → по пилотам · скин подхватывается из профиля; смена иконки — живой предпросмотр"),
           fg=FAINT, size=7, bg=BG).pack(anchor="w", padx=px(20))
         wrap = tk.Frame(self, bg=BG)
         wrap.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
+        self._cards_wrap = wrap
+        from stamina import alt_ui
+        self._stage = alt_ui.LoginStage(self)   # сцена варианта «Пульт-кабина»: шлюз / мастерская
+        self._stage_key = None
         self.canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0)
         self.bar = tk.Scrollbar(wrap, orient="vertical", command=self.canvas.yview)
         self.inner = tk.Canvas(self.canvas, bg=BG, highlightthickness=0, bd=0)   # холст: «Живой космос» между карточками
@@ -774,10 +807,33 @@ class LoginScreen(tk.Frame):
         data["skin"] = skin
         pilots.write_json(path, data)
 
+    def destroy(self) -> None:
+        """Снять все таймеры окна и сцены: после пересборки от старого скина не тикает ничего."""
+        for j in getattr(self, "_jobs", []):
+            try:
+                self.after_cancel(j)
+            except tk.TclError:
+                pass
+        self._jobs = []
+        stage = getattr(self, "_stage", None)
+        if stage is not None:
+            stage.dispose()
+        super().destroy()
+
+    def _rebuild(self) -> bool:
+        """Пересобрать окно входа с выбранной парой «скин + вариант». False — пересобрать нечем."""
+        if self.on_rebuild is None:
+            return False
+        theme.load_theme(self._skin_id, apply_ui=True, root=self.winfo_toplevel())
+        self.on_rebuild({"sel": self.sel, "skin": self._skin_id, "layout": self._layout_id})
+        return True
+
     def _preview_skin(self, tid: str, *, save_sel: bool = True) -> None:
         """Живой предпросмотр скина на всём окне входа."""
         if save_sel:
             self._skin_id = tid
+            if tid != theme.theme_id() and self._rebuild():
+                return
         root = self.winfo_toplevel()
         theme.load_theme(tid, apply_ui=True, root=root)
         try:
@@ -790,11 +846,57 @@ class LoginScreen(tk.Frame):
     def _sync_skin_buttons(self) -> None:
         for k, b in getattr(self, "_skin_btns", {}).items():
             b.set_active(k == self._skin_id)
+        for k, b in getattr(self, "_layout_btns", {}).items():
+            b.set_active(k == getattr(self, "_layout_id", "classic"))
+        self._update_stage()
+
+    def pair_text(self) -> str:
+        """«Скин + вариант» для подписи: «Звездолёт · ПУЛЬТ-КАБИНА»."""
+        name = next((theme.theme_display_name(m["data"]) for m in theme.list_themes()
+                     if m["id"] == getattr(self, "_skin_id", None)), getattr(self, "_skin_id", ""))
+        var = tr_("ПУЛЬТ-КАБИНА") if getattr(self, "_layout_id", "classic") == "alt" else tr_("КЛАССИКА")
+        return f"{name} · {var}"
+
+    def _update_stage(self) -> None:
+        """Живой предпросмотр пары «скин + вариант»: подпись и сцена шлюза / мастерской."""
+        if not hasattr(self, "_stage"):
+            return
+        from stamina import alt_ui
+        pair = self.pair_text()
+        try:
+            self._pair.configure(text=tr_("СКИН + ВАРИАНТ") + ": " + pair, bg=theme.BG, fg=theme.TEXT)
+        except tk.TclError:
+            pass
+        key = (self._skin_id, self._layout_id)
+        if key == self._stage_key:
+            return
+        self._stage_key = key
+        if self._stage.set(alt_ui.profile_id(self._skin_id), self._layout_id, pair):
+            self._stage.pack(fill=tk.X, padx=px(16), pady=(px(6), 0), before=self._cards_wrap)
+        else:
+            self._stage.pack_forget()
+
+    def _load_layout(self, pid) -> None:
+        from stamina import alt_ui
+        self._layout_id = alt_ui.layout_of(self._pilot_settings(pid) if pid else {})
+
+    def _pick_layout(self, lid: str) -> None:
+        changed = lid != self._layout_id
+        self._layout_id = lid
+        if changed and self._rebuild():
+            return
+        self._sync_skin_buttons()
+
+    def _save_pilot_layout(self, pid: str, lid: str) -> None:
+        path = pilots.pilot_dir(pid) / "settings.json"
+        data = pilots.read_json(path) or {}
+        data["ui_layout"] = lid
+        pilots.write_json(path, data)
 
     def _tick(self) -> None:
         if self.winfo_exists():
             self.clock.configure(text=time.strftime("%H:%M"))
-            self.after(5000, self._tick)
+            self._jobs = [self.after(5000, self._tick)]
 
     def _ask_changed(self) -> None:
         reg = pilots.load_registry()
@@ -812,6 +914,11 @@ class LoginScreen(tk.Frame):
         self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, 'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'))
         if self.sel:
             self._skin_id = self._pilot_settings(self.sel).get("skin") or "spaceship"
+        self._load_layout(self.sel)
+        # Пересборка после выбора пилотом: пара «скин + вариант» берётся из выбора, а не из профиля
+        st, self._state = getattr(self, "_state", {}), {}
+        self._skin_id = st.get("skin") or self._skin_id
+        self._layout_id = st.get("layout") or self._layout_id
         self._layout()
         self._preview_skin(self._skin_id, save_sel=False)
 
@@ -835,7 +942,11 @@ class LoginScreen(tk.Frame):
     def select(self, pid: str) -> None:
         self.sel = pid
         skin = (self._pilot_settings(pid).get("skin") if pid else None) or "spaceship"
+        before = (self._skin_id, self._layout_id)
         self._skin_id = skin
+        self._load_layout(pid)
+        if (skin, self._layout_id) != before and self._rebuild():
+            return
         self._layout()
         self._preview_skin(skin, save_sel=False)
 
@@ -858,6 +969,7 @@ class LoginScreen(tk.Frame):
         # сохранить выбранный скин в профиль пилота
         try:
             self._save_pilot_skin(p["id"], self._skin_id)
+            self._save_pilot_layout(p["id"], self._layout_id)
             app = pilots.load_app()
             app["skin"] = self._skin_id
             pilots.save_app(app)
@@ -1208,9 +1320,10 @@ def run_login(root: tk.Tk, *, app_version: str = "", initial_board: bool = False
         board.grid(row=0, column=0, sticky="nsew")
         _swap(board)
 
-    def show_login():
+    def show_login(state=None):
         login = LoginScreen(holder, on_enter=done, on_exit=lambda: done(None), on_board=done,
-                            app_version=app_version)
+                            app_version=app_version, on_rebuild=lambda st: root.after_idle(show_login, st),
+                            state=state)
         login.grid(row=0, column=0, sticky="nsew")
         _swap(login)
 

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from stamina.i18n import t as _t
+from stamina import monitors
 
 import threading
 import time
@@ -46,6 +47,15 @@ def pct(a: int, b: int) -> str:
     return f"{a / b * 100:.0f}%" if b else "0%"
 
 
+
+def _on_app_monitor(dlg, master) -> None:
+    """Диалог — по центру окна программы, на ЕГО мониторе (окно могли перетащить)."""
+    try:
+        dlg.update_idletasks()
+        dlg.geometry(monitors.center_geometry(master, dlg.winfo_reqwidth(), dlg.winfo_reqheight()))
+    except Exception:
+        pass
+
 class SpeedReadScreen(tk.Frame):
     def page_help_key(self) -> str:
         sub = self.current or "overview"
@@ -61,7 +71,10 @@ class SpeedReadScreen(tk.Frame):
         self.bar = tk.Frame(self, bg=BG)
         self.bar.pack(fill=tk.X, padx=px(14), pady=(px(8), px(6)))
         L(self.bar, _t("СКОРОЧТЕНИЕ"), fg=AMBER, size=11, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(10)))
-        HudButton(self.bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
+        # справка в своей рамке: иначе alt-шапка считает её вкладкой («?» в списке ОБЗОР)
+        hbox = tk.Frame(self.bar, bg=BG)
+        hbox.pack(side=tk.RIGHT)
+        HudButton(hbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         self.lbl_info = L(self.bar, "", fg=MUTED, size=8, bold=True, bg=BG)
         self.lbl_info.pack(side=tk.RIGHT, padx=px(8))
@@ -168,6 +181,9 @@ class SpeedReadScreen(tk.Frame):
             self.pages["book"].focus_set()
         else:
             self.app.focus_set()
+        hook = getattr(self.app, "_alt_page_hook", None)   # только в alt-оболочке
+        if hook is not None:
+            hook()
 
     def read(self, tid: str, word: int | None = None) -> None:
         """Открыть в гипердрайве (RSVP)."""
@@ -656,6 +672,7 @@ class LibraryPage(tk.Frame):
         dlg = tk.Toplevel(self, bg=BG)
         dlg.title(_t("Вставить текст"))
         dlg.transient(self.winfo_toplevel())
+        dlg.after(1, lambda d=dlg: _on_app_monitor(d, self))
         L(dlg, _t("Название:"), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
         e = entry(dlg, width=50)
         e.pack(fill=tk.X, padx=px(10))
@@ -746,6 +763,7 @@ class LibraryPage(tk.Frame):
         dlg = tk.Toplevel(self, bg=BG)
         dlg.title(_t("Переименовать"))
         dlg.transient(self.winfo_toplevel())
+        dlg.after(1, lambda d=dlg: _on_app_monitor(d, self))
         L(dlg, _t("Название:"), fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(10), pady=(px(10), 0))
         e1 = entry(dlg, width=44)
         e1.insert(0, m["title"])

@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from stamina import theme
+from stamina import monitors
 from stamina.hud import HudButton
 from stamina.theme import AMBER, BG, BG2, CYAN, LINE, MUTED, PANEL, PANEL_HI, TEXT, px
 
@@ -448,9 +449,9 @@ class PageHelpDialog(tk.Toplevel):
         self.transient(app)
         self.resizable(True, True)
         self.minsize(px(420), px(280))
-        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        sw, sh = monitors.area_size(app)          # монитор окна программы, не основной
         w, h = min(px(680), int(sw * 0.9)), min(px(560), int(sh * 0.85))
-        self.geometry(f"{w}x{h}+{(sw - w) // 2}+{(sh - h) // 2}")
+        self.geometry(monitors.center_geometry(app, w, h))
 
         head = tk.Frame(self, bg=BG)
         head.pack(fill=tk.X, padx=px(16), pady=(px(14), px(6)))

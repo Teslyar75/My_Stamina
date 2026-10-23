@@ -11,7 +11,8 @@ from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MU
                            RED, TEXT, blend, px)
 
 
-def L(master, text="", *, fg=TEXT, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
+def L(master, text="", *, fg=None, size=10, bold=False, mono=False, bg=None, **kw) -> tk.Label:
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
     if bg is None:
         try:
             bg = master.cget("bg")
@@ -29,7 +30,8 @@ def entry(master, width=30, size=11, mono=False) -> tk.Entry:
 class ScrollFrame(tk.Frame):
     """Вертикальная прокрутка колесом мыши; содержимое — в .inner."""
 
-    def __init__(self, master, bg=BG, **kw) -> None:
+    def __init__(self, master, bg=None, **kw) -> None:
+        bg = BG if bg is None else bg  # токен скина — в момент вызова, не при импорте
         super().__init__(master, bg=bg, **kw)
         from stamina.adapt import make_vscroll
         self.canvas = tk.Canvas(self, bg=bg, highlightthickness=0, bd=0)
@@ -45,6 +47,9 @@ class ScrollFrame(tk.Frame):
         self.bind("<Leave>", lambda _e: self._wheel_on(False))
 
     def _wheel_on(self, on: bool) -> None:
+        from stamina import wheel_router
+        if wheel_router.installed(self):
+            return    # общий роутер уже крутит область под курсором; bind_all его бы стёр
         # Windows/macOS: <MouseWheel>; Linux (X11): кнопки 4/5
         for seq, fn in (("<MouseWheel>", self._wheel), ("<Button-4>", lambda e: self._step(-3)),
                         ("<Button-5>", lambda e: self._step(3))):

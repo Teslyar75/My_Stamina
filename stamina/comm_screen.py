@@ -24,7 +24,9 @@ from stamina.voice.mic import MicControl
 ACCENTS = ("cyan", "amber", "green", "red", "purple")
 
 
-def _label(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw):
+def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
@@ -183,7 +185,8 @@ class CommScreen(tk.Frame):
             return
         self.entry.insert_text(text)
 
-    def _mic_status(self, text: str, color=MUTED) -> None:
+    def _mic_status(self, text: str, color=None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         self.mic_hint.configure(text=text, fg=color)
 
     def _tick_mic(self) -> None:

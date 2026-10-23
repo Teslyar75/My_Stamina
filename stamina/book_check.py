@@ -9,6 +9,7 @@ import threading
 import tkinter as tk
 
 from stamina import orion, theme
+from stamina import monitors
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
@@ -77,7 +78,7 @@ class FixesWindow(tk.Toplevel):
         self.configure(bg=BG)
         self.transient(app)
         try:
-            self.geometry(f"{px(760)}x{px(560)}")
+            self.geometry(monitors.center_geometry(app, px(760), px(560)))
         except tk.TclError:
             pass
 

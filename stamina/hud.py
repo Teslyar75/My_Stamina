@@ -114,7 +114,14 @@ class _LazyDraw:
 
     def _flush_draw(self) -> None:
         self._draw_job = None
-        self._draw()
+        # родителя могли уничтожить раньше (destroy() потомка Tk тогда не вызывает):
+        # отложенная перерисовка мёртвого виджета — тихо пропустить
+        try:
+            if not self.winfo_exists():
+                return
+            self._draw()
+        except tk.TclError:
+            pass
 
     def destroy(self) -> None:
         if self._draw_job is not None:
@@ -510,6 +517,7 @@ class RingGauge(_LazyDraw, tk.Canvas):
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(200), height=px(170))
         self.title = title
+        self.track: str | None = None   # alt: цвет дорожки кольца (по умолчанию CYAN_DEEP)
         self.value: float | None = None
         self.sub = ""
         self._draw_job = None
@@ -537,7 +545,7 @@ class RingGauge(_LazyDraw, tk.Canvas):
             self.create_line(cx + r1 * math.cos(a), cy - r1 * math.sin(a),
                              cx + r2 * math.cos(a), cy - r2 * math.sin(a), fill=FAINT)
         tr = r * 0.9
-        self.create_oval(cx - tr, cy - tr, cx + tr, cy + tr, outline=CYAN_DEEP, width=px(9))
+        self.create_oval(cx - tr, cy - tr, cx + tr, cy + tr, outline=self.track or CYAN_DEEP, width=px(9))
         v = self.value
         if v is None:
             col, label = MUTED, "—"
@@ -611,6 +619,7 @@ class Readouts(_LazyDraw, tk.Canvas):
         super().__init__(master, bg=_bg_of(master), highlightthickness=0, bd=0,
                          width=px(200), height=px(rows * 46))
         self.rows: list[tuple[str, str, str]] = []
+        self.stack = False          # alt: подпись над значением, если в строку не влезает
         self._draw_job = None
         self.bind("<Configure>", lambda _e: self._request_draw())
 
@@ -631,10 +640,27 @@ class Readouts(_LazyDraw, tk.Canvas):
             self.create_line(px(4), y + rh - px(3), w - px(4), y + rh - px(3), fill=LINE)
             self.create_rectangle(px(4), y + rh * 0.30, px(7), y + rh * 0.78,
                                   fill=color, outline=color)
-            self.create_text(px(13), y + rh * 0.30, text=title, anchor="nw", fill=MUTED,
-                             font=theme.font(8, True))
-            self.create_text(w - px(4), y + rh * 0.55, text=value, anchor="e", fill=color,
-                             font=theme.font(15, True, mono=True))
+            if not self.stack:
+                self.create_text(px(13), y + rh * 0.30, text=title, anchor="nw", fill=MUTED,
+                                 font=theme.font(8, True))
+                self.create_text(w - px(4), y + rh * 0.55, text=value, anchor="e", fill=color,
+                                 font=theme.font(15, True, mono=True))
+                continue
+            v = self.create_text(w - px(4), y + rh - px(5), text=value, anchor="se", fill=color,
+                                 font=theme.font(15, True, mono=True))
+            t = self.create_text(px(13), y + px(2), text=title, anchor="nw", fill=MUTED,
+                                 font=theme.font(8, True))
+            vb, tb = self.bbox(v), self.bbox(t)
+            if tb and vb and tb[3] > vb[1] and tb[2] > vb[0] - px(4):
+                # не влезла и над значением - значение ниже, подпись целиком сверху
+                self.coords(t, px(13), y + px(1))
+            need = (self.bbox(t) or (0, 0, 0, 0))[2] + px(6)
+            if need > w and need > int(self.cget("width")):
+                self.configure(width=need)      # alt: колонка шире - подпись целиком
+            text = title
+            while text and self.bbox(t) and self.bbox(t)[2] > w - px(2):
+                text = text[:-1]
+                self.itemconfigure(t, text=text.rstrip() + "…")
 
 
 # ---------------------------------------------------------------------------

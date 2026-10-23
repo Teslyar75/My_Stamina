@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 from stamina.i18n import t as tr_          # окно доступа к GitHub исторически зовёт так
+from stamina import archive_view
 from stamina import marks
 
 import queue
@@ -31,6 +32,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_screens import Modal, PinPad
@@ -42,7 +44,9 @@ from stamina.voice import stt, tts
 from stamina.voice.mic import MicControl
 
 
-def _label(master, text="", *, fg=TEXT, size=10, bold=False, bg=PANEL, **kw):
+def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
+    fg = TEXT if fg is None else fg  # токен скина — в момент вызова, не при импорте
+    bg = PANEL if bg is None else bg  # токен скина — в момент вызова, не при импорте
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
@@ -330,14 +334,16 @@ class OrionScreen(tk.Frame):
             w.bind("<MouseWheel>", self._wheel)
             w.bind("<Button-4>", lambda _e: self.text.yview_scroll(-3, "units"))
             w.bind("<Button-5>", lambda _e: self.text.yview_scroll(3, "units"))
-        # Копирование текста из чата — правый клик или Ctrl+C
-        self.text.bind("<Button-3>", self._copy_text)
-        self.text.bind("<Control-c>", self._copy_text)
-        # Разрешаем выделение текста
-        self.text.configure(state=tk.NORMAL)
+        # Лента только для чтения, но текст выделяется мышью и копируется:
+        # Ctrl+C (в любой раскладке), Ctrl+A, правый клик — меню «Копировать».
+        self.text.configure(cursor="xterm", exportselection=True,
+                            selectbackground=CYAN, selectforeground=BG,
+                            inactiveselectbackground=LINE)
+        self.text.bind("<Button-3>", self._feed_menu)
+        self.text.bind("<Control-KeyPress>", self._feed_key)
+        self.text.bind("<<Copy>>", self._copy_text)
         self.text.bind("<Button-1>", self._select_text)
-        self.text.bind("<B1-Motion>", self._select_text)
-        self.text.configure(state=tk.DISABLED)
+        self._msg_texts: list[str] = []
 
         # Живая линия — вместо доски: последняя реплика пилота и ответ Ориона
         self.strip = HudPanel(page, title=_t("ЖИВАЯ ЛИНИЯ"), accent=GREEN)
@@ -352,6 +358,13 @@ class OrionScreen(tk.Frame):
         _label(sbody, _t("Доска скрыта: разговор идёт как контекст. Скажите «запиши задание» — "
                          "или нажмите «ДОСКА»."), fg=MUTED, size=8, bg=PANEL, anchor="w",
                justify="left", wraplength=px(880)).pack(fill=tk.X, pady=(px(10), 0))
+
+        def _wrap_strip(e, box=sbody) -> None:
+            wl = max(px(120), e.width - px(8))
+            for w in box.winfo_children():
+                if isinstance(w, tk.Label) and int(w.cget("wraplength") or 0) != wl:
+                    w.configure(wraplength=wl)
+        sbody.bind("<Configure>", _wrap_strip, add="+")
 
         bottom = tk.Frame(page, bg=BG)
         bottom.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
@@ -387,10 +400,9 @@ class OrionScreen(tk.Frame):
         # Приложенный снимок экрана: виден до отправки, снимается крестиком.
         # Пилот хочет обсуждать картинку, а не имя файла, — потому миниатюра, не путь.
         self.shot_row = tk.Frame(bottom, bg=BG)
-        self.shot_icon = tk.Label(self.shot_row, bg=BG, bd=0, cursor="hand2")
+        # миниатюры всех приложенных картинок: клик — посмотреть, ✕ — снять одну
+        self.shot_icon = tk.Frame(self.shot_row, bg=BG, bd=0)
         self.shot_icon.pack(side=tk.LEFT)
-        self.shot_icon.bind("<Button-1>", lambda _e: self._open_shot(
-            self._pending_shots[0] if self._pending_shots else ""))
         self.shot_label = _label(self.shot_row, "", fg=CYAN, size=9, bg=BG, anchor="w",
                                  justify="left", wraplength=px(760))
         self.shot_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(10), 0))
@@ -415,6 +427,10 @@ class OrionScreen(tk.Frame):
         self.entry.bind_text("<Control-Shift-S>", self._grab_window_shot)
         self.entry.bind_text("<Control-Shift-s>", self._grab_window_shot)
         self.entry.bind_text("<Button-3>", self._context_menu)
+        # 📎 — приложить картинки с диска (как в чатах ИИ); Ctrl+V — из буфера
+        self.attach_btn = HudButton(row, "📎", self._pick_images, height=36, font_size=11,
+                                    width=36, color=CYAN)
+        self.attach_btn.pack(side=tk.LEFT, padx=(0, px(6)))
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
                               settings=self.app.store.settings,
@@ -438,9 +454,66 @@ class OrionScreen(tk.Frame):
         self.text.yview_scroll(int(-e.delta / 120) * 3, "units")
         return "break"
 
-    def _select_text(self, e) -> str:
-        """Разрешить выделение текста в чате."""
+    def _select_text(self, e) -> None:
+        """Клик в ленте: фокус в ленту (иначе Ctrl+C не дойдёт), выделение — штатное Tk."""
+        try:
+            self.text.focus_set()
+        except tk.TclError:
+            pass
         return None
+
+    def _feed_key(self, e) -> str | None:
+        """Ctrl+C / Ctrl+A по коду клавиши — работает и в русской раскладке."""
+        code = getattr(e, "keycode", 0)
+        key = (getattr(e, "keysym", "") or "").lower()
+        if code == 67 or key in ("c", "cyrillic_es"):
+            return self._copy_text(e)
+        if code == 65 or key in ("a", "cyrillic_ef"):
+            return self._select_all_feed()
+        return None
+
+    def _select_all_feed(self) -> str:
+        self.text.tag_remove(tk.SEL, "1.0", tk.END)
+        self.text.tag_add(tk.SEL, "1.0", "end-1c")
+        return "break"
+
+    def _msg_at(self, index: str) -> str:
+        """Текст реплики под курсором (по меткам msgN), пусто — если не на реплике."""
+        for tag in self.text.tag_names(index):
+            if tag.startswith("msg") and tag[3:].isdigit():
+                n = int(tag[3:])
+                if n < len(self._msg_texts):
+                    return self._msg_texts[n]
+        return ""
+
+    def _feed_menu(self, e) -> str:
+        """Правый клик по ленте: Копировать / Копировать сообщение / Выделить всё."""
+        idx = self.text.index(f"@{e.x},{e.y}")
+        has_sel = bool(self.text.tag_ranges(tk.SEL))
+        msg = self._msg_at(idx)
+        menu = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT,
+                       activebackground=CYAN, activeforeground=BG)
+        menu.add_command(label=_t("Копировать"), accelerator="Ctrl+C",
+                         command=lambda: self._copy_text(None),
+                         state=tk.NORMAL if has_sel else tk.DISABLED)
+        menu.add_command(label=_t("Копировать сообщение"),
+                         command=lambda m=msg: self._copy_plain(m),
+                         state=tk.NORMAL if msg else tk.DISABLED)
+        menu.add_command(label=_t("Выделить всё"), accelerator="Ctrl+A",
+                         command=self._select_all_feed)
+        self._feed_menu_widget = menu
+        try:
+            menu.tk_popup(e.x_root, e.y_root)
+        finally:
+            menu.grab_release()
+        return "break"
+
+    def _copy_plain(self, text: str) -> None:
+        if not text:
+            return
+        self.clipboard_clear()
+        self.clipboard_append(text)
+        self._hint(_t("Текст скопирован"), GREEN)
 
     def _paste_text(self, _e) -> str:
         """Вставить из буфера: сначала снимок экрана, потом текст."""
@@ -491,40 +564,80 @@ class OrionScreen(tk.Frame):
                    .format(source), CYAN)
         return True
 
+    IMAGE_TYPES = (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
+
+    def _pick_images(self) -> None:
+        """Кнопка 📎: выбрать одну или несколько картинок — копии уходят на борт."""
+        from tkinter import filedialog
+        names = filedialog.askopenfilenames(
+            parent=self, title=_t("Приложить картинки"),
+            filetypes=[(_t("Картинки"), " ".join("*" + e for e in self.IMAGE_TYPES)),
+                       (_t("Все файлы"), "*.*")])
+        self.attach_paths(names)
+
+    def attach_paths(self, names) -> int:
+        """Приложить файлы-картинки к сообщению. → сколько приложено."""
+        pics = [Path(n) for n in names or () if Path(n).suffix.lower() in self.IMAGE_TYPES]
+        added = 0
+        for taken in shots.adopt(pics):
+            if str(taken) not in self._pending_shots:
+                self._pending_shots.append(str(taken))
+                added += 1
+        if added:
+            self._refresh_shot_row()
+            self._hint(_t("Приложено картинок: {0}. Орион увидит их вместе с сообщением.")
+                       .format(added), CYAN)
+        elif names:
+            self._hint(_t("Это не картинка (png, jpg, gif, bmp, webp)"), AMBER)
+        return added
+
     def _refresh_shot_row(self) -> None:
         """Строка приложенного снимка над полем ввода: миниатюра, имя, крестик."""
         if not hasattr(self, "shot_row"):
             return
         if self._pending_shots:
-            names = ", ".join(Path(p).name for p in self._pending_shots)
+            n = len(self._pending_shots)
             self.shot_label.configure(
-                text=_t("📷 Приложено: {0}").format(names) + "\n"
-                     + _t("Этот снимок уйдёт Ориону вместе с сообщением."))
-            self._draw_shot_preview(self._pending_shots[0])
+                text=_t("📷 Приложено: {0}").format(n) + "\n"
+                     + _t("Картинки уйдут Ориону вместе с сообщением."))
+            self._draw_shot_preview(self._pending_shots)
             self.shot_row.pack(fill=tk.X, pady=(px(4), 0), before=self.input_row)
         else:
             self.shot_label.configure(text="")
-            self._draw_shot_preview("")
+            self._draw_shot_preview([])
             self.shot_row.pack_forget()
 
-    def _draw_shot_preview(self, path: str) -> None:
-        """Миниатюра снимка перед отправкой — пилот видит картинку, а не только имя."""
+    def _draw_shot_preview(self, paths) -> None:
+        """Миниатюры приложенного перед отправкой — пилот видит картинки, а не имена."""
+        for w in self.shot_icon.winfo_children():
+            w.destroy()
         self._shot_previews = []
-        if not path:
-            self.shot_icon.configure(image="", width=0, height=0)
-            return
-        pic = shots.thumbnail(Path(path), size=84)
-        if pic is None:
-            self.shot_icon.configure(image="", width=0, height=0,
-                                     text=_t("📷 снимок не открылся: {0}").format(Path(path).name))
-            return
         try:
             from PIL import ImageTk
-            photo = ImageTk.PhotoImage(pic, master=self.shot_icon)
         except Exception:  # noqa: BLE001
-            return
-        self._shot_previews.append(photo)
-        self.shot_icon.configure(image=photo, text="", width=pic.width, height=pic.height)
+            ImageTk = None
+        for path in list(paths)[:8]:
+            cell = tk.Frame(self.shot_icon, bg=BG)
+            cell.pack(side=tk.LEFT, padx=(0, px(6)))
+            pic = shots.thumbnail(Path(path), size=72)
+            if pic is None or ImageTk is None:
+                lab = tk.Label(cell, text="📷 " + Path(path).name[:18], bg=BG, fg=MUTED,
+                               font=theme.font(8), cursor="hand2")
+            else:
+                photo = ImageTk.PhotoImage(pic, master=cell)
+                self._shot_previews.append(photo)
+                lab = tk.Label(cell, image=photo, bg=BG, bd=1, relief=tk.SOLID, cursor="hand2")
+            lab.pack()
+            lab.bind("<Button-1>", lambda _e, p=path: self._open_shot(p))
+            x = tk.Label(cell, text="✕", bg=BG, fg=MUTED, font=theme.font(8, True), cursor="hand2")
+            x.place(relx=1.0, x=-1, y=1, anchor="ne")
+            x.bind("<Button-1>", lambda _e, p=path: self._drop_shot(p))
+
+    def _drop_shot(self, path: str) -> str:
+        if path in self._pending_shots:
+            self._pending_shots.remove(path)
+        self._refresh_shot_row()
+        return "break"
 
     def _clear_shots(self) -> None:
         """Убрать снимок из сообщения, файл на борту оставить (история уже его знает)."""
@@ -536,7 +649,8 @@ class OrionScreen(tk.Frame):
         """Клик по миниатюре — открыть снимок целиком."""
         if not path or not Path(path).is_file():
             return "break"
-        if not shots.open_file(Path(path)):
+        from stamina import image_viewer
+        if image_viewer.show(self, path) is None and not shots.open_file(Path(path)):
             self._hint(_t("Не удалось открыть снимок: {0}").format(Path(path).name), RED)
         return "break"
 
@@ -784,73 +898,306 @@ class OrionScreen(tk.Frame):
                   color=MUTED).pack(side=tk.LEFT)
 
         _label(page, _t("Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по "
-                        "сообщению — выделить; выделенное переносится в чат."),
+                        "находке — сообщение целиком; ☐ — отметить для переноса в чат."),
                fg=MUTED, size=9, bg=BG, anchor="w", justify="left",
                wraplength=px(900)).pack(fill=tk.X, pady=(0, px(4)))
 
         self.arch = HudPanel(page, title=_t("НАЙДЕННЫЕ СООБЩЕНИЯ"))
+        self.arch.pack(fill=tk.BOTH, expand=True)        # раньше панель не вставала — находки были не видны
+        # подробный вид: панель навигации над тем же местом, где список
+        self.arch_nav = tk.Frame(self.arch.body, bg=PANEL)
+        HudButton(self.arch_nav, _t("← К СПИСКУ"), self._archive_back, height=30, font_size=9,
+                  color=CYAN).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(self.arch_nav, "◀", lambda: self._archive_step(-1), height=30, font_size=10,
+                  color=MUTED).pack(side=tk.LEFT, padx=(0, px(4)))
+        HudButton(self.arch_nav, "▶", lambda: self._archive_step(1), height=30, font_size=10,
+                  color=MUTED).pack(side=tk.LEFT, padx=(0, px(8)))
+        self.arch_pos = _label(self.arch_nav, "", fg=MUTED, size=9, bg=PANEL)
+        self.arch_pos.pack(side=tk.LEFT)
+        self.arch_pick_btn = HudButton(self.arch_nav, _t("ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА"),
+                                       self._archive_detail_pick, height=30, font_size=9,
+                                       color=GREEN)
+        self.arch_pick_btn.pack(side=tk.RIGHT)
         abody = tk.Frame(self.arch.body, bg=PANEL)
         abody.pack(fill=tk.BOTH, expand=True)
+        self.arch_abody = abody
         asb = make_vscroll(abody)
         asb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.arch_sb = asb
         self.arch_text = tk.Text(abody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
                                  font=theme.font(10), padx=px(8), pady=px(6), cursor="arrow",
                                  state=tk.DISABLED, highlightthickness=0, bd=0,
-                                 yscrollcommand=asb.set)
+                                 yscrollcommand=asb.set, spacing1=px(1), spacing3=px(1))
         self.arch_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        asb.configure(command=self.arch_text.yview)
-        for w in (self.arch_text, abody):
-            w.bind("<MouseWheel>", lambda e: self._wheel_in(self.arch_text, e))
-        for tag, color in (("when", MUTED), ("who", CYAN), ("body", TEXT), ("shot", AMBER)):
-            self.arch_text.tag_configure(tag, foreground=color)
+        self.arch_detail = tk.Text(abody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
+                                   font=theme.font(10), padx=px(10), pady=px(8),
+                                   cursor="xterm", state=tk.DISABLED, highlightthickness=0,
+                                   bd=0, yscrollcommand=asb.set, spacing3=px(2),
+                                   selectbackground=CYAN, selectforeground=BG,
+                                   inactiveselectbackground=LINE)
+        asb.configure(command=self._archive_yview)
+        for w in (self.arch_text, self.arch_detail, abody):
+            w.bind("<MouseWheel>", lambda e: self._wheel_in(self._archive_view(), e))
+        for t in (self.arch_text, self.arch_detail):
+            for tag, color in (("when", MUTED), ("who", CYAN), ("body", TEXT), ("shot", AMBER),
+                               ("dim", MUTED), ("chk", GREEN)):
+                t.tag_configure(tag, foreground=color)
+            t.tag_configure("hit", background=AMBER, foreground=BG)
+            t.tag_raise("hit")
+        self.arch_text.tag_configure("snip", lmargin1=px(22), lmargin2=px(22))
+        self.arch_detail.tag_configure("focus", lmargin1=px(10), lmargin2=px(10),
+                                       background=BG2)
+        self.arch_detail.tag_configure("hitcur", background=GREEN, foreground=BG)
+        self.arch_detail.tag_raise("hitcur")
+        self.arch_detail.bind("<Escape>", lambda _e: self._archive_back())
+        self.arch_detail.bind("<Left>", lambda _e: self._archive_step(-1))
+        self.arch_detail.bind("<Right>", lambda _e: self._archive_step(1))
+        self.arch_detail.bind("<Button-1>", lambda _e: self.arch_detail.focus_set())
+        self.arch_detail.bind("<Control-KeyPress>", self._archive_detail_key)
+        self._archive_detail_idx = -1
 
     def _wheel_in(self, widget: tk.Text, e) -> str:
         widget.yview_scroll(int(-e.delta / 120) * 3, "units")
         return "break"
 
     def _archive_search(self) -> None:
-        """Найти в переписке: пустой запрос — показать последние сообщения борта."""
+        """Найти в переписке в фоне: пустой запрос — последние сообщения борта.
+
+        Большой архив читается в потоке; экран не замирает. Пришёл ответ на старый
+        запрос (пилот уже ищет другое) — выбрасываем.
+        """
         query = self.arch_entry.get().strip()
-        self._archive_rows = orion.archive(query, limit=500)
+        self._arch_gen = getattr(self, "_arch_gen", 0) + 1
+        gen = self._arch_gen
+        self._arch_words = tuple(orion.parse_query(query).words)
+        self._arch_started = time.perf_counter()
+        self.arch_found.configure(text=_t("Ищу…"))
+        box: dict = {}
+
+        def work() -> None:
+            try:
+                rows = orion.archive(query, limit=500)
+                box["rows"] = rows
+                box["snips"] = archive_view.prepare(rows, self._arch_words)
+            except Exception as exc:  # noqa: BLE001
+                box["error"] = exc
+            box["done"] = True                       # последним: ответ собран целиком
+
+        threading.Thread(target=work, name="orion-archive", daemon=True).start()
+        self._archive_poll(gen, box)
+
+    def _archive_poll(self, gen: int, box: dict) -> None:
+        if gen != getattr(self, "_arch_gen", 0):
+            return                                   # запрос устарел
+        if "done" not in box:
+            self.after(20, lambda: self._archive_poll(gen, box))
+            return
+        if "error" in box:
+            self._hint(_t("Архив не прочитался: {0}").format(box["error"]), AMBER)
+            box = {"rows": [], "snips": [], "done": True}
+        self._archive_rows = box["rows"]
+        self._archive_snips = box["snips"]
         self._archive_picked = []
         self._archive_tags = {}
         self._archive_tag_ids = {}
+        self._archive_ctx = {}
+        self._archive_back()
         self._render_archive()
+        self._archive_prefetch(gen)
+        self._archive_ms = (time.perf_counter() - self._arch_started) * 1000
         self._hint(_t("Найдено: {0}").format(len(self._archive_rows)) if self._archive_rows
                    else _t("Ничего не найдено — попробуйте другие слова или дату."),
                    CYAN if self._archive_rows else MUTED)
+
+    def _archive_prefetch(self, gen: int) -> None:
+        """Соседей для подробного вида читаем в фоне, когда список уже на экране."""
+        cache = self._archive_ctx
+        agents = list(dict.fromkeys(str(m.get("agent") or "") for m in self._archive_rows))
+
+        def work() -> None:
+            for agent in agents:
+                if not agent or agent in cache or gen != getattr(self, "_arch_gen", 0):
+                    continue
+                try:
+                    cache[agent] = orion.archive_messages(agent)
+                except Exception:  # noqa: BLE001
+                    pass
+
+        threading.Thread(target=work, name="orion-archive-ctx", daemon=True).start()
 
     def _archive_reset(self) -> None:
         self.arch_entry.delete(0, tk.END)
         self._archive_search()
 
     def _render_archive(self) -> None:
-        self.arch_text.configure(state=tk.NORMAL)
-        self.arch_text.delete("1.0", tk.END)
+        """Список находок: шапка и фрагмент вокруг совпадения, слово подсвечено."""
+        t = self.arch_text
+        t.configure(state=tk.NORMAL)
+        t.delete("1.0", tk.END)
         self._archive_images = []
         if not self._archive_rows:
-            self.arch_text.insert(tk.END, _t("Ничего не найдено — попробуйте другие слова "
-                                             "или дату.") + "\n", "when")
+            t.insert(tk.END, _t("Ничего не найдено — попробуйте другие слова или дату.")
+                     + "\n", "when")
+        snips = getattr(self, "_archive_snips", None) or archive_view.prepare(
+            self._archive_rows, getattr(self, "_arch_words", ()))
         for idx, msg in enumerate(self._archive_rows):
             tag = f"pick{idx}"
             self._archive_tag_ids[tag] = str(msg.get("id") or f"_{idx}")
             when = orion.when_text(float(msg.get("ts") or 0.0))
             who = orion.role_name(str(msg.get("role") or "")).upper()
-            self.arch_text.insert(tk.END, "─" * 40 + "\n", "when")
-            self.arch_text.insert(tk.END, f"{when}  ·  {who}", tag)
+            t.mark_set(f"chk{idx}", tk.END + "-1c")
+            t.mark_gravity(f"chk{idx}", tk.LEFT)
+            t.insert(tk.END, "☐ ", ("chk", f"box{idx}"))
+            t.insert(tk.END, f"{when}  ·  {who}", ("when", tag))
             agent_name = str(msg.get("agent_name") or "")
             if agent_name:
-                self.arch_text.insert(tk.END, f"  ·  {agent_name.upper()}", "who")
-            self.arch_text.insert(tk.END, "\n", tag)
-            if str(msg.get("kind") or "") == "quote":
-                self.arch_text.insert(tk.END, "📎 ", tag)
-            self.arch_text.insert(tk.END, f"{msg.get('text', '')}\n", tag)
+                t.insert(tk.END, f"  ·  {agent_name.upper()}", ("who", tag))
             if msg.get("shot"):
-                self._archive_shot(str(msg["shot"]), tag)
-            self.arch_text.tag_bind(tag, "<Button-1>", lambda _e, t=tag: self._archive_toggle(t))
-        self.arch_text.configure(state=tk.DISABLED)
+                t.insert(tk.END, "  📷", ("shot", tag))
+            t.insert(tk.END, "\n", tag)
+            text, spans = snips[idx]
+            if str(msg.get("kind") or "") == "quote":
+                text = "📎 " + text
+                spans = [(a + 2, b + 2) for a, b in spans]
+            start = t.index(tk.END + "-1c")
+            t.insert(tk.END, text, ("body", "snip", tag))
+            for a, b in spans:
+                t.tag_add("hit", f"{start}+{a}c", f"{start}+{b}c")
+            t.insert(tk.END, "\n\n", tag)
+            t.tag_bind(tag, "<Button-1>", lambda _e, i=idx: self._archive_open(i))
+            t.tag_bind(f"box{idx}", "<Button-1>",
+                       lambda _e, tg=tag: self._archive_toggle(tg))
+            t.tag_bind(tag, "<Enter>", lambda _e: t.configure(cursor="hand2"))
+            t.tag_bind(tag, "<Leave>", lambda _e: t.configure(cursor="arrow"))
+        t.tag_raise("hit")                           # подсветка поверх фона выделения
+        t.configure(state=tk.DISABLED)
         self._archive_highlight()
-        self.arch_found.configure(text=_t("Найдено: {0}").format(len(self._archive_rows)))
+
+    # -- подробный вид находки ----------------------------------------------
+    def _archive_view(self) -> tk.Text:
+        return self.arch_detail if self._archive_detail_idx >= 0 else self.arch_text
+
+    def _archive_yview(self, *args) -> None:
+        self._archive_view().yview(*args)
+
+    def _archive_messages(self, agent: str) -> list[dict]:
+        cache = getattr(self, "_archive_ctx", None)
+        if cache is None:
+            cache = self._archive_ctx = {}
+        if agent not in cache:
+            try:
+                cache[agent] = orion.archive_messages(agent)
+            except Exception:  # noqa: BLE001
+                cache[agent] = []
+        return cache[agent]
+
+    def _archive_open(self, idx: int) -> str:
+        """Клик по находке: сообщение целиком в разговоре, слово подсвечено."""
+        if not (0 <= idx < len(self._archive_rows)):
+            return "break"
+        if self._archive_detail_idx < 0:
+            self._archive_list_y = self.arch_text.yview()[0]
+            self.arch_text.pack_forget()
+            self.arch_nav.pack(fill=tk.X, before=self.arch_abody, pady=(0, px(4)))
+            self.arch_detail.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self._archive_detail_idx = idx
+        msg = self._archive_rows[idx]
+        mid = str(msg.get("id") or "")
+        window, pos = archive_view.context(self._archive_messages(str(msg.get("agent") or "")),
+                                           mid) if mid else ([], -1)
+        if pos < 0:
+            window, pos = [msg], 0
+        d = self.arch_detail
+        d.configure(state=tk.NORMAL)
+        d.delete("1.0", tk.END)
+        self._archive_images = []
+        first_hit = None
+        for n, m in enumerate(window):
+            own = n == pos
+            when = orion.when_text(float(m.get("ts") or 0.0))
+            who = orion.role_name(str(m.get("role") or "")).upper()
+            d.insert(tk.END, f"{when}  ·  {who}\n", ("who" if own else "dim",)
+                     + (("focus",) if own else ()))
+            text = str(m.get("text") or "")
+            start = d.index(tk.END + "-1c")
+            d.insert(tk.END, text + "\n", ("body", "focus") if own else ("dim",))
+            if own:
+                for a, b in archive_view.hit_spans(text, getattr(self, "_arch_words", ())):
+                    d.tag_add("hit", f"{start}+{a}c", f"{start}+{b}c")
+                    if first_hit is None:
+                        first_hit = f"{start}+{a}c"
+                        d.tag_add("hitcur", f"{start}+{a}c", f"{start}+{b}c")
+                if m.get("shot"):
+                    self._archive_detail_shot(str(m["shot"]))
+                anchor = start
+            d.insert(tk.END, "\n")
+        d.tag_raise("hit")
+        d.tag_raise("hitcur")
+        d.configure(state=tk.DISABLED)
+        d.see(first_hit or anchor)
+        d.focus_set()
+        self.arch_pos.configure(text=_t("Находка {0} из {1}").format(
+            idx + 1, len(self._archive_rows)))
+        self._archive_detail_mark()
+        return "break"
+
+    def _archive_detail_shot(self, path: str) -> None:
+        pic_path = Path(path)
+        pic = shots.thumbnail(pic_path, size=160) if pic_path.is_file() else None
+        if pic is None:
+            return
+        try:
+            from PIL import ImageTk
+            photo = ImageTk.PhotoImage(pic, master=self.arch_detail)
+        except Exception:  # noqa: BLE001
+            return
+        self._archive_images.append(photo)
+        name = self.arch_detail.image_create(tk.END, image=photo, padx=px(10), pady=px(4))
+        self.arch_detail.insert(tk.END, "\n")
+        self.arch_detail.tag_bind(name, "<Button-1>",
+                                  lambda _e, p=str(pic_path): self._open_shot(p))
+
+    def _archive_step(self, delta: int) -> str:
+        if self._archive_detail_idx >= 0 and self._archive_rows:
+            nxt = self._archive_detail_idx + delta
+            if 0 <= nxt < len(self._archive_rows):
+                self._archive_open(nxt)
+        return "break"
+
+    def _archive_back(self) -> str:
+        if getattr(self, "_archive_detail_idx", -1) < 0:
+            return "break"
+        self._archive_detail_idx = -1
+        self.arch_detail.pack_forget()
+        self.arch_nav.pack_forget()
+        self.arch_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.arch_text.yview_moveto(getattr(self, "_archive_list_y", 0.0))
+        return "break"
+
+    def _archive_detail_pick(self) -> None:
+        if self._archive_detail_idx >= 0:
+            self._archive_toggle(f"pick{self._archive_detail_idx}")
+            self._archive_detail_mark()
+
+    def _archive_detail_mark(self) -> None:
+        mid = self._archive_tag_ids.get(f"pick{self._archive_detail_idx}", "")
+        on = mid in self._archive_picked
+        try:
+            self.arch_pick_btn.set_text(_t("✓ ОТМЕЧЕНО") if on else _t("ОТМЕТИТЬ ДЛЯ ПЕРЕНОСА"))
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _archive_detail_key(self, e) -> str | None:
+        key = str(getattr(e, "keysym", "")).lower()
+        if getattr(e, "keycode", 0) == 67 or key in ("c", "cyrillic_es"):
+            try:
+                text = self.arch_detail.get(tk.SEL_FIRST, tk.SEL_LAST)
+            except tk.TclError:
+                return "break"
+            self.clipboard_clear()
+            self.clipboard_append(text)
+            return "break"
+        return None
 
     def _archive_shot(self, path: str, tag: str) -> None:
         """Миниатюра снимка в найденном сообщении: клик открывает картинку целиком."""
@@ -869,7 +1216,7 @@ class OrionScreen(tk.Frame):
         name = self.arch_text.image_create(tk.END, image=photo, padx=px(4), pady=px(4),
                                            align="bottom")
         self.arch_text.insert(tk.END, "\n")
-        self.arch_text.tag_add(name, tag)
+        self.arch_text.tag_add(tag, name)
         self.arch_text.tag_bind(name, "<Button-1>", lambda _e, p=str(pic_path): self._open_shot(p))
 
     def _archive_toggle(self, tag: str) -> str:
@@ -886,8 +1233,16 @@ class OrionScreen(tk.Frame):
 
     def _archive_highlight(self) -> None:
         picked = set(self._archive_picked)
+        t = self.arch_text
+        t.configure(state=tk.NORMAL)
         for tag, mid in self._archive_tag_ids.items():
-            self.arch_text.tag_configure(tag, background=BG2 if mid in picked else PANEL)
+            on = mid in picked
+            t.tag_configure(tag, background=BG2 if on else PANEL)
+            mark = "chk" + tag[4:]
+            if mark in t.mark_names() and t.get(mark) != ("☑" if on else "☐"):
+                t.delete(mark)
+                t.insert(mark, "☑" if on else "☐", ("chk", "box" + tag[4:]))
+        t.configure(state=tk.DISABLED)
         label = _t("Найдено: {0}").format(len(self._archive_rows))
         if picked:
             label += " · " + _t("Выделено: {0}").format(len(picked))
@@ -949,9 +1304,17 @@ class OrionScreen(tk.Frame):
             key = self.tabs and next(iter(self.tabs))
         self.current_tab = key
         page, btn = self.tabs[key]
+        # в ячейке только текущая вкладка: высота отсека = её высота, а не самой высокой
+        for k, (p, _b) in self.tabs.items():
+            if k != key:
+                p.grid_remove()
+        page.grid()
         page.tkraise()
         for k, b in self.tab_btns.items():
             b.set_active(k == key)
+        hook = getattr(self.app, "_alt_page_hook", None)
+        if callable(hook):
+            hook()
         if key == "archive" and not self._archive_rows:
             self._archive_search()        # архив открыли — сразу показываем свежее
 
@@ -1003,6 +1366,7 @@ class OrionScreen(tk.Frame):
         if not msgs:
             self.text.insert(tk.END, _t("Канал свободен. Скажите Ориону первое слово — "
                                         "письменно или голосом.") + "\n", "hint")
+        self._msg_texts = []
         for m in msgs:
             when = orion.when_text(float(m.get("ts", 0.0)))
             role = m.get("role", "orion")
@@ -1023,7 +1387,9 @@ class OrionScreen(tk.Frame):
             self.text.insert(tk.END, "─" * 40 + "\n", "separator")
             self.text.insert(tk.END, prefix + name, tag)
             self.text.insert(tk.END, f"  {when}\n", "time")
-            self.text.insert(tk.END, f"{m.get('text', '')}\n", "body")
+            mtag = f"msg{len(self._msg_texts)}"
+            self._msg_texts.append(str(m.get("text", "")))
+            self.text.insert(tk.END, f"{m.get('text', '')}\n", ("body", mtag))
             self._insert_shot(m.get("shot"))
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
@@ -1073,9 +1439,12 @@ class OrionScreen(tk.Frame):
         last_pilot = next((m for m in reversed(msgs) if m.get("role") == "pilot"), None)
         last_orion = next((m for m in reversed(msgs) if m.get("role") == "orion"), None)
         name = str(rec.get("name") or "ОРИОН").upper()
-        self.strip_pilot.configure(text=(_t("ПИЛОТ: {0}").format(last_pilot["text"])
+        def _clip(t: str, n: int = 280) -> str:
+            t = " ".join(str(t).split())
+            return t if len(t) <= n else t[:n - 1].rstrip() + "…"
+        self.strip_pilot.configure(text=(_t("ПИЛОТ: {0}").format(_clip(last_pilot["text"]))
                                          if last_pilot else _t("ПИЛОТ: —")))
-        self.strip_orion.configure(text=(f"{name}: {last_orion['text']}" if last_orion
+        self.strip_orion.configure(text=(f"{name}: {_clip(last_orion['text'])}" if last_orion
                                          else _t("{0}: слушаю, пилот").format(name)))
 
     # -- доска: скрыта или открыта -----------------------------------------
@@ -1084,12 +1453,12 @@ class OrionScreen(tk.Frame):
         self.board_visible = visible
         if visible:
             self.strip.pack_forget()
-            self.board.pack(fill=tk.BOTH, expand=True, before=self.bottom)
+            self.board.pack(fill=tk.BOTH, expand=True, after=self.bottom)
             self.board_btn.set_text(_t("ДОСКА: ОТКРЫТА"))
             self.board_btn.set_color(GREEN)
         else:
             self.board.pack_forget()
-            self.strip.pack(fill=tk.BOTH, expand=True, before=self.bottom)
+            self.strip.pack(fill=tk.BOTH, expand=True, after=self.bottom)
             self.board_btn.set_text(_t("ДОСКА: СКРЫТА"))
             self.board_btn.set_color(AMBER)
 
@@ -1102,8 +1471,9 @@ class OrionScreen(tk.Frame):
         if not self.mic.busy:
             self.mic.start()
 
-    def _mic_status(self, text: str, color=MUTED) -> None:
+    def _mic_status(self, text: str, color=None) -> None:
         """Индикатор микрофона: показывает что микрофон работает."""
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         self.mic_indicator.configure(text=("🎤 " + text) if text else "", fg=color)
         self._hint(text, color)
 
@@ -1139,14 +1509,16 @@ class OrionScreen(tk.Frame):
     # -- чат ---------------------------------------------------------------
     # -- шкала работы --------------------------------------------------------
     def _build_activity(self, parent) -> None:
-        """Полоска работы: доклад агента («чем занят») или честная оценка по времени.
+        """Панель работы: по строке на каждую задачу агента (план → процент → цвет).
 
-        Проценты берём из доклада самого агента (`_orion/progress.json`): сколько
-        шагов закрыто из списка, который агент же и написал. Процентов «из ниоткуда»
-        корабль не рисует: если доклада нет — показываем ход по времени и замираем
-        у 97, потому что сто значило бы «готово».
+        Проценты — из плана самого агента (`_orion/tasks/<id>.json`, протокол в
+        `stamina/task_progress.py`): вес закрытых шагов к весу всех. Старый доклад
+        `_orion/progress.json` — ещё одна строка. Нет докладов — одна строка
+        «работаю» с честной оценкой по времени (замирает у 97) или «свободен».
         """
-        self.work_row = tk.Frame(parent, bg=BG)
+        self.work_box = tk.Frame(parent, bg=BG)
+        self.work_box.pack(fill=tk.X, pady=(px(2), 0))
+        self.work_row = tk.Frame(self.work_box, bg=BG)
         self.work_label = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w")
         self.work_label.pack(side=tk.LEFT)
         self.work_bar = tk.Canvas(self.work_row, width=px(170), height=px(10), bg=BG,
@@ -1154,22 +1526,25 @@ class OrionScreen(tk.Frame):
         self.work_bar.pack(side=tk.LEFT, padx=(px(8), px(8)))
         self.work_pct = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w", width=4)
         self.work_pct.pack(side=tk.LEFT)
-        self.work_row.pack(fill=tk.X, pady=(px(2), 0))
+        self.work_row.pack(fill=tk.X)
+        self.task_rows: list[dict] = []   # пул строк задач: {frame, label, bar, pct, key}
         self._work_started = 0.0
         self._work_tick = 0
-        self._report: dict = {}          # доклад агента (читаем не чаще раза в секунду)
+        self._report: dict = {}          # старый доклад v1 (читаем не чаще раза в секунду)
+        self._tasks: list[dict] = []     # задачи v2 + v1
         self._report_read = 0.0
         self._tick_activity()
 
     def _report_view(self) -> dict:
-        """Доклад агента о работе. Файл на диске — читаем не чаще раза в секунду."""
+        """Доклады агента о работе. Файлы на диске — читаем не чаще раза в секунду."""
         now = time.time()
         if now - self._report_read >= 1.0:
             self._report_read = now
             try:
                 self._report = orion.progress_view(now)
+                self._tasks = tprog.active(now, legacy=orion.read_progress())
             except OSError:               # диск отвлёкся — показываем, что было
-                self._report = {}
+                self._report, self._tasks = {}, []
         return self._report
 
     def _time_percent(self) -> int:
@@ -1177,41 +1552,81 @@ class OrionScreen(tk.Frame):
         spent = max(0.0, time.time() - self._work_started)
         return min(97, int(99 * (1 - math.exp(-spent / 40.0))) + 1)
 
+    def _task_row(self, i: int) -> dict:
+        while len(self.task_rows) <= i:
+            fr = tk.Frame(self.work_box, bg=BG)
+            bar = tk.Canvas(fr, width=px(170), height=px(10), bg=BG, highlightthickness=0, bd=0)
+            pct = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="e", width=5)
+            lab = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="w")
+            pct.pack(side=tk.RIGHT)
+            bar.pack(side=tk.RIGHT, padx=(px(8), px(4)))
+            lab.pack(side=tk.LEFT, fill=tk.X, expand=True)
+            self.task_rows.append({"frame": fr, "label": lab, "bar": bar, "pct": pct,
+                                   "key": None, "shown": False})
+        return self.task_rows[i]
+
+    def _task_text(self, t: dict, spin: str) -> tuple[str, str]:
+        title = str(t.get("title") or "")
+        if len(title) > 60:
+            title = title[:59] + "…"
+        state = t.get("state")
+        if state == "done":
+            return "✓ " + title, GREEN
+        if state in ("failed", "stopped"):
+            word = _t("сорвалась") if state == "failed" else _t("остановлена")
+            return "✕ " + title + " · " + word, AMBER
+        if not t.get("total"):
+            return f"{spin} " + title + " · " + _t("оцениваю объём…"), CYAN
+        title += " · " + _t("шаг {0} из {1}").format(t["done"], t["total"])
+        if t.get("stale"):            # агент молчит — пилоту честно об этом
+            return "⚠ " + title + " · " + _t("доклад не обновлялся"), AMBER
+        return f"{spin} " + title, CYAN
+
+    def _show_tasks(self, tasks: list[dict], spin: str) -> None:
+        for i, t in enumerate(tasks):
+            row = self._task_row(i)
+            text, fg = self._task_text(t, spin)
+            pct = int(t.get("percent") or 0)
+            key = (text, fg, pct)
+            if key != row["key"]:
+                row["key"] = key
+                row["label"].configure(text=text, fg=fg)
+                row["pct"].configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                self._draw_bar(row["bar"], pct, tprog.color_for(pct))
+            if not row["shown"]:
+                row["frame"].pack(fill=tk.X)
+                row["shown"] = True
+        for row in self.task_rows[len(tasks):]:
+            if row["shown"]:
+                row["frame"].pack_forget()
+                row["shown"] = False
+
     def _tick_activity(self) -> None:
-        """Шаг шкалы: доклад «что делаю и сколько осталось», оценка или «свободен»."""
+        """Шаг панели: строки задач по их планам, оценка по времени или «свободен»."""
         try:
-            view = self._report_view()
-            if getattr(self, "_busy", False):
-                if not self._work_started:
-                    self._work_started = time.time()
-                spin = "⣾⣽⣻⢿⡿⣟⣯⣷"[self._work_tick % 8]
-                if str(view.get("task") or "") and view.get("state") == "working":
-                    task = str(view["task"])
-                    if view.get("total"):
-                        task += " · " + _t("шаг {0} из {1}").format(view["done"], view["total"])
-                    if view.get("stale"):     # агент молчит — пилоту честно об этом
-                        self.work_label.configure(
-                            text="⚠ " + task + " · " + _t("доклад не обновлялся"), fg=AMBER)
-                        color = AMBER
-                    else:
-                        self.work_label.configure(text=f"{spin} " + task, fg=CYAN)
-                        color = CYAN
-                    pct = int(view.get("percent") or 0)
-                else:
-                    self.work_label.configure(text=f"{spin} " + _t("ОРИОН РАБОТАЕТ"), fg=CYAN)
-                    pct = self._time_percent()
-                    color = CYAN
-                self.work_pct.configure(text=f"{pct}%", fg=color)
-                self._draw_work_bar(pct, color)
-                self._work_tick += 1
-            else:
+            self._report_view()
+            busy = getattr(self, "_busy", False)
+            spin = "⣾⣽⣻⢿⡿⣟⣯⣷"[self._work_tick % 8]
+            self._work_tick += 1
+            tasks = self._tasks
+            self._show_tasks(tasks, spin)
+            working = any(t.get("state") not in tprog.FINAL for t in tasks)
+            if busy and not self._work_started:
+                self._work_started = time.time()
+            if not busy:
                 self._work_started = 0.0
-                task = str(view.get("task") or "")
-                if task and view.get("state") == "done" and float(view.get("age") or 0) <= REPORT_KEEP:
-                    self.work_label.configure(
-                        text="✓ " + _t("ЗАДАЧА ВЫПОЛНЕНА: {0}").format(task), fg=GREEN)
-                    self.work_pct.configure(text="100%", fg=GREEN)
-                    self._draw_work_bar(100, GREEN)
+            if tasks and (working or not busy):
+                if self.work_row.winfo_manager():
+                    self.work_row.pack_forget()
+            else:
+                if not self.work_row.winfo_manager():
+                    self.work_row.pack(fill=tk.X, before=self.task_rows[0]["frame"]
+                                       if self.task_rows else None)
+                if busy:
+                    pct = self._time_percent()
+                    self.work_label.configure(text=f"{spin} " + _t("ОРИОН РАБОТАЕТ"), fg=CYAN)
+                    self.work_pct.configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                    self._draw_work_bar(pct, tprog.color_for(pct))
                 else:
                     self.work_label.configure(text="○ " + _t("ОРИОН СВОБОДЕН — можно обращаться"),
                                               fg=GREEN)
@@ -1222,15 +1637,21 @@ class OrionScreen(tk.Frame):
         self.after(140, self._tick_activity)
 
     def _draw_work_bar(self, pct: int, color: str) -> None:
-        w = self.work_bar.winfo_width() or px(170)
-        h = self.work_bar.winfo_height() or px(10)
-        self.work_bar.delete("all")
-        self.work_bar.create_rectangle(0, 0, w, h, fill=BG2, outline=LINE)
+        self._draw_bar(self.work_bar, pct, color)
+
+    def _draw_bar(self, bar, pct: int, color: str) -> None:
+        w = bar.winfo_width()
+        w = w if w > 1 else px(170)
+        h = bar.winfo_height()
+        h = h if h > 1 else px(10)
+        bar.delete("all")
+        bar.create_rectangle(0, 0, w, h, fill=BG2, outline=LINE)
         fill = int((w - 2) * max(0, min(100, pct)) / 100)
         if fill > 0:
-            self.work_bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
+            bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
 
-    def _hint(self, text: str, color=MUTED) -> None:
+    def _hint(self, text: str, color=None) -> None:
+        color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         self.hint.configure(text=text, fg=color)
 
     def _insert_text(self, text: str) -> None:
@@ -1394,6 +1815,20 @@ class OrionScreen(tk.Frame):
             self._hint(_t("Исполнитель ещё работает — дождитесь его доклада"), AMBER)
             return
         self._job_busy = True
+        # Строка на панели задач: исполнитель сам распишет план и закроет шаги.
+        self._exec_task = "exec-" + (task_id or str(int(time.time())))
+        try:
+            gist = (brief.splitlines() or [""])[0]
+            for line in brief.splitlines()[3:6]:
+                if line.strip() and not line[:2].strip().rstrip(".").isdigit():
+                    gist = line.strip()
+                    break
+            tprog.plan(self._exec_task, _t("Исполнитель: {0}").format(gist[:80]),
+                       state="planning")
+            brief = brief + "\n" + tprog.brief_block(self._exec_task)
+            self._report_read = 0.0
+        except OSError:
+            pass
         ctx = self._context()
         session = orion.profile_session(rec["id"], orion.EXECUTOR_PROFILE) or ""
         threading.Thread(target=self._executor_worker,
@@ -1412,6 +1847,12 @@ class OrionScreen(tk.Frame):
     def _on_executor(self, res, rec: dict, task_id: str) -> None:
         """Доклад исполнителя: пришёл отдельным событием, чат при этом не запирался."""
         self._job_busy = False
+        try:
+            tprog.finish(getattr(self, "_exec_task", "") or "exec",
+                         "stopped" if res.error == "stopped" else ("failed" if res.error else "done"))
+            self._report_read = 0.0
+        except OSError:
+            pass
         if res.error == "stopped":
             note = _t("Исполнитель остановлен — задание осталось открытым")
             orion.remember(rec["id"], "system", note)

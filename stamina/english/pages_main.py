@@ -39,15 +39,18 @@ class SectorCard(tk.Canvas):
         self.hover = v
         self.redraw()
 
-    def redraw(self) -> None:
+    def redraw(self, fresh: bool = False) -> None:
         self.delete("all")
         w, h = self.winfo_width(), self.winfo_height()
         if w < 50:
             return
         sid, lim, name, sub, code = self.s
-        words = self.ctx.vocab.in_set(sid)
-        total = len(words)
-        known = self.ctx.progress.known_or_learned([x["slug"] for x in words])
+        # счёт сектора дорогой (in_set + known_or_learned): <Configure>/hover берут кеш, refresh() - свежий
+        st = None if fresh else getattr(self, "_stats", None)
+        if st is None:
+            words = self.ctx.vocab.in_set(sid)
+            st = self._stats = (len(words), self.ctx.progress.known_or_learned([x["slug"] for x in words]))
+        total, known = st
         frac = known / total if total else 0
         col = GREEN if frac >= 1 else (AMBER if known else (CYAN if self.hover else LINE_HI))
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, px(12)), fill=PANEL_HI if self.hover else PANEL,
@@ -297,7 +300,7 @@ class OverviewPage(tk.Frame):
         self.ro.set([(_t("К ПОВТОРЕНИЮ"), str(due), CYAN), (_t("НОВЫХ ДОСТУПНО"), str(min(new_left, avail)), GREEN),
                      (_t("СЕРИЯ ДНЕЙ / ЛУЧШАЯ"), f"{st} / {max(st, p.data['xp'].get('best_streak', 0))}", AMBER)])
         for c in self.cards:
-            c.redraw()
+            c.redraw(fresh=True)
         lvl, lo, hi = p.level()
         self.lvl.configure(text=str(lvl))
         self.lvl_txt.configure(text=_t("УРОВЕНЬ · {0} XP · ДО {1}: {2} XP").format(p.xp_total, lvl + 1, hi - p.xp_total))
@@ -377,6 +380,10 @@ class SetsPage(tk.Frame):
             self.gridf.grid_columnconfigure(c, weight=1, uniform="t")
         for r in range(self.ROWS):
             self.gridf.grid_rowconfigure(r, weight=1, uniform="r")
+        # альт-режим: плитки компактные, колонок столько, сколько влезает (как миссии мостика)
+        self.gridf._alt_responsive = True
+        self._ncols = self.COLS
+        self.gridf.bind("<Configure>", self._reflow, add="+")
         bot = tk.Frame(self, bg=BG)
         bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
         HudButton(bot, "◀", lambda: self.go(-1), width=44, height=30).pack(side=tk.LEFT)
@@ -459,12 +466,38 @@ class SetsPage(tk.Frame):
         pages = max(1, -(-len(self.items) // per))
         self.page = min(self.page, pages - 1)
         chunk = self.items[self.page * per:(self.page + 1) * per]
-        for i, w in enumerate(chunk):
-            t = Tile(self.gridf, self.ctx, w)
-            t.grid(row=i // self.COLS, column=i % self.COLS, sticky="nsew", padx=px(3), pady=px(3))
-            self.tiles.append(t)
+        for w in chunk:
+            self.tiles.append(Tile(self.gridf, self.ctx, w))
+        self._place()
         self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
         self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
+
+    def _alt(self) -> bool:
+        return getattr(self.winfo_toplevel(), "_alt_view", None) is not None
+
+    def cols_for(self, width: int) -> int:
+        """Сколько плиток в ряд: в классике — всегда COLS, в альт-режиме — по ширине."""
+        if not self._alt() or width <= 1:
+            return self.COLS
+        return max(2, min(self.COLS, (width + px(6)) // px(int(Tile.W * 0.8) + 6)))
+
+    def _reflow(self, e) -> None:
+        n = self.cols_for(e.width)
+        if n != self._ncols:
+            self._ncols = n
+            self._place()
+
+    def _place(self) -> None:
+        """Разложить уже созданные плитки по сетке (без пересоздания — дёшево)."""
+        n = self._ncols if self._alt() else self.COLS
+        for c in range(self.COLS):
+            self.gridf.grid_columnconfigure(c, weight=1 if c < n else 0, uniform="t" if c < n else "",
+                                            minsize=0)
+        if self._alt():
+            for r in range(-(-self.COLS * self.ROWS // 2)):
+                self.gridf.grid_rowconfigure(r, weight=0, uniform="", minsize=px(Tile.H))
+        for i, t in enumerate(self.tiles):
+            t.grid(row=i // n, column=i % n, sticky="nsew", padx=px(3), pady=px(3))
 
     def learn_cards(self) -> None:
         p = self.ctx.progress

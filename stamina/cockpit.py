@@ -75,6 +75,8 @@ class Cockpit(tk.Tk):
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
         self._fullscreen = False
+        from stamina import alt_ui
+        self._layout = alt_ui.layout_of(st)  # вид интерфейса: classic | alt (docs/ALT_UI.md)
         self._build()
         self._start_stall_watch()
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
@@ -192,9 +194,13 @@ class Cockpit(tk.Tk):
     def _fit_to_content(self) -> None:
         """Расширить окно до ширины содержимого (в пределах экрана).
 
+        В alt («Пульт-кабина») не нужно: экран прокручивается, ряды кнопок свёрнуты.
+
         Иначе при крупном интерфейсе шапка и клавиатура не влезают и выглядят
         «сломанными»: текст обрезан, кнопки наезжают.
         """
+        if getattr(self, "_layout", "classic") == "alt":
+            return
         try:
             if self.state() == "zoomed":
                 return                      # развёрнутое окно уже во весь экран
@@ -202,21 +208,28 @@ class Cockpit(tk.Tk):
             cur_w, cur_h = self.winfo_width(), self.winfo_height()
         except tk.TclError:
             return
-        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        from stamina import monitors
+        l, t, r, b = monitors.work_area(self)     # монитор, где окно стоит СЕЙЧАС
+        sw, sh = r - l, b - t
         # окно шире экрана = обрезанные шапка и клавиатура, поэтому жёсткий предел по экрану
         need = min(req_w + px(8), sw - px(20))
         if need <= cur_w:
             return
         try:
             self.geometry(f"{need}x{min(cur_h, sh - px(60))}"
-                          f"+{max(0, (sw - need) // 2)}+{max(0, self.winfo_y())}")
+                          f"+{l + max(0, (sw - need) // 2)}+{max(t, self.winfo_y())}")
         except tk.TclError:
             pass
 
     # ------------------------------------------------------------------
     def _apply_geometry(self) -> None:
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
-        self.minsize(min(px(1000), sw - 40), min(px(660), sh - 80))
+        from stamina import alt_ui
+        if alt_ui.layout_of(self.store.settings) == "alt":
+            # «Пульт-кабина» прокручивается: окно можно сузить до 1024×768 и 1280×720 при любом DPI
+            self.minsize(min(1000, sw - 40), min(600, sh - 80))
+        else:
+            self.minsize(min(px(1000), sw - 40), min(px(660), sh - 80))
         geo = self.store.settings.get("geometry") or ""
         if self.pilot is not None:
             geo = pilots.load_app().get("geometry") or geo  # окно — общее для экипажа
@@ -228,8 +241,10 @@ class Cockpit(tk.Tk):
                 size, x, y = geo.replace("+", " +").split(" ")[0], *geo.split("+")[1:3]
                 w, h = (int(v) for v in size.split("x"))
                 # сохранённая раскладка годится, только если окно целиком влезает в экран
-                if (0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100
-                        and px(600) <= w <= sw - px(20) and px(400) <= h <= sh - px(60)):
+                from stamina import monitors
+                on = monitors.on_some_monitor(int(x) + 100, int(y) + 50)   # второй монитор, x<0
+                inside = on if on is not None else (0 <= int(x) < sw - 100 and 0 <= int(y) < sh - 100)
+                if inside and px(600) <= w <= sw * 3 and px(400) <= h <= sh * 3:
                     self.geometry(geo)
                     return
             except (ValueError, TypeError):
@@ -239,6 +254,20 @@ class Cockpit(tk.Tk):
         self.geometry(f"{w}x{h}+{max(0, (sw - w) // 2)}+{max(0, (sh - h) // 2 - px(20))}")
 
     def _build(self) -> None:
+        # Рама: классическая шапка или «Пульт-кабина» (stamina/alt_ui.py). Экраны,
+        # статус-строка и горячие клавиши — общие для обоих видов.
+        from stamina import alt_ui
+        if getattr(self, "_layout", "classic") == "alt":
+            host = alt_ui.build_chrome(self)
+            self._content_host = getattr(self, "_alt_body", None)
+        else:
+            self._build_classic_chrome()
+            host = self
+            self._content_host = None
+        self._build_body(host)
+
+    def _build_classic_chrome(self) -> None:
+        """Классическая шапка — как до ALT UI, поведение не менять."""
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(10), pady=(px(8), 0))
         self._compact = len(self.SCREENS) >= 6  # много разделов — шапка поуже
@@ -315,8 +344,15 @@ class Cockpit(tk.Tk):
         self.crumb_path = tk.Frame(self.crumbs, bg=BG)
         self.crumb_path.pack(side=tk.LEFT)
 
-        self.content = tk.Frame(self, bg=BG)
-        self.content.pack(fill=tk.BOTH, expand=True)
+    def _build_body(self, host) -> None:
+        """Область экранов и статус-строка (общая часть обоих видов)."""
+        from stamina import alt_ui
+        if self._layout == "alt":
+            # alt: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
+            self.content = alt_ui.make_content(self, host)
+        else:
+            self.content = tk.Frame(host, bg=BG)
+            self.content.pack(fill=tk.BOTH, expand=True)
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
         # Экран не должен «растягивать» окно под себя: все экраны лежат в одной ячейке,
@@ -326,14 +362,15 @@ class Cockpit(tk.Tk):
         self.content.grid_propagate(False)
 
         status = tk.Frame(self, bg=blend(BG, CYAN, 0.04))
-        status.pack(fill=tk.X, side=tk.BOTTOM, before=self.content)  # статус-строка не выдавливается контентом
+        status.pack(fill=tk.X, side=tk.BOTTOM, before=self._content_host or self.content)  # статус-строка не выдавливается контентом
         self.status_dot = tk.Label(status, text="●", bg=status["bg"], fg=GREEN, font=theme.font(9))
         self.status_dot.pack(side=tk.LEFT, padx=(px(10), px(4)))
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        tk.Label(status, text=tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
-                 bg=status["bg"], fg=MUTED, font=theme.font(8)).pack(side=tk.RIGHT, padx=px(10))
+        self._status_hint = tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
+                 bg=status["bg"], fg=MUTED, font=theme.font(8))
+        self._status_hint.pack(side=tk.RIGHT, padx=px(10))
 
         self.screens = {
             "bridge": Bridge(self.content, self),
@@ -641,6 +678,9 @@ class Cockpit(tk.Tk):
                 b.set_active(k == self.current)
         else:
             self.subnav.pack_forget()
+        if getattr(self, "_layout", "classic") == "alt":
+            from stamina import alt_ui
+            alt_ui.on_screen(self)
 
     def toggle_fullscreen(self, on: bool | None = None) -> None:
         """ЭКРАН: полный экран для любого раздела (PgDn; выход — Esc/Del или «✕ ЭКРАН»)."""

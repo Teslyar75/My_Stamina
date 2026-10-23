@@ -13,6 +13,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import theme
+from stamina import monitors
 from stamina.hud import HudButton
 from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, blend, px
 
@@ -1680,6 +1681,30 @@ class BookReaderPage(tk.Frame):
         # край страницы: не хватает хвоста; абзац vs одно предложение — delta огромный
         return delta <= max(48, int(0.25 * len(long)))
 
+    def _tr_fuzzy_bucket(self, tr, sl: str, tl: str, head: str) -> list:
+        """Кандидаты fuzzy: ключи кэша с тем же 24-символьным префиксом (индекс вместо полного перебора)."""
+        try:
+            n = len(tr.cache)
+        except Exception:
+            return []
+        idx = getattr(self, "_tr_fuzzy_idx", None)
+        if idx is None or idx[0] is not tr or idx[1] != (sl, tl) or idx[2] != n:
+            prefix = f"{sl}|{tl}|"
+            buckets: dict[str, list] = {}
+            try:
+                items = list(tr.cache.items())
+            except Exception:
+                return []
+            for k, v in items:
+                if not v or not isinstance(k, str) or not k.startswith(prefix):
+                    continue
+                src = k[len(prefix):]
+                if len(src) >= 24:
+                    buckets.setdefault(src[:24], []).append((src, v))
+            idx = (tr, (sl, tl), n, buckets)
+            self._tr_fuzzy_idx = idx
+        return idx[3].get(head, [])
+
     def _lookup_tr(self, tr, chunk: str, sl: str, tl: str, *, fuzzy: bool = True) -> str | None:
         """Найти перевод куска: кэш UPLINK → локальный mem → нечёткий (край страницы)."""
         chunk = (chunk or "").strip()
@@ -1694,18 +1719,8 @@ class BookReaderPage(tk.Frame):
             return mem
         if not fuzzy or tr is None or len(chunk) < 24:
             return None
-        prefix = f"{sl}|{tl}|"
-        try:
-            items = list(tr.cache.items())
-        except Exception:
-            return None
         best_v, best_n = None, 0
-        for k, v in items:
-            if not v or not isinstance(k, str) or not k.startswith(prefix):
-                continue
-            src = k[len(prefix):]
-            if not src:
-                continue
+        for src, v in self._tr_fuzzy_bucket(tr, sl, tl, chunk[:24]):
             if src == chunk:
                 self._tr_sent_mem[(sl, tl, chunk)] = v
                 return v
@@ -2211,6 +2226,14 @@ class BookReaderPage(tk.Frame):
     def _on_scale(self, val) -> None:
         if self._applying or not self.text:
             return
+        # Tk Scale зовёт command отложенно (в idle), когда _applying уже снят:
+        # эхо собственного scale.set() - не перелистывание, иначе двойная перерисовка
+        try:
+            if int(round(float(val))) == getattr(self, "_scale_echo", None):
+                self._scale_echo = None
+                return
+        except (TypeError, ValueError):
+            pass
         frac = float(val) / 100.0
         if self.mode == "scroll" and self.scroll_view is not None:
             self.scroll_view.yview_moveto(frac)
@@ -2236,8 +2259,10 @@ class BookReaderPage(tk.Frame):
         pct = int(round(w / n * 100))
         self._applying = True
         try:
+            if int(round(float(self.scale.get()))) != pct:
+                self._scale_echo = pct
             self.scale.set(pct)
-        except tk.TclError:
+        except (tk.TclError, TypeError, ValueError):
             pass
         self._applying = False
         self.lbl_pct.configure(text=f"{pct}%")
@@ -2441,7 +2466,7 @@ class BookReaderPage(tk.Frame):
         dlg = tk.Toplevel(parent, bg=th["fallback"])
         dlg.title(_t("Оглавление"))
         dlg.transient(self.winfo_toplevel())
-        dlg.geometry(f"{px(440)}x{px(400)}")
+        dlg.geometry(monitors.center_geometry(self, px(440), px(400)))
         tk.Label(dlg, text=_t("ОГЛАВЛЕНИЕ"), bg=th["fallback"], fg=th["accent"],
                  font=theme.font(12, True)).pack(anchor="w", padx=px(12), pady=px(8))
         fr = tk.Frame(dlg, bg=th["bar"])

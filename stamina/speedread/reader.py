@@ -267,10 +267,16 @@ class ReaderPage(tk.Frame):
             c.create_line(cx, cy - half - px(36), cx, cy - half - px(4), fill=CYAN, width=2)
             c.create_line(cx, guide_bot + px(4), cx, guide_bot + px(36), fill=CYAN, width=2)
         mode = _t("С ПЕРЕВОДОМ") if tr_on else _t("РЕЖИМ ФОКУСА")
-        c.create_text(px(46), px(22), text=_t("ГИПЕРДРАЙВ · {0}").format(self.title.upper()), anchor="w",
-                      fill=blend(CYAN, BG, 0.35), font=theme.font(9, True))
-        c.create_text(w - px(46), px(22), text=f"{mode} · {_t('ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА')}", anchor="e",
-                      fill=AMBER if tr_on else FAINT, font=theme.font(8, True))
+        # длинное название не лезет под правую подпись: режем до свободной ширины
+        right_txt = f"{mode} · {_t('ЩЕЛЧОК / ПРОБЕЛ — ПАУЗА')}"
+        right_f = theme.font(8, True)
+        left_f = theme.font(9, True)
+        room = w - px(92) - int(c.tk.call("font", "measure", right_f, right_txt)) - px(24)
+        from stamina.hud import fit_text
+        c.create_text(px(46), px(22), text=fit_text(left_f, _t("ГИПЕРДРАЙВ · {0}").format(self.title.upper()), max(px(80), room)), anchor="w",
+                      fill=blend(CYAN, BG, 0.35), font=left_f)
+        c.create_text(w - px(46), px(22), text=right_txt, anchor="e",
+                      fill=AMBER if tr_on else FAINT, font=right_f)
         c.create_text(cx, h - px(28), text=_t("ПРОБЕЛ — ПАУЗА · ↑ ↓ — СКОРОСТЬ · ← — НАЗАД НА ПРЕДЛОЖЕНИЕ · 1–5 — СЛОВ ЗА КАДР · + − ШРИФТ · ENTER — ФИНИШ · ESC — ВЫХОД"),
                       fill=FAINT, font=theme.font(8, True))
         f = self._font(fs)
@@ -348,6 +354,16 @@ class ReaderPage(tk.Frame):
         c.coords("bar", m, c.coords("bar")[1], m + (w - 2 * m) * pct / 100, c.coords("bar")[3])
 
     # ------------------------------------------------------------------ pause view
+    def _fit_ctx_title(self) -> None:
+        """Длинное название в паузе: «…» по ширине панели (и заново при её изменении)."""
+        txt = getattr(self, "_ct_full", "")
+        cw = self.ctx_title.master.winfo_width() - px(8)
+        if cw > 60 and txt:
+            from stamina.hud import fit_text
+            txt = fit_text(self.ctx_title.cget("font"), txt, cw)
+        if self.ctx_title.cget("text") != txt:
+            self.ctx_title.configure(text=txt)
+
     def _build_pause(self) -> None:
         pv = self.pause_view
         pv.grid_rowconfigure(0, weight=1)
@@ -358,6 +374,8 @@ class ReaderPage(tk.Frame):
         self.ctx_panel = left
         self.ctx_title = L(left.body, "", fg=MUTED, size=8, bold=True)
         self.ctx_title.pack(anchor="e")
+        self._ct_full = ""
+        self.ctx_title.master.bind("<Configure>", lambda _e: self._fit_ctx_title(), add="+")
         self.ctx_text = tk.Text(left.body, wrap=tk.WORD, bg=BG2, fg=MUTED, relief=tk.FLAT, padx=px(18),
                                 pady=px(12), font=theme.font(12), highlightthickness=0, cursor="hand2",
                                 spacing1=px(2), spacing3=px(6))
@@ -546,8 +564,10 @@ class ReaderPage(tk.Frame):
         t.see(idx(w.start))
         t.yview_scroll(-3, "units")
         n = len(self.words)
-        self.ctx_title.configure(text=f"{self.title.upper()} · {self.pos / n * 100:.0f}%"
+        _ct = (f"{self.title.upper()} · {self.pos / n * 100:.0f}%"
                                  + (_t("  · ⚠ БЕЗ ОРИГИНАЛА (текст без заглавных и знаков)") if self.no_original else ""))
+        self._ct_full = _ct
+        self._fit_ctx_title()
         if self._translate_on():
             self._fill_pause_translation()
 
