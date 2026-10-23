@@ -331,6 +331,9 @@ class OverviewPage(tk.Frame):
 # ЗВЁЗДНЫЕ КАРТЫ (наборы слов)
 # =============================================================================
 
+STRIP_HIDE_H = 420   # альт: высота области (до масштаба), ниже которой заголовок сектора скрыт
+
+
 class SetsPage(tk.Frame):
     COLS, ROWS = 6, 4
 
@@ -413,6 +416,7 @@ class SetsPage(tk.Frame):
         self._alt_btns = (self.btn_more, self.btn_all, self.btn_rnd, self.btn_flt, self.shown_lbl)
         self._tile_h = 0
         self.shown = self.COLS * self.ROWS
+        self._per = self.COLS * self.ROWS     # альт: карт на страницу — по высоте окна (12–24)
         self._alt_on = False
         self._busy = False
         self._arm = False      # автодогрузка — только после того, как пилот сам докрутил вниз
@@ -431,7 +435,7 @@ class SetsPage(tk.Frame):
             return
         self.f[key] = val
         self.page = 0
-        self.shown = self.COLS * self.ROWS
+        self.shown = self._page_size()
         self.apply()
 
     def open_set(self, sid: str) -> None:
@@ -474,9 +478,10 @@ class SetsPage(tk.Frame):
         self.render()
 
     def go(self, d: int) -> None:
-        pages = max(1, -(-len(self.items) // (self.COLS * self.ROWS)))
+        per = self._page_size()
+        pages = max(1, -(-len(self.items) // per))
         self.page = max(0, min(pages - 1, self.page + d))
-        self.shown = self.COLS * self.ROWS
+        self.shown = per
         self.render()
 
     def render(self) -> None:
@@ -518,11 +523,16 @@ class SetsPage(tk.Frame):
                 wdg.pack(side=tk.LEFT, padx=px(3), after=prev)
                 prev = wdg
             self.after(400, self._watch_bottom)
+            vp = self._viewport()
+            if vp is not None and not getattr(self, "_vp_bound", False):
+                self._vp_bound = True      # смена высоты окна — пересчитать карт на страницу
+                vp.canvas.bind("<Configure>", lambda _e: self._alt_on and self.after_idle(self._fit_tiles), add="+")
         else:
             self.alt_grid.pack_forget()
             for wdg in self._alt_btns:
                 wdg.pack_forget()
             self.tip.pack(side=tk.LEFT, padx=px(14), after=self._next_btn)
+            self._strip_show(True)
             self._show_frows(True)
             self._bot.pack_forget()
             self.gridf.pack(fill=tk.BOTH, expand=True, padx=px(10))
@@ -547,8 +557,19 @@ class SetsPage(tk.Frame):
             t.configure(height=self._tile_h)
         return t
 
+    def _strip_show(self, on: bool) -> None:
+        if on and not self.strip.winfo_manager():
+            first = next((c for c in self.pack_slaves() if c is not self.strip), None)
+            self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0), before=first)
+        elif not on and self.strip.winfo_manager():
+            self.strip.pack_forget()
+
+    def _page_size(self) -> int:
+        """Карт на страницу: классика — всегда COLS×ROWS; альт — сколько влезает в окно."""
+        return self._per if self._alt_on else self.COLS * self.ROWS
+
     def _alt_bounds(self) -> tuple[int, int]:
-        start = self.page * self.COLS * self.ROWS
+        start = self.page * self._per
         return start, min(len(self.items), start + self.shown)
 
     def _render_alt(self) -> None:
@@ -556,7 +577,7 @@ class SetsPage(tk.Frame):
         for t in self.tiles:
             t.destroy()
         self.tiles = []
-        per = self.COLS * self.ROWS
+        per = self._per
         pages = max(1, -(-len(self.items) // per))
         self.page = min(self.page, pages - 1)
         a, b = self._alt_bounds()
@@ -575,30 +596,51 @@ class SetsPage(tk.Frame):
         a, b = self._alt_bounds()
         n = len(self.items)
         self.shown_lbl.configure(text=_t("ПОКАЗАНО {0}–{1} ИЗ {2}").format(a + 1 if b > a else 0, b, n))
+        self.btn_more.set_text(_t("ЕЩЁ {0}").format(self._per))
+        self.btn_rnd.set_text(_t("⤨ СЛУЧАЙНЫЕ {0}").format(self._per))
         self.btn_more.set_enabled(b < n)
         self.btn_all.set_enabled(b < n)
         self.after_idle(self._fit_tiles)
         self._viewport_relayout()
 
+    READ_H = 72     # альт: ниже этой высоты плитка нечитаема — тогда меньше карт на страницу
+
     def _fit_tiles(self) -> None:
-        """Альт: высота плиток по окну — первые 24 карты и строка управления без прокрутки."""
+        """Альт: сколько рядов читаемых плиток влезает в окно под шапкой и строкой управления —
+        столько карт и на странице (12–24); высота плиток растягивается по остатку."""
         vp = self._viewport()
-        if vp is None or not self.tiles:
+        if vp is None or not self.tiles or not self._alt_on:
             return
         try:
             self.update_idletasks()
             n = max(1, self._ncols)
-            rows_first = -(-min(len(self.tiles), self.COLS * self.ROWS) // n)
-            cur = self._tile_h or px(Tile.H)
-            grid_h = self.alt_grid.winfo_reqheight()
-            overhead = vp.required() - grid_h
+            overhead = vp.required() - self.alt_grid.winfo_reqheight()
             pad = px(6)
             avail = vp.canvas.winfo_height() - overhead - 2
-            h = int(avail / max(1, rows_first)) - pad
-            h = max(px(44), min(px(Tile.H), h))
         except tk.TclError:
             return
-        if abs(h - cur) <= 1 and self._tile_h:
+        # низкое окно: заголовок сектора прячем (прогресс набора — в счётчике), карт больше
+        short = vp.canvas.winfo_height() < px(STRIP_HIDE_H)
+        if short == bool(self.strip.winfo_manager()):
+            self._strip_show(not short)
+            self.after_idle(self._fit_tiles)
+            return
+        full = self.COLS * self.ROWS
+        rows_fit = max(1, (avail + pad) // (px(self.READ_H) + pad))
+        per = max(n, min(full, rows_fit * n))
+        if per >= full - n + 1:
+            per = full
+        if per != self._per:
+            first = self.page * self._per       # сохранить первую видимую карту
+            self._per = per
+            self.page = first // per
+            self.shown = per
+            self._tile_h = 0
+            self._render_alt()
+            return
+        rows = -(-min(len(self.tiles), per) // n)
+        h = max(px(44), min(px(Tile.H), int(avail / max(1, rows)) - pad))
+        if abs(h - (self._tile_h or 0)) <= 1:
             return
         self._tile_h = h
         for t in self.tiles:
@@ -628,7 +670,7 @@ class SetsPage(tk.Frame):
             return
         self._busy = True
         try:
-            self.shown += n or self.COLS * self.ROWS
+            self.shown += n or self._per
             _a, nb = self._alt_bounds()
             for w in self.items[b:nb]:
                 self.tiles.append(self._alt_tile(w))
@@ -640,7 +682,7 @@ class SetsPage(tk.Frame):
     def random24(self) -> None:
         """Новые случайные 24 из всего набора (с учётом фильтров) — логика ⤨ ПЕРЕМЕШАТЬ."""
         self.page = 0
-        self.shown = self.COLS * self.ROWS
+        self.shown = self._per
         self.shuffle()
 
     def load_all(self) -> None:
@@ -674,7 +716,7 @@ class SetsPage(tk.Frame):
         """Сколько плиток в ряд: в классике — всегда COLS, в альт-режиме — по ширине."""
         if not self._alt() or width <= 1:
             return self.COLS
-        return max(2, min(self.COLS, (width + px(6)) // px(int(Tile.W * 0.6) + 6)))
+        return max(2, min(self.COLS, (width + px(6)) // px(int(Tile.W * 0.5) + 6)))
 
     def _reflow(self, e) -> None:
         n = self.cols_for(e.width)
@@ -697,6 +739,9 @@ class SetsPage(tk.Frame):
             for r in range(rows):
                 g.grid_rowconfigure(r, weight=0, uniform="",
                                     minsize=(self._tile_h or px(Tile.H)) if self._alt_on else px(Tile.H))
+            if self._alt_on:     # лишние ряды от прошлой раскладки — без высоты
+                for r in range(rows, max(rows, g.grid_size()[1], self.COLS * self.ROWS)):
+                    g.grid_rowconfigure(r, minsize=0)
         for i, t in enumerate(self.tiles):
             t.grid(row=i // n, column=i % n, sticky="nsew", padx=px(3), pady=px(3))
 
