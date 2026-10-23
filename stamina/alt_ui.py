@@ -115,7 +115,7 @@ def contrast(a: str, b: str) -> float:
 
 class OverviewButton(HudButton):
     """«ОБЗОР ▾» - своя мягкая заливка акцентом скина (не как текст заголовка),
-    скруглённые углы, тонкая рамка; текст ≥ 4.5:1 к заливке."""
+    срезанные углы как у остальных кнопок скина, тонкая рамка; текст ≥ 4.5:1 к заливке."""
 
     def colors(self) -> tuple[str, str, str]:
         k = 0.46 if self._pressed else 0.36 if (self._hover or self._focus) else 0.26
@@ -134,14 +134,10 @@ class OverviewButton(HudButton):
             self._last_draw = None
             return
         fill, outline, fg = self.colors()
-        r = min(px(9), h // 2 - 1)
-        x0, y0, x1, y1 = 1, 1, w - 2, h - 2
-        pts = []
-        for cx, cy, a0 in ((x1 - r, y0 + r, 270), (x1 - r, y1 - r, 0), (x0 + r, y1 - r, 90), (x0 + r, y0 + r, 180)):
-            for i in range(7):
-                a = math.radians(a0 + i * 15)
-                pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
-        self.create_polygon(pts, fill=fill, outline=outline, width=1, smooth=False)
+        c = min(px(8), h // 3)          # тот же срез углов, что у кнопок шапки (ОРИОН, СЛАЙДЫ)
+        self.create_polygon(chamfer(1, 1, w - 2, h - 2, c), fill=fill, outline=outline, width=1)
+        if self._hover or self._focus:
+            self.create_line(1 + c, 1, 1 + c + px(14), 1, fill=self.color, width=3)
         self.create_text(w / 2, h / 2, text=fit_text(self._font, self._text, w - px(14)), fill=fg, font=self._font)
         self._last_draw = state
 
