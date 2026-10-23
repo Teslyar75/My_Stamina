@@ -34,7 +34,7 @@ class MonkeytypePanel(HudPanel):
                             relief="flat", font=theme.font(10, mono=True))
         self.key.insert(0, st.get("mt_apekey", ""))
         self.key.pack(side=tk.LEFT, padx=px(4))
-        self.btn = HudButton(row, t("↻ ОБНОВИТЬ"), self.refresh_now, height=26, font_size=9, color=CYAN)
+        self.btn = HudButton(row, "↻", self.refresh_now, height=22, font_size=9, width=26, color=CYAN)
         self.btn.pack(side=tk.LEFT, padx=px(8))
         self.status = tk.Label(row, text="", bg=PANEL, fg=MUTED, font=theme.font(8))
         self.status.pack(side=tk.LEFT, padx=px(4))
@@ -54,13 +54,18 @@ class MonkeytypePanel(HudPanel):
         self._msg = ""
         self._busy = False
         self.show_cached()
+        for e in (self.user, self.key):     # ник/ключ: сохранить и сразу подтянуть
+            e.bind("<Return>", lambda _e: self.refresh_now())
+            e.bind("<FocusOut>", lambda _e: self._save_creds())
+        self.bind("<Map>", lambda _e: self.auto())
+        self.after(800, self.auto)          # старт приложения
 
     def show_cached(self) -> None:
         data = monkeytype.load_cache()
         if data and data.get("summary"):
             self._render(data)
         else:
-            self._msg = t("Укажите имя пользователя Monkeytype и нажмите «Обновить».")
+            self._msg = t("Укажите имя пользователя Monkeytype — данные подтянутся сами.")
             self._redraw()
 
     def _render(self, data: dict) -> None:
@@ -97,40 +102,76 @@ class MonkeytypePanel(HudPanel):
         h = account_view.draw(cv, s, pal, theme.font(10, mono=True)[0], w, scale=px(100) / 100,
                               empty=self._msg or t("Пока нет данных."))
         cv.configure(height=int(h + px(4)))
+        cv.tag_bind("acct_name", "<Button-1>", lambda _e: self._open_profile())
+        cv.tag_bind("acct_name", "<Enter>", lambda _e: cv.configure(cursor="hand2"))
+        cv.tag_bind("acct_name", "<Leave>", lambda _e: cv.configure(cursor=""))
 
-    def refresh_now(self) -> None:
-        if self._busy:
+    def _open_profile(self) -> None:
+        """Щелчок по имени — профиль на monkeytype.com (только просмотр)."""
+        name = (self.user.get() or "").strip()
+        if not name:
+            self.user.focus_set()
             return
+        import urllib.parse
+        import webbrowser
+        webbrowser.open("https://monkeytype.com/profile/" + urllib.parse.quote(name))
+
+    def _save_creds(self) -> tuple[str, str]:
         user, key = self.user.get().strip(), self.key.get().strip()
         st = self.app.store.settings
-        st["mt_username"], st["mt_apekey"] = user, key
-        self.app.store.save_settings()
-        self._busy = True
-        self.status.configure(text=t("загрузка…"), fg=MUTED)
-        box: dict = {}
-
-        def work() -> None:
+        if (st.get("mt_username", ""), st.get("mt_apekey", "")) != (user, key):
+            st["mt_username"], st["mt_apekey"] = user, key
             try:
-                box["data"] = monkeytype.refresh(user, key)
-            except monkeytype.MonkeytypeError as e:
-                box["err"] = str(e)
-            except Exception as e:  # noqa: BLE001
-                box["err"] = f"Monkeytype: {e}"
+                self.app.store.save_settings()
+            except Exception:  # noqa: BLE001
+                pass
+        return user, key
 
-        th = threading.Thread(target=work, daemon=True, name="monkeytype")
-        th.start()
+    def auto(self) -> None:
+        """Тихая синхронизация (тот же путь, что у портала: интервал, кэш, пауза после 429)."""
+        self._redraw()
+        self._sync(force=False)
+
+    def refresh_now(self) -> None:
+        """Ручное ↻: обходит 5-минутный интервал, но не паузу после 429."""
+        self._sync(force=True)
+
+    def _sync(self, force: bool) -> None:
+        user, key = self._save_creds()
+        if not user:
+            if force:
+                self.user.focus_set()
+            return
+        left = monkeytype.backoff_left()
+        if left:
+            if force:
+                self.status.configure(text=t("лимит Monkeytype — повтор через {0} мин").format(
+                    max(1, round(left / 60))), fg=AMBER)
+            return
+        box: dict = {}
+        started = monkeytype.auto_sync(user, key, force=force,
+                                       on_done=lambda d: box.setdefault("data", d),
+                                       on_error=lambda e: box.setdefault("err", e))
+        if not started:
+            if force and monkeytype._sync["busy"]:
+                self.status.configure(text=t("загрузка…"), fg=MUTED)
+            return
+        self.status.configure(text=t("загрузка…"), fg=MUTED)
 
         def poll() -> None:
-            if th.is_alive():
-                self.after(150, poll)
+            if not box:
+                if self.winfo_exists():
+                    self.after(150, poll)
                 return
-            self._busy = False
             if "data" in box:
                 self._render(box["data"])
+                zen = getattr(self.app, "zen", None)
+                if zen is not None and getattr(zen, "overlay", None) is not None and zen.on:
+                    zen.overlay._draw_chrome()
             else:
-                self.status.configure(text=t(box.get("err", t("ошибка"))), fg=RED)
+                self.status.configure(text=t(box["err"]), fg=RED)
                 if not self._data:
-                    self._msg = t(box.get("err", t("ошибка")))
+                    self._msg = t(box["err"])
                     self._redraw()
 
         self.after(150, poll)

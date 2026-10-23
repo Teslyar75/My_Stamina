@@ -673,7 +673,26 @@ class LogScreen(tk.Frame):
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         HudButton(top, _t("★ ДОСКА ПОЧЁТА"), lambda: app.show("honor"), color=AMBER, height=34).pack(
             side=tk.RIGHT, padx=(0, px(8)))
-        self.summary = tk.Frame(self, bg=BG)
+        # Содержимое журнала — в прокручиваемом холсте: на ноутбуках (1366×768, 1280×720)
+        # календарь активности Monkeytype уходил за нижний край. В «Пульте» (alt_ui) холст
+        # просит полную высоту, и прокручивает внешний ScrollViewport — без двойной прокрутки.
+        from stamina.alt_ui import SlimBar
+        wrap = tk.Frame(self, bg=BG)
+        wrap.pack(fill=tk.BOTH, expand=True)
+        self.scroll = tk.Canvas(wrap, bg=BG, highlightthickness=0, bd=0, yscrollincrement=px(24))
+        self.canvas, self.profile = self.scroll, "generic"
+        self.vbar = SlimBar(wrap, self, BG)
+        self.scroll.configure(yscrollcommand=self.vbar.set)
+        self.scroll.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.body = tk.Frame(self.scroll, bg=BG)
+        self._win = self.scroll.create_window(0, 0, anchor="nw", window=self.body)
+        self._bar_on = False
+        self._relaying = False
+        self.scroll.bind("<Configure>", lambda _e: self._relayout())
+        self.body.bind("<Configure>", lambda _e: self._relayout())
+        for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
+            self.bind_all(seq, self._wheel, add="+")
+        self.summary = tk.Frame(self.body, bg=BG)
         self.summary.pack(fill=tk.X, padx=px(10))
         self.cells = []
         for i in range(5):
@@ -690,16 +709,16 @@ class LogScreen(tk.Frame):
 
         try:   # Monkeytype — импорт своего прогресса (только чтение), stamina/mt_panel.py
             from stamina.mt_panel import MonkeytypePanel
-            self.mt_panel = MonkeytypePanel(self, app)
+            self.mt_panel = MonkeytypePanel(self.body, app)
             self.mt_panel.pack(fill=tk.X, padx=px(14), pady=px(4))
         except Exception:  # noqa: BLE001
             self.mt_panel = None
-        mid = HudPanel(self, _t("ДИНАМИКА — ПОСЛЕДНИЕ 30 ПОЛЁТОВ"))
+        mid = HudPanel(self.body, _t("ДИНАМИКА — ПОСЛЕДНИЕ 30 ПОЛЁТОВ"))
         mid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(4))
         self.chart = LineChart(mid.body)
         self.chart.pack(fill=tk.BOTH, expand=True)
 
-        bottom = tk.Frame(self, bg=BG)
+        bottom = tk.Frame(self.body, bg=BG)
         bottom.pack(fill=tk.BOTH, expand=True, padx=px(10), pady=(px(4), px(10)))
         heat = HudPanel(bottom, _t("ТЕПЛОВАЯ КАРТА ОШИБОК (ЗА ВСЁ ВРЕМЯ)"), accent=AMBER)
         heat.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(4))
@@ -738,6 +757,53 @@ class LogScreen(tk.Frame):
                   color=AMBER).pack(fill=tk.X, pady=(px(6), 0))
         HudButton(side.body, _t("СБРОСИТЬ СТАТИСТИКУ"), self._reset, color=RED, height=28,
                   font_size=8).pack(fill=tk.X, pady=(px(6), 0))
+
+    # -- прокрутка содержимого ---------------------------------------------
+    def _need(self) -> int:
+        return self.body.winfo_reqheight()
+
+    def yview(self, *a):          # для SlimBar
+        return self.scroll.yview(*a)
+
+    def _relayout(self) -> None:
+        if self._relaying:
+            return
+        self._relaying = True
+        try:
+            need = self._need()
+            alt = (self.app.store.settings.get("ui_layout") == "alt")
+            if alt and self.scroll.winfo_pixels(self.scroll.cget("height")) != need:
+                self.scroll.configure(height=need)      # внешний вьюпорт видит всю высоту
+            h = max(1, self.scroll.winfo_height())
+            w = max(1, self.scroll.winfo_width())
+            self.scroll.itemconfigure(self._win, width=w, height=max(h, need))
+            self.scroll.configure(scrollregion=(0, 0, w, max(h, need)))
+            on = need > h + 1
+            if on != self._bar_on:
+                self._bar_on = on
+                if on:
+                    self.vbar.pack(side=tk.RIGHT, fill=tk.Y)
+                else:
+                    self.vbar.pack_forget()
+                    self.scroll.yview_moveto(0)
+        finally:
+            self._relaying = False
+
+    def _wheel(self, e):
+        if not self._bar_on or not self.winfo_viewable():
+            return None
+        w = e.widget
+        if not isinstance(w, tk.Misc) or w.winfo_class() in ("Text", "Listbox", "Treeview", "Entry"):
+            return None
+        x = w
+        while x is not None and x is not self.body and x is not self.scroll and x is not self.vbar:
+            x = getattr(x, "master", None)
+        if x is None:
+            return None
+        num = getattr(e, "num", 0)
+        d = -1 if num == 4 else 1 if num == 5 else (-1 if getattr(e, "delta", 0) > 0 else 1)
+        self.scroll.yview_scroll(2 * d, "units")
+        return "break"
 
     def _heat_lang(self, lang: str) -> None:
         self.heat_lang = lang

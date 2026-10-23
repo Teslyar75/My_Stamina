@@ -211,34 +211,49 @@ SYNC_BACKOFF = 900             # после 479/429 — пауза 15 минут
 _sync = {"last": 0.0, "until": 0.0, "busy": False}
 
 
+def backoff_left(now: float | None = None) -> int:
+    """Секунд до конца паузы после настоящего 429 (0 — паузы нет)."""
+    now = time.time() if now is None else now
+    return max(0, int(_sync["until"] - now + 0.999))
+
+
 def auto_sync(username: str, ape_key: str = "", *, fetch=None, path: Path | None = None,
-              on_done=None, now: float | None = None, threaded: bool = True) -> bool:
-    """Обновить кэш профиля в фоне, если пора. Ошибки молча глотаются. True — запуск был."""
+              on_done=None, on_error=None, now: float | None = None, threaded: bool = True,
+              force: bool = False) -> bool:
+    """Обновить кэш профиля в фоне, если пора. True — запуск был.
+
+    force (ручное ↻) обходит 5-минутный интервал, но не паузу после 429.
+    on_error(str) получает текст ошибки; флаг busy сбрасывается всегда.
+    """
     username = (username or "").strip()
     now = time.time() if now is None else now
     if not username or _sync["busy"] or now < _sync["until"]:
         return False
-    old = load_cache(path) or {}
-    last = max(_sync["last"], float(old.get("fetched_at") or 0) if old.get("username") == username else 0)
-    if now - last < SYNC_MIN_INTERVAL:
-        return False
+    if not force:
+        old = load_cache(path) or {}
+        same = str(old.get("username", "")).lower() == username.lower()
+        last = max(_sync["last"], float(old.get("fetched_at") or 0) if same else 0)
+        if now - last < SYNC_MIN_INTERVAL:
+            return False
     _sync["last"] = now
     _sync["busy"] = True
 
     def work() -> None:
-        data = None
+        data, err = None, ""
         try:
             data = refresh(username, ape_key, fetch=fetch, path=path)
         except MonkeytypeError as e:
-            if str(e) == t("Лимит запросов Monkeytype — попробуйте позже"):
+            err = str(e)
+            if err == t("Лимит запросов Monkeytype — попробуйте позже"):
                 _sync["until"] = time.time() + SYNC_BACKOFF
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as e:  # noqa: BLE001
+            err = f"Monkeytype: {e}"
         finally:
             _sync["busy"] = False
-        if on_done is not None and data is not None:
+        cb, arg = (on_done, data) if data is not None else (on_error, err or t("ошибка"))
+        if cb is not None:
             try:
-                on_done(data)
+                cb(arg)
             except Exception:  # noqa: BLE001
                 pass
 

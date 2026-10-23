@@ -959,8 +959,6 @@ class ZenController:
     def sync(self, force: bool = False) -> None:
         from stamina import monkeytype
         st = self.app.store.settings
-        if force:
-            monkeytype._sync["last"] = 0.0
 
         def done(_data):
             try:
@@ -969,13 +967,19 @@ class ZenController:
                 pass
 
         try:
-            monkeytype.auto_sync(st.get("mt_username", ""), st.get("mt_apekey", ""), on_done=done)
+            monkeytype.auto_sync(st.get("mt_username", ""), st.get("mt_apekey", ""), on_done=done, force=force)
         except Exception:  # noqa: BLE001
             pass
 
     def _synced(self) -> None:
         if self.overlay is not None and self.on:
             self.overlay._draw_chrome()
+        try:   # классический Бортжурнал тоже видит свежие данные
+            mp = self.app.screens["log"].mt_panel
+            if mp is not None:
+                mp.show_cached()
+        except Exception:  # noqa: BLE001
+            pass
 
     def level(self) -> int:
         d = self.mt_data()

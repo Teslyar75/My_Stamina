@@ -60,7 +60,7 @@ def draw(cv: tk.Canvas, s: dict | None, pal: dict, family: str, width: int, *,
     cv.create_arc(cx - p(17), cy + p(6), cx + p(17), cy + p(34), start=0, extent=180,
                   fill=pal["subalt"], outline="", tags="acct")
     nx = p(76)
-    cv.create_text(nx, y + p(22), anchor="w", text=s.get("name") or "—", fill=pal["text"], font=F(26), tags="acct")
+    cv.create_text(nx, y + p(22), anchor="w", text=s.get("name") or "—", fill=pal["text"], font=F(26), tags=("acct", "acct_name"))
     joined = s.get("joined")
     jtxt = ""
     if joined:
@@ -192,6 +192,7 @@ def draw(cv: tk.Canvas, s: dict | None, pal: dict, family: str, width: int, *,
                 cv.tag_raise(tip)
 
         cv.tag_bind("hm", "<Motion>", on_motion)
+        cv.tag_bind("hm", "<Button-1>", on_motion)     # щелчок по дню — та же подсказка
         cv.tag_bind("hm", "<Leave>", lambda _e: (cv.itemconfigure(tip, text=""),
                                                  cv.itemconfigure(tipbg, state="hidden")))
         y += h
