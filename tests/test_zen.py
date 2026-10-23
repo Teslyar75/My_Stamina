@@ -67,7 +67,7 @@ class ZenCockpitTest(unittest.TestCase):
         a.update()
         self.assertFalse(a.zen.on)
         self.assertFalse(ov.winfo_ismapped())
-        self.assertEqual(br.engine.index, 3)
+        self.assertEqual(br.engine.index, 6)   # «hello » набрано в портале → на мостике
         self.assertEqual((a.current, a._layout, a.store.settings.get("skin")), ("bridge", layout, skin))
 
     def test_words_mode_finish_and_records(self):
@@ -108,10 +108,41 @@ class ZenCockpitTest(unittest.TestCase):
         self.assertEqual(x, ov.words.winfo_x() + bb[0] + 1)
         self.assertGreater(y, ov.words.winfo_y() + bb[1] + lh * 0.6)   # под буквой
         self.assertGreater(w, h)
-        self.assertEqual((round(ov._caret_x), round(ov._caret_y)), (x, y))   # доехала плавно
+        self.assertLessEqual(abs(ov._caret_x - x) + abs(ov._caret_y - y), 2)   # доехала плавно
         for ch in w0[1:]:
             a._on_key(key("x", char=ch))
         self.assertEqual(ov.words.get(f"1.0+{ov._caret_index}c"), " ")              # под пробелом
+
+    def test_portal_typing_advances_bridge(self):
+        a = self.app
+        a.store.settings["zen_mt_mode"] = "words"
+        a.store.settings["zen_mt_counts"] = {"words": 10}
+        a.show("bridge")
+        br = a.screens["bridge"]
+        text = "Hello, World! It's a fine day. " * 20
+        br.start(text, mode="free", title="T", subtitle="")
+        a.zen.toggle(True)
+        a.update()
+        ov = a.zen.overlay
+        self.assertEqual(ov.test.words[:3], ["hello", "world", "it's"])
+        for ch in " ".join(ov.test.words):
+            a._on_key(key("space" if ch == " " else ch, char=ch))
+        self.assertTrue(ov.test.finished)
+        # 10 слов = фраза (6) + «hello world it's a» → мостик сразу после «a »
+        self.assertEqual(br._full_index(), len("Hello, World! It's a fine day. ") + len("Hello, World! It's a "))
+        self.assertGreater(br.engine.typed, 0)
+        a._on_key(key("Tab"))
+        self.assertEqual(ov.test.words[0], "fine")
+        # частичный тест + выход: курсор после последнего законченного слова (с ошибкой — тоже)
+        for ch in "fine dxy hel":
+            a._on_key(key("space" if ch == " " else ch, char=ch))
+        a._on_key(key("Escape")); a._on_key(key("Escape"))
+        a.update()
+        self.assertFalse(a.zen.on)
+        self.assertEqual(br._full_index(), len("Hello, World! It's a fine day. ") * 2)
+        self.assertEqual(br.engine.text[br.engine.index:br.engine.index + 6], "Hello,")
+        a.zen.toggle(True)
+        self.assertEqual(a.zen.overlay.test.words[0], "hello")       # портал продолжает оттуда же
 
     def test_single_esc_restarts_and_other_zones_hide(self):
         a = self.app

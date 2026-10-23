@@ -231,6 +231,44 @@ class Bridge(tk.Frame):
         self._offset = off
         self.viewport.set_state(text=text, index=new.index)
 
+    def advance_to(self, full_index: int, *, typed: int = 0, errors: int = 0, elapsed: float = 0.0) -> bool:
+        """Перенести набранное в портале (дзен): курсор → full_index, счётчики пополняются.
+
+        «Прогресс маршрута» и сессия груза сохраняются как при обычной печати; заход
+        (segment) считает и портальные символы — они попадут в Бортжурнал.
+        """
+        eng = self.engine
+        if eng is None or self.state == "done" or getattr(self, "debrief", None) is not None:
+            return False
+        full = self._full_text or eng.text
+        cur = self._full_index()
+        full_index = max(cur, min(int(full_index), len(full)))
+        if full_index == cur and not typed:
+            return False
+        from stamina.engine import TypingEngine
+        now = time.perf_counter()
+        old_off = self._offset
+        off, text, index = self._window(full, full_index)
+        new = TypingEngine(text, index=index, typed=eng.typed + typed, errors=eng.errors + errors,
+                           elapsed=eng.elapsed(now) + max(0.0, elapsed), case_sensitive=eng.case_sensitive)
+        new.paused = eng.paused
+        new.streak, new.best_streak = eng.streak, eng.best_streak
+        new.key_stats = eng.key_stats
+        new.start_index = eng.start_index - (off - old_off)
+        new.start_typed, new.start_errors = eng.start_typed, eng.start_errors
+        new.start_elapsed = eng.start_elapsed
+        self.engine = new
+        self._offset = off
+        self._session_dirty = True
+        self.viewport.set_state(text=text, index=new.index)
+        self.persist(force=True)
+        try:
+            self._update_cursor()
+            self.refresh_stats()
+        except Exception:  # noqa: BLE001
+            pass
+        return True
+
     def _full_index(self) -> int:
         """Абсолютная позиция в полном тексте (окно + индекс внутри окна)."""
         eng = self.engine

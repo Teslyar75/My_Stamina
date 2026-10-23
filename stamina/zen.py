@@ -10,6 +10,7 @@ Ctrl+M, двойной Esc (одиночный — заново), значок �
 """
 from __future__ import annotations
 
+import re
 import time
 import tkinter as tk
 import tkinter.font as tkfont
@@ -171,8 +172,16 @@ class ZenOverlay(tk.Frame):
             while pos > 0 and not full[pos - 1].isspace():
                 pos -= 1
         self.src_raw = full[pos:pos + 60000]
-        self.src_words = prepare_words(self.src_raw, punctuation=bool(self.st.get("zen_punct")),
-                                       numbers=bool(self.st.get("zen_numbers")))
+        self.src_base = pos
+        # слово портала → конец его токена в тексте мостика (пунктуация/регистр отличаются,
+        # но токены те же: prepare_words режет только по пробелам)
+        self.src_words, self.src_ends = [], []
+        kw = dict(punctuation=bool(self.st.get("zen_punct")), numbers=bool(self.st.get("zen_numbers")))
+        for m in re.finditer(r"\S+", self.src_raw):
+            w = prepare_words(m.group(), **kw)
+            if w:
+                self.src_words.append(w[0])
+                self.src_ends.append(m.end())
         self.src_fallback = not self.src_words
         if self.src_fallback:
             self.src_words = list(FALLBACK_WORDS)
@@ -196,6 +205,7 @@ class ZenOverlay(tk.Frame):
         else:
             start = self.src_pos
         self._test_start = start
+        self._carried = 0          # сколько слов теста уже перенесено на мостик
         if mode == "time":
             n, limit = 300, self.count("time")
         elif mode == "words":
@@ -219,7 +229,36 @@ class ZenOverlay(tk.Frame):
         self.render()
         self._draw_chrome()
 
+    def carry_to_bridge(self) -> bool:
+        """Перенести набранное в тесте на мостик: курсор — сразу после последнего набранного
+        слова (с пробелами за ним), счётчики мостика пополняются верными/ошибочными знаками."""
+        te, br = self.test, self._bridge()
+        if te is None or br is None or self.src_fallback or not te.started:
+            return False
+        done = te.wi + (1 if te.wi < len(te.inputs) and te.inputs[te.wi] == te.words[te.wi]
+                        and te.wi == len(te.words) - 1 else 0)
+        # по кругу (текст кончился) не уходим — только до конца исходника
+        done = min(done, len(self.src_words) - self._test_start)
+        if done <= self._carried:
+            return False
+        k0, k1 = self._test_start + self._carried, self._test_start + done
+        end = self.src_ends[k1 - 1]
+        while end < len(self.src_raw) and self.src_raw[end].isspace():
+            end += 1
+        ok = bad = 0
+        for k in range(self._carried, done):
+            w, inp = te.words[k], te.inputs[k] if k < len(te.inputs) else ""
+            good = sum(1 for a, b in zip(w, inp) if a == b)
+            ok += good + 1
+            bad += max(len(w), len(inp)) - good
+        el = te.elapsed() * (done - self._carried) / max(1, done)
+        self._carried = done
+        self.src_pos = k1                   # следующий тест — сразу после набранного
+        del k0
+        return bool(br.advance_to(self.src_base + end, typed=ok + bad, errors=bad, elapsed=el))
+
     def finished_test(self) -> None:
+        self.carry_to_bridge()
         te = self.test
         res = te.result()
         res["mode"] = te.ui_mode if te.ui_mode in ("time", "words") else te.ui_mode
@@ -889,6 +928,8 @@ class ZenController:
             if not was:
                 self.sync()
         elif self.overlay is not None:
+            if was:
+                self.overlay.carry_to_bridge()    # частично набранный тест — тоже на мостик
             self.overlay.hide()
             st = self.app.store.settings
             if self.on and not st.get("mt_prompt_done"):
