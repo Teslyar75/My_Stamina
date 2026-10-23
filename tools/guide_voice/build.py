@@ -27,8 +27,8 @@ sys.path.insert(0, str(ROOT))
 from stamina import guide_idle  # noqa: E402
 
 SYNTH = Path(__file__).resolve().parent / "synth.ps1"
-BITRATE = "32k"
-SAMPLE_RATE = "22050"
+BITRATE = "24k"
+SAMPLE_RATE = "16000"
 BATCH = 40
 
 
