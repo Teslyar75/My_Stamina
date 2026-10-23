@@ -10,7 +10,10 @@ ApeKey (необязательно) — только для подробных �
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -23,7 +26,7 @@ TIMEOUT = 10
 RESULTS_LIMIT = 10
 
 # Ошибки ApeKey: 470 — неверный, 471 — выключен, 472 — истёк; 479 — лимит запросов
-KEY_ERRORS = {470: "Неверный ApeKey", 471: "ApeKey отключён", 472: "Срок ApeKey истёк"}
+KEY_ERRORS = {470: t("Неверный ApeKey"), 471: t("ApeKey отключён"), 472: t("Срок ApeKey истёк")}
 
 
 class MonkeytypeError(Exception):
@@ -49,11 +52,11 @@ def describe_status(status: int, body: Any = None) -> str:
     if status in KEY_ERRORS:
         return KEY_ERRORS[status]
     if status == 479 or status == 429:
-        return "Лимит запросов Monkeytype — попробуйте позже"
+        return t("Лимит запросов Monkeytype — попробуйте позже")
     if status == 404:
-        return "Пилот Monkeytype не найден"
+        return t("Пилот Monkeytype не найден")
     msg = body.get("message") if isinstance(body, dict) else None
-    return f"Monkeytype: ошибка {status}" + (f" ({msg})" if msg else "")
+    return t("Monkeytype: ошибка {0}").format(status) + (f" ({msg})" if msg else "")
 
 
 class Client:
@@ -67,19 +70,19 @@ class Client:
         headers = {"Accept": "application/json", "User-Agent": "StarTyping/desktop"}
         if auth:
             if not self.ape_key:
-                raise MonkeytypeError("Нужен ApeKey")
+                raise MonkeytypeError(t("Нужен ApeKey"))
             headers["Authorization"] = f"ApeKey {self.ape_key}"
         try:
             status, body = self._fetch(API + path, headers)
         except (urllib.error.URLError, OSError, TimeoutError, ValueError) as e:
-            raise MonkeytypeError("Нет связи с Monkeytype (офлайн?)") from e
+            raise MonkeytypeError(t("Нет связи с Monkeytype (офлайн?)")) from e
         if status != 200:
             raise MonkeytypeError(describe_status(status, body), status)
         return body.get("data") if isinstance(body, dict) else None
 
     def profile(self) -> dict:
         if not self.username:
-            raise MonkeytypeError("Укажите имя пользователя Monkeytype")
+            raise MonkeytypeError(t("Укажите имя пользователя Monkeytype"))
         return self._get("/users/" + urllib.parse.quote(self.username, safe="") + "/profile") or {}
 
     def results(self, limit: int = RESULTS_LIMIT) -> list:
@@ -117,6 +120,8 @@ def summarize(profile: dict | None, results: list | None = None) -> dict:
     recent = [round(float(r.get("wpm", 0)), 1) for r in (results or []) if isinstance(r, dict)]
     return {
         "name": profile.get("name", ""),
+        "xp": int(profile.get("xp") or 0),
+        "level": level(profile.get("xp") or 0),
         "tests": int(ts.get("completedTests") or 0),
         "started": int(ts.get("startedTests") or 0),
         "hours": round(float(ts.get("timeTyping") or 0) / 3600, 1),
@@ -176,3 +181,69 @@ def refresh(username: str, ape_key: str = "", *, fetch=None, path: Path | None =
     from stamina.storage import write_json
     write_json(path or cache_path(), data)
     return data
+
+
+def level(xp) -> int:
+    """Уровень по опыту (та же шкала, что на сайте: 1 + (√(392·xp + 22801) − 151) / 98)."""
+    import math
+    try:
+        return int(1 + (math.sqrt(392 * max(0.0, float(xp)) + 22801) - 151) / 98)
+    except (TypeError, ValueError):
+        return 0
+
+
+def average_pace(data: dict | None, mode: str = "", mode2: str = "") -> int | None:
+    """«average pace» для строки над текстом: последние результаты, иначе рекорды режима."""
+    s = (data or {}).get("summary") or {}
+    rec = [v for v in s.get("recent") or [] if v]
+    if rec:
+        return round(sum(rec) / len(rec))
+    pbs = [p["wpm"] for p in s.get("pbs") or [] if p.get("wpm")
+           and (not mode or p["mode"] == mode) and (not mode2 or p["mode2"] == str(mode2))]
+    if not pbs:
+        pbs = [p["wpm"] for p in s.get("pbs") or [] if p.get("wpm")]
+    return round(sum(pbs) / len(pbs)) if pbs else None
+
+
+# --- тихая фоновая синхронизация (только чтение) -----------------------------
+SYNC_MIN_INTERVAL = 300        # не чаще раза в 5 минут
+SYNC_BACKOFF = 900             # после 479/429 — пауза 15 минут
+_sync = {"last": 0.0, "until": 0.0, "busy": False}
+
+
+def auto_sync(username: str, ape_key: str = "", *, fetch=None, path: Path | None = None,
+              on_done=None, now: float | None = None, threaded: bool = True) -> bool:
+    """Обновить кэш профиля в фоне, если пора. Ошибки молча глотаются. True — запуск был."""
+    username = (username or "").strip()
+    now = time.time() if now is None else now
+    if not username or _sync["busy"] or now < _sync["until"]:
+        return False
+    old = load_cache(path) or {}
+    last = max(_sync["last"], float(old.get("fetched_at") or 0) if old.get("username") == username else 0)
+    if now - last < SYNC_MIN_INTERVAL:
+        return False
+    _sync["last"] = now
+    _sync["busy"] = True
+
+    def work() -> None:
+        data = None
+        try:
+            data = refresh(username, ape_key, fetch=fetch, path=path)
+        except MonkeytypeError as e:
+            if str(e) == t("Лимит запросов Monkeytype — попробуйте позже"):
+                _sync["until"] = time.time() + SYNC_BACKOFF
+        except Exception:  # noqa: BLE001
+            pass
+        finally:
+            _sync["busy"] = False
+        if on_done is not None and data is not None:
+            try:
+                on_done(data)
+            except Exception:  # noqa: BLE001
+                pass
+
+    if threaded:
+        threading.Thread(target=work, daemon=True).start()
+    else:
+        work()
+    return True

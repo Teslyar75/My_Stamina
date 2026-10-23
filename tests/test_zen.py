@@ -47,7 +47,7 @@ class ZenCockpitTest(unittest.TestCase):
         a = self.app
         a.show("bridge")
         br = a.screens["bridge"]
-        br.start("hello world again", mode="free", title="T", subtitle="")
+        br.start("hello world again and more words here", mode="free", title="T", subtitle="")
         for ch in "hel":
             a._on_key(key(ch, char=ch))
         self.assertEqual(br.engine.index, 3)
@@ -55,36 +55,59 @@ class ZenCockpitTest(unittest.TestCase):
         self.assertEqual(a._on_key(key("m", 0x4)), "break")
         a.update()
         self.assertTrue(a.zen.on)
-        self.assertTrue(a.zen.overlay.winfo_ismapped())
-        self.assertTrue(a.store.settings["zen_mode"])
-        a._on_key(key("l", char="l"))           # набор работает как обычно
-        self.assertEqual(br.engine.index, 4)
-        # Esc Esc — назад на борт, без перезапуска
+        ov = a.zen.overlay
+        self.assertTrue(ov.winfo_ismapped())
+        self.assertEqual(ov.test.words[:2], ["hello", "world"])   # слова — с текущего места мостика
+        for ch in "hello wor":
+            a._on_key(key("space" if ch == " " else ch, char=ch))
+        self.assertEqual((ov.test.wi, ov.test.inputs[1]), (1, "wor"))
+        self.assertEqual(br.engine.index, 3)                    # мостик не тронут
         a._on_key(key("Escape"))
         a._on_key(key("Escape"))
         a.update()
         self.assertFalse(a.zen.on)
-        self.assertFalse(a.zen.overlay.winfo_ismapped())
-        self.assertEqual(br.engine.index, 4)
+        self.assertFalse(ov.winfo_ismapped())
+        self.assertEqual(br.engine.index, 3)
         self.assertEqual((a.current, a._layout, a.store.settings.get("skin")), ("bridge", layout, skin))
+
+    def test_words_mode_finish_and_records(self):
+        a = self.app
+        from stamina import portal_stats
+        a.store.settings["zen_mt_mode"] = "words"
+        a.store.settings["zen_mt_counts"] = {"words": 10}
+        a.show("bridge")
+        br = a.screens["bridge"]
+        br.start(" ".join(["ab"] * 30), mode="free", title="T", subtitle="")
+        a.zen.toggle(True)
+        a.update()
+        ov = a.zen.overlay
+        self.assertEqual(len(ov.test.words), 10)
+        for ch in " ".join(["ab"] * 10):
+            a._on_key(key("space" if ch == " " else ch, char=ch))
+        self.assertTrue(ov.test.finished)
+        self.assertTrue(ov.result.winfo_manager())
+        self.assertEqual(portal_stats.load()["results"][-1]["mode2"], 10)
+        a._on_key(key("Tab"))                                   # следующий тест
+        self.assertFalse(ov.test.finished)
 
     def test_single_esc_restarts_and_other_zones_hide(self):
         a = self.app
         a.show("bridge")
         a.zen.toggle(True)
-        calls = []
-        a.restart_current = lambda: calls.append(1)
+        ov = a.zen.overlay
+        a._on_key(key("x", char=ov.test.words[0][0]))
+        self.assertTrue(ov.test.started)
         a._on_key(key("Escape"))
         t0 = time.time()
         while time.time() - t0 < 0.7:
             a.update()
-        self.assertEqual(calls, [1])
+        self.assertFalse(ov.test.started)                       # тест заново
         self.assertTrue(a.zen.on)
         a.show("log")
         a.update()
-        self.assertFalse(a.zen.on)              # дзен — только на «Полёте»
+        self.assertFalse(a.zen.on)
         a.show("bridge")
-        self.assertTrue(a.zen.on)               # выбор запомнен
+        self.assertTrue(a.zen.on)
         a.zen.set_palette("serika")
         self.assertEqual(a.zen.overlay.pal["bg"], "#323437")
 
