@@ -33,10 +33,10 @@ _SHORT_PENALTY = 2.5
 #: Окончания и приставки: «pillow+ed», «re+edit», «bare+ness» — это одно слово, а не склейка.
 _SUFFIXES = {
     "en": ("s", "es", "ed", "d", "ing", "er", "ers", "est", "ly", "ily", "ness", "ful", "fully",
-           "less", "ish", "y", "ies", "ied", "ier", "iest", "ment", "able", "ably"),
+           "less", "ish", "wise", "like", "y", "ies", "ied", "ier", "iest", "ment", "able", "ably"),
     "ru": (),
 }
-_PREFIXES = {"en": ("re", "un", "mis", "in", "dis", "non", "pre", "im", "ir", "il"), "ru": ()}
+_PREFIXES = {"en": ("re", "un", "mis", "in", "dis", "non", "pre", "im", "ir", "il", "over", "under", "mal", "tele", "ante"), "ru": ()}
 #: До какого ранга часть считается «надёжным» словом.
 _PART_RANK = 60_000
 
@@ -60,22 +60,32 @@ def lexicon(lang: str) -> dict[str, int]:
     return {w: i for i, w in enumerate(words)}
 
 
+@lru_cache(maxsize=2)
+def rare_words(lang: str) -> frozenset[str]:
+    """Редкие, но настоящие слова («execrate», «matchwood», «dogeared») — их не режем."""
+    try:
+        with gzip.open(LEX_DIR / f"{lang}_rare.txt.gz", "rt", encoding="utf-8") as fh:
+            return frozenset(fh.read().split())
+    except OSError:
+        return frozenset()
+
+
 def _rank_limit(part: str) -> int:
     """Короткой части верим, только если она частая; длинной — и редкой."""
-    return 20_000 if len(part) <= 3 else (_PART_RANK if len(part) < 6 else 150_000)
+    return 3_000 if len(part) <= 3 else (_PART_RANK if len(part) < 6 else 150_000)
 
 
 def _cost(rank: int, size: int) -> float:
     return math.log((rank + 1) * math.log(max(size, 3)))
 
 
-def segment(low: str, lang: str) -> list[str] | None:
+def segment(low: str, lang: str, allow_short: bool = True) -> list[str] | None:
     """Лучший разрез слова на 2–3 известных слова или None."""
     lex = lexicon(lang)
     if not lex or low in lex:
         return None
     n, size = len(low), len(lex)
-    short = _SHORT_OK.get(lang, frozenset())
+    short = _SHORT_OK.get(lang, frozenset()) if allow_short else frozenset()
     best: list[tuple[float, list[str]] | None] = [None] * (n + 1)
     best[0] = (0.0, [])
     for i in range(1, n + 1):
@@ -96,6 +106,11 @@ def segment(low: str, lang: str) -> list[str] | None:
     # три части допускаем, только если хоть одна — короткое служебное (иначе часто ломает редкие слова)
     if len(parts) == 3 and not any(p in short for p in parts):
         return None
+    # 1–2-буквенный обломок («do geared», «self a basement») — только если без него разрезать нельзя
+    if allow_short and any(len(p) < 3 for p in parts):
+        alt = segment(low, lang, allow_short=False)
+        if alt:
+            return alt
     return parts
 
 
@@ -113,13 +128,27 @@ def find(text: str, lang: str | None = None, *, book_trust: int = 3) -> list[Fix
     if not lexicon(lang):
         return []
     counts = Counter(m.group(0).lower() for m in _TOKEN.finditer(text))
+    family = _families(counts)
+    spaced = " " + " ".join(m.group(0).lower() for m in _TOKEN.finditer(text)) + " "
     cache: dict[str, str | None] = {}
+    # «продуктивные» приставки книги (новояз: mini-, plus-, ante-, good-): если одна и та же голова
+    # даёт ≥3 разных «склейки», это словообразование автора, а не потерянные пробелы
+    heads: Counter = Counter()
+    for low in counts:
+        sp = _split_token(low, lang, counts, book_trust, family, spaced)
+        if sp:
+            cache[low] = sp
+            heads[sp.split()[0]] += 1
+    productive = {h for h, n in heads.items() if n >= 2 and counts.get(h, 0) < 3}
+    for low, sp in list(cache.items()):
+        if sp and sp.split()[0] in productive and not any(ch.isdigit() for ch in low):
+            cache[low] = None
     out: list[Fix] = []
     for m in _TOKEN.finditer(text):
         tok = m.group(0)
         low = tok.lower()
         if low not in cache:
-            cache[low] = _split_token(low, lang, counts, book_trust)
+            cache[low] = _split_token(low, lang, counts, book_trust, family, spaced)
         sp = cache[low]
         if sp is None:
             continue
@@ -129,7 +158,9 @@ def find(text: str, lang: str | None = None, *, book_trust: int = 3) -> list[Fix
     return out
 
 
-def _split_token(low: str, lang: str, counts: Counter, trust: int) -> str | None:
+def _split_token(low: str, lang: str, counts: Counter, trust: int, family: dict | None = None,
+                 spaced: str = "") -> str | None:
+    family = family or {}
     if "-" in low or "'" in low or "’" in low:
         return None  # «forty-five», «don't» — не склейки
     # цифры, прилипшие к буквам: «1984was», «chapter1»
@@ -143,8 +174,19 @@ def _split_token(low: str, lang: str, counts: Counter, trust: int) -> str | None
     if len(low) < 4:
         return None
     lex = lexicon(lang)
-    if low in lex or counts.get(low, 0) >= trust:
+    if low in lex or low in rare_words(lang):
         return None
+    if counts.get(low, 0) >= trust:
+        # частое в книге слово режем, только если в той же книге встречается и раздельный вариант
+        parts = segment(low, lang)
+        if not parts or f" {' '.join(parts)} " not in spaced:
+            return None
+        return " ".join(parts)
+    # семейство слов книги: «goodthink» в «goodthinkful», «telescreen» в «telescreens»
+    if family.get(low, 0) >= trust:
+        return None
+    if any(family.get(low[:k], 0) >= trust and low[:k] not in lex for k in range(6, len(low) - 1)):
+        return None  # «goodthinker» от книжного «goodthink»
     if _is_inflected(low, lang):
         return None
     parts = segment(low, lang)
@@ -154,6 +196,24 @@ def _split_token(low: str, lang: str, counts: Counter, trust: int) -> str | None
     if any(counts.get(p, 0) == 0 and lex.get(p, 10**9) > 60_000 for p in parts):
         return None
     return " ".join(parts)
+
+
+def _families(counts: Counter) -> dict[str, int]:
+    """Сколько раз слово встречается в книге вместе с формами, которые с него начинаются
+    («goodthink» + «goodthinker» + «goodthinkful»). Считаем только для редких токенов."""
+    words = sorted(counts)
+    out: dict[str, int] = {}
+    import bisect
+    for w in words:
+        if len(w) < 6:
+            continue
+        i = bisect.bisect_left(words, w)
+        total = 0
+        while i < len(words) and words[i].startswith(w):
+            total += counts[words[i]]
+            i += 1
+        out[w] = total
+    return out
 
 
 def repair(text: str, lang: str | None = None) -> tuple[str, list[Fix]]:

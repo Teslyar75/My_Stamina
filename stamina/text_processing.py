@@ -295,7 +295,9 @@ def _known_words(known_words, trust: int | None = None) -> frozenset:
 
 def _in_lexicon(low: str) -> bool:
     from stamina.glue_fix import lexicon
-    return low in lexicon("ru" if re.search("[а-яё]", low) else "en")
+    from stamina.glue_fix import rare_words
+    lang = "ru" if re.search("[а-яё]", low) else "en"
+    return low in lexicon(lang) or low in rare_words(lang)
 
 
 def book_words(text: str, limit: int = 200_000) -> dict:

@@ -120,3 +120,31 @@ def test_fix_stored(tmp_path, monkeypatch):
     s = load_session()
     assert s.text == st.cargo[0] and s.text[s.index:] == "end"
     assert glue_fix.fix_stored(st).count == 0
+
+
+# --- ложные разрезы: настоящие слова и авторские сложные слова не трогаем ---
+import pytest as _pt
+from stamina import glue_fix as _g
+
+
+@_pt.mark.parametrize("word", ["dogeared", "execrate", "matchwood", "concertinalike", "goodwise",
+                               "speedwise", "overfulfilment", "underheated", "malreported"])
+def test_false_split_guard(word):
+    assert _g.find(f"he said {word} and left") == []
+
+
+def test_no_one_letter_fragments():
+    sp = _g.find("a selfabasement x")
+    assert all(" a " not in f" {f.split} " for f in sp)
+    assert _g.segment("dogeared", "en") != ["do", "geared"]
+
+
+def test_newspeak_family_and_productive_prefix():
+    text = ("goodthink goodthinkful goodthinker minitrue minipax miniluv miniplenty "
+            "the party said goodthink is good")
+    assert not any(f.token.startswith("mini") or f.token.startswith("goodthink") for f in _g.find(text))
+
+
+def test_repeated_glue_split_when_spaced_form_present():
+    text = "the nineteenthcentury " * 4 + "in the nineteenth century"
+    assert _g.find(text) and all(f.split == "nineteenth century" for f in _g.find(text))
