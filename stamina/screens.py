@@ -1157,6 +1157,9 @@ class SettingsScreen(tk.Frame):
         color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
         if getattr(self, "upd_status", None) is None:
             return
+        text = str(text)
+        if len(text) > 240:
+            text = text[:239].rstrip() + "…"
         self.upd_status.configure(text=text, fg=color)
 
     def _apply_upd_info(self, info, err: str | None = None) -> None:
