@@ -40,4 +40,6 @@ powershell -ExecutionPolicy Bypass -File tools\snapshot.ps1
 
 После каждой законченной части — короткая строка в чат: что сделано, какие
 проверки прошли, что осталось. Долгие поручения — через доклад о работе
-(`_orion/progress.json`, полоска на пульте Ориона).
+(`python -m stamina.task_progress plan|step|finish <id>` → `_orion/tasks/<id>.json`,
+строка на пульте Ориона; запасной путь — legacy `_orion/progress.json` v1).
+Новые варианты скинов — по `docs/skins/ALT_SKIN_GUIDE.md`.
