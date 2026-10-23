@@ -27,7 +27,7 @@ from .ui import HudButton, HudPanel, L, ScrollFrame, Toggle, WpmChart, entry
 _BADGE_COL = {"green": GREEN, "cyan": CYAN, "amber": AMBER, "red": RED, "muted": MUTED}
 
 TABS = [("overview", _t("ОБЗОР")), ("reader", _t("ГИПЕРДРАЙВ")), ("book", _t("КНИГА")),
-        ("exercises", _t("ТРЕНАЖЁРЫ")), ("library", _t("БИБЛИОТЕКА")), ("journal", _t("ЖУРНАЛ")),
+        ("exercises", _t("ТРЕНАЖЁРЫ")), ("library", _t("БИБЛИОТЕКА")), ("books", _t("ВСЕ КНИГИ")), ("journal", _t("ЖУРНАЛ")),
         ("settings", _t("НАСТРОЙКИ"))]
 
 STATUS_RU = {"full": (_t("ОРИГИНАЛ"), GREEN), "recovered": (_t("ОРИГИНАЛ ВОССТАНОВЛЕН"), CYAN),
@@ -97,6 +97,7 @@ class SpeedReadScreen(tk.Frame):
             "book": BookReaderPage(self.body, self),
             "exercises": ExercisesPage(self.body, self),
             "library": LibraryPage(self.body, self),
+            "books": BooksPage(self.body, self),
             "journal": JournalPage(self.body, self),
             "settings": SettingsPage(self.body, self),
         }
@@ -445,11 +446,13 @@ class LibraryPage(tk.Frame):
         super().__init__(master, bg=BG)
         self.ctx = ctx
         self.sel: str | None = None
-        self.grid_columnconfigure(1, weight=1)
+        # список текстов шире и растёт вместе с окном (раньше - узкие 380 px)
+        self.grid_columnconfigure(0, weight=1, minsize=px(440))
+        self.grid_columnconfigure(1, weight=2)
         self.grid_rowconfigure(0, weight=1)
         left = HudPanel(self, _t("ТЕКСТЫ НА БОРТУ"))
         left.grid(row=0, column=0, sticky="nsew", padx=(px(14), px(6)), pady=(0, px(10)))
-        left.configure(width=px(380))
+        left.configure(width=px(440))
         left.grid_propagate(False)
         left.pack_propagate(False)
         acts = tk.Frame(left.body, bg=PANEL)
@@ -471,7 +474,7 @@ class LibraryPage(tk.Frame):
             side=tk.LEFT, fill=tk.X, expand=True, padx=(px(4), 0))
         legend = L(left.body,
                    _t("Значки: 2ЯЗ — готовый перевод · ⌀ред. — без правки · ⌀печ. — не в набор · PD/MT — источник"),
-                   fg=MUTED, size=7, bg=PANEL, wraplength=px(340), justify="left", anchor="w")
+                   fg=MUTED, size=8, bg=PANEL, wraplength=px(400), justify="left", anchor="w")
         legend.pack(fill=tk.X, pady=(px(4), px(2)))
         self.list = ScrollFrame(left.body, bg=PANEL)
         self.list.pack(fill=tk.BOTH, expand=True)
@@ -491,7 +494,7 @@ class LibraryPage(tk.Frame):
             s, col = STATUS_RU.get(m["original"]["status"], ("", MUTED))
             title_fr = tk.Frame(row, bg=row["bg"])
             title_fr.pack(fill=tk.X, padx=px(8), pady=(px(4), 0))
-            t = L(title_fr, m["title"], fg=TEXT, size=10, bold=True, bg=row["bg"], anchor="w")
+            t = L(title_fr, m["title"], fg=TEXT, size=11, bold=True, bg=row["bg"], anchor="w")
             t.pack(side=tk.LEFT, fill=tk.X, expand=True)
             badge_fr = tk.Frame(title_fr, bg=row["bg"])
             badge_fr.pack(side=tk.RIGHT)
@@ -502,7 +505,7 @@ class LibraryPage(tk.Frame):
                 bl.pack(side=tk.LEFT, padx=px(1))
                 clickable.append(bl)
             sub = _t("{0} · {1} · {2} сл.").format(m.get('author') or '—', m['lang'].upper(), m['original']['words'] or '?')
-            a = L(row, sub, fg=MUTED, size=8, bg=row["bg"], anchor="w")
+            a = L(row, sub, fg=MUTED, size=9, bg=row["bg"], anchor="w")
             a.pack(fill=tk.X, padx=px(8))
             c = L(row, "● " + s, fg=col, size=7, bold=True, bg=row["bg"], anchor="w")
             c.pack(fill=tk.X, padx=px(8), pady=(0, px(4)))
@@ -517,6 +520,10 @@ class LibraryPage(tk.Frame):
     def select(self, tid: str) -> None:
         self.sel = tid
         self.refresh()
+
+    def select_and_show(self, tid: str) -> None:
+        self.sel = tid
+        self.ctx.show("library")
 
     def _detail(self) -> None:
         b = self.detail.body
@@ -931,3 +938,128 @@ class SettingsPage(tk.Frame):
                [("paper", _t("БУМАГА")), ("night", _t("НОЧЬ")), ("sepia", _t("СЕПИЯ"))])
         L(self.root, _t("Гипердрайв — RSVP; опция «перевод под словом». «Книга» — страницы; режим «2 ЯЗЫКА» — оригинал слева, перевод справа. Позиция общая. Данные: %APPDATA%\\Stamina\\speedread.json и library\\."), fg=MUTED, size=8, bg=BG).pack(
             anchor="w", pady=px(8))
+
+
+
+# ======================================================================================
+class BooksPage(tk.Frame):
+    """Вкладка «Все книги»: весь перечень текстов таблицей - поиск, сортировка, открытие."""
+
+    COLS = ("title", "author", "lang", "words", "progress", "tags")
+
+    def __init__(self, master, ctx: SpeedReadScreen) -> None:
+        super().__init__(master, bg=BG)
+        from tkinter import ttk
+        self.ctx = ctx
+        self._sort = ("title", False)
+        panel = HudPanel(self, _t("Все книги на борту"))
+        panel.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=(0, px(10)))
+        body = panel.body
+        top = tk.Frame(body, bg=PANEL)
+        top.pack(fill=tk.X, pady=(0, px(6)))
+        L(top, _t("Поиск:"), fg=MUTED, size=10, bold=True, bg=PANEL).pack(side=tk.LEFT)
+        self.q = tk.StringVar()
+        e = entry(top, width=36)
+        e.configure(textvariable=self.q)
+        e.pack(side=tk.LEFT, padx=px(6))
+        self.q.trace_add("write", lambda *_a: self.refresh())
+        self.lbl_n = L(top, "", fg=MUTED, size=9, bg=PANEL)
+        self.lbl_n.pack(side=tk.LEFT, padx=px(8))
+        HudButton(top, _t("В библиотеку"), self._to_lib, height=30, font_size=9).pack(side=tk.RIGHT)
+        HudButton(top, _t("Печатать"), self._type, color=CYAN, height=30, font_size=9).pack(
+            side=tk.RIGHT, padx=(0, px(4)))
+        HudButton(top, _t("Книга"), self._book, color=GREEN, height=30, font_size=9).pack(
+            side=tk.RIGHT, padx=(0, px(4)))
+        HudButton(top, _t("Читать"), self._read, color=AMBER, height=30, font_size=9).pack(
+            side=tk.RIGHT, padx=(0, px(4)))
+        st = ttk.Style(self)
+        sty = "SpeedBooks.Treeview"
+        try:
+            st.configure(sty, background=PANEL, fieldbackground=PANEL, foreground=TEXT,
+                         rowheight=px(26), font=theme.font(10), borderwidth=0)
+            st.configure(sty + ".Heading", background=BG2, foreground=AMBER, font=theme.font(9, True))
+            st.map(sty, background=[("selected", blend(CYAN, BG, 0.55))], foreground=[("selected", TEXT)])
+        except tk.TclError:
+            pass
+        wrap = tk.Frame(body, bg=PANEL)
+        wrap.pack(fill=tk.BOTH, expand=True, pady=(0, px(4)))
+        self.tree = ttk.Treeview(wrap, columns=self.COLS, show="headings", style=sty, selectmode="browse")
+        heads = {"title": _t("Название"), "author": _t("Автор"), "lang": _t("Язык"),
+                 "words": _t("Слов"), "progress": _t("Прочитано"), "tags": _t("Метки")}
+        widths = {"title": 420, "author": 220, "lang": 60, "words": 90, "progress": 90, "tags": 140}
+        for c in self.COLS:
+            self.tree.heading(c, text=heads[c], command=lambda c=c: self._sort_by(c))
+            self.tree.column(c, width=px(widths[c]), stretch=c in ("title", "author"),
+                             anchor="w" if c in ("title", "author", "tags") else "center")
+        from stamina.adapt import make_vscroll
+        sb = make_vscroll(wrap, command=self.tree.yview)
+        self.tree.configure(yscrollcommand=sb.set)
+        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        sb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.tree.bind("<Double-1>", lambda _e: self._read())
+        L(body, _t("Двойной щелчок или Enter - читать; щелчок по заголовку - сортировка."),
+          fg=MUTED, size=8, bg=PANEL).pack(anchor="w")
+
+    def _rows(self) -> list[tuple]:
+        out = []
+        for m in self.ctx.lib.all():
+            words = (m.get("original") or {}).get("words") or 0
+            rw = ((m.get("positions") or {}).get("reading") or {}).get("word", 0)
+            prog = rw / words * 100 if words else 0
+            tags = " ".join(code for code, _ck in book_badges(m))
+            out.append((m["id"], m.get("title") or "", m.get("author") or "",
+                        (m.get("lang") or "").upper(), words, prog, tags))
+        return out
+
+    def refresh(self) -> None:
+        q = self.q.get().strip().lower()
+        rows = [r for r in self._rows() if not q or q in (r[1] + " " + r[2]).lower()]
+        key, rev = self._sort
+        i = self.COLS.index(key) + 1
+        rows.sort(key=lambda r: (r[i].lower() if isinstance(r[i], str) else r[i]), reverse=rev)
+        sel = self.tree.selection()
+        self.tree.delete(*self.tree.get_children())
+        for tid, title, author, lang, words, prog, tags in rows:
+            self.tree.insert("", tk.END, iid=tid, values=(
+                title, author or "-", lang, f"{words:,}".replace(",", " ") if words else "?",
+                f"{prog:.0f}%", tags))
+        active = (sel[0] if sel else None) or self.ctx.lib.index.get("active_reading")
+        if active and self.tree.exists(active):
+            self.tree.selection_set(active)
+            self.tree.see(active)
+        self.lbl_n.configure(text=_t("книг: {0}").format(len(rows)))
+
+    def _sort_by(self, col: str) -> None:
+        k, rev = self._sort
+        self._sort = (col, (not rev) if k == col else col in ("words", "progress"))
+        self.refresh()
+
+    def _cur(self) -> str | None:
+        s = self.tree.selection()
+        return s[0] if s else None
+
+    def _read(self) -> None:
+        tid = self._cur()
+        if tid:
+            self.ctx.read(tid)
+
+    def _book(self) -> None:
+        tid = self._cur()
+        if tid:
+            self.ctx.read_book(tid)
+
+    def _type(self) -> None:
+        tid = self._cur()
+        if tid:
+            self.ctx.pages["library"].type_text(tid)
+
+    def _to_lib(self) -> None:
+        tid = self._cur()
+        if tid:
+            self.ctx.pages["library"].select_and_show(tid)
+        else:
+            self.ctx.show("library")
+
+    def on_key(self, e) -> None:
+        if e.keysym == "Return":
+            self._read()
