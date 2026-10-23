@@ -2068,5 +2068,20 @@
  "сорвалась": "failed",
  "остановлена": "stopped",
  "оцениваю объём…": "estimating the work…",
- "Исполнитель: {0}": "Executor: {0}"
+ "Исполнитель: {0}": "Executor: {0}",
+ "ВСЕ КНИГИ": "ALL BOOKS",
+ "Все книги на борту": "All books on board",
+ "Поиск:": "Search:",
+ "книг: {0}": "books: {0}",
+ "Читать": "Read",
+ "Книга": "Book",
+ "Печатать": "Type",
+ "В библиотеку": "To library",
+ "Название": "Title",
+ "Автор": "Author",
+ "Язык": "Language",
+ "Слов": "Words",
+ "Прочитано": "Read %",
+ "Метки": "Tags",
+ "Двойной щелчок или Enter - читать; щелчок по заголовку - сортировка.": "Double-click or Enter to read; click a header to sort."
 }

@@ -2066,5 +2066,20 @@
  "сорвалась": "fehlgeschlagen",
  "остановлена": "gestoppt",
  "оцениваю объём…": "schätze den Umfang…",
- "Исполнитель: {0}": "Ausführer: {0}"
+ "Исполнитель: {0}": "Ausführer: {0}",
+ "ВСЕ КНИГИ": "ALLE BÜCHER",
+ "Все книги на борту": "Alle Bücher an Bord",
+ "Поиск:": "Suche:",
+ "книг: {0}": "Bücher: {0}",
+ "Читать": "Lesen",
+ "Книга": "Buch",
+ "Печатать": "Tippen",
+ "В библиотеку": "Zur Bibliothek",
+ "Название": "Titel",
+ "Автор": "Autor",
+ "Язык": "Sprache",
+ "Слов": "Wörter",
+ "Прочитано": "Gelesen",
+ "Метки": "Tags",
+ "Двойной щелчок или Enter - читать; щелчок по заголовку - сортировка.": "Doppelklick oder Enter zum Lesen; Klick auf Spaltenkopf sortiert."
 }
