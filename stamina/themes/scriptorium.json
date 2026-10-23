@@ -68,5 +68,45 @@
     "error": "sounds/skins/scriptorium/error.wav",
     "bell": "sounds/skins/scriptorium/bell.wav",
     "start": "sounds/skins/scriptorium/start.wav"
+  },
+  "slideshow": {
+    "topics": [
+      "illuminated manuscript",
+      "Book of Kells",
+      "medieval manuscript miniature",
+      "monastery library",
+      "Gothic cathedral interior",
+      "cloister",
+      "abbey ruins",
+      "calligraphy quill",
+      "medieval scribe",
+      "Gutenberg Bible",
+      "historiated initial",
+      "Codex",
+      "stained glass window",
+      "old library books",
+      "Trinity College Library",
+      "bestiary manuscript",
+      "book of hours",
+      "Romanesque church",
+      "candle manuscript desk",
+      "rose window"
+    ],
+    "per_topic": 3
+  },
+  "radio": {
+    "tags": [
+      "medieval",
+      "early music",
+      "choral",
+      "baroque"
+    ],
+    "pinned": [
+      "Ancient FM",
+      "CEU Medieval",
+      "Concertzender Oude Muziek",
+      "Early Music",
+      "Choral"
+    ]
   }
 }
