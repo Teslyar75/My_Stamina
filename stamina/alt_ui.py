@@ -2653,7 +2653,7 @@ def build_chrome(app) -> tk.Frame:
     app._radio_mini = None
     try:
         from stamina.radio.minibark import RadioMiniBar
-        app._radio_mini = RadioMiniBar(app._mini_row, app)
+        app._radio_mini = RadioMiniBar(app._mini_row, app, draggable=False)  # в alt — своя панель
     except Exception:  # noqa: BLE001
         app._radio_mini = None
     app._alt_band = OrnamentBand(app, prof, "bottom", height=10)

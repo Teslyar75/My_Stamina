@@ -46,6 +46,8 @@ class Cockpit(tk.Tk):
         self._set_icon()
         self.configure(bg=BG)
         self._apply_geometry()
+        from stamina import monitors as _mon
+        _mon.follow_toplevels(self)   # диалоги едут за окном на другой монитор
         self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \

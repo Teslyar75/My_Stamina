@@ -127,3 +127,58 @@ def center_geometry(master, w: int, h: int, dy: int = 0) -> str:
 def area_size(master) -> tuple[int, int]:
     l, t, r, b = work_area(master)
     return r - l, b - t
+
+
+def follow_toplevels(root) -> None:
+    """Окна-спутники (диалоги, просмотр картинки, выпадашки) едут вместе с главным окном.
+
+    Tk не двигает transient-окна за хозяином (Windows), и при переносе программы на
+    другой монитор открытые диалоги оставались на старом. На каждый сдвиг корня
+    сдвигаем дочерние Toplevel на ту же дельту и прижимаем к монитору окна;
+    выпадающие списки (overrideredirect) — закрываем.
+    """
+    state = {"xy": None}
+
+    def on_cfg(e) -> None:
+        if e.widget is not root:
+            return
+        try:
+            xy = (root.winfo_rootx(), root.winfo_rooty())
+        except tk.TclError:
+            return
+        old, state["xy"] = state["xy"], xy
+        if old is None or old == xy:
+            return
+        move_children(root, xy[0] - old[0], xy[1] - old[1])
+
+    root.bind("<Configure>", on_cfg, add="+")
+
+
+def move_children(root, dx: int, dy: int) -> None:
+    area = None
+    for w in list(root.winfo_children()):
+        if not isinstance(w, tk.Toplevel):
+            continue
+        try:
+            if not w.winfo_ismapped():
+                continue
+            if hasattr(w, "close") and w.overrideredirect():
+                w.close()               # выпадающий список — привязан к кнопке, закрываем
+                continue
+            if area is None:
+                area = work_area(root)
+            ww, hh = w.winfo_width(), w.winfo_height()
+            gx, gy = parse_xy(w.geometry())     # те же координаты, что принимает geometry()
+            x, y = fit(gx + dx, gy + dy, ww, hh, area)
+            w.geometry(f"+{x}+{y}")
+        except tk.TclError:
+            pass
+
+
+def parse_xy(geo: str) -> tuple[int, int]:
+    """'WxH+X+Y' / 'WxH-X+Y' → (X, Y) с учётом отрицательных координат."""
+    import re
+    m = re.match(r"\d+x\d+([+-]-?\d+)([+-]-?\d+)", geo)
+    if not m:
+        raise tk.TclError(geo)
+    return int(m.group(1).replace("+-", "-").lstrip("+") or 0), int(m.group(2).replace("+-", "-").lstrip("+") or 0)

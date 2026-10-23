@@ -15,6 +15,7 @@ from stamina.hud import HudButton
 from stamina.i18n import t as _t
 from stamina.theme import blend, px
 
+from . import drag
 from .engine import get_engine
 
 #: Профиль alt-скина → (заголовок, значок, акцентный токен, фон-смесь)
@@ -29,6 +30,7 @@ STYLE: dict[str, tuple[str, str, str, float]] = {
     "generic": ("РАДИО", "≋", "CYAN", 0.08),
 }
 STATE_KEY = "alt_radio_collapsed"
+POS_KEY = "alt_radio_pos"   # [доля x, доля y] в окне отсеков; None — справа по центру
 
 
 def style_of(prof: str) -> tuple[str, str, str, float]:
@@ -59,8 +61,9 @@ class AltRadioPanel:
         inner = self.frame.inner
         head = tk.Frame(inner, bg=self.bg)
         head.pack(fill=tk.X, padx=px(6), pady=(px(4), 0))
-        tk.Label(head, text=f"{self.glyph} {_t(title)}", bg=self.bg, fg=blend(self.acc, theme.TEXT, 0.25),
-                 font=theme.font(7, True)).pack(side=tk.LEFT)
+        self.grip = tk.Label(head, text=f"⠿ {self.glyph} {_t(title)}", bg=self.bg,
+                             fg=blend(self.acc, theme.TEXT, 0.25), font=theme.font(7, True))
+        self.grip.pack(side=tk.LEFT)
         self.btn_fold = HudButton(head, "›", self.fold, height=20, width=24, font_size=8, color=theme.MUTED)
         self.btn_fold.pack(side=tk.RIGHT)
         self.lbl = tk.Label(inner, text="", bg=self.bg, fg=theme.GREEN, font=theme.font(9, True),
@@ -107,6 +110,11 @@ class AltRadioPanel:
         self.frame.bind("<Enter>", self._enter, add="+")
         self.frame.bind("<Leave>", self._leave, add="+")
 
+        # перетаскивание за заголовок (и за ярлычок); двойной щелчок — на место
+        self.drag = drag.Dragger(self.frame, host, [self.grip], drag.load(st, POS_KEY), self._pos_changed)
+        self.tab_drag = drag.Dragger(self.tab, host, [], None, self._pos_changed)
+        host.bind("<Configure>", lambda _e: self._reposition(), add="+")
+
         self.eng.subscribe(self._on_eng)
         self.refresh()
 
@@ -138,6 +146,22 @@ class AltRadioPanel:
         self.collapsed, self._hover = False, False
         self._save()
         self.refresh(force=True)
+
+    def _pos_changed(self, pos) -> None:
+        self.drag.pos = pos
+        try:
+            self.app.store.settings[POS_KEY] = list(pos) if pos else None
+            self.app.store.save_settings()
+        except Exception:  # noqa: BLE001
+            pass
+        self._shown = "?"
+        self.refresh(force=True)
+
+    def _reposition(self) -> None:
+        """Окно изменилось (сдвиг на другой монитор, размер): панель — в его пределах."""
+        if self._shown in ("full", "tab") and self.drag.pos is not None:
+            self._shown = "?"
+            self._place(self.mode())
 
     def _save(self) -> None:
         try:
@@ -216,11 +240,22 @@ class AltRadioPanel:
         self._shown = mode
         self.frame.place_forget()
         self.tab.place_forget()
+        pos = self.drag.pos
         if mode == "full":
-            self.frame.place(relx=1.0, rely=0.5, anchor="e", x=-px(4))
+            xy = self.drag.xy()
+            if xy is None:
+                self.frame.place(relx=1.0, rely=0.5, anchor="e", x=-px(4))
+            else:
+                self.frame.place(x=xy[0], y=xy[1], relx=0, rely=0, anchor="nw")
             self.frame.lift()
         elif mode == "tab":
-            self.tab.place(relx=1.0, rely=0.5, anchor="e", x=-px(2))
+            if pos is None:
+                self.tab.place(relx=1.0, rely=0.5, anchor="e", x=-px(2))
+            else:
+                # ярлычок — у ближайшего края, на высоте перенесённой панели
+                self.tab_drag.pos = (1.0 if pos[0] >= 0.5 else 0.0, pos[1])
+                x, y = self.tab_drag.xy()
+                self.tab.place(x=x, y=y, relx=0, rely=0, anchor="nw")
             self.tab.lift()
 
     def destroy(self) -> None:
