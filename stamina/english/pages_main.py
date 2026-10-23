@@ -397,6 +397,24 @@ class SetsPage(tk.Frame):
         HudButton(bot, _t("УЧИТЬ КАРТОЧКАМИ"), self.learn_cards, color=AMBER, height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
+        # --- альт-вид: лента карт с догрузкой по 24 (классика не затрагивается) ---
+        self._bot = bot
+        self.alt_grid = tk.Frame(self, bg=BG)
+        self.alt_grid.bind("<Configure>", self._reflow, add="+")
+        self.alt_more = tk.Frame(self, bg=BG)
+        self.btn_more = HudButton(self.alt_more, _t("ПОКАЗАТЬ ЕЩЁ 24"), self.load_more, color=AMBER,
+                                  height=30, font_size=9)
+        self.btn_more.pack(side=tk.LEFT, padx=px(4))
+        self.btn_all = HudButton(self.alt_more, _t("ПОКАЗАТЬ ВСЕ"), self.load_all, height=30, font_size=8)
+        self.btn_all.pack(side=tk.LEFT, padx=px(4))
+        HudButton(self.alt_more, _t("⤨ СЛУЧАЙНЫЕ 24"), self.random24, height=30, font_size=8).pack(
+            side=tk.LEFT, padx=px(4))
+        self.shown_lbl = L(self.alt_more, "", fg=CYAN, size=9, bold=True, mono=True, bg=BG)
+        self.shown_lbl.pack(side=tk.LEFT, padx=px(10))
+        self.shown = self.COLS * self.ROWS
+        self._alt_on = False
+        self._busy = False
+        self._arm = False      # автодогрузка — только после того, как пилот сам докрутил вниз
 
     def _group(self, parent, key, title, options) -> None:
         L(parent, title, fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(px(6), px(4)))
@@ -412,6 +430,7 @@ class SetsPage(tk.Frame):
             return
         self.f[key] = val
         self.page = 0
+        self.shown = self.COLS * self.ROWS
         self.apply()
 
     def open_set(self, sid: str) -> None:
@@ -456,9 +475,14 @@ class SetsPage(tk.Frame):
     def go(self, d: int) -> None:
         pages = max(1, -(-len(self.items) // (self.COLS * self.ROWS)))
         self.page = max(0, min(pages - 1, self.page + d))
+        self.shown = self.COLS * self.ROWS
         self.render()
 
     def render(self) -> None:
+        if self._alt():
+            self._render_alt()
+            return
+        self._alt_layout(False)
         for t in self.tiles:
             t.destroy()
         self.tiles = []
@@ -471,6 +495,121 @@ class SetsPage(tk.Frame):
         self._place()
         self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
         self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
+
+    # ---------------------------------------------------------------- альт-вид
+    # Та же логика групп, что в классике (◀ ▶ = страница по 24, page), плюс догрузка:
+    # от начала выбранной группы показываются shown карт; «ЕЩЁ 24», «ВСЕ», колесо до
+    # низа или End добавляют следующие 24. Фильтры/поиск работают по всему набору.
+    def _alt_layout(self, on: bool) -> None:
+        if on == self._alt_on:
+            return
+        self._alt_on = on
+        if on:
+            self.gridf.pack_forget()
+            self._bot.pack_forget()
+            self._bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(4)))     # ◀ ▶ — над лентой
+            self.alt_grid.pack(fill=tk.X, padx=px(10))
+            self.alt_more.pack(fill=tk.X, padx=px(12), pady=(px(4), px(8)))
+            self.after(400, self._watch_bottom)
+        else:
+            self.alt_grid.pack_forget()
+            self.alt_more.pack_forget()
+            self._bot.pack_forget()
+            self.gridf.pack(fill=tk.BOTH, expand=True, padx=px(10))
+            self._bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
+
+    def _alt_bounds(self) -> tuple[int, int]:
+        start = self.page * self.COLS * self.ROWS
+        return start, min(len(self.items), start + self.shown)
+
+    def _render_alt(self) -> None:
+        self._alt_layout(True)
+        for t in self.tiles:
+            t.destroy()
+        self.tiles = []
+        per = self.COLS * self.ROWS
+        pages = max(1, -(-len(self.items) // per))
+        self.page = min(self.page, pages - 1)
+        a, b = self._alt_bounds()
+        for w in self.items[a:b]:
+            self.tiles.append(Tile(self.alt_grid, self.ctx, w))
+        self._place()
+        self._arm = False
+        vp = self._viewport()
+        if vp is not None:
+            vp.canvas.yview_moveto(0)
+        self.pg.configure(text=_t("ГРУППА {0} / {1}").format(self.page + 1, pages))
+        self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
+        self._alt_status()
+
+    def _alt_status(self) -> None:
+        a, b = self._alt_bounds()
+        n = len(self.items)
+        self.shown_lbl.configure(text=_t("ПОКАЗАНО {0}–{1} ИЗ {2}").format(a + 1 if b > a else 0, b, n))
+        self.btn_more.set_enabled(b < n)
+        self.btn_all.set_enabled(b < n)
+        self._viewport_relayout()
+
+    def _viewport_relayout(self) -> None:
+        vp = self._viewport()
+        if vp is not None:
+            self.after_idle(vp.relayout)
+
+    def _viewport(self):
+        w = self.master
+        while w is not None:
+            if hasattr(w, "relayout") and hasattr(w, "canvas"):
+                return w
+            w = w.master
+        return None
+
+    def load_more(self, n: int | None = None) -> None:
+        """Догрузить следующие n (по умолчанию 24) карт, не пересоздавая показанные."""
+        if not self._alt() or self._busy:
+            return
+        a, b = self._alt_bounds()
+        if b >= len(self.items):
+            return
+        self._busy = True
+        try:
+            self.shown += n or self.COLS * self.ROWS
+            _a, nb = self._alt_bounds()
+            for w in self.items[b:nb]:
+                self.tiles.append(Tile(self.alt_grid, self.ctx, w))
+            self._place()
+            self._alt_status()
+        finally:
+            self.after(250, self._unbusy)
+
+    def random24(self) -> None:
+        """Новые случайные 24 из всего набора (с учётом фильтров) — логика ⤨ ПЕРЕМЕШАТЬ."""
+        self.page = 0
+        self.shown = self.COLS * self.ROWS
+        self.shuffle()
+
+    def load_all(self) -> None:
+        a, _b = self._alt_bounds()
+        self.load_more(len(self.items) - a)
+
+    def _unbusy(self) -> None:
+        self._busy = False
+
+    def _watch_bottom(self) -> None:
+        """Пилот докрутил колесом/полосой до низа ленты — догрузить ещё 24."""
+        if not self._alt_on:
+            return
+        try:
+            vp = self._viewport()
+            if vp is not None and self.winfo_ismapped() and vp.need > vp.canvas.winfo_height() + 1:
+                at_bottom = vp.canvas.yview()[1] >= 0.995
+                if at_bottom and self._arm:
+                    self._arm = False
+                    self.load_more()
+                elif not at_bottom:
+                    self._arm = True
+        except tk.TclError:
+            return
+        self.after(400, self._watch_bottom)
 
     def _alt(self) -> bool:
         return getattr(self.winfo_toplevel(), "_alt_view", None) is not None
@@ -490,12 +629,14 @@ class SetsPage(tk.Frame):
     def _place(self) -> None:
         """Разложить уже созданные плитки по сетке (без пересоздания — дёшево)."""
         n = self._ncols if self._alt() else self.COLS
+        g = self.alt_grid if self._alt_on else self.gridf
         for c in range(self.COLS):
-            self.gridf.grid_columnconfigure(c, weight=1 if c < n else 0, uniform="t" if c < n else "",
-                                            minsize=0)
+            g.grid_columnconfigure(c, weight=1 if c < n else 0, uniform="t" if c < n else "",
+                                   minsize=0)
         if self._alt():
-            for r in range(-(-self.COLS * self.ROWS // 2)):
-                self.gridf.grid_rowconfigure(r, weight=0, uniform="", minsize=px(Tile.H))
+            rows = -(-len(self.tiles) // max(1, n)) if self._alt_on else -(-self.COLS * self.ROWS // 2)
+            for r in range(rows):
+                g.grid_rowconfigure(r, weight=0, uniform="", minsize=px(Tile.H))
         for i, t in enumerate(self.tiles):
             t.grid(row=i // n, column=i % n, sticky="nsew", padx=px(3), pady=px(3))
 
@@ -510,6 +651,8 @@ class SetsPage(tk.Frame):
             self.go(1)
         elif e.keysym in ("Left", "Prior"):
             self.go(-1)
+        elif e.keysym == "End" and self._alt():
+            self.load_more()
 
 
 # =============================================================================
