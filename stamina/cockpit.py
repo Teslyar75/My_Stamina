@@ -15,6 +15,7 @@ from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_ho
                      missions, nav, orion_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina import safe_mode
+from stamina import ontop
 from stamina.bridge_settings import BridgeSettingsScreen
 from stamina.hud import HScrollStrip, HudButton
 from stamina.screens import CargoScreen, HelpScreen, LogScreen, MissionsScreen, SettingsScreen
@@ -48,6 +49,7 @@ class Cockpit(tk.Tk):
         self._apply_geometry()
         from stamina import monitors as _mon
         _mon.follow_toplevels(self)   # диалоги едут за окном на другой монитор
+        ontop.apply(self, bool(st.get(ontop.KEY, True)))   # «Поверх всех окон»
         self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
@@ -112,6 +114,8 @@ class Cockpit(tk.Tk):
         for i in range(1, 10):
             self.bind(f"<Alt-Key-{i}>", lambda _e, n=i: self.goto_subtab(n - 1) or "break")
         self.bind("<Control-Shift-P>", lambda _e: self.switch_pilot())
+        for seq in ontop.HOTKEYS:   # «Поверх всех окон» вкл/выкл
+            self.bind(seq, lambda _e: self.toggle_topmost() or "break")
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
         self.bind("<F1>", lambda _e: self.open_help())
@@ -962,6 +966,15 @@ class Cockpit(tk.Tk):
             self.translator = Translator()
         return self.translator
 
+    def toggle_topmost(self) -> None:
+        st = self.store.settings
+        st[ontop.KEY] = not st.get(ontop.KEY, True)
+        self.apply_settings()
+        try:
+            self.screens["settings"].refresh()
+        except (KeyError, tk.TclError):
+            pass
+
     def toggle_sound(self) -> None:
         st = self.store.settings
         st["sound"] = not st["sound"]
@@ -997,6 +1010,7 @@ class Cockpit(tk.Tk):
                 self.configure(bg=theme.BG)
             except tk.TclError:
                 pass
+        ontop.apply(self, bool(st.get(ontop.KEY, True)))
         self.sound.enabled = bool(st["sound"])
         self.sound.volume = int(st.get("volume", 3))
         self._update_sound_button()

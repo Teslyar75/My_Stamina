@@ -42,6 +42,7 @@ def reset_paths() -> None:
 
 DEFAULT_SETTINGS = {
     "sound": True,
+    "topmost": True,  # «Поверх всех окон» (stamina/ontop.py), Ctrl+Shift+T
     "volume": 3,
     "stars": True,
     "keyboard": True,

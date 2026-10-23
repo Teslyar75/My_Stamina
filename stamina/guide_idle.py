@@ -244,7 +244,8 @@ class ClipPlayer:
                 args = [exe, "-nodisp", "-autoexit", "-loglevel", "quiet", str(path)] if "ffplay" in exe \
                     else [exe, "--no-video", "--really-quiet", str(path)]
                 try:
-                    self._proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    self._proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                                  creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                     started = True
                 except OSError:
                     started = False

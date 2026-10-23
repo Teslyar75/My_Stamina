@@ -2112,5 +2112,7 @@
  "RADIO · FM": "RADIO · FM",
  "WIRELESS": "WIRELESS",
  "ПЕСНОПЕНИЯ": "GESÄNGE",
- "ЗВУКИ САДА": "GARTENKLÄNGE"
+ "ЗВУКИ САДА": "GARTENKLÄNGE",
+ "Поверх всех окон": "Immer im Vordergrund",
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "Das Programmfenster bleibt über anderen Fenstern: Konsolen und Pop-ups verdecken es nicht. Strg+Umschalt+T schaltet es um."
 }

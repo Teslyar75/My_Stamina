@@ -209,6 +209,7 @@ def maybe_pip_install(dest_root: Path | None = None, progress: ProgressCb | None
         [str(py), "-m", "pip", "install", "--disable-pip-version-check", "-q", "-r", str(req)],
         cwd=str(root),
         check=False,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
 
 

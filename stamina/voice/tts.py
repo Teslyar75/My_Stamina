@@ -141,7 +141,8 @@ def voices() -> list[str]:
     try:
         out = subprocess.run([powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass",
                               "-File", str(say_script()), "-ListVoices"],
-                             capture_output=True, timeout=30)
+                             capture_output=True, timeout=30,
+                             creationflags=0x08000000 if sys.platform == "win32" else 0)
     except (OSError, subprocess.SubprocessError):
         return []
     text = out.stdout.decode("utf-8", "replace")

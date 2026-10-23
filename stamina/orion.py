@@ -1125,7 +1125,7 @@ def run_profile(record: dict, text: str, *, profile: str, context: str = "",
     started = time.time()
     try:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                cwd=str(PROJECT_DIR))
+                                cwd=str(PROJECT_DIR), creationflags=_NO_WINDOW)  # без чёрной консоли
     except OSError as exc:
         return Result(error="spawn", detail=str(exc), profile=profile,
                       seconds=time.time() - started)
@@ -1240,7 +1240,7 @@ def check_opencode_token(token: str, *, timeout: float = 30.0) -> tuple[bool, st
            "--agent", "orion-chat", f"Ответь одним словом: на связи. (код проверки: {token[:4]})"]
     try:
         proc = subprocess.run(cmd, capture_output=True, timeout=timeout,
-                              cwd=str(PROJECT_DIR))
+                              cwd=str(PROJECT_DIR), creationflags=_NO_WINDOW)
     except subprocess.TimeoutExpired:
         return False, "timeout"
     except OSError as exc:

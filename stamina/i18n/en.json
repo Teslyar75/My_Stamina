@@ -2114,5 +2114,7 @@
  "RADIO · FM": "RADIO · FM",
  "WIRELESS": "WIRELESS",
  "ПЕСНОПЕНИЯ": "CANTICLES",
- "ЗВУКИ САДА": "GARDEN SOUNDS"
+ "ЗВУКИ САДА": "GARDEN SOUNDS",
+ "Поверх всех окон": "Always on top",
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "The program window stays above other windows: consoles and pop-ups won't cover it. Ctrl+Shift+T toggles it."
 }
