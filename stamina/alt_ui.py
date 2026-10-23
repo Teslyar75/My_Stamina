@@ -86,6 +86,14 @@ PROFILES: dict[str, dict] = {
         "drawer": "ПРИБОРЫ",
         "gauge": "",
     },
+    "scriptorium": {
+        "glyphs": {"bridge": "✠", "english": "Ⓐ", "speedread": "¶", "lounge": "❦",
+                   "radio": "♪", "comm": "✒", "orion": "☩", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -96,7 +104,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england", "scriptorium": "scriptorium"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -295,6 +303,18 @@ class AltNavButton(HudButton):
         self.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy, fill=gold, outline="")
         return ("white" if self._active else gold if lit else blend(theme.TEXT, gold, 0.4)), px(24)
 
+    def _nav_scriptorium(self, w, h, col, lit):
+        """Скрипторий: строка рукописи — пергаментная плашка, красная рубрика-буквица слева;
+        активная — с золотой рамкой."""
+        parch, ink, red, gold = "#d9c69a", "#3a2a1a", "#9b2226", "#c8a040"
+        fill = blend(theme.BG, parch, 0.28 if self._active else 0.16 if lit else 0.08)
+        self.create_rectangle(px(3), px(3), w - px(4), h - px(4), fill=fill,
+                              outline=gold if self._active else blend(theme.BG, ink if not lit else gold, 0.6))
+        s = min(h - px(10), px(18))
+        self.create_rectangle(px(6), h / 2 - s / 2, px(6) + s, h / 2 + s / 2,
+                              fill=red if (self._active or lit) else blend(theme.BG, red, 0.5), outline=gold)
+        return (theme.TEXT if lit else blend(theme.TEXT, parch, 0.3)), px(10) + s
+
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
 # ---------------------------------------------------------------------------
@@ -426,6 +446,23 @@ class OrnamentBand(tk.Canvas):
         for x in range(px(40), w, px(160)):
             self.create_oval(x - t, h / 2 - t, x + t, h / 2 + t, fill=gold, outline=navy)
 
+    def _draw_scriptorium(self, w: int, h: int) -> None:
+        """Скрипторий: виноградная лоза — волнистый стебель с листьями и золотыми ягодами."""
+        ink, red, gold, leaf = "#3a2a1a", "#9b2226", "#c8a040", "#5a7a3a"
+        self.create_rectangle(0, 0, w, h, fill=blend(theme.BG, "#d9c69a", 0.12), outline="")
+        pts = []
+        for x in range(0, w + px(8), px(8)):
+            pts += [x, h / 2 + math.sin(x / px(22)) * h * 0.25]
+        if len(pts) >= 4:
+            self.create_line(pts, fill=blend(ink, gold, 0.4), width=2, smooth=True)
+        for i, x in enumerate(range(px(20), w, px(44))):
+            y = h / 2 + math.sin(x / px(22)) * h * 0.25
+            if i % 3 == 2:
+                self.create_oval(x - 2, y - 2, x + 2, y + 2, fill=gold, outline=red)
+            else:
+                d = -1 if i % 2 else 1
+                self.create_oval(x - 3, y + d * 2, x + 4, y + d * 6, fill=leaf, outline="")
+
 def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
     """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
     r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
@@ -513,8 +550,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "scriptorium": "illumin", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "illumin", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -737,6 +774,37 @@ class SkinFrame(tk.Frame):
                 cv.create_line(x, 0, x, h, fill=col, width=wd)
             for y in range(e * 3, h - e * 2, px(90)):
                 cv.create_oval(w / 2 - 3, y - 3, w / 2 + 3, y + 3, fill=gold, outline=red)
+
+    def _edge_illumin(self, cv, side, w, h) -> None:
+        """Скрипторий: пергаментная кайма, двойная чернильная линейка, красно-золотая
+        ромбовая плетёнка и иллюминированные квадраты по углам."""
+        e = self.edge
+        parch, ink, red, gold = "#d9c69a", "#3a2a1a", "#9b2226", "#c8a040"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, parch, 0.22), outline="")
+        horiz = side in ("top", "bottom")
+        L = w if horiz else h
+        m = (h if horiz else w) / 2
+        def ln(a, b, p, **kw):
+            if horiz:
+                cv.create_line(a, p, b, p, **kw)
+            else:
+                cv.create_line(p, a, p, b, **kw)
+        ln(0, L, 1, fill=ink, width=1)
+        ln(0, L, (h if horiz else w) - 2, fill=ink, width=1)
+        step, r = px(14), max(2, int(m * 0.55))
+        for i, a in enumerate(range(int(e * 2.5), int(L - e * 2), step)):
+            col = red if i % 2 else gold
+            pts = (a, m - r, a + step / 2, m, a, m + r, a - step / 2, m) if horiz else                   (m - r, a, m, a + step / 2, m + r, a, m, a - step / 2)
+            cv.create_polygon(pts, fill="", outline=col, width=1)
+        if horiz:
+            for x0 in (0, w - e * 2):
+                cv.create_rectangle(x0 + 1, 1, x0 + e * 2 - 1, h - 1, fill=red, outline=gold, width=2)
+                cv.create_oval(x0 + e * 0.6, h * 0.3, x0 + e * 1.4, h * 0.7, fill=gold, outline="")
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, parch, 0.22), outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=red, font=theme.font(7, True))
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""

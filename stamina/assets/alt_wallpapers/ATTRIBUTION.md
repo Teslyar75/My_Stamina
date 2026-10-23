@@ -170,3 +170,34 @@
 | `old_england/settings.jpg` | [Tower of London viewed from the River Thames.jpg](https://commons.wikimedia.org/wiki/File:Tower_of_London_viewed_from_the_River_Thames.jpg) | Bob Collowan | CC BY-SA 3.0 |
 | `old_england/settings_2.jpg` | [Guard of Buckingham Palace - 01.jpg](https://commons.wikimedia.org/wiki/File:Guard_of_Buckingham_Palace_-_01.jpg) | Carlos Delgado | CC BY-SA 3.0 |
 | `old_england/settings_3.jpg` | [Westminster Abbey (Interior) 01.jpg](https://commons.wikimedia.org/wiki/File:Westminster_Abbey_(Interior)_01.jpg) | Maksim Sokolov (maxergon.com) | CC BY-SA 4.0 |
+
+## Скрипторий (`scriptorium/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `scriptorium/bridge.jpg` | [Franciscan Monastery, Hvar - Cloister .jpg](https://commons.wikimedia.org/wiki/File:Franciscan_Monastery,_Hvar_-_Cloister_.jpg) | Bernard Gagnon | CC BY-SA 4.0 |
+| `scriptorium/bridge_2.jpg` | [Stift melk bibliothek.jpg](https://commons.wikimedia.org/wiki/File:Stift_melk_bibliothek.jpg) | см. страницу файла | CC BY-SA 2.0 |
+| `scriptorium/bridge_3.jpg` | [Medieval Franciscan monastery, Zrin, Croatia.jpg](https://commons.wikimedia.org/wiki/File:Medieval_Franciscan_monastery,_Zrin,_Croatia.jpg) | Glosator | CC BY-SA 4.0 |
+| `scriptorium/english.jpg` | [The book of Kells library interior 1.jpg](https://commons.wikimedia.org/wiki/File:The_book_of_Kells_library_interior_1.jpg) | Rene Cortin | CC BY-SA 4.0 |
+| `scriptorium/english_2.jpg` | [Manuscript Leaf Cutting Probably from a Missal with an Illuminated Initial S and King David Receiving the Holy Bread from Ahimelech the Priest. MET tem2321-12.jpg](https://commons.wikimedia.org/wiki/File:Manuscript_Leaf_Cutting_Probably_from_a_Missal_with_an_Illuminated_Initial_S_and_King_David_Receiving_the_Holy_Bread_from_Ahimelech_the_Priest._MET_tem2321-12.jpg) | см. страницу файла | CC0 |
+| `scriptorium/english_3.jpg` | [The Chained Library, Hereford Cathedral - geograph.org.uk - 8173044.jpg](https://commons.wikimedia.org/wiki/File:The_Chained_Library,_Hereford_Cathedral_-_geograph.org.uk_-_8173044.jpg) | Stuart Wilding | CC BY-SA 2.0 |
+| `scriptorium/speedread.jpg` | [The Chained Library, Hereford Cathedral - geograph.org.uk - 8173040.jpg](https://commons.wikimedia.org/wiki/File:The_Chained_Library,_Hereford_Cathedral_-_geograph.org.uk_-_8173040.jpg) | Stuart Wilding | CC BY-SA 2.0 |
+| `scriptorium/speedread_2.jpg` | [Old-books-on-the-open-access-shelves. Ataide Municipal Library, Mapusa, Goa, India.jpg](https://commons.wikimedia.org/wiki/File:Old-books-on-the-open-access-shelves._Ataide_Municipal_Library,_Mapusa,_Goa,_India.jpg) | Fredericknoronha | CC BY-SA 4.0 |
+| `scriptorium/speedread_3.jpg` | [Strahov knihovna Teolog 2.jpg](https://commons.wikimedia.org/wiki/File:Strahov_knihovna_Teolog_2.jpg) | VitVit | CC BY-SA 4.0 |
+| `scriptorium/lounge.jpg` | [Abbaye Saint-Michel de Cuxa - Cloister 01.jpg](https://commons.wikimedia.org/wiki/File:Abbaye_Saint-Michel_de_Cuxa_-_Cloister_01.jpg) | H. Zell | CC BY-SA 3.0 |
+| `scriptorium/lounge_2.jpg` | [Newstead Abbey, cloister garth.jpg](https://commons.wikimedia.org/wiki/File:Newstead_Abbey,_cloister_garth.jpg) | Tony Grist | Public domain |
+| `scriptorium/lounge_3.jpg` | [Abbaye Fontenay eglise facade.jpg](https://commons.wikimedia.org/wiki/File:Abbaye_Fontenay_eglise_facade.jpg) | Myrabella | CC BY-SA 4.0 |
+| `scriptorium/radio.jpg` | [Gregoriaans1.JPG](https://commons.wikimedia.org/wiki/File:Gregoriaans1.JPG) | Wasily | Public domain |
+| `scriptorium/radio_2.jpg` | [Organ Pipes, Rye Church - geograph.org.uk - 2596095.jpg](https://commons.wikimedia.org/wiki/File:Organ_Pipes,_Rye_Church_-_geograph.org.uk_-_2596095.jpg) | Julian P Guffogg | CC BY-SA 2.0 |
+| `scriptorium/radio_3.jpg` | [Neumes - Medieval musical notes by Serbian composer Kir Stefan Srbin.jpg](https://commons.wikimedia.org/wiki/File:Neumes_-_Medieval_musical_notes_by_Serbian_composer_Kir_Stefan_Srbin.jpg) | This image was made by Sadko.  Please credit this with: "Sadko, Wikipedia" in th | CC BY-SA 4.0 |
+| `scriptorium/comm.jpg` | [Bird Feather Feather Paper pen Bird feather made into dipping pen, inkwell, paper, handwritten letter, inkblots, etc. 2505306 Edited 2020.jpg](https://commons.wikimedia.org/wiki/File:Bird_Feather_Feather_Paper_pen_Bird_feather_made_into_dipping_pen,_inkwell,_paper,_handwritten_letter,_inkblots,_etc._2505306_Edited_2020.jpg) | Tool Dude8mm | CC BY 2.0 |
+| `scriptorium/comm_2.jpg` | [The Scribe at Work.jpg](https://commons.wikimedia.org/wiki/File:The_Scribe_at_Work.jpg) | Jean Le Tavernier | Public domain |
+| `scriptorium/comm_3.jpg` | [Wax seal with impression of uppercase letter A.jpg](https://commons.wikimedia.org/wiki/File:Wax_seal_with_impression_of_uppercase_letter_A.jpg) | en:User:Contrafool | CC BY-SA 3.0 |
+| `scriptorium/orion.jpg` | [Czech-2013-Prague-Astronomical clock face.jpg](https://commons.wikimedia.org/wiki/File:Czech-2013-Prague-Astronomical_clock_face.jpg) | Godot13 | CC BY-SA 4.0 |
+| `scriptorium/orion_2.jpg` | [Astrolabe from the Mughal period in India.JPG](https://commons.wikimedia.org/wiki/File:Astrolabe_from_the_Mughal_period_in_India.JPG) | Rohini | CC BY-SA 3.0 |
+| `scriptorium/orion_3.jpg` | [Lascar Old Town square and the Prague Astronomical Clock (4501537747).jpg](https://commons.wikimedia.org/wiki/File:Lascar_Old_Town_square_and_the_Prague_Astronomical_Clock_(4501537747).jpg) | Jorge Láscar from Australia | CC BY 2.0 |
+| `scriptorium/settings.jpg` | [Paschal Candles - Annunciation, Toronto.jpg](https://commons.wikimedia.org/wiki/File:Paschal_Candles_-_Annunciation,_Toronto.jpg) | ΙΣΧΣΝΙΚΑ-888 | CC BY-SA 3.0 |
+| `scriptorium/settings_2.jpg` | [Letter-writing at a portable desk with quill, inkwell, seal and an open book bound with clasps on a reading stand ... and a clock and bell (Antwerp, 19th c.) (8065271671).jpg](https://commons.wikimedia.org/wiki/File:Letter-writing_at_a_portable_desk_with_quill,_inkwell,_seal_and_an_open_book_bound_with_clasps_on_a_reading_stand_..._and_a_clock_and_bell_(Antwerp,_19th_c.)_(8065271671).jpg) | takomabibelot | CC BY 2.0 |
+| `scriptorium/settings_3.jpg` | [Manuscript Leaf Cutting Probably from a Missal with an Illuminated Initial S and King David Receiving the Holy Bread from Ahimelech the Priest. MET sf23-21-12s2.jpg](https://commons.wikimedia.org/wiki/File:Manuscript_Leaf_Cutting_Probably_from_a_Missal_with_an_Illuminated_Initial_S_and_King_David_Receiving_the_Holy_Bread_from_Ahimelech_the_Priest._MET_sf23-21-12s2.jpg) | см. страницу файла | CC0 |
