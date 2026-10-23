@@ -1077,9 +1077,8 @@ class ScrollViewport(tk.Frame):
         self.canvas.bind("<Configure>", lambda _e: self.relayout())
         self.need = 0
         self._bar_on = False
-        app.bind_all("<MouseWheel>", self._wheel, add="+")
-        app.bind_all("<Button-4>", self._wheel, add="+")
-        app.bind_all("<Button-5>", self._wheel, add="+")
+        from stamina import wheel_router
+        wheel_router.install(app)     # колесо крутит область под курсором (и эту рамку)
         app.bind_all("<FocusIn>", self._focus, add="+")
         self.after(1000, self._watch)
 
@@ -1170,22 +1169,9 @@ class ScrollViewport(tk.Frame):
             return False
 
     def _wheel(self, e):
-        w = e.widget
-        if not self.overflow or not self._inside(w):
-            return None
-        # у списков и текстов — своя прокрутка
-        x = w
-        while x is not None and x is not self.inner:
-            try:
-                if x.winfo_class() in ("Text", "Listbox") or (
-                        x.winfo_class() == "Canvas" and x is not self.canvas and str(x.cget("yscrollcommand"))):
-                    return None
-            except tk.TclError:
-                return None
-            x = getattr(x, "master", None)
-        step = -1 if (getattr(e, "num", 0) == 4 or getattr(e, "delta", 0) > 0) else 1
-        self.canvas.yview_scroll(step * 2, "units")
-        return None
+        """Колесо: общий роутер (stamina.wheel_router) — область под курсором."""
+        from stamina import wheel_router
+        return wheel_router.route(e)
 
     def _focus(self, e) -> None:
         w = e.widget
@@ -1791,6 +1777,8 @@ def _stack_grid(w) -> bool:
     """Сетка из нескольких колонок крупных панелей не влезает по ширине (первые колонки
     съедают всё, последние получают 1 px) — перестроить в одну колонку, сверху вниз."""
     slaves = w.grid_slaves()
+    if getattr(w, "_alt_responsive", False):
+        return False     # сетка сама подбирает число колонок под ширину
     if len(slaves) < 2 or getattr(w, "_alt_stacked", False):
         return False
     info = [(k, k.grid_info()) for k in slaves]

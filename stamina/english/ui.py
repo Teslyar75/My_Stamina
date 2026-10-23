@@ -60,8 +60,14 @@ class ScrollFrame(tk.Frame):
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
         self.inner.bind("<Configure>", lambda _e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
-        self.bind("<Enter>", lambda _e: self.bind_all("<MouseWheel>", self._wheel))
-        self.bind("<Leave>", lambda _e: self.unbind_all("<MouseWheel>"))
+        self.bind("<Enter>", lambda _e: self._wheel_on(True))
+        self.bind("<Leave>", lambda _e: self._wheel_on(False))
+
+    def _wheel_on(self, on: bool) -> None:
+        from stamina import wheel_router
+        if wheel_router.installed(self):
+            return    # общий роутер уже крутит область под курсором; bind_all его бы стёр
+        self.bind_all("<MouseWheel>", self._wheel) if on else self.unbind_all("<MouseWheel>")
 
     def _wheel(self, e) -> None:
         if self.inner.winfo_height() > self.canvas.winfo_height():

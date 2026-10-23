@@ -47,6 +47,9 @@ class ScrollFrame(tk.Frame):
         self.bind("<Leave>", lambda _e: self._wheel_on(False))
 
     def _wheel_on(self, on: bool) -> None:
+        from stamina import wheel_router
+        if wheel_router.installed(self):
+            return    # общий роутер уже крутит область под курсором; bind_all его бы стёр
         # Windows/macOS: <MouseWheel>; Linux (X11): кнопки 4/5
         for seq, fn in (("<MouseWheel>", self._wheel), ("<Button-4>", lambda e: self._step(-3)),
                         ("<Button-5>", lambda e: self._step(3))):
