@@ -70,6 +70,14 @@ PROFILES: dict[str, dict] = {
         "drawer": "ПРИБОРЫ",
         "gauge": "",
     },
+    "neon_city": {
+        "glyphs": {"bridge": "◢", "english": "Ⓐ", "speedread": "⚡", "lounge": "☾",
+                   "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -80,7 +88,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -253,6 +261,20 @@ class AltNavButton(HudButton):
                             style="arc", outline=theme.TEXT)
         return (theme.TEXT if lit else blend(col, theme.TEXT, 0.5)), px(28)
 
+    def _nav_neon_city(self, w, h, col, lit):
+        """Неон-Сити: тёмная плашка со срезами, контур — светящаяся трубка; активная горит маджентой."""
+        c = min(px(10), h // 3)
+        pts = chamfer(px(3), px(3), w - px(4), h - px(4), c)
+        tube = theme.LINE if self._active else theme.CYAN if lit else blend(theme.BG, theme.CYAN, 0.45)
+        self.create_polygon(pts, fill=blend(theme.BG, tube, 0.12 if self._active else 0.04), outline="")
+        for k, wd in ((0.25, px(5)), (0.55, px(3)), (1.0, 1)):
+            if k < 1.0 and not (self._active or lit):
+                continue
+            self.create_polygon(pts, fill="", outline=blend(theme.BG, tube, k), width=wd)
+        cx, cy = px(14), h / 2
+        self.create_line(cx, cy - px(7), cx, cy + px(7), fill=theme.AMBER if self._active else tube, width=2)
+        return (theme.TEXT if lit else blend(theme.CYAN, theme.TEXT, 0.4)), px(24)
+
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
 # ---------------------------------------------------------------------------
@@ -354,6 +376,25 @@ class OrnamentBand(tk.Canvas):
                 self.create_line(x - rr, y, x + rr, y, fill=brass)
                 self.create_line(x, y - rr, x, y + rr, fill=brass)
 
+    def _draw_neon_city(self, w: int, h: int) -> None:
+        """Неон-Сити: сверху силуэт ночных крыш с огнями окон, снизу двойная неоновая трубка."""
+        rnd = random.Random(13 if self.kind == "top" else 17)
+        if self.kind == "top":
+            x = 0
+            while x < w:
+                bw, bh = rnd.randint(px(18), px(60)), rnd.randint(max(2, h // 3), max(3, h - 2))
+                self.create_rectangle(x, h - bh, x + bw, h, fill=blend(theme.BG, theme.PANEL, 0.9), outline="")
+                for _ in range(rnd.randint(0, 3)):
+                    wx = x + rnd.randint(2, max(3, bw - 4))
+                    wy = h - rnd.randint(2, max(3, bh - 1))
+                    self.create_rectangle(wx, wy, wx + 2, wy + 1, fill=rnd.choice((theme.CYAN, theme.LINE, theme.AMBER)),
+                                          outline="")
+                x += bw + rnd.randint(0, px(4))
+            glow_line(self, (0, h - 1, w, h - 1), theme.LINE, 1)
+        else:
+            glow_line(self, (0, h * 0.35, w, h * 0.35), theme.LINE, 2)
+            glow_line(self, (0, h * 0.8, w, h * 0.8), theme.CYAN, 1)
+
 def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
     """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
     r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
@@ -441,8 +482,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "porthole", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "neon", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -601,6 +642,37 @@ class SkinFrame(tk.Frame):
             cv.create_line(xi, 0, xi, h, fill=theme.CYAN)
             for y in range(e * 2, h - e, px(22)):
                 cv.create_oval(w / 2 - r, y - r, w / 2 + r, y + r, fill=brass, outline=theme.BG)
+
+    def _edge_neon(self, cv, side, w, h) -> None:
+        """Неон-Сити: две светящиеся трубки (маджента снаружи, циан внутри), срезанные углы,
+        жёлтые штрихи «вывески» и бегущие огни."""
+        e = self.edge
+        cv.create_rectangle(0, 0, w, h, fill=theme.BG, outline="")
+        horiz = side in ("top", "bottom")
+        mag, cy_ = theme.LINE, theme.CYAN
+        if horiz:
+            yo = e * 0.3 if side == "top" else h - e * 0.3
+            yi = h - 2 if side == "top" else 2
+            # внешняя трубка со срезанными углами
+            c = e * 1.6
+            yc = h if side == "top" else 0
+            glow_line(cv, (0, yc, c * 0.6, yo, w - c * 0.6, yo, w, yc), mag, 2)
+            glow_line(cv, (c, yi, w - c, yi), cy_, 1)
+            for x in range(int(e * 6), int(w - e * 6), px(46)):   # штрихи вывески
+                cv.create_line(x, yo, x + px(14), yo, fill=theme.AMBER, width=2)
+            if side == "top" and self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1, fill=theme.BG,
+                                    outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=mag, font=theme.font(7, True))
+        else:
+            xo = e * 0.3 if side == "left" else w - e * 0.3
+            xi = w - 2 if side == "left" else 2
+            glow_line(cv, (xo, 0, xo, h), mag, 2)
+            glow_line(cv, (xi, 0, xi, h), cy_, 1)
+            for i, y in enumerate(range(e * 2, h - e, px(34))):   # бегущие огни
+                col = (theme.AMBER, cy_, mag)[i % 3]
+                cv.create_rectangle(w / 2 - 1, y, w / 2 + 1, y + px(8), fill=col, outline="")
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""

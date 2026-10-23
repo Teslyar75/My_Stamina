@@ -108,3 +108,34 @@
 | `bathyscaphe/settings.jpg` | [Submarine Monument Surabaya engine room.JPG](https://commons.wikimedia.org/wiki/File:Submarine_Monument_Surabaya_engine_room.JPG) | Midori | CC BY 3.0 |
 | `bathyscaphe/settings_2.jpg` | [USS Cavalla - aft torpedo room 2.jpg](https://commons.wikimedia.org/wiki/File:USS_Cavalla_-_aft_torpedo_room_2.jpg) | Eric Polk | CC BY-SA 4.0 |
 | `bathyscaphe/settings_3.jpg` | [2020-09-16 165855 Soviet submarine B-515.jpg](https://commons.wikimedia.org/wiki/File:2020-09-16_165855_Soviet_submarine_B-515.jpg) | Tim Rademacher | CC BY-SA 4.0 |
+
+## Неон-Сити (`neon_city/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `neon_city/bridge.jpg` | [Colorful neon street signs in Kabukichō, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Colorful_neon_street_signs_in_Kabukich%C5%8D,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/bridge_2.jpg` | [廟街永鴻麻雀館, Hong Kong ~ Kowloon Neon ~ Near Temple Street Night Market.jpg](https://commons.wikimedia.org/wiki/File:%E5%BB%9F%E8%A1%97%E6%B0%B8%E9%B4%BB%E9%BA%BB%E9%9B%80%E9%A4%A8,_Hong_Kong_~_Kowloon_Neon_~_Near_Temple_Street_Night_Market.jpg) | VasenkaPhotography | CC BY 2.0 |
+| `neon_city/bridge_3.jpg` | [Osaka Lights - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Osaka_Lights_-_panoramio.jpg) | AudaCity3371 | CC BY-SA 3.0 |
+| `neon_city/english.jpg` | [Mong Kok Neon Signs Night (48127904386).jpg](https://commons.wikimedia.org/wiki/File:Mong_Kok_Neon_Signs_Night_(48127904386).jpg) | Benh LIEU SONG from Torcy, France | CC BY-SA 2.0 |
+| `neon_city/english_2.jpg` | [Night in Akihabara 2015-07-05.jpg](https://commons.wikimedia.org/wiki/File:Night_in_Akihabara_2015-07-05.jpg) | Stephen Kelly | CC BY 2.0 |
+| `neon_city/english_3.jpg` | [Dotonbori river night.jpg](https://commons.wikimedia.org/wiki/File:Dotonbori_river_night.jpg) | Emma0mb | CC BY 4.0 |
+| `neon_city/speedread.jpg` | [Neon light trails in Munich (Unsplash).jpg](https://commons.wikimedia.org/wiki/File:Neon_light_trails_in_Munich_(Unsplash).jpg) | Emre Karatas emrekaratas | CC0 |
+| `neon_city/speedread_2.jpg` | [筲箕灣東大街 Shau Kei Wan Main Street East 電車總站 Tram Terminus 八珍甜醋 Pat Chun 霓虹燈招牌 Neon Sign, 2020.jpg](https://commons.wikimedia.org/wiki/File:%E7%AD%B2%E7%AE%95%E7%81%A3%E6%9D%B1%E5%A4%A7%E8%A1%97_Shau_Kei_Wan_Main_Street_East_%E9%9B%BB%E8%BB%8A%E7%B8%BD%E7%AB%99_Tram_Terminus_%E5%85%AB%E7%8F%8D%E7%94%9C%E9%86%8B_Pat_Chun_%E9%9C%93%E8%99%B9%E7%87%88%E6%8B%9B%E7%89%8C_Neon_Sign,_2020.jpg) | Lord Jaraxxus | CC BY-SA 4.0 |
+| `neon_city/speedread_3.jpg` | [Tokyo Shibuya Scramble Crossing 2018-10-09.jpg](https://commons.wikimedia.org/wiki/File:Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg) | Benh LIEU SONG (Flickr) | CC BY-SA 2.0 |
+| `neon_city/lounge.jpg` | [DFC 0512 Dimly lit bar interior with neon signs and rows of taps glowing under red and purple lighting ready for the night crowd.jpg](https://commons.wikimedia.org/wiki/File:DFC_0512_Dimly_lit_bar_interior_with_neon_signs_and_rows_of_taps_glowing_under_red_and_purple_lighting_ready_for_the_night_crowd.jpg) | PattayaPatrol | CC BY-SA 4.0 |
+| `neon_city/lounge_2.jpg` | [2024-10-20 Shinjuku Golden Gai at night.jpg](https://commons.wikimedia.org/wiki/File:2024-10-20_Shinjuku_Golden_Gai_at_night.jpg) | Alexkom000 | CC BY 4.0 |
+| `neon_city/lounge_3.jpg` | [Magnolia Cafe neon sign at night.jpg](https://commons.wikimedia.org/wiki/File:Magnolia_Cafe_neon_sign_at_night.jpg) | Nhfruchter | CC BY-SA 4.0 |
+| `neon_city/radio.jpg` | [Buildings with colorful neon street signs at blue hour, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Buildings_with_colorful_neon_street_signs_at_blue_hour,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/radio_2.jpg` | [Las Vegas (Nevada, USA), The Strip -- 2012 -- 6232.jpg](https://commons.wikimedia.org/wiki/File:Las_Vegas_(Nevada,_USA),_The_Strip_--_2012_--_6232.jpg) | Dietmar Rabich | CC BY-SA 4.0 |
+| `neon_city/radio_3.jpg` | [大角咀 Tai Kok Tsui 塘尾道 Tong Mi Road 新城卡拉OK夜總會 New City Karaoke Night Club 霓虹燈招牌 Neon Sign, 2020 (1).jpg](https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E8%A7%92%E5%92%80_Tai_Kok_Tsui_%E5%A1%98%E5%B0%BE%E9%81%93_Tong_Mi_Road_%E6%96%B0%E5%9F%8E%E5%8D%A1%E6%8B%89OK%E5%A4%9C%E7%B8%BD%E6%9C%83_New_City_Karaoke_Night_Club_%E9%9C%93%E8%99%B9%E7%87%88%E6%8B%9B%E7%89%8C_Neon_Sign,_2020_(1).jpg) | Lord Jaraxxus | CC BY-SA 4.0 |
+| `neon_city/comm.jpg` | [Seoul at Night.jpg](https://commons.wikimedia.org/wiki/File:Seoul_at_Night.jpg) | Philippe Teuwen | CC BY-SA 2.0 |
+| `neon_city/comm_2.jpg` | [Neon signs Osaka Japan.jpg](https://commons.wikimedia.org/wiki/File:Neon_signs_Osaka_Japan.jpg) | Flickr user: Joop Amsterdam, Netherlands https://www.flickr.com/people/joopdorre | CC BY 2.0 |
+| `neon_city/comm_3.jpg` | [Colorful illuminated facades of buildings at night, with green, blue and pink lights, Kabukicho, Shinjuku, Tokyo.jpg](https://commons.wikimedia.org/wiki/File:Colorful_illuminated_facades_of_buildings_at_night,_with_green,_blue_and_pink_lights,_Kabukicho,_Shinjuku,_Tokyo.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `neon_city/orion.jpg` | [Tokyo Tower, Minato City.jpg](https://commons.wikimedia.org/wiki/File:Tokyo_Tower,_Minato_City.jpg) | David Kernan | CC BY 4.0 |
+| `neon_city/orion_2.jpg` | [Skyline of Shanghai at night, Aug 10 2023.jpg](https://commons.wikimedia.org/wiki/File:Skyline_of_Shanghai_at_night,_Aug_10_2023.jpg) | A Chinese ID | CC BY-SA 4.0 |
+| `neon_city/orion_3.jpg` | [Hong Kong skyscrapers in a night of typhoon.jpg](https://commons.wikimedia.org/wiki/File:Hong_Kong_skyscrapers_in_a_night_of_typhoon.jpg) | Wilfredor | CC0 |
+| `neon_city/settings.jpg` | [Krakow neon Merkury.jpg](https://commons.wikimedia.org/wiki/File:Krakow_neon_Merkury.jpg) | Andrzej Otrębski | CC BY-SA 4.0 |
+| `neon_city/settings_2.jpg` | [DFC 0505 Neon-lit city street at night reflected in a rain puddle colorful signs and lights mirrored on the wet pavement.jpg](https://commons.wikimedia.org/wiki/File:DFC_0505_Neon-lit_city_street_at_night_reflected_in_a_rain_puddle_colorful_signs_and_lights_mirrored_on_the_wet_pavement.jpg) | PattayaPatrol | CC BY-SA 4.0 |
+| `neon_city/settings_3.jpg` | [Neon.JPG](https://commons.wikimedia.org/wiki/File:Neon.JPG) | Lestat (Jan Mehlich) | CC BY-SA 3.0 |
