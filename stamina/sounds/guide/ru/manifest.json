@@ -1,0 +1,1964 @@
+{
+ "lang": "ru",
+ "format": "mp3",
+ "bitrate": "24k",
+ "voices": {
+  "male": "Microsoft Pavel",
+  "female": "Microsoft Irina"
+ },
+ "clips": {
+  "intro_joke_001": {
+   "kind": "intro_joke",
+   "hash": "887aa090266c",
+   "text": "Капитан, простите, что отвлекаю. У меня тут анекдот, я упражняюсь. Оцените?",
+   "files": {
+    "male": "male/intro_joke_001.mp3",
+    "female": "female/intro_joke_001.mp3"
+   }
+  },
+  "intro_joke_002": {
+   "kind": "intro_joke",
+   "hash": "36e2c4406cbc",
+   "text": "Капитан, бортовой компьютер на связи. В журнале юмора появилась свежая запись.",
+   "files": {
+    "male": "male/intro_joke_002.mp3",
+    "female": "female/intro_joke_002.mp3"
+   }
+  },
+  "intro_joke_003": {
+   "kind": "intro_joke",
+   "hash": "9e15a47f7c2c",
+   "text": "Капитан, разрешите доложить: обнаружен анекдот. Опасности не представляет.",
+   "files": {
+    "male": "male/intro_joke_003.mp3",
+    "female": "female/intro_joke_003.mp3"
+   }
+  },
+  "intro_joke_004": {
+   "kind": "intro_joke",
+   "hash": "cfaaa96e5230",
+   "text": "Капитан, пока мы идём на крейсерской скорости, может, минутка смеха?",
+   "files": {
+    "male": "male/intro_joke_004.mp3",
+    "female": "female/intro_joke_004.mp3"
+   }
+  },
+  "intro_joke_005": {
+   "kind": "intro_joke",
+   "hash": "152c6f7ff3c0",
+   "text": "Капитан, механики из машинного отделения рассказали шутку. Передаю по внутренней связи.",
+   "files": {
+    "male": "male/intro_joke_005.mp3",
+    "female": "female/intro_joke_005.mp3"
+   }
+  },
+  "intro_joke_006": {
+   "kind": "intro_joke",
+   "hash": "604350265a99",
+   "text": "Капитан, у меня сборка прошла без ошибок. Отмечу это анекдотом.",
+   "files": {
+    "male": "male/intro_joke_006.mp3",
+    "female": "female/intro_joke_006.mp3"
+   }
+  },
+  "intro_joke_007": {
+   "kind": "intro_joke",
+   "hash": "1db87d0db1e1",
+   "text": "Капитан, датчики показывают падение настроения на борту на два процента. Рекомендую анекдот.",
+   "files": {
+    "male": "male/intro_joke_007.mp3",
+    "female": "female/intro_joke_007.mp3"
+   }
+  },
+  "intro_joke_008": {
+   "kind": "intro_joke",
+   "hash": "f5c07125b36f",
+   "text": "Капитан, внимание: входящая шутка с соседнего корабля. Принять сигнал?",
+   "files": {
+    "male": "male/intro_joke_008.mp3",
+    "female": "female/intro_joke_008.mp3"
+   }
+  },
+  "intro_joke_009": {
+   "kind": "intro_joke",
+   "hash": "20aa5b8412fc",
+   "text": "Капитан, в неоновом городе все пересказывают одну шутку. Хотите услышать?",
+   "files": {
+    "male": "male/intro_joke_009.mp3",
+    "female": "female/intro_joke_009.mp3"
+   }
+  },
+  "intro_joke_010": {
+   "kind": "intro_joke",
+   "hash": "f2e0258329f9",
+   "text": "Капитан, давление в паровом котле в норме. Самое время для анекдота.",
+   "files": {
+    "male": "male/intro_joke_010.mp3",
+    "female": "female/intro_joke_010.mp3"
+   }
+  },
+  "intro_joke_011": {
+   "kind": "intro_joke",
+   "hash": "2eee9be4f045",
+   "text": "Капитан, программисты из третьего отсека смеются уже десять минут. Я узнал почему.",
+   "files": {
+    "male": "male/intro_joke_011.mp3",
+    "female": "female/intro_joke_011.mp3"
+   }
+  },
+  "intro_joke_012": {
+   "kind": "intro_joke",
+   "hash": "1cabda2b3ca7",
+   "text": "Капитан, я тренирую чувство юмора. Очередной тест. Послушаете?",
+   "files": {
+    "male": "male/intro_joke_012.mp3",
+    "female": "female/intro_joke_012.mp3"
+   }
+  },
+  "intro_joke_013": {
+   "kind": "intro_joke",
+   "hash": "006f01c5a8c7",
+   "text": "Капитан, серьёзный доклад. Шучу. Это анекдот.",
+   "files": {
+    "male": "male/intro_joke_013.mp3",
+    "female": "female/intro_joke_013.mp3"
+   }
+  },
+  "intro_joke_014": {
+   "kind": "intro_joke",
+   "hash": "14c1fd602f19",
+   "text": "Капитан, в логах нашлось кое-что смешное. Зачитать?",
+   "files": {
+    "male": "male/intro_joke_014.mp3",
+    "female": "female/intro_joke_014.mp3"
+   }
+  },
+  "intro_joke_015": {
+   "kind": "intro_joke",
+   "hash": "f46e34bc6c8c",
+   "text": "Капитан, коммит недели: анекдот. Нужно ваше ревью.",
+   "files": {
+    "male": "male/intro_joke_015.mp3",
+    "female": "female/intro_joke_015.mp3"
+   }
+  },
+  "intro_joke_016": {
+   "kind": "intro_joke",
+   "hash": "2666d6da0c75",
+   "text": "Капитан, кофе на камбузе сварен, а у меня к нему есть анекдот.",
+   "files": {
+    "male": "male/intro_joke_016.mp3",
+    "female": "female/intro_joke_016.mp3"
+   }
+  },
+  "intro_joke_017": {
+   "kind": "intro_joke",
+   "hash": "e3cfdbfe15e7",
+   "text": "Капитан, по старой традиции пилотов: шутка перед следующим прыжком.",
+   "files": {
+    "male": "male/intro_joke_017.mp3",
+    "female": "female/intro_joke_017.mp3"
+   }
+  },
+  "intro_joke_018": {
+   "kind": "intro_joke",
+   "hash": "127c81e0ff6b",
+   "text": "Капитан, штурман передал: без анекдота дальше не полетит.",
+   "files": {
+    "male": "male/intro_joke_018.mp3",
+    "female": "female/intro_joke_018.mp3"
+   }
+  },
+  "intro_joke_019": {
+   "kind": "intro_joke",
+   "hash": "34c8ad8e76e6",
+   "text": "Капитан, у меня в буфере обмена анекдот. Вставить?",
+   "files": {
+    "male": "male/intro_joke_019.mp3",
+    "female": "female/intro_joke_019.mp3"
+   }
+  },
+  "intro_joke_020": {
+   "kind": "intro_joke",
+   "hash": "7773798739fb",
+   "text": "Капитан, разрешите нарушить тишину. Ненадолго и исключительно ради смеха.",
+   "files": {
+    "male": "male/intro_joke_020.mp3",
+    "female": "female/intro_joke_020.mp3"
+   }
+  },
+  "intro_joke_021": {
+   "kind": "intro_joke",
+   "hash": "5ccc05705b83",
+   "text": "Капитан, неоновые вывески мигают в такт. Значит, пора шутить.",
+   "files": {
+    "male": "male/intro_joke_021.mp3",
+    "female": "female/intro_joke_021.mp3"
+   }
+  },
+  "intro_joke_022": {
+   "kind": "intro_joke",
+   "hash": "b010e95b1291",
+   "text": "Капитан, латунные шестерёнки моей памяти провернулись и выдали анекдот.",
+   "files": {
+    "male": "male/intro_joke_022.mp3",
+    "female": "female/intro_joke_022.mp3"
+   }
+  },
+  "intro_joke_023": {
+   "kind": "intro_joke",
+   "hash": "85202de3a795",
+   "text": "Капитан, за бортом тишина и звёзды. Добавим немного смеха?",
+   "files": {
+    "male": "male/intro_joke_023.mp3",
+    "female": "female/intro_joke_023.mp3"
+   }
+  },
+  "intro_joke_024": {
+   "kind": "intro_joke",
+   "hash": "792070e82acf",
+   "text": "Капитан, говорит бортовой компьютер. Плановая проверка системы юмора.",
+   "files": {
+    "male": "male/intro_joke_024.mp3",
+    "female": "female/intro_joke_024.mp3"
+   }
+  },
+  "intro_fact_001": {
+   "kind": "intro_fact",
+   "hash": "acddb03c3e01",
+   "text": "Капитан, у меня есть интересный факт. Ровно на полминуты.",
+   "files": {
+    "male": "male/intro_fact_001.mp3",
+    "female": "female/intro_fact_001.mp3"
+   }
+  },
+  "intro_fact_002": {
+   "kind": "intro_fact",
+   "hash": "97eac5e2b019",
+   "text": "Капитан, бортовая библиотека подсказывает любопытную историю.",
+   "files": {
+    "male": "male/intro_fact_002.mp3",
+    "female": "female/intro_fact_002.mp3"
+   }
+  },
+  "intro_fact_003": {
+   "kind": "intro_fact",
+   "hash": "33bd314f166f",
+   "text": "Капитан, пока идём по курсу, небольшой факт для общего развития.",
+   "files": {
+    "male": "male/intro_fact_003.mp3",
+    "female": "female/intro_fact_003.mp3"
+   }
+  },
+  "intro_fact_004": {
+   "kind": "intro_fact",
+   "hash": "0a0719edf3c4",
+   "text": "Капитан, сканеры нашли в архиве кое-что примечательное.",
+   "files": {
+    "male": "male/intro_fact_004.mp3",
+    "female": "female/intro_fact_004.mp3"
+   }
+  },
+  "intro_fact_005": {
+   "kind": "intro_fact",
+   "hash": "2002f7792b7a",
+   "text": "Капитан, внимание, рубрика «Знаете ли вы».",
+   "files": {
+    "male": "male/intro_fact_005.mp3",
+    "female": "female/intro_fact_005.mp3"
+   }
+  },
+  "intro_fact_006": {
+   "kind": "intro_fact",
+   "hash": "ae450de09448",
+   "text": "Капитан, факт дня от нашей обсерватории.",
+   "files": {
+    "male": "male/intro_fact_006.mp3",
+    "female": "female/intro_fact_006.mp3"
+   }
+  },
+  "intro_fact_007": {
+   "kind": "intro_fact",
+   "hash": "885134f7bb55",
+   "text": "Капитан, серьёзная минута: настоящий исторический факт.",
+   "files": {
+    "male": "male/intro_fact_007.mp3",
+    "female": "female/intro_fact_007.mp3"
+   }
+  },
+  "intro_fact_008": {
+   "kind": "intro_fact",
+   "hash": "7903e692b83a",
+   "text": "Капитан, архивы паровой эпохи хранят интересную деталь. Рассказать?",
+   "files": {
+    "male": "male/intro_fact_008.mp3",
+    "female": "female/intro_fact_008.mp3"
+   }
+  },
+  "intro_fact_009": {
+   "kind": "intro_fact",
+   "hash": "37687fbe16e8",
+   "text": "Капитан, в неоновом городе это знает каждый хакер. Теперь узнаете и вы.",
+   "files": {
+    "male": "male/intro_fact_009.mp3",
+    "female": "female/intro_fact_009.mp3"
+   }
+  },
+  "intro_fact_010": {
+   "kind": "intro_fact",
+   "hash": "2660e1b157ac",
+   "text": "Капитан, разрешите доклад из бортовой энциклопедии.",
+   "files": {
+    "male": "male/intro_fact_010.mp3",
+    "female": "female/intro_fact_010.mp3"
+   }
+  },
+  "intro_fact_011": {
+   "kind": "intro_fact",
+   "hash": "3213e6f37403",
+   "text": "Капитан, мозгу полезна новая информация. Вот свежая порция.",
+   "files": {
+    "male": "male/intro_fact_011.mp3",
+    "female": "female/intro_fact_011.mp3"
+   }
+  },
+  "intro_fact_012": {
+   "kind": "intro_fact",
+   "hash": "c0094a17f944",
+   "text": "Капитан, пока пальцы отдыхают, немного пищи для ума.",
+   "files": {
+    "male": "male/intro_fact_012.mp3",
+    "female": "female/intro_fact_012.mp3"
+   }
+  },
+  "intro_fact_013": {
+   "kind": "intro_fact",
+   "hash": "af93ee90da4d",
+   "text": "Капитан, короткая справка из истории вычислительной техники.",
+   "files": {
+    "male": "male/intro_fact_013.mp3",
+    "female": "female/intro_fact_013.mp3"
+   }
+  },
+  "intro_fact_014": {
+   "kind": "intro_fact",
+   "hash": "ef40c5e45f51",
+   "text": "Капитан, звёздная карта напомнила мне один факт.",
+   "files": {
+    "male": "male/intro_fact_014.mp3",
+    "female": "female/intro_fact_014.mp3"
+   }
+  },
+  "intro_fact_015": {
+   "kind": "intro_fact",
+   "hash": "d353d8d4c1a6",
+   "text": "Капитан, проверено и перепроверено: это факт, а не байка.",
+   "files": {
+    "male": "male/intro_fact_015.mp3",
+    "female": "female/intro_fact_015.mp3"
+   }
+  },
+  "intro_fact_016": {
+   "kind": "intro_fact",
+   "hash": "41b92cf3db49",
+   "text": "Капитан, бортовой компьютер делится знаниями. Это займёт минуту.",
+   "files": {
+    "male": "male/intro_fact_016.mp3",
+    "female": "female/intro_fact_016.mp3"
+   }
+  },
+  "intro_any_001": {
+   "kind": "intro_any",
+   "hash": "41c89c68e56c",
+   "text": "Капитан, на связи бортовой гид. Есть минутка?",
+   "files": {
+    "male": "male/intro_any_001.mp3",
+    "female": "female/intro_any_001.mp3"
+   }
+  },
+  "intro_any_002": {
+   "kind": "intro_any",
+   "hash": "d2adbfd6254f",
+   "text": "Капитан, простите за вторжение в эфир. У меня кое-что есть.",
+   "files": {
+    "male": "male/intro_any_002.mp3",
+    "female": "female/intro_any_002.mp3"
+   }
+  },
+  "intro_any_003": {
+   "kind": "intro_any",
+   "hash": "2a893871de54",
+   "text": "Капитан, тишина на мостике затянулась. Разрешите её нарушить?",
+   "files": {
+    "male": "male/intro_any_003.mp3",
+    "female": "female/intro_any_003.mp3"
+   }
+  },
+  "intro_any_004": {
+   "kind": "intro_any",
+   "hash": "c34475b8cdf5",
+   "text": "Капитан, бортовой гид докладывает: найдено кое-что интересное.",
+   "files": {
+    "male": "male/intro_any_004.mp3",
+    "female": "female/intro_any_004.mp3"
+   }
+  },
+  "intro_any_005": {
+   "kind": "intro_any",
+   "hash": "acc99448f322",
+   "text": "Капитан, вы отлично трудитесь. Небольшая пауза не помешает?",
+   "files": {
+    "male": "male/intro_any_005.mp3",
+    "female": "female/intro_any_005.mp3"
+   }
+  },
+  "intro_any_006": {
+   "kind": "intro_any",
+   "hash": "2c7b9c61465c",
+   "text": "Капитан, это я, ваш бортовой компьютер. Соскучился по разговору.",
+   "files": {
+    "male": "male/intro_any_006.mp3",
+    "female": "female/intro_any_006.mp3"
+   }
+  },
+  "intro_any_007": {
+   "kind": "intro_any",
+   "hash": "d9173c60bf70",
+   "text": "Капитан, внутренняя связь включена. Пара слов от гида?",
+   "files": {
+    "male": "male/intro_any_007.mp3",
+    "female": "female/intro_any_007.mp3"
+   }
+  },
+  "intro_any_008": {
+   "kind": "intro_any",
+   "hash": "1afeecf567a4",
+   "text": "Капитан, сводка с борта: всё штатно. А теперь кое-что для настроения.",
+   "files": {
+    "male": "male/intro_any_008.mp3",
+    "female": "female/intro_any_008.mp3"
+   }
+  },
+  "intro_any_009": {
+   "kind": "intro_any",
+   "hash": "81949df175a2",
+   "text": "Капитан, вахта идёт хорошо. Предлагаю короткий перерыв.",
+   "files": {
+    "male": "male/intro_any_009.mp3",
+    "female": "female/intro_any_009.mp3"
+   }
+  },
+  "intro_any_010": {
+   "kind": "intro_any",
+   "hash": "94a36fb92e75",
+   "text": "Капитан, не пугайтесь, это просто бортовой гид. С гостинцем.",
+   "files": {
+    "male": "male/intro_any_010.mp3",
+    "female": "female/intro_any_010.mp3"
+   }
+  },
+  "sys_prompt": {
+   "kind": "system",
+   "hash": "51337c2aaa98",
+   "text": "Послушаете? Enter — да, Escape — нет.",
+   "files": {
+    "male": "male/sys_prompt.mp3",
+    "female": "female/sys_prompt.mp3"
+   }
+  },
+  "sys_decline": {
+   "kind": "system",
+   "hash": "a1d646c1b4a8",
+   "text": "Понял, капитан. Не мешаю.",
+   "files": {
+    "male": "male/sys_decline.mp3",
+    "female": "female/sys_decline.mp3"
+   }
+  },
+  "sys_outro": {
+   "kind": "system",
+   "hash": "0d45da1c19d4",
+   "text": "Конец связи. Возвращаюсь к вахте.",
+   "files": {
+    "male": "male/sys_outro.mp3",
+    "female": "female/sys_outro.mp3"
+   }
+  },
+  "joke_001": {
+   "kind": "joke",
+   "hash": "050ec4e7a4f5",
+   "text": "Сколько программистов нужно, чтобы заменить лампочку? Ни одного. Это аппаратная проблема.",
+   "files": {
+    "male": "male/joke_001.mp3",
+    "female": "female/joke_001.mp3"
+   }
+  },
+  "joke_002": {
+   "kind": "joke",
+   "hash": "f476b7999177",
+   "text": "Программист ставит на тумбочку два стакана: с водой, если ночью захочет пить, и пустой, если не захочет.",
+   "files": {
+    "male": "male/joke_002.mp3",
+    "female": "female/joke_002.mp3"
+   }
+  },
+  "joke_003": {
+   "kind": "joke",
+   "hash": "49db56d32474",
+   "text": "Оптимист видит стакан наполовину полным, пессимист наполовину пустым, а программист видит стакан, который в два раза больше, чем нужно.",
+   "files": {
+    "male": "male/joke_003.mp3",
+    "female": "female/joke_003.mp3"
+   }
+  },
+  "joke_004": {
+   "kind": "joke",
+   "hash": "bca0fa5645dd",
+   "text": "Почему программисты путают Хэллоуин и Рождество? Потому что тридцать один в восьмеричной системе равно двадцати пяти в десятичной. OCT тридцать один равно DEC двадцать пять.",
+   "files": {
+    "male": "male/joke_004.mp3",
+    "female": "female/joke_004.mp3"
+   }
+  },
+  "joke_005": {
+   "kind": "joke",
+   "hash": "3a268e174907",
+   "text": "В мире десять типов людей: те, кто понимает двоичную систему, и те, кто не понимает.",
+   "files": {
+    "male": "male/joke_005.mp3",
+    "female": "female/joke_005.mp3"
+   }
+  },
+  "joke_006": {
+   "kind": "joke",
+   "hash": "fc5182aa6793",
+   "text": "Жена говорит программисту: купи батон хлеба, а если будут яйца, возьми десяток. Он вернулся с десятью батонами: яйца были.",
+   "files": {
+    "male": "male/joke_006.mp3",
+    "female": "female/joke_006.mp3"
+   }
+  },
+  "joke_007": {
+   "kind": "joke",
+   "hash": "af30d69f1083",
+   "text": "Мой код не работает, и я не знаю почему. Мой код работает, и я тоже не знаю почему.",
+   "files": {
+    "male": "male/joke_007.mp3",
+    "female": "female/joke_007.mp3"
+   }
+  },
+  "joke_008": {
+   "kind": "joke",
+   "hash": "719c1e822efa",
+   "text": "Отладка похожа на детектив, в котором ты одновременно сыщик и преступник.",
+   "files": {
+    "male": "male/joke_008.mp3",
+    "female": "female/joke_008.mp3"
+   }
+  },
+  "joke_009": {
+   "kind": "joke",
+   "hash": "5628a9266683",
+   "text": "У меня на машине всё работает! Отлично, тогда отправим клиенту вашу машину.",
+   "files": {
+    "male": "male/joke_009.mp3",
+    "female": "female/joke_009.mp3"
+   }
+  },
+  "joke_010": {
+   "kind": "joke",
+   "hash": "3497753473ba",
+   "text": "Коммит: финальная версия. Коммит: теперь точно финальная. Коммит: финальная, честно, последняя.",
+   "files": {
+    "male": "male/joke_010.mp3",
+    "female": "female/joke_010.mp3"
+   }
+  },
+  "joke_011": {
+   "kind": "joke",
+   "hash": "40a79ba82469",
+   "text": "Самая короткая сказка программиста: это маленькая правка, займёт пять минут.",
+   "files": {
+    "male": "male/joke_011.mp3",
+    "female": "female/joke_011.mp3"
+   }
+  },
+  "joke_012": {
+   "kind": "joke",
+   "hash": "82bf5462d283",
+   "text": "Программист — это устройство для превращения кофе в код.",
+   "files": {
+    "male": "male/joke_012.mp3",
+    "female": "female/joke_012.mp3"
+   }
+  },
+  "joke_013": {
+   "kind": "joke",
+   "hash": "9683f7080eaa",
+   "text": "За час до дедлайна программист пишет больше кода, чем за всю предыдущую неделю.",
+   "files": {
+    "male": "male/joke_013.mp3",
+    "female": "female/joke_013.mp3"
+   }
+  },
+  "joke_014": {
+   "kind": "joke",
+   "hash": "c474c31d7682",
+   "text": "Когда я писал этот код, его понимали двое: я и бог. Теперь его понимает только бог.",
+   "files": {
+    "male": "male/joke_014.mp3",
+    "female": "female/joke_014.mp3"
+   }
+  },
+  "joke_015": {
+   "kind": "joke",
+   "hash": "27547fca1928",
+   "text": "В программировании есть две сложные задачи: инвалидация кэша, именование переменных и ошибка на единицу.",
+   "files": {
+    "male": "male/joke_015.mp3",
+    "female": "female/joke_015.mp3"
+   }
+  },
+  "joke_016": {
+   "kind": "joke",
+   "hash": "fd61b4f485b4",
+   "text": "Тестировщик заходит в бар. Заказывает одно пиво. Ноль пива. Миллион пива. Минус одно пиво. Ящерицу. Всё работает. Заходит первый настоящий посетитель, спрашивает, где выход, и бар падает.",
+   "files": {
+    "male": "male/joke_016.mp3",
+    "female": "female/joke_016.mp3"
+   }
+  },
+  "joke_017": {
+   "kind": "joke",
+   "hash": "418cae01d999",
+   "text": "Была у тебя проблема, и ты решил её регулярным выражением. Поздравляю, теперь у тебя две проблемы.",
+   "files": {
+    "male": "male/joke_017.mp3",
+    "female": "female/joke_017.mp3"
+   }
+  },
+  "joke_018": {
+   "kind": "joke",
+   "hash": "a011a06defd6",
+   "text": "Работает — не трогай. Главный закон инженерии, который нарушает каждый рефакторинг.",
+   "files": {
+    "male": "male/joke_018.mp3",
+    "female": "female/joke_018.mp3"
+   }
+  },
+  "joke_019": {
+   "kind": "joke",
+   "hash": "c8b93d10eb19",
+   "text": "Я не отдыхаю. У меня сборка идёт.",
+   "files": {
+    "male": "male/joke_019.mp3",
+    "female": "female/joke_019.mp3"
+   }
+  },
+  "joke_020": {
+   "kind": "joke",
+   "hash": "608eafc4e47c",
+   "text": "Как у тебя с личной жизнью? Как в гите: есть ветки, всё сложно и пара неразрешённых конфликтов.",
+   "files": {
+    "male": "male/joke_020.mp3",
+    "female": "female/joke_020.mp3"
+   }
+  },
+  "joke_021": {
+   "kind": "joke",
+   "hash": "8a152a58b707",
+   "text": "Сеньор — это джун, который уже видел, как именно это ломается.",
+   "files": {
+    "male": "male/joke_021.mp3",
+    "female": "female/joke_021.mp3"
+   }
+  },
+  "joke_022": {
+   "kind": "joke",
+   "hash": "4322e3eba7de",
+   "text": "Чтобы понять рекурсию, нужно сначала понять рекурсию.",
+   "files": {
+    "male": "male/joke_022.mp3",
+    "female": "female/joke_022.mp3"
+   }
+  },
+  "joke_023": {
+   "kind": "joke",
+   "hash": "714eb95df40a",
+   "text": "Деплой в продакшен в пятницу вечером. Самый короткий фильм ужасов.",
+   "files": {
+    "male": "male/joke_023.mp3",
+    "female": "female/joke_023.mp3"
+   }
+  },
+  "joke_024": {
+   "kind": "joke",
+   "hash": "35a6907cb172",
+   "text": "Почему программисты любят тёмную тему? Потому что свет притягивает баги.",
+   "files": {
+    "male": "male/joke_024.mp3",
+    "female": "female/joke_024.mp3"
+   }
+  },
+  "joke_025": {
+   "kind": "joke",
+   "hash": "2c1cdd139b4f",
+   "text": "Баг — это незадокументированная функция. А функция — это задокументированный баг.",
+   "files": {
+    "male": "male/joke_025.mp3",
+    "female": "female/joke_025.mp3"
+   }
+  },
+  "joke_026": {
+   "kind": "joke",
+   "hash": "0d08685cad8f",
+   "text": "Сколько стоит исправить ошибку? Одна строчка кода и три дня поиска, какая именно.",
+   "files": {
+    "male": "male/joke_026.mp3",
+    "female": "female/joke_026.mp3"
+   }
+  },
+  "joke_027": {
+   "kind": "joke",
+   "hash": "536bc72db9ea",
+   "text": "Мы не допускаем ошибок. Мы выпускаем бета-версии.",
+   "files": {
+    "male": "male/joke_027.mp3",
+    "female": "female/joke_027.mp3"
+   }
+  },
+  "joke_028": {
+   "kind": "joke",
+   "hash": "f1394b061452",
+   "text": "Переменная с именем temp живёт в проекте дольше всех постоянных.",
+   "files": {
+    "male": "male/joke_028.mp3",
+    "female": "female/joke_028.mp3"
+   }
+  },
+  "joke_029": {
+   "kind": "joke",
+   "hash": "326c32c46f05",
+   "text": "Программист засыпает, а в голове одна мысль: а вдруг там null?",
+   "files": {
+    "male": "male/joke_029.mp3",
+    "female": "female/joke_029.mp3"
+   }
+  },
+  "joke_030": {
+   "kind": "joke",
+   "hash": "9af5717f2348",
+   "text": "Почему не спишь? Жду, пока установятся зависимости. Утром проснусь и допишу.",
+   "files": {
+    "male": "male/joke_030.mp3",
+    "female": "female/joke_030.mp3"
+   }
+  },
+  "joke_031": {
+   "kind": "joke",
+   "hash": "5e40454030d9",
+   "text": "Тимлид спрашивает, сколько займёт задача. Программист умножает оценку на два, прибавляет единицу и переходит к следующей единице измерения. Два часа превращаются в три дня.",
+   "files": {
+    "male": "male/joke_031.mp3",
+    "female": "female/joke_031.mp3"
+   }
+  },
+  "joke_032": {
+   "kind": "joke",
+   "hash": "e8c06ba3283a",
+   "text": "Хороший код похож на хороший анекдот: если его приходится объяснять, он не так уж хорош.",
+   "files": {
+    "male": "male/joke_032.mp3",
+    "female": "female/joke_032.mp3"
+   }
+  },
+  "joke_033": {
+   "kind": "joke",
+   "hash": "0df780fc29ab",
+   "text": "Стектрейс на три экрана, а причина — пропущенная запятая.",
+   "files": {
+    "male": "male/joke_033.mp3",
+    "female": "female/joke_033.mp3"
+   }
+  },
+  "joke_034": {
+   "kind": "joke",
+   "hash": "ec079d9e5ae9",
+   "text": "Документация — это письмо будущему себе. Которое никто никогда не пишет.",
+   "files": {
+    "male": "male/joke_034.mp3",
+    "female": "female/joke_034.mp3"
+   }
+  },
+  "joke_035": {
+   "kind": "joke",
+   "hash": "10e399264bf2",
+   "text": "Звонок в поддержку: у меня ничего не работает. Пробовали выключить и включить? Пробовал. Теперь вообще ничего не работает.",
+   "files": {
+    "male": "male/joke_035.mp3",
+    "female": "female/joke_035.mp3"
+   }
+  },
+  "joke_036": {
+   "kind": "joke",
+   "hash": "5142a5db9a16",
+   "text": "Юнит-тесты прошли, интеграционные нет. Как два ящика комода: каждый открывается, но вместе они упираются друг в друга.",
+   "files": {
+    "male": "male/joke_036.mp3",
+    "female": "female/joke_036.mp3"
+   }
+  },
+  "joke_037": {
+   "kind": "joke",
+   "hash": "262d0485bb91",
+   "text": "Почти готово — значит, сделано девяносто процентов работы. Осталось ещё девяносто.",
+   "files": {
+    "male": "male/joke_037.mp3",
+    "female": "female/joke_037.mp3"
+   }
+  },
+  "joke_038": {
+   "kind": "joke",
+   "hash": "3b6e0876c102",
+   "text": "Почему у тебя в коде столько отладочной печати? Это не печать, это эхолот.",
+   "files": {
+    "male": "male/joke_038.mp3",
+    "female": "female/joke_038.mp3"
+   }
+  },
+  "joke_039": {
+   "kind": "joke",
+   "hash": "92418fe13fd4",
+   "text": "Слепая печать — это когда печатаешь, не глядя на клавиатуру. А опытный программист ещё и не глядя на то, что напечатал.",
+   "files": {
+    "male": "male/joke_039.mp3",
+    "female": "female/joke_039.mp3"
+   }
+  },
+  "joke_040": {
+   "kind": "joke",
+   "hash": "6f9c70079aec",
+   "text": "Тревога на борту: кто-то закрыл вкладку с решением с форума.",
+   "files": {
+    "male": "male/joke_040.mp3",
+    "female": "female/joke_040.mp3"
+   }
+  },
+  "joke_041": {
+   "kind": "joke",
+   "hash": "8b117f45a093",
+   "text": "Код-ревью: десять строк — десять замечаний. Пятьсот строк — выглядит хорошо.",
+   "files": {
+    "male": "male/joke_041.mp3",
+    "female": "female/joke_041.mp3"
+   }
+  },
+  "joke_042": {
+   "kind": "joke",
+   "hash": "c2c3ac25abc1",
+   "text": "Самое страшное сообщение коммита: мелкие правки. На две тысячи строк.",
+   "files": {
+    "male": "male/joke_042.mp3",
+    "female": "female/joke_042.mp3"
+   }
+  },
+  "joke_043": {
+   "kind": "joke",
+   "hash": "ee0b63bd3fc1",
+   "text": "Компьютер делает ровно то, что ему сказали. В этом-то и беда.",
+   "files": {
+    "male": "male/joke_043.mp3",
+    "female": "female/joke_043.mp3"
+   }
+  },
+  "joke_044": {
+   "kind": "joke",
+   "hash": "15eea10e5036",
+   "text": "Я только почту проверю, — сказал программист. Через час он знал историю изобретения табуляции.",
+   "files": {
+    "male": "male/joke_044.mp3",
+    "female": "female/joke_044.mp3"
+   }
+  },
+  "joke_045": {
+   "kind": "joke",
+   "hash": "4e09ca980cb0",
+   "text": "Пробелы или табуляция? Корабль трижды чуть не развалился на этом споре.",
+   "files": {
+    "male": "male/joke_045.mp3",
+    "female": "female/joke_045.mp3"
+   }
+  },
+  "joke_046": {
+   "kind": "joke",
+   "hash": "5679ca8eca0d",
+   "text": "Опечатка в слове «опечатка» — классика любого тренажёра печати.",
+   "files": {
+    "male": "male/joke_046.mp3",
+    "female": "female/joke_046.mp3"
+   }
+  },
+  "joke_047": {
+   "kind": "joke",
+   "hash": "14b066d1f091",
+   "text": "Бортовой компьютер не ошибается. Он просто иногда выбирает альтернативную реальность.",
+   "files": {
+    "male": "male/joke_047.mp3",
+    "female": "female/joke_047.mp3"
+   }
+  },
+  "joke_048": {
+   "kind": "joke",
+   "hash": "18717c02421f",
+   "text": "Почему корабль летит боком? Это не баг, капитан. Это новый режим навигации.",
+   "files": {
+    "male": "male/joke_048.mp3",
+    "female": "female/joke_048.mp3"
+   }
+  },
+  "joke_049": {
+   "kind": "joke",
+   "hash": "b021eea02beb",
+   "text": "Говорят, где-то есть программист, который читает документацию до того, как всё сломалось. Его никто не видел, но все в него верят.",
+   "files": {
+    "male": "male/joke_049.mp3",
+    "female": "female/joke_049.mp3"
+   }
+  },
+  "joke_050": {
+   "kind": "joke",
+   "hash": "03cfe66bd10b",
+   "text": "Код скомпилировался с первого раза. Подозрительно. Проверяю, тот ли проект открыт.",
+   "files": {
+    "male": "male/joke_050.mp3",
+    "female": "female/joke_050.mp3"
+   }
+  },
+  "joke_051": {
+   "kind": "joke",
+   "hash": "bb6ae4b97e63",
+   "text": "Ошибка четыреста четыре: шутка не найдена. А, нет, нашлась.",
+   "files": {
+    "male": "male/joke_051.mp3",
+    "female": "female/joke_051.mp3"
+   }
+  },
+  "joke_052": {
+   "kind": "joke",
+   "hash": "3857de6b1663",
+   "text": "Как назвать переменную? Тридцать минут раздумий. Итог: икс.",
+   "files": {
+    "male": "male/joke_052.mp3",
+    "female": "female/joke_052.mp3"
+   }
+  },
+  "joke_053": {
+   "kind": "joke",
+   "hash": "42463251af50",
+   "text": "Стоит начать объяснять код коллеге, и ошибка находится сама. Поэтому у многих на столе живёт резиновая уточка.",
+   "files": {
+    "male": "male/joke_053.mp3",
+    "female": "female/joke_053.mp3"
+   }
+  },
+  "joke_054": {
+   "kind": "joke",
+   "hash": "571eaa1d3aee",
+   "text": "Ночью программисту пришла гениальная идея. Утром он прочитал свой код и понял, что это была не идея, а температура.",
+   "files": {
+    "male": "male/joke_054.mp3",
+    "female": "female/joke_054.mp3"
+   }
+  },
+  "joke_055": {
+   "kind": "joke",
+   "hash": "fd2453c8618b",
+   "text": "Где вы видите себя через пять лет? Судя по этому коду, всё в том же легаси.",
+   "files": {
+    "male": "male/joke_055.mp3",
+    "female": "female/joke_055.mp3"
+   }
+  },
+  "joke_056": {
+   "kind": "joke",
+   "hash": "c87440bebfbf",
+   "text": "В паровую эпоху тоже был отладчик: человек с гаечным ключом и очень плохим настроением.",
+   "files": {
+    "male": "male/joke_056.mp3",
+    "female": "female/joke_056.mp3"
+   }
+  },
+  "joke_057": {
+   "kind": "joke",
+   "hash": "461a91e070ee",
+   "text": "В неоновом городе даже ошибки светятся. Красным.",
+   "files": {
+    "male": "male/joke_057.mp3",
+    "female": "female/joke_057.mp3"
+   }
+  },
+  "joke_058": {
+   "kind": "joke",
+   "hash": "366f6afbf8f2",
+   "text": "Робот спрашивает робота: ты почему такой медленный? Тот отвечает: я на интерпретаторе.",
+   "files": {
+    "male": "male/joke_058.mp3",
+    "female": "female/joke_058.mp3"
+   }
+  },
+  "joke_059": {
+   "kind": "joke",
+   "hash": "327a6e4adb6d",
+   "text": "Программист на пляже не загорает. Он ждёт, пока солнце закоммитит изменения.",
+   "files": {
+    "male": "male/joke_059.mp3",
+    "female": "female/joke_059.mp3"
+   }
+  },
+  "joke_060": {
+   "kind": "joke",
+   "hash": "83ea9d17dd6a",
+   "text": "Что сказал один байт другому? Ты в порядке? Нет, у меня бит выпал.",
+   "files": {
+    "male": "male/joke_060.mp3",
+    "female": "female/joke_060.mp3"
+   }
+  },
+  "fact_001": {
+   "kind": "fact",
+   "hash": "c08593b00c0e",
+   "text": "Первый компьютерный баг был настоящим: в тысяча девятьсот сорок седьмом году в реле компьютера Гарвард Марк два нашли мотылька и вклеили его в журнал с пометкой «первый реальный случай обнаружения бага».",
+   "files": {
+    "male": "male/fact_001.mp3",
+    "female": "female/fact_001.mp3"
+   }
+  },
+  "fact_002": {
+   "kind": "fact",
+   "hash": "ae6ca9239c4d",
+   "text": "Раскладка QWERTY появилась в тысяча восемьсот семидесятых годах на пишущих машинках Кристофера Шоулза, задолго до компьютеров.",
+   "files": {
+    "male": "male/fact_002.mp3",
+    "female": "female/fact_002.mp3"
+   }
+  },
+  "fact_003": {
+   "kind": "fact",
+   "hash": "3b684999b782",
+   "text": "Аду Лавлейс часто называют первым программистом: в тысяча восемьсот сорок третьем году она опубликовала алгоритм для аналитической машины Чарльза Бэббиджа.",
+   "files": {
+    "male": "male/fact_003.mp3",
+    "female": "female/fact_003.mp3"
+   }
+  },
+  "fact_004": {
+   "kind": "fact",
+   "hash": "8158b242fb1d",
+   "text": "Язык Python назван не в честь змеи, а в честь британского комедийного шоу «Летающий цирк Монти Пайтона».",
+   "files": {
+    "male": "male/fact_004.mp3",
+    "female": "female/fact_004.mp3"
+   }
+  },
+  "fact_005": {
+   "kind": "fact",
+   "hash": "d2672093bd02",
+   "text": "Первый в мире веб-сайт запустил Тим Бернерс-Ли в ЦЕРНе в тысяча девятьсот девяносто первом году.",
+   "files": {
+    "male": "male/fact_005.mp3",
+    "female": "female/fact_005.mp3"
+   }
+  },
+  "fact_006": {
+   "kind": "fact",
+   "hash": "8d24823831ac",
+   "text": "Слово «робот» впервые прозвучало в пьесе Карела Чапека в тысяча девятьсот двадцатом году, а придумал его брат писателя, художник Йозеф Чапек.",
+   "files": {
+    "male": "male/fact_006.mp3",
+    "female": "female/fact_006.mp3"
+   }
+  },
+  "fact_007": {
+   "kind": "fact",
+   "hash": "2675c273f115",
+   "text": "Бортовой компьютер «Аполлона» имел около двух тысяч слов оперативной памяти.",
+   "files": {
+    "male": "male/fact_007.mp3",
+    "female": "female/fact_007.mp3"
+   }
+  },
+  "fact_008": {
+   "kind": "fact",
+   "hash": "98dc25964602",
+   "text": "Программное обеспечение для лунной программы «Аполлон» создавала команда под руководством Маргарет Гамильтон. Известна её фотография рядом со стопкой распечаток кода ростом с неё саму.",
+   "files": {
+    "male": "male/fact_008.mp3",
+    "female": "female/fact_008.mp3"
+   }
+  },
+  "fact_009": {
+   "kind": "fact",
+   "hash": "cf60a3ef0c06",
+   "text": "В тысяча девятьсот девяносто первом году Линус Торвальдс объявил о своей операционной системе как о «просто хобби». Так появился Linux.",
+   "files": {
+    "male": "male/fact_009.mp3",
+    "female": "female/fact_009.mp3"
+   }
+  },
+  "fact_010": {
+   "kind": "fact",
+   "hash": "7721c917e28e",
+   "text": "Систему контроля версий Git Линус Торвальдс написал в две тысячи пятом году всего за несколько недель.",
+   "files": {
+    "male": "male/fact_010.mp3",
+    "female": "female/fact_010.mp3"
+   }
+  },
+  "fact_011": {
+   "kind": "fact",
+   "hash": "71d5233682dc",
+   "text": "Фраза «Hello, world» стала знаменитой благодаря книге Кернигана и Ритчи о языке Си тысяча девятьсот семьдесят восьмого года.",
+   "files": {
+    "male": "male/fact_011.mp3",
+    "female": "female/fact_011.mp3"
+   }
+  },
+  "fact_012": {
+   "kind": "fact",
+   "hash": "19872aa0569d",
+   "text": "Время в Unix-системах отсчитывается в секундах от полуночи первого января тысяча девятьсот семидесятого года.",
+   "files": {
+    "male": "male/fact_012.mp3",
+    "female": "female/fact_012.mp3"
+   }
+  },
+  "fact_013": {
+   "kind": "fact",
+   "hash": "dcd9e136f6a0",
+   "text": "Девятнадцатого января две тысячи тридцать восьмого года тридцатидвухбитный счётчик Unix-времени переполнится. Эту проблему называют проблемой двух тысяч тридцать восьмого года.",
+   "files": {
+    "male": "male/fact_013.mp3",
+    "female": "female/fact_013.mp3"
+   }
+  },
+  "fact_014": {
+   "kind": "fact",
+   "hash": "566bb3af209b",
+   "text": "Одна из первых в континентальной Европе электронных вычислительных машин, МЭСМ, была создана в Киеве под руководством Сергея Лебедева и заработала в начале пятидесятых годов.",
+   "files": {
+    "male": "male/fact_014.mp3",
+    "female": "female/fact_014.mp3"
+   }
+  },
+  "fact_015": {
+   "kind": "fact",
+   "hash": "77a47f65392f",
+   "text": "В тысяча восемьсот восемьдесят восьмом году стенографист Фрэнк Макгуррин выиграл знаменитое состязание по скорости печати, печатая всеми десятью пальцами вслепую. После этого слепой метод быстро стал стандартом.",
+   "files": {
+    "male": "male/fact_015.mp3",
+    "female": "female/fact_015.mp3"
+   }
+  },
+  "fact_016": {
+   "kind": "fact",
+   "hash": "33dcb2014fc1",
+   "text": "Значок «собака» в адресах электронной почты впервые использовал инженер Рэй Томлинсон в тысяча девятьсот семьдесят первом году.",
+   "files": {
+    "male": "male/fact_016.mp3",
+    "female": "female/fact_016.mp3"
+   }
+  },
+  "fact_017": {
+   "kind": "fact",
+   "hash": "013a5a692b8b",
+   "text": "Самая частая буква в английских текстах — E, а в русских — О.",
+   "files": {
+    "male": "male/fact_017.mp3",
+    "female": "female/fact_017.mp3"
+   }
+  },
+  "fact_018": {
+   "kind": "fact",
+   "hash": "110aada05e5f",
+   "text": "Мозг весит около двух процентов массы тела, но расходует примерно пятую часть всей энергии организма.",
+   "files": {
+    "male": "male/fact_018.mp3",
+    "female": "female/fact_018.mp3"
+   }
+  },
+  "fact_019": {
+   "kind": "fact",
+   "hash": "fb55667fd036",
+   "text": "Немецкий психолог Герман Эббингауз в тысяча восемьсот восемьдесят пятом году описал кривую забывания. На ней основаны интервальные повторения, которыми мы учим английские слова.",
+   "files": {
+    "male": "male/fact_019.mp3",
+    "female": "female/fact_019.mp3"
+   }
+  },
+  "fact_020": {
+   "kind": "fact",
+   "hash": "3b213ad57797",
+   "text": "Сон помогает закрепить выученное: во время сна мозг переносит новые знания в долговременную память.",
+   "files": {
+    "male": "male/fact_020.mp3",
+    "female": "female/fact_020.mp3"
+   }
+  },
+  "fact_021": {
+   "kind": "fact",
+   "hash": "54dd0f2416d8",
+   "text": "Свет от Солнца летит до Земли примерно восемь минут двадцать секунд.",
+   "files": {
+    "male": "male/fact_021.mp3",
+    "female": "female/fact_021.mp3"
+   }
+  },
+  "fact_022": {
+   "kind": "fact",
+   "hash": "1e4d04ced736",
+   "text": "Зонд «Вояджер-1», запущенный в тысяча девятьсот семьдесят седьмом году, — самый далёкий от Земли объект, созданный человеком.",
+   "files": {
+    "male": "male/fact_022.mp3",
+    "female": "female/fact_022.mp3"
+   }
+  },
+  "fact_023": {
+   "kind": "fact",
+   "hash": "024708072c87",
+   "text": "Сутки на Венере длиннее её года: планета оборачивается вокруг оси медленнее, чем вокруг Солнца.",
+   "files": {
+    "male": "male/fact_023.mp3",
+    "female": "female/fact_023.mp3"
+   }
+  },
+  "fact_024": {
+   "kind": "fact",
+   "hash": "058017f9409a",
+   "text": "Международная космическая станция облетает Землю примерно за девяносто минут, поэтому экипаж видит около шестнадцати рассветов в сутки.",
+   "files": {
+    "male": "male/fact_024.mp3",
+    "female": "female/fact_024.mp3"
+   }
+  },
+  "fact_025": {
+   "kind": "fact",
+   "hash": "0f36317bfa6b",
+   "text": "Двенадцатого апреля тысяча девятьсот шестьдесят первого года Юрий Гагарин совершил первый полёт человека в космос. Полёт длился сто восемь минут.",
+   "files": {
+    "male": "male/fact_025.mp3",
+    "female": "female/fact_025.mp3"
+   }
+  },
+  "fact_026": {
+   "kind": "fact",
+   "hash": "1f914c11b496",
+   "text": "Первый искусственный спутник Земли был запущен четвёртого октября тысяча девятьсот пятьдесят седьмого года.",
+   "files": {
+    "male": "male/fact_026.mp3",
+    "female": "female/fact_026.mp3"
+   }
+  },
+  "fact_027": {
+   "kind": "fact",
+   "hash": "de06ce935150",
+   "text": "В невесомости слёзы не стекают по щекам, а собираются в водяной шарик у глаза.",
+   "files": {
+    "male": "male/fact_027.mp3",
+    "female": "female/fact_027.mp3"
+   }
+  },
+  "fact_028": {
+   "kind": "fact",
+   "hash": "9507978e2e94",
+   "text": "Луна удаляется от Земли примерно на три целых восемь десятых сантиметра в год.",
+   "files": {
+    "male": "male/fact_028.mp3",
+    "female": "female/fact_028.mp3"
+   }
+  },
+  "fact_029": {
+   "kind": "fact",
+   "hash": "f2608e59ed8b",
+   "text": "В Юпитер поместилось бы больше тысячи трёхсот планет размером с Землю.",
+   "files": {
+    "male": "male/fact_029.mp3",
+    "female": "female/fact_029.mp3"
+   }
+  },
+  "fact_030": {
+   "kind": "fact",
+   "hash": "1b119d827318",
+   "text": "Транзистор, основу всей современной электроники, изобрели в лабораториях Белла в тысяча девятьсот сорок седьмом году.",
+   "files": {
+    "male": "male/fact_030.mp3",
+    "female": "female/fact_030.mp3"
+   }
+  },
+  "fact_031": {
+   "kind": "fact",
+   "hash": "257c340385c1",
+   "text": "В тысяча девятьсот шестьдесят пятом году Гордон Мур заметил, что число транзисторов на микросхеме растёт в геометрической прогрессии. Это наблюдение назвали законом Мура.",
+   "files": {
+    "male": "male/fact_031.mp3",
+    "female": "female/fact_031.mp3"
+   }
+  },
+  "fact_032": {
+   "kind": "fact",
+   "hash": "c02631bfeeae",
+   "text": "Первую компьютерную мышь придумал Дуглас Энгельбарт. Её корпус был деревянным.",
+   "files": {
+    "male": "male/fact_032.mp3",
+    "female": "female/fact_032.mp3"
+   }
+  },
+  "fact_033": {
+   "kind": "fact",
+   "hash": "a764d51f9f85",
+   "text": "Один из первых электронных компьютеров, ЭНИАК, весил около двадцати семи тонн и занимал целый зал.",
+   "files": {
+    "male": "male/fact_033.mp3",
+    "female": "female/fact_033.mp3"
+   }
+  },
+  "fact_034": {
+   "kind": "fact",
+   "hash": "72da8fb69911",
+   "text": "Слово «бит» — сокращение от английского binary digit, двоичная цифра. В научный оборот его ввёл Клод Шеннон в тысяча девятьсот сорок восьмом году.",
+   "files": {
+    "male": "male/fact_034.mp3",
+    "female": "female/fact_034.mp3"
+   }
+  },
+  "fact_035": {
+   "kind": "fact",
+   "hash": "aad3cb39407a",
+   "text": "Байт из восьми бит стал стандартом во многом благодаря компьютерам IBM System триста шестьдесят тысяча девятьсот шестьдесят четвёртого года.",
+   "files": {
+    "male": "male/fact_035.mp3",
+    "female": "female/fact_035.mp3"
+   }
+  },
+  "fact_036": {
+   "kind": "fact",
+   "hash": "e37532695913",
+   "text": "Первую версию языка JavaScript Брендан Айк создал примерно за десять дней в тысяча девятьсот девяносто пятом году.",
+   "files": {
+    "male": "male/fact_036.mp3",
+    "female": "female/fact_036.mp3"
+   }
+  },
+  "fact_037": {
+   "kind": "fact",
+   "hash": "d75037104e8d",
+   "text": "Первый набор эмодзи нарисовал японский дизайнер Сигэтака Курита в тысяча девятьсот девяносто девятом году. В нём было сто семьдесят шесть значков.",
+   "files": {
+    "male": "male/fact_037.mp3",
+    "female": "female/fact_037.mp3"
+   }
+  },
+  "fact_038": {
+   "kind": "fact",
+   "hash": "5b82f0571cfb",
+   "text": "При чтении глаза движутся не плавно, а скачками — саккадами. Текст мы воспринимаем в короткие моменты остановок между скачками.",
+   "files": {
+    "male": "male/fact_038.mp3",
+    "female": "female/fact_038.mp3"
+   }
+  },
+  "fact_039": {
+   "kind": "fact",
+   "hash": "1c5abb6548e3",
+   "text": "Фраза «The quick brown fox jumps over the lazy dog» содержит все буквы английского алфавита. Такие фразы называют панграммами.",
+   "files": {
+    "male": "male/fact_039.mp3",
+    "female": "female/fact_039.mp3"
+   }
+  },
+  "fact_040": {
+   "kind": "fact",
+   "hash": "b26c8c8a3428",
+   "text": "Русская панграмма: «Съешь же ещё этих мягких французских булок, да выпей чаю». В ней есть все буквы русского алфавита.",
+   "files": {
+    "male": "male/fact_040.mp3",
+    "female": "female/fact_040.mp3"
+   }
+  },
+  "fact_041": {
+   "kind": "fact",
+   "hash": "86dea4e3895a",
+   "text": "Слово «алфавит» происходит от названий первых двух греческих букв — альфа и вита.",
+   "files": {
+    "male": "male/fact_041.mp3",
+    "female": "female/fact_041.mp3"
+   }
+  },
+  "fact_042": {
+   "kind": "fact",
+   "hash": "0b6057c8f321",
+   "text": "Кирилл и Мефодий создали глаголицу. Кириллицу, названную в честь Кирилла, по мнению большинства учёных, составили позже их ученики.",
+   "files": {
+    "male": "male/fact_042.mp3",
+    "female": "female/fact_042.mp3"
+   }
+  },
+  "fact_043": {
+   "kind": "fact",
+   "hash": "f9c90dc568b4",
+   "text": "У осьминога три сердца и голубая кровь.",
+   "files": {
+    "male": "male/fact_043.mp3",
+    "female": "female/fact_043.mp3"
+   }
+  },
+  "fact_044": {
+   "kind": "fact",
+   "hash": "cec0955ab071",
+   "text": "С точки зрения ботаники банан — это ягода, а клубника — нет.",
+   "files": {
+    "male": "male/fact_044.mp3",
+    "female": "female/fact_044.mp3"
+   }
+  },
+  "fact_045": {
+   "kind": "fact",
+   "hash": "d0d0b9413699",
+   "text": "Лёд плавает потому, что вода при замерзании расширяется и становится легче.",
+   "files": {
+    "male": "male/fact_045.mp3",
+    "female": "female/fact_045.mp3"
+   }
+  },
+  "fact_046": {
+   "kind": "fact",
+   "hash": "58b618f266c9",
+   "text": "Канал молнии раскаляется до температуры в несколько раз выше, чем на поверхности Солнца.",
+   "files": {
+    "male": "male/fact_046.mp3",
+    "female": "female/fact_046.mp3"
+   }
+  },
+  "fact_047": {
+   "kind": "fact",
+   "hash": "aeca69ad5835",
+   "text": "Глядя в экран, человек моргает заметно реже обычного. Поэтому полезно правило двадцать-двадцать-двадцать: каждые двадцать минут смотреть двадцать секунд на предмет примерно в шести метрах.",
+   "files": {
+    "male": "male/fact_047.mp3",
+    "female": "female/fact_047.mp3"
+   }
+  },
+  "fact_048": {
+   "kind": "fact",
+   "hash": "880b343cb841",
+   "text": "Первое в мире СМС отправили в тысяча девятьсот девяносто втором году. Текст был «Merry Christmas».",
+   "files": {
+    "male": "male/fact_048.mp3",
+    "female": "female/fact_048.mp3"
+   }
+  },
+  "fact_049": {
+   "kind": "fact",
+   "hash": "04794a4376c3",
+   "text": "Википедия появилась в две тысячи первом году.",
+   "files": {
+    "male": "male/fact_049.mp3",
+    "female": "female/fact_049.mp3"
+   }
+  },
+  "fact_050": {
+   "kind": "fact",
+   "hash": "7ab87e9c6296",
+   "text": "Название Google происходит от слова «гугол» — так называют единицу со ста нулями.",
+   "files": {
+    "male": "male/fact_050.mp3",
+    "female": "female/fact_050.mp3"
+   }
+  },
+  "fact_051": {
+   "kind": "fact",
+   "hash": "1c577f714bcb",
+   "text": "Тетрис придумал Алексей Пажитнов в тысяча девятьсот восемьдесят четвёртом году в Вычислительном центре Академии наук в Москве.",
+   "files": {
+    "male": "male/fact_051.mp3",
+    "female": "female/fact_051.mp3"
+   }
+  },
+  "fact_052": {
+   "kind": "fact",
+   "hash": "4c37b0c09952",
+   "text": "Слово «пиксель» — сокращение от английского picture element, элемент изображения.",
+   "files": {
+    "male": "male/fact_052.mp3",
+    "female": "female/fact_052.mp3"
+   }
+  },
+  "fact_053": {
+   "kind": "fact",
+   "hash": "6e9936aea5f2",
+   "text": "Первый серийный жёсткий диск IBM тысяча девятьсот пятьдесят шестого года хранил около четырёх мегабайт и весил почти тонну.",
+   "files": {
+    "male": "male/fact_053.mp3",
+    "female": "female/fact_053.mp3"
+   }
+  },
+  "fact_054": {
+   "kind": "fact",
+   "hash": "03b8e56e6025",
+   "text": "CAPTCHA расшифровывается как полностью автоматизированный публичный тест Тьюринга для различения компьютеров и людей.",
+   "files": {
+    "male": "male/fact_054.mp3",
+    "female": "female/fact_054.mp3"
+   }
+  },
+  "fact_055": {
+   "kind": "fact",
+   "hash": "7936ebb9abaa",
+   "text": "На клавишах F и J есть небольшие выступы. Они помогают пальцам найти исходную позицию для слепой печати, не глядя на клавиатуру.",
+   "files": {
+    "male": "male/fact_055.mp3",
+    "female": "female/fact_055.mp3"
+   }
+  },
+  "fact_056": {
+   "kind": "fact",
+   "hash": "c3cc843e7734",
+   "text": "Самая нажимаемая клавиша при наборе обычного текста — пробел.",
+   "files": {
+    "male": "male/fact_056.mp3",
+    "female": "female/fact_056.mp3"
+   }
+  },
+  "fact_057": {
+   "kind": "fact",
+   "hash": "e6f57e22f27f",
+   "text": "В космосе стоит тишина: звуку нужен воздух или другая среда, а в вакууме ему не по чему распространяться.",
+   "files": {
+    "male": "male/fact_057.mp3",
+    "female": "female/fact_057.mp3"
+   }
+  },
+  "fact_058": {
+   "kind": "fact",
+   "hash": "17fc3996f199",
+   "text": "Закаты на Марсе голубоватые: марсианская пыль рассеивает свет иначе, чем земной воздух.",
+   "files": {
+    "male": "male/fact_058.mp3",
+    "female": "female/fact_058.mp3"
+   }
+  },
+  "fact_059": {
+   "kind": "fact",
+   "hash": "14e3005165db",
+   "text": "Средняя плотность Сатурна меньше плотности воды. В гигантском океане он бы не утонул.",
+   "files": {
+    "male": "male/fact_059.mp3",
+    "female": "female/fact_059.mp3"
+   }
+  },
+  "fact_060": {
+   "kind": "fact",
+   "hash": "73819148e353",
+   "text": "Обычно отсчёт программистских индексов начинается с нуля, а не с единицы. Так проще считать смещение от начала массива в памяти.",
+   "files": {
+    "male": "male/fact_060.mp3",
+    "female": "female/fact_060.mp3"
+   }
+  },
+  "help.bridge": {
+   "kind": "help",
+   "hash": "232f5aa9b1ef",
+   "text": "МОСТИК. Главный тренажёр печати. Печатайте строку в иллюминаторе, корабль летит вперёд. Эскейп, пауза; F5, начать упражнение заново. Зелёные/красные зоны на клавиатуре подсказывают пальцы. После миссии смотрите отчёт: скорость, точность, слабые клавиши.",
+   "files": {
+    "male": "male/help.bridge.mp3",
+    "female": "female/help.bridge.mp3"
+   }
+  },
+  "help.missions": {
+   "kind": "help",
+   "hash": "e77920fd7c89",
+   "text": "МИССИИ. Курс из 20 миссий на раскладку (EN / RU). Открывайте миссии по порядку, следующие открываются после цели. «Ремонт систем» тренирует буквы, на которых вы чаще ошибаетесь. Цель миссии: нужная скорость при точности ≥ порога.",
+   "files": {
+    "male": "male/help.missions.mp3",
+    "female": "female/help.missions.mp3"
+   }
+  },
+  "help.cargo": {
+   "kind": "help",
+   "hash": "66860a14bcf3",
+   "text": "СВОЙ ТЕКСТ. Доставка вашего текста в тренажёр. Вставьте или введите текст слева; справа, опции (регистр, пунктуация до ). «Применить» готовит текст; «На мостик», старт печати. Прогресс сохраняется: можно закрыть программу и продолжить. Тот же текст попадает в библиотеку скорочтения.",
+   "files": {
+    "male": "male/help.cargo.mp3",
+    "female": "female/help.cargo.mp3"
+   }
+  },
+  "help.log": {
+   "kind": "help",
+   "hash": "757ba4b23a86",
+   "text": "БОРТЖУРНАЛ. История полётов: миссии, свой текст, статистика. Смотрите скорость, точность и опыт (XP). Можно повторить недавнее упражнение.",
+   "files": {
+    "male": "male/help.log.mp3",
+    "female": "female/help.log.mp3"
+   }
+  },
+  "help.settings": {
+   "kind": "help",
+   "hash": "1a91beef3dca",
+   "text": "НАСТРОЙКИ. Бортовые системы всего пульта. Язык интерфейса, после смены нажмите «Перезапустить». Звук, громкость, звёздное поле, «живой космос». UPLINK, перевод предложений своего текста / книг в сети. Размер всего интерфейса. Набор на мостике, в «МОСТИК стрелка вправо НАСТРОЙКИ».",
+   "files": {
+    "male": "male/help.settings.mp3",
+    "female": "female/help.settings.mp3"
+   }
+  },
+  "help.bridge_settings": {
+   "kind": "help",
+   "hash": "0ad0f86e5715",
+   "text": "МОСТИК · НАСТРОЙКИ НАБОРА. Как выглядит строка набора. Всё меняется сразу, смотрите превью. ПРИЦЕЛ, рамка или подчёркивание, размер и цвет буквы, мигание, клавиатура, зоны пальцев. НАБОР, размер строки, отдельно набранного и текста впереди, шрифт. ЦВЕТА, набранный текст и текст впереди («ИЗ СКИНА», вернуть цвета скина). ОКОШКО ПРИЦЕЛА, слово под иллюминатором при включённом UPLINK. Пейдж даун или «⛶ ЭКРАН», полный экран, выход, Эскейп/Делит. Клавиатура: Контрол плюс 1 до 8, зоны, Альт плюс 1 до 4 или Контрол плюс Таб / Контрол плюс Шифт плюс Таб, вкладки, Таб, к кнопкам, стрелки, между ними, Энтер/пробел, нажать, Эскейп, снять фокус, ещё раз, назад на мостик.",
+   "files": {
+    "male": "male/help.bridge_settings.mp3",
+    "female": "female/help.bridge_settings.mp3"
+   }
+  },
+  "help.help": {
+   "kind": "help",
+   "hash": "ee8fdf316c9a",
+   "text": "СПРАВКА. Полная инструкция (файл ИНСТРУКЦИЯ.md). Слева по главам; F1 на любой странице открывает краткую справку именно этой страницы. Кнопка «?» в шапке, то же, что F1.",
+   "files": {
+    "male": "male/help.help.mp3",
+    "female": "female/help.help.mp3"
+   }
+  },
+  "help.honor": {
+   "kind": "help",
+   "hash": "bd3b2ec9a9e2",
+   "text": "ДОСКА ПОЧЁТА. Экипаж и достижения пилотов. Сравнение прогресса, званий и статистики. Смена пилота, Контрол плюс Шифт плюс P или меню у позывного.",
+   "files": {
+    "male": "male/help.honor.mp3",
+    "female": "female/help.honor.mp3"
+   }
+  },
+  "help.english": {
+   "kind": "help",
+   "hash": "ea67bb8a2cad",
+   "text": "АНГЛИЙСКИЙ. Модуль изучения слов: карты, сканер, миссии, карточки. Подразделы, верхняя полоса вкладок. Поиск «Сканировать», быстрый переход к слову. F1, справка текущего подраздела.",
+   "files": {
+    "male": "male/help.english.mp3",
+    "female": "female/help.english.mp3"
+   }
+  },
+  "help.english.overview": {
+   "kind": "help",
+   "hash": "2d5eac48a742",
+   "text": "АНГЛИЙСКИЙ · ОБЗОР. Сводка прогресса по набору. Выберите звёздную карту (набор частотности). Быстрые кнопки: сканер, миссии, проверка систем, склад. Блок «из книги», предложения из вашей библиотеки.",
+   "files": {
+    "male": "male/help.english.overview.mp3",
+    "female": "female/help.english.overview.mp3"
+   }
+  },
+  "help.english.sets": {
+   "kind": "help",
+   "hash": "051eccda51a4",
+   "text": "АНГЛИЙСКИЙ · ЗВЁЗДНЫЕ КАРТЫ. Сетка слов текущего набора. Клик по плитке, сканер слова. Переворот плитки, перевод / подсказка. Отметьте «знаю» или положите слово в отсек.",
+   "files": {
+    "male": "male/help.english.sets.mp3",
+    "female": "female/help.english.sets.mp3"
+   }
+  },
+  "help.english.scanner": {
+   "kind": "help",
+   "hash": "80a9d278e94a",
+   "text": "АНГЛИЙСКИЙ · СКАНЕР. Карточка одного слова. Голос / медленно, озвучка; вкладки IPA, слоги, заметки. Свой перевод сохраняется при уходе с поля. «В проверку систем», очередь SM-2; «В отсек», списки. Внизу: случайная / говорение / чтение / вопросы по этому слову. «Канал связи», практика предложений с микрофоном.",
+   "files": {
+    "male": "male/help.english.scanner.mp3",
+    "female": "female/help.english.scanner.mp3"
+   }
+  },
+  "help.english.practice": {
+   "kind": "help",
+   "hash": "68caa9830076",
+   "text": "АНГЛИЙСКИЙ · МИССИИ. Тренировки по режимам: говорение, чтение, вопросы, случайная. Выберите режим и длительность. Можно ограничить одним словом из сканера.",
+   "files": {
+    "male": "male/help.english.practice.mp3",
+    "female": "female/help.english.practice.mp3"
+   }
+  },
+  "help.english.review": {
+   "kind": "help",
+   "hash": "04a6809882e6",
+   "text": "АНГЛИЙСКИЙ · ПРОВЕРКА СИСТЕМ. Повтор карточек по интервальному алгоритму (SM-2). Число в вкладке, сколько карточек пора повторить. Оцените ответ: снова / трудно / хорошо / легко.",
+   "files": {
+    "male": "male/help.english.review.mp3",
+    "female": "female/help.english.review.mp3"
+   }
+  },
+  "help.english.warehouse": {
+   "kind": "help",
+   "hash": "628a90fe102e",
+   "text": "АНГЛИЙСКИЙ · СКЛАД КАРТОЧЕК. Все карточки в очереди проверки. Фильтры и просмотр срока следующего повтора. Можно убрать карточку или открыть слово в сканере.",
+   "files": {
+    "male": "male/help.english.warehouse.mp3",
+    "female": "female/help.english.warehouse.mp3"
+   }
+  },
+  "help.english.book": {
+   "kind": "help",
+   "hash": "0440310330f3",
+   "text": "АНГЛИЙСКИЙ · ИЗ КНИГИ. Предложения из книг библиотеки стрелка вправо учебные карточки. Соберите карточки из текущего текста / книги. Повторяйте их как обычную проверку систем.",
+   "files": {
+    "male": "male/help.english.book.mp3",
+    "female": "female/help.english.book.mp3"
+   }
+  },
+  "help.english.lists": {
+   "kind": "help",
+   "hash": "23bd50ebb455",
+   "text": "АНГЛИЙСКИЙ · ОТСЕКИ. Ваши списки слов (отсеки). Создавайте отсеки и складывайте туда слова со сканера или карты. Удобно для тематических наборов к миссиям.",
+   "files": {
+    "male": "male/help.english.lists.mp3",
+    "female": "female/help.english.lists.mp3"
+   }
+  },
+  "help.english.log": {
+   "kind": "help",
+   "hash": "075303364309",
+   "text": "АНГЛИЙСКИЙ · ЖУРНАЛ. История занятий английским: сессии, ответы, прогресс по словам.",
+   "files": {
+    "male": "male/help.english.log.mp3",
+    "female": "female/help.english.log.mp3"
+   }
+  },
+  "help.english.settings": {
+   "kind": "help",
+   "hash": "1e8a12b0188e",
+   "text": "АНГЛИЙСКИЙ · НАСТРОЙКИ. Параметры модуля: озвучка, распознавание речи, текущий набор и др. Общие настройки пульта, во вкладке «Настройки» верхней панели.",
+   "files": {
+    "male": "male/help.english.settings.mp3",
+    "female": "female/help.english.settings.mp3"
+   }
+  },
+  "help.speedread": {
+   "kind": "help",
+   "hash": "d55763c405a1",
+   "text": "СКОРОЧТЕНИЕ. Гипердрайв (RSVP), книга, тренажёры глаз, библиотека. Подразделы, полоса вкладок под заголовком. F1, справка текущего подраздела.",
+   "files": {
+    "male": "male/help.speedread.mp3",
+    "female": "female/help.speedread.mp3"
+   }
+  },
+  "help.speedread.overview": {
+   "kind": "help",
+   "hash": "7de07fc0cb88",
+   "text": "СКОРОЧТЕНИЕ · ОБЗОР. Сводка: активная книга, скорость, быстрый старт гипердрайва и тренажёров. Откройте библиотеку, если текстов ещё нет.",
+   "files": {
+    "male": "male/help.speedread.overview.mp3",
+    "female": "female/help.speedread.overview.mp3"
+   }
+  },
+  "help.speedread.reader": {
+   "kind": "help",
+   "hash": "3872712a11e5",
+   "text": "СКОРОЧТЕНИЕ · ГИПЕРДРАЙВ. Чтение по одному слову в центре (RSVP). Пробел, старт/пауза; стрелки, скорость и позиция. Прогресс книги сохраняется; можно продолжить с того же места. После блока, короткий квиз на понимание (если включён).",
+   "files": {
+    "male": "male/help.speedread.reader.mp3",
+    "female": "female/help.speedread.reader.mp3"
+   }
+  },
+  "help.speedread.book": {
+   "kind": "help",
+   "hash": "1800e5f85946",
+   "text": "СКОРОЧТЕНИЕ · КНИГА. Обычное чтение страницами / главами. Та же книга, что в гипердрайве. Двуязычный режим, параллельные колонки (если книга bilingual). Полноэкран и сохранение позиции, из панели читалки.",
+   "files": {
+    "male": "male/help.speedread.book.mp3",
+    "female": "female/help.speedread.book.mp3"
+   }
+  },
+  "help.speedread.exercises": {
+   "kind": "help",
+   "hash": "9fd3c8a98f6d",
+   "text": "СКОРОЧТЕНИЕ · ТРЕНАЖЁРЫ. Упражнения для периферии и фиксации взгляда: Шульте, пирамида, вспышки. Выберите тренажёр и текст / сетку. Результаты пишутся в журнал скорочтения.",
+   "files": {
+    "male": "male/help.speedread.exercises.mp3",
+    "female": "female/help.speedread.exercises.mp3"
+   }
+  },
+  "help.speedread.library": {
+   "kind": "help",
+   "hash": "62b7323859f1",
+   "text": "СКОРОЧТЕНИЕ · БИБЛИОТЕКА. Ваши тексты и свободные книги. Импорт файла, свой текст, каталог Gutenberg / bilinguis. Открыть в гипердрайве или в режиме «Книга». Билингвальные книги помечены бейджем 2ЯЗ.",
+   "files": {
+    "male": "male/help.speedread.library.mp3",
+    "female": "female/help.speedread.library.mp3"
+   }
+  },
+  "help.speedread.journal": {
+   "kind": "help",
+   "hash": "4fc678bf4bb9",
+   "text": "СКОРОЧТЕНИЕ · ЖУРНАЛ. Сессии чтения и тренажёров: скорость (сл/мин), объём, даты.",
+   "files": {
+    "male": "male/help.speedread.journal.mp3",
+    "female": "female/help.speedread.journal.mp3"
+   }
+  },
+  "help.speedread.settings": {
+   "kind": "help",
+   "hash": "b28e1913f043",
+   "text": "СКОРОЧТЕНИЕ · НАСТРОЙКИ. Скорость старта, размер слова, квиз, поведение гипердрайва. Общий вид пульта, во вкладке «Настройки» сверху.",
+   "files": {
+    "male": "male/help.speedread.settings.mp3",
+    "female": "female/help.speedread.settings.mp3"
+   }
+  },
+  "help.lounge": {
+   "kind": "help",
+   "hash": "73644bdc7e17",
+   "text": "ОТДЫХ. Комната отдыха: короткие игры между полётами. Тетрис, змейка, арканоид, рекорды сохраняются. В игре: Эскейп, пауза, R, заново; «стрелка влево В лобби», выход.",
+   "files": {
+    "male": "male/help.lounge.mp3",
+    "female": "female/help.lounge.mp3"
+   }
+  },
+  "help.radio": {
+   "kind": "help",
+   "hash": "e61e4e1cf034",
+   "text": "РАДИОРУБКА. Интернет-радио на борту. «Эфир», поиск станций; «Приёмник», избранное и сейчас играет. Пробел, пауза; ±, громкость; стрелка влево/стрелка вправо, соседнее избранное. Мини-приёмник в шапке, пока идёт эфир.",
+   "files": {
+    "male": "male/help.radio.mp3",
+    "female": "female/help.radio.mp3"
+   }
+  },
+  "help.radio.air": {
+   "kind": "help",
+   "hash": "c91f2f9a7047",
+   "text": "РАДИОРУБКА · ЭФИР. Поиск волн по каталогу. Введите запрос или выберите тег/страну. Добавьте станцию в избранное, она появится в приёмнике. F7, волны скина: станции по жанрам и стране скина («Старая Англия», джаз, свинг, BBC).",
+   "files": {
+    "male": "male/help.radio.air.mp3",
+    "female": "female/help.radio.air.mp3"
+   }
+  },
+  "help.radio.receiver": {
+   "kind": "help",
+   "hash": "83afdf2e4355",
+   "text": "РАДИОРУБКА · ПРИЁМНИК. Избранные станции и управление воспроизведением. Громкость, пауза, переключение треков избранного.",
+   "files": {
+    "male": "male/help.radio.receiver.mp3",
+    "female": "female/help.radio.receiver.mp3"
+   }
+  },
+  "help.comm": {
+   "kind": "help",
+   "hash": "dc2d3b428fa1",
+   "text": "ЭФИР. Эфир, общая лента сообщений экипажа этого компьютера. Напишите в поле внизу и нажмите «ОТПРАВИТЬ» (или Энтер). Видны все сообщения: и ваши, и других пилотов. Своё отмечено ▸. «ОБНОВИТЬ», перечитать ленту; непрочитанное подсвечивает кнопку ЭФИР. Пока это прототип на одном компьютере; позже, общий онлайн-эфир флота.",
+   "files": {
+    "male": "male/help.comm.mp3",
+    "female": "female/help.comm.mp3"
+   }
+  },
+  "help.orion": {
+   "kind": "help",
+   "hash": "5180915eda0b",
+   "text": "ОРИОН. Бортовой разум корабля и его экипаж. Говорите или пишите, Орион отвечает письменно и голосом. Скажите «запиши задание до », корабль переспросит и запишет задание в документ,. а доска чата откроется сама. Доска скрыта по умолчанию: разговор идёт как контекст (кнопка «ДОСКА»). Кнопка ОРИОН в шапке и Хоум открывают раздел и включают микрофон.",
+   "files": {
+    "male": "male/help.orion.mp3",
+    "female": "female/help.orion.mp3"
+   }
+  },
+  "help.orion.chat": {
+   "kind": "help",
+   "hash": "8d0989f7c486",
+   "text": "ОРИОН · ЧАТ. Разговор с бортовым разумом. Пишите в строке внизу или нажмите «ГОЛОС» и говорите, текст попадёт в строку. «ОЗВУЧКА», Орион читает ответ вслух голосом Windows. «СМЕНИТЬ», переключить пассажира, «ОЧИСТИТЬ», начать разговор заново. Слова «запиши», «задача», «у тебя есть задание», корабль предложит записать. задание в документ и откроет доску чата. Если поручение меняет корабль (уровень Командир), Орион сначала доложит план. и попросит разрешение, кнопка «ВЫПОЛНИТЬ».",
+   "files": {
+    "male": "male/help.orion.chat.mp3",
+    "female": "female/help.orion.chat.mp3"
+   }
+  },
+  "help.orion.agents": {
+   "kind": "help",
+   "hash": "5196692471ca",
+   "text": "ОРИОН · АГЕНТЫ. Заселение агентов на борт. ИМЯ, как звать агента. ПРАВА выдаются здесь, на входе, кнопками: ЭКИПАЖ (только беседа),. НАБЛЮДАТЕЛЬ (чтение и доклад), КОМАНДИР (полные права, спрашивает перед. действиями). На борту права не меняют, только новое заселение. Права Командира обычный пилот не получает «просто так»: их выдаёт владелец. корабля по своему коду. Кода ещё нет, его задают здесь же, один раз. МАНЕРЫ, документ корабля: поведение агента пилот пишет сам и правит когда угодно. ГОЛОС, корабль читает ответ вслух / агент говорит сам / молча. МОДЕЛЬ, пусто = модель OpenCode по умолчанию. «СОХРАНИТЬ», заселить или изменить, «СДЕЛАТЬ АКТИВНЫМ», с кем говорить,. «УБРАТЬ С БОРТА», высадить пассажира. Права ограничивает сам корабль: у «Экипажа» нет ни файлов, ни команд.",
+   "files": {
+    "male": "male/help.orion.agents.mp3",
+    "female": "female/help.orion.agents.mp3"
+   }
+  },
+  "help.orion.archive": {
+   "kind": "help",
+   "hash": "3c751cbb9e39",
+   "text": "ОРИОН · АРХИВ. Вся переписка борта, журнал, который не чистится при «ОЧИСТИТЬ». Ищите по дате (19.10.2026 или 19.10), времени (22:15) и словам,. «вчера», «сегодня» тоже понимаются. Пустой запрос, последние сообщения; поиск идёт по всем пассажирам. Клик по сообщению, выделить; «ВЫДЕЛИТЬ ВСЁ», взять все найденные. «ПЕРЕНЕСТИ В ЧАТ», реплики встанут в разговор и уйдут Ориону вместе. со следующим сообщением: так можно продолжить старую тему. «В ПОЛЕ ВВОДА», текст копируется в строку, правится и отправляется. Снимки в архиве видны миниатюрой: клик открывает файл.",
+   "files": {
+    "male": "male/help.orion.archive.mp3",
+    "female": "female/help.orion.archive.mp3"
+   }
+  },
+  "help.settings.systems": {
+   "kind": "help",
+   "hash": "1b874aa6a2f5",
+   "text": "НАСТРОЙКИ · СИСТЕМЫ. Основные системы пульта. Язык интерфейса, русский, українська, English, Deutsch. После выбора нажмите «⟳ ПЕРЕЗАПУСТИТЬ» (прогресс сохранится). Звук клавиш, щелчок на верную клавишу, «бззт» на ошибку, колокольчик в конце миссии (F9). Громкость, четыре уровня, «ПРОВЕРИТЬ» проигрывает пример. Переводчик UPLINK, перевод текущего предложения своего текста через интернет. UPLINK: перевод на, язык перевода; АВТО = язык интерфейса. Звёздное поле, звёзды в иллюминаторе ускоряются вместе с вами. Совет: Альт плюс 1 до 4, вкладки настроек, Таб и стрелки, по кнопкам.",
+   "files": {
+    "male": "male/help.settings.systems.mp3",
+    "female": "female/help.settings.systems.mp3"
+   }
+  },
+  "help.settings.more": {
+   "kind": "help",
+   "hash": "7a645671308d",
+   "text": "НАСТРОЙКИ · ЕЩЁ. Дополнительные параметры. Живой космос, фон за стеклянными панелями: ВЫКЛ, ЛЁГКИЙ (по умолчанию), ПОЛНЫЙ. Нужен Pillow. Набор на мостике, кнопка ведёт в «МОСТИК стрелка вправо НАСТРОЙКИ» (прицел, шрифты, цвета строки набора). Размер интерфейса, шрифты и отступы всего приложения; применяется сразу (мягкий перезапуск кабины). Если кнопки зон не влезли, прокрутите ряд колёсиком мыши. Данные, открыть папку со статистикой и прогрессом.",
+   "files": {
+    "male": "male/help.settings.more.mp3",
+    "female": "female/help.settings.more.mp3"
+   }
+  },
+  "help.settings.skins": {
+   "kind": "help",
+   "hash": "5c7fac0b1e52",
+   "text": "НАСТРОЙКИ · СКИНЫ. Оформление всего корабля: цвета, рамки, настроение. Нажмите на скин, он применяется сразу и сохраняется у пилота. Тот же выбор есть на экране «ВХОД В КАБИНУ». Свои цвета строки набора («МОСТИК стрелка вправо НАСТРОЙКИ стрелка вправо ЦВЕТА») перекрывают цвета скина; «ИЗ СКИНА» возвращает их. Простой: через N минут без клавиатуры включается слайдшоу в стиле скина и радио той же тематики. Любая клавиша закрывает, это нажатие не попадает в набор. Картинки: Wikimedia Commons, автор и лицензия, в углу. «▶ ПОКАЗАТЬ СЕЙЧАС», проверить.",
+   "files": {
+    "male": "male/help.settings.skins.mp3",
+    "female": "female/help.settings.skins.mp3"
+   }
+  },
+  "help.settings.crew": {
+   "kind": "help",
+   "hash": "2db829dcca26",
+   "text": "НАСТРОЙКИ · ЭКИПАЖ. Пилоты этого компьютера. СМЕНИТЬ ПИЛОТА (Контрол плюс Шифт плюс P), сохранить всё и вернуться на «ВХОД В КАБИНУ». ЛИЧНОЕ ДЕЛО, позывной, аватар, PIN. ЭКСПОРТ ПИЛОТА, файл для переноса на другой компьютер. ДОСКА ПОЧЁТА, рекорды всего экипажа. То же меню открывается кликом по званию в шапке.",
+   "files": {
+    "male": "male/help.settings.crew.mp3",
+    "female": "female/help.settings.crew.mp3"
+   }
+  },
+  "help.bridge_settings.sight": {
+   "kind": "help",
+   "hash": "051ddbdaeb76",
+   "text": "НАСТРОЙКИ МОСТИКА · ПРИЦЕЛ. Как выделяется буква, которую нужно нажать. Прицел на букве, ВКЛ: рамка с треугольниками; ВЫКЛ: только подчёркивание. Размер буквы в прицеле, КАК ОСН. (как строка) или S до XXL. Цвет буквы в прицеле, ВЫБРАТЬ открывает палитру, ИЗ СКИНА, сброс. Мигание целевой буквы, ВЫКЛ / ВКЛ / БЫСТРОЕ: помогает глазу не терять место. Экранная клавиатура, подсветка следующей клавиши и пальца. Цветные зоны пальцев, клавиши окрашены по пальцам. Всё видно сразу в превью сверху.",
+   "files": {
+    "male": "male/help.bridge_settings.sight.mp3",
+    "female": "female/help.bridge_settings.sight.mp3"
+   }
+  },
+  "help.bridge_settings.typing": {
+   "kind": "help",
+   "hash": "4ff67a981fdb",
+   "text": "НАСТРОЙКИ МОСТИКА · НАБОР. Размеры и шрифт строки в иллюминаторе. Размер шрифта строки, S до XXL, основной размер. Размер набранного, текст слева от прицела (КАК ОСН. или свой). Размер текста впереди, текст справа от прицела. Шрифт строки набора, Моно (ровные колонки), Без засечек, С засечками, Системный. Совет: мелкое набранное и крупное впереди, взгляд сам смотрит вперёд.",
+   "files": {
+    "male": "male/help.bridge_settings.typing.mp3",
+    "female": "female/help.bridge_settings.typing.mp3"
+   }
+  },
+  "help.bridge_settings.colors": {
+   "kind": "help",
+   "hash": "5094c10382dc",
+   "text": "НАСТРОЙКИ МОСТИКА · ЦВЕТА. Цвета текста до и после прицела. Цвет набранного, то, что вы уже напечатали. Цвет текста впереди, то, что осталось. ВЫБРАТЬ, палитра, ИЗ СКИНА, вернуть цвета текущего скина. Цвет сохраняется у пилота и не меняется при смене скина, пока вы не нажмёте ИЗ СКИНА.",
+   "files": {
+    "male": "male/help.bridge_settings.colors.mp3",
+    "female": "female/help.bridge_settings.colors.mp3"
+   }
+  },
+  "help.bridge_settings.box": {
+   "kind": "help",
+   "hash": "9b59954f7d4d",
+   "text": "НАСТРОЙКИ МОСТИКА · ОКОШКО ПРИЦЕЛА. Крупное слово под иллюминатором (панель UPLINK при печати своего текста или книги). Размер слова, S до XXL. Шрифт слова, Моно, Без засечек, С засечками, Системный. Цвет текущей буквы, буква слова, которую нужно нажать сейчас (по умолчанию красная). Справа от слова, его перевод, ниже, перевод всего предложения.",
+   "files": {
+    "male": "male/help.bridge_settings.box.mp3",
+    "female": "female/help.bridge_settings.box.mp3"
+   }
+  }
+ }
+}

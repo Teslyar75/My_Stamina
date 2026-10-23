@@ -4,6 +4,8 @@ param(
   [string]$Lang = '',
   [int]$Rate = 0,
   [int]$Volume = 100,
+  [string]$Pitch = '',
+  [switch]$Pauses,
   [switch]$ListVoices
 )
 # NOTE: keep this file pure ASCII. PowerShell 5.1 reads a .ps1 without BOM as ANSI,
@@ -79,9 +81,18 @@ if ($onecore) {
   $speed = [double]1 + ([double]$Rate * 0.12)
   if ($speed -lt 0.5) { $speed = 0.5 }
   if ($speed -gt 2.5) { $speed = 2.5 }
+  # Developer role (-Pitch, -Pauses): slightly lower pitch and short breaks after
+  # commas and full stops make a status report sound less robotic.
+  $body = [System.Security.SecurityElement]::Escape($text)
+  if ($Pauses) {
+    $body = [regex]::Replace($body, '([,;:])\s+', '$1<break time="160ms"/> ')
+    $body = [regex]::Replace($body, '([.!?])\s+', '$1<break time="360ms"/> ')
+  }
+  $pitchAttr = ''
+  if ($Pitch -match '^[+-]?\d+%$') { $pitchAttr = " pitch='" + $Pitch + "'" }
   $ssml = "<speak version='1.0' xml:lang='" + $synth.Voice.Language + "'><prosody rate='" +
-    $speed.ToString([Globalization.CultureInfo]::InvariantCulture) + "'>" +
-    [System.Security.SecurityElement]::Escape($text) + '</prosody></speak>'
+    $speed.ToString([Globalization.CultureInfo]::InvariantCulture) + "'" + $pitchAttr + ">" +
+    $body + '</prosody></speak>'
 
   $task = $synth.SynthesizeSsmlToStreamAsync($ssml)
   $waiter = $asTask.MakeGenericMethod($streamType).Invoke($null, @($task))

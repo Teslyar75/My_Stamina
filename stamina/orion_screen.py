@@ -1802,7 +1802,7 @@ class OrionScreen(tk.Frame):
         self.ask_label.configure(text="")
         self._hint(_t("Задание записано в документ борта"), GREEN)
         if self._answer_voice and tts.available():
-            tts.speak(_t("Записал в документ заданий"))
+            tts.speak(_t("Записал в документ заданий"), role="dev")
         if not self._busy:
             # Пожелание пилота + карта места → ТЗ → подчинённому исполнителю (в фон)
             brief = self._task_brief_for(task)
@@ -1876,7 +1876,7 @@ class OrionScreen(tk.Frame):
         self._render_feed()
         self._hint(note, GREEN)
         if self._answer_voice and tts.available():
-            tts.speak(_t("Исполнитель закончил работу"))
+            tts.speak(_t("Исполнитель закончил работу"), role="dev")
         try:
             self.app.set_status(note, GREEN)
         except Exception:  # noqa: BLE001
@@ -2091,7 +2091,7 @@ class OrionScreen(tk.Frame):
             return
         if getattr(res, "spoke", False):     # агент озвучил себя сам — не повторяем
             return
-        tts.speak(res.reply)
+        tts.speak(res.reply, role="dev")
 
     def _on_answer(self, res, rec: dict, second: bool) -> None:
         self._busy = False
@@ -2565,7 +2565,7 @@ class OrionScreen(tk.Frame):
             return
         self._hint(_t("Читаю: {0}").format(book["title"]), GREEN)
         for chunk in chunks[:3]:
-            tts.speak(chunk)
+            tts.speak(chunk, role="dev")
             time.sleep(0.5)
 
     def _read_book(self) -> None:
@@ -2586,7 +2586,7 @@ class OrionScreen(tk.Frame):
             return
         self._hint(_t("Читаю: {0}").format(book["title"]), GREEN)
         for chunk in chunks[:3]:
-            tts.speak(chunk)
+            tts.speak(chunk, role="dev")
             time.sleep(0.5)
 
     def _exit_master_mode(self) -> None:

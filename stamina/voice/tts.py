@@ -73,8 +73,15 @@ def speech_text(text: str, limit: int = SPEECH_LIMIT) -> str:
     return cut.rstrip() + "…"
 
 
+ROLES = {
+    # Голос разработчика/ИИ-агента: Павел, чуть ниже и с паузами на знаках препинания.
+    "dev": {"pitch": "-4%", "pauses": True},
+    "guide": {},
+}
+
+
 def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
-          lang: str = "") -> bool:
+          lang: str = "", role: str = "") -> bool:
     """Произнести текст. Не блокирует: речь идёт в отдельном процессе.
 
     `lang` — язык текста (`ru`, `en`): по нему выбирается голос, иначе определяется сам.
@@ -95,6 +102,11 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
            "-Path", str(tmp), "-Rate", str(rate), "-Volume", str(volume), "-Lang", lang]
     if voice:
         cmd += ["-Voice", voice]
+    prof = ROLES.get(role, {})
+    if prof.get("pitch"):
+        cmd += ["-Pitch", prof["pitch"]]
+    if prof.get("pauses"):
+        cmd.append("-Pauses")
     flags = 0x08000000 if sys.platform == "win32" else 0     # CREATE_NO_WINDOW
     try:
         with _lock:

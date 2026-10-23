@@ -113,6 +113,7 @@ class Cockpit(tk.Tk):
         self.bind("<F5>", lambda _e: self.restart_current())
         self.bind("<F9>", lambda _e: self.toggle_sound())
         self.bind("<F1>", lambda _e: self.open_help())
+        self.bind("<Shift-F1>", lambda _e: self._guide_help())  # гид читает справку окна вслух
         self.bind("<Button-3>", self._mark_point, add="+")
         self.bind("<FocusOut>", self._on_focus_out)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
@@ -123,6 +124,8 @@ class Cockpit(tk.Tk):
         self.living = LivingSpace(self, self.content, "off" if safe_mode.enabled() else self.store.settings.get("living_space", DEFAULT_MODE))
         from stamina.idle.overlay import IdleController
         self.idle = IdleController(self)  # слайдшоу простоя — только у скинов со slideshow
+        from stamina.guide_idle import GuideController
+        self.guide = GuideController(self)  # бортовой гид: шутки/факты и голосовая справка (офлайн)
         self.after(60, self._bootstrap)
         self.after(100, self._tick)
         # Кабина создаётся уже после окна входа: Windows не отдаёт ей клавиатуру
@@ -449,6 +452,12 @@ class Cockpit(tk.Tk):
             c.create_line(x, px(1), x + px(5), px(1), fill=CYAN_DIM, width=2)
 
     # ------------------------------------------------------------------
+    def _guide_help(self):
+        guide = getattr(self, "guide", None)
+        if guide is not None:
+            guide.speak_help()
+        return "break"
+
     def open_help(self) -> None:
         """F1 / «?»: модалка «как работает эта страница»; полная инструкция — из модалки."""
         from stamina.page_help import open_page_help
