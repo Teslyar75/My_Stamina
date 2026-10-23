@@ -2062,5 +2062,9 @@
  "Ищу…": "Suche…",
  "Архив не прочитался: {0}": "Archiv nicht lesbar: {0}",
  "Находка {0} из {1}": "Treffer {0} von {1}",
- "Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по находке — сообщение целиком; ☐ — отметить для переноса в чат.": "Suche nach Datum (19.10.2026), Uhrzeit (22:15) oder Wörtern. Klick auf einen Treffer zeigt die ganze Nachricht; ☐ markiert sie für den Chat."
+ "Ищите по дате (19.10.2026), времени (22:15) или словам. Клик по находке — сообщение целиком; ☐ — отметить для переноса в чат.": "Suche nach Datum (19.10.2026), Uhrzeit (22:15) oder Wörtern. Klick auf einen Treffer zeigt die ganze Nachricht; ☐ markiert sie für den Chat.",
+ "сорвалась": "fehlgeschlagen",
+ "остановлена": "gestoppt",
+ "оцениваю объём…": "schätze den Umfang…",
+ "Исполнитель: {0}": "Ausführer: {0}"
 }

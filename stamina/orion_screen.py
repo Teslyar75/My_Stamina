@@ -32,6 +32,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.pilot_screens import Modal, PinPad
@@ -1508,14 +1509,16 @@ class OrionScreen(tk.Frame):
     # -- чат ---------------------------------------------------------------
     # -- шкала работы --------------------------------------------------------
     def _build_activity(self, parent) -> None:
-        """Полоска работы: доклад агента («чем занят») или честная оценка по времени.
+        """Панель работы: по строке на каждую задачу агента (план → процент → цвет).
 
-        Проценты берём из доклада самого агента (`_orion/progress.json`): сколько
-        шагов закрыто из списка, который агент же и написал. Процентов «из ниоткуда»
-        корабль не рисует: если доклада нет — показываем ход по времени и замираем
-        у 97, потому что сто значило бы «готово».
+        Проценты — из плана самого агента (`_orion/tasks/<id>.json`, протокол в
+        `stamina/task_progress.py`): вес закрытых шагов к весу всех. Старый доклад
+        `_orion/progress.json` — ещё одна строка. Нет докладов — одна строка
+        «работаю» с честной оценкой по времени (замирает у 97) или «свободен».
         """
-        self.work_row = tk.Frame(parent, bg=BG)
+        self.work_box = tk.Frame(parent, bg=BG)
+        self.work_box.pack(fill=tk.X, pady=(px(2), 0))
+        self.work_row = tk.Frame(self.work_box, bg=BG)
         self.work_label = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w")
         self.work_label.pack(side=tk.LEFT)
         self.work_bar = tk.Canvas(self.work_row, width=px(170), height=px(10), bg=BG,
@@ -1523,22 +1526,25 @@ class OrionScreen(tk.Frame):
         self.work_bar.pack(side=tk.LEFT, padx=(px(8), px(8)))
         self.work_pct = _label(self.work_row, "", fg=MUTED, size=9, bg=BG, anchor="w", width=4)
         self.work_pct.pack(side=tk.LEFT)
-        self.work_row.pack(fill=tk.X, pady=(px(2), 0))
+        self.work_row.pack(fill=tk.X)
+        self.task_rows: list[dict] = []   # пул строк задач: {frame, label, bar, pct, key}
         self._work_started = 0.0
         self._work_tick = 0
-        self._report: dict = {}          # доклад агента (читаем не чаще раза в секунду)
+        self._report: dict = {}          # старый доклад v1 (читаем не чаще раза в секунду)
+        self._tasks: list[dict] = []     # задачи v2 + v1
         self._report_read = 0.0
         self._tick_activity()
 
     def _report_view(self) -> dict:
-        """Доклад агента о работе. Файл на диске — читаем не чаще раза в секунду."""
+        """Доклады агента о работе. Файлы на диске — читаем не чаще раза в секунду."""
         now = time.time()
         if now - self._report_read >= 1.0:
             self._report_read = now
             try:
                 self._report = orion.progress_view(now)
+                self._tasks = tprog.active(now, legacy=orion.read_progress())
             except OSError:               # диск отвлёкся — показываем, что было
-                self._report = {}
+                self._report, self._tasks = {}, []
         return self._report
 
     def _time_percent(self) -> int:
@@ -1546,41 +1552,81 @@ class OrionScreen(tk.Frame):
         spent = max(0.0, time.time() - self._work_started)
         return min(97, int(99 * (1 - math.exp(-spent / 40.0))) + 1)
 
+    def _task_row(self, i: int) -> dict:
+        while len(self.task_rows) <= i:
+            fr = tk.Frame(self.work_box, bg=BG)
+            bar = tk.Canvas(fr, width=px(170), height=px(10), bg=BG, highlightthickness=0, bd=0)
+            pct = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="e", width=5)
+            lab = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="w")
+            pct.pack(side=tk.RIGHT)
+            bar.pack(side=tk.RIGHT, padx=(px(8), px(4)))
+            lab.pack(side=tk.LEFT, fill=tk.X, expand=True)
+            self.task_rows.append({"frame": fr, "label": lab, "bar": bar, "pct": pct,
+                                   "key": None, "shown": False})
+        return self.task_rows[i]
+
+    def _task_text(self, t: dict, spin: str) -> tuple[str, str]:
+        title = str(t.get("title") or "")
+        if len(title) > 60:
+            title = title[:59] + "…"
+        state = t.get("state")
+        if state == "done":
+            return "✓ " + title, GREEN
+        if state in ("failed", "stopped"):
+            word = _t("сорвалась") if state == "failed" else _t("остановлена")
+            return "✕ " + title + " · " + word, AMBER
+        if not t.get("total"):
+            return f"{spin} " + title + " · " + _t("оцениваю объём…"), CYAN
+        title += " · " + _t("шаг {0} из {1}").format(t["done"], t["total"])
+        if t.get("stale"):            # агент молчит — пилоту честно об этом
+            return "⚠ " + title + " · " + _t("доклад не обновлялся"), AMBER
+        return f"{spin} " + title, CYAN
+
+    def _show_tasks(self, tasks: list[dict], spin: str) -> None:
+        for i, t in enumerate(tasks):
+            row = self._task_row(i)
+            text, fg = self._task_text(t, spin)
+            pct = int(t.get("percent") or 0)
+            key = (text, fg, pct)
+            if key != row["key"]:
+                row["key"] = key
+                row["label"].configure(text=text, fg=fg)
+                row["pct"].configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                self._draw_bar(row["bar"], pct, tprog.color_for(pct))
+            if not row["shown"]:
+                row["frame"].pack(fill=tk.X)
+                row["shown"] = True
+        for row in self.task_rows[len(tasks):]:
+            if row["shown"]:
+                row["frame"].pack_forget()
+                row["shown"] = False
+
     def _tick_activity(self) -> None:
-        """Шаг шкалы: доклад «что делаю и сколько осталось», оценка или «свободен»."""
+        """Шаг панели: строки задач по их планам, оценка по времени или «свободен»."""
         try:
-            view = self._report_view()
-            if getattr(self, "_busy", False):
-                if not self._work_started:
-                    self._work_started = time.time()
-                spin = "⣾⣽⣻⢿⡿⣟⣯⣷"[self._work_tick % 8]
-                if str(view.get("task") or "") and view.get("state") == "working":
-                    task = str(view["task"])
-                    if view.get("total"):
-                        task += " · " + _t("шаг {0} из {1}").format(view["done"], view["total"])
-                    if view.get("stale"):     # агент молчит — пилоту честно об этом
-                        self.work_label.configure(
-                            text="⚠ " + task + " · " + _t("доклад не обновлялся"), fg=AMBER)
-                        color = AMBER
-                    else:
-                        self.work_label.configure(text=f"{spin} " + task, fg=CYAN)
-                        color = CYAN
-                    pct = int(view.get("percent") or 0)
-                else:
-                    self.work_label.configure(text=f"{spin} " + _t("ОРИОН РАБОТАЕТ"), fg=CYAN)
-                    pct = self._time_percent()
-                    color = CYAN
-                self.work_pct.configure(text=f"{pct}%", fg=color)
-                self._draw_work_bar(pct, color)
-                self._work_tick += 1
-            else:
+            self._report_view()
+            busy = getattr(self, "_busy", False)
+            spin = "⣾⣽⣻⢿⡿⣟⣯⣷"[self._work_tick % 8]
+            self._work_tick += 1
+            tasks = self._tasks
+            self._show_tasks(tasks, spin)
+            working = any(t.get("state") not in tprog.FINAL for t in tasks)
+            if busy and not self._work_started:
+                self._work_started = time.time()
+            if not busy:
                 self._work_started = 0.0
-                task = str(view.get("task") or "")
-                if task and view.get("state") == "done" and float(view.get("age") or 0) <= REPORT_KEEP:
-                    self.work_label.configure(
-                        text="✓ " + _t("ЗАДАЧА ВЫПОЛНЕНА: {0}").format(task), fg=GREEN)
-                    self.work_pct.configure(text="100%", fg=GREEN)
-                    self._draw_work_bar(100, GREEN)
+            if tasks and (working or not busy):
+                if self.work_row.winfo_manager():
+                    self.work_row.pack_forget()
+            else:
+                if not self.work_row.winfo_manager():
+                    self.work_row.pack(fill=tk.X, before=self.task_rows[0]["frame"]
+                                       if self.task_rows else None)
+                if busy:
+                    pct = self._time_percent()
+                    self.work_label.configure(text=f"{spin} " + _t("ОРИОН РАБОТАЕТ"), fg=CYAN)
+                    self.work_pct.configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                    self._draw_work_bar(pct, tprog.color_for(pct))
                 else:
                     self.work_label.configure(text="○ " + _t("ОРИОН СВОБОДЕН — можно обращаться"),
                                               fg=GREEN)
@@ -1591,13 +1637,18 @@ class OrionScreen(tk.Frame):
         self.after(140, self._tick_activity)
 
     def _draw_work_bar(self, pct: int, color: str) -> None:
-        w = self.work_bar.winfo_width() or px(170)
-        h = self.work_bar.winfo_height() or px(10)
-        self.work_bar.delete("all")
-        self.work_bar.create_rectangle(0, 0, w, h, fill=BG2, outline=LINE)
+        self._draw_bar(self.work_bar, pct, color)
+
+    def _draw_bar(self, bar, pct: int, color: str) -> None:
+        w = bar.winfo_width()
+        w = w if w > 1 else px(170)
+        h = bar.winfo_height()
+        h = h if h > 1 else px(10)
+        bar.delete("all")
+        bar.create_rectangle(0, 0, w, h, fill=BG2, outline=LINE)
         fill = int((w - 2) * max(0, min(100, pct)) / 100)
         if fill > 0:
-            self.work_bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
+            bar.create_rectangle(1, 1, 1 + fill, h - 1, fill=color, outline="")
 
     def _hint(self, text: str, color=None) -> None:
         color = MUTED if color is None else color  # токен скина — в момент вызова, не при импорте
@@ -1764,6 +1815,20 @@ class OrionScreen(tk.Frame):
             self._hint(_t("Исполнитель ещё работает — дождитесь его доклада"), AMBER)
             return
         self._job_busy = True
+        # Строка на панели задач: исполнитель сам распишет план и закроет шаги.
+        self._exec_task = "exec-" + (task_id or str(int(time.time())))
+        try:
+            gist = (brief.splitlines() or [""])[0]
+            for line in brief.splitlines()[3:6]:
+                if line.strip() and not line[:2].strip().rstrip(".").isdigit():
+                    gist = line.strip()
+                    break
+            tprog.plan(self._exec_task, _t("Исполнитель: {0}").format(gist[:80]),
+                       state="planning")
+            brief = brief + "\n" + tprog.brief_block(self._exec_task)
+            self._report_read = 0.0
+        except OSError:
+            pass
         ctx = self._context()
         session = orion.profile_session(rec["id"], orion.EXECUTOR_PROFILE) or ""
         threading.Thread(target=self._executor_worker,
@@ -1782,6 +1847,12 @@ class OrionScreen(tk.Frame):
     def _on_executor(self, res, rec: dict, task_id: str) -> None:
         """Доклад исполнителя: пришёл отдельным событием, чат при этом не запирался."""
         self._job_busy = False
+        try:
+            tprog.finish(getattr(self, "_exec_task", "") or "exec",
+                         "stopped" if res.error == "stopped" else ("failed" if res.error else "done"))
+            self._report_read = 0.0
+        except OSError:
+            pass
         if res.error == "stopped":
             note = _t("Исполнитель остановлен — задание осталось открытым")
             orion.remember(rec["id"], "system", note)
