@@ -201,3 +201,34 @@
 | `scriptorium/settings.jpg` | [Paschal Candles - Annunciation, Toronto.jpg](https://commons.wikimedia.org/wiki/File:Paschal_Candles_-_Annunciation,_Toronto.jpg) | ΙΣΧΣΝΙΚΑ-888 | CC BY-SA 3.0 |
 | `scriptorium/settings_2.jpg` | [Letter-writing at a portable desk with quill, inkwell, seal and an open book bound with clasps on a reading stand ... and a clock and bell (Antwerp, 19th c.) (8065271671).jpg](https://commons.wikimedia.org/wiki/File:Letter-writing_at_a_portable_desk_with_quill,_inkwell,_seal_and_an_open_book_bound_with_clasps_on_a_reading_stand_..._and_a_clock_and_bell_(Antwerp,_19th_c.)_(8065271671).jpg) | takomabibelot | CC BY 2.0 |
 | `scriptorium/settings_3.jpg` | [Manuscript Leaf Cutting Probably from a Missal with an Illuminated Initial S and King David Receiving the Holy Bread from Ahimelech the Priest. MET sf23-21-12s2.jpg](https://commons.wikimedia.org/wiki/File:Manuscript_Leaf_Cutting_Probably_from_a_Missal_with_an_Illuminated_Initial_S_and_King_David_Receiving_the_Holy_Bread_from_Ahimelech_the_Priest._MET_sf23-21-12s2.jpg) | см. страницу файла | CC0 |
+
+## Сад дзен (`zen_garden/`)
+
+Фото с Wikimedia Commons приведены к 1600×900 (cover, по центру), без других изменений.
+
+| Файл | Исходник на Wikimedia Commons | Автор | Лицензия |
+|---|---|---|---|
+| `zen_garden/bridge.jpg` | [RyoanJi-Dry garden.jpg](https://commons.wikimedia.org/wiki/File:RyoanJi-Dry_garden.jpg) | Stephane D'Alu | CC BY-SA 3.0 |
+| `zen_garden/bridge_2.jpg` | [Fort Worth Japanese Garden October 2019 03 (Karesansui Dry Landscape Garden).jpg](https://commons.wikimedia.org/wiki/File:Fort_Worth_Japanese_Garden_October_2019_03_(Karesansui_Dry_Landscape_Garden).jpg) | Michael Barera | CC BY-SA 4.0 |
+| `zen_garden/bridge_3.jpg` | [Raked gravel as flowing water, Japanese garden at Kew - geograph.org.uk - 2711289.jpg](https://commons.wikimedia.org/wiki/File:Raked_gravel_as_flowing_water,_Japanese_garden_at_Kew_-_geograph.org.uk_-_2711289.jpg) | David Hawgood | CC BY-SA 2.0 |
+| `zen_garden/english.jpg` | [Portland Japanese Garden October 2019 005.jpg](https://commons.wikimedia.org/wiki/File:Portland_Japanese_Garden_October_2019_005.jpg) | King of Hearts | CC BY-SA 4.0 |
+| `zen_garden/english_2.jpg` | [20190705 Kenroku-en-7.jpg](https://commons.wikimedia.org/wiki/File:20190705_Kenroku-en-7.jpg) | Balon Greyjoy | CC0 |
+| `zen_garden/english_3.jpg` | [Ritsurin.JPG](https://commons.wikimedia.org/wiki/File:Ritsurin.JPG) | Leela Soden | CC BY-SA 3.0 |
+| `zen_garden/speedread.jpg` | [Bamboo Forest, Arashiyama, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_Forest,_Arashiyama,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/speedread_2.jpg` | [Bamboo grove (phyllostachys viridiglaucescens) in the Botanical Garden of the University of Vienna in Vienna, Austria-stems PNr°1051.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_grove_(phyllostachys_viridiglaucescens)_in_the_Botanical_Garden_of_the_University_of_Vienna_in_Vienna,_Austria-stems_PNr%C2%B01051.jpg) | D-Kuru | CC BY-SA 4.0 |
+| `zen_garden/speedread_3.jpg` | [Arashiyama-Bamboo-Grove-Sunset.jpg](https://commons.wikimedia.org/wiki/File:Arashiyama-Bamboo-Grove-Sunset.jpg) | Bjørn Christian Tørrissen | CC BY-SA 4.0 |
+| `zen_garden/lounge.jpg` | [Japanese tea house - Toulouse - 2013-12-21.jpg](https://commons.wikimedia.org/wiki/File:Japanese_tea_house_-_Toulouse_-_2013-12-21.jpg) | PierreSelim | CC BY 3.0 |
+| `zen_garden/lounge_2.jpg` | [Shinsei-en-Chashitsu-Koma20190727.jpg](https://commons.wikimedia.org/wiki/File:Shinsei-en-Chashitsu-Koma20190727.jpg) | Miya | CC BY-SA 4.0 |
+| `zen_garden/lounge_3.jpg` | [Tea ceremony room of Ryokusuitei Keisui.jpg](https://commons.wikimedia.org/wiki/File:Tea_ceremony_room_of_Ryokusuitei_Keisui.jpg) | 掬茶 | CC BY-SA 4.0 |
+| `zen_garden/radio.jpg` | [Koi in a garden pond in Tuntorp 3.jpg](https://commons.wikimedia.org/wiki/File:Koi_in_a_garden_pond_in_Tuntorp_3.jpg) | W.carter | CC BY-SA 4.0 |
+| `zen_garden/radio_2.jpg` | [Fushimi Inari-taisha Tsukubai animal.jpg](https://commons.wikimedia.org/wiki/File:Fushimi_Inari-taisha_Tsukubai_animal.jpg) | Hyppolyte de Saint-Rambert | CC BY-SA 4.0 |
+| `zen_garden/radio_3.jpg` | [Shishi-odoshi at the Japanese Garden.jpg](https://commons.wikimedia.org/wiki/File:Shishi-odoshi_at_the_Japanese_Garden.jpg) | Holly Cheng | CC BY-SA 4.0 |
+| `zen_garden/comm.jpg` | [Seattle Japanese Garden pond and lantern, 21 June 2026.jpg](https://commons.wikimedia.org/wiki/File:Seattle_Japanese_Garden_pond_and_lantern,_21_June_2026.jpg) | Guywelch2000 | CC BY 4.0 |
+| `zen_garden/comm_2.jpg` | [Torii path with lantern at Fushimi Inari Taisha Shrine, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/comm_3.jpg` | [Moss lawn in Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Moss_lawn_in_Kyoto,_Japan.jpg) | cylonfingers on flickr: https://flickr.com/photos/65097875@N07/ | CC BY-SA 2.0 |
+| `zen_garden/orion.jpg` | [Japan, maple in autumn.jpg](https://commons.wikimedia.org/wiki/File:Japan,_maple_in_autumn.jpg) | Marie-Sophie Mejan | CC BY 4.0 |
+| `zen_garden/orion_2.jpg` | [Water reflection of Kinkaku-ji Temple a sunny day, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Water_reflection_of_Kinkaku-ji_Temple_a_sunny_day,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/orion_3.jpg` | [Lake Kawaguchiko Sakura Mount Fuji 4.JPG](https://commons.wikimedia.org/wiki/File:Lake_Kawaguchiko_Sakura_Mount_Fuji_4.JPG) | Midori | CC BY 3.0 |
+| `zen_garden/settings.jpg` | [Kyoto Tofuku-ji Garten 6.jpg](https://commons.wikimedia.org/wiki/File:Kyoto_Tofuku-ji_Garten_6.jpg) | Zairon | CC BY-SA 4.0 |
+| `zen_garden/settings_2.jpg` | [Moss types at the Ginkakuji garden, Kyoto, Japan (Paul Mannix).jpg](https://commons.wikimedia.org/wiki/File:Moss_types_at_the_Ginkakuji_garden,_Kyoto,_Japan_(Paul_Mannix).jpg) | Paul Mannix | CC BY-SA 2.0 |
+| `zen_garden/settings_3.jpg` | [Sabutsutei garden of Oubai-in, Daitoku-ji 20260921.jpg](https://commons.wikimedia.org/wiki/File:Sabutsutei_garden_of_Oubai-in,_Daitoku-ji_20260921.jpg) | 掬茶 | CC BY-SA 4.0 |

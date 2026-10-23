@@ -94,6 +94,14 @@ PROFILES: dict[str, dict] = {
         "drawer": "ПРИБОРЫ",
         "gauge": "",
     },
+    "zen_garden": {
+        "glyphs": {"bridge": "◯", "english": "Ⓐ", "speedread": "»", "lounge": "☯",
+                   "radio": "≋", "comm": "✉", "orion": "✿", "settings": "⚙"},
+        "subtitle": "ПУЛЬТ ПИЛОТА",
+        "rail": "ОТСЕКИ",
+        "drawer": "ПРИБОРЫ",
+        "gauge": "",
+    },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
@@ -104,7 +112,7 @@ PROFILES: dict[str, dict] = {
     },
 }
 
-SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england", "scriptorium": "scriptorium"}
+SKIN_PROFILE = {"spaceship": "starship", "steampunk": "steampunk", "bathyscaphe": "bathyscaphe", "neon_city": "neon_city", "old_england": "old_england", "scriptorium": "scriptorium", "zen_garden": "zen_garden"}
 
 RAIL_WIDE, RAIL_NARROW = 178, 50
 
@@ -315,6 +323,20 @@ class AltNavButton(HudButton):
                               fill=red if (self._active or lit) else blend(theme.BG, red, 0.5), outline=gold)
         return (theme.TEXT if lit else blend(theme.TEXT, parch, 0.3)), px(10) + s
 
+    def _nav_zen_garden(self, w, h, col, lit):
+        """Сад дзен: скруглённая плашка рисовой бумаги; слева круг-энсо, активная — с красной печатью."""
+        paper = blend(theme.BG, "#e8e0cc", 0.25 if self._active else 0.14 if lit else 0.07)
+        rrect(self, px(3), px(3), w - px(4), h - px(4), px(8), fill=paper,
+              outline=blend(theme.BG, "#1c1c1a" if not lit else theme.TEXT, 0.5))
+        r = min(px(7), h / 3)
+        cx, cy = px(14), h / 2
+        if self._active:
+            self.create_rectangle(cx - r, cy - r, cx + r, cy + r, fill="#b5302a", outline="")
+        else:
+            self.create_arc(cx - r, cy - r, cx + r, cy + r, start=100, extent=310, style="arc",
+                            outline=theme.TEXT if lit else blend(theme.BG, theme.TEXT, 0.5), width=2)
+        return (theme.TEXT if lit else blend(theme.BG, theme.TEXT, 0.7)), px(26)
+
 # ---------------------------------------------------------------------------
 # Орнамент и приборы (рисуются кодом — без чужих картинок)
 # ---------------------------------------------------------------------------
@@ -463,6 +485,22 @@ class OrnamentBand(tk.Canvas):
                 d = -1 if i % 2 else 1
                 self.create_oval(x - 3, y + d * 2, x + 4, y + d * 6, fill=leaf, outline="")
 
+    def _draw_zen_garden(self, w: int, h: int) -> None:
+        """Сад дзен: граблями расчёсанный песок — волнистые параллельные линии, камень и энсо."""
+        sand = blend(theme.BG, "#d8cfb8", 0.25)
+        self.create_rectangle(0, 0, w, h, fill=sand, outline="")
+        for k in range(1, 4):
+            y0 = h * k / 4
+            pts = []
+            for x in range(0, w + px(10), px(10)):
+                pts += [x, y0 + math.sin(x / px(40)) * h * 0.06]
+            if len(pts) >= 4:
+                self.create_line(pts, fill=blend(sand, "#ffffff", 0.35), smooth=True)
+        r = h * 0.4
+        for cx in range(px(120), w, px(420)):
+            self.create_arc(cx - r, h / 2 - r, cx + r, h / 2 + r, start=110, extent=320, style="arc",
+                            outline=blend(sand, "#1c1c1a", 0.7), width=max(2, int(h / 8)))
+
 def rrect(c: tk.Canvas, x0: float, y0: float, x1: float, y1: float, r: float, **kw) -> int:
     """Прямоугольник со скруглёнными углами (сглаженный многоугольник)."""
     r = max(1.0, min(r, (x1 - x0) / 2, (y1 - y0) / 2))
@@ -550,8 +588,8 @@ class GaugeCanvas(tk.Canvas):
 # ---------------------------------------------------------------------------
 
 # Стиль рамки профиля; JSON скина может переопределить: "alt_ui": {"frame": "hud"}.
-FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "scriptorium": "illumin", "generic": "plain"}
-FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "illumin", "plain")
+FRAME_OF_PROFILE = {"starship": "hud", "steampunk": "brass", "bathyscaphe": "porthole", "neon_city": "neon", "old_england": "engraved", "scriptorium": "illumin", "zen_garden": "brush", "generic": "plain"}
+FRAME_STYLES = ("hud", "brass", "porthole", "neon", "engraved", "illumin", "brush", "plain")
 
 
 def frame_style(profile: str, data: dict | None = None) -> str:
@@ -805,6 +843,36 @@ class SkinFrame(tk.Frame):
                 cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
                                     fill=blend(theme.BG, parch, 0.22), outline="")
                 cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=red, font=theme.font(7, True))
+
+    def _edge_brush(self, cv, side, w, h) -> None:
+        """Сад дзен: мазок туши переменной толщины, бамбуковые узлы на боковинах,
+        красная печать-ханко в углах верхней кромки."""
+        e = self.edge
+        ink, seal, bamboo = "#1c1c1a", "#b5302a", "#7a8f4a"
+        cv.create_rectangle(0, 0, w, h, fill=blend(theme.BG, "#e8e0cc", 0.18), outline="")
+        horiz = side in ("top", "bottom")
+        L = w if horiz else h
+        m = (h if horiz else w) / 2
+        rnd = random.Random(hash(side) & 0xFFFF)
+        seg = px(24)
+        for a in range(0, int(L), seg):
+            wd = max(1, int(m * (0.35 + 0.5 * abs(math.sin(a / px(70))))) + rnd.randint(-1, 1))
+            if horiz:
+                cv.create_line(a, m, a + seg + 1, m, fill=blend(theme.BG, ink, 0.85), width=wd, capstyle="round")
+            else:
+                cv.create_line(m, a, m, a + seg + 1, fill=blend(bamboo, ink, 0.3), width=max(2, int(m)))
+        if not horiz:
+            for y in range(e * 3, h, px(70)):                     # узлы бамбука
+                cv.create_line(1, y, w - 1, y, fill=blend(bamboo, "#ffffff", 0.35), width=2)
+        elif side == "top":
+            s = h - 2
+            cv.create_rectangle(w - e * 2 - s, 1, w - e * 2, 1 + s, fill=seal, outline="")
+            cv.create_text(w - e * 2 - s / 2, h / 2, text="禅", fill="white", font=theme.font(max(6, int(s * 0.45)), True))
+            if self.title:
+                tx = e * 3
+                cv.create_rectangle(tx - px(4), 1, tx + len(self.title) * px(6) + px(8), h - 1,
+                                    fill=blend(theme.BG, "#e8e0cc", 0.18), outline="")
+                cv.create_text(tx, h / 2, anchor="w", text=self.title, fill=theme.TEXT, font=theme.font(7, True))
 
 def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: int = 10) -> SkinFrame:
     """Обернуть панель рамкой стиля скина: ``wrap(parent, prof).inner`` — сюда класть содержимое."""
