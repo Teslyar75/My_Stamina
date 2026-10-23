@@ -514,16 +514,31 @@ class GuideController:
                 self._lbl = tk.Label(f, bg=theme.PANEL, fg=theme.TEXT, font=theme.font(10),
                                      wraplength=720, justify="left")
                 self._lbl.pack(side=tk.TOP, anchor="w", padx=10, pady=(6, 2))
-                self._hint = tk.Label(f, bg=theme.PANEL, fg=theme.AMBER, font=theme.font(9, True))
-                self._hint.pack(side=tk.TOP, anchor="w", padx=10, pady=(0, 6))
+                bar = tk.Frame(f, bg=theme.PANEL)
+                bar.pack(side=tk.TOP, fill=tk.X, padx=10, pady=(0, 6))
+                self._hint = tk.Label(bar, bg=theme.PANEL, fg=theme.AMBER, font=theme.font(9, True))
+                self._hint.pack(side=tk.LEFT)
+                # Явные кнопки: щелчок по самому тексту ничего не делает (раньше он
+                # случайно запускал рассказ).
+                self._btn_no = tk.Label(bar, bg=theme.PANEL, fg=theme.TEXT, font=theme.font(9, True),
+                                        cursor="hand2", padx=8)
+                self._btn_no.pack(side=tk.RIGHT)
+                self._btn_yes = tk.Label(bar, text=_t("▶ СЛУШАТЬ"), bg=theme.PANEL, fg=theme.AMBER,
+                                         font=theme.font(9, True), cursor="hand2", padx=8)
+                self._btn_yes.pack(side=tk.RIGHT)
+                self._btn_yes.bind("<Button-1>", lambda _e: self.handle_key("Return"))
+                self._btn_no.bind("<Button-1>", lambda _e: self.handle_key("Escape"))
                 for seq, ks in (("<Return>", "Return"), ("<KP_Enter>", "KP_Enter"), ("<Escape>", "Escape")):
                     f.bind(seq, lambda _e, k=ks: self.handle_key(k))
-                self._lbl.bind("<Button-1>", lambda _e: self.handle_key("Return"))
-                self._hint.bind("<Button-1>", lambda _e: self.handle_key("Escape"))
                 self._toast = f
             self._lbl.configure(text="🛰  " + text)
             self._hint.configure(text=_t("Enter — слушать  ·  Esc — отказаться") if prompt
                                  else _t("Esc — прервать"))
+            self._btn_no.configure(text=_t("✕ НЕТ") if prompt else _t("✕ ПРЕРВАТЬ"))
+            if prompt:
+                self._btn_yes.pack(side=tk.RIGHT, after=self._btn_no)
+            else:
+                self._btn_yes.pack_forget()
             self._toast.place(relx=0.5, rely=1.0, y=-40, anchor="s")
             self._toast.lift()
             self._toast.focus_set()
@@ -540,6 +555,8 @@ class GuideController:
             try:
                 if self._prev_focus is not None and self._prev_focus.winfo_exists():
                     self._prev_focus.focus_set()
+                else:
+                    self.app.focus_set()  # иначе клавиши (Shift+F1, F1) уходят в никуда
             except Exception:  # noqa: BLE001
                 pass
             self._prev_focus = None
