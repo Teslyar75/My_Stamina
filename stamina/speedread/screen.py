@@ -599,6 +599,8 @@ class LibraryPage(tk.Frame):
                       font_size=8).pack(side=tk.LEFT)
             HudButton(r, _t("НЕ НАДО"), lambda: self.dismiss_offer(tid), height=30, font_size=8).pack(
                 side=tk.LEFT, padx=px(6))
+        acts2 = tk.Frame(b, bg=PANEL)
+        acts2.pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
         acts = tk.Frame(b, bg=PANEL)
         acts.pack(side=tk.BOTTOM, fill=tk.X)
         HudButton(acts, _t("▶ ГИПЕРДРАЙВ"), lambda: self.ctx.read(tid), color=AMBER, height=40).pack(
@@ -612,10 +614,10 @@ class LibraryPage(tk.Frame):
             HudButton(acts, _t("⌨ ПЕЧАТАТЬ"), lambda: self.type_text(tid), color=CYAN, height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
         if m["original"]["status"] == "missing" and allows_edit(m):
-            HudButton(acts, _t("ПРИВЯЗАТЬ ОРИГИНАЛ"), lambda: self.attach(tid), color=AMBER, height=40).pack(
+            HudButton(acts2, _t("ПРИВЯЗАТЬ ОРИГИНАЛ"), lambda: self.attach(tid), color=AMBER, height=40).pack(
                 side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, _t("ПЕРЕИМЕНОВАТЬ"), lambda: self.rename(tid), height=40).pack(side=tk.LEFT, padx=(0, px(6)))
-        HudButton(acts, _t("✕ УДАЛИТЬ"), lambda: self.delete(tid), color=RED, height=40).pack(side=tk.RIGHT)
+        HudButton(acts2, _t("ПЕРЕИМЕНОВАТЬ"), lambda: self.rename(tid), height=40).pack(side=tk.LEFT, padx=(0, px(6)))
+        HudButton(acts2, _t("✕ УДАЛИТЬ"), lambda: self.delete(tid), color=RED, height=40).pack(side=tk.RIGHT)
 
     # -- действия -----------------------------------------------------------------------
     def _opts(self) -> dict:
