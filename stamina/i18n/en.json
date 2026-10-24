@@ -2116,5 +2116,13 @@
  "ПЕСНОПЕНИЯ": "CANTICLES",
  "ЗВУКИ САДА": "GARDEN SOUNDS",
  "Поверх всех окон": "Always on top",
- "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "The program window stays above other windows: consoles and pop-ups won't cover it. Ctrl+Shift+T toggles it."
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "The program window stays above other windows: consoles and pop-ups won't cover it. Ctrl+Shift+T toggles it.",
+ "Исправлено склеек: {0}. Файл сохранён.": "Glued words fixed: {0}. File saved.",
+ "Ошибка проверки: {0}": "Check error: {0}",
+ "После фильтров (заглавные, знаки, пробелы) ищет слова без пробела между ними — «distastethis», «nineteenthcentury», «1984was» — разделяет по смыслу и сохраняет исправленную книгу поверх подготовленной.": "After the filters (capitals, punctuation, spaces) finds words with no space between them — «distastethis», «nineteenthcentury», «1984was» — splits them by meaning and saves the fixed book over the prepared one.",
+ "Проверить ИИ: сросшиеся слова": "Check (AI): glued words",
+ "Проверяю текст…": "Checking text…",
+ "Сросшихся слов нет — текст чистый": "No glued words — the text is clean",
+ "✦ ПРОВЕРИТЬ ИИ": "✦ AI CHECK",
+ "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ AI CHECK (BOOK ON BOARD)"
 }

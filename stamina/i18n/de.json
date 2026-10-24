@@ -2114,5 +2114,13 @@
  "ПЕСНОПЕНИЯ": "GESÄNGE",
  "ЗВУКИ САДА": "GARTENKLÄNGE",
  "Поверх всех окон": "Immer im Vordergrund",
- "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "Das Programmfenster bleibt über anderen Fenstern: Konsolen und Pop-ups verdecken es nicht. Strg+Umschalt+T schaltet es um."
+ "Окно программы остаётся над другими окнами: консоли и всплывающие окна не закроют его. Ctrl+Shift+T — включить или выключить.": "Das Programmfenster bleibt über anderen Fenstern: Konsolen und Pop-ups verdecken es nicht. Strg+Umschalt+T schaltet es um.",
+ "Исправлено склеек: {0}. Файл сохранён.": "Korrigierte Verklebungen: {0}. Datei gespeichert.",
+ "Ошибка проверки: {0}": "Prüffehler: {0}",
+ "После фильтров (заглавные, знаки, пробелы) ищет слова без пробела между ними — «distastethis», «nineteenthcentury», «1984was» — разделяет по смыслу и сохраняет исправленную книгу поверх подготовленной.": "Nach den Filtern (Großbuchstaben, Zeichen, Leerzeichen) findet es Wörter ohne Leerzeichen — «distastethis», «nineteenthcentury», «1984was» —, trennt sie sinngemäß und speichert das korrigierte Buch über dem vorbereiteten.",
+ "Проверить ИИ: сросшиеся слова": "Prüfen (KI): zusammengeklebte Wörter",
+ "Проверяю текст…": "Text wird geprüft…",
+ "Сросшихся слов нет — текст чистый": "Keine zusammengeklebten Wörter — der Text ist sauber",
+ "✦ ПРОВЕРИТЬ ИИ": "✦ KI-PRÜFUNG",
+ "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ KI-PRÜFUNG (BUCH AN BORD)"
 }

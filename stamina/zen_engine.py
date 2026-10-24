@@ -25,9 +25,12 @@ _PUNCT = re.compile(r"[^\w'’-]+", re.UNICODE)
 def prepare_words(text: str, *, punctuation: bool = False, numbers: bool = False) -> list[str]:
     """Слова из текста мостика. Без «punctuation» — строчные и без знаков, как в базовом режиме."""
     out = []
-    for w in (text or "").split():
+    raw = (text or "").split()
+    if not punctuation:  # знак между буквами — граница слова («hello—world» → два слова, не «helloworld»)
+        raw = [p for w in raw for p in _PUNCT.sub(" ", re.sub(r"-{2,}", " ", w)).split()]
+    for w in raw:
         if not punctuation:
-            w = _PUNCT.sub("", w).strip("'’-").lower()
+            w = w.strip("'’-").lower()
         if not w:
             continue
         if not numbers and any(ch.isdigit() for ch in w):

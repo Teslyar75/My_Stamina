@@ -41,6 +41,26 @@ _WORDISH = re.compile(r"[^\W_]", re.UNICODE)
 _LETTERS_ONLY = re.compile(r"[^\W\d_]+", re.UNICODE)
 
 
+#: Два и больше дефиса/тире подряд — тире между словами («distaste--this»).
+_DASH_RUN = re.compile(r"[-\u2010\u2011\u2012\u2013\u2014\u2015\u2212]{2,}")
+
+#: Перенос в конце строки: «nine-\nteenth», «сло-\nво», мягкий перенос «­».
+_LINE_HYPHEN = re.compile(r"([^\W\d_]+)[ \t]?[-\u00ad\u2010]\s*\r?\n\s*([^\W\d_]+)", re.UNICODE)
+
+
+def dehyphenate(text: str) -> str:
+    """Переносы на краю строки: слово склеиваем, если оно словарное («nineteenth»),
+    составное с дефисом оставляем через дефис («forty-five»), а не «fortyfive».
+
+    Раньше перенос просто терялся вместе с переводом строки, и половинки срастались
+    либо с соседним словом, либо между собой в несуществующее слово.
+    """
+    if "\n" not in text:
+        return text
+    from stamina.glue_fix import join_hyphenated
+    return _LINE_HYPHEN.sub(lambda m: join_hyphenated(m.group(1), m.group(2), m.group(0)), text)
+
+
 def normalize_spaces(text: str) -> str:
     """Между словами остаётся ровно один пробел; крайние пробелы убираются.
 
@@ -58,6 +78,9 @@ def remove_punctuation(text: str) -> str:
     убирается. Дефис и апостроф внутри слова сохраняются, как и разделитель
     внутри числа.
     """
+    text = dehyphenate(text)
+    # «distaste--this», «word---word», «слово - - слово»: серия тире/дефисов — это тире, а не дефис
+    text = _DASH_RUN.sub(" ", text)
     out: list[str] = []
     n = len(text)
     for i, ch in enumerate(text):
@@ -270,6 +293,13 @@ def _known_words(known_words, trust: int | None = None) -> frozenset:
     return frozenset(str(w).lower() for w in known_words)
 
 
+def _in_lexicon(low: str) -> bool:
+    from stamina.glue_fix import lexicon
+    from stamina.glue_fix import rare_words
+    lang = "ru" if re.search("[а-яё]", low) else "en"
+    return low in lexicon(lang) or low in rare_words(lang)
+
+
 def book_words(text: str, limit: int = 200_000) -> dict:
     """Словарь самой книги: слово → сколько раз встретилось.
 
@@ -300,6 +330,11 @@ def find_glued_words(text: str, *, known_words=None, confident_only: bool = Fals
         token = m.group(0)
         low = token.lower()
         if len(low) < 4:
+            continue
+        # часть слова через дефис/апостроф («наконец-то», «don't») и словарное слово — не склейка
+        if (m.start() > 0 and text[m.start() - 1] in "-'’") or (m.end() < len(text) and text[m.end()] in "-'’"):
+            continue
+        if _in_lexicon(low):
             continue
         own = counts.get(low, 0) if counts is not None else 0
         if counts is not None:
@@ -366,5 +401,8 @@ def process_text(text: str, *, lower: bool = True, punct: bool = True,
         text = normalize_spaces(text)
     if glue:
         # Словарь берём из самого текста: склейка — редкое слово, её половины — частые.
-        text = normalize_spaces(repair_glued_words(text, known_words=book_words(text)))
+        text = repair_glued_words(text, known_words=book_words(text))
+        # затем частотный словарь языка («Проверить ИИ»): «nineteenthcentury», «1984was»
+        from stamina.glue_fix import repair as lexicon_repair
+        text = normalize_spaces(lexicon_repair(text)[0]) if spaces else lexicon_repair(text)[0]
     return text.strip()

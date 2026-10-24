@@ -26,7 +26,7 @@ from stamina.text_processing import process_text
 from stamina.textmap import INITIAL_WORDS, TextMap, fragment_of, load_pace_wpm
 
 DEFAULT_OPTS = {"lower": True, "punct": True, "spaces": True, "translit": False, "yo": False,
-                "glue": False}
+                "glue": True}
 PROCESSOR = "text_processing v1"
 MAX_CANDIDATE_BYTES = 20 * 1024 * 1024
 ORWELL_HEAD = "part one chapter 1 it was a bright cold day in april"
