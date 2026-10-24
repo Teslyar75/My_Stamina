@@ -2124,5 +2124,7 @@
  "Проверяю текст…": "Checking text…",
  "Сросшихся слов нет — текст чистый": "No glued words — the text is clean",
  "✦ ПРОВЕРИТЬ ИИ": "✦ AI CHECK",
- "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ AI CHECK (BOOK ON BOARD)"
+ "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ AI CHECK (BOOK ON BOARD)",
+ "⌨ НА МОСТИК": "⌨ TO BRIDGE",
+ "Отправить эту книгу в слепую печать на мостике (через фильтры подготовки)": "Send this book to touch typing on the bridge (through the prep filters)"
 }

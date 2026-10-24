@@ -2122,5 +2122,7 @@
  "Проверяю текст…": "Text wird geprüft…",
  "Сросшихся слов нет — текст чистый": "Keine zusammengeklebten Wörter — der Text ist sauber",
  "✦ ПРОВЕРИТЬ ИИ": "✦ KI-PRÜFUNG",
- "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ KI-PRÜFUNG (BUCH AN BORD)"
+ "✦ ПРОВЕРИТЬ ИИ (КНИГА НА БОРТУ)": "✦ KI-PRÜFUNG (BUCH AN BORD)",
+ "⌨ НА МОСТИК": "⌨ ZUR BRÜCKE",
+ "Отправить эту книгу в слепую печать на мостике (через фильтры подготовки)": "Dieses Buch zum Blindschreiben auf die Brücke schicken (über die Vorbereitungsfilter)"
 }
