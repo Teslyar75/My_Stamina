@@ -172,6 +172,13 @@ class EnglishScreen(tk.Frame):
 
     def changed(self) -> None:
         self._update_nav()
+        # CEFR: если ученик закрыл слово прямо на плитке, сразу проверяем
+        # порцию и грузим следующую. after_idle — чтобы не разрушать плитку
+        # внутри её же обработчика клика.
+        if self.current == "sets":
+            hub = self.pages.get("sets")
+            if getattr(hub, "current", "") == "cefr":
+                self.after_idle(hub.cefr.refresh)
 
     def open_word(self, slug: str) -> None:
         if self.vocab.get(slug):
