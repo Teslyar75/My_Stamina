@@ -36,17 +36,24 @@ class SetsHubPage(tk.Frame):
         self.body.grid_rowconfigure(0, weight=1)
         self.body.grid_columnconfigure(0, weight=1)
         self.pages: dict[str, tk.Frame] = {}
-        self.standard = SetsPage(self._holder("std"), self.ctx)
-        self.cefr = CefrPage(self._holder("cefr"), self.ctx)
-        self.verbs = VerbsTab(self._holder("verbs"), self.ctx)
-        self.book = BookTab(self._holder("book"), self.ctx)
+        self.standard = self._page("std", SetsPage)
+        self.cefr = self._page("cefr", CefrPage)
+        self.verbs = self._page("verbs", VerbsTab)
+        self.book = self._page("book", BookTab)
         self.show_tab("std")
 
-    def _holder(self, key: str) -> tk.Frame:
-        f = tk.Frame(self.body, bg=BG)
-        f.grid(row=0, column=0, sticky="nsew")
-        self.pages[key] = f
-        return f
+    def _page(self, key: str, cls) -> tk.Frame:
+        """Кадр-держатель + сама страница, растянутая на весь кадр.
+
+        Без pack() страница живёт невидимой: хаб показывал только вкладки и
+        подсказку, а тело оставалось пустым.
+        """
+        holder = tk.Frame(self.body, bg=BG)
+        holder.grid(row=0, column=0, sticky="nsew")
+        page = cls(holder, self.ctx)
+        page.pack(fill=tk.BOTH, expand=True)
+        self.pages[key] = holder
+        return page
 
     # -- навигация -----------------------------------------------------------
     def show_tab(self, key: str) -> None:
