@@ -26,6 +26,22 @@ GitHub Actions создаст Release с notes из changelog.
 
 **Ваша система:** [🪟 Windows](#windows--один-двойной-щелчок) · [🐧 Linux (Ubuntu и др.)](#linux-ubuntu--одна-команда)
 
+### Что нужно для запуска
+
+| | Требование |
+|---|---|
+| **Система** | Windows 10/11 (64-бит) или Linux с рабочим столом. Проверено на Ubuntu 22.04 и 24.04; для Fedora, Arch и openSUSE в `install.sh` свои команды пакетов |
+| **Экран** | Windows — любой; Linux — X11 или Wayland **с XWayland** (окна Tk рисуются через X11). Без экрана (SSH, служба, cron) окно не откроется — программа так и скажет |
+| **Python** | 3.10 или новее, обязательно **с tkinter**. Ставить вручную не нужно: `install.bat` поставит 3.12 через winget, `install.sh` — пакеты `python3` и `python3-tk` |
+| **Диск** | ~300 МБ: программа, Pillow, pypdf. Модель произношения (необязательно) — ещё ~40 МБ |
+| **Интернет** | нужен один раз при установке: пакеты pip/apt и, если включите, модель речи |
+| **Права** | сама программа работает без администратора; `install.sh` спросит пароль sudo только для системных пакетов |
+| **Звук** | не обязателен: без него нет озвучки и микрофона, всё остальное работает. Windows — SAPI, Linux — `espeak-ng` + `libportaudio2` (ставит `install.sh`) |
+| **Не нужно** | Node.js, Docker, база данных — это только для [веб-версии](https://github.com/Teslyar75/Wed_Star_Typing_Version) |
+
+Проверить среду перед запуском (Linux): `./run.sh --check` — покажет Python, tkinter, DISPLAY, Pillow, pypdf и папку данных.
+Если окно не открылось, причина пишется в `~/.local/share/StarTyping/launch.log` и показывается окном.
+
 ### Windows — один двойной щелчок
 1. Скачайте программу: зелёная кнопка **Code → Download ZIP**
    ([прямая ссылка](https://github.com/Teslyar75/My_Stamina/archive/refs/heads/master.zip)) и распакуйте,
@@ -629,7 +645,9 @@ PhotoImage (`paste`). Подробно — [docs/living_space/SPEC.md](docs/livi
 Кэш переводов: `cache\translations.json` в папке программы.
 
 ## Установка и запуск
-Для новичка — [Быстрый старт](#-быстрый-старт-для-новичка) (`install.bat` / `bash install.sh`). Вручную:
+Условия запуска — в таблице [«Что нужно для запуска»](#что-нужно-для-запуска). Для новичка —
+[Быстрый старт](#-быстрый-старт-для-новичка) (`install.bat` / `bash install.sh`). Вручную:
+
 ```bash
 git clone https://github.com/Teslyar75/My_Stamina.git
 cd My_Stamina
@@ -637,9 +655,13 @@ python -m venv .venv          # Linux: python3 -m venv .venv
 .venv\Scripts\pip install -r requirements.txt    # Linux: .venv/bin/pip install -r requirements.txt
 python main.py
 ```
+Нужен Python 3.10+ с tkinter (Ubuntu / Debian / Mint: `sudo apt install python3 python3-tk`; Fedora:
+`python3-tkinter`; Arch: `tk`). Windows: при установке Python с python.org включите **tcl/tk and IDLE**
+и **Add python.exe to PATH**.
 Проверка произношения (необязательно; модель Vosk ~40 МБ в git не хранится):
 `pip install vosk sounddevice` и `python scripts/download_vosk_model.py`.
 - `install.bat` / `install.sh` — установка в один шаг; `Stamina.bat` / `run.sh` — запуск;
+- `./run.sh --check` — отчёт о среде (Python, tkinter, DISPLAY, Pillow, pypdf, папка данных);
 - `create_shortcut.ps1` — ярлык «Star Typing» на рабочем столе Windows (из `.venv`, если есть);
 - данные: Windows `%APPDATA%\Stamina`, Linux `~/.local/share/StarTyping` (прежняя `~/.stamina` тоже читается).
 
