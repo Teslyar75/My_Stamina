@@ -77,6 +77,7 @@ class SetsHubPage(tk.Frame):
         self.show_tab(tab)
         if tab == "std":
             self.standard.open_set(sid)
+        self.ctx.show("sets")
 
     def focus_standard(self) -> None:
         self.show_tab("std")
@@ -84,6 +85,7 @@ class SetsHubPage(tk.Frame):
     def open_cefr(self, level: str = "A1") -> None:
         self.show_tab("cefr")
         self.cefr.select(level)
+        self.ctx.show("sets")
 
     def refresh(self) -> None:
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
@@ -92,7 +94,7 @@ class SetsHubPage(tk.Frame):
 
 
 class CefrPage(tk.Frame):
-    COLS, ROWS = 6, 3
+    COLS, ROWS = 6, 4          # блок = 24 карточки, как в СТАНДАРТЕ
 
     def __init__(self, master, ctx) -> None:
         super().__init__(master, bg=BG)

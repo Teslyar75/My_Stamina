@@ -28,9 +28,11 @@ VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 class SectorCard(tk.Canvas):
     """Сектор-группа на Обзоре: код, название, счётчик, мини-график и шкала."""
 
-    def __init__(self, master, ctx, group: dict) -> None:
-        super().__init__(master, bg=BG, highlightthickness=0, bd=0, height=px(150), width=px(200), cursor="hand2")
+    def __init__(self, master, ctx, group: dict, compact: bool = False, height: int = 150) -> None:
+        super().__init__(master, bg=BG, highlightthickness=0, bd=0, height=px(height), width=px(200),
+                         cursor="hand2")
         self.ctx, self.g = ctx, group
+        self.compact = compact
         self.hover = False
         self.bind("<Configure>", lambda _e: self.redraw())
         self.bind("<Enter>", lambda _e: self._h(True))
@@ -64,13 +66,14 @@ class SectorCard(tk.Canvas):
         self.create_text(px(12), px(40), text=g["name"], anchor="w", fill=TEXT, font=theme.font(13, True))
         note = g.get("note")() if callable(g.get("note")) else (g.get("note") or "")
         self.create_text(px(12), px(62), text=note, anchor="w", fill=MUTED, font=theme.font(8))
-        rng = random.Random(g["code"])
-        pts = [(px(14) + i * (w - px(28)) / 5, px(78) + rng.random() * px(30)) for i in range(6)]
-        for a, b in zip(pts, pts[1:]):
-            self.create_line(*a, *b, fill=blend(col, BG, 0.5))
-        for x, y in pts:
-            self.create_polygon(x, y - px(3), x + px(3), y, x, y + px(3), x - px(3), y, fill=col if known else CYAN_DIM)
-        n, gap = 16, px(3)
+        if not self.compact:
+            rng = random.Random(g["code"])
+            pts = [(px(14) + i * (w - px(28)) / 5, px(78) + rng.random() * px(30)) for i in range(6)]
+            for a, b in zip(pts, pts[1:]):
+                self.create_line(*a, *b, fill=blend(col, BG, 0.5))
+            for x, y in pts:
+                self.create_polygon(x, y - px(3), x + px(3), y, x, y + px(3), x - px(3), y, fill=col if known else CYAN_DIM)
+        n, gap = (12, px(2)) if self.compact else (16, px(3))
         sw = (w - px(24) - gap * (n - 1)) / n
         filled = round(frac * n) if known == 0 else max(1, round(frac * n))
         for i in range(n):
@@ -122,6 +125,29 @@ class OverviewPage(tk.Frame):
             c.grid(row=0, column=i, sticky="nsew", padx=px(3))
             row.grid_columnconfigure(i, weight=1, uniform="sec")
             self.cards.append(c)
+
+        # частотные наборы: те самые плашки 1000 / 3000 / 10 000 / 20 000,
+        # каждая открывает свой набор в СТАНДАРТЕ (листание блоками по 24)
+        L(sec, "ЧАСТОТНЫЕ НАБОРЫ · БЛОКИ ПО 24", fg=MUTED, size=9, bold=True, bg=BG).pack(
+            anchor="w", pady=(px(10), px(4)))
+        frow = tk.Frame(sec, bg=BG)
+        frow.pack(fill=tk.X)
+        self.freq_cards = []
+        for i, (sid, lim, name, sub, code) in enumerate(SETS[:4]):
+            def fstats(sid=sid):
+                ws = ctx.vocab.in_set(sid)
+                return len(ws), ctx.progress.known_or_learned([w["slug"] for w in ws])
+
+            def fnote(sid=sid):
+                ws = ctx.vocab.in_set(sid)
+                return "знаю {0} / {1}".format(ctx.progress.known_or_learned([w["slug"] for w in ws]), len(ws))
+
+            g = {"code": code, "name": name, "sub": sub, "stats": fstats, "note": fnote,
+                 "open": lambda s=sid: self._open_set(s)}
+            c = SectorCard(frow, ctx, g, compact=True, height=112)
+            c.grid(row=0, column=i, sticky="nsew", padx=px(3))
+            frow.grid_columnconfigure(i, weight=1, uniform="freq")
+            self.freq_cards.append(c)
 
         # плашка: предложения из читаемой книги (под секторами)
         self.book_panel = HudPanel(left_col, _t("ИЗ ЧИТАЕМОЙ КНИГИ · ПРЕДЛОЖЕНИЯ"), accent=CYAN)
@@ -188,20 +214,12 @@ class OverviewPage(tk.Frame):
         self._wod = None
 
     def _group_defs(self) -> list[dict]:
-        """Четыре сектора-группы: стандарт, CEFR, глаголы, книга."""
+        """Сектора-группы: CEFR, глаголы, книга. Частотные наборы — отдельными плашками ниже."""
         from . import book_sentences as bs, cefr as cefrmod, paths as en_paths
         p, v = self.ctx.progress, self.ctx.vocab
 
         def hub():
             return getattr(self.ctx, "pages", {}).get("sets")
-
-        def freq_stats():
-            ws = v.in_set("top-1000")
-            return len(ws), p.known_or_learned([w["slug"] for w in ws])
-
-        def freq_note():
-            total, known = freq_stats()
-            return _t("знаю {0} / {1} · 4 набора").format(known, total)
 
         def cefr_stats():
             total = known = 0
@@ -246,16 +264,13 @@ class OverviewPage(tk.Frame):
             h = hub()
             if h is None:
                 return
-            if key == "std":
-                h.open_set("top-1000")
-            elif key == "cefr":
+            if key == "cefr":
                 h.open_cefr("A1")
             else:
                 h.show_tab(key)
+                self.ctx.show("sets")
 
         return [
-            {"code": "S-FREQ", "name": "Essential 1000", "sub": _t("СТАНДАРТ"),
-             "stats": freq_stats, "note": freq_note, "open": lambda: open_group("std")},
             {"code": "S-CEFR", "name": "A1 → C2", "sub": "CEFR",
              "stats": cefr_stats, "note": cefr_note, "open": lambda: open_group("cefr")},
             {"code": "S-VRB", "name": "Irregular", "sub": _t("ГЛАГОЛЫ"),
@@ -263,6 +278,13 @@ class OverviewPage(tk.Frame):
             {"code": "S-BOOK", "name": _t("Из книги"), "sub": _t("ПРЕДЛОЖЕНИЯ"),
              "stats": book_stats, "note": book_note, "open": lambda: open_group("book")},
         ]
+
+    def _open_set(self, sid: str) -> None:
+        """Плашка частотного набора: открыть СТАНДАРТ с этим набором."""
+        hub = getattr(self.ctx, "pages", {}).get("sets")
+        if hub is None:
+            return
+        hub.open_set(sid)
 
     def _active_book_info(self) -> dict | None:
         """Текущая книга из библиотеки / уже синхронизированных карточек."""
@@ -379,6 +401,8 @@ class OverviewPage(tk.Frame):
         self.ro.set([(_t("К ПОВТОРЕНИЮ"), str(due), CYAN), (_t("НОВЫХ ДОСТУПНО"), str(min(new_left, avail)), GREEN),
                      (_t("СЕРИЯ ДНЕЙ / ЛУЧШАЯ"), f"{st} / {max(st, p.data['xp'].get('best_streak', 0))}", AMBER)])
         for c in self.cards:
+            c.redraw(fresh=True)
+        for c in self.freq_cards:
             c.redraw(fresh=True)
         lvl, lo, hi = p.level()
         self.lvl.configure(text=str(lvl))
