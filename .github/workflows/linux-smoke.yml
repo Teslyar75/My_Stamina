@@ -26,12 +26,12 @@ jobs:
         run: |
           . /etc/os-release; echo "$PRETTY_NAME"
           python3 --version
-          python3 -c 'import tkinter; print("tkinter", tkinter.TkVersion)'
 
       - name: Пакеты как в README
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-tk xvfb mpv espeak-ng alsa-utils imagemagick
+          python3 -c 'import tkinter; print("tkinter", tkinter.TkVersion)'
 
       - name: Запуск python3 main.py под виртуальным экраном
         run: |
