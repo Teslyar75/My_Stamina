@@ -1,0 +1,99 @@
+name: Linux smoke
+
+# Проверка «а запускается ли десктопная версия на Linux»: настоящая Ubuntu,
+# виртуальный экран, запуск как у пользователя (python3 main.py) и как из install.sh.
+on:
+  push:
+    branches: [agent/opencode/linux-check]
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  run-app:
+    name: Запуск на ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Что за система
+        run: |
+          . /etc/os-release; echo "$PRETTY_NAME"
+          python3 --version
+          python3 -c 'import tkinter; print("tkinter", tkinter.TkVersion)'
+
+      - name: Пакеты как в README
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-tk xvfb mpv espeak-ng alsa-utils imagemagick
+
+      - name: Запуск python3 main.py под виртуальным экраном
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1600x1000x24 >/dev/null 2>&1 &
+          sleep 2
+          python3 main.py > /tmp/run.out 2>&1 &
+          app=$!
+          sleep 20
+          if kill -0 $app 2>/dev/null; then
+            echo "ИТОГ: процесс живёт через 20 с (pid $app) — окно запустилось"
+          else
+            wait $app; echo "ИТОГ: процесс завершился, код $?"
+          fi
+          import -window root /tmp/screen.png 2>/dev/null || true
+          echo "--- вывод программы ---"
+          tail -40 /tmp/run.out || true
+          echo "--- журнал запуска ---"
+          cat "$HOME/.local/share/StarTyping/start.log" 2>/dev/null | tail -40 || echo "журнала нет"
+          echo "--- файлы ошибок ---"
+          ls -la "$HOME/.local/share/StarTyping/" 2>/dev/null || true
+          for f in "$HOME"/.local/share/StarTyping/*error*.log; do
+            [ -f "$f" ] && { echo "== $f"; tail -60 "$f"; }
+          done
+          kill $app 2>/dev/null || true
+          exit 0
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shot-${{ matrix.os }}
+          path: |
+            /tmp/screen.png
+            /tmp/run.out
+
+  installer:
+    name: Установка через install.sh (ubuntu-24.04)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Пакеты
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-tk python3-venv xvfb
+      - name: install.sh без sudo и без запуска
+        run: bash install.sh --no-voice --no-launch --no-system
+      - name: Запуск из .venv
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1600x1000x24 >/dev/null 2>&1 &
+          sleep 2
+          .venv/bin/python main.py > /tmp/venv.out 2>&1 &
+          app=$!
+          sleep 20
+          if kill -0 $app 2>/dev/null; then
+            echo "ИТОГ: .venv запустился и живёт через 20 с"
+          else
+            wait $app; echo "ИТОГ: .venv завершился, код $?"
+          fi
+          echo "--- вывод ---"
+          tail -40 /tmp/venv.out || true
+          echo "--- журнал ---"
+          cat "$HOME/.local/share/StarTyping/start.log" 2>/dev/null | tail -40 || true
+          kill $app 2>/dev/null || true
+          exit 0
