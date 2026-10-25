@@ -103,6 +103,7 @@ class CefrPage(tk.Frame):
         self.page = 0
         self.block = 0
         self.max_open = 0
+        self.rows = self.ROWS
         self.blocks: list[list[dict]] = []
         self.items: list[dict] = []
         self._reset_block = True
@@ -134,6 +135,10 @@ class CefrPage(tk.Frame):
             self.gridf.grid_columnconfigure(c, weight=1, uniform="c")
         for r in range(self.ROWS):
             self.gridf.grid_rowconfigure(r, weight=1, uniform="r")
+        # высоту задаёт окно: иначе четыре ряда плиток «просят» больше, чем есть,
+        # и нижняя панель с листалкой уезжает за край на низком окне
+        self.gridf.grid_propagate(False)
+        self.bind("<Configure>", self._fit_rows)
         self.empty = L(self, "", fg=AMBER, size=16, bold=True, bg=BG)
         bot = tk.Frame(self, bg=BG)
         bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
@@ -160,6 +165,17 @@ class CefrPage(tk.Frame):
         if getattr(self.ctx, "current", "") != "sets" or getattr(hub, "current", "") != "cefr":
             return
         self.go(-1 if event.keysym == "Left" else 1)
+
+    def _fit_rows(self, event) -> None:
+        """На низком окне меньше рядов, чтобы плитки не сжимались в полоску."""
+        n = 4 if event.height >= 680 else (3 if event.height >= 480 else 2)
+        if n != self.rows:
+            self.rows = n
+            for r in range(self.ROWS):
+                self.gridf.grid_rowconfigure(
+                    r, weight=1 if r < n else 0, uniform="r" if r < n else "")
+            self.page = 0
+            self.render()
 
     # -- прогресс ------------------------------------------------------------
     def _done(self, slug: str) -> bool:
@@ -348,7 +364,7 @@ class CefrPage(tk.Frame):
         for t in self.tiles:
             t.destroy()
         self.tiles = []
-        per = self.COLS * self.ROWS
+        per = self.COLS * self.rows
         pages = max(1, -(-len(self.items) // per))
         self.page = min(self.page, pages - 1)
         chunk = self.items[self.page * per:(self.page + 1) * per]
@@ -362,7 +378,7 @@ class CefrPage(tk.Frame):
             self.page + 1, pages, a, b, len(self.items)))
 
     def go(self, d: int) -> None:
-        per = self.COLS * self.ROWS
+        per = self.COLS * self.rows
         pages = max(1, -(-len(self.items) // per))
         self.page = max(0, min(pages - 1, self.page + d))
         self.render()

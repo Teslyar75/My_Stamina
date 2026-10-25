@@ -143,6 +143,38 @@ def test_cefr_blocks_unlock_after_work(tmp_path):
         root.destroy()
 
 
+def test_cefr_fits_short_window(tmp_path):
+    """На низком окне нижняя панель не уезжает, рядов меньше, плитки не в полоску."""
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    try:
+        root.attributes("-alpha", 0.0)
+        root.geometry("1350x800+20+20")
+        hub = SetsHubPage(root, Ctx(tmp_path))
+        hub.pack(fill="both", expand=True)
+        root.update()
+        hub.show_tab("cefr")
+        root.update()
+        page = hub.cefr
+
+        root.geometry("1350x500")
+        root.update()
+        assert page.rows == 2
+        assert page.pg.winfo_ismapped(), "листалка уехала за край"
+        assert len(page.tiles) == page.COLS * 2
+        assert page.tiles[0].winfo_height() >= 60
+
+        root.geometry("1350x600")
+        root.update()
+        assert page.rows == 3
+        assert page.pg.winfo_ismapped()
+        assert len(page.tiles) == page.COLS * 3
+    finally:
+        root.destroy()
+
+
 def test_open_set_switches_screen_and_set(tmp_path):
     try:
         root = tk.Tk()
