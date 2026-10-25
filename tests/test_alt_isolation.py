@@ -32,7 +32,7 @@ class WorkingRuleTest(unittest.TestCase):
 
     def test_english_declares_work_pages(self):
         from stamina.english.screen import EnglishScreen
-        self.assertEqual(set(EnglishScreen.WORK_PAGES), {"review", "practice", "book"})
+        self.assertEqual(set(EnglishScreen.WORK_PAGES), {"review", "practice", "book", "sets"})
 
 
 @unittest.skipUnless(os.environ.get("STAMINA_SLOW_TESTS") and sys.platform == "win32",

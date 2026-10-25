@@ -8,10 +8,12 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 
+from . import quality
+
 SENT_PASS = 60   # пример в СКАНЕРЕ (история; на складе не обязателен)
 FLIP_OK = 80     # порог зачёта слова/предложения в одном прогоне
 PASS_QUALITY = 85  # средняя точность прогона, чтобы он засчитался (★★ и выше)
-MAX_DIFF = 3
+MAX_DIFF = 5
 PASS_CHOICES = (1, 2, 3, 5)
 DEFAULT_PASSES = 2
 
@@ -41,6 +43,8 @@ def is_ready(progress, vocab, slug: str) -> bool:
     """На активном складе: выучено, есть примеры, не «в работе» и не отработано."""
     if is_away(progress, slug) or is_done(progress, slug):
         return False
+    if quality.is_complete(progress, slug):
+        return False
     if not (progress.is_known(slug) or progress.is_learned(slug)):
         return False
     w = vocab.get(slug)
@@ -62,6 +66,7 @@ def make_card(progress, vocab, word: dict) -> dict:
         "difficulty": max(1, len(sents)),
         "rank": word.get("rank", 0),
         "pos": word.get("pos") or "",
+        "kind": "word",
         "stars": int((done or {}).get("stars", 0) or 0),
         "avg": float((done or {}).get("avg", 0) or 0),
         "passed": bool(done),
@@ -287,6 +292,13 @@ def _move_to_cleared(progress, slug: str, stars: int, avg: float, score_map: dic
             xp = 5 * stars
     progress.save()
     return cleared[slug]["stars"], cleared[slug]["avg"], xp, improved or first
+
+
+def clear_by_quality(progress, slug: str, avg: float | None = None):
+    """Карточка набрала цель качественных повторений → «Отработано»."""
+    if avg is None:
+        avg = quality.average_score(progress, slug)
+    return _move_to_cleared(progress, slug, stars_for_avg(avg), avg, {}, [])
 
 
 def finish_pass(progress, slug: str, scores: dict[int, int], sel: list[bool]

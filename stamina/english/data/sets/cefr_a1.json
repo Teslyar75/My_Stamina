@@ -1,0 +1,342 @@
+{
+  "id": "cefr-a1",
+  "level": "A1",
+  "name": "A1 · Выживание",
+  "source": {
+    "name": "original",
+    "url": "docs/english/PLATFORM_STRUCTURE.md",
+    "license": "CC BY-SA 4.0"
+  },
+  "words": [
+    {
+      "word": "apple", "ru": "яблоко", "ipa": "ˈæp.əl", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a round fruit with red or green skin"}],
+      "sentences": [
+        {"en": "I eat an apple every day.", "ru": "Я ем яблоко каждый день."},
+        {"en": "This apple is red and sweet.", "ru": "Это яблоко красное и сладкое."},
+        {"en": "She puts an apple in her bag.", "ru": "Она кладёт яблоко в сумку."},
+        {"en": "We buy apples at the market.", "ru": "Мы покупаем яблоки на рынке."},
+        {"en": "Do you want an apple?", "ru": "Хочешь яблоко?"}
+      ]
+    },
+    {
+      "word": "water", "ru": "вода", "ipa": "ˈwɔː.tər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the clear liquid that people drink"}],
+      "sentences": [
+        {"en": "I drink water every morning.", "ru": "Я пью воду каждое утро."},
+        {"en": "Can I have some water, please?", "ru": "Можно мне немного воды?"},
+        {"en": "The water is cold.", "ru": "Вода холодная."},
+        {"en": "We need water for tea.", "ru": "Нам нужна вода для чая."},
+        {"en": "There is water in the bottle.", "ru": "В бутылке есть вода."}
+      ]
+    },
+    {
+      "word": "bread", "ru": "хлеб", "ipa": "bred", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a food made from flour and baked in an oven"}],
+      "sentences": [
+        {"en": "I buy bread in the morning.", "ru": "Я покупаю хлеб утром."},
+        {"en": "This bread is very good.", "ru": "Этот хлеб очень хороший."},
+        {"en": "She eats bread with butter.", "ru": "Она ест хлеб с маслом."},
+        {"en": "We have no bread at home.", "ru": "У нас дома нет хлеба."},
+        {"en": "Do you like bread?", "ru": "Ты любишь хлеб?"}
+      ]
+    },
+    {
+      "word": "house", "ru": "дом", "ipa": "haʊs", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a building where people live"}],
+      "sentences": [
+        {"en": "My house is small.", "ru": "Мой дом маленький."},
+        {"en": "We live in a white house.", "ru": "Мы живём в белом доме."},
+        {"en": "His house is near the school.", "ru": "Его дом рядом со школой."},
+        {"en": "There are two rooms in the house.", "ru": "В доме две комнаты."},
+        {"en": "Come to my house today.", "ru": "Приходи ко мне домой сегодня."}
+      ]
+    },
+    {
+      "word": "family", "ru": "семья", "ipa": "ˈfæm.əl.i", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a group of people who are related to each other"}],
+      "sentences": [
+        {"en": "My family is big.", "ru": "Моя семья большая."},
+        {"en": "We have dinner with my family.", "ru": "Мы ужинаем с моей семьёй."},
+        {"en": "Her family lives in the city.", "ru": "Её семья живёт в городе."},
+        {"en": "I love my family.", "ru": "Я люблю свою семью."},
+        {"en": "Is your family at home?", "ru": "Твоя семья дома?"}
+      ]
+    },
+    {
+      "word": "friend", "ru": "друг", "ipa": "frend", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a person you know well and like"}],
+      "sentences": [
+        {"en": "My friend is a teacher.", "ru": "Мой друг — учитель."},
+        {"en": "I meet my friend after school.", "ru": "Я встречаю друга после школы."},
+        {"en": "She has a good friend.", "ru": "У неё есть хороший друг."},
+        {"en": "We are friends.", "ru": "Мы друзья."},
+        {"en": "My friend helps me.", "ru": "Мой друг помогает мне."}
+      ]
+    },
+    {
+      "word": "day", "ru": "день", "ipa": "deɪ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of twenty-four hours"}],
+      "sentences": [
+        {"en": "It is a good day.", "ru": "Это хороший день."},
+        {"en": "I work every day.", "ru": "Я работаю каждый день."},
+        {"en": "What day is it today?", "ru": "Какой сегодня день?"},
+        {"en": "We have five lessons a day.", "ru": "У нас пять уроков в день."},
+        {"en": "The day is long.", "ru": "День длинный."}
+      ]
+    },
+    {
+      "word": "morning", "ru": "утро", "ipa": "ˈmɔː.nɪŋ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the early part of the day, before noon"}],
+      "sentences": [
+        {"en": "I get up early in the morning.", "ru": "Я встаю рано утром."},
+        {"en": "Good morning!", "ru": "Доброе утро!"},
+        {"en": "The morning is cold.", "ru": "Утро холодное."},
+        {"en": "We drink tea in the morning.", "ru": "Мы пьём чай утром."},
+        {"en": "She works in the morning.", "ru": "Она работает утром."}
+      ]
+    },
+    {
+      "word": "evening", "ru": "вечер", "ipa": "ˈiːv.nɪŋ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the part of the day between afternoon and night"}],
+      "sentences": [
+        {"en": "I read a book in the evening.", "ru": "Я читаю книгу вечером."},
+        {"en": "Good evening!", "ru": "Добрый вечер!"},
+        {"en": "We watch TV in the evening.", "ru": "Мы смотрим телевизор вечером."},
+        {"en": "The evening is quiet.", "ru": "Вечер тихий."},
+        {"en": "Come to us this evening.", "ru": "Приходи к нам сегодня вечером."}
+      ]
+    },
+    {
+      "word": "time", "ru": "время", "ipa": "taɪm", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the thing that is measured in minutes, hours and days"}],
+      "sentences": [
+        {"en": "What time is it?", "ru": "Который час?"},
+        {"en": "I have no time today.", "ru": "У меня сегодня нет времени."},
+        {"en": "We have a good time.", "ru": "Мы хорошо проводим время."},
+        {"en": "It is time to go.", "ru": "Пора идти."},
+        {"en": "She studies English in her free time.", "ru": "Она учит английский в свободное время."}
+      ]
+    },
+    {
+      "word": "work", "ru": "работа", "ipa": "wɜːk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a job or the activity of doing a job"}],
+      "sentences": [
+        {"en": "I work in a small office.", "ru": "Я работаю в маленьком офисе."},
+        {"en": "He goes to work at eight.", "ru": "Он идёт на работу в восемь."},
+        {"en": "My work is interesting.", "ru": "Моя работа интересная."},
+        {"en": "We work together.", "ru": "Мы работаем вместе."},
+        {"en": "She likes her work.", "ru": "Ей нравится её работа."}
+      ]
+    },
+    {
+      "word": "school", "ru": "школа", "ipa": "skuːl", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a place where children go to learn"}],
+      "sentences": [
+        {"en": "My school is near the park.", "ru": "Моя школа рядом с парком."},
+        {"en": "The children go to school.", "ru": "Дети идут в школу."},
+        {"en": "I study English at school.", "ru": "Я учу английский в школе."},
+        {"en": "School starts at nine.", "ru": "Школа начинается в девять."},
+        {"en": "Our school is big.", "ru": "Наша школа большая."}
+      ]
+    },
+    {
+      "word": "book", "ru": "книга", "ipa": "bʊk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a set of printed pages that you read"}],
+      "sentences": [
+        {"en": "I read a book every evening.", "ru": "Я читаю книгу каждый вечер."},
+        {"en": "This book is new.", "ru": "Эта книга новая."},
+        {"en": "She has a book in her bag.", "ru": "У неё в сумке есть книга."},
+        {"en": "My book is on the table.", "ru": "Моя книга на столе."},
+        {"en": "Do you like this book?", "ru": "Тебе нравится эта книга?"}
+      ]
+    },
+    {
+      "word": "city", "ru": "город", "ipa": "ˈsɪt.i", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a big town where many people live"}],
+      "sentences": [
+        {"en": "My city is big.", "ru": "Мой город большой."},
+        {"en": "We live in a small city.", "ru": "Мы живём в маленьком городе."},
+        {"en": "The city is beautiful at night.", "ru": "Город красив ночью."},
+        {"en": "He works in the city.", "ru": "Он работает в городе."},
+        {"en": "There are many parks in the city.", "ru": "В городе много парков."}
+      ]
+    },
+    {
+      "word": "car", "ru": "машина", "ipa": "kɑːr", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a road vehicle with four wheels"}],
+      "sentences": [
+        {"en": "My father has a car.", "ru": "У моего отца есть машина."},
+        {"en": "The car is old.", "ru": "Машина старая."},
+        {"en": "We go to work by car.", "ru": "Мы едем на работу на машине."},
+        {"en": "Her car is red.", "ru": "Её машина красная."},
+        {"en": "There is a car near the house.", "ru": "Около дома есть машина."}
+      ]
+    },
+    {
+      "word": "mother", "ru": "мама", "ipa": "ˈmʌð.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a female parent"}],
+      "sentences": [
+        {"en": "My mother is a doctor.", "ru": "Моя мама — врач."},
+        {"en": "I call my mother every day.", "ru": "Я звоню маме каждый день."},
+        {"en": "Her mother lives in the city.", "ru": "Её мама живёт в городе."},
+        {"en": "My mother likes tea.", "ru": "Моя мама любит чай."},
+        {"en": "This is my mother.", "ru": "Это моя мама."}
+      ]
+    },
+    {
+      "word": "father", "ru": "папа", "ipa": "ˈfɑː.ðər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a male parent"}],
+      "sentences": [
+        {"en": "My father works at school.", "ru": "Мой папа работает в школе."},
+        {"en": "His father is a driver.", "ru": "Его папа — водитель."},
+        {"en": "I help my father.", "ru": "Я помогаю папе."},
+        {"en": "My father is at home.", "ru": "Мой папа дома."},
+        {"en": "Her father likes books.", "ru": "Её папа любит книги."}
+      ]
+    },
+    {
+      "word": "good", "ru": "хороший", "ipa": "ɡʊd", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "of high quality or pleasant"}],
+      "sentences": [
+        {"en": "This is a good book.", "ru": "Это хорошая книга."},
+        {"en": "She is a good friend.", "ru": "Она хороший друг."},
+        {"en": "We have a good day.", "ru": "У нас хороший день."},
+        {"en": "The food is very good.", "ru": "Еда очень хорошая."},
+        {"en": "That is a good idea.", "ru": "Это хорошая идея."}
+      ]
+    },
+    {
+      "word": "small", "ru": "маленький", "ipa": "smɔːl", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "not big in size"}],
+      "sentences": [
+        {"en": "My house is small.", "ru": "Мой дом маленький."},
+        {"en": "She has a small bag.", "ru": "У неё маленькая сумка."},
+        {"en": "The city is small.", "ru": "Город маленький."},
+        {"en": "This is a small car.", "ru": "Это маленькая машина."},
+        {"en": "We live in a small room.", "ru": "Мы живём в маленькой комнате."}
+      ]
+    },
+    {
+      "word": "big", "ru": "большой", "ipa": "bɪɡ", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "large in size"}],
+      "sentences": [
+        {"en": "My family is big.", "ru": "Моя семья большая."},
+        {"en": "The city is big.", "ru": "Город большой."},
+        {"en": "He has a big dog.", "ru": "У него большая собака."},
+        {"en": "This is a big house.", "ru": "Это большой дом."},
+        {"en": "The book is big.", "ru": "Книга большая."}
+      ]
+    },
+    {
+      "word": "new", "ru": "новый", "ipa": "njuː", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "recently made or bought"}],
+      "sentences": [
+        {"en": "This is a new book.", "ru": "Это новая книга."},
+        {"en": "I have a new car.", "ru": "У меня новая машина."},
+        {"en": "She is a new teacher.", "ru": "Она новый учитель."},
+        {"en": "Our house is new.", "ru": "Наш дом новый."},
+        {"en": "The day is new.", "ru": "День новый."}
+      ]
+    },
+    {
+      "word": "old", "ru": "старый", "ipa": "əʊld", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "having lived or existed for many years"}],
+      "sentences": [
+        {"en": "My car is old.", "ru": "Моя машина старая."},
+        {"en": "This is an old house.", "ru": "Это старый дом."},
+        {"en": "He has an old book.", "ru": "У него старая книга."},
+        {"en": "The city is old.", "ru": "Город старый."},
+        {"en": "She is my old friend.", "ru": "Она моя старая подруга."}
+      ]
+    },
+    {
+      "word": "happy", "ru": "счастливый", "ipa": "ˈhæp.i", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "feeling pleasure or joy"}],
+      "sentences": [
+        {"en": "I am happy today.", "ru": "Я счастлив сегодня."},
+        {"en": "She is a happy child.", "ru": "Она счастливый ребёнок."},
+        {"en": "We are happy to see you.", "ru": "Мы рады вас видеть."},
+        {"en": "He looks happy.", "ru": "Он выглядит счастливым."},
+        {"en": "They are very happy.", "ru": "Они очень счастливы."}
+      ]
+    },
+    {
+      "word": "go", "ru": "идти", "ipa": "ɡəʊ", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to move or travel to a place"}],
+      "sentences": [
+        {"en": "I go to school every day.", "ru": "Я хожу в школу каждый день."},
+        {"en": "We go home together.", "ru": "Мы идём домой вместе."},
+        {"en": "She goes to work by car.", "ru": "Она едет на работу на машине."},
+        {"en": "Let's go to the park.", "ru": "Пойдём в парк."},
+        {"en": "They go to the city.", "ru": "Они едут в город."}
+      ]
+    },
+    {
+      "word": "come", "ru": "приходить", "ipa": "kʌm", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to move towards the speaker or a place"}],
+      "sentences": [
+        {"en": "Come to my house.", "ru": "Приходи ко мне домой."},
+        {"en": "He comes home at six.", "ru": "Он приходит домой в шесть."},
+        {"en": "We come to school early.", "ru": "Мы приходим в школу рано."},
+        {"en": "She comes from a small city.", "ru": "Она родом из маленького города."},
+        {"en": "Can you come today?", "ru": "Ты можешь прийти сегодня?"}
+      ]
+    },
+    {
+      "word": "eat", "ru": "есть", "ipa": "iːt", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to put food in your mouth and swallow it"}],
+      "sentences": [
+        {"en": "I eat bread in the morning.", "ru": "Я ем хлеб утром."},
+        {"en": "We eat together.", "ru": "Мы едим вместе."},
+        {"en": "She eats an apple every day.", "ru": "Она ест яблоко каждый день."},
+        {"en": "They eat at home.", "ru": "Они едят дома."},
+        {"en": "Do you eat meat?", "ru": "Ты ешь мясо?"}
+      ]
+    },
+    {
+      "word": "drink", "ru": "пить", "ipa": "drɪŋk", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to take liquid into your mouth and swallow it"}],
+      "sentences": [
+        {"en": "I drink water.", "ru": "Я пью воду."},
+        {"en": "She drinks tea in the morning.", "ru": "Она пьёт чай утром."},
+        {"en": "We drink coffee together.", "ru": "Мы пьём кофе вместе."},
+        {"en": "He drinks a lot of water.", "ru": "Он пьёт много воды."},
+        {"en": "Do you drink milk?", "ru": "Ты пьёшь молоко?"}
+      ]
+    },
+    {
+      "word": "see", "ru": "видеть", "ipa": "siː", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to notice something with your eyes"}],
+      "sentences": [
+        {"en": "I see a big house.", "ru": "Я вижу большой дом."},
+        {"en": "We see the city from here.", "ru": "Мы видим город отсюда."},
+        {"en": "She sees her friend.", "ru": "Она видит своего друга."},
+        {"en": "Can you see the car?", "ru": "Ты видишь машину?"},
+        {"en": "I see him every day.", "ru": "Я вижу его каждый день."}
+      ]
+    },
+    {
+      "word": "like", "ru": "нравиться", "ipa": "laɪk", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to enjoy something or find it pleasant"}],
+      "sentences": [
+        {"en": "I like this book.", "ru": "Мне нравится эта книга."},
+        {"en": "She likes tea.", "ru": "Она любит чай."},
+        {"en": "We like our school.", "ru": "Нам нравится наша школа."},
+        {"en": "Do you like the city?", "ru": "Тебе нравится город?"},
+        {"en": "He likes his work.", "ru": "Ему нравится его работа."}
+      ]
+    },
+    {
+      "word": "help", "ru": "помогать", "ipa": "help", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to do something useful for someone"}],
+      "sentences": [
+        {"en": "Can you help me?", "ru": "Ты можешь мне помочь?"},
+        {"en": "She helps her mother.", "ru": "Она помогает маме."},
+        {"en": "We help our friends.", "ru": "Мы помогаем друзьям."},
+        {"en": "I need your help.", "ru": "Мне нужна твоя помощь."},
+        {"en": "He helps at school.", "ru": "Он помогает в школе."}
+      ]
+    }
+  ]
+}

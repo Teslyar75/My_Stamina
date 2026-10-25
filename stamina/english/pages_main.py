@@ -26,14 +26,16 @@ VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 # =============================================================================
 
 class SectorCard(tk.Canvas):
-    def __init__(self, master, ctx, set_def) -> None:
+    """Сектор-группа на Обзоре: код, название, счётчик, мини-график и шкала."""
+
+    def __init__(self, master, ctx, group: dict) -> None:
         super().__init__(master, bg=BG, highlightthickness=0, bd=0, height=px(150), width=px(200), cursor="hand2")
-        self.ctx, self.s = ctx, set_def
+        self.ctx, self.g = ctx, group
         self.hover = False
         self.bind("<Configure>", lambda _e: self.redraw())
         self.bind("<Enter>", lambda _e: self._h(True))
         self.bind("<Leave>", lambda _e: self._h(False))
-        self.bind("<Button-1>", lambda _e: self.ctx.pages["sets"].open_set(self.s[0]))
+        self.bind("<Button-1>", lambda _e: self.g["open"]())
 
     def _h(self, v) -> None:
         self.hover = v
@@ -44,25 +46,25 @@ class SectorCard(tk.Canvas):
         w, h = self.winfo_width(), self.winfo_height()
         if w < 50:
             return
-        sid, lim, name, sub, code = self.s
-        # счёт сектора дорогой (in_set + known_or_learned): <Configure>/hover берут кеш, refresh() - свежий
+        g = self.g
         st = None if fresh else getattr(self, "_stats", None)
         if st is None:
-            words = self.ctx.vocab.in_set(sid)
-            st = self._stats = (len(words), self.ctx.progress.known_or_learned([x["slug"] for x in words]))
+            try:
+                st = self._stats = g["stats"]()
+            except Exception:  # noqa: BLE001
+                st = self._stats = (0, 0)
         total, known = st
         frac = known / total if total else 0
-        col = GREEN if frac >= 1 else (AMBER if known else (CYAN if self.hover else LINE_HI))
+        col = GREEN if frac >= 1 and total else (AMBER if known else (CYAN if self.hover else LINE_HI))
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, px(12)), fill=PANEL_HI if self.hover else PANEL,
                             outline=col, width=2 if known else 1)
-        self.create_text(px(12), px(14), text=code, anchor="w", fill=col if known else CYAN,
+        self.create_text(px(12), px(14), text=g["code"], anchor="w", fill=col if known else CYAN,
                          font=theme.font(9, True, mono=True))
-        self.create_text(w - px(12), px(14), text=sub, anchor="e", fill=MUTED, font=theme.font(8, True))
-        self.create_text(px(12), px(40), text=name, anchor="w", fill=TEXT, font=theme.font(13, True))
-        status = _t("пройден") if frac >= 1 else (_t("в процессе") if known else _t("не начат"))
-        self.create_text(px(12), px(62), text=_t("знаю {0} / {1} · {2}").format(known, total, status), anchor="w", fill=MUTED,
-                         font=theme.font(8))
-        rng = random.Random(sid)
+        self.create_text(w - px(12), px(14), text=g["sub"], anchor="e", fill=MUTED, font=theme.font(8, True))
+        self.create_text(px(12), px(40), text=g["name"], anchor="w", fill=TEXT, font=theme.font(13, True))
+        note = g.get("note")() if callable(g.get("note")) else (g.get("note") or "")
+        self.create_text(px(12), px(62), text=note, anchor="w", fill=MUTED, font=theme.font(8))
+        rng = random.Random(g["code"])
         pts = [(px(14) + i * (w - px(28)) / 5, px(78) + rng.random() * px(30)) for i in range(6)]
         for a, b in zip(pts, pts[1:]):
             self.create_line(*a, *b, fill=blend(col, BG, 0.5))
@@ -100,9 +102,9 @@ class OverviewPage(tk.Frame):
                   font_size=11, width=230).pack(pady=px(4))
         HudButton(acts, _t("БЫСТРАЯ МИССИЯ · 10"), lambda: self.ctx.start_session("random", source="set"),
                   height=42, font_size=11, width=230).pack(pady=px(4))
-        HudButton(acts, _t("ИЗ КНИГИ · КАРТОЧКИ"), lambda: self.ctx.open_book_cards(),
+        HudButton(acts, _t("УРОКИ · ПРОДОЛЖИТЬ"), lambda: self.ctx.show("lessons"),
                   color=CYAN, height=42, font_size=11, width=230).pack(pady=px(4))
-        L(acts, _t("слова из словаря · предложения из прочитанных книг"), fg=MUTED, size=8).pack()
+        L(acts, _t("урок → правило → слова → миссия → склад"), fg=MUTED, size=8).pack()
         # секторы + плашка книги
         left_col = tk.Frame(grid, bg=BG)
         left_col.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
@@ -111,12 +113,12 @@ class OverviewPage(tk.Frame):
 
         sec = tk.Frame(left_col, bg=BG)
         sec.pack(fill=tk.X)
-        L(sec, _t("СЕКТОРЫ · НАБОРЫ СЛОВ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
+        L(sec, _t("СЕКТОРЫ · НАБОРЫ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
         row = tk.Frame(sec, bg=BG)
         row.pack(fill=tk.X)
         self.cards = []
-        for i, s in enumerate(SETS):
-            c = SectorCard(row, ctx, s)
+        for i, g in enumerate(self._group_defs()):
+            c = SectorCard(row, ctx, g)
             c.grid(row=0, column=i, sticky="nsew", padx=px(3))
             row.grid_columnconfigure(i, weight=1, uniform="sec")
             self.cards.append(c)
@@ -184,6 +186,83 @@ class OverviewPage(tk.Frame):
         self.sig_def.pack(anchor="w", pady=px(4))
         HudButton(sb, _t("СКАНИРОВАТЬ"), lambda: self.ctx.open_word(self._wod), height=32).pack(anchor="w", pady=px(4))
         self._wod = None
+
+    def _group_defs(self) -> list[dict]:
+        """Четыре сектора-группы: стандарт, CEFR, глаголы, книга."""
+        from . import book_sentences as bs, cefr as cefrmod, paths as en_paths
+        p, v = self.ctx.progress, self.ctx.vocab
+
+        def hub():
+            return getattr(self.ctx, "pages", {}).get("sets")
+
+        def freq_stats():
+            ws = v.in_set("top-1000")
+            return len(ws), p.known_or_learned([w["slug"] for w in ws])
+
+        def freq_note():
+            total, known = freq_stats()
+            return _t("знаю {0} / {1} · 4 набора").format(known, total)
+
+        def cefr_stats():
+            total = known = 0
+            for lv in cefrmod.available():
+                for w in cefrmod.prepared(lv):
+                    total += 1
+                    if p.is_known(w["slug"]) or p.is_learned(w["slug"]):
+                        known += 1
+            return total, known
+
+        def cefr_note():
+            lv = cefrmod.available()
+            total, known = cefr_stats()
+            return (_t("{0} ур. · {1} слов · знаю {2}").format(len(lv), total, known)
+                    if total else _t("набор готовится"))
+
+        def verbs_data() -> list[dict]:
+            try:
+                import json
+                d = json.loads((en_paths.DATA_DIR / "irregular_verbs.json").read_text(encoding="utf-8"))
+                return d.get("verbs") or []
+            except (OSError, ValueError):
+                return []
+
+        def verb_stats():
+            ws = verbs_data()
+            return len(ws), sum(1 for w in ws if p.is_known("verb:" + str(w.get("verb", ""))))
+
+        def verb_note():
+            total, known = verb_stats()
+            return _t("{0} глаголов · знаю {1}").format(total, known) if total else _t("готовится · этап 3")
+
+        def book_stats():
+            ready, due = bs.count_ready(p), bs.count_due(p)
+            return ready, max(0, ready - due)
+
+        def book_note():
+            ready, due = bs.count_ready(p), bs.count_due(p)
+            return _t("готово {0} · к повторению {1}").format(ready, due) if ready else _t("книга не выбрана")
+
+        def open_group(key: str) -> None:
+            h = hub()
+            if h is None:
+                return
+            if key == "std":
+                h.open_set("top-1000")
+            elif key == "cefr":
+                h.open_cefr("A1")
+            else:
+                h.show_tab(key)
+
+        return [
+            {"code": "S-FREQ", "name": "Essential 1000", "sub": _t("СТАНДАРТ"),
+             "stats": freq_stats, "note": freq_note, "open": lambda: open_group("std")},
+            {"code": "S-CEFR", "name": "A1 → C2", "sub": "CEFR",
+             "stats": cefr_stats, "note": cefr_note, "open": lambda: open_group("cefr")},
+            {"code": "S-VRB", "name": "Irregular", "sub": _t("ГЛАГОЛЫ"),
+             "stats": verb_stats, "note": verb_note, "open": lambda: open_group("verbs")},
+            {"code": "S-BOOK", "name": _t("Из книги"), "sub": _t("ПРЕДЛОЖЕНИЯ"),
+             "stats": book_stats, "note": book_note, "open": lambda: open_group("book")},
+        ]
 
     def _active_book_info(self) -> dict | None:
         """Текущая книга из библиотеки / уже синхронизированных карточек."""
@@ -443,7 +522,11 @@ class SetsPage(tk.Frame):
         self.ctx.progress.settings["current_set"] = sid
         self.ctx.progress.save()
         self.page = 0
-        self.ctx.show("sets")
+        hub = self.ctx.pages.get("sets")
+        if hasattr(hub, "focus_standard"):
+            hub.focus_standard()
+        else:
+            self.ctx.show("sets")
 
     def reset(self) -> None:
         self.f.update(q="", status="all", len="all", pos="all", diff="all", sort="random")
