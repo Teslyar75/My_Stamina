@@ -612,6 +612,281 @@
         {"en": "We read about it in the newspaper.", "ru": "Мы прочитали об этом в газете."},
         {"en": "He read the letter and smiled.", "ru": "Он прочитал письмо и улыбнулся."}
       ]
+    },
+    {
+      "word": "teacher", "ru": "учитель", "ipa": "ˈtiː.tʃər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a person who helps students learn"}],
+      "sentences": [
+        {"en": "My teacher is very kind.", "ru": "Мой учитель очень добрый."},
+        {"en": "The teacher asks a question.", "ru": "Учитель задаёт вопрос."},
+        {"en": "Our teacher speaks English in class.", "ru": "Наш учитель говорит по-английски на уроке."},
+        {"en": "I want to thank my teacher.", "ru": "Я хочу поблагодарить своего учителя."},
+        {"en": "The teacher writes new words on the board.", "ru": "Учитель пишет новые слова на доске."}
+      ]
+    },
+    {
+      "word": "student", "ru": "ученик", "ipa": "ˈstjuː.dənt", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a person who studies at a school or university"}],
+      "sentences": [
+        {"en": "He is a student at a small school.", "ru": "Он ученик маленькой школы."},
+        {"en": "The students read and write in class.", "ru": "Ученики читают и пишут на уроке."},
+        {"en": "She is a good student.", "ru": "Она хорошая ученица."},
+        {"en": "There are twenty students in the class.", "ru": "В классе двадцать учеников."},
+        {"en": "The student asked the teacher a question.", "ru": "Ученик задал учителю вопрос."}
+      ]
+    },
+    {
+      "word": "lesson", "ru": "урок", "ipa": "ˈles.ən", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of time when you learn something"}],
+      "sentences": [
+        {"en": "Our English lesson starts at nine.", "ru": "Наш урок английского начинается в девять."},
+        {"en": "The lesson is about family and friends.", "ru": "Урок о семье и друзьях."},
+        {"en": "I liked today's lesson.", "ru": "Мне понравился сегодняшний урок."},
+        {"en": "We have three lessons in the morning.", "ru": "Утром у нас три урока."},
+        {"en": "The lesson was long but interesting.", "ru": "Урок был долгим, но интересным."}
+      ]
+    },
+    {
+      "word": "class", "ru": "класс", "ipa": "klɑːs", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a group of students who learn together"}],
+      "sentences": [
+        {"en": "My class is small and friendly.", "ru": "Мой класс маленький и дружный."},
+        {"en": "The class starts at eight.", "ru": "Занятие начинается в восемь."},
+        {"en": "She is the best student in the class.", "ru": "Она лучшая ученица в классе."},
+        {"en": "We have a new boy in our class.", "ru": "У нас в классе новый мальчик."},
+        {"en": "After class we go home.", "ru": "После урока мы идём домой."}
+      ]
+    },
+    {
+      "word": "homework", "ru": "домашняя работа", "ipa": "ˈhəʊm.wɜːk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "school work you do at home"}],
+      "sentences": [
+        {"en": "I do my homework after dinner.", "ru": "Я делаю домашнюю работу после ужина."},
+        {"en": "The homework is easy today.", "ru": "Сегодня домашняя работа лёгкая."},
+        {"en": "Our teacher gives us homework every day.", "ru": "Учитель даёт нам домашнюю работу каждый день."},
+        {"en": "Did you finish your homework?", "ru": "Ты закончил домашнюю работу?"},
+        {"en": "I forgot my homework at home.", "ru": "Я забыл домашнюю работу дома."}
+      ]
+    },
+    {
+      "word": "question", "ru": "вопрос", "ipa": "ˈkwes.tʃən", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "something you ask when you want to know"}],
+      "sentences": [
+        {"en": "Can I ask a question?", "ru": "Можно задать вопрос?"},
+        {"en": "The question is easy.", "ru": "Вопрос лёгкий."},
+        {"en": "Nobody knows the answer to this question.", "ru": "Никто не знает ответа на этот вопрос."},
+        {"en": "She asked me a question about my family.", "ru": "Она задала мне вопрос о моей семье."},
+        {"en": "That is a good question.", "ru": "Это хороший вопрос."}
+      ]
+    },
+    {
+      "word": "answer", "ru": "ответ", "ipa": "ˈɑːn.sər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "what you say or write when someone asks"}],
+      "sentences": [
+        {"en": "I do not know the answer.", "ru": "Я не знаю ответа."},
+        {"en": "Your answer is right.", "ru": "Твой ответ правильный."},
+        {"en": "He gave a short answer.", "ru": "Он дал короткий ответ."},
+        {"en": "Please answer my question.", "ru": "Пожалуйста, ответь на мой вопрос."},
+        {"en": "The answer is on the next page.", "ru": "Ответ на следующей странице."}
+      ]
+    },
+    {
+      "word": "write", "ru": "писать", "ipa": "raɪt", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to make words with a pen or on a keyboard"}],
+      "sentences": [
+        {"en": "I write my name on the page.", "ru": "Я пишу своё имя на странице."},
+        {"en": "She writes a letter to her friend.", "ru": "Она пишет письмо подруге."},
+        {"en": "Please write the words in your book.", "ru": "Пожалуйста, напиши слова в тетради."},
+        {"en": "He can write in English.", "ru": "Он умеет писать по-английски."},
+        {"en": "I wrote three sentences.", "ru": "Я написал три предложения."}
+      ]
+    },
+    {
+      "word": "speak", "ru": "говорить", "ipa": "spiːk", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to say words with your voice"}],
+      "sentences": [
+        {"en": "I speak a little English.", "ru": "Я немного говорю по-английски."},
+        {"en": "Please speak slowly.", "ru": "Пожалуйста, говори медленно."},
+        {"en": "She speaks with her mother every day.", "ru": "Она говорит с мамой каждый день."},
+        {"en": "Can you speak Russian?", "ru": "Ты говоришь по-русски?"},
+        {"en": "We spoke about the new lesson.", "ru": "Мы говорили о новом уроке."}
+      ]
+    },
+    {
+      "word": "listen", "ru": "слушать", "ipa": "ˈlɪs.ən", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to give attention to a sound"}],
+      "sentences": [
+        {"en": "I listen to music in the evening.", "ru": "Я слушаю музыку вечером."},
+        {"en": "Listen to the teacher, please.", "ru": "Послушай учителя, пожалуйста."},
+        {"en": "She listens to the radio in the morning.", "ru": "Утром она слушает радио."},
+        {"en": "Did you listen to me?", "ru": "Ты меня слушал?"},
+        {"en": "We listened to a short story.", "ru": "Мы слушали короткий рассказ."}
+      ]
+    },
+    {
+      "word": "learn", "ru": "учить", "ipa": "lɜːn", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to get knowledge or a new skill"}],
+      "sentences": [
+        {"en": "I learn new words every day.", "ru": "Я учу новые слова каждый день."},
+        {"en": "Children learn quickly.", "ru": "Дети учатся быстро."},
+        {"en": "She is learning to swim.", "ru": "Она учится плавать."},
+        {"en": "We learned this song at school.", "ru": "Мы выучили эту песню в школе."},
+        {"en": "It is hard to learn a new language.", "ru": "Учить новый язык трудно."}
+      ]
+    },
+    {
+      "word": "week", "ru": "неделя", "ipa": "wiːk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of seven days"}],
+      "sentences": [
+        {"en": "There are seven days in a week.", "ru": "В неделе семь дней."},
+        {"en": "I go to school five days a week.", "ru": "Я хожу в школу пять дней в неделю."},
+        {"en": "We met last week.", "ru": "Мы встретились на прошлой неделе."},
+        {"en": "This week is very busy.", "ru": "Эта неделя очень занятая."},
+        {"en": "I will call you next week.", "ru": "Я позвоню тебе на следующей неделе."}
+      ]
+    },
+    {
+      "word": "month", "ru": "месяц", "ipa": "mʌnθ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "one of the twelve parts of a year"}],
+      "sentences": [
+        {"en": "January is the first month of the year.", "ru": "Январь — первый месяц года."},
+        {"en": "We moved here two months ago.", "ru": "Мы переехали сюда два месяца назад."},
+        {"en": "She visits her family every month.", "ru": "Она навещает семью каждый месяц."},
+        {"en": "This month is cold and rainy.", "ru": "Этот месяц холодный и дождливый."},
+        {"en": "I will be back next month.", "ru": "Я вернусь в следующем месяце."}
+      ]
+    },
+    {
+      "word": "year", "ru": "год", "ipa": "jɪər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of twelve months"}],
+      "sentences": [
+        {"en": "A year has twelve months.", "ru": "В году двенадцать месяцев."},
+        {"en": "I lived here for one year.", "ru": "Я жил здесь один год."},
+        {"en": "She is ten years old.", "ru": "Ей десять лет."},
+        {"en": "We met last year.", "ru": "Мы познакомились в прошлом году."},
+        {"en": "Next year I want to visit London.", "ru": "В следующем году я хочу поехать в Лондон."}
+      ]
+    },
+    {
+      "word": "hour", "ru": "час", "ipa": "aʊər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of sixty minutes"}],
+      "sentences": [
+        {"en": "The film is two hours long.", "ru": "Фильм длится два часа."},
+        {"en": "I work eight hours a day.", "ru": "Я работаю восемь часов в день."},
+        {"en": "We waited for an hour.", "ru": "Мы ждали час."},
+        {"en": "The train leaves in half an hour.", "ru": "Поезд отправляется через полчаса."},
+        {"en": "She reads for an hour every evening.", "ru": "Она читает час каждый вечер."}
+      ]
+    },
+    {
+      "word": "minute", "ru": "минута", "ipa": "ˈmɪn.ɪt", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a period of sixty seconds"}],
+      "sentences": [
+        {"en": "Wait a minute, please.", "ru": "Подожди минуту, пожалуйста."},
+        {"en": "The shop is five minutes from here.", "ru": "Магазин в пяти минутах отсюда."},
+        {"en": "I will be ready in a minute.", "ru": "Я буду готов через минуту."},
+        {"en": "The lesson starts in two minutes.", "ru": "Урок начинается через две минуты."},
+        {"en": "Every minute is important.", "ru": "Каждая минута важна."}
+      ]
+    },
+    {
+      "word": "today", "ru": "сегодня", "ipa": "təˈdeɪ", "pos": "adverb",
+      "senses": [{"pos": "adverb", "definition": "on this day"}],
+      "sentences": [
+        {"en": "Today is Monday.", "ru": "Сегодня понедельник."},
+        {"en": "What are you doing today?", "ru": "Что ты делаешь сегодня?"},
+        {"en": "The weather is nice today.", "ru": "Сегодня хорошая погода."},
+        {"en": "I have three lessons today.", "ru": "У меня сегодня три урока."},
+        {"en": "Today I want to learn ten new words.", "ru": "Сегодня я хочу выучить десять новых слов."}
+      ]
+    },
+    {
+      "word": "tomorrow", "ru": "завтра", "ipa": "təˈmɒr.əʊ", "pos": "adverb",
+      "senses": [{"pos": "adverb", "definition": "on the day after today"}],
+      "sentences": [
+        {"en": "Tomorrow is my birthday.", "ru": "Завтра мой день рождения."},
+        {"en": "We will meet tomorrow morning.", "ru": "Мы встретимся завтра утром."},
+        {"en": "I am going to the doctor tomorrow.", "ru": "Завтра я иду к врачу."},
+        {"en": "See you tomorrow!", "ru": "До завтра!"},
+        {"en": "Tomorrow will be warmer than today.", "ru": "Завтра будет теплее, чем сегодня."}
+      ]
+    },
+    {
+      "word": "yesterday", "ru": "вчера", "ipa": "ˈjes.tə.deɪ", "pos": "adverb",
+      "senses": [{"pos": "adverb", "definition": "on the day before today"}],
+      "sentences": [
+        {"en": "Yesterday was Sunday.", "ru": "Вчера было воскресенье."},
+        {"en": "I saw her yesterday.", "ru": "Я видел её вчера."},
+        {"en": "We went to the park yesterday.", "ru": "Вчера мы ходили в парк."},
+        {"en": "What did you do yesterday?", "ru": "Что ты делал вчера?"},
+        {"en": "Yesterday it rained all day.", "ru": "Вчера весь день шёл дождь."}
+      ]
+    },
+    {
+      "word": "sun", "ru": "солнце", "ipa": "sʌn", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the bright star that gives us light and heat"}],
+      "sentences": [
+        {"en": "The sun is bright today.", "ru": "Сегодня яркое солнце."},
+        {"en": "We sat in the sun and had tea.", "ru": "Мы сидели на солнце и пили чай."},
+        {"en": "The sun goes down in the evening.", "ru": "Вечером солнце садится."},
+        {"en": "The children play in the sun.", "ru": "Дети играют на солнце."},
+        {"en": "I wear a hat in the sun.", "ru": "Я ношу шляпу на солнце."}
+      ]
+    },
+    {
+      "word": "sky", "ru": "небо", "ipa": "skaɪ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the space above the earth where clouds are"}],
+      "sentences": [
+        {"en": "The sky is blue today.", "ru": "Сегодня небо голубое."},
+        {"en": "There are many stars in the sky at night.", "ru": "Ночью на небе много звёзд."},
+        {"en": "Look at the sky!", "ru": "Посмотри на небо!"},
+        {"en": "The sky was grey before the rain.", "ru": "Перед дождём небо было серым."},
+        {"en": "Birds fly in the sky.", "ru": "Птицы летают в небе."}
+      ]
+    },
+    {
+      "word": "wind", "ru": "ветер", "ipa": "wɪnd", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "air that moves quickly"}],
+      "sentences": [
+        {"en": "The wind is strong today.", "ru": "Сегодня сильный ветер."},
+        {"en": "A cold wind came from the sea.", "ru": "С моря подул холодный ветер."},
+        {"en": "The wind opened the door.", "ru": "Ветер открыл дверь."},
+        {"en": "We walked home against the wind.", "ru": "Мы шли домой против ветра."},
+        {"en": "There is no wind this evening.", "ru": "Сегодня вечером нет ветра."}
+      ]
+    },
+    {
+      "word": "snow", "ru": "снег", "ipa": "snəʊ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "soft white pieces of frozen water that fall from the sky"}],
+      "sentences": [
+        {"en": "The snow is white and clean.", "ru": "Снег белый и чистый."},
+        {"en": "Children play in the snow.", "ru": "Дети играют в снегу."},
+        {"en": "It snowed all night.", "ru": "Всю ночь шёл снег."},
+        {"en": "The snow will stop in the morning.", "ru": "Утром снег прекратится."},
+        {"en": "I like to look at the snow.", "ru": "Я люблю смотреть на снег."}
+      ]
+    },
+    {
+      "word": "sad", "ru": "грустный", "ipa": "sæd", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "not happy; feeling sorry"}],
+      "sentences": [
+        {"en": "She looks sad today.", "ru": "Она сегодня выглядит грустной."},
+        {"en": "I was sad when my friend left.", "ru": "Мне было грустно, когда уехал друг."},
+        {"en": "The film has a sad ending.", "ru": "У фильма грустный конец."},
+        {"en": "Do not be sad, we will meet again.", "ru": "Не грусти, мы ещё встретимся."},
+        {"en": "He felt sad after the letter.", "ru": "Ему стало грустно после письма."}
+      ]
+    },
+    {
+      "word": "angry", "ru": "сердитый", "ipa": "ˈæŋ.ɡri", "pos": "adjective",
+      "senses": [{"pos": "adjective", "definition": "feeling strong bad emotion about something"}],
+      "sentences": [
+        {"en": "My father was angry with me.", "ru": "Мой отец сердился на меня."},
+        {"en": "She is angry because the bus is late.", "ru": "Она сердится, потому что автобус опаздывает."},
+        {"en": "Do not be angry, please.", "ru": "Не сердись, пожалуйста."},
+        {"en": "He looked at me with angry eyes.", "ru": "Он посмотрел на меня сердитыми глазами."},
+        {"en": "The teacher was angry about the noise.", "ru": "Учитель сердился из-за шума."}
+      ]
     }
   ]
 }
