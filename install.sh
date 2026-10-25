@@ -72,10 +72,25 @@ python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' || { 
 python3 -c 'import tkinter' 2>/dev/null || { warn "Нет tkinter (пакет python3-tk) — без него окно не откроется."; exit 1; }
 
 say "[2/5] Папка программы .venv"
+if [ -x .venv/bin/python ] && ! .venv/bin/python -c 'import sys' >/dev/null 2>&1; then
+  warn "Папка .venv осталась от другой версии Python и не работает."
+  warn "Пересоздайте её и запустите установку снова:  rm -rf .venv && bash install.sh"
+  exit 1
+fi
 if [ ! -x .venv/bin/python ]; then
   python3 -m venv .venv || { warn "venv не создался (нужен пакет python3-venv)."; exit 1; }
 fi
 PY="$ROOT/.venv/bin/python"
+# Окно откроется только если у самого venv есть tkinter и свежий Python:
+# .venv мог остаться от прежней установки, где этого не было.
+if ! "$PY" -c 'import tkinter' 2>/dev/null; then
+  warn "В .venv нет tkinter — окно не откроется. Поставьте python3-tk и запустите install.sh снова,"
+  warn "или пересоздайте .venv:  rm -rf .venv && bash install.sh"
+fi
+if ! "$PY" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)'; then
+  warn "В .venv Python $("$PY" -c 'import sys; print(sys.version.split()[0])') — нужен 3.10+."
+  warn "Пересоздайте:  rm -rf .venv && bash install.sh"
+fi
 "$PY" -m pip install --disable-pip-version-check -q --upgrade pip >/dev/null 2>&1
 
 say "[3/5] Пакеты pip: Pillow, pypdf"
@@ -100,6 +115,7 @@ Exec=\"$ROOT/run.sh\"
 Path=$ROOT
 Icon=$ICON
 Terminal=false
+StartupNotify=true
 Categories=Education;"
 APPS="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
 mkdir -p "$APPS" && printf '%s\n' "$DESK" > "$APPS/star-typing.desktop" && chmod +x "$APPS/star-typing.desktop"

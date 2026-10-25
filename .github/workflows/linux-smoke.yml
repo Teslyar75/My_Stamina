@@ -1,0 +1,97 @@
+name: Linux
+
+# Проверка запуска на Linux: окно открывается, а когда не может — программа
+# объясняет причину и выходит с кодом 2 (а не молчит, как раньше).
+on:
+  push:
+    branches: [master, agent/opencode/linux-launch]
+  pull_request:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  window-opens:
+    name: Окно открывается (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Пакеты
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-tk xvfb
+          python3 -c 'import tkinter; print("tkinter", tkinter.TkVersion)'
+
+      - name: Запуск под виртуальным экраном
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1600x1000x24 >/dev/null 2>&1 &
+          sleep 2
+          python3 main.py > /tmp/run.out 2>&1 &
+          app=$!
+          sleep 20
+          if ! kill -0 $app 2>/dev/null; then
+            wait $app
+            echo "::error::программа завершилась вместо того, чтобы открыть окно"
+            tail -40 /tmp/run.out
+            exit 1
+          fi
+          echo "окно открылось и живёт (pid $app)"
+          kill $app 2>/dev/null || true
+
+  explains:
+    name: Без tkinter и без экрана — понятное объяснение
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Пакеты
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq python3-minimal xvfb
+
+      - name: Нет tkinter — код 2 и подсказка про python3-tk
+        run: |
+          sudo apt-get purge -y -qq python3-tk || true
+          if python3 -c 'import tkinter' 2>/dev/null; then
+            echo "tkinter остался — проверка невозможна"; exit 1
+          fi
+          set +e
+          python3 main.py > /tmp/notk.out 2>&1
+          code=$?
+          set -e
+          echo "код выхода: $code"
+          cat /tmp/notk.out
+          [ "$code" = "2" ] || { echo "::error::ожидался код 2"; exit 1; }
+          grep -q "python3-tk" /tmp/notk.out || { echo "::error::нет подсказки про python3-tk"; exit 1; }
+          grep -q "launch.log" /tmp/notk.out || { echo "::error::нет ссылки на журнал"; exit 1; }
+          grep -q "python3-tk" "$HOME/.local/share/StarTyping/launch.log" || { echo "::error::журнал не заполнен"; exit 1; }
+
+      - name: Нет экрана — код 2 и подсказка про рабочий стол
+        run: |
+          unset DISPLAY WAYLAND_DISPLAY
+          set +e
+          python3 main.py > /tmp/nodisp.out 2>&1
+          code=$?
+          set -e
+          echo "код выхода: $code"
+          cat /tmp/nodisp.out
+          [ "$code" = "2" ] || { echo "::error::ожидался код 2"; exit 1; }
+          grep -qi "экрана" /tmp/nodisp.out || { echo "::error::нет объяснения про экран"; exit 1; }
+
+  self-check:
+    name: ./run.sh --check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq python3-tk
+      - name: Отчёт о среде
+        run: |
+          bash run.sh --check | tee /tmp/check.out
+          grep -q "Python:" /tmp/check.out
+          grep -q "tkinter: есть" /tmp/check.out

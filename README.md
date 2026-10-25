@@ -77,6 +77,9 @@ GitHub Actions создаст Release с notes из changelog.
 | Нет фона «Живой космос», в настройках «Не установлен Pillow» | кнопка «УСТАНОВИТЬ ВСЁ» в приветствии или `install.bat` / `bash install.sh` |
 | Linux: `No module named tkinter` | `sudo apt install python3-tk` (или просто `bash install.sh`) |
 | Linux: `externally-managed-environment` при pip | ставьте через `bash install.sh` — он делает отдельную `.venv` |
+| Ничего не происходит при запуске (ярлык, двойной клик) | запустите из терминала `./run.sh --check` — программа сама скажет, чего не хватает; то же пишется в `~/.local/share/StarTyping/launch.log` и показывается окном |
+| Linux: окно не открывается, «нет X11» | Tk рисует через X11: поставьте `xwayland` (или войдите в сессию X11) |
+| Linux: `.venv` остался от старой версии Python | `rm -rf .venv && bash install.sh` |
 | Не слышно звуков / озвучки (Linux) | `sudo apt install alsa-utils espeak-ng`; проверьте: `espeak-ng "hello"` |
 | Микрофон не работает | Windows: Параметры → Конфиденциальность → Микрофон → разрешить приложениям; Linux: `sudo apt install libportaudio2`, выберите микрофон в настройках звука. Без микрофона «говорение» переходит на самооценку |
 | Данные | Windows: `%APPDATA%\Stamina`, Linux: `~/.local/share/StarTyping` |
