@@ -74,6 +74,8 @@ jobs:
 
       - name: Нет экрана — код 2 и подсказка про рабочий стол
         run: |
+          # предыдущий шаг убрал tkinter, а здесь проверяется именно отсутствие экрана
+          sudo apt-get install -y -qq python3-tk
           unset DISPLAY WAYLAND_DISPLAY
           set +e
           python3 main.py > /tmp/nodisp.out 2>&1
