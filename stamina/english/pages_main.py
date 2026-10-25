@@ -494,10 +494,10 @@ class SetsPage(tk.Frame):
         self.gridf.bind("<Configure>", self._reflow, add="+")
         bot = tk.Frame(self, bg=BG)
         bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
-        HudButton(bot, "◀", lambda: self.go(-1), width=44, height=30).pack(side=tk.LEFT)
+        HudButton(bot, "◀ 24", lambda: self.go(-1), width=58, height=30).pack(side=tk.LEFT)
         self.pg = L(bot, "", fg=TEXT, size=9, bold=True, mono=True, bg=BG)
         self.pg.pack(side=tk.LEFT, padx=px(8))
-        HudButton(bot, "▶", lambda: self.go(1), width=44, height=30).pack(side=tk.LEFT)
+        HudButton(bot, "24 ▶", lambda: self.go(1), width=58, height=30).pack(side=tk.LEFT)
         self.tip = L(bot, "", fg=AMBER, size=8, bg=BG)
         self.tip.pack(side=tk.LEFT, padx=px(14))
         HudButton(bot, _t("МИССИЯ ПО НАБОРУ"), lambda: self.ctx.start_session("random", source="filtered",
@@ -523,6 +523,17 @@ class SetsPage(tk.Frame):
         self._alt_on = False
         self._busy = False
         self._arm = False      # автодогрузка — только после того, как пилот сам докрутил вниз
+        # ←/→ листают блоки по 24, когда открыт СТАНДАРТ (в полях поиска не мешаем)
+        self.bind_all("<Left>", self._key_page, add="+")
+        self.bind_all("<Right>", self._key_page, add="+")
+
+    def _key_page(self, event) -> None:
+        if isinstance(event.widget, (tk.Entry, tk.Text)):
+            return
+        hub = getattr(self.ctx, "pages", {}).get("sets")
+        if getattr(self.ctx, "current", "") != "sets" or getattr(hub, "current", "std") != "std":
+            return
+        self.go(-1 if event.keysym == "Left" else 1)
 
     def _group(self, parent, key, title, options) -> None:
         L(parent, title, fg=MUTED, size=8, bold=True).pack(side=tk.LEFT, padx=(px(6), px(4)))
@@ -606,7 +617,10 @@ class SetsPage(tk.Frame):
         for w in chunk:
             self.tiles.append(Tile(self.gridf, self.ctx, w))
         self._place()
-        self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
+        a = self.page * per + 1 if chunk else 0
+        b = self.page * per + len(chunk)
+        self.pg.configure(text="СТР. {0} / {1} · {2}–{3} из {4}".format(
+            self.page + 1, pages, a, b, len(self.items)))
         self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
 
     # ---------------------------------------------------------------- альт-вид

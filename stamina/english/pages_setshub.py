@@ -129,10 +129,10 @@ class CefrPage(tk.Frame):
         self.empty = L(self, "", fg=AMBER, size=16, bold=True, bg=BG)
         bot = tk.Frame(self, bg=BG)
         bot.pack(fill=tk.X, padx=px(12), pady=(px(2), px(6)))
-        HudButton(bot, "◀", lambda: self.go(-1), width=44, height=30).pack(side=tk.LEFT)
+        HudButton(bot, "◀ 24", lambda: self.go(-1), width=58, height=30).pack(side=tk.LEFT)
         self.pg = L(bot, "", fg=TEXT, size=9, bold=True, mono=True, bg=BG)
         self.pg.pack(side=tk.LEFT, padx=px(8))
-        HudButton(bot, "▶", lambda: self.go(1), width=44, height=30).pack(side=tk.LEFT)
+        HudButton(bot, "24 ▶", lambda: self.go(1), width=58, height=30).pack(side=tk.LEFT)
         self.tip = L(bot, "", fg=AMBER, size=8, bg=BG)
         self.tip.pack(side=tk.LEFT, padx=px(14))
         HudButton(bot, "УЧИТЬ КАРТОЧКАМИ", self.learn, color=AMBER, height=30, font_size=9).pack(
@@ -140,6 +140,17 @@ class CefrPage(tk.Frame):
         HudButton(bot, "МИССИЯ ПО НАБОРУ", lambda: self.mission(), height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
+        # ←/→ листают блоки по 24, когда открыта вкладка CEFR
+        self.bind_all("<Left>", self._key_page, add="+")
+        self.bind_all("<Right>", self._key_page, add="+")
+
+    def _key_page(self, event) -> None:
+        if isinstance(event.widget, (tk.Entry, tk.Text)):
+            return
+        hub = getattr(self.ctx, "pages", {}).get("sets")
+        if getattr(self.ctx, "current", "") != "sets" or getattr(hub, "current", "") != "cefr":
+            return
+        self.go(-1 if event.keysym == "Left" else 1)
 
     # -- данные --------------------------------------------------------------
     def select(self, level: str) -> None:
@@ -192,8 +203,11 @@ class CefrPage(tk.Frame):
             t = Tile(self.gridf, self.ctx, w)
             t.grid(row=i // self.COLS, column=i % self.COLS, sticky="nsew", padx=px(3), pady=px(3))
             self.tiles.append(t)
-        self.pg.configure(text=f"СТР. {self.page + 1} / {pages}")
-        self.tip.configure(text=f"{len(self.items)} слов · {self.level}")
+        a = self.page * per + 1 if chunk else 0
+        b = self.page * per + len(chunk)
+        self.pg.configure(text="СТР. {0} / {1} · {2}–{3} из {4}".format(
+            self.page + 1, pages, a, b, len(self.items)))
+        self.tip.configure(text=f"{len(self.items)} слов · {self.level} · ← → по 24")
 
     def go(self, d: int) -> None:
         per = self.COLS * self.ROWS
