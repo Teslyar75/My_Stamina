@@ -10,6 +10,7 @@ import pytest
 from stamina.english.pages_setshub import SetsHubPage
 from stamina.english.progress import Progress
 from stamina.english.vocab import Vocab
+from stamina.english import cefr
 
 
 class Ctx:
@@ -19,12 +20,14 @@ class Ctx:
         self.pages = {}
         self.app = None
         self.shown = []
+        self.statuses = []
+        self.sessions = []
 
-    def status(self, *a, **k):
-        pass
+    def status(self, text="", color=None, *a, **k):
+        self.statuses.append((text, color))
 
     def start_session(self, *a, **k):
-        pass
+        self.sessions.append((a, k))
 
     def show(self, name=None, *a, **k):
         self.shown.append(name)
@@ -90,6 +93,56 @@ def test_cefr_pages_by_24(tmp_path):
         root.destroy()
 
 
+def test_cefr_blocks_unlock_after_work(tmp_path):
+    """Порции по 50: следующая грузится сама, когда закрыта текущая."""
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    try:
+        root.attributes("-alpha", 0.0)
+        root.geometry("1400x800+30+30")
+        ctx = Ctx(tmp_path)
+        hub = SetsHubPage(root, ctx)
+        hub.pack(fill="both", expand=True)
+        root.update()
+        hub.show_tab("cefr")
+        page = hub.cefr
+        page.select("A1")
+        root.update()
+
+        total = len(cefr.prepared("A1"))
+        sizes = [len(b) for b in page.blocks]
+        assert sizes[0] == cefr.BLOCK_SIZE
+        assert sum(sizes) == total
+        assert page.block == 0
+        assert page.block_btns[1]._text.endswith("закр")
+
+        page.pick_block(1)
+        assert page.block == 0, "закрытый блок не должен открываться"
+        assert any("откроется" in s[0] for s in ctx.statuses)
+
+        first = {w["slug"] for w in page.blocks[0]}
+        page._done = lambda slug: slug in first
+        page.refresh()
+        root.update()
+        assert page.max_open == 1
+        assert page.block == 1, "после закрытия блока 1 сразу грузится блок 2"
+        assert len(page.items) == sizes[1]
+        assert any("Блок 1 пройден" in s[0] for s in ctx.statuses)
+
+        page.learn()
+        assert len(ctx.sessions[-1][1]["ids"]) == sizes[1]
+
+        page._done = lambda slug: True
+        page.refresh()
+        root.update()
+        assert page.level == "A2", "после уровня A1 открывается A2"
+        assert page.blocks and len(page.blocks[0]) == len(cefr.prepared("A2"))
+    finally:
+        root.destroy()
+
+
 def test_open_set_switches_screen_and_set(tmp_path):
     try:
         root = tk.Tk()
@@ -108,7 +161,10 @@ def test_open_set_switches_screen_and_set(tmp_path):
         assert ctx.shown and ctx.shown[-1] == "sets"
         hub.open_cefr("A2")
         root.update()
-        assert hub.cefr.level == "A2"
+        # A2 закрыт до прохождения A1 — уровни идут последовательно
+        assert hub.cefr.level == "A1"
+        assert hub.cefr.lv_btns["A2"]._text.endswith("закр")
+        assert ctx.statuses and "A1" in ctx.statuses[-1][0]
         assert ctx.shown[-1] == "sets"
     finally:
         root.destroy()

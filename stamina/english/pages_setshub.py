@@ -10,7 +10,7 @@ from stamina import theme
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 
-from . import cefr
+from . import cefr, quality
 from .pages_main import SetsPage
 from .ui import L, Strip, Tile
 
@@ -94,14 +94,19 @@ class SetsHubPage(tk.Frame):
 
 
 class CefrPage(tk.Frame):
-    COLS, ROWS = 6, 4          # блок = 24 карточки, как в СТАНДАРТЕ
+    COLS, ROWS = 6, 4          # страница = 24 карточки, как в СТАНДАРТЕ
 
     def __init__(self, master, ctx) -> None:
         super().__init__(master, bg=BG)
         self.ctx = ctx
         self.level = "A1"
         self.page = 0
+        self.block = 0
+        self.max_open = 0
+        self.blocks: list[list[dict]] = []
         self.items: list[dict] = []
+        self._reset_block = True
+        self._done_counts: dict[str, int] = {}
         self.strip = Strip(self)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
         lev = HudPanel(self, "УРОВНИ · CEFR")
@@ -109,13 +114,16 @@ class CefrPage(tk.Frame):
         row = tk.Frame(lev.body, bg=PANEL)
         row.pack(fill=tk.X)
         self.lv_btns: dict[str, HudButton] = {}
-        have = set(cefr.available())
         for lv, title, _d in cefr.LEVELS:
-            b = HudButton(row, lv if lv in have else f"{lv} ·", lambda l=lv: self.select(l),
-                          height=28, font_size=9, width=64,
-                          active=(lv == self.level), color=GREEN if lv in have else MUTED)
+            b = HudButton(row, lv, lambda l=lv: self.select(l),
+                          height=28, font_size=9, width=66,
+                          active=(lv == self.level), color=GREEN)
             b.pack(side=tk.LEFT, padx=px(2))
             self.lv_btns[lv] = b
+        # порции уровня: 50 слов; следующая открывается сама, когда закрыта текущая
+        self.block_row = tk.Frame(lev.body, bg=PANEL)
+        self.block_row.pack(fill=tk.X, pady=(px(4), 0))
+        self.block_btns: list[HudButton] = []
         self.info = L(lev.body, "", fg=CYAN, size=9, bg=PANEL)
         self.info.pack(anchor="w", pady=(px(5), 0))
         self.credit = L(lev.body, "", fg=MUTED, size=8, bg=PANEL)
@@ -140,7 +148,8 @@ class CefrPage(tk.Frame):
         HudButton(bot, "МИССИЯ ПО НАБОРУ", lambda: self.mission(), height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
-        # ←/→ листают блоки по 24, когда открыта вкладка CEFR
+        self._sync_level_buttons()
+        # ←/→ листают страницы по 24, когда открыта вкладка CEFR
         self.bind_all("<Left>", self._key_page, add="+")
         self.bind_all("<Right>", self._key_page, add="+")
 
@@ -152,12 +161,72 @@ class CefrPage(tk.Frame):
             return
         self.go(-1 if event.keysym == "Left" else 1)
 
+    # -- прогресс ------------------------------------------------------------
+    def _done(self, slug: str) -> bool:
+        """Слово пройдено: качество закрыто или стоит ручная отметка."""
+        p = self.ctx.progress
+        return (p.is_known(slug) or p.is_learned(slug)
+                or quality.is_complete(p, slug))
+
+    def _block_done(self, words: list[dict]) -> bool:
+        return bool(words) and all(self._done(w["slug"]) for w in words)
+
+    def _frontier(self) -> int:
+        """Первый незакрытый блок; если закрыто всё — последний."""
+        for i, ws in enumerate(self.blocks):
+            if not self._block_done(ws):
+                return i
+        return max(0, len(self.blocks) - 1)
+
+    def _level_open(self, level: str) -> bool:
+        avail = cefr.available()
+        if level not in avail:
+            return False
+        i = avail.index(level)
+        if i == 0:
+            return True
+        return all(self._done(w["slug"]) for w in cefr.prepared(avail[i - 1]))
+
+    def _level_complete(self, level: str) -> bool:
+        ws = cefr.prepared(level)
+        return bool(ws) and all(self._done(w["slug"]) for w in ws)
+
+    def _sync_level_buttons(self) -> None:
+        have = set(cefr.available())
+        for lv, b in self.lv_btns.items():
+            if lv not in have:
+                b.set_text(f"{lv} ·")
+                b.set_color(MUTED)
+                b.set_enabled(False)
+            elif not self._level_open(lv):
+                b.set_text(f"{lv} закр")
+                b.set_color(MUTED)
+                b.set_enabled(True)
+            else:
+                b.set_text(lv)
+                b.set_color(GREEN)
+                b.set_enabled(True)
+            b.set_active(lv == self.level)
+
     # -- данные --------------------------------------------------------------
     def select(self, level: str) -> None:
+        if level not in cefr.available():
+            self.level = level
+            self.block = 0
+            self.page = 0
+            self._sync_level_buttons()
+            self.refresh()
+            return
+        if not self._level_open(level):
+            avail = cefr.available()
+            prev = avail[avail.index(level) - 1]
+            self.ctx.status(f"{level} откроется, когда пройдёшь {prev}", AMBER)
+            return
+        if level != self.level:
+            self.page = 0
         self.level = level
-        self.page = 0
-        for lv, b in self.lv_btns.items():
-            b.set_active(lv == level)
+        self._reset_block = True
+        self._sync_level_buttons()
         self.refresh()
 
     def _set_id(self) -> str:
@@ -168,28 +237,112 @@ class CefrPage(tk.Frame):
         for t in self.tiles:
             t.destroy()
         self.tiles = []
+        self.blocks = []
+        self.max_open = 0
+        self._sync_level_buttons()
         if self.level not in cefr.available():
+            self._render_blocks()
             self.empty.configure(text=f"{cefr.LEVEL_TITLE.get(self.level, self.level)} — НАБОР ГОТОВИТСЯ")
             self.empty.pack(fill=tk.BOTH, expand=True)
             self.info.configure(text="Уровень появится после проверки A1")
             self.credit.configure(text="")
             self.pg.configure(text="")
+            self.tip.configure(text="")
             self.strip.set("CEFR", "Выбери доступный уровень", 0.0, "")
             return
         self.empty.pack_forget()
         cefr.merge_into(self.ctx.vocab, self.level)
-        self.items = self.ctx.vocab.in_set(self._set_id())
-        known = self.ctx.progress.known_or_learned([w["slug"] for w in self.items])
+        words = self.ctx.vocab.in_set(self._set_id())
+        self.blocks = [words[i:i + cefr.BLOCK_SIZE]
+                       for i in range(0, len(words), cefr.BLOCK_SIZE)]
+        self.max_open = self._frontier()
+        done_n = sum(1 for ws in self.blocks if self._block_done(ws))
+        prev = self._done_counts.get(self.level)
+        self._done_counts[self.level] = done_n
+        if self._reset_block:
+            self.block = self.max_open
+            self._reset_block = False
+        elif prev is not None and done_n > prev:
+            if self._auto_next(done_n):
+                return
+        self.block = max(0, min(self.block, max(0, len(self.blocks) - 1)))
+        self._render_blocks()
+        self._update_texts()
+        self.render()
+
+    def _auto_next(self, done_n: int) -> bool:
+        """Ученик закрыл порцию — сразу грузим следующую. True: сменили уровень."""
+        if not self.blocks:
+            return False
+        if done_n < len(self.blocks):
+            self.block = self.max_open
+            self.ctx.status(f"Блок {done_n} пройден · открыт блок {done_n + 1}", GREEN)
+            return False
+        avail = cefr.available()
+        i = avail.index(self.level) if self.level in avail else -1
+        if 0 <= i < len(avail) - 1 and self._level_open(avail[i + 1]):
+            nxt = avail[i + 1]
+            self.ctx.status(f"Уровень {self.level} пройден · открыт {nxt}", GREEN)
+            self.level = nxt
+            self.block = 0
+            self.page = 0
+            self._reset_block = True
+            self.refresh()
+            return True
+        self.ctx.status(f"Уровень {self.level} пройден", GREEN)
+        return False
+
+    def _render_blocks(self) -> None:
+        for b in self.block_btns:
+            b.destroy()
+        self.block_btns = []
+        for i, ws in enumerate(self.blocks):
+            done = self._block_done(ws)
+            open_ = i <= self.max_open
+            label = str(i + 1) + (" ✓" if done else ("" if open_ else " закр"))
+            b = HudButton(self.block_row, label, lambda n=i: self.pick_block(n),
+                          height=24, font_size=8, width=58,
+                          active=(i == self.block),
+                          color=GREEN if done else (CYAN if open_ else MUTED))
+            b.pack(side=tk.LEFT, padx=px(2))
+            self.block_btns.append(b)
+
+    def pick_block(self, n: int) -> None:
+        if not self.blocks or n < 0 or n >= len(self.blocks):
+            return
+        if n > self.max_open:
+            self.ctx.status(f"Блок {n + 1} откроется после блока {self.max_open + 1}", AMBER)
+            return
+        self.block = n
+        self.page = 0
+        self._render_blocks()
+        self._update_texts()
+        self.render()
+
+    def _update_texts(self) -> None:
+        self.items = self.blocks[self.block] if self.blocks else []
+        known = sum(1 for w in self.items if self._done(w["slug"]))
         n_sent = sum(len(self.ctx.vocab.sentences(w)) for w in self.items)
         data = cefr.load(self.level) or {}
         src = data.get("source") or {}
-        self.info.configure(text=f"{data.get('name', self.level)} · слов {len(self.items)} · "
-                                 f"примеров {n_sent} · знаю {known}/{len(self.items)}")
+        pos = self.block + 1
+        total = max(1, len(self.blocks))
+        self.info.configure(text=f"{data.get('name', self.level)} · блок {pos}/{total} · "
+                                 f"слов {len(self.items)} · пройдено {known}/{len(self.items)} · "
+                                 f"примеров {n_sent}")
+        done_level = self._level_complete(self.level)
         self.credit.configure(text=f"Данные: {src.get('name', 'original')} · {src.get('license', 'CC BY-SA 4.0')}"
-                                  + (" · пять предложений на слово" if self.items else ""))
-        self.strip.set(f"CEFR · {self.level}", "Клик по слову — сканер. ⟳ — перевод. ✓ — знаю.",
+                                  + (" · уровень пройден" if done_level else " · пять предложений на слово"))
+        self.strip.set(f"CEFR · {self.level} · блок {pos}",
+                       "Клик по слову — сканер. ⟳ — перевод. ✓ — знаю.",
                        known / max(1, len(self.items)), f"{known} / {len(self.items)}")
-        self.render()
+        if done_level:
+            avail = cefr.available()
+            i = avail.index(self.level) if self.level in avail else -1
+            nxt = avail[i + 1] if 0 <= i < len(avail) - 1 else ""
+            self.tip.configure(text="УРОВЕНЬ ПРОЙДЕН" + (f" · дальше {nxt}" if nxt else ""))
+        else:
+            self.tip.configure(text=f"блок {pos} · {len(self.items)} слов · ← → по 24")
 
     def render(self) -> None:
         for t in self.tiles:
@@ -207,7 +360,6 @@ class CefrPage(tk.Frame):
         b = self.page * per + len(chunk)
         self.pg.configure(text="СТР. {0} / {1} · {2}–{3} из {4}".format(
             self.page + 1, pages, a, b, len(self.items)))
-        self.tip.configure(text=f"{len(self.items)} слов · {self.level} · ← → по 24")
 
     def go(self, d: int) -> None:
         per = self.COLS * self.ROWS

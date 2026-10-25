@@ -26,6 +26,10 @@ SET_ID = {lv: f"cefr-{lv.lower().replace('.', '-')}" for lv in LEVEL_TITLE}
 MAX_SENTENCES = 5
 MIN_SENTENCES = 5
 
+# Порция изучения: 40–60 слов. Порядок слов в файле = порядок блоков,
+# поэтому новые слова только дописываются в конец уровня.
+BLOCK_SIZE = 50
+
 
 def path(level: str):
     return paths.DATA_DIR / "sets" / f"cefr_{level.lower().replace('.', '_')}.json"
@@ -142,3 +146,9 @@ def stats(level: str) -> tuple[int, int]:
     """(слов, предложений) в файле — без обращения к прогрессу."""
     words = entries(level)
     return len(words), sum(len(w.get("sentences") or []) for w in words)
+
+
+def blocks(level: str, size: int = BLOCK_SIZE) -> list[list[dict]]:
+    """Порции уровня: слова по 50, порядок файла = порядок изучения."""
+    ws = prepared(level)
+    return [ws[i:i + size] for i in range(0, len(ws), size)]

@@ -17,6 +17,20 @@ def test_a2_available():
     assert cefr.SET_ID["A2"] == "cefr-a2"
 
 
+def test_blocks_are_fifty_word_portions():
+    """Порция = 50 слов, порядок файла сохраняется, последняя может быть короче."""
+    assert 40 <= cefr.BLOCK_SIZE <= 60
+    words = cefr.prepared("A1")
+    blocks = cefr.blocks("A1")
+    assert blocks, "A1 должен делиться на порции"
+    assert all(len(b) == cefr.BLOCK_SIZE for b in blocks[:-1])
+    assert 0 < len(blocks[-1]) <= cefr.BLOCK_SIZE
+    assert sum(len(b) for b in blocks) == len(words)
+    flat = [w["slug"] for b in blocks for w in b]
+    assert flat == [w["slug"] for w in words]
+    assert cefr.blocks("C2") == []
+
+
 @pytest.mark.parametrize("level", cefr.available())
 def test_level_data_quality(level):
     words = cefr.entries(level)
@@ -42,6 +56,17 @@ def test_levels_do_not_share_words():
             key = w["word"].strip().lower()
             assert key not in seen, f"{key}: {seen.get(key)} и {level}"
             seen[key] = level
+
+
+def test_sentences_are_unique_within_level():
+    """Ни одно предложение не повторяется внутри уровня."""
+    for level in cefr.available():
+        seen: dict[str, str] = {}
+        for w in cefr.entries(level):
+            for s in w["sentences"]:
+                key = s["en"].strip().lower()
+                assert key not in seen, f"{level}: {w['word']} и {seen[key]} — {key}"
+                seen[key] = w["word"]
 
 
 
