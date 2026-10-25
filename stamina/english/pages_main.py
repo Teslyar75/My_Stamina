@@ -63,9 +63,11 @@ class SectorCard(tk.Canvas):
         self.create_text(px(12), px(14), text=g["code"], anchor="w", fill=col if known else CYAN,
                          font=theme.font(9, True, mono=True))
         self.create_text(w - px(12), px(14), text=g["sub"], anchor="e", fill=MUTED, font=theme.font(8, True))
-        self.create_text(px(12), px(40), text=g["name"], anchor="w", fill=TEXT, font=theme.font(13, True))
+        name_y = px(40) if h >= px(120) else px(32)
+        note_y = px(62) if h >= px(120) else px(54)
+        self.create_text(px(12), name_y, text=g["name"], anchor="w", fill=TEXT, font=theme.font(13, True))
         note = g.get("note")() if callable(g.get("note")) else (g.get("note") or "")
-        self.create_text(px(12), px(62), text=note, anchor="w", fill=MUTED, font=theme.font(8))
+        self.create_text(px(12), note_y, text=note, anchor="w", fill=MUTED, font=theme.font(8))
         if not self.compact:
             rng = random.Random(g["code"])
             pts = [(px(14) + i * (w - px(28)) / 5, px(78) + rng.random() * px(30)) for i in range(6)]
@@ -113,9 +115,11 @@ class OverviewPage(tk.Frame):
         left_col.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))
         left_col.grid_rowconfigure(1, weight=0)
         left_col.grid_columnconfigure(0, weight=1)
+        self.left_col = left_col
 
         sec = tk.Frame(left_col, bg=BG)
         sec.pack(fill=tk.X)
+        self.sec = sec
         L(sec, _t("СЕКТОРЫ · НАБОРЫ"), fg=MUTED, size=9, bold=True, bg=BG).pack(anchor="w", pady=(px(2), px(4)))
         row = tk.Frame(sec, bg=BG)
         row.pack(fill=tk.X)
@@ -173,8 +177,13 @@ class OverviewPage(tk.Frame):
                   height=30, font_size=8, width=150).pack(pady=px(2))
         self._book_tid: str | None = None
 
-        L(left_col, _t("Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются."),
-          fg=FAINT, size=8, bg=BG).pack(anchor="w", pady=(px(8), 0))
+        self.footnote = L(left_col, _t("Голосвязь (видео с субтитрами) — позже.  Аудирование, диктант и письменная проверка не делаются."),
+                           fg=FAINT, size=8, bg=BG)
+        self.footnote.pack(anchor="w", pady=(px(6), 0))
+        # высота левой колонки известна только после раскладки: подгоняем плашки,
+        # чтобы и секторы, и частотные наборы влезали в окно без прокрутки
+        self._fit_state: tuple | None = None
+        left_col.bind("<Configure>", lambda _e: self._fit_cards(), add="+")
 
         # телеметрия
         tel = HudPanel(grid, _t("ТЕЛЕМЕТРИЯ ПИЛОТА"))
@@ -285,6 +294,52 @@ class OverviewPage(tk.Frame):
         if hub is None:
             return
         hub.open_set(sid)
+
+    def _fit_cards(self) -> None:
+        """Подогнать высоту плашек под окно: обе группы карточек должны влезать целиком.
+
+        На низком окне книга и примечание уезжают в НАБОРЫ/ИЗ КНИГИ, а карточки
+        становятся компактнее — без прокрутки и обрезанных рядов.
+        """
+        try:
+            avail = self.left_col.winfo_height()
+        except tk.TclError:
+            return
+        if avail < px(60):
+            return
+        if avail >= px(560):
+            gh, fh, book, foot = 150, 112, True, True
+        elif avail >= px(470):
+            gh, fh, book, foot = 128, 100, True, False
+        elif avail >= px(330):
+            gh, fh, book, foot = 128, 100, False, False
+        else:
+            gh, fh, book, foot = 108, 88, False, False
+        state = (gh, fh, book, foot)
+        if state == self._fit_state:
+            return
+        self._fit_state = state
+        for c in self.cards:
+            c.compact = gh < 145
+            c.configure(height=px(gh))
+        for c in self.freq_cards:
+            c.compact = True
+            c.configure(height=px(fh))
+        if book:
+            if not self.book_panel.winfo_manager():
+                self.book_panel.pack(fill=tk.X, pady=(px(10), 0), after=self.sec)
+        elif self.book_panel.winfo_manager():
+            self.book_panel.pack_forget()
+        if foot:
+            if not self.footnote.winfo_manager():
+                self.footnote.pack(anchor="w", pady=(px(6), 0))
+        elif self.footnote.winfo_manager():
+            self.footnote.pack_forget()
+        self.after_idle(self._redraw_cards)
+
+    def _redraw_cards(self) -> None:
+        for c in self.cards + self.freq_cards:
+            c.redraw(fresh=True)
 
     def _active_book_info(self) -> dict | None:
         """Текущая книга из библиотеки / уже синхронизированных карточек."""

@@ -112,3 +112,35 @@ def test_open_set_switches_screen_and_set(tmp_path):
         assert ctx.shown[-1] == "sets"
     finally:
         root.destroy()
+
+
+def test_overview_plates_fit_the_window(tmp_path):
+    """Плашки секторов и частотных наборов не обрезаются на низком окне."""
+    from stamina.english.pages_main import OverviewPage
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    try:
+        root.attributes("-alpha", 0.0)
+        root.geometry("1350x600+20+20")
+        ctx = Ctx(tmp_path)
+        ov = OverviewPage(root, ctx)
+        ov.pack(fill="both", expand=True)
+        root.update()
+        assert len(ov.cards) == 3
+        assert len(ov.freq_cards) == 4
+        bottom = ov.sec.winfo_y() + ov.sec.winfo_height()
+        assert bottom <= ov.left_col.winfo_height() + 1
+        assert all(c.winfo_ismapped() for c in ov.freq_cards)
+        # совсем низкое окно: книга убирается, ряд плашек остаётся целиком
+        root.geometry("1350x500")
+        root.update()
+        assert not ov.book_panel.winfo_manager()
+        assert not ov.footnote.winfo_manager()
+        bottom = ov.sec.winfo_y() + ov.sec.winfo_height()
+        assert bottom <= ov.left_col.winfo_height() + 1
+        assert all(c.winfo_ismapped() for c in ov.freq_cards)
+    finally:
+        root.destroy()
