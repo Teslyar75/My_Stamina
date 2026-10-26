@@ -1437,6 +1437,556 @@
         {"en": "A little girl has a red ball.", "ru": "У маленькой девочки красный мяч."},
         {"en": "The girl smiled at me.", "ru": "Девочка улыбнулась мне."}
       ]
+    },
+    {
+      "word": "breakfast", "ru": "завтрак", "ipa": "ˈbrek.fəst", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the first meal of the day"}],
+      "sentences": [
+        {"en": "I have breakfast at seven.", "ru": "Я завтракаю в семь."},
+        {"en": "Breakfast is ready on the table.", "ru": "Завтрак готов на столе."},
+        {"en": "She eats eggs for breakfast.", "ru": "Она ест яйца на завтрак."},
+        {"en": "We make breakfast together.", "ru": "Мы готовим завтрак вместе."},
+        {"en": "Do you want breakfast now?", "ru": "Ты хочешь завтрак сейчас?"}
+      ]
+    },
+    {
+      "word": "lunch", "ru": "обед", "ipa": "lʌntʃ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a meal in the middle of the day"}],
+      "sentences": [
+        {"en": "We have lunch at school.", "ru": "Мы обедаем в школе."},
+        {"en": "My lunch is in the bag.", "ru": "Мой обед в сумке."},
+        {"en": "She eats soup for lunch.", "ru": "Она ест суп на обед."},
+        {"en": "Lunch is at one o'clock.", "ru": "Обед в час."},
+        {"en": "Let's have lunch in the park.", "ru": "Давай пообедаем в парке."}
+      ]
+    },
+    {
+      "word": "dinner", "ru": "ужин", "ipa": "ˈdɪn.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the main meal in the evening"}],
+      "sentences": [
+        {"en": "We have dinner at six.", "ru": "Мы ужинаем в шесть."},
+        {"en": "Dinner is on the table.", "ru": "Ужин на столе."},
+        {"en": "My mother cooks dinner.", "ru": "Моя мама готовит ужин."},
+        {"en": "I want fish for dinner.", "ru": "Я хочу рыбу на ужин."},
+        {"en": "After dinner we read.", "ru": "После ужина мы читаем."}
+      ]
+    },
+    {
+      "word": "cheese", "ru": "сыр", "ipa": "tʃiːz", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a food made from milk"}],
+      "sentences": [
+        {"en": "I like cheese on bread.", "ru": "Я люблю сыр на хлебе."},
+        {"en": "This cheese is very good.", "ru": "Этот сыр очень вкусный."},
+        {"en": "She buys cheese at the shop.", "ru": "Она покупает сыр в магазине."},
+        {"en": "There is cheese in the fridge.", "ru": "В холодильнике есть сыр."},
+        {"en": "Do you want some cheese?", "ru": "Хочешь немного сыра?"}
+      ]
+    },
+    {
+      "word": "butter", "ru": "масло", "ipa": "ˈbʌt.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a soft yellow food made from milk"}],
+      "sentences": [
+        {"en": "I put butter on my bread.", "ru": "Я кладу масло на хлеб."},
+        {"en": "The butter is cold.", "ru": "Масло холодное."},
+        {"en": "She needs butter for the cake.", "ru": "Ей нужно масло для торта."},
+        {"en": "We keep butter in the fridge.", "ru": "Мы держим масло в холодильнике."},
+        {"en": "There is no butter left.", "ru": "Масла не осталось."}
+      ]
+    },
+    {
+      "word": "cake", "ru": "торт", "ipa": "keɪk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a sweet food made from flour and eggs"}],
+      "sentences": [
+        {"en": "My mother makes a cake.", "ru": "Моя мама делает торт."},
+        {"en": "The cake is big and sweet.", "ru": "Торт большой и сладкий."},
+        {"en": "We eat cake on Sunday.", "ru": "Мы едим торт в воскресенье."},
+        {"en": "Do you want a piece of cake?", "ru": "Хочешь кусок торта?"},
+        {"en": "She buys a cake for the party.", "ru": "Она покупает торт на праздник."}
+      ]
+    },
+    {
+      "word": "banana", "ru": "банан", "ipa": "bəˈnɑː.nə", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a long yellow fruit"}],
+      "sentences": [
+        {"en": "I eat a banana every morning.", "ru": "Я ем банан каждое утро."},
+        {"en": "This banana is yellow.", "ru": "Этот банан жёлтый."},
+        {"en": "She puts a banana in her bag.", "ru": "Она кладёт банан в сумку."},
+        {"en": "We buy bananas at the market.", "ru": "Мы покупаем бананы на рынке."},
+        {"en": "The monkey likes bananas.", "ru": "Обезьяна любит бананы."}
+      ]
+    },
+    {
+      "word": "orange", "ru": "апельсин", "ipa": "ˈɒr.ɪndʒ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a round fruit with sweet juice"}],
+      "sentences": [
+        {"en": "I drink orange juice.", "ru": "Я пью апельсиновый сок."},
+        {"en": "This orange is sweet.", "ru": "Этот апельсин сладкий."},
+        {"en": "She eats an orange after lunch.", "ru": "Она ест апельсин после обеда."},
+        {"en": "We have two oranges.", "ru": "У нас два апельсина."},
+        {"en": "The orange is on the table.", "ru": "Апельсин на столе."}
+      ]
+    },
+    {
+      "word": "juice", "ru": "сок", "ipa": "dʒuːs", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a drink made from fruit"}],
+      "sentences": [
+        {"en": "I drink juice with breakfast.", "ru": "Я пью сок на завтрак."},
+        {"en": "This juice is cold.", "ru": "Этот сок холодный."},
+        {"en": "She wants apple juice.", "ru": "Она хочет яблочный сок."},
+        {"en": "We buy juice at the shop.", "ru": "Мы покупаем сок в магазине."},
+        {"en": "There is juice in the fridge.", "ru": "В холодильнике есть сок."}
+      ]
+    },
+    {
+      "word": "dog", "ru": "собака", "ipa": "dɒɡ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a small animal that people keep at home"}],
+      "sentences": [
+        {"en": "My dog is small and white.", "ru": "Моя собака маленькая и белая."},
+        {"en": "The dog runs in the garden.", "ru": "Собака бегает в саду."},
+        {"en": "I walk my dog every day.", "ru": "Я гуляю с собакой каждый день."},
+        {"en": "Her dog likes to play.", "ru": "Её собака любит играть."},
+        {"en": "Do you have a dog?", "ru": "У тебя есть собака?"}
+      ]
+    },
+    {
+      "word": "cat", "ru": "кошка", "ipa": "kæt", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a small animal that people keep at home"}],
+      "sentences": [
+        {"en": "My cat sleeps on the sofa.", "ru": "Моя кошка спит на диване."},
+        {"en": "The cat is black.", "ru": "Кошка чёрная."},
+        {"en": "She gives the cat some milk.", "ru": "Она даёт кошке молока."},
+        {"en": "Our cat likes fish.", "ru": "Наша кошка любит рыбу."},
+        {"en": "The cat is under the table.", "ru": "Кошка под столом."}
+      ]
+    },
+    {
+      "word": "bird", "ru": "птица", "ipa": "bɜːd", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "an animal with wings and feathers"}],
+      "sentences": [
+        {"en": "A bird sits on the tree.", "ru": "Птица сидит на дереве."},
+        {"en": "The bird is small and blue.", "ru": "Птица маленькая и синяя."},
+        {"en": "Birds sing in the morning.", "ru": "Птицы поют утром."},
+        {"en": "I see a bird in the sky.", "ru": "Я вижу птицу в небе."},
+        {"en": "The cat looks at the bird.", "ru": "Кошка смотрит на птицу."}
+      ]
+    },
+    {
+      "word": "horse", "ru": "лошадь", "ipa": "hɔːs", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a large animal that people ride"}],
+      "sentences": [
+        {"en": "The horse runs fast.", "ru": "Лошадь бежит быстро."},
+        {"en": "My uncle has a horse.", "ru": "У моего дяди есть лошадь."},
+        {"en": "She rides a horse on Sunday.", "ru": "Она катается на лошади в воскресенье."},
+        {"en": "The horse drinks water.", "ru": "Лошадь пьёт воду."},
+        {"en": "That horse is very big.", "ru": "Та лошадь очень большая."}
+      ]
+    },
+    {
+      "word": "tree", "ru": "дерево", "ipa": "triː", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a tall plant with a trunk and branches"}],
+      "sentences": [
+        {"en": "The tree is tall and green.", "ru": "Дерево высокое и зелёное."},
+        {"en": "Birds live in the tree.", "ru": "Птицы живут на дереве."},
+        {"en": "We sit under the tree.", "ru": "Мы сидим под деревом."},
+        {"en": "My father plants a tree.", "ru": "Мой папа сажает дерево."},
+        {"en": "There are many trees in the park.", "ru": "В парке много деревьев."}
+      ]
+    },
+    {
+      "word": "flower", "ru": "цветок", "ipa": "ˈflaʊ.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a colourful part of a plant"}],
+      "sentences": [
+        {"en": "This flower is red.", "ru": "Этот цветок красный."},
+        {"en": "She puts flowers on the table.", "ru": "Она ставит цветы на стол."},
+        {"en": "The garden has many flowers.", "ru": "В саду много цветов."},
+        {"en": "I give my mother a flower.", "ru": "Я дарю маме цветок."},
+        {"en": "Flowers need water and sun.", "ru": "Цветам нужны вода и солнце."}
+      ]
+    },
+    {
+      "word": "grass", "ru": "трава", "ipa": "ɡrɑːs", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a green plant that covers the ground"}],
+      "sentences": [
+        {"en": "The grass is green.", "ru": "Трава зелёная."},
+        {"en": "Children play on the grass.", "ru": "Дети играют на траве."},
+        {"en": "The dog runs in the grass.", "ru": "Собака бегает по траве."},
+        {"en": "We sit on the soft grass.", "ru": "Мы сидим на мягкой траве."},
+        {"en": "My father cuts the grass.", "ru": "Мой папа косит траву."}
+      ]
+    },
+    {
+      "word": "river", "ru": "река", "ipa": "ˈrɪv.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a long line of water that flows to the sea"}],
+      "sentences": [
+        {"en": "The river is long and blue.", "ru": "Река длинная и синяя."},
+        {"en": "We swim in the river.", "ru": "Мы плаваем в реке."},
+        {"en": "There are fish in the river.", "ru": "В реке есть рыба."},
+        {"en": "The children walk to the river.", "ru": "Дети идут к реке."},
+        {"en": "A boat is on the river.", "ru": "Лодка на реке."}
+      ]
+    },
+    {
+      "word": "sea", "ru": "море", "ipa": "siː", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a large area of salt water"}],
+      "sentences": [
+        {"en": "The sea is blue today.", "ru": "Море сегодня синее."},
+        {"en": "We go to the sea in summer.", "ru": "Мы едем на море летом."},
+        {"en": "She likes to swim in the sea.", "ru": "Она любит плавать в море."},
+        {"en": "The sea is cold in winter.", "ru": "Море холодное зимой."},
+        {"en": "I can see the sea from my room.", "ru": "Я вижу море из своей комнаты."}
+      ]
+    },
+    {
+      "word": "mountain", "ru": "гора", "ipa": "ˈmaʊn.tɪn", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a very high hill"}],
+      "sentences": [
+        {"en": "The mountain is very high.", "ru": "Гора очень высокая."},
+        {"en": "We walk up the mountain.", "ru": "Мы поднимаемся на гору."},
+        {"en": "Snow is on the mountain.", "ru": "На горе снег."},
+        {"en": "They live near the mountain.", "ru": "Они живут у горы."},
+        {"en": "I want to see the mountain.", "ru": "Я хочу увидеть гору."}
+      ]
+    },
+    {
+      "word": "road", "ru": "дорога", "ipa": "rəʊd", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a way for cars to travel on"}],
+      "sentences": [
+        {"en": "The road is long and quiet.", "ru": "Дорога длинная и тихая."},
+        {"en": "Cars drive on the road.", "ru": "Машины едут по дороге."},
+        {"en": "We walk along the road.", "ru": "Мы идём вдоль дороги."},
+        {"en": "The shop is across the road.", "ru": "Магазин через дорогу."},
+        {"en": "There is a bike on the road.", "ru": "На дороге велосипед."}
+      ]
+    },
+    {
+      "word": "bike", "ru": "велосипед", "ipa": "baɪk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a vehicle with two wheels that you ride"}],
+      "sentences": [
+        {"en": "I ride my bike to school.", "ru": "Я езжу в школу на велосипеде."},
+        {"en": "My bike is new and red.", "ru": "Мой велосипед новый и красный."},
+        {"en": "She has a small bike.", "ru": "У неё маленький велосипед."},
+        {"en": "We ride bikes in the park.", "ru": "Мы катаемся на велосипедах в парке."},
+        {"en": "Can I use your bike?", "ru": "Можно мне воспользоваться твоим велосипедом?"}
+      ]
+    },
+    {
+      "word": "plane", "ru": "самолёт", "ipa": "pleɪn", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a vehicle that flies in the sky"}],
+      "sentences": [
+        {"en": "The plane is in the sky.", "ru": "Самолёт в небе."},
+        {"en": "We go to the city by plane.", "ru": "Мы летим в город на самолёте."},
+        {"en": "The plane is very fast.", "ru": "Самолёт очень быстрый."},
+        {"en": "She likes to watch planes.", "ru": "Она любит смотреть на самолёты."},
+        {"en": "Our plane leaves at nine.", "ru": "Наш самолёт улетает в девять."}
+      ]
+    },
+    {
+      "word": "boat", "ru": "лодка", "ipa": "bəʊt", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a small vehicle that travels on water"}],
+      "sentences": [
+        {"en": "The boat is on the river.", "ru": "Лодка на реке."},
+        {"en": "We go to the island by boat.", "ru": "Мы плывём на остров на лодке."},
+        {"en": "My father has a small boat.", "ru": "У моего папы маленькая лодка."},
+        {"en": "The boat is white and blue.", "ru": "Лодка белая и синяя."},
+        {"en": "They sit in the boat.", "ru": "Они сидят в лодке."}
+      ]
+    },
+    {
+      "word": "station", "ru": "станция", "ipa": "ˈsteɪ.ʃən", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a place where trains or buses stop"}],
+      "sentences": [
+        {"en": "The train station is near.", "ru": "Вокзал близко."},
+        {"en": "We wait at the station.", "ru": "Мы ждём на станции."},
+        {"en": "The bus stops at the station.", "ru": "Автобус останавливается у станции."},
+        {"en": "She walks to the station every day.", "ru": "Она ходит на станцию каждый день."},
+        {"en": "Is this the right station?", "ru": "Это нужная станция?"}
+      ]
+    },
+    {
+      "word": "key", "ru": "ключ", "ipa": "kiː", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a small metal object that opens a door"}],
+      "sentences": [
+        {"en": "I have the key to my room.", "ru": "У меня есть ключ от моей комнаты."},
+        {"en": "The key is on the table.", "ru": "Ключ на столе."},
+        {"en": "She puts the key in her bag.", "ru": "Она кладёт ключ в сумку."},
+        {"en": "Where is my key?", "ru": "Где мой ключ?"},
+        {"en": "This key opens the door.", "ru": "Этот ключ открывает дверь."}
+      ]
+    },
+    {
+      "word": "bag", "ru": "сумка", "ipa": "bæɡ", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a thing you carry things in"}],
+      "sentences": [
+        {"en": "My bag is full of books.", "ru": "Моя сумка полна книг."},
+        {"en": "She has a red bag.", "ru": "У неё красная сумка."},
+        {"en": "The bag is on the chair.", "ru": "Сумка на стуле."},
+        {"en": "I put the apple in my bag.", "ru": "Я кладу яблоко в сумку."},
+        {"en": "Your bag is very heavy.", "ru": "Твоя сумка очень тяжёлая."}
+      ]
+    },
+    {
+      "word": "box", "ru": "коробка", "ipa": "bɒks", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a container with straight sides"}],
+      "sentences": [
+        {"en": "The box is on the floor.", "ru": "Коробка на полу."},
+        {"en": "There are books in the box.", "ru": "В коробке книги."},
+        {"en": "She opens the box.", "ru": "Она открывает коробку."},
+        {"en": "This box is very big.", "ru": "Эта коробка очень большая."},
+        {"en": "Put the toys in the box.", "ru": "Положи игрушки в коробку."}
+      ]
+    },
+    {
+      "word": "lamp", "ru": "лампа", "ipa": "læmp", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a thing that gives light"}],
+      "sentences": [
+        {"en": "The lamp is on the table.", "ru": "Лампа на столе."},
+        {"en": "I turn on the lamp.", "ru": "Я включаю лампу."},
+        {"en": "Her lamp is small and old.", "ru": "Её лампа маленькая и старая."},
+        {"en": "The room has two lamps.", "ru": "В комнате две лампы."},
+        {"en": "Please turn off the lamp.", "ru": "Пожалуйста, выключи лампу."}
+      ]
+    },
+    {
+      "word": "floor", "ru": "пол", "ipa": "flɔːr", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the flat part of a room that you walk on"}],
+      "sentences": [
+        {"en": "The cat sleeps on the floor.", "ru": "Кошка спит на полу."},
+        {"en": "The floor is clean.", "ru": "Пол чистый."},
+        {"en": "She sits on the floor.", "ru": "Она сидит на полу."},
+        {"en": "The keys are on the floor.", "ru": "Ключи на полу."},
+        {"en": "We clean the floor every day.", "ru": "Мы моем пол каждый день."}
+      ]
+    },
+    {
+      "word": "wall", "ru": "стена", "ipa": "wɔːl", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the side of a room or building"}],
+      "sentences": [
+        {"en": "The wall is white.", "ru": "Стена белая."},
+        {"en": "There is a map on the wall.", "ru": "На стене карта."},
+        {"en": "She puts a picture on the wall.", "ru": "Она вешает картину на стену."},
+        {"en": "The wall is cold.", "ru": "Стена холодная."},
+        {"en": "We paint the wall together.", "ru": "Мы вместе красим стену."}
+      ]
+    },
+    {
+      "word": "clock", "ru": "часы", "ipa": "klɒk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a thing that shows the time"}],
+      "sentences": [
+        {"en": "The clock is on the wall.", "ru": "Часы на стене."},
+        {"en": "This clock is very old.", "ru": "Эти часы очень старые."},
+        {"en": "I look at the clock.", "ru": "Я смотрю на часы."},
+        {"en": "The clock shows eight.", "ru": "Часы показывают восемь."},
+        {"en": "She buys a new clock.", "ru": "Она покупает новые часы."}
+      ]
+    },
+    {
+      "word": "sofa", "ru": "диван", "ipa": "ˈsəʊ.fə", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a soft seat for two or more people"}],
+      "sentences": [
+        {"en": "The cat sleeps on the sofa.", "ru": "Кошка спит на диване."},
+        {"en": "We sit on the sofa.", "ru": "Мы сидим на диване."},
+        {"en": "The sofa is soft and big.", "ru": "Диван мягкий и большой."},
+        {"en": "There is a sofa in the room.", "ru": "В комнате есть диван."},
+        {"en": "She puts a box on the sofa.", "ru": "Она кладёт коробку на диван."}
+      ]
+    },
+    {
+      "word": "desk", "ru": "письменный стол", "ipa": "desk", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a table for writing or working"}],
+      "sentences": [
+        {"en": "My desk is by the window.", "ru": "Мой стол у окна."},
+        {"en": "There are books on the desk.", "ru": "На столе книги."},
+        {"en": "I do my homework at the desk.", "ru": "Я делаю уроки за столом."},
+        {"en": "The desk is new.", "ru": "Стол новый."},
+        {"en": "She puts the pen on the desk.", "ru": "Она кладёт ручку на стол."}
+      ]
+    },
+    {
+      "word": "pen", "ru": "ручка", "ipa": "pen", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a thing you write with"}],
+      "sentences": [
+        {"en": "I write with a pen.", "ru": "Я пишу ручкой."},
+        {"en": "This pen is blue.", "ru": "Эта ручка синяя."},
+        {"en": "She has two pens.", "ru": "У неё две ручки."},
+        {"en": "My pen is on the desk.", "ru": "Моя ручка на столе."},
+        {"en": "Can I take your pen?", "ru": "Можно мне взять твою ручку?"}
+      ]
+    },
+    {
+      "word": "pencil", "ru": "карандаш", "ipa": "ˈpen.səl", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a wooden thing you write or draw with"}],
+      "sentences": [
+        {"en": "I draw with a pencil.", "ru": "Я рисую карандашом."},
+        {"en": "The pencil is short.", "ru": "Карандаш короткий."},
+        {"en": "She needs a pencil for the lesson.", "ru": "Ей нужен карандаш на урок."},
+        {"en": "There is a pencil in my bag.", "ru": "В моей сумке есть карандаш."},
+        {"en": "He gives me a pencil.", "ru": "Он даёт мне карандаш."}
+      ]
+    },
+    {
+      "word": "paper", "ru": "бумага", "ipa": "ˈpeɪ.pər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a thin material for writing on"}],
+      "sentences": [
+        {"en": "I write on a piece of paper.", "ru": "Я пишу на листе бумаги."},
+        {"en": "The paper is white.", "ru": "Бумага белая."},
+        {"en": "She puts the paper on the desk.", "ru": "Она кладёт бумагу на стол."},
+        {"en": "We need paper for the lesson.", "ru": "Нам нужна бумага на урок."},
+        {"en": "There is paper in the box.", "ru": "В коробке бумага."}
+      ]
+    },
+    {
+      "word": "brother", "ru": "брат", "ipa": "ˈbrʌð.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a boy or man with the same parents as you"}],
+      "sentences": [
+        {"en": "My brother is ten.", "ru": "Моему брату десять."},
+        {"en": "My brother likes football.", "ru": "Мой брат любит футбол."},
+        {"en": "I have one brother.", "ru": "У меня один брат."},
+        {"en": "Her brother goes to school.", "ru": "Её брат ходит в школу."},
+        {"en": "My brother and I play together.", "ru": "Мы с братом играем вместе."}
+      ]
+    },
+    {
+      "word": "sister", "ru": "сестра", "ipa": "ˈsɪs.tər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a girl or woman with the same parents as you"}],
+      "sentences": [
+        {"en": "My sister is a teacher.", "ru": "Моя сестра учительница."},
+        {"en": "She has a little sister.", "ru": "У неё есть младшая сестра."},
+        {"en": "My sister likes to sing.", "ru": "Моя сестра любит петь."},
+        {"en": "I have two sisters.", "ru": "У меня две сестры."},
+        {"en": "His sister reads every evening.", "ru": "Его сестра читает каждый вечер."}
+      ]
+    },
+    {
+      "word": "baby", "ru": "малыш", "ipa": "ˈbeɪ.bi", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "a very young child"}],
+      "sentences": [
+        {"en": "The baby smiles at me.", "ru": "Малыш улыбается мне."},
+        {"en": "She sings to the baby.", "ru": "Она поёт малышу."},
+        {"en": "The baby has blue eyes.", "ru": "У малыша голубые глаза."},
+        {"en": "A baby needs milk.", "ru": "Малышу нужно молоко."},
+        {"en": "The baby is very small.", "ru": "Малыш очень маленький."}
+      ]
+    },
+    {
+      "word": "grandmother", "ru": "бабушка", "ipa": "ˈɡræn.mʌð.ər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the mother of your mother or father"}],
+      "sentences": [
+        {"en": "My grandmother lives in the city.", "ru": "Моя бабушка живёт в городе."},
+        {"en": "She visits her grandmother on Sunday.", "ru": "Она навещает бабушку в воскресенье."},
+        {"en": "My grandmother makes good cakes.", "ru": "Моя бабушка печёт вкусные торты."},
+        {"en": "His grandmother is very kind.", "ru": "Его бабушка очень добрая."},
+        {"en": "I help my grandmother in the garden.", "ru": "Я помогаю бабушке в саду."}
+      ]
+    },
+    {
+      "word": "grandfather", "ru": "дедушка", "ipa": "ˈɡræn.fɑː.ðər", "pos": "noun",
+      "senses": [{"pos": "noun", "definition": "the father of your mother or father"}],
+      "sentences": [
+        {"en": "My grandfather is sixty.", "ru": "Моему дедушке шестьдесят."},
+        {"en": "He walks with his grandfather.", "ru": "Он гуляет с дедушкой."},
+        {"en": "My grandfather likes tea.", "ru": "Мой дедушка любит чай."},
+        {"en": "Her grandfather lives in the village.", "ru": "Её дедушка живёт в деревне."},
+        {"en": "I visit my grandfather every week.", "ru": "Я навещаю дедушку каждую неделю."}
+      ]
+    },
+    {
+      "word": "live", "ru": "жить", "ipa": "lɪv", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to have your home in a place"}],
+      "sentences": [
+        {"en": "I live in a small city.", "ru": "Я живу в маленьком городе."},
+        {"en": "My friend lives near the school.", "ru": "Мой друг живёт рядом со школой."},
+        {"en": "They live in a big house.", "ru": "Они живут в большом доме."},
+        {"en": "Where do you live?", "ru": "Где ты живёшь?"},
+        {"en": "We live together.", "ru": "Мы живём вместе."}
+      ]
+    },
+    {
+      "word": "study", "ru": "учиться", "ipa": "ˈstʌd.i", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to learn about something"}],
+      "sentences": [
+        {"en": "I study English every day.", "ru": "Я учу английский каждый день."},
+        {"en": "She studies at the university.", "ru": "Она учится в университете."},
+        {"en": "We study in the library.", "ru": "Мы занимаемся в библиотеке."},
+        {"en": "He studies hard for the test.", "ru": "Он усердно готовится к тесту."},
+        {"en": "Do you study on Sunday?", "ru": "Ты занимаешься в воскресенье?"}
+      ]
+    },
+    {
+      "word": "teach", "ru": "учить", "ipa": "tiːtʃ", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to help someone learn"}],
+      "sentences": [
+        {"en": "My mother teaches English.", "ru": "Моя мама преподаёт английский."},
+        {"en": "She teaches children at school.", "ru": "Она учит детей в школе."},
+        {"en": "He teaches me to swim.", "ru": "Он учит меня плавать."},
+        {"en": "Our teacher teaches well.", "ru": "Наш учитель хорошо преподаёт."},
+        {"en": "Who teaches this class?", "ru": "Кто ведёт этот класс?"}
+      ]
+    },
+    {
+      "word": "drive", "ru": "водить", "ipa": "draɪv", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to make a car move"}],
+      "sentences": [
+        {"en": "I drive a small car.", "ru": "Я вожу маленькую машину."},
+        {"en": "She drives to work every day.", "ru": "Она ездит на работу каждый день."},
+        {"en": "My father drives slowly.", "ru": "Мой папа водит медленно."},
+        {"en": "Can you drive a bus?", "ru": "Ты умеешь водить автобус?"},
+        {"en": "We drive to the sea in summer.", "ru": "Мы едем на море летом."}
+      ]
+    },
+    {
+      "word": "swim", "ru": "плавать", "ipa": "swɪm", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to move through water"}],
+      "sentences": [
+        {"en": "I swim in the river.", "ru": "Я плаваю в реке."},
+        {"en": "She swims very fast.", "ru": "Она плавает очень быстро."},
+        {"en": "We swim in the sea in summer.", "ru": "Мы плаваем в море летом."},
+        {"en": "Can you swim?", "ru": "Ты умеешь плавать?"},
+        {"en": "The children swim after lunch.", "ru": "Дети плавают после обеда."}
+      ]
+    },
+    {
+      "word": "sing", "ru": "петь", "ipa": "sɪŋ", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to make music with your voice"}],
+      "sentences": [
+        {"en": "She sings a happy song.", "ru": "Она поёт весёлую песню."},
+        {"en": "We sing together in class.", "ru": "Мы поём вместе в классе."},
+        {"en": "My mother sings in the morning.", "ru": "Моя мама поёт утром."},
+        {"en": "He can sing very well.", "ru": "Он очень хорошо поёт."},
+        {"en": "The birds sing in the garden.", "ru": "Птицы поют в саду."}
+      ]
+    },
+    {
+      "word": "dance", "ru": "танцевать", "ipa": "dɑːns", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to move your body to music"}],
+      "sentences": [
+        {"en": "We dance at the party.", "ru": "Мы танцуем на празднике."},
+        {"en": "She dances very well.", "ru": "Она очень хорошо танцует."},
+        {"en": "My sister likes to dance.", "ru": "Моя сестра любит танцевать."},
+        {"en": "They dance together.", "ru": "Они танцуют вместе."},
+        {"en": "Do you want to dance?", "ru": "Ты хочешь потанцевать?"}
+      ]
+    },
+    {
+      "word": "draw", "ru": "рисовать", "ipa": "drɔː", "pos": "verb",
+      "senses": [{"pos": "verb", "definition": "to make a picture with a pen or pencil"}],
+      "sentences": [
+        {"en": "I draw a cat.", "ru": "Я рисую кошку."},
+        {"en": "She draws flowers in her book.", "ru": "Она рисует цветы в книге."},
+        {"en": "He can draw very well.", "ru": "Он очень хорошо рисует."},
+        {"en": "We draw on paper.", "ru": "Мы рисуем на бумаге."},
+        {"en": "Do you like to draw?", "ru": "Ты любишь рисовать?"}
+      ]
+    },
+    {
+      "word": "always", "ru": "всегда", "ipa": "ˈɔːl.weɪz", "pos": "adverb",
+      "senses": [{"pos": "adverb", "definition": "at all times"}],
+      "sentences": [
+        {"en": "I always have breakfast at seven.", "ru": "Я всегда завтракаю в семь."},
+        {"en": "She is always happy.", "ru": "Она всегда счастлива."},
+        {"en": "We always walk to school.", "ru": "Мы всегда ходим в школу пешком."},
+        {"en": "He always drinks tea.", "ru": "Он всегда пьёт чай."},
+        {"en": "They are always together.", "ru": "Они всегда вместе."}
+      ]
     }
   ]
 }
