@@ -13,6 +13,8 @@ from . import paths, quality, sm2
 
 DEFAULT_SETTINGS = {
     "rate": 0, "autoplay": True, "asr": True, "self_assess": True, "current_set": "top-1000",
+    # soft / normal / strict — насколько проверка речи доверяет похожим звукам
+    "speech_strictness": "normal",
     "daily_goal": 30, "new_per_day": 20, "reviews_per_day": 200, "session_len": 10,
     "reverse": False, "show_tr": False, "xp_to_rank": True,
     # сколько полных прогонов карточки (слово + примеры) нужно до «Отработано»
@@ -62,6 +64,7 @@ class Progress:
                 "xp": {"total": 0, "by_day": {}, "best_streak": 0, "awarded": {}},
                 "achievements": {}, "attempts": [], "review_done_days": [], "speech_best": {},
                 "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}},
+                "verb_scores": {},
                 "book_sentences": {"books": {}, "cards": {}, "stats": {"flips": 0, "ok": 0, "by_day": {}}}}
         for k, v in base.items():
             d.setdefault(k, v)

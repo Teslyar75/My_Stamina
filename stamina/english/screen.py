@@ -65,6 +65,10 @@ class EnglishScreen(tk.Frame):
         sub = self.current or "overview"
         if sub == "lessons":
             return "english.lessons"
+        if sub == "sets":
+            hub = self.pages.get("sets") if self._built else None
+            if getattr(hub, "current", "") == "verbs":
+                return "english.verbs"
         return f"english.{sub}"
 
     def _build(self) -> None:

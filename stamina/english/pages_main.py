@@ -1243,7 +1243,8 @@ class ScannerPage(tk.Frame):
         else:
             if not alts:
                 return
-            res = [(score_sentence(s["en"], a, w["word"]), a) for a in alts]
+            level = self.ctx.progress.settings.get("speech_strictness", "normal")
+            res = [(score_sentence(s["en"], a, w["word"], strictness=level), a) for a in alts]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         text, vk = verdict(score)
         self.result.configure(text="")

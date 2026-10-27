@@ -764,6 +764,7 @@ class WarehousePage(tk.Frame):
         if not card or self._holding is not None:
             return
         w = self.ctx.vocab.get(card["slug"]) or {}
+        level = self.ctx.progress.settings.get("speech_strictness", "normal")
         marks = None
         heard = ""
 
@@ -773,7 +774,7 @@ class WarehousePage(tk.Frame):
             else:
                 if not alts:
                     return
-                score = score_word(card["word"], alts, w.get("sounds_like"))
+                score = score_word(card["word"], alts, w.get("sounds_like"), strictness=level)
                 heard = alts[0]
             self.scores[WORD_KEY] = max(self.scores.get(WORD_KEY, 0), score)
             wh.save_current_scores(self.ctx.progress, card["slug"], self.scores)
@@ -812,7 +813,7 @@ class WarehousePage(tk.Frame):
         else:
             if not alts:
                 return
-            res = [(score_sentence(s["en"], a, w.get("word")), a) for a in alts]
+            res = [(score_sentence(s["en"], a, w.get("word"), strictness=level), a) for a in alts]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.scores[si] = max(self.scores.get(si, 0), score)
         wh.save_current_scores(self.ctx.progress, card["slug"], self.scores)

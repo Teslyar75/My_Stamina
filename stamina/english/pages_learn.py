@@ -565,14 +565,16 @@ class PracticePage(tk.Frame):
             return
         t = self.tasks[self.i]
         w = t["word"]
+        level = self.ctx.progress.settings.get("speech_strictness", "normal")
         marks = None
         heard = (alts or [""])[0]
         if self_score is not None:
             score = self_score
         elif t["type"] == "S1":
-            score = score_word(w["word"], alts or [], w.get("sounds_like"))
+            score = score_word(w["word"], alts or [], w.get("sounds_like"), strictness=level)
         else:
-            res = [(score_sentence(t["sentence"]["en"], a, w["word"]), a) for a in (alts or [])] or [((0, []), "")]
+            res = [(score_sentence(t["sentence"]["en"], a, w["word"], strictness=level), a)
+                   for a in (alts or [])] or [((0, []), "")]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.match.set(score, marks, heard if self_score is None else "",
                        bool(marks) and target_missed(marks, w["word"]), self_rated=self_score is not None)
