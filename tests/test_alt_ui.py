@@ -77,6 +77,14 @@ class TestAltWidgets(unittest.TestCase):
                 ban.set_zone(z)
             alt_ui.GaugeCanvas(self.root, prof)._on_size(type("E", (), {"width": 150, "height": 150}))
 
+    def test_composer_row_is_not_compacted(self):
+        row = tk.Frame(self.root, bg="#000000")
+        row._alt_nocompact = True
+        for i in range(5):
+            alt_ui.HudButton(row, f"B{i}", height=30).pack(side=tk.LEFT)
+        alt_ui.compact(row, "starship")
+        self.assertFalse(hasattr(row, "_alt_row"))
+
     def test_airlock_finishes(self):
         ban = alt_ui.CompartmentBanner(self.root, "starship")
         ban._size = (600, 64)

@@ -60,6 +60,13 @@ class MarksTest(unittest.TestCase):
         marks.add(5, 6, "МОСТИК", note="кнопка не влезает", root=(800, 600))
         self.assertIn("кнопка не влезает", marks.context_block())
 
+    def test_place_line_matches_agent_block(self):
+        mark = marks.add(5, 6, "МОСТИК", "чат", "HudButton", root=(800, 600))
+        line = marks.place_line(mark)
+        self.assertIn("МОСТИК / чат / HudButton", line)
+        self.assertIn("окно 800x600, точка 5,6", line)
+        self.assertIn(line, marks.context_block())
+
     def test_limit_keeps_last(self):
         for i in range(marks.LIMIT + 5):
             marks.add(i, i, "МОСТИК", root=(800, 600))

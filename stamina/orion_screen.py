@@ -413,6 +413,9 @@ class OrionScreen(tk.Frame):
 
         row = tk.Frame(bottom, bg=BG)
         row.pack(fill=tk.X, pady=(px(4), 0))
+        # Поле, микрофон, вложение и ОТПРАВИТЬ — одна строка, которую нельзя сворачивать
+        # в выпадающий список: иначе кнопки уезжают в «⋯ ЕЩЁ» и отправить нечем.
+        row._alt_nocompact = True
         self.input_row = row
         self.suggester = Suggester()
         self._suggest_seen = -1
@@ -430,20 +433,25 @@ class OrionScreen(tk.Frame):
         # 📎 — приложить картинки с диска (как в чатах ИИ); Ctrl+V — из буфера
         self.attach_btn = HudButton(row, "📎", self._pick_images, height=36, font_size=11,
                                     width=36, color=CYAN)
-        self.attach_btn.pack(side=tk.LEFT, padx=(0, px(6)))
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
                               settings=self.app.store.settings,
                               save=self.app.store.save_settings)
-        self.mic.button.pack(side=tk.LEFT)
-        self.mic.hold_button.pack(side=tk.LEFT, padx=(px(6), 0))
-        self.send_btn = HudButton(row, _t("ОТПРАВИТЬ"), self._send, height=36, font_size=11)
-        self.send_btn.pack(side=tk.LEFT, padx=(px(6), 0))
-        # квадратик «стоп»: пилот прерывает работу, чтобы уточнить задачу до конца правок
-        self.stop_btn = HudButton(row, "■", self._stop_work, height=36, font_size=11,
-                                  width=36, color=RED)
-        self.stop_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        # Кнопки справа: ОТПРАВИТЬ — крупная и последняя перед «СТОП», чтобы
+        # последовательность читалась слева направо: наберите → проверьте → отправьте.
+        self.stop_btn = HudButton(row, _t("■ СТОП"), self._stop_work, height=36, font_size=10,
+                                  width=76, color=RED)
+        self.stop_btn.pack(side=tk.RIGHT, padx=(px(6), 0))
+        self.stop_btn.pack_forget()          # виден только пока агент работает
         self.stop_btn.set_enabled(False)
+        self.send_btn = HudButton(row, _t("ОТПРАВИТЬ") + " ↵", self._send, height=36, font_size=11,
+                                  color=GREEN)
+        self.send_btn.pack(side=tk.RIGHT, padx=(px(6), 0))
+        self.mic.hold_button.pack(side=tk.RIGHT, padx=(px(6), 0))
+        self.mic.button.pack(side=tk.RIGHT)
+        self.attach_btn.pack(side=tk.RIGHT, padx=(0, px(6)))
+        self.composer_hint = _label(bottom, "", fg=MUTED, size=8, bg=BG, anchor="w")
+        self.composer_hint.pack(fill=tk.X, pady=(px(2), 0))
         # Простая панель общения: микрофон, ввод, отправка
         self._apply_mode()
 
@@ -1916,6 +1924,7 @@ class OrionScreen(tk.Frame):
         self._work_started = time.time()
         self.send_btn.set_enabled(False)
         self.stop_btn.set_enabled(True)
+        self._show_stop(True)
         self._pending = (rec, text)
         if second:
             self._hide_permission()
@@ -1940,6 +1949,13 @@ class OrionScreen(tk.Frame):
         threading.Thread(target=self._worker,
                          args=(rec, text, profile, session, ctx, second), daemon=True).start()
 
+    def _show_stop(self, on: bool) -> None:
+        """«■ СТОП» появляется только пока агент работает — в покое не пугает пилота."""
+        if on and not self.stop_btn.winfo_manager():
+            self.stop_btn.pack(side=tk.RIGHT, padx=(px(6), 0), before=self.send_btn)
+        elif not on and self.stop_btn.winfo_manager():
+            self.stop_btn.pack_forget()
+
     def _stop_work(self) -> None:
         """Квадратик «стоп»: оборвать агента на середине — пилот хочет уточнить задачу."""
         rec = self._rec()
@@ -1948,6 +1964,7 @@ class OrionScreen(tk.Frame):
             self.entry.focus_set()
         else:
             self.stop_btn.set_enabled(False)
+            self._show_stop(False)
             self._hint(_t("Орион уже не работает"), MUTED)
 
     # -- вид чата: разговор или ремонтный отсек ------------------------------
@@ -1987,6 +2004,12 @@ class OrionScreen(tk.Frame):
             self.entry.set_history(self._sent_log)
         except tk.TclError:
             pass
+        hint = getattr(self, "composer_hint", None)
+        if hint is not None:
+            hint.configure(text=(
+                _t("Ctrl+Enter — отправить · Enter — новая строка · ↑ — история")
+                if pro else
+                _t("Enter — отправить · Shift+Enter — новая строка · 📎 — картинка")))
 
     def _worker(self, rec: dict, text: str, profile: str, session: str, ctx: str,
                 second: bool) -> None:
@@ -2000,6 +2023,7 @@ class OrionScreen(tk.Frame):
         """Остановить зависший поток Орина."""
         self._busy = False
         self.send_btn.set_enabled(True)
+        self._show_stop(False)
         self._hide_permission()
         self._hint(_t("Орион остановлен. Пopробуйте ещё раз."), MUTED)
 
@@ -2008,6 +2032,7 @@ class OrionScreen(tk.Frame):
         rec = self._rec()
         self._busy = False
         self.send_btn.set_enabled(True)
+        self._show_stop(False)
         self._hide_permission()
         # Останавливаем зависший процесс
         orion.stop_run(rec["id"])
@@ -2097,6 +2122,7 @@ class OrionScreen(tk.Frame):
         self._busy = False
         self.send_btn.set_enabled(True)
         self.stop_btn.set_enabled(False)
+        self._show_stop(False)
         if res.error == "stopped":
             # остаток ответа не выбрасываем: пилот увидит, на чём Орион остановился
             if res.reply:
