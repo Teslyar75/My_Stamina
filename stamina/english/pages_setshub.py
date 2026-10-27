@@ -12,6 +12,7 @@ from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 
 from . import cefr, quality
 from .pages_main import SetsPage
+from .pages_verbs import VerbsTab
 from .ui import L, Strip, Tile
 
 TABS = [("std", "СТАНДАРТ"), ("cefr", "CEFR"), ("verbs", "ГЛАГОЛЫ"), ("book", "ИЗ КНИГИ")]
@@ -69,7 +70,7 @@ class SetsHubPage(tk.Frame):
         self.hint.configure(text={
             "std": "частотные наборы: 1000 · 3000 · 10 000 · 20 000",
             "cefr": "уровни A1–C2 · у каждого слова пять примеров",
-            "verbs": "три формы + примеры (готовится)",
+            "verbs": "12 времён · примеры с переводом и проверкой речи",
             "book": "предложения из читаемой книги · RU → EN",
         }.get(key, ""))
 
@@ -397,26 +398,6 @@ class CefrPage(tk.Frame):
             self.ctx.status("В наборе пока нет слов", AMBER)
             return
         self.ctx.start_session("speaking", source="filtered", ids=ids)
-
-
-class VerbsTab(tk.Frame):
-    def __init__(self, master, ctx) -> None:
-        super().__init__(master, bg=BG)
-        self.ctx = ctx
-        p = HudPanel(self, "НЕПРАВИЛЬНЫЕ ГЛАГОЛЫ")
-        p.pack(fill=tk.BOTH, expand=True, padx=px(40), pady=px(12))
-        b = p.body
-        L(b, "ТРИ ФОРМЫ · ПРИМЕРЫ · СПРЯЖЕНИЕ", fg=CYAN, size=11, bold=True, bg=PANEL).pack(anchor="w")
-        L(b, "Карточка глагола: base · past · past participle, по пять предложений на форму,\n"
-             "плюс таблица спряжения по временам в УРОКАХ → СПРАВОЧНИК.\n\n"
-             "Набор готовится на этапе 3: сначала A1-глаголы (go, come, see, eat…),\n"
-             "затем остальные. Пока учи словарные наборы — они уже работают.",
-          fg=TEXT, size=10, justify="left", bg=PANEL).pack(anchor="w", pady=px(10))
-        HudButton(b, "К СТАНДАРТУ", lambda: self.ctx.pages["sets"].open_set("top-1000"),
-                  color=AMBER, height=34).pack(anchor="w", pady=px(6))
-
-    def refresh(self) -> None:
-        pass
 
 
 class BookTab(tk.Frame):
