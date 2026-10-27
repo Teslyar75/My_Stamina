@@ -62,8 +62,13 @@ def text_hash(text: str) -> str:
     return hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
 
 
+# Озвучка справки: у подраздела может не быть отдельного клипа, тогда
+# проигрываем клип родительского раздела (текст F1 при этом свой).
+_HELP_CLIP_ALIASES = {"english.verbs": "english.sets"}
+
+
 def help_clip_id(page_key: str) -> str:
-    return "help." + page_key
+    return "help." + _HELP_CLIP_ALIASES.get(page_key, page_key)
 
 
 _SPOKEN = [
