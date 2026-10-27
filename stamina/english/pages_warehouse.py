@@ -483,6 +483,7 @@ class WarehousePage(tk.Frame):
 
         done = wh.card_record(self.ctx.progress, card["slug"])
         qc2 = quality.counts(self.ctx.progress, card["slug"], n_sents=len(sents))
+        goal_done = bool(qc2["goal"]) and qc2["filled"] >= qc2["goal"]
 
         # Две колонки: слева карточки для повторения, справа — блок проверки.
         work = tk.Frame(self.body, bg=PANEL)
@@ -528,13 +529,11 @@ class WarehousePage(tk.Frame):
         face_w.pack(anchor="w")
         fit_wrap(face_w, mid_w, px(4))
         self._faces[WORD_KEY] = (face_w, ru_w, card["word"], 18)
-        if word_ok:
-            L(mid_w, card["word"], fg=GREEN, size=12, bold=True, mono=True, bg=w_bg).pack(anchor="w", pady=(px(2), 0))
-        if w_active:
-            right_w = self._side_controls(wrow, WORD_KEY, w_bg)
-        else:
-            right_w = tk.Frame(wrow, bg=w_bg)
-            right_w.pack(side=tk.RIGHT, padx=px(6))
+        # слово с переводом видно всегда — это опора карточки
+        L(mid_w, card["word"], fg=GREEN if word_ok else CYAN, size=12, bold=True, mono=True,
+          bg=w_bg).pack(anchor="w", pady=(px(2), 0))
+        right_w = tk.Frame(wrow, bg=w_bg)
+        right_w.pack(side=tk.RIGHT, padx=px(6))
         ws = self.scores.get(WORD_KEY)
         if ws is not None:
             col = GREEN if ws >= wh.FLIP_OK else (AMBER if ws >= 60 else RED)
@@ -567,17 +566,16 @@ class WarehousePage(tk.Frame):
             face.pack(anchor="w")
             fit_wrap(face, mid, px(4))
             self._faces[si] = (face, ru, s["en"], 13)
-            if score is not None and score >= wh.FLIP_OK:
-                L(mid, s["en"], fg=GREEN, size=10, mono=True, bg=row_bg, wraplength=px(340)).pack(anchor="w")
+            if goal_done:
+                # английский открывается только когда выполнена цель по качественным повторениям
+                L(mid, s["en"], fg=GREEN if score is not None and score >= wh.FLIP_OK else MUTED,
+                  size=10, mono=True, bg=row_bg, wraplength=px(340)).pack(anchor="w")
             elif self.mode == "B" and on:
                 # режим ЧТЕНИЕ: английский виден сразу, читаем вслух
                 L(mid, s["en"], fg=CYAN, size=10, mono=True, bg=row_bg, wraplength=px(340)).pack(anchor="w")
 
-            if active:
-                right = self._side_controls(row, si, row_bg)
-            else:
-                right = tk.Frame(row, bg=row_bg)
-                right.pack(side=tk.RIGHT, padx=px(6))
+            right = tk.Frame(row, bg=row_bg)
+            right.pack(side=tk.RIGHT, padx=px(6))
             if score is not None:
                 col = GREEN if score >= wh.FLIP_OK else (AMBER if score >= 60 else RED)
                 L(right, f"{score}%", fg=col, size=11, bold=True, mono=True, bg=row_bg).pack()
