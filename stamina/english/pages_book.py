@@ -505,7 +505,8 @@ class BookCardsPage(tk.Frame):
         else:
             if not alts:
                 return
-            res = [(score_sentence(en, a, None), a) for a in alts]
+            level = self.ctx.progress.settings.get("speech_strictness", "normal")
+            res = [(score_sentence(en, a, None, strictness=level), a) for a in alts]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self._last_score = score
         if self.match is not None:

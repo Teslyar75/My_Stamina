@@ -20,7 +20,7 @@ from .tts import TTS
 from .ui import L, entry
 from .vocab import Vocab
 
-SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("ЗВЁЗДНЫЕ КАРТЫ")), ("scanner", t("СКАНЕР")),
+SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("НАБОРЫ")), ("scanner", t("СКАНЕР")),
             ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
             ("book", t("ИЗ КНИГИ")),
             ("lists", t("ОТСЕКИ")), ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
@@ -63,13 +63,21 @@ class EnglishScreen(tk.Frame):
 
     def page_help_key(self) -> str:
         sub = self.current or "overview"
+        if sub == "lessons":
+            return "english.lessons"
+        if sub == "sets":
+            hub = self.pages.get("sets") if self._built else None
+            if getattr(hub, "current", "") == "verbs":
+                return "english.verbs"
         return f"english.{sub}"
 
     def _build(self) -> None:
         from .pages_book import BookCardsPage
         from .pages_learn import PracticePage, ReviewPage
-        from .pages_main import OverviewPage, ScannerPage, SetsPage
+        from .pages_lessons import LessonsPage
+        from .pages_main import OverviewPage, ScannerPage
         from .pages_misc import ListsPage, LogPage, SettingsPage
+        from .pages_setshub import SetsHubPage
         from .pages_warehouse import WarehousePage
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(12), pady=(px(8), px(2)))
@@ -99,7 +107,8 @@ class EnglishScreen(tk.Frame):
         self.body.grid_rowconfigure(0, weight=1)
         self.body.grid_columnconfigure(0, weight=1)
         self.pages = {
-            "overview": OverviewPage(self.body, self), "sets": SetsPage(self.body, self),
+            "overview": OverviewPage(self.body, self), "sets": SetsHubPage(self.body, self),
+            "lessons": LessonsPage(self.body, self),
             "scanner": ScannerPage(self.body, self), "practice": PracticePage(self.body, self),
             "review": ReviewPage(self.body, self), "warehouse": WarehousePage(self.body, self),
             "book": BookCardsPage(self.body, self),
@@ -167,6 +176,13 @@ class EnglishScreen(tk.Frame):
 
     def changed(self) -> None:
         self._update_nav()
+        # CEFR: если ученик закрыл слово прямо на плитке, сразу проверяем
+        # порцию и грузим следующую. after_idle — чтобы не разрушать плитку
+        # внутри её же обработчика клика.
+        if self.current == "sets":
+            hub = self.pages.get("sets")
+            if getattr(hub, "current", "") == "cefr":
+                self.after_idle(hub.cefr.refresh)
 
     def open_word(self, slug: str) -> None:
         if self.vocab.get(slug):

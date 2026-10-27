@@ -18,9 +18,35 @@ try:
 except ImportError:  # pragma: no cover
     Image = ImageTk = None
 
+ELLIPSIS = "…"
+
 
 def skin_slideshow() -> dict | None:
     return theme.current().get("slideshow") or None
+
+
+def fit_text(text: str, measure, max_px: int) -> str:
+    """Обрезать строку по ширине в пикселях, добавив «…».
+
+    ``measure`` — функция «строка → ширина в px» (в кадре это холст, в тестах —
+    простая оценка). Нужна, чтобы длинное имя волны не вылезало за рамку плашки
+    в слайдшоу: имя режем по пикселям, а не по числу букв.
+    """
+    text = " ".join(str(text or "").split())
+    if not text or max_px <= 0:
+        return ""
+    if measure(text) <= max_px:
+        return text
+    if measure(ELLIPSIS) > max_px:
+        return ""
+    lo, hi = 0, len(text)
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        if measure(text[:mid].rstrip() + ELLIPSIS) <= max_px:
+            lo = mid
+        else:
+            hi = mid - 1
+    return text[:lo].rstrip() + ELLIPSIS if lo else ELLIPSIS
 
 
 class IdleController:
@@ -162,6 +188,13 @@ class Slideshow(tk.Frame):
 
     def _size(self) -> tuple[int, int]:
         return self.cv.winfo_width(), self.cv.winfo_height()
+
+    def _measure_text(self, text: str, font_spec) -> int:
+        """Ширина строки на холсте; без Tk-шрифта — грубая оценка для тестов."""
+        try:
+            return int(self.cv.tk.call("font", "measure", font_spec, text))
+        except (tk.TclError, ValueError):
+            return len(text) * 7
 
     @staticmethod
     def _fit(img, w: int, h: int):
@@ -487,17 +520,21 @@ class Slideshow(tk.Frame):
         paper = c.get("panel") or "#1b1712"
         gold = c.get("accent") or "#e8c766"
         ink = c.get("text") or "#e8e2d0"
-        name = str(st.get("name", "")).strip()[:48] or "—"
+        name = str(st.get("name", "")).strip() or "—"
         genre = station_genre(st)
         vol = _t("без звука") if self._muted else f"{getattr(self, '_target', 40)}%"
         line1 = f"♪ {name}" + (f"  ·  {genre}" if genre else "")
         line2 = note or (_t("← → — волна · ↑ ↓ — громкость · M — звук · Esc — выйти") + f"   [{self.st_i + 1}/{len(self.stations)} · {vol}]")
         pw = min(w - 40, max(420, int(w * 0.46)))
+        # Имя волны режем по пикселям: длинные названия иначе вылезают за рамку
+        # плашки, особенно в узком окне и на крупном системном шрифте.
+        f1 = theme.font(11, True)
+        line1 = fit_text(line1, lambda s: self._measure_text(s, f1), max(80, pw - 24))
         x0, y1 = (w - pw) // 2, h - 40
         y0 = y1 - 54
         self.cv.create_rectangle(x0, y0, x0 + pw, y1, fill=paper, outline=gold, width=2, tags="plate")
         self.cv.create_rectangle(x0 + 4, y0 + 4, x0 + pw - 4, y1 - 4, outline=gold, width=1, tags="plate")
-        self.cv.create_text(w // 2, y0 + 18, text=line1, fill=gold, font=theme.font(11, True), tags="plate")
+        self.cv.create_text(w // 2, y0 + 18, text=line1, fill=gold, font=f1, tags="plate")
         self.cv.create_text(w // 2, y0 + 38, text=line2, fill=ink, font=theme.font(9), tags="plate")
 
     def _stop_radio(self) -> None:

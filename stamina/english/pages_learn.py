@@ -226,6 +226,12 @@ class PracticePage(tk.Frame):
         L(h, _t("МИССИИ · ПРАКТИКА"), fg=TEXT, size=16, bold=True, bg=BG).pack(anchor="w", padx=px(14), pady=(px(10), 0))
         L(h, _t("Чтение, вопросы и говорение. Аудирования, диктанта и письменной проверки нет (решение пользователя)."),
           fg=MUTED, size=9, bg=BG).pack(anchor="w", padx=px(16))
+        back = tk.Frame(h, bg=BG)
+        back.pack(anchor="w", padx=px(14), pady=(px(4), 0))
+        HudButton(back, _t("← УРОКИ И ПРАВИЛА"), lambda: self.ctx.show("lessons"),
+                  height=28, font_size=9, width=170, color=CYAN).pack(side=tk.LEFT)
+        L(back, _t("миссия — шаг урока; правило открывается рядом"),
+          fg=FAINT, size=8, bg=BG).pack(side=tk.LEFT, padx=px(8))
         opt = HudPanel(h, _t("ПОЛЁТНЫЙ ПЛАН"))
         opt.pack(fill=tk.X, padx=px(12), pady=px(8))
         r = tk.Frame(opt.body, bg=PANEL)
@@ -559,14 +565,16 @@ class PracticePage(tk.Frame):
             return
         t = self.tasks[self.i]
         w = t["word"]
+        level = self.ctx.progress.settings.get("speech_strictness", "normal")
         marks = None
         heard = (alts or [""])[0]
         if self_score is not None:
             score = self_score
         elif t["type"] == "S1":
-            score = score_word(w["word"], alts or [], w.get("sounds_like"))
+            score = score_word(w["word"], alts or [], w.get("sounds_like"), strictness=level)
         else:
-            res = [(score_sentence(t["sentence"]["en"], a, w["word"]), a) for a in (alts or [])] or [((0, []), "")]
+            res = [(score_sentence(t["sentence"]["en"], a, w["word"], strictness=level), a)
+                   for a in (alts or [])] or [((0, []), "")]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.match.set(score, marks, heard if self_score is None else "",
                        bool(marks) and target_missed(marks, w["word"]), self_rated=self_score is not None)

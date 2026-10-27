@@ -1,0 +1,283 @@
+{
+ "id": "cefr-a2",
+ "level": "A2",
+ "name": "A2 · Быт",
+ "source": {"name": "original", "url": "docs/english/PLATFORM_STRUCTURE.md", "license": "CC BY-SA 4.0"},
+ "words": [
+  {
+   "word": "airport", "ru": "аэропорт", "ipa": "ˈeə.pɔːt", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "a place where planes arrive and leave"}],
+   "sentences": [
+    {"en": "We arrived at the airport two hours early.", "ru": "Мы приехали в аэропорт за два часа."},
+    {"en": "The airport is far from the city centre.", "ru": "Аэропорт далеко от центра города."},
+    {"en": "She met her sister at the airport.", "ru": "Она встретила сестру в аэропорту."},
+    {"en": "Our flight leaves from the new airport.", "ru": "Наш рейс вылетает из нового аэропорта."},
+    {"en": "Is there a bus from the airport to the hotel?", "ru": "От аэропорта до отеля ходит автобус?"}
+   ]
+  },
+  {
+   "word": "ticket", "ru": "билет", "ipa": "ˈtɪk.ɪt", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "a small piece of paper that lets you travel or enter"}],
+   "sentences": [
+    {"en": "I bought two tickets for the evening train.", "ru": "Я купил два билета на вечерний поезд."},
+    {"en": "The ticket costs ten pounds.", "ru": "Билет стоит десять фунтов."},
+    {"en": "Keep your ticket in your pocket.", "ru": "Держи билет в кармане."},
+    {"en": "We could not find our tickets.", "ru": "Мы не смогли найти наши билеты."},
+    {"en": "Can I pay for the ticket by card?", "ru": "Можно оплатить билет картой?"}
+   ]
+  },
+  {
+   "word": "luggage", "ru": "багаж", "ipa": "ˈlʌɡ.ɪdʒ", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "the bags you take when you travel"}],
+   "sentences": [
+    {"en": "My luggage is very heavy.", "ru": "Мой багаж очень тяжёлый."},
+    {"en": "Please leave your luggage at the hotel.", "ru": "Пожалуйста, оставьте багаж в отеле."},
+    {"en": "They lost our luggage at the airport.", "ru": "Они потеряли наш багаж в аэропорту."},
+    {"en": "How much luggage can I take on the plane?", "ru": "Сколько багажа я могу взять в самолёт?"},
+    {"en": "Her luggage was ready by the door.", "ru": "Её багаж стоял готовый у двери."}
+   ]
+  },
+  {
+   "word": "journey", "ru": "поездка", "ipa": "ˈdʒɜː.ni", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "travel from one place to another"}],
+   "sentences": [
+    {"en": "The journey to the mountains took six hours.", "ru": "Поездка в горы заняла шесть часов."},
+    {"en": "How was your journey?", "ru": "Как прошла твоя поездка?"},
+    {"en": "We stopped for coffee during the journey.", "ru": "Мы остановились на кофе во время поездки."},
+    {"en": "It is a long journey by train.", "ru": "Это долгая поездка на поезде."},
+    {"en": "I slept for most of the journey.", "ru": "Я проспал большую часть поездки."}
+   ]
+  },
+  {
+   "word": "hotel", "ru": "отель", "ipa": "həʊˈtel", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "a place where you pay to sleep and eat"}],
+   "sentences": [
+    {"en": "We stayed at a small hotel near the sea.", "ru": "Мы жили в маленьком отеле у моря."},
+    {"en": "The hotel has a restaurant on the ground floor.", "ru": "В отеле есть ресторан на первом этаже."},
+    {"en": "Our room was on the third floor of the hotel.", "ru": "Наша комната была на третьем этаже отеля."},
+    {"en": "He works at a hotel in the city centre.", "ru": "Он работает в отеле в центре города."},
+    {"en": "The hotel was full, so we found another one.", "ru": "Отель был полон, поэтому мы нашли другой."}
+   ]
+  },
+  {
+   "word": "weather", "ru": "погода", "ipa": "ˈweð.ər", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "the state of the air: sun, rain, wind, cold"}],
+   "sentences": [
+    {"en": "The weather is lovely today.", "ru": "Сегодня прекрасная погода."},
+    {"en": "What was the weather like on your holiday?", "ru": "Какая погода была в твой отпуск?"},
+    {"en": "We stayed at home because of the bad weather.", "ru": "Мы остались дома из-за плохой погоды."},
+    {"en": "The weather changes quickly in spring.", "ru": "Весной погода меняется быстро."},
+    {"en": "I check the weather before I go out.", "ru": "Я проверяю погоду перед выходом."}
+   ]
+  },
+  {
+   "word": "rain", "ru": "дождь", "ipa": "reɪn", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "water that falls from the sky"}],
+   "sentences": [
+    {"en": "It is going to rain this afternoon.", "ru": "Днём собирается дождь."},
+    {"en": "The rain stopped before we left.", "ru": "Дождь закончился до того, как мы вышли."},
+    {"en": "I forgot my umbrella in the rain.", "ru": "Я забыл зонт под дождём."},
+    {"en": "We walked home in the cold rain.", "ru": "Мы шли домой под холодным дождём."},
+    {"en": "There was a lot of rain last night.", "ru": "Прошлой ночью было много дождя."}
+   ]
+  },
+  {
+   "word": "sunny", "ru": "солнечный", "ipa": "ˈsʌn.i", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "with a lot of light from the sun"}],
+   "sentences": [
+    {"en": "It was a sunny morning in May.", "ru": "Это было солнечное утро в мае."},
+    {"en": "The room is bright and sunny.", "ru": "Комната светлая и солнечная."},
+    {"en": "We had a sunny weekend by the lake.", "ru": "У нас были солнечные выходные у озера."},
+    {"en": "Tomorrow will be warm and sunny.", "ru": "Завтра будет тепло и солнечно."},
+    {"en": "I like sunny days more than rainy ones.", "ru": "Я люблю солнечные дни больше дождливых."}
+   ]
+  },
+  {
+   "word": "cold", "ru": "холодный", "ipa": "kəʊld", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "having a low temperature"}],
+   "sentences": [
+    {"en": "It is very cold outside today.", "ru": "Сегодня на улице очень холодно."},
+    {"en": "The water in the lake was cold.", "ru": "Вода в озере была холодной."},
+    {"en": "Put on a warm coat, it is cold.", "ru": "Надень тёплое пальто, холодно."},
+    {"en": "I caught a cold last week.", "ru": "Я простудился на прошлой неделе."},
+    {"en": "My hands are cold after the walk.", "ru": "У меня замёрзли руки после прогулки."}
+   ]
+  },
+  {
+   "word": "warm", "ru": "тёплый", "ipa": "wɔːm", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "pleasantly hot, not cold"}],
+   "sentences": [
+    {"en": "The evening was warm and quiet.", "ru": "Вечер был тёплым и тихим."},
+    {"en": "This jacket is too warm for summer.", "ru": "Эта куртка слишком тёплая для лета."},
+    {"en": "We sat by the fire to keep warm.", "ru": "Мы сидели у огня, чтобы согреться."},
+    {"en": "The water is warm enough for swimming.", "ru": "Вода достаточно тёплая для купания."},
+    {"en": "She gave me a warm smile.", "ru": "Она тепло мне улыбнулась."}
+   ]
+  },
+  {
+   "word": "doctor", "ru": "врач", "ipa": "ˈdɒk.tər", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "a person who helps people who are ill"}],
+   "sentences": [
+    {"en": "My mother works as a doctor.", "ru": "Моя мама работает врачом."},
+    {"en": "You should see a doctor about that cough.", "ru": "Тебе стоит показаться врачу из-за этого кашля."},
+    {"en": "The doctor asked me to open my mouth.", "ru": "Врач попросил меня открыть рот."},
+    {"en": "We called the doctor at night.", "ru": "Мы вызвали врача ночью."},
+    {"en": "The doctor said I need to rest.", "ru": "Врач сказал, что мне нужно отдыхать."}
+   ]
+  },
+  {
+   "word": "medicine", "ru": "лекарство", "ipa": "ˈmed.ɪ.sən", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "something you take when you are ill"}],
+   "sentences": [
+    {"en": "Take this medicine twice a day.", "ru": "Принимай это лекарство два раза в день."},
+    {"en": "The medicine tastes quite bitter.", "ru": "Лекарство довольно горькое."},
+    {"en": "I bought some medicine for my headache.", "ru": "Я купил лекарство от головной боли."},
+    {"en": "Keep the medicine away from children.", "ru": "Держи лекарство подальше от детей."},
+    {"en": "This medicine helped me sleep.", "ru": "Это лекарство помогло мне уснуть."}
+   ]
+  },
+  {
+   "word": "healthy", "ru": "здоровый", "ipa": "ˈhel.θi", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "good for your body; not ill"}],
+   "sentences": [
+    {"en": "Fruit and vegetables are healthy.", "ru": "Фрукты и овощи полезны."},
+    {"en": "She tries to eat healthy food.", "ru": "Она старается есть здоровую пищу."},
+    {"en": "Walking every day keeps you healthy.", "ru": "Ежедневная ходьба сохраняет здоровье."},
+    {"en": "My brother is tall and healthy.", "ru": "Мой брат высокий и здоровый."},
+    {"en": "A healthy breakfast gives you energy.", "ru": "Здоровый завтрак даёт энергию."}
+   ]
+  },
+  {
+   "word": "tired", "ru": "усталый", "ipa": "ˈtaɪəd", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "needing rest or sleep"}],
+   "sentences": [
+    {"en": "I was tired after the long journey.", "ru": "Я устал после долгой поездки."},
+    {"en": "The children are tired and want to sleep.", "ru": "Дети устали и хотят спать."},
+    {"en": "You look tired today.", "ru": "Ты сегодня выглядишь усталым."},
+    {"en": "She feels tired in the evening.", "ru": "Вечером она чувствует себя уставшей."},
+    {"en": "We were too tired to cook dinner.", "ru": "Мы слишком устали, чтобы готовить ужин."}
+   ]
+  },
+  {
+   "word": "hungry", "ru": "голодный", "ipa": "ˈhʌŋ.ɡri", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "wanting to eat"}],
+   "sentences": [
+    {"en": "I am hungry, let's have lunch.", "ru": "Я голоден, давай пообедаем."},
+    {"en": "The baby gets hungry every three hours.", "ru": "Малыш хочет есть каждые три часа."},
+    {"en": "Were you hungry after the walk?", "ru": "Ты проголодался после прогулки?"},
+    {"en": "She was too hungry to wait.", "ru": "Она была слишком голодна, чтобы ждать."},
+    {"en": "We bought sandwiches because we were hungry.", "ru": "Мы купили бутерброды, потому что проголодались."}
+   ]
+  },
+  {
+   "word": "shopping", "ru": "покупки", "ipa": "ˈʃɒp.ɪŋ", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "the activity of buying things in shops"}],
+   "sentences": [
+    {"en": "We went shopping for new clothes.", "ru": "Мы пошли покупать новую одежду."},
+    {"en": "Shopping in this street is expensive.", "ru": "Покупки на этой улице дорогие."},
+    {"en": "She does her shopping on Saturdays.", "ru": "Она делает покупки по субботам."},
+    {"en": "I have two bags of shopping.", "ru": "У меня две сумки с покупками."},
+    {"en": "Online shopping is quick and easy.", "ru": "Покупки онлайн — быстро и удобно."}
+   ]
+  },
+  {
+   "word": "money", "ru": "деньги", "ipa": "ˈmʌn.i", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "coins and paper notes used to buy things"}],
+   "sentences": [
+    {"en": "I do not have enough money for a new phone.", "ru": "У меня недостаточно денег на новый телефон."},
+    {"en": "He saves money every month.", "ru": "Он откладывает деньги каждый месяц."},
+    {"en": "How much money did you spend?", "ru": "Сколько денег ты потратил?"},
+    {"en": "She paid the money into the bank.", "ru": "Она положила деньги в банк."},
+    {"en": "We need money for the trip.", "ru": "Нам нужны деньги на поездку."}
+   ]
+  },
+  {
+   "word": "price", "ru": "цена", "ipa": "praɪs", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "how much you must pay for something"}],
+   "sentences": [
+    {"en": "The price of the ticket is fair.", "ru": "Цена билета разумная."},
+    {"en": "Prices in this shop are low.", "ru": "Цены в этом магазине низкие."},
+    {"en": "What is the price of this bag?", "ru": "Сколько стоит эта сумка?"},
+    {"en": "The price went up last week.", "ru": "Цена выросла на прошлой неделе."},
+    {"en": "I asked about the price of the room.", "ru": "Я спросил о цене комнаты."}
+   ]
+  },
+  {
+   "word": "cheap", "ru": "дешёвый", "ipa": "tʃiːp", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "costing little money"}],
+   "sentences": [
+    {"en": "This hotel is cheap but clean.", "ru": "Этот отель дешёвый, но чистый."},
+    {"en": "We found a cheap flight to Rome.", "ru": "Мы нашли дешёвый билет в Рим."},
+    {"en": "The tickets are cheaper on weekdays.", "ru": "По будням билеты дешевле."},
+    {"en": "It is not cheap, but it is very good.", "ru": "Это недёшево, но очень хорошо."},
+    {"en": "She bought a cheap pair of shoes.", "ru": "Она купила дешёвую пару туфель."}
+   ]
+  },
+  {
+   "word": "expensive", "ru": "дорогой", "ipa": "ɪkˈspen.sɪv", "pos": "adjective",
+   "senses": [{"pos": "adjective", "definition": "costing a lot of money"}],
+   "sentences": [
+    {"en": "That restaurant is too expensive for us.", "ru": "Тот ресторан слишком дорогой для нас."},
+    {"en": "The hotel was more expensive than we thought.", "ru": "Отель оказался дороже, чем мы думали."},
+    {"en": "He drives an expensive car.", "ru": "Он водит дорогую машину."},
+    {"en": "Everything in this city is expensive.", "ru": "В этом городе всё дорого."},
+    {"en": "I like the bag, but it is expensive.", "ru": "Мне нравится сумка, но она дорогая."}
+   ]
+  },
+  {
+   "word": "clothes", "ru": "одежда", "ipa": "kləʊðz", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "things you wear, like shirts and trousers"}],
+   "sentences": [
+    {"en": "I need to wash my clothes.", "ru": "Мне нужно постирать одежду."},
+    {"en": "She wears warm clothes in winter.", "ru": "Зимой она носит тёплую одежду."},
+    {"en": "These clothes are too small for me.", "ru": "Эта одежда мне слишком мала."},
+    {"en": "We packed our clothes in one bag.", "ru": "Мы сложили одежду в одну сумку."},
+    {"en": "He buys clothes twice a year.", "ru": "Он покупает одежду два раза в год."}
+   ]
+  },
+  {
+   "word": "wear", "ru": "носить", "ipa": "weər", "pos": "verb",
+   "senses": [{"pos": "verb", "definition": "to have clothes on your body"}],
+   "sentences": [
+    {"en": "I wear a coat when it is cold.", "ru": "Я ношу пальто, когда холодно."},
+    {"en": "She was wearing a blue dress.", "ru": "На ней было синее платье."},
+    {"en": "Do you have to wear a uniform at work?", "ru": "Тебе нужно носить форму на работе?"},
+    {"en": "He never wears a hat.", "ru": "Он никогда не носит шляпу."},
+    {"en": "What are you going to wear to the party?", "ru": "Что ты наденешь на вечеринку?"}
+   ]
+  },
+  {
+   "word": "buy", "ru": "покупать", "ipa": "baɪ", "pos": "verb",
+   "senses": [{"pos": "verb", "definition": "to get something by paying money"}],
+   "sentences": [
+    {"en": "I want to buy a present for my sister.", "ru": "Я хочу купить подарок сестре."},
+    {"en": "We bought bread and milk this morning.", "ru": "Утром мы купили хлеб и молоко."},
+    {"en": "Where did you buy those shoes?", "ru": "Где ты купил те туфли?"},
+    {"en": "She is going to buy a new laptop.", "ru": "Она собирается купить новый ноутбук."},
+    {"en": "You can buy tickets at the door.", "ru": "Билеты можно купить на входе."}
+   ]
+  },
+  {
+   "word": "job", "ru": "работа", "ipa": "dʒɒb", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "the work you do to earn money"}],
+   "sentences": [
+    {"en": "He found a new job in the city.", "ru": "Он нашёл новую работу в городе."},
+    {"en": "My job starts at nine o'clock.", "ru": "Моя работа начинается в девять."},
+    {"en": "She likes her job very much.", "ru": "Ей очень нравится её работа."},
+    {"en": "It is not easy to get a good job.", "ru": "Получить хорошую работу непросто."},
+    {"en": "They offered him a job in London.", "ru": "Они предложили ему работу в Лондоне."}
+   ]
+  },
+  {
+   "word": "meeting", "ru": "встреча", "ipa": "ˈmiː.tɪŋ", "pos": "noun",
+   "senses": [{"pos": "noun", "definition": "a time when people come together to talk"}],
+   "sentences": [
+    {"en": "The meeting starts at ten.", "ru": "Встреча начинается в десять."},
+    {"en": "We had a long meeting yesterday.", "ru": "Вчера у нас было долгое совещание."},
+    {"en": "She is in a meeting right now.", "ru": "Она сейчас на совещании."},
+    {"en": "I will send you the notes after the meeting.", "ru": "Я пришлю тебе заметки после встречи."},
+    {"en": "Our meeting was moved to Friday.", "ru": "Нашу встречу перенесли на пятницу."}
+   ]
+  }
+ ]
+}

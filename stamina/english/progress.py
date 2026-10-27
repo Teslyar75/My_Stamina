@@ -9,14 +9,18 @@ import math
 import time
 from pathlib import Path
 
-from . import paths, sm2
+from . import paths, quality, sm2
 
 DEFAULT_SETTINGS = {
     "rate": 0, "autoplay": True, "asr": True, "self_assess": True, "current_set": "top-1000",
+    # soft / normal / strict — насколько проверка речи доверяет похожим звукам
+    "speech_strictness": "normal",
     "daily_goal": 30, "new_per_day": 20, "reviews_per_day": 200, "session_len": 10,
     "reverse": False, "show_tr": False, "xp_to_rank": True,
     # сколько полных прогонов карточки (слово + примеры) нужно до «Отработано»
     "warehouse_passes": 2,
+    # качественные повторения: 20 — максимум, цель можно уменьшить (5/10/15/20)
+    "quality_goal": 20,
 }
 
 ACHIEVEMENTS = [
@@ -45,6 +49,7 @@ class Progress:
         self.path = path or paths.PROGRESS_PATH
         self.app = app  # Cockpit Star Typing (для общего XP и званий)
         self.data = self._load()
+        quality.migrate(self)
         self.on_change = []  # колбэки (уведомления о достижениях и т.п.)
 
     # -- файл ----------------------------------------------------------------
@@ -54,10 +59,12 @@ class Progress:
             d = json.loads(self.path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             d = {}
-        base = {"version": 1, "settings": dict(DEFAULT_SETTINGS), "words": {}, "lists": [], "cards": {},
+        base = {"version": 2, "settings": dict(DEFAULT_SETTINGS), "words": {}, "lists": [], "cards": {},
+                "quality": {},
                 "xp": {"total": 0, "by_day": {}, "best_streak": 0, "awarded": {}},
                 "achievements": {}, "attempts": [], "review_done_days": [], "speech_best": {},
                 "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}},
+                "verb_scores": {},
                 "book_sentences": {"books": {}, "cards": {}, "stats": {"flips": 0, "ok": 0, "by_day": {}}}}
         for k, v in base.items():
             d.setdefault(k, v)

@@ -107,12 +107,13 @@ class Vocab:
 
     # -- выборки -------------------------------------------------------------
     def in_set(self, set_id: str) -> list[dict]:
-        if set_id in THEMATIC_SETS:
-            return [
-                w for w in self.words
-                if set_id in (w.get("sets") or []) or w.get("level") == set_id
-            ]
-        lim = SET_LIMIT.get(set_id, 1000)
+        # тематические и уровневые наборы — по метке sets[], а не по rank
+        if set_id not in SET_LIMIT:
+            out = [w for w in self.words if set_id in (w.get("sets") or [])]
+            if set_id.startswith("cefr-"):
+                out.sort(key=lambda w: (w.get("cefr_order", 9999), w["word"].lower()))
+            return out
+        lim = SET_LIMIT[set_id]
         out = []
         for w in self.words:
             # тематические IT-слова (rank > 20k) не попадают в частотные наборы
@@ -122,6 +123,32 @@ class Vocab:
                 break
             out.append(w)
         return out
+
+    # -- добавление слов из наборов CEFR/глаголов (после load) -----------------
+    def next_rank(self) -> int:
+        """Синтетический ранг для слов вне частотного списка (в частотные наборы не входят)."""
+        return 30000 + len(self.words)
+
+    def add_record(self, r: dict) -> bool:
+        """Добавить слово в словарь (или влить в существующее). Возвращает True, если новое."""
+        if not r.get("word"):
+            return False
+        r.setdefault("rank", self.next_rank())
+        self._normalize_rec(r)
+        r.setdefault("sentences", [])
+        r.setdefault("sets", [])
+        with self._lock:
+            cur = self.by_slug.get(r["slug"])
+            if cur is not None:
+                sets = cur.setdefault("sets", [])
+                for s in r.get("sets") or []:
+                    if s not in sets:
+                        sets.append(s)
+                return False
+            self.words.append(r)
+            self.by_slug[r["slug"]] = r
+        return True
+
 
     def get(self, slug: str) -> dict | None:
         return self.by_slug.get(slug)
