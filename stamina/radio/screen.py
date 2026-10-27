@@ -29,6 +29,9 @@ class RadioScreen(tk.Frame):
         self.eng.bind_ui(self.winfo_toplevel())
         self.eng.reload_store()
         self._stations: list[dict] = []
+        self._cards: dict[str, dict] = {}
+        self._list_cols = 0
+        self._reflow_job = None
         self._pulse = 0
         self._eq_job = None
         self._ui_q: queue.SimpleQueue = queue.SimpleQueue()
@@ -74,11 +77,13 @@ class RadioScreen(tk.Frame):
 
     def close(self) -> None:
         self.eng.unsubscribe(self._on_engine)
-        if self._eq_job:
-            try:
-                self.after_cancel(self._eq_job)
-            except tk.TclError:
-                pass
+        for job in (self._eq_job, self._reflow_job):
+            if job:
+                try:
+                    self.after_cancel(job)
+                except tk.TclError:
+                    pass
+        self._reflow_job = None
 
     def on_key(self, e) -> str | None:
         k = e.keysym
@@ -112,6 +117,8 @@ class RadioScreen(tk.Frame):
             b.set_active(k == name)
         if name == "receiver":
             self._refresh_receiver()
+        elif self._cards:
+            self._sync_cards()          # вернулись с приёмника — подсветка эфира свежая
         self._update_backend_label()
         hook = getattr(self.app, "_alt_page_hook", None)   # только в alt-оболочке
         if hook is not None:
@@ -132,7 +139,7 @@ class RadioScreen(tk.Frame):
             if self.winfo_exists():
                 self._refresh_receiver()
                 if self.current == "air":
-                    self._paint_list()
+                    self._sync_cards()
         except tk.TclError:
             pass
 
@@ -232,6 +239,21 @@ class RadioScreen(tk.Frame):
 
     def _on_list_cfg(self, e) -> None:
         self.list_canvas.itemconfigure(self._list_win, width=e.width)
+        # ширина перешла порог двух колонок — переложить плашки (по успокоению окна)
+        if self._stations and self._columns_for(e.width) != self._list_cols \
+                and self._reflow_job is None:
+            try:
+                self._reflow_job = self.after(150, self._reflow)
+            except tk.TclError:
+                self._reflow_job = None
+
+    def _reflow(self) -> None:
+        self._reflow_job = None
+        try:
+            if self.winfo_exists() and self._stations:
+                self._paint_list()
+        except tk.TclError:
+            pass
 
     def _on_wheel(self, e) -> None:
         if self.current != "air":
@@ -339,42 +361,141 @@ class RadioScreen(tk.Frame):
         self.lbl_status.configure(text=_t("Мои волны пилота"), fg=AMBER)
         self._paint_list()
 
+    # эфирные плашки: две колонки, пока каждая не уже ~430 px; иначе одна
+    COL_MIN = 860
+
+    def _list_width(self) -> int:
+        """Ширина, под которую раскладываются плашки волн."""
+        try:
+            w = self.list_canvas.winfo_width()
+            if w <= 1:                                   # ещё не разложено
+                w = self.winfo_width()
+                if w > 1:
+                    w -= px(280)                         # слева панель фильтров
+        except tk.TclError:
+            return px(1200)
+        return w if w > 1 else px(1200)
+
+    @staticmethod
+    def _columns_for(width: int) -> int:
+        return 2 if width >= px(RadioScreen.COL_MIN) else 1
+
     def _paint_list(self) -> None:
         for w in self.list_inner.winfo_children():
             w.destroy()
+        self._cards = {}
         self.lbl_count.configure(text=_t("{0} станций").format(len(self._stations)))
+        try:
+            if self._reflow_job is not None:
+                self.after_cancel(self._reflow_job)
+        except tk.TclError:
+            pass
+        self._reflow_job = None
+        width = self._list_width()
+        cols = self._columns_for(width)
+        self._list_cols = cols
+        try:
+            self.list_canvas.itemconfigure(self._list_win, width=width)
+        except tk.TclError:
+            pass
+        for c in range(2):
+            self.list_inner.grid_columnconfigure(
+                c, weight=1 if c < cols else 0, uniform="waves" if c < cols else "")
         if not self._stations:
             tk.Label(self.list_inner, text=_t("Станции не найдены"), bg=BG, fg=MUTED,
-                     font=theme.font(11)).pack(pady=px(30))
+                     font=theme.font(11)).grid(row=0, column=0, columnspan=cols, pady=px(30))
             return
         fav_uuids = {f.get("uuid") for f in (self.eng.data.get("favorites") or [])}
         playing = (self.eng.station or {}).get("uuid")
-        for st in self._stations[:120]:
-            row = tk.Frame(self.list_inner, bg=blend(PANEL, CYAN, 0.06),
-                           highlightbackground=CYAN if st.get("uuid") == playing else blend(PANEL, CYAN, 0.25),
-                           highlightthickness=1)
-            row.pack(fill=tk.X, pady=px(3), padx=px(2))
-            logo = tk.Canvas(row, width=px(44), height=px(44), bg=blend(PANEL, CYAN, 0.12),
-                             highlightthickness=0)
-            logo.pack(side=tk.LEFT, padx=px(6), pady=px(6))
-            self._draw_antenna(logo)
-            info = tk.Frame(row, bg=row["bg"])
-            info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=px(6))
-            # width=1: длинное имя не раздвигает ряд и не выталкивает кнопки
-            tk.Label(info, text=st.get("name", "—")[:48], bg=row["bg"], fg=TEXT, width=1,
-                     font=theme.font(11, True), anchor="w").pack(fill=tk.X)
-            sub = " · ".join(x for x in (
-                st.get("country") or st.get("countrycode"),
-                (st.get("tags") or "")[:40],
-                f"{st['bitrate']} kbps" if st.get("bitrate") else "",
-            ) if x)
-            tk.Label(info, text=sub or "—", bg=row["bg"], fg=MUTED, font=theme.font(8), width=1,
-                     anchor="w").pack(fill=tk.X)
-            star = "★" if st.get("uuid") in fav_uuids else "☆"
-            HudButton(row, star, lambda s=st: self._toggle_fav(s), height=30, font_size=12,
-                      width=40, color=AMBER).pack(side=tk.RIGHT, padx=px(4), before=info)
-            HudButton(row, _t("▶"), lambda s=st: self._play(s), height=30, font_size=11,
-                      width=44, color=GREEN).pack(side=tk.RIGHT, padx=px(4), before=info)
+        for i, st in enumerate(self._stations[:120]):
+            card = self._make_card(st, fav_uuids, playing)
+            card.grid(row=i // cols, column=i % cols, sticky="ew", padx=px(3), pady=px(3))
+
+    def _make_card(self, st: dict, fav_uuids: set, playing_uuid: str | None) -> tk.Frame:
+        """Плашка волны: антенна, имя целиком, композиция (или жанр/страна), ▶ и ☆."""
+        uuid = st.get("uuid")
+        live = bool(uuid and uuid == playing_uuid)
+        bg = blend(PANEL, CYAN, 0.10 if live else 0.06)
+        card = tk.Frame(self.list_inner, bg=bg, highlightthickness=1,
+                        highlightbackground=CYAN if live else blend(PANEL, CYAN, 0.25))
+        logo = tk.Canvas(card, width=px(44), height=px(44), bg=blend(PANEL, CYAN, 0.12),
+                         highlightthickness=0)
+        logo.pack(side=tk.LEFT, padx=px(8), pady=px(6))
+        self._draw_antenna(logo)
+        # сначала кнопки справа, потом текст: имя забирает всю оставшуюся ширину
+        HudButton(card, "★" if uuid in fav_uuids else "☆", lambda s=st: self._toggle_fav(s),
+                  height=30, font_size=12, width=40, color=AMBER).pack(
+                      side=tk.RIGHT, padx=(px(2), px(8)))
+        HudButton(card, _t("▶"), lambda s=st: self._play(s), height=30, font_size=11,
+                  width=44, color=GREEN).pack(side=tk.RIGHT, padx=px(2))
+        info = tk.Frame(card, bg=bg)
+        info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=px(4), pady=px(6))
+        name_font = theme.font(11, True)
+        sub_font = theme.font(9)
+        # width=1: длинное имя не раздвигает плашку; хвост режем «…» по факту ширины
+        name = tk.Label(info, text="", bg=bg, fg=TEXT, width=1, font=name_font, anchor="w")
+        name.pack(fill=tk.X)
+        sub = tk.Label(info, text="", bg=bg, fg=CYAN if live else MUTED, width=1,
+                       font=sub_font, anchor="w")
+        sub.pack(fill=tk.X)
+        self._set_label(name, str(st.get("name") or "—"), name_font)
+        self._set_label(sub, self._sub_text(st), sub_font)
+        self._cards[uuid or f"#{id(st)}"] = {
+            "st": st, "card": card, "sub": sub, "sub_font": sub_font}
+        return card
+
+    def _sub_text(self, st: dict) -> str:
+        """Вторая строка плашки: у играющей волны — композиция, у прочих — страна/жанр."""
+        uuid = st.get("uuid")
+        track = (self.eng.track or "").strip()
+        if uuid and uuid == (self.eng.station or {}).get("uuid") and track:
+            return f"♪ {track}"
+        meta = " · ".join(x for x in (
+            st.get("country") or st.get("countrycode"),
+            st.get("tags") or "",
+            f"{st['bitrate']} kbps" if st.get("bitrate") else "",
+        ) if x)
+        return meta or "—"
+
+    def _sync_cards(self) -> None:
+        """Обновление без пересборки: подсветка эфира и название композиции."""
+        if not self._cards:
+            return
+        playing = (self.eng.station or {}).get("uuid")
+        for uuid, c in list(self._cards.items()):
+            try:
+                if not c["card"].winfo_exists():
+                    continue
+                live = bool(uuid and uuid == playing)
+                border = CYAN if live else blend(PANEL, CYAN, 0.25)
+                if c["card"].cget("highlightbackground") != border:
+                    c["card"].configure(highlightbackground=border)
+                c["sub"].configure(fg=CYAN if live else MUTED)
+                want = self._sub_text(c["st"])
+                if getattr(c["sub"], "_full_text", "") != want:
+                    self._set_label(c["sub"], want, c["sub_font"])
+            except tk.TclError:
+                continue
+
+    def _set_label(self, lbl: tk.Label, text: str, font_spec=None) -> None:
+        """Подпись с «…» по своей ширине: Tk режет текст без многоточия."""
+        lbl._full_text = text
+        lbl._fit_font = font_spec or lbl.cget("font")
+        if not getattr(lbl, "_fit_bound", False):
+            lbl._fit_bound = True
+            lbl.bind("<Configure>", self._fit_label)
+        self._fit_label(lbl)
+
+    def _fit_label(self, e) -> None:
+        lbl = getattr(e, "widget", e)          # зовём и напрямую, и из <Configure>
+        full = getattr(lbl, "_full_text", "")
+        w = lbl.winfo_width()
+        txt = full
+        if w > px(24):
+            from stamina.hud import fit_text
+            txt = fit_text(getattr(lbl, "_fit_font", lbl.cget("font")), full, w - px(4))
+        if lbl.cget("text") != txt:
+            lbl.configure(text=txt)
 
     def _set_rx_name(self, text: str) -> None:
         self._rx_full = text
