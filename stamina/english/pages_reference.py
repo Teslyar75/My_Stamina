@@ -114,7 +114,7 @@ class ReferencePanel(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2))
             self.mode_btns[m] = b
         self.tense_btns = {}
-        for row_keys in (cj.TENSE_KEYS[:6], cj.TENSE_KEYS[6:]):
+        for row_keys in (cj.TENSE_KEYS[:4], cj.TENSE_KEYS[4:8], cj.TENSE_KEYS[8:]):
             row = tk.Frame(head, bg=th.PANEL)
             row.pack(fill=tk.X, padx=px(10), pady=(0, px(3)))
             for key in row_keys:
@@ -239,10 +239,18 @@ class ReferencePanel(tk.Frame):
             text = self._conj(pk)
             line = tk.Frame(row, bg=bg)
             line.pack(side=tk.LEFT, fill=tk.X, expand=True, pady=px(4))
+            chunks: list[list] = []          # [текст, подсветка]; знаки препинания липнут к слову
             for tok in _TOKEN.findall(text):
-                hl = tok.lower() in irr
+                tok = tok.strip()
+                if not tok:
+                    continue
+                if chunks and not any(ch.isalnum() for ch in tok):
+                    chunks[-1][0] += tok
+                else:
+                    chunks.append([tok, tok.lower() in irr])
+            for i_c, (tok, hl) in enumerate(chunks):
                 L(line, tok, fg=th.AMBER if hl else th.TEXT, size=12, bold=hl, mono=True,
-                  bg=bg).pack(side=tk.LEFT)
+                  bg=bg).pack(side=tk.LEFT, padx=(0 if i_c == 0 else px(6), 0))
             HudButton(row, _t("→ в карточку"), lambda n=i: self.add_cell(n), height=24, font_size=7,
                       color=th.GREEN).pack(side=tk.RIGHT, padx=px(4), pady=px(2))
             self.ctx.audio_button(row, _t("🔊"), lambda s=text: s, height=24, font_size=8,
