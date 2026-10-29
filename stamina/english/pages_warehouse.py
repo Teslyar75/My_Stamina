@@ -56,8 +56,9 @@ class WarehousePage(tk.Frame):
         self.filt.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
         self._mode_btns: dict[str, HudButton] = {}
         for mode, label in (("shelf", _t("НА СКЛАДЕ")), ("away", _t("В РАБОТЕ")),
-                            ("done", _t("ОТРАБОТАНО"))):
-            b = HudButton(self.filt, label, lambda m=mode: self.set_list_mode(m), height=28, font_size=9, width=120)
+                            ("done", _t("ОТРАБОТАНО")), ("today", _t("СЕГОДНЯ ПОВТОРИТЬ ({0})").format(0))):
+            b = HudButton(self.filt, label, lambda m=mode: self.set_list_mode(m), height=28, font_size=9,
+                          width=170 if mode == "today" else 120)
             b.pack(side=tk.LEFT, padx=px(2))
             self._mode_btns[mode] = b
         L(self.filt, _t("СЛОЖНОСТЬ"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(px(12), px(6)))
@@ -78,8 +79,18 @@ class WarehousePage(tk.Frame):
         self.match: MatchReadout | None = None
         self.fb: tk.Label | None = None
 
+    def _today_cards(self) -> list[dict]:
+        """«Сегодня повторить»: начатые карточки (склад + в работе) с неисчерпанным дневным лимитом."""
+        pr, vocab = self.ctx.progress, self.ctx.vocab
+        pool = {c["slug"]: c for c in wh.collect_cards(pr, vocab, difficulty=None)}
+        for c in wh.collect_away(pr, vocab):
+            pool.setdefault(c["slug"], c)
+        return [pool[s] for s in quality.due_today(pr, list(pool))]
+
     def _reload_cards(self) -> None:
-        if self.list_mode == "away":
+        if self.list_mode == "today":
+            self.cards = self._today_cards()
+        elif self.list_mode == "away":
             self.cards = wh.collect_away(self.ctx.progress, self.ctx.vocab)
         elif self.list_mode == "done":
             self.cards = wh.collect_done(self.ctx.progress, self.ctx.vocab)
@@ -101,11 +112,15 @@ class WarehousePage(tk.Frame):
             b.set_active(k == self.diff_filter)
         for m, b in self._mode_btns.items():
             b.set_active(m == self.list_mode)
+        tb = self._mode_btns.get("today")
+        if tb is not None:
+            n = len(self.cards) if self.list_mode == "today" else len(self._today_cards())
+            tb.set_text(_t("СЕГОДНЯ ПОВТОРИТЬ ({0})").format(n))
         self.render()
         self.ctx.changed()
 
     def set_list_mode(self, mode: str) -> None:
-        self.list_mode = mode if mode in ("shelf", "away", "done") else "shelf"
+        self.list_mode = mode if mode in ("shelf", "away", "done", "today") else "shelf"
         self.refresh()
 
     def move_to_done_view(self) -> None:
@@ -757,6 +772,12 @@ class WarehousePage(tk.Frame):
             if self.fb is not None:
                 self.fb.configure(text=_t("Для следующего слота нужно ≥ {0}% (сейчас {1}%)").format(need, score),
                                   fg=AMBER)
+        elif res == "cap":
+            msg = _t("На сегодня хватит: {0} повторения карточки засчитаны — продолжим завтра").format(
+                quality.daily_cap(self.ctx.progress))
+            self.ctx.status(msg, AMBER)
+            if self.fb is not None:
+                self.fb.configure(text=msg, fg=AMBER)
         return res
 
     def on_speech(self, alts, self_score) -> None:

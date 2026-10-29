@@ -2290,5 +2290,7 @@
  "🔒 КОД ЗАДАН": "🔒 VORGEGEBENER CODE",
  "🔒 Права Командира — только по коду владельца": "🔒 Kommandanten-Rechte — nur mit dem Eigentümer-Code",
  "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN",
- "🎤 ПЕРЕДАЧА  M / ␣": "🎤 SENDEN  M / ␣"
+ "🎤 ПЕРЕДАЧА  M / ␣": "🎤 SENDEN  M / ␣",
+ "СЕГОДНЯ ПОВТОРИТЬ ({0})": "HEUTE WIEDERHOLEN ({0})",
+ "На сегодня хватит: {0} повторения карточки засчитаны — продолжим завтра": "Genug für heute: {0} Wiederholungen dieser Karte gezählt — morgen geht es weiter"
 }

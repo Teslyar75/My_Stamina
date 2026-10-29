@@ -2292,5 +2292,7 @@
  "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
  "🔒 Права Командира — только по коду владельца": "🔒 Commander rights — only with the owner code",
  "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 BOARD AN AGENT",
- "🎤 ПЕРЕДАЧА  M / ␣": "🎤 TRANSMIT  M / ␣"
+ "🎤 ПЕРЕДАЧА  M / ␣": "🎤 TRANSMIT  M / ␣",
+ "СЕГОДНЯ ПОВТОРИТЬ ({0})": "REVIEW TODAY ({0})",
+ "На сегодня хватит: {0} повторения карточки засчитаны — продолжим завтра": "Enough for today: {0} reviews of this card counted — continue tomorrow"
 }

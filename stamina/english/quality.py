@@ -15,6 +15,9 @@ import datetime as dt
 MAX_SLOTS = 20
 DEFAULT_GOAL = 20
 GOAL_CHOICES = (5, 10, 15, 20)
+# Интервальное повторение: не больше 4 слотов одной карточки в день — остальное завтра.
+# 0 в настройках «quality_daily_cap» снимает ограничение. Пороги оценки это не меняет.
+DAILY_CAP = 4
 
 # Пороги по порядку прохода внутри группы (A: 4 повтора, B: 2 прохода и т.д.)
 THRESHOLDS = {
@@ -170,7 +173,7 @@ def is_complete(progress, slug: str, kind: str = "word", n_sents: int = 5) -> bo
 
 def record(progress, slug: str, key: str, score: int | None = None, *,
            self_rated: bool = False, kind: str = "word", n_sents: int = 5) -> str:
-    """Зачесть слот. Возвращает: "ok" | "filled" | "low" | "unknown" | "self"."""
+    """Зачесть слот. Возвращает: "ok" | "filled" | "low" | "unknown" | "self" | "cap"."""
     rec = ensure(progress, slug, kind, n_sents)
     sm = slot_map(rec.get("kind", kind), rec.get("n_sents", n_sents))
     slot = sm.get(key)
@@ -178,6 +181,9 @@ def record(progress, slug: str, key: str, score: int | None = None, *,
         return "unknown"
     if key in (rec.get("slots") or {}):
         return "filled"
+    cap = daily_cap(progress)
+    if cap and today_count(progress, slug) >= cap:
+        return "cap"                        # на сегодня карточке хватит — вернётся завтра
     if not self_rated:
         need = int(slot.get("threshold", 0) or 0)
         if int(score or 0) < need:
@@ -187,6 +193,44 @@ def record(progress, slug: str, key: str, score: int | None = None, *,
         rec["self"] = int(rec.get("self", 0) or 0) + 1
     progress.save()
     return "self" if self_rated else "ok"
+
+
+def daily_cap(progress) -> int:
+    try:
+        return max(0, int(progress.settings.get("quality_daily_cap", DAILY_CAP)))
+    except (TypeError, ValueError):
+        return DAILY_CAP
+
+
+def today_count(progress, slug: str) -> int:
+    """Сколько слотов карточки зачтено сегодня."""
+    today = _today()
+    rec = get(progress, slug) or {}
+    return sum(1 for v in (rec.get("slots") or {}).values()
+               if isinstance(v, (list, tuple)) and len(v) > 1 and v[1] == today)
+
+
+def left_today(progress, slug: str) -> int:
+    cap = daily_cap(progress)
+    return 10 ** 6 if not cap else max(0, cap - today_count(progress, slug))
+
+
+def due_today(progress, slugs=None) -> list[str]:
+    """«Сегодня повторить»: начатые незакрытые карточки, у которых не исчерпан дневной лимит.
+    Сначала давно не тронутые (по дате последнего слота)."""
+    store = _store(progress)
+    pool = list(store) if slugs is None else [s for s in slugs if s in store]
+    out = []
+    for slug in pool:
+        rec = get(progress, slug)
+        if not rec or not rec.get("slots") or is_complete(progress, slug):
+            continue
+        if left_today(progress, slug) <= 0:
+            continue
+        last = max((v[1] for v in rec["slots"].values()
+                    if isinstance(v, (list, tuple)) and len(v) > 1 and v[1]), default="")
+        out.append((last, slug))
+    return [s for _l, s in sorted(out)]
 
 
 def next_slot(progress, slug: str, group: str, score: int | None = None,

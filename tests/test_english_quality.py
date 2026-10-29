@@ -63,6 +63,7 @@ def test_self_rated_slot_has_no_score(tmp_path):
 
 def test_complete_at_goal(tmp_path):
     p = _progress(tmp_path)
+    p.settings["quality_daily_cap"] = 0          # без дневного лимита
     quality.set_goal(p, "apple", 5)
     for _ in range(4):
         assert quality.auto(p, "apple", "A", 95)[0] == "ok"
@@ -107,3 +108,41 @@ def test_migrate_v1(tmp_path):
     assert p.data["version"] == 2
     assert p.data["quality"] == {}
     assert p.data["settings"]["quality_goal"] == 20
+
+
+def test_daily_cap_four_slots(tmp_path):
+    p = _progress(tmp_path)
+    assert quality.daily_cap(p) == quality.DAILY_CAP == 4
+    for _ in range(4):
+        assert quality.auto(p, "apple", "A", 95)[0] == "ok"
+    assert quality.today_count(p, "apple") == 4
+    assert quality.left_today(p, "apple") == 0
+    assert quality.auto(p, "apple", "B", 99, si=0)[0] == "cap"
+    assert quality.filled(p, "apple") == 4                 # лишний слот не записан
+    # другая карточка — свой лимит
+    assert quality.auto(p, "pear", "A", 95)[0] == "ok"
+
+
+def test_cap_counts_only_today(tmp_path):
+    p = _progress(tmp_path)
+    rec = quality.ensure(p, "apple")
+    rec["slots"] = {"a0": [90, "2000-01-01"], "a1": [90, "2000-01-01"],
+                    "a2": [90, "2000-01-01"], "a3": [95, "2000-01-01"]}
+    assert quality.today_count(p, "apple") == 0
+    assert quality.auto(p, "apple", "B", 95, si=0)[0] == "ok"
+
+
+def test_due_today_queue(tmp_path):
+    p = _progress(tmp_path)
+    assert quality.due_today(p) == []
+    quality.ensure(p, "fresh")                               # не начата — не в очереди
+    old = quality.ensure(p, "old")
+    old["slots"] = {"a0": [90, "2000-01-01"]}
+    mid = quality.ensure(p, "mid")
+    mid["slots"] = {"a0": [90, "2010-01-01"]}
+    for _ in range(4):
+        quality.auto(p, "busy", "A", 95)                     # лимит на сегодня исчерпан
+    assert quality.due_today(p) == ["old", "mid"]            # давно не тронутые — первыми
+    assert quality.due_today(p, ["mid", "nope"]) == ["mid"]
+    p.settings["quality_daily_cap"] = 0
+    assert "busy" in quality.due_today(p)
