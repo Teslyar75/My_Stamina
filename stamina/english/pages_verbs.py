@@ -34,6 +34,9 @@ class VerbsTab(tk.Frame):
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(6), 0))
         body = tk.Frame(self, bg=BG)
         body.pack(fill=tk.BOTH, expand=True)
+        self.body = body
+        self.reference = None  # Справочник (pages_reference) создаём по первому открытию
+        self.after_idle(self._bind_reference_key)
 
         left = tk.Frame(body, bg=BG, width=px(270))
         left.pack(side=tk.LEFT, fill=tk.Y, padx=(px(12), px(6)), pady=px(6))
@@ -65,6 +68,8 @@ class VerbsTab(tk.Frame):
                   height=28, font_size=8).pack(side=tk.LEFT, padx=px(2))
         HudButton(tools, _t("СЛУЧАЙНЫЙ"), self.random_verb, height=28, font_size=8,
                   color=AMBER).pack(side=tk.LEFT, padx=px(2))
+        HudButton(tools, _t("СПРАВОЧНИК"), self.open_reference, height=28, font_size=8,
+                  color=GREEN).pack(side=tk.LEFT, padx=px(2))
         self.count_lbl = L(head, "", fg=MUTED, size=8, bg=PANEL)
         self.count_lbl.pack(anchor="w", padx=px(12), pady=(0, px(8)))
 
@@ -195,6 +200,42 @@ class VerbsTab(tk.Frame):
         self.count_lbl.configure(
             text=_t("Проверено примеров: {0}/12 · качество: {1}/{2}").format(done, c["filled"], c["goal"])
         )
+
+    # -- справочник -----------------------------------------------------------
+    def open_reference(self) -> None:
+        """Справочник неправильных и частых глаголов вместо 12 примеров."""
+        from .pages_reference import ReferencePanel
+        if self.reference is None:
+            self.reference = ReferencePanel(self, self.ctx, on_back=self.close_reference)
+        self.body.pack_forget()
+        self.reference.pack(fill=tk.BOTH, expand=True)
+        self.strip.set(_t("ГЛАГОЛЫ · СПРАВОЧНИК"),
+                       _t("Начните вводить глагол — список фильтруется сразу. Enter открывает, ←/→ — время, ↑/↓ — лицо, Ctrl+Enter — «→ в карточку», F2 — назад."))
+        self.reference.search.focus_set()
+
+    def _bind_reference_key(self) -> None:
+        """F2 — открыть/закрыть справочник, пока вкладка ГЛАГОЛЫ на экране."""
+        def on_f2(_e):
+            try:
+                if not self.winfo_ismapped():
+                    return None
+            except tk.TclError:
+                return None
+            if self.reference is not None and self.reference.winfo_ismapped():
+                self.close_reference()
+            else:
+                self.open_reference()
+            return "break"
+        try:
+            self.winfo_toplevel().bind("<F2>", on_f2, add="+")
+        except tk.TclError:
+            pass
+
+    def close_reference(self) -> None:
+        if self.reference is not None:
+            self.reference.pack_forget()
+        self.body.pack(fill=tk.BOTH, expand=True)
+        self.refresh()
 
     # -- действия -------------------------------------------------------------
     def select_verb(self, slug: str) -> None:
