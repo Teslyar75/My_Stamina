@@ -2321,5 +2321,7 @@
  "← 12 ВРЕМЁН": "← 12 TENSES",
  "→ в карточку": "→ to card",
  "🔒 «{0}» пока закрыт: освойте ещё {1} глаголов из открытых.": "🔒 “{0}” is locked: master {1} more of the open verbs.",
- "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Master {0} more verbs to unlock {1} new ones."
+ "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Master {0} more verbs to unlock {1} new ones.",
+ "Произнесите пример: Space или M — микрофон.": "Say the example: Space or M — microphone.",
+ "Пример: {0}% — {1}": "Example: {0}% — {1}"
 }

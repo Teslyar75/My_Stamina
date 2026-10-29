@@ -63,8 +63,6 @@ class EnglishScreen(tk.Frame):
 
     def page_help_key(self) -> str:
         sub = self.current or "overview"
-        if sub == "lessons":
-            return "english.lessons"
         if sub == "sets":
             hub = self.pages.get("sets") if self._built else None
             if getattr(hub, "current", "") == "verbs":
@@ -74,7 +72,6 @@ class EnglishScreen(tk.Frame):
     def _build(self) -> None:
         from .pages_book import BookCardsPage
         from .pages_learn import PracticePage, ReviewPage
-        from .pages_lessons import LessonsPage
         from .pages_main import OverviewPage, ScannerPage
         from .pages_misc import ListsPage, LogPage, SettingsPage
         from .pages_setshub import SetsHubPage
@@ -108,7 +105,6 @@ class EnglishScreen(tk.Frame):
         self.body.grid_columnconfigure(0, weight=1)
         self.pages = {
             "overview": OverviewPage(self.body, self), "sets": SetsHubPage(self.body, self),
-            "lessons": LessonsPage(self.body, self),
             "scanner": ScannerPage(self.body, self), "practice": PracticePage(self.body, self),
             "review": ReviewPage(self.body, self), "warehouse": WarehousePage(self.body, self),
             "book": BookCardsPage(self.body, self),

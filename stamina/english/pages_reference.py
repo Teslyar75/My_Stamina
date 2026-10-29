@@ -17,6 +17,9 @@ from stamina.theme import px
 
 from . import conjugation as cj
 from . import verbs
+from .mic import MicPanel
+from .speech_std import advance_later, passed
+from .textutil import score_sentence, verdict
 from .ui import L, ScrollFrame, entry
 
 _TOKEN = re.compile(r"[A-Za-z']+|[^A-Za-z']+")
@@ -127,6 +130,16 @@ class ReferencePanel(tk.Frame):
         self.cells.pack(fill=tk.X, pady=(px(4), 0))
         self.example = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
         self.example.pack(fill=tk.X, pady=(px(4), 0))
+        # единый стандарт: микрофон на постоянном месте под примером, Space/M, зачёт ≥80%
+        micbar = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
+        micbar.pack(fill=tk.X, pady=(px(4), 0))
+        self.mic_status = L(micbar, _t("Произнесите пример: Space или M — микрофон."), fg=th.MUTED, size=9,
+                            bg=th.PANEL, wraplength=px(420), justify="left")
+        self.mic_status.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(10), pady=px(6))
+        self.mic = None
+        if hasattr(self.ctx, "asr"):
+            self.mic = MicPanel(micbar, self.ctx, self.on_speech, bg=th.PANEL)
+            self.mic.pack(side=tk.RIGHT, padx=px(8), pady=px(4))
         self.status = L(right, _t("Ctrl+Enter — «→ в карточку» для выбранной строки; ←/→ — время, ↑/↓ — лицо."),
                         fg=th.MUTED, size=8, bg=th.BG, wraplength=px(620), justify="left")
         self.status.pack(fill=tk.X, pady=(px(4), 0))
@@ -299,6 +312,39 @@ class ReferencePanel(tk.Frame):
             self.list_i = max(0, min(len(self.results) - 1, self.list_i + d))
             self._render_list()
         return "break"
+
+    def on_key(self, e) -> None:
+        k = (getattr(e, "keysym", "") or "").lower()
+        if k in ("m", "space") and self.mic is not None and getattr(e, "widget", None) is not self.search:
+            self.mic.toggle()
+
+    def on_speech(self, alts, self_score) -> None:
+        """Проверка примера Tatoeba текущего времени по единому стандарту (speech_std)."""
+        ex = verbs.example_for(self.verb, self.tense) if self.verb else None
+        if not ex:
+            return
+        if self_score is not None:
+            score, heard = self_score, ""
+        else:
+            if not alts:
+                return
+            level = self.ctx.progress.settings.get("speech_strictness", "normal")
+            res = [(score_sentence(ex["en"], a, self.verb["lemma"], strictness=level), a) for a in alts]
+            (score, _marks), heard = max(res, key=lambda r: r[0][0])
+        text, vk = verdict(score)
+        col = {"green": th.GREEN, "amber": th.AMBER, "red": th.RED}.get(vk, th.MUTED)
+        msg = _t("Пример: {0}% — {1}").format(score, text)
+        if heard:
+            msg += _t(" · услышано: «{0}»").format(heard)
+        self.mic_status.configure(text=msg, fg=th.GREEN if passed(score) else col)
+        try:
+            self.ctx.sfx("click" if passed(score) else "error")
+        except Exception:  # noqa: BLE001
+            pass
+        if passed(score):
+            here = (self.verb["lemma"], self.tense)
+            advance_later(self, lambda: self._step_tense(1),
+                          lambda: (self.verb["lemma"], self.tense) == here)
 
     def set_mode(self, mode: str) -> None:
         self.mode = mode

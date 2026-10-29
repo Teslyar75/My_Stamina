@@ -2319,5 +2319,7 @@
  "← 12 ВРЕМЁН": "← 12 ZEITFORMEN",
  "→ в карточку": "→ zur Karte",
  "🔒 «{0}» пока закрыт: освойте ещё {1} глаголов из открытых.": "🔒 „{0}“ ist noch gesperrt: lerne noch {1} der offenen Verben.",
- "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Lerne noch {0} Verben — dann öffnen sich {1} neue."
+ "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Lerne noch {0} Verben — dann öffnen sich {1} neue.",
+ "Произнесите пример: Space или M — микрофон.": "Sprich das Beispiel: Leertaste oder M — Mikrofon.",
+ "Пример: {0}% — {1}": "Beispiel: {0}% — {1}"
 }

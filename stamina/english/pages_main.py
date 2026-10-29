@@ -108,9 +108,6 @@ class OverviewPage(tk.Frame):
                   font_size=11, width=230).pack(pady=px(4))
         HudButton(acts, _t("БЫСТРАЯ МИССИЯ · 10"), lambda: self.ctx.start_session("random", source="set"),
                   height=42, font_size=11, width=230).pack(pady=px(4))
-        HudButton(acts, _t("УРОКИ · ПРОДОЛЖИТЬ"), lambda: self.ctx.show("lessons"),
-                  color=CYAN, height=42, font_size=11, width=230).pack(pady=px(4))
-        L(acts, _t("урок → правило → слова → миссия → склад"), fg=MUTED, size=8).pack()
         # секторы + плашка книги
         left_col = tk.Frame(grid, bg=BG)
         left_col.grid(row=1, column=0, sticky="nsew", padx=(0, px(6)))

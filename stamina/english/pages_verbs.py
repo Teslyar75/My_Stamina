@@ -9,6 +9,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, 
 
 from . import quality, verbs
 from .mic import MicPanel
+from .speech_std import advance_later, passed
 from .textutil import score_sentence, verdict
 from .ui import L, ScrollFrame, Strip, target_missed
 
@@ -286,7 +287,7 @@ class VerbsTab(tk.Frame):
         self.ctx.progress.data.setdefault("verb_scores", {})[key] = self._scores[key]
         self.ctx.progress.save()
         text, vk = verdict(score)
-        if score >= 80:
+        if passed(score):
             quality.auto(self.ctx.progress, "verb:" + self.slug, "B", score,
                          si=self.active_si, kind="verb", n_sents=12)
             self.ctx.sfx("click")
@@ -306,6 +307,38 @@ class VerbsTab(tk.Frame):
             self.ctx.status(msg, VCOL[vk])
         self._render_rows()
         self._render_counts()
+        if passed(score):
+            # единый стандарт: зачёт ≥80% → через ADVANCE_MS следующее время (или глагол);
+            # ниже порога строка остаётся выбранной — повторяйте, пока не получится
+            here = (self.slug, self.active_si)
+            advance_later(self, self.next_item, lambda: (self.slug, self.active_si) == here)
+        self._scroll_to_active()
+
+    def next_item(self) -> None:
+        if self.active_si < len(self._sents()) - 1:
+            self.select_row(self.active_si + 1)
+        else:
+            slugs = [v["slug"] for v in verbs.entries()]
+            i = slugs.index(self.slug) if self.slug in slugs else -1
+            self.select_verb(slugs[(i + 1) % len(slugs)])
+        self._scroll_to_active()
+
+    def on_key(self, e) -> None:
+        """Space/M — микрофон (как во всех режимах), ↑/↓ — строка времени."""
+        if self.reference is not None and self.reference.winfo_ismapped():
+            self.reference.on_key(e)
+            return
+        k = (e.keysym or "").lower()
+        if k in ("m", "space") and self.mic is not None:
+            self.mic.toggle()
+        elif k == "down":
+            self.select_row(min(self.active_si + 1, len(self._sents()) - 1))
+            self._scroll_to_active()
+        elif k == "up":
+            self.select_row(max(self.active_si - 1, 0))
+            self._scroll_to_active()
+
+    def _scroll_to_active(self) -> None:
         try:
             self.rows_sf.canvas.yview_moveto(
                 max(0.0, min(1.0, self.rows_sf.inner.winfo_height() and

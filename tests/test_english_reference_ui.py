@@ -87,3 +87,50 @@ def test_locked_verb_shows_hint(root, tmp_path):
     panel.open_verb(locked)
     assert panel.verb is before
     assert "🔒" in panel.status.cget("text")
+
+
+def _wait(root, ms=1100):
+    import time
+    end = time.time() + ms / 1000
+    while time.time() < end:
+        root.update()
+        time.sleep(0.02)
+
+
+def test_reference_example_uses_unified_standard(root, tmp_path):
+    """Пример Tatoeba: зачёт ≥80% → само следующее время; ниже — время остаётся."""
+    panel = ReferencePanel(root, Ctx(tmp_path))
+    panel.pack(fill="both", expand=True)
+    root.update()
+    panel.open_verb(verbs.pack_verb("go"))
+    panel.set_tense("past_simple")
+    panel.on_speech([], 50)
+    _wait(root)
+    assert panel.tense == "past_simple"
+    panel.on_speech([], 90)
+    _wait(root)
+    assert panel.tense == cj.TENSE_KEYS[cj.TENSE_KEYS.index("past_simple") + 1]
+
+
+class VCtx(Ctx):
+    def sfx(self, name):
+        pass
+
+
+def test_verbs_tab_auto_advance_and_retry(root, tmp_path):
+    from stamina.english.pages_verbs import VerbsTab
+    tab = VerbsTab(root, VCtx(tmp_path))
+    tab.pack(fill="both", expand=True)
+    root.update()
+    assert tab.slug in {v["lemma"] for v in verbs.irregular()}
+    tab.on_speech([], 40)               # ниже порога — та же строка, повторяем
+    _wait(root)
+    assert tab.active_si == 0
+    tab.on_speech([], 85)               # зачёт — через ~0.9 с следующая строка без мыши
+    _wait(root)
+    assert tab.active_si == 1
+    tab.select_row(11)
+    first = tab.slug
+    tab.on_speech([], 95)               # последняя строка — следующий глагол
+    _wait(root)
+    assert tab.slug != first and tab.active_si == 0

@@ -88,6 +88,12 @@ class SetsHubPage(tk.Frame):
         self.cefr.select(level)
         self.ctx.show("sets")
 
+    def on_key(self, e) -> None:
+        """Клавиши открытой вкладки (Space/M — микрофон во «ГЛАГОЛАХ» и т. п.)."""
+        page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
+        if page is not None and hasattr(page, "on_key"):
+            page.on_key(e)
+
     def refresh(self) -> None:
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
         if page is not None and hasattr(page, "refresh"):
