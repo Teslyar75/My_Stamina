@@ -24,7 +24,8 @@ LEVEL_DIFF = {lv: diff for lv, _t, diff in LEVELS}
 SET_ID = {lv: f"cefr-{lv.lower().replace('.', '-')}" for lv in LEVEL_TITLE}
 
 MAX_SENTENCES = 5
-MIN_SENTENCES = 5
+# Слово с 1–4 примерами берём и честно помечаем пробел (gaps), без примеров — нет.
+MIN_SENTENCES = 1
 
 # Источник и лицензия не придумываются: если в записи их нет, так и пишем.
 UNKNOWN_SOURCE = "unknown"
@@ -79,7 +80,7 @@ def prepared(level: str) -> list[dict]:
     for idx, raw in enumerate(entries(level)):
         sents = _clean_sentences(raw.get("sentences"))
         if len(sents) < MIN_SENTENCES:
-            continue                      # без пяти примеров слово в набор не берём
+            continue                      # без единого примера карточку не показываем
         senses = raw.get("senses") or []
         definition = (senses[0].get("definition") if senses else "") or raw.get("definition", "")
         out.append({
@@ -100,7 +101,16 @@ def prepared(level: str) -> list[dict]:
             "difficulty": raw.get("difficulty") or LEVEL_DIFF.get(lv, "easy"),
             "source": src,
             "license": src.get("license", UNKNOWN_LICENSE),
-            "rank": int(raw.get("rank") or 0),
+            # частотный ранг источника храним отдельно: rank в словаре синтетический,
+            # чтобы слова набора не попадали в частотные «ТОП-N»
+            "rank": 0,
+            "freq_rank": int(raw.get("rank") or 0),
+            "topic": raw.get("topic", ""),
+            "topic_en": raw.get("topic_en", ""),
+            "ru_source": raw.get("ru_source", ""),
+            "ipa_source": raw.get("ipa_source", ""),
+            "word_source": raw.get("word_source", ""),
+            "gaps": list(raw.get("gaps") or []),
         })
     return out
 
@@ -124,6 +134,9 @@ def merge_into(vocab, level: str) -> int:
         cur.setdefault("level", rec["level"])
         cur.setdefault("definition", rec["definition"])
         cur.setdefault("ipa", rec.get("ipa", ""))
+        for k in ("topic", "topic_en", "word_source"):
+            if rec.get(k):
+                cur.setdefault(k, rec[k])
         have = {s.get("en", "").lower() for s in (cur.get("sentences") or [])}
         sents = list(cur.get("sentences") or [])
         for s in rec["sentences"]:

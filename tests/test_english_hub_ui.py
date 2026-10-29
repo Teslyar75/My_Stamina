@@ -138,7 +138,7 @@ def test_cefr_blocks_unlock_after_work(tmp_path):
         page.refresh()
         root.update()
         assert page.level == "A2", "после уровня A1 открывается A2"
-        assert page.blocks and len(page.blocks[0]) == len(cefr.prepared("A2"))
+        assert page.blocks and len(page.blocks[0]) == min(cefr.BLOCK_SIZE, len(cefr.prepared("A2")))
     finally:
         root.destroy()
 
