@@ -55,7 +55,7 @@ class MicPanel(tk.Frame):
         bg = bg or master.cget("bg")
         super().__init__(master, bg=bg)
         self.ctx, self.on_result = ctx, on_result
-        self.btn = HudButton(self, _t("🎤 ПЕРЕДАЧА  M"), self.toggle, color=RED, height=44, font_size=12, width=210)
+        self.btn = HudButton(self, _t("🎤 ПЕРЕДАЧА  M / ␣"), self.toggle, color=RED, height=44, font_size=12, width=210)
         self.btn.pack(pady=(0, px(4)))
         self.meter = LevelMeter(self)
         self.meter.pack(pady=(0, px(4)))
@@ -88,7 +88,7 @@ class MicPanel(tk.Frame):
             self.live.configure(text=_t("Распознавание недоступно: {0}").format(why))
 
     def _btn_idle(self) -> None:
-        self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M"))
+        self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M / ␣"))
         self.btn.set_color(RED)
         self.btn.set_active(False)
         self.meter.clear()

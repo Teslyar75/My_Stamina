@@ -414,8 +414,9 @@ class EnglishScreen(tk.Frame):
     def on_key(self, e) -> None:
         if not self._built:
             return
-        if isinstance(e.widget, tk.Entry):
-            return
+        from .speech_std import typing_in
+        if typing_in(e.widget):
+            return                      # пробел и буквы в поле ввода — это текст
         page = self.pages.get(self.current)
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)

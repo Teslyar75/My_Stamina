@@ -11,6 +11,7 @@ from stamina import theme
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge
 from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, blend, px
 
+from .speech_std import advance_later, passed as std_passed
 from . import sm2
 from .mic import MicPanel
 from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
@@ -591,6 +592,9 @@ class PracticePage(tk.Frame):
         self._marks(marks)
         lab = _t("Самооценка") if self_score is not None else _t("Совпадение")
         self.answer(passed, q, f"{lab} {score}% · {text}. {extra}", score=score, color=VCOL[vk])
+        if std_passed(score):
+            here = self.i
+            advance_later(self, self.next_task, lambda: self.active and self.i == here and self.answered_cur)
 
     def _marks(self, marks) -> None:
         if not marks or not hasattr(self, "sent_tw") or not self.sent_tw.winfo_exists():
@@ -760,8 +764,8 @@ class PracticePage(tk.Frame):
             idx = int(k) - 1
             if idx < len(t["options"]):
                 self.choose(idx)
-        elif k.lower() == "m" and t and t["type"].startswith("S") and hasattr(self, "mic"):
-            self.mic.toggle()
+        elif k.lower() in ("m", "space") and t and t["type"].startswith("S") and hasattr(self, "mic"):
+            self.mic.toggle()           # единый стандарт: Space и M — микрофон
         elif k == "space" and t:
             self.ctx.say(t["word"]["word"] if t["type"] in ("S1", "Q2", "Q3") else
                          (t.get("sentence") or {}).get("en", "") if t["type"] in ("S2",) else "")

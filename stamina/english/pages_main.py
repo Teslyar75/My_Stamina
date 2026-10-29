@@ -12,6 +12,7 @@ from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
 from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
                            PANEL_HI, RED, TEXT, blend, chamfer, px)
 
+from .speech_std import advance_later, passed
 from . import tasks
 from .mic import MicPanel
 from .textutil import score_sentence, verdict, word_forms
@@ -1267,6 +1268,9 @@ class ScannerPage(tk.Frame):
         self.ctx.progress.record_attempt(self.slug, "speaking", "sentence", score >= 60,
                                          5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2, score)
         self.ctx.sfx("click" if score >= 60 else "error")
+        if passed(score) and len(self._sents()) > 1:
+            here = (self.slug, self.si)
+            advance_later(self, lambda: self.step_sent(1), lambda: (self.slug, self.si) == here)
 
     def toggle_known(self) -> None:
         p = self.ctx.progress
@@ -1292,9 +1296,9 @@ class ScannerPage(tk.Frame):
 
     def on_key(self, e) -> None:
         k = e.keysym.lower()
-        if k == "m":
-            self.mic.toggle()
-        elif k == "space":
+        if k in ("m", "space"):
+            self.mic.toggle()           # единый стандарт: Space и M — микрофон
+        elif k == "s":
             self.ctx.say(self._sent()["en"] or self._cur_word().get("word", ""))
         elif k == "right":
             self.step_sent(1)

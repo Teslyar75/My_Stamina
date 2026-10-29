@@ -585,6 +585,8 @@ class BookCardsPage(tk.Frame):
             self.back_hub()
         elif k == "space" and not self.shown:
             self.show_answer()
+        elif k == "space" and self.mic is not None:
+            self.mic.toggle()
         elif self.shown and k in ("1", "2", "3", "4"):
             self.grade({"1": 1, "2": 3, "3": 4, "4": 5}[k])
         elif k == "h":

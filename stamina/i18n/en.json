@@ -2291,5 +2291,6 @@
  "🔒 КОД": "🔒 CODE",
  "🔒 КОД ЗАДАН": "🔒 CODE SPECIFIED",
  "🔒 Права Командира — только по коду владельца": "🔒 Commander rights — only with the owner code",
- "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 BOARD AN AGENT"
+ "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 BOARD AN AGENT",
+ "🎤 ПЕРЕДАЧА  M / ␣": "🎤 TRANSMIT  M / ␣"
 }

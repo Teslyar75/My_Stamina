@@ -852,7 +852,7 @@ class WarehousePage(tk.Frame):
             return
         if k in ("escape", "backspace"):
             self.close_card()
-        elif k == "m" and self.mic is not None and self._holding is None:
+        elif k in ("m", "space") and self.mic is not None and self._holding is None:
             self.mic.toggle()
         elif k == "h":
             # клавиша H — тоже удержание: press через KeyPress/KeyRelease
