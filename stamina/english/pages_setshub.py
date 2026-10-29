@@ -348,7 +348,7 @@ class CefrPage(tk.Frame):
                                  f"слов {len(self.items)} · пройдено {known}/{len(self.items)} · "
                                  f"примеров {n_sent}")
         done_level = self._level_complete(self.level)
-        self.credit.configure(text=f"Данные: {src.get('name', 'original')} · {src.get('license', 'CC BY-SA 4.0')}"
+        self.credit.configure(text=f"Данные: {src.get('name', 'unknown')} · {src.get('license', 'unknown')}"
                                   + (" · уровень пройден" if done_level else " · пять предложений на слово"))
         self.strip.set(f"CEFR · {self.level} · блок {pos}",
                        "Клик по слову — сканер. ⟳ — перевод. ✓ — знаю.",

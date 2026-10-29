@@ -26,6 +26,10 @@ SET_ID = {lv: f"cefr-{lv.lower().replace('.', '-')}" for lv in LEVEL_TITLE}
 MAX_SENTENCES = 5
 MIN_SENTENCES = 5
 
+# Источник и лицензия не придумываются: если в записи их нет, так и пишем.
+UNKNOWN_SOURCE = "unknown"
+UNKNOWN_LICENSE = "unknown"
+
 # Порция изучения: 40–60 слов. Порядок слов в файле = порядок блоков,
 # поэтому новые слова только дописываются в конец уровня.
 BLOCK_SIZE = 50
@@ -60,8 +64,8 @@ def _clean_sentences(raw: list) -> list[dict]:
             continue
         seen.add(en.lower())
         out.append({"en": en, "ru": (s.get("ru") or "").strip(),
-                    "source": (s.get("source") or "original"),
-                    "license": (s.get("license") or "CC BY-SA 4.0")})
+                    "source": (s.get("source") or UNKNOWN_SOURCE),
+                    "license": (s.get("license") or UNKNOWN_LICENSE)})
     return out
 
 
@@ -70,7 +74,7 @@ def prepared(level: str) -> list[dict]:
     data = load(level) or {}
     lv = data.get("level") or level
     sid = data.get("id") or SET_ID.get(level, "cefr-a1")
-    src = data.get("source") or {"name": "original", "license": "CC BY-SA 4.0"}
+    src = data.get("source") or {"name": UNKNOWN_SOURCE, "license": UNKNOWN_LICENSE}
     out: list[dict] = []
     for idx, raw in enumerate(entries(level)):
         sents = _clean_sentences(raw.get("sentences"))
@@ -95,7 +99,7 @@ def prepared(level: str) -> list[dict]:
             "cefr_order": idx,
             "difficulty": raw.get("difficulty") or LEVEL_DIFF.get(lv, "easy"),
             "source": src,
-            "license": src.get("license", "CC BY-SA 4.0"),
+            "license": src.get("license", UNKNOWN_LICENSE),
             "rank": int(raw.get("rank") or 0),
         })
     return out

@@ -531,6 +531,7 @@ class SetsPage(tk.Frame):
         self._group(r2, "diff", _t("СЛОЖНОСТЬ"), [("all", _t("ВСЕ")), ("easy", _t("ЛЁГК.")), ("medium", _t("СРЕД.")), ("tricky", _t("ТРУД."))])
         r3 = tk.Frame(b, bg=PANEL)
         r3.pack(fill=tk.X, pady=(px(6), 0))
+        r2._alt_toggle = r3._alt_toggle = True  # альт: ряды открываются кнопкой «ФИЛЬТРЫ ▾»
         self._frows = (r2, r3)          # альт: свёрнуты под кнопкой «ФИЛЬТРЫ», чтобы 24 карты влезли в окно
         self._fopen = False
         self._group(r3, "sort", _t("СОРТИРОВКА"), [("random", _t("СЛУЧАЙНО")), ("freq", _t("ЧАСТОТА")), ("alpha", "A→Z"),

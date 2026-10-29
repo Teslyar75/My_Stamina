@@ -450,6 +450,10 @@ class OrionScreen(tk.Frame):
         self.mic.hold_button.pack(side=tk.RIGHT, padx=(px(6), 0))
         self.mic.button.pack(side=tk.RIGHT)
         self.attach_btn.pack(side=tk.RIGHT, padx=(0, px(6)))
+        # поле ввода — последним в порядке pack: иначе на узком окне (alt 1280×720)
+        # растянутое поле съедает место, и кнопки справа (📎) сжимаются в ноль
+        self.entry.pack_forget()
+        self.entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, px(8)))
         self.composer_hint = _label(bottom, "", fg=MUTED, size=8, bg=BG, anchor="w")
         self.composer_hint.pack(fill=tk.X, pady=(px(2), 0))
         # Простая панель общения: микрофон, ввод, отправка
