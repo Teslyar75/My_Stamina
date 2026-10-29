@@ -1293,8 +1293,9 @@ class ScannerPage(tk.Frame):
 
     def on_key(self, e) -> None:
         k = e.keysym.lower()
-        if k in ("m", "space"):
-            self.mic.toggle()           # единый стандарт: Space и M — микрофон
+        from .speech_std import is_mic_key
+        if is_mic_key(e):
+            self.mic.toggle()           # единый стандарт: M — микрофон
         elif k == "s":
             self.ctx.say(self._sent()["en"] or self._cur_word().get("word", ""))
         elif k == "right":

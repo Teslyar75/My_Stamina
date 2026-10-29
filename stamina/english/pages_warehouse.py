@@ -14,6 +14,7 @@ from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL_HI, RED, TEXT, px
 
 from .mic import MicPanel
+from .speech_std import is_hint_key, is_mic_key
 from .textutil import score_sentence, score_word, verdict
 from .ui import L, MatchReadout, ScrollFrame, Strip, target_missed
 from . import quality
@@ -873,11 +874,11 @@ class WarehousePage(tk.Frame):
             return
         if k in ("escape", "backspace"):
             self.close_card()
-        elif k in ("m", "space") and self.mic is not None and self._holding is None:
+        elif is_mic_key(e) and self.mic is not None and self._holding is None:
             self.mic.toggle()
-        elif k == "h":
-            # клавиша H — тоже удержание: press через KeyPress/KeyRelease
-            pass
+        elif is_hint_key(e) and self._holding is None:
+            self._hint_down(self.active_si)     # T — держать, как кнопку 💡 ПОДСКАЗКА
 
     def on_key_up(self, e) -> None:
-        pass
+        if is_hint_key(e) and self._holding is not None:
+            self._hint_up(self._holding)

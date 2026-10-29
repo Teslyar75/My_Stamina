@@ -89,10 +89,15 @@ class SetsHubPage(tk.Frame):
         self.ctx.show("sets")
 
     def on_key(self, e) -> None:
-        """Клавиши открытой вкладки (Space/M — микрофон во «ГЛАГОЛАХ» и т. п.)."""
+        """Клавиши открытой вкладки (M — микрофон, T — подсказка, где она есть)."""
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
+
+    def on_key_up(self, e) -> None:
+        page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
+        if page is not None and hasattr(page, "on_key_up"):
+            page.on_key_up(e)
 
     def refresh(self) -> None:
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)

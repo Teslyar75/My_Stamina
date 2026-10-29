@@ -9,7 +9,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, 
 
 from . import quality, verbs
 from .mic import MicPanel
-from .speech_std import advance_later, passed
+from .speech_std import advance_later, is_mic_key, passed
 from .textutil import score_sentence, verdict
 from .ui import L, ScrollFrame, Strip, target_missed
 
@@ -324,12 +324,12 @@ class VerbsTab(tk.Frame):
         self._scroll_to_active()
 
     def on_key(self, e) -> None:
-        """Space/M — микрофон (как во всех режимах), ↑/↓ — строка времени."""
+        """M — микрофон (как во всех режимах), ↑/↓ — строка времени. Пробел не занят."""
         if self.reference is not None and self.reference.winfo_ismapped():
             self.reference.on_key(e)
             return
         k = (e.keysym or "").lower()
-        if k in ("m", "space") and self.mic is not None:
+        if is_mic_key(e) and self.mic is not None:
             self.mic.toggle()
         elif k == "down":
             self.select_row(min(self.active_si + 1, len(self._sents()) - 1))

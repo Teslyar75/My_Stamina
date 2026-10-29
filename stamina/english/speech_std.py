@@ -10,7 +10,8 @@ import tkinter as tk
 ITEM_OK = 80        # зачёт слова/предложения в одной попытке (= warehouse.FLIP_OK)
 RUN_OK = 85         # средняя прогона карточки (= warehouse.PASS_QUALITY)
 ADVANCE_MS = 900    # пауза перед авто-переходом: успеть увидеть зелёный результат
-MIC_KEYS = ("m", "space")
+MIC_KEYS = ("m", "cyrillic_softsign")      # M (в RU/UK раскладке та же клавиша — «ь»)
+HINT_KEYS = ("t", "cyrillic_ie")           # T — подсказка, удерживать (RU/UK — «е»); пробел свободен
 
 
 def typing_in(widget) -> bool:
@@ -33,6 +34,10 @@ def typing_in(widget) -> bool:
 
 def is_mic_key(e) -> bool:
     return (getattr(e, "keysym", "") or "").lower() in MIC_KEYS and not typing_in(getattr(e, "widget", None))
+
+
+def is_hint_key(e) -> bool:
+    return (getattr(e, "keysym", "") or "").lower() in HINT_KEYS and not typing_in(getattr(e, "widget", None))
 
 
 def passed(score) -> bool:

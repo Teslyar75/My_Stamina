@@ -417,6 +417,16 @@ class EnglishScreen(tk.Frame):
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
 
+    def on_key_up(self, e) -> None:
+        if not self._built:
+            return
+        from .speech_std import typing_in
+        if typing_in(e.widget):
+            return
+        page = self.pages.get(self.current)
+        if page is not None and hasattr(page, "on_key_up"):
+            page.on_key_up(e)
+
     def close(self) -> None:
         self.progress.save()
         self.tts.close()

@@ -130,10 +130,10 @@ class ReferencePanel(tk.Frame):
         self.cells.pack(fill=tk.X, pady=(px(4), 0))
         self.example = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
         self.example.pack(fill=tk.X, pady=(px(4), 0))
-        # единый стандарт: микрофон на постоянном месте под примером, Space/M, зачёт ≥80%
+        # единый стандарт: микрофон на постоянном месте под примером, M, зачёт ≥80%
         micbar = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
         micbar.pack(fill=tk.X, pady=(px(4), 0))
-        self.mic_status = L(micbar, _t("Произнесите пример: Space или M — микрофон."), fg=th.MUTED, size=9,
+        self.mic_status = L(micbar, _t("Произнесите пример: M — микрофон."), fg=th.MUTED, size=9,
                             bg=th.PANEL, wraplength=px(420), justify="left")
         self.mic_status.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(10), pady=px(6))
         self.mic = None
@@ -315,7 +315,8 @@ class ReferencePanel(tk.Frame):
 
     def on_key(self, e) -> None:
         k = (getattr(e, "keysym", "") or "").lower()
-        if k in ("m", "space") and self.mic is not None and getattr(e, "widget", None) is not self.search:
+        from .speech_std import is_mic_key
+        if is_mic_key(e) and self.mic is not None and getattr(e, "widget", None) is not self.search:
             self.mic.toggle()
 
     def on_speech(self, alts, self_score) -> None:
