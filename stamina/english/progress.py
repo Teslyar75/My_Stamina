@@ -89,6 +89,14 @@ class Progress:
     def settings(self) -> dict:
         return self.data["settings"]
 
+    def verbs_unlock_need(self) -> int:
+        """Порог разблокировки пака 1000 глаголов (настройка; формат прогресса не меняется)."""
+        from .verbs import UNLOCK_NEED
+        try:
+            return max(1, int(self.settings.get("verbs_unlock_need", UNLOCK_NEED)))
+        except (TypeError, ValueError):
+            return UNLOCK_NEED
+
     # -- слова ---------------------------------------------------------------
     def _w(self, slug: str) -> dict:
         return self.data["words"].setdefault(slug, {})
