@@ -28,6 +28,8 @@ CTRL = ("Button", "Checkbutton", "Radiobutton", "Menubutton", "Scale", "Entry", 
 
 
 def _label(w) -> str:
+    if w.winfo_class() in ("Entry", "TEntry", "Spinbox", "TSpinbox"):
+        return w.winfo_class()          # cget("text") у поля ввода — имя PY_VARn, оно плавает между запусками
     t = getattr(w, "_text", None)
     if t is None:
         try:
@@ -44,6 +46,16 @@ def _kind(w):
         return "HudButton"
     c = w.winfo_class()
     return c if c in CTRL else None
+
+
+def _toggled(w, stop) -> bool:
+    """Контрол в свёрнутой панели (флаг _alt_toggle), которая открывается одной кнопкой на виду."""
+    x = w
+    while x is not None and x is not stop:
+        if getattr(x, "_alt_toggle", False):
+            return True
+        x = x.master
+    return False
 
 
 def _scroll_owner(w, stop):
@@ -130,11 +142,11 @@ def collect_one(layout: str, skin: str, size: str) -> dict:
                 if id(x) in seen:
                     continue
                 rec = {"screen": name, "tab": tab, "kind": k, "text": _label(x)}
-                if only_managed and id(x) not in hidden and not _managed(x, scr):
+                if only_managed and id(x) not in hidden and not _managed(x, scr) and not (layout == "alt" and _toggled(x, scr)):
                     unseen.setdefault(id(x), dict(rec, tab="", ok=False, why="скрыт"))
                     continue
                 seen.add(id(x))
-                if id(x) in hidden:
+                if id(x) in hidden or (layout == "alt" and not _managed(x, scr) and _toggled(x, scr)):
                     rec.update(ok=True, why="ещё")
                 elif not _managed(x, scr):
                     rec.update(ok=False, why="скрыт")

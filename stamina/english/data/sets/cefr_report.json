@@ -1,0 +1,98 @@
+{
+ "A1": {
+  "words": 1063,
+  "examples_5": 1056,
+  "examples_0": 3,
+  "sentences": 5288,
+  "tatoeba": 5280,
+  "wiktionary": 8,
+  "ru_gap": 50,
+  "ru_mt": 6,
+  "ipa_gap": 79,
+  "topics": 21
+ },
+ "A2": {
+  "words": 1241,
+  "examples_5": 1203,
+  "examples_0": 8,
+  "sentences": 6078,
+  "tatoeba": 6044,
+  "wiktionary": 34,
+  "ru_gap": 92,
+  "ru_mt": 21,
+  "ipa_gap": 121,
+  "topics": 20
+ },
+ "B1.1": {
+  "words": 1070,
+  "examples_5": 1036,
+  "examples_0": 1,
+  "sentences": 5275,
+  "tatoeba": 5233,
+  "wiktionary": 42,
+  "ru_gap": 0,
+  "ru_mt": 12,
+  "ipa_gap": 78,
+  "topics": 19
+ },
+ "B1.2": {
+  "words": 1069,
+  "examples_5": 825,
+  "examples_0": 50,
+  "sentences": 4601,
+  "tatoeba": 4378,
+  "wiktionary": 223,
+  "ru_gap": 181,
+  "ru_mt": 45,
+  "ipa_gap": 168,
+  "topics": 19
+ },
+ "B2.1": {
+  "words": 1209,
+  "examples_5": 1011,
+  "examples_0": 22,
+  "sentences": 5539,
+  "tatoeba": 5235,
+  "wiktionary": 304,
+  "ru_gap": 0,
+  "ru_mt": 45,
+  "ipa_gap": 101,
+  "topics": 19
+ },
+ "B2.2": {
+  "words": 1208,
+  "examples_5": 578,
+  "examples_0": 208,
+  "sentences": 3877,
+  "tatoeba": 3390,
+  "wiktionary": 487,
+  "ru_gap": 332,
+  "ru_mt": 100,
+  "ipa_gap": 259,
+  "topics": 19
+ },
+ "C1": {
+  "words": 913,
+  "examples_5": 309,
+  "examples_0": 222,
+  "sentences": 2390,
+  "tatoeba": 1891,
+  "wiktionary": 499,
+  "ru_gap": 243,
+  "ru_mt": 83,
+  "ipa_gap": 195,
+  "topics": 5
+ },
+ "C2": {
+  "words": 875,
+  "examples_5": 133,
+  "examples_0": 383,
+  "sentences": 1386,
+  "tatoeba": 861,
+  "wiktionary": 525,
+  "ru_gap": 375,
+  "ru_mt": 61,
+  "ipa_gap": 216,
+  "topics": 5
+ }
+}

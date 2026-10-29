@@ -86,6 +86,7 @@ class Cockpit(tk.Tk):
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
+        self.bind("<KeyRelease>", self._on_key_up, add="+")   # только для удержания T в АНГЛИЙСКОМ
         for i, (name, _t) in enumerate(self.SCREENS, 1):
             self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
         # Home — Орион, Prior (PgUp) — слайды, Next (PgDn) — экран (как на вебе)
@@ -1216,6 +1217,13 @@ class Cockpit(tk.Tk):
             self.screens[orion_hook.KEY].on_key(e)
         elif self.current == "honor":
             self.screens["honor"].on_key(e)
+
+    def _on_key_up(self, e: tk.Event) -> None:
+        """Отпускание клавиши — только английской зоне (подсказка T держится, пока клавиша нажата)."""
+        if self.current == english_hook.KEY:
+            scr = self.screens.get(english_hook.KEY)
+            if scr is not None and hasattr(scr, "on_key_up"):
+                scr.on_key_up(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():

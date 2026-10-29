@@ -1,6 +1,8 @@
 """Проверка систем (флеш-карточки SM-2) и миссии (практика R1–R3, Q1–Q4, S1–S3, случайный микс)."""
 from __future__ import annotations
 
+from .speech_std import is_mic_key as _is_mic_key
+
 from stamina.i18n import t as _t
 
 import random
@@ -11,6 +13,7 @@ from stamina import theme
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge
 from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, blend, px
 
+from .speech_std import advance_later, passed as std_passed
 from . import sm2
 from .mic import MicPanel
 from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
@@ -79,7 +82,7 @@ class ReviewPage(tk.Frame):
         _clear(self.btns)
         p = self.ctx.progress
         self.strip.set(_t("ПРОВЕРКА СИСТЕМ · ОСТАЛОСЬ {0}").format(len(self.queue)),
-                       _t("Space — расшифровать, 1–4 — оценка. Интервалы по алгоритму SM-2."),
+                       _t("Enter — расшифровать, 1–4 — оценка. Интервалы по алгоритму SM-2."),
                        self.done / max(1, self.done + len(self.queue)), f"{self.done} / {self.done + len(self.queue)}")
         if not self.queue:
             L(self.body, _t("ВСЕ СИСТЕМЫ В НОРМЕ ✓"), fg=GREEN, size=22, bold=True).pack(pady=(px(60), px(8)))
@@ -103,7 +106,7 @@ class ReviewPage(tk.Frame):
         if not rev and p.settings.get("autoplay") and not self.shown:
             self.after(200, lambda: self.ctx.say(w["word"]))
         if not self.shown:
-            HudButton(self.btns, _t("РАСШИФРОВАТЬ  Space"), self.show_answer, color=AMBER, height=40,
+            HudButton(self.btns, _t("РАСШИФРОВАТЬ  Enter"), self.show_answer, color=AMBER, height=40,
                       font_size=11).pack()
             return
         if rev:
@@ -159,7 +162,7 @@ class ReviewPage(tk.Frame):
 
     def on_key(self, e) -> None:
         k = e.keysym
-        if k == "space" and not self.shown and self.queue:
+        if k == "Return" and not self.shown and self.queue:
             self.show_answer()
         elif self.shown and k in ("1", "2", "3", "4"):
             self.grade({"1": 1, "2": 3, "3": 4, "4": 5}[k])
@@ -397,7 +400,7 @@ class PracticePage(tk.Frame):
         w = t["word"]
         title = MODES[self.mode][0]
         self.strip.set(_t("МИССИЯ · {0} · {1}").format(title, TYPE_TITLE[t['type']]),
-                       _t("Слово #{0} · 1–4 выбрать, Enter — далее, M — микрофон, Space — голос").format(w['rank']),
+                       _t("Слово #{0} · 1–4 выбрать, Enter — далее, M — микрофон").format(w['rank']),
                        self.i / len(self.tasks), f"{self.i + 1} / {len(self.tasks)}")
         L(self.tb, TYPE_TITLE[t["type"]], fg=AMBER, size=10, bold=True).pack(anchor="w")
         self.fb = None
@@ -559,14 +562,16 @@ class PracticePage(tk.Frame):
             return
         t = self.tasks[self.i]
         w = t["word"]
+        level = self.ctx.progress.settings.get("speech_strictness", "normal")
         marks = None
         heard = (alts or [""])[0]
         if self_score is not None:
             score = self_score
         elif t["type"] == "S1":
-            score = score_word(w["word"], alts or [], w.get("sounds_like"))
+            score = score_word(w["word"], alts or [], w.get("sounds_like"), strictness=level)
         else:
-            res = [(score_sentence(t["sentence"]["en"], a, w["word"]), a) for a in (alts or [])] or [((0, []), "")]
+            res = [(score_sentence(t["sentence"]["en"], a, w["word"], strictness=level), a)
+                   for a in (alts or [])] or [((0, []), "")]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.match.set(score, marks, heard if self_score is None else "",
                        bool(marks) and target_missed(marks, w["word"]), self_rated=self_score is not None)
@@ -583,6 +588,9 @@ class PracticePage(tk.Frame):
         self._marks(marks)
         lab = _t("Самооценка") if self_score is not None else _t("Совпадение")
         self.answer(passed, q, f"{lab} {score}% · {text}. {extra}", score=score, color=VCOL[vk])
+        if std_passed(score):
+            here = self.i
+            advance_later(self, self.next_task, lambda: self.active and self.i == here and self.answered_cur)
 
     def _marks(self, marks) -> None:
         if not marks or not hasattr(self, "sent_tw") or not self.sent_tw.winfo_exists():
@@ -752,8 +760,5 @@ class PracticePage(tk.Frame):
             idx = int(k) - 1
             if idx < len(t["options"]):
                 self.choose(idx)
-        elif k.lower() == "m" and t and t["type"].startswith("S") and hasattr(self, "mic"):
-            self.mic.toggle()
-        elif k == "space" and t:
-            self.ctx.say(t["word"]["word"] if t["type"] in ("S1", "Q2", "Q3") else
-                         (t.get("sentence") or {}).get("en", "") if t["type"] in ("S2",) else "")
+        elif t and t["type"].startswith("S") and hasattr(self, "mic") and _is_mic_key(e):
+            self.mic.toggle()           # единый стандарт: M — микрофон (пробел не занят)

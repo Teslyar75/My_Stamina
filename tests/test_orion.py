@@ -707,6 +707,22 @@ class OrionScreenTest(unittest.TestCase):
         self.assertTrue(scr.board.winfo_manager())
         self.assertFalse(scr.strip.winfo_manager())
 
+    def test_stop_button_is_visible_only_while_working(self):
+        """В покое «■ СТОП» не пугает; во время работы появляется рядом с отправкой."""
+        self.app.show("orion")
+        scr = self._screen()
+        self.assertTrue(scr.input_row._alt_nocompact)
+        self.assertTrue(scr.send_btn.winfo_manager())
+        self.assertFalse(scr.stop_btn.winfo_manager())
+
+        scr._show_stop(True)
+        self.app.update_idletasks()
+        self.assertTrue(scr.stop_btn.winfo_manager())
+
+        scr._show_stop(False)
+        self.app.update_idletasks()
+        self.assertFalse(scr.stop_btn.winfo_manager())
+
     def test_voice_text_goes_to_input(self):
         scr = self._screen()
         scr.entry.delete(0, "end")
@@ -933,7 +949,8 @@ class OrionI18nTest(unittest.TestCase):
     def test_labels_translated(self):
         keys = ["ОРИОН · ЧАТ", "ОРИОН · АГЕНТЫ", "ЖИВАЯ ЛИНИЯ", "ПАССАЖИРЫ БОРТА",
                 "КАРТОЧКА ПАССАЖИРА", "СЛУШАЮ… говорите", "ГОЛОС", "КОМАНДИР",
-                "НАБЛЮДАТЕЛЬ", "ЭКИПАЖ", "ДОСКА: СКРЫТА", "СЛУШАЮ… {0} {1}"]
+                "НАБЛЮДАТЕЛЬ", "ЭКИПАЖ", "ДОСКА: СКРЫТА", "СЛУШАЮ… {0} {1}",
+                "■ СТОП"]
         try:
             ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
             for key in keys:

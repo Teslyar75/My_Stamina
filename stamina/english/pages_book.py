@@ -12,6 +12,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL
 from . import book_sentences as bs
 from . import sm2
 from .mic import MicPanel
+from .speech_std import is_hint_key, is_mic_key
 from .textutil import score_sentence, verdict
 from .ui import L, MatchReadout, ScrollFrame, Strip
 
@@ -348,7 +349,7 @@ class BookCardsPage(tk.Frame):
         self.strip.set(
             _t("ИЗ КНИГИ · {0}/{1}").format(self.i + 1, total),
             _t("Русский на карточке → скажи по-английски (≥ {0}%). "
-               "💡 ПОДСКАЗКА — удерживай, чтобы увидеть EN.").format(bs.FLIP_OK),
+               "💡 ПОДСКАЗКА или T — удерживай, чтобы увидеть EN. M — микрофон.").format(bs.FLIP_OK),
             self.i / max(1, total),
             (sent.get("title") or "")[:40],
         )
@@ -424,7 +425,7 @@ class BookCardsPage(tk.Frame):
           fg=MUTED, size=9, bg=PANEL).pack(anchor="w", pady=(px(8), px(12)))
 
         if not self.shown:
-            HudButton(self.btns, _t("РАСШИФРОВАТЬ  Space"), self.show_answer, color=CYAN, height=36,
+            HudButton(self.btns, _t("РАСШИФРОВАТЬ  Enter"), self.show_answer, color=CYAN, height=36,
                       font_size=10).pack(side=tk.LEFT, padx=px(4))
         else:
             for q, text, col, key in ((1, _t("СНОВА"), RED, "1"), (3, _t("ТРУДНО"), AMBER, "2"),
@@ -505,7 +506,8 @@ class BookCardsPage(tk.Frame):
         else:
             if not alts:
                 return
-            res = [(score_sentence(en, a, None), a) for a in alts]
+            level = self.ctx.progress.settings.get("speech_strictness", "normal")
+            res = [(score_sentence(en, a, None, strictness=level), a) for a in alts]
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self._last_score = score
         if self.match is not None:
@@ -582,16 +584,17 @@ class BookCardsPage(tk.Frame):
             return
         if k in ("escape", "backspace"):
             self.back_hub()
-        elif k == "space" and not self.shown:
+        elif k == "return" and not self.shown:
             self.show_answer()
         elif self.shown and k in ("1", "2", "3", "4"):
             self.grade({"1": 1, "2": 3, "3": 4, "4": 5}[k])
-        elif k == "h":
-            if self._holding:
-                self._hint_up()
-            else:
-                self._hint_down()
-        elif k == "m" and self.mic is not None:
+        elif is_hint_key(e):
+            self._hint_down()           # T — держать; отпустил — снова русский (on_key_up)
+        elif is_mic_key(e) and self.mic is not None:
             self.mic.toggle()
         elif k == "s":
             self.skip()
+
+    def on_key_up(self, e) -> None:
+        if self.mode == "drill" and is_hint_key(e):
+            self._hint_up()

@@ -135,7 +135,7 @@ class RadioPickerTest(unittest.TestCase):
         self.assertLessEqual(FADE_MS, 2000)
         self.assertGreaterEqual(RADIO_TARGET, 0.4)
 
-    def test_arrows_switch_other_keys_close(self):
+    def test_arrows_switch_other_keys_do_not_close(self):
         from stamina.idle.overlay import Slideshow
         calls = []
         fake = mock.Mock(stations=[{"name": "a"}, {"name": "b"}], RADIO_KEYS=Slideshow.RADIO_KEYS)
@@ -145,13 +145,14 @@ class RadioPickerTest(unittest.TestCase):
         fake.close.side_effect = lambda: calls.append(("close",))
         for k in ("Right", "Left", "Up", "m", "Cyrillic_softsign", "space"):
             Slideshow._key(fake, mock.Mock(type="2", keysym=k))
-        self.assertEqual(calls, [("sw", 1), ("sw", -1), ("vol", 10), ("mute",), ("mute",), ("close",)])
+        self.assertEqual(calls, [("sw", 1), ("sw", -1), ("vol", 10), ("mute",), ("mute",)])
 
-    def test_arrows_close_when_no_radio(self):
+    def test_arrows_do_nothing_when_no_radio(self):
         from stamina.idle.overlay import Slideshow
         fake = mock.Mock(stations=[], RADIO_KEYS=Slideshow.RADIO_KEYS)
         Slideshow._key(fake, mock.Mock(type="2", keysym="Right"))
-        fake.close.assert_called_once()
+        fake.close.assert_not_called()
+        fake.switch_station.assert_not_called()
 
 
 if __name__ == "__main__":

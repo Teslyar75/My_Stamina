@@ -94,6 +94,26 @@ def describe(mark: dict) -> str:
     return " · ".join(parts)
 
 
+def place_line(mark: dict) -> str:
+    """Адрес точки одной строкой — его пилот вставляет в окно задания.
+
+    Формат совпадает со строкой из блока для агента, чтобы ТЗ и пометка
+    на борту говорили об одном и том же месте одинаковыми словами.
+    """
+    when = time.strftime("%H:%M:%S", time.localtime(mark.get("ts", 0)))
+    w, h = (mark.get("root") or [0, 0])[:2]
+    parts = [mark.get("zone") or "?"]
+    if mark.get("subtab"):
+        parts.append(mark["subtab"])
+    if mark.get("widget"):
+        parts.append(mark["widget"])
+    return (
+        " / ".join(parts)
+        + f" — окно {w}x{h}, точка {mark.get('x')},{mark.get('y')}"
+        + f" (доля {mark.get('nx')}, {mark.get('ny')}), {when}"
+    )
+
+
 def context_block(mark_id: int = 0, n: int = KEEP_FOR_TASK) -> str:
     """Блок для агента: куда именно указывал пилот. Пусто — если пометок нет."""
     items = since(mark_id, n) if mark_id else recent(n)
@@ -101,15 +121,7 @@ def context_block(mark_id: int = 0, n: int = KEEP_FOR_TASK) -> str:
         return ""
     lines = ["МЕСТА, КОТОРЫЕ ПОКАЗАЛ ПИЛОТ (правая кнопка мыши):"]
     for i, m in enumerate(items, 1):
-        when = time.strftime("%H:%M:%S", time.localtime(m.get("ts", 0)))
-        w, h = (m.get("root") or [0, 0])[:2]
-        lines.append(
-            f"{i}. {m.get('zone') or '?'}"
-            + (f" / {m['subtab']}" if m.get("subtab") else "")
-            + (f" / {m['widget']}" if m.get("widget") else "")
-            + f" — окно {w}x{h}, точка {m.get('x')},{m.get('y')}"
-            + f" (доля {m.get('nx')}, {m.get('ny')}), {when}"
-        )
+        lines.append(f"{i}. {place_line(m)}")
         if m.get("note"):
             lines.append(f"   слова пилота: {m['note']}")
     return "\n".join(lines)

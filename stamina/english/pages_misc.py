@@ -407,6 +407,11 @@ class SettingsPage(tk.Frame):
             col = AMBER
         self._toggle(s, "asr", _t("Распознавание речи (Vosk, без интернета)"),
                      _t("Предложение читается в микрофон, слова сверяются с текстом, балл 0–100"))
+        self._choice(s, "speech_strictness", _t("Строгость проверки речи"),
+                     [("soft", _t("МЯГКАЯ")), ("normal", _t("ОБЫЧНАЯ")), ("strict", _t("СТРОГАЯ"))],
+                     _t("Насколько проверка доверяет похожим звукам. МЯГКАЯ принимает больше вариантов "
+                        "распознавания, СТРОГАЯ — только точные слова. Изучаемое слово и смысл проверяются "
+                        "во всех режимах. Подробнее — F1 и docs/english/SPEECH_SCORING.md."))
         L(s, _t("Состояние: {0}").format(st), fg=col, size=8, wraplength=px(480), justify="left").pack(anchor="w")
         L(s, _t("Модель: {0}").format(paths.vosk_model_dir() or paths.MODELS_DIR), fg=MUTED, size=8, wraplength=px(480),
           justify="left").pack(anchor="w")
