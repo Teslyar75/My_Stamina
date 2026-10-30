@@ -172,6 +172,8 @@ def thumbnail(path: Path, size: int = THUMB_PX):
 
 def open_file(path: Path) -> bool:
     """Открыть снимок как есть — системной программой просмотра."""
+    if not Path(path).is_file():
+        return False
     try:
         if sys.platform == "win32":
             os.startfile(str(path))                      # noqa: S606 — открывает пилот, не мы
@@ -183,7 +185,8 @@ def open_file(path: Path) -> bool:
         return False
 
 
-START_RE = re.compile(r"[A-Za-z]:[\\/]")
+# Windows: «C:\…»; Linux/macOS: «/home/…» или «~/…» (слэш не внутри слова и не после «:» в URL).
+START_RE = re.compile(r"[A-Za-z]:[\\/]|(?<![\w:/.~])~?/(?=[^\s/])")
 
 
 def image_paths_in(text: str) -> list[Path]:
@@ -206,7 +209,7 @@ def image_paths_in(text: str) -> list[Path]:
                 ends.append(idx + len(suffix))
                 idx = low.find(suffix, idx + 1)
         for end in sorted(ends):                     # ближайшее окончание — оно и путь
-            candidate = Path(tail[:end].strip().strip("\"'«»"))
+            candidate = Path(tail[:end].strip().strip("\"'«»")).expanduser()
             key = str(candidate).lower()
             if key in seen or not candidate.is_file():
                 continue

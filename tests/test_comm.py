@@ -221,6 +221,8 @@ class CommZoneIntegrationTest(unittest.TestCase):
     def test_zone_loaded_and_badge_colours_unread(self):
         from stamina import comm_hook, theme
         self.assertIn(comm_hook.KEY, [s for s, _ in self.app.SCREENS])
+        # отсек собирается отложенно (after 120 мс) — на быстрой машине его ещё нет
+        self.app._ensure_screen(comm_hook.KEY)
         self.assertIn(comm_hook.KEY, self.app.screens)
         button = self.app.nav_buttons[comm_hook.KEY]
         self.app.show("bridge")

@@ -9,7 +9,13 @@ import copy
 import pathlib
 import sys
 
+import os
 import pytest
+
+# Сторож замираний пишет stall.log в профиль пилота — в тестах он не нужен.
+os.environ.setdefault("STAR_TYPING_NO_STALL_WATCH", "1")
+# Тесты не должны говорить вслух через espeak-ng / spd-say на Linux.
+os.environ.setdefault("STAR_TYPING_NO_LINUX_TTS", "1")
 
 # DPI awareness must be set before the first Tk window of the process, exactly like
 # stamina/app.py does. Set later (inside one test) Windows ignores it once another
@@ -92,3 +98,39 @@ def _isolate_agent_store(monkeypatch, tmp_path_factory):
     monkeypatch.setattr(orion, "_root", _root)
     store = _MemoryCredStore()
     monkeypatch.setattr(agent_connect, "_backend", lambda: ("keyring", store))
+
+
+@pytest.fixture(autouse=True)
+def _gc_on_main_thread():
+    """Мусор прошлых окон Tk собираем здесь, в главном потоке, — иначе его подберёт
+    фоновый поток следующего теста и Tcl на Linux упадёт (Illegal instruction)."""
+    import gc
+    yield
+    gc.collect()
+
+
+@pytest.fixture(autouse=True)
+def _cockpit_bootstrapped(monkeypatch):
+    """Кабина достраивается через after(60): на медленной машине это успевает внутри
+    первого update() теста, на быстрой — нет, и стартовая миссия потом перебивает
+    show() теста. Ждём старта прямо в конструкторе, чтобы тесты не зависели от скорости."""
+    try:
+        from stamina.cockpit import Cockpit
+    except Exception:  # noqa: BLE001
+        yield
+        return
+    orig = Cockpit.__init__
+
+    def init(self, *a, **k):
+        orig(self, *a, **k)
+        import time
+        end = time.time() + 3.0
+        while not getattr(self, "_bootstrapped", False) and time.time() < end:
+            try:
+                self.update()
+            except Exception:  # noqa: BLE001
+                break
+            time.sleep(0.005)
+
+    monkeypatch.setattr(Cockpit, "__init__", init)
+    yield

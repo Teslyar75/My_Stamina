@@ -35,6 +35,10 @@ def agent_for_pilot(pid: str) -> dict | None:
     return max(own, key=lambda a: float(a.get("created") or 0)) if own else None
 
 
+#: Linux без Secret Service: ключ хранить негде — в файл открытым текстом не пишем.
+NO_STORE = ("Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) "
+            "и пакет keyring — см. docs/LINUX.md")
+
 class ConnectAgentDialog(Modal):
     """result — сохранённая запись агента или None."""
 
@@ -184,8 +188,11 @@ class ConnectAgentDialog(Modal):
             try:
                 ref = ac.store_key(saved["id"], key)
             except Exception as exc:  # noqa: BLE001
-                self.msg.configure(text=_t("Не удалось сохранить ключ в хранилище Windows: {0}")
-                                   .format(exc), fg=RED)
+                if str(exc) == "no_store":
+                    text = _t(NO_STORE)
+                else:
+                    text = _t("Не удалось сохранить ключ в хранилище Windows: {0}").format(exc)
+                self.msg.configure(text=text, fg=RED)
                 return
         if ref:
             saved = orion.upsert(dict(saved, cred_ref=ref))

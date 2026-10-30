@@ -9,6 +9,7 @@ JSON-скины: ``stamina/themes/<id>.json`` (см. docs/skins/SKINS.md).
 from __future__ import annotations
 
 import json
+import sys
 import tkinter as tk
 import tkinter.font as tkfont
 from pathlib import Path
@@ -127,6 +128,33 @@ def _forget_root(root: tk.Misc) -> None:
         _root = None
 
 
+_CYR: set | None = None
+
+
+def _cyrillic_families() -> set:
+    """Семейства с кириллицей по fontconfig (только не-Windows; пусто — проверки нет).
+
+    На Linux под именем «Segoe UI» встречаются подмены без кириллицы — тогда весь
+    русский интерфейс рисуется пустыми клетками.
+    """
+    global _CYR
+    if _CYR is not None:
+        return _CYR
+    _CYR = set()
+    if sys.platform != "win32":
+        import shutil
+        import subprocess
+        if shutil.which("fc-list"):
+            try:
+                out = subprocess.run(["fc-list", ":lang=ru", "family"], capture_output=True,
+                                     text=True, timeout=5).stdout
+                for line in out.splitlines():
+                    _CYR.update(x.strip() for x in line.split(",") if x.strip())
+            except (OSError, subprocess.SubprocessError):
+                pass
+    return _CYR
+
+
 def _pick_fonts(root: tk.Misc | None = None) -> None:
     global HUD_FAMILY, MONO_FAMILY
     try:
@@ -141,6 +169,10 @@ def _pick_fonts(root: tk.Misc | None = None) -> None:
         "Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Noto Sans Mono",
         "Ubuntu Mono", "Liberation Mono", "Courier New",
     ]
+    cyr = _cyrillic_families()
+    if cyr:                       # Linux: шрифт с таким именем может быть без кириллицы
+        ui_prefs = [n for n in ui_prefs if n in cyr] or ui_prefs
+        mono_prefs = [n for n in mono_prefs if n in cyr] or mono_prefs
     for name in ui_prefs:
         if not families or name in families:
             HUD_FAMILY = name

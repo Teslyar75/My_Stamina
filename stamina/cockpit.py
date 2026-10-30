@@ -87,6 +87,9 @@ class Cockpit(tk.Tk):
         self._layout = alt_ui.layout_of(st)  # вид интерфейса: classic | alt (docs/ALT_UI.md)
         self._build()
         self._start_stall_watch()
+        from stamina import tk_gc       # Linux: мусор Tk собираем только в главном потоке
+        if tk_gc.install(self):
+            self.bind("<Destroy>", lambda e: tk_gc.uninstall() if e.widget is self else None, add="+")
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
@@ -166,6 +169,8 @@ class Cockpit(tk.Tk):
         import threading
         import traceback
 
+        if os.environ.get("STAR_TYPING_NO_STALL_WATCH"):
+            return
         pulse = [time.time()]
         stop = threading.Event()
         self._stall_stop = stop
@@ -206,6 +211,9 @@ class Cockpit(tk.Tk):
                 pulse[0] = time.time()
 
         self.after(200, beat)
+        # Окно закрыто — сторож уходит вместе с ним (в тестах окон много: иначе потоки копятся
+        # и снимают стек чужого интерпретатора — на Linux это роняло процесс).
+        self.bind("<Destroy>", lambda e: stop.set() if e.widget is self else None, add="+")
         threading.Thread(target=watch, daemon=True, name="stall-watch").start()
 
     def _fit_to_content(self) -> None:
@@ -1064,6 +1072,7 @@ class Cockpit(tk.Tk):
 
     # ------------------------------------------------------------------
     def _bootstrap(self) -> None:
+        self._bootstrapped = True
         self._bootstrap_main()
         start = os.environ.pop("STAMINA_START", "")
         if start == "settings:skins":  # после смены скина — обратно в Настройки → Скины

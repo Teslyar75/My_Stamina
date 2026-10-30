@@ -88,6 +88,11 @@ def _backend():
     """keyring, если установлен; иначе Windows ctypes; иначе None (ключ не сохраняем)."""
     try:
         import keyring  # type: ignore
+        kr = keyring.get_keyring()
+        # На Linux без Secret Service (gnome-keyring / KWallet) keyring даёт «fail»-хранилище:
+        # ключ не сохранить — честно говорим «нет хранилища», а не падаем.
+        if "fail" in type(kr).__module__ or getattr(kr, "priority", 1) <= 0:
+            raise RuntimeError("no secret service")
         return ("keyring", keyring)
     except Exception:  # noqa: BLE001
         pass

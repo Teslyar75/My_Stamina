@@ -49,9 +49,44 @@ def powershell() -> str:
     return ""
 
 
+def linux_tool() -> str:
+    """Linux/macOS: чем говорить — espeak-ng, espeak или spd-say (speech-dispatcher). "" — нечем."""
+    if sys.platform == "win32" or os.environ.get("STAR_TYPING_NO_LINUX_TTS"):
+        return ""
+    from shutil import which
+    for exe in ("espeak-ng", "espeak", "spd-say"):
+        found = which(exe)
+        if found:
+            return found
+    return ""
+
+
+def _player() -> str:
+    """Проигрыватель WAV на Linux: pw-play / paplay / aplay."""
+    from shutil import which
+    for exe in ("pw-play", "paplay", "aplay"):
+        found = which(exe)
+        if found:
+            return found
+    return ""
+
+
+def _linux_cmd(tool: str, phrase: str, *, lang: str, rate: int, volume: int, out: str = "") -> list[str]:
+    code = (lang or "ru").split("-")[0].lower()
+    if Path(tool).name == "spd-say":
+        return [tool, "-w", "-l", code, "-r", str(max(-100, min(100, rate * 10))),
+                "-i", str(max(-100, min(100, volume * 2 - 100))), phrase]
+    cmd = [tool, "-v", code, "-s", str(max(80, 170 + rate * 15)), "-a", str(max(0, min(200, volume * 2)))]
+    if out:
+        cmd += ["-w", out]
+    return cmd + [phrase]
+
+
 def available() -> bool:
-    """Можно ли говорить: Windows + PowerShell + скрипт озвучки на месте."""
-    return sys.platform == "win32" and bool(powershell()) and say_script().is_file()
+    """Можно ли говорить: Windows + PowerShell + say.ps1, либо espeak-ng / spd-say на Linux."""
+    if sys.platform == "win32":
+        return bool(powershell()) and say_script().is_file()
+    return bool(linux_tool())
 
 
 def speech_text(text: str, limit: int = SPEECH_LIMIT) -> str:
@@ -93,6 +128,15 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
     if not lang:
         lang = guess_lang(phrase)
     stop()
+    tool = linux_tool()
+    if tool:
+        try:
+            with _lock:
+                _proc = subprocess.Popen(_linux_cmd(tool, phrase, lang=lang, rate=rate, volume=volume),
+                                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            return False
+        return True
     tmp = Path(tempfile.gettempdir()) / f"orion_say_{os.getpid()}_{abs(hash(phrase)) % 10 ** 8}.txt"
     try:
         tmp.write_text(phrase, encoding="utf-8")
@@ -152,6 +196,16 @@ def render(text: str, *, voice: str = "", lang: str = "", role: str = "", timeou
     if out.is_file() and out.stat().st_size > 1000:
         return out
     lang = lang or guess_lang(phrase)
+    tool = linux_tool()
+    if tool:
+        if Path(tool).name == "spd-say":
+            return None                          # spd-say в файл не пишет — фраза пойдёт живой речью
+        try:
+            subprocess.run(_linux_cmd(tool, phrase, lang=lang, rate=0, volume=100, out=str(out)),
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout)
+        except (OSError, subprocess.SubprocessError):
+            return None
+        return out if out.is_file() and out.stat().st_size > 1000 else None
     tmp = Path(tempfile.gettempdir()) / f"orion_render_{os.getpid()}_{out.stem}.txt"
     try:
         tmp.write_text(phrase, encoding="utf-8")
@@ -165,9 +219,22 @@ def render(text: str, *, voice: str = "", lang: str = "", role: str = "", timeou
 
 def play_cached(text: str, *, voice: str = "", lang: str = "", role: str = "") -> bool:
     """Мгновенно проиграть готовый WAV (если он уже в кэше). False — кэша нет."""
+    global _proc
     out = cache_path(text, voice=voice, lang=lang, role=role)
-    if sys.platform != "win32" or not out.is_file():
+    if not out.is_file():
         return False
+    if sys.platform != "win32":
+        player = _player()
+        if not player:
+            return False
+        stop()
+        try:
+            with _lock:
+                _proc = subprocess.Popen([player, str(out)], stdout=subprocess.DEVNULL,
+                                         stderr=subprocess.DEVNULL)
+        except OSError:
+            return False
+        return True
     stop()
     try:
         import winsound
@@ -202,7 +269,7 @@ def speaking() -> bool:
 
 def voices() -> list[str]:
     """Голоса системы: «хранилище|имя|язык|пол» — OneCore первым, затем System.Speech."""
-    if not available():
+    if sys.platform != "win32" or not available():
         return []
     try:
         out = subprocess.run([powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass",

@@ -377,6 +377,12 @@ class OrionDataTest(unittest.TestCase):
             "sys.stdout.flush()\n",
             encoding="utf-8",
         )
+        if sys.platform != "win32":                     # Linux/macOS: исполняемый скрипт
+            cmd = folder / "opencode"
+            cmd.write_text('#!/bin/sh\nexec "{0}" "{1}" "$@"\n'.format(sys.executable, script),
+                           encoding="utf-8")
+            cmd.chmod(0o755)
+            return cmd
         cmd = folder / "opencode.cmd"
         cmd.write_text('@echo off\r\n"{0}" "%~dp0fake.py"\r\n'.format(sys.executable),
                        encoding="ascii")
@@ -472,6 +478,8 @@ class OrionDataTest(unittest.TestCase):
         Здесь движок — .cmd-обёртка (как npm на Windows): корабль схлопывает
         переводы строк, иначе cmd.exe обрезал бы запрос на первом \\n.
         """
+        if sys.platform != "win32":
+            self.skipTest(".cmd-обёртка есть только в Windows")
         rec = orion.upsert({"name": "Сова"})
         orion.save_character(rec["id"], "Говори коротко.")
         cli = self._echo_cli()
@@ -1209,6 +1217,10 @@ class HudButtonSizeTest(unittest.TestCase):
         except tk.TclError:
             self.skipTest("нет дисплея")
         self.root.withdraw()
+        import tkinter.font as tkfont
+        if sys.platform != "win32" and len(tkfont.families(self.root)) < 50:
+            self.root.destroy()
+            self.skipTest("Tk без Xft: кириллица не измеряется (см. docs/LINUX.md)")
 
     def tearDown(self):
         self.root.destroy()
