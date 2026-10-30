@@ -49,7 +49,7 @@ def add(x: int, y: int, zone: str, subtab: str = "", widget: str = "",
     w, h = root or (0, 0)
     items = load()
     mark = {
-        "id": int(time.time() * 1000),
+        "id": max(int(time.time() * 1000), last_id() + 1),   # строго растёт, даже в одну мс
         "ts": int(time.time()),
         "x": int(x),
         "y": int(y),

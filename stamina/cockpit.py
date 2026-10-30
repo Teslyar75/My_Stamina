@@ -87,6 +87,9 @@ class Cockpit(tk.Tk):
         self._layout = alt_ui.layout_of(st)  # вид интерфейса: classic | alt (docs/ALT_UI.md)
         self._build()
         self._start_stall_watch()
+        from stamina import tk_gc       # Linux: мусор Tk собираем только в главном потоке
+        if tk_gc.install(self):
+            self.bind("<Destroy>", lambda e: tk_gc.uninstall() if e.widget is self else None, add="+")
         # Окно не должно быть уже содержимого: иначе шапка, вкладки и клавиатура обрезаны
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
@@ -166,6 +169,8 @@ class Cockpit(tk.Tk):
         import threading
         import traceback
 
+        if os.environ.get("STAR_TYPING_NO_STALL_WATCH"):
+            return
         pulse = [time.time()]
         stop = threading.Event()
         self._stall_stop = stop
@@ -206,6 +211,9 @@ class Cockpit(tk.Tk):
                 pulse[0] = time.time()
 
         self.after(200, beat)
+        # Окно закрыто — сторож уходит вместе с ним (в тестах окон много: иначе потоки копятся
+        # и снимают стек чужого интерпретатора — на Linux это роняло процесс).
+        self.bind("<Destroy>", lambda e: stop.set() if e.widget is self else None, add="+")
         threading.Thread(target=watch, daemon=True, name="stall-watch").start()
 
     def _fit_to_content(self) -> None:
@@ -1064,6 +1072,7 @@ class Cockpit(tk.Tk):
 
     # ------------------------------------------------------------------
     def _bootstrap(self) -> None:
+        self._bootstrapped = True
         self._bootstrap_main()
         start = os.environ.pop("STAMINA_START", "")
         if start == "settings:skins":  # после смены скина — обратно в Настройки → Скины
@@ -1158,17 +1167,87 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _call_orion(self) -> None:
-        """Кнопка Ориона: если говорит — остановить речь; иначе открыть чат."""
+        """Кнопка ОРИОН / Home: голосовой вызов на месте, с любого экрана (без перехода).
+
+        Говорит Орион (не наш вызов) - нажатие его останавливает. В раздел Ориона
+        ведёт только меню отсеков слева.
+        """
+        vc = getattr(self, "voice_call", None)
         from stamina.voice import tts
-        if tts.speaking():
+        if (vc is None or not vc.active()) and tts.speaking():
             tts.stop()
             self.btn_orion.set_text(tr_("ОРИОН"))
             self.btn_orion.set_color(GREEN)
             return
-        self.show(orion_hook.KEY)
-        scr = self.screens.get(orion_hook.KEY)
-        if scr is not None and hasattr(scr, "listen"):
-            scr.listen()
+        self._voice_call_toggle()
+
+    def _voice_call_toggle(self) -> None:
+        """Голосовой вызов на месте (stamina/voice_call.py): старт или отмена."""
+        from stamina.voice_call import VoiceCall
+        if getattr(self, "voice_call", None) is None:
+            self.voice_call = VoiceCall(self, self._voice_call_state, where=self.voice_context)
+        if not self.voice_call.active():
+            br = self.screens.get("bridge")
+            if self.current == "bridge" and br is not None and getattr(br, "state", "") == "run":
+                br.toggle_pause()          # говорим - печать на паузе
+        self.voice_call.toggle()
+
+    BRIEF_ATTRS = ("current_tab", "level", "word", "current_word", "book_title", "title",
+                   "doc_name", "doc_title", "current_doc", "mission_title")
+
+    def voice_context(self) -> str:
+        """Где пилот: путь отсеков › подвкладка, плюс дешёвые детали экрана (слово, книга, документ)."""
+        parts = []
+        try:
+            parts = [str(label) for label, _t in nav.path(self.current) if label]
+        except Exception:  # noqa: BLE001
+            parts = [str(self.current)]
+        scr = self.screens.get(self.current) if hasattr(self, "screens") else None
+        brief = []
+        hook = getattr(scr, "voice_brief", None)
+        if callable(hook):
+            try:
+                b = hook()
+                if b:
+                    brief.append(str(b))
+            except Exception:  # noqa: BLE001
+                pass
+        for name in self.BRIEF_ATTRS if not brief else ():
+            val = getattr(scr, name, None)
+            if callable(val):
+                continue
+            if isinstance(val, (tk.StringVar, tk.IntVar)):
+                try:
+                    val = val.get()
+                except tk.TclError:
+                    val = None
+            if isinstance(val, (str, int)) and str(val).strip() and str(val) not in parts:
+                txt = " ".join(str(val).split())[:60]
+                if name == "current_tab":
+                    parts.append(txt)
+                else:
+                    brief.append(f"{name}: {txt}")
+        line = " › ".join(parts)
+        if brief:
+            line += " (" + "; ".join(brief[:3]) + ")"
+        return line
+
+    def _voice_call_state(self, state: str, text: str = "") -> None:
+        """Статус вызова на самой кнопке ОРИОН: места на 1024x600 не занимает."""
+        labels = {"listening": ("● " + tr_("СЛУШАЮ"), AMBER), "thinking": ("… " + tr_("ДУМАЮ"), CYAN),
+                  "speaking": ("♪ " + tr_("ОТВЕТ"), CYAN), "error": ("! " + tr_("ОРИОН"), AMBER)}
+        label, color = labels.get(state, (tr_("ОРИОН"), GREEN))
+        try:
+            self.btn_orion.set_text(label)
+            self.btn_orion.set_color(color)
+            if state == "listening":
+                self.set_status(tr_("Орион слушает: спросите голосом. Тишина - отправить, Esc или Home - отмена"), AMBER)
+            elif state == "thinking":
+                self.set_status(tr_("Вопрос Ориону: {0}").format(text[:80]), CYAN)
+            elif state == "error":
+                self.set_status(text[:120], AMBER)
+        except tk.TclError:
+            pass
 
     def show_orion_agents(self) -> None:
         """Открыть зону Ориона с вкладкой «АГЕНТЫ» (для заселения с экрана входа)."""
@@ -1187,6 +1266,9 @@ class Cockpit(tk.Tk):
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
         if e.state & 0x4 or e.state & 0x8 or e.state & 0x1:  # Ctrl / Alt / Shift
             return False
+        from stamina.hotkeys import typing_in
+        if typing_in(getattr(e, "widget", None)):
+            return False                  # в поле ввода Home/PgUp/PgDn принадлежат тексту
         ks = e.keysym
         # Не перебиваем локальную навигацию по карточкам в английской зоне:
         # там PgUp/PgDn листают страницы, как и раньше.
@@ -1210,6 +1292,10 @@ class Cockpit(tk.Tk):
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
+        vc = getattr(self, "voice_call", None)
+        if e.keysym == "Escape" and vc is not None and vc.active():
+            vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
+            return "break"
         if e.keysym == "Escape" and self.current == english_hook.KEY:
             scr = self.screens.get(english_hook.KEY)
             if scr is not None and getattr(scr, "focus_active", lambda: False)():

@@ -732,7 +732,7 @@ class LoginScreen(tk.Frame):
           fg=MUTED, size=8).pack(anchor="w")
         tk.Frame(self, bg=LINE, height=1).pack(fill=tk.X, padx=px(16), pady=px(6))
         L(self, tr_("ВЫБЕРИТЕ ПИЛОТА"), fg=AMBER, size=12, bold=True, bg=BG).pack(anchor="w", padx=px(20))
-        L(self, tr_("← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · Del — списать"),
+        L(self, tr_("← → — выбор · Enter или двойной щелчок — вход · Insert — новый пилот · F2 — личное дело · F4 — подключить агента · Del — списать"),
           fg=MUTED, size=8, bg=BG).pack(anchor="w", padx=px(20))
         # Скины (S0): предпросмотр окна + сохранение в профиль при входе
         skin_bar = tk.Frame(self, bg=BG)
@@ -786,7 +786,8 @@ class LoginScreen(tk.Frame):
         self.btn_enter = None
         for t, f, c in ((tr_("✎ ЛИЧНОЕ ДЕЛО  F2"), self.edit, CYAN), (tr_("⇪ ЭКСПОРТ"), self.export, CYAN),
                         (tr_("✕ СПИСАТЬ  DEL"), self.delete, RED),
-                        (tr_("🤖 ЗАСЕЛИТЬ АГЕНТА"), self.board_agent, GREEN)):
+                        (tr_("🤖 ЗАСЕЛИТЬ АГЕНТА"), self.board_agent, GREEN),
+                        (tr_("🔌 ПОДКЛЮЧИТЬ АГЕНТА  F4"), self.connect_agent, GREEN)):
             HudButton(bottom, t, f, color=c, height=40, font_size=9).pack(side=tk.LEFT, padx=px(3))
         self.ask = tk.BooleanVar(value=bool(reg.get("ask_on_start", True)))
         tk.Checkbutton(bottom, text=tr_("СПРАШИВАТЬ ПРИ ЗАПУСКЕ"), variable=self.ask, command=self._ask_changed,
@@ -975,6 +976,15 @@ class LoginScreen(tk.Frame):
             pilots.save_app(app)
         except Exception:  # noqa: BLE001
             pass
+        # агент пилота выходит на связь сразу: тот же канал на мостике и в каюте Ориона
+        try:
+            from stamina import orion
+            from stamina.agent_dialog import agent_for_pilot
+            own = agent_for_pilot(p["id"])
+            if own is not None:
+                orion.set_active(own["id"])
+        except Exception:  # noqa: BLE001
+            pass
         self.on_enter(p["id"])
 
     def add(self) -> None:
@@ -999,6 +1009,14 @@ class LoginScreen(tk.Frame):
         if pid:
             self.sel = pid
             self.refresh()
+
+    def connect_agent(self) -> None:
+        """«Подключить агента» для выбранного пилота: агент привязывается к его профилю."""
+        from stamina.agent_dialog import ConnectAgentDialog
+        p = pilots.get(self.sel) if self.sel else None
+        if p is None:
+            return
+        ConnectAgentDialog(self, pilot=p["id"]).run()
 
     def board_agent(self) -> None:
         """Перейти к заселению агента (зона ОРИОН → АГЕНТЫ)."""
@@ -1036,6 +1054,8 @@ class LoginScreen(tk.Frame):
             self.add()
         elif k == "F2":
             self.edit()
+        elif k == "F4":
+            self.connect_agent()
         elif k == "Delete":
             self.delete()
         elif k == "Escape":
