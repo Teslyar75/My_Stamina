@@ -50,7 +50,7 @@ class TestStdoc(_Root):
     def test_export(self):
         d = docs.Document("T<1>", [{"t": "a & b\nc"}])
         out = Path(self._tmp.name)
-        self.assertIn("a &amp; b<br>", docs.export_html(d, out / "x.html").read_text(encoding="utf-8"))
+        self.assertIn("<p>a &amp; b</p>", docs.export_html(d, out / "x.html").read_text(encoding="utf-8"))
         self.assertEqual(docs.export_txt(d, out / "x.txt").read_text(encoding="utf-8"), "T<1>\n\na & b\nc")
 
     def test_zone_registered(self):

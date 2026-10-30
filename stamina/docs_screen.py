@@ -16,7 +16,7 @@ import time
 import tkinter as tk
 from pathlib import Path
 
-from stamina import compose, docs, shots, theme
+from stamina import compose, docs, docs_format, mailer, shots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
@@ -33,7 +33,7 @@ def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
-class DocsScreen(tk.Frame):
+class DocsScreen(docs_format.FormatMixin, tk.Frame):
     """Список документов и редактор с автосохранением."""
 
     def __init__(self, master, app) -> None:
@@ -55,6 +55,8 @@ class DocsScreen(tk.Frame):
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         HudButton(top, _t("В ПАПКУ"), self._open_folder, height=32, font_size=9,
                   color=CYAN).pack(side=tk.RIGHT, padx=(0, px(8)))
+        self._out_group = tk.Frame(top, bg=BG)
+        self._out_group.pack(side=tk.RIGHT, padx=(0, px(14)))
 
         body = tk.Frame(self, bg=BG)
         body.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=(0, px(10)))
@@ -64,7 +66,11 @@ class DocsScreen(tk.Frame):
         # -- список
         left = HudPanel(body, title=_t("МОИ ДОКУМЕНТЫ"))
         left.grid(row=0, column=0, sticky="nsew", padx=(0, px(10)))
-        lb = left.body
+        self.left_panel = left
+        # левая панель — либо список документов, либо справка по оформлению (кнопка «?»)
+        self.help_view = self.build_help_view(left.body)
+        lb = self.list_view = tk.Frame(left.body, bg=PANEL)
+        lb.pack(fill=tk.BOTH, expand=True)
         btns = tk.Frame(lb, bg=PANEL)
         btns.pack(fill=tk.X, pady=(0, px(6)))
         HudButton(btns, _t("+ НОВЫЙ"), self.new_doc, height=32, font_size=10,
@@ -94,15 +100,15 @@ class DocsScreen(tk.Frame):
                                     highlightthickness=1, highlightbackground=LINE, highlightcolor=CYAN)
         self.title_entry.pack(fill=tk.X, pady=(0, px(6)), ipady=px(3))
         self.title_var.trace_add("write", lambda *_a: self._changed())
+        self.build_format_bar(rb).pack(fill=tk.X, pady=(0, px(6)))
 
         bar = tk.Frame(rb, bg=PANEL)
         bar.pack(fill=tk.X, pady=(0, px(6)))
-        # Две группы: «вставить» слева и «выдать» справа. На узком окне (1024)
-        # правая группа уходит второй строкой, чтобы ни одна кнопка не обрезалась.
+        # «Вставить» — над редактором; «выдать» (просмотр/PDF/отправить/экспорт) —
+        # в шапке страницы, чтобы на 1024×600 редактору осталась высота.
         ins = tk.Frame(bar, bg=PANEL)
-        out = tk.Frame(bar, bg=PANEL)
-        ins.grid(row=0, column=0, sticky="w")
-        bar.grid_columnconfigure(1, weight=1)
+        ins.pack(side=tk.LEFT)
+        out = self._out_group
         HudButton(ins, _t("СНИМОК"), self.paste_shot, height=30, font_size=9,
                   color=CYAN).pack(side=tk.LEFT)
         HudButton(ins, _t("СКРИН"), self.screen_shot, height=30, font_size=9,
@@ -115,43 +121,38 @@ class DocsScreen(tk.Frame):
                               settings=getattr(store, "settings", None),
                               save=getattr(store, "save_settings", None))
         self.mic.button.pack(side=tk.LEFT, padx=(px(6), 0))
-        self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=30, font_size=9,
+        self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
-        HudButton(out, "PDF", self.save_pdf, height=30, font_size=9,
-                  color=AMBER).pack(side=tk.RIGHT, padx=(0, px(6)))
-        HudButton(out, _t("ПРОСМОТР"), self.preview, height=30, font_size=9,
+        HudButton(out, _t("ОТПРАВИТЬ"), self.send_mail, height=32, font_size=9,
                   color=GREEN).pack(side=tk.RIGHT, padx=(0, px(6)))
-        self._bar_wrapped = None
-
-        def _reflow(_e=None):
-            need = ins.winfo_reqwidth() + out.winfo_reqwidth() + px(12)
-            wrap_now = bar.winfo_width() < need
-            if wrap_now == self._bar_wrapped:
-                return
-            self._bar_wrapped = wrap_now
-            if wrap_now:
-                out.grid(row=1, column=0, columnspan=2, sticky="e", pady=(px(6), 0))
-            else:
-                out.grid(row=0, column=1, sticky="e", pady=0)
-        out.grid(row=0, column=1, sticky="e")
-        bar.bind("<Configure>", _reflow, add="+")
-
+        HudButton(out, "PDF", self.save_pdf, height=32, font_size=9,
+                  color=AMBER).pack(side=tk.RIGHT, padx=(0, px(6)))
+        HudButton(out, _t("ПРОСМОТР"), self.preview, height=32, font_size=9,
+                  color=GREEN).pack(side=tk.RIGHT, padx=(0, px(6)))
         self.mic_hint = _label(rb, "", fg=MUTED, size=8, bg=PANEL, anchor="w")
         self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X)
-        wrap = tk.Frame(rb, bg=PANEL)
+        self.build_find_bar(rb)
+        wrap = self._editor_wrap = tk.Frame(rb, bg=PANEL)
         wrap.pack(fill=tk.BOTH, expand=True)
         tsb = make_vscroll(wrap)
         tsb.pack(side=tk.RIGHT, fill=tk.Y)
         self.text = tk.Text(wrap, wrap=tk.WORD, bg=theme.BG2, fg=TEXT, insertbackground=CYAN,
-                            relief=tk.FLAT, font=theme.font(12), undo=True, padx=px(10), pady=px(8),
-                            highlightthickness=0, yscrollcommand=tsb.set, spacing1=2, spacing3=2)
+                            relief=tk.FLAT, font=docs_format.doc_font(12), undo=True, maxundo=-1, autoseparators=True,
+                            padx=px(30), pady=px(18), highlightthickness=0, yscrollcommand=tsb.set,
+                            spacing1=px(3), spacing2=px(2), spacing3=px(5))
         self.text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         tsb.config(command=self.text.yview)
         self.text.bind("<<Modified>>", self._on_modified)
         self.text.bind("<<Paste>>", self._on_paste)
         self.text.bind("<Button-3>", self._image_menu)
         self.text.bind("<Double-Button-1>", self._open_image_at)
+        self.setup_md_tags()
+        # подсказка в пустом документе (исчезает с первой буквой)
+        self.text_hint = tk.Label(self.text, text=_t("Начните писать здесь. **жирный**, *курсив*, # заголовок, - список — оформление видно сразу.\nСнимок из буфера — Ctrl+V, голос — F9, справка по кнопкам — «?»."),
+                                  bg=theme.BG2, fg=MUTED, font=docs_format.doc_font(11), justify="left",
+                                  anchor="nw", cursor="xterm")
+        self.text_hint.bind("<Button-1>", lambda _e: self.text.focus_set())
 
         self.after(160, self._tick_mic)
         self.refresh()
@@ -181,9 +182,11 @@ class DocsScreen(tk.Frame):
         for i, it in enumerate(self._items):
             when = time.strftime("%d.%m %H:%M", time.localtime(it["modified"])) if it["modified"] else ""
             title = it["title"] or _t("Без названия")
-            self.listbox.insert(tk.END, f"{title}  ·  {when}")
+            self.listbox.insert(tk.END, f" {title}")
+            self.listbox.insert(tk.END, f"    {when}")
+            self.listbox.itemconfig(tk.END, fg=MUTED, selectforeground=MUTED)
             if cur and Path(it["path"]) == Path(cur):
-                self.listbox.selection_set(i)
+                self.listbox.selection_set(2 * i, 2 * i + 1)
         if self._items:
             self.empty_hint.place_forget()
         else:
@@ -193,7 +196,10 @@ class DocsScreen(tk.Frame):
         sel = self.listbox.curselection()
         if not sel:
             return
-        it = self._items[sel[0]]
+        k = sel[0] // 2
+        self.listbox.selection_clear(0, tk.END)
+        self.listbox.selection_set(2 * k, 2 * k + 1)
+        it = self._items[k]
         if self.doc and self.doc.path and Path(self.doc.path) == Path(it["path"]):
             return
         self.save_now()
@@ -240,6 +246,7 @@ class DocsScreen(tk.Frame):
         self.text.edit_reset()
         self.text.edit_modified(False)
         self._loading = False
+        self.highlight()
         self._update_status()
 
     def _ensure_doc(self) -> docs.Document:
@@ -394,6 +401,7 @@ class DocsScreen(tk.Frame):
     def _on_modified(self, _e=None) -> None:
         if self.text.edit_modified():
             self.text.edit_modified(False)
+            self.schedule_highlight()
             self._changed()
 
     def _changed(self) -> None:
@@ -468,8 +476,12 @@ class DocsScreen(tk.Frame):
     # -- экспорт -------------------------------------------------------------------------
     def _export_menu(self) -> None:
         m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        m.add_command(label="Word (.docx)", command=lambda: self._export("docx"))
+        m.add_command(label="Markdown (.md)", command=lambda: self._export("md"))
         m.add_command(label="HTML", command=lambda: self._export("html"))
-        m.add_command(label="TXT", command=lambda: self._export("txt"))
+        m.add_command(label=_t("TXT (без разметки)"), command=lambda: self._export("txt"))
+        m.add_separator()
+        m.add_command(label=_t("Открыть .md…"), command=self.import_md)
         x = self.export_btn.winfo_rootx()
         y = self.export_btn.winfo_rooty() + self.export_btn.winfo_height()
         m.tk_popup(x, y)
@@ -485,8 +497,78 @@ class DocsScreen(tk.Frame):
                                             filetypes=[(kind.upper(), f"*.{kind}")])
         if not path:
             return
-        (docs.export_html if kind == "html" else docs.export_txt)(self.doc, Path(path))
+        fn = {"html": docs.export_html, "txt": docs.export_txt, "md": docs.export_md,
+              "docx": docs.export_docx}[kind]
+        try:
+            fn(self.doc, Path(path))
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не сохранилось: {0}").format(exc), AMBER)
+            return
         self._say(_t("Экспорт: {0}").format(path), GREEN)
+
+    def import_md(self) -> None:
+        from tkinter import filedialog
+        path = filedialog.askopenfilename(parent=self, filetypes=[("Markdown", "*.md *.markdown *.txt")])
+        if not path:
+            return
+        self.save_now()
+        try:
+            doc = docs.import_md(Path(path))
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не открылся: {0}").format(exc), AMBER)
+            return
+        docs.save(doc)
+        self._show_doc(doc)
+        self.refresh()
+        self._say(_t("Импорт: {0}").format(Path(path).name), GREEN)
+
+    # -- письмо ------------------------------------------------------------------------
+    def send_mail(self) -> None:
+        """Письмо с документом (.docx) во вложении — окно почтовой программы, отправляет пилот."""
+        self.save_now()
+        if not self.doc:
+            self._say(_t("Выберите документ или создайте новый"), MUTED)
+            return
+        out = docs.docs_dir() / ".send"
+        out.mkdir(parents=True, exist_ok=True)
+        path = out / f"{docs._safe_name(self.doc.display_title())}.docx"
+        try:
+            docs.export_docx(self.doc, path)
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не сохранилось: {0}").format(exc), AMBER)
+            return
+        how = mailer.send_file(path, self.doc.display_title(), _t("Документ во вложении."))
+        if how == "mailto":
+            self._say(_t("Почтовая программа без вложений: файл в открытой папке — перетащите его в письмо"), AMBER)
+        elif how == "cancel":
+            self._say(_t("Письмо не отправлено"), MUTED)
+        else:
+            self._say(_t("Письмо готово — проверьте и отправьте"), GREEN)
+
+    # -- справка в левой панели ------------------------------------------------------
+    def toggle_help(self, show: bool | None = None) -> None:
+        show = not getattr(self, "_help_on", False) if show is None else show
+        self._help_on = show
+        if show:
+            self.list_view.pack_forget()
+            self.help_view.pack(fill=tk.BOTH, expand=True)
+            self.left_panel.title = _t("СПРАВКА · ОФОРМЛЕНИЕ")
+        else:
+            self.help_view.pack_forget()
+            self.list_view.pack(fill=tk.BOTH, expand=True)
+            self.left_panel.title = _t("МОИ ДОКУМЕНТЫ")
+        try:
+            self.left_panel._draw()
+        except Exception:  # noqa: BLE001
+            pass
+        self.fmt_buttons["help"].set_active(show)
+        self.text.focus_set()
+
+    def update_empty_hint(self) -> None:
+        if self.text.get("1.0", "end-1c").strip() or self.text.dump("1.0", "end", image=True):
+            self.text_hint.place_forget()
+        else:
+            self.text_hint.place(x=px(32), y=px(18))
 
     # -- голос --------------------------------------------------------------------------
     def _tick_mic(self) -> None:
@@ -529,16 +611,38 @@ class DocPreview(tk.Toplevel):
                       highlightthickness=0, cursor="arrow", yscrollcommand=sb.set)
         txt.pack(side=tk.LEFT, fill=tk.Y)
         sb.config(command=txt.yview)
-        txt.tag_configure("h1", font=("Georgia", 20, "bold"), spacing3=px(14))
+        txt.tag_configure("title", font=("Georgia", 20, "bold"), spacing3=px(14))
+        txt.tag_configure("h1", font=("Georgia", 17, "bold"), spacing1=px(10), spacing3=px(6))
+        txt.tag_configure("h2", font=("Georgia", 14, "bold"), spacing1=px(8), spacing3=px(4))
+        txt.tag_configure("b", font=("Georgia", 12, "bold"))
+        txt.tag_configure("i", font=("Georgia", 12, "italic"))
+        txt.tag_configure("bi", font=("Georgia", 12, "bold italic"))
+        txt.tag_configure("u", underline=True)
+        txt.tag_configure("code", font=("Consolas", 11), background="#ecebe6")
+        txt.tag_configure("link", foreground="#1f5fbf", underline=True)
+        txt.tag_configure("quote", foreground="#55585f", lmargin1=px(22), lmargin2=px(22),
+                          font=("Georgia", 12, "italic"))
+        txt.tag_configure("li", lmargin1=px(10), lmargin2=px(24))
+        for tg in ("b", "i", "bi", "code"):
+            txt.tag_raise(tg)
         if doc.title.strip():
-            txt.insert(tk.END, doc.title.strip() + "\n", "h1")
+            txt.insert(tk.END, doc.title.strip() + "\n", "title")
         try:
             from PIL import Image, ImageTk
         except Exception:  # noqa: BLE001
             Image = None
         for seg in doc.segments:
             if "t" in seg:
-                txt.insert(tk.END, seg["t"])
+                from stamina import mdlite
+                paras = mdlite.paragraphs(seg["t"])
+                for n, (kind, rs) in enumerate(paras):
+                    for t, st, _url in rs:
+                        tags = [kind] + [x for x in st]
+                        if "b" in st and "i" in st:
+                            tags.append("bi")
+                        txt.insert(tk.END, t, tuple(tags))
+                    if n < len(paras) - 1:
+                        txt.insert(tk.END, "\n", (kind,))
             elif Image is not None and seg.get("img") in doc.images:
                 im = Image.open(io.BytesIO(doc.images[seg["img"]]))
                 w = int(widths.get(seg["img"]) or seg.get("w") or im.width)
