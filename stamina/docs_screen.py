@@ -49,18 +49,21 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
-        _label(top, _t("ДОКУМЕНТЫ"), size=16, bold=True).pack(side=tk.LEFT)
+        # заголовок страницы уже в «хлебных крошках» пульта — второй большой не повторяем
+        self._top = top
         self.status = _label(top, "", fg=MUTED, size=9)
         self.status.pack(side=tk.LEFT, padx=(px(10), px(6)))
         HudButton(top, "?", lambda: self.app.open_help(), height=32, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
-        HudButton(top, _t("В ПАПКУ"), self._open_folder, height=32, font_size=9,
-                  color=CYAN).pack(side=tk.RIGHT, padx=(0, px(8)))
+        self._folder_btn = HudButton(top, _t("В ПАПКУ"), self._open_folder, height=32, font_size=9,
+                  color=CYAN)
+        self._folder_btn.pack(side=tk.RIGHT, padx=(0, px(8)))
         self._out_group = tk.Frame(top, bg=BG)
         self._out_group.pack(side=tk.RIGHT, padx=(0, px(14)))
 
         body = tk.Frame(self, bg=BG)
         body.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=(0, px(10)))
+        self._body = body
         body.columnconfigure(1, weight=1)
         body.rowconfigure(0, weight=1)
 
@@ -95,6 +98,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
         # -- редактор
         right = HudPanel(body, title=_t("РЕДАКТОР"))
+        self._panels = (left, right)
         right.grid(row=0, column=1, sticky="nsew")
         self.right_panel, self._body = right, body
         rb = right.body
@@ -142,15 +146,24 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.btn_focus = HudButton(ins, _t("⛶ ФОКУС  O"), self.toggle_focus, height=30, font_size=9,
                                    color=AMBER)
         ins.add(self.btn_focus, gap_before=6)
+        # «⋯ ЕЩЁ» (общая подпись меню-переполнения пульта): на узком/низком окне сюда уходят
+        # редкие действия — картинка, перевод, проверка, экспорт
+        self.more_btn = HudButton(ins, _t("⋯ ЕЩЁ"), self.more_menu, height=30, font_size=9,
+                                  color=CYAN)
+        self.more_btn._flow_shown = False
+        ins.add(self.more_btn, gap_before=6)
+        self._ins, self._compact, self._head = ins, None, None
+        self.bind("<Configure>", lambda _e: self._compact_later(), add="+")
         self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
-        HudButton(out, _t("ОТПРАВИТЬ"), self.send_mail, height=32, font_size=9,
-                  color=GREEN).pack(side=tk.RIGHT, padx=(0, px(6)))
-        HudButton(out, "PDF", self.save_pdf, height=32, font_size=9,
-                  color=AMBER).pack(side=tk.RIGHT, padx=(0, px(6)))
-        HudButton(out, _t("ПРОСМОТР"), self.preview, height=32, font_size=9,
-                  color=GREEN).pack(side=tk.RIGHT, padx=(0, px(6)))
+        self._send_btn = HudButton(out, _t("ОТПРАВИТЬ"), self.send_mail, height=32, font_size=9,
+                                   color=GREEN)
+        self._pdf_btn = HudButton(out, "PDF", self.save_pdf, height=32, font_size=9, color=AMBER)
+        self._prev_btn = HudButton(out, _t("ПРОСМОТР"), self.preview, height=32, font_size=9,
+                                   color=GREEN)
+        for b in (self._send_btn, self._pdf_btn, self._prev_btn):
+            b.pack(side=tk.RIGHT, padx=(0, px(6)))
         self.mic_hint = _label(rb, "", fg=MUTED, size=8, bg=PANEL, anchor="w")
         self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X)
         self.build_find_bar(rb)
@@ -406,12 +419,112 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
                 self.insert_image(img)
         self.after(450, grab)
 
+    def _menu(self, master=None) -> tk.Menu:
+        return tk.Menu(master or self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+
     def image_menu(self) -> None:
-        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        m = self._fill_image_menu(self._menu())
+        b = self.img_btn
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+
+    def _fill_image_menu(self, m: tk.Menu) -> tk.Menu:
         m.add_command(label=_t("Снимок из буфера (Ctrl+V)"), command=self.paste_shot)
         m.add_command(label=_t("Скрин экрана"), command=self.screen_shot)
         m.add_command(label=_t("Файл…"), command=self.pick_images)
-        b = self.img_btn
+        return m
+
+    # -- компактный режим (1024×600 и меньше) ------------------------------------------
+    COMPACT_W, COMPACT_H = 1180, 680
+
+    def _compact_later(self) -> None:
+        if getattr(self, "_compact_job", None) is None:
+            self._compact_job = self.after_idle(self._update_compact)
+
+    def _update_compact(self) -> None:
+        self._compact_job = None
+        try:
+            top = self.winfo_toplevel()
+            w, h = top.winfo_width(), top.winfo_height()
+        except tk.TclError:
+            return
+        if w <= 1:
+            return
+        self.set_compact(w < self.COMPACT_W or h < self.COMPACT_H)
+
+    def set_compact(self, on: bool) -> None:
+        if on == self._compact:
+            return
+        self._compact = on
+        k = 0.8 if on else 1.0
+        btns = list(self._ins.items) + list(self._top.winfo_children()) + list(self._out_group.winfo_children())
+        for b in btns:
+            if isinstance(b, HudButton):
+                b.rescale(k)
+        for b in (self.img_btn, self.tr_btn, self.check_btn):
+            b._flow_shown = not on
+        self.more_btn._flow_shown = on
+        try:
+            self.title_entry.configure(font=theme.font(11 if on else 13, True))
+            # на низком экране ужимаем отступы — каждый пиксель высоты уходит редактору
+            self._dock_top(on)
+            self.title_entry.pack_configure(ipady=px(0 if on else 3), pady=(0, px(3 if on else 6)))
+            self._ins.pack_configure(pady=(0, px(3 if on else 6)))
+            self._top.pack_configure(pady=(px(3 if on else 10), px(2 if on else 4)))
+            self._body.pack_configure(pady=(0, px(4 if on else 10)))
+            for pnl in self._panels:
+                pd = 6 if on else pnl._pad
+                pnl.body.pack_configure(padx=px(pd), pady=(px(22 if on else 26), px(pd)))
+            self.text.configure(padx=px(16 if on else 30), pady=px(6 if on else 18))
+            self._ins.relayout(self._ins.winfo_width(), force=True)
+        except tk.TclError:
+            pass
+
+    def _dock_top(self, on: bool) -> None:
+        """В компактном режиме строка «вывода» (просмотр/PDF/…) встаёт в одну линию с заголовком
+        документа — отдельная полоса над панелями съедала у редактора ~40px."""
+        top, ent = self._top, self.title_entry
+        if self._head is None:
+            self._head = tk.Frame(ent.master, bg=PANEL)
+        bg = PANEL if on else BG
+        for w in (top, self._out_group, self.status):
+            w.configure(bg=bg)
+        if on:
+            self._head.pack(fill=tk.X, before=self._ins)
+            ent.pack(in_=self._head, side=tk.LEFT, fill=tk.X, expand=True)
+            top.pack(in_=self._head, side=tk.RIGHT, fill=tk.NONE, padx=(px(6), 0), pady=0)
+            self.status.pack_configure(padx=(px(4), px(4)))
+            ent.lift(); top.lift()   # иначе их закрывают позже созданные rb/_head
+            for b in (self._pdf_btn, self._prev_btn, self._folder_btn):
+                b.pack_forget()        # ушли в «⋯ ЕЩЁ»
+        else:
+            self._head.pack_forget()
+            top.pack(in_=self, side=tk.TOP, fill=tk.X, expand=False, before=self._body, padx=px(14))
+            ent.pack(in_=ent.master, fill=tk.X, before=self._ins, side=tk.TOP, expand=False)
+            self.status.pack_configure(padx=(px(10), px(6)))
+            self._folder_btn.pack(side=tk.RIGHT, padx=(0, px(8)), after=top.winfo_children()[1])
+            self._pdf_btn.pack(side=tk.RIGHT, padx=(0, px(6)), after=self._send_btn)
+            self._prev_btn.pack(side=tk.RIGHT, padx=(0, px(6)), after=self._pdf_btn)
+        self._sync_hint()
+
+    def _sync_hint(self) -> None:
+        """Пустая строка подсказки микрофона в компактном режиме не занимает высоту."""
+        h = self.mic_hint
+        if self._compact and not h.cget("text"):
+            h.pack_forget()
+        elif not h.winfo_manager():
+            h.pack(side=tk.BOTTOM, fill=tk.X, before=self._editor_wrap)
+
+    def more_menu(self) -> None:
+        m = self._menu()
+        m.add_cascade(label=_t("КАРТИНКА ▾"), menu=self._fill_image_menu(self._menu(m)))
+        m.add_cascade(label=_t("ПЕРЕВОД ▾"), menu=self._fill_translate_menu(self._menu(m)))
+        m.add_command(label=_t("ПРОВЕРКА"), command=self.check_text)
+        m.add_cascade(label=_t("ЭКСПОРТ"), menu=self._fill_export_menu(self._menu(m)))
+        m.add_separator()
+        m.add_command(label=_t("ПРОСМОТР"), command=self.preview)
+        m.add_command(label="PDF", command=self.save_pdf)
+        m.add_command(label=_t("В ПАПКУ"), command=self._open_folder)
+        b = self.more_btn
         m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
 
     def pick_images(self) -> None:
@@ -583,7 +696,12 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
     # -- экспорт -------------------------------------------------------------------------
     def _export_menu(self) -> None:
-        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        m = self._fill_export_menu(self._menu())
+        x = self.export_btn.winfo_rootx()
+        y = self.export_btn.winfo_rooty() + self.export_btn.winfo_height()
+        m.tk_popup(x, y)
+
+    def _fill_export_menu(self, m: tk.Menu) -> tk.Menu:
         m.add_command(label="Word (.docx)", command=lambda: self._export("docx"))
         m.add_command(label="Markdown (.md)", command=lambda: self._export("md"))
         m.add_command(label="HTML", command=lambda: self._export("html"))
@@ -594,9 +712,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
                           command=self.save_to_source)
             m.add_separator()
         m.add_command(label=_t("Открыть файл…"), command=self.open_file)
-        x = self.export_btn.winfo_rootx()
-        y = self.export_btn.winfo_rooty() + self.export_btn.winfo_height()
-        m.tk_popup(x, y)
+        return m
 
     def _export(self, kind: str) -> None:
         self.save_now()
@@ -697,6 +813,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
     def _mic_status(self, text: str, color=None) -> None:
         self.mic_hint.config(text=text, fg=color or MUTED)
+        self._sync_hint()
 
     def _say(self, text: str, color=None) -> None:
         self.status.config(text=text, fg=color or MUTED)

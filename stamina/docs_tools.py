@@ -158,7 +158,11 @@ class ToolsMixin:
 
     # -- перевод
     def translate_menu(self) -> None:
-        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        m = self._fill_translate_menu(tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN))
+        b = self.tr_btn
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+
+    def _fill_translate_menu(self, m: tk.Menu) -> tk.Menu:
         sel = bool(self.text.tag_ranges("sel"))
         for tl, name in (("en", "English"), ("de", "Deutsch")):
             if sel:
@@ -172,8 +176,7 @@ class ToolsMixin:
         m.add_command(label=_t("Движок: {0}").format(
             _t("Argos (офлайн)") if doc_translate.argos_available() else _t("онлайн (нет argostranslate)")),
             state=tk.DISABLED)
-        b = self.tr_btn
-        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+        return m
 
     def translate(self, tl: str, where: str, *, wait: bool = False) -> None:
         if self._busy_tr:
