@@ -31,7 +31,7 @@ import webbrowser
 from tkinter import messagebox
 from pathlib import Path
 
-from stamina import __version__, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import __version__, compose, nav, orion, owner_key, pilot_pin, pilots, shots, theme
 from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
@@ -401,7 +401,9 @@ class OrionScreen(tk.Frame):
         # Пилот хочет обсуждать картинку, а не имя файла, — потому миниатюра, не путь.
         self.shot_row = tk.Frame(bottom, bg=BG)
         # миниатюры всех приложенных картинок: клик — посмотреть, ✕ — снять одну
-        self.shot_icon = tk.Frame(self.shot_row, bg=BG, bd=0)
+        self.shot_tray = compose.ShotTray(self.shot_row, bg=BG, size=72,
+                                          on_open=self._open_shot, on_drop=self._drop_shot)
+        self.shot_icon = self.shot_tray.frame
         self.shot_icon.pack(side=tk.LEFT)
         self.shot_label = _label(self.shot_row, "", fg=CYAN, size=9, bg=BG, anchor="w",
                                  justify="left", wraplength=px(760))
@@ -531,22 +533,19 @@ class OrionScreen(tk.Frame):
         """Вставить из буфера: сначала снимок экрана, потом текст."""
         if self._grab_clipboard_shot():
             return "break"
-        try:
-            text = self.clipboard_get()
-            if text:
-                self.entry.paste(text)
-                self.entry.focus_set()
-        except tk.TclError:
-            pass
+        text = compose.clipboard_text(self)
+        if text:
+            self.entry.paste(text)
+            self.entry.focus_set()
         return "break"
 
     # -- снимки экрана -------------------------------------------------------
     def _grab_clipboard_shot(self) -> bool:
         """Картинка из буфера обмена (Win+Shift+S или файл из Проводника) → к сообщению."""
         if not shots.available():
-            self._hint(_t("Снимки недоступны: нет Pillow (pip install Pillow)"), RED)
+            self._hint(_t(compose.NO_PILLOW), RED)
             return False
-        image = shots.grab_clipboard()
+        image = compose.clipboard_image()
         if image is None:
             return False
         return self._attach_image(image, _t("снимок из буфера"))
@@ -554,9 +553,9 @@ class OrionScreen(tk.Frame):
     def _grab_window_shot(self, _e=None) -> str:
         """Ctrl+Shift+S: снять активное окно прямо в поле набора. Отдельной кнопки нет — пилот её не захотел."""
         if not shots.available():
-            self._hint(_t("Снимки недоступны: нет Pillow (pip install Pillow)"), RED)
+            self._hint(_t(compose.NO_PILLOW), RED)
             return "break"
-        image = shots.grab_active_window() or shots.grab_screen()
+        image = compose.window_image()
         if image is None:
             self._hint(_t("Снять не удалось. Нажмите Win+Shift+S, затем Ctrl+V здесь."), RED)
             return "break"
@@ -576,20 +575,15 @@ class OrionScreen(tk.Frame):
                    .format(source), CYAN)
         return True
 
-    IMAGE_TYPES = (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
+    IMAGE_TYPES = compose.IMAGE_TYPES
 
     def _pick_images(self) -> None:
         """Кнопка 📎: выбрать одну или несколько картинок — копии уходят на борт."""
-        from tkinter import filedialog
-        names = filedialog.askopenfilenames(
-            parent=self, title=_t("Приложить картинки"),
-            filetypes=[(_t("Картинки"), " ".join("*" + e for e in self.IMAGE_TYPES)),
-                       (_t("Все файлы"), "*.*")])
-        self.attach_paths(names)
+        self.attach_paths(compose.pick_image_files(self))
 
     def attach_paths(self, names) -> int:
         """Приложить файлы-картинки к сообщению. → сколько приложено."""
-        pics = [Path(n) for n in names or () if Path(n).suffix.lower() in self.IMAGE_TYPES]
+        pics = compose.image_paths(names)
         added = 0
         for taken in shots.adopt(pics):
             if str(taken) not in self._pending_shots:
@@ -621,29 +615,8 @@ class OrionScreen(tk.Frame):
 
     def _draw_shot_preview(self, paths) -> None:
         """Миниатюры приложенного перед отправкой — пилот видит картинки, а не имена."""
-        for w in self.shot_icon.winfo_children():
-            w.destroy()
-        self._shot_previews = []
-        try:
-            from PIL import ImageTk
-        except Exception:  # noqa: BLE001
-            ImageTk = None
-        for path in list(paths)[:8]:
-            cell = tk.Frame(self.shot_icon, bg=BG)
-            cell.pack(side=tk.LEFT, padx=(0, px(6)))
-            pic = shots.thumbnail(Path(path), size=72)
-            if pic is None or ImageTk is None:
-                lab = tk.Label(cell, text="📷 " + Path(path).name[:18], bg=BG, fg=MUTED,
-                               font=theme.font(8), cursor="hand2")
-            else:
-                photo = ImageTk.PhotoImage(pic, master=cell)
-                self._shot_previews.append(photo)
-                lab = tk.Label(cell, image=photo, bg=BG, bd=1, relief=tk.SOLID, cursor="hand2")
-            lab.pack()
-            lab.bind("<Button-1>", lambda _e, p=path: self._open_shot(p))
-            x = tk.Label(cell, text="✕", bg=BG, fg=MUTED, font=theme.font(8, True), cursor="hand2")
-            x.place(relx=1.0, x=-1, y=1, anchor="ne")
-            x.bind("<Button-1>", lambda _e, p=path: self._drop_shot(p))
+        self.shot_tray.draw(paths)
+        self._shot_previews = self.shot_tray.previews
 
     def _drop_shot(self, path: str) -> str:
         if path in self._pending_shots:
@@ -659,10 +632,7 @@ class OrionScreen(tk.Frame):
 
     def _open_shot(self, path: str) -> str:
         """Клик по миниатюре — открыть снимок целиком."""
-        if not path or not Path(path).is_file():
-            return "break"
-        from stamina import image_viewer
-        if image_viewer.show(self, path) is None and not shots.open_file(Path(path)):
+        if not compose.open_image(self, path):
             self._hint(_t("Не удалось открыть снимок: {0}").format(Path(path).name), RED)
         return "break"
 
