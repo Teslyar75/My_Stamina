@@ -2321,5 +2321,6 @@
  "🔒 «{0}» пока закрыт: освойте ещё {1} глаголов из открытых.": "🔒 „{0}“ ist noch gesperrt: lerne noch {1} der offenen Verben.",
  "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Lerne noch {0} Verben — dann öffnen sich {1} neue.",
  "Произнесите пример: M — микрофон.": "Sprich das Beispiel: M — Mikrofon.",
- "Пример: {0}% — {1}": "Beispiel: {0}% — {1}"
+ "Пример: {0}% — {1}": "Beispiel: {0}% — {1}",
+ "🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)": "🔒 {0} wird freigeschaltet, wenn du {1}% von Stufe {2} abschließt (jetzt {3}%)"
 }

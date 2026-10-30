@@ -195,7 +195,7 @@ def test_open_set_switches_screen_and_set(tmp_path):
         root.update()
         # A2 закрыт до прохождения A1 — уровни идут последовательно
         assert hub.cefr.level == "A1"
-        assert hub.cefr.lv_btns["A2"]._text.endswith("закр")
+        assert hub.cefr.lv_btns["A2"]._text.startswith("🔒")
         assert ctx.statuses and "A1" in ctx.statuses[-1][0]
         assert ctx.shown[-1] == "sets"
     finally:

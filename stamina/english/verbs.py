@@ -161,6 +161,9 @@ def unlock_need(progress) -> int:
 def unlocked_count(progress, pack: list[dict] | None = None) -> int:
     """Сколько глаголов пака 1000 открыто при этом прогрессе."""
     pack = frequent() if pack is None else pack
+    from .access import is_captain
+    if is_captain(progress):
+        return len(pack)              # капитану (владельцу) открыт весь пак
     need = unlock_need(progress)
     n = min(len(pack), UNLOCK_START)
     while n < len(pack):
