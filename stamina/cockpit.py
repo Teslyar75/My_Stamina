@@ -1158,7 +1158,11 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _call_orion(self) -> None:
-        """Кнопка Ориона: если говорит — остановить речь; иначе открыть чат."""
+        """Кнопка Ориона: на мостике - голосовой вызов агента; иначе как раньше."""
+        vc = getattr(self, "voice_call", None)
+        if self.current == "bridge" or (vc is not None and vc.active()):
+            self._voice_call_toggle()
+            return
         from stamina.voice import tts
         if tts.speaking():
             tts.stop()
@@ -1169,6 +1173,34 @@ class Cockpit(tk.Tk):
         scr = self.screens.get(orion_hook.KEY)
         if scr is not None and hasattr(scr, "listen"):
             scr.listen()
+
+    def _voice_call_toggle(self) -> None:
+        """Голосовой вызов с мостика (stamina/voice_call.py): старт или отмена."""
+        from stamina.voice_call import VoiceCall
+        if getattr(self, "voice_call", None) is None:
+            self.voice_call = VoiceCall(self, self._voice_call_state)
+        if not self.voice_call.active():
+            br = self.screens.get("bridge")
+            if br is not None and getattr(br, "state", "") == "run":
+                br.toggle_pause()          # говорим - печать на паузе
+        self.voice_call.toggle()
+
+    def _voice_call_state(self, state: str, text: str = "") -> None:
+        """Статус вызова на самой кнопке ОРИОН: места на 1024x600 не занимает."""
+        labels = {"listening": ("● " + tr_("СЛУШАЮ"), AMBER), "thinking": ("… " + tr_("ДУМАЮ"), CYAN),
+                  "speaking": ("♪ " + tr_("ОТВЕТ"), CYAN), "error": ("! " + tr_("ОРИОН"), AMBER)}
+        label, color = labels.get(state, (tr_("ОРИОН"), GREEN))
+        try:
+            self.btn_orion.set_text(label)
+            self.btn_orion.set_color(color)
+            if state == "listening":
+                self.set_status(tr_("Орион слушает: спросите голосом. Тишина - отправить, Esc или Home - отмена"), AMBER)
+            elif state == "thinking":
+                self.set_status(tr_("Вопрос Ориону: {0}").format(text[:80]), CYAN)
+            elif state == "error":
+                self.set_status(text[:120], AMBER)
+        except tk.TclError:
+            pass
 
     def show_orion_agents(self) -> None:
         """Открыть зону Ориона с вкладкой «АГЕНТЫ» (для заселения с экрана входа)."""
@@ -1187,6 +1219,9 @@ class Cockpit(tk.Tk):
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
         if e.state & 0x4 or e.state & 0x8 or e.state & 0x1:  # Ctrl / Alt / Shift
             return False
+        from stamina.hotkeys import typing_in
+        if typing_in(getattr(e, "widget", None)):
+            return False                  # в поле ввода Home/PgUp/PgDn принадлежат тексту
         ks = e.keysym
         # Не перебиваем локальную навигацию по карточкам в английской зоне:
         # там PgUp/PgDn листают страницы, как и раньше.
@@ -1210,6 +1245,10 @@ class Cockpit(tk.Tk):
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
+        vc = getattr(self, "voice_call", None)
+        if e.keysym == "Escape" and vc is not None and vc.active():
+            vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
+            return "break"
         if e.keysym == "Escape" and self.current == english_hook.KEY:
             scr = self.screens.get(english_hook.KEY)
             if scr is not None and getattr(scr, "focus_active", lambda: False)():
