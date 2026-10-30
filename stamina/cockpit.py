@@ -773,13 +773,28 @@ class Cockpit(tk.Tk):
                 self._widget_label(under),
                 root=(self.winfo_width(), self.winfo_height()),
             )
-            self.set_status("⊕ " + marks.describe(mark), GREEN)
+            text = marks.describe(mark)
+            copied = self._copy_mark(text, e.widget)
+            self.set_status("⊕ " + text + (
+                "  ·  скопировано" if copied else ""), GREEN)
             try:
                 self.sound.click()
             except Exception:  # noqa: BLE001
                 pass
         except Exception:  # noqa: BLE001
             pass
+
+    def _copy_mark(self, text: str, widget=None) -> bool:
+        """Put the location string on the system clipboard.
+
+        Text fields keep their own clipboard/context menu: a right click there must
+        not overwrite what the pilot is about to paste.
+        """
+        if isinstance(widget, (tk.Entry, tk.Text)):
+            return False
+        from stamina import clipboard
+
+        return clipboard.set_text(text, self)
 
     def set_status(self, text: str, color: str | None = None) -> None:
         self.status.configure(text=text, fg=color or theme.MUTED)

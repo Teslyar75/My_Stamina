@@ -93,3 +93,23 @@ class MarksTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+def test_mark_copies_location_to_clipboard_but_not_from_text_fields():
+    import tkinter as tk
+    from stamina import clipboard
+    from stamina.cockpit import Cockpit
+    root = tk.Tk()
+    root.withdraw()
+    try:
+        if not clipboard.set_text("probe", root):
+            import pytest
+            pytest.skip("system clipboard unavailable in this session")
+        assert Cockpit._copy_mark(root, "МОСТИК / x=10 y=20") is True
+        assert clipboard.get_text(root) == "МОСТИК / x=10 y=20"
+        clipboard.set_text("keep", root)
+        assert Cockpit._copy_mark(root, "other", tk.Entry(root)) is False
+        assert clipboard.get_text(root) == "keep"
+    finally:
+        root.destroy()
