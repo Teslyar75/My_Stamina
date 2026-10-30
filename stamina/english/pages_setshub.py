@@ -210,7 +210,7 @@ class CefrPage(tk.Frame):
 
     @staticmethod
     def _slugs(level: str) -> list[str]:
-        return [w["slug"] for w in cefr.prepared(level)]
+        return cefr.slugs(level)
 
     def _captain(self) -> bool:
         return access.is_captain(self.ctx.progress)
@@ -227,7 +227,7 @@ class CefrPage(tk.Frame):
             level, need, prev, now)
 
     def _level_complete(self, level: str) -> bool:
-        ws = cefr.prepared(level)
+        ws = cefr.prepared_view(level)
         return bool(ws) and all(self._done(w["slug"]) for w in ws)
 
     def _sync_level_buttons(self) -> None:

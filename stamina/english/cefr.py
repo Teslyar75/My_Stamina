@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import copy
 import json
 
 from . import paths
@@ -70,7 +71,7 @@ def _clean_sentences(raw: list) -> list[dict]:
     return out
 
 
-def prepared(level: str) -> list[dict]:
+def _prepared_uncached(level: str) -> list[dict]:
     """Записи словаря в формате Vocab, ещё до слияния."""
     data = load(level) or {}
     lv = data.get("level") or level
@@ -113,6 +114,39 @@ def prepared(level: str) -> list[dict]:
             "gaps": list(raw.get("gaps") or []),
         })
     return out
+
+
+# Parsing + cleaning a level is ~80 ms and the English screens asked for it 18 times
+# per redraw (1.5 s on the UI thread). The data files only change on update, so the
+# result is cached by file mtime/size.
+_PREP_CACHE: dict[str, tuple[tuple, list[dict]]] = {}
+
+
+def _stamp(level: str) -> tuple:
+    try:
+        st = path(level).stat()
+        return (st.st_mtime_ns, st.st_size)
+    except OSError:
+        return (None, None)
+
+
+def prepared_view(level: str) -> list[dict]:
+    """Cached records of a level. READ-ONLY: do not mutate (use prepared() for a copy)."""
+    stamp = _stamp(level)
+    hit = _PREP_CACHE.get(level)
+    if hit is None or hit[0] != stamp:
+        hit = (stamp, _prepared_uncached(level))
+        _PREP_CACHE[level] = hit
+    return hit[1]
+
+
+def slugs(level: str) -> list[str]:
+    return [w["slug"] for w in prepared_view(level)]
+
+
+def prepared(level: str) -> list[dict]:
+    """Записи словаря в формате Vocab, ещё до слияния (своя копия, можно менять)."""
+    return copy.deepcopy(prepared_view(level))
 
 
 def merge_into(vocab, level: str) -> int:

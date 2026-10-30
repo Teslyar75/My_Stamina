@@ -124,7 +124,7 @@ def level_reached(progress, level: str) -> bool:
     if level not in levels:
         return True
     return level_open(progress, level, levels,
-                      lambda lv: [w["slug"] for w in cefr.prepared(lv)],
+                      cefr.slugs,
                       lambda s: _word_done(progress, s))
 
 
