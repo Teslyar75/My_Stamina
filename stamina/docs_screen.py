@@ -97,25 +97,45 @@ class DocsScreen(tk.Frame):
 
         bar = tk.Frame(rb, bg=PANEL)
         bar.pack(fill=tk.X, pady=(0, px(6)))
-        HudButton(bar, _t("СНИМОК"), self.paste_shot, height=30, font_size=9,
+        # Две группы: «вставить» слева и «выдать» справа. На узком окне (1024)
+        # правая группа уходит второй строкой, чтобы ни одна кнопка не обрезалась.
+        ins = tk.Frame(bar, bg=PANEL)
+        out = tk.Frame(bar, bg=PANEL)
+        ins.grid(row=0, column=0, sticky="w")
+        bar.grid_columnconfigure(1, weight=1)
+        HudButton(ins, _t("СНИМОК"), self.paste_shot, height=30, font_size=9,
                   color=CYAN).pack(side=tk.LEFT)
-        HudButton(bar, _t("СКРИН"), self.screen_shot, height=30, font_size=9,
+        HudButton(ins, _t("СКРИН"), self.screen_shot, height=30, font_size=9,
                   color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
-        HudButton(bar, _t("КАРТИНКА…"), self.pick_images, height=30, font_size=9,
+        HudButton(ins, _t("КАРТИНКА…"), self.pick_images, height=30, font_size=9,
                   color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
         store = getattr(self.app, "store", None)
-        self.mic = MicControl(bar, on_text=self.insert_dictation, on_status=self._mic_status,
+        self.mic = MicControl(ins, on_text=self.insert_dictation, on_status=self._mic_status,
                               label=_t("ДИКТОВКА F9"), height=30, font_size=9,
                               settings=getattr(store, "settings", None),
                               save=getattr(store, "save_settings", None))
         self.mic.button.pack(side=tk.LEFT, padx=(px(6), 0))
-        self.export_btn = HudButton(bar, _t("ЭКСПОРТ"), self._export_menu, height=30, font_size=9,
+        self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=30, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
-        HudButton(bar, "PDF", self.save_pdf, height=30, font_size=9,
+        HudButton(out, "PDF", self.save_pdf, height=30, font_size=9,
                   color=AMBER).pack(side=tk.RIGHT, padx=(0, px(6)))
-        HudButton(bar, _t("ПРОСМОТР"), self.preview, height=30, font_size=9,
+        HudButton(out, _t("ПРОСМОТР"), self.preview, height=30, font_size=9,
                   color=GREEN).pack(side=tk.RIGHT, padx=(0, px(6)))
+        self._bar_wrapped = None
+
+        def _reflow(_e=None):
+            need = ins.winfo_reqwidth() + out.winfo_reqwidth() + px(12)
+            wrap_now = bar.winfo_width() < need
+            if wrap_now == self._bar_wrapped:
+                return
+            self._bar_wrapped = wrap_now
+            if wrap_now:
+                out.grid(row=1, column=0, columnspan=2, sticky="e", pady=(px(6), 0))
+            else:
+                out.grid(row=0, column=1, sticky="e", pady=0)
+        out.grid(row=0, column=1, sticky="e")
+        bar.bind("<Configure>", _reflow, add="+")
 
         self.mic_hint = _label(rb, "", fg=MUTED, size=8, bg=PANEL, anchor="w")
         self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X)
