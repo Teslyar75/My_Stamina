@@ -18,6 +18,40 @@ from .textutil import score_sentence
 from .ui import L, MatchReadout, target_missed
 
 
+class HoldGrab:
+    """Удержание кнопки «💡 ПОДСКАЗКА»: нажал — показать, отпустил — скрыть.
+
+    grab держит отпускание даже вне кнопки (смена RU→EN двигает вёрстку и курсор «уезжает»).
+    Один помощник для книги, склада и всех экранов с подсказкой-удержанием.
+    """
+
+    def __init__(self) -> None:
+        self.btn = None
+
+    def bind(self, btn, on_down, on_up) -> None:
+        btn.command = None  # не клик, а удержание
+        btn.bind("<ButtonPress-1>", lambda _e: on_down(btn), add="+")
+        btn.bind("<ButtonRelease-1>", lambda _e: on_up(), add="+")
+
+    def take(self, btn) -> None:
+        if btn is None:
+            return
+        self.btn = btn
+        try:
+            btn.grab_set()
+        except tk.TclError:
+            self.btn = None
+
+    def release(self) -> None:
+        btn, self.btn = self.btn, None
+        if btn is None:
+            return
+        try:
+            btn.grab_release()
+        except tk.TclError:
+            pass
+
+
 class SpeechCheck(tk.Frame):
     """API: .mic, .match, .note; toggle(), reset(), clear(), evaluate(), judge(), hint_down/up()."""
 
@@ -67,6 +101,8 @@ class SpeechCheck(tk.Frame):
 
     def hint_up(self) -> None:
         self.hint.configure(text="")
+
+    HoldGrab = HoldGrab  # SpeechCheck.HoldGrab — общий помощник удержания подсказки
 
     # -- оценка ---------------------------------------------------------------
     def evaluate(self, target: str, alts, self_score, keyword: str = ""):

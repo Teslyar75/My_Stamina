@@ -23,7 +23,8 @@ class VerbsTab(tk.Frame):
         self.ctx = ctx
         self.slug = verbs.entries()[0]["slug"]
         self.active_si = 0
-        self.show_ru = True
+        # как в сканере: исходно по настройке «Сразу показывать перевод», кнопка ПЕРЕВОД — показать/скрыть
+        self.show_ru = bool(ctx.progress.settings.get("show_tr"))
         self._scores: dict[str, int] = {}
         self._build()
         self.refresh()

@@ -12,9 +12,9 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL
 from . import access
 from . import book_sentences as bs
 from . import sm2
-from .check import SpeechCheck
+from .check import HoldGrab, SpeechCheck
 from .mic import MicPanel
-from .speech_std import is_hint_key, is_mic_key
+from .speech_std import advance_later, is_hint_key, is_mic_key
 from .textutil import score_sentence, verdict
 from .ui import L, MatchReadout, ScrollFrame, Strip
 
@@ -36,7 +36,7 @@ class BookCardsPage(tk.Frame):
         self.shown = False
         self.mode = "hub"  # hub | drill
         self._holding = False
-        self._hint_grab: HudButton | None = None
+        self._grab = HoldGrab()
         self._poll_after = None
 
         self.strip = Strip(self)
@@ -267,7 +267,7 @@ class BookCardsPage(tk.Frame):
 
     # -- render ---------------------------------------------------------------
     def render(self) -> None:
-        self._release_hint_grab()
+        self._grab.release()
         self._holding = False
         _clear(self.body)
         _clear(self.btns)
@@ -288,7 +288,7 @@ class BookCardsPage(tk.Frame):
                 pass
 
     def _render_locked(self, hint: str) -> None:
-        self._release_hint_grab()
+        self._grab.release()
         _clear(self.body)
         _clear(self.btns)
         self.mic = self.match = self.fb = self._face_lab = None
@@ -438,7 +438,7 @@ class BookCardsPage(tk.Frame):
         right.pack(side=tk.RIGHT, padx=px(10), pady=px(8))
         hb = HudButton(right, _t("💡 ПОДСКАЗКА"), None, color=AMBER, height=32, font_size=9, width=130)
         hb.pack(pady=(px(2), 0))
-        self._bind_hint(hb)
+        self._grab.bind(hb, self._hint_down, self._hint_up)
         self.ctx.audio_button(right, _t("🔊 EN"), lambda: self._face_en,
                               height=30, font_size=8, width=90).pack(pady=(px(4), 0))
         self.ctx.audio_button(right, _t("🐢 МЕДЛЕННО"), lambda: self._face_en, slow=True,
@@ -457,7 +457,7 @@ class BookCardsPage(tk.Frame):
         tools.pack(anchor="w", pady=(px(4), 0))
         hb2 = HudButton(tools, _t("💡 ПОДСКАЗКА"), None, color=AMBER, height=30, font_size=9, width=120)
         hb2.pack(side=tk.LEFT, padx=(0, px(4)))
-        self._bind_hint(hb2)
+        self._grab.bind(hb2, self._hint_down, self._hint_up)
         self.ctx.audio_button(tools, _t("🔊 ОЗВУЧИТЬ EN"), lambda: self._face_en,
                               height=30, font_size=9, width=140).pack(side=tk.LEFT)
         L(tools, _t("→ затем проверка микрофоном"), fg=MUTED, size=8, bg=PANEL).pack(
@@ -486,30 +486,6 @@ class BookCardsPage(tk.Frame):
                 L(f, sm2.preview(card, q), fg=MUTED, size=8, bg=BG, mono=True).pack()
         HudButton(self.btns, _t("ПРОПУСТИТЬ"), self.skip, height=36, font_size=9).pack(
             side=tk.LEFT, padx=px(8))
-
-    def _bind_hint(self, btn: HudButton) -> None:
-        btn.command = None  # не клик, а удержание
-
-        def down(_e) -> None:
-            self._hint_down(btn)
-
-        def up(_e) -> None:
-            self._hint_up()
-
-        btn.bind("<ButtonPress-1>", down, add="+")
-        btn.bind("<ButtonRelease-1>", up, add="+")
-        # Leave не трогаем: RU→EN меняет высоту карточки, курсор «уезжает» с кнопки
-        # и подсказка слетала бы сразу. grab держит release даже вне кнопки.
-
-    def _release_hint_grab(self) -> None:
-        btn = self._hint_grab
-        self._hint_grab = None
-        if btn is None:
-            return
-        try:
-            btn.grab_release()
-        except tk.TclError:
-            pass
 
     def show_answer(self) -> None:
         self.shown = True
@@ -573,7 +549,8 @@ class BookCardsPage(tk.Frame):
             # коротко показать EN, затем следующая карточка
             self.shown = True
             self.render()
-            self.after(900, self._advance_after_ok)
+            here = self.i   # общий авто-переход (speech_std.advance_later)
+            advance_later(self, self._advance_after_ok, lambda: self.mode == "drill" and self.i == here)
         else:
             self.ctx.sfx("error")
             self.ctx.status(_t("Ещё раз: {0}%").format(score), VCOL[vk])
@@ -599,12 +576,7 @@ class BookCardsPage(tk.Frame):
             self.ctx.status(_t("Нет английского образца"), AMBER)
             return
         self._holding = True
-        if btn is not None:
-            self._hint_grab = btn
-            try:
-                btn.grab_set()
-            except tk.TclError:
-                self._hint_grab = None
+        self._grab.take(btn)
         try:
             # размер шрифта тот же — меньше скачок вёрстки при удержании
             self._face_lab.configure(text=self._face_en, fg=CYAN, font=theme.font(16, True))
@@ -614,10 +586,10 @@ class BookCardsPage(tk.Frame):
 
     def _hint_up(self) -> None:
         if not self._holding:
-            self._release_hint_grab()
+            self._grab.release()
             return
         self._holding = False
-        self._release_hint_grab()
+        self._grab.release()
         if self._face_lab is None:
             return
         try:

@@ -575,20 +575,24 @@ class PracticePage(tk.Frame):
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.match.set(score, marks, heard if self_score is None else "",
                        bool(marks) and target_missed(marks, w["word"]), self_rated=self_score is not None)
-        passed = score >= (60 if t["type"] == "S3" else 60)
-        if not passed and self.attempt < 3 and self_score is None:
-            self.attempt += 1
+        passed = std_passed(score)   # единый стандарт: ≥80%, попыток без ограничений
+        if not passed:
             text, vk = verdict(score)
-            self.fb.configure(text=_t("Совпадение {0}% · {1} — попытка {2} из 3").format(score, text, self.attempt), fg=VCOL[vk])
+            self.fb.configure(text=_t("Совпадение {0}% · {1} — нужно ≥ 80%, ещё раз (M)").format(score, text),
+                              fg=VCOL[vk])
             self._marks(marks)
-            return
+            try:
+                self.ctx.sfx("error")
+            except Exception:  # noqa: BLE001
+                pass
+            return  # остаёмся на задании
         q = 5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2
         text, vk = verdict(score)
         extra = _t("Оригинал: {0}").format(t['sentence']['en']) if t["type"] == "S3" else ""
         self._marks(marks)
         lab = _t("Самооценка") if self_score is not None else _t("Совпадение")
         self.answer(passed, q, f"{lab} {score}% · {text}. {extra}", score=score, color=VCOL[vk])
-        if std_passed(score):
+        if passed:
             here = self.i
             advance_later(self, self.next_task, lambda: self.active and self.i == here and self.answered_cur)
 

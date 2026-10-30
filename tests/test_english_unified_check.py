@@ -175,3 +175,61 @@ def test_reference_checks_form_then_tense(root, tmp_path):
     assert p.tense == cj.TENSE_KEYS[cj.TENSE_KEYS.index("past_simple") + 1] and p.person_i == 0
     p.on_key(Key("t"))
     assert "V2 went" in p.check.hint.cget("text")
+
+
+# -- консолидация дублей ------------------------------------------------------------
+
+def test_no_duplicate_hold_hint_or_timers():
+    """Удержание подсказки — общий check.HoldGrab; авто-переход — общий advance_later."""
+    for name in ("pages_book.py", "pages_warehouse.py"):
+        src = (PKG / name).read_text(encoding="utf-8")
+        calls = _calls(PKG / name)
+        assert "HoldGrab" in calls, name
+        assert "grab_set" not in calls and "_release_hint_grab" not in src, name
+    book = (PKG / "pages_book.py").read_text(encoding="utf-8")
+    assert "after(900" not in book and "advance_later(" in book
+
+
+def test_practice_uses_unified_pass_rule():
+    src = (PKG / "pages_learn.py").read_text(encoding="utf-8")
+    assert "из 3" not in src and ">= (60" not in src
+    assert "passed = std_passed(score)" in src
+
+
+def test_hold_grab_press_release():
+    root = tk.Tk()
+    root.withdraw()
+    try:
+        log = []
+        g = SpeechCheck.HoldGrab()
+        b = tk.Button(root)
+        b.command = "x"
+        g.bind(b, lambda btn: (log.append("down"), g.take(btn)), lambda: (log.append("up"), g.release()))
+        assert b.command is None
+        assert b.bind("<ButtonPress-1>") and b.bind("<ButtonRelease-1>")
+
+        class Fake:   # перехват обработчиков без реальных событий мыши
+            command = "x"
+            h = {}
+
+            def bind(self, seq, fn, add=None):
+                self.h[seq] = fn
+
+            def grab_set(self):
+                log.append("grab")
+
+            def grab_release(self):
+                log.append("free")
+        fb = Fake()
+        g.bind(fb, lambda btn: (log.append("down"), g.take(btn)), lambda: (log.append("up"), g.release()))
+        fb.h["<ButtonPress-1>"](None)
+        assert g.btn is fb
+        fb.h["<ButtonRelease-1>"](None)
+        assert log == ["down", "grab", "up", "free"] and g.btn is None
+    finally:
+        root.destroy()
+
+
+def test_verbs_translation_follows_scanner_setting():
+    src = (PKG / "pages_verbs.py").read_text(encoding="utf-8")
+    assert 'settings.get("show_tr")' in src
