@@ -16,7 +16,7 @@ import time
 import tkinter as tk
 from pathlib import Path
 
-from stamina import compose, docs, docs_format, mailer, shots, theme
+from stamina import compose, docs, docs_format, docs_tools, mailer, shots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
@@ -33,7 +33,7 @@ def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
-class DocsScreen(docs_format.FormatMixin, tk.Frame):
+class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.ReadAloudMixin, tk.Frame):
     """Список документов и редактор с автосохранением."""
 
     def __init__(self, master, app) -> None:
@@ -109,18 +109,32 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
         ins = tk.Frame(bar, bg=PANEL)
         ins.pack(side=tk.LEFT)
         out = self._out_group
-        HudButton(ins, _t("СНИМОК"), self.paste_shot, height=30, font_size=9,
-                  color=CYAN).pack(side=tk.LEFT)
-        HudButton(ins, _t("СКРИН"), self.screen_shot, height=30, font_size=9,
-                  color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
-        HudButton(ins, _t("КАРТИНКА…"), self.pick_images, height=30, font_size=9,
-                  color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
+        self.img_btn = HudButton(ins, _t("КАРТИНКА ▾"), self.image_menu, height=30, font_size=9,
+                                 color=CYAN)
+        self.img_btn.pack(side=tk.LEFT)
         store = getattr(self.app, "store", None)
         self.mic = MicControl(ins, on_text=self.insert_dictation, on_status=self._mic_status,
                               label=_t("ДИКТОВКА F9"), height=30, font_size=9,
                               settings=getattr(store, "settings", None),
                               save=getattr(store, "save_settings", None))
+        self.mic.button.command = self.start_dictation
         self.mic.button.pack(side=tk.LEFT, padx=(px(6), 0))
+        self.lang_btn = HudButton(ins, "RU", self.dict_lang_menu, height=30, font_size=9,
+                                  width=50, color=GREEN)
+        self.lang_btn.pack(side=tk.LEFT, padx=(px(2), 0))
+        self.tr_btn = HudButton(ins, _t("ПЕРЕВОД ▾"), self.translate_menu, height=30, font_size=9,
+                                color=CYAN)
+        self.tr_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        self.check_btn = HudButton(ins, _t("ПРОВЕРКА"), self.check_text, height=30, font_size=9,
+                                   color=AMBER)
+        self.check_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        self.read_btn = HudButton(ins, _t("▶ ЧИТАТЬ"), self.read_toggle, height=30, font_size=9,
+                                  color=GREEN)
+        self.read_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        for sym, cmd in (("■", self.read_stop), ("⏮", lambda: self.read_chapter(-1)),
+                         ("⏭", lambda: self.read_chapter(1))):
+            HudButton(ins, sym, cmd, height=30, font_size=9, width=30,
+                      color=MUTED).pack(side=tk.LEFT, padx=(px(2), 0))
         self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
@@ -154,6 +168,9 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
                                   anchor="nw", cursor="xterm")
         self.text_hint.bind("<Button-1>", lambda _e: self.text.focus_set())
 
+        self.init_tools()
+        self.text.tag_configure("speak", background="#1f3b4d")
+        self.text.tag_lower("speak")
         self.after(160, self._tick_mic)
         self.refresh()
         self._show_doc(None)
@@ -172,7 +189,7 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
     def dictate(self) -> None:
         """F9 в этом отсеке: начать/закончить диктовку."""
         self.text.focus_set()
-        self.mic.toggle()
+        self.start_dictation()
 
     # -- список ------------------------------------------------------------------
     def refresh(self) -> None:
@@ -231,6 +248,8 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
 
     # -- редактор ------------------------------------------------------------------
     def _show_doc(self, doc) -> None:
+        if self.tts is not None:
+            self.read_stop()
         self._loading = True
         self.doc = doc
         self._photos.clear()
@@ -305,6 +324,14 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
             else:
                 self.insert_image(img)
         self.after(450, grab)
+
+    def image_menu(self) -> None:
+        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        m.add_command(label=_t("Снимок из буфера (Ctrl+V)"), command=self.paste_shot)
+        m.add_command(label=_t("Скрин экрана"), command=self.screen_shot)
+        m.add_command(label=_t("Файл…"), command=self.pick_images)
+        b = self.img_btn
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
 
     def pick_images(self) -> None:
         names = compose.pick_image_files(self, _t("Картинки в документ"))
@@ -574,6 +601,7 @@ class DocsScreen(docs_format.FormatMixin, tk.Frame):
     def _tick_mic(self) -> None:
         try:
             self.mic.poll()
+            self.poll_tools()
         finally:
             self.after(160, self._tick_mic)
 

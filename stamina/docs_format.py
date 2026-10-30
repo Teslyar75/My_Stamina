@@ -169,16 +169,61 @@ class FormatMixin:
     MD_TAGS = ("md_h1", "md_h2", "md_b", "md_i", "md_bi", "md_u", "md_code", "md_link",
                "md_quote", "md_li", "md_mark")
 
+    #: Больше строк — полную подсветку делаем кусками в фоне, чтобы книга не тормозила.
+    HL_SYNC_LINES = 1500
+    HL_CHUNK = 400
+
     def schedule_highlight(self) -> None:
+        """Подсветить после паузы в наборе: только строки у курсора, всё — если строк стало иначе."""
+        t = self.text
+        lines = int(t.index("end-1c").split(".")[0])
+        cur = int(t.index("insert").split(".")[0])
+        prev = getattr(self, "_hl_lines", None)
+        self._hl_lines = lines
+        if prev is None or abs(lines - prev) > 1:
+            rng = (1, lines)
+        else:
+            rng = (max(1, cur - 1), min(lines, cur + 1))
+        old = getattr(self, "_hl_range", None)
+        if old:
+            rng = (min(old[0], rng[0]), max(old[1], rng[1]))
+        self._hl_range = rng
         if getattr(self, "_hl_job", None):
             self.after_cancel(self._hl_job)
-        self._hl_job = self.after(60, self.highlight)
+        self._hl_job = self.after(60, self._run_scheduled_hl)
+
+    def _run_scheduled_hl(self) -> None:
+        rng, self._hl_range = getattr(self, "_hl_range", None), None
+        if rng and rng[1] - rng[0] < self.HL_SYNC_LINES:
+            self.highlight(*rng)
+        else:
+            self.highlight()
+
+    def _hl_step(self, nxt: int, gen: int) -> None:
+        if gen != getattr(self, "_hl_gen", 0):
+            return
+        end = int(self.text.index("end-1c").split(".")[0])
+        last = min(end, nxt + self.HL_CHUNK - 1)
+        self._highlight_lines(nxt, last)
+        if last < end:
+            self._hl_bg = self.after(1, self._hl_step, last + 1, gen)
 
     def highlight(self, first: int | None = None, last: int | None = None) -> None:
         self._hl_job = None
+        end = int(self.text.index("end-1c").split(".")[0])
+        self._hl_lines = end
+        if first is None and last is None and end > self.HL_SYNC_LINES:
+            self._hl_gen = getattr(self, "_hl_gen", 0) + 1       # старый фоновый проход — бросить
+            cur = int(self.text.index("@0,0").split(".")[0])
+            self._highlight_lines(max(1, cur - 50), min(end, cur + 150))   # видимое — сразу
+            self._hl_step(1, self._hl_gen)
+            self.update_empty_hint()
+            return
+        self._highlight_lines(first or 1, min(last or end, end))
+        self.update_empty_hint()
+
+    def _highlight_lines(self, first: int, last: int) -> None:
         t = self.text
-        end = int(t.index("end-1c").split(".")[0])
-        first, last = first or 1, min(last or end, end)
         img_lines = {int(idx.split(".")[0]) for _k, _v, idx in t.dump(f"{first}.0", f"{last}.end", image=True)}
         for tag in self.MD_TAGS:
             t.tag_remove(tag, f"{first}.0", f"{last}.end+1c")
@@ -203,7 +248,6 @@ class FormatMixin:
             both = sorted(bold & ital)
             for k in both:
                 t.tag_add("md_bi", f"{ln}.{k}")
-        self.update_empty_hint()
 
     # -- действия ----------------------------------------------------------------------
     def _on_ctrl_key(self, e):
