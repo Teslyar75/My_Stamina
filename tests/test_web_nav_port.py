@@ -268,14 +268,18 @@ class ChromeHotkeyTest(CockpitKeyboardTest):
         return e
 
     def test_home_calls_orion(self):
-        """Home (и кнопка ОРИОН) открывают раздел ОРИОН и включают микрофон."""
+        """Home (вне полей ввода) - голосовой вызов Ориона на месте, без перехода в раздел."""
         a = self.app
-        if "orion" not in a.screens:
-            self.skipTest("раздел ОРИОН не загрузился")
+        before = a.current
         started = []
-        a.screens["orion"].listen = lambda: started.append(True)
-        self.assertTrue(a._chrome_hotkey(self._ev("Home")))
-        self.assertEqual(a.current, "orion")
+        a._voice_call_toggle = lambda: started.append(True)
+        from stamina.voice import tts
+        orig, tts.speaking = tts.speaking, (lambda: False)
+        try:
+            self.assertTrue(a._chrome_hotkey(self._ev("Home")))
+        finally:
+            tts.speaking = orig
+        self.assertEqual(a.current, before)
         self.assertEqual(started, [True])
 
     def test_pgup_opens_slides(self):

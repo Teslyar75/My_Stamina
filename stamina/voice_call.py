@@ -133,7 +133,22 @@ def pick_agent() -> dict:
     return orion.active()
 
 
-def ask_agent(rec: dict, text: str):
+def context_line(where: str) -> str:
+    """Короткая строка контекста для агента: где пилот и что у него открыто."""
+    from stamina import i18n
+    where = " ".join((where or "").split())[:300]
+    if not where:
+        return ""
+    return i18n.t("Голосовой вопрос пилота; пилот сейчас: {0}. Отвечай коротко, ответ будет озвучен.").format(where)
+
+
+def history_text(text: str, where: str) -> str:
+    """Вопрос для истории чата: компактная метка места + сам вопрос."""
+    where = " ".join((where or "").split())[:120]
+    return f"🎙 [{where}] {text}" if where else f"🎙 {text}"
+
+
+def ask_agent(rec: dict, text: str, context: str = ""):
     """Запрос агенту (блокирует — из потока). Возвращает Result orion.run_profile."""
     from stamina import orion
     profile = orion.profile_for(rec, "orion-recon")
@@ -142,7 +157,7 @@ def ask_agent(rec: dict, text: str):
         session = orion.profile_session(rec["id"], profile)
     except Exception:  # noqa: BLE001
         session = None
-    return orion.run_profile(rec, text, profile=profile, session=session)
+    return orion.run_profile(rec, text, profile=profile, context=context, session=session)
 
 
 class VoiceCall:
@@ -155,7 +170,7 @@ class VoiceCall:
     POLL_MS = 120
 
     def __init__(self, root, on_state=None, *, listener_factory=None, ask=None,
-                 tts=None, remember=None, agent=None, lang=None):
+                 tts=None, remember=None, agent=None, lang=None, where=None):
         self.root = root
         self.on_state = on_state or (lambda s, t="": None)
         self._listener_factory = listener_factory
@@ -164,6 +179,8 @@ class VoiceCall:
         self._remember = remember
         self._agent = agent or pick_agent
         self._lang = lang or ui_lang
+        self._where = where or (lambda: "")
+        self.where = ""
         self.state = "idle"
         self.listener = None
         self.rec: dict | None = None
@@ -211,6 +228,10 @@ class VoiceCall:
         from stamina import i18n
         tr = i18n.t
         self.rec = self._agent()
+        try:
+            self.where = str(self._where() or "")   # место — в момент нажатия
+        except Exception:  # noqa: BLE001
+            self.where = ""
         self._gen += 1
         try:
             self.listener = self._make_listener()
@@ -327,14 +348,15 @@ class VoiceCall:
     # --- агент ---
     def _send(self, text: str) -> None:
         gen = self._gen
-        self._save("pilot", text)
+        self._save("pilot", history_text(text, self.where))
+        ctx = context_line(self.where)
         self._set("thinking", text)
         self._play_filler()
         rec = self.rec
 
         def work():
             try:
-                res = self._ask(rec, text)
+                res = self._ask(rec, text, ctx)
             except Exception as exc:  # noqa: BLE001
                 res = exc
             self._q.put((gen, res))

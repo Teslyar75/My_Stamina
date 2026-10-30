@@ -1,4 +1,4 @@
-﻿"""Голосовой вызов агента с мостика: заглушки, поток вызова, отмена, Home в полях."""
+"""Голосовой вызов агента с мостика: заглушки, поток вызова, отмена, Home в полях."""
 import random
 import tkinter as tk
 from types import SimpleNamespace
@@ -69,18 +69,21 @@ class FakeTTS:
         return False
 
 
-def make(events, reply="Ответ агента", ok=True, error=""):
+def make(events, reply="Ответ агента", ok=True, error="", where=""):
     root, tts, hist, states = FakeRoot(), FakeTTS(), [], []
-    asked = []
+    asked, ctxs = [], []
 
-    def ask(rec, text):
+    def ask(rec, text, context=""):
         asked.append(text)
+        ctxs.append(context)
         return SimpleNamespace(reply=reply, error=error, detail="", session="s1")
 
     call = vc.VoiceCall(root, lambda s, t="": states.append(s),
                         listener_factory=lambda lang: FakeListener(events, ok), ask=ask, tts=tts,
                         remember=lambda aid, role, text, session=None: hist.append((aid, role, text)),
-                        agent=lambda: {"id": "orion", "tts_voice": "Irina"}, lang=lambda: "ru")
+                        agent=lambda: {"id": "orion", "tts_voice": "Irina"}, lang=lambda: "ru",
+                        where=lambda: where)
+    call.ctxs = ctxs
     return call, root, tts, hist, states, asked
 
 
@@ -105,7 +108,7 @@ def test_flow_question_filler_answer_history():
     assert asked == ["как дела"]
     assert tts.said[0] in vc.FILLERS["ru"]          # сразу заглушка
     assert tts.said[-1] == "Ответ агента"           # потом настоящий ответ
-    assert hist == [("orion", "pilot", "как дела"), ("orion", "orion", "Ответ агента")]
+    assert hist == [("orion", "pilot", "🎙 как дела"), ("orion", "orion", "Ответ агента")]
     assert states[:2] == ["listening", "thinking"] and "speaking" in states and states[-1] == "idle"
 
 
@@ -155,3 +158,60 @@ def test_home_ignored_in_text_fields():
         assert not typing_in(tk.Frame(root))
     finally:
         root.destroy()
+
+
+class _Btn:
+    def set_text(self, t):
+        self.text = t
+
+    def set_color(self, c):
+        self.color = c
+
+
+def _fake_cockpit(current):
+    from stamina.cockpit import Cockpit
+    calls = []
+    app = SimpleNamespace(current=current, voice_call=None, btn_orion=_Btn(),
+                          show=lambda *a: calls.append(("show", a)),
+                          _voice_call_toggle=lambda: calls.append(("call",)))
+    return Cockpit, app, calls
+
+
+@pytest.mark.parametrize("screen", ["bridge", "missions", "docs", "english"])
+def test_orion_button_calls_in_place_on_every_screen(monkeypatch, screen):
+    from stamina.voice import tts
+    monkeypatch.setattr(tts, "speaking", lambda: False)
+    Cockpit, app, calls = _fake_cockpit(screen)
+    Cockpit._call_orion(app)
+    assert calls == [("call",)]                    # без перехода в раздел Ориона
+
+
+def test_orion_button_stops_speech(monkeypatch):
+    from stamina.voice import tts
+    stopped = []
+    monkeypatch.setattr(tts, "speaking", lambda: True)
+    monkeypatch.setattr(tts, "stop", lambda: stopped.append(1))
+    Cockpit, app, calls = _fake_cockpit("missions")
+    Cockpit._call_orion(app)
+    assert stopped and calls == []
+
+
+def test_context_goes_to_prompt_and_history():
+    call, root, tts, hist, states, asked = make([("final", "что это за слово")],
+                                               where="Английский › Слова (word: apple)")
+    call.start()
+    _drain(call, root)
+    assert "Английский › Слова (word: apple)" in call.ctxs[0]
+    assert hist[0][2] == "🎙 [Английский › Слова (word: apple)] что это за слово"
+    assert asked == ["что это за слово"]           # сам вопрос — без метки
+
+
+def test_cockpit_voice_context_path_tab_brief():
+    from stamina import cockpit
+    scr = SimpleNamespace(current_tab="words", word="apple", title=lambda: "x")
+    app = SimpleNamespace(current="english", screens={"english": scr}, BRIEF_ATTRS=cockpit.Cockpit.BRIEF_ATTRS)
+    line = cockpit.Cockpit.voice_context(app)
+    assert "words" in line and "word: apple" in line and "x" not in line.split("(")[-1]
+    scr2 = SimpleNamespace(voice_brief=lambda: "книга «Дюна», стр. 12")
+    app2 = SimpleNamespace(current="english", screens={"english": scr2}, BRIEF_ATTRS=cockpit.Cockpit.BRIEF_ATTRS)
+    assert "книга «Дюна», стр. 12" in cockpit.Cockpit.voice_context(app2)

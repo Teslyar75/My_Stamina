@@ -1158,32 +1158,70 @@ class Cockpit(tk.Tk):
             self.show("missions")
 
     def _call_orion(self) -> None:
-        """Кнопка Ориона: на мостике - голосовой вызов агента; иначе как раньше."""
+        """Кнопка ОРИОН / Home: голосовой вызов на месте, с любого экрана (без перехода).
+
+        Говорит Орион (не наш вызов) - нажатие его останавливает. В раздел Ориона
+        ведёт только меню отсеков слева.
+        """
         vc = getattr(self, "voice_call", None)
-        if self.current == "bridge" or (vc is not None and vc.active()):
-            self._voice_call_toggle()
-            return
         from stamina.voice import tts
-        if tts.speaking():
+        if (vc is None or not vc.active()) and tts.speaking():
             tts.stop()
             self.btn_orion.set_text(tr_("ОРИОН"))
             self.btn_orion.set_color(GREEN)
             return
-        self.show(orion_hook.KEY)
-        scr = self.screens.get(orion_hook.KEY)
-        if scr is not None and hasattr(scr, "listen"):
-            scr.listen()
+        self._voice_call_toggle()
 
     def _voice_call_toggle(self) -> None:
-        """Голосовой вызов с мостика (stamina/voice_call.py): старт или отмена."""
+        """Голосовой вызов на месте (stamina/voice_call.py): старт или отмена."""
         from stamina.voice_call import VoiceCall
         if getattr(self, "voice_call", None) is None:
-            self.voice_call = VoiceCall(self, self._voice_call_state)
+            self.voice_call = VoiceCall(self, self._voice_call_state, where=self.voice_context)
         if not self.voice_call.active():
             br = self.screens.get("bridge")
-            if br is not None and getattr(br, "state", "") == "run":
+            if self.current == "bridge" and br is not None and getattr(br, "state", "") == "run":
                 br.toggle_pause()          # говорим - печать на паузе
         self.voice_call.toggle()
+
+    BRIEF_ATTRS = ("current_tab", "level", "word", "current_word", "book_title", "title",
+                   "doc_name", "doc_title", "current_doc", "mission_title")
+
+    def voice_context(self) -> str:
+        """Где пилот: путь отсеков › подвкладка, плюс дешёвые детали экрана (слово, книга, документ)."""
+        parts = []
+        try:
+            parts = [str(label) for label, _t in nav.path(self.current) if label]
+        except Exception:  # noqa: BLE001
+            parts = [str(self.current)]
+        scr = self.screens.get(self.current) if hasattr(self, "screens") else None
+        brief = []
+        hook = getattr(scr, "voice_brief", None)
+        if callable(hook):
+            try:
+                b = hook()
+                if b:
+                    brief.append(str(b))
+            except Exception:  # noqa: BLE001
+                pass
+        for name in self.BRIEF_ATTRS if not brief else ():
+            val = getattr(scr, name, None)
+            if callable(val):
+                continue
+            if isinstance(val, (tk.StringVar, tk.IntVar)):
+                try:
+                    val = val.get()
+                except tk.TclError:
+                    val = None
+            if isinstance(val, (str, int)) and str(val).strip() and str(val) not in parts:
+                txt = " ".join(str(val).split())[:60]
+                if name == "current_tab":
+                    parts.append(txt)
+                else:
+                    brief.append(f"{name}: {txt}")
+        line = " › ".join(parts)
+        if brief:
+            line += " (" + "; ".join(brief[:3]) + ")"
+        return line
 
     def _voice_call_state(self, state: str, text: str = "") -> None:
         """Статус вызова на самой кнопке ОРИОН: места на 1024x600 не занимает."""
