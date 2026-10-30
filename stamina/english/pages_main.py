@@ -17,7 +17,7 @@ from .speech_std import advance_later, passed
 from . import tasks
 from .mic import MicPanel
 from .textutil import score_sentence, verdict, word_forms
-from .ui import DIFF_COLOR, TIPS, Bar, Flow, FocusMode, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
+from .ui import WrapEntry, DIFF_COLOR, TIPS, Bar, Flow, FocusMode, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
 from .vocab import DIFF_RU, POS_FILTER, POS_SHORT, SETS
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
@@ -1058,8 +1058,8 @@ class ScannerPage(tk.Frame):
         trr = tk.Frame(c2, bg=PANEL)
         trr.pack(fill=tk.X, pady=px(1))
         L(trr, _t("МОЙ ПЕРЕВОД"), fg=MUTED, size=7, bold=True).pack(side=tk.LEFT)
-        self.tr = entry(trr, width=8, size=10)
-        self.tr.pack(side=tk.LEFT, padx=(px(4), 0), fill=tk.X, expand=True, ipady=px(2))
+        self.tr = WrapEntry(trr, size=10)
+        self.tr.pack(side=tk.LEFT, padx=(px(4), 0), fill=tk.X, expand=True)
         self.tr.bind("<FocusOut>", lambda _e: self._save_tr())
         self.tr.bind("<Return>", lambda _e: (self._save_tr(), self.focus_set()))
         acts = Flow(c2, gap=3)
@@ -1119,6 +1119,7 @@ class ScannerPage(tk.Frame):
         sbtn.add(HudButton(sbtn, _t("💡 ПОДСКАЗКА"), self.show_hint, height=22, font_size=7, color=AMBER))
         # номер карточки и итог — в полосе заголовка канала, справа: отдельная строка не нужна
         chip_bar = tk.Frame(root, bg=PANEL)
+        self.chip_bar = chip_bar
         self.snum = L(chip_bar, "", fg=MUTED, size=7, bold=True)
         self.snum.pack(side=tk.LEFT)
         self.result = L(chip_bar, "", fg=MUTED, size=8, bold=True)
@@ -1285,7 +1286,7 @@ class ScannerPage(tk.Frame):
     def _place_actbar(self, width: int) -> None:
         """Строка действий: в полосе заголовка панели, если влезает; иначе — отдельной строкой над ней."""
         win, bar = self.scan_panel, self.actbar
-        title_w = tkfont.Font(font=theme.font(9, True)).measure(win.title) + px(36)
+        title_w = tkfont.Font(font=theme.font(round(9 * getattr(win, "_hk", 1.0)), True)).measure(win.title) + px(36)
         fits = width > 1 and bar.winfo_reqwidth() + title_w + px(10) <= width
         mode = "title" if fits else "row"
         if mode == self._bar_mode:
@@ -1387,6 +1388,11 @@ class ScannerPage(tk.Frame):
         self._k = k
         kb = 1 + (k - 1) * 0.6          # focus scaling
         km = 1 + (k - 1) * 0.8          # focus scaling
+        kh = 1 + (k - 1) * 0.45         # header row and panel titles - moderately
+        for p in (self.scan_panel, self.chan):
+            p.rescale(kh)
+        for w in self.chip_bar.winfo_children():
+            self._sfont(w, kh)
         for root in (self.scan_panel, self.chan, getattr(self, "actbar", None)):
             if root is None:
                 continue
@@ -1397,7 +1403,7 @@ class ScannerPage(tk.Frame):
                 if w is self.word:
                     continue
                 if isinstance(w, HudButton):
-                    w.rescale(1.0 if root is self.actbar else (min(km * 1.25, 1 + (k - 1) * 0.55) if w is self.mic.btn else kb))
+                    w.rescale(kh if root is self.actbar else (min(km * 1.25, 1 + (k - 1) * 0.55) if w is self.mic.btn else kb))
                     if w is self.mic.btn and k <= 1.0:
                         w.rescale(1.0)
                     continue
@@ -1410,6 +1416,10 @@ class ScannerPage(tk.Frame):
         self._fit_word()
         for fl in self._flows():
             fl.relayout(fl.winfo_width(), force=True)
+        self.update_idletasks()
+        self._bar_mode = None
+        self._place_actbar(self.scan_panel.winfo_width())
+        self.chip_bar.place_configure(y=px(round(4 * kh)))
 
     def _flows(self):
         out, stack = [], [self.scan_panel, self.chan]

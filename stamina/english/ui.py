@@ -44,6 +44,49 @@ def entry(master, width=30, size=11, mono=False) -> tk.Entry:
                     highlightcolor=CYAN, disabledbackground=BG2)
 
 
+class WrapEntry(tk.Text):
+    """Entry-like text field that wraps long text onto up to maxlines lines (Enter does not add a newline)."""
+
+    def __init__(self, master, size=10, maxlines=3) -> None:
+        super().__init__(master, height=1, width=8, wrap="word", bg=BG2, fg=TEXT, insertbackground=CYAN,
+                         relief="flat", font=theme.font(size), highlightthickness=1,
+                         highlightbackground=LINE_HI, highlightcolor=CYAN, padx=px(3), pady=px(2), bd=0)
+        self.maxlines = maxlines
+        tags = list(self.bindtags())
+        tags.insert(tags.index("Text"), "WrapEntryNoNL")
+        self.bindtags(tuple(tags))
+        self.bind_class("WrapEntryNoNL", "<Return>", lambda _e: "break")
+        self.bind_class("WrapEntryNoNL", "<KP_Enter>", lambda _e: "break")
+        self.bind("<Configure>", lambda _e: self.after_idle(self._fit), add="+")
+        self.bind("<<Modified>>", self._on_mod, add="+")
+
+    def _on_mod(self, _e=None) -> None:
+        self.edit_modified(False)
+        self.after_idle(self._fit)
+
+    def _fit(self) -> None:
+        try:
+            n = self.count("1.0", "end-1c", "displaylines")
+        except tk.TclError:
+            return
+        if isinstance(n, tuple):
+            n = n[0] if n else 0
+        n = (n or 0) + 1
+        h = max(1, min(self.maxlines, n))
+        if int(self.cget("height")) != h:
+            self.configure(height=h)
+
+    def get(self, *_a) -> str:  # Entry API
+        return super().get("1.0", "end-1c")
+
+    def delete(self, *_a) -> None:
+        super().delete("1.0", "end")
+
+    def insert(self, _i, text, *a) -> None:
+        super().insert("end", text.replace("\n", " "), *a)
+        self.after_idle(self._fit)
+
+
 class ScrollFrame(tk.Frame):
     """Вертикальная прокрутка колесом мыши; содержимое — в .inner."""
 

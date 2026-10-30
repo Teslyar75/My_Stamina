@@ -380,6 +380,8 @@ class HudPanel(_LazyDraw, tk.Canvas):
         self.body = tk.Canvas(self, bg=PANEL, highlightthickness=0, bd=0)
         top = px(26) if title else px(pad)
         self.body.pack(fill=tk.BOTH, expand=True, padx=px(pad), pady=(top, px(pad)))
+        self._pad = pad
+        self._hk = 1.0
         self._draw_job = None
         self.bind("<Configure>", lambda _e: self._request_draw())
 
@@ -401,14 +403,26 @@ class HudPanel(_LazyDraw, tk.Canvas):
         self.create_line(w - 2, h - 2 - c, w - 2, h - 2 - c - px(22), fill=a, width=2, tags="frame")
         self.create_line(w - 2 - c, h - 2, w - 2 - c - px(40), h - 2, fill=a, width=2, tags="frame")
         if self.title:
-            self.create_text(px(16), px(13), text=self.title, anchor="w",
-                             fill=blend(a, TEXT, 0.25), font=theme.font(9, True), tags="frame")
+            hk = getattr(self, "_hk", 1.0)
+            self.create_text(px(16), px(round(13 * hk)), text=self.title, anchor="w",
+                             fill=blend(a, TEXT, 0.25), font=theme.font(round(9 * hk), True), tags="frame")
         self.tag_lower("frame")
 
 
 # ---------------------------------------------------------------------------
 # Спидометр
 # ---------------------------------------------------------------------------
+
+def _panel_rescale(self, k: float) -> None:
+    """Focus mode: scale the panel header (title font and header height)."""
+    self._hk = k
+    if self.title:
+        self.body.pack_configure(pady=(px(round(26 * k)), px(self._pad)))
+    self._request_draw()
+
+
+HudPanel.rescale = _panel_rescale
+
 
 class SpeedGauge(tk.Canvas):
     START, SWEEP = 215.0, 250.0
