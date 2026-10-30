@@ -59,6 +59,10 @@ MARKER = "⟦ТРЕБУЕТСЯ РАЗРЕШЕНИЕ⟧"
 
 ACCESSES = ("commander", "observer", "crew")
 VOICE_MODES = ("ship", "agent", "off")
+AGENT_KINDS = ("opencode", "openai_compat", "github_bridge")
+#: Что хранится в профиле подключённого агента. Сам ключ — только в хранилище ОС.
+CONNECT_FIELDS = ("base_url", "cred_ref", "fallback", "tts_voice", "pilot", "discussion_id",
+                  "bridge_login", "webhook", "system")
 
 # Уровень доступа → какие агенты OpenCode запускаются (первый проход, второй проход).
 PROFILES: dict[str, tuple[str, str | None]] = {
@@ -327,6 +331,11 @@ def upsert(record: dict) -> dict:
         "note": str(record.get("note") or "").strip()[:200],
         "created": float(record.get("created") or time.time()),
     }
+    kind = str(record.get("kind") or "opencode")
+    fresh["kind"] = kind if kind in AGENT_KINDS else "opencode"
+    for key in CONNECT_FIELDS:              # поля подключения; ключей здесь нет — только cred_ref
+        if record.get(key):
+            fresh[key] = str(record[key]).strip()[:300]
     for i, a in enumerate(data["agents"]):
         if a["id"] == rid:
             fresh["created"] = float(a.get("created") or fresh["created"])
@@ -908,6 +917,14 @@ def available() -> tuple[bool, str]:
     return bool(exe), exe
 
 
+def ready(record: dict | None = None) -> tuple[bool, str]:
+    """Готов ли агент к разговору: OpenCode нужен только агентам kind=opencode."""
+    kind = str((record or {}).get("kind") or "opencode")
+    if kind == "opencode":
+        return available()
+    return True, kind
+
+
 def context_line(*, zone: str = "", subtab: str = "", pilot: str = "", access: str = "",
                  version: str = "", geometry: str = "", was: str = "") -> str:
     """Отметка корабля перед сообщением: какой отсек открыт сейчас.
@@ -1019,10 +1036,11 @@ class Result:
     needs_permission: bool = False
     request: str = ""
     spoke: bool = False       # агент озвучил себя сам
-    error: str = ""          # код: no_cli | timeout | spawn | empty
+    error: str = ""          # код: no_cli | timeout | spawn | empty | no_key | auth | rate | http | network | bad_reply | config
     detail: str = ""
     seconds: float = 0.0
     profile: str = ""
+    fallback_from: str = ""   # ответил запасной агент вместо сбойного (код сбоя)
 
 
 # -- живой агент: его можно остановить квадратиком «стоп» ----------------------
@@ -1118,8 +1136,51 @@ def ask(record: dict, text: str, *, context: str = "", profile: str = "",
 
 def run_profile(record: dict, text: str, *, profile: str, context: str = "",
                 session: str = "", timeout: float = TIMEOUT,
-                character: str | None = None) -> Result:
-    """Запустить агента и вернуть ответ (манеры, контекст, эволюция)."""
+                character: str | None = None, _seen: tuple = ()) -> Result:
+    """Спросить агента через его провайдера (record["kind"]); при сбое — запасной профиль."""
+    kind = str(record.get("kind") or "opencode")
+    if not (text or "").strip():
+        return Result(error="empty", profile=profile)
+    if kind == "opencode":
+        res = _run_opencode(record, text, profile=profile, context=context, session=session,
+                            timeout=timeout, character=character)
+    else:
+        from stamina import agent_connect as ac
+        if character is None:
+            character = character_block(str(record.get("id") or DEFAULT_AGENT["id"]))
+        prompt = "\n\n".join(part for part in (character, context, text.strip()) if part)
+        if kind == "openai_compat":
+            res = ac.run_openai_compat(record, prompt, timeout=timeout)
+        elif kind == "github_bridge":
+            res = ac.run_github_bridge(record, prompt, timeout=max(timeout, 60.0))
+        else:
+            res = Result(error="kind", detail=kind)
+        res.profile = profile
+    fb = str(record.get("fallback") or "")
+    if res.error and res.error not in ("stopped", "empty") and fb and fb not in _seen \
+            and fb != record.get("id"):
+        other = get(fb)
+        if other is not None:
+            alt = run_profile(other, text, profile=profile_for(other, profile), context=context,
+                              timeout=timeout, _seen=_seen + (str(record.get("id")),))
+            if not alt.error:
+                alt.detail = f"fallback:{fb}:{res.error}"
+                alt.fallback_from = res.error
+            return alt if not alt.error else res
+    return res
+
+
+def profile_for(record: dict, profile: str) -> str:
+    """Профиль OpenCode для запасного агента: свой первый проход, если он opencode."""
+    if str(record.get("kind") or "opencode") == "opencode":
+        return profiles(record)[0]
+    return profile
+
+
+def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
+                  session: str = "", timeout: float = TIMEOUT,
+                  character: str | None = None) -> Result:
+    """Запустить агента OpenCode CLI и вернуть ответ (манеры, контекст, эволюция)."""
     if not (text or "").strip():
         return Result(error="empty", profile=profile)
     exe = find_cli()

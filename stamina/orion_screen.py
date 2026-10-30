@@ -1326,7 +1326,7 @@ class OrionScreen(tk.Frame):
         self.who.configure(text=_t("ПАССАЖИР: {0} · ДОСТУП: {1} · ГОЛОС: {2}").format(
             str(rec.get("name") or "—").upper(), self._access_label(rec.get("access", "crew")),
             self._voice_label(rec.get("voice", "ship"))))
-        ok, exe = orion.available()
+        ok, exe = orion.ready(rec)
         total = len(orion.history(rec["id"])["messages"])
         self.info.configure(text=_t("Реплик: {0}").format(total) + ("" if ok else
                                                                     _t(" · нет OpenCode")))
@@ -1338,7 +1338,7 @@ class OrionScreen(tk.Frame):
     def _render_feed(self) -> None:
         rec = self._rec()
         msgs = orion.history(rec["id"])["messages"]
-        ok, _exe = orion.available()
+        ok, _exe = orion.ready(rec)
         self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
         self._feed_images = []          # Tk не держит ссылки на картинки сам
@@ -1710,7 +1710,7 @@ class OrionScreen(tk.Frame):
             return
         # Связь проверяем ДО того, как стереть поле: иначе при отсутствии OpenCode
         # набранный текст исчезал впустую (жалоба «куда делся текст из окна»)
-        ok, _exe = orion.available()
+        ok, _exe = orion.ready(rec)
         if not ok:
             self._hint(_t("OpenCode не найден: установите opencode и перезапустите корабль.")
                        + " " + _t("Текст остался в поле."), RED)
@@ -2090,7 +2090,8 @@ class OrionScreen(tk.Frame):
             return
         if getattr(res, "spoke", False):     # агент озвучил себя сам — не повторяем
             return
-        tts.speak(res.reply, role="dev")
+        # голос агента: свой (tts_voice из «Подключить агента») или голос корабля
+        tts.speak(res.reply, role="dev", voice=str(rec.get("tts_voice") or ""))
 
     def _on_answer(self, res, rec: dict, second: bool) -> None:
         self._busy = False
@@ -2113,6 +2114,9 @@ class OrionScreen(tk.Frame):
             self._render_feed()
             self._hint(note, RED)
             return
+        if getattr(res, "fallback_from", ""):
+            orion.remember(rec["id"], "system", _t("Основной агент не ответил ({0}) — отвечает запасной")
+                           .format(res.fallback_from))
         orion.remember(rec["id"], "orion", res.reply, session=res.session)
         self._render_feed()
         # Разбор служебных команд радио и книг
@@ -2163,6 +2167,18 @@ class OrionScreen(tk.Frame):
             return _t("Сбой запуска агента") + detail
         if res.error == "empty":
             return _t("Пустое сообщение.")
+        if res.error == "no_key":
+            return _t("Нет ключа API: откройте «Подключить агента» и вставьте ключ.")
+        if res.error == "auth":
+            return _t("Ключ API отклонён провайдером") + detail
+        if res.error == "rate":
+            return _t("Провайдер ограничил запросы — подождите и повторите") + detail
+        if res.error == "network":
+            return _t("Нет связи с провайдером агента") + detail
+        if res.error in ("http", "bad_reply"):
+            return _t("Провайдер агента ответил ошибкой") + detail
+        if res.error == "config":
+            return _t("Агент подключён не до конца: проверьте адрес и модель") + detail
         return _t("Сбой связи с Орионом") + detail
 
     def _show_permission(self, note: str) -> None:
