@@ -698,15 +698,35 @@ class OrionScreen(tk.Frame):
         lp = HudPanel(left, title=_t("ПАССАЖИРЫ БОРТА"))
         lp.pack(fill=tk.BOTH, expand=True)
         lp.configure(width=px(260))
-        self.crew_box = tk.Frame(lp.body, bg=PANEL)
-        self.crew_box.pack(fill=tk.BOTH, expand=True)
-        HudButton(lp.body, _t("＋ ЗАСЕЛИТЬ НОВОГО"), self._new_agent, height=32,
-                  font_size=10, color=GREEN).pack(fill=tk.X, pady=(px(6), 0))
+        # Низ панели пакуем первым (side=BOTTOM): список над ним листается и
+        # последняя карточка не уходит под кнопку.
         # Подчинённый агент — не пассажир: он не заселяется отдельно, а работает
         # по ТЗ, которое Орион составляет из слов пилота и пометок мышью.
         _label(lp.body,
                _t("ПОДЧИНЁННЫЙ: {0} — ТЗ ему даю я").format(_t("ИСПОЛНИТЕЛЬ")),
-               fg=MUTED, size=8, anchor="w", justify="left").pack(fill=tk.X, pady=(px(6), 0))
+               fg=MUTED, size=8, anchor="w", justify="left").pack(side=tk.BOTTOM, fill=tk.X,
+                                                                  pady=(px(6), 0))
+        HudButton(lp.body, _t("＋ ЗАСЕЛИТЬ НОВОГО"), self._new_agent, height=32,
+                  font_size=10, color=GREEN).pack(side=tk.BOTTOM, fill=tk.X, pady=(px(6), 0))
+        wrap = tk.Frame(lp.body, bg=PANEL)
+        wrap.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        csb = make_vscroll(wrap)
+        csb.pack(side=tk.RIGHT, fill=tk.Y)
+        self.crew_canvas = tk.Canvas(wrap, bg=PANEL, highlightthickness=1,
+                                     highlightbackground=PANEL, highlightcolor=CYAN,
+                                     bd=0, takefocus=1, yscrollcommand=csb.set,
+                                     width=px(230))
+        self.crew_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        csb.configure(command=self.crew_canvas.yview)
+        self.crew_box = tk.Frame(self.crew_canvas, bg=PANEL)
+        self._crew_win = self.crew_canvas.create_window(0, 0, window=self.crew_box, anchor="nw")
+        self.crew_box.bind("<Configure>", lambda _e: self._crew_sync())
+        self.crew_canvas.bind("<Configure>", lambda e: (
+            self.crew_canvas.itemconfigure(self._crew_win, width=e.width), self._crew_sync()))
+        for seq, step in (("<Up>", (-1, "units")), ("<Down>", (1, "units")),
+                          ("<Prior>", (-1, "pages")), ("<Next>", (1, "pages"))):
+            self.crew_canvas.bind(seq, lambda _e, st=step: self._crew_scroll(*st))
+        self._crew_bind_wheel(self.crew_canvas)
 
         rp = HudPanel(right, title=_t("КАРТОЧКА ПАССАЖИРА"))
         rp.pack(fill=tk.X)
@@ -2225,6 +2245,36 @@ class OrionScreen(tk.Frame):
         self._pending = None
 
     # -- заселение ---------------------------------------------------------
+    KIND_LABELS = {"openai_compat": "OpenAI-совместимый", "opencode": "OpenCode",
+                   "github_bridge": "Мост GitHub"}
+
+    @classmethod
+    def agent_subtitle(cls, rec: dict) -> str:
+        """Строка под именем: «тип · модель» (напр. «OpenAI-совместимый · deepseek-chat»)."""
+        kind = str(rec.get("kind") or "opencode")
+        model = str(rec.get("model") or "").strip() or _t("модель по умолчанию")
+        return "{0} · {1}".format(_t(cls.KIND_LABELS.get(kind, kind)), model)
+
+    def _crew_sync(self) -> None:
+        c = self.crew_canvas
+        c.configure(scrollregion=(0, 0, c.winfo_width(), self.crew_box.winfo_reqheight()))
+
+    def _crew_scroll(self, n: int, what: str = "units") -> str:
+        self.crew_canvas.yview_scroll(n, what)
+        return "break"
+
+    def _crew_wheel(self, e) -> str:
+        delta = getattr(e, "delta", 0) or (120 if getattr(e, "num", 0) == 4 else -120)
+        return self._crew_scroll(-1 if delta > 0 else 1, "units") if delta else "break"
+
+    def _crew_bind_wheel(self, w) -> None:
+        w.bind("<MouseWheel>", self._crew_wheel)
+        w.bind("<Button-4>", self._crew_wheel)
+        w.bind("<Button-5>", self._crew_wheel)
+        w.bind("<Button-1>", lambda _e: self.crew_canvas.focus_set(), add="+")
+        for ch in w.winfo_children():
+            self._crew_bind_wheel(ch)
+
     def _refresh_crew(self) -> None:
         for w in self.crew_box.winfo_children():
             w.destroy()
@@ -2232,12 +2282,24 @@ class OrionScreen(tk.Frame):
         for a in reg["agents"]:
             active = a["id"] == reg["active"]
             color = CYAN if active else (GREEN if a.get("enabled", True) else MUTED)
-            b = HudButton(self.crew_box, ("▸ " if active else "") + str(a.get("name") or a["id"]),
-                          lambda k=a["id"]: self._edit_agent(k), height=32, font_size=9,
-                          color=color)
-            b.pack(fill=tk.X, pady=px(2))
-            _label(self.crew_box, self._access_label(a.get("access", "crew")), fg=MUTED,
-                   size=8).pack(anchor="w", pady=(0, px(2)))
+            card = tk.Frame(self.crew_box, bg=PANEL)
+            card.pack(fill=tk.X, pady=(px(2), px(4)))
+            top = tk.Frame(card, bg=PANEL)
+            top.pack(fill=tk.X)
+            if a["id"] != orion.DEFAULT_AGENT["id"]:
+                HudButton(top, "✕", lambda k=a["id"]: self._delete_agent(k), height=32,
+                          width=32, font_size=9, color=RED).pack(side=tk.RIGHT, padx=(px(3), 0))
+            HudButton(top, "✎", lambda k=a["id"]: self._edit_agent_full(k), height=32,
+                      width=32, font_size=9, color=CYAN).pack(side=tk.RIGHT, padx=(px(3), 0))
+            HudButton(top, ("▸ " if active else "") + str(a.get("name") or a["id"]),
+                      lambda k=a["id"]: self._edit_agent(k), height=32, font_size=9,
+                      color=color).pack(side=tk.LEFT, fill=tk.X, expand=True)
+            _label(card, self.agent_subtitle(a), fg=TEXT, size=8, anchor="w").pack(fill=tk.X)
+            _label(card, self._access_label(a.get("access", "crew")), fg=MUTED,
+                   size=8, anchor="w").pack(fill=tk.X)
+            self._crew_bind_wheel(card)
+        self.crew_box.update_idletasks()
+        self._crew_sync()
         if self._draft_id not in {a["id"] for a in reg["agents"]}:
             self._draft_id = reg["agents"][0]["id"]
         self._fill_form(orion.get(self._draft_id) or dict(orion.DEFAULT_AGENT))
@@ -2248,6 +2310,50 @@ class OrionScreen(tk.Frame):
         if rec is not None:
             self._fill_form(rec, is_new=False)
         self.show_tab("agents")
+
+    def _edit_agent_full(self, agent_id: str) -> None:
+        """✎: подключённого по API/мосту — общее окно подключения, остальных — карточка."""
+        rec = orion.get(agent_id)
+        if rec is None:
+            return
+        if rec.get("kind") in ("openai_compat", "github_bridge"):
+            from stamina.agent_dialog import ConnectAgentDialog
+            saved = ConnectAgentDialog(self, pilot=str(rec.get("pilot") or ""), record=rec).run()
+            if saved:
+                self._draft_id = saved.get("id") or agent_id
+                self.refresh()
+                self._hint(_t("Пассажир заселён на борт: {0}").format(saved.get("name") or ""),
+                           GREEN)
+            return
+        self._edit_agent(agent_id)
+
+    def _delete_agent(self, agent_id: str) -> None:
+        """✕: удалить агента с подтверждением; ключ из диспетчера учётных данных — тоже."""
+        rec = orion.get(agent_id)
+        if rec is None:
+            return
+        if agent_id == orion.DEFAULT_AGENT["id"]:
+            self._hint(_t("Бортовой разум Орион остаётся на борту — его можно только отключить"),
+                       AMBER)
+            return
+        if not messagebox.askyesno(_t("УБРАТЬ С БОРТА"),
+                                   _t("Убрать пассажира «{0}» с корабля?")
+                                   .format(rec.get("name") or "—")):
+            return
+        ref = str(rec.get("cred_ref") or "")
+        if not orion.remove(agent_id):
+            return
+        orion.clear_binding(agent_id)
+        if ref and not any(a.get("cred_ref") == ref for a in orion.agents()):
+            from stamina import agent_connect
+            try:
+                agent_connect.delete_key(ref)
+            except Exception:                       # нет ключа / нет доступа — не мешает удалению
+                pass
+        if self._draft_id == agent_id:
+            self._draft_id = orion.DEFAULT_AGENT["id"]
+        self.refresh()
+        self._hint(_t("Пассажир убран с борта"), MUTED)
 
     def _new_agent(self) -> None:
         self._draft_id = ""
@@ -2374,21 +2480,7 @@ class OrionScreen(tk.Frame):
             self._hint(_t("На связи: {0}").format(self._rec().get("name") or ""), CYAN)
 
     def _remove_agent(self) -> None:
-        rec = orion.get(self._draft_id)
-        if rec is None:
-            return
-        if not messagebox.askyesno(_t("УБРАТЬ С БОРТА"),
-                                   _t("Убрать пассажира «{0}» с корабля?")
-                                   .format(rec.get("name") or "—")):
-            return
-        if not orion.remove(self._draft_id):
-            self._hint(_t("Бортовой разум Орион остаётся на борту — его можно только отключить"),
-                       AMBER)
-            return
-        orion.clear_binding(self._draft_id)
-        self._draft_id = orion.DEFAULT_AGENT["id"]
-        self.refresh()
-        self._hint(_t("Пассажир убран с борта"), MUTED)
+        self._delete_agent(self._draft_id)
 
     # -- привязка к OpenCode ---------------------------------------------------
     def _refresh_binding(self) -> None:

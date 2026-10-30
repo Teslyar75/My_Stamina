@@ -581,7 +581,17 @@ class OwnerKeyTest(unittest.TestCase):
     def test_code_is_not_stored_as_text(self):
         owner_key.set_code("4321")
         raw = owner_key.path().read_text(encoding="utf-8")
-        self.assertNotIn("4321", raw)            # только солёный хэш
+        # Хэш в hex может случайно содержать «4321» — проверяем, что кода нет как значения
+        data = json.loads(raw)
+        def leaves(x):
+            if isinstance(x, dict):
+                return [y for v in x.values() for y in leaves(v)]
+            if isinstance(x, list):
+                return [y for v in x for y in leaves(v)]
+            return [str(x)]
+        vals = leaves(data)
+        self.assertNotIn("4321", vals)           # только солёный хэш
+        self.assertNotIn('"4321"', raw)
         self.assertIn("pbkdf2_sha256", raw)
 
     def test_bad_code_rejected(self):
@@ -819,7 +829,7 @@ class OrionScreenTest(unittest.TestCase):
         scr._make_active()
         self.assertEqual(orion.active()["name"], "Сова")
         # в списке пассажиров на каждого: кнопка имени + подпись уровня
-        self.assertEqual(len(scr.crew_box.winfo_children()), 4)
+        self.assertEqual(len(scr.crew_box.winfo_children()), 2)   # по карточке на агента
 
     def test_commander_needs_github_access(self):
         """Отказ в доступе к GitHub — прав Командира нет, это второй шаг заселения."""
