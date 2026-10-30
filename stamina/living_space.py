@@ -313,6 +313,17 @@ class LivingSpace:
         try:
             from stamina import theme as th
             th.on_change(self._on_theme)
+            # unsubscribe when the window dies, otherwise theme keeps a dead LivingSpace
+            host.bind("<Destroy>", self._on_host_destroy, add="+")
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _on_host_destroy(self, event=None) -> None:
+        if event is not None and event.widget is not self.host:
+            return
+        try:
+            from stamina import theme as th
+            th.off_change(self._on_theme)
         except Exception:  # noqa: BLE001
             pass
 

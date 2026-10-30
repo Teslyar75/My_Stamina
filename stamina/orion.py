@@ -1225,7 +1225,14 @@ def binding_status(agent_id: str) -> dict:
 def make_boarding_code() -> str:
     """Одноразовый код для заселения агента (пилот вводит его в OpenCode)."""
     import secrets
-    return secrets.token_hex(4)[:8].upper()
+    # token_hex could give only digits (~2% of runs) -> no letters, code.isupper() False.
+    # Unambiguous alphabet (no 0/O, 1/I) and always at least one letter.
+    letters = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+    alphabet = letters + "23456789"
+    while True:
+        code = "".join(secrets.choice(alphabet) for _ in range(8))
+        if any(c in letters for c in code):
+            return code
 
 
 def check_opencode_token(token: str, *, timeout: float = 30.0) -> tuple[bool, str]:
