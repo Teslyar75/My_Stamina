@@ -10,7 +10,9 @@ from stamina import theme
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 
-from . import cefr, quality
+from stamina.i18n import t as _t
+
+from . import access, cefr, quality
 from .pages_main import SetsPage
 from .pages_verbs import VerbsTab
 from .ui import L, Strip, Tile
@@ -206,14 +208,23 @@ class CefrPage(tk.Frame):
                 return i
         return max(0, len(self.blocks) - 1)
 
+    @staticmethod
+    def _slugs(level: str) -> list[str]:
+        return [w["slug"] for w in cefr.prepared(level)]
+
+    def _captain(self) -> bool:
+        return access.is_captain(self.ctx.progress)
+
     def _level_open(self, level: str) -> bool:
-        avail = cefr.available()
-        if level not in avail:
-            return False
-        i = avail.index(level)
-        if i == 0:
-            return True
-        return all(self._done(w["slug"]) for w in cefr.prepared(avail[i - 1]))
+        """Правило в access.level_open: капитану всё, иначе ≥ N % предыдущего уровня."""
+        return access.level_open(self.ctx.progress, level, cefr.available(),
+                                 self._slugs, self._done)
+
+    def _level_hint(self, level: str) -> str:
+        prev, need, now = access.level_need(self.ctx.progress, level, cefr.available(),
+                                            self._slugs, self._done)
+        return _t("🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)").format(
+            level, need, prev, now)
 
     def _level_complete(self, level: str) -> bool:
         ws = cefr.prepared(level)
@@ -227,7 +238,7 @@ class CefrPage(tk.Frame):
                 b.set_color(MUTED)
                 b.set_enabled(False)
             elif not self._level_open(lv):
-                b.set_text(f"{lv} закр")
+                b.set_text(f"🔒 {lv}")
                 b.set_color(MUTED)
                 b.set_enabled(True)
             else:
@@ -246,9 +257,7 @@ class CefrPage(tk.Frame):
             self.refresh()
             return
         if not self._level_open(level):
-            avail = cefr.available()
-            prev = avail[avail.index(level) - 1]
-            self.ctx.status(f"{level} откроется, когда пройдёшь {prev}", AMBER)
+            self.ctx.status(self._level_hint(level), AMBER)
             return
         if level != self.level:
             self.page = 0
@@ -283,12 +292,14 @@ class CefrPage(tk.Frame):
         words = self.ctx.vocab.in_set(self._set_id())
         self.blocks = [words[i:i + cefr.BLOCK_SIZE]
                        for i in range(0, len(words), cefr.BLOCK_SIZE)]
-        self.max_open = self._frontier()
+        self._front = self._frontier()
+        # капитану открыты все порции; ученику — до первой незакрытой
+        self.max_open = (max(0, len(self.blocks) - 1) if self._captain() else self._front)
         done_n = sum(1 for ws in self.blocks if self._block_done(ws))
         prev = self._done_counts.get(self.level)
         self._done_counts[self.level] = done_n
         if self._reset_block:
-            self.block = self.max_open
+            self.block = self._front
             self._reset_block = False
         elif prev is not None and done_n > prev:
             if self._auto_next(done_n):
@@ -303,7 +314,7 @@ class CefrPage(tk.Frame):
         if not self.blocks:
             return False
         if done_n < len(self.blocks):
-            self.block = self.max_open
+            self.block = self._front
             self.ctx.status(f"Блок {done_n} пройден · открыт блок {done_n + 1}", GREEN)
             return False
         avail = cefr.available()
