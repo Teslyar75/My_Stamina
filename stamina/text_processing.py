@@ -70,6 +70,9 @@ def normalize_spaces(text: str) -> str:
     return " ".join(text.split())
 
 
+_APOSTROPHES = frozenset("\u2019\u2018\u02bc\u2032`\u201b")
+
+
 def remove_punctuation(text: str) -> str:
     """Убирает знаки препинания, не сращивая слова.
 
@@ -84,6 +87,9 @@ def remove_punctuation(text: str) -> str:
     out: list[str] = []
     n = len(text)
     for i, ch in enumerate(text):
+        # typographic apostrophe -> keyboard apostrophe, so the word stays typeable
+        if ch in _APOSTROPHES:
+            ch = "'"
         if ch not in _PUNCTUATION:
             out.append(ch)
             continue

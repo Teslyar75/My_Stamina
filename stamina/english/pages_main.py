@@ -235,7 +235,7 @@ class OverviewPage(tk.Frame):
         def cefr_stats():
             total = known = 0
             for lv in cefrmod.available():
-                for w in cefrmod.prepared(lv):
+                for w in cefrmod.prepared_view(lv):
                     total += 1
                     if p.is_known(w["slug"]) or p.is_learned(w["slug"]):
                         known += 1

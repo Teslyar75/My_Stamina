@@ -167,7 +167,7 @@ class CefrPage(tk.Frame):
         HudButton(bot, "МИССИЯ ПО НАБОРУ", lambda: self.mission(), height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
-        self._sync_level_buttons()
+        self._sync_when_warm()
         # ←/→ листают страницы по 24, когда открыта вкладка CEFR
         self.bind_all("<Left>", self._key_page, add="+")
         self.bind_all("<Right>", self._key_page, add="+")
@@ -210,7 +210,7 @@ class CefrPage(tk.Frame):
 
     @staticmethod
     def _slugs(level: str) -> list[str]:
-        return [w["slug"] for w in cefr.prepared(level)]
+        return cefr.slugs(level)
 
     def _captain(self) -> bool:
         return access.is_captain(self.ctx.progress)
@@ -227,8 +227,33 @@ class CefrPage(tk.Frame):
             level, need, prev, now)
 
     def _level_complete(self, level: str) -> bool:
-        ws = cefr.prepared(level)
+        ws = cefr.prepared_view(level)
         return bool(ws) and all(self._done(w["slug"]) for w in ws)
+
+    def _sync_when_warm(self) -> None:
+        """Level locks need every CEFR set parsed (~1.4 s cold).
+
+        Parse one level per event-loop step instead of one 1.4 s block. Not a
+        thread: a worker thread can garbage-collect Tk objects off the Tk thread,
+        which panics Tcl.
+        """
+        todo = [lv for lv in cefr.available() if not cefr.is_warm_level(lv)]
+
+        def step() -> None:
+            try:
+                if not self.winfo_exists():
+                    return
+            except tk.TclError:
+                return
+            if todo:
+                cefr.prepared_view(todo.pop(0))
+                self.after(1, step)
+            else:
+                self._sync_level_buttons()
+        if not todo:
+            self._sync_level_buttons()
+        else:
+            self.after(1, step)
 
     def _sync_level_buttons(self) -> None:
         have = set(cefr.available())

@@ -110,10 +110,21 @@ def init(root: tk.Tk) -> None:
     global S, HUD_FAMILY, MONO_FAMILY, _root
     _root = root
     try:
+        # forget a destroyed root so later skin changes do not remap dead widgets
+        root.bind("<Destroy>", lambda e, r=root: _forget_root(r) if e.widget is r else None, add="+")
+    except (tk.TclError, AttributeError):
+        pass
+    try:
         S = max(1.0, float(root.winfo_fpixels("1i")) / 96.0)
     except tk.TclError:
         S = 1.0
     _pick_fonts(root)
+
+
+def _forget_root(root: tk.Misc) -> None:
+    global _root
+    if _root is root:
+        _root = None
 
 
 def _pick_fonts(root: tk.Misc | None = None) -> None:

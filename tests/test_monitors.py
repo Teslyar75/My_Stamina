@@ -92,7 +92,9 @@ class DropListRealTest(unittest.TestCase):
             root.update()
             dl = alt_ui.DropList(b, [("пункт", None, False, True)], lambda _b: None)
             root.update()
-            self.assertEqual(str(dl.transient()), str(root))
+            # 7c53b4d: no transient() (Tk 9/Windows hides overrideredirect+transient); -topmost instead
+            self.assertEqual(str(dl.transient()), "")
+            self.assertTrue(int(dl.attributes("-topmost")))
             self.assertLessEqual(abs(dl.winfo_rootx() - b.winfo_rootx()), 2)
             self.assertLessEqual(abs(dl.winfo_rooty() - (b.winfo_rooty() + b.winfo_height())), 2)
             dl.close()
