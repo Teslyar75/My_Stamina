@@ -154,6 +154,10 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         ins.add(self.more_btn, gap_before=6)
         self._ins, self._compact, self._head = ins, None, None
         self.bind("<Configure>", lambda _e: self._compact_later(), add="+")
+        # на компактном экране эти кнопки уходят в «⋯ ЕЩЁ» — для аудита alt-раскладки они
+        # «открываются кнопкой», а не потеряны
+        for b in (self.img_btn, self.tr_btn, self.check_btn):
+            b._alt_toggle = True
         self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
@@ -164,6 +168,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
                                    color=GREEN)
         for b in (self._send_btn, self._pdf_btn, self._prev_btn):
             b.pack(side=tk.RIGHT, padx=(0, px(6)))
+        self._pdf_btn._alt_toggle = self._prev_btn._alt_toggle = self._folder_btn._alt_toggle = True
         self.mic_hint = _label(rb, "", fg=MUTED, size=8, bg=PANEL, anchor="w")
         self.mic_hint.pack(side=tk.BOTTOM, fill=tk.X)
         self.build_find_bar(rb)
@@ -448,6 +453,9 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         except tk.TclError:
             return
         if w <= 1:
+            return
+        if getattr(self.app, "_alt_view", None) is not None:
+            self.set_compact(False)   # у alt-раскладки свой ряд «⋯ ЕЩЁ» — не мешаем ему
             return
         self.set_compact(w < self.COMPACT_W or h < self.COMPACT_H)
 
