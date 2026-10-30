@@ -71,12 +71,12 @@ def deps_ok() -> tuple[bool, str]:
     return True, ""
 
 
-def ready() -> tuple[bool, str]:
+def ready(model_path: Path | None = None) -> tuple[bool, str]:
     """Готов ли голосовой ввод целиком: (готово, причина отказа)."""
     ok, missing = deps_ok()
     if not ok:
         return False, f"нет библиотеки {missing}"
-    path = find_model()
+    path = Path(model_path) if model_path and Path(model_path).is_dir() else find_model()
     if path is None:
         return False, f"нет модели Vosk в {models_dir()}"
     return True, ""
@@ -233,7 +233,7 @@ class Listener:
         """Начать запись. False — не получилось (причина уже в очереди событий)."""
         if self.running:
             return True
-        ok, why = ready()
+        ok, why = ready(self.model_path)
         if not ok:
             self._push(("error", why))
             self._push(("done", None))

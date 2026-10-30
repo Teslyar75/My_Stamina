@@ -171,6 +171,8 @@ class HudButton(_LazyDraw, tk.Canvas):
         fs, bold, wraw, hraw = self._base
         self._font = theme.font(max(6, round(fs * k)), bold)
         w = px(round(wraw * k)) if wraw else _measure_px(self._font, self._text) + px(round(30 * k))
+        if wraw:   # узкая кнопка-иконка не должна обрезать подпись (H2, </>) до пустой рамки
+            w = max(w, _measure_px(self._font, self._text) + px(16))
         try:
             self.configure(width=w, height=px(round(hraw * k)))
         except tk.TclError:

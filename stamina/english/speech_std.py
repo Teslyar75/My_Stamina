@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import tkinter as tk
 
+from stamina.hotkeys import letter_key, typing_in  # noqa: F401  (общий помощник, реэкспорт)
+
 ITEM_OK = 80        # зачёт слова/предложения в одной попытке (= warehouse.FLIP_OK)
 RUN_OK = 85         # средняя прогона карточки (= warehouse.PASS_QUALITY)
 ADVANCE_MS = 900    # пауза перед авто-переходом: успеть увидеть зелёный результат
@@ -15,34 +17,16 @@ HINT_KEYS = ("t", "cyrillic_ie")           # T — подсказка, удер�
 FOCUS_KEYS = ("o", "cyrillic_shcha")       # O — фокус-режим рабочей панели (RU/UK — «щ»), Esc — выход
 
 
-def typing_in(widget) -> bool:
-    """Фокус в поле ввода — пробел и буквы принадлежат тексту, не горячим клавишам."""
-    if isinstance(widget, (tk.Entry, tk.Spinbox)):
-        return True
-    try:
-        from tkinter import ttk
-        if isinstance(widget, (ttk.Entry, ttk.Spinbox, ttk.Combobox)):
-            return True
-    except ImportError:  # pragma: no cover
-        pass
-    if isinstance(widget, tk.Text):
-        try:
-            return str(widget.cget("state")) == "normal"
-        except tk.TclError:
-            return False
-    return False
-
-
 def is_mic_key(e) -> bool:
-    return (getattr(e, "keysym", "") or "").lower() in MIC_KEYS and not typing_in(getattr(e, "widget", None))
+    return letter_key(e, MIC_KEYS)
 
 
 def is_hint_key(e) -> bool:
-    return (getattr(e, "keysym", "") or "").lower() in HINT_KEYS and not typing_in(getattr(e, "widget", None))
+    return letter_key(e, HINT_KEYS)
 
 
 def is_focus_key(e) -> bool:
-    return (getattr(e, "keysym", "") or "").lower() in FOCUS_KEYS and not typing_in(getattr(e, "widget", None))
+    return letter_key(e, FOCUS_KEYS)
 
 
 def passed(score) -> bool:

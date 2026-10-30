@@ -59,6 +59,7 @@ class MicControl:
         self._on_status = on_status
         self._label = label
         self._settings = settings if settings is not None else {}
+        self.model_path = None          # папка модели выбранного языка (None — любая найденная)
         self._save = save
         self._listener: stt.Listener | None = None
         self._partial = ""
@@ -107,7 +108,7 @@ class MicControl:
         """Начать запись. False — не получилось (нет модели/микрофона)."""
         if self.busy:
             return True
-        listener = stt.Listener(silence_sec=self.silence_sec(),
+        listener = stt.Listener(model_path=self.model_path, silence_sec=self.silence_sec(),
                                 max_sec=float(self.cfg("voice_max_sec", DEFAULT_MAX)),
                                 idle_sec=float(self.cfg("voice_idle_sec", DEFAULT_IDLE)),
                                 soft_sec=float(self.cfg("voice_soft_sec", DEFAULT_SOFT)))

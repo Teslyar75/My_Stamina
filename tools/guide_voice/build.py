@@ -86,6 +86,8 @@ def main() -> int:
     todo: list[tuple[str, str, Path, Path]] = []
     jobs: list[dict] = []
     for cid, kind, text in items(a.lang):
+        if cid in clips or any(t[0] == cid for t in todo):
+            continue  # дубликат id — озвучиваем один раз
         h = guide_idle.text_hash(text)
         prev = old_clips.get(cid, {})
         files = {}
