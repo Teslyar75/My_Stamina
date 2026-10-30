@@ -6,6 +6,7 @@ param(
   [int]$Volume = 100,
   [string]$Pitch = '',
   [switch]$Pauses,
+  [string]$Out = '',
   [switch]$ListVoices
 )
 # NOTE: keep this file pure ASCII. PowerShell 5.1 reads a .ps1 without BOM as ANSI,
@@ -102,6 +103,11 @@ if ($onecore) {
   $net.CopyTo($ms)
 
   Write-Output ('voice: ' + $synth.Voice.DisplayName)
+  if ($Out) {
+    # cache mode: write the WAV for instant playback later, do not play now
+    [System.IO.File]::WriteAllBytes($Out, $ms.ToArray())
+    exit 0
+  }
   $player = New-Object System.Media.SoundPlayer
   $player.Stream = New-Object System.IO.MemoryStream(, $ms.ToArray())
   $player.PlaySync()
@@ -134,6 +140,7 @@ if ($Voice) {
 }
 $s.Rate = $Rate
 $s.Volume = $Volume
+if ($Out) { $s.SetOutputToWaveFile($Out) }
 Write-Output ('voice: ' + $s.Voice.Name)
 $s.Speak($text)
 $s.Dispose()

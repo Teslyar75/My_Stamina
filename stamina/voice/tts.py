@@ -117,6 +117,66 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
     return True
 
 
+def _say_cmd(phrase_path: Path, *, voice: str, rate: int, volume: int, lang: str, role: str) -> list[str]:
+    cmd = [powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(say_script()),
+           "-Path", str(phrase_path), "-Rate", str(rate), "-Volume", str(volume), "-Lang", lang]
+    if voice:
+        cmd += ["-Voice", voice]
+    prof = ROLES.get(role, {})
+    if prof.get("pitch"):
+        cmd += ["-Pitch", prof["pitch"]]
+    if prof.get("pauses"):
+        cmd.append("-Pauses")
+    return cmd
+
+
+def cache_dir() -> Path:
+    """Готовые WAV коротких фраз (временная папка системы: не жалко потерять)."""
+    d = Path(tempfile.gettempdir()) / "star_typing_tts"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def cache_path(text: str, *, voice: str = "", lang: str = "", role: str = "") -> Path:
+    import hashlib
+    key = "|".join((speech_text(text), voice, lang, role)).encode("utf-8")
+    return cache_dir() / (hashlib.sha1(key).hexdigest()[:20] + ".wav")
+
+
+def render(text: str, *, voice: str = "", lang: str = "", role: str = "", timeout: float = 30.0) -> Path | None:
+    """Синтезировать фразу в WAV заранее (блокирует — вызывать из потока). None — не вышло."""
+    phrase = speech_text(text)
+    if not phrase or not available():
+        return None
+    out = cache_path(phrase, voice=voice, lang=lang, role=role)
+    if out.is_file() and out.stat().st_size > 1000:
+        return out
+    lang = lang or guess_lang(phrase)
+    tmp = Path(tempfile.gettempdir()) / f"orion_render_{os.getpid()}_{out.stem}.txt"
+    try:
+        tmp.write_text(phrase, encoding="utf-8")
+        cmd = _say_cmd(tmp, voice=voice, rate=0, volume=100, lang=lang, role=role) + ["-Out", str(out)]
+        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout,
+                       creationflags=0x08000000 if sys.platform == "win32" else 0)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return out if out.is_file() and out.stat().st_size > 1000 else None
+
+
+def play_cached(text: str, *, voice: str = "", lang: str = "", role: str = "") -> bool:
+    """Мгновенно проиграть готовый WAV (если он уже в кэше). False — кэша нет."""
+    out = cache_path(text, voice=voice, lang=lang, role=role)
+    if sys.platform != "win32" or not out.is_file():
+        return False
+    stop()
+    try:
+        import winsound
+        winsound.PlaySound(str(out), winsound.SND_FILENAME | winsound.SND_ASYNC | winsound.SND_NODEFAULT)
+    except Exception:  # noqa: BLE001
+        return False
+    return True
+
+
 def stop() -> None:
     """Оборвать текущую речь (если говорит)."""
     global _proc
@@ -127,6 +187,12 @@ def stop() -> None:
             except OSError:
                 pass
         _proc = None
+    if sys.platform == "win32":
+        try:
+            import winsound
+            winsound.PlaySound(None, 0)
+        except Exception:  # noqa: BLE001
+            pass
 
 
 def speaking() -> bool:
