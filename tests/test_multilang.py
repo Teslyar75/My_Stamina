@@ -31,7 +31,7 @@ class PrepTest(unittest.TestCase):
 
     def test_ukrainian_apostrophe(self):
         self.assertEqual(adapt_for_typing("М’ясо, сім'я — «їжа»!"), "м'ясо сім'я їжа")
-        self.assertEqual(adapt_for_typing("don't"), "dont")                   # английский — как раньше
+        self.assertEqual(adapt_for_typing("don’t"), "don't")                   # inner apostrophe kept, typographic one normalised
 
     def test_yo(self):
         self.assertEqual(process_text("Ёлка, ещё", yo=True), "елка еще")

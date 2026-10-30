@@ -14,7 +14,8 @@ class SceneTest(unittest.TestCase):
         self.assertEqual(sc.render((10, 20, 110, 70)).size, (100, 50))
 
     def test_profiles(self):
-        self.assertEqual(ls.DEFAULT_MODE, "light")
+        # since ba60963 the living space is OFF by default (window responsiveness)
+        self.assertEqual(ls.DEFAULT_MODE, "off")
         for m in ("light", "full"):
             sc = ls.Scene(300, 200, m)
             self.assertEqual(len(sc.stars), ls.PROFILE[m]["stars"])
