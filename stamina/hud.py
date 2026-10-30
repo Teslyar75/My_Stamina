@@ -141,6 +141,7 @@ class HudButton(_LazyDraw, tk.Canvas):
                  font_size: int = 10, bold: bool = True, active: bool = False) -> None:
         color = color or theme.CYAN   # не значение по умолчанию: оно «замерзает» на цвете первого скина
         self._font = theme.font(font_size, bold)
+        self._base = (font_size, bold, width, height)
         self._text = text
         self._auto_width = width is None      # ширину задали мы — значит, и растим её сами
         measured = _measure_px(self._font, text)
@@ -164,6 +165,18 @@ class HudButton(_LazyDraw, tk.Canvas):
         self.bind("<FocusOut>", lambda _e: self._set_focus(False))
         from stamina import keynav
         keynav.attach(self)
+
+    def rescale(self, k: float) -> None:
+        """Rescale button (focus mode)."""
+        fs, bold, wraw, hraw = self._base
+        self._font = theme.font(max(6, round(fs * k)), bold)
+        w = px(round(wraw * k)) if wraw else _measure_px(self._font, self._text) + px(round(30 * k))
+        try:
+            self.configure(width=w, height=px(round(hraw * k)))
+        except tk.TclError:
+            return
+        self._last_draw = None
+        self._request_draw()
 
     def _set_focus(self, value: bool) -> None:
         self._focus = value
@@ -367,6 +380,8 @@ class HudPanel(_LazyDraw, tk.Canvas):
         self.body = tk.Canvas(self, bg=PANEL, highlightthickness=0, bd=0)
         top = px(26) if title else px(pad)
         self.body.pack(fill=tk.BOTH, expand=True, padx=px(pad), pady=(top, px(pad)))
+        self._pad = pad
+        self._hk = 1.0
         self._draw_job = None
         self.bind("<Configure>", lambda _e: self._request_draw())
 
@@ -388,14 +403,26 @@ class HudPanel(_LazyDraw, tk.Canvas):
         self.create_line(w - 2, h - 2 - c, w - 2, h - 2 - c - px(22), fill=a, width=2, tags="frame")
         self.create_line(w - 2 - c, h - 2, w - 2 - c - px(40), h - 2, fill=a, width=2, tags="frame")
         if self.title:
-            self.create_text(px(16), px(13), text=self.title, anchor="w",
-                             fill=blend(a, TEXT, 0.25), font=theme.font(9, True), tags="frame")
+            hk = getattr(self, "_hk", 1.0)
+            self.create_text(px(16), px(round(13 * hk)), text=self.title, anchor="w",
+                             fill=blend(a, TEXT, 0.25), font=theme.font(round(9 * hk), True), tags="frame")
         self.tag_lower("frame")
 
 
 # ---------------------------------------------------------------------------
 # Спидометр
 # ---------------------------------------------------------------------------
+
+def _panel_rescale(self, k: float) -> None:
+    """Focus mode: scale the panel header (title font and header height)."""
+    self._hk = k
+    if self.title:
+        self.body.pack_configure(pady=(px(round(26 * k)), px(self._pad)))
+    self._request_draw()
+
+
+HudPanel.rescale = _panel_rescale
+
 
 class SpeedGauge(tk.Canvas):
     START, SWEEP = 215.0, 250.0

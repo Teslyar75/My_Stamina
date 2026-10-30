@@ -44,6 +44,81 @@ def entry(master, width=30, size=11, mono=False) -> tk.Entry:
                     highlightcolor=CYAN, disabledbackground=BG2)
 
 
+class WrapEntry(tk.Text):
+    """Entry-like text field that wraps long text onto up to maxlines lines (Enter does not add a newline)."""
+
+    def __init__(self, master, size=10, maxlines=3) -> None:
+        super().__init__(master, height=1, width=8, wrap="word", bg=BG2, fg=TEXT, insertbackground=CYAN,
+                         relief="flat", font=theme.font(size), highlightthickness=1,
+                         highlightbackground=LINE_HI, highlightcolor=CYAN, padx=px(3), pady=px(2), bd=0)
+        self.maxlines = maxlines
+        self._bsize = self._cur = size
+        self.on_resize = None
+        tags = list(self.bindtags())
+        tags.insert(tags.index("Text"), "WrapEntryNoNL")
+        self.bindtags(tuple(tags))
+        self.bind_class("WrapEntryNoNL", "<Return>", lambda _e: "break")
+        self.bind_class("WrapEntryNoNL", "<KP_Enter>", lambda _e: "break")
+        self.bind("<Configure>", lambda _e: self.after_idle(self._fit), add="+")
+        self.bind("<<Modified>>", self._on_mod, add="+")
+
+    def _on_mod(self, _e=None) -> None:
+        self.edit_modified(False)
+        self.after_idle(self._fit)
+
+    def set_size(self, size: int) -> None:
+        """Base font size (focus mode rescales it); the field may shrink it by up to 2pt to stay one line."""
+        self._bsize = size
+        self.after_idle(self._fit)
+
+    def _fit(self) -> None:
+        import tkinter.font as tkfont
+        try:
+            text = self.get()
+            avail = self.winfo_width() - 2 * (int(self.cget("padx")) + int(self.cget("highlightthickness"))) - px(4)
+        except tk.TclError:
+            return
+        size = self._bsize
+        one = not text
+        if avail > 10 and text:
+            for sz in range(self._bsize, max(6, self._bsize - 2) - 1, -1):
+                if tkfont.Font(font=theme.font(sz)).measure(text) <= avail:
+                    size, one = sz, True
+                    break
+        if self._cur != size:
+            self._cur = size
+            self.configure(font=theme.font(size))
+        if one:
+            self._set_h(1)
+        else:
+            self.after_idle(self._fit_lines)
+
+    def _fit_lines(self) -> None:
+        try:
+            n = self.count("1.0", "end-1c", "displaylines")
+        except tk.TclError:
+            return
+        if isinstance(n, tuple):
+            n = n[0] if n else 0
+        self._set_h(max(1, min(self.maxlines, (n or 0) + 1)))
+
+    def _set_h(self, h: int) -> None:
+        if int(self.cget("height")) != h:
+            self.configure(height=h)
+            if self.on_resize:
+                self.after_idle(self.on_resize)
+
+    def get(self, *_a) -> str:  # Entry API
+        return super().get("1.0", "end-1c")
+
+    def delete(self, *_a) -> None:
+        super().delete("1.0", "end")
+
+    def insert(self, _i, text, *a) -> None:
+        super().insert("end", text.replace("\n", " "), *a)
+        self.after_idle(self._fit)
+
+
 class ScrollFrame(tk.Frame):
     """Вертикальная прокрутка колесом мыши; содержимое — в .inner."""
 
@@ -58,10 +133,38 @@ class ScrollFrame(tk.Frame):
         self.canvas.configure(yscrollcommand=self.bar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.inner.bind("<Configure>", lambda _e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
+        self.autohide = False     # True: полоса только когда содержимое выше окна; inner тянется на всю высоту
+        self.inner.bind("<Configure>", self._on_inner)
+        self.canvas.bind("<Configure>", self._on_canvas)
         self.bind("<Enter>", lambda _e: self._wheel_on(True))
         self.bind("<Leave>", lambda _e: self._wheel_on(False))
+
+    def _on_inner(self, _e=None) -> None:
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        if self.autohide:
+            self.after_idle(self.sync)
+
+    def _on_canvas(self, e) -> None:
+        self.canvas.itemconfigure(self._win, width=e.width)
+        if self.autohide:
+            self.after_idle(self.sync)
+
+    def sync(self) -> None:
+        """autohide: показать полосу только при переполнении; inner растянуть до высоты окна."""
+        try:
+            ch, need = self.canvas.winfo_height(), self.inner.winfo_reqheight()
+            if ch <= 1:
+                return
+            self.canvas.itemconfigure(self._win, height=max(ch, need))
+            over = need > ch + 1
+            if over and not self.bar.winfo_manager():
+                self.bar.pack(side=tk.RIGHT, fill=tk.Y, before=self.canvas)
+            elif not over and self.bar.winfo_manager():
+                self.bar.pack_forget()
+                self.canvas.yview_moveto(0)
+            self.canvas.configure(scrollregion=(0, 0, self.canvas.winfo_width(), max(ch, need)))
+        except tk.TclError:
+            pass
 
     def _wheel_on(self, on: bool) -> None:
         from stamina import wheel_router
@@ -376,3 +479,136 @@ def target_missed(marks, target: str) -> bool:
     from .textutil import word_forms
     forms = word_forms(target)
     return any(t in forms for t, _m in marks) and not any(m and t in forms for t, m in marks)
+
+
+class FocusMode:
+    """Фокус-режим: показать один виджет на всё окно программы.
+
+    Поднимаемся от виджета к окну и на каждом уровне убираем «соседей» (шапку программы,
+    полосу вкладок, статус-строку…). Порядок упаковки запоминаем целиком и при выходе
+    восстанавливаем его как был — ничего не пересоздаётся, состояние страниц сохраняется.
+    """
+
+    def __init__(self, widget) -> None:
+        self.widget = widget
+        self.saved = []        # (parent, manager, [(slave, info), ...]) — только затронутые уровни
+        node = widget
+        top = widget.winfo_toplevel()
+        while node is not top and node is not None:
+            parent = node.master
+            if parent is None:
+                break
+            self._hide_siblings(parent, node)
+            node = parent
+
+    def _hide_siblings(self, parent, keep) -> None:
+        try:
+            packed = list(parent.pack_slaves())
+        except tk.TclError:
+            packed = []
+        if len(packed) > 1 or (packed and keep not in packed):
+            order = []
+            for s in packed:
+                info = dict(s.pack_info())
+                info.pop("in", None)
+                order.append((s, info))
+            self.saved.append((parent, "pack", order))
+            for s in packed:
+                if s is not keep:
+                    s.pack_forget()
+        try:
+            gridded = list(parent.grid_slaves())
+        except tk.TclError:
+            gridded = []
+        hid = [s for s in gridded if s is not keep and s.winfo_ismapped()]
+        if hid:
+            for s in hid:
+                s.grid_remove()          # grid помнит параметры сам
+            self.saved.append((parent, "grid", [(s, None) for s in hid]))
+        try:
+            placed = [s for s in parent.place_slaves() if s is not keep]
+        except tk.TclError:
+            placed = []
+        if placed:
+            order = []
+            for s in placed:
+                info = dict(s.place_info())
+                info.pop("in", None)
+                order.append((s, info))
+                s.place_forget()
+            self.saved.append((parent, "place", order))
+
+    def restore(self) -> None:
+        for parent, mgr, items in reversed(self.saved):
+            for s, info in items:
+                try:
+                    if not s.winfo_exists():
+                        continue
+                    if mgr == "pack":
+                        s.pack_forget()
+                    if mgr == "pack":
+                        s.pack(**info)
+                    elif mgr == "grid":
+                        s.grid()
+                    else:
+                        s.place(**info)
+                except tk.TclError:
+                    pass
+        self.saved = []
+
+
+class Flow(tk.Frame):
+    """Ряд кнопок с переносом: дети раскладываются слева направо и переходят на новую строку,
+    когда не помещаются по ширине. Ничего не обрезается и не уходит за правый край.
+    Добавлять детей обычным конструктором (master=flow), затем вызвать ``flow.add(w)``."""
+
+    def __init__(self, master, gap: int = 3, **kw) -> None:
+        kw.setdefault("bg", master.cget("bg"))
+        kw.setdefault("width", 1)       # ширину задаёт родитель (grid/pack), сам ряд её не раздувает
+        kw.setdefault("height", 1)
+        super().__init__(master, **kw)
+        self.gap = px(gap)
+        self.items: list[tk.Widget] = []
+        self._lastw = -1
+        self._job = None
+        self.bind("<Configure>", lambda e: self.relayout(e.width), add="+")
+
+    def _later(self, _e=None) -> None:
+        if self._job is None:
+            self._job = self.after_idle(self._run)
+
+    def _run(self) -> None:
+        self._job = None
+        try:
+            self.relayout(self.winfo_width(), force=True)
+        except tk.TclError:
+            pass
+
+    def add(self, w: tk.Widget, gap_before: int | None = None) -> tk.Widget:
+        w._flow_gap = px(gap_before) if gap_before is not None else None
+        self.items.append(w)
+        w.bind("<Configure>", self._later, add="+")    # текст кнопки/метки сменился — переразложить
+        self.relayout(self.winfo_width(), force=True)
+        return w
+
+    def relayout(self, width: int, force: bool = False) -> None:
+        if width == self._lastw and not force:
+            return
+        self._lastw = width
+        x = y = rowh = 0
+        for w in self.items:
+            if not getattr(w, "_flow_shown", True):
+                w.place_forget()
+                continue
+            bw, bh = w.winfo_reqwidth(), w.winfo_reqheight()
+            g = w._flow_gap if w._flow_gap is not None else self.gap
+            if x and width > 1 and x + g + bw > width:
+                x, y, rowh = 0, y + rowh + self.gap, 0
+            elif x:
+                x += g
+            w.place(x=x, y=y)
+            x += bw
+            rowh = max(rowh, bh)
+        need = max(1, y + rowh)
+        if int(self.cget("height") or 0) != need:
+            self.configure(height=need)

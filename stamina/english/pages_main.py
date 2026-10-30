@@ -8,6 +8,7 @@ from stamina.english import access
 import datetime as dt
 import random
 import tkinter as tk
+import tkinter.font as tkfont
 
 from stamina import missions, theme
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
@@ -18,7 +19,7 @@ from .speech_std import advance_later, passed
 from . import tasks
 from .mic import MicPanel
 from .textutil import score_sentence, verdict, word_forms
-from .ui import DIFF_COLOR, TIPS, Bar, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
+from .ui import WrapEntry, DIFF_COLOR, TIPS, Bar, Flow, FocusMode, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
 from .vocab import DIFF_RU, POS_FILTER, POS_SHORT, SETS
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
@@ -962,8 +963,206 @@ class ScannerPage(tk.Frame):
         self.back = None
         self.si = 0
         self.ptab = "ipa"
+        self._focus = None          # фокус-режим: запись скрытых виджетов (см. ui.FocusMode)
         self.sf = ScrollFrame(self, bg=BG)
         self.sf.pack(fill=tk.BOTH, expand=True)
+        if getattr(self.winfo_toplevel(), "_alt_view", None) is not None:
+            self._build_alt()       # альт-скины пока без изменений
+        else:
+            self._build_compact()   # классика: всё на одном экране
+        self.bind("<Unmap>", self._on_unmap, add="+")
+        if isinstance(ctx, tk.Misc):    # весь отсек «Английский» спрятали (другой отсек) — тоже выйти
+            ctx.bind("<Unmap>", self._on_unmap, add="+")
+
+    def _build_compact(self) -> None:
+        """Классика: сканер + анализ произношения + данные объекта — одна панель в три колонки,
+        под ней одна строка действий и канал связи. Без фиксированных ширин: колонки на весах,
+        переносы текста подстраиваются под ширину (окно 1024×600 и больше — без прокрутки)."""
+        ctx = self.ctx
+        root = self.sf.inner
+        self.compact = True
+        self.sf.autohide = True       # полоса прокрутки — только если не влезает
+        self.strip = Strip(root)        # заголовок не показываем — имя слова и так крупно в панели
+        # объединённая панель; строка действий — в полосе её заголовка (экономим высоту)
+        win = HudPanel(root, _t("СКАНЕР ОБЪЕКТА"), pad=4)
+        win.pack(fill=tk.X, padx=px(8), pady=(px(1), px(2)))
+        self.scan_panel = win
+        bar = tk.Frame(root, bg=PANEL)
+        self.actbar = bar
+        self.btn_back = HudButton(bar, "←", self.go_back, width=30, height=22, font_size=8)
+        self.btn_back._audit_label = _t("← НАЗАД")
+        self.btn_back.pack(side=tk.LEFT)
+        b = HudButton(bar, "◀", lambda: self.neighbor(-1), width=28, height=22, font_size=7)
+        b._audit_label = _t("◀ ПРЕДЫДУЩЕЕ")
+        b.pack(side=tk.LEFT, padx=(px(3), 0))
+        b = HudButton(bar, "▶", lambda: self.neighbor(1), width=28, height=22, font_size=7)
+        b._audit_label = _t("СЛЕДУЮЩЕЕ ▶")
+        b.pack(side=tk.LEFT, padx=px(3))
+        for mode, icon in (("random", "⤨"), ("speaking", "🎤"), ("reading", "▤"), ("questions", "?")):
+            HudButton(bar, f"{icon} {tasks.MODES[mode][0]}",
+                      lambda m=mode: self.ctx.start_session(m, single=self.slug),
+                      height=22, font_size=7).pack(side=tk.LEFT, padx=(px(3), 0))
+        self.btn_focus = HudButton(bar, _t("⛶ ФОКУС  O"), self.toggle_focus, height=22, font_size=7, color=AMBER)
+        self.btn_focus._classic_only = True   # фокус-режим есть только в компактной классике
+        self.btn_focus.pack(side=tk.LEFT, padx=(px(8), 0))
+        self._bar_mode = None
+        win.bind("<Configure>", lambda e: self._place_actbar(e.width), add="+")
+        self._place_actbar(0)
+        wb = win.body
+        # слово — по своей ширине; анализ и данные делят остаток (переносы внутри колонок)
+        # три группы бывших окон рядом на всю ширину, доли 6:7:9, между ними тонкие разделители
+        for gc, wt in ((0, 6), (2, 7), (4, 9)):
+            wb.grid_columnconfigure(gc, weight=wt, uniform="sc", minsize=0)
+        for gc in (1, 3):
+            wb.grid_columnconfigure(gc, weight=0)
+            tk.Frame(wb, bg=LINE, width=1).grid(row=0, column=gc, sticky="ns", padx=px(6))
+        c0 = tk.Frame(wb, bg=PANEL)
+        c0.grid(row=0, column=0, sticky="nsew")
+        self.rank = chip(c0, "", CYAN, size=7)
+        self.rank.pack(anchor="w")
+        self.word = L(c0, "", fg=TEXT, size=20, bold=True, mono=True)
+        self.word.pack(anchor="w")
+        self.meta = Flow(c0, gap=2)
+        self.meta.pack(fill=tk.X, pady=(0, px(2)))
+        self._word_px = 20
+        self._k = 1.0                # масштаб шрифтов: 1 — обычно, больше — в фокус-режиме
+
+        def fit_word(_e=None):  # длинное слово уменьшает шрифт, а не вылезает из группы
+            avail = c0.winfo_width() - px(4)
+            txt = self.word.cget("text")
+            if avail <= 1 or not txt:
+                return
+            size = round(20 * self._k)
+            while size > 11 and tkfont.Font(font=theme.font(size, True, True)).measure(txt) > avail:
+                size -= 1
+            if size != self._word_px:
+                self._word_px = size
+                self.word.configure(font=theme.font(size, True, True))
+        self._fit_word = fit_word
+        c0.bind("<Configure>", fit_word, add="+")
+        sens = Flow(c0, gap=3)      # озвучка слова, перенос под ширину группы
+        sens.pack(fill=tk.X)
+        sens.add(ctx.audio_button(sens, _t("🔊 ГОЛОС"), lambda: self._cur_word()["word"], height=22, font_size=7))
+        sens.add(ctx.audio_button(sens, _t("🐢 МЕДЛЕННО"), lambda: self._cur_word()["word"], slow=True, height=22, font_size=7))
+        c1 = tk.Frame(wb, bg=PANEL)
+        c1.grid(row=0, column=2, sticky="nsew")
+        L(c1, _t("АНАЛИЗ ПРОИЗНОШЕНИЯ"), fg=MUTED, size=7, bold=True).pack(anchor="w")
+        rr = tk.Frame(c1, bg=PANEL)
+        rr.pack(anchor="w", fill=tk.X)
+        self.resp = L(rr, "", fg=CYAN, size=13, bold=True, mono=True)
+        self.resp.pack(side=tk.LEFT)
+        self.pchips = tk.Frame(rr, bg=PANEL)
+        self.pchips.pack(side=tk.LEFT, padx=px(4))
+        tabs = Flow(c1, gap=2)
+        tabs.pack(fill=tk.X, pady=px(2))
+        self.ptabs = {}
+        for key, title in (("ipa", "IPA"), ("syl", _t("СЛОГИ")), ("guide", _t("КАК ПРОИЗНОСИТЬ")), ("notes", _t("ЗАМЕТКИ"))):
+            bt = tabs.add(HudButton(tabs, title, lambda k=key: self.set_ptab(k), height=19, font_size=7))
+            self.ptabs[key] = bt
+        self.ptext = L(c1, "", fg=TEXT, size=10, wraplength=px(300), justify="left")
+        self.ptext.pack(anchor="w")
+        c2 = tk.Frame(wb, bg=PANEL)
+        c2.grid(row=0, column=4, sticky="nsew")
+        L(c2, _t("ДАННЫЕ ОБЪЕКТА"), fg=MUTED, size=7, bold=True).pack(anchor="w")
+        self.defn = L(c2, "", fg=TEXT, size=10, wraplength=px(360), justify="left")
+        self.defn.pack(anchor="w")
+        self.example = tk.Text(c2, height=1, width=10, bg=PANEL, fg=MUTED, relief="flat", wrap="word", bd=0,
+                               font=theme.font(9), highlightthickness=0, cursor="arrow")
+        self.example.tag_configure("t", foreground=CYAN, font=theme.font(9, True))
+        self.example.pack(fill=tk.X, pady=px(1))
+        trr = tk.Frame(c2, bg=PANEL)
+        trr.pack(fill=tk.X, pady=px(1))
+        L(trr, _t("МОЙ ПЕРЕВОД"), fg=MUTED, size=7, bold=True).pack(side=tk.LEFT)
+        self.tr = WrapEntry(trr, size=10)
+        self.tr.on_resize = lambda: self.after(20, self.sf.sync)
+        self.tr.pack(side=tk.LEFT, padx=(px(4), 0), fill=tk.X, expand=True)
+        self.tr.bind("<FocusOut>", lambda _e: self._save_tr())
+        self.tr.bind("<Return>", lambda _e: (self._save_tr(), self.focus_set()))
+        acts = Flow(c2, gap=3)
+        acts.pack(fill=tk.X, pady=(px(1), 0))
+        self.btn_known = acts.add(HudButton(acts, _t("✓ ЗНАЮ"), self.toggle_known, color=GREEN, height=22, font_size=7))
+        self.btn_list = acts.add(HudButton(acts, _t("⊞ В ОТСЕК"),
+                                           lambda: self.ctx.list_menu(self.btn_list, self.slug, None, self.refresh),
+                                           height=22, font_size=7))
+        self.btn_card = acts.add(HudButton(acts, _t("В ПРОВЕРКУ"), self.add_card, color=AMBER, height=22, font_size=7))
+
+        def rewrap(lbl, col, extra=0):
+            col.bind("<Configure>", lambda e: lbl.configure(wraplength=max(px(80), e.width - px(4) - extra)), add="+")
+        rewrap(self.ptext, c1)
+        rewrap(self.defn, c2)
+        # канал связи — практика предложений
+        self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"), pad=4)
+        self.chan.pack(fill=tk.X, padx=px(8), pady=0)
+        cb = self.chan.body
+        cb.grid_columnconfigure(0, weight=1, minsize=0)
+        cb.grid_columnconfigure(1, weight=0)
+        left = tk.Frame(cb, bg=PANEL)
+        left.grid(row=0, column=0, sticky="nsew")
+        self.sent = tk.Text(left, height=2, width=10, bg=PANEL, fg=TEXT, relief="flat", wrap="word", bd=0,
+                            font=theme.font(12, False, True), highlightthickness=0, cursor="arrow")
+        self.sent.tag_configure("t", foreground=CYAN, font=theme.font(12, True, True))
+        self.sent.tag_configure("ok", foreground=GREEN)
+        self.sent.tag_configure("bad", foreground=RED, underline=True)
+        self.sent.pack(fill=tk.X)
+        self.sent.bind("<Configure>", lambda _e: self.after_idle(self._fit_sent), add="+")
+        self.str_ = L(left, "", fg=MUTED, size=10, wraplength=px(400), justify="left")
+        self.str_.pack(anchor="w")
+        self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(400), justify="left")
+        self.hint.pack(anchor="w")
+        rewrap(self.str_, left)
+        rewrap(self.hint, left)
+        sbtn = Flow(left, gap=3)
+        sbtn.pack(fill=tk.X, pady=(px(1), 0))
+        # пустые строки перевода/подсказки не занимают высоту: показываем их только с текстом
+        for lbl in (self.str_, self.hint):
+            lbl.pack_forget()
+
+            def _cfg(cnf=None, _l=lbl, _orig=lbl.configure, **kw):
+                r = _orig(cnf, **kw)
+                if "text" in kw or (isinstance(cnf, dict) and "text" in cnf):
+                    if _l.cget("text"):
+                        if not _l.winfo_manager():
+                            _l.pack(anchor="w", before=sbtn)
+                    elif _l.winfo_manager():
+                        _l.pack_forget()
+                return r
+            lbl.configure = lbl.config = _cfg
+        sbtn.add(HudButton(sbtn, "◀", lambda: self.step_sent(-1), width=30, height=22))
+        sbtn.add(HudButton(sbtn, "▶", lambda: self.step_sent(1), width=30, height=22))
+        sbtn.add(ctx.audio_button(sbtn, _t("🔊 ГОЛОС"), lambda: self._sent()["en"], height=22, font_size=7))
+        sbtn.add(ctx.audio_button(sbtn, _t("🐢 МЕДЛЕННО"), lambda: self._sent()["en"], slow=True, height=22, font_size=7))
+        b = sbtn.add(HudButton(sbtn, _t("ПЕРЕВОД  T"), self.show_tr, height=22, font_size=7))
+        b._audit_label = _t("ПЕРЕВОД")
+        sbtn.add(HudButton(sbtn, _t("💡 ПОДСКАЗКА"), self.show_hint, height=22, font_size=7, color=AMBER))
+        # номер карточки и итог — в полосе заголовка канала, справа: отдельная строка не нужна
+        chip_bar = tk.Frame(root, bg=PANEL)
+        self.chip_bar = chip_bar
+        self.snum = L(chip_bar, "", fg=MUTED, size=7, bold=True)
+        self.snum.pack(side=tk.LEFT)
+        self.result = L(chip_bar, "", fg=MUTED, size=8, bold=True)
+        self.result.pack(side=tk.LEFT, padx=(px(6), 0))
+        chip_bar.place(in_=self.chan, relx=1.0, x=-px(12), y=px(4), anchor="ne")
+        # итог проверки появляется только когда он есть — пустая шкала не съедает высоту
+        self.match = MatchReadout(left, height=48)
+        m_set, m_clear = self.match.set, self.match.clear
+
+        def _mset(*a, **k):
+            if not self.match.winfo_manager():
+                self.match.pack(fill=tk.X, pady=(px(2), 0))
+            m_set(*a, **k)
+
+        def _mclear():
+            m_clear()
+            self.match.pack_forget()
+        self.match.set, self.match.clear = _mset, _mclear
+        # микрофон — всегда справа, на одном месте; строка статуса — под предложением
+        self.mic = MicPanel(cb, ctx, self.on_speech, compact=True, live_master=left)
+        rewrap(self.mic.live, left)
+        self.mic.grid(row=0, column=1, sticky="n", padx=(px(8), 0))
+
+    def _build_alt(self) -> None:
+        ctx = self.ctx
+        self.compact = False
         root = self.sf.inner
         self.strip = Strip(root)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
@@ -1083,7 +1282,9 @@ class ScannerPage(tk.Frame):
             if not alt:
                 if self.sf.pack_info().get("expand") in (0, "0", False):
                     self.sf.pack_configure(fill=tk.BOTH, expand=True)
-                if not self.sf.bar.winfo_manager():
+                if self.sf.autohide:
+                    self.sf.sync()
+                elif not self.sf.bar.winfo_manager():
                     self.sf.bar.pack(side=tk.RIGHT, fill=tk.Y)
                 return
             if self.sf.bar.winfo_manager():
@@ -1098,6 +1299,199 @@ class ScannerPage(tk.Frame):
             self.chan.pack_configure(pady=(px(2), px(4)))
         except tk.TclError:
             pass
+
+    def _place_actbar(self, width: int) -> None:
+        """Строка действий: в полосе заголовка панели, если влезает; иначе — отдельной строкой над ней."""
+        win, bar = self.scan_panel, self.actbar
+        title_w = tkfont.Font(font=theme.font(round(9 * getattr(win, "_hk", 1.0)), True)).measure(win.title) + px(36)
+        fits = width > 1 and bar.winfo_reqwidth() + title_w + px(10) <= width
+        mode = "title" if fits else "row"
+        if mode == self._bar_mode:
+            return
+        self._bar_mode = mode
+        if fits:
+            bar.pack_forget()
+            bar.place(in_=win, relx=1.0, x=-px(10), y=px(2), anchor="ne")
+        else:
+            bar.place_forget()
+            bar.configure(bg=BG)
+            bar.pack(fill=tk.X, padx=px(8), pady=(px(2), 0), before=win)
+        bar.configure(bg=PANEL if fits else BG)
+        bar.lift()
+
+    # -- фокус-режим (O / Щ, Esc — выход) ------------------------------------------
+    def in_focus(self) -> bool:
+        return self._focus is not None
+
+    def toggle_focus(self, on: bool | None = None) -> None:
+        on = (self._focus is None) if on is None else on
+        if on and self._focus is None:
+            self._focus = FocusMode(self)
+            self._grow(True)
+        elif not on and self._focus is not None:
+            f, self._focus = self._focus, None
+            self._grow(False)
+            f.restore()
+        btn = getattr(self, "btn_focus", None)
+        if btn is not None:
+            btn.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
+            btn.set_active(self._focus is not None)
+        try:
+            self.focus_set()
+        except tk.TclError:
+            pass
+
+    def _grow(self, on: bool) -> None:
+        """Focus-mode helper."""
+        panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
+        if len(panels) != 2 or not getattr(self, "compact", False):
+            return
+        sp, ch_ = panels
+        try:
+            if on:
+                self._grow_saved = [(w, dict(w.pack_info())) for w in panels if w.winfo_manager() == "pack"]
+                self._center(True)
+                for w in panels:
+                    w.pack_propagate(False)
+                    w.pack_configure(fill=tk.BOTH, expand=False)
+                self.update_idletasks()
+                cw = max(1, self.sf.canvas.winfo_width())
+                chh = max(1, self.sf.canvas.winfo_height())
+                k = max(1.0, min(4.0, cw / 512, chh / 270))
+                while True:
+                    self._scale(k)
+                    self.update_idletasks()
+                    other = self.sf.inner.winfo_reqheight() - sp.winfo_reqheight() - ch_.winfo_reqheight()
+                    avail = chh - max(0, other) - px(4)
+                    h1 = int(avail * 0.55)
+                    h2 = avail - h1
+                    over = lambda p, hh: p.body.winfo_reqheight() + px(26) + px(4) + px(6) > hh
+                    sp.configure(height=h1)
+                    ch_.configure(height=h2)
+                    if k <= 1.0 or not (over(sp, h1) or over(ch_, h2)):
+                        break
+                    k = max(1.0, k * 0.92)
+            else:
+                self._scale(1.0)
+                self._center(False)
+                for w, info in getattr(self, "_grow_saved", []):
+                    w.pack_propagate(True)
+                    w.configure(height=1)
+                    w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
+                self._grow_saved = []
+            self.sf.sync()
+        except tk.TclError:
+            pass
+
+    def _center(self, on: bool) -> None:
+        """Focus-mode helper."""
+        wb, cb = self.scan_panel.body, self.chan.body
+        wb.grid_rowconfigure(0, weight=1 if on else 0)
+        cb.grid_rowconfigure(0, weight=1 if on else 0)
+        for w in wb.grid_slaves(row=0):
+            if int(w.grid_info()["column"]) in (0, 2, 4):
+                w.grid_configure(sticky="ew" if on else "nsew")
+        for w in cb.grid_slaves(row=0):
+            col = int(w.grid_info()["column"])
+            if col == 0:
+                w.grid_configure(sticky="ew" if on else "nsew")
+            elif w is self.mic:
+                w.grid_configure(sticky="" if on else "n")
+
+    def _scale(self, k: float) -> None:
+        """Focus-mode helper."""
+        if not getattr(self, "compact", False) or abs(k - self._k) < 0.01:
+            return
+        self._k = k
+        kb = 1 + (k - 1) * 0.6          # focus scaling
+        km = 1 + (k - 1) * 0.8          # focus scaling
+        kh = 1 + (k - 1) * 0.45         # header row and panel titles - moderately
+        for p in (self.scan_panel, self.chan):
+            p.rescale(kh)
+        for w in self.chip_bar.winfo_children():
+            self._sfont(w, kh)
+        for root in (self.scan_panel, self.chan, getattr(self, "actbar", None)):
+            if root is None:
+                continue
+            stack = [root]
+            while stack:
+                w = stack.pop()
+                stack.extend(w.winfo_children())
+                if w is self.word:
+                    continue
+                if isinstance(w, HudButton):
+                    w.rescale(kh if root is self.actbar else (min(km * 1.25, 1 + (k - 1) * 0.55) if w is self.mic.btn else kb))
+                    if w is self.mic.btn and k <= 1.0:
+                        w.rescale(1.0)
+                    continue
+                if isinstance(w, (tk.Label, tk.Text, tk.Entry)) and root is not self.actbar:
+                    self._sfont(w, k)
+        f = lambda n, b=False, m=False: theme.font(round(n * k), b, m)
+        self._fit_sent()
+        self.set_ptab(self.ptab)
+        self._word_px = 0
+        self._fit_word()
+        for fl in self._flows():
+            fl.relayout(fl.winfo_width(), force=True)
+        self.update_idletasks()
+        self._bar_mode = None
+        self._place_actbar(self.scan_panel.winfo_width())
+        self.chip_bar.place_configure(y=px(round(4 * kh)))
+
+    def _fit_sent(self) -> None:
+        """Sentence box is exactly as tall as its wrapped text (1-3 lines), so short sentences leave room."""
+        try:
+            n = self.sent.count("1.0", "end-1c", "displaylines")
+        except tk.TclError:
+            return
+        if isinstance(n, tuple):
+            n = n[0] if n else 0
+        h = max(1, min(3, (n or 0) + 1))
+        if int(self.sent.cget("height")) != h:
+            self.sent.configure(height=h)
+            if getattr(self.sf, "autohide", False):
+                self.after(20, self.sf.sync)
+
+    def _flows(self):
+        out, stack = [], [self.scan_panel, self.chan]
+        while stack:
+            w = stack.pop()
+            stack.extend(w.winfo_children())
+            if isinstance(w, Flow):
+                out.append(w)
+        return out
+
+    def _sfont(self, w, k: float) -> None:
+        if not hasattr(w, "_base_font"):
+            try:
+                w._base_font = tkfont.Font(font=w.cget("font")).actual()
+            except tk.TclError:
+                return
+            if isinstance(w, tk.Text):
+                w._base_tags = {}
+                for t in w.tag_names():
+                    tf = w.tag_cget(t, "font")
+                    if tf:
+                        w._base_tags[t] = tkfont.Font(font=tf).actual()
+
+        def mk(a):
+            sz = a["size"]
+            n = max(6, round(abs(sz) * k))
+            return (a["family"], -n if sz < 0 else n, a["weight"]) if a["slant"] == "roman" else (a["family"], -n if sz < 0 else n, a["weight"], a["slant"])
+        if isinstance(w, WrapEntry):
+            w.set_size(max(6, round(abs(w._base_font["size"]) * k)))
+            return
+        try:
+            w.configure(font=mk(w._base_font))
+            for t, a in getattr(w, "_base_tags", {}).items():
+                w.tag_configure(t, font=mk(a))
+        except tk.TclError:
+            pass
+
+    def _on_unmap(self, e) -> None:
+        # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть
+        if self._focus is not None and e.widget in (self, self.ctx):
+            self.after_idle(lambda: self.toggle_focus(False))
 
     # -- данные -------------------------------------------------------------------
     def _cur_word(self) -> dict:
@@ -1149,12 +1543,20 @@ class ScannerPage(tk.Frame):
         self.word.configure(text=w["word"])
         for c in self.meta.winfo_children():
             c.destroy()
-        L(self.meta, " · ".join(POS_SHORT.get(x, x.upper()) for x in (w.get("pos_all") or [w["pos"]])),
-          fg=MUTED, size=9, bold=True).pack(side=tk.LEFT, padx=px(4))
+        flow = isinstance(self.meta, Flow)
+        if flow:
+            self.meta.items.clear()
+
+        def put(wd, pad):
+            self.meta.add(wd) if flow else wd.pack(side=tk.LEFT, padx=px(pad))
+        put(L(self.meta, " · ".join(POS_SHORT.get(x, x.upper()) for x in (w.get("pos_all") or [w["pos"]])),
+              fg=MUTED, size=9, bold=True), 4)
         d = w.get("difficulty", "medium")
-        chip(self.meta, DIFF_RU.get(d, d), DIFF_COLOR.get(d, CYAN)).pack(side=tk.LEFT, padx=px(2))
+        put(chip(self.meta, DIFF_RU.get(d, d), DIFF_COLOR.get(d, CYAN)), 2)
         for t in (w.get("tags") or [])[:4]:
-            chip(self.meta, t, MUTED).pack(side=tk.LEFT, padx=px(2))
+            put(chip(self.meta, t, MUTED), 2)
+        if self.compact:
+            self.after_idle(self._fit_word)
         self.resp.configure(text=f"[ {w['respelling']} ]" if w.get("respelling") else (w.get("ipa") or "—"))
         for c in self.pchips.winfo_children():
             c.destroy()
@@ -1195,7 +1597,7 @@ class ScannerPage(tk.Frame):
                      (_t("\nЧастые ошибки:\n") + "\n".join(f"• {n}" for n in w["common_mistakes"])
                       if w.get("common_mistakes") else "") or _t("нет данных"),
         }[key]
-        self.ptext.configure(text=txt, font=theme.font(14 if key == "ipa" else 10, False, key in ("ipa", "syl")),
+        self.ptext.configure(text=txt, font=theme.font(round(((12 if self.compact else 14) if key == "ipa" else 10) * getattr(self, "_k", 1.0)), False, key in ("ipa", "syl")),
                              fg=CYAN if key in ("ipa", "syl") else TEXT)
         for k, bt in self.ptabs.items():
             bt.set_active(k == key)
@@ -1271,6 +1673,8 @@ class ScannerPage(tk.Frame):
             for i, (tok, ok) in enumerate(marks):
                 self.sent.insert(tk.END, ("" if i == 0 else " ") + tok, "ok" if ok else "bad")
             self.sent.configure(state="disabled")
+        if getattr(self, "compact", False):
+            self.after_idle(self._fit_sent)
         key = f"{self.slug}:{self.si % len(self._sents())}"
         best = self.ctx.progress.data["speech_best"]
         best[key] = max(best.get(key, 0), score)
@@ -1309,11 +1713,25 @@ class ScannerPage(tk.Frame):
     def on_key(self, e) -> None:
         k = e.keysym.lower()
         from .speech_std import is_mic_key
+        from .speech_std import is_focus_key, is_hint_key
+        if k == "escape" and self._focus is not None:
+            self.toggle_focus(False)    # Esc в фокус-режиме — только выход из него
+            return "break"
         if is_mic_key(e):
             self.mic.toggle()           # единый стандарт: M — микрофон
+        elif is_focus_key(e) and getattr(self, "compact", False):
+            self.toggle_focus()         # O — развернуть/свернуть рабочую панель
+        elif is_hint_key(e):
+            self.str_.configure(text=self._sent().get("ru") or _t("перевода нет"))  # T держим — перевод
         elif k == "s":
             self.ctx.say(self._sent()["en"] or self._cur_word().get("word", ""))
         elif k == "right":
             self.step_sent(1)
         elif k == "left":
             self.step_sent(-1)
+
+    def on_key_up(self, e) -> None:
+        from .speech_std import is_hint_key
+        if is_hint_key(e):
+            cur = self._sent()
+            self.str_.configure(text=(cur.get("ru") or "") if self.ctx.progress.settings.get("show_tr") else "")
