@@ -134,3 +134,28 @@ def _cockpit_bootstrapped(monkeypatch):
 
     monkeypatch.setattr(Cockpit, "__init__", init)
     yield
+
+
+@pytest.fixture(autouse=True)
+def _close_english_tts(monkeypatch):
+    """Каждая кабина поднимает свой powershell-процесс озвучки английского и тесты его
+    не закрывают: к середине прогона в Windows их десятки и всё встаёт. Закрываем после теста."""
+    try:
+        from stamina.english import tts as etts
+    except Exception:  # noqa: BLE001
+        yield
+        return
+    made = []
+    orig = etts.TTS.__init__
+
+    def init(self, *a, **k):
+        orig(self, *a, **k)
+        made.append(self)
+
+    monkeypatch.setattr(etts.TTS, "__init__", init)
+    yield
+    for t in made:
+        try:
+            t.close()
+        except Exception:  # noqa: BLE001
+            pass
