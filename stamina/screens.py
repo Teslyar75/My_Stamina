@@ -1064,7 +1064,7 @@ class SettingsScreen(tk.Frame):
                                   wraplength=px(720), justify="left", anchor="w")
         self.upd_notes.pack(fill=tk.X, pady=(0, px(6)))
         self._upd_info = None
-        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc/Del — пауза  ·  F9 — звук  ·  Home — Орион  ·  PgUp — слайды  ·  PgDn — экран  ·  Ctrl+1…8 — разделы"),
+        _label(self.body, _t("Горячие клавиши:  F1 — справка  ·  F5 — заново  ·  Esc/Del — пауза  ·  F9 — звук  ·  Home — Орион  ·  PgUp — слайды  ·  PgDn — экран  ·  Ctrl+1…9 — разделы"),
                fg=MUTED, size=9).pack(anchor="w", pady=(px(14), 0))
         self.show_tab("systems")
         if getattr(app, "_alt_view", None) is not None:   # «Пульт-кабина»: все вкладки разом, секциями

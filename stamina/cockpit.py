@@ -640,7 +640,7 @@ class Cockpit(tk.Tk):
         b.set_color(AMBER if n else CYAN)
 
     def show_zone(self, zone: str) -> None:
-        """Кнопка зоны в шапке / Ctrl+1…8. Мостик из другой зоны — туда, где были в нём последний раз."""
+        """Кнопка зоны в шапке / Ctrl+1…9. Мостик из другой зоны — туда, где были в нём последний раз."""
         if zone == "bridge":
             in_bridge = nav.zone_of(self.current) == "bridge"
             self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))

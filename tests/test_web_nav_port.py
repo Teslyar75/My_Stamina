@@ -237,7 +237,7 @@ class PageHelpCoverageTest(CockpitKeyboardTest):
         dlg = ph.PageHelpDialog(a)
         a.update()
         self.assertEqual(dlg.key, "bridge_settings.sight")
-        self.assertIn("Ctrl+1…8", dlg.text.get("1.0", "end"))
+        self.assertIn("Ctrl+1…9", dlg.text.get("1.0", "end"))
         dlg.next_topic(1)
         self.assertNotEqual(dlg.key, "bridge_settings.sight")
         dlg.destroy()
