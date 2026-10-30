@@ -8,7 +8,7 @@ import tkinter as tk
 from stamina.hud import HudButton
 from stamina.theme import AMBER, BG2, GREEN, LINE, MUTED, RED, TEXT, blend, px
 
-from .ui import L
+from .ui import Flow, L
 
 
 class LevelMeter(tk.Canvas):
@@ -51,24 +51,34 @@ class LevelMeter(tk.Canvas):
 
 
 class MicPanel(tk.Frame):
-    def __init__(self, master, ctx, on_result, bg=None) -> None:
+    def __init__(self, master, ctx, on_result, bg=None, compact: bool = False, live_master=None) -> None:
         bg = bg or master.cget("bg")
         super().__init__(master, bg=bg)
         self.ctx, self.on_result = ctx, on_result
-        self.btn = HudButton(self, _t("🎤 ПЕРЕДАЧА  M / ␣"), self.toggle, color=RED, height=44, font_size=12, width=210)
-        self.btn.pack(pady=(0, px(4)))
+        self._gap = px(2) if compact else px(4)
+        self.btn = HudButton(self, _t("🎤 ПЕРЕДАЧА  M"), self.toggle, color=RED,
+                             height=32 if compact else 44, font_size=10 if compact else 12, width=210)
+        self.btn.pack(pady=(0, self._gap))
         self.meter = LevelMeter(self)
-        self.meter.pack(pady=(0, px(4)))
-        self.live = L(self, "", fg=MUTED, size=9, bg=bg, wraplength=px(260), justify="center")
-        self.live.pack()
+        self.meter.pack(pady=(0, self._gap))
+        # live_master: строка статуса может жить рядом с текстом (компактный сканер), а не под кнопкой
+        self.live = L(live_master or self, "", fg=MUTED, size=8 if compact else 9, bg=bg,
+                      wraplength=px(300 if compact else 260), justify="left" if live_master else "center")
+        self.live.pack(anchor="w" if live_master else "center")
         self._silent = ""
         self.selfbox = tk.Frame(self, bg=bg)
-        L(self.selfbox, _t("Оцени себя после прослушивания образца:"), fg=MUTED, size=8, bg=bg).pack()
-        row = tk.Frame(self.selfbox, bg=bg)
-        row.pack(pady=px(2))
-        for text, score, col in ((_t("СКАЗАЛ ХОРОШО"), 90, GREEN), (_t("ТАК СЕБЕ"), 60, AMBER), (_t("НЕ ПОЛУЧИЛОСЬ"), 20, RED)):
-            HudButton(row, text, lambda s=score: self._self(s), color=col, height=28, font_size=8).pack(
-                side=tk.LEFT, padx=px(2))
+        if compact:     # узкая колонка: кнопки самооценки переносятся под ширину кнопки микрофона
+            row = Flow(self.selfbox, gap=3, bg=bg)
+            row.pack(fill=tk.X)
+            for text, score, col in ((_t("СКАЗАЛ ХОРОШО"), 90, GREEN), (_t("ТАК СЕБЕ"), 60, AMBER), (_t("НЕ ПОЛУЧИЛОСЬ"), 20, RED)):
+                row.add(HudButton(row, text, lambda s=score: self._self(s), color=col, height=22, font_size=7))
+        else:
+            L(self.selfbox, _t("Оцени себя после прослушивания образца:"), fg=MUTED, size=8, bg=bg).pack()
+            row = tk.Frame(self.selfbox, bg=bg)
+            row.pack(pady=px(2))
+            for text, score, col in ((_t("СКАЗАЛ ХОРОШО"), 90, GREEN), (_t("ТАК СЕБЕ"), 60, AMBER), (_t("НЕ ПОЛУЧИЛОСЬ"), 20, RED)):
+                HudButton(row, text, lambda s=score: self._self(s), color=col, height=28, font_size=8).pack(
+                    side=tk.LEFT, padx=px(2))
         self._polling = False
         self.refresh_mode()
 
@@ -77,18 +87,18 @@ class MicPanel(tk.Frame):
 
     def refresh_mode(self) -> None:
         if self.speech_on():
-            self.btn.pack(pady=(0, px(4)))
+            self.btn.pack(pady=(0, self._gap))
             self.selfbox.pack_forget()
             self.live.configure(text=_t("Нажми и прочитай вслух. Запись остановится сама после паузы."))
         else:
             self.btn.pack_forget()
             if self.ctx.progress.settings.get("self_assess", True):
-                self.selfbox.pack()
+                self.selfbox.pack(fill=tk.X)
             why = self.ctx.asr.why_unavailable() if self.ctx.progress.settings.get("asr", True) else _t("выключено в настройках")
             self.live.configure(text=_t("Распознавание недоступно: {0}").format(why))
 
     def _btn_idle(self) -> None:
-        self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M / ␣"))
+        self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M"))
         self.btn.set_color(RED)
         self.btn.set_active(False)
         self.meter.clear()

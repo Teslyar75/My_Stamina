@@ -1179,6 +1179,11 @@ class Cockpit(tk.Tk):
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
+        if e.keysym == "Escape" and self.current == english_hook.KEY:
+            scr = self.screens.get(english_hook.KEY)
+            if scr is not None and getattr(scr, "focus_active", lambda: False)():
+                scr.pages[scr.current].toggle_focus(False)   # Esc в фокус-режиме — только выход из него
+                return "break"
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del

@@ -76,19 +76,36 @@ class EnglishScreen(tk.Frame):
         from .pages_misc import ListsPage, LogPage, SettingsPage
         from .pages_setshub import SetsHubPage
         from .pages_warehouse import WarehousePage
+        alt = getattr(self.app, "_alt_view", None) is not None
         top = tk.Frame(self, bg=BG)
-        top.pack(fill=tk.X, padx=px(12), pady=(px(8), px(2)))
+        top.pack(fill=tk.X, padx=px(12) if alt else px(8), pady=(px(8), px(2)) if alt else (px(4), px(2)))
+        self.top = top
         self.nav: dict[str, HudButton] = {}
+        if alt:
+            tabs = top
+        else:
+            # классика: вкладки переносятся в несколько рядов, поиск всегда справа — ничего не уходит за край
+            top.grid_columnconfigure(0, weight=1, minsize=0)
+            tabs = tk.Frame(top, bg=BG)
+            tabs.grid(row=0, column=0, sticky="nsew")
         for name, title in SUBPAGES:
-            b = HudButton(top, title, lambda n=name: self.show(n), height=30, font_size=8)
-            b.pack(side=tk.LEFT, padx=px(2))
+            b = HudButton(tabs, title, lambda n=name: self.show(n), height=30 if alt else 20, font_size=8)
+            if alt:
+                b.pack(side=tk.LEFT, padx=px(2))
             self.nav[name] = b
+        if not alt:
+            self._tabs = tabs
+            self._tabs_w = 0
+            tabs.bind("<Configure>", lambda e: self._flow_tabs(e.width), add="+")
+            self._flow_tabs(0)
         sbox = tk.Frame(top, bg=BG)
-        sbox.pack(side=tk.RIGHT)
+        if alt:
+            sbox.pack(side=tk.RIGHT)
+        else:
+            sbox.grid(row=0, column=1, sticky="ne", padx=(px(6), 0))
         L(sbox, "⌕", fg=CYAN, size=13, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(4)))
         # alt: поле шире, чтобы подсказка <СКАНИРОВАТЬ СЛОВО:> не обрезалась; классика - как была
-        alt = getattr(self.app, "_alt_view", None) is not None
-        self.search = entry(sbox, width=24 if alt else 18, size=10)
+        self.search = entry(sbox, width=24 if alt else 16, size=10)
         self.search.pack(side=tk.LEFT, ipady=px(4))
         HudButton(sbox, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.LEFT, padx=(px(6), 0))
@@ -119,10 +136,29 @@ class EnglishScreen(tk.Frame):
             self.asr.load_async()
         self.show("overview")
 
+    def _flow_tabs(self, width: int) -> None:
+        """Классика: разложить кнопки вкладок по рядам под текущую ширину (перенос, а не обрезка)."""
+        if width == self._tabs_w and width:
+            return
+        self._tabs_w = width
+        gap = px(2)
+        x = y = rowh = 0
+        for b in self.nav.values():
+            bw, bh = b.winfo_reqwidth(), b.winfo_reqheight()
+            if width > 1 and x and x + bw > width:
+                x, y, rowh = 0, y + rowh + gap, 0
+            b.place(x=x, y=y)
+            x += bw + gap
+            rowh = max(rowh, bh)
+        self._tabs.configure(height=y + rowh, width=1)
+
     # -- навигация ------------------------------------------------------------------
     def show(self, name: str) -> None:
         if not self._built:
             return
+        for p in self.pages.values():          # фокус-режим не переживает смену вкладки
+            if getattr(p, "_focus", None) is not None:
+                p.toggle_focus(False)
         self.current = name
         page = self.pages[name]
         if hasattr(page, "refresh"):
@@ -416,6 +452,10 @@ class EnglishScreen(tk.Frame):
         page = self.pages.get(self.current)
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
+
+    def focus_active(self) -> bool:
+        page = self.pages.get(self.current) if self._built else None
+        return getattr(page, "_focus", None) is not None
 
     def on_key_up(self, e) -> None:
         if not self._built:

@@ -30,7 +30,8 @@ CTRL = ("Button", "Checkbutton", "Radiobutton", "Menubutton", "Scale", "Entry", 
 def _label(w) -> str:
     if w.winfo_class() in ("Entry", "TEntry", "Spinbox", "TSpinbox"):
         return w.winfo_class()          # cget("text") у поля ввода — имя PY_VARn, оно плавает между запусками
-    t = getattr(w, "_text", None)
+    # _audit_label: короткая подпись в компактной классике = та же функция, что и полная в alt
+    t = getattr(w, "_audit_label", None) or getattr(w, "_text", None)
     if t is None:
         try:
             t = w.cget("text")
@@ -137,7 +138,7 @@ def collect_one(layout: str, skin: str, size: str) -> dict:
                 x = stack.pop()
                 stack.extend(x.winfo_children())
                 k = _kind(x)
-                if k is None or getattr(x, "_alt_more", False):
+                if k is None or getattr(x, "_alt_more", False) or getattr(x, "_classic_only", False):
                     continue
                 if id(x) in seen:
                     continue

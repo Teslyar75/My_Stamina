@@ -12,6 +12,7 @@ RUN_OK = 85         # средняя прогона карточки (= warehous
 ADVANCE_MS = 900    # пауза перед авто-переходом: успеть увидеть зелёный результат
 MIC_KEYS = ("m", "cyrillic_softsign")      # M (в RU/UK раскладке та же клавиша — «ь»)
 HINT_KEYS = ("t", "cyrillic_ie")           # T — подсказка, удерживать (RU/UK — «е»); пробел свободен
+FOCUS_KEYS = ("o", "cyrillic_shcha")       # O — фокус-режим рабочей панели (RU/UK — «щ»), Esc — выход
 
 
 def typing_in(widget) -> bool:
@@ -38,6 +39,10 @@ def is_mic_key(e) -> bool:
 
 def is_hint_key(e) -> bool:
     return (getattr(e, "keysym", "") or "").lower() in HINT_KEYS and not typing_in(getattr(e, "widget", None))
+
+
+def is_focus_key(e) -> bool:
+    return (getattr(e, "keysym", "") or "").lower() in FOCUS_KEYS and not typing_in(getattr(e, "widget", None))
 
 
 def passed(score) -> bool:
