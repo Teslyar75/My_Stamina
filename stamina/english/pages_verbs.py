@@ -8,10 +8,9 @@ from stamina.i18n import t as _t
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
 
 from . import quality, verbs
-from .mic import MicPanel
-from .speech_std import advance_later, is_mic_key, passed
-from .textutil import score_sentence, verdict
-from .ui import L, ScrollFrame, Strip, target_missed
+from .check import SpeechCheck
+from .speech_std import is_hint_key, is_mic_key, passed
+from .ui import L, ScrollFrame, Strip
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 
@@ -79,16 +78,12 @@ class VerbsTab(tk.Frame):
 
         bottom = tk.Frame(right, bg=PANEL, highlightthickness=1, highlightbackground=LINE)
         bottom.pack(fill=tk.X, pady=(px(4), 0))
-        self.status = L(bottom, _t("Выберите пример и проверьте произношение."), fg=MUTED, size=9,
-                        bg=PANEL, wraplength=px(420), justify="left")
-        self.status.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(10), pady=px(8))
-        self.mic = None
-        if hasattr(self.ctx, "asr"):
-            self.mic = MicPanel(bottom, self.ctx, self.on_speech, bg=PANEL)
-            self.mic.pack(side=tk.RIGHT, padx=px(8), pady=px(6))
-        else:
-            L(bottom, _t("Микрофон доступен в приложении"), fg=MUTED, size=8,
-              bg=PANEL).pack(side=tk.RIGHT, padx=px(8))
+        # единый блок проверки — как в сканере (check.SpeechCheck)
+        self.check = SpeechCheck(bottom, self.ctx, self.on_speech, bg=PANEL)
+        self.check.pack(fill=tk.X, padx=px(10), pady=px(6))
+        self.mic = self.check.mic
+        self.status = self.check.note
+        self.status.configure(text=_t("Выберите пример и проверьте произношение."))
 
     # -- данные ---------------------------------------------------------------
     def _verb(self) -> dict:
@@ -254,6 +249,8 @@ class VerbsTab(tk.Frame):
         self.refresh()
 
     def select_row(self, i: int) -> None:
+        if i != self.active_si:
+            self.check.clear()
         self.active_si = i
         self._scores = dict(self.ctx.progress.data.get("verb_scores") or {})
         self._render_rows()
@@ -272,47 +269,28 @@ class VerbsTab(tk.Frame):
     def on_speech(self, alts, self_score) -> None:
         sent = self._active_sent()
         verb = self._verb()
-        if self_score is not None:
-            score = self_score
-            marks = None
-            heard = ""
-        else:
-            if not alts:
-                return
-            level = self.ctx.progress.settings.get("speech_strictness", "normal")
-            res = [(score_sentence(sent["en"], a, verb["word"], strictness=level), a) for a in alts]
-            (score, marks), heard = max(res, key=lambda r: r[0][0])
+        res = self.check.evaluate(sent["en"], alts, self_score, verb["word"])
+        if res is None:
+            return
+        score = res[0]
         key = self._score_key(self.active_si)
         self._scores[key] = max(self._scores.get(key, 0), score)
         self.ctx.progress.data.setdefault("verb_scores", {})[key] = self._scores[key]
         self.ctx.progress.save()
-        text, vk = verdict(score)
         if passed(score):
             quality.auto(self.ctx.progress, "verb:" + self.slug, "B", score,
                          si=self.active_si, kind="verb", n_sents=12)
-            self.ctx.sfx("click")
-            msg = _t("Пример {0}: {1}% · {2}").format(self.active_si + 1, score, text)
-            if heard:
-                msg += _t(" · услышано: «{0}»").format(heard)
-            self.status.configure(text=msg, fg=GREEN)
-            self.ctx.status(msg, GREEN)
-        else:
-            self.ctx.sfx("error")
-            msg = _t("Пример {0}: {1}% · {2}").format(self.active_si + 1, score, text)
-            if marks and target_missed(marks, verb["word"]):
-                msg += _t(" · не найдено слово «{0}»").format(verb["word"])
-            if heard:
-                msg += _t(" · услышано: «{0}»").format(heard)
-            self.status.configure(text=msg, fg=VCOL[vk])
-            self.ctx.status(msg, VCOL[vk])
+        self.status.configure(text=_t("Пример {0}: {1}%").format(self.active_si + 1, score),
+                              fg=GREEN if passed(score) else MUTED)
         self._render_rows()
         self._render_counts()
-        if passed(score):
-            # единый стандарт: зачёт ≥80% → через ADVANCE_MS следующее время (или глагол);
-            # ниже порога строка остаётся выбранной — повторяйте, пока не получится
-            here = (self.slug, self.active_si)
-            advance_later(self, self.next_item, lambda: (self.slug, self.active_si) == here)
+        here = (self.slug, self.active_si)
+        self.check.judge(score, self.next_item, lambda: (self.slug, self.active_si) == here)
         self._scroll_to_active()
+
+    def _hint_text(self) -> str:
+        s = self._active_sent()
+        return f"{s.get('ru') or ''}  ·  {s.get('tense_ru') or ''}: {s.get('hint') or ''}"
 
     def next_item(self) -> None:
         if self.active_si < len(self._sents()) - 1:
@@ -329,14 +307,22 @@ class VerbsTab(tk.Frame):
             self.reference.on_key(e)
             return
         k = (e.keysym or "").lower()
-        if is_mic_key(e) and self.mic is not None:
-            self.mic.toggle()
+        if is_mic_key(e):
+            self.check.toggle()
+        elif is_hint_key(e):
+            self.check.hint_down(self._hint_text())   # T — держать, как во всех проверках
         elif k == "down":
             self.select_row(min(self.active_si + 1, len(self._sents()) - 1))
             self._scroll_to_active()
         elif k == "up":
             self.select_row(max(self.active_si - 1, 0))
             self._scroll_to_active()
+
+    def on_key_up(self, e) -> None:
+        if self.reference is not None and self.reference.winfo_ismapped():
+            self.reference.on_key_up(e)
+        elif is_hint_key(e):
+            self.check.hint_up()
 
     def _scroll_to_active(self) -> None:
         try:

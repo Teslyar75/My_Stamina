@@ -13,6 +13,7 @@ import tkinter as tk
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL_HI, RED, TEXT, px
 
+from .check import SpeechCheck
 from .mic import MicPanel
 from .speech_std import is_hint_key, is_mic_key
 from .textutil import score_sentence, score_word, verdict
@@ -641,12 +642,9 @@ class WarehousePage(tk.Frame):
             self.ctx.audio_button(tools, _t("🔊 ОЗВУЧИТЬ EN"), lambda t=en_target: t,
                                   height=30, font_size=9, width=140).pack(side=tk.LEFT)
 
-            mic_row = tk.Frame(panel, bg=PANEL)
-            mic_row.pack(anchor="w", pady=px(2))
-            self.mic = MicPanel(mic_row, self.ctx, self.on_speech)
-            self.mic.pack(side=tk.LEFT)
-            self.match = MatchReadout(panel)
-            self.match.pack(fill=tk.X, pady=(px(4), 0))
+            self.check = SpeechCheck(panel, self.ctx, self.on_speech)
+            self.check.pack(fill=tk.X, pady=(px(2), 0))
+            self.mic, self.match = self.check.mic, self.check.match
             self.fb = L(panel, "", fg=MUTED, size=10, bg=PANEL)
             self.fb.pack(anchor="w")
 

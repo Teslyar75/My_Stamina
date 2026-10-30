@@ -12,6 +12,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL
 from . import access
 from . import book_sentences as bs
 from . import sm2
+from .check import SpeechCheck
 from .mic import MicPanel
 from .speech_std import is_hint_key, is_mic_key
 from .textutil import score_sentence, verdict
@@ -462,12 +463,9 @@ class BookCardsPage(tk.Frame):
         L(tools, _t("→ затем проверка микрофоном"), fg=MUTED, size=8, bg=PANEL).pack(
             side=tk.LEFT, padx=px(10))
 
-        mic_row = tk.Frame(box, bg=PANEL)
-        mic_row.pack(anchor="w", pady=px(6))
-        self.mic = MicPanel(mic_row, self.ctx, self.on_speech, bg=PANEL)
-        self.mic.pack(side=tk.LEFT)
-        self.match = MatchReadout(box)
-        self.match.pack(fill=tk.X, pady=(px(4), 0))
+        self.check = SpeechCheck(box, self.ctx, self.on_speech, bg=PANEL)
+        self.check.pack(fill=tk.X, pady=(px(6), 0))
+        self.mic, self.match = self.check.mic, self.check.match
         self.fb = L(box, "", fg=MUTED, size=10, bg=PANEL)
         self.fb.pack(anchor="w")
 

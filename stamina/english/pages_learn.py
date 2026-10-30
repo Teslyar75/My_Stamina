@@ -15,6 +15,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUT
 
 from .speech_std import advance_later, passed as std_passed
 from . import sm2
+from .check import SpeechCheck
 from .mic import MicPanel
 from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
 from .textutil import score_sentence, score_word, verdict, word_forms
@@ -536,10 +537,9 @@ class PracticePage(tk.Frame):
         left.pack(side=tk.LEFT, anchor="n")
         self.ctx.audio_button(left, _t("🔊 ОБРАЗЕЦ"), lambda: sample, height=30, font_size=9).pack(anchor="w", pady=px(2))
         self.ctx.audio_button(left, _t("🐢 МЕДЛЕННО"), lambda: sample, slow=True, height=30, font_size=9).pack(anchor="w")
-        self.mic = MicPanel(r, self.ctx, self.on_speech)
-        self.mic.pack(side=tk.LEFT, padx=px(30))
-        self.match = MatchReadout(self.tb)  # «СОВПАДЕНИЕ: N%» после каждой попытки
-        self.match.pack(fill=tk.X, pady=(px(8), 0))
+        self.check = SpeechCheck(r, self.ctx, self.on_speech)   # тот же блок, что в сканере
+        self.check.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(30), 0))
+        self.mic, self.match = self.check.mic, self.check.match
 
     def _t_S1(self, t, w) -> None:
         self._big(w["word"], size=34)

@@ -98,7 +98,7 @@ def _wait(root, ms=1100):
 
 
 def test_reference_example_uses_unified_standard(root, tmp_path):
-    """Пример Tatoeba: зачёт ≥80% → само следующее время; ниже — время остаётся."""
+    """Форма лицо×время: зачёт ≥80% → следующая форма, после последней — время; ниже — остаёмся."""
     panel = ReferencePanel(root, Ctx(tmp_path))
     panel.pack(fill="both", expand=True)
     root.update()
@@ -107,6 +107,10 @@ def test_reference_example_uses_unified_standard(root, tmp_path):
     panel.on_speech([], 50)
     _wait(root)
     assert panel.tense == "past_simple"
+    panel.on_speech([], 90)
+    _wait(root)
+    assert (panel.tense, panel.person_i) == ("past_simple", 1)   # следующая форма
+    panel.select_person(len(cj.PERSONS) - 1)
     panel.on_speech([], 90)
     _wait(root)
     assert panel.tense == cj.TENSE_KEYS[cj.TENSE_KEYS.index("past_simple") + 1]
