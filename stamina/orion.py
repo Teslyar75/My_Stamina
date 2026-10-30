@@ -140,7 +140,16 @@ def _write_json(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.parent / (path.name + ".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
-    tmp.replace(path)
+    # Windows: replace() fails with WinError 5 while another reader (antivirus,
+    # indexer, a UI thread reading history) briefly holds the target open. Retry.
+    for attempt in range(20):
+        try:
+            tmp.replace(path)
+            return
+        except PermissionError:
+            if attempt == 19:
+                raise
+            time.sleep(0.025)
 
 
 def _read_json(path: Path, fallback: dict) -> dict:
