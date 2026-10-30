@@ -434,7 +434,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         return m
 
     # -- компактный режим (1024×600 и меньше) ------------------------------------------
-    COMPACT_W, COMPACT_H = 1180, 680
+    COMPACT_W, COMPACT_H = 1180, 760   # 1280x720 тоже ужимаем: редактору +~100px
 
     def _compact_later(self) -> None:
         if getattr(self, "_compact_job", None) is None:
