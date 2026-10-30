@@ -67,15 +67,16 @@ class FormatMixin:
 
     # -- лента -------------------------------------------------------------------
     def build_format_bar(self, parent) -> tk.Frame:
-        bar = tk.Frame(parent, bg=PANEL)
+        from stamina.english.ui import Flow   # общий ряд с переносом: на 1024 ничего не обрезается
+        bar = Flow(parent, bg=PANEL)
         self.fmt_buttons: dict[str, HudButton] = {}
         for aid, label, _keys in actions():
             color = AMBER if aid == "help" else (GREEN if aid == "find" else CYAN)
-            gap = px(6) if aid in ("undo", "find", "help") else px(2)
+            gap = 6 if aid in ("undo", "find", "help") else 2
             w = 30
             b = HudButton(bar, label, lambda a=aid: self.do_action(a), height=28, width=w,
                           font_size=9, color=color)
-            b.pack(side=tk.LEFT, padx=(gap if self.fmt_buttons else 0, 0))
+            bar.add(b, gap_before=gap if self.fmt_buttons else 0)
             self.fmt_buttons[aid] = b
         return bar
 

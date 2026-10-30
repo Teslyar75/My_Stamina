@@ -16,6 +16,7 @@ import time
 import tkinter as tk
 from pathlib import Path
 
+from stamina.english.ui import Flow
 from stamina import compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
@@ -71,18 +72,18 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.help_view = self.build_help_view(left.body)
         lb = self.list_view = tk.Frame(left.body, bg=PANEL)
         lb.pack(fill=tk.BOTH, expand=True)
-        btns = tk.Frame(lb, bg=PANEL)
+        btns = Flow(lb, bg=PANEL)     # перенос, чтобы список не отнимал ширину у редактора на 1024
         btns.pack(fill=tk.X, pady=(0, px(6)))
-        HudButton(btns, _t("+ НОВЫЙ"), self.new_doc, height=32, font_size=10,
-                  color=GREEN).pack(side=tk.LEFT)
-        HudButton(btns, _t("ОТКРЫТЬ"), self.open_file, height=32, font_size=10,
-                  color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
+        btns.add(HudButton(btns, _t("+ НОВЫЙ"), self.new_doc, height=32, font_size=10, color=GREEN),
+                 gap_before=0)
+        btns.add(HudButton(btns, _t("ОТКРЫТЬ"), self.open_file, height=32, font_size=10, color=CYAN),
+                 gap_before=6)
         self.del_btn = HudButton(btns, _t("УБРАТЬ"), self._remove, height=32, font_size=9,
                                  color=MUTED)
-        self.del_btn.pack(side=tk.RIGHT)
+        btns.add(self.del_btn, gap_before=6)
         sb = make_vscroll(lb)
         sb.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listbox = tk.Listbox(lb, width=24, bg=PANEL, fg=TEXT, relief=tk.FLAT, bd=0,
+        self.listbox = tk.Listbox(lb, width=20, bg=PANEL, fg=TEXT, relief=tk.FLAT, bd=0,
                                   highlightthickness=0, selectbackground=theme.blend(CYAN, PANEL, 0.55),
                                   selectforeground=TEXT, activestyle="none", font=theme.font(10),
                                   yscrollcommand=sb.set, exportselection=False)
@@ -103,45 +104,44 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
                                     highlightthickness=1, highlightbackground=LINE, highlightcolor=CYAN)
         self.title_entry.pack(fill=tk.X, pady=(0, px(6)), ipady=px(3))
         self.title_var.trace_add("write", lambda *_a: self._changed())
-        self.build_format_bar(rb).pack(fill=tk.X, pady=(0, px(6)))
+        fmt = self.build_format_bar(rb)
+        fmt.pack(fill=tk.X, pady=(0, px(6)))
 
-        bar = tk.Frame(rb, bg=PANEL)
-        bar.pack(fill=tk.X, pady=(0, px(6)))
         # «Вставить» — над редактором; «выдать» (просмотр/PDF/отправить/экспорт) —
         # в шапке страницы, чтобы на 1024×600 редактору осталась высота.
-        ins = tk.Frame(bar, bg=PANEL)
-        ins.pack(side=tk.LEFT)
+        # одна общая лента с переносом (ui.Flow, как в сканере): формат + вставка/чтение/ФОКУС —
+        # на 1024×600 ничего не обрезается и редактору остаётся высота
+        ins = fmt
         out = self._out_group
         self.img_btn = HudButton(ins, _t("КАРТИНКА ▾"), self.image_menu, height=30, font_size=9,
                                  color=CYAN)
-        self.img_btn.pack(side=tk.LEFT)
+        ins.add(self.img_btn, gap_before=6)
         store = getattr(self.app, "store", None)
         self.mic = MicControl(ins, on_text=self.insert_dictation, on_status=self._mic_status,
                               label=_t("ДИКТОВКА F9"), height=30, font_size=9,
                               settings=getattr(store, "settings", None),
                               save=getattr(store, "save_settings", None))
         self.mic.button.command = self.start_dictation
-        self.mic.button.pack(side=tk.LEFT, padx=(px(6), 0))
+        ins.add(self.mic.button, gap_before=6)
         self.lang_btn = HudButton(ins, "RU", self.dict_lang_menu, height=30, font_size=9,
                                   width=50, color=GREEN)
-        self.lang_btn.pack(side=tk.LEFT, padx=(px(2), 0))
+        ins.add(self.lang_btn, gap_before=2)
         self.tr_btn = HudButton(ins, _t("ПЕРЕВОД ▾"), self.translate_menu, height=30, font_size=9,
                                 color=CYAN)
-        self.tr_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        ins.add(self.tr_btn, gap_before=6)
         self.check_btn = HudButton(ins, _t("ПРОВЕРКА"), self.check_text, height=30, font_size=9,
                                    color=AMBER)
-        self.check_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        ins.add(self.check_btn, gap_before=6)
         self.read_btn = HudButton(ins, _t("▶ ЧИТАТЬ"), self.read_toggle, height=30, font_size=9,
                                   color=GREEN)
-        self.read_btn.pack(side=tk.LEFT, padx=(px(6), 0))
-        for sym, cmd in (("■", self.read_stop), ("⏮", lambda: self.read_chapter(-1)),
-                         ("⏭", lambda: self.read_chapter(1))):
-            HudButton(ins, sym, cmd, height=30, font_size=9, width=30,
-                      color=MUTED).pack(side=tk.LEFT, padx=(px(2), 0))
+        ins.add(self.read_btn, gap_before=6)
+        for sym, cmd in (("■", self.read_stop), ("|◀", lambda: self.read_chapter(-1)),
+                         ("▶|", lambda: self.read_chapter(1))):
+            ins.add(HudButton(ins, sym, cmd, height=30, font_size=9, width=30, color=MUTED), gap_before=2)
         self._focus = None      # фокус-режим O — общий ui.FocusMode, как в сканере английского
         self.btn_focus = HudButton(ins, _t("⛶ ФОКУС  O"), self.toggle_focus, height=30, font_size=9,
                                    color=AMBER)
-        self.btn_focus.pack(side=tk.LEFT, padx=(px(6), 0))
+        ins.add(self.btn_focus, gap_before=6)
         self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
