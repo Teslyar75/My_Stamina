@@ -12,7 +12,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, orion_hook, pilots, radio_hook, speedread_hook, theme)
+                     missions, nav, docs_hook, orion_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina import safe_mode
 from stamina import ontop
@@ -70,6 +70,10 @@ class Cockpit(tk.Tk):
         if self._comm_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(comm_hook.KEY, comm_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._docs_cls = docs_hook.load_class()  # вкладка «ДОКУМЕНТЫ» — тексты и снимки
+        if self._docs_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(docs_hook.KEY, docs_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         self._orion_cls = orion_hook.load_class()  # вкладка «ОРИОН» — бортовой разум
         if self._orion_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
@@ -118,7 +122,7 @@ class Cockpit(tk.Tk):
         for seq in ontop.HOTKEYS:   # «Поверх всех окон» вкл/выкл
             self.bind(seq, lambda _e: self.toggle_topmost() or "break")
         self.bind("<F5>", lambda _e: self.restart_current())
-        self.bind("<F9>", lambda _e: self.toggle_sound())
+        self.bind("<F9>", self._on_f9)
         self.bind("<F1>", lambda _e: self.open_help())
         self.bind("<Shift-F1>", lambda _e: self._guide_help())  # гид читает справку окна вслух
         self.bind("<Button-3>", self._mark_point, add="+")
@@ -405,6 +409,7 @@ class Cockpit(tk.Tk):
         self._lazy(lounge_hook, self._lounge_cls)
         self._lazy(radio_hook, self._radio_cls)
         self._lazy(comm_hook, self._comm_cls)
+        self._lazy(docs_hook, self._docs_cls)
         self._lazy(orion_hook, self._orion_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
@@ -604,6 +609,8 @@ class Cockpit(tk.Tk):
             scr.text.focus_set()
         elif name == comm_hook.KEY and hasattr(scr, "focus_input"):
             scr.focus_input()
+        elif name == docs_hook.KEY and hasattr(scr, "focus_input"):
+            scr.focus_input()
         elif name == orion_hook.KEY and hasattr(scr, "focus_input"):
             scr.focus_input()
             if hasattr(scr, "on_show"):
@@ -633,7 +640,7 @@ class Cockpit(tk.Tk):
         b.set_color(AMBER if n else CYAN)
 
     def show_zone(self, zone: str) -> None:
-        """Кнопка зоны в шапке / Ctrl+1…8. Мостик из другой зоны — туда, где были в нём последний раз."""
+        """Кнопка зоны в шапке / Ctrl+1…9. Мостик из другой зоны — туда, где были в нём последний раз."""
         if zone == "bridge":
             in_bridge = nav.zone_of(self.current) == "bridge"
             self.show("bridge" if in_bridge else (self._last_bridge or "bridge"))
@@ -991,6 +998,15 @@ class Cockpit(tk.Tk):
         except (KeyError, tk.TclError):
             pass
 
+    def _on_f9(self, _e=None):
+        """F9: в ДОКУМЕНТАХ — диктовка, в остальных отсеках — звук."""
+        scr = self.screens.get(docs_hook.KEY) if self.current == docs_hook.KEY else None
+        if scr is not None and hasattr(scr, "dictate"):
+            scr.dictate()
+        else:
+            self.toggle_sound()
+        return "break"
+
     def toggle_sound(self) -> None:
         st = self.store.settings
         st["sound"] = not st["sound"]
@@ -1199,6 +1215,11 @@ class Cockpit(tk.Tk):
             if scr is not None and getattr(scr, "focus_active", lambda: False)():
                 scr.pages[scr.current].toggle_focus(False)   # Esc в фокус-режиме — только выход из него
                 return "break"
+        if e.keysym == "Escape" and self.current == docs_hook.KEY:
+            scr = self.screens.get(docs_hook.KEY)
+            if scr is not None and getattr(scr, "in_focus", lambda: False)():
+                scr.toggle_focus(False)      # Документы: Esc — выход из фокус-режима
+                return "break"
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
@@ -1233,6 +1254,8 @@ class Cockpit(tk.Tk):
             self.screens[radio_hook.KEY].on_key(e)
         elif self.current == comm_hook.KEY:
             self.screens[comm_hook.KEY].on_key(e)
+        elif self.current == docs_hook.KEY:
+            self.screens[docs_hook.KEY].on_key(e)
         elif self.current == orion_hook.KEY:
             self.screens[orion_hook.KEY].on_key(e)
         elif self.current == "honor":

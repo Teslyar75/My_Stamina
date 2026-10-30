@@ -940,7 +940,7 @@ class OrionScreenTest(unittest.TestCase):
         for key in ("orion", "orion.chat", "orion.agents"):
             self.assertIn(key, ph.PAGES, key)
         self.assertIn("ГОЛОС", ph.HOTKEYS["orion"])
-        self.assertIn("Ctrl+1…8", ph.GLOBAL_KEYS)
+        self.assertIn("Ctrl+1…9", ph.GLOBAL_KEYS)
 
 
 class OrionI18nTest(unittest.TestCase):

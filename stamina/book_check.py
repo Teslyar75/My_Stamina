@@ -54,14 +54,14 @@ def collect(replies: list[list[tuple[str, str]]]) -> list[tuple[str, str]]:
     return out
 
 
-def run_check(text: str, ask, chunks: list[str] | None = None, progress=None):
+def run_check(text: str, ask, chunks: list[str] | None = None, progress=None, prompt=None):
     """Спросить агента по каждому куску. `ask(prompt) -> reply`, возвращает правки."""
     parts = split_chunks(text) if chunks is None else list(chunks)
     replies = []
     for i, part in enumerate(parts, 1):
         if progress is not None:
             progress(i, len(parts))
-        replies.append(orion.parse_fixes(ask(orion.check_prompt(part))))
+        replies.append(orion.parse_fixes(ask((prompt or orion.check_prompt)(part))))
     return collect(replies)
 
 
@@ -163,7 +163,7 @@ def ask_agent(rec: dict, prompt: str) -> str:
 
 
 def check_in_background(app, text: str, rec: dict, on_done, on_progress=None,
-                        ask=None) -> threading.Thread:
+                        ask=None, prompt=None) -> threading.Thread:
     """Проверить книгу в фоне и вернуть правки в главный поток через `app.after`."""
 
     def work() -> None:
@@ -171,7 +171,8 @@ def check_in_background(app, text: str, rec: dict, on_done, on_progress=None,
         try:
             found = run_check(text, ask or (lambda p: ask_agent(rec, p)),
                               progress=lambda i, n: app.after(0, lambda: on_progress(i, n)
-                                                              if on_progress else None))
+                                                              if on_progress else None),
+                              prompt=prompt)
         except Exception:  # noqa: BLE001
             found = []
         app.after(0, lambda: on_done(found))
