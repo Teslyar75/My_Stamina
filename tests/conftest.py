@@ -56,3 +56,39 @@ def _isolate_stamina_globals():
         c = getattr(hud, cache, None)
         if isinstance(c, dict):
             c.clear()
+
+
+class _MemoryCredStore:
+    """Credential Manager stand-in: tests never write to the real Windows vault."""
+
+    def __init__(self):
+        self.d = {}
+
+    def set_password(self, svc, user, pw):
+        self.d[svc] = pw
+
+    def get_password(self, svc, user):
+        return self.d.get(svc)
+
+    def delete_password(self, svc, user):
+        self.d.pop(svc, None)
+
+
+@pytest.fixture(autouse=True)
+def _isolate_agent_store(monkeypatch, tmp_path_factory):
+    """Agent profiles, Orion history/characters and keys go to a temp dir, not %APPDATA%\\Stamina.
+
+    Tests that call pilots.reset_root(tmp) keep their own root; only the real root is redirected.
+    """
+    from stamina import agent_connect, orion, pilots
+    real = pathlib.Path(pilots._root())
+    tmp = tmp_path_factory.mktemp("orion_root")
+    orig = orion._root
+
+    def _root():
+        cur = pathlib.Path(orig())
+        return tmp if cur == real else cur
+
+    monkeypatch.setattr(orion, "_root", _root)
+    store = _MemoryCredStore()
+    monkeypatch.setattr(agent_connect, "_backend", lambda: ("keyring", store))
