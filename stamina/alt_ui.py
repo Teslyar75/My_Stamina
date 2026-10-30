@@ -48,7 +48,7 @@ DEFAULT_LAYOUT = "classic"
 PROFILES: dict[str, dict] = {
     "starship": {
         "glyphs": {"bridge": "◈", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
-                   "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
         "subtitle": "БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -56,7 +56,7 @@ PROFILES: dict[str, dict] = {
     },
     "steampunk": {
         "glyphs": {"bridge": "⚙", "english": "Æ", "speedread": "§", "lounge": "☕",
-                   "radio": "☊", "comm": "✉", "orion": "☉", "settings": "⚒"},
+                   "radio": "☊", "comm": "✉", "docs": "✒", "orion": "☉", "settings": "⚒"},
         "subtitle": "МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА",
         "rail": "РЫЧАГИ",
         "drawer": "МАНОМЕТРЫ",
@@ -64,7 +64,7 @@ PROFILES: dict[str, dict] = {
     },
     "bathyscaphe": {
         "glyphs": {"bridge": "⚓", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
-                   "radio": "◉", "comm": "✉", "orion": "✦", "settings": "⚙"},
+                   "radio": "◉", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -72,7 +72,7 @@ PROFILES: dict[str, dict] = {
     },
     "neon_city": {
         "glyphs": {"bridge": "◢", "english": "Ⓐ", "speedread": "⚡", "lounge": "☾",
-                   "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -80,7 +80,7 @@ PROFILES: dict[str, dict] = {
     },
     "old_england": {
         "glyphs": {"bridge": "♔", "english": "Æ", "speedread": "§", "lounge": "☕",
-                   "radio": "☎", "comm": "✉", "orion": "✠", "settings": "⚒"},
+                   "radio": "☎", "comm": "✉", "docs": "✒", "orion": "✠", "settings": "⚒"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -88,7 +88,7 @@ PROFILES: dict[str, dict] = {
     },
     "scriptorium": {
         "glyphs": {"bridge": "✠", "english": "Ⓐ", "speedread": "¶", "lounge": "❦",
-                   "radio": "♪", "comm": "✒", "orion": "☩", "settings": "⚙"},
+                   "radio": "♪", "comm": "✒", "docs": "✍", "orion": "☩", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -96,7 +96,7 @@ PROFILES: dict[str, dict] = {
     },
     "zen_garden": {
         "glyphs": {"bridge": "◯", "english": "Ⓐ", "speedread": "»", "lounge": "☯",
-                   "radio": "≋", "comm": "✉", "orion": "✿", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✿", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -104,7 +104,7 @@ PROFILES: dict[str, dict] = {
     },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
-                   "radio": "≋", "comm": "✉", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -892,6 +892,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
         "lounge": ("ОРАНЖЕРЕЯ · КАЮТ-КОМПАНИЯ", "GREEN"),
         "radio": ("АНТЕННЫЙ ОТСЕК · ДАЛЬНЯЯ СВЯЗЬ", "AMBER"),
         "comm": ("ПОСТ СВЯЗИ ЭКИПАЖА", "CYAN"),
+        "docs": ("ШТУРМАНСКАЯ · БОРТОВОЙ АРХИВ", "GREEN"),
         "orion": ("ЯДРО БОРТОВОГО РАЗУМА", "PURPLE"),
         "settings": ("ИНЖЕНЕРНЫЙ ОТСЕК", "AMBER"),
     },
@@ -902,6 +903,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
         "lounge": ("ЧАЙНЫЙ САЛОН", "GREEN"),
         "radio": ("ГРАММОФОННАЯ", "AMBER"),
         "comm": ("ТЕЛЕГРАФНАЯ · ПНЕВМОПОЧТА", "CYAN"),
+        "docs": ("КОНТОРА ПИСАРЯ · ПИШУЩАЯ МАШИНКА", "AMBER"),
         "orion": ("КАБИНЕТ АВТОМАТОНА · ПЛАНЕТАРИЙ", "PURPLE"),
         "settings": ("ВЕРСТАК МЕХАНИКА", "AMBER"),
     },
@@ -921,6 +923,8 @@ def compartment(profile: str, zone: str | None) -> tuple[str, str] | None:
 # ---------------------------------------------------------------------------
 WALL_DIR = Path(__file__).resolve().parent / "assets" / "alt_wallpapers"
 WALL_DIM = 0.35
+# Отсек без своих обоев берёт панорамы родственного (пока своих картинок нет)
+WALL_ALIAS = {"docs": "comm"}
 
 
 def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:
@@ -929,6 +933,8 @@ def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:
         return []
     d = WALL_DIR / profile
     out: list[Path] = []
+    if zone in WALL_ALIAS and not any(d.glob(f"{zone}.*")) and not any(d.glob(f"{zone}_*.*")):
+        zone = WALL_ALIAS[zone]
     for ext in ("jpg", "png"):
         p = d / f"{zone}.{ext}"
         if p.is_file():
@@ -1283,6 +1289,16 @@ class CompartmentBanner(tk.Canvas):
             self.create_line(x, y, x2, y2, fill=blend(acc, theme.BG, 0.65))
             self.create_oval(x - 3, y - 3, x + 3, y + 3, fill=acc, outline="")
 
+    def _starship_docs(self, w, h, acc, rnd):
+        x0 = w * 0.62   # стопка бортовых листов
+        for i in range(4):
+            dx, dy = i * px(10), i * px(8)
+            self.create_rectangle(x0 + dx, h * 0.25 + dy, x0 + dx + px(90), h * 0.25 + dy + px(110),
+                                  outline=blend(acc, theme.BG, 0.3 + i * 0.15), fill="")
+        for k in range(5):
+            y = h * 0.25 + px(40) + k * px(14)
+            self.create_line(x0 + px(40), y, x0 + px(110), y, fill=blend(acc, theme.BG, 0.5))
+
     def _starship_orion(self, w, h, acc, rnd):
         cx, cy = w * 0.78, h * 0.5
         for i in range(1, 6):   # кольца ядра
@@ -1347,6 +1363,14 @@ class CompartmentBanner(tk.Canvas):
             y = h * (0.2 + 0.25 * k)
             self._pipes(w, h, y, theme.CYAN_DIM)
         self.create_oval(w * 0.75, h * 0.1, w * 0.75 + px(40), h * 0.1 + px(18), fill=acc, outline=theme.BG)
+
+    def _steampunk_docs(self, w, h, acc, rnd):
+        cx, cy = w * 0.78, h * 0.55   # пишущая машинка: каретка и рычажки
+        self.create_rectangle(cx - px(60), cy, cx + px(60), cy + px(40), fill=blend(theme.PANEL, acc, 0.25),
+                              outline=theme.LINE_HI)
+        self.create_rectangle(cx - px(70), cy - px(12), cx + px(70), cy - px(4), fill=acc, outline="")
+        for i in range(-4, 5):
+            self.create_line(cx + i * px(10), cy + px(4), cx + i * px(6), cy - px(30), fill=theme.LINE_HI)
 
     def _steampunk_orion(self, w, h, acc, rnd):
         cx, cy = w * 0.8, h * 0.5   # латунный планетарий

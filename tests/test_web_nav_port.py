@@ -1,4 +1,4 @@
-"""Порт из веб-версии: зоны и строка пути, «Мостик → Настройки», шкала тепловой карты."""
+﻿"""Порт из веб-версии: зоны и строка пути, «Мостик → Настройки», шкала тепловой карты."""
 import unittest
 
 from stamina import i18n, nav, theme, typing_style as ts
@@ -8,7 +8,7 @@ from stamina.storage import DEFAULT_SETTINGS
 class NavTest(unittest.TestCase):
     def test_eight_zones_in_order(self):
         self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
-                                       "orion", "settings"])
+                                       "docs", "orion", "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
         self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
         # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
@@ -20,6 +20,9 @@ class NavTest(unittest.TestCase):
         self.assertEqual(nav.zone_of("orion"), "orion")
         self.assertEqual(nav.path("orion"), [("ОРИОН", "orion")])
         self.assertLess(nav.ZONE_ORDER.index("orion"), nav.ZONE_ORDER.index("settings"))
+        # «ДОКУМЕНТЫ» — тексты, диктовка и снимки пилота
+        self.assertEqual(nav.zones({"docs"}), ["bridge", "docs", "settings"])
+        self.assertEqual(nav.path("docs"), [("ДОКУМЕНТЫ", "docs")])
 
     def test_bridge_submenu_belongs_to_bridge(self):
         for leaf, _title in nav.BRIDGE_LEAVES:
@@ -165,7 +168,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 8)
+        self.assertEqual(len(a.SCREENS), 9)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")
