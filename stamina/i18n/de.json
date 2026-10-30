@@ -2322,5 +2322,11 @@
  "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Lerne noch {0} Verben — dann öffnen sich {1} neue.",
  "Произнесите пример: M — микрофон.": "Sprich das Beispiel: M — Mikrofon.",
  "Пример: {0}% — {1}": "Beispiel: {0}% — {1}",
- "🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)": "🔒 {0} wird freigeschaltet, wenn du {1}% von Stufe {2} abschließt (jetzt {3}%)"
+ "🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)": "🔒 {0} wird freigeschaltet, wenn du {1}% von Stufe {2} abschließt (jetzt {3}%)",
+ "⏳ Собираю предложения из прочитанного": "⏳ Sammle Sätze aus dem Gelesenen",
+ "⏳ Собираю предложения из прочитанного…": "⏳ Sammle Sätze aus dem Gelesenen…",
+ "🔒 РАЗДЕЛ ДЛЯ ПРОДВИНУТЫХ": "🔒 FÜR FORTGESCHRITTENE",
+ "для продвинутых: скорость и уровень": "Fortgeschrittene: Tempo und Stufe",
+ " ✓": " ✓",
+ "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 „Aus dem Buch“ ist für Fortgeschrittene: Tippgeschwindigkeit ab {0} WpM (jetzt {1}) und freigeschaltete Stufe {2}{3}"
 }

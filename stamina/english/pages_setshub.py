@@ -441,16 +441,25 @@ class BookTab(tk.Frame):
         HudButton(row, "СФОРМИРОВАТЬ", self._sync, color=CYAN, height=34).pack(side=tk.LEFT, padx=px(3))
 
     def _sync(self) -> None:
-        try:
-            from . import book_sentences as bs
-            from stamina import library as libmod
-            n_books, n_sents = bs.sync_all(self.ctx.progress, libmod.Library())
+        ok, hint = access.book_access(self.ctx.progress, getattr(self.ctx, "app", None))
+        if not ok:
+            self.ctx.status(hint, AMBER)
+            return
+        from . import book_sentences as bs
+        from stamina import library as libmod
+
+        def done(n_books: int, n_sents: int) -> None:
             self.ctx.status(f"Книг: {n_books} · предложений: {n_sents}", GREEN)
-        except Exception as exc:  # noqa: BLE001
-            self.ctx.status(f"Не удалось: {type(exc).__name__}", AMBER)
-        self.refresh()
+            self.refresh()
+
+        bs.sync_in_background(self, self.ctx.progress, libmod.Library, done)
+        self.ctx.status(_t("⏳ Собираю предложения из прочитанного…"), CYAN)
 
     def refresh(self) -> None:
+        ok, hint = access.book_access(self.ctx.progress, getattr(self.ctx, "app", None))
+        if not ok:
+            self.info.configure(text=hint)
+            return
         try:
             from . import book_sentences as bs
             books = bs.list_books(self.ctx.progress)

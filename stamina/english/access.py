@@ -67,6 +67,82 @@ def level_open(progress, level: str, levels: list[str],
     return level_pct(slugs_of(levels[i - 1]), done) >= unlock_pct(progress)
 
 
+# --- «ИЗ КНИГИ»: только для продвинутых --------------------------------------
+BOOK_MIN_WPM = 35          # средняя скорость печати, слов/мин
+BOOK_MIN_LEVEL = "B1.1"    # уровень CEFR, который должен быть открыт
+
+
+def typing_wpm(app=None) -> int:
+    """Скорость печати: лучшее из среднего по 10 последним забегам (cpm/5)
+    и среднего по 10 последним тестам портала (wpm)."""
+    vals = []
+    try:
+        runs = [r for r in (app.store.stats.get("runs") or []) if isinstance(r, dict)][-10:]
+        cpms = [float(r.get("cpm") or 0) for r in runs if r.get("cpm")]
+        if cpms:
+            vals.append(sum(cpms) / len(cpms) / 5.0)
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        from stamina import portal_stats
+        v = portal_stats.average_pace()
+        if v:
+            vals.append(float(v))
+    except Exception:  # noqa: BLE001
+        pass
+    return int(round(max(vals))) if vals else 0
+
+
+def book_min_wpm(progress) -> int:
+    try:
+        return max(0, int((progress.settings or {}).get("book_min_wpm", BOOK_MIN_WPM)))
+    except (AttributeError, TypeError, ValueError):
+        return BOOK_MIN_WPM
+
+
+def book_min_level(progress) -> str:
+    try:
+        lv = (progress.settings or {}).get("book_min_level") or BOOK_MIN_LEVEL
+    except AttributeError:
+        lv = BOOK_MIN_LEVEL
+    return str(lv)
+
+
+def _word_done(progress, slug: str) -> bool:
+    try:
+        from . import quality
+        return bool(progress.is_known(slug) or progress.is_learned(slug)
+                    or quality.is_complete(progress, slug))
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def level_reached(progress, level: str) -> bool:
+    """Уровень достигнут = он открыт по правилу level_open."""
+    from . import cefr
+    levels = cefr.available()
+    if level not in levels:
+        return True
+    return level_open(progress, level, levels,
+                      lambda lv: [w["slug"] for w in cefr.prepared(lv)],
+                      lambda s: _word_done(progress, s))
+
+
+def book_access(progress, app=None) -> tuple[bool, str]:
+    """(доступно, подсказка). Капитану — всегда. Иначе нужны И скорость, И уровень."""
+    from stamina.i18n import t
+    if is_captain(progress):
+        return True, ""
+    need_wpm, need_lv = book_min_wpm(progress), book_min_level(progress)
+    wpm = typing_wpm(app)
+    lv_ok = level_reached(progress, need_lv)
+    if wpm >= need_wpm and lv_ok:
+        return True, ""
+    return False, t("🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) "
+                    "и открытый уровень {2}{3}").format(
+        need_wpm, wpm, need_lv, "" if not lv_ok else t(" ✓"))
+
+
 def level_need(progress, level: str, levels: list[str],
                slugs_of: Callable[[str], list[str]], done: Callable[[str], bool]) -> tuple[str, int, int]:
     """(предыдущий уровень, нужно %, сейчас %) — для подсказки у закрытого уровня."""

@@ -9,6 +9,7 @@ from stamina import theme
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL_HI, RED, TEXT, px
 
+from . import access
 from . import book_sentences as bs
 from . import sm2
 from .mic import MicPanel
@@ -109,31 +110,60 @@ class BookCardsPage(tk.Frame):
         elif n:
             self.ctx.status(_t("Переводы предложений обновлены"), GREEN)
 
-    def _sync_later(self) -> None:
+    def _sync_later(self, on_done=None, tid: str | None = None) -> None:
         """Извлечение предложений (секунды на большой библиотеке) - в потоке;
-        запись в прогресс и перерисовка - здесь же, в главном потоке, по готовности."""
-        if getattr(self, "_warm", None) is not None:
-            return
-        import threading
-        th = threading.Thread(target=bs.warm_up, args=(self._lib(),), name="book-cards-sync", daemon=True)
-        self._warm = th
-        th.start()
-
-        def wait() -> None:
-            if th.is_alive():
-                self.after(60, wait)
-                return
-            self._warm = None
-            self._sync_apply()
-
-        self.after(60, wait)
-
-    def _sync_apply(self) -> None:
+        запись в прогресс и перерисовка - в главном потоке по готовности (after)."""
         before = (bs.count_ready(self.ctx.progress), len(bs.list_books(self.ctx.progress)))
-        self._sync(request=True)
-        if self.mode == "hub" and before != (bs.count_ready(self.ctx.progress),
-                                              len(bs.list_books(self.ctx.progress))):
-            self._render_soon()
+
+        def done(books_n: int, sent_n: int) -> None:
+            self._spin_stop()
+            if self._tr() is not None:
+                self._schedule_poll()      # переводы уже запрошены в sync_in_background
+            if on_done is not None:
+                on_done(books_n, sent_n)
+            elif self.mode == "hub" and before != (bs.count_ready(self.ctx.progress),
+                                                    len(bs.list_books(self.ctx.progress))):
+                self._render_soon()
+
+        bs.sync_in_background(self, self.ctx.progress, self._lib, done, tid=tid,
+                              translator=self._tr(), tl=self._tl())
+        self._spin_start()
+
+    # индикатор фоновой работы ------------------------------------------------
+    def _spin_start(self) -> None:
+        if getattr(self, "_spin_job", None) is not None:
+            return
+        self._spin_i = 0
+
+        def tick() -> None:
+            if not bs.busy(self.ctx.progress):
+                self._spin_stop()
+                return
+            self._spin_i = (self._spin_i + 1) % 4
+            lab = getattr(self, "_spin_lab", None)
+            try:
+                if lab is not None and lab.winfo_exists():
+                    lab.configure(text=_t("⏳ Собираю предложения из прочитанного") + "." * self._spin_i)
+            except tk.TclError:
+                pass
+            self._spin_job = self.after(250, tick)
+
+        self._spin_job = self.after(250, tick)
+
+    def _spin_stop(self) -> None:
+        job = getattr(self, "_spin_job", None)
+        self._spin_job = None
+        if job is not None:
+            try:
+                self.after_cancel(job)
+            except Exception:
+                pass
+        lab = getattr(self, "_spin_lab", None)
+        try:
+            if lab is not None and lab.winfo_exists():
+                lab.configure(text="")
+        except tk.TclError:
+            pass
 
     def _render_soon(self) -> None:
         """Склейка пересборок хаба: переводы приходят порциями каждые 400 мс -
@@ -154,7 +184,16 @@ class BookCardsPage(tk.Frame):
         self._render_job = self.after(1500, lambda: self.after_idle(run))
 
     # -- navigation -----------------------------------------------------------
+    def _locked(self) -> str:
+        ok, hint = access.book_access(self.ctx.progress, getattr(self.ctx, "app", None))
+        return "" if ok else hint
+
     def refresh(self) -> None:
+        hint = self._locked()
+        if hint:
+            self._render_locked(hint)
+            self.ctx.changed()
+            return
         if self.mode == "hub":
             # сначала рисуем из сохранённого, синхронизация с библиотекой - в простое
             self.render()
@@ -171,20 +210,17 @@ class BookCardsPage(tk.Frame):
         self.i = 0
         self.shown = False
         self.tid = tid
-        _books_n, sent_n = self._sync(request=True)
-        if tid:
-            # точечная синхронизация текущей книги (на случай если sync_all пропустил lang)
-            try:
-                book = bs.sync_book(self.ctx.progress, self._lib(), tid)
-                if book:
-                    sent_n = max(sent_n, len(book.get("sentences") or []))
-                tr = self._tr()
-                tl = self._tl()
-                bs.fill_ru_from_cache(self.ctx.progress, tr, tl)
-                bs.request_missing_ru(self.ctx.progress, tr, tl)
-            except Exception:
-                pass
+        hint = self._locked()
+        if hint:
+            self.ctx.show("book")        # refresh нарисует замок
+            self.ctx.status(hint, AMBER)
+            return
+        # экран открывается сразу из сохранённого; книги читаются и режутся в фоне
         self.ctx.show("book")
+        self._sync_later(on_done=lambda _b, n: self._after_focus(tid, n), tid=tid)
+        self.ctx.status(_t("⏳ Собираю предложения из прочитанного…"), CYAN)
+
+    def _after_focus(self, tid: str | None, sent_n: int) -> None:
         ready = (len(bs.ready_sentences(self.ctx.progress, tid)) if tid
                  else bs.count_ready(self.ctx.progress))
         if ready:
@@ -207,7 +243,7 @@ class BookCardsPage(tk.Frame):
         self.start_drill(tid)
 
     def start_drill(self, tid: str | None = None, *, due_only: bool = True) -> None:
-        self._sync(request=True)
+        # без синхронизации в UI-потоке: порция (до 50) из уже собранного
         self.tid = tid
         self.queue = bs.build_queue(self.ctx.progress, tid, due_only=due_only, limit=50)
         if not self.queue and due_only:
@@ -250,7 +286,17 @@ class BookCardsPage(tk.Frame):
             except Exception:
                 pass
 
+    def _render_locked(self, hint: str) -> None:
+        self._release_hint_grab()
+        _clear(self.body)
+        _clear(self.btns)
+        self.mic = self.match = self.fb = self._face_lab = None
+        L(self.body, _t("🔒 РАЗДЕЛ ДЛЯ ПРОДВИНУТЫХ"), fg=AMBER, size=20, bold=True).pack(pady=(px(40), px(8)))
+        L(self.body, hint, fg=MUTED, size=11, wraplength=px(700), justify="left").pack()
+
     def _render_hub(self) -> None:
+        self._spin_lab = L(self.body, "", fg=CYAN, size=9)
+        self._spin_lab.pack(anchor="w")
         books = bs.list_books(self.ctx.progress)
         ready = bs.count_ready(self.ctx.progress)
         due = bs.count_due(self.ctx.progress)
@@ -325,13 +371,18 @@ class BookCardsPage(tk.Frame):
             pass
 
     def _on_sync_click(self) -> None:
-        books_n, sent_n = self._sync(request=True)
         self.ctx.sfx("click")
-        self.ctx.status(
-            _t("Синхронизация: {0} книг, {1} предложений из прочитанного").format(books_n, sent_n),
-            GREEN if sent_n else AMBER)
-        self.render()
-        self.ctx.changed()
+
+        def done(books_n: int, sent_n: int) -> None:
+            self.ctx.status(
+                _t("Синхронизация: {0} книг, {1} предложений из прочитанного").format(books_n, sent_n),
+                GREEN if sent_n else AMBER)
+            if self.mode == "hub":
+                self.render()
+            self.ctx.changed()
+
+        self._sync_later(on_done=done)
+        self.ctx.status(_t("⏳ Собираю предложения из прочитанного…"), CYAN)
 
     def _render_drill(self) -> None:
         if not self.queue or self.i >= len(self.queue):
