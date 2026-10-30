@@ -16,7 +16,7 @@ import time
 import tkinter as tk
 from pathlib import Path
 
-from stamina import compose, docs, docs_format, docs_tools, mailer, shots, theme
+from stamina import compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
@@ -75,6 +75,8 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         btns.pack(fill=tk.X, pady=(0, px(6)))
         HudButton(btns, _t("+ НОВЫЙ"), self.new_doc, height=32, font_size=10,
                   color=GREEN).pack(side=tk.LEFT)
+        HudButton(btns, _t("ОТКРЫТЬ"), self.open_file, height=32, font_size=10,
+                  color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
         self.del_btn = HudButton(btns, _t("УБРАТЬ"), self._remove, height=32, font_size=9,
                                  color=MUTED)
         self.del_btn.pack(side=tk.RIGHT)
@@ -264,6 +266,52 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.listbox.selection_clear(0, tk.END)
         self.title_entry.focus_set()
         self._say(_t("Новый документ — пишите, всё сохранится само"), GREEN)
+
+    # -- «ОТКРЫТЬ» — загрузить документ с компьютера -----------------------------------
+    def _recent_files(self) -> list:
+        st = self._settings()
+        return docs_import.recent(st) if st is not None else list(getattr(self, "_recent_mem", []))
+
+    def open_file(self, path=None, mode: str | None = None) -> None:
+        if path is None:
+            from stamina.docs_open import OpenDocDialog
+            res = OpenDocDialog(self, self._recent_files()).run()
+            if not res:
+                return
+            path, mode = res
+        self.save_now()
+        try:
+            doc = docs_import.import_file(Path(path))
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не открылся: {0}").format(exc), AMBER)
+            return
+        docs.save(doc)
+        st = self._settings()
+        if st is not None:
+            docs_import.remember(st, path)
+            self._save_settings()
+        else:
+            mem = [p for p in getattr(self, "_recent_mem", []) if p != str(path)]
+            self._recent_mem = [str(path)] + mem
+        self._show_doc(doc)
+        self.refresh()
+        if docs_import.can_write_back(doc):
+            self._say(_t("Открыт «{0}» — обратно в файл: ЭКСПОРТ ▸ В исходный файл").format(Path(path).name), GREEN)
+        else:
+            self._say(_t("Открыт «{0}»").format(Path(path).name), GREEN)
+        if mode == "read":
+            self.preview()
+
+    def save_to_source(self) -> None:
+        self.save_now()
+        if not (self.doc and docs_import.can_write_back(self.doc)):
+            return
+        try:
+            p = docs_import.write_back(self.doc)
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не сохранилось: {0}").format(exc), AMBER)
+            return
+        self._say(_t("Сохранено в исходный файл: {0}").format(p), GREEN)
 
     def _remove(self) -> None:
         if not (self.doc and self.doc.path):
@@ -541,7 +589,11 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         m.add_command(label="HTML", command=lambda: self._export("html"))
         m.add_command(label=_t("TXT (без разметки)"), command=lambda: self._export("txt"))
         m.add_separator()
-        m.add_command(label=_t("Открыть .md…"), command=self.import_md)
+        if self.doc is not None and docs_import.can_write_back(self.doc):
+            m.add_command(label=_t("В исходный файл ({0})").format(Path(self.doc.source).name),
+                          command=self.save_to_source)
+            m.add_separator()
+        m.add_command(label=_t("Открыть файл…"), command=self.open_file)
         x = self.export_btn.winfo_rootx()
         y = self.export_btn.winfo_rooty() + self.export_btn.winfo_height()
         m.tk_popup(x, y)

@@ -41,6 +41,7 @@ class Document:
         self.created = created or time.time()
         self.modified = modified or self.created
         self.path = path
+        self.source: str | None = None    # файл с компьютера, из которого документ открыт
 
     @property
     def text(self) -> str:
@@ -84,6 +85,8 @@ def save(doc: Document, path: Path | None = None) -> Path:
     used = {s["img"] for s in doc.segments if "img" in s}
     meta = {"format": FORMAT, "title": doc.title, "created": doc.created,
             "modified": doc.modified, "segments": doc.segments}
+    if getattr(doc, "source", None):
+        meta["source"] = str(doc.source)
     tmp = path.with_suffix(path.suffix + ".tmp")
     with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr(DOC_JSON, json.dumps(meta, ensure_ascii=False, indent=1))
@@ -101,8 +104,10 @@ def load(path: Path) -> Document:
         meta = json.loads(z.read(DOC_JSON).decode("utf-8"))
         images = {n: z.read(n) for n in z.namelist() if n.startswith("images/") and not n.endswith("/")}
     segs = [s for s in meta.get("segments") or [] if isinstance(s, dict) and ("t" in s or "img" in s)]
-    return Document(str(meta.get("title") or ""), segs, images, meta.get("created"),
-                    meta.get("modified"), path)
+    doc = Document(str(meta.get("title") or ""), segs, images, meta.get("created"),
+                   meta.get("modified"), path)
+    doc.source = meta.get("source") or None
+    return doc
 
 
 def peek(path: Path) -> dict:

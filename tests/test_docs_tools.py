@@ -328,3 +328,69 @@ class TestFocusMode(_Root):
         self.assertTrue(s.in_focus())
         self.assertFalse(s.left_panel.winfo_ismapped())
         s.toggle_focus(False)
+
+
+class TestOpenFile(_Root):
+    def _png(self):
+        import base64
+        return base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==")
+
+    def test_formats_import_and_write_back(self):
+        from stamina import docs, docs_import
+        d = Path(self.tmp)
+        src = docs.Document("Книга", [{"t": "# Глава 1\nТекст **жирный** и *курсив*.\n- пункт\n"},
+                                       {"img": "images/1.png", "w": 0}, {"t": "Конец\n"}],
+                            {"images/1.png": self._png()})
+        docs.export_docx(src, d / "a.docx")
+        got = docs_import.import_file(d / "a.docx")
+        self.assertEqual(got.title, "Книга")
+        self.assertIn("# Глава 1", got.text)
+        self.assertIn("**жирный**", got.text)
+        self.assertIn("*курсив*", got.text)
+        self.assertIn("- пункт", got.text)
+        self.assertEqual(sum(1 for s in got.segments if "img" in s), 1)
+        self.assertIn("Конец", got.text)
+        (d / "b.txt").write_bytes("Привет, борт".encode("cp1251"))
+        self.assertEqual(docs_import.import_file(d / "b.txt").text, "Привет, борт")
+        p = docs.save(src, d / "c.stdoc")
+        st = docs_import.import_file(p)
+        self.assertIsNone(st.path)
+        self.assertTrue(docs_import.can_write_back(got))
+        self.assertFalse(docs_import.can_write_back(st))
+        with self.assertRaises(ValueError):
+            docs_import.import_file(d / "x.pdf")
+
+    def test_open_edit_read_and_save_back(self):
+        d = Path(self.tmp) / "note.md"
+        d.write_text("# Заметка\nстрока\n", encoding="utf-8")
+        s = self.scr
+        with mock.patch.object(s, "preview") as pv:
+            s.open_file(d, "edit")
+            pv.assert_not_called()
+            self.assertEqual(s.doc.title, "Заметка")
+            self.assertEqual(Path(s.doc.source), d)
+            self.assertIsNotNone(s.doc.path)                       # стал документом в списке
+            self.assertTrue(any(it["title"] == "Заметка" for it in s._items))
+            s.open_file(d, "read")
+            pv.assert_called_once()
+        self.assertEqual(s._recent_files(), [str(d)])
+        from stamina import docs
+        self.assertEqual(docs.load(s.doc.path).source, str(d))     # источник переживает перезагрузку
+        s.text.insert("end", "добавка\n")
+        s.save_to_source()
+        self.assertIn("добавка", d.read_text(encoding="utf-8"))
+
+    def test_dialog_choose_and_modes(self):
+        from stamina.docs_open import OpenDocDialog
+        f = Path(self.tmp) / "r.txt"
+        f.write_text("x", encoding="utf-8")
+        dlg = OpenDocDialog(self.root, [str(f), str(Path(self.tmp) / "gone.txt")])
+        self.assertEqual(dlg.recent, [str(f)])                      # пропавшие файлы не показываем
+        dlg.done("edit")
+        self.assertIsNone(dlg.result)                               # без файла не закрывается
+        dlg.choose(str(Path(self.tmp) / "a.pdf"))
+        self.assertIsNone(dlg.path)
+        dlg.listbox.selection_set(0)
+        dlg._on_recent()
+        dlg.done("read")
+        self.assertEqual(dlg.result, (str(f), "read"))
