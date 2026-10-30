@@ -58,10 +58,38 @@ class ScrollFrame(tk.Frame):
         self.canvas.configure(yscrollcommand=self.bar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.inner.bind("<Configure>", lambda _e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
+        self.autohide = False     # True: полоса только когда содержимое выше окна; inner тянется на всю высоту
+        self.inner.bind("<Configure>", self._on_inner)
+        self.canvas.bind("<Configure>", self._on_canvas)
         self.bind("<Enter>", lambda _e: self._wheel_on(True))
         self.bind("<Leave>", lambda _e: self._wheel_on(False))
+
+    def _on_inner(self, _e=None) -> None:
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        if self.autohide:
+            self.after_idle(self.sync)
+
+    def _on_canvas(self, e) -> None:
+        self.canvas.itemconfigure(self._win, width=e.width)
+        if self.autohide:
+            self.after_idle(self.sync)
+
+    def sync(self) -> None:
+        """autohide: показать полосу только при переполнении; inner растянуть до высоты окна."""
+        try:
+            ch, need = self.canvas.winfo_height(), self.inner.winfo_reqheight()
+            if ch <= 1:
+                return
+            self.canvas.itemconfigure(self._win, height=max(ch, need))
+            over = need > ch + 1
+            if over and not self.bar.winfo_manager():
+                self.bar.pack(side=tk.RIGHT, fill=tk.Y, before=self.canvas)
+            elif not over and self.bar.winfo_manager():
+                self.bar.pack_forget()
+                self.canvas.yview_moveto(0)
+            self.canvas.configure(scrollregion=(0, 0, self.canvas.winfo_width(), max(ch, need)))
+        except tk.TclError:
+            pass
 
     def _wheel_on(self, on: bool) -> None:
         from stamina import wheel_router

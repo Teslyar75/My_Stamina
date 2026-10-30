@@ -120,6 +120,7 @@ class ScannerCompactTest(unittest.TestCase):
     def _check_layout(self, page, size):
         sf = page.sf
         self.assertEqual(tuple(sf.canvas.yview()), (0.0, 1.0), f"{size}: нужна прокрутка")
+        self.assertFalse(sf.bar.winfo_ismapped(), f"{size}: лишняя полоса прокрутки")
         self.assertEqual(self._squeezed(page), [], f"{size}: обрезано")
         for w, n in ((page.scan_panel, "панель сканера"), (page.chan, "канал связи"),
                      (page.mic.btn, "кнопка микрофона"), (page.sent, "предложение")):
@@ -151,6 +152,9 @@ class ScannerCompactTest(unittest.TestCase):
             self.assertIsNotNone(page._focus, f"{size}: O не включил фокус")
             self.assertFalse(scr.nav["scanner"].winfo_ismapped(), f"{size}: фокус не скрыл вкладки")
             self._assert_inside(page.mic.btn, f"{size} фокус: кнопка микрофона")
+            bottom = self._rel(page.chan)[1] + page.chan.winfo_height()
+            self.assertGreater(bottom, a.winfo_height() - 30, f"{size} фокус: пустое место снизу")
+            self.assertFalse(page.sf.bar.winfo_ismapped(), f"{size} фокус: лишняя полоса прокрутки")
             self.assertEqual(self._squeezed(page), [], f"{size} фокус: обрезано")
             esc = types.SimpleNamespace(keysym="Escape", widget=a, char="", state=0, keycode=27)
             a._on_key(esc)

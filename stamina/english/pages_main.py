@@ -966,6 +966,7 @@ class ScannerPage(tk.Frame):
         ctx = self.ctx
         root = self.sf.inner
         self.compact = True
+        self.sf.autohide = True       # полоса прокрутки — только если не влезает
         self.strip = Strip(root)        # заголовок не показываем — имя слова и так крупно в панели
         # объединённая панель; строка действий — в полосе её заголовка (экономим высоту)
         win = HudPanel(root, _t("СКАНЕР ОБЪЕКТА"), pad=4)
@@ -1009,13 +1010,14 @@ class ScannerPage(tk.Frame):
         self.meta = Flow(c0, gap=2)
         self.meta.pack(fill=tk.X, pady=(0, px(2)))
         self._word_px = 20
+        self._k = 1.0                # масштаб шрифтов: 1 — обычно, больше — в фокус-режиме
 
         def fit_word(_e=None):  # длинное слово уменьшает шрифт, а не вылезает из группы
             avail = c0.winfo_width() - px(4)
             txt = self.word.cget("text")
             if avail <= 1 or not txt:
                 return
-            size = 20
+            size = round(20 * self._k)
             while size > 11 and tkfont.Font(font=theme.font(size, True, True)).measure(txt) > avail:
                 size -= 1
             if size != self._word_px:
@@ -1262,7 +1264,9 @@ class ScannerPage(tk.Frame):
             if not alt:
                 if self.sf.pack_info().get("expand") in (0, "0", False):
                     self.sf.pack_configure(fill=tk.BOTH, expand=True)
-                if not self.sf.bar.winfo_manager():
+                if self.sf.autohide:
+                    self.sf.sync()
+                elif not self.sf.bar.winfo_manager():
                     self.sf.bar.pack(side=tk.RIGHT, fill=tk.Y)
                 return
             if self.sf.bar.winfo_manager():
@@ -1305,8 +1309,10 @@ class ScannerPage(tk.Frame):
         on = (self._focus is None) if on is None else on
         if on and self._focus is None:
             self._focus = FocusMode(self)
+            self._grow(True)
         elif not on and self._focus is not None:
             f, self._focus = self._focus, None
+            self._grow(False)
             f.restore()
         btn = getattr(self, "btn_focus", None)
         if btn is not None:
@@ -1316,6 +1322,42 @@ class ScannerPage(tk.Frame):
             self.focus_set()
         except tk.TclError:
             pass
+
+    def _grow(self, on: bool) -> None:
+        """Фокус: панели сканера и канала связи делят всю высоту окна (без пустоты снизу)."""
+        panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
+        try:
+            if on:
+                self._grow_saved = [(w, dict(w.pack_info())) for w in panels if w.winfo_manager() == "pack"]
+                for w, _i in self._grow_saved:
+                    w.pack_configure(fill=tk.BOTH, expand=True)
+                self.update_idletasks()
+                need = max(1, self.sf.inner.winfo_reqheight())
+                ch = self.sf.canvas.winfo_height()
+                self._scale(max(1.0, min(2.4, 0.8 * ch / need)))
+            else:
+                self._scale(1.0)
+                for w, info in getattr(self, "_grow_saved", []):
+                    w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
+                self._grow_saved = []
+            self.sf.sync()
+        except tk.TclError:
+            pass
+
+    def _scale(self, k: float) -> None:
+        """Фокус: крупнее слово, транскрипция, определение и предложение (кнопки и микрофон — как были)."""
+        if not getattr(self, "compact", False) or abs(k - self._k) < 0.01:
+            return
+        self._k = k
+        f = lambda n, b=False, m=False: theme.font(round(n * k), b, m)
+        self.resp.configure(font=f(13, True, True))
+        self.defn.configure(font=f(10), wraplength=round(px(360) * k))
+        self.ptext.configure(wraplength=round(px(300) * k))
+        self.sent.configure(font=f(12, False, True), height=3 if k > 1.01 else 2)
+        self.sent.tag_configure("t", font=f(12, True, True))
+        self.set_ptab(self.ptab)
+        self._word_px = 0
+        self._fit_word()
 
     def _on_unmap(self, e) -> None:
         # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть
@@ -1426,7 +1468,7 @@ class ScannerPage(tk.Frame):
                      (_t("\nЧастые ошибки:\n") + "\n".join(f"• {n}" for n in w["common_mistakes"])
                       if w.get("common_mistakes") else "") or _t("нет данных"),
         }[key]
-        self.ptext.configure(text=txt, font=theme.font((12 if self.compact else 14) if key == "ipa" else 10, False, key in ("ipa", "syl")),
+        self.ptext.configure(text=txt, font=theme.font(round(((12 if self.compact else 14) if key == "ipa" else 10) * getattr(self, "_k", 1.0)), False, key in ("ipa", "syl")),
                              fg=CYAN if key in ("ipa", "syl") else TEXT)
         for k, bt in self.ptabs.items():
             bt.set_active(k == key)
