@@ -149,6 +149,31 @@ def prepared(level: str) -> list[dict]:
     return copy.deepcopy(prepared_view(level))
 
 
+def is_warm() -> bool:
+    return all(lv in _PREP_CACHE and _PREP_CACHE[lv][0] == _stamp(lv) for lv in available())
+
+
+_WARM_THREAD = None
+
+
+def warm_async():
+    """Parse all levels in a daemon thread so the UI thread does not block on startup."""
+    global _WARM_THREAD
+    import threading
+    if _WARM_THREAD is not None and _WARM_THREAD.is_alive():
+        return _WARM_THREAD
+
+    def run() -> None:
+        for lv in available():
+            try:
+                prepared_view(lv)
+            except Exception:
+                pass
+    _WARM_THREAD = threading.Thread(target=run, name="cefr-warm", daemon=True)
+    _WARM_THREAD.start()
+    return _WARM_THREAD
+
+
 def merge_into(vocab, level: str) -> int:
     """Влить набор в словарь. Возвращает число слов, у которых стало больше примеров."""
     added_or_filled = 0

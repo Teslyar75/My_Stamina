@@ -167,7 +167,7 @@ class CefrPage(tk.Frame):
         HudButton(bot, "МИССИЯ ПО НАБОРУ", lambda: self.mission(), height=30, font_size=9).pack(
             side=tk.RIGHT, padx=px(3))
         self.tiles: list[Tile] = []
-        self._sync_level_buttons()
+        self._sync_when_warm()
         # ←/→ листают страницы по 24, когда открыта вкладка CEFR
         self.bind_all("<Left>", self._key_page, add="+")
         self.bind_all("<Right>", self._key_page, add="+")
@@ -229,6 +229,25 @@ class CefrPage(tk.Frame):
     def _level_complete(self, level: str) -> bool:
         ws = cefr.prepared_view(level)
         return bool(ws) and all(self._done(w["slug"]) for w in ws)
+
+    def _sync_when_warm(self) -> None:
+        """Level locks need every CEFR set parsed (~1.4 s cold): do it off the UI thread."""
+        if cefr.is_warm():
+            self._sync_level_buttons()
+            return
+        th = cefr.warm_async()
+
+        def poll() -> None:
+            try:
+                if not self.winfo_exists():
+                    return
+            except tk.TclError:
+                return
+            if th.is_alive():
+                self.after(60, poll)
+            else:
+                self._sync_level_buttons()
+        self.after(60, poll)
 
     def _sync_level_buttons(self) -> None:
         have = set(cefr.available())
