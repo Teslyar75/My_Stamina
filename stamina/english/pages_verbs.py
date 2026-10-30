@@ -126,15 +126,44 @@ class VerbsTab(tk.Frame):
         if not self.status.cget("text"):
             self.status.configure(text=_t("Выберите пример и проверьте произношение."), fg=MUTED)
 
+    VERB_CHUNK = 16
+
     def _render_verbs(self) -> None:
+        # The list is the same on every refresh: rebuilding ~100 canvas buttons on
+        # each verb click / at startup cost ~0.9 s on the UI thread. Build once, in
+        # after()-chunks, then only move the "active" mark.
+        slugs = [v["slug"] for v in verbs.entries()]
+        btns = getattr(self, "_verb_btns", None)
+        if btns and getattr(self, "_verb_slugs", None) == slugs and all(
+                b.winfo_exists() for b in btns.values()):
+            for slug, b in btns.items():
+                b.set_active(slug == self.slug)
+            return
+        self._verb_btns = {}
+        self._verb_slugs = slugs
+        self._verb_gen = getattr(self, "_verb_gen", 0) + 1
         for c in self.verb_sf.inner.winfo_children():
             c.destroy()
-        for v in verbs.entries():
+        self._build_verb_chunk(list(verbs.entries()), self._verb_gen)
+
+    def _build_verb_chunk(self, todo: list, gen: int) -> None:
+        if gen != self._verb_gen:
+            return                      # a newer rebuild started
+        try:
+            if not self.verb_sf.inner.winfo_exists():
+                return
+        except tk.TclError:
+            return
+        for v in todo[:self.VERB_CHUNK]:
             on = v["slug"] == self.slug
-            b = HudButton(self.verb_sf.inner, f"{v['word']}  ·  {v['ru']}",
+            b = HudButton(self.verb_sf.inner, f"{v['word']}  \u00b7  {v['ru']}",
                           lambda s=v["slug"]: self.select_verb(s), height=32, font_size=9,
                           width=228, active=on, color=CYAN if on else None)
             b.pack(fill=tk.X, padx=px(4), pady=px(3))
+            self._verb_btns[v["slug"]] = b
+        rest = todo[self.VERB_CHUNK:]
+        if rest:
+            self.after(1, lambda: self._build_verb_chunk(rest, gen))
 
     def _render_rows(self) -> None:
         top = self.rows_sf.canvas.yview()[0]
