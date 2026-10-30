@@ -142,3 +142,28 @@ def test_github_bridge_posts_and_polls(monkeypatch):
                                token="t", sleep=lambda s: None)
     assert res.reply == "Ответ агента"
     assert ac.run_github_bridge({"id": "g"}, "hi", token="t").error == "config"
+
+
+def test_dialog_save_keeps_only_reference(store):
+    import tkinter as tk
+    from stamina.agent_dialog import ConnectAgentDialog, agent_for_pilot
+    root = tk.Tk()
+    root.withdraw()
+    try:
+        dlg = ConnectAgentDialog(root, pilot="p1")
+        dlg.use_preset("deepseek")
+        dlg.vars["name"].set("Deep")
+        dlg.key_var.set("sk-dialog")
+        dlg.save()
+        rec = dlg.result
+        assert rec and rec["pilot"] == "p1" and rec["kind"] == "openai_compat"
+        assert store.d[rec["cred_ref"]] == "sk-dialog"
+        assert "sk-dialog" not in orion.agents_path().read_text("utf-8")
+        assert orion.active()["id"] == rec["id"] and agent_for_pilot("p1")["id"] == rec["id"]
+        # повторное редактирование без ключа — ссылка сохраняется
+        dlg2 = ConnectAgentDialog(root, pilot="p1")
+        dlg2.vars["model"].set("deepseek-reasoner")
+        dlg2.save()
+        assert dlg2.result["cred_ref"] == rec["cred_ref"] and dlg2.result["id"] == rec["id"]
+    finally:
+        root.destroy()

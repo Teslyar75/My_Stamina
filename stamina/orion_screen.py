@@ -300,6 +300,8 @@ class OrionScreen(tk.Frame):
         self.who.pack(side=tk.LEFT)
         HudButton(bar, _t("СМЕНИТЬ"), self._cycle_agent, height=30, font_size=9,
                   color=CYAN).pack(side=tk.RIGHT, padx=(px(4), 0))
+        HudButton(bar, _t("🔌 ПОДКЛЮЧИТЬ АГЕНТА"), self._connect_agent, height=30, font_size=9,
+                  color=GREEN).pack(side=tk.RIGHT, padx=(px(4), 0))
         self.voice_btn = HudButton(bar, _t("ОЗВУЧКА: ВКЛ"), self._toggle_voice, height=30,
                                    font_size=9, color=GREEN)
         self.voice_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
@@ -2068,6 +2070,19 @@ class OrionScreen(tk.Frame):
         self._hide_permission()
         self._hint(_t("Канал очищен — разговор начинается заново"), MUTED)
         self.refresh()
+
+    def _connect_agent(self) -> None:
+        """Общее окно «Подключить агента» (то же, что на экране входа)."""
+        from stamina import pilots
+        from stamina.agent_dialog import ConnectAgentDialog
+        cur = pilots.active() or {}
+        rec = self._rec()
+        mine = rec if rec.get("kind") != "opencode" and rec.get("pilot") == cur.get("id") else None
+        saved = ConnectAgentDialog(self, pilot=str(cur.get("id") or ""), record=mine).run()
+        if saved:
+            tts.stop()
+            self.refresh()
+            self._hint(_t("Теперь на связи: {0}").format(saved.get("name") or ""), GREEN)
 
     def _cycle_agent(self) -> None:
         reg = orion.registry()
