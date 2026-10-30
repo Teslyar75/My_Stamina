@@ -2324,5 +2324,11 @@
  "🔒 Освойте ещё {0} глаголов — откроется {1} новых.": "🔒 Master {0} more verbs to unlock {1} new ones.",
  "Произнесите пример: M — микрофон.": "Say the example: M — microphone.",
  "Пример: {0}% — {1}": "Example: {0}% — {1}",
- "🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)": "🔒 {0} unlocks once you complete {1}% of level {2} (now {3}%)"
+ "🔒 {0} откроется, когда пройдёшь {1}% уровня {2} (сейчас {3}%)": "🔒 {0} unlocks once you complete {1}% of level {2} (now {3}%)",
+ "⏳ Собираю предложения из прочитанного": "⏳ Collecting sentences from what you've read",
+ "⏳ Собираю предложения из прочитанного…": "⏳ Collecting sentences from what you've read…",
+ "🔒 РАЗДЕЛ ДЛЯ ПРОДВИНУТЫХ": "🔒 FOR ADVANCED LEARNERS",
+ "для продвинутых: скорость и уровень": "advanced: typing speed and level",
+ " ✓": " ✓",
+ "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 “From the book” is for advanced learners: typing speed of {0} wpm or more (now {1}) and level {2} unlocked{3}"
 }

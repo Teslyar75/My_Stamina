@@ -88,6 +88,11 @@ def reading_word(lib, tid: str) -> int:
 _SYNC_MEMO: dict[str, tuple] = {}
 
 
+def _sig(pos: int, text: str) -> tuple:
+    """Подпись состояния книги, стабильная между запусками (hash() строки - нет)."""
+    return (int(pos), len(text), hashlib.sha1(text[:512].encode("utf-8", "replace")).hexdigest()[:12])
+
+
 def warm_up(lib) -> None:
     """Тяжёлая часть sync_all без записи в прогресс: извлечь предложения всех книг
     в кэш _EXTRACT (можно звать из фонового потока)."""
@@ -101,7 +106,9 @@ def warm_up(lib) -> None:
             if not text or not text.strip():
                 continue
             pos = reading_word(lib, tid)
-            key = (tid, pos, len(text), hash(text[:512]))
+            key = (tid,) + _sig(pos, text)
+            if _SYNC_MEMO.get(tid) == key[1:] or key in _EXTRACT:
+                continue
             if key not in _EXTRACT:
                 _EXTRACT[key] = extract_sentences(text, pos)
         except Exception:  # noqa: BLE001 - прогрев не обязателен
@@ -130,9 +137,14 @@ def sync_book(progress, lib, tid: str, *, save: bool = True, changed: list | Non
 
     pos = reading_word(lib, tid)
     store = ensure_store(progress)
-    sig = (pos, len(text), hash(text[:512]))
+    sig = _sig(pos, text)
     if _SYNC_MEMO.get(tid) == sig and tid in store["books"]:
         return store["books"][tid]
+    cached = store["books"].get(tid)
+    if cached and tuple(cached.get("sig") or ()) == sig:
+        # постоянный кэш в english.json: книга и позиция не менялись - не токенизируем заново
+        _SYNC_MEMO[tid] = sig
+        return cached
     extracted = _EXTRACT.pop((tid,) + sig, None)
     if extracted is None:
         extracted = extract_sentences(text, pos)
@@ -159,6 +171,7 @@ def sync_book(progress, lib, tid: str, *, save: bool = True, changed: list | Non
         "author": m.get("author") or "",
         "word_pos": pos,
         "updated": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "sig": list(sig),
         "sentences": sentences,
     }
     store["books"][tid] = book
@@ -183,6 +196,76 @@ def sync_all(progress, lib) -> tuple[int, int]:
     if changed:
         progress.save()       # одна запись на всю синхронизацию, а не по книге
     return books_n, sent_n
+
+
+_BG: dict[int, list] = {}
+
+
+def busy(progress) -> bool:
+    """Идёт ли фоновая синхронизация для этого прогресса."""
+    return id(progress) in _BG
+
+
+def sync_in_background(widget, progress, lib_factory, on_done=None, *, tid: str | None = None,
+                       translator=None, tl: str = "ru", poll_ms: int = 60) -> bool:
+    """Синхронизация без зависания окна.
+
+    Тяжёлое (чтение и токенизация книг) - в потоке; запись в прогресс, переводы из кэша
+    и колбэк on_done(books_n, sent_n) - в главном потоке через widget.after().
+    Повторный вызов во время работы только добавляет колбэк. → True, если запущено сейчас.
+    """
+    key = id(progress)
+    if key in _BG:
+        if on_done is not None:
+            _BG[key].append(on_done)
+        return False
+    _BG[key] = [on_done] if on_done is not None else []
+    import threading
+    box: dict = {}
+
+    def work() -> None:
+        try:
+            lib = lib_factory()
+            box["lib"] = lib
+            warm_up(lib)
+        except Exception as e:  # noqa: BLE001
+            box["err"] = e
+
+    th = threading.Thread(target=work, name="book-sentences-sync", daemon=True)
+    th.start()
+
+    def finish() -> None:
+        books_n = sent_n = 0
+        try:
+            lib = box.get("lib")
+            if lib is not None:
+                books_n, sent_n = sync_all(progress, lib)
+                if tid:
+                    b = sync_book(progress, lib, tid)
+                    if b:
+                        sent_n = max(sent_n, len(b.get("sentences") or []))
+                if translator is not None:
+                    fill_ru_from_cache(progress, translator, tl)
+                    request_missing_ru(progress, translator, tl)
+        except Exception:  # noqa: BLE001
+            pass
+        for cb in _BG.pop(key, []):
+            try:
+                cb(books_n, sent_n)
+            except Exception:  # noqa: BLE001
+                pass
+
+    def wait() -> None:
+        if th.is_alive():
+            try:
+                widget.after(poll_ms, wait)
+            except Exception:  # noqa: BLE001 - виджет закрыт
+                _BG.pop(key, None)
+            return
+        finish()
+
+    widget.after(poll_ms, wait)
+    return True
 
 
 def uplink_tl(app) -> str:

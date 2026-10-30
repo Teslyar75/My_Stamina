@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 
+from stamina.english import access
+
 import datetime as dt
 import random
 import tkinter as tk
@@ -66,7 +68,8 @@ class SectorCard(tk.Canvas):
         self.create_text(w - px(12), px(14), text=g["sub"], anchor="e", fill=MUTED, font=theme.font(8, True))
         name_y = px(40) if h >= px(120) else px(32)
         note_y = px(62) if h >= px(120) else px(54)
-        self.create_text(px(12), name_y, text=g["name"], anchor="w", fill=TEXT, font=theme.font(13, True))
+        name = g["name"]() if callable(g["name"]) else g["name"]
+        self.create_text(px(12), name_y, text=name, anchor="w", fill=TEXT, font=theme.font(13, True))
         note = g.get("note")() if callable(g.get("note")) else (g.get("note") or "")
         self.create_text(px(12), note_y, text=note, anchor="w", fill=MUTED, font=theme.font(8))
         if not self.compact:
@@ -267,10 +270,19 @@ class OverviewPage(tk.Frame):
             ready, due = bs.count_ready(p), bs.count_due(p)
             return _t("готово {0} · к повторению {1}").format(ready, due) if ready else _t("книга не выбрана")
 
+        def book_lock() -> str:
+            ok, hint = access.book_access(p, getattr(self.ctx, "app", None))
+            return "" if ok else hint
+
         def open_group(key: str) -> None:
             h = hub()
             if h is None:
                 return
+            if key == "book":
+                hint = book_lock()
+                if hint:
+                    self.ctx.status(hint, AMBER)
+                    return
             if key == "cefr":
                 h.open_cefr("A1")
             else:
@@ -282,8 +294,10 @@ class OverviewPage(tk.Frame):
              "stats": cefr_stats, "note": cefr_note, "open": lambda: open_group("cefr")},
             {"code": "S-VRB", "name": "Irregular", "sub": _t("ГЛАГОЛЫ"),
              "stats": verb_stats, "note": verb_note, "open": lambda: open_group("verbs")},
-            {"code": "S-BOOK", "name": _t("Из книги"), "sub": _t("ПРЕДЛОЖЕНИЯ"),
-             "stats": book_stats, "note": book_note, "open": lambda: open_group("book")},
+            {"code": "S-BOOK",
+             "name": lambda: ("🔒 " if book_lock() else "") + _t("Из книги"), "sub": _t("ПРЕДЛОЖЕНИЯ"),
+             "stats": book_stats,
+             "note": lambda: _t("для продвинутых: скорость и уровень") if book_lock() else book_note(), "open": lambda: open_group("book")},
         ]
 
     def _open_set(self, sid: str) -> None:
@@ -418,25 +432,26 @@ class OverviewPage(tk.Frame):
             self.ctx.status(_t("Библиотека недоступна"), AMBER)
             return
         tid = self._book_tid
-        if tid:
-            book = bs.sync_book(self.ctx.progress, lib, tid)
-            n = len((book or {}).get("sentences") or [])
-        else:
-            _bn, n = bs.sync_all(self.ctx.progress, lib)
+        ok, hint = access.book_access(self.ctx.progress, getattr(self.ctx, "app", None))
+        if not ok:
+            self.ctx.status(hint, AMBER)
+            return
         try:
             tr = self.ctx.app.get_translator()
         except Exception:
             tr = None
         tl = bs.uplink_tl(self.ctx.app)
-        filled = bs.fill_ru_from_cache(self.ctx.progress, tr, tl)
-        bs.request_missing_ru(self.ctx.progress, tr, tl)
         self.ctx.sfx("click")
-        self.ctx.status(
-            _t("Собрано {0} предложений из прочитанного").format(n) + (
-                _t(" · переводов из кэша: {0}").format(filled) if filled else ""),
-            GREEN if n else AMBER)
-        self._refresh_book_plate()
-        self.ctx.changed()
+
+        def done(_bn: int, n: int) -> None:
+            if tid:
+                n = len(bs.sentences_of(self.ctx.progress, tid))
+            self.ctx.status(_t("Собрано {0} предложений из прочитанного").format(n), GREEN if n else AMBER)
+            self._refresh_book_plate()
+            self.ctx.changed()
+
+        bs.sync_in_background(self, self.ctx.progress, lambda: lib, done, tid=tid, translator=tr, tl=tl)
+        self.ctx.status(_t("⏳ Собираю предложения из прочитанного…"), CYAN)
 
     def _practice_book_plate(self) -> None:
         self.ctx.open_book_cards(self._book_tid)

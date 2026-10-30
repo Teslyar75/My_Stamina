@@ -33,8 +33,8 @@ def tokenize(text: str) -> list[Word]:
         w.para_end = gap.count("\n") >= 2 or (i + 1 == len(matches))
         core = w.text.rstrip("\"'»”“’)]›«")
         w.sent_end = core.endswith(SENT_END) or w.para_end
-        line_start = text.rfind("\n", 0, m.start()) + 1
-        if line_start == m.start() or i == 0:
+        # начало строки: O(1) вместо rfind от начала текста (на длинной строке было O(n²))
+        if i == 0 or text[m.start() - 1] == "\n":
             line_end = text.find("\n", m.start())
             line = text[m.start(): line_end if line_end >= 0 else len(text)]
             w.chapter = bool(CHAPTER_RE.match(line)) and len(line) < 60
