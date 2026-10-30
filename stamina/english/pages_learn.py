@@ -15,6 +15,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUT
 
 from .speech_std import advance_later, passed as std_passed
 from . import sm2
+from .check import SpeechCheck
 from .mic import MicPanel
 from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
 from .textutil import score_sentence, score_word, verdict, word_forms
@@ -536,10 +537,9 @@ class PracticePage(tk.Frame):
         left.pack(side=tk.LEFT, anchor="n")
         self.ctx.audio_button(left, _t("🔊 ОБРАЗЕЦ"), lambda: sample, height=30, font_size=9).pack(anchor="w", pady=px(2))
         self.ctx.audio_button(left, _t("🐢 МЕДЛЕННО"), lambda: sample, slow=True, height=30, font_size=9).pack(anchor="w")
-        self.mic = MicPanel(r, self.ctx, self.on_speech)
-        self.mic.pack(side=tk.LEFT, padx=px(30))
-        self.match = MatchReadout(self.tb)  # «СОВПАДЕНИЕ: N%» после каждой попытки
-        self.match.pack(fill=tk.X, pady=(px(8), 0))
+        self.check = SpeechCheck(r, self.ctx, self.on_speech)   # тот же блок, что в сканере
+        self.check.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(30), 0))
+        self.mic, self.match = self.check.mic, self.check.match
 
     def _t_S1(self, t, w) -> None:
         self._big(w["word"], size=34)
@@ -575,20 +575,24 @@ class PracticePage(tk.Frame):
             (score, marks), heard = max(res, key=lambda r: r[0][0])
         self.match.set(score, marks, heard if self_score is None else "",
                        bool(marks) and target_missed(marks, w["word"]), self_rated=self_score is not None)
-        passed = score >= (60 if t["type"] == "S3" else 60)
-        if not passed and self.attempt < 3 and self_score is None:
-            self.attempt += 1
+        passed = std_passed(score)   # единый стандарт: ≥80%, попыток без ограничений
+        if not passed:
             text, vk = verdict(score)
-            self.fb.configure(text=_t("Совпадение {0}% · {1} — попытка {2} из 3").format(score, text, self.attempt), fg=VCOL[vk])
+            self.fb.configure(text=_t("Совпадение {0}% · {1} — нужно ≥ 80%, ещё раз (M)").format(score, text),
+                              fg=VCOL[vk])
             self._marks(marks)
-            return
+            try:
+                self.ctx.sfx("error")
+            except Exception:  # noqa: BLE001
+                pass
+            return  # остаёмся на задании
         q = 5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2
         text, vk = verdict(score)
         extra = _t("Оригинал: {0}").format(t['sentence']['en']) if t["type"] == "S3" else ""
         self._marks(marks)
         lab = _t("Самооценка") if self_score is not None else _t("Совпадение")
         self.answer(passed, q, f"{lab} {score}% · {text}. {extra}", score=score, color=VCOL[vk])
-        if std_passed(score):
+        if passed:
             here = self.i
             advance_later(self, self.next_task, lambda: self.active and self.i == here and self.answered_cur)
 

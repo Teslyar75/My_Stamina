@@ -2330,5 +2330,10 @@
  "🔒 РАЗДЕЛ ДЛЯ ПРОДВИНУТЫХ": "🔒 FOR ADVANCED LEARNERS",
  "для продвинутых: скорость и уровень": "advanced: typing speed and level",
  " ✓": " ✓",
- "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 “From the book” is for advanced learners: typing speed of {0} wpm or more (now {1}) and level {2} unlocked{3}"
+ "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 “From the book” is for advanced learners: typing speed of {0} wpm or more (now {1}) and level {2} unlocked{3}",
+ "M — микрофон · T (держать) — подсказка · ≥80% — дальше": "M — microphone · T (hold) — hint · ≥80% — next",
+ "Произнесите выбранную форму: M — микрофон.": "Say the selected form: M — microphone.",
+ "Форма «{0}»: {1}%": "Form “{0}”: {1}%",
+ "Пример {0}: {1}%": "Example {0}: {1}%",
+ "Совпадение {0}% · {1} — нужно ≥ 80%, ещё раз (M)": "Match {0}% · {1} — need ≥ 80%, try again (M)"
 }

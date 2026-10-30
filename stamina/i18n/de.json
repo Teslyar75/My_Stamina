@@ -2328,5 +2328,10 @@
  "🔒 РАЗДЕЛ ДЛЯ ПРОДВИНУТЫХ": "🔒 FÜR FORTGESCHRITTENE",
  "для продвинутых: скорость и уровень": "Fortgeschrittene: Tempo und Stufe",
  " ✓": " ✓",
- "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 „Aus dem Buch“ ist für Fortgeschrittene: Tippgeschwindigkeit ab {0} WpM (jetzt {1}) und freigeschaltete Stufe {2}{3}"
+ "🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}": "🔒 „Aus dem Buch“ ist für Fortgeschrittene: Tippgeschwindigkeit ab {0} WpM (jetzt {1}) und freigeschaltete Stufe {2}{3}",
+ "M — микрофон · T (держать) — подсказка · ≥80% — дальше": "M — Mikrofon · T (halten) — Hinweis · ≥80% — weiter",
+ "Произнесите выбранную форму: M — микрофон.": "Sprechen Sie die gewählte Form: M — Mikrofon.",
+ "Форма «{0}»: {1}%": "Form „{0}“: {1}%",
+ "Пример {0}: {1}%": "Beispiel {0}: {1}%",
+ "Совпадение {0}% · {1} — нужно ≥ 80%, ещё раз (M)": "Übereinstimmung {0}% · {1} — nötig ≥ 80%, noch einmal (M)"
 }

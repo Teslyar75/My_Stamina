@@ -17,9 +17,8 @@ from stamina.theme import px
 
 from . import conjugation as cj
 from . import verbs
-from .mic import MicPanel
-from .speech_std import advance_later, passed
-from .textutil import score_sentence, verdict
+from .check import SpeechCheck
+from .speech_std import is_hint_key, is_mic_key, passed
 from .ui import L, ScrollFrame, entry
 
 _TOKEN = re.compile(r"[A-Za-z']+|[^A-Za-z']+")
@@ -130,16 +129,14 @@ class ReferencePanel(tk.Frame):
         self.cells.pack(fill=tk.X, pady=(px(4), 0))
         self.example = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
         self.example.pack(fill=tk.X, pady=(px(4), 0))
-        # единый стандарт: микрофон на постоянном месте под примером, M, зачёт ≥80%
+        # единый блок проверки — как в сканере: произносим выбранную форму (лицо × время)
         micbar = tk.Frame(right, bg=th.PANEL, highlightthickness=1, highlightbackground=th.LINE)
         micbar.pack(fill=tk.X, pady=(px(4), 0))
-        self.mic_status = L(micbar, _t("Произнесите пример: M — микрофон."), fg=th.MUTED, size=9,
-                            bg=th.PANEL, wraplength=px(420), justify="left")
-        self.mic_status.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=px(10), pady=px(6))
-        self.mic = None
-        if hasattr(self.ctx, "asr"):
-            self.mic = MicPanel(micbar, self.ctx, self.on_speech, bg=th.PANEL)
-            self.mic.pack(side=tk.RIGHT, padx=px(8), pady=px(4))
+        self.check = SpeechCheck(micbar, self.ctx, self.on_speech, bg=th.PANEL)
+        self.check.pack(fill=tk.X, padx=px(10), pady=px(6))
+        self.mic = self.check.mic
+        self.mic_status = self.check.note
+        self.mic_status.configure(text=_t("Произнесите выбранную форму: M — микрофон."))
         self.status = L(right, _t("Ctrl+Enter — «→ в карточку» для выбранной строки; ←/→ — время, ↑/↓ — лицо."),
                         fg=th.MUTED, size=8, bg=th.BG, wraplength=px(620), justify="left")
         self.status.pack(fill=tk.X, pady=(px(4), 0))
@@ -314,44 +311,57 @@ class ReferencePanel(tk.Frame):
         return "break"
 
     def on_key(self, e) -> None:
-        k = (getattr(e, "keysym", "") or "").lower()
-        from .speech_std import is_mic_key
-        if is_mic_key(e) and self.mic is not None and getattr(e, "widget", None) is not self.search:
-            self.mic.toggle()
+        if getattr(e, "widget", None) is self.search:
+            return
+        if is_mic_key(e):
+            self.check.toggle()
+        elif is_hint_key(e):
+            self.check.hint_down(self._hint_text())
+
+    def on_key_up(self, e) -> None:
+        if is_hint_key(e):
+            self.check.hint_up()
+
+    def _hint_text(self) -> str:
+        if self.verb is None:
+            return ""
+        v = self.verb
+        parts = [f"V1 {v['lemma']} · V2 {v.get('v2', '')} · V3 {v.get('v3', '')}", v.get("ru") or ""]
+        ex = verbs.example_for(v, self.tense)
+        if ex:
+            parts.append(f"{ex['en']} — {ex.get('ru') or ''}")
+        return "\n".join(p for p in parts if p)
 
     def on_speech(self, alts, self_score) -> None:
-        """Проверка примера Tatoeba текущего времени по единому стандарту (speech_std)."""
-        ex = verbs.example_for(self.verb, self.tense) if self.verb else None
-        if not ex:
+        """Проверка выбранной формы (лицо × время) по стандарту сканера; ≥80% — следующая форма,
+        после последнего лица — следующее время; ниже — остаёмся."""
+        if self.verb is None:
             return
-        if self_score is not None:
-            score, heard = self_score, ""
+        target = self._conj(cj.PERSON_KEYS[self.person_i])
+        res = self.check.evaluate(target, alts, self_score, self.verb["lemma"])
+        if res is None:
+            return
+        score = res[0]
+        self.mic_status.configure(text=_t("Форма «{0}»: {1}%").format(target, score),
+                                  fg=th.GREEN if passed(score) else th.MUTED)
+        here = (self.verb["lemma"], self.tense, self.person_i)
+        self.check.judge(score, self.next_form,
+                         lambda: (self.verb["lemma"], self.tense, self.person_i) == here)
+
+    def next_form(self) -> None:
+        if self.person_i < len(cj.PERSONS) - 1:
+            self.select_person(self.person_i + 1)
         else:
-            if not alts:
-                return
-            level = self.ctx.progress.settings.get("speech_strictness", "normal")
-            res = [(score_sentence(ex["en"], a, self.verb["lemma"], strictness=level), a) for a in alts]
-            (score, _marks), heard = max(res, key=lambda r: r[0][0])
-        text, vk = verdict(score)
-        col = {"green": th.GREEN, "amber": th.AMBER, "red": th.RED}.get(vk, th.MUTED)
-        msg = _t("Пример: {0}% — {1}").format(score, text)
-        if heard:
-            msg += _t(" · услышано: «{0}»").format(heard)
-        self.mic_status.configure(text=msg, fg=th.GREEN if passed(score) else col)
-        try:
-            self.ctx.sfx("click" if passed(score) else "error")
-        except Exception:  # noqa: BLE001
-            pass
-        if passed(score):
-            here = (self.verb["lemma"], self.tense)
-            advance_later(self, lambda: self._step_tense(1),
-                          lambda: (self.verb["lemma"], self.tense) == here)
+            self.person_i = 0
+            self._step_tense(1)
 
     def set_mode(self, mode: str) -> None:
         self.mode = mode
         self._render_verb()
 
     def set_tense(self, key: str) -> None:
+        if key != self.tense:
+            self.check.clear()
         self.tense = key
         self._render_verb()
 
@@ -363,6 +373,8 @@ class ReferencePanel(tk.Frame):
         self.select_person((self.person_i + d) % len(cj.PERSONS))
 
     def select_person(self, i: int) -> None:
+        if i != self.person_i:
+            self.check.clear()
         self.person_i = i
         self._render_cells(cj.irregular_tokens(self.verb["lemma"], self.verb.get("v2"), self.verb.get("v3")))
 

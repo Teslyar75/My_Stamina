@@ -13,6 +13,7 @@ import tkinter as tk
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, PANEL_HI, RED, TEXT, px
 
+from .check import HoldGrab, SpeechCheck
 from .mic import MicPanel
 from .speech_std import is_hint_key, is_mic_key
 from .textutil import score_sentence, score_word, verdict
@@ -48,7 +49,7 @@ class WarehousePage(tk.Frame):
         self._active_ru = ""
         self._active_en = ""
         self._holding: int | None = None
-        self._hint_grab = None  # HudButton | None
+        self._grab = HoldGrab()
 
         self.strip = Strip(self)
         self.strip.pack(fill=tk.X, padx=px(12), pady=(px(4), 0))
@@ -220,27 +221,7 @@ class WarehousePage(tk.Frame):
 
     # -- подсказка: удержание ----------------------------------------------------
     def _bind_hint(self, btn: HudButton, key: int) -> None:
-        btn.command = None  # не клик, а удержание
-
-        def down(_e, k=key, b=btn) -> None:
-            self._hint_down(k, b)
-
-        def up(_e, k=key) -> None:
-            self._hint_up(k)
-
-        btn.bind("<ButtonPress-1>", down, add="+")
-        btn.bind("<ButtonRelease-1>", up, add="+")
-        # Leave не используем: смена текста двигает вёрстку и срывает удержание
-
-    def _release_hint_grab(self) -> None:
-        btn = self._hint_grab
-        self._hint_grab = None
-        if btn is None:
-            return
-        try:
-            btn.grab_release()
-        except tk.TclError:
-            pass
+        self._grab.bind(btn, lambda b, k=key: self._hint_down(k, b), lambda k=key: self._hint_up(k))
 
     def _en_for(self, key: int) -> str:
         face = self._faces.get(key)
@@ -275,12 +256,7 @@ class WarehousePage(tk.Frame):
             self.ctx.status(_t("Нет английского образца"), AMBER)
             return
         self._holding = key
-        if btn is not None:
-            self._hint_grab = btn
-            try:
-                btn.grab_set()
-            except tk.TclError:
-                self._hint_grab = None
+        self._grab.take(btn)
         try:
             from stamina import theme
             lab.configure(text=en, fg=CYAN, font=theme.font(size, True))
@@ -297,7 +273,7 @@ class WarehousePage(tk.Frame):
         if key is None or self._holding != key:
             return
         self._holding = None
-        self._release_hint_grab()
+        self._grab.release()
         face = self._faces.get(key)
         if not face:
             return
@@ -314,7 +290,7 @@ class WarehousePage(tk.Frame):
                 pass
 
     def render(self) -> None:
-        self._release_hint_grab()
+        self._grab.release()
         self._holding = None
         _clear(self.body)
         _clear(self.btns)
@@ -641,12 +617,9 @@ class WarehousePage(tk.Frame):
             self.ctx.audio_button(tools, _t("🔊 ОЗВУЧИТЬ EN"), lambda t=en_target: t,
                                   height=30, font_size=9, width=140).pack(side=tk.LEFT)
 
-            mic_row = tk.Frame(panel, bg=PANEL)
-            mic_row.pack(anchor="w", pady=px(2))
-            self.mic = MicPanel(mic_row, self.ctx, self.on_speech)
-            self.mic.pack(side=tk.LEFT)
-            self.match = MatchReadout(panel)
-            self.match.pack(fill=tk.X, pady=(px(4), 0))
+            self.check = SpeechCheck(panel, self.ctx, self.on_speech)
+            self.check.pack(fill=tk.X, pady=(px(2), 0))
+            self.mic, self.match = self.check.mic, self.check.match
             self.fb = L(panel, "", fg=MUTED, size=10, bg=PANEL)
             self.fb.pack(anchor="w")
 
