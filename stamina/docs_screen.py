@@ -93,6 +93,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         # -- редактор
         right = HudPanel(body, title=_t("РЕДАКТОР"))
         right.grid(row=0, column=1, sticky="nsew")
+        self.right_panel, self._body = right, body
         rb = right.body
         self.title_var = tk.StringVar()
         self.title_entry = tk.Entry(rb, textvariable=self.title_var, bg=theme.BG2, fg=TEXT,
@@ -135,6 +136,10 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
                          ("⏭", lambda: self.read_chapter(1))):
             HudButton(ins, sym, cmd, height=30, font_size=9, width=30,
                       color=MUTED).pack(side=tk.LEFT, padx=(px(2), 0))
+        self._focus = None      # фокус-режим O — общий ui.FocusMode, как в сканере английского
+        self.btn_focus = HudButton(ins, _t("⛶ ФОКУС  O"), self.toggle_focus, height=30, font_size=9,
+                                   color=AMBER)
+        self.btn_focus.pack(side=tk.LEFT, padx=(px(6), 0))
         self.export_btn = HudButton(out, _t("ЭКСПОРТ"), self._export_menu, height=32, font_size=9,
                                     color=AMBER)
         self.export_btn.pack(side=tk.RIGHT)
@@ -180,10 +185,38 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.refresh()
         self.text.focus_set()
 
-    def on_key(self, _e) -> None:
-        return None          # набор принадлежит редактору
+    def on_key(self, e):
+        """Набор принадлежит редактору; O/Щ — фокус-режим, только вне полей ввода."""
+        if e.keysym == "Escape" and self._focus is not None:
+            self.toggle_focus(False)
+            return "break"
+        from stamina.english.speech_std import is_focus_key
+        w = self.focus_get()
+        if is_focus_key(e) and not isinstance(w, (tk.Text, tk.Entry)):
+            self.toggle_focus()
+            return "break"
+        return None
+
+    # -- фокус-режим (O / Щ, Esc — выход) ----------------------------------------
+    def in_focus(self) -> bool:
+        return self._focus is not None
+
+    def toggle_focus(self, on: bool | None = None) -> None:
+        from stamina.english.ui import FocusMode
+        on = (self._focus is None) if on is None else on
+        if on and self._focus is None:
+            # редактор на всё окно; если открыта справка — редактор вместе со справкой
+            target = self._body if getattr(self, "_help_on", False) else self.right_panel
+            self.update_idletasks()   # FocusMode прячет только отображённые grid-виджеты
+            self._focus = FocusMode(target)
+        elif not on and self._focus is not None:
+            f, self._focus = self._focus, None
+            f.restore()
+        self.btn_focus.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
+        self.btn_focus.set_active(self._focus is not None)
 
     def on_leave(self) -> None:
+        self.toggle_focus(False)
         self.save_now()
 
     def dictate(self) -> None:
@@ -575,6 +608,9 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
     # -- справка в левой панели ------------------------------------------------------
     def toggle_help(self, show: bool | None = None) -> None:
         show = not getattr(self, "_help_on", False) if show is None else show
+        refocus = getattr(self, "_focus", None) is not None
+        if refocus:
+            self.toggle_focus(False)
         self._help_on = show
         if show:
             self.list_view.pack_forget()
@@ -589,6 +625,8 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         except Exception:  # noqa: BLE001
             pass
         self.fmt_buttons["help"].set_active(show)
+        if refocus:
+            self.toggle_focus(True)     # справка открыта/закрыта — фокус пересобираем
         self.text.focus_set()
 
     def update_empty_hint(self) -> None:

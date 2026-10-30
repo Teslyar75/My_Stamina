@@ -1200,6 +1200,11 @@ class Cockpit(tk.Tk):
             if scr is not None and getattr(scr, "focus_active", lambda: False)():
                 scr.pages[scr.current].toggle_focus(False)   # Esc в фокус-режиме — только выход из него
                 return "break"
+        if e.keysym == "Escape" and self.current == docs_hook.KEY:
+            scr = self.screens.get(docs_hook.KEY)
+            if scr is not None and getattr(scr, "in_focus", lambda: False)():
+                scr.toggle_focus(False)      # Документы: Esc — выход из фокус-режима
+                return "break"
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del

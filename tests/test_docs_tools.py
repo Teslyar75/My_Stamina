@@ -274,3 +274,57 @@ class TestLongDocs(_Root):
         s._run_scheduled_hl()
         self.assertLess(time.perf_counter() - t0, 0.2)
         self.assertIn("md_h1", s.text.tag_names("3000.3"))
+
+
+class TestFocusMode(_Root):
+    def _key(self, sym, char=""):
+        return mock.Mock(keysym=sym, char=char, keycode=79, state=0)
+
+    def test_o_toggles_outside_editor_and_esc_exits(self):
+        s = self.scr
+        self.root.deiconify()
+        s.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+        self.root.update()
+        s.listbox.focus_force()
+        self.root.update()
+        self.assertEqual(s.on_key(self._key("o", "o")), "break")
+        self.assertTrue(s.in_focus())
+        self.root.update()
+        self.assertFalse(s.left_panel.winfo_ismapped())       # список скрыт
+        self.assertTrue(s.right_panel.winfo_ismapped())       # редактор остался
+        self.assertEqual(s.on_key(self._key("Escape")), "break")
+        self.assertFalse(s.in_focus())
+        self.root.update()
+        self.assertTrue(s.left_panel.winfo_ismapped())
+
+    def test_cyrillic_shcha_and_typing_untouched(self):
+        s = self.scr
+        self.root.deiconify()
+        s.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+        s.listbox.focus_force()
+        self.root.update()
+        s.on_key(self._key("Cyrillic_shcha", "щ"))
+        self.assertTrue(s.in_focus())
+        s.toggle_focus(False)
+        s.text.focus_force()
+        self.root.update()
+        self.assertIsNone(s.on_key(self._key("o", "o")))      # в редакторе O — это буква
+        self.assertFalse(s.in_focus())
+
+    def test_help_stays_visible_in_focus(self):
+        s = self.scr
+        self.root.deiconify()
+        s.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+        s.toggle_help(True)
+        s.toggle_focus(True)
+        self.root.update()
+        self.assertTrue(s.left_panel.winfo_ismapped())
+        self.assertTrue(s.right_panel.winfo_ismapped())
+        s.toggle_help(False)                                   # справку закрыли — фокус пересобран
+        self.root.update()
+        self.assertTrue(s.in_focus())
+        self.assertFalse(s.left_panel.winfo_ismapped())
+        s.toggle_focus(False)
