@@ -52,7 +52,7 @@ def _isolate_stamina_globals():
         if mod is not None:
             setattr(mod, k, v)
     hud = sys.modules.get("stamina.hud")
-    for cache in ("_FIT_CACHE", "_MEASURE_CACHE"):
+    for cache in ("_FIT_CACHE", "_MEASURE_CACHE", "_FONT_OBJS"):
         c = getattr(hud, cache, None)
         if isinstance(c, dict):
             c.clear()

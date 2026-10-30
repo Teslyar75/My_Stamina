@@ -35,6 +35,20 @@ def _bg_of(widget: tk.Misc) -> str:
 
 _FIT_CACHE: dict[tuple, str] = {}
 _MEASURE_CACHE: dict[tuple, int] = {}
+# tkfont.Font(...) creates a new named Tcl font on every call (~1-2 ms each, 500+
+# times at startup); one Font object per spec is reused instead.
+_FONT_OBJS: dict[str, "tkfont.Font"] = {}
+
+
+def _font_obj(font_spec):
+    key = str(font_spec)
+    f = _FONT_OBJS.get(key)
+    if f is None:
+        f = tkfont.Font(font=font_spec)
+        if len(_FONT_OBJS) > 200:
+            _FONT_OBJS.clear()
+        _FONT_OBJS[key] = f
+    return f
 
 
 def _measure_px(font_spec, text: str) -> int:
@@ -44,9 +58,13 @@ def _measure_px(font_spec, text: str) -> int:
     if cached is not None:
         return cached
     try:
-        value = tkfont.Font(font=font_spec).measure(text)
-    except tk.TclError:
-        return 0
+        value = _font_obj(font_spec).measure(text)
+    except (tk.TclError, RuntimeError):
+        _FONT_OBJS.clear()      # font of a destroyed root: rebuild once
+        try:
+            value = _font_obj(font_spec).measure(text)
+        except (tk.TclError, RuntimeError):
+            return 0
     if len(_MEASURE_CACHE) > 1200:
         _MEASURE_CACHE.clear()
     _MEASURE_CACHE[key] = value
@@ -76,9 +94,14 @@ def fit_text(font_spec, text: str, max_px: int) -> str:
 
 def _fit_text_uncached(font_spec, text: str, max_px: int) -> str:
     try:
-        f = tkfont.Font(font=font_spec)
-    except tk.TclError:
-        return text
+        f = _font_obj(font_spec)
+        f.measure("")
+    except (tk.TclError, RuntimeError):
+        _FONT_OBJS.clear()
+        try:
+            f = _font_obj(font_spec)
+        except (tk.TclError, RuntimeError):
+            return text
     if max_px <= 0:
         return ""
     try:
@@ -144,8 +167,7 @@ class HudButton(_LazyDraw, tk.Canvas):
         self._base = (font_size, bold, width, height)
         self._text = text
         self._auto_width = width is None      # ширину задали мы — значит, и растим её сами
-        measured = _measure_px(self._font, text)
-        w = px(width) if width else measured + px(30)
+        w = px(width) if width else _measure_px(self._font, text) + px(30)
         super().__init__(master, width=w, height=px(height), bg=_bg_of(master),
                          highlightthickness=0, bd=0, cursor="hand2", takefocus=1)
         self.command = command
