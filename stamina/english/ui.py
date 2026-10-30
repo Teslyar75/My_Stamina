@@ -52,6 +52,8 @@ class WrapEntry(tk.Text):
                          relief="flat", font=theme.font(size), highlightthickness=1,
                          highlightbackground=LINE_HI, highlightcolor=CYAN, padx=px(3), pady=px(2), bd=0)
         self.maxlines = maxlines
+        self._bsize = self._cur = size
+        self.on_resize = None
         tags = list(self.bindtags())
         tags.insert(tags.index("Text"), "WrapEntryNoNL")
         self.bindtags(tuple(tags))
@@ -64,17 +66,47 @@ class WrapEntry(tk.Text):
         self.edit_modified(False)
         self.after_idle(self._fit)
 
+    def set_size(self, size: int) -> None:
+        """Base font size (focus mode rescales it); the field may shrink it by up to 2pt to stay one line."""
+        self._bsize = size
+        self.after_idle(self._fit)
+
     def _fit(self) -> None:
+        import tkinter.font as tkfont
+        try:
+            text = self.get()
+            avail = self.winfo_width() - 2 * (int(self.cget("padx")) + int(self.cget("highlightthickness"))) - px(4)
+        except tk.TclError:
+            return
+        size = self._bsize
+        one = not text
+        if avail > 10 and text:
+            for sz in range(self._bsize, max(6, self._bsize - 2) - 1, -1):
+                if tkfont.Font(font=theme.font(sz)).measure(text) <= avail:
+                    size, one = sz, True
+                    break
+        if self._cur != size:
+            self._cur = size
+            self.configure(font=theme.font(size))
+        if one:
+            self._set_h(1)
+        else:
+            self.after_idle(self._fit_lines)
+
+    def _fit_lines(self) -> None:
         try:
             n = self.count("1.0", "end-1c", "displaylines")
         except tk.TclError:
             return
         if isinstance(n, tuple):
             n = n[0] if n else 0
-        n = (n or 0) + 1
-        h = max(1, min(self.maxlines, n))
+        self._set_h(max(1, min(self.maxlines, (n or 0) + 1)))
+
+    def _set_h(self, h: int) -> None:
         if int(self.cget("height")) != h:
             self.configure(height=h)
+            if self.on_resize:
+                self.after_idle(self.on_resize)
 
     def get(self, *_a) -> str:  # Entry API
         return super().get("1.0", "end-1c")

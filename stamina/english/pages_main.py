@@ -1059,6 +1059,7 @@ class ScannerPage(tk.Frame):
         trr.pack(fill=tk.X, pady=px(1))
         L(trr, _t("МОЙ ПЕРЕВОД"), fg=MUTED, size=7, bold=True).pack(side=tk.LEFT)
         self.tr = WrapEntry(trr, size=10)
+        self.tr.on_resize = lambda: self.after(20, self.sf.sync)
         self.tr.pack(side=tk.LEFT, padx=(px(4), 0), fill=tk.X, expand=True)
         self.tr.bind("<FocusOut>", lambda _e: self._save_tr())
         self.tr.bind("<Return>", lambda _e: (self._save_tr(), self.focus_set()))
@@ -1088,6 +1089,7 @@ class ScannerPage(tk.Frame):
         self.sent.tag_configure("ok", foreground=GREEN)
         self.sent.tag_configure("bad", foreground=RED, underline=True)
         self.sent.pack(fill=tk.X)
+        self.sent.bind("<Configure>", lambda _e: self.after_idle(self._fit_sent), add="+")
         self.str_ = L(left, "", fg=MUTED, size=10, wraplength=px(400), justify="left")
         self.str_.pack(anchor="w")
         self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(400), justify="left")
@@ -1410,7 +1412,7 @@ class ScannerPage(tk.Frame):
                 if isinstance(w, (tk.Label, tk.Text, tk.Entry)) and root is not self.actbar:
                     self._sfont(w, k)
         f = lambda n, b=False, m=False: theme.font(round(n * k), b, m)
-        self.sent.configure(height=2)
+        self._fit_sent()
         self.set_ptab(self.ptab)
         self._word_px = 0
         self._fit_word()
@@ -1420,6 +1422,20 @@ class ScannerPage(tk.Frame):
         self._bar_mode = None
         self._place_actbar(self.scan_panel.winfo_width())
         self.chip_bar.place_configure(y=px(round(4 * kh)))
+
+    def _fit_sent(self) -> None:
+        """Sentence box is exactly as tall as its wrapped text (1-3 lines), so short sentences leave room."""
+        try:
+            n = self.sent.count("1.0", "end-1c", "displaylines")
+        except tk.TclError:
+            return
+        if isinstance(n, tuple):
+            n = n[0] if n else 0
+        h = max(1, min(3, (n or 0) + 1))
+        if int(self.sent.cget("height")) != h:
+            self.sent.configure(height=h)
+            if getattr(self.sf, "autohide", False):
+                self.after(20, self.sf.sync)
 
     def _flows(self):
         out, stack = [], [self.scan_panel, self.chan]
@@ -1447,6 +1463,9 @@ class ScannerPage(tk.Frame):
             sz = a["size"]
             n = max(6, round(abs(sz) * k))
             return (a["family"], -n if sz < 0 else n, a["weight"]) if a["slant"] == "roman" else (a["family"], -n if sz < 0 else n, a["weight"], a["slant"])
+        if isinstance(w, WrapEntry):
+            w.set_size(max(6, round(abs(w._base_font["size"]) * k)))
+            return
         try:
             w.configure(font=mk(w._base_font))
             for t, a in getattr(w, "_base_tags", {}).items():
@@ -1639,6 +1658,8 @@ class ScannerPage(tk.Frame):
             for i, (tok, ok) in enumerate(marks):
                 self.sent.insert(tk.END, ("" if i == 0 else " ") + tok, "ok" if ok else "bad")
             self.sent.configure(state="disabled")
+        if getattr(self, "compact", False):
+            self.after_idle(self._fit_sent)
         key = f"{self.slug}:{self.si % len(self._sents())}"
         best = self.ctx.progress.data["speech_best"]
         best[key] = max(best.get(key, 0), score)
