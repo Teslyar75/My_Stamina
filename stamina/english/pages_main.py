@@ -1324,40 +1324,125 @@ class ScannerPage(tk.Frame):
             pass
 
     def _grow(self, on: bool) -> None:
-        """Фокус: панели сканера и канала связи делят всю высоту окна (без пустоты снизу)."""
+        """Focus-mode helper."""
         panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
+        if len(panels) != 2 or not getattr(self, "compact", False):
+            return
+        sp, ch_ = panels
         try:
             if on:
                 self._grow_saved = [(w, dict(w.pack_info())) for w in panels if w.winfo_manager() == "pack"]
-                for w, _i in self._grow_saved:
-                    w.pack_configure(fill=tk.BOTH, expand=True)
+                self._center(True)
+                for w in panels:
+                    w.pack_propagate(False)
+                    w.pack_configure(fill=tk.BOTH, expand=False)
                 self.update_idletasks()
-                need = max(1, self.sf.inner.winfo_reqheight())
-                ch = self.sf.canvas.winfo_height()
-                self._scale(max(1.0, min(2.4, 0.8 * ch / need)))
+                cw = max(1, self.sf.canvas.winfo_width())
+                chh = max(1, self.sf.canvas.winfo_height())
+                k = max(1.0, min(4.0, cw / 512, chh / 270))
+                while True:
+                    self._scale(k)
+                    self.update_idletasks()
+                    other = self.sf.inner.winfo_reqheight() - sp.winfo_reqheight() - ch_.winfo_reqheight()
+                    avail = chh - max(0, other) - px(4)
+                    h1 = int(avail * 0.55)
+                    h2 = avail - h1
+                    over = lambda p, hh: p.body.winfo_reqheight() + px(26) + px(4) + px(6) > hh
+                    sp.configure(height=h1)
+                    ch_.configure(height=h2)
+                    if k <= 1.0 or not (over(sp, h1) or over(ch_, h2)):
+                        break
+                    k = max(1.0, k * 0.92)
             else:
                 self._scale(1.0)
+                self._center(False)
                 for w, info in getattr(self, "_grow_saved", []):
+                    w.pack_propagate(True)
+                    w.configure(height=1)
                     w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
                 self._grow_saved = []
             self.sf.sync()
         except tk.TclError:
             pass
 
+    def _center(self, on: bool) -> None:
+        """Focus-mode helper."""
+        wb, cb = self.scan_panel.body, self.chan.body
+        wb.grid_rowconfigure(0, weight=1 if on else 0)
+        cb.grid_rowconfigure(0, weight=1 if on else 0)
+        for w in wb.grid_slaves(row=0):
+            if int(w.grid_info()["column"]) in (0, 2, 4):
+                w.grid_configure(sticky="ew" if on else "nsew")
+        for w in cb.grid_slaves(row=0):
+            col = int(w.grid_info()["column"])
+            if col == 0:
+                w.grid_configure(sticky="ew" if on else "nsew")
+            elif w is self.mic:
+                w.grid_configure(sticky="" if on else "n")
+
     def _scale(self, k: float) -> None:
-        """Фокус: крупнее слово, транскрипция, определение и предложение (кнопки и микрофон — как были)."""
+        """Focus-mode helper."""
         if not getattr(self, "compact", False) or abs(k - self._k) < 0.01:
             return
         self._k = k
+        kb = 1 + (k - 1) * 0.6          # focus scaling
+        km = 1 + (k - 1) * 0.8          # focus scaling
+        for root in (self.scan_panel, self.chan, getattr(self, "actbar", None)):
+            if root is None:
+                continue
+            stack = [root]
+            while stack:
+                w = stack.pop()
+                stack.extend(w.winfo_children())
+                if w is self.word:
+                    continue
+                if isinstance(w, HudButton):
+                    w.rescale(1.0 if root is self.actbar else (min(km * 1.25, 1 + (k - 1) * 0.55) if w is self.mic.btn else kb))
+                    if w is self.mic.btn and k <= 1.0:
+                        w.rescale(1.0)
+                    continue
+                if isinstance(w, (tk.Label, tk.Text, tk.Entry)) and root is not self.actbar:
+                    self._sfont(w, k)
         f = lambda n, b=False, m=False: theme.font(round(n * k), b, m)
-        self.resp.configure(font=f(13, True, True))
-        self.defn.configure(font=f(10), wraplength=round(px(360) * k))
-        self.ptext.configure(wraplength=round(px(300) * k))
-        self.sent.configure(font=f(12, False, True), height=3 if k > 1.01 else 2)
-        self.sent.tag_configure("t", font=f(12, True, True))
+        self.sent.configure(height=2)
         self.set_ptab(self.ptab)
         self._word_px = 0
         self._fit_word()
+        for fl in self._flows():
+            fl.relayout(fl.winfo_width(), force=True)
+
+    def _flows(self):
+        out, stack = [], [self.scan_panel, self.chan]
+        while stack:
+            w = stack.pop()
+            stack.extend(w.winfo_children())
+            if isinstance(w, Flow):
+                out.append(w)
+        return out
+
+    def _sfont(self, w, k: float) -> None:
+        if not hasattr(w, "_base_font"):
+            try:
+                w._base_font = tkfont.Font(font=w.cget("font")).actual()
+            except tk.TclError:
+                return
+            if isinstance(w, tk.Text):
+                w._base_tags = {}
+                for t in w.tag_names():
+                    tf = w.tag_cget(t, "font")
+                    if tf:
+                        w._base_tags[t] = tkfont.Font(font=tf).actual()
+
+        def mk(a):
+            sz = a["size"]
+            n = max(6, round(abs(sz) * k))
+            return (a["family"], -n if sz < 0 else n, a["weight"]) if a["slant"] == "roman" else (a["family"], -n if sz < 0 else n, a["weight"], a["slant"])
+        try:
+            w.configure(font=mk(w._base_font))
+            for t, a in getattr(w, "_base_tags", {}).items():
+                w.tag_configure(t, font=mk(a))
+        except tk.TclError:
+            pass
 
     def _on_unmap(self, e) -> None:
         # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть

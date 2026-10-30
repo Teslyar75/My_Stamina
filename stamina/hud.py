@@ -141,6 +141,7 @@ class HudButton(_LazyDraw, tk.Canvas):
                  font_size: int = 10, bold: bool = True, active: bool = False) -> None:
         color = color or theme.CYAN   # не значение по умолчанию: оно «замерзает» на цвете первого скина
         self._font = theme.font(font_size, bold)
+        self._base = (font_size, bold, width, height)
         self._text = text
         self._auto_width = width is None      # ширину задали мы — значит, и растим её сами
         measured = _measure_px(self._font, text)
@@ -164,6 +165,18 @@ class HudButton(_LazyDraw, tk.Canvas):
         self.bind("<FocusOut>", lambda _e: self._set_focus(False))
         from stamina import keynav
         keynav.attach(self)
+
+    def rescale(self, k: float) -> None:
+        """Rescale button (focus mode)."""
+        fs, bold, wraw, hraw = self._base
+        self._font = theme.font(max(6, round(fs * k)), bold)
+        w = px(round(wraw * k)) if wraw else _measure_px(self._font, self._text) + px(round(30 * k))
+        try:
+            self.configure(width=w, height=px(round(hraw * k)))
+        except tk.TclError:
+            return
+        self._last_draw = None
+        self._request_draw()
 
     def _set_focus(self, value: bool) -> None:
         self._focus = value
