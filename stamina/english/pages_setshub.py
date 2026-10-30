@@ -231,23 +231,29 @@ class CefrPage(tk.Frame):
         return bool(ws) and all(self._done(w["slug"]) for w in ws)
 
     def _sync_when_warm(self) -> None:
-        """Level locks need every CEFR set parsed (~1.4 s cold): do it off the UI thread."""
-        if cefr.is_warm():
-            self._sync_level_buttons()
-            return
-        th = cefr.warm_async()
+        """Level locks need every CEFR set parsed (~1.4 s cold).
 
-        def poll() -> None:
+        Parse one level per event-loop step instead of one 1.4 s block. Not a
+        thread: a worker thread can garbage-collect Tk objects off the Tk thread,
+        which panics Tcl.
+        """
+        todo = [lv for lv in cefr.available() if not cefr.is_warm_level(lv)]
+
+        def step() -> None:
             try:
                 if not self.winfo_exists():
                     return
             except tk.TclError:
                 return
-            if th.is_alive():
-                self.after(60, poll)
+            if todo:
+                cefr.prepared_view(todo.pop(0))
+                self.after(1, step)
             else:
                 self._sync_level_buttons()
-        self.after(60, poll)
+        if not todo:
+            self._sync_level_buttons()
+        else:
+            self.after(1, step)
 
     def _sync_level_buttons(self) -> None:
         have = set(cefr.available())
