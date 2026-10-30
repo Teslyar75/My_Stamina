@@ -1237,6 +1237,12 @@ class Cockpit(tk.Tk):
         labels = {"listening": ("● " + tr_("СЛУШАЮ"), AMBER), "thinking": ("… " + tr_("ДУМАЮ"), CYAN),
                   "speaking": ("♪ " + tr_("ОТВЕТ"), CYAN), "error": ("! " + tr_("ОРИОН"), AMBER)}
         label, color = labels.get(state, (tr_("ОРИОН"), GREEN))
+        scr = self.screens.get(orion_hook.KEY) if state != "listening" else None
+        if scr is not None and hasattr(scr, "_render_feed"):
+            try:
+                scr._render_feed()       # вопрос и ответ сразу видны в чате Ориона
+            except Exception:  # noqa: BLE001
+                pass
         try:
             self.btn_orion.set_text(label)
             self.btn_orion.set_color(color)
@@ -1264,7 +1270,9 @@ class Cockpit(tk.Tk):
 
     def _chrome_hotkey(self, e: tk.Event) -> bool:
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
-        if e.state & 0x4 or e.state & 0x8 or e.state & 0x1:  # Ctrl / Alt / Shift
+        import sys
+        alt = 0x20000 if sys.platform == "win32" else 0x8   # Windows: 0x8 = NumLock, Alt = 0x20000
+        if e.state & 0x4 or e.state & alt or e.state & 0x1:  # Ctrl / Alt / Shift
             return False
         from stamina.hotkeys import typing_in
         if typing_in(getattr(e, "widget", None)):

@@ -2720,6 +2720,10 @@ class OrionScreen(tk.Frame):
 
     def on_show(self) -> None:
         """Орион приветствует пилота при входе в зону."""
+        try:
+            self._render_feed()          # голосовые вопросы/ответы с других экранов
+        except Exception:  # noqa: BLE001
+            pass
         rec = self._rec()
         name = str(rec.get("name") or "ОРИОН").upper()
         greeting = _t("{0} на связи. Готов к общению, пилот.").format(name)
