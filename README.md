@@ -258,6 +258,8 @@ Star Typing — настольная программа на Python (tkinter) в
 | --- | --- |
 | ![Агенты](docs/screenshots/orion_agents_list.png) | ![Агенты, конец](docs/screenshots/orion_agents_list_end.png) |
 
+**Пошаговая инструкция для пользователей: [docs/AGENTS_GUIDE.md](docs/AGENTS_GUIDE.md)** (бесплатный путь через OpenCode, без ключа).
+
 Ориону можно дать «мозг» одного из трёх видов:
 
 - **OpenCode**: консольный агент `opencode`, как было раньше.
