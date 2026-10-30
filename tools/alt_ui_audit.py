@@ -195,7 +195,13 @@ def run(layout, skin, size, timeout=300) -> dict:
 
 
 def _key(r):
-    return (r["screen"], r["tab"], r["kind"], r["text"])
+    text = r["text"]
+    # The bridge pause button flips PAUSE <-> RESUME with the session state (the
+    # flight auto-pauses when the window loses focus, which depends on load), so
+    # it is one control: compare it by its hotkey, not by its current label.
+    if r["screen"] == "bridge" and r["kind"] == "HudButton" and text.rstrip().endswith("Esc/Del"):
+        text = "<pause-toggle> Esc/Del"
+    return (r["screen"], r["tab"], r["kind"], text)
 
 
 def parity(classic: dict, alt: dict) -> dict:
