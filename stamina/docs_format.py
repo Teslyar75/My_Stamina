@@ -20,8 +20,11 @@ from stamina.theme import AMBER, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 
 WIN = sys.platform.startswith("win")
 # Windows virtual-key коды: одинаковы в любой раскладке (Ctrl+B и на кириллице)
-VK = {66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 76: "l", 81: "q", 69: "e", 75: "k",
-      90: "z", 89: "y", 70: "f", 72: "h", 191: "/"}
+VK = {66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 55: "7", 56: "8", 76: "l", 81: "q", 69: "e",
+      75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s"}
+#: X11 при Shift даёт символ над цифрой — приводим к самой цифре (американская раскладка)
+SHIFT_DIGITS = {"exclam": "1", "at": "2", "ampersand": "7", "asterisk": "8",
+                "slash": "/", "question": "/"}
 WRAP = {"b": ("**", "**"), "i": ("*", "*"), "u": ("<u>", "</u>"), "code": ("`", "`")}
 LINE_MARK = {"h1": "# ", "h2": "## ", "li": "- ", "quote": "> "}
 
@@ -31,7 +34,7 @@ def actions() -> list[tuple[str, str, str]]:
     return [
         ("b", "B", "Ctrl+B"), ("i", "I", "Ctrl+I"), ("u", "U", "Ctrl+U"),
         ("h1", "H1", "Ctrl+Shift+1"), ("h2", "H2", "Ctrl+Shift+2"),
-        ("li", "•", "Ctrl+Shift+L"), ("quote", "❝", "Ctrl+Shift+Q"),
+        ("li", "•", "Ctrl+Shift+L"), ("ol", "1.", "Ctrl+Shift+7"), ("quote", "❝", "Ctrl+Shift+Q"),
         ("code", "</>", "Ctrl+E"), ("link", "🔗", "Ctrl+K"),
         ("undo", "↶", "Ctrl+Z"), ("redo", "↷", "Ctrl+Y"),
         ("find", "🔍", "Ctrl+F / Ctrl+H"), ("help", "?", "Ctrl+/"),
@@ -41,9 +44,16 @@ def actions() -> list[tuple[str, str, str]]:
 def action_names() -> dict:
     return {"b": _t("жирный"), "i": _t("курсив"), "u": _t("подчёркнутый"),
             "h1": _t("заголовок"), "h2": _t("подзаголовок"), "li": _t("список"),
-            "quote": _t("цитата"), "code": _t("код"), "link": _t("ссылка"),
+            "ol": _t("нумерованный список"), "quote": _t("цитата"), "code": _t("код"), "link": _t("ссылка"),
             "undo": _t("отменить"), "redo": _t("вернуть"), "find": _t("найти и заменить"),
             "help": _t("эта справка (ещё раз — список документов)")}
+
+
+def extra_keys() -> list[tuple[str, str]]:
+    """Клавиши без кнопок на ленте — для справки (клавиши, что делают)."""
+    return [("Ctrl+S", _t("сохранить сейчас (и так сохраняется само)")),
+            ("Ctrl+Shift+8", _t("маркированный список")),
+            ("Ctrl+Shift+7", _t("нумерованный список"))]
 
 
 def cheat_sheet() -> list[tuple[str, str]]:
@@ -60,6 +70,19 @@ def doc_font(size: int = 12, style: str = "") -> tuple:
     family = "Segoe UI" if WIN else theme.font(size)[0]
     f = (family, theme.font(size)[1])
     return f + (style,) if style else f
+
+
+def one_undo(fn):
+    """Правка из нескольких вставок/удалений отменяется одним Ctrl+Z (docs_undo.compound)."""
+    import contextlib
+    import functools
+
+    @functools.wraps(fn)
+    def run(self, *a, **kw):
+        undo = getattr(self, "undo", None)
+        with (undo.compound() if undo is not None else contextlib.nullcontext()):
+            return fn(self, *a, **kw)
+    return run
 
 
 class FormatMixin:
@@ -131,6 +154,9 @@ class FormatMixin:
             t.insert(tk.END, f"{label}  ", "k")
             t.insert(tk.END, f"{names[aid]}  ")
             t.insert(tk.END, keys + "\n", "d")
+        for keys, what in extra_keys():
+            t.insert(tk.END, keys + "  ", "k")
+            t.insert(tk.END, what + "\n", "d")
         t.insert(tk.END, _t("ШПАРГАЛКА MARKDOWN") + "\n", "h")
         for src, res in cheat_sheet():
             t.insert(tk.END, src, "m")
@@ -255,10 +281,14 @@ class FormatMixin:
         key = VK.get(e.keycode) if WIN else None
         if key is None:
             ks = (e.keysym or "").lower()
-            key = {"exclam": "1", "at": "2", "slash": "/", "question": "/"}.get(ks, ks if len(ks) == 1 else None)
+            key = SHIFT_DIGITS.get(ks, ks if len(ks) == 1 else None)
         shift = bool(e.state & 0x1)
+        if key == "s" and not shift:
+            self.save_manual()
+            return "break"
         if shift:
-            act = {"1": "h1", "2": "h2", "l": "li", "q": "quote", "z": "redo"}.get(key)
+            act = {"1": "h1", "2": "h2", "7": "ol", "8": "li", "l": "li", "q": "quote",
+                   "z": "redo"}.get(key)
         else:
             act = {"b": "b", "i": "i", "u": "u", "e": "code", "k": "link", "z": "undo", "y": "redo",
                    "f": "find", "h": "find", "/": "help"}.get(key)
@@ -273,6 +303,8 @@ class FormatMixin:
             self.wrap_selection(*WRAP[aid])
         elif aid in LINE_MARK:
             self.toggle_line(aid)
+        elif aid == "ol":
+            self.toggle_numbered()
         elif aid == "link":
             self.wrap_selection("[", "](https://)", select_tail=True)
         elif aid == "undo":
@@ -296,6 +328,7 @@ class FormatMixin:
         self._changed()
         t.focus_set()
 
+    @one_undo
     def wrap_selection(self, left: str, right: str, select_tail: bool = False) -> None:
         t = self.text
         t.edit_separator()
@@ -328,6 +361,7 @@ class FormatMixin:
             t.mark_set("insert", f"{a}+{len(left)}c")
         t.edit_separator()
 
+    @one_undo
     def toggle_line(self, kind: str) -> None:
         t = self.text
         t.edit_separator()
@@ -344,6 +378,32 @@ class FormatMixin:
                 t.delete(f"{ln}.0", f"{ln}.{n}")
             if not all_on and (s.strip() or l1 == l2):
                 t.insert(f"{ln}.0", LINE_MARK[kind])
+        t.edit_separator()
+
+    @one_undo
+    def toggle_numbered(self) -> None:
+        """Нумерованный список: строки выделения получают «1. », «2. »…; если все уже
+        нумерованы — номера снимаются. Маркер «- » заменяется номером."""
+        import re
+        t = self.text
+        t.edit_separator()
+        try:
+            l1 = int(t.index("sel.first").split(".")[0])
+            l2 = int(t.index("sel.last").split(".")[0])
+        except tk.TclError:
+            l1 = l2 = int(t.index("insert").split(".")[0])
+        num = re.compile(r"\s*\d+[.)]\s+")
+        lines = [t.get(f"{ln}.0", f"{ln}.end") for ln in range(l1, l2 + 1)]
+        filled = [s for s in lines if s.strip()]
+        all_on = bool(filled) and all(num.match(s) for s in filled)
+        k = 1
+        for ln, s in zip(range(l1, l2 + 1), lines):
+            _kind, n = mdlite.block_of(s)
+            if n:
+                t.delete(f"{ln}.0", f"{ln}.{n}")
+            if not all_on and (s.strip() or l1 == l2):
+                t.insert(f"{ln}.0", f"{k}. ")
+                k += 1
         t.edit_separator()
 
     def _on_return(self, _e=None):
@@ -418,6 +478,7 @@ class FormatMixin:
         t.see(pos)
         return True
 
+    @one_undo
     def replace_one(self) -> None:
         t = self.text
         q = self.find_var.get()
@@ -434,6 +495,7 @@ class FormatMixin:
         self.highlight()
         self._changed()
 
+    @one_undo
     def replace_all(self) -> int:
         t = self.text
         q, r = self.find_var.get(), self.repl_var.get()

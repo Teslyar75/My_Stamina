@@ -17,6 +17,8 @@ edit separator.
 """
 from __future__ import annotations
 
+import contextlib
+
 import tkinter as tk
 from typing import Callable
 
@@ -46,6 +48,7 @@ class DocUndo:
         self._open = False           # последняя группа ещё принимает правки
         self._last: tuple | None = None
         self.replaying = False
+        self._compound = 0
         text.configure(undo=False)
         w = text._w
         self._orig = w + "_docundo_orig"
@@ -116,11 +119,25 @@ class DocUndo:
         return str(i)
 
     # -- запись -----------------------------------------------------------------------
+    @contextlib.contextmanager
+    def compound(self):
+        """Составная правка (кнопка оформления, замена всех) — одна отмена на всё."""
+        self.separator()
+        self._compound += 1
+        try:
+            yield
+        finally:
+            self._compound -= 1
+            if not self._compound:
+                self.separator()
+
     def _push(self, op: tuple, kind_break: bool = True) -> None:
         self.redo_stack.clear()
         last = self._last
         new_group = not self._open or not self.undo_stack
-        if not new_group and kind_break and last is not None:
+        if self._compound and self._open and self.undo_stack:
+            new_group = False
+        elif not new_group and kind_break and last is not None:
             if last[0] == "img" and op[0] == "ins" and op[1] == last[3] and op[2] == ["\n"]:
                 pass                    # перевод строки за картинкой — одна правка с ней
             elif op[0] != last[0] or op[0] == "img" or last[0] == "img":
@@ -210,7 +227,8 @@ class DocUndo:
         self._open = False
 
     def separator(self) -> None:
-        self._open = False
+        if not self._compound:
+            self._open = False
 
     def reset(self) -> None:
         self.undo_stack.clear()

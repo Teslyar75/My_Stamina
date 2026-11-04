@@ -173,23 +173,47 @@ def ui_scale() -> float:
 
 
 def peek(path: Path) -> dict:
-    """Карточка для списка без чтения картинок: заголовок, время, начало текста."""
+    """Карточка для списка без чтения картинок: заголовок, время, начало текста и
+    текст для поиска (search — в нижнем регистре, заголовок + текст)."""
     try:
         with zipfile.ZipFile(path) as z:
             meta = json.loads(z.read(DOC_JSON).decode("utf-8"))
     except (OSError, zipfile.BadZipFile, KeyError, ValueError):
-        return {"path": Path(path), "title": Path(path).stem, "modified": 0.0, "snippet": "", "broken": True}
+        stem = Path(path).stem
+        return {"path": Path(path), "title": stem, "modified": 0.0, "created": 0.0, "snippet": "",
+                "search": stem.lower(), "words": 0, "images": 0, "broken": True}
     doc = Document(str(meta.get("title") or ""), meta.get("segments") or [])
     text = " ".join(doc.text.split())
     pics = sum(1 for s in doc.segments if "img" in s)
-    return {"path": Path(path), "title": doc.display_title(), "modified": float(meta.get("modified") or 0),
-            "snippet": text[:120], "words": len(text.split()), "images": pics, "broken": False}
+    modified = float(meta.get("modified") or 0)
+    return {"path": Path(path), "title": doc.display_title(), "modified": modified,
+            "created": float(meta.get("created") or modified), "snippet": text[:120],
+            "search": (doc.title + "\n" + text).lower(), "words": len(text.split()), "images": pics,
+            "broken": False}
 
 
-def list_docs() -> list[dict]:
-    """Документы пилота: свежие сверху."""
-    items = [peek(p) for p in docs_dir().glob(f"*{SUFFIX}")]
-    return sorted(items, key=lambda d: d["modified"], reverse=True)
+SORTS = ("modified", "title", "created")
+
+
+def sort_items(items: list[dict], by: str = "modified") -> list[dict]:
+    """Порядок списка: «modified»/«created» — свежие сверху, «title» — по алфавиту."""
+    if by == "title":
+        return sorted(items, key=lambda d: (d["title"] or "").casefold())
+    key = "created" if by == "created" else "modified"
+    return sorted(items, key=lambda d: d.get(key) or 0, reverse=True)
+
+
+def filter_items(items: list[dict], query: str) -> list[dict]:
+    """Поиск по заголовку и тексту: все слова запроса, без учёта регистра."""
+    words = query.lower().split()
+    if not words:
+        return list(items)
+    return [d for d in items if all(w in d.get("search", "") for w in words)]
+
+
+def list_docs(by: str = "modified") -> list[dict]:
+    """Документы пилота: по умолчанию свежие сверху."""
+    return sort_items([peek(p) for p in docs_dir().glob(f"*{SUFFIX}")], by)
 
 
 def remove_to_trash(path: Path) -> Path:

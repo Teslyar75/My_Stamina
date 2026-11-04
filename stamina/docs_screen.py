@@ -87,6 +87,24 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.del_btn = HudButton(btns, _t("УБРАТЬ"), self._remove, height=32, font_size=9,
                                  color=MUTED)
         btns.add(self.del_btn, gap_before=6)
+        # поиск по заголовку и тексту + порядок списка
+        sr = tk.Frame(lb, bg=PANEL)
+        sr.pack(fill=tk.X, pady=(0, px(6)))
+        self.search_var = tk.StringVar()
+        self.search_entry = tk.Entry(sr, textvariable=self.search_var, width=12, bg=theme.BG2, fg=TEXT,
+                                     insertbackground=CYAN, relief=tk.FLAT, font=theme.font(9),
+                                     highlightthickness=1, highlightbackground=LINE, highlightcolor=CYAN)
+        self.search_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(2))
+        self.search_hint = tk.Label(self.search_entry, text="🔍 " + _t("поиск"), bg=theme.BG2, fg=MUTED,
+                                    font=theme.font(9), cursor="xterm")
+        self.search_hint.place(x=px(4), rely=0.5, anchor="w")
+        self.search_hint.bind("<Button-1>", lambda _e: self.search_entry.focus_set())
+        self.search_var.trace_add("write", lambda *_a: self._on_search())
+        self.search_entry.bind("<Escape>", lambda _e: (self.search_var.set(""), "break")[1])
+        self.search_entry.bind("<Down>", lambda _e: (self._pick_index(0), "break")[1])
+        self.sort_btn = HudButton(sr, self._sort_label(), self._sort_menu, height=26, font_size=8,
+                                  color=MUTED)
+        self.sort_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
         sb = make_vscroll(lb)
         sb.pack(side=tk.RIGHT, fill=tk.Y)
         self.listbox = tk.Listbox(lb, width=20, bg=PANEL, fg=TEXT, relief=tk.FLAT, bd=0,
@@ -96,6 +114,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.listbox.pack(fill=tk.BOTH, expand=True)
         sb.config(command=self.listbox.yview)
         self.listbox.bind("<<ListboxSelect>>", self._on_pick)
+        self._view: list[dict] = []        # то, что сейчас показано (после поиска и сортировки)
         self.empty_hint = _label(lb, _t("Здесь появятся ваши документы.\nНажмите «+ НОВЫЙ» и пишите —\nвсё сохраняется само."),
                                  fg=MUTED, size=9, bg=PANEL, justify="left")
 
@@ -189,6 +208,8 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.text.bind("<<Paste>>", self._on_paste)
         self.text.bind("<Button-3>", self._image_menu)
         self.text.bind("<Double-Button-1>", self._open_image_at)
+        self.text.bind("<<Selection>>", lambda _e: self._update_status(), add="+")
+        self._saved_at: float | None = None
         self.setup_md_tags()
         # своя история правок: Tk не отменяет вставку/удаление картинок (stamina/docs_undo.py)
         self.undo = DocUndo(self.text, image_width=lambda n: self._widths.get(self._img_name(n)),
@@ -255,25 +276,82 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
     # -- список ------------------------------------------------------------------
     def refresh(self) -> None:
-        self._items = docs.list_docs()
+        self._items = docs.list_docs(self._sort_key())
         self._render_list()
 
+    # порядок списка (настройка docs_sort): изменён / название / создан
+    def _sort_key(self) -> str:
+        st = self._settings()
+        key = (st or {}).get("docs_sort") if st is not None else getattr(self, "_sort_mem", None)
+        return key if key in docs.SORTS else "modified"
+
+    def _sort_label(self) -> str:
+        return {"modified": _t("ИЗМЕНЁН ▾"), "title": _t("А–Я ▾"), "created": _t("СОЗДАН ▾")}[self._sort_key()]
+
+    def _sort_menu(self) -> None:
+        m = self._menu()
+        names = {"modified": _t("Сначала изменённые"), "title": _t("По названию"),
+                 "created": _t("Сначала новые")}
+        cur = self._sort_key()
+        for key in docs.SORTS:
+            m.add_command(label=("● " if key == cur else "   ") + names[key],
+                          command=lambda k=key: self.set_sort(k))
+        b = self.sort_btn
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+
+    def set_sort(self, key: str) -> None:
+        st = self._settings()
+        if st is not None:
+            st["docs_sort"] = key
+            self._save_settings()
+        else:
+            self._sort_mem = key
+        self.sort_btn.set_text(self._sort_label())
+        self._items = docs.sort_items(self._items, key)
+        self._render_list()
+
+    def _on_search(self) -> None:
+        q = self.search_var.get()
+        if q:
+            self.search_hint.place_forget()
+        else:
+            self.search_hint.place(x=px(4), rely=0.5, anchor="w")
+        self._render_list()
+
+    @staticmethod
+    def _when(ts: float) -> str:
+        """Коротко: сегодня — время, в этом году — день.месяц, раньше — с годом."""
+        if not ts:
+            return ""
+        lt, now = time.localtime(ts), time.localtime()
+        if lt[:3] == now[:3]:
+            return time.strftime("%H:%M", lt)
+        return time.strftime("%d.%m" if lt.tm_year == now.tm_year else "%d.%m.%y", lt)
+
     def _render_list(self) -> None:
+        """Одна строка на документ: «название · когда». Поиск — по заголовку и тексту."""
         top = self.listbox.yview()[0]
         self.listbox.delete(0, tk.END)
         cur = self.doc.path if self.doc else None
-        for i, it in enumerate(self._items):
-            when = time.strftime("%d.%m %H:%M", time.localtime(it["modified"])) if it["modified"] else ""
+        q = self.search_var.get()
+        self._view = docs.filter_items(self._items, q)
+        stamp = "created" if self._sort_key() == "created" else "modified"
+        for i, it in enumerate(self._view):
             title = it["title"] or _t("Без названия")
-            self.listbox.insert(tk.END, f" {title}")
-            self.listbox.insert(tk.END, f"    {when}")
-            self.listbox.itemconfig(tk.END, fg=MUTED, selectforeground=MUTED)
+            when = self._when(it.get(stamp) or 0)
+            self.listbox.insert(tk.END, f" {title}  · {when}" if when else f" {title}")
+            if it.get("broken"):
+                self.listbox.itemconfig(tk.END, fg=AMBER)
             if cur and Path(it["path"]) == Path(cur):
-                self.listbox.selection_set(2 * i, 2 * i + 1)
+                self.listbox.selection_set(i)
         self.listbox.yview_moveto(top)
-        if self._items:
+        if q and not self._view:
+            self.empty_hint.config(text=_t("Ничего не найдено по «{0}».").format(q))
+            self.empty_hint.place(relx=0.04, rely=0.08)
+        elif self._items:
             self.empty_hint.place_forget()
         else:
+            self.empty_hint.config(text=_t("Здесь появятся ваши документы.\nНажмите «+ НОВЫЙ» и пишите —\nвсё сохраняется само."))
             self.empty_hint.place(relx=0.04, rely=0.08)
 
     def _sync_list(self) -> None:
@@ -292,14 +370,19 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
             self._items.insert(0, item)
         self._render_list()
 
+    def _pick_index(self, k: int) -> None:
+        if 0 <= k < len(self._view):
+            self.listbox.focus_set()
+            self.listbox.selection_clear(0, tk.END)
+            self.listbox.selection_set(k)
+            self.listbox.activate(k)
+            self._on_pick()
+
     def _on_pick(self, _e=None) -> None:
         sel = self.listbox.curselection()
-        if not sel:
+        if not sel or sel[0] >= len(self._view):
             return
-        k = sel[0] // 2
-        self.listbox.selection_clear(0, tk.END)
-        self.listbox.selection_set(2 * k, 2 * k + 1)
-        it = self._items[k]
+        it = self._view[sel[0]]
         if self.doc and self.doc.path and Path(self.doc.path) == Path(it["path"]):
             return
         self.save_now()
@@ -395,6 +478,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.text.edit_reset()
         self.text.edit_modified(False)
         self._loading = False
+        self._saved_at = doc.modified if (doc and doc.path) else None
         self.highlight()
         self._update_status()
 
@@ -699,7 +783,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
             return
         self._cancel_save()
         self._save_job = self.after(AUTOSAVE_MS, self.save_now)
-        self._say(_t("правка…"), MUTED)
+        self._update_status()
 
     def _cancel_save(self) -> None:
         if self._save_job is not None:
@@ -724,14 +808,32 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self._sync_list()
         self._update_status(saved=True)
 
+    def save_manual(self) -> None:
+        """Ctrl+S: сохранить сейчас (автосохранение и так работает — это для спокойствия)."""
+        self.save_now()
+        if self.doc is not None and self.doc.path is not None:
+            self._say(_t("Сохранено в {0}").format(time.strftime("%H:%M")), GREEN)
+
+    @staticmethod
+    def count(text: str) -> tuple[int, int]:
+        """(слов, знаков) — знаки без переводов строк, как в текстовых редакторах."""
+        return len(text.split()), len(text.replace("\n", ""))
+
     def _update_status(self, saved: bool = False) -> None:
         if self.doc is None:
             self._say(_t("Выберите документ или создайте новый"), MUTED)
             return
-        words = len(self.text.get("1.0", "end-1c").split())
-        line = _t("{0} слов").format(words)
         if saved:
-            line += " · " + _t("сохранено {0}").format(time.strftime("%H:%M:%S"))
+            self._saved_at = time.time()
+        words, chars = self.count(self.text.get("1.0", "end-1c"))
+        line = _t("{0} слов · {1} знаков").format(words, chars)
+        try:
+            sw, sc = self.count(self.text.get("sel.first", "sel.last"))
+            line = _t("выделено {0} сл. · {1} зн. из {2}").format(sw, sc, words)
+        except tk.TclError:
+            pass
+        if self._saved_at and self._save_job is None:
+            line += " · " + _t("сохранено {0}").format(time.strftime("%H:%M", time.localtime(self._saved_at)))
         self._say(line, GREEN if saved else MUTED)
 
     # -- просмотр: готовый документ страницей, только чтение ------------------------
