@@ -17,7 +17,7 @@ import tkinter as tk
 from pathlib import Path
 
 from stamina.english.ui import Flow
-from stamina import clip_html, docs_imgdrag, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
+from stamina import clip_html, docs_imgdrag, docs_visual, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
 from stamina.docs_dialogs import confirm
 from stamina.docs_preview import DocPreview
 from stamina.docs_undo import DocUndo
@@ -37,7 +37,7 @@ def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
     return tk.Label(master, text=text, fg=fg, bg=bg, font=theme.font(size, bold), **kw)
 
 
-class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_tools.ToolsMixin, docs_tools.ReadAloudMixin, tk.Frame):
+class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visual.VisualMixin, docs_tools.ToolsMixin, docs_tools.ReadAloudMixin, tk.Frame):
     """Список документов и редактор с автосохранением."""
 
     def __init__(self, master, app) -> None:
@@ -211,6 +211,7 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_tool
         self.text.bind("<<Selection>>", lambda _e: self._update_status(), add="+")
         self._saved_at: float | None = None
         self.setup_md_tags()
+        self.setup_visual()
         self.setup_image_drag()
         # своя история правок: Tk не отменяет вставку/удаление картинок (stamina/docs_undo.py)
         self.undo = DocUndo(self.text, image_width=lambda n: self._widths.get(self._img_name(n)),

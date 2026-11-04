@@ -268,7 +268,7 @@ class ToolsMixin:
         for bad, good in chosen:
             pos = "1.0"
             while True:
-                pos = self.text.search(bad, pos, "end", nocase=False)
+                pos = self.text.search(bad, pos, "end", nocase=False, elide=True)
                 if not pos:
                     break
                 end = f"{pos}+{len(bad)}c"

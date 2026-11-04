@@ -21,7 +21,7 @@ from stamina.theme import AMBER, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 WIN = sys.platform.startswith("win")
 # Windows virtual-key коды: одинаковы в любой раскладке (Ctrl+B и на кириллице)
 VK = {66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 55: "7", 56: "8", 76: "l", 81: "q", 69: "e",
-      75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s", 80: "p", 86: "v"}
+      75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s", 80: "p", 86: "v", 77: "m"}
 #: X11 при Shift даёт символ над цифрой — приводим к самой цифре (американская раскладка)
 SHIFT_DIGITS = {"exclam": "1", "at": "2", "ampersand": "7", "asterisk": "8",
                 "slash": "/", "question": "/"}
@@ -37,7 +37,7 @@ def actions() -> list[tuple[str, str, str]]:
         ("li", "•", "Ctrl+Shift+L"), ("ol", "1.", "Ctrl+Shift+7"), ("quote", "❝", "Ctrl+Shift+Q"),
         ("code", "</>", "Ctrl+E"), ("link", "🔗", "Ctrl+K"),
         ("undo", "↶", "Ctrl+Z"), ("redo", "↷", "Ctrl+Y"),
-        ("find", "🔍", "Ctrl+F / Ctrl+H"), ("help", "?", "Ctrl+/"),
+        ("find", "🔍", "Ctrl+F / Ctrl+H"), ("visual", "👁", "Ctrl+Shift+M"), ("help", "?", "Ctrl+/"),
     ]
 
 
@@ -46,6 +46,7 @@ def action_names() -> dict:
             "h1": _t("заголовок"), "h2": _t("подзаголовок"), "li": _t("список"),
             "ol": _t("нумерованный список"), "quote": _t("цитата"), "code": _t("код"), "link": _t("ссылка"),
             "undo": _t("отменить"), "redo": _t("вернуть"), "find": _t("найти и заменить"),
+            "visual": _t("прятать маркеры вне строки с курсором"),
             "help": _t("эта справка (ещё раз — список документов)")}
 
 
@@ -98,12 +99,14 @@ class FormatMixin:
         self.fmt_buttons: dict[str, HudButton] = {}
         for aid, label, _keys in actions():
             color = AMBER if aid == "help" else (GREEN if aid == "find" else CYAN)
-            gap = 6 if aid in ("undo", "find", "help") else 2
+            gap = 6 if aid in ("undo", "find") else 2
             w = 30
             b = HudButton(bar, label, lambda a=aid: self.do_action(a), height=28, width=w,
                           font_size=9, color=color)
             bar.add(b, gap_before=gap if self.fmt_buttons else 0)
             self.fmt_buttons[aid] = b
+        if hasattr(self, "visual_on"):
+            self.fmt_buttons["visual"].set_active(self.visual_on())
         return bar
 
     def build_find_bar(self, parent) -> tk.Frame:
@@ -278,6 +281,8 @@ class FormatMixin:
             both = sorted(bold & ital)
             for k in both:
                 t.tag_add("md_bi", f"{ln}.{k}")
+        if hasattr(self, "apply_hide"):
+            self.apply_hide(first, last)
 
     # -- действия ----------------------------------------------------------------------
     def _on_ctrl_key(self, e):
@@ -297,7 +302,7 @@ class FormatMixin:
             return "break"
         if shift:
             act = {"1": "h1", "2": "h2", "7": "ol", "8": "li", "l": "li", "q": "quote",
-                   "z": "redo"}.get(key)
+                   "z": "redo", "m": "visual"}.get(key)
         else:
             act = {"b": "b", "i": "i", "u": "u", "e": "code", "k": "link", "z": "undo", "y": "redo",
                    "f": "find", "h": "find", "/": "help"}.get(key)
@@ -328,6 +333,10 @@ class FormatMixin:
                 pass
         elif aid == "find":
             self.open_find(replace)
+            return
+        elif aid == "visual":
+            self.set_visual()
+            t.focus_set()
             return
         elif aid == "help":
             self.toggle_help()
@@ -464,7 +473,7 @@ class FormatMixin:
         if q:
             pos = "1.0"
             while True:
-                pos = t.search(q, pos, tk.END, nocase=True)
+                pos = t.search(q, pos, tk.END, nocase=True, elide=True)
                 if not pos:
                     break
                 t.tag_add("found", pos, f"{pos}+{len(q)}c")
@@ -478,12 +487,14 @@ class FormatMixin:
         q = self.find_var.get()
         if not q:
             return False
-        pos = t.search(q, "insert+1c", tk.END, nocase=True) or t.search(q, "1.0", tk.END, nocase=True)
+        pos = t.search(q, "insert+1c", tk.END, nocase=True, elide=True) or t.search(q, "1.0", tk.END, nocase=True, elide=True)
         if not pos:
             return False
         t.tag_remove("sel", "1.0", tk.END)
         t.tag_add("sel", pos, f"{pos}+{len(q)}c")
         t.mark_set("insert", pos)
+        if hasattr(self, "reveal_cursor_line"):
+            self.reveal_cursor_line()
         t.see(pos)
         return True
 
@@ -513,7 +524,7 @@ class FormatMixin:
         n, pos = 0, "1.0"
         t.edit_separator()
         while True:
-            pos = t.search(q, pos, tk.END, nocase=True)
+            pos = t.search(q, pos, tk.END, nocase=True, elide=True)
             if not pos:
                 break
             t.delete(pos, f"{pos}+{len(q)}c")
