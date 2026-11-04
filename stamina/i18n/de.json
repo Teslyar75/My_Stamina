@@ -2507,5 +2507,17 @@
  "OpenAI-совместимый": "OpenAI-kompatibel",
  "модель по умолчанию": "Standardmodell",
  "OpenCode": "OpenCode",
- "Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) и пакет keyring — см. docs/LINUX.md": "Kein sicherer Schlüsselspeicher: gnome-keyring (oder KWallet) und das Paket keyring installieren — siehe docs/LINUX.md"
+ "Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) и пакет keyring — см. docs/LINUX.md": "Kein sicherer Schlüsselspeicher: gnome-keyring (oder KWallet) und das Paket keyring installieren — siehe docs/LINUX.md",
+ "Мост GitHub: сообщения уходят в обсуждение GitHub (снимки — в ветку ship-chat-media), ответы корабль забирает опросом до 30 минут. Нужен токен GitHub (Discussions: запись, Contents: запись). Вебхук — по желанию.": "GitHub-Brücke: Nachrichten gehen in eine GitHub-Diskussion (Screenshots in den Branch ship-chat-media); das Schiff fragt bis zu 30 Minuten nach Antworten. Benötigt ein GitHub-Token (Discussions: Schreiben, Contents: Schreiben). Webhook optional.",
+ "Ожидание ответа отменено": "Warten auf Antwort abgebrochen",
+ "Провайдер или модель агента вернули ошибку": "Anbieter oder Modell des Agenten meldete einen Fehler",
+ "Орион пишет ответ…": "Orion schreibt eine Antwort…",
+ "Сообщение отправлено — {0} печатает…": "Nachricht gesendet — {0} schreibt…",
+ "Ответа так и не пришло за 30 минут — проверьте обсуждение на GitHub": "Keine Antwort innerhalb von 30 Minuten — prüfen Sie die Diskussion auf GitHub",
+ "Пилот перестал ждать ответа ({0})": "Der Pilot wartet nicht mehr auf eine Antwort ({0})",
+ "Орион {0}": "Orion {0}",
+ "Вебхук агента не принял сообщение ({0}) — оно ушло в обсуждение GitHub": "Der Agenten-Webhook hat die Nachricht abgelehnt ({0}) — sie ging in die GitHub-Diskussion",
+ "{0} печатает… (■ — перестать ждать)": "{0} schreibt… (■ — nicht mehr warten)",
+ "{0}: ответ получен": "{0}: Antwort erhalten",
+ "Мост GitHub: ошибка опроса — {0}": "GitHub-Brücke: Abfragefehler — {0}"
 }

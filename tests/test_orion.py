@@ -501,12 +501,12 @@ class OrionDataTest(unittest.TestCase):
         class _Proc:
             pid = 777
             returncode = 0
-            stdout = b""
-            stderr = b""
-
             def __init__(self, cmd, **_kw):
+                import io
                 seen["cmd"] = cmd
                 self.args = cmd
+                self.stdout = io.BytesIO(b"")
+                self.stderr = io.BytesIO(b"")
 
             def communicate(self, input=None, timeout=None):
                 return b"", b""
@@ -1017,8 +1017,11 @@ class OrionStopTest(unittest.TestCase):
             returncode = 1
 
             def __init__(self, cmd, **kw):
+                import io
                 self.cmd = cmd
                 self.args = cmd
+                self.stdout = io.BytesIO(payload)    # агент читает поток построчно
+                self.stderr = io.BytesIO(b"")
 
             def communicate(self, input=None, timeout=None):
                 if stop_inside:
@@ -1029,6 +1032,8 @@ class OrionStopTest(unittest.TestCase):
                 return self.returncode
 
             def wait(self, timeout=None):
+                if stop_inside:
+                    orion.stop_run("orion")
                 return self.returncode
 
             def kill(self):
