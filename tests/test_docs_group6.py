@@ -150,3 +150,26 @@ class TestScreen(_Base):
         self.scr.restore_version(old)
         self.assertIn("старый", self.scr.doc.text)
         self.assertTrue(any("новый" in docs.load(v["path"]).text for v in docs.list_versions(path)))
+
+
+class TestUndoProxyErrors(unittest.TestCase):
+    def test_read_error_does_not_leak_into_mainloop(self):
+        try:
+            root = tk.Tk()
+        except tk.TclError:
+            self.skipTest("нет дисплея")
+        try:
+            from stamina.docs_undo import DocUndo
+            t = tk.Text(root)
+            DocUndo(t, image_width=lambda n: None, restore_image=lambda *a: None, set_width=lambda *a: None)
+            t.insert("1.0", "abc")
+            with self.assertRaises(tk.TclError):
+                t.get("sel.first", "sel.last")
+            with self.assertRaises(tk.TclError):
+                t.insert("плохой", "x")
+            root.after(30, root.quit)
+            root.mainloop()                      # раньше здесь всплывала ошибка «нет sel»
+            t.edit_undo()
+            self.assertEqual(t.get("1.0", "end-1c"), "")
+        finally:
+            root.destroy()

@@ -276,20 +276,29 @@ def _versions_dir(path: Path) -> Path:
     return Path(path).parent / VERSIONS_DIR / Path(path).stem
 
 
+def _by_time(folder: Path) -> list[Path]:
+    """Версии от старых к новым: по времени снимка, при равенстве — по имени."""
+    if not folder.is_dir():
+        return []
+    return sorted(folder.glob(f"*{SUFFIX}"), key=lambda p: (p.stat().st_mtime, p.name))
+
+
 def snapshot(path: Path, force: bool = False) -> Path | None:
     """Сохранить прежнее состояние файла как версию (раз в VERSION_EVERY, последние VERSION_KEEP)."""
     path = Path(path)
     if not path.is_file():
         return None
     folder = _versions_dir(path)
-    olds = sorted(folder.glob(f"*{SUFFIX}")) if folder.is_dir() else []
+    olds = _by_time(folder)
     if olds and not force and time.time() - olds[-1].stat().st_mtime < VERSION_EVERY:
         return None
     folder.mkdir(parents=True, exist_ok=True)
-    dest = _free_name(folder, time.strftime("%Y-%m-%d_%H%M%S") + SUFFIX)
+    now = time.time()
+    dest = _free_name(folder, time.strftime("%Y-%m-%d_%H%M%S", time.localtime(now))
+                      + f"_{int(now * 1000) % 1000:03d}{SUFFIX}")
     shutil.copy2(path, dest)
     os.utime(dest)                      # время версии — момент снимка
-    for old in sorted(folder.glob(f"*{SUFFIX}"))[:-VERSION_KEEP]:
+    for old in _by_time(folder)[:-VERSION_KEEP]:
         old.unlink(missing_ok=True)
     return dest
 
@@ -298,7 +307,7 @@ def list_versions(path: Path) -> list[dict]:
     """Версии документа: свежие сверху; when — время снимка."""
     folder = _versions_dir(path)
     out = []
-    for p in sorted(folder.glob(f"*{SUFFIX}"), reverse=True) if folder.is_dir() else []:
+    for p in reversed(_by_time(folder)):
         info = peek(p)
         info["when"] = p.stat().st_mtime
         out.append(info)

@@ -23,6 +23,7 @@ import tkinter as tk
 from typing import Callable
 
 MAX_GROUPS = 500
+_ERR = "docundo-error:"   # метка ошибки от Python-части прокси
 
 
 class DocUndo:
@@ -52,22 +53,45 @@ class DocUndo:
         text.configure(undo=False)
         w = text._w
         self._orig = w + "_docundo_orig"
+        self._py = w + "_docundo_py"
         text.tk.call("rename", w, self._orig)
-        text.tk.createcommand(w, self._dispatch)
+        text.tk.createcommand(self._py, self._dispatch_safe)
+        # Прокси на Tcl: правки — в Python, всё остальное (get, index, tag…) — прямо в виджет.
+        # Так ошибки чтения («нет выделения» и т. п.) остаются обычными ошибками Tcl:
+        # исключение из Python-колбэка tkinter запоминает и потом бросает из mainloop.
+        text.tk.eval(
+            "proc %s {args} {\n"
+            "  switch -- [lindex $args 0] {\n"
+            "    insert - delete - replace - image - mark - edit {\n"
+            "      set r [%s {*}$args]\n"
+            "      if {[string first %s $r] == 0} {return -code error [string range $r %d end]}\n"
+            "      return $r\n"
+            "    }\n"
+            "    default {return [%s {*}$args]}\n"
+            "  }\n"
+            "}" % (w, self._py, _ERR, len(_ERR), self._orig))
         text.bind("<Destroy>", self._on_destroy, add="+")
 
     # -- прокси -----------------------------------------------------------------------
     def _on_destroy(self, e) -> None:
         if e.widget is not self.text:
             return
-        try:
-            self.text.tk.deletecommand(self.text._w)
-        except tk.TclError:
-            pass
+        for name in (self.text._w, self._py):
+            try:
+                self.text.tk.deletecommand(name)
+            except tk.TclError:
+                pass
 
     def raw(self, *args):
         """Команда виджета мимо истории."""
         return self.text.tk.call(self._orig, *args)
+
+    def _dispatch_safe(self, *args):
+        """Ошибка Tcl не уходит исключением в tkinter (он перебросил бы её из mainloop)."""
+        try:
+            return self._dispatch(*args)
+        except tk.TclError as e:
+            return _ERR + str(e)
 
     def _dispatch(self, *args):
         cmd = args[0] if args else ""
