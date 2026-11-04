@@ -34,6 +34,10 @@ if sys.platform == "win32":
 # PurePath: storage.DATA_DIR/SETTINGS_PATH follow the activated pilot and leaked the
 # previous test's pilot (with its UI scale) into the next Cockpit.
 _SIMPLE = (int, float, str, bool, tuple, type(None), pathlib.PurePath)
+# Modules whose dict/list globals are UI state, not caches. stamina.i18n holds the skin's
+# voice pack (`_voice`, set by theme.apply_skin through set_voice) and the language table:
+# a Cockpit test applying the "old_england" skin made later tests read «ФЛИТ-СТРИТ» for «МОСТИК».
+_DICT_STATE = ("stamina.theme", "stamina.i18n")
 
 
 def _snapshot():
@@ -44,7 +48,7 @@ def _snapshot():
         for k, v in list(vars(mod).items()):
             if k.startswith("__"):
                 continue
-            if isinstance(v, _SIMPLE) or (name == "stamina.theme" and isinstance(v, (dict, list))):
+            if isinstance(v, _SIMPLE) or (name in _DICT_STATE and isinstance(v, (dict, list))):
                 snap[(name, k)] = copy.copy(v)
     return snap
 

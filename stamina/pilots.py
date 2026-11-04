@@ -58,6 +58,14 @@ def reset_root(root: Path | None = None) -> None:
     global ROOT_DIR, _active
     ROOT_DIR = Path(root) if root else _root()
     _active = None
+    # settings/stats/session paths hang off the root (no pilot → the root itself): without
+    # this, a Cockpit built after reset_root(tmp) read the real ~/.local/share/StarTyping
+    # settings.json — on the box with skin «old_england», so labels came out «ФЛИТ-СТРИТ».
+    try:
+        from stamina import storage
+        storage.reset_paths()
+    except Exception:  # noqa: BLE001 — storage may be mid-import
+        pass
 
 
 def registry_path() -> Path:
