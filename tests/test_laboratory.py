@@ -1,0 +1,250 @@
+"""Лаборатория: адаптер данных (временные папки, выдуманные файлы), раскладка, экран."""
+from __future__ import annotations
+
+import json
+import os
+import tempfile
+import time
+import types
+import unittest
+from pathlib import Path
+
+from stamina import lab_data, nav
+from stamina.lab_demo import demo_graph
+from stamina.laboratory import MAX_STARS, aggregate, layout
+
+NOW = time.mktime((2026, 11, 4, 12, 0, 0, 0, 0, -1))
+
+
+def _day(days_ago: int) -> str:
+    return time.strftime("%Y-%m-%d", time.localtime(NOW - days_ago * 86400))
+
+
+def _write(root: Path, name: str, data: dict) -> None:
+    p = root / name
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+
+
+class LabDataTest(unittest.TestCase):
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp())
+
+    def _fill(self):
+        _write(self.root, "english.json", {
+            "words": {"case": {"known": True, "known_at": _day(3)}},
+            "cards": {"time": {"interval": 25, "reps": 4, "last": _day(1)},
+                      "dog": {"interval": 3, "reps": 1, "last": _day(1)}},   # ещё не выучено
+            "verb_scores": {"go:0": 92, "go:1": 85, "be:0": 40},
+            "xp": {"by_day": {_day(0): 5}},
+            "book_sentences": {
+                "books": {"t1": {"title": "Tale", "sentences": [
+                    {"id": "t1:0", "en": "In any case, it is time.", "w0": 0},
+                    {"id": "t1:9", "en": "Never practised.", "w0": 9}]}},
+                "cards": {"t1:0": {"reps": 2, "last": _day(2)}}},
+        })
+        _write(self.root, "stats.json", {
+            "runs": [{"ts": NOW - 86400, "chars": 300, "cpm": 210, "acc": 96},
+                     {"ts": NOW - 5 * 86400, "chars": 300, "cpm": 120, "acc": 91, "mission": "en-01"}],
+            "missions": {"en-01": {"stars": 2}, "en-02": {"stars": 1}, "en-03": {"stars": 0}},
+        })
+        _write(self.root, "speedread.json", {
+            "sessions": [{"title": "Tale", "words": 900, "eff_wpm": 260, "ts": NOW - 2 * 86400}],
+            "exercises": {"E-SHL": {"5x5-a": {"runs": [{"ts": NOW - 86400, "result": 40}]}}},
+            "days": [_day(1)],
+        })
+        _write(self.root, "library/library.json", {"texts": [{"id": "t1", "title": "Tale"}]})
+
+    def test_empty_pilot_gives_empty_graph(self):
+        g = lab_data.collect(self.root, NOW)
+        self.assertEqual(g.nodes, [])
+        self.assertEqual(g.entity(NOW)["quiet_days"], -1)
+        self.assertEqual(lab_data.collect(None, NOW).nodes, [])
+
+    def test_real_files_become_stars_and_edges(self):
+        self._fill()
+        g = lab_data.collect(self.root, NOW)
+        ids = {n["id"] for n in g.nodes}
+        self.assertTrue({"w:case", "w:time", "v:go", "vf:go:v2", "vf:go:v3", "b:t1"} <= ids)
+        self.assertNotIn("w:dog", ids)                       # интервал 3 дня — не выдумываем знание
+        self.assertNotIn("v:be", ids)                        # 40 баллов — не зачтено
+        self.assertTrue({"ty:cpm:100", "ty:cpm:200", "ty:acc:95", "ty:m:en-01", "ty:m:en-02"} <= ids)
+        self.assertNotIn("ty:cpm:250", ids)
+        self.assertNotIn("ty:m:en-03", ids)
+        self.assertTrue({"sr:wpm:250", "sr:ex:E-SHL"} <= ids)
+        self.assertNotIn("sr:wpm:300", ids)
+        edges = {(g.nodes[a]["id"], g.nodes[b]["id"]) for a, b in g.edges}
+        self.assertIn(("v:go", "vf:go:v2"), edges)
+        self.assertIn(("w:case", "b:t1"), edges)             # слово из отработанного предложения
+        self.assertIn(("w:time", "b:t1"), edges)
+        self.assertIn(("ty:cpm:100", "ty:cpm:150"), edges)
+        self.assertIn(("ty:m:en-01", "ty:m:en-02"), edges)
+        case = next(n for n in g.nodes if n["id"] == "w:case")
+        self.assertTrue(case["group"].startswith("cefr:"))   # созвездие = набор CEFR и тема
+        self.assertEqual(g.counts()["read"], 5)  # книга + 3 рубежа (150-250) + упражнение
+        self.assertGreaterEqual(g.entity(NOW)["recent_days"], 2)
+
+    def test_collect_is_read_only(self):
+        self._fill()
+        before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        lab_data.collect(self.root, NOW)
+        after = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        self.assertEqual(before, after)
+
+    def test_broken_files_do_not_crash(self):
+        (self.root / "english.json").write_text("{not json", encoding="utf-8")
+        _write(self.root, "stats.json", {"runs": "oops", "missions": []})
+        g = lab_data.collect(self.root, NOW)
+        self.assertIsInstance(g.nodes, list)
+
+    def test_freshness_dims_but_never_disappears(self):
+        f0 = lab_data.freshness(NOW, 0, NOW)
+        f10 = lab_data.freshness(NOW - 10 * 86400, 0, NOW)
+        f10_strong = lab_data.freshness(NOW - 10 * 86400, 8, NOW)
+        f_old = lab_data.freshness(NOW - 3650 * 86400, 0, NOW)
+        self.assertAlmostEqual(f0, 1.0)
+        self.assertLess(f10, f0)
+        self.assertGreater(f10_strong, f10)                  # крепкое знание тускнеет медленнее
+        self.assertGreaterEqual(f_old, lab_data.FLOOR - 1e-9)
+
+    def test_entity_quiets_after_break(self):
+        busy = {_day(i) for i in range(14)}
+        pause = {_day(i) for i in range(10, 24)}
+        a = lab_data.entity_state(busy, 100, NOW)
+        b = lab_data.entity_state(pause, 100, NOW)
+        self.assertEqual(a["quiet_days"], 0)
+        self.assertEqual(b["quiet_days"], 10)
+        self.assertGreater(a["vitality"], b["vitality"])
+        self.assertGreaterEqual(b["vitality"], 0.08)
+
+
+class LabLayoutTest(unittest.TestCase):
+    def test_demo_is_marked_and_sized(self):
+        g = demo_graph(1000, now=NOW)
+        self.assertTrue(g.demo)
+        self.assertEqual(len(g.nodes), 1000)
+
+    def test_layout_fits_unit_disc(self):
+        g = demo_graph(1000, now=NOW)
+        pos, shape = layout(g)
+        self.assertEqual(len(pos), 1000)
+        self.assertTrue(all(x * x + y * y < 1.3 for x, y in pos))
+        self.assertTrue(all(g.nodes[a]["group"] == g.nodes[b]["group"] for a, b in shape))
+
+    def test_aggregate_caps_star_count(self):
+        g = demo_graph(3000, now=NOW)
+        a = aggregate(g, 1200)
+        self.assertLessEqual(len(a.nodes), 1200)
+        self.assertTrue(any(n["kind"] == "cluster" for n in a.nodes))
+        self.assertIs(aggregate(demo_graph(500, now=NOW)).__class__, lab_data.Graph)
+        self.assertLessEqual(MAX_STARS, 2000)
+
+    def test_hotkeys_keep_settings_on_ctrl9(self):
+        keys = dict((n, k) for k, n in nav.zone_hotkeys(nav.zones()))
+        self.assertEqual(keys["lab"], "0")
+        self.assertEqual(keys["settings"], "9")
+        self.assertEqual(keys["bridge"], "1")
+        self.assertIn("lab", nav.ZONE_ORDER)
+
+
+class LabScreenTest(unittest.TestCase):
+    def setUp(self):
+        import tkinter as tk
+        from stamina import theme
+        try:
+            self.root = tk.Tk()
+        except tk.TclError:
+            self.skipTest("нет дисплея")
+        theme.init(self.root)
+        self.root.geometry("1024x600")
+        self.dir = Path(tempfile.mkdtemp())
+        self.app = types.SimpleNamespace(current="lab", pilot=None)
+        from stamina import laboratory
+        self._orig = laboratory.lab_data.pilot_root
+        laboratory.lab_data.pilot_root = lambda app: self.dir
+        from stamina.laboratory import LabScreen
+        self.scr = LabScreen(self.root, self.app)
+        self.scr.pack(fill="both", expand=True)
+        self.root.update()
+
+    def tearDown(self):
+        from stamina import laboratory
+        laboratory.lab_data.pilot_root = self._orig
+        self.root.destroy()
+
+    def _texts(self):
+        cv = self.scr.cv
+        return " ".join(cv.itemcget(i, "text") for i in cv.find_all() if cv.type(i) == "text")
+
+    def test_empty_state(self):
+        self.scr.reload()
+        self.root.update()
+        self.assertIn("Лаборатория ждёт первых знаний", self._texts())
+        self.assertFalse(self.scr.demo)
+
+    def test_demo_perf_and_tooltip(self):
+        self.scr.set_demo(True)
+        self.root.update()
+        self.assertEqual(self.scr.badge.cget("text"), "ДЕМО-ДАННЫЕ")
+        self.assertEqual(len(self.scr.items), 1000)
+        t = time.perf_counter()
+        for k in range(30):
+            self.scr.step(t + k * 0.033)
+            self.root.update_idletasks()
+        p = self.scr.perf()
+        self.assertLess(p["avg_ms"], 40.0, p)
+        x, y = self.scr._screen_xy[5]
+        i = self.scr.star_at(x, y)
+        self.assertIsNotNone(i)
+        self.assertIn("яркость", self.scr.tooltip_text(i))
+        self.assertFalse((self.dir / "lab.json").exists())   # демо ничего не пишет
+
+    def test_real_data_writes_only_own_seen_file(self):
+        _write(self.dir, "english.json", {"words": {"case": {"known": True, "known_at": _day(1)}}})
+        self.scr.reload()
+        self.assertEqual(len(self.scr.items), 1)
+        seen = json.loads((self.dir / "lab.json").read_text(encoding="utf-8"))
+        self.assertEqual(seen["seen"], ["w:case"])
+        self.assertEqual(self.scr.fliers, [])                # первый визит — без «ливня»
+        _write(self.dir, "english.json", {"words": {"case": {"known": True}, "time": {"known": True}}})
+        self.scr.reload()
+        self.assertEqual(len(self.scr.fliers), 1)            # новая звезда влетает
+
+    def test_loop_stops_when_hidden(self):
+        self.scr.set_demo(True)
+        self.scr.start()
+        self.app.current = "bridge"
+        self.scr._tick()
+        self.assertIsNone(self.scr._job)
+
+
+class LabCockpitTest(unittest.TestCase):
+    def setUp(self):
+        import tkinter as tk
+        from stamina import pilots
+        self._tmp = tempfile.mkdtemp()
+        pilots.reset_root(Path(self._tmp))
+        os.environ.setdefault("APPDATA", self._tmp)
+        try:
+            from stamina.cockpit import Cockpit
+            self.app = Cockpit()
+        except tk.TclError:
+            pilots.reset_root()
+            self.skipTest("нет дисплея")
+        self.app.update()
+
+    def tearDown(self):
+        from stamina import pilots
+        self.app.destroy()
+        pilots.reset_root()
+
+    def test_zone_in_menu_and_opens(self):
+        keys = [s for s, _ in self.app.SCREENS]
+        self.assertIn("lab", keys)
+        self.assertEqual(keys.index("lab"), keys.index("settings") - 1)
+        self.assertIn("lab", self.app.nav_buttons)
+        scr = self.app._ensure_screen("lab")
+        self.assertIsNotNone(scr)
+        self.app.show("lab")
+        self.app.update()
+        self.assertEqual(self.app.current, "lab")

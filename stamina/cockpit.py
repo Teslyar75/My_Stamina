@@ -12,7 +12,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, docs_hook, orion_hook, pilots, radio_hook, speedread_hook, theme)
+                     missions, nav, docs_hook, orion_hook, lab_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina import safe_mode
 from stamina import ontop
@@ -78,6 +78,10 @@ class Cockpit(tk.Tk):
         if self._orion_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(orion_hook.KEY, orion_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._lab_cls = lab_hook.load_class()  # вкладка «ЛАБОРАТОРИЯ» — созвездия знаний
+        if self._lab_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(lab_hook.KEY, lab_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
@@ -94,8 +98,8 @@ class Cockpit(tk.Tk):
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
         self.bind("<KeyRelease>", self._on_key_up, add="+")   # только для удержания T в АНГЛИЙСКОМ
-        for i, (name, _t) in enumerate(self.SCREENS, 1):
-            self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
+        for key, name in nav.zone_hotkeys([n for n, _t in self.SCREENS]):
+            self.bind(f"<Control-Key-{key}>", lambda _e, n=name: self.show_zone(n))
         # Home — Орион, Prior (PgUp) — слайды, Next (PgDn) — экран (как на вебе)
         def _all_chrome(e, want: tuple[str, ...]):
             if e.keysym not in want:
@@ -393,7 +397,7 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        self._status_hint = tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
+        self._status_hint = tk.Label(status, text=alt_ui.status_hint(min(9, sum(1 for s_ in self.SCREENS if s_[0] not in nav.FIXED_HOTKEYS))) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(min(9, sum(1 for s_ in self.SCREENS if s_[0] not in nav.FIXED_HOTKEYS))),
                  bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
 
@@ -419,6 +423,7 @@ class Cockpit(tk.Tk):
         self._lazy(comm_hook, self._comm_cls)
         self._lazy(docs_hook, self._docs_cls)
         self._lazy(orion_hook, self._orion_cls)
+        self._lazy(lab_hook, self._lab_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,

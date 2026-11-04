@@ -48,7 +48,7 @@ DEFAULT_LAYOUT = "classic"
 PROFILES: dict[str, dict] = {
     "starship": {
         "glyphs": {"bridge": "◈", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
-                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "settings": "⚙"},
         "subtitle": "БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -56,7 +56,7 @@ PROFILES: dict[str, dict] = {
     },
     "steampunk": {
         "glyphs": {"bridge": "⚙", "english": "Æ", "speedread": "§", "lounge": "☕",
-                   "radio": "☊", "comm": "✉", "docs": "✒", "orion": "☉", "settings": "⚒"},
+                   "radio": "☊", "comm": "✉", "docs": "✒", "orion": "☉", "lab": "✧", "settings": "⚒"},
         "subtitle": "МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА",
         "rail": "РЫЧАГИ",
         "drawer": "МАНОМЕТРЫ",
@@ -64,7 +64,7 @@ PROFILES: dict[str, dict] = {
     },
     "bathyscaphe": {
         "glyphs": {"bridge": "⚓", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
-                   "radio": "◉", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
+                   "radio": "◉", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -72,7 +72,7 @@ PROFILES: dict[str, dict] = {
     },
     "neon_city": {
         "glyphs": {"bridge": "◢", "english": "Ⓐ", "speedread": "⚡", "lounge": "☾",
-                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -80,7 +80,7 @@ PROFILES: dict[str, dict] = {
     },
     "old_england": {
         "glyphs": {"bridge": "♔", "english": "Æ", "speedread": "§", "lounge": "☕",
-                   "radio": "☎", "comm": "✉", "docs": "✒", "orion": "✠", "settings": "⚒"},
+                   "radio": "☎", "comm": "✉", "docs": "✒", "orion": "✠", "lab": "✧", "settings": "⚒"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -88,7 +88,7 @@ PROFILES: dict[str, dict] = {
     },
     "scriptorium": {
         "glyphs": {"bridge": "✠", "english": "Ⓐ", "speedread": "¶", "lounge": "❦",
-                   "radio": "♪", "comm": "✒", "docs": "✍", "orion": "☩", "settings": "⚙"},
+                   "radio": "♪", "comm": "✒", "docs": "✍", "orion": "☩", "lab": "✧", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -96,7 +96,7 @@ PROFILES: dict[str, dict] = {
     },
     "zen_garden": {
         "glyphs": {"bridge": "◯", "english": "Ⓐ", "speedread": "»", "lounge": "☯",
-                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✿", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✿", "lab": "✧", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -104,7 +104,7 @@ PROFILES: dict[str, dict] = {
     },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
-                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "settings": "⚙"},
+                   "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
         "drawer": "ПРИБОРЫ",
@@ -894,6 +894,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
         "comm": ("ПОСТ СВЯЗИ ЭКИПАЖА", "CYAN"),
         "docs": ("ШТУРМАНСКАЯ · БОРТОВОЙ АРХИВ", "GREEN"),
         "orion": ("ЯДРО БОРТОВОГО РАЗУМА", "PURPLE"),
+        "lab": ("ЛАБОРАТОРИЯ · ЗВЁЗДНАЯ КАРТА ЗНАНИЙ", "CYAN"),
         "settings": ("ИНЖЕНЕРНЫЙ ОТСЕК", "AMBER"),
     },
     "steampunk": {
@@ -905,6 +906,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
         "comm": ("ТЕЛЕГРАФНАЯ · ПНЕВМОПОЧТА", "CYAN"),
         "docs": ("КОНТОРА ПИСАРЯ · ПИШУЩАЯ МАШИНКА", "AMBER"),
         "orion": ("КАБИНЕТ АВТОМАТОНА · ПЛАНЕТАРИЙ", "PURPLE"),
+        "lab": ("ЛАБОРАТОРИЯ АЛХИМИКА · АСТРОЛЯБИЯ", "AMBER"),
         "settings": ("ВЕРСТАК МЕХАНИКА", "AMBER"),
     },
 }
@@ -924,7 +926,7 @@ def compartment(profile: str, zone: str | None) -> tuple[str, str] | None:
 WALL_DIR = Path(__file__).resolve().parent / "assets" / "alt_wallpapers"
 WALL_DIM = 0.35
 # Отсек без своих обоев берёт панорамы родственного (пока своих картинок нет)
-WALL_ALIAS = {"docs": "comm"}
+WALL_ALIAS = {"docs": "comm", "lab": "orion"}   # Лаборатория — пока панорамы Ориона
 
 
 def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:
