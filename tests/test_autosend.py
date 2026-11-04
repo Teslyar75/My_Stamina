@@ -48,13 +48,25 @@ def test_new_phrase_restarts_and_edit_cancels():
     assert sent == []
 
 
-def test_busy_or_disabled_does_not_send():
+def test_busy_defers_until_free_and_disabled_never_sends():
     s, clock, sent, box = _make("x", busy=True)
     s.arm()
     clock.run()
-    assert sent == []
-    box["busy"], box["on"] = False, False
-    assert not s.arm() and sent == []
+    assert sent == [] and s.armed          # Орион отвечает — фраза ждёт
+    box["busy"] = False
+    clock.run()
+    assert sent == ["x"]
+    box["on"] = False
+    assert not s.arm()
+
+
+def test_edit_while_busy_drops_autosend():
+    s, clock, sent, box = _make("x", busy=True)
+    s.arm()
+    clock.run()
+    box["t"], box["busy"] = "x и ещё", False
+    clock.run()
+    assert sent == [] and not s.armed
 
 
 def test_should_send_rules():

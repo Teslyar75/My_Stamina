@@ -8,6 +8,7 @@ Ctrl+Enter — сохранить, Esc — отмена. Ключ уходит �
 from __future__ import annotations
 
 import queue
+import re
 import threading
 import tkinter as tk
 
@@ -62,18 +63,30 @@ class ConnectAgentDialog(Modal):
             self.kind_btns[k] = b
             self.bind(f"<Control-Key-{i}>", lambda _e, k=k: self.set_kind(k))
         self.vars = {k: tk.StringVar(value=str(rec.get(k) or "")) for k in
-                     ("name", "base_url", "model", "tts_voice", "discussion_id")}
+                     ("name", "base_url", "model", "tts_voice", "discussion_id", "bridge_repo",
+                      "discussion_number", "bridge_login", "webhook", "webhook_header",
+                      "webhook_scheme", "timeout")}
         self.key_var = tk.StringVar()
+        self.hook_key_var = tk.StringVar()
         self.entries: dict[str, tk.Entry] = {}
         self.rows: dict[str, tk.Frame] = {}
         for k, title in (("name", "ИМЯ АГЕНТА"), ("base_url", "АДРЕС API (BASE URL)"),
                          ("model", "МОДЕЛЬ"), ("key", "КЛЮЧ API"),
-                         ("discussion_id", "ID ОБСУЖДЕНИЯ GITHUB"), ("tts_voice", "ГОЛОС (ИМЯ ГОЛОСА WINDOWS)")):
+                         ("bridge_repo", "РЕПОЗИТОРИЙ GITHUB (ВЛАДЕЛЕЦ/ИМЯ)"),
+                         ("discussion_number", "НОМЕР ОБСУЖДЕНИЯ"),
+                         ("discussion_id", "ID ОБСУЖДЕНИЯ GITHUB"),
+                         ("bridge_login", "ВАШ ЛОГИН GITHUB (ЗАПАСНОЙ ПРИЗНАК ОТВЕТА)"),
+                         ("webhook", "ВЕБХУК АГЕНТА (НЕОБЯЗАТЕЛЬНО)"), ("hook_key", "КЛЮЧ ВЕБХУКА"),
+                         ("webhook_header", "ЗАГОЛОВОК КЛЮЧА (ПО УМОЛЧАНИЮ Authorization)"),
+                         ("webhook_scheme", "СХЕМА КЛЮЧА (ПО УМОЛЧАНИЮ Bearer, «-» — БЕЗ СХЕМЫ)"),
+                         ("timeout", "ЖДАТЬ ОТВЕТА, СЕКУНД (ПО УМОЛЧАНИЮ 900)"),
+                         ("tts_voice", "ГОЛОС (ИМЯ ГОЛОСА WINDOWS)")):
             row = tk.Frame(self.body, bg=PANEL)
             _lbl(row, _t(title), fg=MUTED, size=8).pack(fill=tk.X)
-            var = self.key_var if k == "key" else self.vars[k]
+            var = {"key": self.key_var, "hook_key": self.hook_key_var}.get(k) or self.vars[k]
             e = tk.Entry(row, textvariable=var, bg=BG2, fg=TEXT, insertbackground=TEXT,
-                         relief="flat", font=theme.font(10), width=48, show="•" if k == "key" else "")
+                         relief="flat", font=theme.font(10), width=48,
+                         show="•" if k in ("key", "hook_key") else "")
             e.pack(fill=tk.X, ipady=px(3))
             self.entries[k] = e
             self.rows[k] = row
@@ -105,12 +118,14 @@ class ConnectAgentDialog(Modal):
         self.kind = kind
         for k, b in self.kind_btns.items():
             b.set_active(k == kind) if hasattr(b, "set_active") else None
-        show = {"openai_compat": ("name", "base_url", "model", "key", "tts_voice"),
-                "opencode": ("name", "model", "tts_voice"),
-                "github_bridge": ("name", "discussion_id", "key", "tts_voice")}[kind]
+        show = {"openai_compat": ("name", "base_url", "model", "key", "timeout", "tts_voice"),
+                "opencode": ("name", "model", "timeout", "tts_voice"),
+                "github_bridge": ("name", "bridge_repo", "discussion_number", "discussion_id", "key",
+                                  "bridge_login", "webhook", "hook_key", "webhook_header",
+                                  "webhook_scheme", "tts_voice")}[kind]
         for w in (*self.rows.values(), self.preset_row, self.note, self.msg, self.btns):
             w.pack_forget()
-        for k in ("name", "base_url", "model", "key", "discussion_id", "tts_voice"):
+        for k in self.rows:
             if k in show:
                 self.rows[k].pack(fill=tk.X, pady=(px(4), 0))
             if k == "model" and kind == "openai_compat":
@@ -127,8 +142,9 @@ class ConnectAgentDialog(Modal):
             return _t("Подписка ChatGPT Plus не даёт ключа API: нужен ключ OpenAI API "
                       "(platform.openai.com). Для локальной Ollama ключ не нужен.")
         if kind == "github_bridge":
-            return _t("Мост GitHub: сообщения уходят в обсуждение GitHub, ответы корабль забирает "
-                      "опросом. Нужен токен GitHub с доступом к обсуждению.")
+            return _t("Мост GitHub: сообщения уходят в обсуждение GitHub (снимки — в ветку "
+                      "ship-chat-media), ответы корабль забирает опросом до 30 минут. Нужен токен "
+                      "GitHub (Discussions: запись, Contents: запись). Вебхук — по желанию.")
         return _t("OpenCode CLI должен быть установлен на этом компьютере.")
 
     def use_preset(self, name: str) -> None:
@@ -140,6 +156,12 @@ class ConnectAgentDialog(Modal):
 
     def record(self) -> dict:
         rec = {k: v.get().strip() for k, v in self.vars.items()}
+        repo = rec.get("bridge_repo", "")
+        m = re.match(r"^(?:https?://github\.com/)?([\w.-]+/[\w.-]+?)(?:/discussions/(\d+))?/?$", repo)
+        if m:                               # вставили ссылку на обсуждение целиком
+            rec["bridge_repo"] = m.group(1)
+            if m.group(2) and not rec.get("discussion_number"):
+                rec["discussion_number"] = m.group(2)
         rec["kind"] = self.kind
         if self.rid:
             rec["id"] = self.rid
@@ -193,6 +215,15 @@ class ConnectAgentDialog(Modal):
                 else:
                     text = _t("Не удалось сохранить ключ в хранилище Windows: {0}").format(exc)
                 self.msg.configure(text=text, fg=RED)
+                return
+        hook_key = self.hook_key_var.get().strip()
+        if hook_key:
+            try:
+                from stamina import ship_chat
+                ac.store_key(saved["id"], hook_key, ref=ship_chat.webhook_ref(saved["id"]))
+            except Exception as exc:  # noqa: BLE001
+                self.msg.configure(text=_t("Не удалось сохранить ключ в хранилище Windows: {0}")
+                                   .format(exc), fg=RED)
                 return
         if ref:
             saved = orion.upsert(dict(saved, cred_ref=ref))

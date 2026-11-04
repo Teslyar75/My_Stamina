@@ -130,11 +130,13 @@ def test_ready_needs_opencode_only_for_opencode(monkeypatch):
 
 def test_github_bridge_posts_and_polls(monkeypatch):
     answers = iter([
+        {"data": {"viewer": {"login": "me"}, "node": {"id": "D_1", "number": 7, "title": "t",
+                                                      "repository": {"nameWithOwner": "o/r"}}}},
         {"data": {"addDiscussionComment": {"comment": {"id": "c1", "createdAt": "2026-10-30T10:00:00Z"}}}},
         {"data": {"node": {"comments": {"nodes": []}}}},
         {"data": {"node": {"comments": {"nodes": [
-            {"body": "мой", "createdAt": "2026-10-30T10:00:00Z", "author": {"login": "me"}},
-            {"body": "Ответ агента", "createdAt": "2026-10-30T10:01:00Z", "author": {"login": "grok"}}]}}}},
+            {"id": "x1", "body": "мой", "createdAt": "2026-10-30T10:00:00Z", "author": {"login": "me"}},
+            {"id": "x2", "body": "Ответ агента", "createdAt": "2026-10-30T10:01:00Z", "author": {"login": "grok"}}]}}}},
     ])
     fake_http(monkeypatch, None)
     monkeypatch.setattr(ac, "_opener", lambda: (lambda req, timeout=0: Resp(json.dumps(next(answers)).encode())))

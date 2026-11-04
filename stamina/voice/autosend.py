@@ -9,7 +9,8 @@
 * в поле есть текст;
 * текст не менялся с момента диктовки (пилот не начал править руками —
   иначе он ещё думает, и мешать ему нельзя);
-* Орион свободен (``busy`` — уже отвечает или выполняет задание).
+* Орион свободен (``busy`` — уже отвечает или выполняет задание); если занят,
+  отправка откладывается до конца ответа, а не теряется.
 
 Таймер подставляется снаружи (``after``/``after_cancel``), поэтому правило и обвязка
 проверяются тестом без tkinter.
@@ -91,8 +92,13 @@ class AutoSender:
     def fire(self) -> bool:
         """Сработал таймер: отправить, если пилот молчит и не правил текст."""
         self._job = None
-        if not should_send(text=self._text(), baseline=self._base,
-                           busy=self._busy(), enabled=self._enabled()):
+        ready = should_send(text=self._text(), baseline=self._base, enabled=self._enabled())
+        if ready and self._busy():
+            # Орион ещё отвечает (поток OpenCode, отправка в мост) — фраза не теряется:
+            # ждём, пока он освободится, и уходим, если пилот за это время ничего не правил.
+            self._job = self._after(self._delay(), self.fire)
+            return False
+        if not ready:
             return False
         self._send()
         return True
