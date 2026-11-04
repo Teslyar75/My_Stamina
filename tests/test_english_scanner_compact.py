@@ -150,6 +150,10 @@ class ScannerCompactTest(unittest.TestCase):
             scr.on_key(ev)
             self.pump(0.6)
             self.assertIsNotNone(page._focus, f"{size}: O не включил фокус")
+            from stamina.english.pages_main import FOCUS_FONT_GAIN
+            cv = page.sf.canvas   # шрифт растёт, но не «впритык» к окну: глаза не разбегаются
+            fit = min(4.0, cv.winfo_width() / 512, cv.winfo_height() / 270)
+            self.assertLessEqual(page._k, max(1.0, fit * FOCUS_FONT_GAIN) + 0.01, f"{size}: фокус-шрифт крупнее нормы")
             self.assertFalse(scr.nav["scanner"].winfo_ismapped(), f"{size}: фокус не скрыл вкладки")
             self._assert_inside(page.mic.btn, f"{size} фокус: кнопка микрофона")
             bottom = self._rel(page.chan)[1] + page.chan.winfo_height()

@@ -24,6 +24,10 @@ from .vocab import DIFF_RU, POS_FILTER, POS_SHORT, SETS
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 
+# Фокус-режим O: доля от «максимально влезающего» масштаба. 1.0 — шрифт на весь экран
+# (слово до ~62 px на 1600x1000, глаза разбегаются); 0.8 — на 20 % спокойнее.
+FOCUS_FONT_GAIN = 0.8
+
 
 # =============================================================================
 # ОБЗОР
@@ -1357,7 +1361,9 @@ class ScannerPage(tk.Frame):
                 self.update_idletasks()
                 cw = max(1, self.sf.canvas.winfo_width())
                 chh = max(1, self.sf.canvas.winfo_height())
-                k = max(1.0, min(4.0, cw / 512, chh / 270))
+                # растягиваем по окну, но на FOCUS_FONT_GAIN мельче «впритык»: на большом экране
+                # шрифт во весь размах рассыпал взгляд; пропорции между элементами те же
+                k = max(1.0, min(4.0, cw / 512, chh / 270) * FOCUS_FONT_GAIN)
                 while True:
                     self._scale(k)
                     self.update_idletasks()
