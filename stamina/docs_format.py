@@ -21,7 +21,7 @@ from stamina.theme import AMBER, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 WIN = sys.platform.startswith("win")
 # Windows virtual-key коды: одинаковы в любой раскладке (Ctrl+B и на кириллице)
 VK = {66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 55: "7", 56: "8", 76: "l", 81: "q", 69: "e",
-      75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s"}
+      75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s", 80: "p", 86: "v"}
 #: X11 при Shift даёт символ над цифрой — приводим к самой цифре (американская раскладка)
 SHIFT_DIGITS = {"exclam": "1", "at": "2", "ampersand": "7", "asterisk": "8",
                 "slash": "/", "question": "/"}
@@ -52,6 +52,9 @@ def action_names() -> dict:
 def extra_keys() -> list[tuple[str, str]]:
     """Клавиши без кнопок на ленте — для справки (клавиши, что делают)."""
     return [("Ctrl+S", _t("сохранить сейчас (и так сохраняется само)")),
+            ("Ctrl+P", _t("печать: PDF откроется в просмотрщике")),
+            ("Ctrl+V", _t("вставить; из браузера и Word — с оформлением")),
+            ("Ctrl+Shift+V", _t("вставить только текст")),
             ("Ctrl+Shift+8", _t("маркированный список")),
             ("Ctrl+Shift+7", _t("нумерованный список"))]
 
@@ -285,6 +288,12 @@ class FormatMixin:
         shift = bool(e.state & 0x1)
         if key == "s" and not shift:
             self.save_manual()
+            return "break"
+        if key == "p" and not shift:          # Ctrl+Shift+P — переключение пилота в пульте
+            self.print_doc()
+            return "break"
+        if key == "v" and shift:
+            self.paste_plain()
             return "break"
         if shift:
             act = {"1": "h1", "2": "h2", "7": "ol", "8": "li", "l": "li", "q": "quote",

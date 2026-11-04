@@ -17,7 +17,7 @@ import tkinter as tk
 from pathlib import Path
 
 from stamina.english.ui import Flow
-from stamina import compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
+from stamina import clip_html, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
 from stamina.docs_dialogs import confirm
 from stamina.docs_preview import DocPreview
 from stamina.docs_undo import DocUndo
@@ -683,7 +683,40 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         if img is not None:
             self.insert_image(img)
             return "break"
+        # из браузера/Word — с оформлением: HTML буфера → Markdown (stamina/clip_html.py)
+        md = clip_html.clipboard_markdown()
+        if md:
+            try:
+                plain = self.clipboard_get()
+            except tk.TclError:
+                plain = ""
+            if md.strip() != plain.strip():
+                self._insert_text(md)
+                self._say(_t("Вставлено с оформлением · без оформления — Ctrl+Shift+V"), GREEN)
+                return "break"
         return None            # обычный текст — стандартная вставка Tk
+
+    def paste_plain(self) -> None:
+        """Ctrl+Shift+V: только текст, без оформления и картинок."""
+        try:
+            plain = self.clipboard_get()
+        except tk.TclError:
+            return
+        self._insert_text(plain)
+
+    @docs_format.one_undo
+    def _insert_text(self, text: str) -> None:
+        t = self.text
+        try:
+            a = t.index("sel.first")
+            t.delete("sel.first", "sel.last")
+            t.mark_set("insert", a)
+        except tk.TclError:
+            pass
+        t.insert("insert", text)
+        t.see("insert")
+        self.highlight()
+        self._changed()
 
     def insert_dictation(self, text: str) -> None:
         before = self.text.get("insert-1c", "insert")
@@ -864,6 +897,32 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
             return
         self._say(_t("Экспорт: {0}").format(path), GREEN)
         shots.open_file(Path(path))
+
+    def print_doc(self) -> None:
+        """Ctrl+P: документ — PDF во временной папке, открывается в просмотрщике (печать оттуда).
+        Без fpdf2 — HTML-страница в браузере (там тоже Ctrl+P)."""
+        self.save_now()
+        if not self.doc:
+            return
+        name = docs._safe_name(self.doc.display_title())
+        folder = docs.temp_dir("print")
+        try:
+            if docs.pdf_available():
+                path = docs.export_pdf(self.doc, folder / f"{name}.pdf")
+            else:
+                path = docs.export_html(self.doc, folder / f"{name}.html")
+        except Exception as exc:  # noqa: BLE001
+            self._say(_t("Не получилось подготовить к печати: {0}").format(exc), AMBER)
+            return
+        if path.suffix == ".pdf":
+            ok = shots.open_file(path)
+        else:
+            import webbrowser
+            ok = webbrowser.open(path.resolve().as_uri())
+        if ok:
+            self._say(_t("Открыто для печати — напечатайте из просмотрщика (Ctrl+P)"), GREEN)
+        else:
+            self._say(_t("Файл для печати: {0}").format(path), AMBER)
 
     # -- экспорт -------------------------------------------------------------------------
     def _export_menu(self) -> None:
