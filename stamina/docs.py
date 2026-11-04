@@ -11,6 +11,7 @@ import html
 import io
 import json
 import os
+import shutil
 import time
 import zipfile
 from pathlib import Path
@@ -128,6 +129,8 @@ def new_path(title: str = "") -> Path:
 def save(doc: Document, path: Path | None = None) -> Path:
     """Атомарная запись: во временный файл, затем replace — сбой не портит документ."""
     path = Path(path or doc.path or new_path(doc.title))
+    if path.parent == docs_dir():
+        snapshot(path)
     doc.modified = time.time()
     used = {s["img"] for s in doc.segments if "img" in s}
     meta = {"format": FORMAT, "title": doc.title, "created": doc.created,
@@ -216,14 +219,90 @@ def list_docs(by: str = "modified") -> list[dict]:
     return sort_items([peek(p) for p in docs_dir().glob(f"*{SUFFIX}")], by)
 
 
+TRASH_DIR = ".trash"
+VERSIONS_DIR = ".versions"
+VERSION_EVERY = 10 * 60      # не чаще одной версии в 10 минут
+VERSION_KEEP = 20
+
+
+def _free_name(folder: Path, name: str) -> Path:
+    """folder/name, а если занято — «имя (2).stdoc», «имя (3).stdoc»…"""
+    dest = folder / name
+    stem, suf = Path(name).stem, Path(name).suffix
+    k = 2
+    while dest.exists():
+        dest = folder / f"{stem} ({k}){suf}"
+        k += 1
+    return dest
+
+
 def remove_to_trash(path: Path) -> Path:
-    """«Удалить» — переложить в корзину documents/.trash (вернуть можно руками)."""
+    """«Удалить» — переложить в корзину documents/.trash; одноимённые не затирают друг друга."""
     path = Path(path)
-    trash = path.parent / ".trash"
+    trash = path.parent / TRASH_DIR
     trash.mkdir(exist_ok=True)
-    dest = trash / path.name
+    dest = _free_name(trash, path.name)
     os.replace(path, dest)
     return dest
+
+
+def list_trash() -> list[dict]:
+    """Корзина: свежие удаления сверху (по времени переноса)."""
+    trash = docs_dir() / TRASH_DIR
+    items = []
+    for p in trash.glob(f"*{SUFFIX}") if trash.is_dir() else []:
+        info = peek(p)
+        info["deleted"] = p.stat().st_mtime if p.exists() else 0
+        items.append(info)
+    return sorted(items, key=lambda d: d["deleted"], reverse=True)
+
+
+def restore_from_trash(path: Path) -> Path:
+    path = Path(path)
+    dest = _free_name(docs_dir(), path.name)
+    os.replace(path, dest)
+    return dest
+
+
+def purge(path: Path) -> None:
+    """Удалить из корзины насовсем (только файлы внутри .trash)."""
+    path = Path(path)
+    if path.parent.name != TRASH_DIR:
+        raise ValueError("purge: только из корзины")
+    path.unlink(missing_ok=True)
+
+
+def _versions_dir(path: Path) -> Path:
+    return Path(path).parent / VERSIONS_DIR / Path(path).stem
+
+
+def snapshot(path: Path, force: bool = False) -> Path | None:
+    """Сохранить прежнее состояние файла как версию (раз в VERSION_EVERY, последние VERSION_KEEP)."""
+    path = Path(path)
+    if not path.is_file():
+        return None
+    folder = _versions_dir(path)
+    olds = sorted(folder.glob(f"*{SUFFIX}")) if folder.is_dir() else []
+    if olds and not force and time.time() - olds[-1].stat().st_mtime < VERSION_EVERY:
+        return None
+    folder.mkdir(parents=True, exist_ok=True)
+    dest = _free_name(folder, time.strftime("%Y-%m-%d_%H%M%S") + SUFFIX)
+    shutil.copy2(path, dest)
+    os.utime(dest)                      # время версии — момент снимка
+    for old in sorted(folder.glob(f"*{SUFFIX}"))[:-VERSION_KEEP]:
+        old.unlink(missing_ok=True)
+    return dest
+
+
+def list_versions(path: Path) -> list[dict]:
+    """Версии документа: свежие сверху; when — время снимка."""
+    folder = _versions_dir(path)
+    out = []
+    for p in sorted(folder.glob(f"*{SUFFIX}"), reverse=True) if folder.is_dir() else []:
+        info = peek(p)
+        info["when"] = p.stat().st_mtime
+        out.append(info)
+    return out
 
 
 # -- экспорт ---------------------------------------------------------------------
@@ -252,7 +331,10 @@ def export_md(doc: Document, path: Path) -> Path:
             files.mkdir(parents=True, exist_ok=True)
             name = Path(s["img"]).name
             (files / name).write_bytes(doc.images[s["img"]])
-            parts.append(f"![]({files.name}/{name})")
+            w = int(s.get("w") or 0)
+            src = f"{files.name}/{name}"
+            # ширина, заданная в редакторе, сохраняется (HTML-тег понимают все просмотрщики Markdown)
+            parts.append(f'<img src="{src}" width="{w}">' if w else f"![]({src})")
     path.write_text("".join(parts), encoding="utf-8")
     return path
 
@@ -268,13 +350,14 @@ def import_md(path: Path) -> Document:
         title, text = m.group(1), text[m.end():]
     doc = Document(title)
     pos = 0
-    for im in re.finditer(r"!\[[^\]]*\]\(([^)\s]+)\)", text):
+    rx = r'!\[[^\]]*\]\(([^)\s]+)\)|<img\s+src="([^"]+)"(?:\s+width="(\d+)")?\s*/?>'
+    for im in re.finditer(rx, text):
         if im.start() > pos:
             doc.segments.append({"t": text[pos:im.start()]})
-        src = (path.parent / im.group(1))
+        src = (path.parent / (im.group(1) or im.group(2)))
         if src.is_file():
             name = doc.add_image(src.read_bytes(), src.suffix.lower() or ".png")
-            doc.segments.append({"img": name, "w": 0})
+            doc.segments.append({"img": name, "w": int(im.group(3) or 0)})
         else:
             doc.segments.append({"t": im.group(0)})
         pos = im.end()
@@ -283,14 +366,28 @@ def import_md(path: Path) -> Document:
     return doc
 
 
+HTML_CSS = ("body{font-family:'Segoe UI',sans-serif;max-width:860px;margin:2em auto;padding:0 1em;"
+            "line-height:1.5;color:#1d2330}"
+            "h1,h2{line-height:1.25}blockquote{border-left:3px solid #aab;margin:.4em 0;padding-left:1em;color:#555}"
+            "code{background:#eef;padding:0 .2em;border-radius:3px}p{margin:.25em 0}mark{background:#ffe58a}"
+            "table{border-collapse:collapse;margin:.6em 0}td,th{border:1px solid #bbc;padding:.25em .6em}"
+            "th{background:#eef}ul.tasks{list-style:none;padding-left:1em}"
+            "nav.toc{border:1px solid #dde;padding:.4em 1em;margin-bottom:1.5em}nav.toc ul{list-style:none;padding:0}"
+            "nav.toc .l2{padding-left:1.2em}img{display:block;margin:.5em 0}"
+            "@media print{nav.toc{display:none}}")
+
+
 def export_html(doc: Document, path: Path) -> Path:
-    """HTML с картинками внутри (data URI) — один файл, открывается где угодно."""
+    """HTML с картинками внутри (data URI) — один файл, открывается где угодно.
+    Списки, задачи, таблицы, выделение; оглавление — если заголовков 3 и больше."""
     import base64
+    toc = True
     from stamina import mdlite
     parts = [f"<h1>{html.escape(doc.title)}</h1>"] if doc.title.strip() else []
     for s in doc.segments:
         if "t" in s:
-            parts.append(mdlite.to_html(s["t"]))
+            parts.append(mdlite.to_html(s["t"], toc=toc))
+            toc = False
         elif s.get("img") in doc.images:
             b64 = base64.b64encode(doc.images[s["img"]]).decode("ascii")
             w = int(s.get("w") or 0)
@@ -299,9 +396,7 @@ def export_html(doc: Document, path: Path) -> Path:
     body = "\n".join(parts)
     page = ("<!doctype html><html><head><meta charset=\"utf-8\">"
             f"<title>{html.escape(doc.display_title())}</title>"
-            "<style>blockquote{border-left:3px solid #aaa;margin:0;padding-left:1em;color:#555}"
-            "code{background:#eee;padding:0 .2em}p{margin:.2em 0}</style></head>"
-            f"<body style=\"font-family:sans-serif;max-width:900px;margin:2em auto\">{body}</body></html>")
+            f"<style>{HTML_CSS}</style></head><body>{body}</body></html>")
     Path(path).write_text(page, encoding="utf-8")
     return Path(path)
 
@@ -342,6 +437,8 @@ def export_docx(doc: Document, path: Path) -> Path:
             rpr += '<w:u w:val="single"/>'
         if "link" in st:
             rpr += '<w:color w:val="1F5FBF"/>'
+        if "hl" in st:
+            rpr += '<w:highlight w:val="yellow"/>'
         if "code" in st:
             rpr += '<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas"/><w:shd w:val="clear" w:fill="EEEEEE"/>'
         rpr = f"<w:rPr>{rpr}</w:rPr>" if rpr else ""

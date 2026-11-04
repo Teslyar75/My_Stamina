@@ -17,7 +17,7 @@ import tkinter as tk
 from pathlib import Path
 
 from stamina.english.ui import Flow
-from stamina import clip_html, docs_imgdrag, docs_visual, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
+from stamina import clip_html, docs_dialogs, docs_imgdrag, docs_templates, docs_visual, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
 from stamina.docs_dialogs import confirm
 from stamina.docs_preview import DocPreview
 from stamina.docs_undo import DocUndo
@@ -82,11 +82,20 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         btns.pack(fill=tk.X, pady=(0, px(6)))
         btns.add(HudButton(btns, _t("+ НОВЫЙ"), self.new_doc, height=32, font_size=10, color=GREEN),
                  gap_before=0)
+        self.tpl_btn = HudButton(btns, "▾", self.template_menu, height=32, width=26, font_size=10,
+                                 color=GREEN)
+        btns.add(self.tpl_btn, gap_before=2)
         btns.add(HudButton(btns, _t("ОТКРЫТЬ"), self.open_file, height=32, font_size=10, color=CYAN),
                  gap_before=6)
         self.del_btn = HudButton(btns, _t("УБРАТЬ"), self._remove, height=32, font_size=9,
                                  color=MUTED)
         btns.add(self.del_btn, gap_before=6)
+        self.ver_btn = HudButton(btns, "🕘", self.versions_dialog, height=32, width=32, font_size=10,
+                                 color=MUTED)
+        btns.add(self.ver_btn, gap_before=2)
+        self.trash_btn = HudButton(btns, "🗑", self.trash_dialog, height=32, width=32, font_size=10,
+                                   color=MUTED)
+        btns.add(self.trash_btn, gap_before=2)
         # поиск по заголовку и тексту + порядок списка
         sr = tk.Frame(lb, bg=PANEL)
         sr.pack(fill=tk.X, pady=(0, px(6)))
@@ -400,6 +409,82 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         self.title_entry.focus_set()
         self._say(_t("Новый документ — пишите, всё сохранится само"), GREEN)
 
+    # -- шаблоны, корзина, версии ---------------------------------------------------------
+    def template_menu(self) -> None:
+        m = self._menu()
+        for tid, label, _title, _text in docs_templates.templates():
+            m.add_command(label=label, command=lambda k=tid: self.new_from_template(k))
+        b = self.tpl_btn
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
+
+    def new_from_template(self, tid: str) -> None:
+        tpl = {t[0]: t for t in docs_templates.templates()}[tid]
+        self.save_now()
+        self._show_doc(docs.Document(tpl[2], [{"t": tpl[3]}]))
+        self.listbox.selection_clear(0, tk.END)
+        # курсор — на первое пустое место заготовки
+        t = self.text
+        pos = t.search("- [ ] ", "1.0", tk.END) or t.search("- ", "1.0", tk.END)
+        t.mark_set("insert", f"{pos} lineend" if pos else "end-1c")
+        self.reveal_cursor_line()
+        t.focus_set()
+        self._changed()
+        self._say(_t("Новый документ из шаблона «{0}»").format(tpl[1]), GREEN)
+
+    @staticmethod
+    def _stamp(ts: float) -> str:
+        return time.strftime("%d.%m.%Y %H:%M", time.localtime(ts))
+
+    def trash_dialog(self) -> None:
+        items = docs.list_trash()
+        rows = [(f"{it['title'] or _t('Без названия')}  · {self._stamp(it['deleted'])}", it["path"]) for it in items]
+        res = docs_dialogs.pick(self, _t("Корзина"), _t("Убранные документы. Вернуть — в список; удалить — насовсем."),
+                                rows, [(_t("ВЕРНУТЬ"), "restore", GREEN), (_t("УДАЛИТЬ НАСОВСЕМ"), "purge", theme.RED)],
+                                _t("Корзина пуста"))
+        if not res:
+            return
+        key, path = res
+        if key == "restore":
+            dest = docs.restore_from_trash(path)
+            self.refresh()
+            self._show_doc(docs.load(dest))
+            self._say(_t("Документ возвращён из корзины"), GREEN)
+        elif confirm(self, _t("Удалить насовсем"), _t("Удалить документ насовсем? Это не отменить."),
+                     _t("УДАЛИТЬ"), danger=True):
+            docs.purge(path)
+            self._say(_t("Удалено насовсем"), AMBER)
+
+    def versions_dialog(self) -> None:
+        if not (self.doc and self.doc.path):
+            self._say(_t("У нового документа ещё нет версий"), AMBER)
+            return
+        self.save_now()
+        items = docs.list_versions(self.doc.path)
+        rows = [(f"{self._stamp(it['when'])}  · {(it.get('search') or '')[:40].strip()}", it["path"]) for it in items]
+        res = docs_dialogs.pick(self, _t("Версии"),
+                                _t("Прежние состояния документа (не чаще раза в 10 минут, последние 20). Нынешнее перед заменой тоже сохранится версией."),
+                                rows, [(_t("ВЕРНУТЬ ЭТУ"), "restore", GREEN), (_t("ОТКРЫТЬ ПРОСМОТР"), "view", CYAN)],
+                                _t("Версий пока нет — они появляются при правках"))
+        if not res:
+            return
+        key, path = res
+        old = docs.load(path)
+        if key == "view":
+            from stamina.docs_preview import DocPreview
+            DocPreview(self, old, {})
+            return
+        self.restore_version(old)
+
+    def restore_version(self, old: docs.Document) -> None:
+        """Вернуть версию: нынешнее — в версии (принудительно), содержимое — из old, файл тот же."""
+        doc = self.doc
+        docs.snapshot(doc.path, force=True)
+        doc.title, doc.segments, doc.images = old.title, old.segments, old.images
+        docs.save(doc)
+        self._show_doc(docs.load(doc.path))
+        self.refresh()
+        self._say(_t("Версия возвращена — прежний текст тоже в версиях"), GREEN)
+
     # -- «ОТКРЫТЬ» — загрузить документ с компьютера -----------------------------------
     def _recent_files(self) -> list:
         st = self._settings()
@@ -601,6 +686,7 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
                 b.rescale(k)
         for b in (self.img_btn, self.tr_btn, self.check_btn):
             b._flow_shown = not on
+        self.set_format_compact(on)
         self.more_btn._flow_shown = on
         try:
             self.title_entry.configure(font=theme.font(11 if on else 13, True))

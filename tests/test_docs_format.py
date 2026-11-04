@@ -25,7 +25,7 @@ class TestMdlite(unittest.TestCase):
         kinds = [k for k, _ in mdlite.paragraphs("# A\n## B\n- c\n1. d\n> e\nf")]
         self.assertEqual(kinds, ["h1", "h2", "li", "li", "quote", "p"])
         self.assertEqual(mdlite.plain("# A\n**b** и *c*"), "A\nb и c")
-        self.assertIn("<h1>A</h1>", mdlite.to_html("# A"))
+        self.assertIn('<h1 id="a">A</h1>', mdlite.to_html("# A"))
 
 
 class _Root(unittest.TestCase):

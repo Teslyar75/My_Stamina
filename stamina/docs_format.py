@@ -20,13 +20,16 @@ from stamina.theme import AMBER, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 
 WIN = sys.platform.startswith("win")
 # Windows virtual-key коды: одинаковы в любой раскладке (Ctrl+B и на кириллице)
-VK = {66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 55: "7", 56: "8", 76: "l", 81: "q", 69: "e",
+VK = {88: "x", 79: "o", 84: "t", 66: "b", 73: "i", 85: "u", 49: "1", 50: "2", 55: "7", 56: "8", 76: "l", 81: "q", 69: "e",
       75: "k", 90: "z", 89: "y", 70: "f", 72: "h", 191: "/", 83: "s", 80: "p", 86: "v", 77: "m"}
 #: X11 при Shift даёт символ над цифрой — приводим к самой цифре (американская раскладка)
 SHIFT_DIGITS = {"exclam": "1", "at": "2", "ampersand": "7", "asterisk": "8",
                 "slash": "/", "question": "/"}
 WRAP = {"b": ("**", "**"), "i": ("*", "*"), "u": ("<u>", "</u>"), "code": ("`", "`")}
-LINE_MARK = {"h1": "# ", "h2": "## ", "li": "- ", "quote": "> "}
+WRAP["hl"] = ("==", "==")
+LINE_MARK = {"h1": "# ", "h2": "## ", "li": "- ", "quote": "> ", "task": "- [ ] "}
+#: на узком экране (1024×600) эти кнопки уходят в «⋯» — клавиши работают как прежде
+COMPACT_HIDE = ("quote", "code", "table", "toc", "undo", "redo", "visual")
 
 
 def actions() -> list[tuple[str, str, str]]:
@@ -34,8 +37,10 @@ def actions() -> list[tuple[str, str, str]]:
     return [
         ("b", "B", "Ctrl+B"), ("i", "I", "Ctrl+I"), ("u", "U", "Ctrl+U"),
         ("h1", "H1", "Ctrl+Shift+1"), ("h2", "H2", "Ctrl+Shift+2"),
-        ("li", "•", "Ctrl+Shift+L"), ("ol", "1.", "Ctrl+Shift+7"), ("quote", "❝", "Ctrl+Shift+Q"),
-        ("code", "</>", "Ctrl+E"), ("link", "🔗", "Ctrl+K"),
+        ("li", "•", "Ctrl+Shift+L"), ("ol", "1.", "Ctrl+Shift+7"), ("task", "☐", "Ctrl+Shift+X"),
+        ("quote", "❝", "Ctrl+Shift+Q"), ("hl", "==", "Ctrl+Shift+H"),
+        ("code", "</>", "Ctrl+E"), ("link", "🔗", "Ctrl+K"), ("table", "▦", "Ctrl+Shift+T"),
+        ("toc", "☰", "Ctrl+Shift+O"),
         ("undo", "↶", "Ctrl+Z"), ("redo", "↷", "Ctrl+Y"),
         ("find", "🔍", "Ctrl+F / Ctrl+H"), ("visual", "👁", "Ctrl+Shift+M"), ("help", "?", "Ctrl+/"),
     ]
@@ -44,7 +49,9 @@ def actions() -> list[tuple[str, str, str]]:
 def action_names() -> dict:
     return {"b": _t("жирный"), "i": _t("курсив"), "u": _t("подчёркнутый"),
             "h1": _t("заголовок"), "h2": _t("подзаголовок"), "li": _t("список"),
-            "ol": _t("нумерованный список"), "quote": _t("цитата"), "code": _t("код"), "link": _t("ссылка"),
+            "ol": _t("нумерованный список"),
+            "task": _t("задача с галочкой (щелчок по [ ] — отметить)"), "hl": _t("выделение маркером"),
+            "table": _t("вставить таблицу"), "toc": _t("оглавление: перейти к заголовку"), "quote": _t("цитата"), "code": _t("код"), "link": _t("ссылка"),
             "undo": _t("отменить"), "redo": _t("вернуть"), "find": _t("найти и заменить"),
             "visual": _t("прятать маркеры вне строки с курсором"),
             "help": _t("эта справка (ещё раз — список документов)")}
@@ -65,6 +72,9 @@ def cheat_sheet() -> list[tuple[str, str]]:
     return [("**текст**", _t("жирный")), ("*текст*", _t("курсив")), ("<u>текст</u>", _t("подчёркнутый")),
             ("# " + _t("Заголовок"), _t("заголовок")), ("## " + _t("Подзаголовок"), _t("подзаголовок")),
             ("- " + _t("пункт"), _t("список")), ("1. " + _t("пункт"), _t("нумерованный список")),
+            ("- [ ] " + _t("дело"), _t("задача")), ("- [x] " + _t("дело"), _t("сделано")),
+            ("==" + _t("текст") + "==", _t("выделение маркером")),
+            ("| a | b |", _t("строка таблицы")),
             ("> " + _t("цитата"), _t("цитата")), ("`код`", _t("код")),
             ("[" + _t("текст") + "](https://…)", _t("ссылка"))]
 
@@ -74,6 +84,11 @@ def doc_font(size: int = 12, style: str = "") -> tuple:
     family = "Segoe UI" if WIN else theme.font(size)[0]
     f = (family, theme.font(size)[1])
     return f + (style,) if style else f
+
+
+def _null():
+    import contextlib
+    return contextlib.nullcontext()
 
 
 def one_undo(fn):
@@ -105,9 +120,28 @@ class FormatMixin:
                           font_size=9, color=color)
             bar.add(b, gap_before=gap if self.fmt_buttons else 0)
             self.fmt_buttons[aid] = b
+        self.fmt_more = HudButton(bar, "⋯", self.fmt_more_menu, height=28, width=30, font_size=9, color=CYAN)
+        self.fmt_more._flow_shown = False
+        bar.add(self.fmt_more, gap_before=2)
         if hasattr(self, "visual_on"):
             self.fmt_buttons["visual"].set_active(self.visual_on())
         return bar
+
+    def set_format_compact(self, on: bool) -> None:
+        """1024×600: редкие кнопки ленты — в меню «⋯» (клавиши остаются)."""
+        for aid in COMPACT_HIDE:
+            self.fmt_buttons[aid]._flow_shown = not on
+        self.fmt_more._flow_shown = on
+
+    def fmt_more_menu(self) -> None:
+        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        names = action_names()
+        keys = {a: k for a, _l, k in actions()}
+        for aid in COMPACT_HIDE:
+            m.add_command(label=f"{names[aid]}", accelerator=keys[aid],
+                          command=lambda a=aid: self.do_action(a))
+        b = self.fmt_more
+        m.tk_popup(b.winfo_rootx(), b.winfo_rooty() + b.winfo_height())
 
     def build_find_bar(self, parent) -> tk.Frame:
         f = tk.Frame(parent, bg=PANEL)
@@ -189,18 +223,26 @@ class FormatMixin:
         t.tag_configure("md_quote", foreground=MUTED, lmargin1=px(18), lmargin2=px(18))
         t.tag_configure("md_li", lmargin1=px(6), lmargin2=px(22))
         t.tag_configure("md_mark", foreground=theme.blend(MUTED, theme.BG2, 0.55))
+        t.tag_configure("md_hl", background=theme.blend(AMBER, theme.BG2, 0.35))
+        t.tag_configure("md_task", lmargin1=px(6), lmargin2=px(30))
+        t.tag_configure("md_box", foreground=CYAN)
+        t.tag_configure("md_done", overstrike=True, foreground=MUTED)
+        t.tag_configure("md_row", font=theme.font(base - 1, mono=True), background=theme.blend(LINE, theme.BG2, 0.25))
         t.tag_configure("found", background=theme.blend(AMBER, theme.BG2, 0.45))
         for tag in ("md_h1", "md_h2"):
             t.tag_raise(tag)
-        for tag in ("md_b", "md_i", "md_bi", "md_code", "md_mark", "found"):
+        for tag in ("md_b", "md_i", "md_bi", "md_code", "md_hl", "md_box", "md_mark", "found"):
             t.tag_raise(tag)
         self._hl_job = None
         t.bind("<KeyRelease>", lambda _e: self.schedule_highlight(), add="+")
         t.bind("<Control-KeyPress>", self._on_ctrl_key, add="+")
         t.bind("<Return>", self._on_return, add="+")
+        t.bind("<Button-1>", self._on_task_click, add="+")
+        t.tag_bind("md_box", "<Enter>", lambda _e: t.config(cursor="hand2"))
+        t.tag_bind("md_box", "<Leave>", lambda _e: t.config(cursor="xterm"))
 
     MD_TAGS = ("md_h1", "md_h2", "md_b", "md_i", "md_bi", "md_u", "md_code", "md_link",
-               "md_quote", "md_li", "md_mark")
+               "md_quote", "md_li", "md_mark", "md_hl", "md_task", "md_box", "md_done", "md_row")
 
     #: Больше строк — полную подсветку делаем кусками в фоне, чтобы книга не тормозила.
     HL_SYNC_LINES = 1500
@@ -267,9 +309,15 @@ class FormatMixin:
             if not line:
                 continue
             kind, n = mdlite.block_of(line)
-            if kind != "p":
+            if kind == "task":
+                t.tag_add("md_task", f"{ln}.0", f"{ln}.end")
+                box = line.index("[")
+                t.tag_add("md_box", f"{ln}.{box}", f"{ln}.{box + 3}")
+                if mdlite.task_done(line):
+                    t.tag_add("md_done", f"{ln}.{n}", f"{ln}.end")
+            elif kind != "p":
                 t.tag_add("md_" + kind, f"{ln}.0", f"{ln}.end")
-                if kind != "li":
+                if kind not in ("li", "row"):
                     t.tag_add("md_mark", f"{ln}.0", f"{ln}.{n}")
             spans = mdlite.inline_spans(line)
             bold, ital = set(), set()
@@ -302,13 +350,14 @@ class FormatMixin:
             return "break"
         if shift:
             act = {"1": "h1", "2": "h2", "7": "ol", "8": "li", "l": "li", "q": "quote",
-                   "z": "redo", "m": "visual"}.get(key)
+                   "z": "redo", "m": "visual",
+                   "x": "task", "h": "hl", "t": "table", "o": "toc"}.get(key)
         else:
             act = {"b": "b", "i": "i", "u": "u", "e": "code", "k": "link", "z": "undo", "y": "redo",
                    "f": "find", "h": "find", "/": "help"}.get(key)
         if act is None:
             return None
-        self.do_action(act, replace=(key == "h"))
+        self.do_action(act, replace=(key == "h" and not shift))
         return "break"
 
     def do_action(self, aid: str, replace: bool = False) -> None:
@@ -319,6 +368,11 @@ class FormatMixin:
             self.toggle_line(aid)
         elif aid == "ol":
             self.toggle_numbered()
+        elif aid == "table":
+            self.insert_table()
+        elif aid == "toc":
+            self.toc_menu()
+            return
         elif aid == "link":
             self.wrap_selection("[", "](https://)", select_tail=True)
         elif aid == "undo":
@@ -424,13 +478,79 @@ class FormatMixin:
                 k += 1
         t.edit_separator()
 
+    # -- задачи, таблица, оглавление -------------------------------------------------------
+    def toggle_task_at(self, ln: int) -> bool:
+        """«- [ ]» ⇄ «- [x]» в строке ln — один шаг Ctrl+Z."""
+        t = self.text
+        line = t.get(f"{ln}.0", f"{ln}.end")
+        done = mdlite.task_done(line)
+        if done is None:
+            return False
+        k = line.index("[") + 1
+        with (self.undo.compound() if getattr(self, "undo", None) else _null()):
+            t.delete(f"{ln}.{k}")
+            t.insert(f"{ln}.{k}", " " if done else "x")
+        self.highlight(ln, ln)
+        self._changed()
+        return True
+
+    def _on_task_click(self, e):
+        t = self.text
+        idx = t.index(f"@{e.x},{e.y}")
+        if "md_box" not in t.tag_names(idx):
+            return None
+        bbox = t.bbox(idx)
+        if bbox is None or not (bbox[0] - 2 <= e.x <= bbox[0] + bbox[2] * 3 + 2):
+            return None
+        self.toggle_task_at(int(idx.split(".")[0]))
+        return "break"
+
+    TABLE_TEMPLATE = "| {0} | {1} |\n|---|---|\n|  |  |\n|  |  |\n"
+
+    @one_undo
+    def insert_table(self) -> None:
+        """Таблица 2×2 с новой строки; курсор — в первую ячейку данных."""
+        t = self.text
+        if t.compare("insert", "!=", "insert linestart"):
+            t.mark_set("insert", "insert lineend")
+            t.insert("insert", "\n")
+        start = t.index("insert")
+        t.insert("insert", self.TABLE_TEMPLATE.format(_t("Столбец 1"), _t("Столбец 2")))
+        ln = int(start.split(".")[0]) + 2
+        t.mark_set("insert", f"{ln}.2")
+        t.see("insert")
+
+    def toc_menu(self) -> None:
+        """Оглавление документа (заголовки # и ##): щелчок — перейти."""
+        heads = mdlite.headings(self.text.get("1.0", "end-1c"))
+        m = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT, activebackground=CYAN)
+        if not heads:
+            m.add_command(label=_t("Заголовков нет — начните строку с «# »"), state=tk.DISABLED)
+        for ln, level, title in heads:
+            m.add_command(label=("    " if level == 2 else "") + title[:60],
+                          command=lambda n=ln: self.goto_line(n))
+        b = self.fmt_buttons.get("toc")
+        if b is not None and b.winfo_ismapped():
+            x, y = b.winfo_rootx(), b.winfo_rooty() + b.winfo_height()
+        else:
+            x, y = self.text.winfo_rootx() + 40, self.text.winfo_rooty() + 20
+        m.tk_popup(x, y)
+
+    def goto_line(self, ln: int) -> None:
+        t = self.text
+        t.mark_set("insert", f"{ln}.0")
+        if hasattr(self, "reveal_cursor_line"):
+            self.reveal_cursor_line()
+        t.yview(f"{ln}.0")
+        t.focus_set()
+
     def _on_return(self, _e=None):
         """Enter в пункте списка продолжает список; на пустом пункте — заканчивает."""
         t = self.text
         ln = t.index("insert").split(".")[0]
         line = t.get(f"{ln}.0", f"{ln}.end")
         kind, n = mdlite.block_of(line)
-        if kind not in ("li", "quote") or t.compare("insert", "!=", f"{ln}.end"):
+        if kind not in ("li", "quote", "task") or t.compare("insert", "!=", f"{ln}.end"):
             self.schedule_highlight()
             return None
         if not line[n:].strip():
@@ -438,6 +558,8 @@ class FormatMixin:
             self.schedule_highlight()
             return "break"
         mark = line[:n]
+        if kind == "task":
+            mark = mark.replace("[x]", "[ ]").replace("[X]", "[ ]").replace("[х]", "[ ]").replace("[Х]", "[ ]")
         import re
         num = re.match(r"(\s*)(\d+)([.)]\s+)", mark)
         if num:
