@@ -2509,5 +2509,17 @@
  "OpenAI-совместимый": "OpenAI-compatible",
  "модель по умолчанию": "default model",
  "OpenCode": "OpenCode",
- "Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) и пакет keyring — см. docs/LINUX.md": "No secure key storage: install gnome-keyring (or KWallet) and the keyring package — see docs/LINUX.md"
+ "Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) и пакет keyring — см. docs/LINUX.md": "No secure key storage: install gnome-keyring (or KWallet) and the keyring package — see docs/LINUX.md",
+ "Мост GitHub: сообщения уходят в обсуждение GitHub (снимки — в ветку ship-chat-media), ответы корабль забирает опросом до 30 минут. Нужен токен GitHub (Discussions: запись, Contents: запись). Вебхук — по желанию.": "GitHub bridge: messages go to a GitHub discussion (screenshots to the ship-chat-media branch); the ship polls for replies for up to 30 minutes. Needs a GitHub token (Discussions: write, Contents: write). Webhook is optional.",
+ "Ожидание ответа отменено": "Waiting for the reply cancelled",
+ "Провайдер или модель агента вернули ошибку": "The agent provider or model returned an error",
+ "Орион пишет ответ…": "Orion is writing a reply…",
+ "Сообщение отправлено — {0} печатает…": "Message sent — {0} is typing…",
+ "Ответа так и не пришло за 30 минут — проверьте обсуждение на GitHub": "No reply within 30 minutes — check the discussion on GitHub",
+ "Пилот перестал ждать ответа ({0})": "The pilot stopped waiting for a reply ({0})",
+ "Орион {0}": "Orion {0}",
+ "Вебхук агента не принял сообщение ({0}) — оно ушло в обсуждение GitHub": "The agent webhook rejected the message ({0}) — it went to the GitHub discussion",
+ "{0} печатает… (■ — перестать ждать)": "{0} is typing… (■ — stop waiting)",
+ "{0}: ответ получен": "{0}: reply received",
+ "Мост GitHub: ошибка опроса — {0}": "GitHub bridge: polling error — {0}"
 }

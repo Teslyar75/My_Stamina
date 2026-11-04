@@ -54,7 +54,8 @@ TASKS_FILE = "orion_tasks.json"
 MAX_MESSAGES = 500          # сколько реплик диалога храним
 MAX_TEXT = 6000             # знаков в одной реплике
 MAX_CHARACTER = 4000        # знаков в документе манер агента
-TIMEOUT = 120.0             # секунд на ответ агента (рабочая версия)
+TIMEOUT = 900.0             # секунд на ответ агента по умолчанию (профиль: поле "timeout")
+MIN_TIMEOUT, MAX_TIMEOUT = 30.0, 3 * 3600.0
 MARKER = "⟦ТРЕБУЕТСЯ РАЗРЕШЕНИЕ⟧"
 
 ACCESSES = ("commander", "observer", "crew")
@@ -62,7 +63,8 @@ VOICE_MODES = ("ship", "agent", "off")
 AGENT_KINDS = ("opencode", "openai_compat", "github_bridge")
 #: Что хранится в профиле подключённого агента. Сам ключ — только в хранилище ОС.
 CONNECT_FIELDS = ("base_url", "cred_ref", "fallback", "tts_voice", "pilot", "discussion_id",
-                  "bridge_login", "webhook", "system")
+                  "bridge_login", "webhook", "system", "bridge_repo", "discussion_number",
+                  "webhook_header", "webhook_scheme", "timeout")
 
 # Уровень доступа → какие агенты OpenCode запускаются (первый проход, второй проход).
 PROFILES: dict[str, tuple[str, str | None]] = {
@@ -387,6 +389,17 @@ def history(agent_id: str) -> dict:
             "sessions": data.get("sessions") or {}}
 
 
+def tidy_text(text: str) -> str:
+    """Убрать лишние пробелы, но сохранить строки: ответы агента — с разметкой и кодом."""
+    lines = [ln.rstrip() for ln in (text or "").replace("\r\n", "\n").replace("\r", "\n").split("\n")]
+    out: list[str] = []
+    for ln in lines:
+        if not ln.strip() and out and not out[-1].strip():
+            continue                     # не больше одной пустой строки подряд
+        out.append(ln)
+    return "\n".join(out).strip()
+
+
 def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
              kind: str = "", shot: str = "") -> dict:
     """Дописать реплику: role — pilot | orion | system.
@@ -401,7 +414,8 @@ def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
         data.setdefault("sessions", {})["orion-recon"] = session
         data["sessions"]["orion-commander"] = session
     msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(),
-           "text": " ".join((text or "").split())[:MAX_TEXT], "kind": kind}
+           "text": (" ".join((text or "").split()) if role == "pilot" else tidy_text(text))[:MAX_TEXT],
+           "kind": kind}
     if shot:
         msg["shot"] = str(shot)
     data["messages"].append(msg)
@@ -950,9 +964,21 @@ def context_line(*, zone: str = "", subtab: str = "", pilot: str = "", access: s
     return ("[КОРАБЛЬ] " + " · ".join(bits)) if bits else ""
 
 
+def agent_timeout(record: dict | None, default: float = TIMEOUT) -> float:
+    """Сколько ждать ответа агента: поле профиля "timeout" (секунды) или значение по умолчанию."""
+    try:
+        val = float(str((record or {}).get("timeout") or "").strip() or default)
+    except ValueError:
+        val = default
+    return max(MIN_TIMEOUT, min(MAX_TIMEOUT, val))
+
+
 def build_command(exe: str, profile: str, prompt: str, *, session: str = "",
-                  model: str = "", project: Path | None = None) -> list[str]:
-    """Команда запуска агента: `opencode run --format json …`."""
+                  model: str = "", project: Path | None = None, files=()) -> list[str]:
+    """Команда запуска агента: `opencode run --format json … "<prompt>" -f <снимок>…`.
+
+    Запрос идёт ДО `-f`: флаг-массив иначе проглотит его как ещё один файл.
+    """
     cmd = [exe, "run", "--format", "json", "--dir", str(project or PROJECT_DIR)]
     if session:
         cmd += ["--session", session]
@@ -961,7 +987,72 @@ def build_command(exe: str, profile: str, prompt: str, *, session: str = "",
     if model:
         cmd += ["--model", model]
     cmd.append(prompt)
+    for f in files or ():
+        if f and Path(f).is_file():
+            cmd += ["-f", str(f)]
     return cmd
+
+
+def event_status(ev: dict) -> tuple[str, str]:
+    """Одно JSON-событие OpenCode → ("text", кусок ответа) | ("status", строка) | ("", "")."""
+    kind = ev.get("type")
+    part = ev.get("part") or {}
+    if kind == "text":
+        return "text", str(part.get("text") or "")
+    if kind == "tool_use":
+        tool = str(part.get("tool") or "?")
+        st = part.get("state")
+        title = (st.get("title") if isinstance(st, dict) else "") or ""
+        return "status", f"использует инструмент {tool}" + (f": {title}" if title else "")
+    if kind in ("step_start", "reasoning"):
+        return "status", "думает…"
+    if kind == "error":
+        return "status", "ошибка: " + error_text(ev)
+    return "", ""
+
+
+def error_text(ev: dict) -> str:
+    """Понятная строка из события ошибки OpenCode (провайдер, модель, лимит)."""
+    err = ev.get("error") or (ev.get("part") or {}).get("error") or {}
+    if isinstance(err, str):
+        return err[:300]
+    data = err.get("data") if isinstance(err, dict) else None
+    name = str((err or {}).get("name") or "")
+    msg = ""
+    if isinstance(data, dict):
+        msg = str(data.get("message") or data.get("responseBody") or "")
+        prov = data.get("providerID") or data.get("provider")
+        if prov:
+            name = f"{name} [{prov}]".strip()
+    msg = msg or str((err or {}).get("message") or "")
+    return (f"{name}: {msg}" if name and msg else name or msg or json.dumps(err, ensure_ascii=False))[:300]
+
+
+_ERR_HINTS = ("error", "ошибка", "unauthorized", "forbidden", "rate limit", "quota", "not found",
+              "model", "provider", "api key", "credit", "insufficient", "timeout")
+
+
+def stderr_detail(err: str) -> str:
+    """Из хвоста stderr — строка с сутью ошибки (а не последняя строка лога)."""
+    lines = [ln.strip() for ln in (err or "").splitlines() if ln.strip()]
+    for ln in reversed(lines):
+        if any(h in ln.lower() for h in _ERR_HINTS):
+            return ln[:300]
+    return lines[-1][:300] if lines else ""
+
+
+def stream_errors(stdout: str) -> list[str]:
+    out = []
+    for line in (stdout or "").splitlines():
+        line = line.strip()
+        if line.startswith("{"):
+            try:
+                ev = json.loads(line)
+            except ValueError:
+                continue
+            if ev.get("type") == "error":
+                out.append(error_text(ev))
+    return out
 
 
 def parse_events(stdout: str) -> dict:
@@ -1127,7 +1218,7 @@ def _forget_run(proc: "subprocess.Popen") -> bool:
 
 
 def ask(record: dict, text: str, *, context: str = "", profile: str = "",
-        session: str = "", timeout: float = TIMEOUT) -> Result:
+        session: str = "", timeout: float | None = None) -> Result:
     """Спросить агента (первый проход). Разрешение на изменения корабль спросит сам."""
     first, _second = profiles(record)
     return run_profile(record, text, profile=profile or first, context=context,
@@ -1135,15 +1226,22 @@ def ask(record: dict, text: str, *, context: str = "", profile: str = "",
 
 
 def run_profile(record: dict, text: str, *, profile: str, context: str = "",
-                session: str = "", timeout: float = TIMEOUT,
-                character: str | None = None, _seen: tuple = ()) -> Result:
-    """Спросить агента через его провайдера (record["kind"]); при сбое — запасной профиль."""
+                session: str = "", timeout: float | None = None,
+                character: str | None = None, _seen: tuple = (), files=(),
+                on_event=None) -> Result:
+    """Спросить агента через его провайдера (record["kind"]); при сбое — запасной профиль.
+
+    files — снимки пилота (OpenCode получает их флагом -f); on_event(kind, text) —
+    поток для экрана: ("status", «использует инструмент X») или ("text", кусок ответа).
+    """
     kind = str(record.get("kind") or "opencode")
+    if timeout is None:
+        timeout = agent_timeout(record)
     if not (text or "").strip():
         return Result(error="empty", profile=profile)
     if kind == "opencode":
         res = _run_opencode(record, text, profile=profile, context=context, session=session,
-                            timeout=timeout, character=character)
+                            timeout=timeout, character=character, files=files, on_event=on_event)
     else:
         from stamina import agent_connect as ac
         if character is None:
@@ -1162,7 +1260,8 @@ def run_profile(record: dict, text: str, *, profile: str, context: str = "",
         other = get(fb)
         if other is not None:
             alt = run_profile(other, text, profile=profile_for(other, profile), context=context,
-                              timeout=timeout, _seen=_seen + (str(record.get("id")),))
+                              _seen=_seen + (str(record.get("id")),), files=files,
+                              on_event=on_event)
             if not alt.error:
                 alt.detail = f"fallback:{fb}:{res.error}"
                 alt.fallback_from = res.error
@@ -1179,8 +1278,12 @@ def profile_for(record: dict, profile: str) -> str:
 
 def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
                   session: str = "", timeout: float = TIMEOUT,
-                  character: str | None = None) -> Result:
-    """Запустить агента OpenCode CLI и вернуть ответ (манеры, контекст, эволюция)."""
+                  character: str | None = None, files=(), on_event=None) -> Result:
+    """Запустить агента OpenCode CLI и вернуть ответ (манеры, контекст, эволюция).
+
+    stdout читается построчно: экран видит, что агент думает или каким инструментом
+    пользуется, и кусочки ответа — не ждёт молча до конца.
+    """
     if not (text or "").strip():
         return Result(error="empty", profile=profile)
     exe = find_cli()
@@ -1191,7 +1294,8 @@ def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
     prompt = "\n\n".join(part for part in (character, context, text.strip()) if part)
     if Path(exe).suffix.lower() in SHIMS:
         prompt = flatten(prompt)
-    cmd = build_command(exe, profile, prompt, session=session, model=str(record.get("model") or ""))
+    cmd = build_command(exe, profile, prompt, session=session, model=str(record.get("model") or ""),
+                        files=files)
     started = time.time()
     try:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -1201,15 +1305,52 @@ def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
                       seconds=time.time() - started)
     # Берём процесс на учёт: без этого кнопка «стоп» его не найдёт и не погасит
     _remember_run(str(record.get("id") or DEFAULT_AGENT["id"]), proc)
+    out_lines: list[str] = []
+    err_chunks: list[bytes] = []
+
+    def read_out():
+        for raw in iter(proc.stdout.readline, b""):
+            line = raw.decode("utf-8", "replace")
+            out_lines.append(line)
+            if on_event and line.lstrip().startswith("{"):
+                try:
+                    kind, val = event_status(json.loads(line))
+                except ValueError:
+                    continue
+                if kind:
+                    try:
+                        on_event(kind, val)
+                    except Exception:  # noqa: BLE001 — экран не должен ронять агента
+                        pass
+
+    def read_err():
+        for raw in iter(proc.stderr.readline, b""):
+            err_chunks.append(raw)
+            del err_chunks[:-200]
+
+    readers = [threading.Thread(target=read_out, daemon=True),
+               threading.Thread(target=read_err, daemon=True)]
+    for th in readers:
+        th.start()
     try:
-        out_b, err_b = proc.communicate(timeout=timeout)
+        proc.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
         _kill(proc)
-        out_b, err_b = proc.communicate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            pass
         _forget_run(proc)
-        return Result(error="timeout", profile=profile, seconds=time.time() - started)
+        for th in readers:
+            th.join(timeout=2)
+        parsed = parse_events("".join(out_lines))
+        return Result(error="timeout", reply=strip_marker(parsed["reply"])[0], session=parsed["session"],
+                      detail=f"{int(timeout)} s", profile=profile, seconds=time.time() - started)
+    for th in readers:
+        th.join(timeout=5)
     stopped = _forget_run(proc)
-    out = (out_b or b"").decode("utf-8", "replace")
+    out = "".join(out_lines)
+    err = b"".join(err_chunks).decode("utf-8", "replace")
     parsed = parse_events(out)
     reply, request = strip_marker(parsed["reply"])
     needs = bool(request) or parsed["denied"]
@@ -1219,10 +1360,11 @@ def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
                       error="stopped", needs_permission=needs, request=request,
                       spoke=parsed["spoke"], profile=profile,
                       seconds=time.time() - started)
-    if not reply and proc.returncode != 0:
-        tail = (err_b or b"").decode("utf-8", "replace").strip().splitlines()
-        return Result(error="spawn", detail=(tail[-1] if tail else ""), session=parsed["session"],
-                      profile=profile, seconds=time.time() - started)
+    errors = stream_errors(out)
+    if not reply and (proc.returncode != 0 or errors):
+        detail = errors[-1] if errors else stderr_detail(err)
+        return Result(error="provider" if errors else "spawn", detail=detail,
+                      session=parsed["session"], profile=profile, seconds=time.time() - started)
     return Result(reply=reply, session=parsed["session"], tools=parsed["tools"],
                   needs_permission=needs, request=request, spoke=parsed["spoke"],
                   profile=profile, seconds=time.time() - started)

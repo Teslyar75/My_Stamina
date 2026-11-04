@@ -104,9 +104,12 @@ def _backend():
     return None
 
 
-def store_key(agent_id: str, secret: str) -> str:
-    """Положить ключ в хранилище ОС. Возвращает ссылку для профиля ("" — пусто)."""
-    ref = cred_ref(agent_id)
+def store_key(agent_id: str, secret: str, *, ref: str = "") -> str:
+    """Положить ключ в хранилище ОС. Возвращает ссылку для профиля ("" — пусто).
+
+    ref — своё имя записи (например, ключ вебхука ``StarTyping/agent/<id>/webhook``).
+    """
+    ref = ref or cred_ref(agent_id)
     be = _backend()
     if be is None:
         raise RuntimeError("no_store")
@@ -257,7 +260,7 @@ def bridge_body(text: str, *, geo: str = "", shots=()) -> str:
     if geo:
         parts.append("📍 " + geo)
     for s in shots or ():
-        parts.append(f"🖼 {os.path.basename(str(s))}")   # TODO: загрузка картинок (нет API вложений)
+        parts.append(f"🖼 {os.path.basename(str(s))}")   # картинки загружает ship_chat.upload_shots
     return "\n\n".join(p for p in parts if p)
 
 
@@ -271,33 +274,13 @@ def pick_reply(nodes: list[dict], *, after: str, me: str = "") -> str:
 
 def run_github_bridge(record: dict, prompt: str, *, token: str = "", timeout: float = 300.0,
                       poll: float = 10.0, sleep=time.sleep):
-    """Отправить сообщение в обсуждение GitHub и дождаться ответа агента опросом."""
-    from stamina.orion import Result, read_binding
-    started = time.time()
-    disc = str(record.get("discussion_id") or "")
-    token = token or read_key(str(record.get("cred_ref") or "")) or \
-        str(read_binding(str(record.get("id") or "")).get("github_token") or "")
-    if not disc:
-        return Result(error="config", detail="discussion_id")
-    if not token:
-        return Result(error="no_key")
-    try:
-        posted = _gql(token, POST_COMMENT, {"id": disc, "body": bridge_body(prompt)})
-        after = posted["addDiscussionComment"]["comment"]["createdAt"]
-        me = str(record.get("bridge_login") or "")
-        while time.time() - started < timeout:
-            sleep(poll)
-            data = _gql(token, POLL_COMMENTS, {"id": disc})
-            nodes = ((data.get("node") or {}).get("comments") or {}).get("nodes") or []
-            reply = pick_reply(nodes, after=after, me=me)
-            if reply:
-                return Result(reply=reply, seconds=time.time() - started)
-    except urllib.error.HTTPError as exc:
-        code, detail = _http_error_code(exc)
-        return Result(error=code, detail=detail, seconds=time.time() - started)
-    except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError) as exc:
-        return Result(error="network", detail=str(exc), seconds=time.time() - started)
-    return Result(error="timeout", seconds=time.time() - started)
+    """Отправить сообщение в обсуждение GitHub и дождаться окончательного ответа (блокирующе).
+
+    Экран Ориона использует фоновый путь (ship_chat.send + Watcher); этот — для цепочки
+    запасных агентов. Разбор ответов общий: метки star-typing-reply / reply-to / interim.
+    """
+    from stamina import ship_chat
+    return ship_chat.run_blocking(record, prompt, token=token, timeout=timeout, sleep=sleep)
 
 
 # ----------------------------------------------------------------- проверка связи
@@ -313,9 +296,8 @@ def check(record: dict, *, key: str = "") -> tuple[bool, str]:
         res = _run_with_key(rec, key) if key else run_openai_compat(rec, "ping: ответь одним словом OK", timeout=30)
         return (not res.error), (res.reply[:80] if not res.error else f"{res.error} {res.detail}".strip())
     if kind == "github_bridge":
-        if not record.get("discussion_id"):
-            return False, "config discussion_id"
-        return True, "config ok"
+        from stamina import ship_chat
+        return ship_chat.check(record, key=key)
     return False, "kind"
 
 

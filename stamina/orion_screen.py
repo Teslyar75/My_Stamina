@@ -31,7 +31,8 @@ import webbrowser
 from tkinter import messagebox
 from pathlib import Path
 
-from stamina import __version__, compose, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import __version__, chat_md, compose, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import ship_chat
 from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
@@ -257,11 +258,20 @@ class OrionScreen(tk.Frame):
         self._master_mode = False          # режим активного ока (мастер)
         self._last_mouse_pos = None
         self._last_hint_time = 0
+        self._stream = ""                  # ответ OpenCode, пришедший кусками (пока агент пишет)
+        self._web_images: dict[str, str] = {}   # url картинки из ответа → файл миниатюры ("" — не вышло)
+        self._bridge_watch = ship_chat.Watcher(
+            lambda kind, aid, data: self._queue.put(("bridge", kind, aid, data)))
 
         self._build()
         self.show_tab("chat")
         self.refresh()
         self._pump()
+        try:
+            if ship_chat.waiting():           # ожидание ответа пережило перезапуск корабля
+                self._bridge_watch.start()
+        except Exception:  # noqa: BLE001
+            pass
 
     # -- каркас ------------------------------------------------------------
     def _build(self) -> None:
@@ -687,6 +697,21 @@ class OrionScreen(tk.Frame):
         self.text.tag_configure("body", foreground=TEXT, font=theme.font(10))
         self.text.tag_configure("hint", foreground=MUTED, font=theme.font(10))
         self.text.tag_configure("separator", foreground=LINE, font=theme.font(8))
+        # лёгкая разметка ответов агента: поверх цветов реплик, не вместо них
+        self.text.tag_configure("md_b", font=theme.font(10, True))
+        self.text.tag_configure("md_i", font=(theme.font(10)[0], theme.font(10)[1], "italic"))
+        self.text.tag_configure("md_bi", font=(theme.font(10)[0], theme.font(10)[1], "bold italic"))
+        self.text.tag_configure("md_u", underline=True)
+        self.text.tag_configure("md_code", font=("Consolas", 10), foreground=AMBER, background=BG2)
+        self.text.tag_configure("md_block", font=("Consolas", 10), foreground=TEXT, background=BG2,
+                                lmargin1=px(12), lmargin2=px(12))
+        self.text.tag_configure("md_h", font=theme.font(11, True), foreground=CYAN)
+        self.text.tag_configure("md_quote", foreground=MUTED, lmargin1=px(14), lmargin2=px(14))
+        self.text.tag_configure("md_li", lmargin1=px(10), lmargin2=px(24))
+        self.text.tag_configure("md_link", foreground=CYAN, underline=True)
+        self.text.tag_bind("md_link", "<Enter>", lambda _e: self.text.configure(cursor="hand2"))
+        self.text.tag_bind("md_link", "<Leave>", lambda _e: self.text.configure(cursor=""))
+        self.text.tag_configure("typing", foreground=AMBER, font=theme.font(9, True))
 
     # -- вкладка АГЕНТЫ ----------------------------------------------------
     def _build_agents(self, page: tk.Frame) -> None:
@@ -1364,6 +1389,7 @@ class OrionScreen(tk.Frame):
         self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
         self._feed_images = []          # Tk не держит ссылки на картинки сам
+        self._links: list[str] = []
         if not ok:
             self.text.insert(tk.END, _t("OpenCode не найден: Орион на связи не будет. "
                                         "Установите opencode и перезапустите корабль.") + "\n", "hint")
@@ -1393,12 +1419,121 @@ class OrionScreen(tk.Frame):
             self.text.insert(tk.END, f"  {when}\n", "time")
             mtag = f"msg{len(self._msg_texts)}"
             self._msg_texts.append(str(m.get("text", "")))
-            self.text.insert(tk.END, f"{m.get('text', '')}\n", ("body", mtag))
+            if role == "orion":
+                self._insert_md(str(m.get("text", "")), ("body", mtag))
+            else:
+                self.text.insert(tk.END, f"{m.get('text', '')}\n", ("body", mtag))
             self._insert_shot(m.get("shot"))
+        self._insert_typing(rec)
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
         self._render_strip(msgs, rec)
         self._refresh_suggest(msgs)
+
+    # -- разметка ответа ---------------------------------------------------
+    def _insert_md(self, text: str, base: tuple) -> None:
+        """Ответ агента с лёгкой разметкой: жирный, курсив, код, списки, ссылки, картинки."""
+        try:
+            blocks = chat_md.parse(text)
+        except Exception:  # noqa: BLE001 — разметка не должна ронять чат
+            self.text.insert(tk.END, text + "\n", base)
+            return
+        for b in blocks:
+            if b[0] == "code":
+                self.text.insert(tk.END, (b[2] or " ") + "\n", base + ("md_block",))
+            elif b[0] == "image":
+                self._insert_web_image(b[1], b[2], base)
+            else:
+                _kind, kind, prefix, rs = b
+                extra = {"h1": ("md_h",), "h2": ("md_h",), "quote": ("md_quote",),
+                         "li": ("md_li",), "ol": ("md_li",)}.get(kind, ())
+                if prefix:
+                    self.text.insert(tk.END, prefix, base + extra)
+                for chunk, styles, href in rs:
+                    self.text.insert(tk.END, chunk, base + extra + self._md_tags(styles, href))
+                self.text.insert(tk.END, "\n", base)
+
+    def _md_tags(self, styles, href: str) -> tuple:
+        tags: list[str] = []
+        if "code" in styles:
+            tags.append("md_code")
+        elif "b" in styles and "i" in styles:
+            tags.append("md_bi")
+        elif "b" in styles:
+            tags.append("md_b")
+        elif "i" in styles:
+            tags.append("md_i")
+        if "u" in styles:
+            tags.append("md_u")
+        if href:
+            tag = f"href{len(self._links)}"
+            self._links.append(href)
+            self.text.tag_bind(tag, "<Button-1>", lambda _e, u=href: self._open_link(u))
+            tags += ["md_link", tag]
+        return tuple(tags)
+
+    def _open_link(self, url: str) -> None:
+        if re.match(r"^(https?|mailto):", url or ""):
+            webbrowser.open(url)
+        elif url and Path(url).exists():
+            self._open_shot(url)
+
+    def _insert_web_image(self, alt: str, url: str, base: tuple) -> None:
+        """Картинка из ответа: миниатюра (качается в фоне), пока нет — ссылка."""
+        local = url if (url and not re.match(r"^https?://", url) and Path(url).is_file()) else ""
+        cached = local or self._web_images.get(url)
+        if cached:
+            pic = shots.thumbnail(Path(cached))
+            if pic is not None:
+                try:
+                    from PIL import ImageTk
+                    photo = ImageTk.PhotoImage(pic, master=self.text)
+                    self._feed_images.append(photo)
+                    name = self.text.image_create(tk.END, image=photo, padx=px(4), pady=px(6))
+                    self.text.insert(tk.END, "\n")
+                    self.text.tag_bind(name, "<Button-1>", lambda _e, u=url: self._open_link(u))
+                    return
+                except Exception:  # noqa: BLE001
+                    pass
+        self.text.insert(tk.END, "🖼 ", base)
+        self.text.insert(tk.END, alt or url, base + self._md_tags(frozenset(), url))
+        self.text.insert(tk.END, "\n", base)
+        if url not in self._web_images and re.match(r"^https://", url or ""):
+            self._web_images[url] = ""
+            threading.Thread(target=self._fetch_image, args=(url,), daemon=True).start()
+
+    def _fetch_image(self, url: str) -> None:
+        """Скачать картинку из ответа в папку снимков (до 8 МБ) и перерисовать чат."""
+        import hashlib
+        import urllib.request
+        try:
+            folder = shots.shots_dir() / "web"
+            folder.mkdir(parents=True, exist_ok=True)
+            dest = folder / (hashlib.sha1(url.encode("utf-8")).hexdigest()[:16] + ".img")
+            if not dest.is_file():
+                req = urllib.request.Request(url, headers={"User-Agent": "StarTyping"})
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    blob = resp.read(8 * 1024 * 1024 + 1)
+                if len(blob) > 8 * 1024 * 1024:
+                    return
+                dest.write_bytes(blob)
+            self._queue.put(("md_image", url, str(dest)))
+        except Exception:  # noqa: BLE001 — остаётся ссылкой
+            return
+
+    def _insert_typing(self, rec: dict) -> None:
+        """«Star Typing печатает…» / кусок ответа OpenCode, пока он пишется."""
+        if self._busy and self._stream:
+            self.text.insert(tk.END, "─" * 40 + "\n", "separator")
+            self.text.insert(tk.END, "◂ " + str(rec.get("name") or _t("ОРИОН")).upper() + " ✎\n", "orion")
+            self.text.insert(tk.END, self._stream[-4000:] + "\n", ("body",))
+        try:
+            wait = ship_chat.waiting(rec["id"])
+        except Exception:  # noqa: BLE001
+            wait = []
+        if wait:
+            self.text.insert(tk.END, _t("{0} печатает… (■ — перестать ждать)").format(
+                str(rec.get("name") or "Star Typing")) + "\n", "typing")
 
     def _insert_shot(self, path: str | None) -> None:
         """Миниатюра снимка под репликой. Клик — открыть снимок целиком."""
@@ -1925,7 +2060,16 @@ class OrionScreen(tk.Frame):
         if second:
             self._hide_permission()
         self._hint(_t("Орион думает… (■ остановит его, чтобы вы уточнили задачу)"), AMBER)
+        self._stream = ""
         ctx = self._context()
+        geo = self._geo_line()
+        if geo:
+            ctx = (ctx + "\n\n" + geo) if ctx else geo
+        files = [p for p in (shot or []) if p and Path(p).is_file()]
+        if rec.get("kind") == "github_bridge" and not profile_hint:
+            threading.Thread(target=self._bridge_worker, args=(rec, text, ctx, geo, files),
+                             daemon=True).start()
+            return
         # При втором проходе — передаём разрешение в промпт
         if second:
             text = _t("РАЗРЕШЕНИЕ: Командир разрешил изменения. Выполни работу целиком.") + "\n\n" + text
@@ -1943,7 +2087,39 @@ class OrionScreen(tk.Frame):
             base = profile if profile_hint else "orion-recon"
             session = orion.profile_session(rec["id"], base) or orion.last_session(rec["id"])
         threading.Thread(target=self._worker,
-                         args=(rec, text, profile, session, ctx, second), daemon=True).start()
+                         args=(rec, text, profile, session, ctx, second, files), daemon=True).start()
+
+    def _geo_line(self) -> str:
+        """«Где показал пилот»: новые пометки правой кнопкой и последняя позиция мыши."""
+        parts = []
+        try:
+            block = marks.context_block(getattr(self, "_marks_sent", 0))
+            if block:
+                parts.append(block)
+                self._marks_sent = marks.last_id()
+        except Exception:  # noqa: BLE001
+            pass
+        if self._last_mouse_pos:
+            x, y = self._last_mouse_pos
+            parts.append(orion.mouse_position_text(x, y, self._zone_title(self.app.current or "")))
+        return "\n".join(parts)
+
+    def _bridge_worker(self, rec: dict, text: str, ctx: str, geo: str, files: list) -> None:
+        """Мост GitHub: отправить сообщение (снимки, вебхук) и встать в ожидание ответа."""
+        app = self.app
+        cur = app.current or ""
+        scr = app.screens.get(cur) if hasattr(app, "screens") else None
+        context = {"compartment": self._zone_title(cur),
+                   "tab": str(getattr(scr, "current_tab", "") or ""), "raw": ctx}
+        try:
+            sent = ship_chat.send(rec, text, context=context, geo=geo, shots=files,
+                                  pilot=str((app.pilot or {}).get("callsign") or ""),
+                                  app_version=__version__)
+            if sent["ok"]:
+                ship_chat.add_pending(rec["id"], sent)
+        except Exception as exc:  # noqa: BLE001
+            sent = {"ok": False, "error": "network", "detail": str(exc)}
+        self._queue.put(("bridge_sent", rec, sent))
 
     def _show_stop(self, on: bool) -> None:
         """«■ СТОП» появляется только пока агент работает — в покое не пугает пилота."""
@@ -1955,6 +2131,14 @@ class OrionScreen(tk.Frame):
     def _stop_work(self) -> None:
         """Квадратик «стоп»: оборвать агента на середине — пилот хочет уточнить задачу."""
         rec = self._rec()
+        if not self._busy and ship_chat.waiting(rec["id"]):
+            n = ship_chat.drop_pending(agent_id=rec["id"])
+            self.stop_btn.set_enabled(False)
+            self._show_stop(False)
+            orion.remember(rec["id"], "system", _t("Пилот перестал ждать ответа ({0})").format(n))
+            self._render_feed()
+            self._hint(_t("Ожидание ответа отменено"), MUTED)
+            return
         if orion.stop_run(rec["id"]):
             self._hint(_t("Останавливаю… сейчас можно дописать уточнение"), AMBER)
             self.entry.focus_set()
@@ -2008,9 +2192,12 @@ class OrionScreen(tk.Frame):
                 _t("Enter — отправить · Shift+Enter — новая строка · 📎 — картинка")))
 
     def _worker(self, rec: dict, text: str, profile: str, session: str, ctx: str,
-                second: bool) -> None:
+                second: bool, files=()) -> None:
+        def on_event(kind: str, val: str) -> None:
+            self._queue.put(("stream", kind, val))
         try:
-            res = orion.run_profile(rec, text, profile=profile, context=ctx, session=session)
+            res = orion.run_profile(rec, text, profile=profile, context=ctx, session=session,
+                                    files=files, on_event=on_event)
         except Exception as exc:  # noqa: BLE001
             res = orion.Result(error="spawn", detail=str(exc), profile=profile)
         self._queue.put(("answer", res, rec, second))
@@ -2126,10 +2313,11 @@ class OrionScreen(tk.Frame):
         if getattr(res, "spoke", False):     # агент озвучил себя сам — не повторяем
             return
         # голос агента: свой (tts_voice из «Подключить агента») или голос корабля
-        tts.speak(res.reply, role="dev", voice=str(rec.get("tts_voice") or ""))
+        tts.speak(chat_md.plain(res.reply) or res.reply, role="dev", voice=str(rec.get("tts_voice") or ""))
 
     def _on_answer(self, res, rec: dict, second: bool) -> None:
         self._busy = False
+        self._stream = ""
         self.send_btn.set_enabled(True)
         self.stop_btn.set_enabled(False)
         self._show_stop(False)
@@ -2192,14 +2380,69 @@ class OrionScreen(tk.Frame):
                                                         else _t("доклад")), GREEN)
         self._speak(res)
 
+    def _on_stream(self, kind: str, val: str) -> None:
+        """Поток OpenCode: строка состояния и ответ, растущий на глазах."""
+        if not self._busy:
+            return
+        if kind == "status":
+            self._hint(_t("Орион {0}").format(val), AMBER)
+        elif kind == "text" and val:
+            self._stream += val
+            self._hint(_t("Орион пишет ответ…"), AMBER)
+            self._render_feed()
+
+    def _on_bridge_sent(self, rec: dict, sent: dict) -> None:
+        self._busy = False
+        self.send_btn.set_enabled(True)
+        if not sent.get("ok"):
+            self.stop_btn.set_enabled(False)
+            self._show_stop(False)
+            note = self._error_text(orion.Result(error=sent.get("error") or "network",
+                                                 detail=sent.get("detail") or ""))
+            orion.remember(rec["id"], "system", note)
+            self._render_feed()
+            self._hint(note, RED)
+            return
+        self.stop_btn.set_enabled(True)       # ■ — перестать ждать ответа
+        self._show_stop(True)
+        if sent.get("webhook") not in ("", "off"):
+            orion.remember(rec["id"], "system", _t("Вебхук агента не принял сообщение ({0}) — "
+                                                   "оно ушло в обсуждение GitHub").format(sent["webhook"]))
+        self._bridge_watch.start()
+        self._bridge_watch.kick()
+        self._render_feed()
+        self._hint(_t("Сообщение отправлено — {0} печатает…").format(rec.get("name") or "Star Typing"), CYAN)
+
+    def _on_bridge(self, kind: str, agent_id: str, data: dict) -> None:
+        """Ответ через мост GitHub: в чат, в память, голосом агента."""
+        rec = orion.get(agent_id) or self._rec()
+        if kind == "reply":
+            orion.remember(agent_id, "orion", data.get("body") or "")
+            if agent_id == self._rec()["id"]:
+                self._speak(orion.Result(reply=chat_md.plain(data.get("body") or "")))
+                self._hint(_t("{0}: ответ получен").format(rec.get("name") or agent_id), GREEN)
+        elif kind == "expired":
+            orion.remember(agent_id, "system", _t("Ответа так и не пришло за 30 минут — "
+                                                  "проверьте обсуждение на GitHub"))
+        elif kind == "error":
+            self._hint(_t("Мост GitHub: ошибка опроса — {0}").format(data.get("detail", "")), RED)
+            return
+        if not ship_chat.waiting(self._rec()["id"]) and not self._busy:
+            self.stop_btn.set_enabled(False)
+            self._show_stop(False)
+        if self.current_tab == "chat":
+            self._render_feed()
+
     def _error_text(self, res) -> str:
         detail = f": {res.detail}" if res.detail else ""
         if res.error == "no_cli":
             return _t("OpenCode не найден: установите opencode и перезапустите корабль.")
         if res.error == "timeout":
-            return _t("Орион не ответил вовремя — попробуйте короче или повторите.")
+            return _t("Орион не ответил вовремя — попробуйте короче или повторите.") + detail
         if res.error == "spawn":
             return _t("Сбой запуска агента") + detail
+        if res.error == "provider":
+            return _t("Провайдер или модель агента вернули ошибку") + detail
         if res.error == "empty":
             return _t("Пустое сообщение.")
         if res.error == "no_key":
@@ -2622,20 +2865,20 @@ class OrionScreen(tk.Frame):
             self._last_hint_time = now
             rec = self._rec()
             mouse_ctx = orion.mouse_position_text(x, y, screen_name)
-        ctx = self._context()
-        # Места, которые пилот показал правой кнопкой мыши: агенту нужен адрес,
-        # а не «где-то в интерфейсе». Отдаём только новые пометки — прежние уже в истории.
-        mark_block = marks.context_block(getattr(self, "_marks_sent", 0))
-        if mark_block:
-            ctx = (ctx + "\n\n" + mark_block) if ctx else mark_block
-            self._marks_sent = marks.last_id()
-            prompt = (f"Пилот позвал мастера. Режим активного ока.\n"
-                      f"{mouse_ctx}\n"
-                      f"Элемент под курсором: {element or 'неизвестно'}\n"
-                      f"Проанализируй что пилот делает на корабле и дай подсказку.")
-            # Запускаем в отдельном потоке
-            threading.Thread(target=self._master_worker,
-                             args=(rec, prompt, ctx), daemon=True).start()
+            ctx = self._context()
+            # Места, которые пилот показал правой кнопкой мыши: агенту нужен адрес,
+            # а не «где-то в интерфейсе». Отдаём только новые пометки — прежние уже в истории.
+            mark_block = marks.context_block(getattr(self, "_marks_sent", 0))
+            if mark_block:
+                ctx = (ctx + "\n\n" + mark_block) if ctx else mark_block
+                self._marks_sent = marks.last_id()
+                prompt = (f"Пилот позвал мастера. Режим активного ока.\n"
+                          f"{mouse_ctx}\n"
+                          f"Элемент под курсором: {element or 'неизвестно'}\n"
+                          f"Проанализируй что пилот делает на корабле и дай подсказку.")
+                # Запускаем в отдельном потоке (как и прежде — только когда есть новые пометки)
+                threading.Thread(target=self._master_worker,
+                                 args=(rec, prompt, ctx), daemon=True).start()
 
     def _master_worker(self, rec: dict, prompt: str, ctx: str) -> None:
         """Фоновый анализ в режиме мастера."""
@@ -2787,6 +3030,16 @@ class OrionScreen(tk.Frame):
                     self._on_answer(ev[1], ev[2], ev[3])
                 elif ev[0] == "executor":
                     self._on_executor(ev[1], ev[2], ev[3])
+                elif ev[0] == "stream":
+                    self._on_stream(ev[1], ev[2])
+                elif ev[0] == "bridge_sent":
+                    self._on_bridge_sent(ev[1], ev[2])
+                elif ev[0] == "bridge":
+                    self._on_bridge(ev[1], ev[2], ev[3])
+                elif ev[0] == "md_image":
+                    self._web_images[ev[1]] = ev[2]
+                    if self.current_tab == "chat":
+                        self._render_feed()
         except queue.Empty:
             pass
         try:
