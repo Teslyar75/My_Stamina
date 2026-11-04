@@ -309,7 +309,16 @@ class VoiceCall:
 
     # --- заглушка ---
     def _voice(self) -> str:
-        return str((self.rec or {}).get("tts_voice") or "")
+        """Голос агента: свой или автоматический, отличный от голоса Ориона."""
+        own = str((self.rec or {}).get("tts_voice") or "")
+        if own or not self.rec:
+            return own
+        try:
+            from stamina import orion
+            from stamina.voice import agent_voice
+            return agent_voice.voice_for(self.rec, self._lang(), orion.get(agent_voice.ORION_ID))
+        except Exception:  # noqa: BLE001 — без списка голосов говорим голосом по умолчанию
+            return ""
 
     def _prepare_filler(self) -> None:
         """Пока пилот говорит — заранее отрисовать следующую фразу в WAV (в потоке)."""

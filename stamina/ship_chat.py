@@ -69,6 +69,12 @@ def token_for(record: dict) -> str:
 # ----------------------------------------------------------------- HTTP
 def _request(method: str, url: str, *, token: str = "", body=None, headers=None,
              timeout: float = 30.0) -> dict:
+    return _request_meta(method, url, token=token, body=body, headers=headers, timeout=timeout)[0]
+
+
+def _request_meta(method: str, url: str, *, token: str = "", body=None, headers=None,
+                  timeout: float = 30.0) -> tuple[dict, dict]:
+    """Как _request, но ещё и заголовки ответа (X-OAuth-Scopes и т. п.)."""
     data = None if body is None else json.dumps(body, ensure_ascii=False).encode("utf-8")
     h = {"User-Agent": "StarTyping", "Accept": "application/vnd.github+json"}
     if body is not None:
@@ -79,13 +85,14 @@ def _request(method: str, url: str, *, token: str = "", body=None, headers=None,
     req = urllib.request.Request(url, data=data, headers=h, method=method)
     with ac._opener()(req, timeout=timeout) as resp:
         raw = resp.read()
+        got = {str(k).lower(): str(v) for k, v in dict(getattr(resp, "headers", None) or {}).items()}
     if not raw:
-        return {}
+        return {}, got
     try:
         out = json.loads(raw.decode("utf-8", "replace"))
     except ValueError:
-        return {}
-    return out if isinstance(out, dict) else {"items": out}
+        return {}, got
+    return (out if isinstance(out, dict) else {"items": out}), got
 
 
 def gql(token: str, query: str, variables: dict) -> dict:
@@ -136,8 +143,60 @@ def discussion_info(record: dict, token: str) -> dict:
     raise ValueError("discussion_id")
 
 
-def check(record: dict, *, key: str = "") -> tuple[bool, str]:
-    """Проверить связь по-настоящему: токен работает и обсуждение существует."""
+# ----------------------------------------------------------------- права токена
+TOKEN_SETTINGS = "https://github.com/settings/personal-access-tokens"
+_PERM_RE = re.compile(r"not accessible|bad credentials|could not resolve|must have|forbidden|"
+                      r"repo not found|discussion not found|insufficient|scope", re.I)
+
+
+def is_permission_error(code: int | None, detail: str = "") -> bool:
+    """401/403/404 или «Resource not accessible by personal access token» в ответе GraphQL."""
+    return code in (401, 403, 404) or bool(_PERM_RE.search(str(detail or "")))
+
+
+def permission_hint(repo: str = "", need: str = "") -> str:
+    """Что включить у токена GitHub — по-человечески, со ссылкой на настройки."""
+    from stamina.i18n import t
+    lines = [t("Токену GitHub не хватает прав для моста."),
+             t("Откройте {url}, выберите токен и проверьте:").format(url=TOKEN_SETTINGS),
+             "• " + t("Repository access — выбран репозиторий {repo}").format(
+                 repo=repo or t("обсуждения")),
+             "• " + t("Discussions — Read and write (писать комментарии в обсуждение)"),
+             "• " + t("Contents — Read and write (класть снимки экрана в ветку ship-chat-media)")]
+    if need == "media":
+        lines.insert(1, t("Не прошла загрузка снимка экрана — скорее всего, нет Contents: Read and write."))
+    elif need == "comment":
+        lines.insert(1, t("Не прошёл комментарий — скорее всего, нет Discussions: Read and write."))
+    return "\n".join(lines)
+
+
+def write_access(repo: str, token: str) -> dict:
+    """Права на запись без побочных эффектов: только GET /repos/{repo}.
+
+    → {"comment": bool|None, "media": bool|None}; None — заранее узнать нельзя.
+    Классический токен присылает свои области в X-OAuth-Scopes — по ним ответ точный.
+    Детальный (fine-grained) токен свои права GitHub не сообщает; ``permissions`` репозитория —
+    это роль пользователя, а не токена: она может только запретить, но не разрешить.
+    """
+    info, headers = _request_meta("GET", f"{API}/repos/{repo}", token=token)
+    push = (info.get("permissions") or {}).get("push")
+    private = bool(info.get("private"))
+    out = {"comment": None, "media": None if push is not False else False}
+    scopes = headers.get("x-oauth-scopes")
+    if scopes is not None:
+        have = {x.strip() for x in scopes.split(",") if x.strip()}
+        ok = "repo" in have or ("public_repo" in have and not private)
+        out["comment"] = ok
+        out["media"] = ok and push is not False
+    return out
+
+
+def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
+    """Проверить связь по-настоящему: токен работает, обсуждение существует, писать можно.
+
+    → (True, …) — всё проверено; (None, …) — читать можно, запись заранее не проверить;
+    (False, …) — не работает. Ничего не пишет в GitHub.
+    """
     if not (record.get("discussion_id") or (record.get("bridge_repo") and record.get("discussion_number"))):
         return False, "config discussion"
     token = key or token_for(record)
@@ -151,8 +210,29 @@ def check(record: dict, *, key: str = "") -> tuple[bool, str]:
     except (urllib.error.URLError, OSError) as exc:
         return False, f"network {getattr(exc, 'reason', exc)}"
     except (ValueError, KeyError, TypeError) as exc:
+        if is_permission_error(None, str(exc)):
+            return False, f"{exc}\n" + permission_hint(str(record.get("bridge_repo") or ""))
         return False, str(exc)
-    return True, f"#{info.get('number')} «{info.get('title')}» · {info.get('login')}"
+    head = f"#{info.get('number')} «{info.get('title')}» · {info.get('login')}"
+    repo = str(info.get("repo") or "")
+    if not repo:
+        return None, head
+    try:
+        can = write_access(repo, token)
+    except urllib.error.HTTPError as exc:
+        return False, f"HTTP {exc.code}\n" + permission_hint(repo)
+    except (urllib.error.URLError, OSError) as exc:
+        return False, f"network {getattr(exc, 'reason', exc)}"
+    from stamina.i18n import t
+    if can["comment"] is False:
+        return False, head + "\n" + permission_hint(repo, "comment")
+    if can["media"] is False:
+        return None, head + "\n" + permission_hint(repo, "media")
+    if can["comment"] is None or can["media"] is None:
+        return None, head + "\n" + t("Чтение работает. Права детального токена на запись GitHub "
+                                      "заранее не сообщает — проверьте их в {url}: Discussions и "
+                                      "Contents — Read and write.").format(url=TOKEN_SETTINGS)
+    return True, head
 
 
 # ----------------------------------------------------------------- снимки
@@ -291,14 +371,18 @@ def send(record: dict, text: str, *, context: dict | None = None, geo: str = "",
     if not token:
         out["error"] = "no_key"
         return out
+    phase = "read"
+    repo = str(record.get("bridge_repo") or "")
     try:
         disc = discussion_info(record, token)
-        repo = disc.get("repo") or str(record.get("bridge_repo") or "")
+        repo = disc.get("repo") or repo
+        phase = "media"
         uploaded = upload_shots(repo, token, out["message_id"], shots) if repo else \
             [{"name": Path(p).name, "url": ""} for p in shots or ()]
         payload = build_payload(message_id=out["message_id"], text=text, context=context, geo=geo,
                                 screenshots=uploaded, discussion=disc, pilot=pilot,
                                 app_version=app_version, agent_id=str(record.get("id") or ""))
+        phase = "comment"
         posted = gql(token, POST_COMMENT, {"id": disc["node_id"], "body": comment_body(payload)})
         out["after"] = posted["addDiscussionComment"]["comment"]["createdAt"]
         out["node_id"] = disc["node_id"]
@@ -306,12 +390,16 @@ def send(record: dict, text: str, *, context: dict | None = None, geo: str = "",
         out["payload"] = payload
     except urllib.error.HTTPError as exc:
         out["error"], out["detail"] = ac._http_error_code(exc)
+        if is_permission_error(exc.code, out["detail"]):
+            out["error"], out["need"], out["repo"] = "bridge_perm", phase, repo
         return out
     except (urllib.error.URLError, OSError) as exc:
         out["error"], out["detail"] = "network", str(getattr(exc, "reason", exc))
         return out
     except (ValueError, KeyError, TypeError) as exc:
         out["error"], out["detail"] = "config", str(exc)
+        if is_permission_error(None, out["detail"]):
+            out["error"], out["need"], out["repo"] = "bridge_perm", phase, repo
         return out
     out["webhook"] = send_webhook(record, payload)
     out["ok"] = True
@@ -427,6 +515,87 @@ def waiting(agent_id: str = "") -> list[dict]:
     return [e for e in load_pending() if not agent_id or e["agent_id"] == agent_id]
 
 
+# ----------------------------------------------------------------- сообщения без запроса
+INBOX_FILE = "ship_chat_inbox.json"
+INBOX_EVERY = 15 * 60          # медленный фоновый опрос, секунд
+INBOX_BACKLOG = 7 * 24 * 3600  # при первом запуске — показать сообщения за последнюю неделю
+
+
+def inbox_path() -> Path:
+    from stamina import orion
+    return orion._root() / orion.HISTORY_DIR / INBOX_FILE
+
+
+def _inbox_load() -> dict:
+    from stamina import orion
+    data = orion._read_json(inbox_path(), {})
+    return data.get("agents", {}) if isinstance(data.get("agents"), dict) else {}
+
+
+def _inbox_save(agents: dict) -> None:
+    from stamina import orion
+    orion._write_json(inbox_path(), {"version": 1, "agents": agents})
+
+
+def inbox_mark_seen(agent_id: str, ids, after: str = "") -> None:
+    """Запомнить комментарии как показанные (ответы на запрос тоже — без дублей)."""
+    with _LOCK:
+        agents = _inbox_load()
+        st = agents.setdefault(agent_id, {"after": "", "seen": []})
+        st["seen"] = list(dict.fromkeys(list(st.get("seen") or []) + [str(i) for i in ids]))[-200:]
+        if after and after > str(st.get("after") or ""):
+            st["after"] = after
+        _inbox_save(agents)
+
+
+def _iso(ts: float) -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ts))
+
+
+def pick_unsolicited(nodes: list[dict], *, after: str, seen=()) -> list[dict]:
+    """Сообщения агента без запроса: с ``REPLY_MARK``, но без ``reply-to``; новее after."""
+    seen = set(seen or ())
+    out = []
+    for n in sorted(_flatten(nodes), key=lambda x: str(x.get("createdAt") or "")):
+        cid, body = str(n.get("id") or ""), str(n.get("body") or "")
+        if (not cid or cid in seen or str(n.get("createdAt") or "") <= after
+                or REPLY_MARK not in body or _REPLY_TO.search(body) or _MSG_RX.search(body)):
+            continue
+        out.append({"id": cid, "createdAt": n.get("createdAt"), "interim": False,
+                    "unsolicited": True, "body": clean_reply(body)})
+    return out
+
+
+def check_inbox(record: dict, *, now: float | None = None, token: str = "") -> list[dict]:
+    """Новые сообщения агента без запроса (например, еженедельные рекомендации).
+
+    Без токена — пусто и без сети. Ошибки сети пробрасываются: вызывающий молча повторит позже.
+    Состояние (последнее время + id показанных) хранится на диске — без дублей между запусками.
+    """
+    aid = str(record.get("id") or "")
+    token = token or token_for(record)
+    if not aid or not token:
+        return []
+    if not (record.get("discussion_id") or (record.get("bridge_repo") and record.get("discussion_number"))):
+        return []
+    st = _inbox_load().get(aid) or {}
+    after = str(st.get("after") or "") or _iso((now or time.time()) - INBOX_BACKLOG)
+    seen = set(st.get("seen") or ())
+    for e in load_pending():                       # уже разобранные ответы на запросы
+        seen.update(e.get("seen") or ())
+    node = str(record.get("discussion_id") or "").strip()
+    if not node or record.get("bridge_repo"):
+        node = discussion_info(record, token)["node_id"]
+    data = gql(token, POLL_COMMENTS, {"id": node})
+    nodes = ((data.get("node") or {}).get("comments") or {}).get("nodes") or []
+    found = pick_unsolicited(nodes, after=after, seen=seen)
+    if found:
+        inbox_mark_seen(aid, [f["id"] for f in found], str(found[-1]["createdAt"] or ""))
+    elif not st.get("after"):
+        inbox_mark_seen(aid, [], after)            # зафиксировать отсчёт после первого опроса
+    return found
+
+
 class Watcher:
     """Фоновый опрос всех ожидающих сообщений. События — в ``emit(kind, agent_id, data)``.
 
@@ -444,6 +613,7 @@ class Watcher:
         self._errors: dict[str, int] = {}
         self._thread: threading.Thread | None = None
         self._sleep = sleep
+        self._inbox_due = 0.0          # 0 — проверить сообщения без запроса при первом проходе
 
     def start(self) -> None:
         if self._thread and self._thread.is_alive():
@@ -459,6 +629,28 @@ class Watcher:
     def kick(self) -> None:
         self._wake.set()
 
+    def check_inbox_soon(self) -> None:
+        """Открыли чат Ориона — проверить сообщения без запроса, не дожидаясь 15 минут."""
+        self._inbox_due = 0.0
+        self._wake.set()
+
+    def _agents(self) -> list[dict]:
+        from stamina import orion
+        return [a for a in orion.agents() if a.get("kind") == "github_bridge"]
+
+    def _inbox_tick(self, now: float) -> float:
+        if now < self._inbox_due:
+            return self._inbox_due - now
+        self._inbox_due = now + INBOX_EVERY
+        for rec in self._agents():
+            try:
+                found = check_inbox(rec, now=now)
+            except Exception:  # noqa: BLE001 — нет сети: тихо повторим в следующий раз
+                continue
+            for f in found:
+                self.emit("reply", str(rec.get("id")), f)
+        return INBOX_EVERY
+
     def _loop(self) -> None:
         while not self._stop.is_set():
             delay = self.tick()
@@ -472,7 +664,7 @@ class Watcher:
         """Один проход опроса. → через сколько секунд снова."""
         now = self.now()
         items = load_pending()
-        soonest = 30.0
+        soonest = 30.0 if items else float(INBOX_EVERY)
         for e in items:
             mid = e["message_id"]
             age = now - float(e.get("started") or now)
@@ -498,6 +690,7 @@ class Watcher:
                 found = []
             if found:
                 _mark_seen(mid, [f["id"] for f in found])
+                inbox_mark_seen(e["agent_id"], [f["id"] for f in found])
             final = False
             for f in found:
                 self.emit("reply", e["agent_id"], dict(f, message_id=mid))
@@ -510,6 +703,8 @@ class Watcher:
             wait = next_delay(age)
             self._next[mid] = now + wait
             soonest = min(soonest, wait)
+        # после ответов на запросы: их id уже помечены, сообщения без запроса не задвоятся
+        soonest = min(soonest, self._inbox_tick(now))
         return max(1.0, soonest)
 
 

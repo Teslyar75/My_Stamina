@@ -131,9 +131,11 @@ def test_discussions_disabled_and_check(monkeypatch, store):
     monkeypatch.setattr(ac, "_opener", lambda: FakeGitHub({("POST", "hasDiscussionsEnabled"): off}))
     ok, msg = ac.check(REC, key="t")
     assert not ok and "disabled" in msg
-    monkeypatch.setattr(ac, "_opener", lambda: FakeGitHub({("POST", "hasDiscussionsEnabled"): DISC}))
+    monkeypatch.setattr(ac, "_opener", lambda: FakeGitHub({("POST", "hasDiscussionsEnabled"): DISC,
+                                                            ("GET", "/repos/o/r"): {"permissions": {"push": True}}}))
     ok, msg = ac.check(REC, key="t")
-    assert ok and "#5" in msg and "pilot" in msg
+    # права детального токена на запись заранее не узнать — не «зелёный», но и не ошибка
+    assert ok is None and "#5" in msg and "pilot" in msg
     assert ac.check({"kind": "github_bridge"}, key="t") == (False, "config discussion")
     assert ac.check(REC)[1] == "no_key"
     err = urllib.error.HTTPError("u", 401, "x", {}, io.BytesIO(b'{"message":"Bad credentials"}'))
@@ -187,6 +189,7 @@ def test_watcher_interim_then_final_and_restart(monkeypatch):
     ])
     monkeypatch.setattr(sc, "token_for", lambda rec: "t")
     monkeypatch.setattr(sc, "gql", lambda tok, q, v: {"node": {"comments": {"nodes": next(replies)}}})
+    monkeypatch.setattr(sc, "check_inbox", lambda rec, now=None: [])   # здесь — только ожидание ответа
     events = []
     clock = [1000.0]
     w = sc.Watcher(lambda kind, aid, data: events.append((kind, data.get("body"))), now=lambda: clock[0])

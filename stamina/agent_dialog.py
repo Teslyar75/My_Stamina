@@ -17,6 +17,7 @@ from stamina import orion, theme
 from stamina.hud import HudButton
 from stamina.i18n import t as _t
 from stamina.pilot_screens import Modal
+from stamina.voice import agent_voice, tts
 from stamina.theme import AMBER, BG2, CYAN, GREEN, MUTED, PANEL, RED, TEXT, px
 
 KIND_TITLES = (("openai_compat", "API (OpenAI-совместимый)"), ("opencode", "OpenCode CLI"),
@@ -80,14 +81,24 @@ class ConnectAgentDialog(Modal):
                          ("webhook_header", "ЗАГОЛОВОК КЛЮЧА (ПО УМОЛЧАНИЮ Authorization)"),
                          ("webhook_scheme", "СХЕМА КЛЮЧА (ПО УМОЛЧАНИЮ Bearer, «-» — БЕЗ СХЕМЫ)"),
                          ("timeout", "ЖДАТЬ ОТВЕТА, СЕКУНД (ПО УМОЛЧАНИЮ 900)"),
-                         ("tts_voice", "ГОЛОС (ИМЯ ГОЛОСА WINDOWS)")):
+                         ("tts_voice", "ГОЛОС АГЕНТА (ПУСТО — СВОЙ, НЕ КАК У ОРИОНА)")):
             row = tk.Frame(self.body, bg=PANEL)
             _lbl(row, _t(title), fg=MUTED, size=8).pack(fill=tk.X)
             var = {"key": self.key_var, "hook_key": self.hook_key_var}.get(k) or self.vars[k]
             e = tk.Entry(row, textvariable=var, bg=BG2, fg=TEXT, insertbackground=TEXT,
                          relief="flat", font=theme.font(10), width=48,
                          show="•" if k in ("key", "hook_key") else "")
-            e.pack(fill=tk.X, ipady=px(3))
+            if k == "tts_voice":
+                vrow = tk.Frame(row, bg=PANEL)
+                vrow.pack(fill=tk.X)
+                e = tk.Entry(vrow, textvariable=var, bg=BG2, fg=TEXT, insertbackground=TEXT,
+                             relief="flat", font=theme.font(10), width=36)
+                e.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=px(3))
+                self.voice_btn = HudButton(vrow, "▾", self.voice_menu, height=26, font_size=9)
+                self.voice_btn.pack(side=tk.LEFT, padx=(px(4), 0))
+                HudButton(vrow, _t("ПРОСЛУШАТЬ"), self.preview_voice, height=26, font_size=8,
+                          color=CYAN).pack(side=tk.LEFT, padx=(px(4), 0))
+            e.pack(fill=tk.X, ipady=px(3)) if k != "tts_voice" else None
             self.entries[k] = e
             self.rows[k] = row
         if rec.get("cred_ref") and ac.read_key(str(rec["cred_ref"])):
@@ -111,7 +122,48 @@ class ConnectAgentDialog(Modal):
         self.bind("<F5>", lambda _e: self.test())
         self.bind("<Control-Return>", lambda _e: self.save())
         self.set_kind(self.kind)
+        # список голосов на Windows — запуск PowerShell: собираем заранее, не держа окно
+        threading.Thread(target=tts.voices, daemon=True).start()
         self.after(50, lambda: self.entries["name"].focus_set())
+
+    # ------------------------------------------------------------ голос агента
+    def voice_menu(self) -> None:
+        """Выпадающий список установленных голосов (поле остаётся и для ручного ввода)."""
+        menu = tk.Menu(self, tearoff=0, bg=BG2, fg=TEXT, activebackground=CYAN,
+                       activeforeground=BG2, font=theme.font(9))
+        menu.add_command(label=_t("Автоматически (не как у Ориона)"),
+                         command=lambda: self.vars["tts_voice"].set(""))
+        if not tts.voices_ready():
+            menu.add_command(label=_t("Список голосов загружается…"), state=tk.DISABLED)
+        else:
+            names = agent_voice.choices()
+            if names:
+                menu.add_separator()
+            for name in names:
+                menu.add_command(label=name, command=lambda n=name: self.vars["tts_voice"].set(n))
+            if not names:
+                menu.add_command(label=_t("Голоса системы не найдены — впишите имя вручную"),
+                                 state=tk.DISABLED)
+        try:
+            menu.tk_popup(self.voice_btn.winfo_rootx(),
+                          self.voice_btn.winfo_rooty() + self.voice_btn.winfo_height())
+        finally:
+            menu.grab_release()
+
+    def preview_voice(self) -> None:
+        """«Прослушать»: короткая фраза тем голосом, каким агент будет отвечать."""
+        if not tts.available():
+            self.msg.configure(text=_t("Озвучка недоступна: нет голосового движка"), fg=AMBER)
+            return
+        probe = {"id": self.rid or "new-agent", "tts_voice": self.vars["tts_voice"].get().strip()}
+        if not tts.voices_ready() and not probe["tts_voice"]:
+            self.msg.configure(text=_t("Список голосов загружается…"), fg=MUTED)
+            return
+        voice = agent_voice.voice_for(probe, "ru", orion.get(agent_voice.ORION_ID))
+        name = self.vars["name"].get().strip() or _t("агент")
+        tts.speak(_t("Здравствуйте, пилот. Говорит {name}.").format(name=name), voice=voice,
+                  lang="ru", role="dev")
+        self.msg.configure(text=_t("Голос: {voice}").format(voice=voice or _t("по умолчанию")), fg=MUTED)
 
     # ------------------------------------------------------------ вид подключения
     def set_kind(self, kind: str) -> None:
@@ -189,6 +241,9 @@ class ConnectAgentDialog(Modal):
                 self.after(100, self._poll)
             return
         self.test_btn.set_enabled(True)
+        if ok is None:                 # читать можно, запись заранее не проверить — не «зелёный»
+            self.msg.configure(text=_t("Связь есть, запись не подтверждена: {0}").format(info), fg=AMBER)
+            return
         self.msg.configure(text=(_t("Связь есть: {0}") if ok else _t("Нет связи: {0}")).format(info),
                            fg=GREEN if ok else RED)
 

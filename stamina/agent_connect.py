@@ -284,7 +284,7 @@ def run_github_bridge(record: dict, prompt: str, *, token: str = "", timeout: fl
 
 
 # ----------------------------------------------------------------- проверка связи
-def check(record: dict, *, key: str = "") -> tuple[bool, str]:
+def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
     """«Проверить связь»: короткий запрос. key — ещё не сохранённый ключ из поля."""
     kind = record.get("kind") or "opencode"
     if kind == "opencode":

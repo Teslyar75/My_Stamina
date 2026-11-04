@@ -41,7 +41,8 @@ from stamina.prompt_box import PromptBox, hud_colors
 from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import (AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT,
                            blend, px)
-from stamina.voice import autosend, stt, tts
+from stamina.voice import agent_voice, autosend, stt, tts
+from stamina.voice.engine import guess_lang
 from stamina.voice.mic import MicControl
 
 
@@ -269,7 +270,9 @@ class OrionScreen(tk.Frame):
         self.refresh()
         self._pump()
         try:
-            if ship_chat.waiting():           # ожидание ответа пережило перезапуск корабля
+            # ожидание ответа пережило перезапуск, а сообщения без запроса (рекомендации агента)
+            # проверяются при старте и раз в 15 минут — опрос лёгкий и без токена в сеть не ходит
+            if ship_chat.waiting() or any(a.get("kind") == "github_bridge" for a in orion.agents()):
                 self._bridge_watch.start()
         except Exception:  # noqa: BLE001
             pass
@@ -698,6 +701,10 @@ class OrionScreen(tk.Frame):
         self.text.tag_configure("orion", foreground=GREEN, font=theme.font(10, True))
         self.text.tag_configure("system", foreground=AMBER, font=theme.font(9, True))
         self.text.tag_configure("time", foreground=MUTED, font=theme.font(8))
+        self.text.tag_configure("replay", foreground=CYAN, font=theme.font(9))
+        self.text.tag_bind("replay", "<Button-1>", self._on_replay_click)
+        self.text.tag_bind("replay", "<Enter>", lambda _e: self.text.configure(cursor="hand2"))
+        self.text.tag_bind("replay", "<Leave>", lambda _e: self.text.configure(cursor=""))
         self.text.tag_configure("body", foreground=TEXT, font=theme.font(10))
         self.text.tag_configure("hint", foreground=MUTED, font=theme.font(10))
         self.text.tag_configure("separator", foreground=LINE, font=theme.font(8))
@@ -1337,6 +1344,10 @@ class OrionScreen(tk.Frame):
             key = self.tabs and next(iter(self.tabs))
         self.current_tab = key
         page, btn = self.tabs[key]
+        if key == "chat" and getattr(self, "_bridge_watch", None) is not None:
+            if any(a.get("kind") == "github_bridge" for a in orion.agents()):
+                self._bridge_watch.start()
+                self._bridge_watch.check_inbox_soon()
         # в ячейке только текущая вкладка: высота отсека = её высота, а не самой высокой
         for k, (p, _b) in self.tabs.items():
             if k != key:
@@ -1420,7 +1431,10 @@ class OrionScreen(tk.Frame):
             # Визуальное разделение реплик
             self.text.insert(tk.END, "─" * 40 + "\n", "separator")
             self.text.insert(tk.END, prefix + name, tag)
-            self.text.insert(tk.END, f"  {when}\n", "time")
+            self.text.insert(tk.END, f"  {when}", "time")
+            if role == "orion" and m.get("text"):
+                self.text.insert(tk.END, "  🔊", ("replay", f"rp{len(self._msg_texts)}"))
+            self.text.insert(tk.END, "\n", "time")
             mtag = f"msg{len(self._msg_texts)}"
             self._msg_texts.append(str(m.get("text", "")))
             if role == "orion":
@@ -2367,16 +2381,39 @@ class OrionScreen(tk.Frame):
         self.refresh()
         self._hint(_t("Теперь на связи: {0}").format(self._rec().get("name") or ""), CYAN)
 
-    def _speak(self, res) -> None:
+    def _speak(self, res, rec: dict | None = None) -> None:
         if not self._answer_voice or not tts.available():
             return
-        rec = self._rec()
+        rec = rec or self._rec()
         if rec.get("voice") == "off":
             return
         if getattr(res, "spoke", False):     # агент озвучил себя сам — не повторяем
             return
-        # голос агента: свой (tts_voice из «Подключить агента») или голос корабля
-        tts.speak(chat_md.plain(res.reply) or res.reply, role="dev", voice=str(rec.get("tts_voice") or ""))
+        self._say_as(rec, chat_md.plain(res.reply) or res.reply)
+
+    def _say_as(self, rec: dict, text: str) -> bool:
+        """Сказать голосом агента rec: свой из «Подключить агента» или свой автоматический."""
+        lang = guess_lang(text) if text else "ru"
+        voice = agent_voice.voice_for(rec, lang, orion.get(agent_voice.ORION_ID))
+        return tts.speak(text, role="dev", voice=voice, lang=lang)
+
+    def _on_replay_click(self, event) -> str:
+        for tag in self.text.tag_names(f"@{event.x},{event.y}"):
+            if tag.startswith("rp") and tag[2:].isdigit():
+                self.replay(int(tag[2:]))
+                break
+        return "break"
+
+    def replay(self, index: int) -> None:
+        """🔊 у реплики агента — озвучить её ещё раз голосом этого агента."""
+        if not (0 <= index < len(self._msg_texts)):
+            return
+        if not tts.available():
+            self._hint(_t("Озвучка недоступна: нет голосового движка"), AMBER)
+            return
+        text = chat_md.plain(self._msg_texts[index]) or self._msg_texts[index]
+        if not self._say_as(self._rec(), text):
+            self._hint(_t("Не удалось озвучить реплику"), AMBER)
 
     def _on_answer(self, res, rec: dict, second: bool) -> None:
         self._busy = False
@@ -2460,8 +2497,16 @@ class OrionScreen(tk.Frame):
         if not sent.get("ok"):
             self.stop_btn.set_enabled(False)
             self._show_stop(False)
-            note = self._error_text(orion.Result(error=sent.get("error") or "network",
-                                                 detail=sent.get("detail") or ""))
+            err = sent.get("error") or "network"
+            detail = f" ({sent['detail']})" if sent.get("detail") else ""
+            if err == "bridge_perm":
+                note = ship_chat.permission_hint(sent.get("repo") or str(rec.get("bridge_repo") or ""),
+                                                 sent.get("need") or "") + detail
+            elif err == "config":
+                note = _t("Мост GitHub настроен не до конца: проверьте репозиторий и номер "
+                          "обсуждения в «Подключить агента»") + detail
+            else:
+                note = self._error_text(orion.Result(error=err, detail=sent.get("detail") or ""))
             orion.remember(rec["id"], "system", note)
             self._render_feed()
             self._hint(note, RED)
@@ -2479,10 +2524,14 @@ class OrionScreen(tk.Frame):
     def _on_bridge(self, kind: str, agent_id: str, data: dict) -> None:
         """Ответ через мост GitHub: в чат, в память, голосом агента."""
         rec = orion.get(agent_id) or self._rec()
-        if kind == "reply":
+        if kind == "reply" and data.get("unsolicited"):
+            orion.remember(agent_id, "orion", data.get("body") or "")
+            self._speak(orion.Result(reply=chat_md.plain(data.get("body") or "")), rec)
+            self._hint(_t("{0}: новое сообщение").format(rec.get("name") or agent_id), CYAN)
+        elif kind == "reply":
             orion.remember(agent_id, "orion", data.get("body") or "")
             if agent_id == self._rec()["id"]:
-                self._speak(orion.Result(reply=chat_md.plain(data.get("body") or "")))
+                self._speak(orion.Result(reply=chat_md.plain(data.get("body") or "")), rec)
                 self._hint(_t("{0}: ответ получен").format(rec.get("name") or agent_id), GREEN)
         elif kind == "expired":
             orion.remember(agent_id, "system", _t("Ответа так и не пришло за 30 минут — "

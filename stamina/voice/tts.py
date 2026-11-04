@@ -71,12 +71,14 @@ def _player() -> str:
     return ""
 
 
-def _linux_cmd(tool: str, phrase: str, *, lang: str, rate: int, volume: int, out: str = "") -> list[str]:
+def _linux_cmd(tool: str, phrase: str, *, lang: str, rate: int, volume: int, out: str = "",
+               voice: str = "") -> list[str]:
     code = (lang or "ru").split("-")[0].lower()
     if Path(tool).name == "spd-say":
-        return [tool, "-w", "-l", code, "-r", str(max(-100, min(100, rate * 10))),
-                "-i", str(max(-100, min(100, volume * 2 - 100))), phrase]
-    cmd = [tool, "-v", code, "-s", str(max(80, 170 + rate * 15)), "-a", str(max(0, min(200, volume * 2)))]
+        cmd = [tool, "-w", "-l", code, "-r", str(max(-100, min(100, rate * 10))),
+               "-i", str(max(-100, min(100, volume * 2 - 100)))]
+        return cmd + (["-y", voice] if voice else []) + [phrase]
+    cmd = [tool, "-v", voice or code, "-s", str(max(80, 170 + rate * 15)), "-a", str(max(0, min(200, volume * 2)))]
     if out:
         cmd += ["-w", out]
     return cmd + [phrase]
@@ -130,9 +132,11 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
     stop()
     tool = linux_tool()
     if tool:
+        if voice and voice not in {r[1] for r in voice_rows()}:
+            voice = ""                   # имя голоса Windows Linux-синтезатору неизвестно — голос по языку
         try:
             with _lock:
-                _proc = subprocess.Popen(_linux_cmd(tool, phrase, lang=lang, rate=rate, volume=volume),
+                _proc = subprocess.Popen(_linux_cmd(tool, phrase, lang=lang, rate=rate, volume=volume, voice=voice),
                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError:
             return False
@@ -201,7 +205,8 @@ def render(text: str, *, voice: str = "", lang: str = "", role: str = "", timeou
         if Path(tool).name == "spd-say":
             return None                          # spd-say в файл не пишет — фраза пойдёт живой речью
         try:
-            subprocess.run(_linux_cmd(tool, phrase, lang=lang, rate=0, volume=100, out=str(out)),
+            subprocess.run(_linux_cmd(tool, phrase, lang=lang, rate=0, volume=100, out=str(out),
+                                      voice=voice if voice in {r[1] for r in voice_rows()} else ""),
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout)
         except (OSError, subprocess.SubprocessError):
             return None
@@ -267,9 +272,30 @@ def speaking() -> bool:
         return _proc is not None and _proc.poll() is None
 
 
-def voices() -> list[str]:
-    """Голоса системы: «хранилище|имя|язык|пол» — OneCore первым, затем System.Speech."""
-    if sys.platform != "win32" or not available():
+_voices_cache: list[str] | None = None
+
+
+def voices(refresh: bool = False) -> list[str]:
+    """Голоса системы: «хранилище|имя|язык|пол» — OneCore первым, затем System.Speech.
+
+    На Linux — голоса espeak-ng / espeak или синтезатора speech-dispatcher. Список кэшируется:
+    на Windows он стоит запуска PowerShell.
+    """
+    global _voices_cache
+    if _voices_cache is None or refresh:
+        _voices_cache = _list_voices()
+    return list(_voices_cache)
+
+
+def voices_ready() -> bool:
+    """Список голосов уже собран (вызов voices() не будет ждать PowerShell)."""
+    return _voices_cache is not None
+
+
+def _list_voices() -> list[str]:
+    if sys.platform != "win32":
+        return _linux_voices()
+    if not available():
         return []
     try:
         out = subprocess.run([powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass",
@@ -280,6 +306,27 @@ def voices() -> list[str]:
         return []
     text = out.stdout.decode("utf-8", "replace")
     return [line.strip() for line in text.splitlines() if "|" in line]
+
+
+def _linux_voices() -> list[str]:
+    tool = linux_tool()
+    if not tool:
+        return []
+    spd = Path(tool).name == "spd-say"
+    try:
+        out = subprocess.run([tool, "-L"] if spd else [tool, "--voices"], capture_output=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return []
+    rows = []
+    lines = out.stdout.decode("utf-8", "replace").splitlines()[1:]
+    for line in lines:
+        parts = line.split()
+        if spd and len(parts) >= 2:                       # NAME LANGUAGE VARIANT
+            rows.append(f"spd|{parts[0]}|{parts[1]}|")
+        elif not spd and len(parts) >= 5:                 # Pty Language Age/Gender VoiceName File
+            gender = {"M": "Male", "F": "Female"}.get(parts[2].split("/")[-1], "")
+            rows.append(f"espeak|{parts[3]}|{parts[1]}|{gender}")
+    return rows
 
 
 def voice_rows() -> list[tuple[str, str, str, str]]:
