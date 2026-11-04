@@ -688,7 +688,8 @@ class OrionScreenTest(unittest.TestCase):
         pilots.reset_root()
 
     def _screen(self):
-        scr = self.app.screens.get("orion")
+        # отсеки собираются лениво (after(120) или show) — собираем по требованию, не по таймеру
+        scr = self.app._ensure_screen("orion")
         if scr is None:
             self.skipTest("раздел ОРИОН не загрузился")
         scr._answer_voice = False          # в тестах Орион молчит
