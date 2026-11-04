@@ -2,12 +2,14 @@
 
 Windows: Simple MAPI (MAPISendMailW) с флагом MAPI_DIALOG — открывается окно
 нового письма в Outlook/Thunderbird с уже приложенным файлом, отправляет сам
-пилот. Нет MAPI-клиента — mailto: (тема и текст) и папка с файлом, чтобы
-перетащить его в письмо. Ключей, паролей и серверов здесь нет.
+пилот. Linux/BSD: xdg-email --attach (Thunderbird, Evolution, KMail
+прикладывают файл сами). Нет ни того ни другого — mailto: (тема и текст)
+и папка с файлом, чтобы перетащить его в письмо. Ключей, паролей и серверов здесь нет.
 """
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 import urllib.parse
@@ -64,8 +66,23 @@ def reveal(path: Path) -> None:
         pass
 
 
+def xdg_email_send(path: Path, subject: str, body: str) -> bool:
+    """Linux: новое письмо с вложением через xdg-email (xdg-utils). False — нет утилиты
+    или она не смогла открыть почтовую программу."""
+    exe = shutil.which("xdg-email")
+    if not exe:
+        return False
+    try:
+        rc = subprocess.run([exe, "--utf8", "--subject", subject, "--body", body, "--attach", str(path)],
+                            timeout=20, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return rc == 0
+
+
 def send_file(path: Path, subject: str, body: str = "") -> str:
-    """Открыть письмо с вложением. Возвращает "mapi", "cancel" или "mailto"."""
+    """Открыть письмо с вложением. Возвращает "mapi", "xdg", "cancel" или "mailto"
+    ("mailto" — письмо без вложения, файл показан в папке)."""
     path = Path(path).resolve()
     if sys.platform.startswith("win") and not os.environ.get("STAR_TYPING_NO_MAPI"):
         try:
@@ -76,6 +93,8 @@ def send_file(path: Path, subject: str, body: str = "") -> str:
                 return "cancel"
         except Exception:  # noqa: BLE001 — нет mapi32 или клиента
             pass
+    elif not sys.platform.startswith(("win", "darwin")) and xdg_email_send(path, subject, body):
+        return "xdg"
     webbrowser.open(mailto_url(subject, body))
     reveal(path)
     return "mailto"

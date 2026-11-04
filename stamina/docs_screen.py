@@ -18,13 +18,16 @@ from pathlib import Path
 
 from stamina.english.ui import Flow
 from stamina import compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
+from stamina.docs_dialogs import confirm
+from stamina.docs_preview import DocPreview
+from stamina.docs_undo import DocUndo
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
 from stamina.voice.mic import MicControl
 
 AUTOSAVE_MS = 1200
-IMG_WIDTH = 560          # ширина вставленного снимка по умолчанию, px
+IMG_WIDTH = 560          # ширина вставленного снимка по умолчанию, логические px (96 dpi)
 SIZES = (25, 50, 75, 100)
 
 
@@ -177,7 +180,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         tsb = make_vscroll(wrap)
         tsb.pack(side=tk.RIGHT, fill=tk.Y)
         self.text = tk.Text(wrap, wrap=tk.WORD, bg=theme.BG2, fg=TEXT, insertbackground=CYAN,
-                            relief=tk.FLAT, font=docs_format.doc_font(12), undo=True, maxundo=-1, autoseparators=True,
+                            relief=tk.FLAT, font=docs_format.doc_font(12), undo=False,
                             padx=px(30), pady=px(18), highlightthickness=0, yscrollcommand=tsb.set,
                             spacing1=px(3), spacing2=px(2), spacing3=px(5))
         self.text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -187,6 +190,10 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.text.bind("<Button-3>", self._image_menu)
         self.text.bind("<Double-Button-1>", self._open_image_at)
         self.setup_md_tags()
+        # своя история правок: Tk не отменяет вставку/удаление картинок (stamina/docs_undo.py)
+        self.undo = DocUndo(self.text, image_width=lambda n: self._widths.get(self._img_name(n)),
+                            restore_image=lambda i, n, w: self._put_image(self._img_name(n), int(w or 0), i),
+                            set_width=self._set_width)
         # подсказка в пустом документе (исчезает с первой буквой)
         self.text_hint = tk.Label(self.text, text=_t("Начните писать здесь. **жирный**, *курсив*, # заголовок, - список — оформление видно сразу.\nСнимок из буфера — Ctrl+V, голос — F9, справка по кнопкам — «?»."),
                                   bg=theme.BG2, fg=MUTED, font=docs_format.doc_font(11), justify="left",
@@ -197,6 +204,8 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         self.text.tag_configure("speak", background="#1f3b4d")
         self.text.tag_lower("speak")
         self.after(160, self._tick_mic)
+        docs.cleanup_temp()       # прошлый просмотр/письмо — временные файлы не копятся
+        self.bind("<Destroy>", lambda e: e.widget is self and docs.cleanup_temp(), add="+")
         self.refresh()
         self._show_doc(None)
 
@@ -247,6 +256,10 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
     # -- список ------------------------------------------------------------------
     def refresh(self) -> None:
         self._items = docs.list_docs()
+        self._render_list()
+
+    def _render_list(self) -> None:
+        top = self.listbox.yview()[0]
         self.listbox.delete(0, tk.END)
         cur = self.doc.path if self.doc else None
         for i, it in enumerate(self._items):
@@ -257,10 +270,27 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
             self.listbox.itemconfig(tk.END, fg=MUTED, selectforeground=MUTED)
             if cur and Path(it["path"]) == Path(cur):
                 self.listbox.selection_set(2 * i, 2 * i + 1)
+        self.listbox.yview_moveto(top)
         if self._items:
             self.empty_hint.place_forget()
         else:
             self.empty_hint.place(relx=0.04, rely=0.08)
+
+    def _sync_list(self) -> None:
+        """После автосохранения: обновить строку текущего документа на месте, без пересортировки
+        (иначе список «прыгал» под рукой). Новый документ встаёт первым. Полная сортировка —
+        при входе в отсек, новом и открытом документе (refresh)."""
+        if not (self.doc and self.doc.path):
+            return
+        cur = Path(self.doc.path)
+        item = docs.peek(cur)
+        for k, it in enumerate(self._items):
+            if Path(it["path"]) == cur:
+                self._items[k] = item
+                break
+        else:
+            self._items.insert(0, item)
+        self._render_list()
 
     def _on_pick(self, _e=None) -> None:
         sel = self.listbox.curselection()
@@ -334,8 +364,9 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
     def _remove(self) -> None:
         if not (self.doc and self.doc.path):
             return
-        from tkinter import messagebox
-        if not messagebox.askyesno(_t("ДОКУМЕНТЫ"), _t("Убрать документ в корзину (папка .trash)?"), parent=self):
+        if not confirm(self, _t("Убрать документ"),
+                       _t("Убрать «{0}» в корзину? Вернуть можно из КОРЗИНЫ.").format(self.doc.display_title() or _t("Без названия")),
+                       _t("УБРАТЬ"), danger=True):
             return
         self._cancel_save()
         docs.remove_to_trash(self.doc.path)
@@ -372,15 +403,27 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
             self.doc = docs.Document()
         return self.doc
 
-    def _photo(self, name: str, width: int):
+    @staticmethod
+    def _img_name(value: str) -> str:
+        """Имя картинки в тексте без суффикса Tk «#2» (одинаковые имена)."""
+        return re.sub(r"#\d+$", "", str(value))
+
+    def _photo(self, name: str, width: int, fast: bool = False):
+        """Картинка для экрана; width — логическая ширина (0 — как есть)."""
         try:
             from PIL import Image, ImageTk
         except Exception:  # noqa: BLE001
             return None
         img = Image.open(io.BytesIO(self.doc.images[name]))
-        if width and width < img.width:
-            img = img.resize((width, max(1, round(img.height * width / img.width))), Image.LANCZOS)
+        shown = px(width) if width else img.width
+        if shown != img.width and shown > 0:
+            img = img.resize((shown, max(1, round(img.height * shown / img.width))),
+                             Image.BILINEAR if fast else Image.LANCZOS)
         return ImageTk.PhotoImage(img, master=self)
+
+    def _natural_width(self, img_width: int) -> int:
+        """Логическая ширина, при которой картинка на экране — в свои пиксели."""
+        return max(1, round(img_width / max(docs.ui_scale(), 0.01)))
 
     def _put_image(self, name: str, width: int, index) -> None:
         photo = self._photo(name, width)
@@ -395,8 +438,10 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         """PIL-картинка в позицию курсора (снимок, буфер, файл)."""
         doc = self._ensure_doc()
         name = doc.add_image(docs.image_bytes(img))
-        self._put_image(name, min(img.width, px(IMG_WIDTH)), tk.INSERT)
+        self.text.edit_separator()
+        self._put_image(name, min(self._natural_width(img.width), IMG_WIDTH), tk.INSERT)
         self.text.insert(tk.INSERT, "\n")
+        self.text.edit_separator()
         self._changed()
 
     def paste_shot(self) -> None:
@@ -584,20 +629,38 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         m.tk_popup(e.x_root, e.y_root)
         return "break"
 
+    MIN_IMG_W = 40      # логические px
+
     def _resize(self, name: str, pct: int) -> None:
+        """Размер в % от натуральной ширины — один шаг Ctrl+Z."""
         try:
             from PIL import Image
             full = Image.open(io.BytesIO(self.doc.images[name])).width
         except Exception:  # noqa: BLE001
             return
-        width = max(px(40), round(full * pct / 100))
-        photo = self._photo(name, width)
+        width = max(self.MIN_IMG_W, round(self._natural_width(full) * pct / 100))
+        self.resize_image(name, width)
+
+    def resize_image(self, name: str, width: int) -> None:
+        old = self._widths.get(name, 0)
+        if width == old:
+            return
+        self._set_width(name, width)
+        self.undo.record_resize(name, old, width)
+        self._changed()
+
+    def _set_width(self, name: str, width: int, fast: bool = False) -> None:
+        """Показать картинку name шириной width (логические px) — без записи в историю."""
+        photo = self._photo(name, width, fast=fast)
+        if photo is None:
+            return
         for key, value, idx in self.text.dump("1.0", tk.END, image=True):
-            if key == "image" and re.sub(r"#\d+$", "", value) == name:
+            if key == "image" and self._img_name(value) == name:
                 self.text.image_configure(idx, image=photo)
         self._photos[name] = photo
         self._widths[name] = width
-        self._changed()
+        if not fast:
+            self._changed()
 
     def _open_image_at(self, e):
         name = self._image_at(e)
@@ -607,9 +670,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         return None
 
     def _open_image(self, name: str) -> None:
-        tmp = docs.docs_dir() / ".view"
-        tmp.mkdir(exist_ok=True)
-        p = tmp / Path(name).name
+        p = docs.temp_dir("view") / Path(name).name
         p.write_bytes(self.doc.images[name])
         compose.open_image(self, str(p))
 
@@ -660,7 +721,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         except OSError as exc:
             self._say(_t("Не сохранилось: {0}").format(exc), AMBER)
             return
-        self.refresh()
+        self._sync_list()
         self._update_status(saved=True)
 
     def _update_status(self, saved: bool = False) -> None:
@@ -765,9 +826,7 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         if not self.doc:
             self._say(_t("Выберите документ или создайте новый"), MUTED)
             return
-        out = docs.docs_dir() / ".send"
-        out.mkdir(parents=True, exist_ok=True)
-        path = out / f"{docs._safe_name(self.doc.display_title())}.docx"
+        path = docs.temp_dir("send") / f"{docs._safe_name(self.doc.display_title())}.docx"
         try:
             docs.export_docx(self.doc, path)
         except Exception as exc:  # noqa: BLE001
@@ -776,6 +835,8 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
         how = mailer.send_file(path, self.doc.display_title(), _t("Документ во вложении."))
         if how == "mailto":
             self._say(_t("Почтовая программа без вложений: файл в открытой папке — перетащите его в письмо"), AMBER)
+        elif how == "xdg":
+            self._say(_t("Письмо открыто в почтовой программе — если файла нет во вложении, он в папке документов (.tmp/send)"), GREEN)
         elif how == "cancel":
             self._say(_t("Письмо не отправлено"), MUTED)
         else:
@@ -825,76 +886,3 @@ class DocsScreen(docs_format.FormatMixin, docs_tools.ToolsMixin, docs_tools.Read
 
     def _say(self, text: str, color=None) -> None:
         self.status.config(text=text, fg=color or MUTED)
-
-
-class DocPreview(tk.Toplevel):
-    """Полноэкранный просмотр: белый «лист» по центру, только чтение. Esc — закрыть."""
-
-    PAGE_BG, INK = "#fbfaf6", "#1d1d1f"
-
-    def __init__(self, master, doc, widths: dict) -> None:
-        super().__init__(master, bg="#2a2c31")
-        self.title(doc.display_title() or _t("ПРОСМОТР"))
-        try:
-            self.attributes("-fullscreen", True)
-        except tk.TclError:
-            self.state("zoomed")
-        self._photos: list = []
-        bar = tk.Frame(self, bg="#2a2c31")
-        bar.pack(fill=tk.X, padx=px(14), pady=px(6))
-        tk.Label(bar, text=_t("ПРОСМОТР · Esc — закрыть"), bg="#2a2c31", fg="#b8bcc6",
-                 font=theme.font(9)).pack(side=tk.LEFT)
-        HudButton(bar, "✕", self.destroy, height=28, width=36, font_size=10).pack(side=tk.RIGHT)
-        page = tk.Frame(self, bg=self.PAGE_BG, highlightthickness=1, highlightbackground="#55585f")
-        page.pack(fill=tk.Y, expand=True, pady=(0, px(14)))
-        sb = make_vscroll(page)
-        sb.pack(side=tk.RIGHT, fill=tk.Y)
-        txt = tk.Text(page, wrap=tk.WORD, width=78, bg=self.PAGE_BG, fg=self.INK, relief=tk.FLAT, bd=0,
-                      font=("Georgia", 12), padx=px(48), pady=px(36), spacing1=2, spacing3=4,
-                      highlightthickness=0, cursor="arrow", yscrollcommand=sb.set)
-        txt.pack(side=tk.LEFT, fill=tk.Y)
-        sb.config(command=txt.yview)
-        txt.tag_configure("title", font=("Georgia", 20, "bold"), spacing3=px(14))
-        txt.tag_configure("h1", font=("Georgia", 17, "bold"), spacing1=px(10), spacing3=px(6))
-        txt.tag_configure("h2", font=("Georgia", 14, "bold"), spacing1=px(8), spacing3=px(4))
-        txt.tag_configure("b", font=("Georgia", 12, "bold"))
-        txt.tag_configure("i", font=("Georgia", 12, "italic"))
-        txt.tag_configure("bi", font=("Georgia", 12, "bold italic"))
-        txt.tag_configure("u", underline=True)
-        txt.tag_configure("code", font=("Consolas", 11), background="#ecebe6")
-        txt.tag_configure("link", foreground="#1f5fbf", underline=True)
-        txt.tag_configure("quote", foreground="#55585f", lmargin1=px(22), lmargin2=px(22),
-                          font=("Georgia", 12, "italic"))
-        txt.tag_configure("li", lmargin1=px(10), lmargin2=px(24))
-        for tg in ("b", "i", "bi", "code"):
-            txt.tag_raise(tg)
-        if doc.title.strip():
-            txt.insert(tk.END, doc.title.strip() + "\n", "title")
-        try:
-            from PIL import Image, ImageTk
-        except Exception:  # noqa: BLE001
-            Image = None
-        for seg in doc.segments:
-            if "t" in seg:
-                from stamina import mdlite
-                paras = mdlite.paragraphs(seg["t"])
-                for n, (kind, rs) in enumerate(paras):
-                    for t, st, _url in rs:
-                        tags = [kind] + [x for x in st]
-                        if "b" in st and "i" in st:
-                            tags.append("bi")
-                        txt.insert(tk.END, t, tuple(tags))
-                    if n < len(paras) - 1:
-                        txt.insert(tk.END, "\n", (kind,))
-            elif Image is not None and seg.get("img") in doc.images:
-                im = Image.open(io.BytesIO(doc.images[seg["img"]]))
-                w = int(widths.get(seg["img"]) or seg.get("w") or im.width)
-                if w < im.width:
-                    im = im.resize((w, max(1, round(im.height * w / im.width))), Image.LANCZOS)
-                ph = ImageTk.PhotoImage(im, master=self)
-                self._photos.append(ph)
-                txt.image_create(tk.END, image=ph, pady=4)
-        txt.config(state=tk.DISABLED)
-        self.bind("<Escape>", lambda _e: self.destroy())
-        self.bind("<MouseWheel>", lambda e: txt.yview_scroll(-1 if e.delta > 0 else 1, "units"))
-        self.focus_set()

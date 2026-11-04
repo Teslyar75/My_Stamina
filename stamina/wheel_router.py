@@ -100,3 +100,25 @@ def route(e):
     except tk.TclError:
         pass
     return None
+
+
+def bind_scroll(widget, scroll=None, *, units: int = 3, add: str = ""):
+    """Своя прокрутка колесом на всех платформах: MouseWheel (Windows/macOS/Tk 9)
+    и Button-4/5 (X11 на Tk 8.6). scroll(d) получает направление ±1;
+    по умолчанию — widget.yview_scroll(d * units, "units"). Событие не уходит дальше."""
+    if scroll is None:
+        def scroll(d, w=widget):
+            w.yview_scroll(d * units, "units")
+
+    def handler(e):
+        d = direction(e)
+        if d:
+            try:
+                scroll(d)
+            except tk.TclError:
+                pass
+        return "break"
+
+    for seq in WHEEL:
+        widget.bind(seq, handler, add=add)
+    return handler

@@ -84,9 +84,34 @@ class TestExports(_Root):
         f = self.out / "x.docx"
         f.write_bytes(b"x")
         with mock.patch.dict(os.environ, {"STAR_TYPING_NO_MAPI": "1"}), \
+                mock.patch.object(mailer.shutil, "which", return_value=None), \
                 mock.patch.object(mailer.webbrowser, "open") as op, mock.patch.object(mailer, "reveal") as rv:
             self.assertEqual(mailer.send_file(f, "Тема", "Текст"), "mailto")
         self.assertTrue(op.call_args[0][0].startswith("mailto:?subject="))
+        rv.assert_called_once()
+
+    def test_xdg_email_attach(self):
+        f = self.out / "x.docx"
+        f.write_bytes(b"x")
+        done = mock.Mock(returncode=0)
+        with mock.patch.object(mailer.sys, "platform", "linux"), \
+                mock.patch.object(mailer.shutil, "which", return_value="/usr/bin/xdg-email"), \
+                mock.patch.object(mailer.subprocess, "run", return_value=done) as run, \
+                mock.patch.object(mailer.webbrowser, "open") as op:
+            self.assertEqual(mailer.send_file(f, "Тема", "Текст"), "xdg")
+        args = run.call_args[0][0]
+        self.assertIn("--attach", args)
+        self.assertEqual(args[args.index("--attach") + 1], str(f.resolve()))
+        op.assert_not_called()
+
+    def test_xdg_email_failure_falls_back(self):
+        f = self.out / "x.docx"
+        f.write_bytes(b"x")
+        with mock.patch.object(mailer.sys, "platform", "linux"), \
+                mock.patch.object(mailer.shutil, "which", return_value="/usr/bin/xdg-email"), \
+                mock.patch.object(mailer.subprocess, "run", return_value=mock.Mock(returncode=3)), \
+                mock.patch.object(mailer.webbrowser, "open"), mock.patch.object(mailer, "reveal") as rv:
+            self.assertEqual(mailer.send_file(f, "Тема", "Текст"), "mailto")
         rv.assert_called_once()
 
 

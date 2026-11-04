@@ -16,7 +16,9 @@ import zipfile
 from pathlib import Path
 
 SUFFIX = ".stdoc"
-FORMAT = 1
+# 2: ширина картинки "w" — логическая (px при 96 dpi, без масштаба экрана);
+# в формате 1 там были экранные пиксели того компьютера, где документ правили.
+FORMAT = 2
 DOC_JSON = "document.json"
 DIR_NAME = "documents"
 
@@ -27,6 +29,43 @@ def docs_dir() -> Path:
     d = Path(pilots.active_dir()) / DIR_NAME
     d.mkdir(parents=True, exist_ok=True)
     return d
+
+
+TMP_DIR = ".tmp"
+LEGACY_TMP = (".view", ".send", ".print")
+
+
+def temp_dir(kind: str) -> Path:
+    """Временная папка отсека (просмотр картинки, письмо, печать): documents/.tmp/<kind>.
+    Стирается при входе в отсек и при выходе из программы (cleanup_temp)."""
+    d = docs_dir() / TMP_DIR / kind
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def cleanup_temp() -> int:
+    """Стереть временные файлы отсека (и старые .view/.send). Занятый файл (открыт
+    в почте или просмотрщике) пропускаем — сотрётся в следующий раз. → сколько стёрто."""
+    base = docs_dir()
+    n = 0
+    for name in (TMP_DIR,) + LEGACY_TMP:
+        d = base / name
+        if not d.is_dir():
+            continue
+        for p in sorted(d.rglob("*"), key=lambda q: len(q.parts), reverse=True):
+            try:
+                if p.is_dir():
+                    p.rmdir()
+                else:
+                    p.unlink()
+                    n += 1
+            except OSError:
+                pass
+        try:
+            d.rmdir()
+        except OSError:
+            pass
+    return n
 
 
 class Document:
@@ -54,6 +93,14 @@ class Document:
         name = f"images/{n}{ext}"
         self.images[name] = data
         return name
+
+    def migrate_widths(self, scale: float) -> None:
+        """Формат 1 → 2: экранные px ширин картинок → логические (делим на масштаб экрана)."""
+        if not scale or abs(scale - 1.0) < 1e-6:
+            return
+        for seg in self.segments:
+            if "img" in seg and seg.get("w"):
+                seg["w"] = max(1, int(round(int(seg["w"]) / scale)))
 
     def display_title(self) -> str:
         if self.title.strip():
@@ -107,7 +154,22 @@ def load(path: Path) -> Document:
     doc = Document(str(meta.get("title") or ""), segs, images, meta.get("created"),
                    meta.get("modified"), path)
     doc.source = meta.get("source") or None
+    try:
+        fmt = int(meta.get("format") or 1)
+    except (TypeError, ValueError):
+        fmt = 1
+    if fmt < 2:
+        doc.migrate_widths(ui_scale())
     return doc
+
+
+def ui_scale() -> float:
+    """Текущий масштаб экрана программы (1.0 без Tk) — для перевода старых ширин."""
+    try:
+        from stamina import theme
+        return float(theme.S) * float(theme.UI)
+    except Exception:  # noqa: BLE001
+        return 1.0
 
 
 def peek(path: Path) -> dict:

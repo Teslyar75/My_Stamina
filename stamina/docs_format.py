@@ -12,7 +12,7 @@ from __future__ import annotations
 import sys
 import tkinter as tk
 
-from stamina import mdlite, theme
+from stamina import wheel_router, mdlite, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton
 from stamina.i18n import t as _t
@@ -138,7 +138,7 @@ class FormatMixin:
         t.insert(tk.END, _t("ФАЙЛЫ") + "\n", "h")
         t.insert(tk.END, _t("ЭКСПОРТ → .md, .docx, .html, .txt; «Открыть .md…» — взять файл Markdown. «ОТПРАВИТЬ» — письмо с файлом во вложении."), "d")
         t.config(state=tk.DISABLED)
-        t.bind("<MouseWheel>", lambda e: (t.yview_scroll(-1 if e.delta > 0 else 1, "units"), "break")[1])
+        wheel_router.bind_scroll(t, lambda d: t.yview_scroll(d, "units"))
         self.help_text = t
         return f
 
