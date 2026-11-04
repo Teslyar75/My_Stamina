@@ -27,6 +27,10 @@ VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 # Фокус-режим O: доля от «максимально влезающего» масштаба. 1.0 — шрифт на весь экран
 # (слово до ~62 px на 1600x1000, глаза разбегаются); 0.8 — на 20 % спокойнее.
 FOCUS_FONT_GAIN = 0.8
+# обычный (не фокус) режим сканера тоже растёт с окном, но спокойнее фокуса O:
+# меньше коэффициент и потолок — вкладки, шапка и кнопки остаются, шрифт не «кричит»
+NORMAL_FONT_GAIN = 0.6
+NORMAL_FONT_CAP = 3.0     # потолок «вписанного» масштаба до gain: k ≤ 0.6·3 = 1.8 (фокус — до 3.2)
 
 
 # =============================================================================
@@ -974,6 +978,9 @@ class ScannerPage(tk.Frame):
             self._build_alt()       # альт-скины пока без изменений
         else:
             self._build_compact()   # классика: всё на одном экране
+            self._fit_job = None
+            self.sf.canvas.bind("<Configure>", self._queue_fit, add="+")
+            self.bind("<Map>", lambda _e: self.after_idle(lambda: self._fit_normal(force=True)), add="+")
         self.bind("<Unmap>", self._on_unmap, add="+")
         if isinstance(ctx, tk.Misc):    # весь отсек «Английский» спрятали (другой отсек) — тоже выйти
             ctx.bind("<Unmap>", self._on_unmap, add="+")
@@ -1336,6 +1343,8 @@ class ScannerPage(tk.Frame):
             f, self._focus = self._focus, None
             self._grow(False)
             f.restore()
+            self._fit_size = None
+            self.after_idle(self._fit_normal)
         btn = getattr(self, "btn_focus", None)
         if btn is not None:
             btn.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
@@ -1346,14 +1355,29 @@ class ScannerPage(tk.Frame):
             pass
 
     def _grow(self, on: bool) -> None:
-        """Focus-mode helper."""
+        """Фокус-режим: панели на всю высоту, шрифт по окну (FOCUS_FONT_GAIN)."""
+        if on:
+            self._fill(FOCUS_FONT_GAIN, 4.0)
+        else:
+            self._fill(None)
+
+    def scale_for(self, cw: int, chh: int, gain: float, cap: float) -> float:
+        """Общая формула масштаба для фокуса и обычного режима."""
+        return max(1.0, min(cap, cw / 512, chh / 270) * gain)
+
+    def _fill(self, gain: float | None, cap: float = 4.0, calm: bool = False) -> None:
+        """Растянуть панели сканера и канала связи по высоте окна и масштабировать шрифт
+        (gain=None — вернуть исходную компактную раскладку). calm — обычный режим: каждая
+        панель получает не меньше своего содержимого, остаток высоты делится 55/45;
+        если не помещается и при k=1 — остаётся обычная раскладка (с прокруткой при нужде)."""
         panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
         if len(panels) != 2 or not getattr(self, "compact", False):
             return
         sp, ch_ = panels
         try:
-            if on:
-                self._grow_saved = [(w, dict(w.pack_info())) for w in panels if w.winfo_manager() == "pack"]
+            if gain is not None:
+                if not getattr(self, "_grow_saved", None):
+                    self._grow_saved = [(w, dict(w.pack_info())) for w in panels if w.winfo_manager() == "pack"]
                 self._center(True)
                 for w in panels:
                     w.pack_propagate(False)
@@ -1361,9 +1385,8 @@ class ScannerPage(tk.Frame):
                 self.update_idletasks()
                 cw = max(1, self.sf.canvas.winfo_width())
                 chh = max(1, self.sf.canvas.winfo_height())
-                # растягиваем по окну, но на FOCUS_FONT_GAIN мельче «впритык»: на большом экране
-                # шрифт во весь размах рассыпал взгляд; пропорции между элементами те же
-                k = max(1.0, min(4.0, cw / 512, chh / 270) * FOCUS_FONT_GAIN)
+                # растягиваем по окну, но мельче «впритык»: пропорции между элементами те же
+                k = self.scale_for(cw, chh, gain, cap)
                 while True:
                     self._scale(k)
                     self.update_idletasks()
@@ -1371,7 +1394,18 @@ class ScannerPage(tk.Frame):
                     avail = chh - max(0, other) - px(4)
                     h1 = int(avail * 0.55)
                     h2 = avail - h1
-                    over = lambda p, hh: p.body.winfo_reqheight() + px(26) + px(4) + px(6) > hh
+                    need = lambda p: p.body.winfo_reqheight() + px(26) + px(4) + px(6)
+                    over = lambda p, hh: need(p) > hh
+                    if calm:
+                        n1, n2 = need(sp), need(ch_)
+                        if n1 + n2 > avail:
+                            if k <= 1.0:
+                                self._fill(None)
+                                return
+                            k = max(1.0, k * 0.92)
+                            continue
+                        h1 = n1 + int((avail - n1 - n2) * 0.55)
+                        h2 = avail - h1
                     sp.configure(height=h1)
                     ch_.configure(height=h2)
                     if k <= 1.0 or not (over(sp, h1) or over(ch_, h2)):
@@ -1380,14 +1414,31 @@ class ScannerPage(tk.Frame):
             else:
                 self._scale(1.0)
                 self._center(False)
-                for w, info in getattr(self, "_grow_saved", []):
+                for w, info in getattr(self, "_grow_saved", None) or []:
                     w.pack_propagate(True)
                     w.configure(height=1)
                     w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
                 self._grow_saved = []
+            self.update_idletasks()   # reqheight после последних height=, иначе sync видит старую высоту
             self.sf.sync()
         except tk.TclError:
             pass
+
+    def _fit_normal(self, force: bool = False) -> None:
+        """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
+        self._fit_job = None
+        if self._focus is not None or not getattr(self, "compact", False) or not self.winfo_ismapped():
+            return
+        cv = self.sf.canvas
+        size = (cv.winfo_width(), cv.winfo_height())
+        if size[0] < 50 or size[1] < 50 or (not force and size == getattr(self, "_fit_size", None)):
+            return
+        self._fit_size = size
+        self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+
+    def _queue_fit(self, _e=None) -> None:
+        if getattr(self, "_fit_job", None) is None:
+            self._fit_job = self.after(60, self._fit_normal)
 
     def _center(self, on: bool) -> None:
         """Focus-mode helper."""

@@ -178,3 +178,34 @@ class ScannerCompactTest(unittest.TestCase):
             res = scr.on_key(ev)
             self.assertNotEqual(res, "break", f"{ch} перехвачен в поле ввода")
         self.assertIsNone(page._focus, "O в поле ввода включил фокус")
+
+    def test_normal_scale_grows_below_focus(self):
+        """Обычный режим: шрифт растёт с окном, но спокойнее фокуса O; панели заполняют высоту."""
+        from stamina.english.pages_main import (FOCUS_FONT_GAIN, NORMAL_FONT_CAP, NORMAL_FONT_GAIN)
+        scr, page = self._open_scanner()
+        a = self.app
+        ks = []
+        for w, h in ((1024, 600), (1600, 1000)):
+            a.state("normal")
+            a.minsize(640, 480)
+            a.geometry(f"{w}x{h}+0+0")
+            self.pump(1.2)
+            if (a.winfo_width(), a.winfo_height()) != (w, h):
+                self.skipTest("оконный менеджер не дал нужный размер")
+            cv = page.sf.canvas
+            fit = min(4.0, cv.winfo_width() / 512, cv.winfo_height() / 270)
+            self.assertLessEqual(page._k, max(1.0, min(NORMAL_FONT_CAP, fit) * NORMAL_FONT_GAIN) + 0.01)
+            self.assertLess(page._k, max(1.0, fit * FOCUS_FONT_GAIN) + 0.01 if fit * FOCUS_FONT_GAIN > 1 else 9)
+            self._check_layout(page, f"{w}x{h}")
+            bottom = self._rel(page.chan)[1] + page.chan.winfo_height()
+            self.assertGreater(bottom, a.winfo_height() - 30, f"{w}x{h}: пустое место снизу")
+            ks.append(page._k)
+            scr.on_key(types.SimpleNamespace(keysym="o", widget=a, char="o", state=0, keycode=79))
+            self.pump(0.6)
+            self.assertGreater(page._k, ks[-1] - 0.01, f"{w}x{h}: фокус мельче обычного")
+            if w == 1600:
+                self.assertGreater(page._k, ks[-1], "фокус O должен быть крупнее обычного режима")
+            a._on_key(types.SimpleNamespace(keysym="Escape", widget=a, char="", state=0, keycode=27))
+            self.pump(0.8)
+            self.assertAlmostEqual(page._k, ks[-1], delta=0.02, msg="после Esc обычный масштаб не вернулся")
+        self.assertGreater(ks[1], ks[0], "обычный масштаб не растёт с окном")
