@@ -1940,14 +1940,15 @@ class RowCompactor:
         if not bs:
             return
         actives = [b for b in bs if getattr(b, "_active", False)]
+        protected = [b for b in bs if getattr(b, "_alt_nocompact", False)]
         # ряд-выбор (одна активная из ≥3) → выпадающий список «текущее ▾»: место под обои
         choice = len(bs) >= 3 and len(actives) == 1
         if choice:
-            keep = set()
+            keep = set(protected)
         elif len(bs) <= ROW_MAX:
             keep = set(bs)
         else:
-            keep = [b for b in bs if getattr(b, "_active", False)]
+            keep = [b for b in bs if getattr(b, "_active", False) or getattr(b, "_alt_nocompact", False)]
             for b in bs:
                 if len(keep) >= ROW_MAX - 1:
                     break
@@ -2616,6 +2617,7 @@ def build_chrome(app) -> tk.Frame:
     app.btn_help.pack(side=tk.RIGHT, padx=px(4))
     app.btn_orion = HB(right, tr_("ОРИОН"), app._call_orion, height=36, font_size=9, width=90,
                        color=theme.GREEN)
+    app.btn_orion._alt_nocompact = True
     app.btn_orion.pack(side=tk.RIGHT, padx=px(4))
 
     mid = tk.Frame(head, bg=head_bg)

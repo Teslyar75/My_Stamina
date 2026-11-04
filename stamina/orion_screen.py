@@ -40,7 +40,7 @@ from stamina.prompt_box import PromptBox, hud_colors
 from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import (AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT,
                            blend, px)
-from stamina.voice import stt, tts
+from stamina.voice import autosend, stt, tts
 from stamina.voice.mic import MicControl
 
 
@@ -252,6 +252,7 @@ class OrionScreen(tk.Frame):
         self._archive_tag_ids: dict[str, str] = {}
         self._archive_images: list = []
         self._voice_mode = "ship"
+        self._autosender = None            # таймер автоотправки голоса (см. `_autosend`)
         self._enabled = True
         self.board_visible = False         # доска чата скрыта, разговор идёт как контекст
         self._master_mode = False          # режим активного ока (мастер)
@@ -305,6 +306,9 @@ class OrionScreen(tk.Frame):
         self.voice_btn = HudButton(bar, _t("ОЗВУЧКА: ВКЛ"), self._toggle_voice, height=30,
                                    font_size=9, color=GREEN)
         self.voice_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
+        self.auto_btn = HudButton(bar, self._auto_title(), self._toggle_autosend, height=30,
+                                  font_size=9, color=GREEN)
+        self.auto_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
         self.board_btn = HudButton(bar, _t("ДОСКА: СКРЫТА"), self._toggle_board, height=30,
                                    font_size=9, color=AMBER)
         self.board_btn.pack(side=tk.RIGHT, padx=(px(4), 0))
@@ -1678,6 +1682,64 @@ class OrionScreen(tk.Frame):
             return
         self.entry.insert_text(text)
         self.send_btn.set_enabled(True)
+        self._arm_auto_send()
+
+    # -- автоотправка голоса ---------------------------------------------
+    @property
+    def _autosend(self) -> autosend.AutoSender:
+        """Обвязка автоотправки: живёт на экране, правило — в `stamina.voice.autosend`."""
+        sender = getattr(self, "_autosender", None)
+        if sender is None:
+            sender = autosend.AutoSender(
+                after=self.after, after_cancel=self.after_cancel,
+                text=self.entry.get, sender=self._autosend_ship,
+                enabled=self._auto_enabled, busy=lambda: self._busy)
+            self._autosender = sender
+        return sender
+
+    def _autosend_ship(self) -> None:
+        """Автоотправка дозрела — подсказка и отправка (без второго таймера)."""
+        self._hint(_t("Отправляю сам — тишина в эфире"), CYAN)
+        self._send()
+
+    def _auto_enabled(self) -> bool:
+        """Настройка «автоотправка»: по умолчанию включена."""
+        try:
+            return bool(self.app.store.settings.get("orion_auto_send", True))
+        except Exception:  # noqa: BLE001
+            return True
+
+    def _auto_title(self) -> str:
+        return _t("АВТООТПРАВКА: ВКЛ") if self._auto_enabled() else _t("АВТООТПРАВКА: ВЫКЛ")
+
+    def _toggle_autosend(self) -> None:
+        """Переключатель в шапке чата: голос уходит сам или ждёт Enter."""
+        on = not self._auto_enabled()
+        try:
+            self.app.store.settings["orion_auto_send"] = on
+            self.app.store.save_settings()
+        except Exception:  # noqa: BLE001
+            pass
+        self.auto_btn.set_text(self._auto_title())
+        self.auto_btn.set_color(GREEN if on else AMBER)
+        self._cancel_auto_send()
+        self._hint(_t("Голос уйдёт сам после паузы") if on
+                   else _t("Голос ждёт Enter — автоотправка выключена"),
+                   GREEN if on else AMBER)
+
+    def _arm_auto_send(self) -> None:
+        """Взвести отправку: пилот замолчал — через паузу сообщение уходит само.
+
+        Новая распознанная фраза перезапускает отсчёт (несколько фраз склеиваются
+        в одно сообщение), а ручная правка поля отменяет отправку — пилот ещё думает.
+        """
+        self._autosend.arm()
+
+    def _cancel_auto_send(self) -> None:
+        self._autosend.cancel()
+
+    def _auto_send_now(self) -> None:
+        self._autosend.fire()
 
     def _clear_input(self) -> None:
         """Опустошить поле набора и снять приложенные снимки — только после отправки."""
@@ -1691,6 +1753,7 @@ class OrionScreen(tk.Frame):
         self._draft_text = text
 
     def _send(self) -> None:
+        self._cancel_auto_send()      # пилот отправил сам — автоплан больше не нужен
         rec = self._rec()
         text = " ".join(self.entry.get().split())
         shot_paths = list(getattr(self, "_pending_shots", []))

@@ -5,6 +5,7 @@ from __future__ import annotations
 from stamina.i18n import t as tr_
 
 import tkinter as tk
+import tkinter.font as tkfont
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel  # noqa: F401  (реэкспорт для страниц)
@@ -421,11 +422,16 @@ class MatchReadout(tk.Canvas):
     def __init__(self, master, height=86) -> None:
         bg = master.cget("bg")
         super().__init__(master, bg=bg, highlightthickness=0, bd=0, height=px(height))
+        self._base_h = px(height)     # высота по умолчанию — когда итога нет
+        self._want_h = self._base_h   # высота под длинную заметку (после переноса строк)
         self.data = None
         self.bind("<Configure>", lambda _e: self.redraw())
 
     def clear(self) -> None:
         self.data = None
+        if self._want_h != self._base_h:
+            self._want_h = self._base_h
+            self.configure(height=self._base_h)
         self.redraw()
 
     def set(self, score: int, marks=None, heard: str = "", target_missed: bool = False, self_rated=False) -> None:
@@ -471,7 +477,43 @@ class MatchReadout(tk.Canvas):
             line = ""
         if heard:
             line = (line + "   ·   " if line else "") + tr_("услышано: «{0}»").format(heard)
-        self.create_text(px(16), px(70), text=line, anchor="w", fill=MUTED, font=theme.font(9), width=w - px(28))
+        # Заметка бывает длинной (7 пропущенных слов + «ключевое слово не распознано»)
+        # и переносится на вторую-третью строку. Высоту подгоняем по факту отрисовки,
+        # иначе низ обрезается (жалоба «под шкалой видны половинки букв»).
+        if not line:
+            self._fit_height(self._base_h)
+            return
+        # Переносим сами, по ширине слов в этом шрифте: перенос Tk по `width=` на шрифтах X11
+        # без Xft ошибается на кириллице (рвёт одну короткую строку на две).
+        font = tkfont.Font(font=theme.font(9))
+        rows = wrap_text(line, font.measure, w - px(28))
+        self.create_text(px(16), px(66), text="\n".join(rows), anchor="nw", fill=MUTED,
+                         font=theme.font(9))
+        # базовая высота рассчитана на одну строку — растём на каждую следующую
+        self._fit_height(self._base_h + (len(rows) - 1) * font.metrics("linespace"))
+
+    def _fit_height(self, need: int) -> None:
+        """Подогнать высоту под содержимое один раз (без дребезга перерисовок)."""
+        need = max(self._base_h, need)
+        if abs(need - self._want_h) < 2:
+            return
+        self._want_h = need
+        self.configure(height=need)
+
+
+def wrap_text(text: str, measure, width: int) -> list[str]:
+    """Разбить строку по словам так, чтобы каждая влезла в `width` (по `measure`)."""
+    rows: list[str] = []
+    cur = ""
+    for word in text.split(" "):
+        cand = word if not cur else cur + " " + word
+        if cur and measure(cand) > width:
+            rows.append(cur)
+            cur = word
+        else:
+            cur = cand
+    rows.append(cur)
+    return rows
 
 
 def target_missed(marks, target: str) -> bool:
