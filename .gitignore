@@ -90,3 +90,6 @@ _hide.txt
 _prof.txt
 _*.ps1
 
+
+# external analysis sandboxes (contain secrets/db copies)
+Qoder/

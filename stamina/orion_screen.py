@@ -1715,11 +1715,17 @@ class OrionScreen(tk.Frame):
             bar = tk.Canvas(fr, width=px(170), height=px(10), bg=BG, highlightthickness=0, bd=0)
             pct = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="e", width=5)
             lab = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="w")
+            chk = _label(fr, "☐", fg=MUTED, size=11, bg=BG, anchor="w", width=2,
+                         cursor="hand2")
+            chk.pack(side=tk.LEFT, padx=(0, px(2)))
             pct.pack(side=tk.RIGHT)
             bar.pack(side=tk.RIGHT, padx=(px(8), px(4)))
             lab.pack(side=tk.LEFT, fill=tk.X, expand=True)
-            self.task_rows.append({"frame": fr, "label": lab, "bar": bar, "pct": pct,
-                                   "key": None, "shown": False})
+            row = {"frame": fr, "label": lab, "bar": bar, "pct": pct, "check": chk,
+                   "key": None, "shown": False, "task_id": ""}
+            self.task_rows.append(row)
+            # галочка — «задача закрыта»: клик по строке состояния, а не по всему пульту
+            chk.bind("<Button-1>", lambda _e, r=row: self._toggle_task_done(r["task_id"]))
         return self.task_rows[i]
 
     def _task_text(self, t: dict, spin: str) -> tuple[str, str]:
@@ -1744,11 +1750,16 @@ class OrionScreen(tk.Frame):
             row = self._task_row(i)
             text, fg = self._task_text(t, spin)
             pct = int(t.get("percent") or 0)
-            key = (text, fg, pct)
+            task_id = str(t.get("id") or "")
+            checked = t.get("state") == "done"
+            key = (text, fg, pct, checked, task_id)
             if key != row["key"]:
                 row["key"] = key
+                row["task_id"] = task_id
                 row["label"].configure(text=text, fg=fg)
                 row["pct"].configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                row["check"].configure(text="☑" if checked else "☐",
+                                       fg=GREEN if checked else MUTED)
                 self._draw_bar(row["bar"], pct, tprog.color_for(pct))
             if not row["shown"]:
                 row["frame"].pack(fill=tk.X)
@@ -1757,6 +1768,35 @@ class OrionScreen(tk.Frame):
             if row["shown"]:
                 row["frame"].pack_forget()
                 row["shown"] = False
+
+    def _toggle_task_done(self, task_id: str) -> None:
+        """Галочка напротив шкалы: закрыть задачу или снова открыть её."""
+        task = next((t for t in self._tasks if str(t.get("id") or "") == task_id), None)
+        if task is None:
+            return
+        title = str(task.get("title") or task_id)
+        was_done = task.get("state") == "done"
+        try:
+            if task_id == "progress":          # старый одиночный доклад v1
+                data = orion.read_progress()
+                if not str(data.get("task") or "").strip():
+                    return
+                steps = data.get("steps") or []
+                orion.write_progress(str(data.get("task") or ""), steps,
+                                     done=0 if was_done else len(steps),
+                                     state="working" if was_done else "done")
+            elif was_done:
+                tprog.reopen(task_id)
+            else:
+                tprog.finish(task_id, "done")
+        except OSError:
+            self._hint(_t("Не удалось сохранить задачу"), RED)
+            return
+        self._report_read = 0.0                # следующая строка панели — уже новая
+        if was_done:
+            self._hint(_t("Задача снова открыта: {0}").format(title[:60]), CYAN)
+        else:
+            self._hint(_t("ЗАДАЧА ВЫПОЛНЕНА: {0}").format(title[:60]), GREEN)
 
     def _tick_activity(self) -> None:
         """Шаг панели: строки задач по их планам, оценка по времени или «свободен»."""
