@@ -7,6 +7,7 @@ MAX_NAV видимых кнопок. Временный APPDATA. Итог — JS
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
@@ -21,8 +22,21 @@ MAX_NAV = 6
 
 
 def main() -> None:
-    layout, skin, out = sys.argv[1], sys.argv[2], Path(sys.argv[3])
-    size = sys.argv[4] if len(sys.argv) > 4 else "1280x720"
+    ap = argparse.ArgumentParser(
+        description="Аудит выпадающих списков и навигационных рядов. Нужен дисплей: поднимаются окна.",
+        epilog="Без аргументов берёт classic/spaceship и пишет отчёт в _orion/audit.",
+    )
+    ap.add_argument("layout", nargs="?", default="classic", help="classic | alt")
+    ap.add_argument("skin", nargs="?", default="spaceship", help="имя скина без .json")
+    ap.add_argument("out", nargs="?", default="_orion/audit", help="папка для json и png")
+    ap.add_argument("size", nargs="?", default="1280x720", help="WxH окна")
+    args = ap.parse_args()
+    layout, skin = args.layout, args.skin
+    out = Path(args.out)
+    if not out.is_absolute():
+        out = ROOT / out
+    out.mkdir(parents=True, exist_ok=True)
+    size = args.size
     try:
         import ctypes
         ctypes.windll.shcore.SetProcessDpiAwareness(2)
