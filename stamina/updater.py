@@ -188,6 +188,34 @@ def safe_extract(zf: zipfile.ZipFile, target: Path) -> None:
         raise RuntimeError(f"архив содержит пути вне папки обновления: {shown}")
 
 
+def tree_version(src: Path) -> str:
+    """Версия, объявленная внутри скачанного дерева (stamina/__init__.py)."""
+    init = src / "stamina" / "__init__.py"
+    if not init.is_file():
+        raise RuntimeError("в архиве нет stamina/__init__.py — это не дерево программы")
+    text = init.read_text(encoding="utf-8", errors="replace")
+    m = re.search(r"""__version__\s*=\s*['"]([^'"]+)['"]""", text)
+    if not m:
+        raise RuntimeError("в скачанном stamina/__init__.py нет __version__")
+    return normalize_version(m.group(1))
+
+
+def assert_release_matches(src: Path, expected: str) -> str:
+    """Проверить, что скачанное дерево — тот же релиз, который объявлен тегом.
+
+    Без этой проверки канал обновлений принимает содержимое на веру: редирект,
+    зеркало или архив, собранный не с того refs, молча легли бы поверх рабочего
+    кода, а пилот увидел бы на экране одну версию и ставил бы другую.
+    """
+    want = normalize_version(expected)
+    if not want:
+        raise RuntimeError("у релиза пустой тег — непонятно, какую версию ждать")
+    got = tree_version(src)
+    if got != want:
+        raise RuntimeError(f"архив не соответствует релизу: тег обещает {want}, внутри {got}")
+    return got
+
+
 def download_and_apply(
     info: ReleaseInfo,
     dest_root: Path | None = None,
@@ -195,11 +223,14 @@ def download_and_apply(
 ) -> Path:
     """Скачать ZIP релиза и наложить на dest_root (по умолчанию PROJECT_DIR)."""
     dest = Path(dest_root or PROJECT_DIR)
-    if not info.zipball_url:
-        raise RuntimeError("no zipball_url in release")
+    url = info.zipball_url
+    if not url.startswith("https://"):
+        # Обновление перезаписывает код программы: канал обязан быть шифрованным,
+        # иначе подмену содержимого в сети нельзя отличить от нормального релиза.
+        raise RuntimeError(f"ссылка релиза не по HTTPS: {url[:60]}")
     log = progress or (lambda _m: None)
     log("downloading…")
-    req = urllib.request.Request(info.zipball_url, headers={"User-Agent": USER_AGENT})
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with tempfile.TemporaryDirectory(prefix="st-upd-") as tmp:
         tmp_path = Path(tmp)
         zip_path = tmp_path / "release.zip"
@@ -212,6 +243,8 @@ def download_and_apply(
         if not roots:
             raise RuntimeError("empty archive")
         src = roots[0]
+        log("проверка релиза…")
+        assert_release_matches(src, info.version)
         log("applying…")
         apply_tree(src, dest, progress=log)
     log("done")
