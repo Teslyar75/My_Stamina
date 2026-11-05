@@ -1,0 +1,15 @@
+# Зависимости для разработки — их НЕ ставит install.bat/install.sh обычному пилоту.
+# Само приложение по-прежнему живёт на stdlib + Pillow + pypdf + fpdf2.
+#
+# Зачем отдельный файл: tests/ импортирует pytest, а на машине разработчика он
+# лежит в per-user site-packages и потому не виден как зависимость. Проверено:
+# при подмене APPDATA на пустой каталог `python -m pytest` падает с
+# ModuleNotFoundError: No module named 'pygments'. Без этого файла свежий ноутбук
+# или CI-раннер не может запустить тесты вообще, и молчание выглядит как «всё хорошо».
+
+pytest>=8
+ruff>=0.6
+
+# Инструменты-генераторы (tools/vocab_builder, tools/i18n_mt) в гейте не нужны,
+# ставятся точечно:  pip install nltk wordfreq cmudict transformers torch
+# Распознавание речи (voice-тесты):  pip install vosk sounddevice
