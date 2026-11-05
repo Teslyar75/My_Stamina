@@ -11,7 +11,7 @@ import urllib.error
 import urllib.request
 import zipfile
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Callable
 
 from stamina import __version__
@@ -162,6 +162,32 @@ def apply_tree(src_root: Path, dest_root: Path, progress: ProgressCb | None = No
     return n
 
 
+def safe_extract(zf: zipfile.ZipFile, target: Path) -> None:
+    """Распаковать только то, что остаётся внутри target.
+
+    Канал обновлений перезаписывает собственный код программы, поэтому путь
+    элемента архива проверяется, а не предполагается: tarball GitHub обычно чист,
+    но замена источника загрузки (редирект, зеркало, битый ассет) не должна
+    означать запись за пределы папки программы.
+    """
+    root = target.resolve()
+    dangerous = []
+    for member in zf.infolist():
+        name = member.filename.replace("\\", "/")
+        pure = PurePosixPath(name)
+        if not name or pure.is_absolute() or name[1:2] == ":" or ".." in pure.parts:
+            dangerous.append(member.filename)
+            continue
+        dest = (root / name).resolve()
+        if dest != root and root not in dest.parents:
+            dangerous.append(member.filename)
+            continue
+        zf.extract(member, target)
+    if dangerous:
+        shown = ", ".join(dangerous[:3])
+        raise RuntimeError(f"архив содержит пути вне папки обновления: {shown}")
+
+
 def download_and_apply(
     info: ReleaseInfo,
     dest_root: Path | None = None,
@@ -181,7 +207,7 @@ def download_and_apply(
             shutil.copyfileobj(resp, out)
         log("extracting…")
         with zipfile.ZipFile(zip_path, "r") as zf:
-            zf.extractall(tmp_path / "unz")
+            safe_extract(zf, tmp_path / "unz")
         roots = [p for p in (tmp_path / "unz").iterdir() if p.is_dir()]
         if not roots:
             raise RuntimeError("empty archive")

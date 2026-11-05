@@ -1,8 +1,12 @@
-"""Тесты updater: semver, parse release, skip-list (без сети)."""
+"""Тесты updater: semver, parse release, skip-list, защита путей архива (без сети)."""
 from __future__ import annotations
 
+import io
 import json
+import zipfile
 from pathlib import Path
+
+import pytest
 
 from stamina.updater import (
     apply_tree,
@@ -11,6 +15,7 @@ from stamina.updater import (
     normalize_version,
     parse_release_payload,
     parse_semver,
+    safe_extract,
     should_skip,
 )
 
@@ -90,3 +95,36 @@ def test_changelog_notes_tool():
     notes = extract_notes(md, "v3.7.0")
     assert "foo" in notes
     assert "bar" not in notes
+
+
+def _zip_with(names: list[str]) -> zipfile.ZipFile:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        for name in names:
+            zf.writestr(name, "payload")
+    return zipfile.ZipFile(io.BytesIO(buf.getvalue()))
+
+
+def test_safe_extract_keeps_normal_release_tree(tmp_path: Path):
+    with _zip_with(["repo-abc123/main.py", "repo-abc123/stamina/app.py"]) as zf:
+        safe_extract(zf, tmp_path)
+    assert (tmp_path / "repo-abc123" / "main.py").is_file()
+
+
+@pytest.mark.parametrize(
+    "evil",
+    [
+        "../escape.py",
+        "../../escape.py",
+        "repo/../../escape.py",
+        "/absolute/escape.py",
+        "C:/Windows/escape.py",
+        "repo\\..\\..\\escape.py",
+    ],
+)
+def test_safe_extract_rejects_paths_outside_target(tmp_path: Path, evil: str):
+    with _zip_with([evil]) as zf:
+        with pytest.raises(RuntimeError, match="пути вне папки"):
+            safe_extract(zf, tmp_path)
+    assert not (tmp_path.parent / "escape.py").exists()
+    assert not list(tmp_path.rglob("escape.py"))
