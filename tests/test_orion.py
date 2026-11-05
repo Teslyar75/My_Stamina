@@ -811,6 +811,7 @@ class OrionScreenTest(unittest.TestCase):
             row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
             self.assertEqual(row["check"].cget("text"), "☐")
 
+            self.app.update()      # строка только что упакована: event_generate доходит лишь до видимого виджета
             row["check"].event_generate("<Button-1>")
             self.app.update()
             state = next(t["state"] for t in tprog.active() if t["id"] == "exec-check")
