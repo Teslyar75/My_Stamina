@@ -1270,9 +1270,8 @@ class Cockpit(tk.Tk):
 
     def _chrome_hotkey(self, e: tk.Event) -> bool:
         """Home → Орион, Prior(PgUp) → слайды, Next(PgDn) → экран."""
-        import sys
-        alt = 0x20000 if sys.platform == "win32" else 0x8   # Windows: 0x8 = NumLock, Alt = 0x20000
-        if e.state & 0x4 or e.state & alt or e.state & 0x1:  # Ctrl / Alt / Shift
+        from stamina.hotkeys import ALT, CTRL, SHIFT
+        if e.state & (CTRL | ALT | SHIFT):    # Alt на Windows — 0x20000, 0x8 там NumLock
             return False
         from stamina.hotkeys import typing_in
         if typing_in(getattr(e, "widget", None)):

@@ -74,6 +74,13 @@
 - Файлы: `stamina/comm.py`, `stamina/comm_screen.py`, `stamina/comm_hook.py`; тесты `tests/test_comm.py`.
 - Микрофон доступен и в «Эфире»: голос набирает сообщение в строку ввода.
 
+### Исправлено
+- **Ctrl+M (портал «ДЗЕН») снова работает при включённом NumLock.** Хоткей проверял бит `0x8`
+  в `event.state` как «Alt», а на Windows это NumLock: портал не открывался, а внутри портала
+  печать уходила на мостик за оверлеем. Маски модификаторов теперь в одном месте
+  (`stamina/hotkeys.py`: `SHIFT` / `CTRL` / `ALT`), ими пользуются `stamina/zen.py` и
+  `stamina/cockpit.py` (Home/PgUp/PgDn). Тесты: `tests/test_zen.py`.
+
 ## 3.7.0 — 17.10.2026 — автообновления с GitHub Releases
 
 ### Добавлено
