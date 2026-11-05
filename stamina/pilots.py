@@ -28,7 +28,10 @@ ACCENTS = ("cyan", "amber", "green", "red", "purple")
 CALLSIGN_RE = re.compile(r"^[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё \-]{1,15}$")
 # файлы данных пилота (форматы как раньше; меняется только место)
 DATA_FILES = ("settings.json", "stats.json", "session.json", "cargo.txt", "cargo_original.txt",
-              "english.json", "speedread.json", "translations.json", "achievements.json")
+              "english.json", "speedread.json", "translations.json", "achievements.json", "lounge.json")
+# файлы, которые раньше были общими в корне и НЕ переносятся ни одному пилоту (сброс):
+# старый общий lounge.json смешивал рекорды игр всех пилотов (stamina/lounge/store.py)
+ROOT_NOT_MIGRATED = ("lounge.json",)
 DATA_DIRS = ("library",)
 
 
