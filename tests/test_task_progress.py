@@ -40,6 +40,18 @@ class TaskProgressTest(unittest.TestCase):
         self.assertEqual(tp.active()[0]["percent"], 100)
         self.assertEqual(tp.active(time.time() + tp.KEEP + 5), [])
 
+    def test_reopen_keeps_steps(self):
+        tp.plan("a", "Т", ["x", "y"])
+        tp.step("a", "x")
+        tp.finish("a")
+        self.assertEqual(tp.active()[0]["state"], "done")
+        tp.reopen("a")
+        view = tp.active()[0]
+        self.assertEqual(view["state"], "working")
+        self.assertAlmostEqual(view["percent"], 50.0)
+        self.assertEqual(view["total"], 2)
+        self.assertEqual(tp.reopen("нет-такого"), {})
+
     def test_five_rows_and_legacy(self):
         for i in range(5):
             tp.plan(f"t{i}", f"Задача {i}", ["a", "b"])

@@ -5,6 +5,7 @@
 отмечает ✓ текущий экран. Временный APPDATA. Итог - OUT/header_SKIN_WxH_SCALE.json + png."""
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
@@ -14,12 +15,24 @@ import traceback
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def main() -> None:
-    skin, out = sys.argv[1], Path(sys.argv[2])
-    size = sys.argv[3] if len(sys.argv) > 3 else "1280x720"
-    scale = sys.argv[4] if len(sys.argv) > 4 else "M"
+    ap = argparse.ArgumentParser(
+        description="Аудит шапки и правил навигации alt-вида. Нужен дисплей: поднимаются окна.",
+        epilog="Без аргументов проверяет скин по умолчанию и пишет отчёт в _orion/audit.",
+    )
+    ap.add_argument("skin", nargs="?", default="spaceship", help="имя скина без .json")
+    ap.add_argument("out", nargs="?", default="_orion/audit", help="папка для json и png")
+    ap.add_argument("size", nargs="?", default="1280x720", help="WxH окна")
+    ap.add_argument("scale", nargs="?", default="M", help="масштаб интерфейса: S|M|L")
+    args = ap.parse_args()
+    skin, out = args.skin, Path(args.out)
+    if not out.is_absolute():
+        out = ROOT / out
+    size, scale = args.size, args.scale
+    out.mkdir(parents=True, exist_ok=True)
     try:
         import ctypes
         ctypes.windll.shcore.SetProcessDpiAwareness(2)

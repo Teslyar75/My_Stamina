@@ -793,6 +793,50 @@ class OrionScreenTest(unittest.TestCase):
         self.assertEqual(orion.tasks()[0]["text"], "починить эфир")
         self.assertEqual(scr._pending_task, "")
 
+    def test_activity_task_checkbox_closes_and_reopens(self):
+        """Галочка у шкалы задачи: клик закрывает её, повторный — снова открывает."""
+        from stamina import task_progress as tprog
+
+        old = os.environ.get("STAR_TYPING_TASKS_DIR")
+        os.environ["STAR_TYPING_TASKS_DIR"] = str(Path(self._tmp) / "agent_tasks")
+        try:
+            tprog.plan("exec-check", "Проверить эфир", ["найти:1", "тесты:3"])
+            self.app.show("orion")
+            scr = self._screen()
+            scr.show_tab("chat")
+            self.app.update()
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☐")
+
+            self.app.update()      # строка только что упакована: event_generate доходит лишь до видимого виджета
+            row["check"].event_generate("<Button-1>")
+            self.app.update()
+            state = next(t["state"] for t in tprog.active() if t["id"] == "exec-check")
+            self.assertEqual(state, "done")
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☑")
+
+            row["check"].event_generate("<Button-1>")
+            self.app.update()
+            state = next(t["state"] for t in tprog.active() if t["id"] == "exec-check")
+            self.assertEqual(state, "working")
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☐")
+        finally:
+            if old is None:
+                os.environ.pop("STAR_TYPING_TASKS_DIR", None)
+            else:
+                os.environ["STAR_TYPING_TASKS_DIR"] = old
+
     def _grant_commander(self, scr, allow=True, github=True):
         """Выдать (или не выдать) права Командира: два шага — код владельца, доступ к GitHub."""
         from stamina import orion_screen

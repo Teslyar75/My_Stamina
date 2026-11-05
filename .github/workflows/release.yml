@@ -25,7 +25,10 @@ jobs:
           TAG="${GITHUB_REF_NAME#v}"
           VER=$(python -c "import re,pathlib; t=pathlib.Path('stamina/__init__.py').read_text(encoding='utf-8'); m=re.search(r\"__version__\\s*=\\s*['\\\"]([^'\\\"]+)\", t); print(m.group(1) if m else '')")
           if [ "$VER" != "$TAG" ]; then
-            echo "::warning::stamina.__version__=$VER does not match tag $TAG"
+            echo "::error::stamina.__version__=$VER не совпадает с тегом ${GITHUB_REF_NAME}"
+            echo "Версия на экране берётся из __version__, а код приезжает по тегу:"
+            echo "рассогласование означает, что пилот получит не то, что показал релиз."
+            exit 1
           fi
 
       - name: Create GitHub Release
