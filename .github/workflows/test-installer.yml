@@ -51,11 +51,16 @@ jobs:
       - name: Проверка что pip failure block достигнут
         shell: pwsh
         run: |
+          if (-not (Test-Path install_fail_output.txt)) {
+            Write-Error "Файл install_fail_output.txt не найден"
+            exit 1
+          }
           $output = Get-Content install_fail_output.txt -Raw
+          Write-Host "=== Содержимое install_fail_output.txt ==="
+          Write-Host $output
+          Write-Host "=== Конец файла ==="
           if ($output -notmatch "PIP_INSTALL_MARKER") {
             Write-Error "Маркер pip install не найден - fake python не был вызван для pip install"
-            Write-Host "Output:"
-            Write-Host $output
             exit 1
           }
           Write-Host "✓ pip install block был достигнут (маркер найден)"
@@ -85,11 +90,16 @@ jobs:
       - name: Проверка что pip success block достигнут
         shell: pwsh
         run: |
+          if (-not (Test-Path install_ok_output.txt)) {
+            Write-Error "Файл install_ok_output.txt не найден"
+            exit 1
+          }
           $output = Get-Content install_ok_output.txt -Raw
+          Write-Host "=== Содержимое install_ok_output.txt ==="
+          Write-Host $output
+          Write-Host "=== Конец файла ==="
           if ($output -notmatch "PIP_INSTALL_MARKER") {
             Write-Error "Маркер pip install не найден - fake python не был вызван для pip install"
-            Write-Host "Output:"
-            Write-Host $output
             exit 1
           }
           Write-Host "✓ pip install block был достигнут (маркер найден)"
