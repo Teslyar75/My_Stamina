@@ -18,23 +18,35 @@ jobs:
         shell: cmd
         run: |
           mkdir fake_python_fail
-          echo @echo off > fake_python_fail\python.bat
-          echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0 >> fake_python_fail\python.bat
-          echo if "%%1"=="-c" exit /b 0 >> fake_python_fail\python.bat
-          echo if "%%1"=="--version" echo Python 3.12.0 ^& exit /b 0 >> fake_python_fail\python.bat
-          echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" echo PIP_INSTALL_MARKER ^& exit /b 1 >> fake_python_fail\python.bat
-          echo exit /b 0 >> fake_python_fail\python.bat
+          (echo @echo off
+           echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0
+           echo if "%%1"=="-c" exit /b 0
+           echo if "%%1"=="--version" (
+           echo   echo Python 3.12.0
+           echo   exit /b 0
+           echo ^)
+           echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" (
+           echo   echo PIP_INSTALL_MARKER
+           echo   exit /b 1
+           echo ^)
+           echo exit /b 0) > fake_python_fail\python.bat
 
       - name: Создать fake Python для симуляции pip success
         shell: cmd
         run: |
           mkdir fake_python_ok
-          echo @echo off > fake_python_ok\python.bat
-          echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0 >> fake_python_ok\python.bat
-          echo if "%%1"=="-c" exit /b 0 >> fake_python_ok\python.bat
-          echo if "%%1"=="--version" echo Python 3.12.0 ^& exit /b 0 >> fake_python_ok\python.bat
-          echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" echo PIP_INSTALL_MARKER ^& exit /b 0 >> fake_python_ok\python.bat
-          echo exit /b 0 >> fake_python_ok\python.bat
+          (echo @echo off
+           echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0
+           echo if "%%1"=="-c" exit /b 0
+           echo if "%%1"=="--version" (
+           echo   echo Python 3.12.0
+           echo   exit /b 0
+           echo ^)
+           echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" (
+           echo   echo PIP_INSTALL_MARKER
+           echo   exit /b 0
+           echo ^)
+           echo exit /b 0) > fake_python_ok\python.bat
 
       - name: Test install.bat с pip failure (должен останавливаться)
         shell: cmd

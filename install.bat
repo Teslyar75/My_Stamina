@@ -35,11 +35,6 @@ exit /b 1
 :have_python
 echo  [1/5] Python:
 "%PYEXE%" %PYARGS% --version
-if errorlevel 1 (
-    echo  [DEBUG] Python --version failed with errorlevel %ERRORLEVEL%
-    exit /b 1
-)
-echo  [DEBUG] Python --version succeeded
 
 echo  [2/5] Папка программы .venv ...
 if not exist "%ROOT%.venv\Scripts\python.exe" call "%PYEXE%" %PYARGS% -m venv "%ROOT%.venv"
