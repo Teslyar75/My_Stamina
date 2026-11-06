@@ -21,7 +21,7 @@ jobs:
           @'
           @echo off
           if "%1"=="-m" if "%2"=="venv" exit /b 0
-          if "%1"=="-c" exit /b 0
+          if "%1"=="-c" goto :eof
           if "%1"=="--version" (
             echo Python 3.12.0
             exit /b 0
@@ -43,7 +43,7 @@ jobs:
           @'
           @echo off
           if "%1"=="-m" if "%2"=="venv" exit /b 0
-          if "%1"=="-c" exit /b 0
+          if "%1"=="-c" goto :eof
           if "%1"=="--version" (
             echo Python 3.12.0
             exit /b 0
