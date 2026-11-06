@@ -30,7 +30,6 @@ except ImportError:  # без Pillow режим недоступен, всё р�
     Image = None
 
 from stamina import theme as _theme
-from stamina.theme import BG, CYAN, PANEL  # совместимость; в горячих местах — _theme.BG
 
 MODES = ("off", "light", "full")
 MODE_TITLES = {"off": _t("ВЫКЛ"), "light": _t("ЛЁГКИЙ"), "full": _t("ПОЛНЫЙ")}
