@@ -45,7 +45,6 @@ jobs:
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
           set STAMINA_NO_PAUSE=1
-          set STAMINA_SKIP_TK_CHECK=1
           call install.bat > install_fail_output.txt 2>&1
           echo INSTALLER_EXIT=%ERRORLEVEL% >> %GITHUB_OUTPUT%
 
@@ -85,7 +84,6 @@ jobs:
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
           set STAMINA_NO_PAUSE=1
-          set STAMINA_SKIP_TK_CHECK=1
           call install.bat > install_ok_output.txt 2>&1
           echo INSTALLER_EXIT=%ERRORLEVEL% >> %GITHUB_OUTPUT%
 
