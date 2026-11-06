@@ -32,6 +32,9 @@ jobs:
           )
           exit /b 0
           '@ | Out-File -FilePath fake_python_fail\python.bat -Encoding ASCII
+          Write-Host "=== Содержимое fake_python_fail\python.bat ==="
+          Get-Content fake_python_fail\python.bat
+          Write-Host "=== Конец файла ==="
 
       - name: Создать fake Python для симуляции pip success
         shell: pwsh
