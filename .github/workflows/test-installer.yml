@@ -18,21 +18,23 @@ jobs:
         shell: cmd
         run: |
           mkdir fake_python_fail
-          echo @echo off > fake_python_fail\python.exe.bat
-          echo exit /b 1 >> fake_python_fail\python.exe.bat
-          copy fake_python_fail\python.exe.bat fake_python_fail\python.bat
+          echo @echo off > fake_python_fail\python.bat
+          echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0 >> fake_python_fail\python.bat
+          echo if "%%1"=="-c" exit /b 0 >> fake_python_fail\python.bat
+          echo if "%%1"=="--version" echo Python 3.12.0 ^& exit /b 0 >> fake_python_fail\python.bat
+          echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" echo PIP_INSTALL_MARKER ^& exit /b 1 >> fake_python_fail\python.bat
+          echo exit /b 0 >> fake_python_fail\python.bat
 
       - name: Создать fake Python для симуляции pip success
         shell: cmd
         run: |
           mkdir fake_python_ok
-          echo @echo off > fake_python_ok\python.exe.bat
-          echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0 >> fake_python_ok\python.exe.bat
-          echo if "%%1"=="-m" if "%%2"=="pip" exit /b 0 >> fake_python_ok\python.exe.bat
-          echo if "%%1"=="-c" exit /b 0 >> fake_python_ok\python.exe.bat
-          echo if "%%1"=="--version" echo Python 3.12.0 >> fake_python_ok\python.exe.bat
-          echo exit /b 0 >> fake_python_ok\python.exe.bat
-          copy fake_python_ok\python.exe.bat fake_python_ok\python.bat
+          echo @echo off > fake_python_ok\python.bat
+          echo if "%%1"=="-m" if "%%2"=="venv" exit /b 0 >> fake_python_ok\python.bat
+          echo if "%%1"=="-c" exit /b 0 >> fake_python_ok\python.bat
+          echo if "%%1"=="--version" echo Python 3.12.0 ^& exit /b 0 >> fake_python_ok\python.bat
+          echo if "%%1"=="-m" if "%%2"=="pip" if "%%3"=="install" echo PIP_INSTALL_MARKER ^& exit /b 0 >> fake_python_ok\python.bat
+          echo exit /b 0 >> fake_python_ok\python.bat
 
       - name: Test install.bat с pip failure (должен останавливаться)
         shell: cmd
@@ -42,8 +44,21 @@ jobs:
           set STAMINA_PYTHON=%CD%\fake_python_fail\python.bat
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
-          call install.bat
+          set STAMINA_NO_PAUSE=1
+          call install.bat > install_fail_output.txt 2>&1
           echo INSTALLER_EXIT=%ERRORLEVEL% >> %GITHUB_OUTPUT%
+
+      - name: Проверка что pip failure block достигнут
+        shell: pwsh
+        run: |
+          $output = Get-Content install_fail_output.txt -Raw
+          if ($output -notmatch "PIP_INSTALL_MARKER") {
+            Write-Error "Маркер pip install не найден - fake python не был вызван для pip install"
+            Write-Host "Output:"
+            Write-Host $output
+            exit 1
+          }
+          Write-Host "✓ pip install block был достигнут (маркер найден)"
 
       - name: Проверка что installer остановился на pip failure
         shell: pwsh
@@ -51,6 +66,7 @@ jobs:
           $exitCode = "${{ steps.test_fail.outputs.INSTALLER_EXIT }}"
           if ($exitCode -ne "1") {
             Write-Error "install.bat должен вернуть exit code 1 при pip failure, получен: $exitCode"
+            Get-Content install_fail_output.txt
             exit 1
           }
           Write-Host "✓ install.bat корректно остановился с exit code 1"
@@ -62,8 +78,21 @@ jobs:
           set STAMINA_PYTHON=%CD%\fake_python_ok\python.bat
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
-          call install.bat
+          set STAMINA_NO_PAUSE=1
+          call install.bat > install_ok_output.txt 2>&1
           echo INSTALLER_EXIT=%ERRORLEVEL% >> %GITHUB_OUTPUT%
+
+      - name: Проверка что pip success block достигнут
+        shell: pwsh
+        run: |
+          $output = Get-Content install_ok_output.txt -Raw
+          if ($output -notmatch "PIP_INSTALL_MARKER") {
+            Write-Error "Маркер pip install не найден - fake python не был вызван для pip install"
+            Write-Host "Output:"
+            Write-Host $output
+            exit 1
+          }
+          Write-Host "✓ pip install block был достигнут (маркер найден)"
 
       - name: Проверка что installer завершился успешно
         shell: pwsh
@@ -71,6 +100,7 @@ jobs:
           $exitCode = "${{ steps.test_success.outputs.INSTALLER_EXIT }}"
           if ($exitCode -ne "0") {
             Write-Error "install.bat должен вернуть exit code 0 при успехе, получен: $exitCode"
+            Get-Content install_ok_output.txt
             exit 1
           }
           Write-Host "✓ install.bat корректно завершился с exit code 0"

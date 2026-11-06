@@ -66,12 +66,11 @@ if errorlevel 1 (
     echo  [!] pip не смог поставить пакеты. Вот что он сказал:
     type "%PIPLOG%"
     echo.
-    echo      Без них программа откроется, но без Pillow нет фона и аватаров,
-    echo      без pypdf не импортируется PDF, без fpdf2 нет кнопки PDF.
+    echo      Нужны: Pillow (фон и аватары), pypdf (импорт PDF), fpdf2 (кнопка PDF).
     echo.
     echo  [!] Установка остановлена из-за ошибки pip.
     echo      Исправьте проблему (обычно интернет) и запустите install.bat заново.
-    pause
+    if not defined STAMINA_NO_PAUSE pause
     exit /b 1
 )
 
