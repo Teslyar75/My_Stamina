@@ -1,7 +1,7 @@
 @echo off
 rem Star Typing - установка в один клик для Windows.
 rem Делает всё сам: Python (через winget, если его нет) -> папка .venv -> пакеты -> ярлык -> запуск.
-rem Для проверок: STAMINA_PYTHON=путь\python.exe, STAMINA_NO_SHORTCUT=1, STAMINA_NO_LAUNCH=1.
+rem Для проверок: STAMINA_PYTHON=путь\python.exe, STAMINA_NO_SHORTCUT=1, STAMINA_NO_LAUNCH=1, STAMINA_SKIP_TK_CHECK=1.
 chcp 65001 >nul
 setlocal EnableExtensions
 set "ROOT=%~dp0"
@@ -46,14 +46,16 @@ if not exist "%VPY%" (
 
 rem Python 3.13.0 + .venv на Windows не находит библиотеку Tcl - ошибка CPython gh-125235.
 rem Проверяем не импорт, а настоящее окно: импорт проходит и там, где окна не будет.
-call "%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
-if errorlevel 1 (
-    echo.
-    echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
-    echo      Star Typing запустится: он сам подставит папку Tcl из базового Python.
-    echo      Правильнее обновить Python до 3.13.1 или новее и запустить install.bat заново:
-    echo      https://www.python.org/downloads/
-    echo.
+if not defined STAMINA_SKIP_TK_CHECK (
+    call "%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
+    if errorlevel 1 (
+        echo.
+        echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
+        echo      Star Typing запустится: он сам подставит папку Tcl из базового Python.
+        echo      Правильнее обновить Python до 3.13.1 или новее и запустить install.bat заново:
+        echo      https://www.python.org/downloads/
+        echo.
+    )
 )
 
 echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
