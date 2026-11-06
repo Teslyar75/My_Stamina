@@ -46,9 +46,7 @@ if not exist "%VPY%" (
 
 rem Python 3.13.0 + .venv на Windows не находит библиотеку Tcl - ошибка CPython gh-125235.
 rem Проверяем не импорт, а настоящее окно: импорт проходит и там, где окна не будет.
-echo  DEBUG: проверка Tk начата (VPY=%VPY%)
 >nul 2>&1 call "%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()"
-echo  DEBUG: Tk check returned errorlevel=%ERRORLEVEL%
 if errorlevel 1 (
     echo.
     echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
@@ -57,7 +55,6 @@ if errorlevel 1 (
     echo      https://www.python.org/downloads/
     echo.
 )
-echo  DEBUG: Tk check завершён
 
 echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
 rem pip читает requirements.txt в кодировке локали; PYTHONUTF8=1 держит кириллицу в комментариях.
@@ -69,10 +66,10 @@ if errorlevel 1 (
     echo  [!] pip не смог поставить пакеты. Вот что он сказал:
     type "%PIPLOG%"
     echo.
-    echo      Нужны: Pillow (фон и аватары), pypdf (импорт PDF), fpdf2 (кнопка PDF).
+    echo      Нужны: Pillow ^(фон и аватары^), pypdf ^(импорт PDF^), fpdf2 ^(кнопка PDF^).
     echo.
     echo  [!] Установка остановлена из-за ошибки pip.
-    echo      Исправьте проблему (обычно интернет) и запустите install.bat заново.
+    echo      Исправьте проблему ^(обычно интернет^) и запустите install.bat заново.
     if not defined STAMINA_NO_PAUSE pause
     exit /b 1
 )

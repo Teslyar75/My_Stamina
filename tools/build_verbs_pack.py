@@ -40,7 +40,6 @@ UA = "StarTypingDataBuilder/1.0 (offline pack build; https://github.com/Teslyar7
 FILES = {
     "kaikki-verbs.jsonl": "https://kaikki.org/dictionary/English/pos-verb/kaikki.org-dictionary-English-by-pos-verb.jsonl",
     "en_50k.txt": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/en/en_50k.txt",
-    "ru_50k.txt": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ru/ru_50k.txt",
     "cefrj.csv": "https://raw.githubusercontent.com/openlanguageprofiles/olp-en-cefrj/master/cefrj-vocabulary-profile-1.5.csv",
     "octanove.csv": "https://raw.githubusercontent.com/openlanguageprofiles/olp-en-cefrj/master/octanove-vocabulary-profile-c1c2-1.0.csv",
     "eng_sentences.tsv.bz2": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences.tsv.bz2",
@@ -140,6 +139,8 @@ def load_ru_rank(work: Path) -> None:
     """Частотность русских слов (FrequencyWords, CC BY-SA 4.0) — чтобы из нескольких значений
     выбрать самое употребительное («сказать», а не «различать» для tell)."""
     path = work / "ru_50k.txt"
+    if not path.exists():
+        fetch(FREQ_URL.replace("/en/en_50k", "/ru/ru_50k"), path)
     with open(path, encoding="utf-8") as fh:
         for i, line in enumerate(fh):
             parts = line.split()
