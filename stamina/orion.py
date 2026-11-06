@@ -68,7 +68,7 @@ CONNECT_FIELDS = ("base_url", "cred_ref", "fallback", "tts_voice", "pilot", "dis
 
 # Уровень доступа → какие агенты OpenCode запускаются (первый проход, второй проход).
 PROFILES: dict[str, tuple[str, str | None]] = {
-    "commander": ("orion-recon", "orion-commander"),
+    "commander": ("orion-commander", None),  # был ("orion-recon", "orion-commander")
     "observer": ("orion-recon", None),
     "crew": ("orion-chat", None),
 }
