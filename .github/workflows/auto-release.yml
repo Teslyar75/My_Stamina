@@ -1,0 +1,50 @@
+# Автоматический выпуск: каждый push в master, где есть новая работа, становится
+# GitHub Release — и программа у пилота видит обновление по кнопке «Обновить сейчас».
+#
+# Раньше тег ставили руками и забывали: с 3.7.0 так накопилось 283 коммита без релиза.
+# Логика — в tools/auto_release.py (её видно и можно прогнать локально:
+#   python tools/auto_release.py          — только план
+#   python tools/auto_release.py --push   — выпустить).
+#
+# Почему release.yml остаётся: он выпускает релиз, если тег поставили руками или из
+# другой ветки. Оба пути идемпотентны — существующий Release они не пересоздают.
+
+name: auto release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Два push подряд не должны выпускать две версии одновременно.
+concurrency:
+  group: auto-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # нужны теги и вся история: по ним считается «что нового»
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: От чьего имени коммитим
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Выпустить версию
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python tools/auto_release.py --push

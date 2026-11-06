@@ -35,6 +35,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Релиз мог уже создать auto-release.yml: не пересоздаём, а дополняем пустой.
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            echo "Release ${GITHUB_REF_NAME} уже есть - ничего не делаю"
+            exit 0
+          fi
           gh release create "${GITHUB_REF_NAME}" \
             --title "Star Typing ${GITHUB_REF_NAME}" \
             --notes-file /tmp/notes.md \

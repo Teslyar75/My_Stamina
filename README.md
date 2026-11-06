@@ -11,14 +11,16 @@
 - при входе — диалог, если есть новая версия;
 - **НАСТРОЙКИ → ЕЩЁ → Обновления**: «Проверить», changelog, **«Обновить сейчас»** (скачает ZIP тега, обновит файлы, сохранит пилотов / `.venv` / `models` / `cache`, перезапустит).
 
-Как выпустить релиз разработчику: обновите `CHANGELOG.md` и `stamina/__init__.py` → `__version__`, затем:
+Как выпускается релиз: **сам**. Каждый push в `master`, где есть новая работа, GitHub Actions
+поднимает версию, ставит тег и создаёт Release с notes из `CHANGELOG.md`
+(`tools/auto_release.py`, `.github/workflows/auto-release.yml`). Ничего ставить руками не нужно.
 
-```bash
-git tag v3.7.0
-git push origin v3.7.0
-```
+Нужен минорный релиз с новыми возможностями — поставьте в `stamina/__init__.py` `__version__`
+выше последней выпущенной (например `3.9.0`): выпуск возьмёт её как есть.
 
-GitHub Actions создаст Release с notes из changelog.
+- посмотреть, что выйдет, ничего не меняя: `python tools/auto_release.py`;
+- выпустить вручную: `python tools/auto_release.py --push`;
+- тег `v*` руками тоже работает — `release.yml` создаст Release, если его ещё нет.
 
 ---
 
