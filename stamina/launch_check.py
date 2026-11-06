@@ -217,14 +217,14 @@ def check(*, tk_ok: bool | None = None, window_ok: bool | None = None,
     """
     plat = platform or sys.platform
     environment = os.environ if env is None else env
-    # На Linux сначала проверяем DISPLAY: если его нет, проблема в отсутствии экрана,
-    # а не в tkinter или Tcl
+    tk_installed = has_tkinter() if tk_ok is None else tk_ok
+    if not tk_installed:
+        return tk_problem(plat)
+    # На Linux: если tkinter есть, но нет DISPLAY, это проблема экрана, а не Tcl
     if plat.startswith("linux"):
         disp_problem = display_problem(plat, environment)
         if disp_problem is not None:
             return disp_problem
-    if not (has_tkinter() if tk_ok is None else tk_ok):
-        return tk_problem(plat)
     if not (has_tk_window() if window_ok is None else window_ok):
         return tcl_problem(plat)
     return display_problem(plat, environment)
