@@ -1316,7 +1316,18 @@ class SettingsScreen(tk.Frame):
 
     def _do_update(self) -> None:
         import threading
-        from stamina.updater import check_error_message, download_and_apply, fetch_latest, maybe_pip_install
+        from stamina.updater import (
+            check_error_message,
+            dev_checkout_error,
+            download_and_apply,
+            fetch_latest,
+            maybe_pip_install,
+        )
+
+        guard = dev_checkout_error()
+        if guard:
+            messagebox.showinfo(_t("Обновления"), guard, parent=self)
+            return
 
         if not messagebox.askyesno(
             _t("Обновления"),

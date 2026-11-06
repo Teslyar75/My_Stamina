@@ -1091,7 +1091,10 @@ class Cockpit(tk.Tk):
         import threading
         from stamina import __version__
         from stamina.i18n import t as _t
-        from stamina.updater import check_error_message, fetch_latest
+        from stamina.updater import check_error_message, dev_checkout_error, fetch_latest
+
+        if dev_checkout_error():
+            return          # рабочая копия: обновляемся через git, пилота не дёргаем
 
         def work() -> None:
             try:

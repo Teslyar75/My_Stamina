@@ -12,6 +12,7 @@ from stamina.updater import (
     ReleaseInfo,
     apply_tree,
     assert_release_matches,
+    dev_checkout_error,
     download_and_apply,
     is_newer,
     markdown_to_plain,
@@ -22,6 +23,25 @@ from stamina.updater import (
     should_skip,
     tree_version,
 )
+
+
+def test_dev_checkout_blocks_button_update(tmp_path):
+    """Рабочая копия git: кнопка обновления затёрла бы незакоммиченные правки."""
+    (tmp_path / ".git").mkdir()
+    assert dev_checkout_error(tmp_path) is not None
+
+
+def test_plain_install_allows_button_update(tmp_path):
+    """У пилота обычная установка без git — кнопка работает."""
+    assert dev_checkout_error(tmp_path) is None
+
+
+def test_nested_checkout_is_recognised(tmp_path):
+    """Программа лежит внутри репозитория (например .venv рядом с .git выше)."""
+    (tmp_path / ".git").mkdir()
+    nested = tmp_path / "My_Stamina-master"
+    nested.mkdir()
+    assert dev_checkout_error(nested) is not None
 
 
 def test_normalize_version():

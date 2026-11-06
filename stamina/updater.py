@@ -278,6 +278,26 @@ def open_releases_page(info: ReleaseInfo | None = None) -> None:
     webbrowser.open(url)
 
 
+def dev_checkout_error(root: Path | None = None) -> str | None:
+    """Программа запущена из рабочей копии git — кнопкой обновлять нельзя.
+
+    Обновление кладёт файлы ZIP поверх установки, не спрашивая git: в рабочей
+    копии это тихо затирает незакоммиченные правки и расходится с историей.
+    Там обновляются слиянием, а кнопка нужна для обычной установки у пилота.
+    """
+    base = Path(root or PROJECT_DIR)
+    inside = (base / ".git").exists() or (base / ".." / ".git").exists()
+    if not inside:
+        return None
+    return (
+        "Эта копия программы — рабочая: рядом лежит папка .git.\n\n"
+        "Кнопка обновления затирает файлы поверх и потеряет незакоммиченные правки,\n"
+        "поэтому здесь она не работает. Обновитесь через git (слияние с master),\n"
+        "затем запустите программу заново.\n\n"
+        "Кнопка нужна для обычной установки без git — как у пилота."
+    )
+
+
 def check_error_message(exc: BaseException) -> str:
     if isinstance(exc, urllib.error.HTTPError):
         if exc.code == 404:
