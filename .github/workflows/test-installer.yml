@@ -124,10 +124,19 @@ jobs:
             exit 1
           }
           $output = Get-Content install_ok_output.txt -Raw
+          $pipLog = Join-Path $env:TEMP "star-typing-pip.log"
+          if (-not (Test-Path $pipLog)) {
+            Write-Error "Файл pip log не найден: $pipLog"
+            exit 1
+          }
+          $pipOutput = Get-Content $pipLog -Raw
           Write-Host "=== Содержимое install_ok_output.txt ==="
           Write-Host $output
           Write-Host "=== Конец файла ==="
-          if ($output -notmatch "PIP_INSTALL_MARKER") {
+          Write-Host "=== Содержимое star-typing-pip.log ==="
+          Write-Host $pipOutput
+          Write-Host "=== Конец pip log ==="
+          if ($pipOutput -notmatch "PIP_INSTALL_MARKER") {
             Write-Error "Маркер pip install не найден - fake python не был вызван для pip install"
             exit 1
           }
