@@ -60,6 +60,7 @@ jobs:
         continue-on-error: true
         id: test_fail
         run: |
+          if exist .venv rd /s /q .venv
           set STAMINA_PYTHON=%CD%\fake_python_fail\python.bat
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
@@ -99,6 +100,7 @@ jobs:
         shell: cmd
         id: test_success
         run: |
+          if exist .venv rd /s /q .venv
           set STAMINA_PYTHON=%CD%\fake_python_ok\python.bat
           set STAMINA_NO_SHORTCUT=1
           set STAMINA_NO_LAUNCH=1
