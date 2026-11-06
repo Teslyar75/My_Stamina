@@ -44,9 +44,34 @@ if not exist "%VPY%" (
     set "VPY=%PYEXE%"
 )
 
-echo  [3/5] Пакеты: Pillow, pypdf ...
-"%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt"
-if errorlevel 1 echo  [!] pip не смог поставить пакеты - проверьте интернет. Программа запустится и без них.
+rem Python 3.13.0 + .venv на Windows не находит библиотеку Tcl - ошибка CPython gh-125235.
+rem Проверяем не импорт, а настоящее окно: импорт проходит и там, где окна не будет.
+"%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
+    echo      Star Typing запустится: он сам подставит папку Tcl из базового Python.
+    echo      Правильнее обновить Python до 3.13.1 или новее и запустить install.bat заново:
+    echo      https://www.python.org/downloads/
+    echo.
+)
+
+echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
+rem pip читает requirements.txt в кодировке локали; PYTHONUTF8=1 держит кириллицу в комментариях.
+set "PYTHONUTF8=1"
+set "PIPLOG=%TEMP%\star-typing-pip.log"
+"%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt" >"%PIPLOG%" 2>&1
+if errorlevel 1 (
+    echo.
+    echo  [!] pip не смог поставить пакеты. Вот что он сказал:
+    type "%PIPLOG%"
+    echo.
+    echo      Программа запустится и без них, но без Pillow нет фона и аватаров,
+    echo      без pypdf не импортируется PDF, без fpdf2 нет кнопки PDF.
+    echo      Обычно помогает повторить установку при рабочем интернете.
+    echo.
+    timeout /t 8 >nul
+)
 
 echo.
 echo  Проверка произношения в АНГЛИЙСКОМ: микрофон, vosk, модель ~40 МБ.
