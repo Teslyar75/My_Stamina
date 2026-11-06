@@ -17,8 +17,8 @@ from . import sm2
 from .check import SpeechCheck
 from .tasks import MODES, TYPE_TITLE, TaskFactory
 from .textutil import score_sentence, score_word, verdict, word_forms
-from .ui import Choice, L, ScrollFrame, Strip, entry, target_missed
-from .vocab import POS_SHORT, SETS
+from .ui import Choice, L, Strip, entry, target_missed
+from .vocab import POS_SHORT
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 

@@ -13,7 +13,7 @@ from tkinter import filedialog, messagebox, simpledialog
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
-from stamina.theme import (AMBER, BG, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, PANEL_HI, PURPLE, RED, TEXT,
+from stamina.theme import (AMBER, BG, CYAN, GREEN, LINE, LINE_HI, MUTED, PANEL, PANEL_HI, PURPLE, RED, TEXT,
                            blend, heat_color, px)
 
 from . import paths

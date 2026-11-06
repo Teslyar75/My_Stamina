@@ -3,6 +3,7 @@
 справа в блоке проверки видна целиком (и в фокус-режиме O), Esc возвращает вид,
 а O/T в поле ввода печатаются как буквы."""
 import os
+import sys
 import tempfile
 import time
 import tkinter as tk
