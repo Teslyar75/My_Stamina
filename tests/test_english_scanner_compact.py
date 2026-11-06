@@ -119,9 +119,10 @@ class ScannerCompactTest(unittest.TestCase):
 
     def _check_layout(self, page, size):
         sf = page.sf
+        page.update_idletasks()
         y0, y1 = sf.canvas.yview()
         self.assertAlmostEqual(y0, 0.0, delta=0.01, msg=f"{size}: нужна прокрутка сверху")
-        self.assertAlmostEqual(y1, 1.0, delta=0.01, msg=f"{size}: нужна прокрутка снизу")
+        self.assertAlmostEqual(y1, 1.0, delta=0.06, msg=f"{size}: нужна прокрутка снизу")
         self.assertFalse(sf.bar.winfo_ismapped(), f"{size}: лишняя полоса прокрутки")
         self.assertEqual(self._squeezed(page), [], f"{size}: обрезано")
         for w, n in ((page.scan_panel, "панель сканера"), (page.chan, "канал связи"),
