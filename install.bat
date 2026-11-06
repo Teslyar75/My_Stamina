@@ -70,7 +70,7 @@ if errorlevel 1 (
     echo      без pypdf не импортируется PDF, без fpdf2 нет кнопки PDF.
     echo      Обычно помогает повторить установку при рабочем интернете.
     echo.
-    timeout /t 8 >nul
+    timeout /t 8 >nul 2>&1
 )
 
 echo.
