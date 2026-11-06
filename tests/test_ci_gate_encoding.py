@@ -1,5 +1,4 @@
 """Тесты encoding-устойчивости ci_gate: кириллица в cp1252 не роняет print."""
-import io
 import sys
 import unittest
 from unittest import mock
