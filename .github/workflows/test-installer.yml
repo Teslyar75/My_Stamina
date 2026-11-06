@@ -20,16 +20,20 @@ jobs:
           New-Item -ItemType Directory -Path fake_python_fail
           @'
           @echo off
-          if "%1"=="-m" if "%2"=="venv" exit /b 0
-          if "%1"=="-c" goto :eof
-          if "%1"=="--version" (
+          setlocal
+          if "%~1"=="-m" if "%~2"=="venv" (endlocal & exit /b 0)
+          if "%~1"=="-c" (endlocal & exit /b 0)
+          if "%~1"=="--version" (
             echo Python 3.12.0
+            endlocal
             exit /b 0
           )
-          if "%1"=="-m" if "%2"=="pip" if "%3"=="install" (
+          if "%~1"=="-m" if "%~2"=="pip" if "%~3"=="install" (
             echo PIP_INSTALL_MARKER
+            endlocal
             exit /b 1
           )
+          endlocal
           exit /b 0
           '@ | Out-File -FilePath fake_python_fail\python.bat -Encoding ASCII
           Write-Host "=== Содержимое fake_python_fail\python.bat ==="
@@ -42,16 +46,20 @@ jobs:
           New-Item -ItemType Directory -Path fake_python_ok
           @'
           @echo off
-          if "%1"=="-m" if "%2"=="venv" exit /b 0
-          if "%1"=="-c" goto :eof
-          if "%1"=="--version" (
+          setlocal
+          if "%~1"=="-m" if "%~2"=="venv" (endlocal & exit /b 0)
+          if "%~1"=="-c" (endlocal & exit /b 0)
+          if "%~1"=="--version" (
             echo Python 3.12.0
+            endlocal
             exit /b 0
           )
-          if "%1"=="-m" if "%2"=="pip" if "%3"=="install" (
+          if "%~1"=="-m" if "%~2"=="pip" if "%~3"=="install" (
             echo PIP_INSTALL_MARKER
+            endlocal
             exit /b 0
           )
+          endlocal
           exit /b 0
           '@ | Out-File -FilePath fake_python_ok\python.bat -Encoding ASCII
 
