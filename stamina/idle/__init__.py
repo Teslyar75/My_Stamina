@@ -63,6 +63,25 @@ def order_stations(stations: list[dict], saved: str | None = None, pinned: list[
     return sorted(stations, key=rank)
 
 
+def start_index(stations: list[dict], current: dict | None) -> int:
+    """С какой волны слайдшоу начнёт: текущая с радиорубки, иначе первая.
+
+    Пилот не ждёт, что экран отдыха «переставит» его волну: если радио уже
+    выбрано, слайдшоу включает именно его.
+    """
+    if not stations:
+        return 0
+    cur = current or {}
+    uuid = str(cur.get("uuid") or "").strip()
+    name = str(cur.get("name") or "").strip().lower()
+    for i, st in enumerate(stations):
+        if uuid and str(st.get("uuid") or "").strip() == uuid:
+            return i
+        if name and str(st.get("name") or "").strip().lower() == name:
+            return i
+    return 0
+
+
 def station_genre(st: dict) -> str:
     tags = [t.strip() for t in str(st.get("tags") or "").split(",") if t.strip()]
     return ", ".join(tags[:2])

@@ -11,7 +11,9 @@ import tkinter as tk
 from stamina import theme
 from stamina import safe_mode
 from stamina.i18n import t as _t
-from stamina.idle import DRIFT, FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
+from stamina.idle import (DRIFT, FADE_MS, GIF_MAX_FRAMES, RADIO_TARGET, SLIDE_MS, XFADE_MS,
+                          XFADE_STEPS, fade_volume, is_idle, order_stations, pick_station,
+                          settings_of, start_index, station_genre)
 
 try:
     from PIL import Image, ImageTk
@@ -115,6 +117,7 @@ class Slideshow(tk.Frame):
         self._drift_job = None
         self._pos = (0.0, 0.0)
         self._radio_started = False
+        self._was_playing = False       # радио играло ещё до слайдшоу
         self.stations: list[dict] = []
         self.st_i = 0
         self._muted = False
@@ -400,6 +403,7 @@ class Slideshow(tk.Frame):
         eng = self._engine()
         if eng is None:
             return
+        self._was_playing = bool(eng.playing)
         autoplay = not eng.playing
         saved = (self.app.store.settings.get("idle_station") or {}).get(theme.theme_id())
 
@@ -418,9 +422,9 @@ class Slideshow(tk.Frame):
         if not self.winfo_exists() or not items:
             return
         self.stations = items
-        self.st_i = 0
+        self.st_i = start_index(items, getattr(eng, "station", None))
         if autoplay:
-            self._play(eng, items[0])
+            self._play(eng, items[self.st_i])
         self._plate()
 
     def _play(self, eng, st: dict) -> None:
@@ -538,12 +542,17 @@ class Slideshow(tk.Frame):
         self.cv.create_text(w // 2, y0 + 38, text=line2, fill=ink, font=theme.font(9), tags="plate")
 
     def _stop_radio(self) -> None:
+        """Выход из слайдшоу: волну не меняем.
+
+        Музыку гасим, только если её завёл сам слайдшоу. Если радио играло
+        до него, оно и продолжает играть на той же волне.
+        """
         if not self._radio_started:
             return
         try:
             from stamina.radio import get_engine
             eng = get_engine()
-            if self.cfg["idle_after"] == "stop":
+            if self.cfg["idle_after"] == "stop" and not self._was_playing:
                 eng.stop()
             eng.player.set_volume(getattr(self, "_radio_full", eng.volume))
         except Exception:  # noqa: BLE001
