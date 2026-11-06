@@ -469,7 +469,8 @@ class OrionScreen(tk.Frame):
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
                               settings=self.app.store.settings,
-                              save=self.app.store.save_settings)
+                              save=self.app.store.save_settings,
+                              quiet=tts.speaking)
         # Кнопки справа: ОТПРАВИТЬ — крупная и последняя перед «СТОП», чтобы
         # последовательность читалась слева направо: наберите → проверьте → отправьте.
         self.stop_btn = HudButton(row, _t("■ СТОП"), self._stop_work, height=36, font_size=10,
