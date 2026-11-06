@@ -11,7 +11,7 @@ from stamina.hud import HudButton
 import time
 from tkinter import font as tkfont
 
-from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE_HI, MUTED, PANEL, RED, TEXT, px
+from stamina.theme import AMBER, BG, BG2, CYAN, LINE_HI, MUTED, PANEL, RED, TEXT, px
 
 from . import paths
 from .asr import ASR
