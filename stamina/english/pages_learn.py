@@ -15,10 +15,9 @@ from stamina.theme import AMBER, BG, CYAN, FAINT, GREEN, LINE_HI, MUTED, PANEL, 
 from .speech_std import advance_later, passed as std_passed
 from . import sm2
 from .check import SpeechCheck
-from .mic import MicPanel
-from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
+from .tasks import MODES, TYPE_TITLE, TaskFactory
 from .textutil import score_sentence, score_word, verdict, word_forms
-from .ui import Choice, L, MatchReadout, ScrollFrame, Strip, entry, target_missed
+from .ui import Choice, L, ScrollFrame, Strip, entry, target_missed
 from .vocab import POS_SHORT, SETS
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
