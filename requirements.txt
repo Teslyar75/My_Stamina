@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Star Typing — Python 3.10+, стандартная библиотека (tkinter, winsound, urllib) + Pillow.
 # Pillow — фон «Живой космос» и собственные аватары пилотов (без него программа работает, фон выключен):
 Pillow>=10.0
