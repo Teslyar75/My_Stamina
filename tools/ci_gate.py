@@ -114,6 +114,12 @@ def render_markdown(results: list[dict], ok: bool) -> str:
 
 
 def main() -> int:
+    # Кириллица в cp1252/cp866 роняет print: заменяем непечатаемые символы
+    try:
+        sys.stdout.reconfigure(errors="replace")
+    except Exception:  # noqa: BLE001
+        pass
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", default=str(Path(__file__).resolve().parent.parent),
                         help="корень репозитория (по умолчанию — родитель tools/)")
