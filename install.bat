@@ -37,7 +37,7 @@ echo  [1/5] Python:
 "%PYEXE%" %PYARGS% --version
 
 echo  [2/5] Папка программы .venv ...
-if not exist "%ROOT%.venv\Scripts\python.exe" "%PYEXE%" %PYARGS% -m venv "%ROOT%.venv"
+if not exist "%ROOT%.venv\Scripts\python.exe" call "%PYEXE%" %PYARGS% -m venv "%ROOT%.venv"
 set "VPY=%ROOT%.venv\Scripts\python.exe"
 if not exist "%VPY%" (
     echo  [!] Не удалось создать .venv - ставлю пакеты в общий Python.
@@ -46,7 +46,7 @@ if not exist "%VPY%" (
 
 rem Python 3.13.0 + .venv на Windows не находит библиотеку Tcl - ошибка CPython gh-125235.
 rem Проверяем не импорт, а настоящее окно: импорт проходит и там, где окна не будет.
-"%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
+call "%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
 if errorlevel 1 (
     echo.
     echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
@@ -60,7 +60,7 @@ echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
 rem pip читает requirements.txt в кодировке локали; PYTHONUTF8=1 держит кириллицу в комментариях.
 set "PYTHONUTF8=1"
 set "PIPLOG=%TEMP%\star-typing-pip.log"
-"%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt" >"%PIPLOG%" 2>&1
+call "%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt" >"%PIPLOG%" 2>&1
 if errorlevel 1 (
     echo.
     echo  [!] pip не смог поставить пакеты. Вот что он сказал:
