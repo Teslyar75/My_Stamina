@@ -119,11 +119,7 @@ class ScannerCompactTest(unittest.TestCase):
 
     def _check_layout(self, page, size):
         sf = page.sf
-        page.update_idletasks()  # обновить геометрию перед проверкой yview
-        yview = tuple(sf.canvas.yview())
-        # В CI yview может быть не точно (0.0, 1.0), проверяем что весь контент виден
-        self.assertAlmostEqual(yview[0], 0.0, delta=0.01, msg=f"{size}: yview start не у начала")
-        self.assertGreaterEqual(yview[1], 0.99, f"{size}: нужна прокрутка, yview={yview}")
+        self.assertEqual(tuple(sf.canvas.yview()), (0.0, 1.0), f"{size}: нужна прокрутка")
         self.assertFalse(sf.bar.winfo_ismapped(), f"{size}: лишняя полоса прокрутки")
         self.assertEqual(self._squeezed(page), [], f"{size}: обрезано")
         for w, n in ((page.scan_panel, "панель сканера"), (page.chan, "канал связи"),
