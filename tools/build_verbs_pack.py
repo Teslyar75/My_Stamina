@@ -140,7 +140,12 @@ def load_ru_rank(work: Path) -> None:
     выбрать самое употребительное («сказать», а не «различать» для tell)."""
     path = work / "ru_50k.txt"
     if not path.exists():
-        fetch(FREQ_URL.replace("/en/en_50k", "/ru/ru_50k"), path)
+        url = FILES["en_50k.txt"].replace("/en/en_50k", "/ru/ru_50k")
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=300) as r, open(path, "wb") as f:
+            while chunk := r.read(1 << 20):
+                f.write(chunk)
+        time.sleep(3)
     with open(path, encoding="utf-8") as fh:
         for i, line in enumerate(fh):
             parts = line.split()

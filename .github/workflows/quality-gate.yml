@@ -53,10 +53,14 @@ jobs:
           python -m pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Быстрый гейт (contrast + i18n + dep)
+        env:
+          PYTHONUTF8: '1'
         run: python tools/ci_gate.py --only contrast --only i18n --only dep
 
       - name: Тесты (Windows — нативный Tk)
         if: runner.os == 'Windows'
+        env:
+          PYTHONUTF8: '1'
         run: python -m pytest tests/ -q -p no:cacheprovider
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
@@ -65,6 +69,8 @@ jobs:
 
       - name: Отчёт гейта
         if: always()
+        env:
+          PYTHONUTF8: '1'
         run: python tools/ci_gate.py --only contrast --only i18n --only dep --md gate_report.md --json gate_report.json
 
       - name: Паритет альт-интерфейса (advisory, не красит сборку)
