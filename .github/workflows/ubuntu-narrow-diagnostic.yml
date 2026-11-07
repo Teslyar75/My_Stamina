@@ -1,6 +1,6 @@
-# Узкая диагностика Ubuntu-гейта PR34 (HEAD 8d1dc5d): не полный suite.
-# Запускается только с этой ветки. Обязательные checks / quality-gate не меняет.
-name: ubuntu narrow diagnostic
+# Полный Ubuntu diagnostic suite для дерева PR34 (8d1dc5d).
+# Только эта ветка. Не quality-gate, не Windows, продуктовый код не трогает.
+name: ubuntu full diagnostic
 
 on:
   push:
@@ -13,9 +13,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  ubuntu-narrow:
+  ubuntu-full:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       PYTHONUNBUFFERED: "1"
     steps:
@@ -40,23 +40,21 @@ jobs:
           python -m pip install -r requirements.txt -r requirements-dev.txt
           python -m pip install pytest-timeout
 
-      - name: Narrow Ubuntu tests under Xvfb
+      - name: Full Ubuntu tests under Xvfb
         run: |
           set -o pipefail
-          xvfb-run -a python -X faulthandler -m pytest \
-            tests/test_alt_parity.py \
-            tests/test_english_conjugation.py \
-            tests/test_english_hub_ui.py \
-            tests/test_english_quality.py \
-            tests/test_english_reference_ui.py \
-            tests/test_english_scanner_compact.py \
+          xvfb-run -a python -X faulthandler -m pytest tests/ \
             -vv --tb=short -s -p no:cacheprovider \
             --timeout=90 --timeout-method=signal \
-            --durations=20 2>&1 | tee ubuntu_narrow_diag.log
+            --durations=30 \
+            --junitxml=ubuntu_full_diag.xml \
+            2>&1 | tee ubuntu_full_diag.log
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ubuntu-narrow-diagnostic-log
-          path: ubuntu_narrow_diag.log
+          name: ubuntu-full-diagnostic-log
+          path: |
+            ubuntu_full_diag.log
+            ubuntu_full_diag.xml
           if-no-files-found: ignore
