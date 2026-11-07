@@ -12,6 +12,7 @@ import time
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 from stamina import i18n, orion, owner_key, pilots
 
@@ -256,6 +257,15 @@ class OrionDataTest(unittest.TestCase):
         orion.tasks_path().write_text("{это не json", encoding="utf-8")
         self.assertEqual(orion.tasks(), [])
         self.assertTrue(orion.add_task("новая задача"))
+
+    def test_task_document_order_stable_on_clock_backstep(self):
+        with (
+            mock.patch("stamina.orion.time.time", side_effect=[1000.0, 999.0]),
+            mock.patch("stamina.orion.time.time_ns", side_effect=[1_000_000, 900_000]),
+        ):
+            orion.add_task("первая", author="Комета")
+            orion.add_task("вторая", author="Комета")
+        self.assertEqual([r["text"] for r in orion.tasks()], ["вторая", "первая"])
 
     # -- понимание речи пилота ---------------------------------------------
     def test_detect_task_by_triggers(self):
@@ -1356,6 +1366,15 @@ class OrionArchiveTest(unittest.TestCase):
     def test_archive_newest_first(self):
         for word in ("первое", "второе", "третье"):
             orion.remember("orion", "pilot", word)
+        self.assertEqual([m["text"] for m in orion.archive("")], ["третье", "второе", "первое"])
+
+    def test_archive_newest_first_on_clock_backstep(self):
+        with (
+            mock.patch("stamina.orion.time.time", side_effect=[2000.0, 1999.0, 1998.0]),
+            mock.patch("stamina.orion.time.time_ns", side_effect=[2_000_000, 1_900_000, 1_800_000]),
+        ):
+            for word in ("первое", "второе", "третье"):
+                orion.remember("orion", "pilot", word)
         self.assertEqual([m["text"] for m in orion.archive("")], ["третье", "второе", "первое"])
 
     def test_archive_by_day_and_minute(self):

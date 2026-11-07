@@ -399,6 +399,26 @@ def tidy_text(text: str) -> str:
     return "\n".join(out).strip()
 
 
+def _coerce_int(value, default: int | None = None) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _next_seq(rows: list[dict]) -> int:
+    """Монотонный порядковый номер записи даже при скачках системных часов."""
+    top = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        val = _coerce_int(row.get("seq"))
+        if val is not None and val > top:
+            top = val
+    now = time.time_ns()
+    return now if now > top else top + 1
+
+
 def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
              kind: str = "", shot: str = "") -> dict:
     """Дописать реплику: role — pilot | orion | system.
@@ -412,7 +432,8 @@ def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
         # Сохраняем сессию по профилю — иначе смена профиля ломает инструменты
         data.setdefault("sessions", {})["orion-recon"] = session
         data["sessions"]["orion-commander"] = session
-    msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(), "seq": time.time_ns(),
+    msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(),
+           "seq": _next_seq(data["messages"]),
            "text": (" ".join((text or "").split()) if role == "pilot" else tidy_text(text))[:MAX_TEXT],
            "kind": kind}
     if shot:
@@ -616,14 +637,14 @@ def archive(query: str = "", *, agent_id: str = "", limit: int = 400,
             row["agent"] = str(rec.get("id") or "")
             row["agent_name"] = name
             rows.append(row)
-    def _seq(msg: dict, fallback: int) -> int:
-        try:
-            return int(msg.get("seq") or fallback)
-        except (TypeError, ValueError):
-            return fallback
+    def _order(msg: dict, fallback: int) -> tuple[int, int]:
+        seq = _coerce_int(msg.get("seq"))
+        if seq is None:
+            seq = int(float(msg.get("ts") or 0.0) * 1_000_000_000)
+        return seq, fallback
     rows = [msg for _i, msg in sorted(
         enumerate(rows),
-        key=lambda pair: (float(pair[1].get("ts") or 0.0), _seq(pair[1], pair[0])),
+        key=lambda pair: _order(pair[1], pair[0]),
         reverse=True,
     )]
     return rows[:limit] if limit else rows
@@ -779,14 +800,14 @@ def tasks(*, status: str = "") -> list[dict]:
     rows = [t for t in (data.get("tasks") or []) if isinstance(t, dict)]
     if status:
         rows = [t for t in rows if t.get("status") == status]
-    def _seq(task: dict, fallback: int) -> int:
-        try:
-            return int(task.get("seq") or fallback)
-        except (TypeError, ValueError):
-            return fallback
+    def _order(task: dict, fallback: int) -> tuple[int, int]:
+        seq = _coerce_int(task.get("seq"))
+        if seq is None:
+            seq = int(float(task.get("ts") or 0.0) * 1_000_000_000)
+        return seq, fallback
     return [task for _i, task in sorted(
         enumerate(rows),
-        key=lambda pair: (float(pair[1].get("ts") or 0.0), _seq(pair[1], pair[0])),
+        key=lambda pair: _order(pair[1], pair[0]),
         reverse=True,
     )]
 
@@ -799,7 +820,7 @@ def add_task(text: str, *, author: str = "", agent: str = "", brief: str = "") -
     """
     data = _read_json(tasks_path(), {"version": 1, "tasks": []})
     data.setdefault("tasks", [])
-    row = {"id": uuid.uuid4().hex[:12], "ts": time.time(), "seq": time.time_ns(),
+    row = {"id": uuid.uuid4().hex[:12], "ts": time.time(), "seq": _next_seq(data["tasks"]),
            "text": " ".join((text or "").split())[:MAX_TEXT],
            "author": author, "agent": agent or DEFAULT_AGENT["id"], "status": "open"}
     if brief:
