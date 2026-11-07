@@ -1,0 +1,53 @@
+name: scanner windows diagnostic
+
+on:
+  push:
+    branches:
+      - cursor/fix-windows-gate-failures-c61e
+  workflow_dispatch:
+
+concurrency:
+  group: scanner-diag-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scanner-diag:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      STAMINA_SCANNER_DIAG: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Установка зависимостей
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Scanner targeted diagnostics (Windows Tk)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          python -m pytest `
+            tests/test_english_scanner_compact.py::ScannerCompactTest::test_layout_fits_small_screens_and_focus `
+            tests/test_english_scanner_compact.py::ScannerCompactTest::test_normal_scale_grows_below_focus `
+            tests/test_english_scanner_compact.py::ScannerCompactTest::test_o_and_t_type_in_entry `
+            -q -s -p no:cacheprovider 2>&1 | Tee-Object -FilePath scanner_diag.log
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scanner-windows-diagnostic
+          path: scanner_diag.log
+          if-no-files-found: error
