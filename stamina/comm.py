@@ -28,6 +28,18 @@ MAX_MESSAGES = 500    # сколько последних сообщений х�
 FILE_NAME = "comm.json"
 
 
+def message_language(text: str) -> str:
+    """Язык сообщения без интернета: ru/uk/en/de… или «und», если букв нет."""
+    from stamina import langdetect
+    return langdetect.detect(text or "")
+
+
+def needs_translation(text: str, target: str) -> bool:
+    """Стоит ли показывать кнопку перевода: текст на другом языке, не пустой."""
+    lang = message_language(text)
+    return bool(lang) and lang != "und" and lang != (target or "")
+
+
 def _root() -> Path:
     # ROOT_DIR меняется в tests/pilots.reset_root, поэтому берём его в момент вызова
     from stamina import pilots

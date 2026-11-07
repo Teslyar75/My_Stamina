@@ -80,6 +80,14 @@ class CommDataTest(unittest.TestCase):
         self.assertIsNotNone(comm.send("p1", "Комета", "снова"))
         self.assertEqual(len(comm.messages()), 1)
 
+    def test_language_helpers(self):
+        self.assertEqual(comm.message_language("Привет, экипаж! Как дела?"), "ru")
+        self.assertEqual(comm.message_language("Привіт, екіпаж! Як справи?"), "uk")
+        self.assertEqual(comm.message_language("Hello, crew! How are you?"), "en")
+        self.assertTrue(comm.needs_translation("Hello, crew!", "ru"))
+        self.assertFalse(comm.needs_translation("Привет, экипаж!", "ru"))
+        self.assertFalse(comm.needs_translation("123 ???", "ru"))   # букв нет — не переводим
+
 
 class CommScreenTest(unittest.TestCase):
     """Экран раздела: лента видна, отправка из поля ввода попадает в эфир."""
@@ -146,6 +154,53 @@ class CommScreenTest(unittest.TestCase):
         self.assertIn("Есть связь?", self.scr.text.get("1.0", "end"))
         self.assertIn("Новых: 1", self.scr.info.cget("text"))
         self.assertEqual(comm.unread(self.app.pilot["id"]), 0)   # отметили прочитанным
+
+    def test_translate_button_only_for_foreign_message(self):
+        comm.send("vega", "Вега", "Привет, экипаж!", ts=1.0)
+        self.scr.refresh()
+        self.assertEqual(self.scr._tr_widgets, [])          # уже на языке пилота
+        comm.send("vega", "Вега", "Hello, crew! How are you?", ts=2.0)
+        self.scr.refresh()
+        self.assertEqual(len(self.scr._tr_widgets), 1)
+        self.assertIn("ПЕРЕВОД", self.scr._tr_widgets[0].cget("text"))
+
+    def test_translate_toggle_and_cache(self):
+        """Нажали — перевод, нажали снова — оригинал; повторный перевод из кэша."""
+        import time
+        import stamina.comm_screen as cs
+        calls = []
+
+        def fake(text, sl, tl):
+            calls.append((text, sl, tl))
+            return "Привет, экипаж! Как дела?"
+
+        orig = cs.translate_message
+        cs.translate_message = fake
+        try:
+            msg = comm.send("vega", "Вега", "Hello, crew! How are you?", ts=2.0)
+            self.scr.refresh()
+            self.scr._tr_widgets[0].invoke()
+            self.assertIn("…", self.scr._tr_widgets[0].cget("text"))   # ждём перевод
+            end = time.time() + 3.0
+            while time.time() < end:
+                self.scr._poll_translations()
+                if str(msg["id"]) not in self.scr._tr_pending:
+                    break
+                self.root.update()
+                time.sleep(0.01)
+            body = self.scr.text.get("1.0", "end")
+            self.assertIn("Привет, экипаж!", body)
+            self.assertNotIn("Hello, crew!", body)
+            self.assertIn("ОРИГИНАЛ", self.scr._tr_widgets[0].cget("text"))
+            self.scr._tr_widgets[0].invoke()                    # вернуть оригинал
+            body = self.scr.text.get("1.0", "end")
+            self.assertIn("Hello, crew!", body)
+            self.assertNotIn("Привет, экипаж!", body)
+            self.scr._tr_widgets[0].invoke()                    # снова перевод
+            self.assertIn("Привет, экипаж!", self.scr.text.get("1.0", "end"))
+            self.assertEqual(len(calls), 1)                     # второй раз — из кэша
+        finally:
+            cs.translate_message = orig
 
     def test_without_pilot_input_is_disabled(self):
         self.app.pilot = None

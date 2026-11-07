@@ -49,7 +49,7 @@ class MicControl:
 
     def __init__(self, master, *, on_text, on_status=None, label: str = RESTING,
                  height: int = 36, font_size: int = 11, settings: dict | None = None,
-                 save=None) -> None:
+                 save=None, quiet=None) -> None:
         self.button = HudButton(master, _t(label), self.toggle, height=height,
                                 font_size=font_size, color=GREEN)
         # режим «не обрывать по тишине»: рядом с ГОЛОС, активен — значит держим микрофон
@@ -61,6 +61,7 @@ class MicControl:
         self._settings = settings if settings is not None else {}
         self.model_path = None          # папка модели выбранного языка (None — любая найденная)
         self._save = save
+        self._quiet = quiet or (lambda: False)
         self._listener: stt.Listener | None = None
         self._partial = ""
         self._bar = ""
@@ -147,6 +148,12 @@ class MicControl:
         if listener is None:
             return
         for kind, value in listener.poll():
+            # Корабль говорит вслух — микрофон слышит нашу же озвучку.
+            # Такую «фразу» выбрасываем, иначе Орион отвечает сам себе.
+            if kind in ("partial", "final") and self._quiet():
+                if kind == "final":
+                    self._reset()
+                continue
             if kind == "status":
                 self._say(_t("Готовлю распознавание…") if value == "loading"
                           else _t("СЛУШАЮ… говорите"), GREEN)

@@ -371,9 +371,21 @@ class OrionScreen(tk.Frame):
         self.strip_pilot = _label(sbody, "", fg=CYAN, size=11, bold=True, bg=PANEL, anchor="w",
                                   justify="left", wraplength=px(880))
         self.strip_pilot.pack(fill=tk.X, pady=(px(6), px(4)))
-        self.strip_orion = _label(sbody, "", fg=TEXT, size=11, bg=PANEL, anchor="w",
-                                  justify="left", wraplength=px(880))
-        self.strip_orion.pack(fill=tk.X)
+        # Ответ Ориона — выделяемый: фрагменты кода и команды копируются мышью,
+        # Ctrl+C/Ctrl+A и правым кликом. Label этого не умеет, поэтому здесь Text.
+        self.strip_orion = tk.Text(sbody, wrap=tk.WORD, bg=PANEL, fg=TEXT, relief=tk.FLAT,
+                                   font=theme.font(11), padx=0, pady=0, cursor="xterm",
+                                   height=8, state=tk.DISABLED, highlightthickness=0, bd=0,
+                                   exportselection=True, selectbackground=CYAN,
+                                   selectforeground=BG, inactiveselectbackground=LINE)
+        self.strip_orion.pack(fill=tk.BOTH, expand=True)
+        self.strip_orion.bind("<Button-3>", self._strip_menu)
+        self.strip_orion.bind("<Control-KeyPress>", self._strip_key)
+        self.strip_orion.bind("<<Copy>>", lambda _e: self._strip_copy())
+        self.strip_orion.bind("<Button-4>", lambda _e: self.strip_orion.yview_scroll(-3, "units"))
+        self.strip_orion.bind("<Button-5>", lambda _e: self.strip_orion.yview_scroll(3, "units"))
+        self.strip_orion.bind("<MouseWheel>", lambda e: self.strip_orion.yview_scroll(
+            int(-e.delta / 120) * 3, "units"))
         _label(sbody, _t("Доска скрыта: разговор идёт как контекст. Скажите «запиши задание» — "
                          "или нажмите «ДОСКА»."), fg=MUTED, size=8, bg=PANEL, anchor="w",
                justify="left", wraplength=px(880)).pack(fill=tk.X, pady=(px(10), 0))
@@ -457,7 +469,8 @@ class OrionScreen(tk.Frame):
         self.mic = MicControl(row, on_text=self._insert_text, on_status=self._mic_status,
                               label=_t("ГОЛОС"), height=36, font_size=11,
                               settings=self.app.store.settings,
-                              save=self.app.store.save_settings)
+                              save=self.app.store.save_settings,
+                              quiet=tts.speaking)
         # Кнопки справа: ОТПРАВИТЬ — крупная и последняя перед «СТОП», чтобы
         # последовательность читалась слева направо: наберите → проверьте → отправьте.
         self.stop_btn = HudButton(row, _t("■ СТОП"), self._stop_work, height=36, font_size=10,
@@ -694,6 +707,75 @@ class OrionScreen(tk.Frame):
                 self._hint(_t("Текст скопирован"), GREEN)
         except tk.TclError:
             pass
+        return "break"
+
+    # -- живая линия: выделение и копирование -----------------------------
+    def _strip_set(self, text: str) -> None:
+        """Записать ответ в живую линию, сохранив прокрутку."""
+        tx = self.strip_orion
+        try:
+            top = tx.yview()[0]
+        except tk.TclError:
+            top = 0.0
+        tx.configure(state=tk.NORMAL)
+        tx.delete("1.0", tk.END)
+        tx.insert("1.0", text)
+        tx.configure(state=tk.DISABLED)
+        try:
+            tx.yview_moveto(top)
+        except tk.TclError:
+            pass
+
+    def _strip_key(self, e) -> str | None:
+        """Ctrl+C / Ctrl+A в живой линии — по коду клавиши (работает и в русской раскладке)."""
+        code = getattr(e, "keycode", 0)
+        key = (getattr(e, "keysym", "") or "").lower()
+        if code == 67 or key in ("c", "cyrillic_es"):
+            return self._strip_copy()
+        if code == 65 or key in ("a", "cyrillic_ef"):
+            self.strip_orion.tag_add(tk.SEL, "1.0", "end-1c")
+            return "break"
+        return None
+
+    def _strip_copy(self) -> str:
+        """Копировать выделенное в живой линии."""
+        tx = self.strip_orion
+        try:
+            selected = tx.get(tk.SEL_FIRST, tk.SEL_LAST)
+        except tk.TclError:
+            selected = ""
+        if selected:
+            self.clipboard_clear()
+            self.clipboard_append(selected)
+            self._hint(_t("Текст скопирован"), GREEN)
+        return "break"
+
+    def _strip_copy_all(self) -> str:
+        """Копировать весь ответ Ориона — удобно для кода и команд."""
+        text = self.strip_orion.get("1.0", "end-1c").strip()
+        if text:
+            self.clipboard_clear()
+            self.clipboard_append(text)
+            self._hint(_t("Ответ скопирован"), GREEN)
+        return "break"
+
+    def _strip_menu(self, e) -> str:
+        """Правый клик по живой линии: копировать выделение или весь ответ."""
+        tx = self.strip_orion
+        has_sel = bool(tx.tag_ranges(tk.SEL))
+        menu = tk.Menu(self, tearoff=0, bg=PANEL, fg=TEXT,
+                       activebackground=CYAN, activeforeground=BG)
+        menu.add_command(label=_t("Копировать"), accelerator="Ctrl+C",
+                         command=self._strip_copy,
+                         state=tk.NORMAL if has_sel else tk.DISABLED)
+        menu.add_command(label=_t("Копировать весь ответ"), command=self._strip_copy_all)
+        menu.add_command(label=_t("Выделить всё"), accelerator="Ctrl+A",
+                         command=lambda: (tx.tag_add(tk.SEL, "1.0", "end-1c"), "break")[1])
+        self._feed_menu_widget = menu
+        try:
+            menu.tk_popup(e.x_root, e.y_root)
+        finally:
+            menu.grab_release()
         return "break"
 
     def _apply_tags(self) -> None:
@@ -1601,8 +1683,9 @@ class OrionScreen(tk.Frame):
             return t if len(t) <= n else t[:n - 1].rstrip() + "…"
         self.strip_pilot.configure(text=(_t("ПИЛОТ: {0}").format(_clip(last_pilot["text"]))
                                          if last_pilot else _t("ПИЛОТ: —")))
-        self.strip_orion.configure(text=(f"{name}: {_clip(last_orion['text'])}" if last_orion
-                                         else _t("{0}: слушаю, пилот").format(name)))
+        # Ответ показываем целиком: код и команды должны копироваться без обрезки.
+        self._strip_set(f"{name}: {str(last_orion['text'])}" if last_orion
+                        else _t("{0}: слушаю, пилот").format(name))
 
     # -- доска: скрыта или открыта -----------------------------------------
     def _set_board(self, visible: bool) -> None:
