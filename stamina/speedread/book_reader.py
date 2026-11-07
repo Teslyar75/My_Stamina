@@ -15,11 +15,10 @@ import tkinter.font as tkfont
 from stamina import theme
 from stamina import monitors
 from stamina.hud import HudButton
-from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, blend, px
+from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, blend, px
 
 from .paper_tex import paper_photo
 from .text_norm import normalize_book_text, paragraphs
-from .ui import L
 
 THEMES = {
     "paper": {

@@ -1,6 +1,4 @@
 """Пометки правой кнопкой: запись, хранение, блок для агента."""
-import json
-import time
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory

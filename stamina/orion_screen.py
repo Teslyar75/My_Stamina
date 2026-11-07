@@ -31,7 +31,7 @@ import webbrowser
 from tkinter import messagebox
 from pathlib import Path
 
-from stamina import __version__, chat_md, compose, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import __version__, chat_md, compose, nav, orion, owner_key, pilot_pin, shots, theme
 from stamina import ship_chat
 from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
@@ -40,8 +40,8 @@ from stamina.pilot_screens import Modal, PinPad
 from stamina.prompt_box import PromptBox, hud_colors
 from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import (AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT,
-                           blend, px)
-from stamina.voice import agent_voice, autosend, stt, tts
+                           px)
+from stamina.voice import agent_voice, autosend, tts
 from stamina.voice.engine import guess_lang
 from stamina.voice.mic import MicControl
 

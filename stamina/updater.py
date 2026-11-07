@@ -5,7 +5,6 @@ import json
 import re
 import shutil
 import subprocess
-import sys
 import tempfile
 import urllib.error
 import urllib.request

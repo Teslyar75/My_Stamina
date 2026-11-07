@@ -17,7 +17,6 @@
 from __future__ import annotations
 
 import bisect
-import difflib
 import re
 import time
 from typing import Callable

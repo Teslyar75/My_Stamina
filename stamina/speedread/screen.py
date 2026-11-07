@@ -12,7 +12,7 @@ from tkinter import filedialog, messagebox
 
 from stamina import theme
 from stamina.hud import Readouts, RingGauge
-from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, RED,
+from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE_HI, MUTED, PANEL, RED,
                            TEXT, blend, px)
 
 from stamina import library as libmod

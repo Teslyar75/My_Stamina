@@ -1,5 +1,4 @@
 """Плавающая панель радио alt_ui: строится во всех профилях, логика — движок радио."""
-import os
 import tkinter as tk
 import unittest
 from unittest import mock
