@@ -74,12 +74,13 @@ class Document:
 
     def __init__(self, title: str = "", segments: list | None = None, images: dict | None = None,
                  created: float | None = None, modified: float | None = None,
-                 path: Path | None = None) -> None:
+                 path: Path | None = None, saved_ns: int | None = None) -> None:
         self.title = title
         self.segments = list(segments or [])
         self.images: dict[str, bytes] = dict(images or {})   # имя → PNG/JPEG-байты
         self.created = created or time.time()
         self.modified = modified or self.created
+        self.saved_ns = int(saved_ns or 0)
         self.path = path
         self.source: str | None = None    # файл с компьютера, из которого документ открыт
 
@@ -132,9 +133,12 @@ def save(doc: Document, path: Path | None = None) -> Path:
     if path.parent == docs_dir():
         snapshot(path)
     doc.modified = time.time()
+    ns = time.time_ns()
+    prev = int(getattr(doc, "saved_ns", 0) or 0)
+    doc.saved_ns = ns if ns > prev else prev + 1
     used = {s["img"] for s in doc.segments if "img" in s}
     meta = {"format": FORMAT, "title": doc.title, "created": doc.created,
-            "modified": doc.modified, "segments": doc.segments}
+            "modified": doc.modified, "saved_ns": doc.saved_ns, "segments": doc.segments}
     if getattr(doc, "source", None):
         meta["source"] = str(doc.source)
     tmp = path.with_suffix(path.suffix + ".tmp")
@@ -155,7 +159,7 @@ def load(path: Path) -> Document:
         images = {n: z.read(n) for n in z.namelist() if n.startswith("images/") and not n.endswith("/")}
     segs = [s for s in meta.get("segments") or [] if isinstance(s, dict) and ("t" in s or "img" in s)]
     doc = Document(str(meta.get("title") or ""), segs, images, meta.get("created"),
-                   meta.get("modified"), path)
+                   meta.get("modified"), path, meta.get("saved_ns"))
     doc.source = meta.get("source") or None
     try:
         fmt = int(meta.get("format") or 1)
@@ -179,20 +183,30 @@ def peek(path: Path) -> dict:
     """Карточка для списка без чтения картинок: заголовок, время, начало текста и
     текст для поиска (search — в нижнем регистре, заголовок + текст)."""
     try:
+        st = Path(path).stat()
+    except OSError:
+        st = None
+    try:
         with zipfile.ZipFile(path) as z:
             meta = json.loads(z.read(DOC_JSON).decode("utf-8"))
     except (OSError, zipfile.BadZipFile, KeyError, ValueError):
         stem = Path(path).stem
         return {"path": Path(path), "title": stem, "modified": 0.0, "created": 0.0, "snippet": "",
-                "search": stem.lower(), "words": 0, "images": 0, "broken": True}
+                "search": stem.lower(), "words": 0, "images": 0, "saved_ns": 0,
+                "fs_mtime_ns": int(getattr(st, "st_mtime_ns", 0) or 0), "broken": True}
     doc = Document(str(meta.get("title") or ""), meta.get("segments") or [])
     text = " ".join(doc.text.split())
     pics = sum(1 for s in doc.segments if "img" in s)
     modified = float(meta.get("modified") or 0)
+    try:
+        saved_ns = int(meta.get("saved_ns") or 0)
+    except (TypeError, ValueError):
+        saved_ns = 0
+    fs_mtime_ns = int(getattr(st, "st_mtime_ns", 0) or 0)
     return {"path": Path(path), "title": doc.display_title(), "modified": modified,
             "created": float(meta.get("created") or modified), "snippet": text[:120],
             "search": (doc.title + "\n" + text).lower(), "words": len(text.split()), "images": pics,
-            "broken": False}
+            "saved_ns": saved_ns, "fs_mtime_ns": fs_mtime_ns, "broken": False}
 
 
 SORTS = ("modified", "title", "created")
@@ -203,7 +217,16 @@ def sort_items(items: list[dict], by: str = "modified") -> list[dict]:
     if by == "title":
         return sorted(items, key=lambda d: (d["title"] or "").casefold())
     key = "created" if by == "created" else "modified"
-    return sorted(items, key=lambda d: d.get(key) or 0, reverse=True)
+    return [it for _i, it in sorted(
+        enumerate(items),
+        key=lambda pair: (
+            float(pair[1].get(key) or 0),
+            int(pair[1].get("saved_ns") or 0),
+            int(pair[1].get("fs_mtime_ns") or 0),
+            pair[0],
+        ),
+        reverse=True,
+    )]
 
 
 def filter_items(items: list[dict], query: str) -> list[dict]:
