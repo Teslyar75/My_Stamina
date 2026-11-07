@@ -12,7 +12,7 @@ from stamina import theme
 from stamina import safe_mode
 from stamina.i18n import t as _t
 from stamina.idle import (DRIFT, FADE_MS, GIF_MAX_FRAMES, RADIO_TARGET, SLIDE_MS, XFADE_MS,
-                          XFADE_STEPS, fade_volume, is_idle, order_stations, pick_station,
+                          XFADE_STEPS, fade_volume, is_idle, order_stations,
                           settings_of, start_index, station_genre)
 
 try:

@@ -9,8 +9,8 @@ import tkinter.font as tkfont
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel  # noqa: F401  (реэкспорт для страниц)
-from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
-                           PANEL_HI, PURPLE, RED, TEXT, blend, chamfer, px)
+from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
+                           PANEL_HI, RED, TEXT, blend, chamfer, px)
 
 DIFF_COLOR = {"easy": GREEN, "medium": CYAN, "tricky": AMBER}
 

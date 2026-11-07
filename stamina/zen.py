@@ -16,7 +16,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import theme
-from stamina.account_view import blend, rrect
+from stamina.account_view import rrect
 from stamina.hotkeys import ALT, CTRL
 from stamina.i18n import t
 from stamina.zen_engine import COUNTS, PortalTest, prepare_words, quote_slice

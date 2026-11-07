@@ -42,8 +42,6 @@ def test_irregular_forms_are_used():
 
 
 # --- паки из настоящих данных (data/verbs/*.json) ---------------------------
-import pytest
-
 from stamina.english.progress import Progress
 
 
@@ -117,7 +115,6 @@ def test_unlock_on_fake_progress(tmp_path):
 
 
 def test_add_to_card_reaches_warehouse(tmp_path):
-    from stamina.english import warehouse
     class FakeVocab:  # словарь с одним словом, без загрузки с диска
         def get(self, slug):
             return {"slug": slug, "word": slug} if slug == "go" else None

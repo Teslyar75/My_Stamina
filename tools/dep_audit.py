@@ -224,6 +224,10 @@ def as_markdown(report: dict) -> str:
 
 
 def main() -> int:
+    try:
+        sys.stdout.reconfigure(errors="replace")
+    except Exception:  # noqa: BLE001
+        pass
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", metavar="PATH", help="записать отчёт JSON")
     parser.add_argument("--allow", action="append", default=[], help="считать модуль необязательным")

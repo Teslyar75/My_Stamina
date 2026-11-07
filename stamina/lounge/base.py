@@ -8,7 +8,7 @@ from typing import Callable
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
-from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, px
 
 from . import store
 

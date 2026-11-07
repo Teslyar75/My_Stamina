@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 from stamina import glue_fix
-from stamina.text_processing import process_text, remove_punctuation
+from stamina.text_processing import process_text
 from stamina.zen_engine import prepare_words
 
 DATA = Path(__file__).parent / "data"

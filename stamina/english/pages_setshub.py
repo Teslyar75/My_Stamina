@@ -6,9 +6,8 @@ from __future__ import annotations
 
 import tkinter as tk
 
-from stamina import theme
 from stamina.hud import HudButton, HudPanel
-from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, TEXT, px
 
 from stamina.i18n import t as _t
 
