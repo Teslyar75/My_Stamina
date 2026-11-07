@@ -31,6 +31,9 @@ FOCUS_FONT_GAIN = 0.8
 # меньше коэффициент и потолок — вкладки, шапка и кнопки остаются, шрифт не «кричит»
 NORMAL_FONT_GAIN = 0.6
 NORMAL_FONT_CAP = 3.0     # потолок «вписанного» масштаба до gain: k ≤ 0.6·3 = 1.8 (фокус — до 3.2)
+# очень низкое окно (1024×600): ниже этого шрифт не ужимаем — остаётся читаемым,
+# но панель всё ещё заполняет высоту без лишней прокрутки.
+NORMAL_FONT_MIN = 0.82
 
 
 # =============================================================================
@@ -1368,8 +1371,9 @@ class ScannerPage(tk.Frame):
     def _fill(self, gain: float | None, cap: float = 4.0, calm: bool = False) -> None:
         """Растянуть панели сканера и канала связи по высоте окна и масштабировать шрифт
         (gain=None — вернуть исходную компактную раскладку). calm — обычный режим: каждая
-        панель получает не меньше своего содержимого, остаток высоты делится 55/45;
-        если не помещается и при k=1 — остаётся обычная раскладка (с прокруткой при нужде)."""
+        панель получает не меньше своего содержимого, остаток высоты делится 55/45.
+        На очень низком окне допускаем мягкое уменьшение k ниже 1.0 (до NORMAL_FONT_MIN),
+        чтобы не оставлять пустой низ и не включать прокрутку на 1024×600."""
         panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
         if len(panels) != 2 or not getattr(self, "compact", False):
             return
@@ -1387,11 +1391,15 @@ class ScannerPage(tk.Frame):
                 chh = max(1, self.sf.canvas.winfo_height())
                 # растягиваем по окну, но мельче «впритык»: пропорции между элементами те же
                 k = self.scale_for(cw, chh, gain, cap)
-                while True:
+                if not calm:
+                    k = max(1.0, k * 0.98)  # небольшой запас: фокус не должен упираться в потолок окна
+                min_k = NORMAL_FONT_MIN if calm else 1.0
+                for _ in range(12):  # защита от дребезга layout/scrollbar на границе высоты
                     self._scale(k)
-                    self.update_idletasks()
+                    if not calm:
+                        self.update_idletasks()
                     other = self.sf.inner.winfo_reqheight() - sp.winfo_reqheight() - ch_.winfo_reqheight()
-                    avail = chh - max(0, other) - px(4)
+                    avail = chh - max(0, other) - (0 if calm else px(4))
                     h1 = int(avail * 0.55)
                     h2 = avail - h1
                     need = lambda p: p.body.winfo_reqheight() + px(26) + px(4) + px(6)
@@ -1399,18 +1407,19 @@ class ScannerPage(tk.Frame):
                     if calm:
                         n1, n2 = need(sp), need(ch_)
                         if n1 + n2 > avail:
-                            if k <= 1.0:
-                                self._fill(None)
-                                return
-                            k = max(1.0, k * 0.92)
-                            continue
+                            if k > min_k + 0.01:
+                                k = max(min_k, k * 0.92)
+                                continue
                         h1 = n1 + int((avail - n1 - n2) * 0.55)
                         h2 = avail - h1
                     sp.configure(height=h1)
                     ch_.configure(height=h2)
-                    if k <= 1.0 or not (over(sp, h1) or over(ch_, h2)):
+                    if k <= min_k or not (over(sp, h1) or over(ch_, h2)):
                         break
-                    k = max(1.0, k * 0.92)
+                    nk = max(min_k, k * 0.92)
+                    if abs(nk - k) < 0.005:
+                        break
+                    k = nk
             else:
                 self._scale(1.0)
                 self._center(False)
@@ -1419,7 +1428,6 @@ class ScannerPage(tk.Frame):
                     w.configure(height=1)
                     w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
                 self._grow_saved = []
-            self.update_idletasks()   # reqheight после последних height=, иначе sync видит старую высоту
             self.sf.sync()
         except tk.TclError:
             pass
@@ -1427,6 +1435,9 @@ class ScannerPage(tk.Frame):
     def _fit_normal(self, force: bool = False) -> None:
         """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
         self._fit_job = None
+        if getattr(self, "_fitting", False):
+            self._fit_dirty = True
+            return
         if self._focus is not None or not getattr(self, "compact", False) or not self.winfo_ismapped():
             return
         cv = self.sf.canvas
@@ -1434,9 +1445,19 @@ class ScannerPage(tk.Frame):
         if size[0] < 50 or size[1] < 50 or (not force and size == getattr(self, "_fit_size", None)):
             return
         self._fit_size = size
-        self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+        self._fitting = True
+        try:
+            self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+        finally:
+            self._fitting = False
+        if getattr(self, "_fit_dirty", False):
+            self._fit_dirty = False
+            self._queue_fit()
 
     def _queue_fit(self, _e=None) -> None:
+        if getattr(self, "_fitting", False):
+            self._fit_dirty = True
+            return
         if getattr(self, "_fit_job", None) is None:
             self._fit_job = self.after(60, self._fit_normal)
 
@@ -1490,7 +1511,6 @@ class ScannerPage(tk.Frame):
         self._fit_word()
         for fl in self._flows():
             fl.relayout(fl.winfo_width(), force=True)
-        self.update_idletasks()
         self._bar_mode = None
         self._place_actbar(self.scan_panel.winfo_width())
         self.chip_bar.place_configure(y=px(round(4 * kh)))
