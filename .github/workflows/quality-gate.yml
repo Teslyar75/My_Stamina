@@ -27,9 +27,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-24.04]
+        include:
+          - os: windows-latest
+            timeout: 60
+          - os: ubuntu-24.04
+            timeout: 40
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: ${{ matrix.timeout }}
     steps:
       - uses: actions/checkout@v4
 
