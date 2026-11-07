@@ -1,0 +1,62 @@
+# Узкая диагностика Ubuntu-гейта PR34 (HEAD 8d1dc5d): не полный suite.
+# Запускается только с этой ветки. Обязательные checks / quality-gate не меняет.
+name: ubuntu narrow diagnostic
+
+on:
+  push:
+    branches:
+      - cursor/ubuntu-narrow-diag-c61e
+  workflow_dispatch:
+
+concurrency:
+  group: ubuntu-narrow-diag-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-narrow:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: "Системные пакеты (Linux: Tk и дисплей)"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk xvfb
+
+      - name: Установка зависимостей
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+          python -m pip install pytest-timeout
+
+      - name: Narrow Ubuntu tests under Xvfb
+        run: |
+          set -o pipefail
+          xvfb-run -a python -X faulthandler -m pytest \
+            tests/test_alt_parity.py \
+            tests/test_english_conjugation.py \
+            tests/test_english_hub_ui.py \
+            tests/test_english_quality.py \
+            tests/test_english_reference_ui.py \
+            tests/test_english_scanner_compact.py \
+            -vv --tb=short -s -p no:cacheprovider \
+            --timeout=90 --timeout-method=signal \
+            --durations=20 2>&1 | tee ubuntu_narrow_diag.log
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ubuntu-narrow-diagnostic-log
+          path: ubuntu_narrow_diag.log
+          if-no-files-found: ignore
