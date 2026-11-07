@@ -1,4 +1,4 @@
-import bz2, csv, json, re, collections, sys
+import bz2, csv, json, collections
 csv.field_size_limit(10**9)
 def rd(fn):
     with bz2.open(fn, "rt", encoding="utf-8") as f:

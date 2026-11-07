@@ -1,4 +1,4 @@
-import json, re, math, collections, heapq
+import json, re, collections, heapq
 V = json.load(open("stage1.json", encoding="utf-8"))
 fm = json.load(open("formmap.json"))
 rank = {w["slug"]: w["rank"] for w in V}
