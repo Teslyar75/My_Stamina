@@ -31,9 +31,10 @@ FOCUS_FONT_GAIN = 0.8
 # меньше коэффициент и потолок — вкладки, шапка и кнопки остаются, шрифт не «кричит»
 NORMAL_FONT_GAIN = 0.6
 NORMAL_FONT_CAP = 3.0     # потолок «вписанного» масштаба до gain: k ≤ 0.6·3 = 1.8 (фокус — до 3.2)
-# очень низкое окно (1024×600): ниже этого шрифт не ужимаем — остаётся читаемым,
-# но панель всё ещё заполняет высоту без лишней прокрутки.
-NORMAL_FONT_MIN = 0.82
+# Очень низкое окно (1024×600) и «высокие» метрики шрифтов в Windows требуют более
+# глубокого сжатия normal-режима, иначе включается лишняя прокрутка. Нижняя граница
+# остаётся читаемой, но гарантирует укладку панелей без overflow.
+NORMAL_FONT_MIN = 0.66
 
 
 # =============================================================================
@@ -1414,6 +1415,14 @@ class ScannerPage(tk.Frame):
                         h2 = avail - h1
                     sp.configure(height=h1)
                     ch_.configure(height=h2)
+                    if calm:
+                        # Надёжный признак переполнения — фактическая высота содержимого
+                        # ScrollFrame после выставления высот панелей (особенно на Windows,
+                        # где reqheight шрифтов может отличаться от предварительной оценки).
+                        overflow = self.sf.inner.winfo_reqheight() - chh
+                        if overflow > 0 and k > min_k + 0.01:
+                            k = max(min_k, k * 0.92)
+                            continue
                     if k <= min_k or not (over(sp, h1) or over(ch_, h2)):
                         break
                     nk = max(min_k, k * 0.92)
@@ -1448,11 +1457,39 @@ class ScannerPage(tk.Frame):
         self._fitting = True
         try:
             self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+            # 1024×600 (canvas ~340px по высоте): на Windows метрики Segoe/Consolas
+            # иногда дают overflow после обычного fit. Для этого режима фиксируем
+            # «мягко-компактный» normal-масштаб.
+            if size[1] <= px(360) and self._k > NORMAL_FONT_MIN + 0.001:
+                self._scale(NORMAL_FONT_MIN)
+                self.sf.sync()
+            # Платформенные метрики Tk (особенно Windows) могут дать небольшой
+            # overflow после первичного fit. Дожимаем только normal-режим
+            # короткими шагами до исчезновения вертикальной прокрутки.
+            for _ in range(4):
+                try:
+                    y1 = self.sf.canvas.yview()[1]
+                except tk.TclError:
+                    break
+                if y1 >= 0.995 or self._k <= NORMAL_FONT_MIN + 0.001:
+                    break
+                self._scale(max(NORMAL_FONT_MIN, self._k * 0.92))
+                self.sf.sync()
         finally:
             self._fitting = False
         if getattr(self, "_fit_dirty", False):
             self._fit_dirty = False
             self._queue_fit()
+        # После пересчёта переносы в текстовых виджетах могут дорастить reqheight
+        # с небольшой задержкой; проверяем и при необходимости дожимаем normal-масштаб.
+        if self._focus is None:
+            if getattr(self, "_fit_settle_job", None) is not None:
+                try:
+                    self.after_cancel(self._fit_settle_job)
+                except tk.TclError:
+                    pass
+            self._fit_settle_tries = 0
+            self._fit_settle_job = self.after(80, self._fit_settle)
 
     def _queue_fit(self, _e=None) -> None:
         if getattr(self, "_fitting", False):
@@ -1460,6 +1497,25 @@ class ScannerPage(tk.Frame):
             return
         if getattr(self, "_fit_job", None) is None:
             self._fit_job = self.after(60, self._fit_normal)
+
+    def _fit_settle(self) -> None:
+        self._fit_settle_job = None
+        if self._focus is not None or not getattr(self, "compact", False):
+            return
+        try:
+            y1 = self.sf.canvas.yview()[1]
+        except tk.TclError:
+            return
+        if y1 >= 0.995:
+            return
+        nk = max(NORMAL_FONT_MIN, self._k * 0.92)
+        if nk >= self._k - 0.001:
+            return
+        self._scale(nk)
+        self.sf.sync()
+        self._fit_settle_tries = getattr(self, "_fit_settle_tries", 0) + 1
+        if self._fit_settle_tries < 4:
+            self._fit_settle_job = self.after(80, self._fit_settle)
 
     def _center(self, on: bool) -> None:
         """Focus-mode helper."""
