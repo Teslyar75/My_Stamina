@@ -984,6 +984,9 @@ class ScannerPage(tk.Frame):
             self._build_compact()   # классика: всё на одном экране
             self._fit_job = None
             self.sf.canvas.bind("<Configure>", self._queue_fit, add="+")
+            # Изменения внутренних блоков (например, MicPanel.refresh_mode) могут
+            # менять reqheight без изменения размеров canvas.
+            self.sf.inner.bind("<Configure>", self._queue_fit, add="+")
             self.bind("<Map>", lambda _e: self.after_idle(lambda: self._fit_normal(force=True)), add="+")
         self.bind("<Unmap>", self._on_unmap, add="+")
         if isinstance(ctx, tk.Misc):    # весь отсек «Английский» спрятали (другой отсек) — тоже выйти
@@ -1448,9 +1451,13 @@ class ScannerPage(tk.Frame):
             return
         cv = self.sf.canvas
         size = (cv.winfo_width(), cv.winfo_height())
-        if size[0] < 50 or size[1] < 50 or (not force and size == getattr(self, "_fit_size", None)):
+        try:
+            req_h = self.sf.inner.winfo_reqheight()
+        except tk.TclError:
             return
-        self._fit_size = size
+        fit_state = (size, req_h)
+        if size[0] < 50 or size[1] < 50 or (not force and fit_state == getattr(self, "_fit_size", None)):
+            return
         self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
         # 1024×600 (canvas ~340px по высоте): на Windows метрики Segoe/Consolas
         # иногда дают overflow после обычного fit. Для этого режима фиксируем
@@ -1468,6 +1475,12 @@ class ScannerPage(tk.Frame):
                 break
             self._scale(max(NORMAL_FONT_MIN, self._k * 0.92))
             self.sf.sync()
+        # Кэшируем итоговое состояние после fit, чтобы повторный вызов отрабатывал
+        # только при реальном изменении размера окна или reqheight контента.
+        try:
+            self._fit_size = (size, self.sf.inner.winfo_reqheight())
+        except tk.TclError:
+            self._fit_size = None
 
     def _queue_fit(self, _e=None) -> None:
         if getattr(self, "_fit_job", None) is None:
