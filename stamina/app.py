@@ -333,7 +333,6 @@ def run_app(argv: list[str] | None = None) -> None:
         # Configure» — тысячи перерисовок в секунду, окно встаёт. Считаем события по
         # виджетам и, если виджет зашкалил, снимаем с него обработчик и пишем в журнал.
         def _install_layout_guard(root) -> None:
-            import tkinter
             per_widget: dict[str, int] = {}
             hooked: set[str] = set()
 

@@ -7,7 +7,7 @@ from stamina.i18n import t as _t
 import random
 import re
 
-from .textutil import tokens, word_forms
+from .textutil import word_forms
 from .vocab import POS_SHORT
 
 MODES = {

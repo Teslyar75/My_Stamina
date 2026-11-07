@@ -76,6 +76,10 @@ def fix_token(colors: dict, fg: str, bgs: tuple[str, ...], need: float) -> str |
 
 
 def main() -> int:
+    try:
+        sys.stdout.reconfigure(errors="replace")
+    except Exception:  # noqa: BLE001
+        pass
     do_fix = "--fix" in sys.argv
     bad = 0
     print("| скин | токен | фон | было | стало | нужно |\n|---|---|---|---|---|---|")

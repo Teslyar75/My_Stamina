@@ -1,7 +1,7 @@
 @echo off
 rem Star Typing - установка в один клик для Windows.
 rem Делает всё сам: Python (через winget, если его нет) -> папка .venv -> пакеты -> ярлык -> запуск.
-rem Для проверок: STAMINA_PYTHON=путь\python.exe, STAMINA_NO_SHORTCUT=1, STAMINA_NO_LAUNCH=1.
+rem Для проверок: STAMINA_PYTHON=путь\python.exe, STAMINA_NO_SHORTCUT=1, STAMINA_NO_LAUNCH=1, STAMINA_NO_PAUSE=1.
 chcp 65001 >nul
 setlocal EnableExtensions
 set "ROOT=%~dp0"
@@ -34,10 +34,10 @@ exit /b 1
 
 :have_python
 echo  [1/5] Python:
-"%PYEXE%" %PYARGS% --version
+call "%PYEXE%" %PYARGS% --version
 
 echo  [2/5] Папка программы .venv ...
-if not exist "%ROOT%.venv\Scripts\python.exe" "%PYEXE%" %PYARGS% -m venv "%ROOT%.venv"
+if not exist "%ROOT%.venv\Scripts\python.exe" call "%PYEXE%" %PYARGS% -m venv "%ROOT%.venv"
 set "VPY=%ROOT%.venv\Scripts\python.exe"
 if not exist "%VPY%" (
     echo  [!] Не удалось создать .venv - ставлю пакеты в общий Python.
@@ -46,7 +46,7 @@ if not exist "%VPY%" (
 
 rem Python 3.13.0 + .venv на Windows не находит библиотеку Tcl - ошибка CPython gh-125235.
 rem Проверяем не импорт, а настоящее окно: импорт проходит и там, где окна не будет.
-"%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()" >nul 2>&1
+>nul 2>&1 call "%VPY%" -c "import tkinter; r=tkinter.Tk(); r.withdraw(); r.destroy()"
 if errorlevel 1 (
     echo.
     echo  [!] В .venv не создаётся окно Tk - известная ошибка Python 3.13.0.
@@ -60,17 +60,18 @@ echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
 rem pip читает requirements.txt в кодировке локали; PYTHONUTF8=1 держит кириллицу в комментариях.
 set "PYTHONUTF8=1"
 set "PIPLOG=%TEMP%\star-typing-pip.log"
-"%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt" >"%PIPLOG%" 2>&1
+call "%VPY%" -m pip install --disable-pip-version-check -q -r "%ROOT%requirements.txt" >"%PIPLOG%" 2>&1
 if errorlevel 1 (
     echo.
     echo  [!] pip не смог поставить пакеты. Вот что он сказал:
     type "%PIPLOG%"
     echo.
-    echo      Программа запустится и без них, но без Pillow нет фона и аватаров,
-    echo      без pypdf не импортируется PDF, без fpdf2 нет кнопки PDF.
-    echo      Обычно помогает повторить установку при рабочем интернете.
+    echo      Нужны: Pillow ^(фон и аватары^), pypdf ^(импорт PDF^), fpdf2 ^(кнопка PDF^).
     echo.
-    timeout /t 8 >nul 2>&1
+    echo  [!] Установка остановлена из-за ошибки pip.
+    echo      Исправьте проблему ^(обычно интернет^) и запустите install.bat заново.
+    if not defined STAMINA_NO_PAUSE pause
+    exit /b 1
 )
 
 echo.

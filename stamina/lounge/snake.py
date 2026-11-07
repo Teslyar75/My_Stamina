@@ -7,7 +7,7 @@ import random
 import tkinter as tk
 
 from stamina import theme
-from stamina.theme import AMBER, BG2, CYAN, GREEN, LINE, PANEL, RED, TEXT, blend, px
+from stamina.theme import AMBER, BG2, CYAN, GREEN, LINE, PANEL, TEXT, blend, px
 
 from .base import GameShell
 

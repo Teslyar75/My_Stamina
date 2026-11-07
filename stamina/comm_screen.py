@@ -17,7 +17,7 @@ from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.prompt_box import PromptBox, hud_colors
 from stamina.suggest import Suggester, dictionary_from
-from stamina.theme import AMBER, BG, BG2, CYAN, LINE, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, TEXT, px
 from stamina.voice.mic import MicControl
 
 # позывной красим цветом «акцента» пилота из реестра экипажа (сами цвета берём у скина)

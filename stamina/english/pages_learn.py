@@ -5,22 +5,20 @@ from .speech_std import is_mic_key as _is_mic_key
 
 from stamina.i18n import t as _t
 
-import random
 import time
 import tkinter as tk
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge
-from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, blend, px
+from stamina.theme import AMBER, BG, CYAN, FAINT, GREEN, LINE_HI, MUTED, PANEL, RED, TEXT, px
 
 from .speech_std import advance_later, passed as std_passed
 from . import sm2
 from .check import SpeechCheck
-from .mic import MicPanel
-from .tasks import MODES, POS_RU, TYPE_TITLE, TaskFactory
+from .tasks import MODES, TYPE_TITLE, TaskFactory
 from .textutil import score_sentence, score_word, verdict, word_forms
-from .ui import Choice, L, MatchReadout, ScrollFrame, Strip, entry, target_missed
-from .vocab import POS_SHORT, SETS
+from .ui import Choice, L, Strip, entry, target_missed
+from .vocab import POS_SHORT
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 

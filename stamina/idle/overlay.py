@@ -11,7 +11,7 @@ import tkinter as tk
 from stamina import theme
 from stamina import safe_mode
 from stamina.i18n import t as _t
-from stamina.idle import DRIFT, FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, pick_station, settings_of
+from stamina.idle import DRIFT, FADE_MS, GIF_MAX_FRAMES, order_stations, station_genre, XFADE_MS, XFADE_STEPS, RADIO_TARGET, SLIDE_MS, fade_volume, is_idle, settings_of
 
 try:
     from PIL import Image, ImageTk
