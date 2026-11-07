@@ -412,7 +412,7 @@ def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
         # Сохраняем сессию по профилю — иначе смена профиля ломает инструменты
         data.setdefault("sessions", {})["orion-recon"] = session
         data["sessions"]["orion-commander"] = session
-    msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(),
+    msg = {"id": uuid.uuid4().hex[:12], "role": role, "ts": time.time(), "seq": time.time_ns(),
            "text": (" ".join((text or "").split()) if role == "pilot" else tidy_text(text))[:MAX_TEXT],
            "kind": kind}
     if shot:
@@ -616,7 +616,16 @@ def archive(query: str = "", *, agent_id: str = "", limit: int = 400,
             row["agent"] = str(rec.get("id") or "")
             row["agent_name"] = name
             rows.append(row)
-    rows.sort(key=lambda m: float(m.get("ts") or 0.0), reverse=True)
+    def _seq(msg: dict, fallback: int) -> int:
+        try:
+            return int(msg.get("seq") or fallback)
+        except (TypeError, ValueError):
+            return fallback
+    rows = [msg for _i, msg in sorted(
+        enumerate(rows),
+        key=lambda pair: (float(pair[1].get("ts") or 0.0), _seq(pair[1], pair[0])),
+        reverse=True,
+    )]
     return rows[:limit] if limit else rows
 
 
@@ -770,7 +779,16 @@ def tasks(*, status: str = "") -> list[dict]:
     rows = [t for t in (data.get("tasks") or []) if isinstance(t, dict)]
     if status:
         rows = [t for t in rows if t.get("status") == status]
-    return sorted(rows, key=lambda t: float(t.get("ts") or 0.0), reverse=True)
+    def _seq(task: dict, fallback: int) -> int:
+        try:
+            return int(task.get("seq") or fallback)
+        except (TypeError, ValueError):
+            return fallback
+    return [task for _i, task in sorted(
+        enumerate(rows),
+        key=lambda pair: (float(pair[1].get("ts") or 0.0), _seq(pair[1], pair[0])),
+        reverse=True,
+    )]
 
 
 def add_task(text: str, *, author: str = "", agent: str = "", brief: str = "") -> dict:
@@ -781,7 +799,7 @@ def add_task(text: str, *, author: str = "", agent: str = "", brief: str = "") -
     """
     data = _read_json(tasks_path(), {"version": 1, "tasks": []})
     data.setdefault("tasks", [])
-    row = {"id": uuid.uuid4().hex[:12], "ts": time.time(),
+    row = {"id": uuid.uuid4().hex[:12], "ts": time.time(), "seq": time.time_ns(),
            "text": " ".join((text or "").split())[:MAX_TEXT],
            "author": author, "agent": agent or DEFAULT_AGENT["id"], "status": "open"}
     if brief:
