@@ -59,3 +59,13 @@ python -m pytest tests/ -q                                       # тесты (�
 (`python -m stamina.task_progress plan|step|finish <id>` → `_orion/tasks/<id>.json`,
 строка на пульте Ориона; запасной путь — legacy `_orion/progress.json` v1).
 Новые варианты скинов — по `docs/skins/ALT_SKIN_GUIDE.md`.
+
+## Cursor Cloud specific instructions
+
+Среда агента — Ubuntu с рабочим столом. `install` ставит `python3-tk`, `python3-venv`, `fonts-dejavu`, `xvfb`, `espeak-ng`, `xclip`, `libportaudio2` и создаёт `.venv` из `requirements.txt`, `requirements-dev.txt` и `keyring`. Долгоживущего сервера нет: окно поднимают сами.
+
+- Запуск: `.venv/bin/python main.py` (на столе агента уже есть `DISPLAY`). Данные пилота: `~/.local/share/StarTyping`.
+- Быстрый гейт: `.venv/bin/python tools/ci_gate.py --only contrast --only i18n --only dep`
+- Тесты без своего экрана: `xvfb-run -a -s "-screen 0 1600x1000x24" .venv/bin/python -m pytest tests/ -q`
+- `ruff check stamina tools tests main.py` в CI не блокирует слияние.
+- Vosk, модель речи и OpenCode в среду не входят. Озвучка — `espeak-ng`. Без микрофона программа работает.
