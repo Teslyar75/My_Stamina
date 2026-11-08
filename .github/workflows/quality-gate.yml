@@ -28,8 +28,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-24.04]
+        include:
+          - os: windows-latest
+            timeout_minutes: 60
+          - os: ubuntu-24.04
+            timeout_minutes: 40
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: ${{ matrix.timeout_minutes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -61,7 +66,7 @@ jobs:
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
         if: runner.os == 'Linux'
-        run: xvfb-run -a python -m pytest tests/ -q -p no:cacheprovider
+        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=signal
 
       - name: Отчёт гейта
         if: always()

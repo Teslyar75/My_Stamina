@@ -305,6 +305,7 @@ class LivingSpace:
         self._last_glass = self._last_gap = self._last_scan = 0.0
         self._last_step = time.monotonic()
         self.static = reduced_motion()
+        self._static_warm_until = 0.0
         self._static_done = False
         self.warp = 1.0
         self._job = None
@@ -373,6 +374,9 @@ class LivingSpace:
         bg.place(x=0, y=0, relwidth=1, relheight=1)
         tk.Misc.lower(bg)
         self.scan()
+        # static/reduced-motion режим обновляется редко (2 с); короткий «прогрев»
+        # даёт несколько кадров после attach и предотвращает флаки в CI.
+        self._static_warm_until = time.monotonic() + 1.0
         self._schedule(30)
 
     def detach(self) -> None:
@@ -612,6 +616,8 @@ class LivingSpace:
         self.stats["frames"] += 1
         self.stats["render_ms"] += ms
         if self.static:
+            if now < self._static_warm_until:
+                return 50
             if not self._pending:
                 return 2000      # раз в 2 с проверить, не появились ли новые панели
             return 50

@@ -131,9 +131,14 @@ class FormatMixin:
             w = 30
             b = HudButton(bar, label, lambda a=aid: self.do_action(a), height=28, width=w,
                           font_size=9, color=color)
+            if aid in COMPACT_HIDE:
+                # В alt-аудите эти кнопки считаются доступными через «⋯», даже когда
+                # скрыты в компактном ряду (_flow_shown=False).
+                b._alt_toggle = True
             bar.add(b, gap_before=gap if self.fmt_buttons else 0)
             self.fmt_buttons[aid] = b
         self.fmt_more = HudButton(bar, "⋯", self.fmt_more_menu, height=28, width=30, font_size=9, color=CYAN)
+        self.fmt_more._alt_toggle = True
         self.fmt_more._flow_shown = False
         bar.add(self.fmt_more, gap_before=2)
         if hasattr(self, "visual_on"):

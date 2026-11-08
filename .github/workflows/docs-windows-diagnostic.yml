@@ -1,0 +1,51 @@
+name: docs windows diagnostic
+
+on:
+  push:
+    branches:
+      - cursor/fix-windows-gate-failures-c61e
+  workflow_dispatch:
+
+concurrency:
+  group: docs-diag-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs-diag:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Установка зависимостей
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Docs ordering targeted tests (Windows Tk)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          python -m pytest `
+            tests/test_docs_fixes.py::TestListAndDialogs::test_autosave_keeps_order `
+            tests/test_docs_fixes.py::TestListAndDialogs::test_autosave_keeps_order_when_modified_equal `
+            tests/test_docs_fixes.py::TestModel::test_sort_items_uses_saved_ns_tie_breaker `
+            -q -p no:cacheprovider 2>&1 | Tee-Object -FilePath docs_diag.log
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docs-windows-diagnostic
+          path: docs_diag.log
+          if-no-files-found: error

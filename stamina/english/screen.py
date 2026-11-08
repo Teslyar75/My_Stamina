@@ -130,6 +130,7 @@ class EnglishScreen(tk.Frame):
         }
         for p in self.pages.values():
             p.grid(row=0, column=0, sticky="nsew")
+            p.grid_remove()
         self._built = True
         self.tts.warm_up()
         if self.progress.settings.get("asr", True):
@@ -159,11 +160,24 @@ class EnglishScreen(tk.Frame):
         for p in self.pages.values():          # фокус-режим не переживает смену вкладки
             if getattr(p, "_focus", None) is not None:
                 p.toggle_focus(False)
+        prev = self.current
         self.current = name
         page = self.pages[name]
+        if prev != name:
+            old = self.pages.get(prev) if prev else None
+            if old is not None:
+                old.grid_remove()
+            page.grid(row=0, column=0, sticky="nsew")
+        scan = self.pages.get("scanner")
+        if name != "scanner" and scan is not None and hasattr(scan, "_cancel_fit_jobs"):
+            scan._cancel_fit_jobs()
         if hasattr(page, "refresh"):
             page.refresh()
-        page.tkraise()
+        if name == "scanner" and hasattr(page, "_fit_normal"):
+            try:
+                page.after_idle(lambda: page._fit_normal(force=True))
+            except tk.TclError:
+                pass
         for n, b in self.nav.items():
             b.set_active(n == name)
         self._update_nav()
