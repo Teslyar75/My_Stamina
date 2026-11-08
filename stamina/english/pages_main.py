@@ -11,6 +11,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import missions, theme
+from stamina.adapt import bind_wraplength
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
 from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
                            PANEL_HI, RED, TEXT, blend, chamfer, px)
@@ -1105,10 +1106,8 @@ class ScannerPage(tk.Frame):
                                            height=22, font_size=7))
         self.btn_card = acts.add(HudButton(acts, _t("В ПРОВЕРКУ"), self.add_card, color=AMBER, height=22, font_size=7))
 
-        def rewrap(lbl, col, extra=0):
-            col.bind("<Configure>", lambda e: lbl.configure(wraplength=max(px(80), e.width - px(4) - extra)), add="+")
-        rewrap(self.ptext, c1)
-        rewrap(self.defn, c2)
+        bind_wraplength(self.ptext, c1, margin=4)
+        bind_wraplength(self.defn, c2, margin=4)
         # канал связи — практика предложений
         self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"), pad=4)
         self.chan.pack(fill=tk.X, padx=px(8), pady=0)
@@ -1128,8 +1127,8 @@ class ScannerPage(tk.Frame):
         self.str_.pack(anchor="w")
         self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(400), justify="left")
         self.hint.pack(anchor="w")
-        rewrap(self.str_, left)
-        rewrap(self.hint, left)
+        bind_wraplength(self.str_, left, margin=4)
+        bind_wraplength(self.hint, left, margin=4)
         sbtn = Flow(left, gap=3)
         sbtn.pack(fill=tk.X, pady=(px(1), 0))
         # пустые строки перевода/подсказки не занимают высоту: показываем их только с текстом
@@ -1176,7 +1175,7 @@ class ScannerPage(tk.Frame):
         self.match.set, self.match.clear = _mset, _mclear
         # микрофон — всегда справа, на одном месте; строка статуса — под предложением
         self.mic = MicPanel(cb, ctx, self.on_speech, compact=True, live_master=left)
-        rewrap(self.mic.live, left)
+        bind_wraplength(self.mic.live, left, margin=4)
         self.mic.grid(row=0, column=1, sticky="n", padx=(px(8), 0))
 
     def _build_alt(self) -> None:
@@ -1444,10 +1443,31 @@ class ScannerPage(tk.Frame):
         except tk.TclError:
             pass
 
+    def _visible_for_fit(self) -> bool:
+        """Сканер лежит в том же grid, что и обзор: не пересчитывать fit, пока вкладка другая."""
+        cur = getattr(self.ctx, "current", "scanner")
+        return cur in (None, "scanner")
+
+    def _cancel_fit_jobs(self) -> None:
+        for attr in ("_fit_job", "_fit_settle_job"):
+            job = getattr(self, attr, None)
+            if job is None:
+                continue
+            try:
+                self.after_cancel(job)
+            except tk.TclError:
+                pass
+            setattr(self, attr, None)
+
+    def destroy(self) -> None:
+        self._cancel_fit_jobs()
+        super().destroy()
+
     def _fit_normal(self, force: bool = False) -> None:
         """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
         self._fit_job = None
-        if self._focus is not None or not getattr(self, "compact", False) or not self.winfo_ismapped():
+        if (self._focus is not None or not getattr(self, "compact", False)
+                or not self.winfo_ismapped() or not self._visible_for_fit()):
             return
         cv = self.sf.canvas
         size = (cv.winfo_width(), cv.winfo_height())
@@ -1476,6 +1496,9 @@ class ScannerPage(tk.Frame):
     def _queue_fit(self, _e=None) -> None:
         # Trailing debounce: пересчитываем fit в финальном состоянии геометрии,
         # а не в промежуточной фазе каскада Configure-событий.
+        if not self._visible_for_fit():
+            self._cancel_fit_jobs()
+            return
         job = getattr(self, "_fit_job", None)
         if job is not None:
             try:
@@ -1594,6 +1617,7 @@ class ScannerPage(tk.Frame):
 
     def _on_unmap(self, e) -> None:
         # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть
+        self._cancel_fit_jobs()
         if self._focus is not None and e.widget in (self, self.ctx):
             self.after_idle(lambda: self.toggle_focus(False))
 
