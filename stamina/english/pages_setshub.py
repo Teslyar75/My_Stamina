@@ -385,7 +385,7 @@ class CefrPage(tk.Frame):
     def _update_texts(self) -> None:
         self.items = self.blocks[self.block] if self.blocks else []
         known = sum(1 for w in self.items if self._done(w["slug"]))
-        n_sent = sum(len(self.ctx.vocab.sentences(w)) for w in self.items)
+        n_sent = sum(self.ctx.vocab.sentence_count(w) for w in self.items)
         data = cefr.load(self.level) or {}
         src = data.get("source") or {}
         pos = self.block + 1
