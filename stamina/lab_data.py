@@ -448,6 +448,67 @@ def fragment_of(graph: Graph, group: str) -> Graph:
     return out
 
 
+NEIGHBOR_BATCH = 20  # порция 1-hop соседей при выборе звезды (Obsidian-like)
+
+
+def adjacency(graph: Graph) -> dict[int, list[int]]:
+    """Индекс смежности по индексам узлов (без дублей, порядок стабильный)."""
+    adj: dict[int, list[int]] = {i: [] for i in range(len(graph.nodes))}
+    seen: set[tuple[int, int]] = set()
+    for a, b in graph.edges:
+        e = (a, b) if a < b else (b, a)
+        if a == b or e in seen:
+            continue
+        seen.add(e)
+        adj[a].append(b)
+        adj[b].append(a)
+    for i in adj:
+        adj[i].sort()
+    return adj
+
+
+def star_neighborhood(
+    graph: Graph,
+    node_id: str,
+    *,
+    limit: int = NEIGHBOR_BATCH,
+    offset: int = 0,
+    now: float | None = None,
+) -> dict | None:
+    """Выбранный узел + порция 1-hop соседей (лениво, чанками).
+
+    Возвращает ``None``, если ``node_id`` нет в графе. Соседи дальше ``offset+limit``
+    не включаются — UI зовёт снова с большим offset («показать ещё»).
+    """
+    now = time.time() if now is None else now
+    ix = graph.index(node_id)
+    if ix is None:
+        return None
+    adj = adjacency(graph)
+    nids = adj.get(ix) or []
+    total = len(nids)
+    chunk = nids[offset:offset + max(0, limit)]
+    sel = dict(graph.nodes[ix])
+    sel["fresh"] = round(freshness(sel["last"], sel["strength"], now), 4)
+    sel["detail_level"] = "full"
+    neighbors = []
+    for j in chunk:
+        row = dict(graph.nodes[j])
+        row["fresh"] = round(freshness(row["last"], row["strength"], now), 4)
+        row["detail_level"] = "compact"
+        neighbors.append(row)
+    edge_ids = [(node_id, graph.nodes[j]["id"]) for j in chunk]
+    return {
+        "selected": sel,
+        "neighbors": neighbors,
+        "edges": edge_ids,
+        "neighbor_total": total,
+        "neighbor_offset": offset,
+        "neighbor_limit": limit,
+        "has_more": offset + len(chunk) < total,
+    }
+
+
 def iter_snapshot(
     root: Path | None,
     *,

@@ -11,7 +11,11 @@ from pathlib import Path
 
 from stamina import lab_data, nav
 from stamina.lab_demo import demo_graph
-from stamina.laboratory import MAX_STARS, MODE_VISUAL, MODE_WORK, aggregate, layout
+from stamina.laboratory import (
+    DRAG_CLICK_PX, MAX_STARS, MODE_VISUAL, MODE_WORK, PITCH_MAX, WORK_ZOOM,
+    ZOOM_MAX, ZOOM_MIN, ZOOM_STEP, aggregate, clamp_pitch, layout, project_point,
+    zoom_toward,
+)
 
 NOW = time.mktime((2026, 11, 4, 12, 0, 0, 0, 0, -1))
 
@@ -187,6 +191,26 @@ class LabLodLevelsTest(unittest.TestCase):
         self.assertEqual(data["kind"], "lab_entity_snapshot")
         self.assertEqual(len(data["nodes"]), len(snap["nodes"]))
 
+    def test_star_neighborhood_one_hop_batched(self):
+        full = lab_data.collect(self.root, NOW)
+        bund = lab_data.star_neighborhood(full, "b:t1", limit=1, offset=0, now=NOW)
+        self.assertIsNotNone(bund)
+        self.assertEqual(bund["selected"]["id"], "b:t1")
+        self.assertEqual(bund["selected"]["detail_level"], "full")
+        self.assertLessEqual(len(bund["neighbors"]), 1)
+        self.assertTrue(all(n["detail_level"] == "compact" for n in bund["neighbors"]))
+        self.assertGreaterEqual(bund["neighbor_total"], 1)
+        # вторая порция
+        if bund["has_more"]:
+            more = lab_data.star_neighborhood(
+                full, "b:t1", limit=1, offset=1, now=NOW)
+            self.assertTrue(more["neighbors"])
+            ids1 = {n["id"] for n in bund["neighbors"]}
+            ids2 = {n["id"] for n in more["neighbors"]}
+            self.assertTrue(ids1.isdisjoint(ids2))
+        miss = lab_data.star_neighborhood(full, "nope", now=NOW)
+        self.assertIsNone(miss)
+
 
 class LabLayoutTest(unittest.TestCase):
     def test_demo_is_marked_and_sized(self):
@@ -198,7 +222,8 @@ class LabLayoutTest(unittest.TestCase):
         g = demo_graph(1000, now=NOW)
         pos, shape = layout(g)
         self.assertEqual(len(pos), 1000)
-        self.assertTrue(all(x * x + y * y < 1.6 for x, y in pos))
+        self.assertEqual(len(pos[0]), 3)
+        self.assertTrue(all(x * x + y * y < 1.6 for x, y, _z in pos))
         # контурные рёбра — внутри группы или книга→слово
         for a, b in shape:
             ga, gb = g.nodes[a]["group"], g.nodes[b]["group"]
@@ -220,9 +245,27 @@ class LabLayoutTest(unittest.TestCase):
         linked = [b if a == bi else a for a, b in g.edges if a == bi or b == bi]
         linked = [i for i in linked if g.nodes[i]["kind"] == "word"]
         if linked:
-            bx, by = pos[bi]
+            bx, by, _bz = pos[bi]
             dists = [((pos[i][0] - bx) ** 2 + (pos[i][1] - by) ** 2) ** 0.5 for i in linked]
             self.assertTrue(all(d < 0.55 for d in dists))
+
+    def test_project_zoom_and_pitch_clamp(self):
+        sx0, sy0, d0 = project_point(0.2, 0.0, 0.0, yaw=0.0, pitch=0.0, zoom=1.0,
+                                     pan_x=0, pan_y=0, cx=100, cy=100, R=50)
+        sx1, sy1, d1 = project_point(0.2, 0.0, 0.0, yaw=0.0, pitch=0.0, zoom=2.0,
+                                     pan_x=0, pan_y=0, cx=100, cy=100, R=50)
+        self.assertGreater(abs(sx1 - 100), abs(sx0 - 100))
+        self.assertGreater(d0, 0.5)
+        self.assertEqual(clamp_pitch(10), PITCH_MAX)
+        self.assertEqual(clamp_pitch(-10), -PITCH_MAX)
+        z, px_, py_ = zoom_toward(1.0, 0.0, 0.0, factor=ZOOM_STEP, cursor_uv=(0.3, -0.1))
+        self.assertGreater(z, 1.0)
+        self.assertLessEqual(z, ZOOM_MAX)
+        z2, _, _ = zoom_toward(ZOOM_MAX, 0.0, 0.0, factor=ZOOM_STEP, cursor_uv=(0.1, 0.1))
+        self.assertEqual(z2, ZOOM_MAX)
+        self.assertGreaterEqual(ZOOM_MIN, 0.2)
+        self.assertGreater(WORK_ZOOM, 1.0)
+        self.assertGreaterEqual(DRAG_CLICK_PX, 3)
 
     def test_aggregate_caps_star_count(self):
         g = demo_graph(3000, now=NOW)
@@ -317,6 +360,60 @@ class LabScreenTest(unittest.TestCase):
         self.root.update()
         self.assertEqual(self.scr.mode, MODE_VISUAL)
         self.assertEqual(self.scr.zoom, 1.0)
+
+    def test_ctrl_wheel_zooms_without_reload(self):
+        self.scr.set_demo(True)
+        self.root.update()
+        n0 = len(self.scr.graph.nodes)
+        z0 = self.scr.zoom
+        # имитация Ctrl+Wheel вверх
+        ev = types.SimpleNamespace(state=0x4, delta=120, num=0, x=200, y=150)
+        self.assertEqual(self.scr._on_wheel(ev), "break")
+        self.assertGreater(self.scr.zoom, z0)
+        self.assertEqual(len(self.scr.graph.nodes), n0)  # без перезагрузки данных
+        # без Ctrl — не зумим
+        z1 = self.scr.zoom
+        self.assertIsNone(self.scr._on_wheel(types.SimpleNamespace(state=0, delta=120, num=0, x=200, y=150)))
+        self.assertEqual(self.scr.zoom, z1)
+        self.scr.reset_view()
+        self.assertAlmostEqual(self.scr.zoom, self.scr._view_home[0], places=3)
+
+    def test_orbit_drag_vs_click_and_selection(self):
+        self.scr.set_demo(True)
+        self.root.update()
+        cluster = next(n for n in self.scr.graph.nodes if n["kind"] == "cluster")
+        self.scr._load_fragment(cluster["group"])
+        self.root.update()
+        yaw0 = self.scr.yaw
+        # drag: орбита, не выбор
+        self.scr._on_press(types.SimpleNamespace(x=100, y=100))
+        self.scr._on_drag(types.SimpleNamespace(x=100 + DRAG_CLICK_PX + 20, y=110))
+        self.scr._on_release(types.SimpleNamespace(x=140, y=110))
+        self.assertNotEqual(self.scr.yaw, yaw0)
+        self.assertIsNone(self.scr.selected_id)
+        # короткий клик по звезде → выбор + 1-hop
+        i = 0
+        x, y = self.scr._screen_xy[i]
+        nid = self.scr.graph.nodes[i]["id"]
+        self.scr._on_press(types.SimpleNamespace(x=x, y=y))
+        self.scr._on_release(types.SimpleNamespace(x=x, y=y))
+        # after(1) в select_star — дождёмся без mainloop
+        deadline = time.time() + 1.0
+        while self.scr._selection is None and time.time() < deadline:
+            self.root.update()
+            time.sleep(0.01)
+        self.assertEqual(self.scr.selected_id, nid)
+        self.assertIsNotNone(self.scr._selection)
+        self.assertEqual(self.scr._selection["selected"]["detail_level"], "full")
+        # кэш: повторный выбор без новой сборки
+        self.scr._selection_cache[nid]["cached"] = True
+        self.scr.select_star(nid)
+        self.assertTrue(self.scr._selection.get("cached"))
+        # смена выбора отменяет устаревший token
+        tok = self.scr._selection_token
+        other = next(n["id"] for n in self.scr.graph.nodes if n["id"] != nid)
+        self.scr.select_star(other)
+        self.assertGreater(self.scr._selection_token, tok)
 
     def test_real_data_writes_only_own_seen_file(self):
         _write(self.dir, "english.json", {"words": {"case": {"known": True, "known_at": _day(1)}}})
