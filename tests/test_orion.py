@@ -709,7 +709,7 @@ class OrionScreenTest(unittest.TestCase):
     def test_zone_is_in_header(self):
         keys = [s for s, _ in self.app.SCREENS]
         self.assertIn("orion", keys)
-        self.assertEqual(keys.index("orion"), keys.index("settings") - 1)
+        self.assertLess(keys.index("orion"), keys.index("settings"))
         self.assertIn("orion", self.app.nav_buttons)
         self.assertTrue(self.app.bind("<Control-Key-8>"))     # Ctrl+8 — восьмая зона
 

@@ -62,11 +62,14 @@ jobs:
 
       - name: Тесты (Windows — нативный Tk)
         if: runner.os == 'Windows'
+        # без per-test timeout: на Win thread-method замедляет весь прогон (~10+ мин) и
+        # не укладываемся в 60 мин job; зависания LabScreen глушим stop()/Destroy
         run: python -m pytest tests/ -q -p no:cacheprovider
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
         if: runner.os == 'Linux'
-        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=signal
+        # thread: signal не прерывает зависание внутри Tk/C на Xvfb
+        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=thread
 
       - name: Отчёт гейта
         if: always()
