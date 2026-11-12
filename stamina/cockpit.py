@@ -393,9 +393,20 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
+        # Компактный индикатор связи с агентом Ориона (зеркало вкладки АГЕНТЫ).
+        from stamina import orion_link
+        self._orion_link_ind = orion_link.LinkIndicator(
+            status, compact=True, bg=status["bg"],
+            on_click=self.show_orion_agents)
+        self._orion_link_ind.pack(side=tk.LEFT, padx=(px(12), px(4)))
+        self._orion_link_name = tk.Label(status, text="", bg=status["bg"], fg=MUTED,
+                                         font=theme.font(8, True), cursor="hand2")
+        self._orion_link_name.pack(side=tk.LEFT)
+        self._orion_link_name.bind("<Button-1>", lambda _e: self.show_orion_agents())
         self._status_hint = tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
                  bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
+        self._start_orion_link_watcher()
 
         self.screens = {
             "bridge": Bridge(self.content, self),
@@ -1265,6 +1276,29 @@ class Cockpit(tk.Tk):
         if scr is not None and hasattr(scr, "show_tab"):
             scr.show_tab("agents")
 
+    def _start_orion_link_watcher(self) -> None:
+        """Лёгкий опрос связи с активным агентом → HUD-индикатор."""
+        from stamina import orion_link
+        self.orion_link_watcher = orion_link.LinkWatcher(self)
+        self.orion_link_watcher.subscribe(self._on_orion_link)
+        self.orion_link_watcher.start()
+
+    def _on_orion_link(self, agent, _health, view) -> None:
+        ind = getattr(self, "_orion_link_ind", None)
+        name_lbl = getattr(self, "_orion_link_name", None)
+        if ind is None:
+            return
+        from stamina import orion_link
+        tip = orion_link.tooltip_for(view, agent, _health)
+        try:
+            ind.apply(view, tip=tip)
+            if name_lbl is not None:
+                name = str((agent or {}).get("name") or "")
+                fg = {"green": GREEN, "amber": AMBER, "red": theme.RED}.get(view.name_fg, MUTED)
+                name_lbl.configure(text=name, fg=fg)
+        except tk.TclError:
+            pass
+
     def _greet_orion(self) -> None:
         """Орион приветствует пилота при входе в зону."""
         scr = self.screens.get(orion_hook.KEY)
@@ -1388,6 +1422,12 @@ class Cockpit(tk.Tk):
         self.after(33 if smooth else 200, self._tick)
 
     def _on_close(self) -> None:
+        watcher = getattr(self, "orion_link_watcher", None)
+        if watcher is not None:
+            try:
+                watcher.stop()
+            except Exception:  # noqa: BLE001
+                pass
         self._stop_agents()
         self._save_all()
         self.destroy()
