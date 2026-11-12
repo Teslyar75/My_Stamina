@@ -1,22 +1,15 @@
 """ONLINE idle: шутки/факты в чат Ориона при свободном агенте + пул guide_content."""
 from __future__ import annotations
 
-import json
-import random
 import tempfile
 import time
 from pathlib import Path
 from types import SimpleNamespace
-from unittest import mock
-
-import pytest
 
 from stamina import guide_idle as g
 from stamina import orion, pilots
 
-
 EXPECTED_POOL = 120
-
 
 def test_pool_counts_and_uniqueness_per_lang():
     langs = g.list_langs()
@@ -39,7 +32,6 @@ def test_pool_counts_and_uniqueness_per_lang():
         assert c["facts"][0]["id"].startswith("fact_")
         assert {"id", "text"} <= set(c["jokes"][0])
         assert {"id", "text"} <= set(c["facts"][0])
-
 
 def test_can_online_ambient_gates():
     now = 1_000_000.0
@@ -73,7 +65,6 @@ def test_can_online_ambient_gates():
         **{**base, "last_online_at": now - (g.ONLINE_COOLDOWN_S + 1)}
     ) is True
 
-
 class _App:
     def __init__(self, settings=None):
         self.store = SimpleNamespace(settings=dict(settings or {
@@ -98,7 +89,6 @@ class _App:
     def focus_get(self):
         return None
 
-
 def _ctrl(tmp_path, settings=None):
     app = _App(settings)
     c = g.GuideController(app, state_path=tmp_path / "s.json", autostart=False)
@@ -108,14 +98,12 @@ def _ctrl(tmp_path, settings=None):
     c._say = lambda cid, done: (said.append(cid), done and done())
     return c, said, app
 
-
 def test_online_toggle_off_disables(tmp_path):
     c, _, app = _ctrl(tmp_path, {"guide_enabled": True, "guide_online_jokes": False,
                                  "guide_interval": "10-20", "guide_voice": "male"})
     assert c.online_enabled() is False
     c.schedule_online()
     assert not any(fn == c._online_tick for _, fn in app.jobs if fn)
-
 
 def test_online_no_inject_when_busy(tmp_path, monkeypatch):
     root = Path(tempfile.mkdtemp())
@@ -134,7 +122,6 @@ def test_online_no_inject_when_busy(tmp_path, monkeypatch):
     finally:
         pilots.reset_root()
 
-
 def test_online_no_inject_when_typing_draft(tmp_path, monkeypatch):
     root = Path(tempfile.mkdtemp())
     pilots.reset_root(root)
@@ -152,7 +139,6 @@ def test_online_no_inject_when_typing_draft(tmp_path, monkeypatch):
     finally:
         pilots.reset_root()
 
-
 def test_online_no_inject_when_waiting(tmp_path, monkeypatch):
     root = Path(tempfile.mkdtemp())
     pilots.reset_root(root)
@@ -168,7 +154,6 @@ def test_online_no_inject_when_waiting(tmp_path, monkeypatch):
         assert orion.history("orion")["messages"] == []
     finally:
         pilots.reset_root()
-
 
 def test_online_inject_persists_in_history(tmp_path, monkeypatch):
     root = Path(tempfile.mkdtemp())
@@ -202,7 +187,6 @@ def test_online_inject_persists_in_history(tmp_path, monkeypatch):
         assert c.maybe_online_ambient() is False
     finally:
         pilots.reset_root()
-
 
 def test_content_lazy_load_unchanged_api():
     """Ленивая загрузка: load_content читает JSON по запросу, структура прежняя."""
