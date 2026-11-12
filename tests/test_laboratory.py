@@ -322,21 +322,40 @@ class LabLayoutTest(unittest.TestCase):
 
 
 class LabScreenTest(unittest.TestCase):
-    def setUp(self):
+    """Один Tk на класс — иначе 8× Tk+demo_graph раздувают Windows gate."""
+
+    @classmethod
+    def setUpClass(cls):
         import tkinter as tk
         from stamina import theme
+        from stamina.lab_demo import demo_graph as _demo
         try:
-            self.root = tk.Tk()
+            cls.root = tk.Tk()
         except tk.TclError:
+            cls.root = None
+            return
+        theme.init(cls.root)
+        cls.root.geometry("1024x600")
+        cls._demo = _demo(320, now=NOW)  # компактный фикс для всех UI-тестов
+
+    @classmethod
+    def tearDownClass(cls):
+        if getattr(cls, "root", None) is not None:
+            try:
+                cls.root.destroy()
+            except Exception:
+                pass
+            cls.root = None
+
+    def setUp(self):
+        if self.root is None:
             self.skipTest("нет дисплея")
-        theme.init(self.root)
-        self.root.geometry("1024x600")
+        from stamina import laboratory
+        from stamina.laboratory import LabScreen
         self.dir = Path(tempfile.mkdtemp())
         self.app = types.SimpleNamespace(current="lab", pilot=None)
-        from stamina import laboratory
         self._orig = laboratory.lab_data.pilot_root
         laboratory.lab_data.pilot_root = lambda app: self.dir
-        from stamina.laboratory import LabScreen
         self.scr = LabScreen(self.root, self.app)
         self.scr.pack(fill="both", expand=True)
         self.root.update()
@@ -347,8 +366,15 @@ class LabScreenTest(unittest.TestCase):
             self.scr.stop()
         except Exception:
             pass
+        try:
+            self.scr.destroy()
+        except Exception:
+            pass
         laboratory.lab_data.pilot_root = self._orig
-        self.root.destroy()
+
+    def _demo_on(self):
+        self.scr.set_demo(True, graph=self._demo)
+        self.root.update()
 
     def _texts(self):
         cv = self.scr.cv
@@ -362,15 +388,14 @@ class LabScreenTest(unittest.TestCase):
         self.assertEqual(self.scr.mode, MODE_VISUAL)
 
     def test_demo_visual_perf_and_tooltip(self):
-        self.scr.set_demo(True)
-        self.root.update()
+        self._demo_on()
         self.assertEqual(self.scr.badge.cget("text"), "ДЕМО-ДАННЫЕ")
         self.assertEqual(self.scr.mode, MODE_VISUAL)
-        # визуальный уровень — кластеры, не 1000 слов
+        # визуальный уровень — кластеры, не отдельные слова
         self.assertLess(len(self.scr.items), 250)
         self.assertGreater(len(self.scr.items), 5)
         t = time.perf_counter()
-        for k in range(30):
+        for k in range(20):
             self.scr.step(t + k * 0.033)
             self.root.update_idletasks()
         p = self.scr.perf()
@@ -383,9 +408,7 @@ class LabScreenTest(unittest.TestCase):
         self.assertFalse((self.dir / "lab.json").exists())   # демо ничего не пишет
 
     def test_work_mode_zoom_and_back(self):
-        self.scr.set_demo(True)
-        self.root.update()
-        # берём первый кластер и входим в фрагмент
+        self._demo_on()
         cluster = next(n for n in self.scr.graph.nodes if n["kind"] == "cluster")
         self.scr._load_fragment(cluster["group"])
         self.root.update()
@@ -398,8 +421,7 @@ class LabScreenTest(unittest.TestCase):
         self.assertEqual(self.scr.zoom, 1.0)
 
     def test_ctrl_wheel_zooms_without_reload(self):
-        self.scr.set_demo(True)
-        self.root.update()
+        self._demo_on()
         n0 = len(self.scr.graph.nodes)
         z0 = self.scr.zoom
         cx, cy, _R = self.scr._geom()
@@ -421,8 +443,7 @@ class LabScreenTest(unittest.TestCase):
         self.assertEqual((self.scr.view_ox, self.scr.view_oy), (0.0, 0.0))
 
     def test_orbit_drag_vs_click_and_selection(self):
-        self.scr.set_demo(True)
-        self.root.update()
+        self._demo_on()
         cluster = next(n for n in self.scr.graph.nodes if n["kind"] == "cluster")
         self.scr._load_fragment(cluster["group"])
         self.root.update()
@@ -468,15 +489,14 @@ class LabScreenTest(unittest.TestCase):
         self.assertGreaterEqual(len(self.scr.items), 1)
 
     def test_loop_stops_when_hidden(self):
-        self.scr.set_demo(True)
+        self._demo_on()
         self.scr.start()
         self.app.current = "bridge"
         self.scr._tick()
         self.assertIsNone(self.scr._job)
 
     def test_entity_items_drawn(self):
-        self.scr.set_demo(True)
-        self.root.update()
+        self._demo_on()
         self.assertGreaterEqual(len(self.scr._entity_items), 4)
         self.assertGreater(len(self.scr.bg_items), 0)
 

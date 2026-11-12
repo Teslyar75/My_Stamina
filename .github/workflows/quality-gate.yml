@@ -62,8 +62,9 @@ jobs:
 
       - name: Тесты (Windows — нативный Tk)
         if: runner.os == 'Windows'
-        # timeout на тест: без него один зависший Tk-after съедает весь лимит job (60 мин)
-        run: python -m pytest tests/ -q -p no:cacheprovider --timeout=90 --timeout-method=thread
+        # без per-test timeout: на Win thread-method замедляет весь прогон (~10+ мин) и
+        # не укладываемся в 60 мин job; зависания LabScreen глушим stop()/Destroy
+        run: python -m pytest tests/ -q -p no:cacheprovider
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
         if: runner.os == 'Linux'
