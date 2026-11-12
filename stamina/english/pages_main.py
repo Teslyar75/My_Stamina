@@ -11,6 +11,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import missions, theme
+from stamina.adapt import bind_wraplength
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
 from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
                            PANEL_HI, RED, TEXT, blend, chamfer, px)
@@ -31,6 +32,10 @@ FOCUS_FONT_GAIN = 0.8
 # меньше коэффициент и потолок — вкладки, шапка и кнопки остаются, шрифт не «кричит»
 NORMAL_FONT_GAIN = 0.6
 NORMAL_FONT_CAP = 3.0     # потолок «вписанного» масштаба до gain: k ≤ 0.6·3 = 1.8 (фокус — до 3.2)
+# Очень низкое окно (1024×600) и «высокие» метрики шрифтов в Windows требуют более
+# глубокого сжатия normal-режима, иначе включается лишняя прокрутка. Нижняя граница
+# остаётся читаемой, но гарантирует укладку панелей без overflow.
+NORMAL_FONT_MIN = 0.66
 
 
 # =============================================================================
@@ -979,7 +984,11 @@ class ScannerPage(tk.Frame):
         else:
             self._build_compact()   # классика: всё на одном экране
             self._fit_job = None
+            self._fit_settle_job = None
             self.sf.canvas.bind("<Configure>", self._queue_fit, add="+")
+            # Изменения внутренних блоков (например, MicPanel.refresh_mode) могут
+            # менять reqheight без изменения размеров canvas.
+            self.sf.inner.bind("<Configure>", self._queue_fit, add="+")
             self.bind("<Map>", lambda _e: self.after_idle(lambda: self._fit_normal(force=True)), add="+")
         self.bind("<Unmap>", self._on_unmap, add="+")
         if isinstance(ctx, tk.Misc):    # весь отсек «Английский» спрятали (другой отсек) — тоже выйти
@@ -1097,10 +1106,8 @@ class ScannerPage(tk.Frame):
                                            height=22, font_size=7))
         self.btn_card = acts.add(HudButton(acts, _t("В ПРОВЕРКУ"), self.add_card, color=AMBER, height=22, font_size=7))
 
-        def rewrap(lbl, col, extra=0):
-            col.bind("<Configure>", lambda e: lbl.configure(wraplength=max(px(80), e.width - px(4) - extra)), add="+")
-        rewrap(self.ptext, c1)
-        rewrap(self.defn, c2)
+        bind_wraplength(self.ptext, c1, margin=4)
+        bind_wraplength(self.defn, c2, margin=4)
         # канал связи — практика предложений
         self.chan = HudPanel(root, _t("КАНАЛ СВЯЗИ · ПРАКТИКА ПРЕДЛОЖЕНИЙ"), pad=4)
         self.chan.pack(fill=tk.X, padx=px(8), pady=0)
@@ -1120,8 +1127,8 @@ class ScannerPage(tk.Frame):
         self.str_.pack(anchor="w")
         self.hint = L(left, "", fg=AMBER, size=9, wraplength=px(400), justify="left")
         self.hint.pack(anchor="w")
-        rewrap(self.str_, left)
-        rewrap(self.hint, left)
+        bind_wraplength(self.str_, left, margin=4)
+        bind_wraplength(self.hint, left, margin=4)
         sbtn = Flow(left, gap=3)
         sbtn.pack(fill=tk.X, pady=(px(1), 0))
         # пустые строки перевода/подсказки не занимают высоту: показываем их только с текстом
@@ -1168,7 +1175,7 @@ class ScannerPage(tk.Frame):
         self.match.set, self.match.clear = _mset, _mclear
         # микрофон — всегда справа, на одном месте; строка статуса — под предложением
         self.mic = MicPanel(cb, ctx, self.on_speech, compact=True, live_master=left)
-        rewrap(self.mic.live, left)
+        bind_wraplength(self.mic.live, left, margin=4)
         self.mic.grid(row=0, column=1, sticky="n", padx=(px(8), 0))
 
     def _build_alt(self) -> None:
@@ -1343,7 +1350,6 @@ class ScannerPage(tk.Frame):
             f, self._focus = self._focus, None
             self._grow(False)
             f.restore()
-            self._fit_size = None
             self.after_idle(self._fit_normal)
         btn = getattr(self, "btn_focus", None)
         if btn is not None:
@@ -1368,8 +1374,9 @@ class ScannerPage(tk.Frame):
     def _fill(self, gain: float | None, cap: float = 4.0, calm: bool = False) -> None:
         """Растянуть панели сканера и канала связи по высоте окна и масштабировать шрифт
         (gain=None — вернуть исходную компактную раскладку). calm — обычный режим: каждая
-        панель получает не меньше своего содержимого, остаток высоты делится 55/45;
-        если не помещается и при k=1 — остаётся обычная раскладка (с прокруткой при нужде)."""
+        панель получает не меньше своего содержимого, остаток высоты делится 55/45.
+        На очень низком окне допускаем мягкое уменьшение k ниже 1.0 (до NORMAL_FONT_MIN),
+        чтобы не оставлять пустой низ и не включать прокрутку на 1024×600."""
         panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None)) if w is not None]
         if len(panels) != 2 or not getattr(self, "compact", False):
             return
@@ -1387,11 +1394,15 @@ class ScannerPage(tk.Frame):
                 chh = max(1, self.sf.canvas.winfo_height())
                 # растягиваем по окну, но мельче «впритык»: пропорции между элементами те же
                 k = self.scale_for(cw, chh, gain, cap)
-                while True:
+                if not calm:
+                    k = max(1.0, k * 0.98)  # небольшой запас: фокус не должен упираться в потолок окна
+                min_k = NORMAL_FONT_MIN if calm else 1.0
+                for _ in range(12):  # защита от дребезга layout/scrollbar на границе высоты
                     self._scale(k)
-                    self.update_idletasks()
+                    if not calm:
+                        self.update_idletasks()
                     other = self.sf.inner.winfo_reqheight() - sp.winfo_reqheight() - ch_.winfo_reqheight()
-                    avail = chh - max(0, other) - px(4)
+                    avail = chh - max(0, other) - (0 if calm else px(4))
                     h1 = int(avail * 0.55)
                     h2 = avail - h1
                     need = lambda p: p.body.winfo_reqheight() + px(26) + px(4) + px(6)
@@ -1399,18 +1410,27 @@ class ScannerPage(tk.Frame):
                     if calm:
                         n1, n2 = need(sp), need(ch_)
                         if n1 + n2 > avail:
-                            if k <= 1.0:
-                                self._fill(None)
-                                return
-                            k = max(1.0, k * 0.92)
-                            continue
+                            if k > min_k + 0.01:
+                                k = max(min_k, k * 0.92)
+                                continue
                         h1 = n1 + int((avail - n1 - n2) * 0.55)
                         h2 = avail - h1
                     sp.configure(height=h1)
                     ch_.configure(height=h2)
-                    if k <= 1.0 or not (over(sp, h1) or over(ch_, h2)):
+                    if calm:
+                        # Надёжный признак переполнения — фактическая высота содержимого
+                        # ScrollFrame после выставления высот панелей (особенно на Windows,
+                        # где reqheight шрифтов может отличаться от предварительной оценки).
+                        overflow = self.sf.inner.winfo_reqheight() - chh
+                        if overflow > 0 and k > min_k + 0.01:
+                            k = max(min_k, k * 0.92)
+                            continue
+                    if k <= min_k or not (over(sp, h1) or over(ch_, h2)):
                         break
-                    k = max(1.0, k * 0.92)
+                    nk = max(min_k, k * 0.92)
+                    if abs(nk - k) < 0.005:
+                        break
+                    k = nk
             else:
                 self._scale(1.0)
                 self._center(False)
@@ -1419,26 +1439,77 @@ class ScannerPage(tk.Frame):
                     w.configure(height=1)
                     w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
                 self._grow_saved = []
-            self.update_idletasks()   # reqheight после последних height=, иначе sync видит старую высоту
             self.sf.sync()
         except tk.TclError:
             pass
 
+    def _visible_for_fit(self) -> bool:
+        """Сканер лежит в том же grid, что и обзор: не пересчитывать fit, пока вкладка другая."""
+        cur = getattr(self.ctx, "current", "scanner")
+        return cur in (None, "scanner")
+
+    def _cancel_fit_jobs(self) -> None:
+        for attr in ("_fit_job", "_fit_settle_job"):
+            job = getattr(self, attr, None)
+            if job is None:
+                continue
+            try:
+                self.after_cancel(job)
+            except tk.TclError:
+                pass
+            setattr(self, attr, None)
+
+    def destroy(self) -> None:
+        self._cancel_fit_jobs()
+        super().destroy()
+
     def _fit_normal(self, force: bool = False) -> None:
         """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
         self._fit_job = None
-        if self._focus is not None or not getattr(self, "compact", False) or not self.winfo_ismapped():
+        if (self._focus is not None or not getattr(self, "compact", False)
+                or not self.winfo_ismapped() or not self._visible_for_fit()):
             return
         cv = self.sf.canvas
         size = (cv.winfo_width(), cv.winfo_height())
-        if size[0] < 50 or size[1] < 50 or (not force and size == getattr(self, "_fit_size", None)):
+        if size[0] < 50 or size[1] < 50:
             return
-        self._fit_size = size
         self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+        # 1024×600 (canvas ~340px по высоте): на Windows метрики Segoe/Consolas
+        # иногда дают overflow после обычного fit. Для этого режима фиксируем
+        # «мягко-компактный» normal-масштаб.
+        if size[1] <= px(360) and self._k > NORMAL_FONT_MIN + 0.001:
+            self._scale(NORMAL_FONT_MIN)
+            self.sf.sync()
+        # Платформенные метрики Tk могут дать небольшой overflow после первичного fit.
+        for _ in range(4):
+            try:
+                y1 = self.sf.canvas.yview()[1]
+            except tk.TclError:
+                break
+            if y1 >= 0.995 or self._k <= NORMAL_FONT_MIN + 0.001:
+                break
+            self._scale(max(NORMAL_FONT_MIN, self._k * 0.92))
+            self.sf.sync()
+        if not force and getattr(self, "_fit_settle_job", None) is None:
+            self._fit_settle_job = self.after_idle(self._fit_settle)
 
     def _queue_fit(self, _e=None) -> None:
-        if getattr(self, "_fit_job", None) is None:
-            self._fit_job = self.after(60, self._fit_normal)
+        # Trailing debounce: пересчитываем fit в финальном состоянии геометрии,
+        # а не в промежуточной фазе каскада Configure-событий.
+        if not self._visible_for_fit():
+            self._cancel_fit_jobs()
+            return
+        job = getattr(self, "_fit_job", None)
+        if job is not None:
+            try:
+                self.after_cancel(job)
+            except tk.TclError:
+                pass
+        self._fit_job = self.after(60, self._fit_normal)
+
+    def _fit_settle(self) -> None:
+        self._fit_settle_job = None
+        self._fit_normal(force=True)
 
     def _center(self, on: bool) -> None:
         """Focus-mode helper."""
@@ -1490,7 +1561,6 @@ class ScannerPage(tk.Frame):
         self._fit_word()
         for fl in self._flows():
             fl.relayout(fl.winfo_width(), force=True)
-        self.update_idletasks()
         self._bar_mode = None
         self._place_actbar(self.scan_panel.winfo_width())
         self.chip_bar.place_configure(y=px(round(4 * kh)))
@@ -1547,6 +1617,7 @@ class ScannerPage(tk.Frame):
 
     def _on_unmap(self, e) -> None:
         # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть
+        self._cancel_fit_jobs()
         if self._focus is not None and e.widget in (self, self.ctx):
             self.after_idle(lambda: self.toggle_focus(False))
 
