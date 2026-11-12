@@ -445,7 +445,7 @@ class LinkIndicator:
                 pass
 
     def apply(self, view: LinkView, *, tip: str = "") -> None:
-        from stamina.theme import AMBER, GREEN, MUTED, RED, blend, BG
+        from stamina.theme import AMBER, GREEN, MUTED, RED
 
         self.view = view
         self._tip_text = tip or view.tip
