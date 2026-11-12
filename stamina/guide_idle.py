@@ -10,6 +10,11 @@ Enter — шутка или факт, Esc — гид извиняется и з�
 из «мешков»: каждый элемент звучит один раз, пока не прозвучат все, и не повторяется
 два раза подряд даже на стыке мешков.
 
+ONLINE ambient (тумблер «В ONLINE-чате», по умолчанию вкл.): редко, с паузой ~15 мин,
+когда агент свободен (нет запроса, пилот не печатает миссию, никто не ждёт ответа),
+гид кладёт шутку/факт в историю чата Ориона отдельным ``remember(..., kind=joke|fact)``
+— без смешивания с ответом ИИ; переживает перезапуск.
+
 Shift+F1 — гид читает вслух справку F1 текущего окна (запись; если записи нет —
 живой офлайн-синтез tts.speak). Обычный F1 не изменился.
 """
@@ -40,9 +45,20 @@ DEFAULT_INTERVAL = "10-20"
 DECLINE_STREAK_SLOWDOWN = 3
 PROMPT_TIMEOUT_MS = 30_000
 TYPING_QUIET_S = 6.0
+# ONLINE ambient (зеркало web guideIdle): реже офлайн-гида, только в чат агента.
+ONLINE_COOLDOWN_S = 15 * 60
+ONLINE_CHECK_MS = 60_000
+AMBIENT_KINDS = frozenset({"joke", "fact"})
 
 
 # -- данные ------------------------------------------------------------------
+def list_langs() -> list[str]:
+    """Языки, для которых лежит guide_content/<lang>.json."""
+    if not CONTENT_DIR.is_dir():
+        return []
+    return sorted(p.stem for p in CONTENT_DIR.glob("*.json") if p.is_file())
+
+
 def load_content(lang: str = "ru") -> dict:
     path = CONTENT_DIR / f"{lang}.json"
     if not path.exists():
@@ -163,7 +179,10 @@ class GuideState:
 
     def __init__(self, path: Path | None) -> None:
         self.path = path
-        self.data: dict = {"bags": {}, "listened": 0, "declined": 0, "decline_streak": 0}
+        self.data: dict = {
+            "bags": {}, "listened": 0, "declined": 0, "decline_streak": 0,
+            "last_online_at": 0.0,
+        }
         if path is not None:
             try:
                 self.data.update(json.loads(path.read_text(encoding="utf-8")))
@@ -209,6 +228,39 @@ def texts(content: dict) -> dict[str, str]:
     for lst in list(content["intros"].values()) + [content["system"], content["jokes"], content["facts"]]:
         out.update({x["id"]: x["text"] for x in lst})
     return out
+
+
+def can_online_ambient(
+    *,
+    guide_enabled: bool,
+    online_enabled: bool,
+    busy: bool,
+    has_draft: bool,
+    waiting: bool,
+    listening: bool = False,
+    pending_answer: bool = False,
+    phase_idle: bool = True,
+    now: float,
+    last_key_at: float,
+    last_online_at: float,
+    cooldown_s: float = ONLINE_COOLDOWN_S,
+    typing_quiet_s: float = TYPING_QUIET_S,
+) -> bool:
+    """Можно ли вставить шутку/факт в ONLINE-чат: агент свободен, кулдаун, тумблер вкл.
+
+    Зеркало web ``canOnlineAmbient``: не мешать запросу, набору миссии и ожиданию ответа.
+    """
+    if not guide_enabled or not online_enabled:
+        return False
+    if not phase_idle:
+        return False
+    if busy or has_draft or waiting or listening or pending_answer:
+        return False
+    if now - last_key_at < typing_quiet_s:
+        return False
+    if last_online_at and now - last_online_at < cooldown_s:
+        return False
+    return True
 
 
 # -- проигрывание -----------------------------------------------------------
@@ -316,9 +368,10 @@ class GuideController:
                 state_path = None
         self.state = GuideState(state_path)
         self.player = ClipPlayer(app)
-        self.phase = "idle"          # idle | intro | prompt | item | decline | help
+        self.phase = "idle"          # idle | intro | prompt | item | decline | help | online
         self.current: tuple[str, str, str] | None = None
         self._timer = None
+        self._online_timer = None
         self._prompt_job = None
         self._toast = None
         self._prev_focus = None
@@ -330,6 +383,7 @@ class GuideController:
             pass
         if autostart:
             self.schedule()
+            self.schedule_online()
 
     # настройки
     def _settings(self) -> dict:
@@ -340,6 +394,10 @@ class GuideController:
 
     def enabled(self) -> bool:
         return bool(self._settings().get("guide_enabled", True))
+
+    def online_enabled(self) -> bool:
+        """Тумблер «В ONLINE-чате»: шутки/факты в историю, когда агент свободен."""
+        return bool(self._settings().get("guide_online_jokes", True))
 
     def voice(self) -> str:
         v = self._settings().get("guide_voice", "male")
@@ -364,6 +422,26 @@ class GuideController:
                 return
         self._timer = self.app.after(delay_ms, self.fire)
 
+    def schedule_online(self, delay_ms: int | None = None) -> None:
+        """Редкий опрос ONLINE ambient (как web ONLINE_CHECK_MS)."""
+        if self._online_timer is not None:
+            try:
+                self.app.after_cancel(self._online_timer)
+            except Exception:  # noqa: BLE001
+                pass
+            self._online_timer = None
+        if not self.enabled() or not self.online_enabled():
+            return
+        self._online_timer = self.app.after(
+            ONLINE_CHECK_MS if delay_ms is None else delay_ms, self._online_tick)
+
+    def _online_tick(self) -> None:
+        self._online_timer = None
+        try:
+            self.maybe_online_ambient()
+        finally:
+            self.schedule_online()
+
     def fire(self, force: bool = False) -> None:
         self._timer = None
         if not force:
@@ -384,6 +462,136 @@ class GuideController:
         self._show_toast(self.texts.get(intro, ""), prompt=True)
         self._say(intro, lambda: self._say("sys_prompt", self._await_answer))
 
+    def agent_free_ctx(self) -> dict:
+        """Снимок занятости ONLINE-чата Ориона (для idle-gate)."""
+        ctx = {
+            "busy": False,
+            "has_draft": False,
+            "waiting": False,
+            "listening": False,
+            "pending_answer": False,
+            "online_mode": True,
+        }
+        try:
+            from stamina import orion, ship_chat
+            scr = None
+            screens = getattr(self.app, "screens", None) or {}
+            if isinstance(screens, dict):
+                scr = screens.get("orion")
+            if scr is None:
+                scr = getattr(self.app, "orion_screen", None)
+            if scr is not None:
+                ctx["busy"] = bool(getattr(scr, "_busy", False))
+                draft = ""
+                try:
+                    entry = getattr(scr, "entry", None)
+                    if entry is not None and hasattr(entry, "get"):
+                        draft = " ".join(str(entry.get() or "").split())
+                except Exception:  # noqa: BLE001
+                    draft = str(getattr(scr, "_draft_text", "") or "").strip()
+                if not draft:
+                    draft = str(getattr(scr, "_draft_text", "") or "").strip()
+                ctx["has_draft"] = bool(draft)
+                ctx["listening"] = bool(getattr(scr, "_listening", False) or
+                                        getattr(scr, "_voice_listening", False))
+                ctx["pending_answer"] = bool(
+                    getattr(scr, "_await_task", False)
+                    or getattr(scr, "_pending", None) is not None
+                    or getattr(scr, "_pending_task", "")
+                )
+            try:
+                aid = str((orion.active() or {}).get("id") or "")
+                ctx["waiting"] = bool(ship_chat.waiting(aid) if aid else ship_chat.waiting())
+            except Exception:  # noqa: BLE001
+                ctx["waiting"] = False
+            # ONLINE = есть активный агент (на desktop Орион всегда на борту).
+            ctx["online_mode"] = bool(orion.active())
+        except Exception:  # noqa: BLE001
+            pass
+        return ctx
+
+    def maybe_online_ambient(self, *, force: bool = False, now: float | None = None) -> bool:
+        """Редко вставить шутку/факт в чат Ориона, только если агент свободен.
+
+        Не смешивается с ответом агента: отдельное ``remember(..., kind=joke|fact)``.
+        """
+        if self.phase != "idle" and not force:
+            return False
+        ctx = self.agent_free_ctx()
+        wall = time.time() if now is None else now
+        last_online = float(self.state.data.get("last_online_at") or 0.0)
+        if not force:
+            if not ctx.get("online_mode", True):
+                return False
+            if not can_online_ambient(
+                guide_enabled=self.enabled(),
+                online_enabled=self.online_enabled(),
+                busy=bool(ctx["busy"]),
+                has_draft=bool(ctx["has_draft"]),
+                waiting=bool(ctx["waiting"]),
+                listening=bool(ctx["listening"]),
+                pending_answer=bool(ctx["pending_answer"]),
+                phase_idle=self.phase == "idle",
+                now=wall,
+                last_key_at=wall - max(0.0, time.monotonic() - self._last_key),
+                last_online_at=last_online,
+            ):
+                return False
+        return self._inject_online_ambient(wall_now=wall)
+
+    def _inject_online_ambient(self, *, wall_now: float | None = None) -> bool:
+        """pick → remember(kind) → toast+аудио; повторная проверка занятости перед записью."""
+        ctx = self.agent_free_ctx()
+        if ctx["busy"] or ctx["waiting"] or ctx["has_draft"] or ctx["pending_answer"]:
+            return False
+        if self.phase != "idle":
+            return False
+        self.current = pick(self.content, self.state)
+        kind, _intro, item = self.current
+        if kind not in AMBIENT_KINDS or not item:
+            return False
+        text = self.texts.get(item, "")
+        if not text:
+            return False
+        # Ещё раз: за время pick агент мог заняться.
+        ctx = self.agent_free_ctx()
+        if ctx["busy"] or ctx["waiting"] or ctx["has_draft"] or ctx["pending_answer"]:
+            return False
+        saved = self._remember_ambient(kind=kind, text=text, clip_id=item)
+        if not saved:
+            return False
+        self.state.data["last_online_at"] = float(wall_now if wall_now is not None else time.time())
+        self.state.save()
+        self.phase = "online"
+        self._duck()
+        self._show_toast(text, prompt=False)
+        self._say(item, self.finish)
+        return True
+
+    def _remember_ambient(self, *, kind: str, text: str, clip_id: str) -> dict | None:
+        """Сохранить ambient в историю чата (формат web POST /api/orion/remember)."""
+        try:
+            from stamina import orion
+            rec = orion.active() or {}
+            agent_id = str(rec.get("id") or "")
+            if not agent_id:
+                return None
+            msg = orion.remember(agent_id, "orion", text, kind=kind, clip_id=clip_id)
+            # Обновить ленту, если экран Ориона уже открыт.
+            screens = getattr(self.app, "screens", None) or {}
+            scr = screens.get("orion") if isinstance(screens, dict) else None
+            if scr is not None and hasattr(scr, "_render_feed"):
+                try:
+                    scr._render_feed()
+                except Exception:  # noqa: BLE001
+                    try:
+                        scr.refresh()
+                    except Exception:  # noqa: BLE001
+                        pass
+            return msg
+        except Exception:  # noqa: BLE001
+            return None
+
     def _await_answer(self) -> None:
         if self.phase != "intro":
             return
@@ -399,7 +607,7 @@ class GuideController:
             if keysym == "Escape":
                 self.decline()
                 return "break"
-        elif self.phase in ("item", "help") and keysym == "Escape":
+        elif self.phase in ("item", "help", "online") and keysym == "Escape":
             self.finish()
             return "break"
         return None

@@ -1644,6 +1644,10 @@ class OrionScreen(tk.Frame):
                 name = "📌 " + name
             elif m.get("kind") == "quote":
                 name = "📎 " + name
+            elif m.get("kind") == "joke":
+                name = _t("ШУТКА") + " · " + name
+            elif m.get("kind") == "fact":
+                name = _t("ФАКТ") + " · " + name
             # Визуальное разделение реплик
             self.text.insert(tk.END, "─" * 40 + "\n", "separator")
             self.text.insert(tk.END, prefix + name, tag)
