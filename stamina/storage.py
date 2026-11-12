@@ -78,6 +78,8 @@ DEFAULT_SETTINGS = {
     "guide_enabled": True,  # бортовой гид: шутки и факты раз в guide_interval минут
     "guide_interval": "10-20",
     "guide_voice": "male",  # male — Павел, female — Ирина
+    # ONLINE: редко вставлять шутку/факт в чат Ориона, когда агент свободен (по умолчанию вкл.)
+    "guide_online_jokes": True,
     "idle_minutes": 1,  # простой: слайдшоу + радио скина (только скины со slideshow)
     "idle_radio": True,
     "idle_after": "stop",

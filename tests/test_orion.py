@@ -203,6 +203,14 @@ class OrionDataTest(unittest.TestCase):
         orion.remember("orion", "pilot", "Смотри снимок.", shot=r"C:\shots\1.png")
         self.assertEqual(orion.history("orion")["messages"][0]["shot"], r"C:\shots\1.png")
 
+    def test_history_keeps_ambient_kind_and_clip_id(self):
+        """Шутка/факт гида — как web POST /api/orion/remember (kind + clip_id)."""
+        orion.remember("orion", "orion", "Короткий факт.", kind="fact", clip_id="fact_001")
+        msg = orion.history("orion")["messages"][0]
+        self.assertEqual(msg["kind"], "fact")
+        self.assertEqual(msg["clip_id"], "fact_001")
+        self.assertEqual(msg["role"], "orion")
+
     def test_history_hides_empty_screenshot(self):
         orion.remember("orion", "pilot", "без картинки")
         self.assertNotIn("shot", orion.history("orion")["messages"][0])

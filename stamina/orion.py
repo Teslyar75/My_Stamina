@@ -420,10 +420,13 @@ def _next_seq(rows: list[dict]) -> int:
 
 
 def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
-             kind: str = "", shot: str = "") -> dict:
+             kind: str = "", shot: str = "", clip_id: str = "") -> dict:
     """Дописать реплику: role — pilot | orion | system.
 
     `shot` — путь к снимку экрана, если пилот приложил картинку к сообщению.
+    `kind` — метка реплики (``joke`` / ``fact`` / ``task`` / ``quote`` / …);
+    ambient-шутки гида пишутся с ``kind=joke|fact`` (как web POST /api/orion/remember).
+    `clip_id` — id фразы из guide_content (необязательно; для паритета с web).
     """
     data = _read_json(history_path(agent_id), {"version": 1, "session": "", "messages": []})
     data.setdefault("messages", [])
@@ -438,6 +441,8 @@ def remember(agent_id: str, role: str, text: str, *, session: str | None = None,
            "kind": kind}
     if shot:
         msg["shot"] = str(shot)
+    if clip_id:
+        msg["clip_id"] = str(clip_id)[:40]
     data["messages"].append(msg)
     if len(data["messages"]) > MAX_MESSAGES:
         data["messages"] = data["messages"][-MAX_MESSAGES:]
