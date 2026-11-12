@@ -1,6 +1,7 @@
 """Навигация по зонам (порт web shell/zones.ts + routes.ts).
 
-Девять зон в шапке: МОСТИК, АНГЛИЙСКИЙ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, ЭФИР, ДОКУМЕНТЫ, ОРИОН, НАСТРОЙКИ.
+Зоны в шапке: МОСТИК, АНГЛИЙСКИЙ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, ЭФИР, ДОКУМЕНТЫ, ОРИОН,
+ЛАБОРАТОРИЯ, НАСТРОЙКИ.
 Миссии, Свой текст, Бортжурнал и Настройки мостика — подменю Мостика.
 Под шапкой — строка пути «МОСТИК › БОРТЖУРНАЛ» с кликабельными частями.
 Модуль без Tk — его проверяют тесты.
@@ -10,7 +11,7 @@ from __future__ import annotations
 
 from stamina.i18n import t
 
-ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "docs", "orion", "settings")
+ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab", "settings")
 
 # подменю Мостика: (экран, подпись)
 BRIDGE_LEAVES = (
@@ -30,6 +31,7 @@ ZONE_TITLES = {
     "comm": "ЭФИР",
     "docs": "ДОКУМЕНТЫ",
     "orion": "ОРИОН",
+    "lab": "ЛАБОРАТОРИЯ",
     "settings": "НАСТРОЙКИ",
 }
 
@@ -65,3 +67,16 @@ def path(screen: str | None) -> list[tuple[str, str]]:
         title = dict(BRIDGE_LEAVES)[screen]
         segs.append((t(title), screen))
     return segs
+
+
+# Зоны с постоянной клавишей вне счёта Ctrl+1…9: остальные нумеруются по порядку,
+# поэтому новая зона не сдвигает привычные Ctrl+N (НАСТРОЙКИ остаются Ctrl+9).
+FIXED_HOTKEYS = {"lab": "0"}
+
+
+def zone_hotkeys(names: list[str]) -> list[tuple[str, str]]:
+    """[(цифра, зона), …] для Ctrl+цифра; больше девяти по порядку не бывает."""
+    out = [(FIXED_HOTKEYS[n], n) for n in names if n in FIXED_HOTKEYS]
+    rest = [n for n in names if n not in FIXED_HOTKEYS]
+    out += [(str(i), n) for i, n in enumerate(rest[:9], 1)]
+    return out

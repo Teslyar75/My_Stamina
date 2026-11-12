@@ -821,6 +821,15 @@ class OrionScreen(tk.Frame):
         form = tk.Frame(rp.body, bg=PANEL)
         form.pack(fill=tk.BOTH, expand=True)
 
+        # Индикатор связи в карточке (не дубль списка — полный вид с подписью).
+        from stamina import orion_link
+        link_row = tk.Frame(form, bg=PANEL)
+        link_row.pack(fill=tk.X, pady=(0, px(4)))
+        self._card_link = orion_link.LinkIndicator(
+            link_row, compact=False, bg=PANEL,
+            on_click=lambda: self.show_tab("agents"))
+        self._card_link.pack(side=tk.LEFT)
+
         self.name_var = tk.StringVar()
         self.model_var = tk.StringVar()
         self.note_var = tk.StringVar()
@@ -2619,6 +2628,12 @@ class OrionScreen(tk.Frame):
             self.refresh()
             self._hint(_t("Теперь на связи: {0}").format(saved.get("name") or ""), GREEN)
 
+    def _notify_link_watcher(self) -> None:
+        """Смена активного агента — HUD и индикаторы перепроверяют связь."""
+        watcher = getattr(self.app, "orion_link_watcher", None)
+        if watcher is not None:
+            watcher.on_agent_switch()
+
     def _cycle_agent(self) -> None:
         reg = orion.registry()
         ids = [a["id"] for a in reg["agents"]]
@@ -2630,6 +2645,7 @@ class OrionScreen(tk.Frame):
         tts.stop()
         self._hide_permission()
         self.refresh()
+        self._notify_link_watcher()
         self._hint(_t("Теперь на связи: {0}").format(self._rec().get("name") or ""), CYAN)
 
     def _speak(self, res, rec: dict | None = None) -> None:
@@ -2881,34 +2897,157 @@ class OrionScreen(tk.Frame):
         for ch in w.winfo_children():
             self._crew_bind_wheel(ch)
 
+    def _link_name_color(self, token: str) -> str:
+        """Цвет имени по токену индикатора связи (контрастные токены скина)."""
+        return {"green": GREEN, "amber": AMBER, "red": RED}.get(token, TEXT)
+
+    def _open_agents_tab(self) -> None:
+        self.show_tab("agents")
+
     def _refresh_crew(self) -> None:
+        from stamina import orion_link
+
         for w in self.crew_box.winfo_children():
             w.destroy()
+        self._crew_link_rows: dict[str, tuple] = {}
+        self._ensure_crew_health_poll()
         reg = orion.registry()
         for a in reg["agents"]:
             active = a["id"] == reg["active"]
-            color = CYAN if active else (GREEN if a.get("enabled", True) else MUTED)
-            card = tk.Frame(self.crew_box, bg=PANEL)
-            card.pack(fill=tk.X, pady=(px(2), px(4)))
-            top = tk.Frame(card, bg=PANEL)
-            top.pack(fill=tk.X)
+            selected = a["id"] == self._draft_id
+            view = orion_link.list_view(a)
+            # Рамка: выбранный в карточке — cyan; активный «в эфире» тоже заметен.
+            card_bg = PANEL
+            card = tk.Frame(self.crew_box, bg=card_bg, highlightthickness=1,
+                            highlightbackground=CYAN if (selected or active) else PANEL,
+                            highlightcolor=CYAN)
+            card.pack(fill=tk.X, pady=(px(2), px(4)), padx=px(1))
+            top = tk.Frame(card, bg=card_bg)
+            top.pack(fill=tk.X, padx=px(4), pady=(px(2), 0))
             if a["id"] != orion.DEFAULT_AGENT["id"]:
-                HudButton(top, "✕", lambda k=a["id"]: self._delete_agent(k), height=32,
-                          width=32, font_size=9, color=RED).pack(side=tk.RIGHT, padx=(px(3), 0))
-            HudButton(top, "✎", lambda k=a["id"]: self._edit_agent_full(k), height=32,
-                      width=32, font_size=9, color=CYAN).pack(side=tk.RIGHT, padx=(px(3), 0))
-            HudButton(top, ("▸ " if active else "") + str(a.get("name") or a["id"]),
-                      lambda k=a["id"]: self._edit_agent(k), height=32, font_size=9,
-                      color=color).pack(side=tk.LEFT, fill=tk.X, expand=True)
-            _label(card, self.agent_subtitle(a), fg=TEXT, size=8, anchor="w").pack(fill=tk.X)
+                HudButton(top, "✕", lambda k=a["id"]: self._delete_agent(k), height=28,
+                          width=28, font_size=9, color=RED).pack(side=tk.RIGHT, padx=(px(3), 0))
+            HudButton(top, "✎", lambda k=a["id"]: self._edit_agent_full(k), height=28,
+                      width=28, font_size=9, color=CYAN).pack(side=tk.RIGHT, padx=(px(3), 0))
+
+            row = tk.Frame(top, bg=card_bg, cursor="hand2")
+            row.pack(side=tk.LEFT, fill=tk.X, expand=True)
+            ind = orion_link.LinkIndicator(
+                row, compact=True, bg=card_bg,
+                on_click=lambda k=a["id"]: self._edit_agent(k))
+            tip = orion_link.tooltip_for(view, a, None)
+            ind.apply(view, tip=tip)
+            ind.pack(side=tk.LEFT)
+            name_fg = self._link_name_color(view.name_fg)
+            name_lbl = _label(row, str(a.get("name") or a["id"]), fg=name_fg, size=10,
+                              bold=True, bg=card_bg, cursor="hand2")
+            name_lbl.pack(side=tk.LEFT, padx=(px(6), 0))
+            name_lbl.bind("<Button-1>", lambda _e, k=a["id"]: self._edit_agent(k))
+            if active:
+                tag = _label(row, _t("в эфире"), fg=MUTED, size=7, bg=card_bg)
+                tag.configure(highlightthickness=1, highlightbackground=MUTED,
+                              padx=px(4), pady=px(1))
+                tag.pack(side=tk.LEFT, padx=(px(6), 0))
+            row.bind("<Button-1>", lambda _e, k=a["id"]: self._edit_agent(k))
+            self._crew_link_rows[a["id"]] = (ind, name_lbl, a)
+
+            _label(card, self.agent_subtitle(a), fg=TEXT, size=8, anchor="w",
+                   bg=card_bg).pack(fill=tk.X, padx=px(4))
             _label(card, self._access_label(a.get("access", "crew")), fg=MUTED,
-                   size=8, anchor="w").pack(fill=tk.X)
+                   size=8, anchor="w", bg=card_bg).pack(fill=tk.X, padx=px(4),
+                                                        pady=(0, px(2)))
             self._crew_bind_wheel(card)
+            # Фоновый probe для openai_compat (opencode уже оценён локально).
+            if str(a.get("kind") or "") == "openai_compat":
+                orion_link.probe_async(a, lambda h, aid=a["id"]: self._on_crew_health(aid, h),
+                                       refresh=False)
         self.crew_box.update_idletasks()
         self._crew_sync()
         if self._draft_id not in {a["id"] for a in reg["agents"]}:
             self._draft_id = reg["agents"][0]["id"]
         self._fill_form(orion.get(self._draft_id) or dict(orion.DEFAULT_AGENT))
+        self._refresh_card_link()
+
+    def _ensure_crew_health_poll(self) -> None:
+        """Опрос очереди health только с UI-потока (after из worker нельзя)."""
+        import queue
+        if getattr(self, "_crew_health_q", None) is None:
+            self._crew_health_q = queue.SimpleQueue()
+        if getattr(self, "_crew_health_poll", None):
+            return
+        self._crew_health_poll = True
+        try:
+            self.after(100, self._poll_crew_health)
+        except tk.TclError:
+            self._crew_health_poll = False
+
+    def _on_crew_health(self, agent_id: str, health) -> None:
+        """Ответ фонового probe → только put в очередь (без Tk)."""
+        q = getattr(self, "_crew_health_q", None)
+        if q is None:
+            import queue
+            # очередь могла ещё не создаться — создаём без after
+            self._crew_health_q = queue.SimpleQueue()
+            q = self._crew_health_q
+        try:
+            q.put((agent_id, health))
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _poll_crew_health(self) -> None:
+        """Забрать health пассажиров и перекрасить индикаторы на UI-потоке."""
+        import queue
+        from stamina import orion_link
+        q = getattr(self, "_crew_health_q", None)
+        if q is None:
+            self._crew_health_poll = False
+            return
+        try:
+            while True:
+                agent_id, health = q.get_nowait()
+                row = getattr(self, "_crew_link_rows", {}).get(agent_id)
+                if not row:
+                    continue
+                ind, name_lbl, agent = row
+                view = orion_link.derive_view(agent, health)
+                try:
+                    if not ind.frame.winfo_exists():
+                        continue
+                    ind.apply(view, tip=orion_link.tooltip_for(view, agent, health))
+                    name_lbl.configure(fg=self._link_name_color(view.name_fg))
+                except tk.TclError:
+                    continue
+                if agent_id == getattr(self, "_draft_id", None):
+                    self._refresh_card_link(health)
+                if agent_id == (orion.active() or {}).get("id"):
+                    watcher = getattr(self.app, "orion_link_watcher", None)
+                    if watcher is not None:
+                        watcher.publish(agent, health, view)
+        except queue.Empty:
+            pass
+        try:
+            self.after(100, self._poll_crew_health)
+        except tk.TclError:
+            self._crew_health_poll = False
+
+    def _refresh_card_link(self, health=None) -> None:
+        """Индикатор в шапке карточки пассажира (вкладка АГЕНТЫ)."""
+        from stamina import orion_link
+        ind = getattr(self, "_card_link", None)
+        if ind is None:
+            return
+        rec = orion.get(self._draft_id) if self._draft_id else None
+        if rec is None or getattr(self, "_is_new", False):
+            view = orion_link.derive_view(None, None)
+            ind.apply(view)
+            return
+        if health is None:
+            view = orion_link.list_view(rec)
+            health_guess = None
+        else:
+            view = orion_link.derive_view(rec, health)
+            health_guess = health
+        ind.apply(view, tip=orion_link.tooltip_for(view, rec, health_guess))
 
     def _edit_agent(self, agent_id: str) -> None:
         self._draft_id = agent_id
@@ -2979,6 +3118,7 @@ class OrionScreen(tk.Frame):
         self._paint_form()
         self._refresh_binding()
         self._refresh_evolution()
+        self._refresh_card_link()
 
     def _load_character(self, agent_id: str) -> None:
         """Показать документ манер: у заселённого — его документ, у нового — заготовку."""
@@ -3083,6 +3223,7 @@ class OrionScreen(tk.Frame):
             return
         if orion.set_active(self._draft_id):
             self.refresh()
+            self._notify_link_watcher()
             self._hint(_t("На связи: {0}").format(self._rec().get("name") or ""), CYAN)
 
     def _remove_agent(self) -> None:

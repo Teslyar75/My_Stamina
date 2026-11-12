@@ -12,7 +12,7 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, docs_hook, orion_hook, pilots, radio_hook, speedread_hook, theme)
+                     missions, nav, docs_hook, orion_hook, lab_hook, pilots, radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina import safe_mode
 from stamina import ontop
@@ -50,6 +50,8 @@ class Cockpit(tk.Tk):
         from stamina import monitors as _mon
         _mon.follow_toplevels(self)   # диалоги едут за окном на другой монитор
         ontop.apply(self, bool(st.get(ontop.KEY, True)))   # «Поверх всех окон»
+        # load_class() — только проверка файлов на диске, без import тяжёлых модулей.
+        # Import и сборка виджетов — при первом заходе в отсек (фабрика / _ensure_screen).
         self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
@@ -78,6 +80,10 @@ class Cockpit(tk.Tk):
         if self._orion_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(orion_hook.KEY, orion_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._lab_cls = lab_hook.load_class()  # вкладка «ЛАБОРАТОРИЯ» — созвездия знаний
+        if self._lab_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(lab_hook.KEY, lab_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
@@ -94,8 +100,8 @@ class Cockpit(tk.Tk):
         self.after(800, self._fit_to_content)
         self.bind("<Key>", self._on_key)
         self.bind("<KeyRelease>", self._on_key_up, add="+")   # только для удержания T в АНГЛИЙСКОМ
-        for i, (name, _t) in enumerate(self.SCREENS, 1):
-            self.bind(f"<Control-Key-{i}>", lambda _e, n=name: self.show_zone(n))
+        for key, name in nav.zone_hotkeys([n for n, _t in self.SCREENS]):
+            self.bind(f"<Control-Key-{key}>", lambda _e, n=name: self.show_zone(n))
         # Home — Орион, Prior (PgUp) — слайды, Next (PgDn) — экран (как на вебе)
         def _all_chrome(e, want: tuple[str, ...]):
             if e.keysym not in want:
@@ -393,9 +399,25 @@ class Cockpit(tk.Tk):
         self.status = tk.Label(status, text=tr_("ВСЕ СИСТЕМЫ В НОРМЕ"), bg=status["bg"], fg=MUTED,
                                font=theme.font(8, True))
         self.status.pack(side=tk.LEFT)
-        self._status_hint = tk.Label(status, text=alt_ui.status_hint(len(self.SCREENS)) if self._layout == "alt" else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(len(self.SCREENS)),
-                 bg=status["bg"], fg=MUTED, font=theme.font(8))
+        # Компактный индикатор связи с агентом Ориона (зеркало вкладки АГЕНТЫ).
+        from stamina import orion_link
+        self._orion_link_ind = orion_link.LinkIndicator(
+            status, compact=True, bg=status["bg"],
+            on_click=self.show_orion_agents)
+        self._orion_link_ind.pack(side=tk.LEFT, padx=(px(12), px(4)))
+        self._orion_link_name = tk.Label(status, text="", bg=status["bg"], fg=MUTED,
+                                         font=theme.font(8, True), cursor="hand2")
+        self._orion_link_name.pack(side=tk.LEFT)
+        self._orion_link_name.bind("<Button-1>", lambda _e: self.show_orion_agents())
+        # Ctrl+1…N без FIXED_HOTKEYS (lab=0 и т.п.), иначе подсказка врёт про число зон
+        _n_zones = min(9, sum(1 for s_ in self.SCREENS if s_[0] not in nav.FIXED_HOTKEYS))
+        self._status_hint = tk.Label(
+            status,
+            text=(alt_ui.status_hint(_n_zones) if self._layout == "alt"
+                  else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(_n_zones)),
+            bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
+        self._start_orion_link_watcher()
 
         self.screens = {
             "bridge": Bridge(self.content, self),
@@ -407,10 +429,9 @@ class Cockpit(tk.Tk):
             "help": HelpScreen(self.content, self),
             "honor": self._make_honor(),
         }
-        # Тяжёлые отсеки (книги, переписка, тексты «Английского») собираем после
-        # первого кадра: их построение — это сотни миллисекунд процессорного времени,
-        # и держать перед ними мёртвое окно нельзя. Отсек собирается по требованию
-        # (show) или в фоне по одному между кадрами.
+        # Тяжёлые отсеки собираем только по требованию (show / _ensure_screen).
+        # Фоновый _build_pending больше не гоняет все фабрики — иначе RSS и CPU
+        # растут, пока пилот ещё на мостике (см. docs/perf/LAZY_COMPARTMENTS.md).
         self._factories: dict[str, object] = {}
         self._lazy(english_hook, self._english_cls)
         self._lazy(speedread_hook, self._speed_cls)
@@ -419,12 +440,12 @@ class Cockpit(tk.Tk):
         self._lazy(comm_hook, self._comm_cls)
         self._lazy(docs_hook, self._docs_cls)
         self._lazy(orion_hook, self._orion_cls)
+        self._lazy(lab_hook, self._lab_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,
         # а внутри них большие тексты — окно уходило в 100 % CPU (см. _only_screen).
         self._only_screen(self.current or "bridge")
-        self.after(120, self._build_pending)
         self.update_rank()
         self._update_sound_button()
         self.update_comm_badge()
@@ -487,13 +508,13 @@ class Cockpit(tk.Tk):
         open_page_help(self)
 
     # ------------------------------------------------------------------
-    def _lazy(self, hook, cls) -> None:
-        """Запомнить, как собрать отсек, вместо немедленной сборки."""
-        if cls is None:
+    def _lazy(self, hook, available) -> None:
+        """Запомнить фабрику отсека. Import модуля — внутри hook.create при первом заходе."""
+        if available is None:
             return
 
-        def build(hook=hook, cls=cls):
-            return hook.create(cls, self.content, self)
+        def build(hook=hook, available=available):
+            return hook.create(available, self.content, self)
 
         self._factories[hook.KEY] = build
 
@@ -526,18 +547,11 @@ class Cockpit(tk.Tk):
                 pass
 
     def _build_pending(self) -> None:
-        """Собирать отложенные отсеки по одному между кадрами: окно остаётся живым."""
-        if safe_mode.enabled():
-            return  # безопасный режим: отсек собирается только когда в него зашли
-        while self._factories:
-            name = next(iter(self._factories))
-            try:
-                if self._ensure_screen(name) is not None:
-                    break
-            except Exception:  # noqa: BLE001
-                self._drop_zone(name)
-        if self._factories:
-            self.after(80, self._build_pending)
+        """Раньше собирал все lazy-отсеки в фоне. Теперь no-op: только по show/_ensure_screen.
+
+        Метод оставлен: тесты и утилиты могут вызывать его явно; поведение как у safe mode.
+        """
+        return
 
     def _only_screen(self, name: str) -> None:
         """Оставить в раскладке только текущий экран.
@@ -1265,6 +1279,29 @@ class Cockpit(tk.Tk):
         if scr is not None and hasattr(scr, "show_tab"):
             scr.show_tab("agents")
 
+    def _start_orion_link_watcher(self) -> None:
+        """Лёгкий опрос связи с активным агентом → HUD-индикатор."""
+        from stamina import orion_link
+        self.orion_link_watcher = orion_link.LinkWatcher(self)
+        self.orion_link_watcher.subscribe(self._on_orion_link)
+        self.orion_link_watcher.start()
+
+    def _on_orion_link(self, agent, _health, view) -> None:
+        ind = getattr(self, "_orion_link_ind", None)
+        name_lbl = getattr(self, "_orion_link_name", None)
+        if ind is None:
+            return
+        from stamina import orion_link
+        tip = orion_link.tooltip_for(view, agent, _health)
+        try:
+            ind.apply(view, tip=tip)
+            if name_lbl is not None:
+                name = str((agent or {}).get("name") or "")
+                fg = {"green": GREEN, "amber": AMBER, "red": theme.RED}.get(view.name_fg, MUTED)
+                name_lbl.configure(text=name, fg=fg)
+        except tk.TclError:
+            pass
+
     def _greet_orion(self) -> None:
         """Орион приветствует пилота при входе в зону."""
         scr = self.screens.get(orion_hook.KEY)
@@ -1388,6 +1425,12 @@ class Cockpit(tk.Tk):
         self.after(33 if smooth else 200, self._tick)
 
     def _on_close(self) -> None:
+        watcher = getattr(self, "orion_link_watcher", None)
+        if watcher is not None:
+            try:
+                watcher.stop()
+            except Exception:  # noqa: BLE001
+                pass
         self._stop_agents()
         self._save_all()
         self.destroy()
