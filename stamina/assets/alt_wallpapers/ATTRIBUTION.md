@@ -232,3 +232,49 @@
 | `zen_garden/settings.jpg` | [Kyoto Tofuku-ji Garten 6.jpg](https://commons.wikimedia.org/wiki/File:Kyoto_Tofuku-ji_Garten_6.jpg) | Zairon | CC BY-SA 4.0 |
 | `zen_garden/settings_2.jpg` | [Moss types at the Ginkakuji garden, Kyoto, Japan (Paul Mannix).jpg](https://commons.wikimedia.org/wiki/File:Moss_types_at_the_Ginkakuji_garden,_Kyoto,_Japan_(Paul_Mannix).jpg) | Paul Mannix | CC BY-SA 2.0 |
 | `zen_garden/settings_3.jpg` | [Sabutsutei garden of Oubai-in, Daitoku-ji 20260921.jpg](https://commons.wikimedia.org/wiki/File:Sabutsutei_garden_of_Oubai-in,_Daitoku-ji_20260921.jpg) | 掬茶 | CC BY-SA 4.0 |
+
+| `bathyscaphe/lab.jpg` | [MARUM Schwarzer Raucher.jpg](https://commons.wikimedia.org/wiki/File:MARUM_Schwarzer_Raucher.jpg) | MARUM − Zentrum für Marine Umweltwissenschaften, Universität Bremen | CC BY 4.0 |
+
+| `bathyscaphe/lab_2.jpg` | [Small jellyfishes in aquarium.jpg](https://commons.wikimedia.org/wiki/File:Small_jellyfishes_in_aquarium.jpg) | Vincent Niochet | CC BY-SA 4.0 |
+
+| `bathyscaphe/lab_3.jpg` | [Soleil à travers un paysage sous-marin de Bretagne (Ifremer 00378-48922 - 913).jpg](https://commons.wikimedia.org/wiki/File:Soleil_%C3%A0_travers_un_paysage_sous-marin_de_Bretagne_(Ifremer_00378-48922_-_913).jpg) | Olivier Dugornay | CC BY 4.0 |
+
+| `zen_garden/lab.jpg` | [Japan, maple in autumn.jpg](https://commons.wikimedia.org/wiki/File:Japan,_maple_in_autumn.jpg) | Marie-Sophie Mejan | CC BY 4.0 |
+
+| `zen_garden/lab_2.jpg` | [Water reflection of Kinkaku-ji Temple a sunny day, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Water_reflection_of_Kinkaku-ji_Temple_a_sunny_day,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+
+| `zen_garden/lab_3.jpg` | [Lake Kawaguchiko Sakura Mount Fuji 4.JPG](https://commons.wikimedia.org/wiki/File:Lake_Kawaguchiko_Sakura_Mount_Fuji_4.JPG) | Midori | CC BY 3.0 |
+
+| `steampunk/lab.jpg` | [Wright of Derby, The Orrery.jpg](https://commons.wikimedia.org/wiki/File:Wright_of_Derby,_The_Orrery.jpg) | Joseph Wright of Derby | Public domain |
+
+| `steampunk/lab_2.jpg` | [Orrery-MHS 818-P7220243.JPG](https://commons.wikimedia.org/wiki/File:Orrery-MHS_818-P7220243.JPG) | Rama | CC BY-SA 3.0 fr |
+
+| `steampunk/lab_3.jpg` | [Joseph Wright of Derby - Philosopher giving a lecture on the orrery - Google Art Project.jpg](https://commons.wikimedia.org/wiki/File:Joseph_Wright_of_Derby_-_Philosopher_giving_a_lecture_on_the_orrery_-_Google_Art_Project.jpg) | Joseph Wright of Derby | Public domain |
+
+| `steampunk/lab_4.jpg` | [Antique brass telescope (30037438655).jpg](https://commons.wikimedia.org/wiki/File:Antique_brass_telescope_(30037438655).jpg) | Thomas Quine | CC BY 2.0 |
+
+| `starship/lab.jpg` | [Abstract Art Found in the Orion Nebula (2006-01-1825).tiff](https://commons.wikimedia.org/wiki/File:Abstract_Art_Found_in_the_Orion_Nebula_(2006-01-1825).tiff) | NASA, ESA, and The Hubble Heritage Team (STScI/AURA), Acknowledgment: NASA, ESA, M. Robberto (Space Telescope Science Institute) and the Hubble Space Telescope Orion Treasury Project Team | Public domain |
+
+| `starship/lab_2.jpg` | [Orion Bar (Hubble) (2021-024-01F53EZR83X5VJYX3ZP73QWRJK).png](https://commons.wikimedia.org/wiki/File:Orion_Bar_(Hubble)_(2021-024-01F53EZR83X5VJYX3ZP73QWRJK).png) | SCIENCE: NASA, ESA, Massimo Robberto (STScI, ESA), Hubble Space Telescope Orion Treasury Project Team IMAGE PROCESSING: Zolt G. Levay (STScI), Joseph DePasquale (STScI) | Public domain |
+
+| `starship/lab_3.jpg` | [Horsehead-Hubble.jpg](https://commons.wikimedia.org/wiki/File:Horsehead-Hubble.jpg) | NASA, NOAO, ESA and The Hubble Heritage Team STScI/AURA | Public domain |
+
+| `starship/lab_4.jpg` | [Horsehead Nebula, mostly starless, Hubble Palette (Explored) - Flickr - john.purvis.jpg](https://commons.wikimedia.org/wiki/File:Horsehead_Nebula,_mostly_starless,_Hubble_Palette_(Explored)_-_Flickr_-_john.purvis.jpg) | john.purvis | CC BY 2.0 |
+
+| `scriptorium/lab.jpg` | [Czech-2013-Prague-Astronomical clock face.jpg](https://commons.wikimedia.org/wiki/File:Czech-2013-Prague-Astronomical_clock_face.jpg) | Godot13 | CC BY-SA 4.0 |
+
+| `scriptorium/lab_2.jpg` | [Astrolabe from the Mughal period in India.JPG](https://commons.wikimedia.org/wiki/File:Astrolabe_from_the_Mughal_period_in_India.JPG) | Rohini | CC BY-SA 3.0 |
+
+| `scriptorium/lab_3.jpg` | [Lascar Old Town square and the Prague Astronomical Clock (4501537747).jpg](https://commons.wikimedia.org/wiki/File:Lascar_Old_Town_square_and_the_Prague_Astronomical_Clock_(4501537747).jpg) | Jorge Láscar from Australia | CC BY 2.0 |
+
+| `neon_city/lab.jpg` | [Tokyo Tower, Minato City.jpg](https://commons.wikimedia.org/wiki/File:Tokyo_Tower,_Minato_City.jpg) | David Kernan | CC BY 4.0 |
+
+| `neon_city/lab_2.jpg` | [Skyline of Shanghai at night, Aug 10 2023.jpg](https://commons.wikimedia.org/wiki/File:Skyline_of_Shanghai_at_night,_Aug_10_2023.jpg) | A Chinese ID | CC BY-SA 4.0 |
+
+| `neon_city/lab_3.jpg` | [Hong Kong skyscrapers in a night of typhoon.jpg](https://commons.wikimedia.org/wiki/File:Hong_Kong_skyscrapers_in_a_night_of_typhoon.jpg) | Wilfredor | CC0 |
+
+| `old_england/lab.jpg` | [View of the Royal Observatory Greenwich from One Tree Hill in Greenwich Park, London, 20260719 0940 4508.jpg](https://commons.wikimedia.org/wiki/File:View_of_the_Royal_Observatory_Greenwich_from_One_Tree_Hill_in_Greenwich_Park,_London,_20260719_0940_4508.jpg) | Jakub Hałun | CC BY 4.0 |
+
+| `old_england/lab_2.jpg` | [St Paul's Cathedral West Facade Night 2020.jpg](https://commons.wikimedia.org/wiki/File:St_Paul's_Cathedral_West_Facade_Night_2020.jpg) | Julian Herzog (Website) | CC BY 4.0 |
+
+| `old_england/lab_3.jpg` | [Stonehenge, Condado de Wiltshire, Inglaterra, 2014-08-12, DD 09.JPG](https://commons.wikimedia.org/wiki/File:Stonehenge,_Condado_de_Wiltshire,_Inglaterra,_2014-08-12,_DD_09.JPG) | Diego Delso | CC BY-SA 4.0 |
