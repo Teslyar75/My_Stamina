@@ -12,6 +12,7 @@ import time
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 from stamina import i18n, orion, owner_key, pilots
 
@@ -256,6 +257,15 @@ class OrionDataTest(unittest.TestCase):
         orion.tasks_path().write_text("{это не json", encoding="utf-8")
         self.assertEqual(orion.tasks(), [])
         self.assertTrue(orion.add_task("новая задача"))
+
+    def test_task_document_order_stable_on_clock_backstep(self):
+        with (
+            mock.patch("stamina.orion.time.time", side_effect=[1000.0, 999.0]),
+            mock.patch("stamina.orion.time.time_ns", side_effect=[1_000_000, 900_000]),
+        ):
+            orion.add_task("первая", author="Комета")
+            orion.add_task("вторая", author="Комета")
+        self.assertEqual([r["text"] for r in orion.tasks()], ["вторая", "первая"])
 
     # -- понимание речи пилота ---------------------------------------------
     def test_detect_task_by_triggers(self):
@@ -793,6 +803,50 @@ class OrionScreenTest(unittest.TestCase):
         self.assertEqual(orion.tasks()[0]["text"], "починить эфир")
         self.assertEqual(scr._pending_task, "")
 
+    def test_activity_task_checkbox_closes_and_reopens(self):
+        """Галочка у шкалы задачи: клик закрывает её, повторный — снова открывает."""
+        from stamina import task_progress as tprog
+
+        old = os.environ.get("STAR_TYPING_TASKS_DIR")
+        os.environ["STAR_TYPING_TASKS_DIR"] = str(Path(self._tmp) / "agent_tasks")
+        try:
+            tprog.plan("exec-check", "Проверить эфир", ["найти:1", "тесты:3"])
+            self.app.show("orion")
+            scr = self._screen()
+            scr.show_tab("chat")
+            self.app.update()
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☐")
+
+            self.app.update()      # строка только что упакована: event_generate доходит лишь до видимого виджета
+            row["check"].event_generate("<Button-1>")
+            self.app.update()
+            state = next(t["state"] for t in tprog.active() if t["id"] == "exec-check")
+            self.assertEqual(state, "done")
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☑")
+
+            row["check"].event_generate("<Button-1>")
+            self.app.update()
+            state = next(t["state"] for t in tprog.active() if t["id"] == "exec-check")
+            self.assertEqual(state, "working")
+            scr._report_read = 0.0
+            scr._report_view()
+            scr._show_tasks(scr._tasks, "·")
+            row = next(r for r in scr.task_rows if r["task_id"] == "exec-check")
+            self.assertEqual(row["check"].cget("text"), "☐")
+        finally:
+            if old is None:
+                os.environ.pop("STAR_TYPING_TASKS_DIR", None)
+            else:
+                os.environ["STAR_TYPING_TASKS_DIR"] = old
+
     def _grant_commander(self, scr, allow=True, github=True):
         """Выдать (или не выдать) права Командира: два шага — код владельца, доступ к GitHub."""
         from stamina import orion_screen
@@ -1312,6 +1366,15 @@ class OrionArchiveTest(unittest.TestCase):
     def test_archive_newest_first(self):
         for word in ("первое", "второе", "третье"):
             orion.remember("orion", "pilot", word)
+        self.assertEqual([m["text"] for m in orion.archive("")], ["третье", "второе", "первое"])
+
+    def test_archive_newest_first_on_clock_backstep(self):
+        with (
+            mock.patch("stamina.orion.time.time", side_effect=[2000.0, 1999.0, 1998.0]),
+            mock.patch("stamina.orion.time.time_ns", side_effect=[2_000_000, 1_900_000, 1_800_000]),
+        ):
+            for word in ("первое", "второе", "третье"):
+                orion.remember("orion", "pilot", word)
         self.assertEqual([m["text"] for m in orion.archive("")], ["третье", "второе", "первое"])
 
     def test_archive_by_day_and_minute(self):

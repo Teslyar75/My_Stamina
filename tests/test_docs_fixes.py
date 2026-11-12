@@ -1,6 +1,5 @@
 """Документы: исправления — колесо на Linux, список без прыжков, отмена картинок,
 логическая ширина снимков (формат 2), временные файлы, окна в стиле темы."""
-import io
 import json
 import os
 import tempfile
@@ -59,6 +58,15 @@ class TestModel(_Root):
         self.assertFalse((docs.docs_dir() / docs.TMP_DIR).exists())
         self.assertFalse(legacy.exists())
         self.assertTrue(keep.exists())
+
+    def test_sort_items_uses_saved_ns_tie_breaker(self):
+        rows = [
+            {"title": "первый", "modified": 100.0, "saved_ns": 10, "fs_mtime_ns": 100},
+            {"title": "второй", "modified": 100.0, "saved_ns": 20, "fs_mtime_ns": 100},
+            {"title": "третий", "modified": 100.0, "saved_ns": 30, "fs_mtime_ns": 100},
+        ]
+        self.assertEqual([r["title"] for r in docs.sort_items(rows, "modified")],
+                         ["третий", "второй", "первый"])
 
 
 class _Screen(_Root):
@@ -167,6 +175,22 @@ class TestListAndDialogs(_Screen):
         self.assertEqual([it["title"] for it in self.scr._items], order)   # не прыгнул наверх
         self.scr.refresh()
         self.assertEqual(self.scr._items[0]["title"], "первый")          # при входе — свежие сверху
+
+    def test_autosave_keeps_order_when_modified_equal(self):
+        seq = {"n": 0}
+
+        def _ns():
+            seq["n"] += 1
+            return seq["n"]
+
+        with mock.patch("stamina.docs.time.time", return_value=2_000_000_000.0), \
+             mock.patch("stamina.docs.time.time_ns", side_effect=_ns):
+            for title in ("первый", "второй", "третий"):
+                self.scr.new_doc()
+                self.scr.title_var.set(title)
+                self.scr.save_now()
+            self.scr.refresh()
+            self.assertEqual(self.scr._items[0]["title"], "третий")
 
     def test_remove_uses_themed_confirm(self):
         self.scr.title_var.set("удалить")

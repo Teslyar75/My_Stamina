@@ -1,4 +1,4 @@
-import json, re, collections, unicodedata, math, sys
+import json, re, collections
 from nltk.corpus import wordnet as wn
 import cmudict, phon
 L = json.load(open("wordlist.json"))

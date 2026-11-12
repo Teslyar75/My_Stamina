@@ -25,6 +25,9 @@ env/
 .ruff_cache/
 .coverage
 htmlcov/
+gate_report.md
+gate_report.json
+alt_ui_report.md
 
 # IDE / OS
 .vscode/
@@ -87,3 +90,6 @@ _hide.txt
 _prof.txt
 _*.ps1
 
+
+# external analysis sandboxes (contain secrets/db copies)
+Qoder/

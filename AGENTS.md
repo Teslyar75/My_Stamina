@@ -26,6 +26,22 @@ powershell -ExecutionPolicy Bypass -File tools\snapshot.ps1
 Скрипт ставит тег `snap-YYYYMMDD-HHMM` и печатает строку откатa. Если что-то
 пошло не так — `git checkout <тег>`, и корабль снова дышит.
 
+## Проверка перед слиянием
+
+```powershell
+python tools/ci_gate.py --only contrast --only i18n --only dep   # быстрые аудиты, секунды
+python -m pytest tests/ -q                                       # тесты (нужен дисплей для GUI-частей)
+```
+
+Гейт собирает в один отчёт то, что уже написано в `tools/`: контраст по скинам,
+переводы интерфейса, заявленные зависимости, паритет альт-вида (`--full`), и
+печатает код возврата для CI. В CI это же исполняет
+`.github/workflows/quality-gate.yml` — на Windows и Linux.
+
+Зависимости для разработки (pytest, ruff) лежат в `requirements-dev.txt` и в
+`install.bat` не ставятся: пилоту они не нужны, а агенту без них нечем проверить
+свою правку.
+
 ## Кто чем занят
 
 Общий список — `.opencode/agents/ACTIVE.md`. Перед правкой допиши строку

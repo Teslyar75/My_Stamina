@@ -16,7 +16,8 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import theme
-from stamina.account_view import blend, rrect
+from stamina.account_view import rrect
+from stamina.hotkeys import ALT, CTRL
 from stamina.i18n import t
 from stamina.zen_engine import COUNTS, PortalTest, prepare_words, quote_slice
 
@@ -59,8 +60,13 @@ def _mono_family() -> str:
 
 
 def is_zen_hotkey(e) -> bool:
-    """Ctrl+M в любой раскладке (код клавиши M = 77 на Windows; keysym m/M/ь)."""
-    if not (getattr(e, "state", 0) & 0x4) or (getattr(e, "state", 0) & 0x8):
+    """Ctrl+M в любой раскладке (код клавиши M = 77 на Windows; keysym m/M/ь).
+
+    NumLock не мешает: на Windows он приходит битом 0x8, а Alt — битом 0x20000
+    (см. stamina/hotkeys.py: ALT).
+    """
+    st = getattr(e, "state", 0)
+    if not (st & CTRL) or (st & ALT):
         return False
     return getattr(e, "keysym", "") in ("m", "M", "Cyrillic_softsign", "Cyrillic_SOFTSIGN") \
         or getattr(e, "keycode", 0) == 77
@@ -819,7 +825,7 @@ class ZenOverlay(tk.Frame):
         ks = getattr(e, "keysym", "")
         state = getattr(e, "state", 0)
         ch = getattr(e, "char", "")
-        ctrl = bool(state & 0x4)
+        ctrl = bool(state & CTRL)
         if self.account is not None:
             if ks in ("Escape", "Tab", "Return"):
                 self.hide_account()
@@ -847,7 +853,7 @@ class ZenOverlay(tk.Frame):
             te.backspace(word=ctrl)
             self._after_input()
             return "break"
-        if ctrl or (state & 0x8):
+        if ctrl or (state & ALT):
             return None                  # Ctrl+… / Alt+… — горячие клавиши кабины
         if ks.startswith("F") and ks[1:].isdigit():
             return None

@@ -1,4 +1,5 @@
 """Порт из веб-версии: зоны и строка пути, «Мостик → Настройки», шкала тепловой карты."""
+import sys
 import unittest
 
 from stamina import i18n, nav, theme, typing_style as ts
@@ -297,8 +298,12 @@ class ChromeHotkeyTest(CockpitKeyboardTest):
 
     def test_modifiers_are_ignored(self):
         a = self.app
-        for mod in (0x4, 0x8, 0x1):     # Ctrl / Alt / Shift
+        from stamina.hotkeys import ALT, CTRL, SHIFT
+        for mod in (CTRL, ALT, SHIFT):  # Alt на Windows — 0x20000; 0x8 там NumLock
             self.assertFalse(a._chrome_hotkey(self._ev("Home", mod)))
+        a.idle.open = a._call_orion = lambda: None
+        numlock = 0x8 if sys.platform == "win32" else 0x10
+        self.assertTrue(a._chrome_hotkey(self._ev("Home", numlock)))   # NumLock не мешает
 
     def test_main_key_consumes_chrome(self):
         a = self.app

@@ -333,7 +333,6 @@ def run_app(argv: list[str] | None = None) -> None:
         # Configure» — тысячи перерисовок в секунду, окно встаёт. Считаем события по
         # виджетам и, если виджет зашкалил, снимаем с него обработчик и пишем в журнал.
         def _install_layout_guard(root) -> None:
-            import tkinter
             per_widget: dict[str, int] = {}
             hooked: set[str] = set()
 
@@ -448,6 +447,18 @@ def run_app(argv: list[str] | None = None) -> None:
         text = t("Ошибка пульта:\n") + traceback.format_exc()
         pilots.log_error(text, "cockpit_error.log")
         _journal(text)
+        # Под pythonw консоли нет: без окна пилот видит только «ничего не произошло»
+        try:
+            from stamina import launch_check
+
+            last = (traceback.format_exc().strip().splitlines() or ["?"])[-1]
+            launch_check.show_dialog(
+                "Star Typing: ошибка при запуске",
+                f"Пульт не открылся.\n\n{last}\n\n"
+                f"Подробности в журнале:\n{launch_check.log_path()}",
+            )
+        except Exception:  # noqa: BLE001 — окно с ошибкой не важнее самой ошибки
+            pass
         raise
 
 

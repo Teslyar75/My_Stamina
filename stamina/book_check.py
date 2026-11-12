@@ -13,7 +13,7 @@ from stamina import monitors
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
-from stamina.theme import BG, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
+from stamina.theme import BG, CYAN, GREEN, MUTED, PANEL, RED, px
 
 
 def split_chunks(text: str, size: int = orion.CHECK_CHUNK) -> list[str]:

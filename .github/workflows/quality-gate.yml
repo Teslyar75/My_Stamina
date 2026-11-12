@@ -1,0 +1,103 @@
+# Конвейер качества: тесты + аудиты, которые уже написаны, но нигде не запускались.
+#
+# Что было до этого: linux-smoke.yml поднимает окно и проверяет, что процесс жив
+# 20 секунд; release.yml собирает notes из CHANGELOG. Ни один тест и ни один аудит
+# (contrast_audit, i18n_check, alt_ui_audit, dep_audit) в CI не запускался, и
+# Windows — основная платформа продукта — не тестировался в CI вообще.
+#
+# Быстрые шаги (--only) блокируют всегда: они зелёные уже сегодня. Тесты идут
+# отдельным шагом: первый прогон на чистой машине может вскрыть падающие тесты,
+# и это работа на вечер, а не причина откладывать конвейер.
+
+name: quality gate
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Новый пуш отменяет предыдущий прогон этой же ветки — экономия минут.
+concurrency:
+  group: gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-24.04]
+        include:
+          - os: windows-latest
+            timeout_minutes: 60
+          - os: ubuntu-24.04
+            timeout_minutes: 40
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: ${{ matrix.timeout_minutes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: "Системные пакеты (Linux: Tk и дисплей)"
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk xvfb
+
+      - name: Установка зависимостей
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Быстрый гейт (contrast + i18n + dep)
+        run: python tools/ci_gate.py --only contrast --only i18n --only dep
+
+      - name: Тесты (Windows — нативный Tk)
+        if: runner.os == 'Windows'
+        run: python -m pytest tests/ -q -p no:cacheprovider
+
+      - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=signal
+
+      - name: Отчёт гейта
+        if: always()
+        run: python tools/ci_gate.py --only contrast --only i18n --only dep --md gate_report.md --json gate_report.json
+
+      - name: Паритет альт-интерфейса (advisory, не красит сборку)
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        run: xvfb-run -a python tools/alt_ui_audit.py --md alt_ui_report.md
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gate-${{ matrix.os }}
+          path: |
+            gate_report.md
+            gate_report.json
+            alt_ui_report.md
+          if-no-files-found: ignore
+
+  # Статический контроль отдельным job: дешёвый, даёт подсветку строк прямо в PR,
+  # на первых порах не блокирует слияние.
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install ruff
+      - name: Ruff (базовый набор правил из pyproject.toml)
+        run: ruff check stamina tools tests main.py

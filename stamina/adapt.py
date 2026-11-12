@@ -7,8 +7,13 @@ from tkinter import ttk
 from stamina.theme import BG2, CYAN, CYAN_DIM, LINE_HI, PANEL, PANEL_HI, TEXT, blend, px
 
 
-def bind_wraplength(label: tk.Label, host: tk.Misc | None = None, *, margin: int = 16) -> None:
-    """Обновлять wraplength лейбла при изменении ширины host (по умолчанию — master)."""
+def bind_wraplength(label: tk.Label, host: tk.Misc | None = None, *, margin: int = 16,
+                    slack: int = 4) -> None:
+    """Обновлять wraplength лейбла при изменении ширины host (по умолчанию — master).
+
+    slack: не гоняться за 1–2 пикселями — иначе Label.configure(wraplength)
+    снова шлёт Configure родителю и Tk зависает в каскаде (Ubuntu/Xvfb).
+    """
     host = host or label.master
     last = {"w": -1}
 
@@ -16,7 +21,16 @@ def bind_wraplength(label: tk.Label, host: tk.Misc | None = None, *, margin: int
         if e.widget is not host:
             return
         w = int(e.width) - px(margin)
-        if w <= 40 or w == last["w"]:
+        if w <= 40:
+            return
+        if last["w"] >= 0 and abs(w - last["w"]) <= slack:
+            return
+        try:
+            cur = int(label.cget("wraplength") or 0)
+        except tk.TclError:
+            return
+        if abs(cur - w) <= slack:
+            last["w"] = w
             return
         last["w"] = w
         try:
@@ -27,17 +41,26 @@ def bind_wraplength(label: tk.Label, host: tk.Misc | None = None, *, margin: int
     host.bind("<Configure>", _on, add="+")
 
 
-def bind_wraplengths(labels: list[tk.Label], host: tk.Misc, *, margin: int = 16) -> None:
+def bind_wraplengths(labels: list[tk.Label], host: tk.Misc, *, margin: int = 16,
+                     slack: int = 4) -> None:
     last = {"w": -1}
 
     def _on(e) -> None:
         if e.widget is not host:
             return
         w = int(e.width) - px(margin)
-        if w <= 40 or w == last["w"]:
+        if w <= 40:
+            return
+        if last["w"] >= 0 and abs(w - last["w"]) <= slack:
             return
         last["w"] = w
         for lab in labels:
+            try:
+                cur = int(lab.cget("wraplength") or 0)
+            except tk.TclError:
+                continue
+            if abs(cur - w) <= slack:
+                continue
             try:
                 lab.configure(wraplength=w)
             except tk.TclError:

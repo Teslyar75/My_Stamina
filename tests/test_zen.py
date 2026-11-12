@@ -19,7 +19,25 @@ class ZenHotkeyTest(unittest.TestCase):
         self.assertTrue(is_zen_hotkey(key("Cyrillic_softsign", 0x4)))
         self.assertTrue(is_zen_hotkey(key("??", 0x4, keycode=77)))
         self.assertFalse(is_zen_hotkey(key("m")))
-        self.assertFalse(is_zen_hotkey(key("m", 0x4 | 0x8)))
+
+    def test_alt_does_not_trigger(self):
+        """Ctrl+Alt+M — чужой хоткей (и AltGr): портал не открывается."""
+        from stamina.hotkeys import ALT
+        from stamina.zen import is_zen_hotkey
+        self.assertFalse(is_zen_hotkey(key("m", 0x4 | ALT)))
+
+    def test_numlock_bit_is_not_alt(self):
+        """Windows: в state бит 0x8 — это NumLock, а не Alt; Ctrl+M должен работать."""
+        import sys
+        from stamina.hotkeys import ALT, CTRL
+        from stamina.zen import is_zen_hotkey
+        if sys.platform == "win32":
+            self.assertEqual(ALT, 0x20000)
+            # настоящий Ctrl+M при включённом NumLock: keysym «??», код клавиши 77
+            self.assertTrue(is_zen_hotkey(key("??", CTRL | 0x8, keycode=77)))
+            self.assertTrue(is_zen_hotkey(key("Cyrillic_softsign", CTRL | 0x8)))
+        else:
+            self.assertEqual(ALT, 0x8)          # X11: Alt = Mod1
 
 
 class ZenCockpitTest(unittest.TestCase):
@@ -69,6 +87,23 @@ class ZenCockpitTest(unittest.TestCase):
         self.assertFalse(ov.winfo_ismapped())
         self.assertEqual(br.engine.index, 6)   # «hello » набрано в портале → на мостике
         self.assertEqual((a.current, a._layout, a.store.settings.get("skin")), ("bridge", layout, skin))
+
+    def test_numlock_does_not_steal_typing(self):
+        """Windows, NumLock включён: Ctrl+M открывает портал, а печать идёт в портал, не на мостик."""
+        import sys
+        a = self.app
+        a.show("bridge")
+        br = a.screens["bridge"]
+        br.start("hello world again and more words here", mode="free", title="T", subtitle="")
+        numlock = 0x8 if sys.platform == "win32" else 0   # 0x8 = NumLock только на Windows
+        self.assertEqual(a._on_key(key("??", 0x4 | numlock, keycode=77)), "break")
+        a.update()
+        self.assertTrue(a.zen.on)
+        for ch in "hel":
+            a._on_key(key(ch, numlock, char=ch, keycode=ord(ch.upper())))
+        a.update()
+        self.assertEqual(a.zen.overlay.test.inputs[0], "hel")
+        self.assertEqual(br.engine.index, 0)        # за порталом мостик молчит
 
     def test_words_mode_finish_and_records(self):
         a = self.app

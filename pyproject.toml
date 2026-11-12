@@ -1,0 +1,37 @@
+# Конфигурация инструментов разработки.
+#
+# ВАЖНО: здесь намеренно НЕТ таблиц [project] и [build-system]. Приложение
+# распространяется как ZIP + install.bat/.venv, а не как pip-пакет; появление
+# [project] превратило бы корень в устанавливаемый дистрибутив и сбило бы
+# install.bat/install.sh с толку. Поэтому только секции [tool.*].
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# no:cacheprovider — иначе .pytest_cache шумит в git status после каждого прогона.
+addopts = "-q -p no:cacheprovider"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 110
+# Данные, вендоры и рабочие папки не проверяем: словари English и снимки экрана.
+exclude = [
+    ".venv", "models", "web_star_typing", "_orion", "_local_shots",
+    "stamina/english/data", "graphify-out", "docs", "screenshots",
+]
+
+[tool.ruff.lint]
+# Базовый уровень = только настоящие ошибки, чтобы гейт прошёл сегодня без
+# массовых правок. Широту (SIM, C90, ANN) поднимают одним коммитом на правило,
+# когда оно зелёное.
+select = [
+    "E9",   # синтаксические ошибки
+    "F63",  # некорректные literal-аномалии
+    "F7",   # return вне функции и подобные
+    "F82",  # имя не найдено
+    "F401", # неиспользуемый импорт — ловит осколки рефакторингов
+    "B006", # изменяемый дефолтный аргумент
+    "B008", # вызов в дефолтном аргументе
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tools/*" = ["E501"]

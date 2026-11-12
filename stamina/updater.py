@@ -5,13 +5,12 @@ import json
 import re
 import shutil
 import subprocess
-import sys
 import tempfile
 import urllib.error
 import urllib.request
 import zipfile
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Callable
 
 from stamina import __version__
@@ -162,6 +161,60 @@ def apply_tree(src_root: Path, dest_root: Path, progress: ProgressCb | None = No
     return n
 
 
+def safe_extract(zf: zipfile.ZipFile, target: Path) -> None:
+    """Распаковать только то, что остаётся внутри target.
+
+    Канал обновлений перезаписывает собственный код программы, поэтому путь
+    элемента архива проверяется, а не предполагается: tarball GitHub обычно чист,
+    но замена источника загрузки (редирект, зеркало, битый ассет) не должна
+    означать запись за пределы папки программы.
+    """
+    root = target.resolve()
+    dangerous = []
+    for member in zf.infolist():
+        name = member.filename.replace("\\", "/")
+        pure = PurePosixPath(name)
+        if not name or pure.is_absolute() or name[1:2] == ":" or ".." in pure.parts:
+            dangerous.append(member.filename)
+            continue
+        dest = (root / name).resolve()
+        if dest != root and root not in dest.parents:
+            dangerous.append(member.filename)
+            continue
+        zf.extract(member, target)
+    if dangerous:
+        shown = ", ".join(dangerous[:3])
+        raise RuntimeError(f"архив содержит пути вне папки обновления: {shown}")
+
+
+def tree_version(src: Path) -> str:
+    """Версия, объявленная внутри скачанного дерева (stamina/__init__.py)."""
+    init = src / "stamina" / "__init__.py"
+    if not init.is_file():
+        raise RuntimeError("в архиве нет stamina/__init__.py — это не дерево программы")
+    text = init.read_text(encoding="utf-8", errors="replace")
+    m = re.search(r"""__version__\s*=\s*['"]([^'"]+)['"]""", text)
+    if not m:
+        raise RuntimeError("в скачанном stamina/__init__.py нет __version__")
+    return normalize_version(m.group(1))
+
+
+def assert_release_matches(src: Path, expected: str) -> str:
+    """Проверить, что скачанное дерево — тот же релиз, который объявлен тегом.
+
+    Без этой проверки канал обновлений принимает содержимое на веру: редирект,
+    зеркало или архив, собранный не с того refs, молча легли бы поверх рабочего
+    кода, а пилот увидел бы на экране одну версию и ставил бы другую.
+    """
+    want = normalize_version(expected)
+    if not want:
+        raise RuntimeError("у релиза пустой тег — непонятно, какую версию ждать")
+    got = tree_version(src)
+    if got != want:
+        raise RuntimeError(f"архив не соответствует релизу: тег обещает {want}, внутри {got}")
+    return got
+
+
 def download_and_apply(
     info: ReleaseInfo,
     dest_root: Path | None = None,
@@ -169,11 +222,14 @@ def download_and_apply(
 ) -> Path:
     """Скачать ZIP релиза и наложить на dest_root (по умолчанию PROJECT_DIR)."""
     dest = Path(dest_root or PROJECT_DIR)
-    if not info.zipball_url:
-        raise RuntimeError("no zipball_url in release")
+    url = info.zipball_url
+    if not url.startswith("https://"):
+        # Обновление перезаписывает код программы: канал обязан быть шифрованным,
+        # иначе подмену содержимого в сети нельзя отличить от нормального релиза.
+        raise RuntimeError(f"ссылка релиза не по HTTPS: {url[:60]}")
     log = progress or (lambda _m: None)
     log("downloading…")
-    req = urllib.request.Request(info.zipball_url, headers={"User-Agent": USER_AGENT})
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with tempfile.TemporaryDirectory(prefix="st-upd-") as tmp:
         tmp_path = Path(tmp)
         zip_path = tmp_path / "release.zip"
@@ -181,11 +237,13 @@ def download_and_apply(
             shutil.copyfileobj(resp, out)
         log("extracting…")
         with zipfile.ZipFile(zip_path, "r") as zf:
-            zf.extractall(tmp_path / "unz")
+            safe_extract(zf, tmp_path / "unz")
         roots = [p for p in (tmp_path / "unz").iterdir() if p.is_dir()]
         if not roots:
             raise RuntimeError("empty archive")
         src = roots[0]
+        log("проверка релиза…")
+        assert_release_matches(src, info.version)
         log("applying…")
         apply_tree(src, dest, progress=log)
     log("done")
@@ -217,6 +275,26 @@ def open_releases_page(info: ReleaseInfo | None = None) -> None:
     import webbrowser
     url = info.html_url if info else f"https://github.com/{REPO}/releases"
     webbrowser.open(url)
+
+
+def dev_checkout_error(root: Path | None = None) -> str | None:
+    """Программа запущена из рабочей копии git — кнопкой обновлять нельзя.
+
+    Обновление кладёт файлы ZIP поверх установки, не спрашивая git: в рабочей
+    копии это тихо затирает незакоммиченные правки и расходится с историей.
+    Там обновляются слиянием, а кнопка нужна для обычной установки у пилота.
+    """
+    base = Path(root or PROJECT_DIR)
+    inside = (base / ".git").exists() or (base / ".." / ".git").exists()
+    if not inside:
+        return None
+    return (
+        "Эта копия программы — рабочая: рядом лежит папка .git.\n\n"
+        "Кнопка обновления затирает файлы поверх и потеряет незакоммиченные правки,\n"
+        "поэтому здесь она не работает. Обновитесь через git (слияние с master),\n"
+        "затем запустите программу заново.\n\n"
+        "Кнопка нужна для обычной установки без git — как у пилота."
+    )
 
 
 def check_error_message(exc: BaseException) -> str:

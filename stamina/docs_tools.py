@@ -13,7 +13,7 @@ import tkinter as tk
 
 from stamina import doc_translate, docs, orion
 from stamina.i18n import t as _t
-from stamina.theme import AMBER, CYAN, GREEN, MUTED, PANEL, RED, TEXT
+from stamina.theme import AMBER, CYAN, GREEN, PANEL, RED, TEXT
 from stamina.voice import models as vmodels
 
 LANG_LABEL = {"ru": "RU", "uk": "UK", "en": "EN"}

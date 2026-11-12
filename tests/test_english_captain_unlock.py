@@ -1,7 +1,4 @@
 """Капитан (владелец) видит все уровни CEFR и весь пак глаголов; ученик открывает по мере курса."""
-import tempfile
-from pathlib import Path
-
 import pytest
 
 from stamina import pilots

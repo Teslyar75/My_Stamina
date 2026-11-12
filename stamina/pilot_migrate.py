@@ -23,7 +23,8 @@ FIRST_NAME = "1984"
 
 
 def legacy_items(root: Path) -> list[Path]:
-    out = [root / f for f in pilots.DATA_FILES if (root / f).is_file()]
+    out = [root / f for f in pilots.DATA_FILES
+           if f not in pilots.ROOT_NOT_MIGRATED and (root / f).is_file()]
     out += [root / d for d in pilots.DATA_DIRS if (root / d).is_dir()]
     return out
 
@@ -125,6 +126,8 @@ def late_sync(root: Path | None = None) -> list[str]:
     d = pilots.pilot_dir(first["id"])
     moved = []
     for name in pilots.DATA_FILES:
+        if name in pilots.ROOT_NOT_MIGRATED:   # общий старый файл — сброс, никому не копируем
+            continue
         src = root / name
         if not src.is_file() or src.stat().st_mtime <= t0:
             continue

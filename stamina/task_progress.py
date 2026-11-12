@@ -167,6 +167,15 @@ def finish(task_id, state: str = "done") -> dict:
     return _write(data)
 
 
+def reopen(task_id) -> dict:
+    """Снять галочку «выполнено»: задача снова в работе, шаги не теряются."""
+    data = _read(task_id)
+    if not data:
+        return data
+    data["state"] = "working" if data.get("steps") else "planning"
+    return _write(data)
+
+
 def remove(task_id) -> None:
     try:
         _path(task_id).unlink()

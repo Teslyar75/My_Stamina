@@ -181,6 +181,7 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         # редкие действия — картинка, перевод, проверка, экспорт
         self.more_btn = HudButton(ins, _t("⋯ ЕЩЁ"), self.more_menu, height=30, font_size=9,
                                   color=CYAN)
+        self.more_btn._alt_toggle = True
         self.more_btn._flow_shown = False
         ins.add(self.more_btn, gap_before=6)
         self._ins, self._compact, self._head = ins, None, None
@@ -670,9 +671,8 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
             return
         if w <= 1:
             return
-        if getattr(self.app, "_alt_view", None) is not None:
-            self.set_compact(False)   # у alt-раскладки свой ряд «⋯ ЕЩЁ» — не мешаем ему
-            return
+        # Классика и alt должны включать компакт одинаково: иначе в parity-аудите
+        # «⋯»/«⋯ ЕЩЁ» видны только в одном виде на том же размере окна.
         self.set_compact(w < self.COMPACT_W or h < self.COMPACT_H)
 
     def set_compact(self, on: bool) -> None:

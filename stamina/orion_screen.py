@@ -31,7 +31,7 @@ import webbrowser
 from tkinter import messagebox
 from pathlib import Path
 
-from stamina import __version__, chat_md, compose, nav, orion, owner_key, pilot_pin, pilots, shots, theme
+from stamina import __version__, chat_md, compose, nav, orion, owner_key, pilot_pin, shots, theme
 from stamina import ship_chat
 from stamina import task_progress as tprog
 from stamina.adapt import make_vscroll
@@ -40,8 +40,8 @@ from stamina.pilot_screens import Modal, PinPad
 from stamina.prompt_box import PromptBox, hud_colors
 from stamina.suggest import Suggester, dictionary_from
 from stamina.theme import (AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, PANEL, RED, TEXT,
-                           blend, px)
-from stamina.voice import agent_voice, autosend, stt, tts
+                           px)
+from stamina.voice import agent_voice, autosend, tts
 from stamina.voice.engine import guess_lang
 from stamina.voice.mic import MicControl
 
@@ -725,15 +725,27 @@ class OrionScreen(tk.Frame):
         self.text.tag_configure("typing", foreground=AMBER, font=theme.font(9, True))
 
     # -- вкладка АГЕНТЫ ----------------------------------------------------
+    # Порог ширины правой зоны (карточка+привязка): уже — стек / вкладки.
+    # Логические px: на 1366×768 при UI S–XL две колонки ещё влезают (см. тесты).
+    AGENTS_WIDE_MIN = 480
+    AGENTS_TABS_MAX = 340
+
     def _build_agents(self, page: tk.Frame) -> None:
+        """Список пассажиров слева; карточка и привязка — рядом (на узком окне стек/вкладки)."""
         left = tk.Frame(page, bg=BG)
         left.pack(side=tk.LEFT, fill=tk.Y)
         right = tk.Frame(page, bg=BG)
         right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(10), 0))
+        self._agents_page = page
+        self._agents_right = right
+        self._agents_mode = None          # "wide" | "stack" | "tabs"
+        self._agents_tab = "card"        # активная вкладка в режиме tabs
+        self._agents_wrap: list[tk.Label] = []
 
         lp = HudPanel(left, title=_t("ПАССАЖИРЫ БОРТА"))
         lp.pack(fill=tk.BOTH, expand=True)
         lp.configure(width=px(260))
+        self._agents_list = lp
         # Низ панели пакуем первым (side=BOTTOM): список над ним листается и
         # последняя карточка не уходит под кнопку.
         # Подчинённый агент — не пассажир: он не заселяется отдельно, а работает
@@ -764,8 +776,48 @@ class OrionScreen(tk.Frame):
             self.crew_canvas.bind(seq, lambda _e, st=step: self._crew_scroll(*st))
         self._crew_bind_wheel(self.crew_canvas)
 
-        rp = HudPanel(right, title=_t("КАРТОЧКА ПАССАЖИРА"))
-        rp.pack(fill=tk.X)
+        right.grid_rowconfigure(0, weight=0)   # переключатель вкладок (только tabs)
+        right.grid_rowconfigure(1, weight=1)   # карточка + привязка (доля высоты)
+        right.grid_rowconfigure(2, weight=0, minsize=px(56))   # эволюция — всегда видна
+        right.grid_rowconfigure(3, weight=1, minsize=px(120))  # манеры
+        right.grid_columnconfigure(0, weight=1)
+
+        # Узкое окно: кнопки «Карточка / Привязка» вместо двух колонок.
+        self._agents_tab_bar = tk.Frame(right, bg=BG)
+        self._agents_tab_btns: dict[str, HudButton] = {}
+        for key, title in (("card", "КАРТОЧКА"), ("bind", "ПРИВЯЗКА")):
+            b = HudButton(self._agents_tab_bar, _t(title),
+                          lambda k=key: self._agents_pick_tab(k), height=28, font_size=9,
+                          color=CYAN)
+            b.pack(side=tk.LEFT, padx=(0, px(6)))
+            self._agents_tab_btns[key] = b
+
+        # Верхняя зона (карточка|привязка) в холсте: при нехватке высоты — прокрутка,
+        # эволюция и манеры остаются закреплены снизу.
+        top_host = tk.Frame(right, bg=BG)
+        self._agents_top_host = top_host
+        top_host.grid_rowconfigure(0, weight=1)
+        top_host.grid_columnconfigure(0, weight=1)
+        top_sb = make_vscroll(top_host)
+        self._agents_top_sb = top_sb
+        top_sb.grid(row=0, column=1, sticky="ns")
+        top_cv = tk.Canvas(top_host, bg=BG, highlightthickness=0, bd=0,
+                           yscrollcommand=top_sb.set)
+        self._agents_top_cv = top_cv
+        top_cv.grid(row=0, column=0, sticky="nsew")
+        top_sb.configure(command=top_cv.yview)
+        top = tk.Frame(top_cv, bg=BG)
+        self._agents_top = top
+        self._agents_top_win = top_cv.create_window(0, 0, window=top, anchor="nw")
+        top.bind("<Configure>", lambda _e: self._agents_top_sync())
+        top_cv.bind("<Configure>", self._on_agents_top_canvas)
+
+        top.grid_rowconfigure(0, weight=1)
+        top.grid_columnconfigure(0, weight=1)
+        top.grid_columnconfigure(1, weight=1)
+
+        rp = HudPanel(top, title=_t("КАРТОЧКА ПАССАЖИРА"))
+        self._agents_card = rp
         form = tk.Frame(rp.body, bg=PANEL)
         form.pack(fill=tk.BOTH, expand=True)
 
@@ -775,124 +827,131 @@ class OrionScreen(tk.Frame):
         for title, var, hint in ((_t("ИМЯ"), self.name_var, _t("Как звать агента (Орион, Пилот-2, Сова…)")),
                                  (_t("МОДЕЛЬ"), self.model_var, _t("Пусто — модель OpenCode по умолчанию")),
                                  (_t("ЗАМЕТКА"), self.note_var, _t("Для чего заселён"))):
-            _label(form, title, fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(6), 0))
+            _label(form, title, fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(3), 0))
             e = tk.Entry(form, textvariable=var, bg=BG2, fg=TEXT, insertbackground=CYAN,
                          relief=tk.FLAT, font=theme.font(10), highlightthickness=1,
                          highlightbackground=LINE, highlightcolor=CYAN)
-            e.pack(fill=tk.X, ipady=px(4))
+            e.pack(fill=tk.X, ipady=px(3))
             _label(form, hint, fg=MUTED, size=8).pack(anchor="w")
 
         # Права выдаются НА ВХОДЕ — кнопками, а не перебором. Права Командира обычный
         # пилот «просто так» не получает: их выдаёт владелец корабля по своему коду.
-        _label(form, _t("ПРАВА НА ВХОДЕ"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(8), 0))
+        _label(form, _t("ПРАВА НА ВХОДЕ"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(4), 0))
         self.access_row = tk.Frame(form, bg=PANEL)
         self.access_row.pack(anchor="w")
         self.access_btns: dict[str, HudButton] = {}
         for key, title in (("crew", "ЭКИПАЖ"), ("observer", "НАБЛЮДАТЕЛЬ"),
                            ("commander", "КОМАНДИР")):
             b = HudButton(self.access_row, _t(title), lambda k=key: self._pick_access(k),
-                          height=32, font_size=9, color=CYAN)
+                          height=28, font_size=9, color=CYAN)
             b.pack(side=tk.LEFT, padx=(0, px(6)))
             self.access_btns[key] = b
         self.access_hint = _label(form, "", fg=MUTED, size=8, anchor="w", justify="left",
-                                  wraplength=px(620))
+                                  wraplength=px(320))
         self.access_hint.pack(fill=tk.X)
+        self._agents_wrap.append(self.access_hint)
 
-        _label(form, _t("ГОЛОС"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(8), 0))
-        self.voice_mode_btn = HudButton(form, "—", self._cycle_voice, height=38, font_size=12,
+        _label(form, _t("ГОЛОС"), fg=MUTED, size=9, bold=True).pack(anchor="w", pady=(px(4), 0))
+        self.voice_mode_btn = HudButton(form, "—", self._cycle_voice, height=32, font_size=11,
                                         color=GREEN)
         self.voice_mode_btn.pack(anchor="w")
         self.voice_hint = _label(form, "", fg=MUTED, size=8, anchor="w", justify="left",
-                                 wraplength=px(620))
+                                 wraplength=px(320))
         self.voice_hint.pack(fill=tk.X)
+        self._agents_wrap.append(self.voice_hint)
 
-        self.enabled_btn = HudButton(form, "—", self._toggle_enabled, height=32, font_size=10,
+        self.enabled_btn = HudButton(form, "—", self._toggle_enabled, height=28, font_size=10,
                                      color=GREEN)
-        self.enabled_btn.pack(anchor="w", pady=(px(10), 0))
+        self.enabled_btn.pack(anchor="w", pady=(px(6), 0))
 
         btns = tk.Frame(form, bg=PANEL)
-        btns.pack(fill=tk.X, pady=(px(10), 0))
-        HudButton(btns, _t("СОХРАНИТЬ"), self._save_agent, height=34, font_size=10,
+        btns.pack(fill=tk.X, pady=(px(6), 0))
+        HudButton(btns, _t("СОХРАНИТЬ"), self._save_agent, height=30, font_size=10,
                   color=GREEN).pack(side=tk.LEFT)
-        HudButton(btns, _t("СДЕЛАТЬ АКТИВНЫМ"), self._make_active, height=34, font_size=9,
+        HudButton(btns, _t("СДЕЛАТЬ АКТИВНЫМ"), self._make_active, height=30, font_size=9,
                   color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
-        HudButton(btns, _t("УБРАТЬ С БОРТА"), self._remove_agent, height=34, font_size=9,
+        HudButton(btns, _t("УБРАТЬ С БОРТА"), self._remove_agent, height=30, font_size=9,
                   color=RED).pack(side=tk.LEFT, padx=(px(6), 0))
 
-        # ПРИВЯЗКА К OPENCODY: код для заселения, токен, статус связи
-        bp = HudPanel(form, title=_t("ПРИВЯЗКА К OPENCODY"), accent=GREEN)
-        bp.pack(fill=tk.BOTH, expand=True, pady=(px(10), 0))
+        # ПРИВЯЗКА К OPENCODY — соседняя колонка (не внутри карточки).
+        bp = HudPanel(top, title=_t("ПРИВЯЗКА К OPENCODY"), accent=GREEN)
+        self._agents_bind = bp
         bbody = tk.Frame(bp.body, bg=PANEL)
         bbody.pack(fill=tk.BOTH, expand=True)
 
         self.boarding_code = orion.make_boarding_code()
         code_row = tk.Frame(bbody, bg=PANEL)
-        code_row.pack(fill=tk.X, pady=(px(10), 0))
-        _label(code_row, _t("КОД ДЛЯ ЗАСЕЛЕНИЯ"), fg=MUTED, size=11, bold=True).pack(anchor="w")
-        self.code_label = _label(code_row, self.boarding_code, fg=GREEN, size=28, bold=True, bg=PANEL)
-        self.code_label.pack(anchor="w", pady=(px(6), 0))
-        _label(code_row, _t("Введите этот код в OpenCode CLI при заселении агента."),
-               fg=MUTED, size=10, anchor="w", justify="left",
-               wraplength=px(800)).pack(anchor="w")
+        code_row.pack(fill=tk.X, pady=(px(2), 0))
+        _label(code_row, _t("КОД ДЛЯ ЗАСЕЛЕНИЯ"), fg=MUTED, size=10, bold=True).pack(anchor="w")
+        self.code_label = _label(code_row, self.boarding_code, fg=GREEN, size=20, bold=True, bg=PANEL)
+        self.code_label.pack(anchor="w", pady=(px(2), 0))
+        code_hint = _label(code_row, _t("Введите этот код в OpenCode CLI при заселении агента."),
+                           fg=MUTED, size=8, anchor="w", justify="left", wraplength=px(320))
+        code_hint.pack(anchor="w")
+        self._agents_wrap.append(code_hint)
 
         oc_row = tk.Frame(bbody, bg=PANEL)
-        oc_row.pack(fill=tk.X, pady=(px(8), 0))
+        oc_row.pack(fill=tk.X, pady=(px(4), 0))
         _label(oc_row, _t("ТОКЕН OPENCODY"), fg=MUTED, size=9, bold=True).pack(anchor="w")
         self.token_entry = tk.Entry(oc_row, bg=BG2, fg=TEXT, insertbackground=CYAN,
                                     relief=tk.FLAT, font=theme.font(10),
                                     highlightthickness=1, highlightbackground=LINE,
                                     highlightcolor=CYAN, show="*")
-        self.token_entry.pack(fill=tk.X, ipady=px(4))
+        self.token_entry.pack(fill=tk.X, ipady=px(3))
         self.oc_status = _label(oc_row, "", fg=MUTED, size=8, anchor="w", justify="left",
-                                wraplength=px(620))
+                                wraplength=px(320))
         self.oc_status.pack(fill=tk.X)
+        self._agents_wrap.append(self.oc_status)
 
         gh_row = tk.Frame(bbody, bg=PANEL)
-        gh_row.pack(fill=tk.X, pady=(px(8), 0))
+        gh_row.pack(fill=tk.X, pady=(px(4), 0))
         _label(gh_row, _t("ТОКЕН GITHUB (ДЛЯ КОМАНДИРА)"), fg=MUTED, size=9, bold=True).pack(anchor="w")
         self.gh_entry = tk.Entry(gh_row, bg=BG2, fg=TEXT, insertbackground=CYAN,
                                  relief=tk.FLAT, font=theme.font(10),
                                  highlightthickness=1, highlightbackground=LINE,
                                  highlightcolor=CYAN, show="*")
-        self.gh_entry.pack(fill=tk.X, ipady=px(4))
+        self.gh_entry.pack(fill=tk.X, ipady=px(3))
         self.gh_status = _label(gh_row, "", fg=MUTED, size=8, anchor="w", justify="left",
-                                wraplength=px(620))
+                                wraplength=px(320))
         self.gh_status.pack(fill=tk.X)
+        self._agents_wrap.append(self.gh_status)
 
         bind_row = tk.Frame(bbody, bg=PANEL)
-        bind_row.pack(fill=tk.X, pady=(px(8), 0))
-        HudButton(bind_row, _t("ПРОВЕРИТЬ СВЯЗЬ"), self._check_binding, height=32,
-                  font_size=10, color=GREEN).pack(side=tk.LEFT)
-        HudButton(bind_row, _t("СОХРАНИТЬ ПРИВЯЗКУ"), self._save_binding, height=32,
+        bind_row.pack(fill=tk.X, pady=(px(4), 0))
+        HudButton(bind_row, _t("ПРОВЕРИТЬ СВЯЗЬ"), self._check_binding, height=28,
+                  font_size=9, color=GREEN).pack(side=tk.LEFT)
+        HudButton(bind_row, _t("СОХРАНИТЬ ПРИВЯЗКУ"), self._save_binding, height=28,
                   font_size=9, color=CYAN).pack(side=tk.LEFT, padx=(px(6), 0))
-        HudButton(bind_row, _t("ЗАБЫТЬ ПРИВЯЗКУ"), self._clear_binding, height=32,
+        HudButton(bind_row, _t("ЗАБЫТЬ ПРИВЯЗКУ"), self._clear_binding, height=28,
                   font_size=9, color=RED).pack(side=tk.LEFT, padx=(px(6), 0))
 
         self.bind_status = _label(bbody, "", fg=MUTED, size=9, bold=True, anchor="w",
-                                  justify="left", wraplength=px(620))
-        self.bind_status.pack(fill=tk.X, pady=(px(6), px(8)))
+                                  justify="left", wraplength=px(320))
+        self.bind_status.pack(fill=tk.X, pady=(px(4), px(2)))
+        self._agents_wrap.append(self.bind_status)
 
-        # ЭВОЛЮЦИЯ ХАРАКТЕРА — иллюзия развития ИИ
-        ep = HudPanel(form, title=_t("ЭВОЛЮЦИЯ ХАРАКТЕРА"), accent=AMBER)
-        ep.pack(fill=tk.X, pady=(px(10), 0))
+        # ЭВОЛЮЦИЯ ХАРАКТЕРА — компактная полоса под двумя колонками.
+        ep = HudPanel(right, title=_t("ЭВОЛЮЦИЯ ХАРАКТЕРА"), accent=AMBER, pad=6)
+        self._agents_evo = ep
         ebody = tk.Frame(ep.body, bg=PANEL)
         ebody.pack(fill=tk.X)
-        self.evo_label = _label(ebody, "", fg=AMBER, size=10, bold=True, anchor="w",
+        self.evo_label = _label(ebody, "", fg=AMBER, size=9, bold=True, anchor="w",
                                 justify="left", wraplength=px(620))
-        self.evo_label.pack(fill=tk.X, pady=(px(6), 0))
-        self.evo_hint = _label(ebody, "", fg=MUTED, size=8, anchor="w", justify="left",
-                               wraplength=px(620))
-        self.evo_hint.pack(fill=tk.X, pady=(px(4), px(6)))
+        self.evo_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self.evo_hint = _label(ebody, "", fg=MUTED, size=8, anchor="e", justify="right",
+                               wraplength=px(420))
+        self.evo_hint.pack(side=tk.RIGHT, padx=(px(8), 0))
+        self._agents_wrap.extend((self.evo_label, self.evo_hint))
 
         # МАНЕРЫ АГЕНТА — документ корабля: поведение агента пилот пишет сам
         mp = HudPanel(right, title=_t("МАНЕРЫ АГЕНТА"), accent=CYAN)
-        mp.pack(fill=tk.BOTH, expand=True, pady=(px(8), 0))
+        self._agents_manners = mp
         mbody = tk.Frame(mp.body, bg=PANEL)
         mbody.pack(fill=tk.BOTH, expand=True)
         msb = make_vscroll(mbody)
         msb.pack(side=tk.RIGHT, fill=tk.Y)
         self.char_text = tk.Text(mbody, wrap=tk.WORD, bg=BG2, fg=TEXT, relief=tk.FLAT,
-                                 font=theme.font(10), padx=px(6), pady=px(4), height=6,
+                                 font=theme.font(10), padx=px(6), pady=px(4), height=4,
                                  insertbackground=CYAN, highlightthickness=1,
                                  highlightbackground=LINE, highlightcolor=CYAN,
                                  yscrollcommand=msb.set)
@@ -900,9 +959,139 @@ class OrionScreen(tk.Frame):
         msb.configure(command=self.char_text.yview)
         self.char_hint = _label(mp.body, "", fg=MUTED, size=8, anchor="w", justify="left",
                                 wraplength=px(620))
-        self.char_hint.pack(fill=tk.X, pady=(px(4), px(6)))
-        HudButton(mp.body, _t("СОХРАНИТЬ МАНЕРЫ"), self._save_character, height=32,
-                  font_size=10, color=CYAN).pack(anchor="w")
+        self.char_hint.pack(fill=tk.X, pady=(px(2), px(4)))
+        self._agents_wrap.append(self.char_hint)
+        HudButton(mp.body, _t("СОХРАНИТЬ МАНЕРЫ"), self._save_character, height=28,
+                  font_size=9, color=CYAN).pack(anchor="w")
+
+        right.bind("<Configure>", self._on_agents_resize, add="+")
+        self._layout_agents("wide")
+
+    def _agents_mode_for(self, width: int) -> str:
+        """wide — две колонки; stack — друг под другом; tabs — переключатель панелей."""
+        if width < px(self.AGENTS_TABS_MAX):
+            return "tabs"
+        if width < px(self.AGENTS_WIDE_MIN):
+            return "stack"
+        return "wide"
+
+    def _on_agents_resize(self, e) -> None:
+        if e.widget is not getattr(self, "_agents_right", None):
+            return
+        if e.width < 40:
+            return
+        mode = self._agents_mode_for(e.width)
+        if mode != self._agents_mode:
+            self._layout_agents(mode)
+        self._agents_set_wrap(e.width, mode)
+
+    def _agents_set_wrap(self, width: int, mode: str | None = None) -> None:
+        mode = mode or self._agents_mode or "wide"
+        col = width // 2 if mode == "wide" else width
+        wl = max(px(160), col - px(48))
+        for lbl in getattr(self, "_agents_wrap", ()):
+            try:
+                lbl.configure(wraplength=wl)
+            except tk.TclError:
+                pass
+
+    def _agents_pick_tab(self, key: str) -> None:
+        self._agents_tab = key if key in ("card", "bind") else "card"
+        if self._agents_mode == "tabs":
+            self._layout_agents("tabs")
+
+    def _agents_top_sync(self) -> None:
+        cv = getattr(self, "_agents_top_cv", None)
+        top = getattr(self, "_agents_top", None)
+        if cv is None or top is None:
+            return
+        try:
+            h = max(top.winfo_reqheight(), 1)
+            cv.configure(scrollregion=(0, 0, cv.winfo_width(), h))
+            need = h > cv.winfo_height() + 2
+            sb = self._agents_top_sb
+            if need and not sb.winfo_ismapped():
+                sb.grid(row=0, column=1, sticky="ns")
+            elif not need and sb.winfo_ismapped():
+                sb.grid_remove()
+                cv.yview_moveto(0)
+        except tk.TclError:
+            pass
+
+    def _on_agents_top_canvas(self, e) -> None:
+        try:
+            self._agents_top_cv.itemconfigure(self._agents_top_win, width=e.width)
+        except tk.TclError:
+            return
+        self._agents_top_sync()
+
+    def _agents_top_scroll(self, n: int, what: str = "units") -> str:
+        self._agents_top_cv.yview_scroll(n, what)
+        return "break"
+
+    def _agents_top_wheel(self, e) -> str:
+        delta = getattr(e, "delta", 0) or (120 if getattr(e, "num", 0) == 4 else -120)
+        return self._agents_top_scroll(-1 if delta > 0 else 1, "units") if delta else "break"
+
+    def _agents_top_bind_wheel(self, w) -> None:
+        w.bind("<MouseWheel>", self._agents_top_wheel)
+        w.bind("<Button-4>", self._agents_top_wheel)
+        w.bind("<Button-5>", self._agents_top_wheel)
+        for ch in w.winfo_children():
+            self._agents_top_bind_wheel(ch)
+
+    def _layout_agents(self, mode: str) -> None:
+        """Разложить карточку и привязку: рядом / столбиком / вкладками."""
+        top = self._agents_top
+        host = self._agents_top_host
+        card, bind = self._agents_card, self._agents_bind
+        bar = self._agents_tab_bar
+        evo, manners = self._agents_evo, self._agents_manners
+        right = self._agents_right
+        self._agents_mode = mode
+
+        for w in (bar, host, card, bind, evo, manners):
+            try:
+                w.grid_forget()
+            except tk.TclError:
+                pass
+
+        gap = px(6)
+        if mode == "wide":
+            host.grid(row=1, column=0, sticky="nsew")
+            top.grid_rowconfigure(0, weight=1)
+            top.grid_rowconfigure(1, weight=0)
+            top.grid_columnconfigure(0, weight=1, uniform="agents")
+            top.grid_columnconfigure(1, weight=1, uniform="agents")
+            card.grid(row=0, column=0, sticky="nsew", padx=(0, gap // 2))
+            bind.grid(row=0, column=1, sticky="nsew", padx=(gap // 2, 0))
+        elif mode == "stack":
+            host.grid(row=1, column=0, sticky="nsew")
+            top.grid_rowconfigure(0, weight=0)
+            top.grid_rowconfigure(1, weight=0)
+            top.grid_columnconfigure(0, weight=1, uniform="")
+            top.grid_columnconfigure(1, weight=0, uniform="")
+            card.grid(row=0, column=0, columnspan=2, sticky="new", pady=(0, gap))
+            bind.grid(row=1, column=0, columnspan=2, sticky="new")
+        else:  # tabs
+            bar.grid(row=0, column=0, sticky="ew", pady=(0, px(4)))
+            host.grid(row=1, column=0, sticky="nsew")
+            top.grid_rowconfigure(0, weight=1)
+            top.grid_rowconfigure(1, weight=0)
+            top.grid_columnconfigure(0, weight=1, uniform="")
+            top.grid_columnconfigure(1, weight=0, uniform="")
+            show = card if self._agents_tab == "card" else bind
+            show.grid(row=0, column=0, columnspan=2, sticky="nsew")
+            for key, b in self._agents_tab_btns.items():
+                b.set_active(key == self._agents_tab)
+
+        evo.grid(row=2, column=0, sticky="ew", pady=(gap, 0))
+        manners.grid(row=3, column=0, sticky="nsew", pady=(gap, 0))
+        right.grid_rowconfigure(1, weight=2)
+        right.grid_rowconfigure(3, weight=1)
+        self._agents_top_bind_wheel(self._agents_top)
+        self._agents_top_bind_wheel(self._agents_top_cv)
+        self.after_idle(self._agents_top_sync)
 
     # -- вкладка АРХИВ -----------------------------------------------------
     def _build_archive(self, page: tk.Frame) -> None:
@@ -1361,6 +1550,24 @@ class OrionScreen(tk.Frame):
             hook()
         if key == "archive" and not self._archive_rows:
             self._archive_search()        # архив открыли — сразу показываем свежее
+        if key == "agents":
+            self.after_idle(self._agents_relayout)
+
+    def _agents_relayout(self) -> None:
+        """После показа вкладки — подогнать колонки под фактическую ширину."""
+        right = getattr(self, "_agents_right", None)
+        if right is None:
+            return
+        try:
+            w = int(right.winfo_width())
+        except tk.TclError:
+            return
+        if w < 40:
+            return
+        mode = self._agents_mode_for(w)
+        if mode != self._agents_mode:
+            self._layout_agents(mode)
+        self._agents_set_wrap(w, mode)
 
     def page_help_key(self) -> str:
         return "orion." + getattr(self, "current_tab", "chat")
@@ -1715,11 +1922,17 @@ class OrionScreen(tk.Frame):
             bar = tk.Canvas(fr, width=px(170), height=px(10), bg=BG, highlightthickness=0, bd=0)
             pct = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="e", width=5)
             lab = _label(fr, "", fg=MUTED, size=9, bg=BG, anchor="w")
+            chk = _label(fr, "☐", fg=MUTED, size=11, bg=BG, anchor="w", width=2,
+                         cursor="hand2")
+            chk.pack(side=tk.LEFT, padx=(0, px(2)))
             pct.pack(side=tk.RIGHT)
             bar.pack(side=tk.RIGHT, padx=(px(8), px(4)))
             lab.pack(side=tk.LEFT, fill=tk.X, expand=True)
-            self.task_rows.append({"frame": fr, "label": lab, "bar": bar, "pct": pct,
-                                   "key": None, "shown": False})
+            row = {"frame": fr, "label": lab, "bar": bar, "pct": pct, "check": chk,
+                   "key": None, "shown": False, "task_id": ""}
+            self.task_rows.append(row)
+            # галочка — «задача закрыта»: клик по строке состояния, а не по всему пульту
+            chk.bind("<Button-1>", lambda _e, r=row: self._toggle_task_done(r["task_id"]))
         return self.task_rows[i]
 
     def _task_text(self, t: dict, spin: str) -> tuple[str, str]:
@@ -1744,11 +1957,16 @@ class OrionScreen(tk.Frame):
             row = self._task_row(i)
             text, fg = self._task_text(t, spin)
             pct = int(t.get("percent") or 0)
-            key = (text, fg, pct)
+            task_id = str(t.get("id") or "")
+            checked = t.get("state") == "done"
+            key = (text, fg, pct, checked, task_id)
             if key != row["key"]:
                 row["key"] = key
+                row["task_id"] = task_id
                 row["label"].configure(text=text, fg=fg)
                 row["pct"].configure(text=f"{pct}%", fg=tprog.color_for(pct))
+                row["check"].configure(text="☑" if checked else "☐",
+                                       fg=GREEN if checked else MUTED)
                 self._draw_bar(row["bar"], pct, tprog.color_for(pct))
             if not row["shown"]:
                 row["frame"].pack(fill=tk.X)
@@ -1757,6 +1975,35 @@ class OrionScreen(tk.Frame):
             if row["shown"]:
                 row["frame"].pack_forget()
                 row["shown"] = False
+
+    def _toggle_task_done(self, task_id: str) -> None:
+        """Галочка напротив шкалы: закрыть задачу или снова открыть её."""
+        task = next((t for t in self._tasks if str(t.get("id") or "") == task_id), None)
+        if task is None:
+            return
+        title = str(task.get("title") or task_id)
+        was_done = task.get("state") == "done"
+        try:
+            if task_id == "progress":          # старый одиночный доклад v1
+                data = orion.read_progress()
+                if not str(data.get("task") or "").strip():
+                    return
+                steps = data.get("steps") or []
+                orion.write_progress(str(data.get("task") or ""), steps,
+                                     done=0 if was_done else len(steps),
+                                     state="working" if was_done else "done")
+            elif was_done:
+                tprog.reopen(task_id)
+            else:
+                tprog.finish(task_id, "done")
+        except OSError:
+            self._hint(_t("Не удалось сохранить задачу"), RED)
+            return
+        self._report_read = 0.0                # следующая строка панели — уже новая
+        if was_done:
+            self._hint(_t("Задача снова открыта: {0}").format(title[:60]), CYAN)
+        else:
+            self._hint(_t("ЗАДАЧА ВЫПОЛНЕНА: {0}").format(title[:60]), GREEN)
 
     def _tick_activity(self) -> None:
         """Шаг панели: строки задач по их планам, оценка по времени или «свободен»."""

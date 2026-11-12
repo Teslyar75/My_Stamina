@@ -10,7 +10,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 
 from stamina import theme
-from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED,
+from stamina.theme import (AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, LINE_HI, MUTED,
                            PANEL, RED, TEXT, blend, chamfer, px)
 
 from . import rsvp

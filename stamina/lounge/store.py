@@ -1,13 +1,45 @@
-"""Рекорды комнаты отдыха (%APPDATA%\\Stamina\\lounge.json)."""
+"""Рекорды комнаты отдыха: у каждого пилота свои (%APPDATA%\\Stamina\\pilots\\<id>\\lounge.json).
+
+Путь считается при каждом обращении от активного пилота (``pilots.active_dir()``), поэтому
+смена пилота и ``pilots.reset_root`` сразу видят нужный файл.
+
+До версии с пилотами рекорды лежали в общем ``%APPDATA%\\Stamina\\lounge.json`` и смешивались
+у всех пилотов. По решению экипажа они сброшены: старый файл один раз переименовывается
+в ``lounge.json.shared-old`` (не удаляется) и никому не отдаётся.
+"""
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
+LEGACY_NAME = "lounge.json"
+LEGACY_RENAMED = "lounge.json.shared-old"
+
+
+def _retire_shared() -> None:
+    """Убрать старый общий файл рекордов из корня (идемпотентно, без удаления)."""
+    from stamina import pilots
+    if pilots.active() is None:      # без пилотов (режим «по-старому») корень и есть папка данных
+        return
+    root = Path(pilots.ROOT_DIR)
+    old = root / LEGACY_NAME
+    if not old.is_file():
+        return
+    dest = root / LEGACY_RENAMED
+    n = 1
+    while dest.exists():
+        dest = root / f"{LEGACY_RENAMED}.{n}"
+        n += 1
+    try:
+        old.rename(dest)
+    except OSError:
+        pass                          # занят — попробуем при следующем обращении; читать его всё равно не будем
+
 
 def _path() -> Path:
-    from stamina.pilots import ROOT_DIR
-    return Path(ROOT_DIR) / "lounge.json"
+    from stamina import pilots
+    _retire_shared()
+    return Path(pilots.active_dir()) / LEGACY_NAME
 
 
 def load() -> dict:

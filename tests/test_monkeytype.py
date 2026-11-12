@@ -1,5 +1,4 @@
 """Monkeytype: импорт прогресса (только чтение), HTTP подменён."""
-import json
 import tempfile
 import unittest
 from pathlib import Path
