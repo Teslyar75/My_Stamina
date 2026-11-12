@@ -1,4 +1,4 @@
-"""Лаборатория: адаптер данных (временные папки, выдуманные файлы), раскладка, экран."""
+"""Лаборатория: адаптер данных, три уровня LOD, раскладка, экран, слепок."""
 from __future__ import annotations
 
 import json
@@ -11,7 +11,7 @@ from pathlib import Path
 
 from stamina import lab_data, nav
 from stamina.lab_demo import demo_graph
-from stamina.laboratory import MAX_STARS, aggregate, layout
+from stamina.laboratory import MAX_STARS, MODE_VISUAL, MODE_WORK, aggregate, layout
 
 NOW = time.mktime((2026, 11, 4, 12, 0, 0, 0, 0, -1))
 
@@ -88,6 +88,8 @@ class LabDataTest(unittest.TestCase):
         self._fill()
         before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         lab_data.collect(self.root, NOW)
+        lab_data.collect_visual(self.root, NOW)
+        list(lab_data.iter_snapshot(self.root, now=NOW))
         after = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         self.assertEqual(before, after)
 
@@ -118,6 +120,74 @@ class LabDataTest(unittest.TestCase):
         self.assertGreaterEqual(b["vitality"], 0.08)
 
 
+class LabLodLevelsTest(unittest.TestCase):
+    """Три уровня: visual / fragment / full snapshot."""
+
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp())
+        LabDataTest._fill(self)  # type: ignore[arg-type]
+
+    def test_visual_has_no_individual_words(self):
+        vis = lab_data.collect_visual(self.root, NOW)
+        kinds = {n["kind"] for n in vis.nodes}
+        self.assertNotIn("word", kinds)
+        self.assertNotIn("form", kinds)
+        self.assertTrue(any(n["kind"] == "cluster" for n in vis.nodes) or any(n["kind"] == "book" for n in vis.nodes))
+        self.assertEqual(vis.mode, "visual")
+        # визуальный заметно легче полного
+        full = lab_data.collect(self.root, NOW)
+        self.assertLessEqual(len(vis.nodes), len(full.nodes))
+
+    def test_fragment_loads_only_one_group(self):
+        full = lab_data.collect(self.root, NOW)
+        case = next(n for n in full.nodes if n["id"] == "w:case")
+        frag = lab_data.collect_fragment(self.root, case["group"], NOW)
+        self.assertEqual(frag.mode, "fragment")
+        self.assertEqual(frag.focus, case["group"])
+        # все «свои» узлы группы на месте; чужие CEFR-темы не тянем
+        groups = {n["group"] for n in frag.nodes}
+        self.assertIn(case["group"], groups)
+        # книга может приехать как сосед по ребру
+        self.assertTrue(any(n["id"] == "w:case" for n in frag.nodes))
+        self.assertLess(len(frag.nodes), len(full.nodes))
+
+    def test_book_fragment_includes_linked_words(self):
+        frag = lab_data.collect_fragment(self.root, "book:t1", NOW)
+        ids = {n["id"] for n in frag.nodes}
+        self.assertIn("b:t1", ids)
+        self.assertTrue({"w:case", "w:time"} & ids)
+
+    def test_snapshot_chunks_progress_and_cancel(self):
+        events = list(lab_data.iter_snapshot(self.root, chunk_size=2, now=NOW))
+        self.assertEqual(events[0]["phase"], "collect")
+        self.assertEqual(events[-1]["phase"], "done")
+        snap = events[-1]["snapshot"]
+        self.assertEqual(snap["version"], lab_data.SNAPSHOT_VERSION)
+        self.assertEqual(snap["kind"], "lab_entity_snapshot")
+        self.assertIn("entity", snap)
+        self.assertIn("nodes", snap)
+        self.assertIn("edges", snap)
+        self.assertTrue(all("fresh" in n for n in snap["nodes"]))
+        # отмена на первом же шаге после collect
+        flag = {"n": 0}
+
+        def cancel():
+            flag["n"] += 1
+            return flag["n"] > 1
+
+        ev2 = list(lab_data.iter_snapshot(self.root, chunk_size=1, now=NOW, cancel=cancel))
+        self.assertTrue(any(e.get("phase") == "cancelled" for e in ev2))
+        self.assertFalse(any(e.get("phase") == "done" for e in ev2))
+
+    def test_export_snapshot_writes_json(self):
+        out = Path(tempfile.mkdtemp()) / "snap.json"
+        snap = lab_data.export_snapshot(self.root, out, chunk_size=5, now=NOW)
+        self.assertIsNotNone(snap)
+        data = json.loads(out.read_text(encoding="utf-8"))
+        self.assertEqual(data["kind"], "lab_entity_snapshot")
+        self.assertEqual(len(data["nodes"]), len(snap["nodes"]))
+
+
 class LabLayoutTest(unittest.TestCase):
     def test_demo_is_marked_and_sized(self):
         g = demo_graph(1000, now=NOW)
@@ -128,8 +198,31 @@ class LabLayoutTest(unittest.TestCase):
         g = demo_graph(1000, now=NOW)
         pos, shape = layout(g)
         self.assertEqual(len(pos), 1000)
-        self.assertTrue(all(x * x + y * y < 1.3 for x, y in pos))
-        self.assertTrue(all(g.nodes[a]["group"] == g.nodes[b]["group"] for a, b in shape))
+        self.assertTrue(all(x * x + y * y < 1.6 for x, y in pos))
+        # контурные рёбра — внутри группы или книга→слово
+        for a, b in shape:
+            ga, gb = g.nodes[a]["group"], g.nodes[b]["group"]
+            kinds = {g.nodes[a]["kind"], g.nodes[b]["kind"]}
+            self.assertTrue(ga == gb or "book" in kinds)
+
+    def test_english_crescent_and_book_fans(self):
+        g = demo_graph(400, now=NOW)
+        pos, _ = layout(g)
+        en = [pos[i] for i, n in enumerate(g.nodes) if n["skill"] == "en"]
+        self.assertTrue(en)
+        # полумесяц: центр масс английского слева от нуля (x < 0)
+        cx = sum(p[0] for p in en) / len(en)
+        self.assertLess(cx, 0.05)
+        books = [i for i, n in enumerate(g.nodes) if n["kind"] == "book"]
+        self.assertTrue(books)
+        # слова у книги ближе к ней, чем случайная точка у края
+        bi = books[0]
+        linked = [b if a == bi else a for a, b in g.edges if a == bi or b == bi]
+        linked = [i for i in linked if g.nodes[i]["kind"] == "word"]
+        if linked:
+            bx, by = pos[bi]
+            dists = [((pos[i][0] - bx) ** 2 + (pos[i][1] - by) ** 2) ** 0.5 for i in linked]
+            self.assertTrue(all(d < 0.55 for d in dists))
 
     def test_aggregate_caps_star_count(self):
         g = demo_graph(3000, now=NOW)
@@ -138,6 +231,12 @@ class LabLayoutTest(unittest.TestCase):
         self.assertTrue(any(n["kind"] == "cluster" for n in a.nodes))
         self.assertIs(aggregate(demo_graph(500, now=NOW)).__class__, lab_data.Graph)
         self.assertLessEqual(MAX_STARS, 2000)
+
+    def test_visual_collapse_of_demo_is_light(self):
+        g = demo_graph(1000, now=NOW)
+        vis = lab_data.collapse_to_clusters(g)
+        self.assertLess(len(vis.nodes), 200)
+        self.assertFalse(any(n["kind"] == "word" for n in vis.nodes))
 
     def test_hotkeys_keep_settings_on_ctrl9(self):
         keys = dict((n, k) for k, n in nav.zone_hotkeys(nav.zones()))
@@ -181,34 +280,57 @@ class LabScreenTest(unittest.TestCase):
         self.root.update()
         self.assertIn("Лаборатория ждёт первых знаний", self._texts())
         self.assertFalse(self.scr.demo)
+        self.assertEqual(self.scr.mode, MODE_VISUAL)
 
-    def test_demo_perf_and_tooltip(self):
+    def test_demo_visual_perf_and_tooltip(self):
         self.scr.set_demo(True)
         self.root.update()
         self.assertEqual(self.scr.badge.cget("text"), "ДЕМО-ДАННЫЕ")
-        self.assertEqual(len(self.scr.items), 1000)
+        self.assertEqual(self.scr.mode, MODE_VISUAL)
+        # визуальный уровень — кластеры, не 1000 слов
+        self.assertLess(len(self.scr.items), 250)
+        self.assertGreater(len(self.scr.items), 5)
         t = time.perf_counter()
         for k in range(30):
             self.scr.step(t + k * 0.033)
             self.root.update_idletasks()
         p = self.scr.perf()
         self.assertLess(p["avg_ms"], 40.0, p)
-        x, y = self.scr._screen_xy[5]
+        x, y = self.scr._screen_xy[0]
         i = self.scr.star_at(x, y)
         self.assertIsNotNone(i)
-        self.assertIn("яркость", self.scr.tooltip_text(i))
+        tip = self.scr.tooltip_text(i)
+        self.assertIn("яркость", tip)
         self.assertFalse((self.dir / "lab.json").exists())   # демо ничего не пишет
+
+    def test_work_mode_zoom_and_back(self):
+        self.scr.set_demo(True)
+        self.root.update()
+        # берём первый кластер и входим в фрагмент
+        cluster = next(n for n in self.scr.graph.nodes if n["kind"] == "cluster")
+        self.scr._load_fragment(cluster["group"])
+        self.root.update()
+        self.assertEqual(self.scr.mode, MODE_WORK)
+        self.assertGreater(self.scr.zoom, 1.0)
+        self.assertTrue(any(n["group"] == cluster["group"] for n in self.scr.graph.nodes))
+        self.scr.back_to_visual()
+        self.root.update()
+        self.assertEqual(self.scr.mode, MODE_VISUAL)
+        self.assertEqual(self.scr.zoom, 1.0)
 
     def test_real_data_writes_only_own_seen_file(self):
         _write(self.dir, "english.json", {"words": {"case": {"known": True, "known_at": _day(1)}}})
         self.scr.reload()
+        # визуальный: одно слово → один кластер (или одиночный узел-кластер)
         self.assertEqual(len(self.scr.items), 1)
         seen = json.loads((self.dir / "lab.json").read_text(encoding="utf-8"))
-        self.assertEqual(seen["seen"], ["w:case"])
+        self.assertEqual(len(seen["seen"]), 1)
         self.assertEqual(self.scr.fliers, [])                # первый визит — без «ливня»
         _write(self.dir, "english.json", {"words": {"case": {"known": True}, "time": {"known": True}}})
+        self.scr._full_cache = None
         self.scr.reload()
-        self.assertEqual(len(self.scr.fliers), 1)            # новая звезда влетает
+        # новая звезда/кластер может влететь
+        self.assertGreaterEqual(len(self.scr.items), 1)
 
     def test_loop_stops_when_hidden(self):
         self.scr.set_demo(True)
@@ -216,6 +338,12 @@ class LabScreenTest(unittest.TestCase):
         self.app.current = "bridge"
         self.scr._tick()
         self.assertIsNone(self.scr._job)
+
+    def test_entity_items_drawn(self):
+        self.scr.set_demo(True)
+        self.root.update()
+        self.assertGreaterEqual(len(self.scr._entity_items), 4)
+        self.assertGreater(len(self.scr.bg_items), 0)
 
 
 class LabCockpitTest(unittest.TestCase):

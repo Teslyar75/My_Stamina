@@ -6,6 +6,11 @@
 отработанных предложениях книги), цепочки рубежей. Созвездие (``group``) — набор
 CEFR и тема слова, книга, цепочка рубежей.
 
+Три уровня детализации (экран не грузит лишнего):
+- ``visual`` — агрегаты по созвездиям (кластеры), без отдельных слов;
+- ``fragment`` — один созвездие/книга по запросу (рабочий режим);
+- ``full`` — полный граф; для экспорта слепка чанками (см. ``iter_snapshot``).
+
 Модуль без Tk и без записи: файлы пилота читаются через ``pilots.read_json``.
 Единственный собственный файл Лаборатории (``lab.json``, кто из звёзд уже
 показан) пишет экран, а не этот модуль.
@@ -18,6 +23,7 @@ import math
 import re
 import time
 from pathlib import Path
+from typing import Callable, Iterator
 
 from stamina import pilots
 
@@ -30,6 +36,8 @@ CPM_STEPS = (100, 150, 200, 250, 300, 350, 400, 500)
 ACC_STEPS = (90, 95, 97, 98, 99)
 WPM_STEPS = (150, 200, 250, 300, 400, 500, 600, 800)
 BOOK_WORD_EDGES = 40    # не больше рёбер слово↔книга на одну книгу
+SNAPSHOT_VERSION = 1
+SNAPSHOT_CHUNK = 200    # узлов за один шаг экспорта (UI не зависает)
 
 _SETS_DIR = Path(__file__).resolve().parent / "english" / "data" / "sets"
 _VERBS_PATH = Path(__file__).resolve().parent / "english" / "data" / "verbs" / "irregular.json"
@@ -115,6 +123,8 @@ class Graph:
         self.active_days: set[str] = set()
         self.gaps: list[str] = []
         self.demo = False
+        self.mode = "full"          # visual | fragment | full
+        self.focus: str | None = None
         self._ix: dict[str, int] = {}
 
     def add(self, nid: str, kind: str, skill: str, label: str, group: str, *, last: float | None = None,
@@ -313,7 +323,22 @@ def _typing(g: Graph, stats: dict) -> None:
 
 
 def collect(root: Path | None, now: float | None = None) -> Graph:
-    """Граф по папке пилота ``root``. Без исключений: нет файлов — пустой граф."""
+    """Полный граф по папке пилота ``root``. Без исключений: нет файлов — пустой граф."""
+    return _collect(root, mode="full")
+
+
+def collect_visual(root: Path | None, now: float | None = None) -> Graph:
+    """Визуальный уровень: только кластеры/агрегаты, без отдельных слов и форм."""
+    return collapse_to_clusters(_collect(root, mode="full"))
+
+
+def collect_fragment(root: Path | None, group: str, now: float | None = None) -> Graph:
+    """Рабочий уровень: узлы и рёбра только одного созвездия ``group``."""
+    full = _collect(root, mode="full")
+    return fragment_of(full, group)
+
+
+def _collect(root: Path | None, *, mode: str = "full") -> Graph:
     g = Graph()
     if root is None:
         return g
@@ -330,7 +355,178 @@ def collect(root: Path | None, now: float | None = None) -> Graph:
     for day, n in ((eng.get("xp") or {}).get("by_day") or {}).items():
         if n:
             g.active_days.add(str(day))
+    g.mode = mode
     return g
+
+
+def collapse_to_clusters(graph: Graph) -> Graph:
+    """Свернуть слова/формы/глаголы в кластеры по ``group``; книги и рубежи оставить.
+
+    Рёбра между созвездиями сохраняются (книга↔тема и т.п.). Внутрикластерные
+    рёбра отбрасываются — на визуальном уровне их не рисуем.
+    """
+    if not graph.nodes:
+        out = Graph()
+        out.demo, out.active_days, out.gaps = graph.demo, set(graph.active_days), list(graph.gaps)
+        out.mode = "visual"
+        return out
+    groups: dict[str, list[int]] = {}
+    for i, n in enumerate(graph.nodes):
+        groups.setdefault(n["group"], []).append(i)
+    out = Graph()
+    out.demo, out.active_days, out.gaps = graph.demo, set(graph.active_days), list(graph.gaps)
+    out.mode = "visual"
+    remap: dict[int, int] = {}
+    for gkey, ids in groups.items():
+        ns = [graph.nodes[i] for i in ids]
+        # одиночная книга / рубеж / миссия / упражнение — оставляем как есть
+        if len(ns) == 1 and ns[0]["kind"] in ("book", "milestone", "exercise", "mission", "cluster"):
+            n = ns[0]
+            remap[ids[0]] = out.add(n["id"], n["kind"], n["skill"], n["label"], n["group"],
+                                    last=n["last"], strength=n["strength"], detail=n["detail"])
+            if "count" in n:
+                out.nodes[remap[ids[0]]]["count"] = n["count"]
+            continue
+        lasts = [n["last"] for n in ns if n["last"]]
+        skill = ns[0]["skill"]
+        # подпись кластера: тема из group или число звёзд
+        label = _cluster_label(gkey, len(ns))
+        j = out.add("agg:" + gkey, "cluster", skill, label, gkey,
+                    last=max(lasts) if lasts else None,
+                    strength=sum(n["strength"] for n in ns) / max(1, len(ns)),
+                    detail=gkey)
+        out.nodes[j]["count"] = len(ns)
+        for i in ids:
+            remap[i] = j
+    seen: set[tuple[int, int]] = set()
+    for a, b in graph.edges:
+        ia, ib = remap.get(a), remap.get(b)
+        if ia is None or ib is None or ia == ib:
+            continue
+        e = (ia, ib) if ia < ib else (ib, ia)
+        if e not in seen:
+            seen.add(e)
+            out.edges.append((ia, ib))
+    return out
+
+
+def _cluster_label(group: str, count: int) -> str:
+    if group.startswith("cefr:"):
+        parts = group.split(":", 2)
+        topic = parts[2] if len(parts) > 2 else ""
+        lvl = parts[1] if len(parts) > 1 else ""
+        return f"{lvl} · {topic}" if topic else (lvl or str(count))
+    if group == "verbs":
+        return "verbs"
+    if group.startswith("book:"):
+        return str(count)
+    if ":" in group:
+        return group.rsplit(":", 1)[-1]
+    return str(count)
+
+
+def fragment_of(graph: Graph, group: str) -> Graph:
+    """Подграф одного созвездия + соседи по рёбрам (книга↔слова)."""
+    out = Graph()
+    out.demo, out.active_days, out.gaps = graph.demo, set(graph.active_days), list(graph.gaps)
+    out.mode = "fragment"
+    out.focus = group
+    keep: set[int] = {i for i, n in enumerate(graph.nodes) if n["group"] == group}
+    # слова, связанные с книгой этого созвездия (и наоборот)
+    for a, b in graph.edges:
+        if a in keep or b in keep:
+            keep.add(a)
+            keep.add(b)
+    remap: dict[int, int] = {}
+    for i in sorted(keep):
+        n = graph.nodes[i]
+        remap[i] = out.add(n["id"], n["kind"], n["skill"], n["label"], n["group"],
+                           last=n["last"], strength=n["strength"], detail=n["detail"])
+    for a, b in graph.edges:
+        if a in remap and b in remap:
+            out.edges.append((remap[a], remap[b]))
+    return out
+
+
+def iter_snapshot(
+    root: Path | None,
+    *,
+    chunk_size: int = SNAPSHOT_CHUNK,
+    now: float | None = None,
+    cancel: Callable[[], bool] | None = None,
+) -> Iterator[dict]:
+    """Полный слепок чанками: progress-события и финальный ``snapshot``.
+
+    Пилот вызывает редко (кнопка «Полный слепок»). Отмена — ``cancel() is True``.
+    Данные пилота только читаются; запись — в выбранный пилотом файл экспорта.
+    """
+    now = time.time() if now is None else now
+    yield {"phase": "collect", "done": 0, "total": 0}
+    if cancel and cancel():
+        yield {"phase": "cancelled", "done": 0, "total": 0}
+        return
+    g = _collect(root, mode="full")
+    total = len(g.nodes)
+    nodes_out: list[dict] = []
+    for i in range(0, max(total, 1), max(1, chunk_size)):
+        if cancel and cancel():
+            yield {"phase": "cancelled", "done": len(nodes_out), "total": total}
+            return
+        if total == 0:
+            break
+        for n in g.nodes[i:i + chunk_size]:
+            row = dict(n)
+            row["fresh"] = round(freshness(n["last"], n["strength"], now), 4)
+            if n["last"]:
+                row["last_iso"] = time.strftime("%Y-%m-%d", time.localtime(n["last"]))
+            nodes_out.append(row)
+        yield {"phase": "nodes", "done": min(i + chunk_size, total), "total": total}
+    if cancel and cancel():
+        yield {"phase": "cancelled", "done": len(nodes_out), "total": total}
+        return
+    edges = [[g.nodes[a]["id"], g.nodes[b]["id"]] for a, b in g.edges]
+    yield {
+        "phase": "done",
+        "done": total,
+        "total": total,
+        "snapshot": {
+            "version": SNAPSHOT_VERSION,
+            "kind": "lab_entity_snapshot",
+            "created_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(now)),
+            "entity": g.entity(now),
+            "counts": g.counts(),
+            "nodes": nodes_out,
+            "edges": edges,
+            "gaps": list(g.gaps),
+            "demo": bool(g.demo),
+        },
+    }
+
+
+def export_snapshot(
+    root: Path | None,
+    path: Path,
+    *,
+    chunk_size: int = SNAPSHOT_CHUNK,
+    now: float | None = None,
+    progress: Callable[[dict], None] | None = None,
+    cancel: Callable[[], bool] | None = None,
+) -> dict | None:
+    """Собрать полный слепок и записать JSON. ``None`` — отмена."""
+    snap = None
+    for ev in iter_snapshot(root, chunk_size=chunk_size, now=now, cancel=cancel):
+        if progress:
+            progress(ev)
+        if ev.get("phase") == "cancelled":
+            return None
+        if ev.get("phase") == "done":
+            snap = ev["snapshot"]
+    if snap is None:
+        return None
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(snap, ensure_ascii=False, indent=2), encoding="utf-8")
+    return snap
 
 
 def pilot_root(app) -> Path | None:
