@@ -50,6 +50,8 @@ class Cockpit(tk.Tk):
         from stamina import monitors as _mon
         _mon.follow_toplevels(self)   # диалоги едут за окном на другой монитор
         ontop.apply(self, bool(st.get(ontop.KEY, True)))   # «Поверх всех окон»
+        # load_class() — только проверка файлов на диске, без import тяжёлых модулей.
+        # Import и сборка виджетов — при первом заходе в отсек (фабрика / _ensure_screen).
         self._english_cls = english_hook.load_class()  # вкладка «АНГЛИЙСКИЙ» (stamina/english)
         if self._english_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
@@ -418,10 +420,9 @@ class Cockpit(tk.Tk):
             "help": HelpScreen(self.content, self),
             "honor": self._make_honor(),
         }
-        # Тяжёлые отсеки (книги, переписка, тексты «Английского») собираем после
-        # первого кадра: их построение — это сотни миллисекунд процессорного времени,
-        # и держать перед ними мёртвое окно нельзя. Отсек собирается по требованию
-        # (show) или в фоне по одному между кадрами.
+        # Тяжёлые отсеки собираем только по требованию (show / _ensure_screen).
+        # Фоновый _build_pending больше не гоняет все фабрики — иначе RSS и CPU
+        # растут, пока пилот ещё на мостике (см. docs/perf/LAZY_COMPARTMENTS.md).
         self._factories: dict[str, object] = {}
         self._lazy(english_hook, self._english_cls)
         self._lazy(speedread_hook, self._speed_cls)
@@ -435,7 +436,6 @@ class Cockpit(tk.Tk):
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,
         # а внутри них большие тексты — окно уходило в 100 % CPU (см. _only_screen).
         self._only_screen(self.current or "bridge")
-        self.after(120, self._build_pending)
         self.update_rank()
         self._update_sound_button()
         self.update_comm_badge()
@@ -498,13 +498,13 @@ class Cockpit(tk.Tk):
         open_page_help(self)
 
     # ------------------------------------------------------------------
-    def _lazy(self, hook, cls) -> None:
-        """Запомнить, как собрать отсек, вместо немедленной сборки."""
-        if cls is None:
+    def _lazy(self, hook, available) -> None:
+        """Запомнить фабрику отсека. Import модуля — внутри hook.create при первом заходе."""
+        if available is None:
             return
 
-        def build(hook=hook, cls=cls):
-            return hook.create(cls, self.content, self)
+        def build(hook=hook, available=available):
+            return hook.create(available, self.content, self)
 
         self._factories[hook.KEY] = build
 
@@ -537,18 +537,11 @@ class Cockpit(tk.Tk):
                 pass
 
     def _build_pending(self) -> None:
-        """Собирать отложенные отсеки по одному между кадрами: окно остаётся живым."""
-        if safe_mode.enabled():
-            return  # безопасный режим: отсек собирается только когда в него зашли
-        while self._factories:
-            name = next(iter(self._factories))
-            try:
-                if self._ensure_screen(name) is not None:
-                    break
-            except Exception:  # noqa: BLE001
-                self._drop_zone(name)
-        if self._factories:
-            self.after(80, self._build_pending)
+        """Раньше собирал все lazy-отсеки в фоне. Теперь no-op: только по show/_ensure_screen.
+
+        Метод оставлен: тесты и утилиты могут вызывать его явно; поведение как у safe mode.
+        """
+        return
 
     def _only_screen(self, name: str) -> None:
         """Оставить в раскладке только текущий экран.
