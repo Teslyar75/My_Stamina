@@ -62,11 +62,13 @@ jobs:
 
       - name: Тесты (Windows — нативный Tk)
         if: runner.os == 'Windows'
-        run: python -m pytest tests/ -q -p no:cacheprovider
+        # timeout на тест: без него один зависший Tk-after съедает весь лимит job (60 мин)
+        run: python -m pytest tests/ -q -p no:cacheprovider --timeout=90 --timeout-method=thread
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
         if: runner.os == 'Linux'
-        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=signal
+        # thread: signal не прерывает зависание внутри Tk/C на Xvfb
+        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=thread
 
       - name: Отчёт гейта
         if: always()

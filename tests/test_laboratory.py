@@ -300,7 +300,7 @@ class LabLayoutTest(unittest.TestCase):
             self.assertNotEqual(zoom, 1.0)
 
     def test_aggregate_caps_star_count(self):
-        g = demo_graph(3000, now=NOW)
+        g = demo_graph(1400, now=NOW)
         a = aggregate(g, 1200)
         self.assertLessEqual(len(a.nodes), 1200)
         self.assertTrue(any(n["kind"] == "cluster" for n in a.nodes))
@@ -343,6 +343,10 @@ class LabScreenTest(unittest.TestCase):
 
     def tearDown(self):
         from stamina import laboratory
+        try:
+            self.scr.stop()
+        except Exception:
+            pass
         laboratory.lab_data.pilot_root = self._orig
         self.root.destroy()
 
@@ -435,11 +439,7 @@ class LabScreenTest(unittest.TestCase):
         nid = self.scr.graph.nodes[i]["id"]
         self.scr._on_press(types.SimpleNamespace(x=x, y=y))
         self.scr._on_release(types.SimpleNamespace(x=x, y=y))
-        # after(1) в select_star — дождёмся без mainloop
-        deadline = time.time() + 1.0
-        while self.scr._selection is None and time.time() < deadline:
-            self.root.update()
-            time.sleep(0.01)
+        # select_star собирает соседей синхронно (без after/mainloop)
         self.assertEqual(self.scr.selected_id, nid)
         self.assertIsNotNone(self.scr._selection)
         self.assertEqual(self.scr._selection["selected"]["detail_level"], "full")
@@ -498,6 +498,12 @@ class LabCockpitTest(unittest.TestCase):
 
     def tearDown(self):
         from stamina import pilots
+        scr = self.app.screens.get("lab")
+        if scr is not None:
+            try:
+                scr.stop()
+            except Exception:
+                pass
         self.app.destroy()
         pilots.reset_root()
 

@@ -324,7 +324,11 @@ class LabScreen(tk.Frame):
                                font=theme.font(9), justify="left", anchor="nw")
         self.cv = tk.Canvas(self.panel.body, bg=theme.PANEL, highlightthickness=0, bd=0)
         self.cv.pack(fill=tk.BOTH, expand=True)
-        self.cv.bind("<Configure>", lambda _e: self._redraw())
+        self._redrawing = False
+        self._configure_job = None
+        self._hotkey_bound = False
+        # Configure → отложенный redraw (без реentranтности и шторма на pack/resize)
+        self.cv.bind("<Configure>", self._on_configure)
         self.cv.bind("<Motion>", self._on_motion)
         self.cv.bind("<Leave>", lambda _e: self._hide_tip())
         self.cv.bind("<ButtonPress-1>", self._on_press)
@@ -332,7 +336,8 @@ class LabScreen(tk.Frame):
         self.cv.bind("<ButtonRelease-1>", self._on_release)
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
             self.cv.bind(seq, self._on_wheel)
-        self.bind_all("<Control-Home>", self._on_reset_hotkey, add="+")
+        # Control-Home только пока отсек жив; bind_all снимаем в stop() (не копить по тестам)
+        self.bind("<Destroy>", self._on_destroy, add="+")
 
     # -- данные --------------------------------------------------------------------
     def set_demo(self, on: bool, graph: lab_data.Graph | None = None) -> None:
@@ -472,8 +477,9 @@ class LabScreen(tk.Frame):
         if cached is not None:
             self._apply_selection(cached, token)
             return
-        # ленивая сборка из полного графа (соседи могут быть вне текущего group-среза)
-        self.after(1, lambda: self._load_selection_async(node_id, token, lab_data.NEIGHBOR_BATCH))
+        # соседи могут быть вне текущего group-среза — сборка из полного графа
+        # синхронно: after(1)+mainloop в тестах/CI давал зависания; граф компактный
+        self._load_selection_async(node_id, token, lab_data.NEIGHBOR_BATCH)
 
     def _load_selection_async(self, node_id: str, token: int, limit: int) -> None:
         if token != self._selection_token or node_id != self.selected_id:
@@ -590,12 +596,33 @@ class LabScreen(tk.Frame):
         self._schedule_view_redraw()
 
     def _on_reset_hotkey(self, e) -> str | None:
-        if getattr(self.app, "current", None) != "lab":
+        try:
+            if not self.winfo_exists() or not self.winfo_ismapped():
+                return None
+        except tk.TclError:
             return None
-        if not self.winfo_ismapped():
+        if getattr(self.app, "current", None) != "lab":
             return None
         self.reset_view()
         return "break"
+
+    def _on_configure(self, _e) -> None:
+        if self._configure_job is not None:
+            return
+        self._configure_job = self.after(VIEW_THROTTLE_MS, self._flush_configure)
+
+    def _flush_configure(self) -> None:
+        self._configure_job = None
+        try:
+            if self.winfo_exists():
+                self._redraw()
+        except tk.TclError:
+            pass
+
+    def _on_destroy(self, e) -> None:
+        if e.widget is not self:
+            return
+        self.stop()
 
     def _event_xy(self, e) -> tuple[float, float]:
         """Координаты события в системе холста (scroll + HiDPI/Windows)."""
@@ -819,13 +846,22 @@ class LabScreen(tk.Frame):
                 fill=fill, outline="", tags="bg"))
 
     def _redraw(self) -> None:
+        if self._redrawing:
+            return
+        self._redrawing = True
         cv = self.cv
         try:
-            cv.delete("all")
-        except tk.TclError:
-            return
-        self.items, self.edge_items, self.bg_items = [], [], []
-        cx, cy, R = self._geom()
+            try:
+                cv.delete("all")
+            except tk.TclError:
+                return
+            self.items, self.edge_items, self.bg_items = [], [], []
+            cx, cy, R = self._geom()
+            self._redraw_body(cv, cx, cy, R)
+        finally:
+            self._redrawing = False
+
+    def _redraw_body(self, cv, cx: float, cy: float, R: float) -> None:
         if not self.graph.nodes:
             col = blend(theme.PANEL, theme.PURPLE, 0.35)
             for k in range(3):
@@ -1037,23 +1073,34 @@ class LabScreen(tk.Frame):
         if self._job is None:
             self._last_tick = time.perf_counter()
             self._job = self.after(FRAME_MS, self._tick)
+        if not self._hotkey_bound:
+            try:
+                self.bind_all("<Control-Home>", self._on_reset_hotkey, add="+")
+                self._hotkey_bound = True
+            except tk.TclError:
+                pass
 
     def stop(self) -> None:
-        if self._job is not None:
+        for attr in ("_job", "_view_job", "_configure_job"):
+            job = getattr(self, attr, None)
+            if job is not None:
+                try:
+                    self.after_cancel(job)
+                except tk.TclError:
+                    pass
+                setattr(self, attr, None)
+        if self._hotkey_bound:
             try:
-                self.after_cancel(self._job)
+                # только lab использует Control-Home глобально
+                self.unbind_all("<Control-Home>")
             except tk.TclError:
                 pass
-            self._job = None
-        if self._view_job is not None:
-            try:
-                self.after_cancel(self._view_job)
-            except tk.TclError:
-                pass
-            self._view_job = None
+            self._hotkey_bound = False
 
     def _visible(self) -> bool:
         try:
+            if not self.winfo_exists():
+                return False
             cur = getattr(self.app, "current", "lab")
             return cur in (None, "lab") and bool(self.winfo_ismapped())
         except tk.TclError:
@@ -1068,7 +1115,8 @@ class LabScreen(tk.Frame):
             self.step(t)
         except tk.TclError:
             return
-        self._job = self.after(FRAME_MS, self._tick)
+        if self._visible():
+            self._job = self.after(FRAME_MS, self._tick)
 
     def step(self, now: float) -> None:
         dt_ = min(0.2, now - self._last_tick)
