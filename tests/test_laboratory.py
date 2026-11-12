@@ -258,14 +258,46 @@ class LabLayoutTest(unittest.TestCase):
         self.assertGreater(d0, 0.5)
         self.assertEqual(clamp_pitch(10), PITCH_MAX)
         self.assertEqual(clamp_pitch(-10), -PITCH_MAX)
-        z, px_, py_ = zoom_toward(1.0, 0.0, 0.0, factor=ZOOM_STEP, cursor_uv=(0.3, -0.1))
+        z, ox, oy = zoom_toward(1.0, 0.0, 0.0, factor=ZOOM_STEP,
+                                cursor_xy=(130.0, 90.0), origin_xy=(100.0, 100.0))
         self.assertGreater(z, 1.0)
         self.assertLessEqual(z, ZOOM_MAX)
-        z2, _, _ = zoom_toward(ZOOM_MAX, 0.0, 0.0, factor=ZOOM_STEP, cursor_uv=(0.1, 0.1))
+        self.assertNotEqual((ox, oy), (0.0, 0.0))
+        z2, _, _ = zoom_toward(ZOOM_MAX, 0.0, 0.0, factor=ZOOM_STEP,
+                               cursor_xy=(110.0, 110.0), origin_xy=(100.0, 100.0))
         self.assertEqual(z2, ZOOM_MAX)
         self.assertGreaterEqual(ZOOM_MIN, 0.2)
         self.assertGreater(WORK_ZOOM, 1.0)
         self.assertGreaterEqual(DRAG_CLICK_PX, 3)
+
+    def test_zoom_toward_keeps_point_under_cursor(self):
+        """Мировая точка под курсором не смещается по экрану при шагах зума (+ орбита)."""
+        cx, cy, R = 400.0, 300.0, 180.0
+        world = (0.28, -0.17, 0.12)
+        pan = (0.08, -0.04)
+        cases = (
+            (0.0, 0.0),
+            (0.85, 0.35),
+            (-1.1, -0.55),
+            (0.4, PITCH_MAX * 0.9),
+        )
+        for yaw, pitch in cases:
+            zoom, vox, voy = 1.0, 0.0, 0.0
+            sx0, sy0, _ = project_point(
+                *world, yaw=yaw, pitch=pitch, zoom=zoom,
+                pan_x=pan[0], pan_y=pan[1], cx=cx, cy=cy, R=R,
+                view_ox=vox, view_oy=voy)
+            for factor in (ZOOM_STEP, ZOOM_STEP, 1.0 / ZOOM_STEP, ZOOM_STEP ** 2, 1.0 / ZOOM_STEP):
+                zoom, vox, voy = zoom_toward(
+                    zoom, vox, voy, factor=factor,
+                    cursor_xy=(sx0, sy0), origin_xy=(cx, cy))
+                sx, sy, _ = project_point(
+                    *world, yaw=yaw, pitch=pitch, zoom=zoom,
+                    pan_x=pan[0], pan_y=pan[1], cx=cx, cy=cy, R=R,
+                    view_ox=vox, view_oy=voy)
+                self.assertAlmostEqual(sx, sx0, places=9, msg=(yaw, pitch, factor, zoom))
+                self.assertAlmostEqual(sy, sy0, places=9, msg=(yaw, pitch, factor, zoom))
+            self.assertNotEqual(zoom, 1.0)
 
     def test_aggregate_caps_star_count(self):
         g = demo_graph(3000, now=NOW)
@@ -366,17 +398,23 @@ class LabScreenTest(unittest.TestCase):
         self.root.update()
         n0 = len(self.scr.graph.nodes)
         z0 = self.scr.zoom
-        # имитация Ctrl+Wheel вверх
-        ev = types.SimpleNamespace(state=0x4, delta=120, num=0, x=200, y=150)
+        cx, cy, _R = self.scr._geom()
+        # Ctrl+Wheel не в центре — должен появиться экранный сдвиг view_ox/oy
+        ev = types.SimpleNamespace(state=0x4, delta=120, num=0, x=int(cx + 80), y=int(cy - 40))
         self.assertEqual(self.scr._on_wheel(ev), "break")
         self.assertGreater(self.scr.zoom, z0)
         self.assertEqual(len(self.scr.graph.nodes), n0)  # без перезагрузки данных
+        self.assertTrue(abs(self.scr.view_ox) + abs(self.scr.view_oy) > 1e-6)
         # без Ctrl — не зумим
         z1 = self.scr.zoom
-        self.assertIsNone(self.scr._on_wheel(types.SimpleNamespace(state=0, delta=120, num=0, x=200, y=150)))
+        ox1, oy1 = self.scr.view_ox, self.scr.view_oy
+        self.assertIsNone(self.scr._on_wheel(types.SimpleNamespace(
+            state=0, delta=120, num=0, x=int(cx + 80), y=int(cy - 40))))
         self.assertEqual(self.scr.zoom, z1)
+        self.assertEqual((self.scr.view_ox, self.scr.view_oy), (ox1, oy1))
         self.scr.reset_view()
         self.assertAlmostEqual(self.scr.zoom, self.scr._view_home[0], places=3)
+        self.assertEqual((self.scr.view_ox, self.scr.view_oy), (0.0, 0.0))
 
     def test_orbit_drag_vs_click_and_selection(self):
         self.scr.set_demo(True)

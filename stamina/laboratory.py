@@ -210,12 +210,17 @@ def project_point(
     yaw: float, pitch: float, zoom: float,
     pan_x: float, pan_y: float,
     cx: float, cy: float, R: float,
+    view_ox: float = 0.0, view_oy: float = 0.0,
 ) -> tuple[float, float, float]:
-    """Экранные (sx, sy) и depth 0.55…1.35 (ближе — больше). Без внешних deps."""
+    """Экранные (sx, sy) и depth 0.55…1.35 (ближе — больше).
+
+    Мировой pan — до yaw/pitch; ``view_ox/oy`` — сдвиг в экранных пикселях
+    после вращения (для зума к курсору).
+    """
     rx, ry, rz = rotate_xyz(x + pan_x, y + pan_y, z, yaw, pitch)
     depth = 1.0 / max(0.45, 1.0 + rz * 0.42)
-    sx = cx + rx * zoom * R * depth
-    sy = cy + ry * zoom * R * 0.86 * depth
+    sx = cx + rx * zoom * R * depth + view_ox
+    sy = cy + ry * zoom * R * 0.86 * depth + view_oy
     return sx, sy, depth
 
 
@@ -224,19 +229,24 @@ def clamp_pitch(p: float) -> float:
 
 
 def zoom_toward(
-    zoom: float, pan_x: float, pan_y: float, *,
-    factor: float, cursor_uv: tuple[float, float],
+    zoom: float, view_ox: float, view_oy: float, *,
+    factor: float, cursor_xy: tuple[float, float], origin_xy: tuple[float, float],
 ) -> tuple[float, float, float]:
-    """Зум к точке курсора в UV (после yaw/pitch, до перспективы)."""
+    """Зум к курсору в экранном пространстве (после yaw/pitch).
+
+    Точка под курсором остаётся на том же пикселе: считаем «содержание»
+    ``q = (cursor - origin - view_o) / zoom`` до смены масштаба и подбираем
+    ``view_o``, чтобы ``origin + q·new_zoom + view_o`` снова попало в cursor.
+    """
     old = zoom
     new = max(ZOOM_MIN, min(ZOOM_MAX, old * factor))
-    if abs(new - old) < 1e-9:
-        return old, pan_x, pan_y
-    ux, uy = cursor_uv
-    # удерживаем точку под курсором: (p + pan)*zoom ≈ const в линейной зоне
-    pan_x = pan_x + ux * (1.0 / new - 1.0 / old)
-    pan_y = pan_y + uy * (1.0 / new - 1.0 / old)
-    return new, pan_x, pan_y
+    if abs(new - old) < 1e-9 or abs(old) < 1e-12:
+        return old, view_ox, view_oy
+    mx, my = cursor_xy
+    cx, cy = origin_xy
+    qx = (mx - cx - view_ox) / old
+    qy = (my - cy - view_oy) / old
+    return new, mx - cx - qx * new, my - cy - qy * new
 
 
 class LabScreen(tk.Frame):
@@ -260,7 +270,9 @@ class LabScreen(tk.Frame):
         self.zoom = 1.0
         self.pan_x = 0.0
         self.pan_y = 0.0
-        self._view_home = (1.0, 0.0, 0.0, 0.0, 0.18)  # zoom, pan_x, pan_y, yaw, pitch
+        self.view_ox = 0.0   # экранный сдвиг после проекции (зум к курсору)
+        self.view_oy = 0.0
+        self._view_home = (1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.18)  # z,panx,pany,vox,voy,yaw,pitch
         self._yaw_vel = 0.0
         self._pitch_vel = 0.0
         self._drag = None          # (x0, y0, yaw0, pitch0, moved)
@@ -382,7 +394,8 @@ class LabScreen(tk.Frame):
         self.entity = self.graph.entity(now)
         self.zoom = zoom
         self.pan_x, self.pan_y = pan
-        self._view_home = (zoom, pan[0], pan[1], self.yaw, self.pitch)
+        self.view_ox = self.view_oy = 0.0
+        self._view_home = (zoom, pan[0], pan[1], 0.0, 0.0, self.yaw, self.pitch)
         self._new_fliers()
         self.badge.configure(text=_t("ДЕМО-ДАННЫЕ") if self.demo else "")
         c = self.graph.counts()
@@ -569,8 +582,9 @@ class LabScreen(tk.Frame):
 
     # -- камера: зум / орбита / сброс ----------------------------------------------
     def reset_view(self) -> None:
-        z, px_, py_, yaw, pitch = self._view_home
+        z, px_, py_, vox, voy, yaw, pitch = self._view_home
         self.zoom, self.pan_x, self.pan_y = z, px_, py_
+        self.view_ox, self.view_oy = vox, voy
         self.yaw, self.pitch = yaw, pitch
         self._yaw_vel = self._pitch_vel = 0.0
         self._schedule_view_redraw()
@@ -583,6 +597,15 @@ class LabScreen(tk.Frame):
         self.reset_view()
         return "break"
 
+    def _event_xy(self, e) -> tuple[float, float]:
+        """Координаты события в системе холста (scroll + HiDPI/Windows)."""
+        cv = self.cv
+        try:
+            # canvasx/canvasy — пиксели холста; на Win с масштабом DPI совпадают с item coords
+            return float(cv.canvasx(e.x)), float(cv.canvasy(e.y))
+        except (tk.TclError, AttributeError, TypeError, ValueError):
+            return float(getattr(e, "x", 0) or 0), float(getattr(e, "y", 0) or 0)
+
     def _on_wheel(self, e) -> str | None:
         # без Ctrl — текущее поведение (роутер / ничего)
         if not (int(getattr(e, "state", 0) or 0) & CTRL):
@@ -592,23 +615,18 @@ class LabScreen(tk.Frame):
             return None
         # d: -1 вверх (приблизить), +1 вниз
         factor = ZOOM_STEP if d < 0 else 1.0 / ZOOM_STEP
-        ux, uy = self._screen_to_uv(e.x, e.y)
-        self.zoom, self.pan_x, self.pan_y = zoom_toward(
-            self.zoom, self.pan_x, self.pan_y, factor=factor, cursor_uv=(ux, uy))
+        mx, my = self._event_xy(e)
+        cx, cy, _R = self._geom()
+        self.zoom, self.view_ox, self.view_oy = zoom_toward(
+            self.zoom, self.view_ox, self.view_oy,
+            factor=factor, cursor_xy=(mx, my), origin_xy=(cx, cy))
         self._yaw_vel = self._pitch_vel = 0.0
         self._schedule_view_redraw()
         return "break"
 
-    def _screen_to_uv(self, sx: float, sy: float) -> tuple[float, float]:
-        """Грубая обратная проекция в плоскость камеры (для зума к курсору)."""
-        cx, cy, R = self._geom()
-        if R < 1e-6 or self.zoom < 1e-6:
-            return 0.0, 0.0
-        # игнорируем перспективу depth≈1 — достаточно для стабильного зума
-        return (sx - cx) / (self.zoom * R), (sy - cy) / (self.zoom * R * 0.86)
-
     def _on_press(self, e) -> None:
-        self._drag = [e.x, e.y, self.yaw, self.pitch, False]
+        mx, my = self._event_xy(e)
+        self._drag = [mx, my, self.yaw, self.pitch, False]
         self._yaw_vel = self._pitch_vel = 0.0
         self._hide_tip()
 
@@ -616,7 +634,8 @@ class LabScreen(tk.Frame):
         if not self._drag:
             return
         x0, y0, yaw0, pitch0, _moved = self._drag
-        dx, dy = e.x - x0, e.y - y0
+        mx, my = self._event_xy(e)
+        dx, dy = mx - x0, my - y0
         if abs(dx) + abs(dy) >= DRAG_CLICK_PX:
             self._drag[4] = True
         self.yaw = yaw0 + dx * ORBIT_SENS
@@ -634,7 +653,8 @@ class LabScreen(tk.Frame):
         if moved:
             return  # орбита — не выбор
         # короткий клик
-        i = self.star_at(e.x, e.y)
+        mx, my = self._event_xy(e)
+        i = self.star_at(mx, my)
         if i is None:
             if self.mode == MODE_WORK and self.selected_id:
                 self.clear_selection()
@@ -846,7 +866,8 @@ class LabScreen(tk.Frame):
             x, y, z = self.pos[i]
             sx, sy, depth = project_point(
                 x, y, z, yaw=self.yaw, pitch=self.pitch, zoom=self.zoom,
-                pan_x=self.pan_x, pan_y=self.pan_y, cx=cx, cy=cy, R=R)
+                pan_x=self.pan_x, pan_y=self.pan_y, cx=cx, cy=cy, R=R,
+                view_ox=self.view_ox, view_oy=self.view_oy)
             xy.append((sx, sy))
             depths.append(depth)
         self._screen_xy = xy
@@ -937,7 +958,8 @@ class LabScreen(tk.Frame):
         # сущность в начале координат мира → проекция
         ex, ey, depth = project_point(
             0.0, 0.0, 0.0, yaw=self.yaw, pitch=self.pitch, zoom=self.zoom,
-            pan_x=self.pan_x, pan_y=self.pan_y, cx=cx, cy=cy, R=self._geom()[2])
+            pan_x=self.pan_x, pan_y=self.pan_y, cx=cx, cy=cy, R=self._geom()[2],
+            view_ox=self.view_ox, view_oy=self.view_oy)
         wob_x = math.sin(t * 0.7) * px(3) * (0.35 + 0.65 * v)
         wob_y = math.cos(t * 0.55) * px(2.5) * (0.35 + 0.65 * v)
         ex, ey = ex + wob_x, ey + wob_y
@@ -1126,7 +1148,8 @@ class LabScreen(tk.Frame):
     def _on_motion(self, e) -> None:
         if self._drag and self._drag[4]:
             return
-        i = self.star_at(e.x, e.y)
+        mx, my = self._event_xy(e)
+        i = self.star_at(mx, my)
         if i == self._hover:
             return
         self._hide_tip()
