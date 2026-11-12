@@ -1,14 +1,21 @@
-"""Словарь: загрузка data/vocab.json (схема DATA_MODEL §1), индексы, поиск, фильтры."""
+"""Словарь: загрузка data/vocab.json (схема DATA_MODEL §1), индексы, поиск, фильтры.
+
+По умолчанию — ленивый режим: лёгкий индекс в RAM, тяжёлые поля (предложения,
+определения…) из чанков по запросу. Исходный vocab.json не удаляется; кэш
+собирается автоматически в каталоге данных пилота (см. vocab_lazy.py).
+"""
 from __future__ import annotations
 
 from stamina.i18n import t
 
 import gzip
 import json
+import os
 import random
 import threading
 
 from . import paths
+from . import vocab_lazy as vlazy
 from .textutil import lev
 
 SETS = [
@@ -32,6 +39,10 @@ DIFF_RU = {"easy": t("ЛЁГКОЕ"), "medium": t("СРЕДНЕЕ"), "tricky": t
 DIFF_ORDER = {"easy": 0, "medium": 1, "tricky": 2}
 
 
+def _force_full_load() -> bool:
+    return os.environ.get("STAR_TYPING_VOCAB_FULL", "").strip() in ("1", "true", "yes")
+
+
 class Vocab:
     def __init__(self) -> None:
         self.words: list[dict] = []
@@ -39,6 +50,8 @@ class Vocab:
         self.ready = False
         self.error = ""
         self.source = ""
+        self.lazy = False
+        self._chunk_store: vlazy.ChunkStore | None = None
         self._lock = threading.Lock()
 
     # -- загрузка в фоне, чтобы не задерживать запуск Star Typing ------------
@@ -52,49 +65,91 @@ class Vocab:
     def load(self) -> None:
         path = paths.vocab_file()
         try:
-            if path.suffix == ".gz":
-                with gzip.open(path, "rt", encoding="utf-8") as f:
-                    raw = json.load(f)
-            else:
-                raw = json.loads(path.read_text(encoding="utf-8"))
-            if isinstance(raw, dict):
-                raw = raw.get("words", [])
-            words = []
-            for r in raw:
-                if not r.get("word") or not r.get("rank"):
-                    continue
-                self._normalize_rec(r)
-                words.append(r)
-            # тематический словарь IT / собеседования (отдельный файл)
+            if _force_full_load() or path == paths.SAMPLE_PATH:
+                words, src = self._read_full_sources(path)
+                self._install(words, src, lazy=False)
+                return
+
             dev_path = paths.DATA_DIR / "vocab_dev.json"
-            src = str(path)
-            if dev_path.exists():
-                try:
-                    dev = json.loads(dev_path.read_text(encoding="utf-8"))
-                    extra = dev.get("words", dev) if isinstance(dev, dict) else dev
-                    n_add = 0
-                    for r in extra:
-                        if not r.get("word") or not r.get("rank"):
-                            continue
-                        self._normalize_rec(r)
-                        r.setdefault("sets", ["dev-interview"])
-                        if "dev-interview" not in r["sets"]:
-                            r["sets"].append("dev-interview")
-                        words.append(r)
-                        n_add += 1
-                    if n_add:
-                        src = f"{path} + {dev_path.name} ({n_add})"
-                except Exception:
-                    pass
-            words.sort(key=lambda w: w["rank"])
-            with self._lock:
-                self.words = words
-                self.by_slug = {w["slug"]: w for w in words}
-                self.source = src
-                self.ready = True
+            extras = [dev_path] if dev_path.exists() else []
+            stamp = vlazy.source_stamp(path, extras)
+            root = vlazy.cache_root()
+            if vlazy.cache_valid(root, stamp):
+                light = vlazy.load_index(root)
+                store = vlazy.ChunkStore(root)
+                words = [vlazy.LazyWord(dict(r), store) for r in light]
+                # нормализация pos уже в кэше; на всякий случай для старых кэшей
+                for r in words:
+                    self._normalize_rec(r)
+                src = f"{path} [lazy-index {root.name}]"
+                if extras:
+                    src += f" + {dev_path.name}"
+                self._install(words, src, lazy=True, store=store)
+                return
+
+            # Первый раз (или устарел кэш): полный разбор → кэш → в RAM только индекс.
+            words_full, src = self._read_full_sources(path)
+            try:
+                vlazy.build_cache(words_full, stamp, root)
+                store = vlazy.ChunkStore(root)
+                words = [vlazy.LazyWord(vlazy.light_record(w), store) for w in words_full]
+                src = f"{src} [lazy-built {root.name}]"
+                self._install(words, src, lazy=True, store=store)
+            except Exception:
+                # кэш не собрался — работаем как раньше, на полном списке
+                self._install(words_full, src, lazy=False)
         except Exception as exc:  # noqa: BLE001
             self.error = f"{type(exc).__name__}: {exc}"
             self.ready = True
+
+    def _install(self, words: list[dict], src: str, *, lazy: bool,
+                 store: vlazy.ChunkStore | None = None) -> None:
+        words = list(words)
+        words.sort(key=lambda w: w["rank"])
+        with self._lock:
+            self.words = words
+            self.by_slug = {w["slug"]: w for w in words}
+            self.source = src
+            self.lazy = lazy
+            self._chunk_store = store
+            self.ready = True
+
+    def _read_full_sources(self, path) -> tuple[list[dict], str]:
+        if path.suffix == ".gz":
+            with gzip.open(path, "rt", encoding="utf-8") as f:
+                raw = json.load(f)
+        else:
+            raw = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(raw, dict):
+            raw = raw.get("words", [])
+        words = []
+        for r in raw:
+            if not r.get("word") or not r.get("rank"):
+                continue
+            self._normalize_rec(r)
+            words.append(r)
+        # тематический словарь IT / собеседования (отдельный файл)
+        dev_path = paths.DATA_DIR / "vocab_dev.json"
+        src = str(path)
+        if dev_path.exists():
+            try:
+                dev = json.loads(dev_path.read_text(encoding="utf-8"))
+                extra = dev.get("words", dev) if isinstance(dev, dict) else dev
+                n_add = 0
+                for r in extra:
+                    if not r.get("word") or not r.get("rank"):
+                        continue
+                    self._normalize_rec(r)
+                    r.setdefault("sets", ["dev-interview"])
+                    if "dev-interview" not in r["sets"]:
+                        r["sets"].append("dev-interview")
+                    words.append(r)
+                    n_add += 1
+                if n_add:
+                    src = f"{path} + {dev_path.name} ({n_add})"
+            except Exception:
+                pass
+        return words, src
 
     @staticmethod
     def _normalize_rec(r: dict) -> None:
@@ -145,10 +200,12 @@ class Vocab:
                     if s not in sets:
                         sets.append(s)
                 return False
+            # новые записи (CEFR и т.п.) уже полные — без ленивой подгрузки
+            if not isinstance(r, vlazy.LazyWord):
+                r = vlazy.LazyWord(r, None) if self.lazy else r
             self.words.append(r)
             self.by_slug[r["slug"]] = r
         return True
-
 
     def get(self, slug: str) -> dict | None:
         return self.by_slug.get(slug)
@@ -216,7 +273,19 @@ class Vocab:
             out.sort(key=lambda w: (DIFF_ORDER.get(w["difficulty"], 1), w["rank"]))
         return out
 
+    def sentence_count(self, w: dict) -> int:
+        """Число предложений без обязательной подгрузки чанка (если есть n_sentences)."""
+        if isinstance(w, vlazy.LazyWord):
+            n = dict.get(w, "n_sentences")
+        else:
+            n = w.get("n_sentences")
+        if n is not None:
+            return int(n)
+        return len(self.sentences(w))
+
     def sentences(self, w: dict) -> list[dict]:
+        if isinstance(w, vlazy.LazyWord):
+            w.hydrate()
         s = [x for x in (w.get("sentences") or []) if x.get("en")]
         if not s and w.get("example"):
             s = [{"en": w["example"], "ru": w.get("example_ru"), "context": None, "context_ru": None}]
