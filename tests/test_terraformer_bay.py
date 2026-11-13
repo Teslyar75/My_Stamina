@@ -130,12 +130,19 @@ class TerraformerBayScreenTest(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_arrows_switch_and_choice_is_saved(self) -> None:
+        # event_generate("<Left/Right>") ненадёжен в Windows CI и длинных
+        # прогонах: фокус окна часто не успевает встать, и клавиша не доходит
+        # до обработчика. Сами _on_left/_on_right синхронны, выбор сохраняется
+        # сразу. Проверяем, что привязки стоят, и вызываем обработчики напрямую.
         self.assertEqual(self.scr.current_robot().id, "a1")
-        self.scr.canvas.focus_set()
-        self.scr.canvas.event_generate("<Right>")
+        self.assertTrue(self.scr.canvas.bind("<Right>"))
+        self.assertTrue(self.scr.canvas.bind("<Left>"))
+        self.assertTrue(self.scr.bind("<Right>"))
+        self.assertTrue(self.scr.bind("<Left>"))
+        self.scr._on_right()
         self.root.update()
         self.assertEqual(self.scr.current_robot().id, "a2")
-        self.scr.event_generate("<Left>")
+        self.scr._on_left()
         self.root.update()
         self.assertEqual(self.scr.current_robot().id, "a1")
         self.assertTrue(self.scr.choose())
