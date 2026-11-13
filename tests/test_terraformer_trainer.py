@@ -50,6 +50,7 @@ class TrainerModelTest(unittest.TestCase):
 
     def test_dig_takes_soil_then_depth_blocks(self) -> None:
         m = TrainerModel(depth=1)
+        m.finds = {}
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
         self.assertEqual(m.holds["soil"], 1)
@@ -58,6 +59,7 @@ class TrainerModelTest(unittest.TestCase):
 
     def test_depth_two_takes_clay(self) -> None:
         m = TrainerModel(depth=2)
+        m.finds = {}
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
         self.assertEqual(m.dig(), "ok")
@@ -120,6 +122,7 @@ class TrainerModelTest(unittest.TestCase):
 
     def test_layer_left(self) -> None:
         m = TrainerModel(depth=2)
+        m.finds = {}
         self.assertEqual(m.layer_left(10, 10), 2)
         m.robot = [10, 10]
         m.dig()
@@ -360,6 +363,273 @@ class ArchiveTest(unittest.TestCase):
             game.destroy()
         finally:
             root.destroy()
+
+
+def _cell_with(model: TrainerModel, res: str, layer: int):
+    return next(c for c, f in sorted(model.finds.items()) if f == (res, layer))
+
+
+class FindsModelTest(unittest.TestCase):
+    """Находки: детерминизм по сиду, открытие ровно один раз, отдельный отсек."""
+
+    def test_seed_is_deterministic_and_saved(self) -> None:
+        from stamina.terraformer_trainer import RESOURCES
+        a, b = TrainerModel(seed=1234), TrainerModel(seed=1234)
+        self.assertEqual(a.finds, b.finds)
+        self.assertNotEqual(a.finds, TrainerModel(seed=4321).finds)
+        again = TrainerModel.from_blueprint(a.to_blueprint())
+        self.assertEqual(again.seed, 1234)
+        self.assertEqual(again.finds, a.finds)
+        cells = a.w * a.h
+        self.assertTrue(0.04 * cells <= len(a.finds) <= 0.08 * cells, len(a.finds))
+        self.assertEqual({f[0] for f in a.finds.values()}, set(RESOURCES))
+        for cell in a.site_cells() + [tuple(a.robot)]:
+            self.assertNotIn(cell, a.finds)
+
+    def test_a1_can_find_something(self) -> None:
+        for seed in (1, 2, 3, 99):
+            top = [f[0] for f in TrainerModel(seed=seed).finds.values() if f[1] == 0]
+            self.assertGreaterEqual(top.count("water"), 1)
+            self.assertIn("organic", top)
+            self.assertIn("quartz", top)
+
+    def test_find_revealed_once_and_spring_blocks(self) -> None:
+        m = TrainerModel(seed=7)
+        m.robot = list(_cell_with(m, "water", 0))
+        self.assertEqual(m.dig(), "ok")
+        self.assertEqual(m.last_find["res"], "water")
+        self.assertTrue(m.last_find["first"])
+        self.assertEqual(m.dig(), "spring")
+        self.assertIsNone(m.last_find)
+        self.assertEqual(m.finds_count["water"], 1)
+        self.assertIn(tuple(m.robot), m.springs)
+
+        m.robot = list(_cell_with(m, "organic", 0))
+        self.assertEqual(m.dig(), "ok")
+        self.assertEqual(m.last_find["res"], "organic")
+        self.assertEqual(m.dig(), "too_deep")
+        self.assertIsNone(m.last_find)
+        self.assertEqual(m.finds_count["organic"], 1)
+        second = [c for c, f in m.finds.items() if f == ("organic", 0) and c != tuple(m.robot)][0]
+        m.robot = list(second)
+        m.dig()
+        self.assertFalse(m.last_find["first"])
+        self.assertEqual(m.finds_count["organic"], 2)
+
+    def test_find_goes_to_own_hold_when_soil_full(self) -> None:
+        m = TrainerModel(seed=11)
+        m.holds["soil"] = HOLD_CAP
+        m.robot = list(_cell_with(m, "quartz", 0))
+        self.assertEqual(m.dig(), "hold_full")
+        self.assertEqual(m.last_find["res"], "quartz")
+        self.assertEqual(m.finds_count["quartz"], 1)
+        self.assertEqual(m.holds["soil"], HOLD_CAP)
+        self.assertEqual(m.dig(), "hold_full")
+        self.assertIsNone(m.last_find)                 # второй раз не открывается
+        self.assertEqual(m.finds_count["quartz"], 1)
+
+    def test_a1_does_not_reveal_deep_finds(self) -> None:
+        m = TrainerModel(seed=5)
+        m.robot = list(_cell_with(m, "stone", 1))
+        self.assertEqual(m.dig(), "ok")
+        self.assertIsNone(m.last_find)
+        self.assertEqual(m.dig(), "too_deep")
+        self.assertEqual(m.finds_count["stone"], 0)
+
+    def test_old_blueprint_without_finds_loads(self) -> None:
+        m = TrainerModel(seed=3)
+        old = m.to_blueprint()
+        for k in ("seed", "revealed", "finds_count"):
+            old.pop(k)
+        loaded = TrainerModel.from_blueprint(old)
+        self.assertEqual(sum(loaded.finds_count.values()), 0)
+        self.assertEqual(loaded.revealed, set())
+        self.assertTrue(loaded.finds)
+        self.assertEqual(loaded.dug, m.dug)
+
+    def test_new_blueprint_roundtrip_keeps_finds(self) -> None:
+        m = TrainerModel(seed=21)
+        m.robot = list(_cell_with(m, "organic", 0))
+        m.dig()
+        loaded = TrainerModel.from_blueprint(json.loads(json.dumps(m.to_blueprint())))
+        self.assertEqual(loaded.finds_count, m.finds_count)
+        self.assertEqual(loaded.revealed, m.revealed)
+        loaded.robot = list(m.robot)
+        loaded.dig()
+        self.assertIsNone(loaded.last_find)            # уже открытое не открывается снова
+
+
+class TrainerHelpTkTest(unittest.TestCase):
+    """F1-инструкция, отсек «Находки», уведомления и ширина подсказки (1280)."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            cls.root = tk.Tk()
+        except tk.TclError:
+            cls.root = None
+            return
+        theme.init(cls.root)
+        cls.root.geometry("1280x720")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if getattr(cls, "root", None) is not None:
+            try:
+                cls.root.destroy()
+            except tk.TclError:
+                pass
+
+    def setUp(self) -> None:
+        if getattr(self, "root", None) is None:
+            self.skipTest("нет дисплея")
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name) / "Stamina"
+        self.data.mkdir()
+        pilots.reset_root(self.data)
+        pilots.activate(pilots.create("Tester")["id"])
+        from stamina.lounge.trainer import TrainerGame
+        self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
+        self.game.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+
+    def tearDown(self) -> None:
+        try:
+            self.game.stop()
+            self.game.destroy()
+        except tk.TclError:
+            pass
+        self.root.update()
+        pilots.reset_root()
+        self.tmp.cleanup()
+
+    class _Event:
+        def __init__(self, keysym: str, keycode: int = 0, state: int = 0) -> None:
+            self.keysym, self.keycode, self.state = keysym, keycode, state
+
+    def _texts(self, tag: str | None = None) -> str:
+        c = self.game.canvas
+        ids = c.find_withtag(tag) if tag else c.find_all()
+        return "\n".join(c.itemcget(i, "text") for i in ids if c.type(i) == "text")
+
+    def test_f1_opens_and_closes_and_blocks_keys(self) -> None:
+        g = self.game
+        self.assertTrue(g.on_help())
+        self.assertEqual(g.overlay, "help")
+        self.root.update()
+        self.assertIn("Ресурсы и находки", self._texts("help"))
+        self.assertTrue(g.help_fits)                   # без прокрутки на 1280×720
+        before = list(g.model.robot)
+        g.on_key(self._Event("d", 68))
+        g.on_key(self._Event("space", 32))
+        g.on_wheel(-1, True, False)
+        self.assertEqual(g.model.robot, before)
+        self.assertEqual(g.model.holds["soil"], 0)
+        self.assertEqual(g.camera.zoom, 1.0)
+        g.on_key(self._Event("Escape", 27))
+        self.assertIsNone(g.overlay)
+        self.assertFalse(g.paused)                     # Esc закрыл инструкцию, а не поставил паузу
+        g.on_key(self._Event("F1", 112))
+        self.assertEqual(g.overlay, "help")
+        g.on_key(self._Event("F1", 112))
+        self.assertIsNone(g.overlay)
+
+    def test_lounge_delegates_f1_only_in_trainer(self) -> None:
+        from stamina.lounge.screen import LoungeScreen
+
+        class _App:
+            living = None
+
+            def set_status(self, *_a, **_k):
+                pass
+
+            def open_help(self):
+                pass
+        scr = LoungeScreen(self.root, _App())
+        try:
+            self.assertFalse(scr.on_help())            # лобби — обычная справка страницы
+            scr.launch("trainer")
+            self.assertTrue(scr.on_help())
+            self.assertEqual(scr.game.overlay, "help")
+            scr.show_lobby()
+            scr.launch("snake")
+            self.assertFalse(scr.on_help())
+        finally:
+            scr.close()
+            scr.destroy()
+
+    def test_finds_panel_and_toast(self) -> None:
+        g = self.game
+        g.model = TrainerModel(seed=7)
+        self.assertEqual(g.toggle_finds(), "finds")
+        self.root.update()
+        self.assertIn("???", self._texts("finds"))
+        before = list(g.model.robot)
+        g.on_key(self._Event("d", 68))
+        self.assertEqual(g.model.robot, before)        # пока открыт отсек — робот стоит
+        g.on_key(self._Event("q", 81))
+        self.assertIsNone(g.overlay)
+
+        g.model.robot = list(_cell_with(g.model, "water", 0))
+        g.do_dig()
+        self.assertIsNotNone(g.toast)
+        self.assertIn("источник воды", g.toast[0])
+        self.assertTrue(g.toast[1])                    # первая находка типа — ярче
+        self.root.update()
+        self.assertIn(g.toast[0], self._texts("toast"))
+        cells = [c for c, f in sorted(g.model.finds.items()) if f == ("water", 0)]
+        g.model.robot = list(cells[1])
+        g.do_dig()
+        self.assertFalse(g.toast[1])
+        g.on_key(self._Event("Escape", 27))            # Esc без оверлея — пауза
+        self.assertTrue(g.paused)
+        g.on_key(self._Event("Escape", 27))
+        g.toggle_finds()
+        self.root.update()
+        text = self._texts("finds")
+        self.assertIn("Источник воды × 2", text)
+        self.assertIn("Пригодится на этапе", text)
+        from stamina.terraformer_trainer import load_blueprint
+        self.assertEqual(load_blueprint().finds_count["water"], 2)   # находка сохранена сразу
+
+    def test_key_hint_fits_1280_in_all_languages(self) -> None:
+        import tkinter.font as tkfont
+        from stamina import i18n
+        from stamina.lounge.trainer import key_hint
+        key = key_hint()
+        self.assertIn("F1", key)
+        self.assertIn("Q", key)
+        font = tkfont.Font(root=self.root, font=theme.font(10))
+        room = 1280 - theme.px(12) * 2 - theme.px(40)
+        for lang in ("ru", "uk", "en", "de"):
+            text = key if lang == "ru" else json.loads(
+                (i18n.DIR / f"{lang}.json").read_text(encoding="utf-8"))[key]
+            self.assertLessEqual(font.measure(text), room, lang)
+        self.root.update()
+        self.game.redraw()
+        self.assertEqual(self.game.hint_font_size, 10)
+        self.assertIn("F1", self._texts("keyhint"))
+
+
+class TrainerI18nTest(unittest.TestCase):
+    def test_help_and_resource_keys_in_all_languages(self) -> None:
+        from stamina import i18n
+        from stamina.lounge import trainer as tr
+        from stamina.terraformer_trainer import RESOURCES
+        keys = [tr.key_hint(), "ИНСТРУКЦИЯ · ТРЕНАЖЁР ТЕРРАФОРМЕРА", "F1 или Esc — закрыть",
+                "ОТСЕК «НАХОДКИ»", "Q или Esc — закрыть", "Отлично, нашёл источник воды!",
+                "Нашёл ресурс: {0}"]
+        for head, body in tr.help_sections():
+            keys += [head, body]
+        for res in RESOURCES:
+            use, stage = tr.resource_use(res)
+            keys += [tr.resource_name(res), use, stage]
+        ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
+        for lang in ("uk", "en", "de"):
+            table = json.loads((i18n.DIR / f"{lang}.json").read_text(encoding="utf-8"))
+            for k in keys:
+                self.assertIn(k, ru)
+                self.assertTrue(table.get(k), (lang, k))
 
 
 if __name__ == "__main__":
