@@ -509,7 +509,17 @@ class Cockpit(tk.Tk):
         return "break"
 
     def open_help(self) -> None:
-        """F1 / «?»: модалка «как работает эта страница»; полная инструкция — из модалки."""
+        """F1 / «?»: модалка «как работает эта страница»; полная инструкция — из модалки.
+
+        Экран может перехватить F1 своим on_help() → True (тренажёр в комнате отдыха)."""
+        scr = (getattr(self, "screens", None) or {}).get(getattr(self, "current", None))
+        handler = getattr(scr, "on_help", None)
+        if callable(handler):
+            try:
+                if handler():
+                    return
+            except Exception:  # noqa: BLE001
+                pass
         from stamina.page_help import open_page_help
         open_page_help(self)
 

@@ -217,6 +217,11 @@ class LoungeScreen(tk.Frame):
         if self.game is not None:
             self.game.on_key(e)
 
+    def on_help(self) -> bool:
+        """F1: у игры своя инструкция (тренажёр) — отдать ей; иначе обычная справка страницы."""
+        handler = getattr(self.game, "on_help", None)
+        return bool(handler()) if callable(handler) else False
+
     def on_leave(self) -> None:
         if self.game is not None:
             self.game.pause_leave()
