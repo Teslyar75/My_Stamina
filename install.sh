@@ -93,7 +93,7 @@ if ! "$PY" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)'; t
 fi
 "$PY" -m pip install --disable-pip-version-check -q --upgrade pip >/dev/null 2>&1
 
-say "[3/5] Пакеты pip: Pillow, pypdf"
+say "[3/5] Пакеты pip: Pillow, numpy, pypdf, fpdf2"
 "$PY" -m pip install --disable-pip-version-check -q -r requirements.txt || warn "pip не смог поставить пакеты — программа запустится и без них."
 
 if [ "$VOICE" = yes ]; then

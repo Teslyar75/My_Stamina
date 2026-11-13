@@ -34,7 +34,7 @@ class RequirementsEncodingTest(unittest.TestCase):
                      "first line should declare encoding via coding cookie")
 
     def test_requirements_content_unchanged(self):
-        """Зависимости остались теми же (Pillow, pypdf, fpdf2)."""
+        """Зависимости остались теми же (Pillow, numpy, pypdf, fpdf2)."""
         req_path = Path(__file__).parent.parent / "requirements.txt"
         with open(req_path, "r", encoding="utf-8") as f:
             lines = [l.strip() for l in f if l.strip() and not l.strip().startswith("#")]
@@ -42,9 +42,16 @@ class RequirementsEncodingTest(unittest.TestCase):
         # Проверяем наличие ожидаемых зависимостей
         deps = [l.split(">=")[0].strip() for l in lines]
         self.assertIn("Pillow", deps, "Pillow should be in requirements")
+        self.assertIn("numpy", deps, "numpy should be in requirements (terraformer bay render)")
         self.assertIn("pypdf", deps, "pypdf should be in requirements")
         self.assertIn("fpdf2", deps, "fpdf2 should be in requirements")
-        self.assertEqual(len(deps), 3, "should have exactly 3 dependencies")
+        self.assertEqual(len(deps), 4, "should have exactly 4 dependencies")
+
+    def test_requirements_txt_is_ascii(self):
+        """requirements.txt целиком ASCII: pip на любой локали Windows читает его без PYTHONUTF8."""
+        req_path = Path(__file__).parent.parent / "requirements.txt"
+        content = req_path.read_bytes()
+        self.assertTrue(content.isascii(), "requirements.txt must stay ASCII-only")
 
 
 if __name__ == "__main__":

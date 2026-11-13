@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# Star Typing - Python 3.10+, standard library (tkinter, winsound, urllib) + Pillow.
+# Star Typing - Python 3.10+, standard library (tkinter, winsound, urllib) + Pillow + numpy.
 # Pillow - live space background and custom pilot avatars (app runs without it, background off):
 Pillow>=10.0
+# numpy - smooth 3D render of terraformers in the TERRAFORMER bay (app runs without it, flat render):
+numpy>=1.24
 # pypdf - import PDF into text library (pure Python):
 pypdf>=4.0
 # fpdf2 - PDF button in DOCUMENTS (pure Python, Cyrillic via system TTF):
