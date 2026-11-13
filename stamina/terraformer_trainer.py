@@ -1,10 +1,17 @@
 """Тренажёр терраформера A1 — чистая логика без Tk.
 
 Модель поля, камера и сохранение чертежа. Отрисовка живёт в lounge/trainer.py.
+
+Находки: при создании площадки по сиду (он хранится в чертеже) в клетки прячутся
+ресурсы — вода, камень, органика, железная руда, кварцевый песок. Находка
+открывается один раз, когда робот снимает слой, в котором она лежит; урожай идёт
+в отдельный отсек «Находки» и места в отсеке грунта не занимает. Находки в слоях
+глубже, чем копает робот, не показываются — их откроют роботы A2+.
 """
 from __future__ import annotations
 
 import json
+import random
 import time
 from pathlib import Path
 
@@ -21,11 +28,44 @@ ZOOM_MAX = 3.0
 ZOOM_STEP = 1.25
 BASE_CELL = 28
 
+RESOURCES = ("water", "stone", "organic", "iron", "quartz")
+# (ресурс, слой, сколько) — ~6 % клеток; A1 (только верхний слой) находит органику,
+# кварцевый песок и два источника воды.
+FIND_PLAN = (
+    ("water", 0, 2), ("water", 1, 1),
+    ("organic", 0, 18),
+    ("quartz", 0, 3), ("quartz", 1, 3),
+    ("stone", 1, 20),
+    ("iron", 2, 12),
+)
+
+
+def new_seed() -> int:
+    return random.SystemRandom().randrange(1, 2 ** 31)
+
+
+def generate_finds(seed: int, w: int, h: int, exclude=()) -> dict:
+    """{(x, y): (ресурс, слой)} — детерминированно по сиду и размеру поля."""
+    rng = random.Random(f"terraformer-trainer:{int(seed)}:{int(w)}x{int(h)}")
+    skip = set(exclude)
+    cells = [(x, y) for y in range(h) for x in range(w) if (x, y) not in skip]
+    rng.shuffle(cells)
+    out: dict = {}
+    i = 0
+    for res, layer, n in FIND_PLAN:
+        for _ in range(n):
+            if i >= len(cells):
+                return out
+            out[cells[i]] = (res, layer)
+            i += 1
+    return out
+
 
 class TrainerModel:
     """Поле, робот, отсеки и фундамент учебной смены."""
 
-    def __init__(self, w: int = GRID_W, h: int = GRID_H, depth: int = 1) -> None:
+    def __init__(self, w: int = GRID_W, h: int = GRID_H, depth: int = 1,
+                 seed: int | None = None) -> None:
         self.w = max(1, int(w))
         self.h = max(1, int(h))
         self.depth = max(1, min(int(depth), len(LAYERS)))
@@ -36,6 +76,33 @@ class TrainerModel:
         self.active_hold = "soil"
         self.blocks: list[tuple[int, int]] = []
         self.walls_open = False
+        self.seed = int(seed) if seed is not None else new_seed()
+        exclude = set(self.site_cells()) | {tuple(self.robot)}
+        self.finds = generate_finds(self.seed, self.w, self.h, exclude)
+        self.revealed: set[tuple[int, int]] = set()
+        self.finds_count = {name: 0 for name in RESOURCES}
+        self.last_find: dict | None = None
+
+    # -- находки ---------------------------------------------------------------
+    @property
+    def springs(self) -> set:
+        """Открытые источники воды: эти клетки дальше не копают."""
+        return {c for c in self.revealed if self.finds.get(c, ("",))[0] == "water"}
+
+    def found_types(self) -> list[str]:
+        return [r for r in RESOURCES if self.finds_count.get(r, 0) > 0]
+
+    def _reveal(self, x: int, y: int, layer: int) -> dict | None:
+        cell = (x, y)
+        f = self.finds.get(cell)
+        if not f or f[1] != layer or cell in self.revealed:
+            return None
+        res = f[0]
+        self.revealed.add(cell)
+        first = self.finds_count.get(res, 0) == 0
+        self.finds_count[res] = self.finds_count.get(res, 0) + 1
+        self.last_find = {"res": res, "first": first, "cell": cell, "layer": layer}
+        return self.last_find
 
     # -- стройплощадка -------------------------------------------------------
     def site_cells(self) -> list[tuple[int, int]]:
@@ -56,13 +123,19 @@ class TrainerModel:
         return moved
 
     def dig(self) -> str:
+        """ok | hold_full | too_deep | site | spring. Находка — в self.last_find."""
+        self.last_find = None
         x, y = self.robot
         if self.on_site(x, y):
             return "site"
+        if (x, y) in self.springs:
+            return "spring"
         layers = self.dug[y][x]
         if layers >= self.depth or layers >= len(LAYERS):
             return "too_deep"
         hold = LAYERS[layers]
+        # находка уходит в свой отсек, даже если отсек грунта полон
+        self._reveal(x, y, layers)
         if self.holds[hold] >= HOLD_CAP:
             return "hold_full"
         self.dug[y][x] = layers + 1
@@ -118,6 +191,9 @@ class TrainerModel:
             "holds": dict(self.holds),
             "blocks": [[x, y] for x, y in self.blocks],
             "walls_open": bool(self.walls_open),
+            "seed": self.seed,
+            "revealed": [[x, y] for x, y in sorted(self.revealed)],
+            "finds_count": dict(self.finds_count),
         }
 
     @classmethod
@@ -135,7 +211,11 @@ class TrainerModel:
             depth = int(d.get("depth", 1))
         except (TypeError, ValueError):
             depth = 1
-        model = cls(w, h, depth)
+        try:
+            seed = int(d["seed"])          # старые чертежи без сида получают новый
+        except (KeyError, TypeError, ValueError):
+            seed = None
+        model = cls(w, h, depth, seed=seed)
 
         dug = d.get("dug")
         if not isinstance(dug, list) or len(dug) != h:
@@ -184,6 +264,27 @@ class TrainerModel:
                     model.blocks.append(cell)
 
         model.walls_open = bool(d.get("walls_open")) or len(model.blocks) >= len(model.site_cells())
+
+        revealed = d.get("revealed")
+        if isinstance(revealed, list):
+            for item in revealed:
+                try:
+                    cell = (int(item[0]), int(item[1]))
+                except (TypeError, ValueError, IndexError, KeyError):
+                    continue
+                if cell in model.finds:
+                    model.revealed.add(cell)
+        counts = d.get("finds_count")
+        if isinstance(counts, dict):
+            for name in RESOURCES:
+                try:
+                    model.finds_count[name] = max(0, int(counts.get(name, 0)))
+                except (TypeError, ValueError):
+                    pass
+        else:                              # нет счётчика — считаем по открытым клеткам
+            for cell in model.revealed:
+                res = model.finds[cell][0]
+                model.finds_count[res] = model.finds_count.get(res, 0) + 1
         return model
 
 
