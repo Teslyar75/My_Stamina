@@ -12,7 +12,8 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, docs_hook, orion_hook, lab_hook, pilots, radio_hook, speedread_hook, theme)
+                     missions, nav, docs_hook, orion_hook, lab_hook, terraformer_hook, pilots,
+                     radio_hook, speedread_hook, theme)
 from stamina.bridge import Bridge
 from stamina import safe_mode
 from stamina import ontop
@@ -84,6 +85,10 @@ class Cockpit(tk.Tk):
         if self._lab_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(lab_hook.KEY, lab_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        self._terraformer_cls = terraformer_hook.load_class()  # вкладка «ТЕРРАФОРМЕР»
+        if self._terraformer_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(terraformer_hook.KEY, terraformer_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
         # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
@@ -441,6 +446,7 @@ class Cockpit(tk.Tk):
         self._lazy(docs_hook, self._docs_cls)
         self._lazy(orion_hook, self._orion_cls)
         self._lazy(lab_hook, self._lab_cls)
+        self._lazy(terraformer_hook, self._terraformer_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,

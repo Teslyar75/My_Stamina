@@ -168,20 +168,14 @@ CAPTAIN = "captain"
 
 
 def is_captain(p: dict | None = None) -> bool:
-    """Капитан — владелец программы: ему открыто всё (для проверки).
+    """Капитан — разработчик с подтверждённым доступом к GitHub-репозиторию.
 
-    Явно: role == "captain" у записи в pilots.json. Если явной роли нет ни у
-    одного пилота, капитан — пилот, перенесённый из исходных данных владельца
-    (migrated_from). Без реестра пилотов (или без активного пилота) — не капитан.
+    Правило в stamina.roles: is_captain == is_developer (кэш проверки
+    Teslyar75/My_Stamina). role == "captain" и migrated_from сами по себе
+    капитана не дают. Без реестра или без активного пилота — не капитан.
     """
-    p = p if p is not None else _active
-    if not p:
-        return False
-    if p.get("role") == CAPTAIN:
-        return True
-    if any(x.get("role") == CAPTAIN for x in pilots()):
-        return False
-    return bool(p.get("migrated_from"))
+    from stamina import roles
+    return bool(roles.is_captain(p if p is not None else _active))
 
 
 def set_role(pid: str, role: str | None) -> dict | None:
