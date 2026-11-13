@@ -192,7 +192,6 @@
  "{0} станций": "{0} Sender",
  "{0} тестов за последние 12 месяцев": "{0} Tests in den letzten 12 Monaten",
  "{0} ур. · {1} слов · знаю {2}": "{0} Stufe · {1} Wörter · kenne {2}",
- "{0}: {1}": "{0}: {1}",
  "{0}: новое сообщение": "{0}: neue Nachricht",
  "{0}: ответ получен": "{0}: Antwort erhalten",
  "{0}: открыт раздел «{1}»": "{0}: Bereich „{1}“ geöffnet",
@@ -2719,5 +2718,17 @@
  "Проверьте адрес, ключ и доступность сервиса": "URL, Schlüssel und Dienstverfügbarkeit prüfen",
  "Связь GitHub проверяется при отправке сообщения": "GitHub-Link wird beim Senden geprüft",
  "Проверьте интернет и адрес API": "Internet und API-URL prüfen",
- "Откройте ОРИОН → АГЕНТЫ и проверьте привязку": "ORION → AGENTEN öffnen und Bindung prüfen"
+ "Откройте ОРИОН → АГЕНТЫ и проверьте привязку": "ORION → AGENTEN öffnen und Bindung prüfen",
+ "ТЕРРАФОРМЕР": "TERRAFORMER",
+ "ЗАГРУЗКА ТЕРРАФОРМЕРА": "TERRAFORMER WIRD GELADEN",
+ "ЧАСТОТНЫЙ КУРС": "FREQUENZKURS",
+ "ВЫБРАН": "AUSGEWÄHLT",
+ "Выбран: {0}": "Ausgewählt: {0}",
+ "🔒 Откроется после {0}: нужно {1}% (сейчас {2}%)": "🔒 Freigeschaltet nach {0}: {1}% nötig (jetzt {2}%)",
+ "🔒 ЗАКРЫТ": "🔒 GESPERRT",
+ "Капитан — открыты все уровни": "Kapitän — alle Stufen offen",
+ "Уровень открыт": "Stufe freigeschaltet",
+ "АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА": "TERRAFORMER-HANGAR · LADEN",
+ "СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА": "DAMPFMASCHINEN-WERKHALLE · LADEN",
+ "{0}: {1}": "{0}: {1}"
 }

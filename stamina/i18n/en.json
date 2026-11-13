@@ -192,7 +192,6 @@
  "{0} станций": "{0} stations",
  "{0} тестов за последние 12 месяцев": "{0} tests in the last 12 months",
  "{0} ур. · {1} слов · знаю {2}": "{0} lvl · {1} words · know {2}",
- "{0}: {1}": "{0}: {1}",
  "{0}: новое сообщение": "{0}: new message",
  "{0}: ответ получен": "{0}: reply received",
  "{0}: открыт раздел «{1}»": "{0}: section “{1}” opened",
@@ -2721,5 +2720,17 @@
  "Проверьте адрес, ключ и доступность сервиса": "Check URL, key and service availability",
  "Связь GitHub проверяется при отправке сообщения": "GitHub link is checked when sending a message",
  "Проверьте интернет и адрес API": "Check the internet and API URL",
- "Откройте ОРИОН → АГЕНТЫ и проверьте привязку": "Open ORION → AGENTS and check the binding"
+ "Откройте ОРИОН → АГЕНТЫ и проверьте привязку": "Open ORION → AGENTS and check the binding",
+ "ТЕРРАФОРМЕР": "TERRAFORMER",
+ "ЗАГРУЗКА ТЕРРАФОРМЕРА": "TERRAFORMER LOADING",
+ "ЧАСТОТНЫЙ КУРС": "FREQUENCY COURSE",
+ "ВЫБРАН": "SELECTED",
+ "Выбран: {0}": "Selected: {0}",
+ "🔒 Откроется после {0}: нужно {1}% (сейчас {2}%)": "🔒 Unlocks after {0}: need {1}% (now {2}%)",
+ "🔒 ЗАКРЫТ": "🔒 LOCKED",
+ "Капитан — открыты все уровни": "Captain — all levels unlocked",
+ "Уровень открыт": "Level unlocked",
+ "АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА": "TERRAFORMER HANGAR · LOADING",
+ "СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА": "STEAM ENGINE ASSEMBLY · LOADING",
+ "{0}: {1}": "{0}: {1}"
 }

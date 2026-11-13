@@ -11,7 +11,8 @@ from __future__ import annotations
 
 from stamina.i18n import t
 
-ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab", "settings")
+ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab",
+              "terraformer", "settings")
 
 # подменю Мостика: (экран, подпись)
 BRIDGE_LEAVES = (
@@ -32,6 +33,7 @@ ZONE_TITLES = {
     "docs": "ДОКУМЕНТЫ",
     "orion": "ОРИОН",
     "lab": "ЛАБОРАТОРИЯ",
+    "terraformer": "ТЕРРАФОРМЕР",
     "settings": "НАСТРОЙКИ",
 }
 
@@ -71,12 +73,16 @@ def path(screen: str | None) -> list[tuple[str, str]]:
 
 # Зоны с постоянной клавишей вне счёта Ctrl+1…9: остальные нумеруются по порядку,
 # поэтому новая зона не сдвигает привычные Ctrl+N (НАСТРОЙКИ остаются Ctrl+9).
-FIXED_HOTKEYS = {"lab": "0"}
+FIXED_HOTKEYS = {"lab": "0", "terraformer": None}
 
 
 def zone_hotkeys(names: list[str]) -> list[tuple[str, str]]:
-    """[(цифра, зона), …] для Ctrl+цифра; больше девяти по порядку не бывает."""
-    out = [(FIXED_HOTKEYS[n], n) for n in names if n in FIXED_HOTKEYS]
+    """[(цифра, зона), …] для Ctrl+цифра; больше девяти по порядку не бывает.
+
+    Зона в FIXED_HOTKEYS со значением None считается «закреплённой» (не входит
+    в счёт Ctrl+1…9), но клавишу не получает: биндинг для неё не создаётся.
+    """
+    out = [(FIXED_HOTKEYS[n], n) for n in names if FIXED_HOTKEYS.get(n)]
     rest = [n for n in names if n not in FIXED_HOTKEYS]
     out += [(str(i), n) for i, n in enumerate(rest[:9], 1)]
     return out

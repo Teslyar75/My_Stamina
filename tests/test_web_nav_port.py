@@ -9,7 +9,7 @@ from stamina.storage import DEFAULT_SETTINGS
 class NavTest(unittest.TestCase):
     def test_eight_zones_in_order(self):
         self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
-                                       "docs", "orion", "lab", "settings"])
+                                       "docs", "orion", "lab", "terraformer", "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
         self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
         # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
@@ -169,7 +169,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 10)   # + «Лаборатория» (Ctrl+0)
+        self.assertEqual(len(a.SCREENS), 11)   # + «Лаборатория» (Ctrl+0)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")

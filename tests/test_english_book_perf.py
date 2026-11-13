@@ -191,8 +191,10 @@ def test_book_level_setting_and_real_rule(tmp_path):
 def test_captain_always_has_book(tmp_path, monkeypatch):
     pilots.reset_root(tmp_path / "pilots")
     try:
+        from stamina import roles
+        roles._FORCE_FILE_STORE = True
         cap = pilots.create("Captain")
-        pilots.set_role(cap["id"], pilots.CAPTAIN)
+        roles.write_access_cache(cap["id"], ok=True, login="dev")
         pilots._active = pilots.get(cap["id"])
         p = Progress(tmp_path / "english.json")
         assert access.book_access(p, None) == (True, "")
