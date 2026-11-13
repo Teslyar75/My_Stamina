@@ -2732,5 +2732,22 @@
  "Уровень открыт": "Level unlocked",
  "АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА": "TERRAFORMER HANGAR · LOADING",
  "СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА": "STEAM ENGINE ASSEMBLY · LOADING",
- "{0}: {1}": "{0}: {1}"
+ "{0}: {1}": "{0}: {1}",
+ "ТРЕНАЖЁР ТЕРРАФОРМЕРА · УЧЕБНАЯ СМЕНА": "TERRAFORMER TRAINER · TRAINING SHIFT",
+ "Стрелки/WASD — ехать · Пробел — копать · E — блок · Q — отсек · Ctrl+колесо, +/− — масштаб · 0 — к роботу": "Arrows/WASD — drive · Space — dig · E — block · Q — hold · Ctrl+wheel, +/− — zoom · 0 — to robot",
+ "Отсек грунта полон — нажми E": "Soil hold is full — press E",
+ "Слой недоступен для A1": "Layer unavailable for A1",
+ "Здесь стройплощадка": "This is the build site",
+ "Блок уложен {0}/{1}": "Block placed {0}/{1}",
+ "Фундамент готов — стены открыты!": "Foundation complete — walls open!",
+ "Отсек не полон: {0}/{1}": "Hold not full: {0}/{1}",
+ "Активный отсек: {0}": "Active hold: {0}",
+ "Учебная смена / тренажёр": "Training shift / trainer",
+ "Грунт {0}/{1}": "Soil {0}/{1}",
+ "Фундамент {0}/{1}": "Foundation {0}/{1}",
+ "Масштаб {0}%": "Zoom {0}%",
+ "СТЕНЫ ОТКРЫТЫ": "WALLS OPEN",
+ "ТРЕНАЖЁР": "TRAINER",
+ "ТЕРРАФОРМЕР A1 · УЧЕБНАЯ СМЕНА": "TERRAFORMER A1 · TRAINING SHIFT",
+ "Учебная смена перед настоящим терраформированием: снимай грунт слоями, собирай блоки и закладывай фундамент.": "A training shift before real terraforming: strip the soil in layers, gather blocks and lay the foundation."
 }

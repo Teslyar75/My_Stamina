@@ -2730,5 +2730,22 @@
  "Уровень открыт": "Stufe freigeschaltet",
  "АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА": "TERRAFORMER-HANGAR · LADEN",
  "СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА": "DAMPFMASCHINEN-WERKHALLE · LADEN",
- "{0}: {1}": "{0}: {1}"
+ "{0}: {1}": "{0}: {1}",
+ "ТРЕНАЖЁР ТЕРРАФОРМЕРА · УЧЕБНАЯ СМЕНА": "TERRAFORMER-TRAINER · ÜBUNGSSCHICHT",
+ "Стрелки/WASD — ехать · Пробел — копать · E — блок · Q — отсек · Ctrl+колесо, +/− — масштаб · 0 — к роботу": "Pfeile/WASD — fahren · Leertaste — graben · E — Block · Q — Fach · Strg+Rad, +/− — Zoom · 0 — zum Roboter",
+ "Отсек грунта полон — нажми E": "Bodenfach ist voll — drücke E",
+ "Слой недоступен для A1": "Schicht für A1 nicht verfügbar",
+ "Здесь стройплощадка": "Hier ist die Baustelle",
+ "Блок уложен {0}/{1}": "Block gelegt {0}/{1}",
+ "Фундамент готов — стены открыты!": "Fundament fertig — Wände offen!",
+ "Отсек не полон: {0}/{1}": "Fach nicht voll: {0}/{1}",
+ "Активный отсек: {0}": "Aktives Fach: {0}",
+ "Учебная смена / тренажёр": "Übungsschicht / Trainer",
+ "Грунт {0}/{1}": "Boden {0}/{1}",
+ "Фундамент {0}/{1}": "Fundament {0}/{1}",
+ "Масштаб {0}%": "Zoom {0}%",
+ "СТЕНЫ ОТКРЫТЫ": "WÄNDE OFFEN",
+ "ТРЕНАЖЁР": "TRAINER",
+ "ТЕРРАФОРМЕР A1 · УЧЕБНАЯ СМЕНА": "TERRAFORMER A1 · ÜBUNGSSCHICHT",
+ "Учебная смена перед настоящим терраформированием: снимай грунт слоями, собирай блоки и закладывай фундамент.": "Eine Übungsschicht vor dem echten Terraforming: Boden in Schichten abtragen, Blöcke sammeln und das Fundament legen."
 }
