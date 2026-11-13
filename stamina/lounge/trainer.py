@@ -13,6 +13,7 @@ from ..terraformer_trainer import (
     HOLD_CAP,
     Camera,
     TrainerModel,
+    archive_blueprint,
     load_blueprint,
     save_blueprint,
 )
@@ -35,8 +36,8 @@ class TrainerGame(GameShell):
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
-        self.set_hint(_t("Стрелки/WASD — ехать · Пробел — копать · E — блок · Q — отсек · "
-                         "Ctrl+колесо, +/− — масштаб · 0 — к роботу"))
+        # в верхней строке — короткая подсказка (влезает на 1280), полная — внизу поля
+        self.set_hint(_t("WASD · Пробел · E · Q · Ctrl+колесо · 0"))
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
             self.canvas.bind(seq, self._wheel_event)
@@ -48,6 +49,14 @@ class TrainerGame(GameShell):
         pass
 
     def reset(self) -> None:
+        # ЗАНОВО: прежняя площадка не теряется — сохраняем и кладём копию в архив
+        model = getattr(self, "model", None)
+        if model is not None:
+            try:
+                save_blueprint(model)
+                archive_blueprint()
+            except Exception:  # noqa: BLE001
+                pass
         self.model = TrainerModel()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
@@ -270,6 +279,15 @@ class TrainerGame(GameShell):
             c.create_text(px(10), ty, text=_t("СТЕНЫ ОТКРЫТЫ"), fill=GREEN, anchor="nw",
                           font=theme.font(11, True))
 
+        full = _t("Стрелки/WASD — ехать · Пробел — копать · E — блок · Q — отсек · "
+                  "Ctrl+колесо, +/− — масштаб · 0 — к роботу")
+        tid = c.create_text(w - px(10), h - px(10), text=full, fill=MUTED, anchor="se",
+                            font=theme.font(9), width=max(px(200), w // 2 - px(20)), justify="right")
+        bb = c.bbox(tid)
+        if bb:
+            back = c.create_rectangle(bb[0] - px(6), bb[1] - px(4), bb[2] + px(6), bb[3] + px(4),
+                                      fill=BG, outline=LINE)
+            c.tag_lower(back, tid)
         if self.msg:
             c.create_text(px(10), h - px(10), text=self.msg, fill=AMBER, anchor="sw",
                           font=theme.font(10, True))

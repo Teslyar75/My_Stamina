@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 
 GRID_W = 40
@@ -13,6 +14,8 @@ LAYERS = ("soil", "clay", "metal")
 HOLD_CAP = 10
 SITE = (2, 2, 4, 3)          # x, y, width, height — 12 блоков фундамента
 BLUEPRINT_NAME = "terraformer_trainer.json"
+ARCHIVE_DIR = "terraformer_trainer_archive"
+ARCHIVE_KEEP = 20
 ZOOM_MIN = 0.5
 ZOOM_MAX = 3.0
 ZOOM_STEP = 1.25
@@ -256,6 +259,39 @@ def save_blueprint(model: TrainerModel, path: Path | None = None) -> bool:
         return True
     except OSError:
         return False
+
+
+def archive_blueprint(path: Path | None = None, keep: int = ARCHIVE_KEEP,
+                      stamp: str | None = None) -> Path | None:
+    """Копия текущего чертежа в <папка пилота>/terraformer_trainer_archive/<ГГГГММДД-ЧЧММСС>.json.
+
+    Хранятся последние ``keep`` копий; удаляются только старые *.json из этой папки архива.
+    Нет чертежа — None.
+    """
+    src = Path(path) if path is not None else blueprint_path()
+    try:
+        data = src.read_bytes()
+    except OSError:
+        return None
+    folder = src.parent / ARCHIVE_DIR
+    name = stamp or time.strftime("%Y%m%d-%H%M%S")
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+        dest = folder / f"{name}.json"
+        n = 1
+        while dest.exists():
+            dest = folder / f"{name}-{n}.json"
+            n += 1
+        dest.write_bytes(data)
+        old = sorted(folder.glob("*.json"), key=lambda p: (p.stat().st_mtime, p.name))
+        for extra in old[:max(0, len(old) - max(1, int(keep)))]:
+            try:
+                extra.unlink()
+            except OSError:
+                pass
+        return dest
+    except OSError:
+        return None
 
 
 def load_blueprint(path: Path | None = None) -> TrainerModel | None:

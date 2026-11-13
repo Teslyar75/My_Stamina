@@ -306,5 +306,61 @@ class TrainerTkTest(unittest.TestCase):
         self.assertAlmostEqual(self.game.camera.zoom, zoom)
 
 
+class ArchiveTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name) / "Stamina"
+        self.root.mkdir()
+        pilots.reset_root(self.root)
+        pilots.activate(pilots.create("Tester")["id"])
+
+    def tearDown(self) -> None:
+        pilots.reset_root()
+        self.tmp.cleanup()
+
+    def test_archive_copies_and_keeps_latest(self) -> None:
+        from stamina.terraformer_trainer import ARCHIVE_DIR, archive_blueprint, blueprint_path
+        self.assertIsNone(archive_blueprint())          # нет чертежа — нечего архивировать
+        m = TrainerModel()
+        m.robot = [7, 7]
+        m.dig()
+        self.assertTrue(save_blueprint(m))
+        folder = blueprint_path().parent / ARCHIVE_DIR
+        other = folder.parent / "keep_me.json"
+        other.write_text("{}", encoding="utf-8")        # чужие файлы пилота не трогаем
+        first = archive_blueprint(stamp="20260101-000000")
+        self.assertIsNotNone(first)
+        self.assertEqual(json.loads(first.read_text(encoding="utf-8")), m.to_blueprint())
+        for i in range(25):
+            archive_blueprint(keep=20, stamp=f"20260101-0001{i:02d}")
+        files = sorted(folder.glob("*.json"))
+        self.assertEqual(len(files), 20)
+        self.assertTrue(other.is_file())
+        self.assertTrue(blueprint_path().is_file())
+
+    def test_restart_archives_previous_site(self) -> None:
+        try:
+            root = tk.Tk()
+        except tk.TclError:
+            self.skipTest("нет дисплея")
+        try:
+            theme.init(root)
+            from stamina.lounge.trainer import TrainerGame
+            from stamina.terraformer_trainer import ARCHIVE_DIR, blueprint_path
+            game = TrainerGame(root, on_back=lambda: None, app=None)
+            game.model.robot = [10, 10]
+            game.do_dig()
+            game.reset()                                  # то, что делает кнопка ЗАНОВО
+            arch = list((blueprint_path().parent / ARCHIVE_DIR).glob("*.json"))
+            self.assertEqual(len(arch), 1)
+            saved = json.loads(arch[0].read_text(encoding="utf-8"))
+            self.assertEqual(saved["dug"][10][10], 1)
+            self.assertEqual(game.model.dug[10][10], 0)
+            game.stop()
+            game.destroy()
+        finally:
+            root.destroy()
+
+
 if __name__ == "__main__":
     unittest.main()

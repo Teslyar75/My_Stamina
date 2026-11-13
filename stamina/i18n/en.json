@@ -2749,5 +2749,6 @@
  "СТЕНЫ ОТКРЫТЫ": "WALLS OPEN",
  "ТРЕНАЖЁР": "TRAINER",
  "ТЕРРАФОРМЕР A1 · УЧЕБНАЯ СМЕНА": "TERRAFORMER A1 · TRAINING SHIFT",
- "Учебная смена перед настоящим терраформированием: снимай грунт слоями, собирай блоки и закладывай фундамент.": "A training shift before real terraforming: strip the soil in layers, gather blocks and lay the foundation."
+ "Учебная смена перед настоящим терраформированием: снимай грунт слоями, собирай блоки и закладывай фундамент.": "A training shift before real terraforming: strip the soil in layers, gather blocks and lay the foundation.",
+ "WASD · Пробел · E · Q · Ctrl+колесо · 0": "WASD · Space · E · Q · Ctrl+wheel · 0"
 }
