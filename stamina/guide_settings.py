@@ -31,6 +31,16 @@ def build(scr) -> None:
         scr.guide_btns[key] = b
     HudButton(row2, _t("▶ ПРОВЕРИТЬ"), lambda: _test(scr), height=30, font_size=8,
               color=theme.AMBER).pack(side=tk.LEFT, padx=px(6))
+    row3 = scr._row(
+        _t("В ONLINE-чате"),
+        _t("Редко вставлять шутку или факт в историю чата Ориона, только когда агент свободен "
+           "(нет запроса, пилот не печатает миссию, никто не ждёт ответа). Отдельное сообщение "
+           "с меткой «шутка»/«факт», не смешивается с ответом ИИ. Переживает перезапуск."),
+    )
+    b = HudButton(row3, _t("ВКЛ"), lambda: _set(scr, "guide_online_jokes", None),
+                  width=64, height=30, font_size=8)
+    b.pack(side=tk.LEFT, padx=px(2))
+    scr.guide_btns["online"] = b
     sync(scr)
 
 
@@ -44,6 +54,8 @@ def _set(scr, key: str, value) -> None:
     guide = getattr(scr.app, "guide", None)
     if guide is not None:
         guide.schedule()
+        if hasattr(guide, "schedule_online"):
+            guide.schedule_online()
     sync(scr)
 
 
@@ -68,3 +80,7 @@ def sync(scr) -> None:
     for k in ("male", "female"):
         if k in btns:
             btns[k].set_active(k == v)
+    if "online" in btns:
+        online = bool(st.get("guide_online_jokes", True))
+        btns["online"].set_text(_t("ВКЛ") if online else _t("ВЫКЛ"))
+        btns["online"].set_active(online and on)

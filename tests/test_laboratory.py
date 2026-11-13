@@ -530,7 +530,8 @@ class LabCockpitTest(unittest.TestCase):
     def test_zone_in_menu_and_opens(self):
         keys = [s for s, _ in self.app.SCREENS]
         self.assertIn("lab", keys)
-        self.assertEqual(keys.index("lab"), keys.index("settings") - 1)
+        self.assertEqual(keys.index("lab"), keys.index("terraformer") - 1)
+        self.assertEqual(keys.index("terraformer"), keys.index("settings") - 1)
         self.assertIn("lab", self.app.nav_buttons)
         scr = self.app._ensure_screen("lab")
         self.assertIsNotNone(scr)

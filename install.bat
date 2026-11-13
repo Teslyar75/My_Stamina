@@ -56,7 +56,7 @@ if errorlevel 1 (
     echo.
 )
 
-echo  [3/5] Пакеты: Pillow, pypdf, fpdf2 ...
+echo  [3/5] Пакеты: Pillow, numpy, pypdf, fpdf2 ...
 rem pip читает requirements.txt в кодировке локали; PYTHONUTF8=1 держит кириллицу в комментариях.
 set "PYTHONUTF8=1"
 set "PIPLOG=%TEMP%\star-typing-pip.log"
@@ -66,7 +66,7 @@ if errorlevel 1 (
     echo  [!] pip не смог поставить пакеты. Вот что он сказал:
     type "%PIPLOG%"
     echo.
-    echo      Нужны: Pillow ^(фон и аватары^), pypdf ^(импорт PDF^), fpdf2 ^(кнопка PDF^).
+    echo      Нужны: Pillow ^(фон и аватары^), numpy ^(3D-отсек терраформеров^), pypdf ^(импорт PDF^), fpdf2 ^(кнопка PDF^).
     echo.
     echo  [!] Установка остановлена из-за ошибки pip.
     echo      Исправьте проблему ^(обычно интернет^) и запустите install.bat заново.

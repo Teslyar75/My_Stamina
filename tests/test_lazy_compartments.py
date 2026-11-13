@@ -13,6 +13,7 @@ from stamina import (
     orion_hook,
     radio_hook,
     speedread_hook,
+    terraformer_hook,
 )
 
 # Модули экранов отсеков. Пакет stamina.radio может подтянуться мини-баром
@@ -25,6 +26,7 @@ LAZY_MODULES = (
     "stamina.comm_screen",
     "stamina.docs_screen",
     "stamina.orion_screen",
+    "stamina.terraformer_bay",
 )
 
 HOOKS = (
@@ -35,6 +37,7 @@ HOOKS = (
     comm_hook,
     docs_hook,
     orion_hook,
+    terraformer_hook,
 )
 
 

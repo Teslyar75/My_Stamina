@@ -13,6 +13,7 @@ from . import store
 from .breakout import BreakoutGame
 from .snake import SnakeGame
 from .tetris import TetrisGame
+from .trainer import TrainerGame
 
 GAMES = [
     {
@@ -38,6 +39,15 @@ GAMES = [
         "blurb": _t("Отбивайте заряд щитом и сбивайте блоки обшивки. Три жизни на заход."),
         "color": PURPLE,
         "cls": BreakoutGame,
+    },
+    {
+        "id": "trainer",
+        "title": _t("ТРЕНАЖЁР"),
+        "subtitle": _t("ТЕРРАФОРМЕР A1 · УЧЕБНАЯ СМЕНА"),
+        "blurb": _t("Учебная смена перед настоящим терраформированием: снимай грунт слоями, "
+                    "собирай блоки и закладывай фундамент."),
+        "color": AMBER,
+        "cls": TrainerGame,
     },
 ]
 
@@ -66,7 +76,7 @@ class LoungeScreen(tk.Frame):
 
         grid = tk.Frame(self.lobby, bg=BG)
         grid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
-        for i in range(3):
+        for i in range(len(GAMES)):
             grid.grid_columnconfigure(i, weight=1, uniform="g")
         grid.grid_rowconfigure(0, weight=1)
 
@@ -124,6 +134,29 @@ class LoungeScreen(tk.Frame):
                                        ox + (x + 1) * cell - 1, oy + (y + 1) * cell - 1,
                                        fill=col, outline="")
                 c.create_oval(ox + 7 * cell, oy + 1 * cell, ox + 8 * cell, oy + 2 * cell, fill=AMBER)
+            elif gid == "trainer":
+                cell = max(6, min(ww, hh) // 9)
+                ox = ww // 2 - 3 * cell
+                oy = hh // 2 - 2 * cell
+                # снятые слои грунта
+                for bx, by in ((0, 0), (1, 0), (0, 1)):
+                    c.create_rectangle(ox + bx * cell, oy + by * cell,
+                                       ox + (bx + 1) * cell - 1, oy + (by + 1) * cell - 1,
+                                       fill=blend(color, PANEL, 0.45), outline="")
+                # контур площадки 4×3 и несколько блоков
+                c.create_rectangle(ox + 3 * cell, oy, ox + 7 * cell, oy + 3 * cell,
+                                   outline=AMBER, dash=(3, 2))
+                for bx in range(4):
+                    for by in range(3):
+                        if (bx + by) % 2 == 0:
+                            c.create_rectangle(ox + (3 + bx) * cell + 1, oy + by * cell + 1,
+                                               ox + (4 + bx) * cell - 1, oy + (by + 1) * cell - 1,
+                                               fill=blend(AMBER, PANEL, 0.35), outline="")
+                # маленький робот
+                c.create_rectangle(ox, oy + 2 * cell, ox + cell - 1, oy + 3 * cell - 1,
+                                   fill=CYAN, outline="")
+                c.create_line(ox + cell, oy + 2.5 * cell, ox + cell * 2, oy + 2.5 * cell,
+                              fill=AMBER, width=2, arrow="last")
             else:
                 for r in range(3):
                     for col in range(8):

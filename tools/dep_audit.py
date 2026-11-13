@@ -6,7 +6,7 @@
     python tools/dep_audit.py --json out.json   машиночитаемый отчёт
     python tools/dep_audit.py --allow vosk      счесть модуль необязательным вручную
 
-Зачем: requirements.txt объявляет Pillow/pypdf/fpdf2, а vosk и sounddevice живут
+Зачем: requirements.txt объявляет Pillow/numpy/pypdf/fpdf2, а vosk и sounddevice живут
 в комментариях. Проверка статическая — ничего не импортирует и не запускает,
 поэтому работает и на машине без установленных пакетов.
 

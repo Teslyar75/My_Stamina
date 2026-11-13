@@ -1,4 +1,4 @@
-"""Капитан (владелец) видит все уровни CEFR и весь пак глаголов; ученик открывает по мере курса."""
+"""Капитан (GitHub-разработчик) видит все уровни CEFR и весь пак глаголов; ученик открывает по мере курса."""
 import pytest
 
 from stamina import pilots
@@ -24,20 +24,19 @@ def test_no_registry_is_not_captain(root):
     assert not access.is_captain()
 
 
-def test_explicit_role_and_migrated_owner(root):
+def test_migrated_from_and_role_are_not_captain(root):
+    from stamina import roles
+    roles._FORCE_FILE_STORE = True
     a = pilots.create("Alpha")
     b = pilots.create("Bravo")
     assert not pilots.is_captain(a)
-    # владелец, перенесённый при миграции, — капитан, пока явной роли нет ни у кого
+    # перенос старых данных и поле role сами по себе капитана не дают
     pilots.update_pilot(a["id"], migrated_from="C:/old")
-    assert pilots.is_captain(pilots.get(a["id"]))
-    assert not pilots.is_captain(pilots.get(b["id"]))
-    # явная роль важнее
-    pilots.set_role(b["id"], pilots.CAPTAIN)
-    assert pilots.is_captain(pilots.get(b["id"]))
     assert not pilots.is_captain(pilots.get(a["id"]))
-    pilots.set_role(b["id"], None)
     assert not pilots.is_captain(pilots.get(b["id"]))
+    pilots.set_role(b["id"], pilots.CAPTAIN)
+    assert not pilots.is_captain(pilots.get(b["id"]))
+    assert not pilots.is_captain(pilots.get(a["id"]))
 
 
 def _levels_rule(progress, done_set):
@@ -63,17 +62,20 @@ def test_student_progressive_levels(root, tmp_path):
     assert (prev, need, now) == ("A1", 100, 80)
 
 
-def test_start_level_hook(root, tmp_path):
+def test_start_level_setting_does_not_bypass(root, tmp_path):
     pilots._active = None
     p = Progress(tmp_path / "e.json")
     p.settings["cefr_start_level"] = "A2"
     is_open = _levels_rule(p, set())
-    assert is_open("A1") and is_open("A2") and not is_open("B1.1")
+    assert is_open("A1") and not is_open("A2") and not is_open("B1.1")
+    assert access.start_level(p, ["A1", "A2", "B1.1"]) == "A2"
 
 
 def test_captain_gets_everything(root, tmp_path):
+    from stamina import roles
+    roles._FORCE_FILE_STORE = True
     cap = pilots.create("Captain")
-    pilots.set_role(cap["id"], pilots.CAPTAIN)
+    roles.write_access_cache(cap["id"], ok=True, login="dev")
     _activate(pilots.get(cap["id"]))
     p = Progress(tmp_path / "e.json")
     is_open = _levels_rule(p, set())
