@@ -619,8 +619,31 @@ class GuideController:
         self.state.answered(True)
         self.phase = "item"
         item = self.current[2]
-        self._show_toast(self.texts.get(item, ""), prompt=False)
+        text = self.texts.get(item, "")
+        self._to_chat(text)
+        self._show_toast(text, prompt=False)
         self._say(item, self.finish)
+
+    def _to_chat(self, text: str) -> None:
+        """Гид сказал шутку или факт — оставляем её строкой в переписке с Орионом.
+
+        Раньше фраза звучала и исчезала вместе с подсказкой; пилот просил, чтобы
+        единственная сказанная шутка оставалась в чате как реплика бортового.
+        """
+        text = " ".join(str(text or "").split())
+        if not text:
+            return
+        try:
+            from stamina import orion
+            orion.remember(orion.active()["id"], "orion", text, kind="guide")
+        except Exception:  # noqa: BLE001
+            return
+        try:
+            screen = (getattr(self.app, "screens", None) or {}).get("orion")
+            if screen is not None:
+                screen.refresh()          # чат уже открыт — строка видна сразу
+        except Exception:  # noqa: BLE001
+            pass
 
     def decline(self) -> None:
         if self.phase not in ("intro", "prompt"):

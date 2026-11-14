@@ -9,10 +9,12 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 
+import queue
+import threading
 import time
 import tkinter as tk
 
-from stamina import comm, pilots, theme
+from stamina import comm, doc_translate, i18n, pilots, theme
 from stamina.adapt import make_vscroll
 from stamina.hud import HudButton, HudPanel
 from stamina.prompt_box import PromptBox, hud_colors
@@ -22,6 +24,11 @@ from stamina.voice.mic import MicControl
 
 # позывной красим цветом «акцента» пилота из реестра экипажа (сами цвета берём у скина)
 ACCENTS = ("cyan", "amber", "green", "red", "purple")
+
+
+def translate_message(text: str, sl: str, tl: str) -> str:
+    """Перевод одного сообщения: Argos офлайн, сеть — запасной путь (doc_translate)."""
+    return doc_translate.translate_md(text, tl, sl=sl)
 
 
 def _label(master, text="", *, fg=None, size=10, bold=False, bg=None, **kw):
@@ -37,6 +44,15 @@ class CommScreen(tk.Frame):
         super().__init__(master, bg=BG)
         self.app = app
         self._accents: dict[str, str] = {}
+        # перевод сообщений: язык определяем один раз, перевод кэшируем по (id, язык)
+        self._tr_lang: dict[str, str] = {}
+        self._tr_cache: dict[tuple[str, str], str] = {}
+        self._tr_shown: set[str] = set()      # какие сообщения сейчас показаны переводом
+        self._tr_pending: set[str] = set()    # ждём ответ переводчика
+        self._tr_errors: dict[str, str] = {}
+        self._tr_widgets: list[tk.Widget] = []
+        self._tr_vars: list[tk.BooleanVar] = []
+        self._tr_results: queue.Queue = queue.Queue()
 
         top = tk.Frame(self, bg=BG)
         top.pack(fill=tk.X, padx=px(14), pady=(px(10), px(4)))
@@ -139,9 +155,76 @@ class CommScreen(tk.Frame):
         self.suggester = Suggester(dictionary_from(texts))
         self.entry.set_suggester(self.suggester)
 
+    def _target_lang(self) -> str:
+        """Основной язык пилота — язык интерфейса (ru/uk/en/de)."""
+        return i18n.language()
+
+    def _message_lang(self, msg: dict) -> str:
+        mid = str(msg.get("id") or "")
+        lang = self._tr_lang.get(mid)
+        if lang is None:
+            lang = comm.message_language(str(msg.get("text") or ""))
+            self._tr_lang[mid] = lang
+        return lang
+
+    def _toggle_translation(self, mid: str, text: str, sl: str) -> None:
+        """Кнопка у сообщения: перевод → оригинал → перевод (из кэша)."""
+        if mid in self._tr_pending:
+            return
+        if mid in self._tr_shown:
+            self._tr_shown.discard(mid)
+            self._render()
+            return
+        tl = self._target_lang()
+        if (mid, tl) in self._tr_cache:
+            self._tr_shown.add(mid)
+            self._render()
+            return
+        self._tr_pending.add(mid)
+        self._tr_errors.pop(mid, None)
+        self._render()          # сразу показываем «перевод…», не ждём сеть
+        threading.Thread(target=self._translate_worker, args=(mid, text, sl, tl),
+                         name="comm-translate", daemon=True).start()
+
+    def _translate_worker(self, mid: str, text: str, sl: str, tl: str) -> None:
+        try:
+            out = translate_message(text, sl, tl)
+        except Exception as exc:  # noqa: BLE001 — сеть/Argos могут отказать
+            self._tr_results.put((mid, tl, None, str(exc) or exc.__class__.__name__))
+        else:
+            self._tr_results.put((mid, tl, out, ""))
+
+    def _poll_translations(self) -> None:
+        """Забрать готовые переводы в потоке Tk и перерисовать ленту."""
+        changed = False
+        while True:
+            try:
+                mid, tl, out, err = self._tr_results.get_nowait()
+            except queue.Empty:
+                break
+            self._tr_pending.discard(mid)
+            changed = True
+            if out:
+                self._tr_cache[(mid, tl)] = out
+                self._tr_errors.pop(mid, None)
+                self._tr_shown.add(mid)
+            else:
+                self._tr_errors[mid] = err
+                self.info.configure(text=_t("Перевод не удался: {0}").format(err))
+        if changed:
+            self._render()
+
     def _render(self) -> None:
+        for w in self._tr_widgets:
+            try:
+                w.destroy()
+            except tk.TclError:
+                pass
+        self._tr_widgets.clear()
+        self._tr_vars.clear()
         msgs = comm.messages()
         pid = self._pid()
+        target = self._target_lang()
         self.text.configure(state=tk.NORMAL)
         self.text.delete("1.0", tk.END)
         if not pid:
@@ -157,7 +240,36 @@ class CommScreen(tk.Frame):
                 self.text.insert(tk.END, " ▸", "time")     # своё сообщение
             when = time.strftime("%d.%m %H:%M", time.localtime(float(m.get("ts", 0.0))))
             self.text.insert(tk.END, f"  {when}\n", "time")
-            self.text.insert(tk.END, f"{m.get('text', '')}\n\n", "body")
+
+            mid = str(m.get("id") or "")
+            text = str(m.get("text") or "")
+            lang = self._message_lang(m)
+            translated = self._tr_cache.get((mid, target)) if mid in self._tr_shown else None
+            if translated is None:
+                self._tr_shown.discard(mid)
+                body = text
+            else:
+                body = translated
+            self.text.insert(tk.END, body + " ", "body")
+            if lang != "und" and lang != target:
+                pending = mid in self._tr_pending
+                label = "⇄ " + _t("ОРИГИНАЛ") if translated is not None else "⇄ " + _t("ПЕРЕВОД")
+                if pending:
+                    label += "…"
+                var = tk.BooleanVar(value=translated is not None)
+                cb = tk.Checkbutton(
+                    self.text, text=label, command=lambda mid=mid, text=text, sl=lang:
+                    self._toggle_translation(mid, text, sl),
+                    indicatoron=False, variable=var,
+                    bg=PANEL, fg=CYAN, activebackground=BG2, activeforeground=CYAN,
+                    selectcolor=BG2, disabledforeground=MUTED, font=theme.font(8, True),
+                    bd=0, relief=tk.FLAT, highlightthickness=0, padx=px(6), pady=px(1),
+                    cursor="hand2", takefocus=0, state=tk.DISABLED if pending else tk.NORMAL,
+                )
+                self.text.window_create(tk.END, window=cb, padx=px(2), pady=px(1))
+                self._tr_widgets.append(cb)
+                self._tr_vars.append(var)      # Tk не держит Python-ссылку на переменную
+            self.text.insert(tk.END, "\n\n", "body")
         self.text.configure(state=tk.DISABLED)
         self.text.see(tk.END)
 
@@ -190,9 +302,13 @@ class CommScreen(tk.Frame):
         self.mic_hint.configure(text=text, fg=color)
 
     def _tick_mic(self) -> None:
-        """Микрофон пишет в отдельном потоке — забираем события в интерфейс."""
+        """Микрофон и переводчик работают в потоках — забираем события в интерфейс."""
         try:
             self.mic.poll()
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            self._poll_translations()
         except Exception:  # noqa: BLE001
             pass
         self.after(160, self._tick_mic)

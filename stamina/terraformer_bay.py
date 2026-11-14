@@ -10,6 +10,9 @@
 видит всё. Выбор пилота хранится в
 ``Progress.settings`` (``terraformer_cefr`` / ``terraformer_freq``).
 
+Дополнительно: робот A2 открывается после завершения первой железной или
+кварцевой платформы на тренажёре (мотивация строить платформы).
+
 Импорт модуля не создаёт окон Tk.
 """
 from __future__ import annotations
@@ -23,6 +26,7 @@ from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t
 from stamina.terraformer_models import ROBOTS, robot
 from stamina.terraformer_render import TerraformerViewer
+from stamina.terraformer_trainer import load_blueprint, TrainerModel
 
 KEY = "terraformer"
 SETTING_KEYS = {"cefr": "terraformer_cefr", "freq": "terraformer_freq"}
@@ -31,6 +35,19 @@ LINES = {
     "cefr": tuple(r.id for r in ROBOTS if r.line == "cefr"),
     "freq": tuple(r.id for r in ROBOTS if r.line == "freq"),
 }
+
+
+def _has_completed_deep_platform() -> bool:
+    """Проверяет, есть ли завершённая платформа железа или кварца (для разблокировки A2)."""
+    try:
+        model = load_blueprint()
+        if isinstance(model, TrainerModel):
+            for p in model.platforms:
+                if p.complete and p.resource in ("iron", "quartz"):
+                    return True
+    except Exception:
+        pass
+    return False
 
 
 def _progress_for(app=None) -> Progress:
@@ -84,13 +101,22 @@ def _freq_need(progress, robot_id: str):
 
 
 def robot_open(progress, robot_id: str) -> bool:
-    """Открыт ли робот: только после прохождения предыдущего уровня; капитану — всё."""
+    """Открыт ли робот: только после прохождения предыдущего уровня; капитану — всё.
+    Дополнительно: A2 открывается после завершения железной/кварцевой платформы."""
     r = robot(robot_id)
     if r.line != "cefr":
         return _freq_need(progress, robot_id) is None
     levels = cefr.available()
     if not levels:
         return access.is_captain(progress)
+    # A2 — особый кейс: открывается через терраформер или язык
+    if r.id == "a2":
+        if access.is_captain(progress):
+            return True
+        if _has_completed_deep_platform():
+            return True
+        return access.level_open(progress, r.name, levels, cefr.slugs,
+                                 lambda s: _done(progress, s))
     return access.level_open(progress, r.name, levels, cefr.slugs,
                              lambda s: _done(progress, s))
 
@@ -111,6 +137,25 @@ def robot_need(progress, robot_id: str):
 
 def need_hint(progress, robot_id: str) -> str:
     """Подсказка у замка: предыдущий уровень и порог прохождения."""
+    r = robot(robot_id)
+    if r.id == "a2" and r.line == "cefr":
+        if access.is_captain(progress):
+            return ""
+        if _has_completed_deep_platform():
+            return ""
+        # проверяем, есть ли прогресс по платформам
+        try:
+            model = load_blueprint()
+            if isinstance(model, TrainerModel):
+                for p in model.platforms:
+                    if p.resource in ("iron", "quartz") and not p.complete:
+                        return t("🔒 Откроется после завершения платформы {0} ({1}%)").format(
+                            t("Железная руда" if p.resource == "iron" else "Кварцевый песок"),
+                            p.progress_pct()
+                        )
+        except Exception:
+            pass
+        return t("🔒 Откроется после постройки платформы Железо или Кварц на тренажёре")
     need = robot_need(progress, robot_id)
     if need is None:
         return ""
