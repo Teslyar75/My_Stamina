@@ -140,6 +140,9 @@ class LanguagesScreen(tk.Frame):
             return None
 
     def _select_language(self, lang_code: str) -> None:
+        if lang_code == "en":
+            self.app.show("english")
+            return
         self.current_lang = lang_code
         plugin = self.registry.get(lang_code)
         if not plugin:
