@@ -540,9 +540,14 @@ class TrainerGame(GameShell):
             c.create_rectangle(px_ + 2, py_ + 2, px_ + cell - 2, py_ + cell - 2,
                                outline=AMBER, dash=(3, 3), width=1)
 
-        # уложенные блоки
+        # уложенные блоки (фундамент + платформы)
         block_fill = blend(AMBER, TEXT, 0.25)
         for x, y in model.blocks:
+            px_, py_ = cam.to_screen(x, y, w, h)
+            c.create_rectangle(px_ + 2, py_ + 2, px_ + cell - 2, py_ + cell - 2,
+                               fill=block_fill, outline=AMBER, width=2)
+        # блоки платформ добычи — тот же стиль
+        for x, y in model.platform_blocks:
             px_, py_ = cam.to_screen(x, y, w, h)
             c.create_rectangle(px_ + 2, py_ + 2, px_ + cell - 2, py_ + cell - 2,
                                fill=block_fill, outline=AMBER, width=2)
