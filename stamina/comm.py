@@ -13,8 +13,11 @@
 Формат ``comm.json``::
 
     {"version": 1,
-     "messages": [{"id", "author", "callsign", "ts", "text"}],
+     "messages": [{"id", "author", "callsign", "ts", "text", "shots": [пути]}],
      "read": {"<id пилота>": <время последнего прочтения>}}
+
+``shots`` — необязательный список картинок-снимков рядом с сообщением. Старые
+сообщения поля не имеют и читаются как обычно.
 """
 from __future__ import annotations
 
@@ -25,6 +28,7 @@ from pathlib import Path
 
 MAX_TEXT = 500        # знаков в одном сообщении
 MAX_MESSAGES = 500    # сколько последних сообщений храним
+MAX_SHOTS = 8         # картинок в одном сообщении
 FILE_NAME = "comm.json"
 
 
@@ -89,10 +93,27 @@ def _clean(text: str) -> str:
     return " ".join((text or "").split())[:MAX_TEXT]
 
 
-def send(author: str, callsign: str, text: str, *, ts: float | None = None) -> dict | None:
-    """Добавить сообщение. Пустое — отбрасывается (возвращает None)."""
+def _clean_shots(shots) -> list[str]:
+    """Список картинок: только строки, без повторов, не больше MAX_SHOTS."""
+    if isinstance(shots, str):
+        shots = [shots]
+    out: list[str] = []
+    for raw in shots or ():
+        path = str(raw or "").strip()
+        if not path or path in out:
+            continue
+        out.append(path)
+        if len(out) >= MAX_SHOTS:
+            break
+    return out
+
+
+def send(author: str, callsign: str, text: str, *, shots=None,
+         ts: float | None = None) -> dict | None:
+    """Добавить сообщение. Пустое (без текста и без картинок) отбрасывается."""
     body = _clean(text)
-    if not body:
+    pics = _clean_shots(shots)
+    if not body and not pics:
         return None
     msg = {
         "id": uuid.uuid4().hex[:12],
@@ -101,6 +122,8 @@ def send(author: str, callsign: str, text: str, *, ts: float | None = None) -> d
         "ts": float(ts if ts is not None else time.time()),
         "text": body,
     }
+    if pics:
+        msg["shots"] = pics
     data = load()
     data["messages"].append(msg)
     if len(data["messages"]) > MAX_MESSAGES:

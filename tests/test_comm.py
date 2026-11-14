@@ -4,6 +4,7 @@
 (как в test_web_nav_port), поэтому без дисплея тесты экрана пропускаются.
 """
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -41,6 +42,21 @@ class CommDataTest(unittest.TestCase):
         self.assertIsNone(comm.send("p1", "Комета", "   "))
         self.assertIsNone(comm.send("p1", "Комета", "\n\n"))
         self.assertEqual(comm.messages(), [])
+
+    def test_shots_are_stored_and_cleaned(self):
+        msg = comm.send("p1", "Комета", "", shots=[" a.png ", "a.png", "", 5])
+        self.assertEqual(msg["shots"], ["a.png", "5"])       # пробелы, повторы и пустое — вон
+        self.assertEqual(comm.messages()[0]["shots"], ["a.png", "5"])
+        plain = comm.send("p1", "Комета", "без картинок")
+        self.assertNotIn("shots", plain)                     # старый формат не меняется
+
+    def test_message_with_only_shots_is_kept(self):
+        self.assertIsNotNone(comm.send("p1", "Комета", "  ", shots=["x.png"]))
+        self.assertIsNone(comm.send("p1", "Комета", "  ", shots=[]))
+
+    def test_shots_are_limited(self):
+        msg = comm.send("p1", "Комета", "", shots=[f"{i}.png" for i in range(comm.MAX_SHOTS + 5)])
+        self.assertEqual(len(msg["shots"]), comm.MAX_SHOTS)
 
     def test_long_message_is_trimmed(self):
         comm.send("p1", "Комета", "x" * (comm.MAX_TEXT + 50))
@@ -122,6 +138,9 @@ class CommScreenTest(unittest.TestCase):
             pilots.reset_root()
             self.skipTest("нет дисплея")
         self.root.withdraw()
+        # снимки к сообщениям — во временную папку, а не в репозиторий
+        self._old_shots_dir = os.environ.get("STAR_TYPING_SHOTS_DIR")
+        os.environ["STAR_TYPING_SHOTS_DIR"] = str(Path(self._tmp) / "shots")
         theme.init(self.root)
         self.app = self._App()
         self.app.pilot = pilots.create("Комета", accent="amber")
@@ -133,6 +152,46 @@ class CommScreenTest(unittest.TestCase):
         self.root.destroy()
         i18n.set_language("ru")
         pilots.reset_root()
+        if self._old_shots_dir is None:
+            os.environ.pop("STAR_TYPING_SHOTS_DIR", None)
+        else:
+            os.environ["STAR_TYPING_SHOTS_DIR"] = self._old_shots_dir
+
+    def _png(self, name="shot.png") -> Path:
+        """Тестовая картинка (без Pillow экран всё равно не покажет миниатюру)."""
+        try:
+            from PIL import Image
+        except Exception:  # noqa: BLE001
+            self.skipTest("нет Pillow")
+        path = Path(self._tmp) / name
+        Image.new("RGB", (40, 30), (20, 40, 60)).save(path)
+        return path
+
+    def test_message_with_shot_draws_thumbnail(self):
+        pic = self._png()
+        comm.send("vega", "Вега", "Смотри снимок", shots=[str(pic)], ts=1.0)
+        self.scr.refresh()
+        self.assertTrue(self.scr._feed_images)          # миниатюра отрисована и лежит в кэше
+        self.assertIn("Смотри снимок", self.scr.text.get("1.0", "end"))
+
+    def test_attach_then_send_only_picture(self):
+        pic = self._png()
+        self.assertEqual(self.scr.attach_paths([str(pic)]), 1)
+        self.assertTrue(self.scr._pending_shots)
+        self.assertEqual(self.scr.shot_row.winfo_manager(), "pack")   # ряд приложенного виден
+        self.scr._send()                                  # текста нет — уходит одна картинка
+        msgs = comm.messages()
+        self.assertEqual(len(msgs), 1)
+        self.assertEqual(msgs[0]["text"], "")
+        self.assertEqual(len(msgs[0]["shots"]), 1)
+        self.assertEqual(self.scr._pending_shots, [])     # после отправки ряд пуст
+        self.assertEqual(self.scr.shot_row.winfo_manager(), "")
+
+    def test_non_image_is_not_attached(self):
+        note = Path(self._tmp) / "note.txt"
+        note.write_text("не картинка", encoding="utf-8")
+        self.assertEqual(self.scr.attach_paths([str(note)]), 0)
+        self.assertEqual(self.scr._pending_shots, [])
 
     def test_empty_state_then_send(self):
         self.scr.refresh()

@@ -59,3 +59,8 @@ python -m pytest tests/ -q                                       # тесты (�
 (`python -m stamina.task_progress plan|step|finish <id>` → `_orion/tasks/<id>.json`,
 строка на пульте Ориона; запасной путь — legacy `_orion/progress.json` v1).
 Новые варианты скинов — по `docs/skins/ALT_SKIN_GUIDE.md`.
+
+
+## Handoff between models
+
+Read `docs/HANDOFF.md` before starting and keep it updated after each meaningful step (goal, done, next, decisions, problems). Full rule: `.clinerules/handoff.md`.
