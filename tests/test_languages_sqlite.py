@@ -79,6 +79,7 @@ def test_rest_band_is_a_freq_set():
     ids = [item.id for item in GermanPlugin.freq_sets]
     assert ids[0] == "goethe-a1"
     assert "rest" in ids
-    screen = open(r"d:\My_New_Stamina\stamina\languages\screen.py", encoding="utf-8").read()
+    from pathlib import Path
+    screen = (Path(__file__).parent.parent / "stamina" / "languages" / "screen.py").read_text(encoding="utf-8")
     assert "set_id, size, name_en, name_target, short = fs" not in screen
     assert "fs.id" in screen

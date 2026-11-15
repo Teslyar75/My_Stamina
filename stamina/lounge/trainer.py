@@ -342,6 +342,23 @@ class TrainerGame(GameShell):
         self.redraw()
         return success, msg
 
+    def do_unload(self) -> str:
+        """Выгрузка грунта на стройплощадку (E при полном отсеке)."""
+        result = self.model.unload()
+        if result == "not_full":
+            self.msg = _t("Отсек не полон — набери {0} грунта").format(HOLD_CAP - self.model.holds.get("soil", 0))
+        elif result == "ok":
+            self.msg = _t("Блок уложен")
+        elif result == "complete":
+            self.msg = _t("Платформа завершена — стены открыты!")
+        elif result == "done":
+            self.msg = _t("Все блоки уже уложены")
+        self.set_score(len(self.model.blocks) + len(self.model.platform_blocks))
+        self.camera.track(*self.model.robot)
+        save_blueprint(self.model)
+        self.redraw()
+        return result
+
     def toggle_build_plan(self) -> str | None:
         self.overlay = None if self.overlay == "build_plan" else "build_plan"
         self.redraw()

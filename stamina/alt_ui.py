@@ -47,7 +47,7 @@ DEFAULT_LAYOUT = "classic"
 # Профили антуража. Подписи — ключи i18n (переводятся при сборке).
 PROFILES: dict[str, dict] = {
     "starship": {
-        "glyphs": {"bridge": "◈", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
+        "glyphs": {"bridge": "◈", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ",
         "rail": "ОТСЕКИ",
@@ -55,7 +55,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "РАДАР",
     },
     "steampunk": {
-        "glyphs": {"bridge": "⚙", "english": "Æ", "speedread": "§", "lounge": "☕",
+        "glyphs": {"bridge": "⚙", "english": "Æ", "languages": "🌐", "speedread": "§", "lounge": "☕",
                    "radio": "☊", "comm": "✉", "docs": "✒", "orion": "☉", "lab": "✧", "terraformer": "⌬", "settings": "⚒"},
         "subtitle": "МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА",
         "rail": "РЫЧАГИ",
@@ -63,7 +63,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "ДАВЛЕНИЕ",
     },
     "bathyscaphe": {
-        "glyphs": {"bridge": "⚓", "english": "Ⓐ", "speedread": "»", "lounge": "◐",
+        "glyphs": {"bridge": "⚓", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "◉", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
@@ -71,7 +71,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "",
     },
     "neon_city": {
-        "glyphs": {"bridge": "◢", "english": "Ⓐ", "speedread": "⚡", "lounge": "☾",
+        "glyphs": {"bridge": "◢", "english": "Ⓐ", "languages": "🌐", "speedread": "⚡", "lounge": "☾",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
@@ -79,7 +79,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "",
     },
     "old_england": {
-        "glyphs": {"bridge": "♔", "english": "Æ", "speedread": "§", "lounge": "☕",
+        "glyphs": {"bridge": "♔", "english": "Æ", "languages": "🌐", "speedread": "§", "lounge": "☕",
                    "radio": "☎", "comm": "✉", "docs": "✒", "orion": "✠", "lab": "✧", "terraformer": "⌬", "settings": "⚒"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
@@ -87,7 +87,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "",
     },
     "scriptorium": {
-        "glyphs": {"bridge": "✠", "english": "Ⓐ", "speedread": "¶", "lounge": "❦",
+        "glyphs": {"bridge": "✠", "english": "Ⓐ", "languages": "🌐", "speedread": "¶", "lounge": "❦",
                    "radio": "♪", "comm": "✒", "docs": "✍", "orion": "☩", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
@@ -95,7 +95,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "",
     },
     "zen_garden": {
-        "glyphs": {"bridge": "◯", "english": "Ⓐ", "speedread": "»", "lounge": "☯",
+        "glyphs": {"bridge": "◯", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "☯",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✿", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
@@ -103,7 +103,7 @@ PROFILES: dict[str, dict] = {
         "gauge": "",
     },
     "generic": {
-        "glyphs": {"bridge": "▣", "english": "A", "speedread": "»", "lounge": "◐",
+        "glyphs": {"bridge": "▣", "english": "A", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
         "subtitle": "ПУЛЬТ ПИЛОТА",
         "rail": "ОТСЕКИ",
