@@ -1,0 +1,547 @@
+# lemma|pos|ru|gender|plural
+ich|pron|я||
+du|pron|ты||
+er|pron|он||
+sie|pron|она; они||
+es|pron|оно||
+wir|pron|мы||
+ihr|pron|вы; её; их||
+Sie|pron|Вы (вежливо)||
+mein|det|мой||
+dein|det|твой||
+sein|det|его||
+unser|det|наш||
+euer|det|ваш||
+Ihr|det|Ваш||
+der|det|определённый артикль (м. р.)||
+die|det|определённый артикль (ж. р. и мн. ч.)||
+das|det|определённый артикль (ср. р.)||
+ein|det|неопределённый артикль (м. и ср. р.)||
+eine|det|неопределённый артикль (ж. р.)||
+kein|det|никакой||
+dieser|det|этот||
+jeder|det|каждый||
+welcher|det|какой||
+und|conj|и||
+oder|conj|или||
+aber|conj|но||
+denn|conj|ведь; потому что||
+weil|conj|потому что||
+dass|conj|что (союз)||
+wenn|conj|если; когда||
+nicht|adv|не||
+auch|adv|тоже; также||
+nur|adv|только||
+schon|adv|уже||
+noch|adv|ещё||
+sehr|adv|очень||
+hier|adv|здесь||
+dort|adv|там||
+jetzt|adv|сейчас||
+heute|adv|сегодня||
+morgen|adv|завтра||
+gestern|adv|вчера||
+immer|adv|всегда||
+oft|adv|часто||
+manchmal|adv|иногда||
+nie|adv|никогда||
+gern|adv|охотно||
+vielleicht|adv|может быть||
+natürlich|adv|конечно||
+leider|adv|к сожалению||
+genau|adv|точно||
+dann|adv|потом||
+zuerst|adv|сначала||
+danach|adv|после этого||
+bald|adv|скоро||
+zusammen|adv|вместе||
+allein|adv|один; в одиночестве||
+viel|adv|много||
+wenig|adv|мало||
+mehr|adv|больше||
+alles|pron|всё||
+etwas|pron|что-то||
+nichts|pron|ничего||
+jemand|pron|кто-то||
+niemand|pron|никто||
+man|pron|неопределённо-личное местоимение||
+bitte|interj|пожалуйста||
+danke|interj|спасибо||
+ja|interj|да||
+nein|interj|нет||
+hallo|interj|привет||
+tschüss|interj|пока||
+Entschuldigung|interj|извините||
+in|prep|в||
+an|prep|на; у||
+auf|prep|на||
+aus|prep|из||
+bei|prep|у; при||
+mit|prep|с||
+nach|prep|после; в (направление)||
+von|prep|от; из||
+zu|prep|к||
+für|prep|для||
+über|prep|над; о||
+unter|prep|под||
+vor|prep|перед||
+hinter|prep|за||
+neben|prep|рядом с||
+ohne|prep|без||
+gegen|prep|против||
+was|pron|что||
+wer|pron|кто||
+wo|adv|где||
+wohin|adv|куда||
+woher|adv|откуда||
+wann|adv|когда||
+wie|adv|как||
+warum|adv|почему||
+gut|adj|хороший||
+schlecht|adj|плохой||
+groß|adj|большой||
+klein|adj|маленький||
+neu|adj|новый||
+alt|adj|старый||
+schön|adj|красивый||
+jung|adj|молодой||
+kalt|adj|холодный||
+warm|adj|тёплый||
+heiß|adj|горячий||
+schnell|adj|быстрый||
+langsam|adj|медленный||
+leicht|adj|лёгкий||
+schwer|adj|тяжёлый; трудный||
+teuer|adj|дорогой||
+billig|adj|дешёвый||
+offen|adj|открытый||
+geschlossen|adj|закрытый||
+krank|adj|больной||
+gesund|adj|здоровый||
+müde|adj|усталый||
+glücklich|adj|счастливый||
+traurig|adj|грустный||
+nett|adj|милый; приятный||
+freundlich|adj|дружелюбный||
+wichtig|adj|важный||
+richtig|adj|правильный||
+falsch|adj|неправильный||
+möglich|adj|возможный||
+früh|adj|ранний||
+spät|adj|поздний||
+lang|adj|длинный||
+kurz|adj|короткий||
+hoch|adj|высокий||
+niedrig|adj|низкий||
+voll|adj|полный||
+leer|adj|пустой||
+rot|adj|красный||
+blau|adj|синий||
+grün|adj|зелёный||
+gelb|adj|жёлтый||
+schwarz|adj|чёрный||
+weiß|adj|белый||
+braun|adj|коричневый||
+grau|adj|серый||
+interessant|adj|интересный||
+langweilig|adj|скучный||
+lustig|adj|весёлый||
+lecker|adj|вкусный||
+hungrig|adj|голодный||
+durstig|adj|испытывающий жажду||
+frei|adj|свободный||
+besetzt|adj|занятый||
+kaputt|adj|сломанный||
+sauber|adj|чистый||
+schmutzig|adj|грязный||
+laut|adj|громкий||
+leise|adj|тихий||
+hell|adj|светлый||
+dunkel|adj|тёмный||
+nah|adj|близкий||
+weit|adj|далёкий||
+nächste|adj|следующий||
+letzte|adj|последний||
+links|adv|слева||
+rechts|adv|справа||
+null|num|ноль||
+eins|num|один||
+zwei|num|два||
+drei|num|три||
+vier|num|четыре||
+fünf|num|пять||
+sechs|num|шесть||
+sieben|num|семь||
+acht|num|восемь||
+neun|num|девять||
+zehn|num|десять||
+elf|num|одиннадцать||
+zwölf|num|двенадцать||
+zwanzig|num|двадцать||
+dreißig|num|тридцать||
+hundert|num|сто||
+tausend|num|тысяча||
+haben|verb|иметь||
+sein|verb|быть||
+werden|verb|становиться; вспомогательный глагол будущего||
+können|verb|мочь||
+müssen|verb|быть должным||
+wollen|verb|хотеть||
+sollen|verb|следует||
+dürfen|verb|мочь (иметь разрешение)||
+mögen|verb|любить; нравиться||
+machen|verb|делать||
+gehen|verb|идти||
+kommen|verb|приходить||
+sehen|verb|видеть||
+hören|verb|слышать||
+sprechen|verb|говорить||
+sagen|verb|сказать||
+fragen|verb|спрашивать||
+antworten|verb|отвечать||
+lernen|verb|учить; учиться||
+arbeiten|verb|работать||
+wohnen|verb|жить; проживать||
+leben|verb|жить||
+heißen|verb|называться||
+essen|verb|есть||
+trinken|verb|пить||
+schlafen|verb|спать||
+kaufen|verb|покупать||
+bezahlen|verb|платить||
+nehmen|verb|брать||
+geben|verb|давать||
+finden|verb|находить||
+suchen|verb|искать||
+spielen|verb|играть||
+lesen|verb|читать||
+schreiben|verb|писать||
+verstehen|verb|понимать||
+wissen|verb|знать (факт)||
+kennen|verb|знать; быть знакомым||
+helfen|verb|помогать||
+brauchen|verb|нуждаться||
+warten|verb|ждать||
+fahren|verb|ехать||
+laufen|verb|бежать; идти пешком||
+bleiben|verb|оставаться||
+liegen|verb|лежать||
+stehen|verb|стоять||
+sitzen|verb|сидеть||
+öffnen|verb|открывать||
+schließen|verb|закрывать||
+beginnen|verb|начинать||
+bringen|verb|приносить||
+holen|verb|приносить; забирать||
+tragen|verb|нести; носить||
+waschen|verb|мыть||
+kochen|verb|готовить||
+backen|verb|печь||
+putzen|verb|чистить||
+studieren|verb|учиться в вузе||
+tanzen|verb|танцевать||
+singen|verb|петь||
+schwimmen|verb|плавать||
+reisen|verb|путешествовать||
+besuchen|verb|посещать||
+anrufen|verb|звонить по телефону||
+treffen|verb|встречать||
+lieben|verb|любить||
+glauben|verb|верить; думать||
+denken|verb|думать||
+hoffen|verb|надеяться||
+bekommen|verb|получать||
+kosten|verb|стоить||
+fehlen|verb|отсутствовать; не хватать||
+gefallen|verb|нравиться||
+schmecken|verb|быть на вкус||
+regnen|verb|идти (о дожде)||
+schneien|verb|идти (о снеге)||
+zeigen|verb|показывать||
+erklären|verb|объяснять||
+wiederholen|verb|повторять||
+üben|verb|упражняться||
+vergessen|verb|забывать||
+erinnern|verb|помнить; напоминать||
+verlieren|verb|терять||
+gewinnen|verb|выигрывать||
+verkaufen|verb|продавать||
+bestellen|verb|заказывать||
+reservieren|verb|бронировать||
+einladen|verb|приглашать||
+aufstehen|verb|вставать||
+einkaufen|verb|делать покупки||
+fernsehen|verb|смотреть телевизор||
+aussehen|verb|выглядеть||
+ankommen|verb|прибывать||
+abfahren|verb|отъезжать||
+einsteigen|verb|садиться (в транспорт)||
+aussteigen|verb|выходить (из транспорта)||
+umsteigen|verb|делать пересадку||
+frühstücken|verb|завтракать||
+duschen|verb|принимать душ||
+gehören|verb|принадлежать||
+bedeuten|verb|значить||
+feiern|verb|праздновать||
+spazieren|verb|гулять||
+entschuldigen|verb|извинять||
+danken|verb|благодарить||
+es gibt|phrase|имеется; есть||
+Mann|noun|мужчина|m|Männer
+Frau|noun|женщина|f|Frauen
+Kind|noun|ребёнок|n|Kinder
+Junge|noun|мальчик|m|Jungen
+Mädchen|noun|девочка|n|Mädchen
+Familie|noun|семья|f|Familien
+Vater|noun|отец|m|Väter
+Mutter|noun|мать|f|Mütter
+Bruder|noun|брат|m|Brüder
+Schwester|noun|сестра|f|Schwestern
+Sohn|noun|сын|m|Söhne
+Tochter|noun|дочь|f|Töchter
+Eltern|noun|родители|pl|Eltern
+Freund|noun|друг|m|Freunde
+Freundin|noun|подруга|f|Freundinnen
+Mensch|noun|человек|m|Menschen
+Name|noun|имя|m|Namen
+Herr|noun|господин|m|Herren
+Haus|noun|дом|n|Häuser
+Wohnung|noun|квартира|f|Wohnungen
+Zimmer|noun|комната|n|Zimmer
+Küche|noun|кухня|f|Küchen
+Bad|noun|ванная|n|Bäder
+Tür|noun|дверь|f|Türen
+Fenster|noun|окно|n|Fenster
+Tisch|noun|стол|m|Tische
+Stuhl|noun|стул|m|Stühle
+Bett|noun|кровать|n|Betten
+Lampe|noun|лампа|f|Lampen
+Schrank|noun|шкаф|m|Schränke
+Garten|noun|сад|m|Gärten
+Treppe|noun|лестница|f|Treppen
+Schlüssel|noun|ключ|m|Schlüssel
+Adresse|noun|адрес|f|Adressen
+Essen|noun|еда|n|
+Frühstück|noun|завтрак|n|Frühstücke
+Mittagessen|noun|обед|n|
+Abendessen|noun|ужин|n|
+Brot|noun|хлеб|n|Brote
+Wasser|noun|вода|n|
+Kaffee|noun|кофе|m|
+Tee|noun|чай|m|
+Milch|noun|молоко|f|
+Saft|noun|сок|m|Säfte
+Apfel|noun|яблоко|m|Äpfel
+Banane|noun|банан|f|Bananen
+Orange|noun|апельсин|f|Orangen
+Ei|noun|яйцо|n|Eier
+Käse|noun|сыр|m|
+Suppe|noun|суп|f|Suppen
+Fleisch|noun|мясо|n|
+Fisch|noun|рыба|m|Fische
+Reis|noun|рис|m|
+Kartoffel|noun|картофель|f|Kartoffeln
+Salat|noun|салат|m|Salate
+Kuchen|noun|пирог|m|Kuchen
+Eis|noun|мороженое|n|
+Bier|noun|пиво|n|Biere
+Wein|noun|вино|m|Weine
+Salz|noun|соль|n|
+Zucker|noun|сахар|m|
+Butter|noun|сливочное масло|f|
+Gemüse|noun|овощи|n|
+Obst|noun|фрукты|n|
+Restaurant|noun|ресторан|n|Restaurants
+Café|noun|кафе|n|Cafés
+Speisekarte|noun|меню|f|Speisekarten
+Rechnung|noun|счёт|f|Rechnungen
+Kellner|noun|официант|m|Kellner
+Kellnerin|noun|официантка|f|Kellnerinnen
+Stadt|noun|город|f|Städte
+Dorf|noun|деревня|n|Dörfer
+Straße|noun|улица|f|Straßen
+Platz|noun|площадь|m|Plätze
+Bahnhof|noun|вокзал|m|Bahnhöfe
+Flughafen|noun|аэропорт|m|Flughäfen
+Bus|noun|автобус|m|Busse
+Zug|noun|поезд|m|Züge
+Auto|noun|машина|n|Autos
+Fahrrad|noun|велосипед|n|Fahrräder
+Fahrkarte|noun|билет|f|Fahrkarten
+Fahrplan|noun|расписание|m|Fahrpläne
+Taxi|noun|такси|n|Taxis
+Haltestelle|noun|остановка|f|Haltestellen
+Flug|noun|рейс|m|Flüge
+Flugzeug|noun|самолёт|n|Flugzeuge
+Reise|noun|поездка|f|Reisen
+Urlaub|noun|отпуск|m|Urlaube
+Hotel|noun|отель|n|Hotels
+Schule|noun|школа|f|Schulen
+Klasse|noun|класс|f|Klassen
+Lehrer|noun|учитель|m|Lehrer
+Lehrerin|noun|учительница|f|Lehrerinnen
+Schüler|noun|ученик|m|Schüler
+Schülerin|noun|ученица|f|Schülerinnen
+Buch|noun|книга|n|Bücher
+Heft|noun|тетрадь|n|Hefte
+Stift|noun|ручка|m|Stifte
+Aufgabe|noun|задание|f|Aufgaben
+Prüfung|noun|экзамен|f|Prüfungen
+Sprache|noun|язык|f|Sprachen
+Wort|noun|слово|n|Wörter
+Satz|noun|предложение|m|Sätze
+Frage|noun|вопрос|f|Fragen
+Antwort|noun|ответ|f|Antworten
+Hausaufgabe|noun|домашнее задание|f|Hausaufgaben
+Universität|noun|университет|f|Universitäten
+Student|noun|студент|m|Studenten
+Studentin|noun|студентка|f|Studentinnen
+Arbeit|noun|работа|f|Arbeiten
+Beruf|noun|профессия|m|Berufe
+Büro|noun|офис|n|Büros
+Kollege|noun|коллега|m|Kollegen
+Kollegin|noun|коллега|f|Kolleginnen
+Chef|noun|начальник|m|Chefs
+Chefin|noun|начальница|f|Chefinnen
+Geld|noun|деньги|n|
+Euro|noun|евро|m|
+Preis|noun|цена|m|Preise
+Laden|noun|магазин|m|Läden
+Markt|noun|рынок|m|Märkte
+Geschäft|noun|магазин|n|Geschäfte
+Apotheke|noun|аптека|f|Apotheken
+Bank|noun|банк|f|Banken
+Firma|noun|фирма|f|Firmen
+Tag|noun|день|m|Tage
+Woche|noun|неделя|f|Wochen
+Monat|noun|месяц|m|Monate
+Jahr|noun|год|n|Jahre
+Stunde|noun|час|f|Stunden
+Minute|noun|минута|f|Minuten
+Morgen|noun|утро|m|
+Abend|noun|вечер|m|Abende
+Nacht|noun|ночь|f|Nächte
+Zeit|noun|время|f|Zeiten
+Montag|noun|понедельник|m|Montage
+Dienstag|noun|вторник|m|Dienstage
+Mittwoch|noun|среда|m|Mittwoche
+Donnerstag|noun|четверг|m|Donnerstage
+Freitag|noun|пятница|m|Freitage
+Samstag|noun|суббота|m|Samstage
+Sonntag|noun|воскресенье|m|Sonntage
+Januar|noun|январь|m|
+Februar|noun|февраль|m|
+März|noun|март|m|
+April|noun|апрель|m|
+Mai|noun|май|m|
+Juni|noun|июнь|m|
+Juli|noun|июль|m|
+August|noun|август|m|
+September|noun|сентябрь|m|
+Oktober|noun|октябрь|m|
+November|noun|ноябрь|m|
+Dezember|noun|декабрь|m|
+Frühling|noun|весна|m|
+Sommer|noun|лето|m|
+Herbst|noun|осень|m|
+Winter|noun|зима|m|
+Wochenende|noun|выходные|n|Wochenenden
+Geburtstag|noun|день рождения|m|Geburtstage
+Kopf|noun|голова|m|Köpfe
+Auge|noun|глаз|n|Augen
+Ohr|noun|ухо|n|Ohren
+Nase|noun|нос|f|Nasen
+Mund|noun|рот|m|Münder
+Zahn|noun|зуб|m|Zähne
+Hand|noun|рука|f|Hände
+Arm|noun|рука|m|Arme
+Bein|noun|нога|n|Beine
+Fuß|noun|стопа|m|Füße
+Herz|noun|сердце|n|Herzen
+Rücken|noun|спина|m|
+Bauch|noun|живот|m|Bäuche
+Haar|noun|волос|n|Haare
+Hemd|noun|рубашка|n|Hemden
+Hose|noun|брюки|f|Hosen
+Kleid|noun|платье|n|Kleider
+Schuh|noun|туфля|m|Schuhe
+Jacke|noun|куртка|f|Jacken
+Mantel|noun|пальто|m|Mäntel
+Tasche|noun|сумка|f|Taschen
+Brille|noun|очки|f|Brillen
+Wetter|noun|погода|n|
+Sonne|noun|солнце|f|Sonnen
+Regen|noun|дождь|m|
+Schnee|noun|снег|m|
+Wind|noun|ветер|m|Winde
+Wolke|noun|облако|f|Wolken
+Himmel|noun|небо|m|
+Land|noun|страна|n|Länder
+Deutschland|name|Германия||
+Arzt|noun|врач|m|Ärzte
+Ärztin|noun|врач|f|Ärztinnen
+Krankenhaus|noun|больница|n|Krankenhäuser
+Medizin|noun|лекарство|f|Medikamente
+Schmerz|noun|боль|m|Schmerzen
+Telefon|noun|телефон|n|Telefone
+Computer|noun|компьютер|m|Computer
+Internet|noun|интернет|n|
+Nummer|noun|номер|f|Nummern
+Musik|noun|музыка|f|
+Film|noun|фильм|m|Filme
+Kino|noun|кино|n|Kinos
+Sport|noun|спорт|m|
+Fußball|noun|футбол|m|
+Spiel|noun|игра|n|Spiele
+Hund|noun|собака|m|Hunde
+Katze|noun|кошка|f|Katzen
+Vogel|noun|птица|m|Vögel
+Tier|noun|животное|n|Tiere
+Blume|noun|цветок|f|Blumen
+Baum|noun|дерево|m|Bäume
+Park|noun|парк|m|Parks
+Ausweis|noun|удостоверение|m|Ausweise
+Pass|noun|паспорт|m|Pässe
+Karte|noun|карта|f|Karten
+Uhr|noun|часы|f|Uhren
+Problem|noun|проблема|n|Probleme
+Hilfe|noun|помощь|f|
+Idee|noun|идея|f|Ideen
+Farbe|noun|цвет|f|Farben
+Hunger|noun|голод|m|
+Durst|noun|жажда|m|
+Liebe|noun|любовь|f|
+Glück|noun|счастье|n|
+Angst|noun|страх|f|Ängste
+Fehler|noun|ошибка|m|Fehler
+Beispiel|noun|пример|m|Beispiele
+Seite|noun|страница|f|Seiten
+Bild|noun|картина|n|Bilder
+Zeitung|noun|газета|f|Zeitungen
+Brief|noun|письмо|m|Briefe
+Vorname|noun|имя|m|Vornamen
+Nachname|noun|фамилия|m|Nachnamen
+Ort|noun|место|n|Orte
+Zentrum|noun|центр|n|Zentren
+Brücke|noun|мост|f|Brücken
+Fluss|noun|река|m|Flüsse
+See|noun|озеро|m|Seen
+Meer|noun|море|n|Meere
+Berg|noun|гора|m|Berge
+Wald|noun|лес|m|Wälder
+Insel|noun|остров|f|Inseln
+Museum|noun|музей|n|Museen
+Kirche|noun|церковь|f|Kirchen
+Theater|noun|театр|n|Theater
+Bibliothek|noun|библиотека|f|Bibliotheken
+Supermarkt|noun|супермаркет|m|Supermärkte
+Bäckerei|noun|пекарня|f|Bäckereien
+Rathaus|noun|ратуша|n|Rathäuser
+Post|noun|почта|f|
+Polizei|noun|полиция|f|
+Feuerwehr|noun|пожарная команда|f|
+Gast|noun|гость|m|Gäste
+Geschenk|noun|подарок|n|Geschenke
+Fest|noun|праздник|n|Feste
+Party|noun|вечеринка|f|Partys
+Einladung|noun|приглашение|f|Einladungen

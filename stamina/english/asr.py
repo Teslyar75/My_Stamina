@@ -29,8 +29,10 @@ def _module_present(name: str) -> bool:
 
 
 class ASR:
-    def __init__(self) -> None:
+    def __init__(self, model_dir=None) -> None:
+        # None — английская модель, как раньше. Свой каталог — у сканера языка.
         self.model = None
+        self._model_dir = paths.Path(model_dir) if model_dir else None
         self.status = _t("не загружен")
         self.events: queue.Queue = queue.Queue()
         self._stop = threading.Event()
@@ -45,18 +47,27 @@ class ASR:
             _LIBS_OK = _module_present("sounddevice") and _module_present("vosk")
         return _LIBS_OK
 
+    def _dir(self):
+        if self._model_dir is not None:
+            folder = self._model_dir
+            if folder.is_dir() and (folder / "am").is_dir():
+                return folder
+            return None
+        return paths.vosk_model_dir()
+
     def available(self) -> bool:
-        return self.libs_ok() and paths.vosk_model_dir() is not None
+        return self.libs_ok() and self._dir() is not None
 
     def why_unavailable(self) -> str:
         if not self.libs_ok():
             return _t("нет библиотек vosk / sounddevice (pip install vosk sounddevice)")
-        if paths.vosk_model_dir() is None:
-            return _t("нет модели Vosk в {0}").format(paths.MODELS_DIR)
+        if self._dir() is None:
+            return _t("нет модели Vosk в {0}").format(self._model_dir or paths.MODELS_DIR)
         return self.status
 
     def load_async(self) -> None:
-        if self.model is not None or self._loading or not self.available():
+        folder = self._dir()
+        if self.model is not None or self._loading or folder is None:
             return
         self._loading = True
 
@@ -65,7 +76,7 @@ class ASR:
                 import vosk
                 vosk.SetLogLevel(-1)
                 self.status = _t("загрузка модели…")
-                self.model = vosk.Model(str(paths.vosk_model_dir()))
+                self.model = vosk.Model(str(folder))
                 self.status = _t("готов")
             except Exception as exc:  # noqa: BLE001
                 self.status = _t("ошибка: {0}").format(exc)

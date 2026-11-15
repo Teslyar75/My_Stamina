@@ -50,22 +50,27 @@ while ($true) {
     $task = $in.ReadLineAsync()
     $line = $line.Trim()
     if ($line -eq '') { continue }
-    $p = $line.Split('|', 4)
+    $p = $line.Split('|', 5)
     if ($p[0] -eq 'STOP') {
       if ($cur -ne $null) { $s.SpeakAsyncCancelAll(); Out ('CANCEL|' + $curId); $cur = $null; $curId = '' }
       continue
     }
-    if ($p[0] -eq 'SAY' -and $p.Length -eq 4) {
+    if ($p[0] -eq 'SAY' -and ($p.Length -eq 4 -or $p.Length -eq 5)) {
       try {
         if ($cur -ne $null) { $s.SpeakAsyncCancelAll(); Out ('CANCEL|' + $curId); $cur = $null }
         if ($s.State -eq 'Ready') { try { $s.SetOutputToDefaultAudioDevice() } catch { } }  # если сменили устройство вывода
         $s.Rate = [Math]::Max(-10, [Math]::Min(10, [int]$p[2]))
         $t = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($p[3]))
-        # Русский текст → голос ru-*, иначе en-* (английский голос «молчит» на кириллице)
-        $want = if ($t -match '[\u0400-\u04FF]') { 'ru-*' } else { 'en-*' }
+        # Пятое поле — культура (de-*, es-*). Без него: кириллица ru-*, иначе en-*.
+        if ($p.Length -eq 5 -and $p[4] -ne '') { $want = $p[4] }
+        elseif ($t -match '[\u0400-\u04FF]') { $want = 'ru-*' } else { $want = 'en-*' }
         $nv = $s.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -like $want } | Select-Object -First 1
         if (-not $nv -and $want -eq 'ru-*') {
           Out ('ERR|' + $p[1] + '|нет русского голоса Windows (Параметры → Время и язык → Речь)')
+          continue
+        }
+        if (-not $nv -and $p.Length -eq 5 -and $p[4] -ne '') {
+          Out ('ERR|' + $p[1] + '|нет голоса Windows ' + $want + ' (Параметры → Время и язык → Речь)')
           continue
         }
         if ($nv) { $s.SelectVoice($nv.VoiceInfo.Name) }
@@ -195,7 +200,7 @@ class TTS:
             self.proc = None
             return False
 
-    def speak(self, text: str, rate: int = 0) -> int:
+    def speak(self, text: str, rate: int = 0, culture: str = "") -> int:
         """rate: −10…10 (0 — обычная, −4 — медленно). Возвращает id фразы (0 — не отправлено,
         причина в событии ('error', 0, текст))."""
         if not text:
@@ -214,9 +219,10 @@ class TTS:
                 self._speak_linux(sid, text, rate)
                 return sid
             data = base64.b64encode(text.encode("utf-8")).decode("ascii")
-            if not self._send(f"SAY|{sid}|{int(rate)}|{data}"):
+            tail = f"|{culture}" if culture else ""
+            if not self._send(f"SAY|{sid}|{int(rate)}|{data}{tail}"):
                 # одна попытка перезапуска процесса
-                if not (self._ensure() and self._send(f"SAY|{sid}|{int(rate)}|{data}")):
+                if not (self._ensure() and self._send(f"SAY|{sid}|{int(rate)}|{data}{tail}")):
                     self.events.put(("error", sid, self.why_unavailable()))
             return sid
 

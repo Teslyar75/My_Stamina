@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from stamina.i18n import t
 
-ZONE_ORDER = ("bridge", "english", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab",
+ZONE_ORDER = ("bridge", "english", "languages", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab",
               "terraformer", "settings")
 
 # подменю Мостика: (экран, подпись)
@@ -26,6 +26,7 @@ BRIDGE_LEAVES = (
 ZONE_TITLES = {
     "bridge": "МОСТИК",
     "english": "АНГЛИЙСКИЙ",
+    "languages": "ИНОСТРАННЫЕ ЯЗЫКИ",
     "speedread": "СКОРОЧТЕНИЕ",
     "lounge": "ОТДЫХ",
     "radio": "РАДИОРУБКА",
@@ -73,7 +74,7 @@ def path(screen: str | None) -> list[tuple[str, str]]:
 
 # Зоны с постоянной клавишей вне счёта Ctrl+1…9: остальные нумеруются по порядку,
 # поэтому новая зона не сдвигает привычные Ctrl+N (НАСТРОЙКИ остаются Ctrl+9).
-FIXED_HOTKEYS = {"lab": "0", "terraformer": None}
+FIXED_HOTKEYS = {"lab": "0", "terraformer": None, "languages": None}
 
 
 def zone_hotkeys(names: list[str]) -> list[tuple[str, str]]:
