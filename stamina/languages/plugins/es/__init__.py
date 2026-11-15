@@ -176,7 +176,11 @@ class SpanishPlugin(LanguagePlugin):
     }
 
     def load_vocab(self) -> VocabSource:
-        return SpanishVocabSource()
+        from stamina.languages.core.json_vocab import load_vocab_file
+        src = SpanishVocabSource()
+        src._words = load_vocab_file(Path(__file__).parent / "vocab_a1.json")
+        src._loaded = True
+        return src
 
     def get_grammar_engine(self) -> GrammarEngine:
         return SpanishGrammarEngine()

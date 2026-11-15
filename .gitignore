@@ -93,3 +93,6 @@ _*.ps1
 
 # external analysis sandboxes (contain secrets/db copies)
 Qoder/
+
+# Сырьё словарей (Tatoeba, частотные списки). В репозиторий не кладём.
+data/vocab_sources/
