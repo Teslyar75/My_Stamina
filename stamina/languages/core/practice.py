@@ -49,6 +49,17 @@ class MissionGenerator:
         random.shuffle(missions)
         return missions
 
+    def cards_session(self, slugs: list[str], limit: int = 10) -> list[Mission]:
+        """Свободная практика по набору: без учёта расписания, только слова."""
+        self._pool = list(slugs)
+        missions: list[Mission] = []
+        for slug in self._pool[:limit]:
+            word = self.vocab.get_word(slug)
+            if word:
+                missions.append(self._make_new_mission(word))
+        random.shuffle(missions)
+        return missions
+
     def _make_review_mission(self, word: WordEntry) -> Mission:
         modes = ["choice", "type", "speak", "listen"]
         mode = random.choice(modes)

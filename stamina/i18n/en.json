@@ -2812,5 +2812,8 @@
  "СКАЖИ ПРЕДЛОЖЕНИЕ": "SAY THE SENTENCE",
  "примера пока нет": "no example yet",
  "Клик по слову — сканер слова и фразы.": "Click a word — scanner for the word and the phrase.",
- "модель речи для {0} ещё скачивается": "speech model for {0} is still downloading"
+ "модель речи для {0} ещё скачивается": "speech model for {0} is still downloading",
+ "Токен GitHub больше не действует — истёк срок или его отозвали.": "The GitHub token is no longer valid — it has expired or was revoked.",
+ "Создайте новый: {url} — Discussions и Contents: Read and write.": "Create a new one: {url} — Discussions and Contents: Read and write.",
+ "Затем вставьте его в «Подключить агента» и нажмите «Проверить связь».": "Then paste it into «Connect an agent» and press «Check the link»."
 }

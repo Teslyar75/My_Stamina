@@ -256,3 +256,64 @@ class LanguageProgress:
     def get_new_cards(self, slugs: list[str], limit: int = 20) -> list[str]:
         new = [s for s in slugs if s not in self.data["cards"]]
         return new[:limit]
+
+    # -- отсеки (именованные списки слов) -------------------------------------
+    @property
+    def lists(self) -> list[dict]:
+        return self.data["lists"]
+
+    def list_by_id(self, lid: str) -> dict | None:
+        return next((l for l in self.lists if l["id"] == lid), None)
+
+    def create_list(self, name: str) -> dict:
+        item = {
+            "id": f"l{int(time.time() * 1000)}",
+            "name": name.strip() or "Новый отсек",
+            "slugs": [],
+            "created": _today(),
+        }
+        self.lists.append(item)
+        self.save()
+        return item
+
+    def rename_list(self, lid: str, name: str) -> None:
+        item = self.list_by_id(lid)
+        if item and name.strip():
+            item["name"] = name.strip()
+            self.save()
+
+    def delete_list(self, lid: str) -> None:
+        if lid != "favorites":
+            self.data["lists"] = [l for l in self.lists if l["id"] != lid]
+            self.save()
+
+    def toggle_in_list(self, lid: str, slug: str) -> bool:
+        item = self.list_by_id(lid)
+        if not item:
+            return False
+        if slug in item["slugs"]:
+            item["slugs"].remove(slug)
+            self.save()
+            return False
+        item["slugs"].append(slug)
+        self.save()
+        return True
+
+    def lists_of(self, slug: str) -> list[str]:
+        return [l["id"] for l in self.lists if slug in l["slugs"]]
+
+    # -- журнал ---------------------------------------------------------------
+    def recent_attempts(self, limit: int = 60) -> list[dict]:
+        return sorted(self.data.get("attempts", []), key=lambda a: a.get("ts", 0), reverse=True)[:limit]
+
+    def mistakes(self, days: int = 7) -> list[str]:
+        cutoff = time.time() - days * 86400
+        bad: list[tuple[float, str]] = []
+        for attempt in self.data.get("attempts", []):
+            if attempt.get("ts", 0) >= cutoff and not attempt.get("correct"):
+                bad.append((attempt["ts"], attempt.get("slug", "")))
+        out: list[str] = []
+        for _ts, slug in sorted(bad, reverse=True):
+            if slug and slug not in out:
+                out.append(slug)
+        return out

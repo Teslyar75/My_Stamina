@@ -1404,6 +1404,8 @@ class Cockpit(tk.Tk):
             self.screens[speedread_hook.KEY].on_key(e)
         elif self.current == lounge_hook.KEY:
             self.screens[lounge_hook.KEY].on_key(e)
+        elif self.current == languages_hook.KEY:
+            self.screens[languages_hook.KEY].on_key(e)
         elif self.current == radio_hook.KEY:
             self.screens[radio_hook.KEY].on_key(e)
         elif self.current == comm_hook.KEY:

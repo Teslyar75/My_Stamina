@@ -1,4 +1,4 @@
-"""Речь немецкого и испанского сканера.
+"""Речь языкового отсека: de, es, fr, it.
 
 Та же связка, что в английском отсеке: Vosk слушает, оценка слова и фразы
 считается теми же функциями. Модели лежат в models/lang/, не в корне models/,
@@ -26,8 +26,16 @@ MODELS = {
         "vosk-model-small-es-0.42",
         "https://alphacephei.com/vosk/models/vosk-model-small-es-0.42.zip",
     ),
+    "fr": (
+        "vosk-model-small-fr-0.22",
+        "https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip",
+    ),
+    "it": (
+        "vosk-model-small-it-0.22",
+        "https://alphacephei.com/vosk/models/vosk-model-small-it-0.22.zip",
+    ),
 }
-CULTURE = {"de": "de-*", "es": "es-*"}
+CULTURE = {"de": "de-*", "es": "es-*", "fr": "fr-*", "it": "it-*"}
 
 _asr: dict[str, "LangASR"] = {}
 _tts: TTS | None = None
@@ -137,6 +145,8 @@ import tempfile
 _VOICES = {
     "de": "de-DE-KatjaNeural",
     "es": "es-ES-ElviraNeural",
+    "fr": "fr-FR-DeniseNeural",
+    "it": "it-IT-ElsaNeural",
 }
 _player = None
 _player_lock = threading.Lock()
