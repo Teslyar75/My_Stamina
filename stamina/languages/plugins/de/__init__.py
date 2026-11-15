@@ -160,6 +160,7 @@ class GermanPlugin(LanguagePlugin):
         FreqSet("goethe-b2", 5000, "Goethe B2", "ГЕТЕ B2", "G-B2"),
         FreqSet("goethe-c1", 10000, "Goethe C1", "ГЕТЕ C1", "G-C1"),
         FreqSet("goethe-c2", 20000, "Goethe C2", "ГЕТЕ C2", "G-C2"),
+        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
     ]
     thematic_sets = {
         "dtz": ThematicSet("dtz", "DTZ (Deutsch-Test für Zuwanderer)", "Vocab for DTZ exam"),
@@ -171,8 +172,10 @@ class GermanPlugin(LanguagePlugin):
 
     def load_vocab(self) -> VocabSource:
         from stamina.languages.core.json_vocab import load_vocab_file
+        from stamina.languages.core.sqlite_vocab import attach_sqlite, sqlite_path
         src = GermanVocabSource()
         src._words = load_vocab_file(Path(__file__).parent / "vocab_a1.json")
+        attach_sqlite(src, sqlite_path(), "de")
         src._loaded = True
         return src
 

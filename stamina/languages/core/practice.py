@@ -25,8 +25,10 @@ class MissionGenerator:
         self.vocab = vocab
         self.progress = progress
         self.settings = settings
+        self._pool: list[str] = []
 
     def generate_session(self, slugs: list[str], new_limit: int = None, review_limit: int = None) -> list[Mission]:
+        self._pool = list(slugs)
         new_limit = new_limit or self.settings.get("new_per_day", 20)
         review_limit = review_limit or self.settings.get("reviews_per_day", 200)
 
@@ -61,11 +63,13 @@ class MissionGenerator:
 
         if mode == "choice":
             options = [expected]
-            all_words = list(self.vocab.get_all_slugs())
-            random.shuffle(all_words)
-            for sw in all_words:
+            pool = list(self._pool)
+            random.shuffle(pool)
+            for sw in pool:
                 if len(options) >= 4:
                     break
+                if sw == word.slug:
+                    continue
                 w = self.vocab.get_word(sw)
                 if w and w.translations.get("ru", [""])[0] != expected:
                     options.append(w.translations.get("ru", [""])[0])

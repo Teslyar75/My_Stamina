@@ -2790,5 +2790,18 @@
  "стены": "Wände",
  "стены и инфраструктура": "Wände und Infrastruktur",
  "укрытие": "Unterkunft",
- "укрытие и инфраструктура": "Unterkunft und Infrastruktur"
+ "укрытие и инфраструктура": "Unterkunft und Infrastruktur",
+ "В МИССИИ": "ZUR MISSION",
+ "Слова: {0}": "Wörter: {0}",
+ "Показаны первые {0} из {1}": "Erste {0} von {1}",
+ "Нет слов в наборе": "Keine Wörter in diesem Satz",
+ "Задание {0} из {1}": "Aufgabe {0} von {1}",
+ "ВЕРНО": "RICHTIG",
+ "Мимо": "DANEBEN",
+ "Миссия пройдена": "Mission geschafft",
+ "Нет карточек на сегодня": "Heute keine Karten",
+ "Интервал: {0} дн.": "Intervall: {0} Tage",
+ "Поиск слова": "Wort suchen",
+ "Карточек: {0}": "Karten: {0}",
+ "Ничего не найдено": "Nichts gefunden"
 }

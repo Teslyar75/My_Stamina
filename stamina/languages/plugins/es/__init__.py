@@ -166,6 +166,7 @@ class SpanishPlugin(LanguagePlugin):
         FreqSet("cervantes-b2", 5000, "Cervantes B2", "СЕРВАНТЕС B2", "C-B2"),
         FreqSet("cervantes-c1", 10000, "Cervantes C1", "СЕРВАНТЕС C1", "C-C1"),
         FreqSet("cervantes-c2", 20000, "Cervantes C2", "СЕРВАНТЕС C2", "C-C2"),
+        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
     ]
     thematic_sets = {
         "dele": ThematicSet("dele", "DELE Exams", "Vocab for DELE certification"),
@@ -177,8 +178,10 @@ class SpanishPlugin(LanguagePlugin):
 
     def load_vocab(self) -> VocabSource:
         from stamina.languages.core.json_vocab import load_vocab_file
+        from stamina.languages.core.sqlite_vocab import attach_sqlite, sqlite_path
         src = SpanishVocabSource()
         src._words = load_vocab_file(Path(__file__).parent / "vocab_a1.json")
+        attach_sqlite(src, sqlite_path(), "es")
         src._loaded = True
         return src
 

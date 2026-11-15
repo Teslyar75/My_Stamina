@@ -2792,5 +2792,18 @@
  "стены": "walls",
  "стены и инфраструктура": "walls and infrastructure",
  "укрытие": "shelter",
- "укрытие и инфраструктура": "shelter and infrastructure"
+ "укрытие и инфраструктура": "shelter and infrastructure",
+ "В МИССИИ": "TO MISSIONS",
+ "Слова: {0}": "Words: {0}",
+ "Показаны первые {0} из {1}": "First {0} of {1}",
+ "Нет слов в наборе": "No words in this set",
+ "Задание {0} из {1}": "Task {0} of {1}",
+ "ВЕРНО": "CORRECT",
+ "Мимо": "MISS",
+ "Миссия пройдена": "Mission complete",
+ "Нет карточек на сегодня": "No cards due today",
+ "Интервал: {0} дн.": "Interval: {0} d",
+ "Поиск слова": "Find a word",
+ "Карточек: {0}": "Cards: {0}",
+ "Ничего не найдено": "Nothing found"
 }
