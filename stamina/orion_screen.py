@@ -2849,7 +2849,9 @@ class OrionScreen(tk.Frame):
             self._show_stop(False)
             err = sent.get("error") or "network"
             detail = f" ({sent['detail']})" if sent.get("detail") else ""
-            if err == "bridge_perm":
+            if err == "bridge_token":
+                note = ship_chat.token_hint() + detail
+            elif err == "bridge_perm":
                 note = ship_chat.permission_hint(sent.get("repo") or str(rec.get("bridge_repo") or ""),
                                                  sent.get("need") or "") + detail
             elif err == "config":

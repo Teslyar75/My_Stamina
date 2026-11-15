@@ -177,7 +177,7 @@ class TestLanguageRegistry:
         reg = get_registry()
         reg.discover()
         for plugin in reg.all():
-            assert plugin.code in ("en", "de", "es")
+            assert plugin.code in ("en", "de", "es", "fr", "it")
             assert plugin.name_native
             assert plugin.name_target
             assert plugin.flag_emoji

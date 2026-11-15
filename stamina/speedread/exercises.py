@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from stamina.i18n import t as _t
 
+import math
 import random
 import time
 import tkinter as tk
@@ -20,10 +21,10 @@ CATALOG = [
     ("E-GRB", _t("Таблица Горбова"), _t("Чёрные ↑ и красные ↓ поочерёдно"), True),
     ("E-PYR", _t("Пирамида"), _t("Расширение поля зрения по клину"), True),
     ("E-TAC", _t("Вспышка"), _t("Тахистоскоп: слова на 50–300 мс"), True),
-    ("E-FND", _t("Поиск слов"), _t("Найди заданные слова в тексте"), False),
-    ("E-GAP", _t("Пропущенные буквы"), _t("Прочти слова с пропусками"), False),
-    ("E-EYE", _t("Глазодвигатель"), _t("Точки-мишени, саккады"), False),
-    ("E-PCR", _t("Указка"), _t("Ведущая строка без возвратов"), False),
+    ("E-FND", _t("Поиск слов"), _t("Найди заданные слова в тексте"), True),
+    ("E-GAP", _t("Пропущенные буквы"), _t("Прочти слова с пропусками"), True),
+    ("E-EYE", _t("Глазодвигатель"), _t("Точки-мишени, саккады"), True),
+    ("E-PCR", _t("Указка"), _t("Ведущая строка без возвратов"), True),
 ]
 
 RU_ABC = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ"
@@ -430,6 +431,510 @@ class PyramidEx(ExerciseBase):
 
 
 # ---------------------------------------------------------------------------
+class FindEx(ExerciseBase):
+    """Поиск слов: найти заданные слова в тексте за время."""
+    code = "E-FND"
+
+    def __init__(self, master, ctx, on_exit) -> None:
+        super().__init__(master, ctx, on_exit)
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-FND · ПОИСК СЛОВ"))
+        self.h2.configure(text=_t("текст ниже — найдите все целевые слова (подсвечены) и кликните по ним · R — новый текст"))
+        self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.bind("<Configure>", lambda _e: self.draw())
+        self.canvas.bind("<Button-1>", self.click)
+        row = tk.Frame(self.body, bg=BG)
+        row.pack(pady=px(8))
+        HudButton(row, _t("⟲ НОВЫЙ ТЕКСТ  R"), self.new, color=AMBER, height=34).pack(side=tk.LEFT)
+        self.lbl_time = L(row, "", fg=CYAN, size=11, bold=True, mono=True)
+        self.lbl_time.pack(side=tk.LEFT, padx=px(20))
+        self.lbl_score = L(row, "", fg=AMBER, size=11, bold=True, mono=True)
+        self.lbl_score.pack(side=tk.LEFT, padx=px(20))
+        self.result = L(self.body, "", fg=AMBER, size=11, bold=True, bg=BG)
+        self.result.pack(pady=px(6))
+        self.new()
+
+    def _pool(self) -> list[str]:
+        lang = self.ctx.sstore.settings.get("fnd_lang") or reading_lang(self.ctx)
+        words: list[str] = []
+        try:
+            lib = self.ctx.lib
+            tid = lib.index.get("active_reading")
+            if tid:
+                import re
+                txt = lib.reading_text(tid)[:300000]
+                words = [w.lower() for w in re.findall(r"[^\W\d_]{4,12}", txt)]
+                if words:
+                    return list(dict.fromkeys(words))
+        except Exception:  # noqa: BLE001
+            pass
+        base = FLASH_WORDS.get(lang, FLASH_WORDS["en"])
+        return [w for w in base.split() if len(w) >= 4]
+
+    def new(self) -> None:
+        self.stop()
+        self.pool = self._pool()
+        self.text = " ".join(random.choice(self.pool) for _ in range(200))
+        self.words = self.text.split()
+        self.targets = random.sample([w for w in set(self.words) if len(w) >= 4], k=min(8, len(set(self.words))))
+        self.found = set()
+        self.t0 = None
+        self.done = False
+        self.draw()
+
+    def draw(self) -> None:
+        c = self.canvas
+        c.delete("all")
+        w, h = c.winfo_width(), c.winfo_height()
+        if w < 50:
+            return
+        f = theme.font(13)
+        import tkinter.font as tkfont
+        tf = tkfont.Font(font=f)
+        lh = tf.metrics("linespace")
+        x, y = px(20), px(20)
+        max_w = w - px(40)
+        self._spans = []
+        for word in self.words:
+            tw = tf.measure(word + " ")
+            if x + tw > max_w:
+                x = px(20)
+                y += lh
+            is_target = word in self.targets and word not in self.found
+            color = AMBER if is_target else (GREEN if word in self.found else TEXT)
+            self._spans.append((x, y, x + tf.measure(word), y + lh, word, is_target))
+            c.create_text(x, y, text=word + " ", anchor="nw", fill=color, font=f)
+            x += tw
+
+    def click(self, e) -> None:
+        if self.done:
+            return
+        for x0, y0, x1, y1, word, is_target in getattr(self, "_spans", []):
+            if x0 <= e.x <= x1 and y0 <= e.y <= y1:
+                if is_target:
+                    if self.t0 is None:
+                        self.t0 = time.perf_counter()
+                        self._tick()
+                    self.found.add(word)
+                    if len(self.found) >= len(self.targets):
+                        self.finish()
+                else:
+                    self.flash_wrong(x0, y0, x1, y1)
+                self.draw()
+                self._update()
+                return
+
+    def flash_wrong(self, x0, y0, x1, y1) -> None:
+        c = self.canvas
+        c.create_rectangle(x0, y0, x1, y1, fill=blend(RED, BG, 0.5), outline=RED)
+        self.after(150, self.draw)
+
+    def _tick(self) -> None:
+        self._job = None
+        if self.done or self.t0 is None:
+            return
+        self.lbl_time.configure(text=fmt_s(time.perf_counter() - self.t0))
+        self._job = self.after(100, self._tick)
+
+    def _update(self) -> None:
+        self.lbl_score.configure(text=_t("{0}/{1}").format(len(self.found), len(self.targets)))
+
+    def finish(self) -> None:
+        self.done = True
+        self.stop()
+        elapsed = time.perf_counter() - self.t0 if self.t0 else 0
+        self.lbl_time.configure(text=fmt_s(elapsed))
+        stars = stars_for(elapsed, (15, 25, 40))
+        xp, rec = self.ctx.sstore.add_exercise(self.code, "default", elapsed, stars)
+        self.ctx.changed()
+        self.result.configure(text=_t("ВРЕМЯ {0}  {1}{2}  +{3} XP").format(fmt_s(elapsed), '★' * stars, '☆' * (3 - stars), xp) + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""))
+
+    def on_key(self, e) -> None:
+        if e.keysym in ("r", "R", "Cyrillic_ka", "Cyrillic_KA"):
+            self.new()
+        else:
+            super().on_key(e)
+
+
+# ---------------------------------------------------------------------------
+class GapEx(ExerciseBase):
+    """Пропущенные буквы: слова с пропусками, нужно ввести полное слово."""
+    code = "E-GAP"
+    ROUNDS = 12
+
+    def __init__(self, master, ctx, on_exit) -> None:
+        super().__init__(master, ctx, on_exit)
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-GAP · ПРОПУЩЕННЫЕ БУКВЫ"))
+        self.h2.configure(text=_t("слово с пропусками мелькнёт · введите полное слово и Enter"))
+        self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0, height=px(200))
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.bind("<Configure>", lambda _e: self._frame())
+        row = tk.Frame(self.body, bg=BG)
+        row.pack(pady=px(8))
+        self.inp = entry(row, width=30, size=16, mono=True)
+        self.inp.pack(side=tk.LEFT, ipady=px(4))
+        self.inp.bind("<Return>", lambda _e: self.check())
+        HudButton(row, _t("ПРОВЕРИТЬ  ENTER"), self.check, color=GREEN, height=36).pack(side=tk.LEFT, padx=px(8))
+        HudButton(row, _t("⟲ ЗАНОВО"), self.new, color=AMBER, height=36).pack(side=tk.LEFT)
+        self.status = L(self.body, "", fg=MUTED, size=10, bold=True, bg=BG)
+        self.status.pack()
+        self.new()
+
+    def _pool(self) -> list[str]:
+        lang = self.ctx.sstore.settings.get("gap_lang") or reading_lang(self.ctx)
+        words: list[str] = []
+        try:
+            lib = self.ctx.lib
+            tid = lib.index.get("active_reading")
+            if tid:
+                import re
+                txt = lib.reading_text(tid)[:200000]
+                words = [w.lower() for w in re.findall(r"[^\W\d_]{5,12}", txt)]
+                if words:
+                    return list(dict.fromkeys(words))
+        except Exception:  # noqa: BLE001
+            pass
+        base = FLASH_WORDS.get(lang, FLASH_WORDS["en"])
+        return [w for w in base.split() if len(w) >= 5]
+
+    def _mask(self, word: str) -> str:
+        n = len(word)
+        k = max(2, n // 2)
+        idxs = random.sample(range(n), k)
+        return "".join(ch if i not in idxs else "▢" for i, ch in enumerate(word))
+
+    def new(self) -> None:
+        self.stop()
+        self.pool = self._pool()
+        self.round = 0
+        self.ok = 0
+        self.total_ms = 0
+        self.status.configure(text="")
+        self._next_round()
+
+    def _frame(self, text: str = "", mask: bool = False) -> None:
+        c = self.canvas
+        c.delete("all")
+        w, h = c.winfo_width(), c.winfo_height()
+        if w < 50:
+            return
+        cx, cy = w / 2, h / 2
+        c.create_text(px(20), px(16), text=_t("РАУНД {0}/{1}").format(self.round, self.ROUNDS),
+                      anchor="w", fill=MUTED, font=theme.font(9, True))
+        if mask:
+            c.create_text(cx, cy, text="#" * max(5, len(getattr(self, "answer", "")) or 5), fill=FAINT,
+                          font=theme.font(28, True, mono=True))
+        elif text:
+            c.create_text(cx, cy, text=text, fill=TEXT, font=theme.font(28, True, mono=True))
+        else:
+            c.create_oval(cx - 4, cy - 4, cx + 4, cy + 4, fill=RED, outline=RED)
+
+    def _next_round(self) -> None:
+        self.round += 1
+        if self.round > self.ROUNDS:
+            self.finish()
+            return
+        self.answer = random.choice(self.pool)
+        self.masked = self._mask(self.answer)
+        self.inp.delete(0, tk.END)
+        self._frame()
+        self._job = self.after(600, self._show)
+
+    def _show(self) -> None:
+        self._frame(self.masked)
+        self._job = None
+        self.inp.focus_set()
+        self._round_t0 = time.perf_counter()
+
+    def check(self) -> None:
+        if self._job is not None or self.round > self.ROUNDS:
+            return
+        got = self.inp.get().strip().lower()
+        dt = time.perf_counter() - self._round_t0
+        self.total_ms += dt * 1000
+        ok = got == self.answer.lower()
+        if ok:
+            self.ok += 1
+        self.status.configure(text=(_t("✓ ВЕРНО: {0}").format(self.answer) if ok else _t("✕ БЫЛО: {0}").format(self.answer)),
+                              fg=GREEN if ok else RED)
+        self._next_round()
+
+    def finish(self) -> None:
+        self.stop()
+        if self.ok == 0:
+            self.status.configure(text=_t("Нет верных ответов — попробуйте ещё раз."), fg=AMBER)
+            return
+        avg_ms = self.total_ms / self.ROUNDS
+        # score: больше верных и меньше времени = лучше
+        score = self.ok * 1000 - avg_ms
+        stars = 3 if (self.ok >= 11 and avg_ms <= 3000) else 2 if (self.ok >= 8 or avg_ms <= 4000) else 1 if self.ok >= 5 else 0
+        xp, rec = self.ctx.sstore.add_exercise(self.code, "default", score, stars, lower_is_better=False,
+                                               extra={"ok": self.ok, "avg_ms": round(avg_ms)})
+        self.ctx.changed()
+        self._frame()
+        self.status.configure(text=_t("ИТОГ: верно {0}/{1} · средн. {2:.0f} мс  {3}{4}  +{5} XP").format(self.ok, self.ROUNDS, avg_ms, '★' * stars, '☆' * (3 - stars), xp) + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""),
+                              fg=AMBER)
+
+    def on_key(self, e) -> None:
+        if e.keysym == "Escape":
+            self.exit()
+
+
+# ---------------------------------------------------------------------------
+class EyeEx(ExerciseBase):
+    """Глазодвигатель: саккады между точками-мишенями."""
+    code = "E-EYE"
+    ROUNDS = 20
+
+    def __init__(self, master, ctx, on_exit) -> None:
+        super().__init__(master, ctx, on_exit)
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-EYE · ГЛАЗОДВИГАТЕЛЬ (САККАДЫ)"))
+        self.h2.configure(text=_t("смотрите в центр · когда появится цель — кликните по ней максимально быстро · R — заново"))
+        self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.bind("<Configure>", lambda _e: self.draw())
+        self.canvas.bind("<Button-1>", self.click)
+        row = tk.Frame(self.body, bg=BG)
+        row.pack(pady=px(8))
+        HudButton(row, _t("⟲ ЗАНОВО  R"), self.new, color=AMBER, height=34).pack(side=tk.LEFT)
+        self.lbl_time = L(row, "", fg=CYAN, size=11, bold=True, mono=True)
+        self.lbl_time.pack(side=tk.LEFT, padx=px(20))
+        self.lbl_score = L(row, "", fg=AMBER, size=11, bold=True, mono=True)
+        self.lbl_score.pack(side=tk.LEFT, padx=px(20))
+        self.result = L(self.body, "", fg=AMBER, size=11, bold=True, bg=BG)
+        self.result.pack(pady=px(6))
+        self.new()
+
+    def new(self) -> None:
+        self.stop()
+        self.round = 0
+        self.ok = 0
+        self.total_ms = 0
+        self.target_pos = None
+        self.target_show_time = 0
+        self.waiting_for_click = False
+        self.result.configure(text="")
+        self._next_round()
+
+    def _next_round(self) -> None:
+        self.round += 1
+        if self.round > self.ROUNDS:
+            self.finish()
+            return
+        self.waiting_for_click = False
+        self.draw()
+
+    def draw(self) -> None:
+        c = self.canvas
+        c.delete("all")
+        w, h = c.winfo_width(), c.winfo_height()
+        if w < 50:
+            return
+        cx, cy = w / 2, h / 2
+        # центральная точка фиксации
+        c.create_oval(cx - 4, cy - 4, cx + 4, cy + 4, fill=RED, outline=RED)
+        c.create_text(px(20), px(16), text=_t("РАУНД {0}/{1}").format(self.round, self.ROUNDS),
+                      anchor="w", fill=MUTED, font=theme.font(9, True))
+        if not self.waiting_for_click:
+            # случайная задержка перед появлением цели (500-1500 мс)
+            delay = random.randint(500, 1500)
+            self._job = self.after(delay, self._show_target)
+
+    def _show_target(self) -> None:
+        if self.round > self.ROUNDS:
+            return
+        c = self.canvas
+        w, h = c.winfo_width(), c.winfo_height()
+        cx, cy = w / 2, h / 2
+        # цель в случайной позиции (не слишком близко к центру)
+        angle = random.uniform(0, 2 * 3.14159)
+        radius = random.uniform(min(w, h) * 0.25, min(w, h) * 0.4)
+        tx = cx + radius * math.cos(angle)
+        ty = cy + radius * math.sin(angle)
+        self.target_pos = (tx, ty)
+        self.target_show_time = time.perf_counter()
+        self.waiting_for_click = True
+        r = px(16)
+        c.create_oval(tx - r, ty - r, tx + r, ty + r, fill=AMBER, outline=CYAN, width=2)
+        c.create_text(px(20), px(16), text=_t("РАУНД {0}/{1} · ЦЕЛЬ!").format(self.round, self.ROUNDS),
+                      anchor="w", fill=AMBER, font=theme.font(9, True))
+
+    def click(self, e) -> None:
+        if not self.waiting_for_click or self.target_pos is None:
+            return
+        tx, ty = self.target_pos
+        dist = math.hypot(e.x - tx, e.y - ty)
+        if dist <= px(20):  # попал в цель
+            dt = time.perf_counter() - self.target_show_time
+            self.total_ms += dt * 1000
+            self.ok += 1
+            self.waiting_for_click = False
+            self._next_round()
+        else:
+            # промах - штраф
+            self.total_ms += 500
+
+    def finish(self) -> None:
+        self.stop()
+        if self.ok == 0:
+            self.result.configure(text=_t("Нет попаданий — попробуйте ещё раз."), fg=AMBER)
+            return
+        avg_ms = self.total_ms / self.ROUNDS
+        # score: меньше времени и больше попаданий = лучше
+        score = self.ok * 1000 - avg_ms
+        stars = 3 if (self.ok >= 18 and avg_ms <= 400) else 2 if (self.ok >= 14 or avg_ms <= 600) else 1 if self.ok >= 10 else 0
+        xp, rec = self.ctx.sstore.add_exercise(self.code, "default", score, stars, lower_is_better=False,
+                                               extra={"ok": self.ok, "avg_ms": round(avg_ms)})
+        self.ctx.changed()
+        self.result.configure(text=_t("ИТОГ: попаданий {0}/{1} · средн. {2:.0f} мс  {3}{4}  +{5} XP").format(self.ok, self.ROUNDS, avg_ms, '★' * stars, '☆' * (3 - stars), xp) + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""),
+                              fg=AMBER)
+
+    def on_key(self, e) -> None:
+        if e.keysym in ("r", "R", "Cyrillic_ka", "Cyrillic_KA"):
+            self.new()
+        else:
+            super().on_key(e)
+
+
+# ---------------------------------------------------------------------------
+class PacerEx(ExerciseBase):
+    """Указка (пейсер): движущаяся линия-ведущая, запрет возвратов глазам."""
+    code = "E-PCR"
+
+    def __init__(self, master, ctx, on_exit) -> None:
+        super().__init__(master, ctx, on_exit)
+        self.h1.configure(text=_t("ТРЕНАЖЁР E-PCR · УКАЗКА (ПЕЙСЕР)"))
+        self.h2.configure(text=_t("линия движется сверху вниз · читайте за ней · не возвращайтесь назад · Space — пауза"))
+        self.canvas = tk.Canvas(self.body, bg=BG2, highlightthickness=0)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.bind("<Configure>", lambda _e: self.draw())
+        row = tk.Frame(self.body, bg=BG)
+        row.pack(pady=px(8))
+        HudButton(row, _t("⏸ ПАУЗА  Space"), self.toggle_pause, color=AMBER, height=34).pack(side=tk.LEFT)
+        HudButton(row, _t("⟲ ЗАНОВО"), self.new, color=AMBER, height=34).pack(side=tk.LEFT, padx=px(8))
+        self.lbl_wpm = L(row, "", fg=CYAN, size=11, bold=True, mono=True)
+        self.lbl_wpm.pack(side=tk.LEFT, padx=px(20))
+        self.lbl_line = L(row, "", fg=AMBER, size=11, bold=True, mono=True)
+        self.lbl_line.pack(side=tk.LEFT, padx=px(20))
+        self.result = L(self.body, "", fg=AMBER, size=11, bold=True, bg=BG)
+        self.result.pack(pady=px(6))
+        self.new()
+
+    def _pool(self) -> list[str]:
+        lang = self.ctx.sstore.settings.get("pcr_lang") or reading_lang(self.ctx)
+        try:
+            lib = self.ctx.lib
+            tid = lib.index.get("active_reading")
+            if tid:
+                txt = lib.reading_text(tid)
+                if txt:
+                    return txt.split("\n\n")
+        except Exception:  # noqa: BLE001
+            pass
+        # fallback
+        return [" ".join(random.choice(FLASH_WORDS.get(lang, FLASH_WORDS["en"]).split()) for _ in range(120))]
+
+    def new(self) -> None:
+        self.stop()
+        self.text = "\n\n".join(random.choice(self._pool()) for _ in range(3))
+        self.lines = [l for l in self.text.split("\n") if l.strip()]
+        self.line_idx = 0
+        self.paused = False
+        self.wpm = self.ctx.sstore.settings.get("pcr_wpm", 250)
+        self.y = 0
+        self.line_h = 0
+        self.t0 = time.perf_counter()
+        self.words_read = 0
+        self.result.configure(text="")
+        self._tick()
+
+    def toggle_pause(self) -> None:
+        self.paused = not self.paused
+        if not self.paused:
+            self.t0 = time.perf_counter() - (self.y / self.speed_px_per_s)
+            self._tick()
+
+    def draw(self) -> None:
+        c = self.canvas
+        c.delete("all")
+        w, h = c.winfo_width(), c.winfo_height()
+        if w < 50:
+            return
+        # рисуем текст
+        f = theme.font(14)
+        import tkinter.font as tkfont
+        tf = tkfont.Font(font=f)
+        self.line_h = tf.metrics("linespace")
+        x0, y0 = px(30), px(30)
+        self._line_rects = []
+        for i, line in enumerate(self.lines):
+            if i < self.line_idx:
+                continue
+            y = y0 + (i - self.line_idx) * self.line_h
+            if y > h:
+                break
+            c.create_text(x0, y, text=line, anchor="nw", fill=TEXT, font=f)
+            self._line_rects.append((i, x0, y, x0 + tf.measure(line), y + self.line_h))
+        # рисуем указатель (линия)
+        if not self.paused and self.line_idx < len(self.lines):
+            i, lx, ly, rx, ry = self._line_rects[0] if self._line_rects else (0, 0, 0, 0, 0)
+            py = ly + self.y
+            if py >= ly and py <= ry + self.line_h * 2:
+                c.create_line(lx - 10, py, rx + 10, py, fill=AMBER, width=2, dash=(6, 4))
+        self.lbl_wpm.configure(text=_t("{0} WPM").format(self.wpm))
+        self.lbl_line.configure(text=_t("строка {0}/{1}").format(min(self.line_idx + 1, len(self.lines)), len(self.lines)))
+
+    def _tick(self) -> None:
+        if self.paused or self.line_idx >= len(self.lines):
+            self.finish()
+            return
+        c = self.canvas
+        w, h = c.winfo_width(), c.winfo_height()
+        if h < 50:
+            return
+        # скорость в пикселях в секунду
+        self.speed_px_per_s = self.wpm / 60 * self.line_h * 2.5
+        dt = time.perf_counter() - self.t0
+        self.y = self.speed_px_per_s * dt
+        self.draw()
+        # переключение строки
+        if self._line_rects:
+            _, _, ly, _, ry = self._line_rects[0]
+            if self.y > ry + self.line_h:
+                self.line_idx += 1
+                self.y = 0
+                self.t0 = time.perf_counter()
+                self.words_read += len(self.lines[self.line_idx - 1].split()) if self.line_idx > 0 else 0
+        if self.line_idx < len(self.lines):
+            self._job = self.after(16, self._tick)
+
+    def finish(self) -> None:
+        self.stop()
+        elapsed = time.perf_counter() - self.t0 if hasattr(self, 't0') else 0
+        wpm_actual = self.words_read / (elapsed / 60) if elapsed > 0 else 0
+        # score: ближе к целевому WPM и больше прочитано = лучше
+        score = wpm_actual * 10 - abs(wpm_actual - self.wpm) * 2
+        stars = 3 if (abs(wpm_actual - self.wpm) <= 20 and wpm_actual >= 200) else 2 if (abs(wpm_actual - self.wpm) <= 40 and wpm_actual >= 150) else 1 if wpm_actual >= 100 else 0
+        xp, rec = self.ctx.sstore.add_exercise(self.code, "default", score, stars, lower_is_better=False,
+                                               extra={"wpm": round(wpm_actual), "target_wpm": self.wpm, "lines": self.line_idx})
+        self.ctx.changed()
+        self.result.configure(text=_t("ИТОГ: {0:.0f} WPM (цель {1}) · строк {2}  {3}{4}  +{5} XP").format(wpm_actual, self.wpm, self.line_idx, '★' * stars, '☆' * (3 - stars), xp) + (_t("  · НОВЫЙ РЕКОРД!") if rec else ""),
+                              fg=AMBER)
+
+    def on_key(self, e) -> None:
+        if e.keysym == "space":
+            self.toggle_pause()
+        elif e.keysym in ("Up", "Prior"):
+            self.wpm = min(800, self.wpm + 25)
+        elif e.keysym in ("Down", "Next"):
+            self.wpm = max(100, self.wpm - 25)
+        elif e.keysym in ("r", "R", "Cyrillic_ka", "Cyrillic_KA"):
+            self.new()
+        else:
+            super().on_key(e)
+
+
+# ---------------------------------------------------------------------------
 class FlashEx(ExerciseBase):
     """Вспышка (тахистоскоп): слова на короткое время, затем маска; ввести увиденное.
     Лестница: 3 верных подряд — время −20 мс, ошибка — +20 мс; длина растёт на 2 уровнях."""
@@ -582,4 +1087,15 @@ def best_text(code: str, rec: dict | None) -> str:
     if code == "E-TAC":
         best_run = max(r["runs"], key=lambda x: x["result"])
         return _t("{0} сл · {1} мс").format(best_run.get('words', 1), best_run.get('ms', '?'))
+    if code == "E-FND":
+        return _t("{0:.1f} с").format(b)
+    if code == "E-GAP":
+        best_run = max(r["runs"], key=lambda x: x["result"])
+        return _t("верно {0}/{1} · {2:.0f} мс").format(best_run.get('extra', {}).get('ok', 0), 12, best_run.get('extra', {}).get('avg_ms', 0))
+    if code == "E-EYE":
+        best_run = max(r["runs"], key=lambda x: x["result"])
+        return _t("поп. {0}/{1} · {2:.0f} мс").format(best_run.get('extra', {}).get('ok', 0), 20, best_run.get('extra', {}).get('avg_ms', 0))
+    if code == "E-PCR":
+        best_run = max(r["runs"], key=lambda x: x["result"])
+        return _t("{0} WPM (цель {1}) · строк {2}").format(best_run.get('extra', {}).get('wpm', 0), best_run.get('extra', {}).get('target_wpm', 0), best_run.get('extra', {}).get('lines', 0))
     return str(b)

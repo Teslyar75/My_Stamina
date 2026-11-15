@@ -16,6 +16,12 @@ import sys
 import unicodedata
 import urllib.request
 from pathlib import Path
+import sys
+
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+from tools.merge_lang_vocab_cards import merge_vocab_payload
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -424,6 +430,11 @@ def build_for_lang(code: str, levels: list[str]) -> None:
             "words": words,
         }
         out_path = out_dir / f"vocab_{level.lower()}.json"
+        payload, _merge_stats = merge_vocab_payload(payload)
+        print(
+            "    cards merged: {} (was {})".format(_merge_stats["out"], _merge_stats["in"]),
+            flush=True,
+        )
         out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
         print(f"записал {out_path.name}: слов {len(words)}, с примерами {with_ex}", flush=True)
 

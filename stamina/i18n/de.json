@@ -2810,5 +2810,8 @@
  "СКАЖИ ПРЕДЛОЖЕНИЕ": "SAG DEN SATZ",
  "примера пока нет": "noch kein Beispiel",
  "Клик по слову — сканер слова и фразы.": "Klick aufs Wort — Scanner für Wort und Satz.",
- "модель речи для {0} ещё скачивается": "Sprachmodell für {0} wird noch geladen"
+ "модель речи для {0} ещё скачивается": "Sprachmodell für {0} wird noch geladen",
+ "Токен GitHub больше не действует — истёк срок или его отозвали.": "Das GitHub-Token gilt nicht mehr — es ist abgelaufen oder wurde widerrufen.",
+ "Создайте новый: {url} — Discussions и Contents: Read and write.": "Erstellen Sie ein neues: {url} — Discussions und Contents: Read and write.",
+ "Затем вставьте его в «Подключить агента» и нажмите «Проверить связь».": "Fügen Sie es dann in «Agent verbinden» ein und drücken Sie «Verbindung prüfen»."
 }

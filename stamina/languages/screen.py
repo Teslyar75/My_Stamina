@@ -4,6 +4,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import tkinter as tk
+import time
 from typing import Callable
 
 from stamina import theme
@@ -19,6 +20,7 @@ SUBPAGES = [
     ("overview", _t("ОБЗОР")),
     ("sets", _t("НАБОРЫ")),
     ("practice", _t("МИССИИ")),
+    ("reading", _t("ЧТЕНИЕ")),
     ("review", _t("ПРОВЕРКА")),
     ("warehouse", _t("СКЛАД")),
     ("book", _t("ИЗ КНИГИ")),
@@ -37,6 +39,9 @@ class LanguagesScreen(tk.Frame):
         self.current_page: str = "overview"
         self._pool_slugs: list[str] | None = None
         self._pool_title = ""
+        self._practice_src = "set"
+        self._practice_len: int | None = None
+        self._scanner = None
         self.pages: dict[str, tk.Frame] = {}
         self.lang_cards: list[dict] = []
 
@@ -178,8 +183,12 @@ class LanguagesScreen(tk.Frame):
 
         self._show_page("overview")
 
-    def _show_page(self, page_name: str) -> None:
+    def _show_page(self, page_name: str, keep_pool: bool = False) -> None:
         self.current_page = page_name
+        self._scanner = None
+        if page_name == "practice" and not keep_pool:
+            self._pool_slugs = None
+            self._pool_title = ""
         for w in self.page_container.winfo_children():
             w.destroy()
 
@@ -198,6 +207,8 @@ class LanguagesScreen(tk.Frame):
             self._build_sets(plugin, progress, vocab)
         elif page_name == "practice":
             self._build_practice(plugin, progress, vocab)
+        elif page_name == "reading":
+            self._build_reading(plugin, progress, vocab)
         elif page_name == "review":
             self._build_review(plugin, progress, vocab)
         elif page_name == "warehouse":
@@ -205,7 +216,7 @@ class LanguagesScreen(tk.Frame):
         elif page_name == "book":
             self._build_book(plugin, progress, vocab)
         elif page_name == "log":
-            self._build_log(plugin, progress)
+            self._build_log(plugin, progress, vocab)
         elif page_name == "settings":
             self._build_settings(plugin, progress)
 
@@ -273,7 +284,8 @@ class LanguagesScreen(tk.Frame):
 
     def _start_quick(self, plugin, progress, vocab) -> None:
         n = int(progress.settings.get("session_len", 10))
-        self._start_portion(self._pick_lesson(plugin, progress, vocab, n), _t("БЫСТРАЯ МИССИЯ · 10"))
+        self._start_portion(self._pick_lesson(plugin, progress, vocab, n),
+                            _t("БЫСТРАЯ МИССИЯ · {0}").format(n))
 
     def _scan_word(self, word, progress, lang: str) -> None:
         from stamina.languages.scanner import WordScanner
@@ -283,6 +295,7 @@ class LanguagesScreen(tk.Frame):
             self.page_container, word, progress, lang, self.app,
             on_back=lambda: self._show_page("overview"),
         )
+        self._scanner = scanner
         scanner.pack(fill=tk.BOTH, expand=True)
 
     def _build_overview(self, plugin, progress, vocab) -> None:
@@ -449,7 +462,33 @@ class LanguagesScreen(tk.Frame):
     def _start_portion(self, slugs: list[str], title: str) -> None:
         self._pool_slugs = list(slugs)
         self._pool_title = title
-        self._show_page("practice")
+        self._practice_src = "set"
+        self._show_page("practice", keep_pool=True)
+
+    def _build_reading(self, plugin, progress, vocab) -> None:
+        if not progress:
+            tk.Label(self.page_container, text=_t("Прогресс не загружен"), bg=BG, fg=MUTED,
+                     font=theme.font(12)).pack(expand=True)
+            return
+        from stamina.languages.reading_page import ReadingPage
+        page = ReadingPage(
+            self.page_container, plugin, progress, vocab, self.app,
+            on_back=lambda: self._show_page("overview"),
+        )
+        page.pack(fill=tk.BOTH, expand=True)
+
+    def on_key(self, event) -> None:
+        """Клавиши отсека: сканер и текущая страница сами решают, что делать."""
+        if isinstance(event.widget, (tk.Entry, tk.Text)):
+            return
+        if self._scanner is not None:
+            self._scanner.on_key(event)
+            return
+        for child in self.page_container.winfo_children():
+            handler = getattr(child, "on_key", None)
+            if callable(handler):
+                handler(event)
+                return
 
     def _open_set(self, set_id: str, vocab, progress) -> None:
         plugin = self.registry.get(self.current_lang)
@@ -468,7 +507,7 @@ class LanguagesScreen(tk.Frame):
         top.pack(fill=tk.X)
         HudButton(top, _t("НАЗАД"), lambda: self._show_page("sets"),
                   color=MUTED, height=28, font_size=10).pack(side=tk.LEFT)
-        HudButton(top, _t("В МИССИИ"), lambda: self._show_page("practice"),
+        HudButton(top, _t("В МИССИИ"), lambda: self._show_page("practice", keep_pool=True),
                   color=CYAN, height=28, font_size=10).pack(side=tk.RIGHT)
         tk.Label(frame, text=_t("Слова: {0}").format(len(slugs)),
                  bg=BG, fg=AMBER, font=theme.font(14, True)).pack(anchor="w", pady=px(6))
@@ -493,55 +532,140 @@ class LanguagesScreen(tk.Frame):
     def _build_practice(self, plugin, progress, vocab) -> None:
         frame = tk.Frame(self.page_container, bg=BG)
         frame.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
+        frame.on_key = self._practice_key
 
         if not progress:
             tk.Label(frame, text=_t("Прогресс не загружен"), bg=BG, fg=MUTED).pack(expand=True)
             return
 
+        plan = HudPanel(frame, _t("ПОЛЁТНЫЙ ПЛАН"))
+        plan.pack(fill=tk.X)
+        row = tk.Frame(plan.body, bg=PANEL)
+        row.pack(fill=tk.X)
+        tk.Label(row, text=_t("ИСТОЧНИК"), bg=PANEL, fg=MUTED,
+                 font=theme.font(8, True)).pack(side=tk.LEFT, padx=(0, px(6)))
+        for key, title in (
+            ("set", _t("НАБОР · НЕЗНАКОМЫЕ")),
+            ("due", _t("НА ПОВТОРЕНИИ")),
+            ("mistakes", _t("ОШИБКИ 7 ДН")),
+        ):
+            HudButton(row, title, lambda k=key: self._set_practice_src(k),
+                      height=28, font_size=8, active=(self._practice_src == key),
+                      color=GREEN if self._practice_src == key else CYAN).pack(side=tk.LEFT, padx=px(2))
+        tk.Label(row, text=_t("ДЛИНА"), bg=PANEL, fg=MUTED,
+                 font=theme.font(8, True)).pack(side=tk.LEFT, padx=(px(10), px(6)))
+        length = self._practice_length(progress)
+        for n in (5, 10, 20):
+            HudButton(row, str(n), lambda k=n: self._set_practice_len(k), width=44, height=28,
+                      font_size=9, active=(n == length),
+                      color=GREEN if n == length else CYAN).pack(side=tk.LEFT, padx=px(2))
+
+        slugs = self._practice_pool(plugin, progress, vocab)
         from stamina.languages.core import MissionGenerator
         try:
-            slugs = self._pool(plugin, vocab)
-            studied = any(slug in progress.data.get("cards", {}) for slug in slugs)
-            missions = MissionGenerator(vocab, progress, progress.settings).generate_session(
-                slugs, new_limit=8, review_limit=8 if studied else 0,
-            )[:8]
+            generator = MissionGenerator(vocab, progress, progress.settings)
+            missions = generator.generate_session(
+                slugs, new_limit=length, review_limit=length,
+            )[:length]
+            if not missions:
+                missions = generator.cards_session(slugs, length)
         except Exception as exc:
             tk.Label(frame, text=str(exc), bg=BG, fg=AMBER, font=theme.font(11),
                      wraplength=px(640)).pack(anchor="w")
             return
-        title = getattr(self, "_pool_title", "")
-        if title:
-            tk.Label(frame, text=title, bg=BG, fg=CYAN, font=theme.font(11)).pack(anchor="w")
+
+        source = {
+            "set": getattr(self, "_pool_title", "") or _t("текущий набор"),
+            "due": _t("слова на повторении"),
+            "mistakes": _t("ошибки за 7 дней"),
+        }[self._practice_src]
+        tk.Label(frame, text=_t("МИССИИ · ПРАКТИКА"), bg=BG, fg=AMBER,
+                 font=theme.font(14, True)).pack(anchor="w", pady=(px(6), 0))
+        tk.Label(frame, text=_t("Источник: {0} · слов в очереди {1} · заданий {2}").format(
+            source, len(slugs), len(missions)),
+            bg=BG, fg=CYAN, font=theme.font(9)).pack(anchor="w")
         self._missions = missions
+        self._mission_answers: dict[int, dict] = {}
         self._mission_at = 0
-        self._mission_locked = False
         self._progress_ref = progress
-        tk.Label(frame, text=_t("МИССИЯ: {0} заданий").format(len(missions)),
-                 bg=BG, fg=AMBER, font=theme.font(14, True)).pack(anchor="w")
+        self._vocab_ref = vocab
         self._mission_body = tk.Frame(frame, bg=BG)
-        self._mission_body.pack(fill=tk.BOTH, expand=True, pady=px(8))
+        self._mission_body.pack(fill=tk.BOTH, expand=True, pady=px(6))
         self._render_mission()
+
+    def _practice_length(self, progress) -> int:
+        if self._practice_len is None:
+            try:
+                self._practice_len = int(progress.settings.get("session_len", 10))
+            except (TypeError, ValueError):
+                self._practice_len = 10
+        return self._practice_len
+
+    def _practice_pool(self, plugin, progress, vocab) -> list[str]:
+        if self._practice_src == "due":
+            return progress.get_due_cards(list(progress.data.get("cards", {})), 200)
+        if self._practice_src == "mistakes":
+            return progress.mistakes(7)
+        if self._pool_slugs:
+            return list(self._pool_slugs)
+        return self._pool(plugin, vocab)
+
+    def _set_practice_src(self, key: str) -> None:
+        self._practice_src = key if key in ("set", "due", "mistakes") else "set"
+        self._show_page("practice", keep_pool=True)
+
+    def _set_practice_len(self, n: int) -> None:
+        self._practice_len = int(n)
+        progress = getattr(self, "_progress_ref", None)
+        if progress is not None:
+            progress.settings["session_len"] = int(n)
+            progress.save()
+        self._show_page("practice", keep_pool=True)
+
+    def _mission_nav(self) -> tk.Frame:
+        """Строка движения по карточкам: пройденные остаются доступны."""
+        nav = tk.Frame(self._mission_body, bg=BG)
+        nav.pack(fill=tk.X, pady=(0, px(4)))
+        missions = getattr(self, "_missions", [])
+        HudButton(nav, _t("◀ НАЗАД"), self._prev_mission, height=26, font_size=8,
+                  color=MUTED).pack(side=tk.LEFT)
+        tk.Label(nav, text=_t("Задание {0} из {1}").format(
+            min(self._mission_at + 1, len(missions)), len(missions)),
+            bg=BG, fg=MUTED, font=theme.font(9)).pack(side=tk.LEFT, padx=px(8))
+        HudButton(nav, _t("ДАЛЕЕ ▶"), self._next_mission, height=26, font_size=8,
+                  color=CYAN).pack(side=tk.LEFT)
+        if self._mission_at < len(missions) and self._mission_at not in self._mission_answers:
+            HudButton(nav, _t("ПРОПУСТИТЬ"), self._next_mission, height=26, font_size=8,
+                      color=MUTED).pack(side=tk.RIGHT)
+        return nav
 
     def _render_mission(self) -> None:
         for child in self._mission_body.winfo_children():
             child.destroy()
-        self._mission_locked = False
         missions = getattr(self, "_missions", [])
         if not missions:
             tk.Label(self._mission_body, text=_t("Нет слов в наборе"), bg=BG, fg=MUTED).pack(anchor="w")
             return
+        self._mission_nav()
         if self._mission_at >= len(missions):
-            tk.Label(self._mission_body, text=_t("Миссия пройдена"), bg=BG, fg=GREEN,
-                     font=theme.font(14, True)).pack(anchor="w")
+            self._mission_summary()
             return
         mission = missions[self._mission_at]
-        tk.Label(
-            self._mission_body,
-            text=_t("Задание {0} из {1}").format(self._mission_at + 1, len(missions)),
-            bg=BG, fg=MUTED, font=theme.font(10),
-        ).pack(anchor="w")
-        card = HudPanel(self._mission_body, mission.prompt, accent=GREEN)
+        answer = self._mission_answers.get(self._mission_at)
+        card = HudPanel(self._mission_body, mission.prompt, accent=GREEN if not answer else (
+            GREEN if answer["ok"] else AMBER))
         card.pack(fill=tk.X, pady=px(4))
+        if answer is not None:
+            color = GREEN if answer["ok"] else AMBER
+            tk.Label(card.body, text=_t("ВЕРНО") if answer["ok"] else _t("Мимо"),
+                     bg=PANEL, fg=color, font=theme.font(14, True)).pack(anchor="w")
+            tk.Label(card.body, text=_t("Твой ответ: {0}").format(answer["given"] or "—"),
+                     bg=PANEL, fg=TEXT, font=theme.font(10)).pack(anchor="w")
+            if not answer["ok"]:
+                expected = mission.expected if isinstance(mission.expected, list) else [str(mission.expected)]
+                tk.Label(card.body, text=_t("Правильный ответ: {0}").format(expected[0]),
+                         bg=PANEL, fg=CYAN, font=theme.font(10)).pack(anchor="w")
+            return
         if mission.options:
             for opt in mission.options:
                 HudButton(
@@ -557,23 +681,66 @@ class LanguagesScreen(tk.Frame):
                 card.body, _t("ПРОВЕРИТЬ"), lambda m=mission, b=box: self._grade_mission(m, b.get()),
                 color=CYAN, height=30, font_size=10,
             ).pack(fill=tk.X, pady=px(2))
-        self._result_label = tk.Label(card.body, text="", bg=PANEL, fg=TEXT, font=theme.font(12))
-        self._result_label.pack(anchor="w", pady=px(4))
+
+    def _mission_summary(self) -> None:
+        answered = len(self._mission_answers)
+        total = len(self._missions)
+        done = answered >= total
+        tk.Label(self._mission_body,
+                 text=_t("Миссия пройдена") if done else _t("Осталось заданий: {0}").format(total - answered),
+                 bg=BG, fg=GREEN if done else AMBER, font=theme.font(14, True)).pack(anchor="w", pady=px(8))
+        if not done:
+            HudButton(self._mission_body, _t("К НЕЗАВЕРШЁННОМУ"), self._first_unanswered,
+                      color=CYAN, height=30, font_size=10).pack(anchor="w", pady=px(4))
+        HudButton(self._mission_body, _t("⟲ ЕЩЁ РАЗ"), self._restart_mission,
+                  height=30, font_size=10).pack(anchor="w", pady=px(4))
+
+    def _restart_mission(self) -> None:
+        self._mission_answers.clear()
+        self._mission_at = 0
+        self._render_mission()
+
+    def _first_unanswered(self) -> None:
+        for i in range(len(self._missions)):
+            if i not in self._mission_answers:
+                self._mission_at = i
+                self._render_mission()
+                return
 
     def _grade_mission(self, mission, given: str) -> None:
-        if self._mission_locked:
+        if self._mission_at in self._mission_answers:
             return
-        self._mission_locked = True
         expected = mission.expected if isinstance(mission.expected, list) else [str(mission.expected)]
         ok = given.strip().casefold() in {item.strip().casefold() for item in expected}
         if self._progress_ref is not None:
             self._progress_ref.record_attempt(mission.slug, ok, mission.mode)
-        self._result_label.configure(text=_t("ВЕРНО") if ok else _t("Мимо"), fg=GREEN if ok else AMBER)
-        HudButton(self._mission_body, _t("ДАЛЬШЕ"), self._next_mission,
-                  color=CYAN, height=30, font_size=10).pack(fill=tk.X, pady=px(6))
+        self._mission_answers[self._mission_at] = {"ok": ok, "given": given}
+        self._render_mission()
+
+    def _practice_key(self, event) -> None:
+        key = event.keysym
+        if key == "Left":
+            self._prev_mission()
+        elif key == "Right":
+            self._next_mission()
+        elif key == "Return" and (
+            self._mission_at in self._mission_answers or self._mission_at >= len(self._missions)
+        ):
+            self._next_mission()
+        elif key in ("1", "2", "3", "4") and self._mission_at < len(self._missions):
+            mission = self._missions[self._mission_at]
+            if self._mission_at in self._mission_answers or not mission.options:
+                return
+            idx = int(key) - 1
+            if 0 <= idx < len(mission.options):
+                self._grade_mission(mission, mission.options[idx])
+
+    def _prev_mission(self) -> None:
+        self._mission_at = max(0, self._mission_at - 1)
+        self._render_mission()
 
     def _next_mission(self) -> None:
-        self._mission_at += 1
+        self._mission_at = min(len(getattr(self, "_missions", [])), self._mission_at + 1)
         self._render_mission()
 
     def _build_review(self, plugin, progress, vocab) -> None:
@@ -686,12 +853,109 @@ class LanguagesScreen(tk.Frame):
         frame.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
         tk.Label(frame, text=_t("Из книги (скоро)"), bg=BG, fg=MUTED).pack(expand=True)
 
-    def _build_log(self, plugin, progress) -> None:
+    def _build_log(self, plugin, progress, vocab) -> None:
         frame = tk.Frame(self.page_container, bg=BG)
         frame.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
-        tk.Label(frame, text=_t("Журнал сессий (скоро)"), bg=BG, fg=MUTED).pack(expand=True)
+        if not progress:
+            tk.Label(frame, text=_t("Прогресс не загружен"), bg=BG, fg=MUTED).pack(expand=True)
+            return
+        self._progress_ref = progress
+        tk.Label(frame, text=_t("ЖУРНАЛ ЯЗЫКА"), bg=BG, fg=AMBER,
+                 font=theme.font(14, True)).pack(anchor="w")
+        attempts = progress.recent_attempts(60)
+        wrong = sum(1 for a in attempts if not a.get("correct"))
+        row = tk.Frame(frame, bg=BG)
+        row.pack(fill=tk.X, pady=px(2))
+        tk.Label(row, text=_t("Попыток: {0} · ошибок: {1}").format(len(attempts), wrong),
+                 bg=BG, fg=CYAN, font=theme.font(9)).pack(side=tk.LEFT)
+        HudButton(row, _t("ПОВТОРИТЬ ОШИБКИ"),
+                  lambda: self._set_practice_src("mistakes"),
+                  height=26, font_size=8, color=AMBER).pack(side=tk.RIGHT)
+        if not attempts:
+            tk.Label(frame, text=_t("Записей пока нет"), bg=BG, fg=MUTED).pack(anchor="w", pady=px(8))
+            return
+        inner = self._scroller(frame)
+        for attempt in attempts:
+            when = time.strftime("%d.%m %H:%M", time.localtime(attempt.get("ts", 0)))
+            word = vocab.get_word(attempt.get("slug", "")) if vocab else None
+            title = word.lemma if word else attempt.get("slug", "")
+            ok = bool(attempt.get("correct"))
+            tk.Label(
+                inner,
+                text=f"{when}  {'✓' if ok else '✗'}  {title}  ·  {attempt.get('mode', '')}",
+                bg=BG, fg=GREEN if ok else AMBER, font=theme.font(9), anchor="w",
+            ).pack(fill=tk.X, pady=1)
 
     def _build_settings(self, plugin, progress) -> None:
         frame = tk.Frame(self.page_container, bg=BG)
         frame.pack(fill=tk.BOTH, expand=True, padx=px(16), pady=px(8))
-        tk.Label(frame, text=_t("Настройки языка (скоро)"), bg=BG, fg=MUTED).pack(expand=True)
+        if not progress:
+            tk.Label(frame, text=_t("Прогресс не загружен"), bg=BG, fg=MUTED).pack(expand=True)
+            return
+        self._progress_ref = progress
+        tk.Label(frame, text=_t("НАСТРОЙКИ · {0}").format(plugin.name_native if plugin else ""),
+                 bg=BG, fg=AMBER, font=theme.font(14, True)).pack(anchor="w")
+        tk.Label(frame, text=_t("Изменения сохраняются сразу"), bg=BG, fg=MUTED,
+                 font=theme.font(8)).pack(anchor="w", pady=(0, px(4)))
+        inner = self._scroller(frame)
+
+        for key, title in (
+            ("autoplay", _t("Автовоспроизведение слова")),
+            ("asr", _t("Микрофон и распознавание")),
+            ("self_assess", _t("Самооценка чтения")),
+            ("reverse", _t("Обратные карточки")),
+            ("show_tr", _t("Перевод на плитке")),
+            ("xp_to_rank", _t("XP идут в звание")),
+        ):
+            row = tk.Frame(inner, bg=BG)
+            row.pack(fill=tk.X, pady=px(2))
+            tk.Label(row, text=title, bg=BG, fg=TEXT, font=theme.font(10)).pack(side=tk.LEFT)
+            on = bool(progress.settings.get(key, False))
+            HudButton(row, _t("ВКЛ") if on else _t("ВЫКЛ"),
+                      lambda k=key: self._toggle_setting(k), height=26, font_size=8,
+                      active=on, color=GREEN if on else MUTED).pack(side=tk.RIGHT)
+
+        self._choice_row(inner, "daily_goal", _t("ДНЕВНАЯ ЦЕЛЬ"), [10, 20, 30, 50])
+        self._choice_row(inner, "new_per_day", _t("НОВЫХ В ДЕНЬ"), [5, 10, 20])
+        self._choice_row(inner, "reviews_per_day", _t("ПОВТОРЕНИЙ В ДЕНЬ"), [20, 50, 100, 200])
+        self._choice_row(inner, "session_len", _t("ДЛИНА ЗАНЯТИЯ"), [5, 10, 20])
+        self._choice_row(inner, "rate", _t("ТЕМП РЕЧИ"), [0, 1, 2],
+                         labels={0: _t("медленно"), 1: _t("обычно"), 2: _t("быстро")})
+        self._choice_row(inner, "speech_strictness", _t("СТРОГОСТЬ РЕЧИ"),
+                         ["soft", "normal", "strict"],
+                         labels={"soft": _t("мягко"), "normal": _t("обычно"), "strict": _t("строго")})
+        HudButton(inner, _t("СБРОСИТЬ НАСТРОЙКИ"), self._reset_settings,
+                  height=28, font_size=9, color=MUTED).pack(anchor="w", pady=px(8))
+
+    def _choice_row(self, parent, key: str, title: str, values: list, labels: dict | None = None) -> None:
+        progress = self._progress_ref
+        row = tk.Frame(parent, bg=BG)
+        row.pack(fill=tk.X, pady=px(2))
+        tk.Label(row, text=title, bg=BG, fg=MUTED, font=theme.font(8, True), width=20,
+                 anchor="w").pack(side=tk.LEFT)
+        current = progress.settings.get(key)
+        for value in values:
+            on = current == value
+            text = (labels or {}).get(value, str(value))
+            HudButton(row, text, lambda k=key, v=value: self._set_setting(k, v),
+                      height=26, font_size=8, active=on,
+                      color=GREEN if on else CYAN).pack(side=tk.LEFT, padx=px(2))
+
+    def _toggle_setting(self, key: str) -> None:
+        progress = self._progress_ref
+        progress.settings[key] = not bool(progress.settings.get(key))
+        progress.save()
+        self._show_page("settings")
+
+    def _set_setting(self, key: str, value) -> None:
+        progress = self._progress_ref
+        progress.settings[key] = value
+        progress.save()
+        self._show_page("settings")
+
+    def _reset_settings(self) -> None:
+        from stamina.languages.core.progress import DEFAULT_SETTINGS
+        progress = self._progress_ref
+        progress.settings.update(dict(DEFAULT_SETTINGS))
+        progress.save()
+        self._show_page("settings")

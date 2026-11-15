@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import tkinter as tk
+from tkinter import simpledialog
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
@@ -45,6 +46,8 @@ class WordsPage(tk.Frame):
         self.words = []
         self._n_blocks = 0
         self.scanner = None
+        self.focus_index = 0
+        self._tiles: dict[int, tk.Frame] = {}
 
         self.lev = HudPanel(self, _t("УРОВНИ · CEFR"))
         self.lev.pack(fill=tk.X, padx=px(12), pady=px(4))
@@ -238,16 +241,82 @@ class WordsPage(tk.Frame):
     def _render_grid(self) -> None:
         for child in self.gridf.winfo_children():
             child.destroy()
+        self._tiles = {}
         per = COLS * self.rows
         pages = max(1, -(-len(self.words) // per)) if self.words else 1
         self.page = min(self.page, pages - 1)
         chunk = self.words[self.page * per:(self.page + 1) * per]
+        if chunk:
+            self.focus_index = min(self.focus_index, len(chunk) - 1)
+        else:
+            self.focus_index = 0
         for index, word in enumerate(chunk):
-            tile = self._tile(word)
+            tile = self._tile(word, index)
             tile.grid(row=index // COLS, column=index % COLS, sticky="nsew", padx=px(3), pady=px(3))
+            self._tiles[index] = tile
+        self._paint_focus()
         self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
 
-    def _tile(self, word) -> tk.Frame:
+    def _paint_focus(self) -> None:
+        per = COLS * self.rows
+        chunk = self.words[self.page * per:(self.page + 1) * per]
+        for index, tile in self._tiles.items():
+            if index == self.focus_index:
+                color = AMBER
+            elif index < len(chunk) and self._done(chunk[index].slug):
+                color = GREEN
+            else:
+                color = CYAN
+            try:
+                tile.configure(highlightbackground=color)
+            except tk.TclError:
+                pass
+
+    def on_key(self, event) -> None:
+        """Стрелки водят по плиткам, Enter — сканер, Space — «знаю»."""
+        if self.scanner is not None:
+            self.scanner.on_key(event)
+            return
+        if not self.words:
+            return
+        key = event.keysym
+        per = COLS * self.rows
+        if key == "Next":
+            self.go(1)
+            self.focus_index = 0
+            return
+        if key == "Prior":
+            self.go(-1)
+            self.focus_index = 0
+            return
+        total = len(self.words)
+        idx = self.page * per + self.focus_index
+        if key == "Right":
+            idx += 1
+        elif key == "Left":
+            idx -= 1
+        elif key == "Down":
+            idx += COLS
+        elif key == "Up":
+            idx -= COLS
+        elif key in ("Return", "KP_Enter"):
+            chunk = self.words[self.page * per:(self.page + 1) * per]
+            if self.focus_index < len(chunk):
+                self.open_scanner(chunk[self.focus_index])
+            return
+        elif key == "space":
+            chunk = self.words[self.page * per:(self.page + 1) * per]
+            if self.focus_index < len(chunk):
+                self._toggle(chunk[self.focus_index].slug)
+            return
+        else:
+            return
+        idx = max(0, min(total - 1, idx))
+        self.page = idx // per
+        self.focus_index = idx % per
+        self._render_grid()
+
+    def _tile(self, word, index: int = 0) -> tk.Frame:
         known = self._done(word.slug)
         box = tk.Frame(
             self.gridf, bg=PANEL,
@@ -267,6 +336,51 @@ class WordsPage(tk.Frame):
                          anchor="w", wraplength=px(150))
         gloss.pack(fill=tk.X, padx=px(6), pady=(0, px(6)))
         for widget in (box, title, gloss, top):
-            widget.bind("<Button-1>", lambda _e, item=word: self.open_scanner(item))
+            widget.bind("<Button-1>", lambda _e, item=word, i=index: self._click_word(item, i))
+            widget.bind("<Button-3>", lambda e, item=word: self._context_menu(e, item))
         mark.bind("<Button-1>", lambda _e, slug=word.slug: self._toggle(slug))
+        mark.bind("<Button-3>", lambda e, item=word: self._context_menu(e, item))
         return box
+
+    def _click_word(self, word, index: int) -> None:
+        self.focus_index = index
+        self.open_scanner(word)
+
+    def _context_menu(self, event, word) -> None:
+        if self.progress is None:
+            return
+        menu = tk.Menu(self, tearoff=0)
+        known = self.progress.is_known(word.slug)
+        menu.add_command(label=_t("✓ ЗНАЮ") if known else _t("✓ ЗНАЮ · отметить"),
+                         command=lambda: self._toggle(word.slug))
+        menu.add_separator()
+        for item in self.progress.lists:
+            inside = word.slug in item.get("slugs", [])
+            menu.add_command(
+                label=("✓ " if inside else "   ") + (item.get("name") or item.get("id", "")),
+                command=lambda lid=item["id"]: self._toggle_list(lid, word.slug),
+            )
+        menu.add_separator()
+        menu.add_command(label=_t("➕ НОВЫЙ ОТСЕК"), command=lambda: self._new_list_for(word.slug))
+        menu.add_command(label=_t("🎧 СКАНИРОВАТЬ"), command=lambda: self.open_scanner(word))
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+
+    def _toggle_list(self, lid: str, slug: str) -> None:
+        if self.progress is None:
+            return
+        self.progress.toggle_in_list(lid, slug)
+        self.refresh()
+
+    def _new_list_for(self, slug: str) -> None:
+        if self.progress is None:
+            return
+        name = simpledialog.askstring(_t("Новый отсек"), _t("Название отсека"),
+                                      parent=self)
+        if not name or not name.strip():
+            return
+        item = self.progress.create_list(name)
+        self.progress.toggle_in_list(item["id"], slug)
+        self.refresh()

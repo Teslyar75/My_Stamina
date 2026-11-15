@@ -19,7 +19,7 @@ from stamina import library as libmod
 from stamina.library import allows_edit, allows_print, book_badges, is_bilingual
 
 from .book_reader import BookReaderPage
-from .exercises import CATALOG, FlashEx, PyramidEx, SchulteEx, best_text
+from .exercises import CATALOG, EyeEx, FindEx, FlashEx, GapEx, PacerEx, PyramidEx, SchulteEx, best_text
 from .reader import ReaderPage
 from .store import SpeedStore
 from .ui import HudButton, HudPanel, L, ScrollFrame, Toggle, WpmChart, entry
@@ -413,7 +413,7 @@ class ExercisesPage(tk.Frame):
         self.stop()
         cls = {"E-SHL": lambda m, c, x: SchulteEx(m, c, x, gorbov=False),
                "E-GRB": lambda m, c, x: SchulteEx(m, c, x, gorbov=True),
-               "E-PYR": PyramidEx, "E-TAC": FlashEx}.get(code)
+               "E-PYR": PyramidEx, "E-TAC": FlashEx, "E-FND": FindEx, "E-GAP": GapEx, "E-EYE": EyeEx, "E-PCR": PacerEx}.get(code)
         if cls is None:
             return
         if self.ctx.current != "exercises":

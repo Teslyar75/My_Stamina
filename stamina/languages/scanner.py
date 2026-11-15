@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import tkinter as tk
 from datetime import date
+from tkinter import simpledialog
 
+from stamina import theme
 from stamina.adapt import bind_wraplength
 from stamina.english.mic import MicPanel
 from stamina.english.speech_std import advance_later, passed
@@ -15,38 +17,13 @@ from stamina.english.textutil import score_sentence, score_word
 from stamina.english.ui import Flow, L, MatchReadout, WrapEntry, chip
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
+from stamina.languages.ctx import LangCtx
 from stamina.languages.speech import asr_for, ensure_model, model_ready, speak, stop_speak
-from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, LINE_HI, MUTED, PANEL, TEXT, px
 
 
 def _russian(word) -> str:
     return ", ".join(word.translations.get("ru") or [])
-
-
-class _TTS:
-    def stop(self) -> None:
-        stop_speak()
-
-    def poll(self):
-        return []
-
-
-class _Ctx:
-    def __init__(self, progress, asr, app) -> None:
-        self.progress = progress
-        self.asr = asr
-        self.tts = _TTS()
-        self.app = app
-
-    def status(self, text: str, color=None) -> None:
-        fn = getattr(self.app, "status", None)
-        if callable(fn):
-            fn(text, color)
-
-    def sfx(self, name: str) -> None:
-        fn = getattr(self.app, "sfx", None)
-        if callable(fn):
-            fn(name)
 
 
 class WordScanner(tk.Frame):
@@ -65,7 +42,7 @@ class WordScanner(tk.Frame):
                 self.index = i
                 break
         self.si = 0
-        self.ctx = _Ctx(progress, asr_for(lang), app)
+        self.ctx = LangCtx(progress, asr_for(lang), app)
         ensure_model(lang, on_done=lambda: self.after(0, self._model_ready))
 
         nav = tk.Frame(self, bg=BG)
@@ -133,6 +110,7 @@ class WordScanner(tk.Frame):
         acts = Flow(right, gap=3)
         acts.pack(fill=tk.X, pady=(px(2), 0))
         self.btn_known = acts.add(HudButton(acts, _t("✓ ЗНАЮ"), self._toggle_known, color=GREEN, height=22, font_size=7))
+        self.btn_shelf = acts.add(HudButton(acts, _t("⊞ В ОТСЕК"), self._list_menu, height=22, font_size=7))
         bind_wraplength(self.ptext, mid, margin=4)
         bind_wraplength(self.defn, right, margin=4)
         bind_wraplength(self.example, right, margin=4)
@@ -283,6 +261,48 @@ class WordScanner(tk.Frame):
         self.progress.set_known(self.word.slug, not self.progress.is_known(self.word.slug))
         self._show()
 
+    # -- отсеки (именованные списки), как в английском сканере ----------------
+    def _list_menu(self) -> None:
+        if self.progress is None:
+            return
+        menu = tk.Menu(
+            self, tearoff=0, bg=PANEL, fg=TEXT,
+            activebackground=LINE_HI, activeforeground=CYAN, font=theme.font(10),
+        )
+        current = set(self.progress.lists_of(self.word.slug))
+        for item in self.progress.lists:
+            mark = "✓ " if item["id"] in current else "   "
+            menu.add_command(
+                label=f"{mark}{item['name']}  ({len(item['slugs'])})",
+                command=lambda lid=item["id"]: self._toggle_in_list(lid),
+            )
+        menu.add_separator()
+        menu.add_command(label=_t("+ Новый отсек…"), command=self._new_list)
+        x = self.btn_shelf.winfo_rootx() + px(6)
+        y = self.btn_shelf.winfo_rooty() + self.btn_shelf.winfo_height()
+        try:
+            menu.tk_popup(x, y)
+        finally:
+            menu.grab_release()
+
+    def _toggle_in_list(self, lid: str) -> None:
+        added = self.progress.toggle_in_list(lid, self.word.slug)
+        item = self.progress.list_by_id(lid)
+        name = item["name"] if item else "?"
+        self.ctx.status(
+            _t("«{0}» {1} отсек «{2}»").format(
+                self.word.lemma, _t("добавлено в") if added else _t("убрано из"), name,
+            ),
+            CYAN,
+        )
+
+    def _new_list(self) -> None:
+        name = simpledialog.askstring(_t("Новый отсек"), _t("Название отсека:"), parent=self)
+        if not name:
+            return
+        item = self.progress.create_list(name)
+        self._toggle_in_list(item["id"])
+
     def on_speech(self, alts, self_score) -> None:
         items = self._sentences()
         if items:
@@ -325,6 +345,22 @@ class WordScanner(tk.Frame):
             self.progress.award_once(f"speech:{key}:{date.today().isoformat()}", xp)
         quality = 5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2
         self.progress.record_attempt(self.word.slug, score >= 60, "speaking", 0, quality)
+
+    def on_key(self, event) -> None:
+        """Клавиши карточки: ←/→ листают слова, Esc — назад в набор."""
+        if isinstance(event.widget, (tk.Entry, tk.Text)):
+            return
+        key = event.keysym
+        if key == "Escape":
+            self._back()
+        elif key == "Left":
+            self._neighbor(-1)
+        elif key == "Right":
+            self._neighbor(1)
+        elif key in ("Prior", "Up"):
+            self._step_sent(-1)
+        elif key in ("Next", "Down"):
+            self._step_sent(1)
 
     def _back(self) -> None:
         self._save_tr()

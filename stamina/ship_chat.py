@@ -147,6 +147,23 @@ def discussion_info(record: dict, token: str) -> dict:
 TOKEN_SETTINGS = "https://github.com/settings/personal-access-tokens"
 _PERM_RE = re.compile(r"not accessible|bad credentials|could not resolve|must have|forbidden|"
                       r"repo not found|discussion not found|insufficient|scope", re.I)
+_DEAD_RE = re.compile(r"bad credentials|requires authentication|token (?:has )?expired|"
+                      r"token (?:was )?revoked", re.I)
+
+
+def is_dead_token(code: int | None, detail: str = "") -> bool:
+    """401 «Bad credentials» — токен истёк или отозван. Это не «мало прав»: новый токен решит."""
+    return code == 401 or bool(_DEAD_RE.search(str(detail or "")))
+
+
+def token_hint() -> str:
+    """Что делать, если GitHub больше не принимает токен (совет другой, чем «добавь прав»)."""
+    from stamina.i18n import t
+    return "\n".join([
+        t("Токен GitHub больше не действует — истёк срок или его отозвали."),
+        t("Создайте новый: {url} — Discussions и Contents: Read and write.").format(url=TOKEN_SETTINGS),
+        t("Затем вставьте его в «Подключить агента» и нажмите «Проверить связь»."),
+    ])
 
 
 def is_permission_error(code: int | None, detail: str = "") -> bool:
@@ -206,10 +223,14 @@ def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
         info = discussion_info(record, token)
     except urllib.error.HTTPError as exc:
         code, detail = ac._http_error_code(exc)
+        if is_dead_token(code, detail):
+            return False, token_hint()
         return False, f"{code} {detail}".strip()
     except (urllib.error.URLError, OSError) as exc:
         return False, f"network {getattr(exc, 'reason', exc)}"
     except (ValueError, KeyError, TypeError) as exc:
+        if is_dead_token(None, str(exc)):
+            return False, token_hint()
         if is_permission_error(None, str(exc)):
             return False, f"{exc}\n" + permission_hint(str(record.get("bridge_repo") or ""))
         return False, str(exc)
@@ -390,7 +411,9 @@ def send(record: dict, text: str, *, context: dict | None = None, geo: str = "",
         out["payload"] = payload
     except urllib.error.HTTPError as exc:
         out["error"], out["detail"] = ac._http_error_code(exc)
-        if is_permission_error(exc.code, out["detail"]):
+        if is_dead_token(exc.code, out["detail"]):
+            out["error"], out["need"], out["repo"] = "bridge_token", phase, repo
+        elif is_permission_error(exc.code, out["detail"]):
             out["error"], out["need"], out["repo"] = "bridge_perm", phase, repo
         return out
     except (urllib.error.URLError, OSError) as exc:
@@ -398,7 +421,9 @@ def send(record: dict, text: str, *, context: dict | None = None, geo: str = "",
         return out
     except (ValueError, KeyError, TypeError) as exc:
         out["error"], out["detail"] = "config", str(exc)
-        if is_permission_error(None, out["detail"]):
+        if is_dead_token(None, out["detail"]):
+            out["error"], out["need"], out["repo"] = "bridge_token", phase, repo
+        elif is_permission_error(None, out["detail"]):
             out["error"], out["need"], out["repo"] = "bridge_perm", phase, repo
         return out
     out["webhook"] = send_webhook(record, payload)

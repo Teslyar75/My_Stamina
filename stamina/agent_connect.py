@@ -181,12 +181,34 @@ def parse_chat_response(raw: bytes | str) -> str:
     return str(msg.get("content") or choices[0].get("text") or "").strip()
 
 
+def _error_message(raw: bytes | str) -> str:
+    """Причина из тела ошибки: OpenAI — ``error.message``, GitHub — ``message``, GraphQL — faults.
+
+    Раньше тело разбиралось только как ответ chat/completions, и на ошибке GitHub
+    («Bad credentials») пилот видел «no choices» — понять, что токен мёртв, было нельзя.
+    """
+    text = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else str(raw or "")
+    try:
+        data = json.loads(text)
+    except ValueError:
+        return ""
+    if not isinstance(data, dict):
+        return ""
+    err = data.get("error")
+    if isinstance(err, dict) and err.get("message"):
+        return str(err["message"])
+    if isinstance(err, str):
+        return err
+    errors = data.get("errors")
+    if isinstance(errors, list) and errors and isinstance(errors[0], dict):
+        return str(errors[0].get("message") or "")
+    return str(data.get("message") or "")
+
+
 def _http_error_code(exc: urllib.error.HTTPError) -> tuple[str, str]:
     detail = str(exc.reason or "")
     try:
-        parse_chat_response(exc.read())
-    except ValueError as err:          # {"error": {"message": ...}} — понятная причина
-        detail = str(err) or detail
+        detail = _error_message(exc.read()) or detail
     except Exception:  # noqa: BLE001
         pass
     detail = f"HTTP {exc.code}: {detail}".strip()
