@@ -21,19 +21,13 @@ from ..terraformer_trainer import (
     archive_blueprint,
     load_blueprint,
     save_blueprint,
-    PLATFORM_PATTERNS,
     PLATFORM_YIELD,
     PLATFORM_VARIANTS,
     VARIANT_DESC,
     VARIANT_YIELD_MULT,
-    DEEP_RESOURCES,
-    PlatformBlueprint,
     PROGRESSION_TIERS,
     get_language_level,
     get_unlocked_variants,
-    get_unlocked_robots,
-    get_unlocked_upgrades,
-    get_tier_description,
     get_next_tier_preview,
 )
 
@@ -1185,7 +1179,7 @@ class TrainerGame(GameShell):
                     legend_y += px(28)
 
         for text, color in stats:
-            c.create_text(x, legend_y, text=text, fill=color, anchor="nw", font=theme.font(10, bold if color == MUTED else False), tags="gallery")
+            c.create_text(x, legend_y, text=text, fill=color, anchor="nw", font=theme.font(10, color != MUTED), tags="gallery")
             legend_y += px(18)
 
     def _draw_gallery_3d_preview(self, c: tk.Canvas, x: int, y: int, w: int, h: int) -> None:

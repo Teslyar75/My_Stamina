@@ -5,7 +5,7 @@ from pathlib import Path
 
 from stamina.languages.core.base import (
     LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
-    VoicesConfig, BestPractices, WordEntry, ExampleSentence, MorphologyBundle, SpanishMorphology
+    VoicesConfig, BestPractices, WordEntry,
 )
 
 

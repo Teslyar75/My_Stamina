@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from .base import VocabSource, WordEntry
-from .scheduler import SM2Scheduler
 
 
 @dataclass

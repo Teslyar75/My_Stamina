@@ -10,7 +10,6 @@ from stamina.i18n import t as _t
 import tkinter as tk
 
 from stamina import theme
-from stamina.hud import HudButton
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, PANEL, PURPLE, RED, TEXT, blend, px
 
 from .base import GameShell
