@@ -235,7 +235,7 @@ def collect_examples(detailed, links, russian, rows, code):
             return
         bucket.append(item)
         bucket.sort(key=lambda ex: (ex["lead"], ex["nwords"], len(ex["text"])))
-        del bucket[2:]
+        del bucket[5:]
 
     seen = 0
     for cols in iter_tsv(detailed):

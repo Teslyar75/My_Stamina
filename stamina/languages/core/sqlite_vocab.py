@@ -46,9 +46,6 @@ def _split(text: str) -> list[str]:
 def entry_from_row(row: sqlite3.Row) -> WordEntry:
     ru = _split(row["gloss_ru"])
     en = _split(row["gloss_en"])
-    native = _split(row["gloss_native"])
-    if not ru:
-        ru = en or native
     translations: dict[str, list[str]] = {}
     if ru:
         translations["ru"] = ru
@@ -72,7 +69,7 @@ def entry_from_row(row: sqlite3.Row) -> WordEntry:
             ExampleSentence(
                 id="kaikki",
                 text=row["example"],
-                translation=ru[0] if ru else "",
+                translation="",
                 source=row["source"] or "Kaikki, CC BY-SA 4.0",
                 cefr_level=row["cefr"] or "",
             )
@@ -110,7 +107,26 @@ def attach_sqlite(source, path: Path, lang: str) -> bool:
     original_search = source.search
     original_set = source.get_set
     words = source._words
+    by_lemma: dict[str, object] = {}
+    for item in words.values():
+        by_lemma.setdefault(item.lemma.casefold(), item)
     stamp = path.stat().st_mtime_ns
+
+    def _with_curated(entry):
+        """Частотный ключ (ich) и учебный (ich-pron) разные. Русский берём по слову."""
+        if entry.translations.get("ru"):
+            return entry
+        donor = by_lemma.get((entry.lemma or "").casefold())
+        if donor is None:
+            return entry
+        if donor.pos and entry.pos and donor.pos.casefold() != entry.pos.casefold():
+            return entry
+        ru = list(donor.translations.get("ru") or [])
+        if ru:
+            entry.translations["ru"] = ru
+        if donor.examples:
+            entry.examples = list(donor.examples)
+        return entry
 
     def cached(kind: str, extra: str, loader):
         key = (str(path), stamp, lang, kind, extra)
@@ -131,7 +147,7 @@ def attach_sqlite(source, path: Path, lang: str) -> bool:
             ).fetchone()
         except sqlite3.Error:
             return None
-        return entry_from_row(row) if row else None
+        return _with_curated(entry_from_row(row)) if row else None
 
     def get_all_slugs() -> list[str]:
         def load():
@@ -219,6 +235,44 @@ def attach_sqlite(source, path: Path, lang: str) -> bool:
             return out
         return original_set(set_id)
 
+    def count_all() -> int:
+        try:
+            row = conn.execute("SELECT COUNT(*) FROM words WHERE lang=?", (lang,)).fetchone()
+            return int(row[0] if row else 0)
+        except sqlite3.Error:
+            return len(words)
+
+    def count_band(band: str) -> int:
+        try:
+            row = conn.execute(
+                "SELECT COUNT(*) FROM words WHERE lang=? AND band=?",
+                (lang, band),
+            ).fetchone()
+            return int(row[0] if row else 0)
+        except sqlite3.Error:
+            return sum(1 for item in words.values() if item.frequency_band == band)
+
+    def portion(band: str, index: int, size: int = 50) -> list[str]:
+        offset = max(0, index) * size
+        sql = (
+            "SELECT slug FROM words WHERE lang=? AND band=? "
+            "ORDER BY CASE WHEN rank IS NULL OR rank=0 THEN 1 ELSE 0 END, rank, lemma "
+            "LIMIT ? OFFSET ?"
+        )
+        try:
+            rows = conn.execute(sql, (lang, band, size, offset)).fetchall()
+            return [row[0] for row in rows]
+        except sqlite3.Error:
+            ranked = sorted(
+                (item.frequency_rank or 10**9, slug)
+                for slug, item in words.items()
+                if item.frequency_band == band
+            )
+            return [slug for _rank, slug in ranked[offset:offset + size]]
+
+    source.count_all = count_all
+    source.count_band = count_band
+    source.portion = portion
     source.get_word = get_word
     source.get_all_slugs = get_all_slugs
     source.get_slugs_by_freq_band = get_slugs_by_freq_band
@@ -227,3 +281,33 @@ def attach_sqlite(source, path: Path, lang: str) -> bool:
     source.get_set = get_set
     source._sqlite = conn
     return True
+
+
+PORTION = 50
+
+
+def count_all(vocab) -> int:
+    fn = vocab.__dict__.get("count_all")
+    if callable(fn):
+        return int(fn())
+    return len(getattr(vocab, "_words", {}) or {})
+
+
+def count_band(vocab, band: str) -> int:
+    fn = vocab.__dict__.get("count_band")
+    if callable(fn):
+        return int(fn(band))
+    return sum(1 for item in vocab._words.values() if item.frequency_band == band)
+
+
+def portion_slugs(vocab, band: str, index: int, size: int = PORTION) -> list[str]:
+    fn = vocab.__dict__.get("portion")
+    if callable(fn):
+        return list(fn(band, index, size))
+    ranked = sorted(
+        (item.frequency_rank or 10**9, item.slug)
+        for item in vocab._words.values()
+        if item.frequency_band == band
+    )
+    start = max(0, index) * size
+    return [slug for _rank, slug in ranked[start:start + size]]

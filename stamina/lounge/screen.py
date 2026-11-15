@@ -14,6 +14,7 @@ from .breakout import BreakoutGame
 from .snake import SnakeGame
 from .tetris import TetrisGame
 from .trainer import TrainerGame
+from .vim_trainer import VimTrainerGame
 
 GAMES = [
     {
@@ -48,6 +49,15 @@ GAMES = [
                     "собирай блоки и закладывай фундамент."),
         "color": AMBER,
         "cls": TrainerGame,
+    },
+    {
+        "id": "vim_trainer",
+        "title": _t("VIM ТРЕНАЖЁР"),
+        "subtitle": _t("РЕДАКТОР КОДА · 12 УРОКОВ"),
+        "blurb": _t("Освой VIM: h/j/k/l, w/b/e, x/dw/dd, i/a/o, cw/cc, v/V, /, u, счетчики. "
+                    "Интерактивные уроки на игровой сетке."),
+        "color": PURPLE,
+        "cls": VimTrainerGame,
     },
 ]
 
@@ -157,6 +167,25 @@ class LoungeScreen(tk.Frame):
                                    fill=CYAN, outline="")
                 c.create_line(ox + cell, oy + 2.5 * cell, ox + cell * 2, oy + 2.5 * cell,
                               fill=AMBER, width=2, arrow="last")
+            elif gid == "vim_trainer":
+                cell = max(6, min(ww, hh) // 10)
+                ox = ww // 2 - 4 * cell
+                oy = hh // 2 - 2 * cell
+                # VIM-like grid preview
+                for y in range(4):
+                    for x in range(8):
+                        cx = ox + x * cell
+                        cy = oy + y * cell
+                        is_cursor = (x == 3 and y == 1)
+                        fill = CYAN if is_cursor else blend(color, PANEL, 0.15 + y * 0.05)
+                        c.create_rectangle(cx, cy, cx + cell - 1, cy + cell - 1, fill=fill, outline=blend(fill, TEXT, 0.2))
+                        if is_cursor:
+                            c.create_text(cx + cell // 2, cy + cell // 2, text="@", fill=BG, font=theme.font(8, True, mono=True))
+                        elif (x + y) % 3 == 0:
+                            c.create_text(cx + cell // 2, cy + cell // 2, text="vim"[x % 3], fill=MUTED, font=theme.font(7, mono=True))
+                # Key hints
+                c.create_text(ox + 4 * cell, oy + 4 * cell + 5, text="h j k l  w b e  x dw dd  i a o  v / u",
+                              fill=AMBER, font=theme.font(7), anchor="center")
             else:
                 for r in range(3):
                     for col in range(8):

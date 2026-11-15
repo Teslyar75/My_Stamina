@@ -33,6 +33,8 @@ def _db(path):
     )
     rows = [
         ("haus-noun", "Haus", "noun", "de", 10, "goethe-a1", "A1", "n", "house", "", "", "Das Haus.", "Kaikki", 3),
+        ("haus", "Haus", "noun", "de", 11, "goethe-a1", "A1", "n", "house", "", "", "Das Haus ist alt.", "Kaikki", 3),
+        ("gate-noun", "Gate", "noun", "de", 12, "goethe-a1", "A1", "n", "gate", "", "", "", "Kaikki", 1),
         ("baum-noun", "Baum", "noun", "de", 50, "goethe-a2", "A2", "m", "tree", "дерево", "", "", "Kaikki", 10),
         ("real-adj", "real", "adj", "de", 0, "rest", "", "", "real", "реальный", "", "", "Kaikki", 10),
         ("real-adj", "real", "adj", "es", 0, "rest", "", "", "royal", "королевский", "", "", "Kaikki", 10),
@@ -59,6 +61,9 @@ def test_curated_word_wins_and_languages_stay_apart(tmp_path):
     }
     assert attach_sqlite(src, path, "de")
     assert src.get_word("haus-noun").translations["ru"][0] == "дом"
+    borrowed = src.get_word("haus")
+    assert borrowed.translations["ru"][0] == "дом"
+    assert not src.get_word("gate-noun").translations.get("ru")
     baum = src.get_word("baum-noun")
     assert baum.translations["ru"][0] == "дерево"
     assert baum.morphology.german.article_sg == "der"

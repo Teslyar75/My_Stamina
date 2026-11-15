@@ -58,7 +58,7 @@ class MissionGenerator:
         return self._make_mission(word, "choice", review=False)
 
     def _make_mission(self, word: WordEntry, mode: str, review: bool) -> Mission:
-        translations = word.translations.get("ru", [word.lemma])
+        translations = word.translations.get("ru") or [word.lemma]
         expected = translations[0]
 
         if mode == "choice":

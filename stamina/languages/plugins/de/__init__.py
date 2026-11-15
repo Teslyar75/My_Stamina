@@ -174,7 +174,10 @@ class GermanPlugin(LanguagePlugin):
         from stamina.languages.core.json_vocab import load_vocab_file
         from stamina.languages.core.sqlite_vocab import attach_sqlite, sqlite_path
         src = GermanVocabSource()
-        src._words = load_vocab_file(Path(__file__).parent / "vocab_a1.json")
+        words = {}
+        for level in ["a1", "a2", "b1", "b2", "c1", "c2"]:
+            words.update(load_vocab_file(Path(__file__).parent / f"vocab_{level}.json"))
+        src._words = words
         attach_sqlite(src, sqlite_path(), "de")
         src._loaded = True
         return src

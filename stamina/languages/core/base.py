@@ -14,6 +14,8 @@ class MorphologyBundle:
     number: str | None = None
     german: "GermanMorphology | None" = None
     spanish: "SpanishMorphology | None" = None
+    french: "FrenchMorphology | None" = None
+    italian: "ItalianMorphology | None" = None
     english: "EnglishMorphology | None" = None
 
 
@@ -97,6 +99,134 @@ class SpanishMorphology:
     is_reflexive: bool = False
     is_stem_changing: bool = False
     stem_change_type: str | None = None
+
+
+@dataclass
+class FrenchMorphology:
+    gender: str = ""
+    singular: str = ""
+    plural: str = ""
+    infinitive: str = ""
+    participe_passe: str = ""
+    gerondif: str = ""
+    pres_je: str = ""
+    pres_tu: str = ""
+    pres_il: str = ""
+    pres_nous: str = ""
+    pres_vous: str = ""
+    pres_ils: str = ""
+    imparf_je: str = ""
+    imparf_tu: str = ""
+    imparf_il: str = ""
+    imparf_nous: str = ""
+    imparf_vous: str = ""
+    imparf_ils: str = ""
+    passe_je: str = ""
+    passe_tu: str = ""
+    passe_il: str = ""
+    passe_nous: str = ""
+    passe_vous: str = ""
+    passe_ils: str = ""
+    futur_je: str = ""
+    futur_tu: str = ""
+    futur_il: str = ""
+    futur_nous: str = ""
+    futur_vous: str = ""
+    futur_ils: str = ""
+    cond_je: str = ""
+    cond_tu: str = ""
+    cond_il: str = ""
+    cond_nous: str = ""
+    cond_vous: str = ""
+    cond_ils: str = ""
+    subj_pres_je: str = ""
+    subj_pres_tu: str = ""
+    subj_pres_il: str = ""
+    subj_pres_nous: str = ""
+    subj_pres_vous: str = ""
+    subj_pres_ils: str = ""
+    subj_imparf_je: str = ""
+    subj_imparf_tu: str = ""
+    subj_imparf_il: str = ""
+    subj_imparf_nous: str = ""
+    subj_imparf_vous: str = ""
+    subj_imparf_ils: str = ""
+    imper_tu: str = ""
+    imper_nous: str = ""
+    imper_vous: str = ""
+    conjugation_group: int = 0
+    is_irregular: bool = False
+    is_reflexive: bool = False
+    auxiliary: str = "avoir"
+    past_participle_agreement: bool = False
+
+
+@dataclass
+class ItalianMorphology:
+    gender: str = ""
+    singular: str = ""
+    plural: str = ""
+    infinitive: str = ""
+    gerundio: str = ""
+    participio: str = ""
+    pres_io: str = ""
+    pres_tu: str = ""
+    pres_lui: str = ""
+    pres_noi: str = ""
+    pres_voi: str = ""
+    pres_loro: str = ""
+    imperf_io: str = ""
+    imperf_tu: str = ""
+    imperf_lui: str = ""
+    imperf_noi: str = ""
+    imperf_voi: str = ""
+    imperf_loro: str = ""
+    passato_io: str = ""
+    passato_tu: str = ""
+    passato_lui: str = ""
+    passato_noi: str = ""
+    passato_voi: str = ""
+    passato_loro: str = ""
+    trapass_io: str = ""
+    trapass_tu: str = ""
+    trapass_lui: str = ""
+    trapass_noi: str = ""
+    trapass_voi: str = ""
+    trapass_loro: str = ""
+    futuro_io: str = ""
+    futuro_tu: str = ""
+    futuro_lui: str = ""
+    futuro_noi: str = ""
+    futuro_voi: str = ""
+    futuro_loro: str = ""
+    cond_io: str = ""
+    cond_tu: str = ""
+    cond_lui: str = ""
+    cond_noi: str = ""
+    cond_voi: str = ""
+    cond_loro: str = ""
+    congiuntivo_pres_io: str = ""
+    congiuntivo_pres_tu: str = ""
+    congiuntivo_pres_lui: str = ""
+    congiuntivo_pres_noi: str = ""
+    congiuntivo_pres_voi: str = ""
+    congiuntivo_pres_loro: str = ""
+    congiuntivo_imperf_io: str = ""
+    congiuntivo_imperf_tu: str = ""
+    congiuntivo_imperf_lui: str = ""
+    congiuntivo_imperf_noi: str = ""
+    congiuntivo_imperf_voi: str = ""
+    congiuntivo_imperf_loro: str = ""
+    imper_tu: str = ""
+    imper_lui: str = ""
+    imper_noi: str = ""
+    imper_voi: str = ""
+    imper_loro: str = ""
+    conjugation_group: int = 0
+    is_irregular: bool = False
+    is_reflexive: bool = False
+    auxiliary: str = "avere"
+    past_participle_agreement: bool = False
 
 
 @dataclass

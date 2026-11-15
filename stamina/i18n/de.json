@@ -2803,5 +2803,12 @@
  "Интервал: {0} дн.": "Intervall: {0} Tage",
  "Поиск слова": "Wort suchen",
  "Карточек: {0}": "Karten: {0}",
- "Ничего не найдено": "Nichts gefunden"
+ "Ничего не найдено": "Nichts gefunden",
+ "УРОВНИ · CEFR": "STUFEN · CEFR",
+ "блок {0} из {1} · слов {2} · пройдено {3}": "Block {0} von {1} · Wörter {2} · geschafft {3}",
+ "НАБОР ГОТОВИТСЯ": "SATZ WIRD VORBEREITET",
+ "СКАЖИ ПРЕДЛОЖЕНИЕ": "SAG DEN SATZ",
+ "примера пока нет": "noch kein Beispiel",
+ "Клик по слову — сканер слова и фразы.": "Klick aufs Wort — Scanner für Wort und Satz.",
+ "модель речи для {0} ещё скачивается": "Sprachmodell für {0} wird noch geladen"
 }
