@@ -1,0 +1,5 @@
+﻿# Local only: Windows reserved 8697-8796, bridge moved to 7865 (2026-11-12)
+services:
+  backend:
+    environment:
+      ORION_OPENCODE_URL: http://host.docker.internal:7865

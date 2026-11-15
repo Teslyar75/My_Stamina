@@ -11,5 +11,5 @@ fpdf2>=2.7
 # For pronunciation check in ENGLISH tab (optional):
 #   pip install vosk sounddevice
 #   python scripts/download_vosk_model.py
-# German and Spanish scanner voice:
-edge-tts>=7.0
+# German and Spanish scanner voice (optional):
+# edge-tts>=7.0

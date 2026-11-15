@@ -1,11 +1,12 @@
 """Отсек «ИНОСТРАННЫЕ ЯЗЫКИ» — селектор языков и под-страницы."""
 from __future__ import annotations
 
+from pathlib import Path
+
 from stamina.i18n import t as _t
 
 import tkinter as tk
 import time
-from typing import Callable
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel

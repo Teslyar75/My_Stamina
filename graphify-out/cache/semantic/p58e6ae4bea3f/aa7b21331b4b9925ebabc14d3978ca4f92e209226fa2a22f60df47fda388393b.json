@@ -1,0 +1,1 @@
+{"nodes": [{"id": "docs_web_web_plan", "label": "Web Implementation Plan", "file_type": "document", "source_file": "docs/web/WEB_PLAN.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null, "rationale": "Lays out the architecture, tech stacks, and modular guidelines.", "_origin": "semantic"}], "edges": [], "hyperedges": []}

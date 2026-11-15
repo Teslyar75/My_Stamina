@@ -6,10 +6,9 @@ import tempfile
 from datetime import date, timedelta
 from pathlib import Path
 
-import pytest
 
 from stamina.languages.core import (
-    LanguageRegistry, SM2Scheduler, SM2Card, LanguageProgress,
+    SM2Scheduler, LanguageProgress,
     get_registry, TerraformerRewards, calculate_terraformer_energy
 )
 from stamina.languages.core.base import (

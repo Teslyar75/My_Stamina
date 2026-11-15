@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
-
 from stamina.languages.core.base import (
     LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
     VoicesConfig, BestPractices, WordEntry, ExampleSentence, MorphologyBundle, EnglishMorphology
