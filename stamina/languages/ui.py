@@ -25,15 +25,16 @@ POS_SHORT = {
 W, H = 186, 112
 
 
-def head_text(word) -> str:
+def head_text(word, lang: str = "ru") -> str:
     """Слово с артиклем или родом, если язык их показывает (der Baum, el árbol)."""
     from stamina.languages.core.sqlite_vocab import word_line
-    return word_line(word).partition(" — ")[0]
+    return word_line(word, lang).partition(" — ")[0]
 
 
-def gloss_text(word) -> str:
+def gloss_text(word, lang: str = "ru") -> str:
     """Перевод — то, что английская плитка прячет на обороте."""
-    return ", ".join((getattr(word, "translations", {}) or {}).get("ru", [])[:3])
+    from stamina.languages.core.sqlite_vocab import glosses
+    return ", ".join(glosses(word, lang))
 
 
 def pos_short(word) -> str:
@@ -51,11 +52,13 @@ class WordTile(tk.Canvas):
     W, H = W, H
 
     def __init__(self, master, word, *, is_known=None, in_lists=None, on_open=None,
-                 on_known=None, on_list=None, on_menu=None, index: int = 0) -> None:
+                 on_known=None, on_list=None, on_menu=None, index: int = 0,
+                 lang: str = "ru") -> None:
         super().__init__(master, bg=BG, highlightthickness=0, bd=0,
                          width=px(self.W), height=px(self.H), cursor="hand2")
         self.w = word
         self.index = index
+        self.lang = lang
         self._is_known = is_known or (lambda _slug: False)
         self._in_lists = in_lists or (lambda _slug: False)
         self._on_open = on_open
@@ -134,9 +137,9 @@ class WordTile(tk.Canvas):
                              font=theme.font(8, True, mono=True))
         self.create_text(w - px(10), px(7), text="⟳", anchor="ne", fill=CYAN,
                          font=theme.font(11, True), tags="flip")
-        head = head_text(self.w)
+        head = head_text(self.w, self.lang)
         if self.flipped:
-            back = gloss_text(self.w) or head
+            back = gloss_text(self.w, self.lang) or head
             self.create_text(w / 2, px(52), text=back, width=w - px(18), fill=TEXT,
                              font=theme.font(9), justify="center", tags="flip")
         elif h < px(96):

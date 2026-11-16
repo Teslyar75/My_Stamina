@@ -26,8 +26,37 @@ def sqlite_path() -> Path:
     return Path(__file__).resolve().parents[3] / "data" / "vocab_sources" / "kaikki" / "vocab.sqlite"
 
 
-def word_line(word: WordEntry) -> str:
-    ru = ", ".join((word.translations.get("ru") or [])[:3])
+def gloss_lang(settings: dict | None = None) -> str:
+    """На каком языке показывать перевод в карточках.
+
+    Настройка отсека `gloss_lang`: «ui» — как язык интерфейса (пилот-англичанин
+    учит испанский через английский), либо конкретный код языка.
+    """
+    from stamina import i18n
+
+    want = str((settings or {}).get("gloss_lang") or "ui")
+    if want == "ui":
+        want = i18n.language()
+    return want if want in ("ru", "en", "uk", "de") else "ru"
+
+
+def glosses(word: WordEntry, lang: str = "ru") -> list[str]:
+    """Перевод слова: на нужный язык, иначе русский, иначе английский.
+
+    В базе есть только русский и английский глоссы (kaikki), поэтому испанский
+    через английский работает сразу, а «немецкий через немецкий» — нет:
+    тогда честно показываем английский, а не пустоту.
+    """
+    tr = getattr(word, "translations", None) or {}
+    for code in (lang, "ru", "en"):
+        values = [v for v in (tr.get(code) or []) if v]
+        if values:
+            return values[:3]
+    return []
+
+
+def word_line(word: WordEntry, lang: str = "ru") -> str:
+    ru = ", ".join(glosses(word, lang))
     german = word.morphology.german if word.morphology else None
     spanish = word.morphology.spanish if word.morphology else None
     if spanish and spanish.singular:

@@ -22,8 +22,10 @@ from stamina.languages.speech import asr_for, ensure_model, model_ready, speak, 
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, LINE_HI, MUTED, PANEL, TEXT, px
 
 
-def _russian(word) -> str:
-    return ", ".join(word.translations.get("ru") or [])
+def _gloss_text(word, progress) -> str:
+    """Перевод в сканере: на языке интерфейса (или выбранном в настройках)."""
+    from stamina.languages.core.sqlite_vocab import glosses, gloss_lang
+    return ", ".join(glosses(word, gloss_lang(getattr(progress, "settings", None))))
 
 
 class WordScanner(tk.Frame):
@@ -158,7 +160,7 @@ class WordScanner(tk.Frame):
 
     def _show(self) -> None:
         word = self.word
-        ru = _russian(word)
+        ru = _gloss_text(word, self.progress)
         self.where.configure(text=f"{self.index + 1} / {len(self.neighbors)}")
         rank = word.frequency_rank or 0
         self.rank.configure(text=_t(" ЧАСТОТНОСТЬ #{0} ").format(rank) if rank else word.cefr_level or word.pos)
@@ -199,7 +201,7 @@ class WordScanner(tk.Frame):
         if not items:
             self.snum.configure(text=_t("ПРЕДЛОЖЕНИЙ ДЛЯ ЭТОГО СЛОВА НЕТ"))
             self.sent.configure(text=self.word.lemma)
-            self.str_.configure(text=_russian(self.word) or _t("перевода нет"))
+            self.str_.configure(text=_gloss_text(self.word, self.progress) or _t("перевода нет"))
             self.example.configure(text="")
             self.match.clear()
             return
@@ -207,16 +209,16 @@ class WordScanner(tk.Frame):
         cur = items[self.si]
         self.snum.configure(text=_t("КАРТОЧКА ПРЕДЛОЖЕНИЯ {0:02d} / {1:02d}").format(self.si + 1, len(items)))
         self.sent.configure(text=cur.text.strip())
-        self.str_.configure(text=cur.translation or _russian(self.word) or _t("перевода нет"))
+        self.str_.configure(text=cur.translation or _gloss_text(self.word, self.progress) or _t("перевода нет"))
         self.example.configure(text=f"“{cur.text.strip()}”")
         self.match.clear()
 
     def _show_tr(self) -> None:
         items = self._sentences()
         if not items:
-            self.str_.configure(text=_russian(self.word) or _t("перевода нет"))
+            self.str_.configure(text=_gloss_text(self.word, self.progress) or _t("перевода нет"))
             return
-        text = items[self.si % len(items)].translation or _russian(self.word)
+        text = items[self.si % len(items)].translation or _gloss_text(self.word, self.progress)
         self.str_.configure(text=text or _t("перевода нет"))
 
     def _step_sent(self, delta: int) -> None:
@@ -251,7 +253,7 @@ class WordScanner(tk.Frame):
         if self.progress is None:
             return
         text = self.tr.get().strip()
-        if text == (self.progress.my_tr(self.word.slug) or _russian(self.word)):
+        if text == (self.progress.my_tr(self.word.slug) or _gloss_text(self.word, self.progress)):
             return
         self.progress.set_my_tr(self.word.slug, text)
 

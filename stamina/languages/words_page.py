@@ -317,7 +317,13 @@ class WordsPage(tk.Frame):
             on_known=self._toggle,
             on_list=self._tile_list,
             on_menu=self._context_menu,
+            lang=self._gloss_lang(),
         )
+
+    def _gloss_lang(self) -> str:
+        """Перевод на языке интерфейса (если пилот не выбрал другой в настройках)."""
+        from stamina.languages.core.sqlite_vocab import gloss_lang
+        return gloss_lang(self.progress.settings if self.progress else None)
 
     def _in_lists(self, slug: str) -> bool:
         if self.progress is None:

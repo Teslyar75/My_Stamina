@@ -3116,5 +3116,8 @@
   "Исходный вид": "Original view",
   "Редактор не открылся: {0}": "The editor did not open: {0}",
   "Снимок обновлён": "Screenshot updated",
-  "Клик по миниатюре — обрезать и повернуть. Картинки уйдут Ориону вместе с сообщением.": "Click a thumbnail to crop and rotate. Images go to Orion with the message."
+  "Клик по миниатюре — обрезать и повернуть. Картинки уйдут Ориону вместе с сообщением.": "Click a thumbnail to crop and rotate. Images go to Orion with the message.",
+  "ЯЗЫК ПЕРЕВОДА": "ÜBERSETZUNGSSPRACHE",
+  "как интерфейс": "wie Oberfläche",
+  "Учите испанский по-английски? Поставьте интерфейс и перевод на English — карточки будут переводиться на английский.": "Spanisch über Englisch lernen? Stellen Sie Oberfläche und Übersetzungssprache auf English — die Karten werden ins Englische übersetzt."
 }

@@ -259,9 +259,16 @@ class LanguagesScreen(tk.Frame):
                 out.append(word)
         return out
 
+    def _glang(self) -> str:
+        """Язык перевода в карточках: по умолчанию — язык интерфейса."""
+        from stamina.languages.core.sqlite_vocab import gloss_lang
+        progress = getattr(self, "_progress_ref", None)
+        return gloss_lang(progress.settings if progress is not None else None)
+
     def _gloss(self, word) -> str:
-        ru = (word.translations.get("ru") or [""])[0]
-        return ru or _t("перевода нет")
+        from stamina.languages.core.sqlite_vocab import glosses
+        values = glosses(word, self._glang())
+        return values[0] if values else _t("перевода нет")
 
     def _pick_lesson(self, plugin, progress, vocab, n: int) -> list[str]:
         import random
@@ -527,7 +534,7 @@ class LanguagesScreen(tk.Frame):
             word = vocab.get_word(slug)
             if word is None:
                 continue
-            tk.Label(inner, text=word_line(word), bg=BG, fg=TEXT,
+            tk.Label(inner, text=word_line(word, self._glang()), bg=BG, fg=TEXT,
                      font=theme.font(11), anchor="w").pack(fill=tk.X, pady=1)
 
     def _build_practice(self, plugin, progress, vocab) -> None:
@@ -774,7 +781,7 @@ class LanguagesScreen(tk.Frame):
             return
         card = HudPanel(frame, word.lemma, accent=CYAN)
         card.pack(fill=tk.X, pady=px(4))
-        tk.Label(card.body, text=word_line(word), bg=PANEL, fg=TEXT,
+        tk.Label(card.body, text=word_line(word, self._glang()), bg=PANEL, fg=TEXT,
                  font=theme.font(14)).pack(anchor="w", pady=px(4))
         if word.examples:
             tk.Label(card.body, text=word.examples[0].text, bg=PANEL, fg=MUTED,
@@ -845,7 +852,7 @@ class LanguagesScreen(tk.Frame):
         for word, interval in rows:
             tk.Label(
                 inner,
-                text=f"{word_line(word)}  ·  {interval}",
+                text=f"{word_line(word, self._glang())}  ·  {interval}",
                 bg=BG, fg=TEXT, font=theme.font(11), anchor="w",
             ).pack(fill=tk.X, pady=1)
 
@@ -925,6 +932,15 @@ class LanguagesScreen(tk.Frame):
         self._choice_row(inner, "speech_strictness", _t("СТРОГОСТЬ РЕЧИ"),
                          ["soft", "normal", "strict"],
                          labels={"soft": _t("мягко"), "normal": _t("обычно"), "strict": _t("строго")})
+        self._choice_row(inner, "gloss_lang", _t("ЯЗЫК ПЕРЕВОДА"),
+                         ["ui", "ru", "en", "uk", "de"],
+                         labels={"ui": _t("как интерфейс"), "ru": "Русский", "en": "English",
+                                 "uk": "Українська", "de": "Deutsch"})
+        tk.Label(inner,
+                 text=_t("Учите испанский по-английски? Поставьте интерфейс и перевод "
+                         "на English — карточки будут переводиться на английский."),
+                 bg=BG, fg=MUTED, font=theme.font(8), wraplength=px(760),
+                 justify="left").pack(anchor="w", pady=(0, px(4)))
         HudButton(inner, _t("СБРОСИТЬ НАСТРОЙКИ"), self._reset_settings,
                   height=28, font_size=9, color=MUTED).pack(anchor="w", pady=px(8))
 
