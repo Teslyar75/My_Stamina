@@ -19,12 +19,18 @@ Done:
   Ruff по stamina/tools/tests/main.py; ветка `agent/orion/ci-i18n-ruff` — локально зелёная.
 
 Next:
+- Язык перевода карточек = язык интерфейса (если не выбран другой): `gloss_lang()` в
+  `languages/core/sqlite_vocab.py`, настройка отсека «ЯЗЫК ПЕРЕВОДА» (ui/ru/en/uk/de).
+  Ветка `agent/orion/lang-gloss`, коммит dcdbbda, `tests/test_languages_gloss.py` (9).
+  Данные: у ES 805k английских глоссов, у DE 350k, у IT и FR — 0 (нужна дозаправка).
+- Выбор es/fr/it для интерфейса: 2886 ключей × 3, только машинный перевод + вычитка.
 - Показать пилоту плитки в живом корабле (DE/ES/IT/FR), поправить отступы по месту.
 - Отдельная задача: потеря первых слов в микрофоне «Английского» (pre-buffer в `english/asr.py`).
 - Push + PR в master по обеим веткам; позже — нормальный MT для uk/de.
 
 Decisions: uk/de для новых строк = русский ключ (placeholder-safe), en — MT + fallback.
 Плитка языков берёт данные из `WordEntry` (`frequency_rank`, `pos`, `cefr_level`,
-`translations["ru"]`), а не из английского `vocab`; `word_line()` даёт артикль/род.
+перевод — `gloss_lang()`: язык интерфейса или выбранный в настройках отсека), а не из
+английского `vocab`; `word_line()` даёт артикль/род.
 
 Problems: нет. `pr_body.md` в корне — чужой untracked, не трогать.
