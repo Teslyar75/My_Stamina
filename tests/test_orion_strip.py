@@ -52,6 +52,15 @@ class StripCopyTest(unittest.TestCase):
         self.screen._strip_copy()
         self.assertEqual(self.box, [])
 
+    def test_ctrl_v_in_strip_pastes_into_message(self):
+        """Клик по живой линии забирает фокус — Ctrl+V всё равно должен вставлять в сообщение."""
+        calls: list = []
+        self.screen._paste_text = lambda event=None: (calls.append(True), "break")[1]
+        self.screen._strip_key = OrionScreen._strip_key.__get__(self.screen)
+        event = type("E", (), {"keycode": 86, "keysym": "v"})()
+        self.assertEqual(self.screen._strip_key(event), "break")
+        self.assertEqual(calls, [True])
+
 
 if __name__ == "__main__":
     unittest.main()

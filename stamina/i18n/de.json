@@ -3099,5 +3099,22 @@
   "🔒 Разблокируется на уровне языка...": "🔒 Разблокируется на уровне языка...",
   "🕘 Версии: прежние состояния документа, раз в 10 минут, последние 20.": "🕘 Versionen: frühere Stände des Dokuments, alle 10 Minuten, die letzten 20.",
   "🗑 Корзина: убранные документы — вернуть или удалить насовсем.": "🗑 Papierkorb: entfernte Dokumente — wiederherstellen oder endgültig löschen.",
-  "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN"
+  "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN",
+  "Правка снимка": "Edit screenshot",
+  "ПРЕДВАРИТЕЛЬНАЯ РЕДАКЦИЯ": "PRE-SEND EDIT",
+  "⟲ ПОВЕРНУТЬ": "⟲ ROTATE",
+  "▣ ОБРЕЗАТЬ": "▣ CROP",
+  "⟲ СБРОС": "⟲ RESET",
+  "ПРИМЕНИТЬ": "APPLY",
+  "🗑 УБРАТЬ СНИМОК": "🗑 REMOVE SHOT",
+  "{0}×{1} · {2}%": "{0}×{1} · {2}%",
+  "Рамка слишком мала — обведёте область заново": "Selection is too small — draw it again",
+  "Обведено — нажмите «Обрезать»": "Selected — press “Crop”",
+  "Повёрнуто": "Rotated",
+  "Сначала обведите область мышью": "First select an area with the mouse",
+  "Обрезано": "Cropped",
+  "Исходный вид": "Original view",
+  "Редактор не открылся: {0}": "The editor did not open: {0}",
+  "Снимок обновлён": "Screenshot updated",
+  "Клик по миниатюре — обрезать и повернуть. Картинки уйдут Ориону вместе с сообщением.": "Click a thumbnail to crop and rotate. Images go to Orion with the message."
 }

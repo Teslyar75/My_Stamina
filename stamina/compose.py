@@ -65,13 +65,15 @@ class ShotTray:
     """Ряд миниатюр приложенных картинок: клик — открыть, ✕ — снять одну.
 
     Хранит Tk-ссылки на картинки (иначе их съест сборщик мусора).
+    Если задан `on_edit`, клик по миниатюре открывает предварительную редакцию,
+    а просмотр целиком переезжает на правую кнопку.
     """
 
     def __init__(self, master, *, bg=None, size: int = 72, limit: int = 8,
-                 on_open=None, on_drop=None) -> None:
+                 on_open=None, on_drop=None, on_edit=None) -> None:
         self.bg = BG if bg is None else bg
         self.size, self.limit = size, limit
-        self.on_open, self.on_drop = on_open, on_drop
+        self.on_open, self.on_drop, self.on_edit = on_open, on_drop, on_edit
         self.frame = tk.Frame(master, bg=self.bg, bd=0)
         self.previews: list = []
 
@@ -95,7 +97,11 @@ class ShotTray:
                 self.previews.append(photo)
                 lab = tk.Label(cell, image=photo, bg=self.bg, bd=1, relief=tk.SOLID, cursor="hand2")
             lab.pack()
-            if self.on_open:
+            if self.on_edit:
+                lab.bind("<Button-1>", lambda _e, p=path: self.on_edit(p))
+                if self.on_open:
+                    lab.bind("<Button-3>", lambda _e, p=path: self.on_open(p))
+            elif self.on_open:
                 lab.bind("<Button-1>", lambda _e, p=path: self.on_open(p))
             x = tk.Label(cell, text="✕", bg=self.bg, fg=MUTED, font=theme.font(8, True), cursor="hand2")
             x.place(relx=1.0, x=-1, y=1, anchor="ne")
