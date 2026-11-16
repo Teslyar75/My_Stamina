@@ -37,7 +37,7 @@ def gloss_lang(settings: dict | None = None) -> str:
     want = str((settings or {}).get("gloss_lang") or "ui")
     if want == "ui":
         want = i18n.language()
-    return want if want in ("ru", "en", "uk", "de") else "ru"
+    return want if want in i18n.LANGS else "ru"
 
 
 def glosses(word: WordEntry, lang: str = "ru") -> list[str]:

@@ -1851,7 +1851,6 @@
  "Русский": "Russian",
  "Русский на карточке → скажи по-английски (≥ {0}%). 💡 ПОДСКАЗКА или T — удерживай, чтобы увидеть EN. M — микрофон.": "Russian on the card → say it in English (≥ {0}%). 💡 HINT or T — hold to see EN. M — microphone.",
  "Русский → английский (≥ {0}%). Нужно {1} прогон(ов) со ср. ≥ {2}% — затем авто «Отработано».": "Russian English (≥ {0} per cent). {1} runs (s) from ≥ {2} per cent are required, followed by the vehicle \"Failed».",
- "Русский, українська, English, Deutsch. Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится).": "Русский, українська, English, Deutsch. Only the program's labels change; typing texts, dictionaries and books stay as they are. The new language takes effect after a restart — the “RESTART” button does it right away (progress is saved).",
  "Ряд миссий на ★★★": "Several missions at ★★★",
  "С ПЕРЕВОДОМ": "WITH TRANSLATION",
  "С ПРАВИЛА": "START WITH RULE",
@@ -3119,7 +3118,8 @@
  "Редактор не открылся: {0}": "The editor did not open: {0}",
  "Снимок обновлён": "Screenshot updated",
  "Клик по миниатюре — обрезать и повернуть. Картинки уйдут Ориону вместе с сообщением.": "Click a thumbnail to crop and rotate. Images go to Orion with the message.",
-  "ЯЗЫК ПЕРЕВОДА": "TRANSLATION LANGUAGE",
-  "как интерфейс": "follow interface",
-  "Учите испанский по-английски? Поставьте интерфейс и перевод на English — карточки будут переводиться на английский.": "Learning Spanish through English? Set the interface and translation language to English — cards will be translated into English."
+ "ЯЗЫК ПЕРЕВОДА": "TRANSLATION LANGUAGE",
+ "как интерфейс": "follow interface",
+ "Учите испанский по-английски? Поставьте интерфейс и перевод на English — карточки будут переводиться на английский.": "Learning Spanish through English? Set the interface and translation language to English — cards will be translated into English.",
+ "Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится). Español, Français, Italiano — черновой машинный перевод.": "Program labels change; typing texts, dictionaries and books stay as they are. A new language takes effect after restart — the «RESTART» button does it at once (progress is kept). Español, Français, Italiano — machine-translated draft."
 }

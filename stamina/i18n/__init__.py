@@ -15,7 +15,10 @@ import sys
 from pathlib import Path
 
 DIR = Path(__file__).resolve().parent
-LANGS = {"ru": "Русский", "uk": "Українська", "en": "English", "de": "Deutsch"}
+LANGS = {"ru": "Русский", "uk": "Українська", "en": "English", "de": "Deutsch",
+         "es": "Español", "fr": "Français", "it": "Italiano"}
+#: Черновые словари: машинный перевод (tools/i18n_mt.py), ждут вычитки.
+DRAFT = frozenset({"es", "fr", "it"})
 DEFAULT = "ru"
 
 _lang = DEFAULT
