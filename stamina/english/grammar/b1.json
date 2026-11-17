@@ -1,0 +1,46 @@
+{
+  "level": "B1",
+  "title": "Intermediate Grammar (Essential Grammar in Use - Murphy)",
+  "lesson_overview": "B1 level introduces complex structures for more flexible communication, including conditionals and reported speech.",
+  "topics": [
+    {
+      "name": "Conditionals",
+      "focus": "Zero, first, second, third conditionals",
+      "lesson_text": "Conditionals describe results of conditions. Zero Conditional: if + present, present (general truths: If you heat water to 100°C, it boils). First Conditional: if + present, will (real future: If it rains, I will stay home). Second Conditional: if + past, would (unreal present/hypothetical: If I won the lottery, I would travel). Third Conditional: if + past perfect, would have + past participle (unreal past: If I had studied, I would have passed). Mixed conditionals combine time references. Note: unless = if not. Conditional sentences with 'unless', 'as long as', 'in case'.",
+      "examples": ["If you mix red and white, you get pink.", "If I have time, I will call you.", "If I were rich, I would buy a boat.", "If I had studied harder, I would have passed the exam."],
+      "exercise_types": ["complete_the_conditional", "choose_right", "sentence_transform", "correct_mistake"],
+      "key_concepts": ["if vs unless", "tense shifts", "real vs unreal"],
+      "total_exercises": 15
+    },
+    {
+      "name": "Passive Voice",
+      "focus": "Present/past perfective passive, by-phrase",
+      "lesson_text": "Passive voice focuses on the action/recipient rather than the doer. Structure: be + past participle. Form: am/is/are + past participle (present), was/were + past participle (past). By-phrase: The window was broken by the boy. When doer is unknown: The book was published in 2020. Present perfect passive: have/has been + past participle. Note: Not all verbs can be passivized (intransitive). Sometimes 'get' used informally: He got fired.",
+      "examples": ["The house was built in 1990.", "The report has been written by the team.", "My bike was stolen."],
+      "exercise_types": ["change_active_to_passive", "choose_right", "fill_gap", "by_phrase"],
+      "key_concepts": ["be + past participle", "by-phrase", "tense forms"],
+      "total_exercises": 10
+    },
+    {
+      "name": "Reported Speech",
+      "focus": "Statements, questions, commands",
+      "lesson_text": "Reported speech (indirect speech) reports what someone said without quoting directly. Statement changes: pronouns, time/place words shift back (today -> that day, now -> then). Verb tense backshift: present -> past, past -> past perfect. Questions: reported question word + if/whether + statement form. Commands: tell/ask/order + object + to-infinitive. Reporting verbs: say, tell, ask, explain. Note: sometimes no backshift if statement is still true.",
+      "examples": ["She said \"I am tired\" -> She said she was tired.", "He asked \"Do you speak English?\" -> He asked if I spoke English.", "The teacher said \"Open your books\" -> The teacher told us to open our books."],
+      "exercise_types": ["transform_direct_to_reported", "choose_right", "fill_gap", "correct_mistake"],
+      "key_concepts": ["tense backshift", "time words change", "question forms"],
+      "total_exercises": 12
+    },
+    {
+      "name": "Gerund/Infinitive",
+      "focus": "after verbs, adjectives, nouns",
+      "lesson_text": "Gerund (-ing form) functions as noun. Infinitive (to + base verb) functions as noun, adjective, adverb. Verbs followed by gerund: enjoy, mind, suggest, appreciate, finish, risk. Verbs followed by infinitive: want, need, decide, hope, promise, learn. Verbs followed by gerund or infinitive with meaning change: start, begin, like, love, hate. Adjectives + infinitive: happy to see, glad to help. Nouns + gerund: difficulty in doing, importance of doing. Note: Some verbs take object + infinitive: want somebody to do something.",
+      "examples": ["I enjoy swimming.", "He decided to leave.", "I'm happy to help you.", "There is no point in waiting."],
+      "exercise_types": ["choose_right", "complete_the_pattern", "transform", "identify_gerund_inf"],
+      "key_concepts": ["verb + gerund/infinitive patterns", "meaning change verbs", "nouns + gerund"],
+      "total_exercises": 9
+    }
+  ],
+  "total_exercises": 46,
+  "cefr_description": "Can deal with most situations likely to arise whilst travelling in an area where the language is spoken.",
+  "reference_unit": "Units 9-12, Essential Grammar in Use (Murphy)"
+}

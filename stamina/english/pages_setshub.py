@@ -61,6 +61,8 @@ class SetsHubPage(tk.Frame):
     def show_tab(self, key: str) -> None:
         if key not in self.pages:
             return
+        if key != "verbs" and hasattr(self.verbs, "portal_open") and self.verbs.portal_open():
+            self.verbs.portal.close()   # портал на весь экран не переживает смену вкладки
         self.current = key
         self.pages[key].tkraise()
         for k, b in self.tab_btns.items():
@@ -99,6 +101,11 @@ class SetsHubPage(tk.Frame):
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)
         if page is not None and hasattr(page, "on_key_up"):
             page.on_key_up(e)
+
+    def close_portal(self) -> None:
+        """Свернуть портал спряжения, если он открыт (смена вкладки или раздела)."""
+        if hasattr(self.verbs, "portal_open") and self.verbs.portal_open():
+            self.verbs.portal.close()
 
     def refresh(self) -> None:
         page = {"std": self.standard, "cefr": self.cefr, "verbs": self.verbs, "book": self.book}.get(self.current)

@@ -1,0 +1,46 @@
+{
+  "level": "C2",
+  "title": "Proficiency Grammar (Essential Grammar in Use - Murphy)",
+  "lesson_overview": "C2 level near-native precision, idiomatic density, and genre-specific structures for exceptional mastery of English nuance and style.",
+  "topics": [
+    {
+      "name": "Near-native Precision",
+      "focus": "subtle meaning distinctions, style matching",
+      "lesson_text": "Exceptionally fine distinctions in meaning and style. English has many near-synonyms with subtle differences: claim vs allege vs assert vs maintain vs suggest. Verb patterns with subtle meaning shifts: help somebody (to) do vs help do. Passive vs active voice choices for emphasis. Modal verbs with extreme certainty: must surely vs can possibly vs may well. Cleft sentences: It was the lawyer who defended him. Pseudo-cleft: What he did was leave. Note: Native-like precision requires understanding connotation, collocation, and pragmatic appropriacy, not just grammatical correctness. Advanced irony, understatement, litotes.",
+      "examples": ["He claimed he was innocent. vs He alleged the money was missing. vs He asserted his rights. vs He maintained his position. vs He suggested leaving early.", "It was such a lovely day that we decided to picnic.", "It was the chef who cooked the meal."],
+      "exercise_types": ["distinguish_similar", "style_match", "identify_nuance", "transform"],
+      "key_concepts": ["near-synonym distinctions", "cleft sentences", "pseudo-cleft", "pragmatic appropriacy"],
+      "total_exercises": 15
+    },
+    {
+      "name": "Idiomatic Density",
+      "focus": "fixed expressions, colloquial usage, metaphor",
+      "lesson_text": "Fixed idioms and expressions that cannot be understood literally. Hundreds of common idioms: beat around the bush, cut corners, hit the nail on the head, once in a blue moon, piece of cake, spill the beans. Collocations: words that frequently go together (make a decision, not do a decision; strong coffee, not powerful coffee). Metaphorical language: time flies, a ray of hope, the foot of the mountain. Phrasal verbs with specific meanings: give up, give in, give out. Note: Idioms are context-dependent; some are informal, some neutral, some literary. Mastery involves recognizing and using appropriate idioms for register and context.",
+      "examples": ["He finally admitted he was wrong. vs He finally came clean.", "She's feeling under the weather today.", "You really should apply yourself more."],
+      "exercise_types": ["identify_idiom", "match_idiom_meaning", "complete_idiom", "register_identify"],
+      "key_concepts": ["common idioms", "collocations", "metaphor", "phrasal verbs"],
+      "total_exercises": 12
+    },
+    {
+      "name": "Rhetorical Devices",
+      "focus": "contrast, emphasis, concession",
+      "lesson_text": "Rhetorical devices for persuasive and literary effect. Contrast: not only...but also, whereas, while, in contrast. Emphasis: it is...that, as...as, fronting. Concession: although, even though, despite, in spite of, while. Rhetorical questions: Who could possibly disagree?. Repetition: We shall fight on the beaches. Antithesis: It was the best of times, it was the worst of times. Note: Devices depend on context and purpose; literary vs persuasive vs everyday use. Advanced connector phrases: notwithstanding, not to mention, let alone.",
+      "examples": ["Although it was raining, the game continued.", "Not only did he win, but he also set a record.", "Hardly had I arrived when the phone rang."],
+      "exercise_types": ["identify_device", "transform_device", "choose_device", "analyze_effect"],
+      "key_concepts": ["concession", "emphasis", "contrast", "rhetorical questions"],
+      "total_exercises": 9
+    },
+    {
+      "name": "Genre-specific",
+      "focus": "academic, creative, business registers",
+      "lesson_text": "Genre-specific linguistic features. Academic: passive voice frequent, impersonal structures, objective tone, hedging (may, might, can, could, appear to, seem), complex sentence structures, formal vocabulary (utilize vs use, whereas vs but). Creative: figurative language, sensory detail, Show don't tell, dialogue patterns, stream of consciousness. Business: concise communication, standard format, clear action orientation, effective email structure, report organization. Note: Genre conventions vary within broad categories; academic disciplines have specific norms; business genres (email, report, proposal) have standard structures. Register alignment with purpose and audience is crucial.",
+      "examples": ["Academic: The study revealed a significant correlation. Business: We are pleased to inform you that. Creative: The dawn crept over the hills, shy and golden."],
+      "exercise_types": ["identify_genre", "transform_genre", "analyze_features", "write_in_genre"],
+      "key_concepts": ["academic features", "business format", "creative techniques", "register alignment"],
+      "total_exercises": 10
+    }
+  ],
+  "total_exercises": 46,
+  "cefr_description": "Can understand with ease virtually everything heard or read and can summarise information from different spoken and written sources, reconstructing arguments and accounts in a coherent presentation.",
+  "reference_unit": "Units 21-24, Essential Grammar in Use (Murphy)"
+}

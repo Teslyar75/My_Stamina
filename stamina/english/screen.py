@@ -166,6 +166,9 @@ class EnglishScreen(tk.Frame):
         if prev != name:
             old = self.pages.get(prev) if prev else None
             if old is not None:
+                close = getattr(old, "close_portal", None)
+                if callable(close):
+                    close()                 # портал спряжения живёт только на своей вкладке
                 old.grid_remove()
             page.grid(row=0, column=0, sticky="nsew")
         scan = self.pages.get("scanner")

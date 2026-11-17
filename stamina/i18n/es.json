@@ -3121,5 +3121,10 @@
  "ЯЗЫК ПЕРЕВОДА": "IDIOMA DE TRADUCCIÓN",
  "как интерфейс": "como una interfaz",
  "Учите испанский по-английски? Поставьте интерфейс и перевод на English — карточки будут переводиться на английский.": "¿Aprender español en inglés? Configure la interfaz y la traducción al inglés: las tarjetas se traducirán al inglés.",
- "Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится). Español, Français, Italiano — черновой машинный перевод.": "Cambian las etiquetas del programa; los textos de mecanografía, los diccionarios y los libros quedan como están. El nuevo idioma se activa tras reiniciar: el botón «REINICIAR» lo hace al instante (el progreso se conserva). Español, Français, Italiano: borrador traducido automáticamente."
+ "Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится). Español, Français, Italiano — черновой машинный перевод.": "Cambian las etiquetas del programa; los textos de mecanografía, los diccionarios y los libros quedan como están. El nuevo idioma se activa tras reiniciar: el botón «REINICIAR» lo hace al instante (el progreso se conserva). Español, Français, Italiano: borrador traducido automáticamente.",
+ "Пример: {0}": "Ejemplo: {0}",
+ "🔊 ОЗВУЧИТЬ": "🔊 ESCUCHAR",
+ "🎤 ПРОВЕРИТЬ": "🎤 COMPROBAR",
+ "Читаем: {0}": "Leemos: {0}",
+ "O / Esc — назад": "O / Esc — atrás"
 }

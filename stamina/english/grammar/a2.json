@@ -1,0 +1,46 @@
+{
+  "level": "A2",
+  "title": "Elementary Grammar (Essential Grammar in Use - Murphy)",
+  "lesson_overview": "A2 level builds on A1 foundations, introducing past, future, and more complex structures for everyday communication.",
+  "topics": [
+    {
+      "name": "Past Simple",
+      "focus": "Regular/irregular verbs, positive/negative questions",
+      "lesson_text": "Past Simple describes completed actions at a definite time in the past. Regular verbs: add -ed or -d. Irregular verbs: changes form completely (see list). Positive: I/you/he/she/it/we/they + past form. Negative: I/you/he/she/it/we/they + did not + base verb. Question: Did + I/you/he/she/it/we/they + base verb?. Time expressions: yesterday, last week, in 2010, ago., two ago.",
+      "examples": ["I watched a film yesterday.", "She bought a new car last month.", "They went to Paris in 2019."],
+      "exercise_types": ["fill_gap", "choose_right", "put_verb", "correct_mistake"],
+      "key_concepts": ["regular vs irregular verbs", "time expressions", "did + base form"],
+      "total_exercises": 12
+    },
+    {
+      "name": "Present Perfect",
+      "focus": "ever/never/already/just, life experience",
+      "lesson_text": "Present Perfect connects past to present. Used for: life experience (I have ever been to...), recent actions (I have just done), ongoing situation (I have known him for...), with ever/never, already/just, for/since. Structure: have/has + past participle. Regular past participles: add -ed. Irregular: changes form. Note: Already = before the main verb or after 'not'. Just = immediately before the main verb.",
+      "examples": ["I have seen that film.", "She has just arrived.", "I have known him for years."],
+      "exercise_types": ["fill_gap", "choose_right", "sentence_transform", "correct_mistake"],
+      "key_concepts": ["have/has + past participle", "for/since", "ever/never already/just"],
+      "total_exercises": 10
+    },
+    {
+      "name": "Future Forms",
+      "focus": "will, going to, present continuous for future",
+      "lesson_text": "Future with will: spontaneous decisions, predictions, promises. Future with going to: intentions, plans based on evidence. Present continuous for future: arrangements already made. Structure: will + base verb. be + going to + base verb. be + -ing for future. Note: will not = won't. Going to not = not going to.",
+      "examples": ["I will help you with that.", "It is going to rain.", " We are flying to New York tomorrow."],
+      "exercise_types": ["choose_right", "complete_the_sentence", "correct_mistake", "matching"],
+      "key_concepts": ["will vs going to vs present continuous", "spontaneous vs planned"],
+      "total_exercises": 8
+    },
+    {
+      "name": "Modals (can/could/must)",
+      "focus": "ability, obligation, permission",
+      "lesson_text": "Can: ability, opportunity, request, permission. Could: past ability, polite suggestion, possibility. Must: strong obligation, necessity. Don't have to: not necessary. Must not: forbidden. Structure: modal + base verb (no 'to' after modal except have to). Negative: can't, couldn't, mustn't, don't have to. Note: Can't = cannot. Could have + past participle = missed possibility.",
+      "examples": ["I can swim.", "You could try that restaurant.", "You must stop at the red light."],
+      "exercise_types": ["choose_right", "correct_mistake", "matching", "sentence_transform"],
+      "key_concepts": ["modal + base verb", "must vs don't have to", "can't vs mustn't"],
+      "total_exercises": 7
+    }
+  ],
+  "total_exercises": 37,
+  "cefr_description": "Can communicate in simple and routine tasks requiring a direct exchange of information.",
+  "reference_unit": "Units 5-8, Essential Grammar in Use (Murphy)"
+}
