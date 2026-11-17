@@ -146,9 +146,10 @@ def _show_level(level_key: str, grammar_engine) -> None:
     # Destroy previous level frame if exists
     for key, widget in _content_frames.items():
         widget.grid_remove()
-    # Create and show new level frame
+    # Create and show new level frame inside the grammar page's content area
+    parent = _ensure_content_area(None) if _content_area is None else _content_area
     if level_key not in _content_frames:
-        _content_frames[level_key] = _level_frame(_content_area, level_key)
+        _content_frames[level_key] = _level_frame(parent, level_key)
     _content_frames[level_key].grid(row=1, column=0, sticky="nsew")
 
 
@@ -163,8 +164,8 @@ def _show_tables(grammar_engine) -> None:
 
     for key, widget in _content_frames.items():
         widget.grid_remove()
-    # Simple info about tables
-    info = tk.Label(_content_area,
+    parent = _ensure_content_area(None) if _content_area is None else _content_area
+    info = tk.Label(parent,
                     text=_t("Справочные таблицы есть в файле tables.json: verb tenses, irregular verbs, conditionals, modals"),
                     fg=MUTED, bg=BG, font=("", 10))
     info.pack(padx=px(20), pady=px(20))
@@ -172,6 +173,19 @@ def _show_tables(grammar_engine) -> None:
 
 # Module-level tracking of content frames - will be replaced by screen integration
 _content_frames: dict = {}
+_content_area: tk.Frame | None = None  # Reference to grammar page's content area
+
+
+def _ensure_content_area(parent: tk.Frame | None) -> tk.Frame:
+    """Ensure _content_area is set, using parent if not yet initialized."""
+    global _content_area
+    if _content_area is None:
+        if parent is not None:
+            _content_area = parent
+        else:
+            # Create a default frame if no parent provided
+            _content_area = tk.Frame()  # Will be replaced later
+    return _content_area
 
 
 def init_grammar_tab(english_screen) -> None:
@@ -179,11 +193,8 @@ def init_grammar_tab(english_screen) -> None:
     global _content_area
 
     # Build the grammar page content
-    global _content_area
-    _content_area = tk.Frame(english_screen, bg=BG)
-    _content_area.place(relx=0, rely=0, relwidth=1, relheight=1)
-
     grammar_page = _build_grammar_page(english_screen)
+    _content_area = grammar_page  # Store reference for _show_level
 
     # Add "grammar" to SUBPAGES if not already there
     subpage_names = [name for name, _ in english_screen.SUBPAGES]

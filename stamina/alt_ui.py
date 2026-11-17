@@ -887,6 +887,7 @@ def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: 
 COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
     "starship": {
         "bridge": ("ХОДОВАЯ РУБКА · ОБЗОРНЫЙ ИЛЛЮМИНАТОР", "CYAN"),
+        "languages": ("ЛИНГВОМОДУЛЬ · ПАНЕЛЬ ЯЗЫКОВ", "GREEN"),
         "english": ("ОТСЕК СВЯЗИ С ЗЕМЛЁЙ · ЛИНГВОМОДУЛЬ", "GREEN"),
         "speedread": ("ГИПЕРДВИГАТЕЛЬНЫЙ ОТСЕК", "PURPLE"),
         "lounge": ("ОРАНЖЕРЕЯ · КАЮТ-КОМПАНИЯ", "GREEN"),
@@ -900,6 +901,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
     },
     "steampunk": {
         "bridge": ("КОТЕЛЬНАЯ · ГЛАВНЫЙ ПАРОВОЙ ПУЛЬТ", "AMBER"),
+        "languages": ("ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ", "GREEN"),
         "english": ("БИБЛИОТЕКА ПУТЕШЕСТВЕННИКА", "TEXT"),
         "speedread": ("ЧАСОВАЯ МАСТЕРСКАЯ", "AMBER"),
         "lounge": ("ЧАЙНЫЙ САЛОН", "GREEN"),
