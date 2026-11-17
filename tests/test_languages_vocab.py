@@ -52,13 +52,16 @@ def test_spanish_a1_file():
         assert shown.split()[0] in {"el", "la", "los", "las"}
 
 
+def _band_slug_count(code: str, band: str) -> int:
+    return sum(1 for w in _words(code).values() if w.frequency_band == band)
+
+
 def test_plugins_load_a1_sets():
     reg = get_registry()
     reg.discover()
+    assert _band_slug_count("de", "goethe-a1") >= 300
+    assert _band_slug_count("es", "cervantes-a1") >= 300
     german = reg.get("de").load_vocab()
-    spanish = reg.get("es").load_vocab()
-    assert len(german.get_slugs_by_freq_band("goethe-a1")) >= 300
-    assert len(spanish.get_slugs_by_freq_band("cervantes-a1")) >= 300
     haus = german.get_word("haus-noun")
     assert haus is not None
     assert haus.morphology.german.article_sg == "das"
