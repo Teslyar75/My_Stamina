@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "language": "de",
+  "levels": [
+    {"code": "A1", "file": "a1.json", "lessons": 18, "title": "A1 · Выживание"},
+    {"code": "A2", "file": "a2.json", "lessons": 18, "title": "A2 · Быт и поездки"},
+    {"code": "B1", "file": "b1.json", "lessons": 12, "title": "B1 · Работа и учёба"},
+    {"code": "B2", "file": "b2.json", "lessons": 10, "title": "B2 · Профессиональный уровень"},
+    {"code": "C1", "file": "c1.json", "lessons": 6, "title": "C1 · Сложные тексты"},
+    {"code": "C2", "file": "c2.json", "lessons": 4, "title": "C2 · Мастерство"}
+  ],
+  "tables_file": "tables.json"
+}

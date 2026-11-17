@@ -1,0 +1,1192 @@
+{
+  "version": 1,
+  "level": "C1",
+  "lessons": [
+    {
+      "id": "c1-01-nominalstil",
+      "order": 1,
+      "title": "Nominalstil против Verbalstil",
+      "subtitle": "Substantivierung, Funktionsverbgefüge, Behördendeutsch vermeiden",
+      "topics": [
+        "nominalisierung",
+        "funktionsverbgefuege"
+      ],
+      "prereq": [
+        "b2-04-nominalisierung",
+        "b2-08-funktionsverbgefuege"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nominalstil = viele Substantive, wenig Verben. Typisch für Behördensprache, Wissenschaft. Verbalstil = mehr Verben, direkter, verständlicher."
+        },
+        {
+          "kind": "rule",
+          "title": "Nominalstil (Behördendeutsch)",
+          "text": "Die Durchführung der Prüfung erfolgt durch den Prüfer. (statt: Der Prüfer führt die Prüfung durch.)"
+        },
+        {
+          "kind": "rule",
+          "title": "Verbalstil (besser)",
+          "text": "Der Prüfer prüft. / Die Prüfung wird durchgeführt. Aktiv, direkt."
+        },
+        {
+          "kind": "rule",
+          "title": "Umwandlung",
+          "text": "Substantiv + Lichtverb → Verb: Entscheidung treffen → entscheiden. In Frage kommen → geeignet sein. Zur Kenntnis nehmen → erfahren."
+        },
+        {
+          "kind": "rule",
+          "title": "Wann Nominalstil OK",
+          "text": "Wissenschaftliche Texte, Verträge, Gesetze (Präzision). In Alltag/Journalismus: Verbalstil bevorzugen."
+        },
+        {
+          "kind": "table",
+          "ref": "nominalisierung"
+        },
+        {
+          "kind": "table",
+          "ref": "funktionsverbgefuege"
+        },
+        {
+          "kind": "example",
+          "de": "Nominal: Die Erstellung des Berichts erfolgt durch den Mitarbeiter. Verbal: Der Mitarbeiter erstellt den Bericht. Oder: Der Bericht wird erstellt.",
+          "ru": "Номинальный: Составление отчёта производится сотрудником. Вербальный: Сотрудник составляет отчёт. Или: Отчёт составляется.",
+          "note": "Nominalstil = schwer lesbar. Verbalstil = klar."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-01-d01",
+          "type": "choice",
+          "prompt": "Nominalstil: 'Die ____ des Vertrags erfolgt morgen.' (unterschreiben)",
+          "options": [
+            "Unterzeichnung",
+            "Unterschreiben",
+            "Unterschrift",
+            "Unterschrifts"
+          ],
+          "answer": [
+            "Unterzeichnung"
+          ],
+          "why": "Substantivierung: unterschreiben → die Unterzeichnung."
+        },
+        {
+          "id": "c1-01-d02",
+          "type": "choice",
+          "prompt": "Verbalstil statt 'zur Kenntnis nehmen':",
+          "options": [
+            "erfahren",
+            "kennen",
+            "wissen",
+            "nehmen"
+          ],
+          "answer": [
+            "erfahren"
+          ],
+          "why": "zur Kenntnis nehmen → erfahren."
+        },
+        {
+          "id": "c1-01-d03",
+          "type": "choice",
+          "prompt": "FVG: 'in Betracht ziehen' → Verb:",
+          "options": [
+            "erwägen",
+            "betrachten",
+            "ziehen",
+            "kommen"
+          ],
+          "answer": [
+            "erwägen"
+          ],
+          "why": "in Betracht ziehen = erwägen."
+        },
+        {
+          "id": "c1-01-d04",
+          "type": "fill",
+          "prompt": "Verbalstil: 'Die ____ (Entscheidung) fällt der Chef.' → 'Der Chef ____.'",
+          "answer": [
+            "entscheidet"
+          ],
+          "why": "Entscheidung treffen → entscheiden."
+        },
+        {
+          "id": "c1-01-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'wird / die / Prüfung / durchgeführt / von / dem / Prüfer'",
+          "answer": [
+            "Die Prüfung wird vom Prüfer durchgeführt."
+          ],
+          "why": "Passiv statt Nominalstil mit FVG."
+        },
+        {
+          "id": "c1-01-d06",
+          "type": "choice",
+          "prompt": "Nominal: 'Zur ____ der Sicherheit...' (sichern)",
+          "options": [
+            "Gewährleistung",
+            "Sicherung",
+            "Sicherheit",
+            "Sichernden"
+          ],
+          "answer": [
+            "Gewährleistung"
+          ],
+          "why": "sichern → die Gewährleistung (FVG: Gewährleistung bieten)."
+        },
+        {
+          "id": "c1-01-d07",
+          "type": "fill",
+          "prompt": "Verbalstil: 'Er kommt ____ (in Frage) für den Posten.'",
+          "answer": [
+            "in Frage"
+          ],
+          "why": "in Frage kommen = geeignet sein."
+        },
+        {
+          "id": "c1-01-d08",
+          "type": "transform",
+          "prompt": "Nominal → Verbal: 'Die Durchführung der Untersuchung...' → ____",
+          "answer": [
+            "Der Arzt untersucht... / Die Untersuchung wird durchgeführt."
+          ],
+          "why": "Substantiv + Lichtverb → Verb."
+        },
+        {
+          "id": "c1-01-d09",
+          "type": "choice",
+          "prompt": "Wann ist Nominalstil angebracht?",
+          "options": [
+            "immer",
+            "nie",
+            "Wissenschaft/Verträge/Gesetze",
+            "nur mündlich"
+          ],
+          "answer": [
+            "Wissenschaft/Verträge/Gesetze"
+          ],
+          "why": "Präzision, Rechtssicherheit."
+        },
+        {
+          "id": "c1-01-d10",
+          "type": "fill",
+          "prompt": "FVG → Verb: 'Antrag stellen' → ____",
+          "answer": [
+            "beantragen"
+          ],
+          "why": "Antrag stellen = beantragen."
+        },
+        {
+          "id": "c1-01-d11",
+          "type": "choice",
+          "prompt": "'Wirkung zeigen' =",
+          "options": [
+            "wirken",
+            "zeigen",
+            "wirksam sein",
+            "Wirkung haben"
+          ],
+          "answer": [
+            "wirken"
+          ],
+          "why": "Wirkung zeigen = wirken."
+        },
+        {
+          "id": "c1-01-d12",
+          "type": "fill",
+          "prompt": "Verbalstil: 'Zur ____ (Lösung) des Problems...' → 'Das Problem ____.'",
+          "answer": [
+            "löst"
+          ],
+          "why": "Lösung finden → lösen."
+        }
+      ]
+    },
+    {
+      "id": "c1-02-komplexe-syntax",
+      "order": 2,
+      "title": "Многоуровневые Satzgefüge",
+      "subtitle": "Verschachtelte Nebensätze, Infinitivgruppen, Partizipialkonstruktionen",
+      "topics": [
+        "partizipialattribute",
+        "infinitive_zu"
+      ],
+      "prereq": [
+        "b2-03-partizipialsaetze",
+        "b2-07-final"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "C1-Syntax: Kombination mehrerer Nebensätze, Infinitivgruppen und Partizipialkonstruktionen in einem Satz."
+        },
+        {
+          "kind": "rule",
+          "title": "Verschachtelte Nebensätze",
+          "text": "Nebensatz in Nebensatz: 'Ich denke, dass er sagt, dass er kommt.' Verb-Reihenfolge am Ende: kommt, sagt, denke."
+        },
+        {
+          "kind": "rule",
+          "title": "Infinitivgruppen mit zu",
+          "text": "Mehrere zu-Infinitive: 'Er versucht, zu lernen, um zu bestehen.' Oder mit Objekt: 'Ich bitte ihn, zu kommen.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Partizipialkonstruktionen",
+          "text": "Kombination: 'Nach dem Essen gegangen, ruhte er sich aus, ohne zu schlafen.' Partizip II + Partizip I + Infinitiv."
+        },
+        {
+          "kind": "rule",
+          "title": "Satzklammern bei Komplexität",
+          "text": "Konjugiertes Verb Pos 2, Infinitiv/Partizip II/Präfix am Ende. Bei mehreren: letzte Position sammelt alle."
+        },
+        {
+          "kind": "example",
+          "de": "Ich denke, dass er sagt, dass er kommen will, ohne sich anzumelden. Nachdem er gegessen hatte, ging er schlafen, ohne zu lesen.",
+          "ru": "Я думаю, что он говорит, что он хочет прийти, не регистрируясь. После того как он поел, он пошёл спать, не читая.",
+          "note": "Mehrere Ebenen: dass... dass... wollen... ohne... zu. Partizip II + Infinitiv."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-02-d01",
+          "type": "choice",
+          "prompt": "Verschachtelung: 'Ich weiß, ____ er denkt, ____ sie kommt.'",
+          "options": [
+            "dass / dass",
+            "ob / ob",
+            "dass / ob",
+            "ob / dass"
+          ],
+          "answer": [
+            "dass / dass"
+          ],
+          "why": "Zwei dass-Nebensätze nacheinander."
+        },
+        {
+          "id": "c1-02-d02",
+          "type": "choice",
+          "prompt": "Verb-Reihenfolge am Ende: '..., dass er kommen ____ ____ ____ .'",
+          "options": [
+            "will können müssen",
+            "müssen können will",
+            "können müssen will",
+            "müssen will können"
+          ],
+          "answer": [
+            "will können müssen"
+          ],
+          "why": "Modal + Infinitiv + Modal: will (konjugiert) + können + müssen (Infinitiv)."
+        },
+        {
+          "id": "c1-02-d03",
+          "type": "choice",
+          "prompt": "Infinitivgruppe mit Objekt: 'Ich bitte ____ , ____ zu kommen.'",
+          "options": [
+            "ihn / ihn",
+            "ihm / ihn",
+            "ihn / ihm",
+            "ihm / ihm"
+          ],
+          "answer": [
+            "ihn / ihn"
+          ],
+          "why": "bitten + Akk + zu-Infinitiv: ich bitte ihn, zu kommen."
+        },
+        {
+          "id": "c1-02-d04",
+          "type": "fill",
+          "prompt": "Partizip II + Infinitiv: '____ (essen), ging er ____ (schlafen).'",
+          "answer": [
+            "Gegessen, schlafen"
+          ],
+          "why": "Partizip II Perfekt (Vorzeitigkeit) + Infinitivgruppe."
+        },
+        {
+          "id": "c1-02-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'dass / er / kommen / will / , / ohne / sich / anzumelden / , / sagt / er'",
+          "answer": [
+            "Er sagt, dass er kommen will, ohne sich anzumelden."
+          ],
+          "why": "Hauptsatz V2, dass-Nebensatz, Infinitivgruppe am Ende."
+        },
+        {
+          "id": "c1-02-d06",
+          "type": "choice",
+          "prompt": "Partizipialkonstruktion: 'Nachdem er ____ (lesen), ____ (schlafen).'",
+          "options": [
+            "gelesen hatte, schlief",
+            "lesend, schlief",
+            "gelesen, schlafend",
+            "gelesen hatte, schlafend"
+          ],
+          "answer": [
+            "gelesen hatte, schlief"
+          ],
+          "why": "Nebensatz (Nachdem...) + Hauptsatz. Oder Partizip II: 'Gelesen, schlief er.'"
+        },
+        {
+          "id": "c1-02-d07",
+          "type": "fill",
+          "prompt": "Kombination: 'Er ging, ____ (nicht / zögern), ____ (schnell / laufen).'",
+          "answer": [
+            "ohne zu zögern, schnell laufend"
+          ],
+          "why": "Infinitivgruppe (ohne zu) + Partizip I (laufend)."
+        },
+        {
+          "id": "c1-02-d08",
+          "type": "choice",
+          "prompt": "Satzklammer bei mehreren Endgliedern:",
+          "options": [
+            "nur das letzte Verb am Ende",
+            "alle Verben am Ende",
+            "nur Partizip am Ende",
+            "Infinitiv vor Partizip"
+          ],
+          "answer": [
+            "alle Verben am Ende"
+          ],
+          "why": "Am Satzende sammeln sich: Infinitiv, Partizip II, Präfix, Modal-Infinitive."
+        },
+        {
+          "id": "c1-02-d09",
+          "type": "transform",
+          "prompt": "Zwei Sätze verbinden: 'Er aß. Dann schlief er.' → Partizip II:",
+          "answer": [
+            "Gegessen, schlief er."
+          ],
+          "why": "Partizip II Perfekt für Vorzeitigkeit."
+        },
+        {
+          "id": "c1-02-d10",
+          "type": "fill",
+          "prompt": "Infinitiv mit 'zu' + Objekt: 'Ich rate ____ , ____ zu lernen.'",
+          "answer": [
+            "ihm, es"
+          ],
+          "why": "raten + Dat + Akk + zu-Infinitiv."
+        },
+        {
+          "id": "c1-02-d11",
+          "type": "choice",
+          "prompt": "Richtige Verb-Reihenfolge am Satzende:",
+          "options": [
+            "... kommen will können müssen",
+            "... müssen können will kommen",
+            "... will können müssen kommen",
+            "... kommen müssen können will"
+          ],
+          "answer": [
+            "... will können müssen kommen"
+          ],
+          "why": "Konjugiertes Modal (will) + Infinitiv (können) + Infinitiv (müssen) + Hauptverb (kommen)."
+        },
+        {
+          "id": "c1-02-d12",
+          "type": "fill",
+          "prompt": "Partizip I + Infinitiv: '____ (lesend), ____ (verstehen).'",
+          "answer": [
+            "Lesend, verstand er"
+          ],
+          "why": "Partizip I (gleichzeitig) + Hauptsatz."
+        }
+      ]
+    },
+    {
+      "id": "c1-03-akademisch",
+      "order": 3,
+      "title": "Научный стиль, осторожные формулировки",
+      "subtitle": "Passiv, Konjunktiv, Modalverben, Nominalisierung, Hedging",
+      "topics": [
+        "passiv_zeiten",
+        "konjunktiv_i",
+        "modalverben"
+      ],
+      "prereq": [
+        "c1-01-nominalstil",
+        "b2-01-konjunktiv-i",
+        "b2-09-passiv-modal"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Akademischer Stil: objektiv, präzise, zurückhaltend (Hedging). Vermeidung von 'ich', Nutzung von Passiv, Konjunktiv, Modalverben."
+        },
+        {
+          "kind": "rule",
+          "title": "Passiv statt 'man/ich'",
+          "text": "Nicht: 'Ich untersuche...' Sondern: 'Es wird untersucht...' / 'Die Daten wurden analysiert.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Konjunktiv I für fremde Meinungen",
+          "text": "Nach Verben des Sagens/Denkens: 'Müller (2020) argumentiert, dass die These zutreffend sei.' (Konj. I)."
+        },
+        {
+          "kind": "rule",
+          "title": "Hedging (Absicherung)",
+          "text": "Modalverben: könnte, dürfte, müsste, scheint, erscheint. 'Die Ergebnisse deuten darauf hin, dass...' statt 'Die Ergebnisse beweisen, dass...'"
+        },
+        {
+          "kind": "rule",
+          "title": "Nominalisierung für Präzision",
+          "text": "Substantive statt Verben: 'Die Analyse der Daten' statt 'Wir analysieren die Daten.' Aber: nicht übertreiben (siehe Nominalstil)."
+        },
+        {
+          "kind": "example",
+          "de": "Es lässt sich zeigen, dass die Hypothese zutreffend sein könnte. Müller (2020) argumentiert, dass die Methode geeignet sei. Die Daten wurden statistisch analysiert.",
+          "ru": "Можно показать, что гипотеза может быть верной. Мюллер (2020) аргументирует, что метод подходит. Данные были статистически проанализированы.",
+          "note": "Passiv (lässt sich zeigen), Konj. I (sei), Modal (könnte), Hedging."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-03-d01",
+          "type": "choice",
+          "prompt": "Akademisch statt 'Ich analysiere die Daten':",
+          "options": [
+            "Die Daten werden analysiert.",
+            "Man analysiert die Daten.",
+            "Ich analysiere die Daten.",
+            "Die Daten analysiere ich."
+          ],
+          "answer": [
+            "Die Daten werden analysiert."
+          ],
+          "why": "Passiv statt ich/man."
+        },
+        {
+          "id": "c1-03-d02",
+          "type": "choice",
+          "prompt": "Fremde Meinung mit Konj. I: 'Schmidt meint, die These ____ richtig.'",
+          "options": [
+            "sei",
+            "ist",
+            "wäre",
+            "war"
+          ],
+          "answer": [
+            "sei"
+          ],
+          "why": "Konj. I nach Verben des Sagens: sei."
+        },
+        {
+          "id": "c1-03-d03",
+          "type": "choice",
+          "prompt": "Hedging: 'Die Ergebnisse ____ darauf hin, dass...'",
+          "options": [
+            "deuten",
+            "beweisen",
+            "zeigen klar",
+            "bestätigen"
+          ],
+          "answer": [
+            "deuten"
+          ],
+          "why": "deuten = vorsichtig, hedging."
+        },
+        {
+          "id": "c1-03-d04",
+          "type": "fill",
+          "prompt": "Modalverb für Möglichkeit: 'Die Hypothese ____ zutreffend ____ .'",
+          "answer": [
+            "sein könnte"
+          ],
+          "why": "könnte + Infinitiv = Möglichkeit."
+        },
+        {
+          "id": "c1-03-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'dass / die / These / zutreffend / sei / , / argumentiert / Müller'",
+          "answer": [
+            "Müller argumentiert, dass die These zutreffend sei."
+          ],
+          "why": "Konj. I in indirekter Rede."
+        },
+        {
+          "id": "c1-03-d06",
+          "type": "choice",
+          "prompt": "Passiv Präteritum akademisch: 'Die Daten ____ analysiert.'",
+          "options": [
+            "wurden",
+            "waren",
+            "worden",
+            "werden"
+          ],
+          "answer": [
+            "wurden"
+          ],
+          "why": "Präteritum Passiv: wurden + Partizip II."
+        },
+        {
+          "id": "c1-03-d07",
+          "type": "fill",
+          "prompt": "Hedging: 'Es ____ sich ____ , dass...' (zeigen)",
+          "answer": [
+            "lässt zeigen"
+          ],
+          "why": "sich zeigen lassen = sich ergeben, sich zeigen."
+        },
+        {
+          "id": "c1-03-d08",
+          "type": "choice",
+          "prompt": "Konj. I Perfekt = Indikativ → Ersatz:",
+          "options": [
+            "Konj. II",
+            "Indikativ",
+            "Futur",
+            "Präteritum"
+          ],
+          "answer": [
+            "Konj. II"
+          ],
+          "why": "habe gemacht (Indikativ) → hätte gemacht (Konj. II)."
+        },
+        {
+          "id": "c1-03-d09",
+          "type": "transform",
+          "prompt": "'Ich beweise, dass...' → Akademisch:",
+          "answer": [
+            "Es lässt sich zeigen, dass..."
+          ],
+          "why": "Passiv + Hedging."
+        },
+        {
+          "id": "c1-03-d10",
+          "type": "fill",
+          "prompt": "Akademisch: 'Die Studie ____ (zeigen), dass...'",
+          "answer": [
+            "zeigt"
+          ],
+          "why": "Subjekt = Studie (nicht ich). Aktiv, aber objektiv."
+        },
+        {
+          "id": "c1-03-d11",
+          "type": "choice",
+          "prompt": "Typisch für Hedging:",
+          "options": [
+            "könnte, dürfte, scheint",
+            "muss, ist, beweist",
+            "soll, will, kann",
+            "war, hat, wurde"
+          ],
+          "answer": [
+            "könnte, dürfte, scheint"
+          ],
+          "why": "Hedging = Vorsicht, Möglichkeit."
+        },
+        {
+          "id": "c1-03-d12",
+          "type": "fill",
+          "prompt": "Konj. I: 'Er behauptet, er ____ (wissen) die Antwort.'",
+          "answer": [
+            "wisse"
+          ],
+          "why": "wissen → Konj. I: wisse."
+        }
+      ]
+    },
+    {
+      "id": "c1-04-konnektoren-c1",
+      "order": 4,
+      "title": "Связки аргументации (C1)",
+      "subtitle": "zwar...aber, nicht nur...sondern auch, je...desto, einerseits...andererseits",
+      "topics": [
+        "konnektoren_uebersicht"
+      ],
+      "prereq": [
+        "b2-06-konzessiv",
+        "b2-07-final",
+        "b1-12-konnektoren"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "C1-Konnektoren für komplexe Argumentation: Korrelative Konnektoren (Paare), graduell, kontrastiv."
+        },
+        {
+          "kind": "rule",
+          "title": "zwar... aber",
+          "text": "Zugeständnis + Kontrast: 'Er ist zwar müde, aber er arbeitet weiter.' zwar im Nebensatz/Hauptsatz, aber im Hauptsatz."
+        },
+        {
+          "kind": "rule",
+          "title": "nicht nur... sondern auch",
+          "text": "Ergänzung, Steigerung: 'Er kann nicht nur Deutsch, sondern auch Englisch.' Wortstellung: nicht nur + Teil 1, sondern auch + Teil 2."
+        },
+        {
+          "kind": "rule",
+          "title": "je... desto / umso",
+          "text": "Proportionalität: 'Je mehr er lernt, desto besser wird er.' Je + Komparativ (Nebensatz), desto/umso + Komparativ (Hauptsatz)."
+        },
+        {
+          "kind": "rule",
+          "title": "einerseits... andererseits",
+          "text": "Abwägung: 'Einerseits will er gehen, andererseits muss er bleiben.' Oft mit Konjunktiv."
+        },
+        {
+          "kind": "rule",
+          "title": "weitere Paare",
+          "text": "sowohl... als auch (Beide), weder... noch (Keines), mal... mal (Abwechslung)."
+        },
+        {
+          "kind": "example",
+          "de": "Er ist zwar müde, aber er arbeitet. Je mehr man übt, desto besser wird man. Einerseits reizt die Stelle, andererseits ist der Weg weit. Sowohl Peter als auch Maria kommen.",
+          "ru": "Он хоть и уставший, но работает. Чем больше тренируешься, тем лучше. С одной стороны работа привлекает, с другой — далеко. И Петр, и Мария придут.",
+          "note": "Korrelative Konnektoren stehen paarweise, feste Wortstellung."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-04-d01",
+          "type": "choice",
+          "prompt": "'Er ist ____ müde, ____ er arbeitet weiter.'",
+          "options": [
+            "zwar / aber",
+            "aber / zwar",
+            "zwar / denn",
+            "aber / sondern"
+          ],
+          "answer": [
+            "zwar / aber"
+          ],
+          "why": "zwar... aber = Zugeständnis + Kontrast."
+        },
+        {
+          "id": "c1-04-d02",
+          "type": "choice",
+          "prompt": "'Er kann ____ Deutsch ____ Englisch.'",
+          "options": [
+            "nicht nur / sondern auch",
+            "sowohl / als auch",
+            "weder / noch",
+            "entweder / oder"
+          ],
+          "answer": [
+            "nicht nur / sondern auch"
+          ],
+          "why": "nicht nur... sondern auch = Steigerung."
+        },
+        {
+          "id": "c1-04-d03",
+          "type": "choice",
+          "prompt": "'____ mehr er lernt, ____ besser wird er.'",
+          "options": [
+            "Je / desto",
+            "Je / umso",
+            "Desto / je",
+            "Umso / je"
+          ],
+          "answer": [
+            "Je / desto"
+          ],
+          "why": "je + Komparativ (Nebensatz), desto/umso + Komparativ (Hauptsatz)."
+        },
+        {
+          "id": "c1-04-d04",
+          "type": "fill",
+          "prompt": "'____seits will er gehen, ____seits muss er bleiben.'",
+          "answer": [
+            "Einer /ander"
+          ],
+          "why": "einerseits... andererseits."
+        },
+        {
+          "id": "c1-04-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'nicht / nur / Deutsch / kann / er / , / sondern / auch / Englisch'",
+          "answer": [
+            "Er kann nicht nur Deutsch, sondern auch Englisch."
+          ],
+          "why": "Korrelatives Paar: nicht nur... sondern auch."
+        },
+        {
+          "id": "c1-04-d06",
+          "type": "choice",
+          "prompt": "'____ Peter ____ Maria kommen.' (Beide)",
+          "options": [
+            "Sowohl / als auch",
+            "Entweder / oder",
+            "Weder / noch",
+            "Nicht nur / sondern auch"
+          ],
+          "answer": [
+            "Sowohl / als auch"
+          ],
+          "why": "sowohl... als auch = beide."
+        },
+        {
+          "id": "c1-04-d07",
+          "type": "fill",
+          "prompt": "'____ er müde ist, ____ arbeitet er.' (zwar... aber)",
+          "answer": [
+            "Zwar / aber"
+          ],
+          "why": "zwar... aber."
+        },
+        {
+          "id": "c1-04-d08",
+          "type": "choice",
+          "prompt": "Proportionalität mit 'umso': 'Je früher, ____ besser.'",
+          "options": [
+            "umso",
+            "desto",
+            "je",
+            "desto/umso"
+          ],
+          "answer": [
+            "desto/umso"
+          ],
+          "why": "desto oder umso austauschbar."
+        },
+        {
+          "id": "c1-04-d09",
+          "type": "transform",
+          "prompt": "Zwei Sätze: 'Er ist müde. Er arbeitet.' → mit 'zwar...aber':",
+          "answer": [
+            "Er ist zwar müde, aber er arbeitet."
+          ],
+          "why": "zwar... aber verbindet Konzession und Kontrast."
+        },
+        {
+          "id": "c1-04-d10",
+          "type": "fill",
+          "prompt": "'____ ____ ____ ____ , ____ ____ ____.' (weder... noch)",
+          "answer": [
+            "Weder Peter noch Maria"
+          ],
+          "why": "weder... noch = keines von beiden."
+        },
+        {
+          "id": "c1-04-d11",
+          "type": "choice",
+          "prompt": "Word order bei 'je...desto':",
+          "options": [
+            "Je + Komparativ (Hauptsatz), desto + Komparativ (Nebensatz)",
+            "Je + Komparativ (Nebensatz), desto + Komparativ (Hauptsatz)",
+            "Beide Hauptsätze",
+            "Beide Nebensätze"
+          ],
+          "answer": [
+            "Je + Komparativ (Nebensatz), desto + Komparativ (Hauptsatz)"
+          ],
+          "why": "Je-Satz = Nebensatz (Verb am Ende), desto-Satz = Hauptsatz (V2)."
+        },
+        {
+          "id": "c1-04-d12",
+          "type": "fill",
+          "prompt": "'Mal ____ , mal ____ ' (Abwechslung)",
+          "answer": [
+            "mal / mal"
+          ],
+          "why": "mal... mal = abwechselnd."
+        }
+      ]
+    },
+    {
+      "id": "c1-05-modalitaet",
+      "order": 5,
+      "title": "Модальность: dürfte, müsste, sollte, mag",
+      "subtitle": "Epistemische vs deontische Modalität, Konjunktiv II",
+      "topics": [
+        "modalverben",
+        "konjunktiv_ii"
+      ],
+      "prereq": [
+        "b1-01-konjunktiv-ii",
+        "c1-03-akademisch",
+        "b2-09-passiv-modal"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Modalität = Einstellung des Sprechers zum Sachverhalt. Epistemisch (Wahrscheinlichkeit): 'Er dürfte da sein.' Deontisch (Pflicht/Erlaubnis): 'Er muss gehen.' Konjunktiv II für Irrealität/Höflichkeit."
+        },
+        {
+          "kind": "rule",
+          "title": "Epistemisch (Vermutung)",
+          "text": "muss (fast sicher), dürfte (wahrscheinlich), sollte (erwartet), könnte (möglich), mag (konzediert). 'Er dürfte jetzt zu Hause sein.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Deontisch (Pflicht/Erlaubnis)",
+          "text": "muss (Pflicht), soll (Empfehlung), darf (Erlaubnis), kann (Fähigkeit/Erlaubnis). 'Er muss Steuern zahlen.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Konjunktiv II der Modalverben",
+          "text": "könnte, müsste, sollte, dürfte, wollte, möchte. Höflichkeit, Irrealität, Ratschläge: 'Das müsste man machen.' 'Könnten Sie mir helfen?'"
+        },
+        {
+          "kind": "rule",
+          "title": "mag (Konj. I von mögen)",
+          "text": "Konjunktiv I: 'Es mag sein, dass...' = 'Es ist möglich, dass...' (konzediert, akademisch)."
+        },
+        {
+          "kind": "example",
+          "de": "Er dürfte krank sein (Vermutung). Er muss ins Krankenhaus (Pflicht). Das sollte man machen (Empfehlung). Es mag sein, dass er recht hat (Konj. I, akademisch).",
+          "ru": "Вероятно, он болен (предположение). Он должен в больницу (обязательность). Следует это сделать (рекомендация). Возможно, он прав (концессив, наука).",
+          "note": "Epistemisch vs deontisch. Konj. II für Höflichkeit/Irrealität. mag = Konj. I."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-05-d01",
+          "type": "choice",
+          "prompt": "Epistemisch (Vermutung, hoch): 'Er ____ zu Hause sein.'",
+          "options": [
+            "muss",
+            "darf",
+            "kann",
+            "will"
+          ],
+          "answer": [
+            "muss"
+          ],
+          "why": "muss = fast sicher (epistemisch)."
+        },
+        {
+          "id": "c1-05-d02",
+          "type": "choice",
+          "prompt": "Epistemisch (wahrscheinlich): 'Er ____ zu Hause sein.'",
+          "options": [
+            "dürfte",
+            "müsste",
+            "sollte",
+            "könnte"
+          ],
+          "answer": [
+            "dürfte"
+          ],
+          "why": "dürfte = wahrscheinlich (epistemisch)."
+        },
+        {
+          "id": "c1-05-d03",
+          "type": "choice",
+          "prompt": "Deontisch (Pflicht): 'Er ____ Steuern zahlen.'",
+          "options": [
+            "muss",
+            "dürfte",
+            "könnte",
+            "mag"
+          ],
+          "answer": [
+            "muss"
+          ],
+          "why": "muss = Pflicht (deontisch)."
+        },
+        {
+          "id": "c1-05-d04",
+          "type": "fill",
+          "prompt": "Höflichkeit (Konj. II): '____ Sie mir helfen?'",
+          "answer": [
+            "Könnten"
+          ],
+          "why": "Konj. II von können: Könnten."
+        },
+        {
+          "id": "c1-05-d05",
+          "type": "choice",
+          "prompt": "Konj. I (akademisch, Konzession): 'Es ____ sein, dass er recht hat.'",
+          "options": [
+            "mag",
+            "möge",
+            "möchte",
+            "mochte"
+          ],
+          "answer": [
+            "mag"
+          ],
+          "why": "mag = Konj. I von mögen: 'Es mag sein' = es ist möglich."
+        },
+        {
+          "id": "c1-05-d06",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'müsste / man / das / machen'",
+          "answer": [
+            "Das müsste man machen."
+          ],
+          "why": "Konj. II von müssen: Empfehlung/Irrealität."
+        },
+        {
+          "id": "c1-05-d07",
+          "type": "fill",
+          "prompt": "Epistemisch (erwartet): 'Der Zug ____ gleich kommen.'",
+          "answer": [
+            "sollte"
+          ],
+          "why": "sollte = erwartet wird (epistemisch)."
+        },
+        {
+          "id": "c1-05-d08",
+          "type": "choice",
+          "prompt": "Epistemisch (möglich, niedrig): 'Er ____ recht haben.'",
+          "options": [
+            "könnte",
+            "müsste",
+            "dürfte",
+            "sollte"
+          ],
+          "answer": [
+            "könnte"
+          ],
+          "why": "könnte = möglich (epistemisch)."
+        },
+        {
+          "id": "c1-05-d09",
+          "type": "transform",
+          "prompt": "'Er muss kommen' (Pflicht) → epistemisch (Vermutung):",
+          "answer": [
+            "Er muss krank sein."
+          ],
+          "why": "muss epistemisch = fast sicher."
+        },
+        {
+          "id": "c1-05-d10",
+          "type": "fill",
+          "prompt": "Ratschlag (Konj. II): 'Du ____ (sollen) zum Arzt gehen.'",
+          "answer": [
+            "solltest"
+          ],
+          "why": "sollen → Konj. II: solltest (Ratschlag)."
+        },
+        {
+          "id": "c1-05-d11",
+          "type": "choice",
+          "prompt": "'Das mag zutreffen' = Bedeutung:",
+          "options": [
+            "Das ist sicher",
+            "Das ist möglich / ich gestehe zu",
+            "Das ist falsch",
+            "Das muss sein"
+          ],
+          "answer": [
+            "Das ist möglich / ich gestehe zu"
+          ],
+          "why": "mag = Konj. I Konzession."
+        },
+        {
+          "id": "c1-05-d12",
+          "type": "fill",
+          "prompt": "Irrealität (Konj. II Vergangenheit): 'Er ____ (können) kommen, wenn er gewollt ____ (haben).'",
+          "answer": [
+            "hätte gekonnt, hätte"
+          ],
+          "why": "Konj. II Vergangenheit: hätte + Partizip II."
+        }
+      ]
+    },
+    {
+      "id": "c1-06-wortbildung",
+      "order": 6,
+      "title": "Wortbildung: Приставки, суффиксы, композиты",
+      "subtitle": "un-, be-, ent-, -ung, -heit, -keit, -nis, -bar, -los, Zusammensetzungen",
+      "topics": [
+        "nominalisierung",
+        "adj_komparation"
+      ],
+      "prereq": [
+        "c1-01-nominalstil",
+        "b2-04-nominalisierung",
+        "a2-08-komparativ"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Deutsche Wortbildung: Präfixe (Veränderung der Bedeutung), Suffixe (Wortartänderung), Komposita (Zusammensetzungen)."
+        },
+        {
+          "kind": "rule",
+          "title": "Präfixe (Verben)",
+          "text": "be- (transitivieren: liegen → belügen), ent- (Gegenteil/Entfernung: laden → entladen), er- (Erfolg/Inchoativ: finden → erfinden), ver- (Fehler/Richtung: laufen → verlaufen), zer- (Zerstörung: brechen → zerbrechen), miss- (Misslingen: verstehen → missverstehen)."
+        },
+        {
+          "kind": "rule",
+          "title": "Präfixe (Adjektive/Substantive)",
+          "text": "un- (Negation: glücklich → unglücklich), miss- (Miss-: Erfolg → Misserfolg), Haupt- (Haupt-: Stadt → Hauptstadt), Fehl- (Fehl-: Leitung → Fehlleitung)."
+        },
+        {
+          "kind": "rule",
+          "title": "Suffixe (Substantive)",
+          "text": "-ung (Verben: entscheiden → Entscheidung), -heit/-keit (Adjektive: gesund → Gesundheit, frei → Freiheit), -nis (Adjektive/Verben: bitter → Bitternis, kennen → Kenntnis), -tum (Adjektive/Substantive: eigen → Eigentum), -schaft (Substantive: Freund → Freundschaft)."
+        },
+        {
+          "kind": "rule",
+          "title": "Suffixe (Adjektive)",
+          "text": "-bar (Möglichkeit: lesen → lesbar), -los (Fehlen: hoffen → hoffnungslos), -haft (Eigenschaft: Kind → kindhaft), -ig (Eigenschaft: mutig), -isch (Zugehörigkeit: deutsch)."
+        },
+        {
+          "kind": "rule",
+          "title": "Komposita",
+          "text": "Bestimmungswort + Grundwort: Hauptstadt, Handschuh, Zahnarzt. Fugenlaute: -n-, -s-, -en-, -e- (Hundehütte, Arbeitsamt, Gastgeber)."
+        },
+        {
+          "kind": "example",
+          "de": "Entscheidung, Gesundheit, lesbar, hoffnungslos, Hauptstadt, Handschuh, missverstehen, erfinden, zerbrechen.",
+          "ru": "Решение, здоровье, читаемый, безнадежный, столица, перчатка, неверно понять, изобретать, разбить.",
+          "note": "Präfixe verändern Bedeutung, Suffixe Wortart, Komposita = neue Wörter."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-06-d01",
+          "type": "choice",
+          "prompt": "Präfix für 'Gegenteil/Entfernung': ____ laden",
+          "options": [
+            "ent-",
+            "be-",
+            "ver-",
+            "zer-"
+          ],
+          "answer": [
+            "ent-"
+          ],
+          "why": "entladen = ausladen, entfernen."
+        },
+        {
+          "id": "c1-06-d02",
+          "type": "choice",
+          "prompt": "Präfix für 'Fehler/Richtung': ____ laufen",
+          "options": [
+            "ver-",
+            "ent-",
+            "be-",
+            "zer-"
+          ],
+          "answer": [
+            "ver-"
+          ],
+          "why": "verlaufen = sich verlaufen, falsch laufen."
+        },
+        {
+          "id": "c1-06-d03",
+          "type": "choice",
+          "prompt": "Suffix für Substantiv aus Adjektiv 'gesund':",
+          "options": [
+            "-heit",
+            "-keit",
+            "-nis",
+            "-tum"
+          ],
+          "answer": [
+            "-heit"
+          ],
+          "why": "gesund → Gesundheit."
+        },
+        {
+          "id": "c1-06-d04",
+          "type": "fill",
+          "prompt": "Suffix für 'Möglichkeit' aus Verb 'lesen': ____",
+          "answer": [
+            "-bar"
+          ],
+          "why": "lesbar = kann gelesen werden."
+        },
+        {
+          "id": "c1-06-d05",
+          "type": "choice",
+          "prompt": "Suffix für 'Fehlen' aus 'Hoffnung':",
+          "options": [
+            "-los",
+            "-bar",
+            "-haft",
+            "-ig"
+          ],
+          "answer": [
+            "-los"
+          ],
+          "why": "hoffnungslos = ohne Hoffnung."
+        },
+        {
+          "id": "c1-06-d06",
+          "type": "fill",
+          "prompt": "Kompositum: 'Stadt' + 'Haupt' = ____",
+          "answer": [
+            "Hauptstadt"
+          ],
+          "why": "Bestimmungswort (Haupt) + Grundwort (Stadt). Fugen-s: keins."
+        },
+        {
+          "id": "c1-06-d07",
+          "type": "choice",
+          "prompt": "Fugenlaut bei 'Arbeit' + 'Amt':",
+          "options": [
+            "Arbeitsamt",
+            "Arbeitamt",
+            "Arbeitensamt",
+            "Arbeitssamt"
+          ],
+          "answer": [
+            "Arbeitsamt"
+          ],
+          "why": "Fugen-s: Arbeit + s + Amt."
+        },
+        {
+          "id": "c1-06-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'Hand / Schuh / der'",
+          "answer": [
+            "der Handschuh"
+          ],
+          "why": "Kompositum: Hand + Schuh. Grundwort bestimmt Genus (der Schuh)."
+        },
+        {
+          "id": "c1-06-d09",
+          "type": "choice",
+          "prompt": "Präfix 'miss-' Bedeutung:",
+          "options": [
+            "Misslingen",
+            "Wiederholung",
+            "Verstärkung",
+            "Richtung"
+          ],
+          "answer": [
+            "Misslingen"
+          ],
+          "why": "missverstehen = falsch verstehen."
+        },
+        {
+          "id": "c1-06-d10",
+          "type": "fill",
+          "prompt": "Verb → Substantiv mit -ung: 'entscheiden' → die ____",
+          "answer": [
+            "Entscheidung"
+          ],
+          "why": "-ung Suffix für Verben."
+        },
+        {
+          "id": "c1-06-d11",
+          "type": "choice",
+          "prompt": "Adjektiv → Substantiv mit -keit: 'frei' → die ____",
+          "options": [
+            "Freiheit",
+            "Freikeit",
+            "Freikheit",
+            "Freheit"
+          ],
+          "answer": [
+            "Freiheit"
+          ],
+          "why": "frei → Freiheit (-heit nach Adjektiven auf -ig, -lich, -sam, sonst -keit)."
+        },
+        {
+          "id": "c1-06-d12",
+          "type": "transform",
+          "prompt": "Zusammensetzung: 'Schuh' + 'Hand' (wer trägt was?) →",
+          "answer": [
+            "Handschuh"
+          ],
+          "why": "Hand (Bestimmungswort) + Schuh (Grundwort) = Handschuh."
+        }
+      ]
+    }
+  ]
+}

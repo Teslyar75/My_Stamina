@@ -1,0 +1,3491 @@
+{
+  "version": 1,
+  "level": "A2",
+  "lessons": [
+    {
+      "id": "a2-01-dativ",
+      "order": 1,
+      "title": "Dativ: формы и глаголы с Dativ",
+      "subtitle": "Артикли, местоимения, важные глаголы (helfen, danken, folgen...)",
+      "topics": [
+        "dative_case",
+        "dative_verbs"
+      ],
+      "prereq": [
+        "a1-11-possessiv",
+        "a1-09-nominativ-akkusativ"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Dativ (3. Fall) отвечает на вопрос Wem? Используется для косвенного дополнения и после определённых предлогов/глаголов."
+        },
+        {
+          "kind": "rule",
+          "title": "Artikel im Dativ",
+          "text": "Mask: dem, Fem: der, Neut: dem, Pl: den + -n. Unbestimmt: einem, einer, einem, —. Negativ: keinem, keiner, keinem, keinen."
+        },
+        {
+          "kind": "rule",
+          "title": "Pronomen im Dativ",
+          "text": "mir, dir, ihm, ihr, ihm, uns, euch, ihnen/Ihnen."
+        },
+        {
+          "kind": "rule",
+          "title": "Wichtige Verben mit Dativ",
+          "text": "helfen, danken, folgen, gefallen, gehören, glauben, gratulieren, passieren, schaden, vertrauen, verzeihen, begegnen, fehlen, passen, raten, antworten, zuhören, zusehen."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_definite"
+        },
+        {
+          "kind": "table",
+          "ref": "personalpronomen"
+        },
+        {
+          "kind": "example",
+          "de": "Ich helfe dem Mann. Das gefällt mir. Wir danken dir. Er folgt dem Lehrer.",
+          "ru": "Я помогаю мужчине. Это мне нравится. Мы благодарим тебя. Он следует за учителем.",
+          "note": "helfen + Dat, gefallen + Dat (Subjekt = Sache, Objekt = Person im Dat)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-01-d01",
+          "type": "choice",
+          "prompt": "Ich helfe ____ Mann. (bestimmt)",
+          "options": [
+            "dem",
+            "den",
+            "der",
+            "des"
+          ],
+          "answer": [
+            "dem"
+          ],
+          "why": "Maskulin Dativ: der → dem."
+        },
+        {
+          "id": "a2-01-d02",
+          "type": "choice",
+          "prompt": "Das gefällt ____ . (mir/dich/ihm)",
+          "options": [
+            "ich",
+            "mich",
+            "mir",
+            "mein"
+          ],
+          "answer": [
+            "mir"
+          ],
+          "why": "gefallen + Dativ: mir (1. Pers. Sg. Dativ)."
+        },
+        {
+          "id": "a2-01-d03",
+          "type": "choice",
+          "prompt": "Wir danken ____ Eltern. (bestimmt, Plural)",
+          "options": [
+            "den",
+            "die",
+            "der",
+            "dem"
+          ],
+          "answer": [
+            "den"
+          ],
+          "why": "Dativ Plural: die → den (+ -n an Nomen: den Eltern)."
+        },
+        {
+          "id": "a2-01-d04",
+          "type": "fill",
+          "prompt": "Er folgt ____ Lehrer. (unbestimmt)",
+          "answer": [
+            "einem"
+          ],
+          "why": "Maskulin Dativ unbestimmt: ein → einem."
+        },
+        {
+          "id": "a2-01-d05",
+          "type": "choice",
+          "prompt": "Das gehört ____ . (mir/dich/ihm)",
+          "options": [
+            "ich",
+            "mich",
+            "mir",
+            "mein"
+          ],
+          "answer": [
+            "mir"
+          ],
+          "why": "gehören + Dativ."
+        },
+        {
+          "id": "a2-01-d06",
+          "type": "fill",
+          "prompt": "Ich glaube ____ nicht. (dir, Dativ)",
+          "answer": [
+            "dir"
+          ],
+          "why": "glauben + Dativ: dir."
+        },
+        {
+          "id": "a2-01-d07",
+          "type": "choice",
+          "prompt": "Welches Verb nimmt AKKUSATIV?",
+          "options": [
+            "helfen",
+            "sehen",
+            "danken",
+            "folgen"
+          ],
+          "answer": [
+            "sehen"
+          ],
+          "why": "sehen + Akk, die anderen + Dat."
+        },
+        {
+          "id": "a2-01-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'dem / Kind / gibt / er / den / Ball'",
+          "answer": [
+            "Er gibt dem Kind den Ball."
+          ],
+          "why": "geben: Dativobjekt (dem Kind) vor Akkusativobjekt (den Ball)."
+        },
+        {
+          "id": "a2-01-d09",
+          "type": "fill",
+          "prompt": "Wir gratulieren ____ Geburtstag. (ihm)",
+          "answer": [
+            "ihm"
+          ],
+          "why": "gratulieren + Dativ: ihm."
+        },
+        {
+          "id": "a2-01-d10",
+          "type": "choice",
+          "prompt": "Es fehlt ____ an Geld. (ihm/ihr/ihnen)",
+          "options": [
+            "ihm",
+            "ihn",
+            "er",
+            "sein"
+          ],
+          "answer": [
+            "ihm"
+          ],
+          "why": "fehlen + Dativ: ihm."
+        },
+        {
+          "id": "a2-01-d11",
+          "type": "transform",
+          "prompt": "Akkusativ → Dativ: 'Ich sehe den Mann' → 'Ich helfe ____ '",
+          "answer": [
+            "dem Mann"
+          ],
+          "why": "helfen + Dativ: dem Mann."
+        },
+        {
+          "id": "a2-01-d12",
+          "type": "fill",
+          "prompt": "Er antwortet ____ nicht. (ihr)",
+          "answer": [
+            "ihr"
+          ],
+          "why": "antworten + Dativ: ihr."
+        }
+      ]
+    },
+    {
+      "id": "a2-02-genitiv",
+      "order": 2,
+      "title": "Genitiv",
+      "subtitle": "Артикли, местоимения, предлоги (wegen, trotz, während, statt...)",
+      "topics": [
+        "genitive_case",
+        "prepositions_gen"
+      ],
+      "prereq": [
+        "a2-01-dativ"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Genitiv (4. Fall) отвечает на вопрос Wessen? Выражает принадлежность. В устной речи часто заменяется на von + Dativ."
+        },
+        {
+          "kind": "rule",
+          "title": "Artikel im Genitiv",
+          "text": "Mask/Neut: des + -s/-es (des Mannes, des Buches). Fem: der. Pl: der. Unbestimmt: eines, einer, eines. Negativ: keines, keiner, keines, keiner."
+        },
+        {
+          "kind": "rule",
+          "title": "N-Deklination im Genitiv",
+          "text": "Schwache Maskulina: des Herrn, des Studenten (kein -s)."
+        },
+        {
+          "kind": "rule",
+          "title": "Präpositionen mit Genitiv",
+          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund. Im gesprochenen oft mit Dativ."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_definite"
+        },
+        {
+          "kind": "table",
+          "ref": "praep_genitiv"
+        },
+        {
+          "kind": "example",
+          "de": "Wegen des Regens bleibe ich zu Hause. Das ist das Buch meines Vaters. Während der Woche arbeite ich.",
+          "ru": "Из-за дождя я остаюсь дома. Это книга моего отца. В течение недели я работаю.",
+          "note": "wegen + Gen, während + Gen. Mask/Neut: des + -s."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-02-d01",
+          "type": "choice",
+          "prompt": "Das ist das Auto ____ Vaters. (bestimmt)",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "Maskulin Genitiv: der → des (+ -s: Vaters)."
+        },
+        {
+          "id": "a2-02-d02",
+          "type": "choice",
+          "prompt": "Wegen ____ Regens bleibe ich zu Hause.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "wegen + Genitiv, Maskulin: der → des."
+        },
+        {
+          "id": "a2-02-d03",
+          "type": "choice",
+          "prompt": "Die Farbe ____ Hauses ist blau. (Neutrum)",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "Neutrum Genitiv: das → des (+ -s/-es: Hauses)."
+        },
+        {
+          "id": "a2-02-d04",
+          "type": "fill",
+          "prompt": "Trotz ____ Schmerzen geht er arbeiten. (Plural)",
+          "answer": [
+            "der"
+          ],
+          "why": "Plural Genitiv: die → der."
+        },
+        {
+          "id": "a2-02-d05",
+          "type": "choice",
+          "prompt": "Wessen Buch ist das? (Frage nach Genitiv)",
+          "options": [
+            "Wer",
+            "Wen",
+            "Wem",
+            "Wessen"
+          ],
+          "answer": [
+            "Wessen"
+          ],
+          "why": "Wessen = Genitiv-Fragewort."
+        },
+        {
+          "id": "a2-02-d06",
+          "type": "fill",
+          "prompt": "Während ____ Woche habe ich gearbeitet.",
+          "answer": [
+            "der"
+          ],
+          "why": "während + Genitiv, Feminin: die → der."
+        },
+        {
+          "id": "a2-02-d07",
+          "type": "choice",
+          "prompt": "Statt ____ Kaffee trinke ich Tee.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "statt + Genitiv, Maskulin: der → des."
+        },
+        {
+          "id": "a2-02-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'des / wegen / Wetters / bleibe / ich / zu / Hause'",
+          "answer": [
+            "Wegen des Wetters bleibe ich zu Hause."
+          ],
+          "why": "wegen + Genitiv an Satzanfang, dann V2: bleibe ich."
+        },
+        {
+          "id": "a2-02-d09",
+          "type": "fill",
+          "prompt": "Das ist die Meinung ____ Lehrers. (Maskulin, N-Deklination? nein)",
+          "answer": [
+            "des"
+          ],
+          "why": "Lehrer → des Lehrers (regelmässig + -s)."
+        },
+        {
+          "id": "a2-02-d10",
+          "type": "choice",
+          "prompt": "Innerhalb ____ Jahres.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "innerhalb + Genitiv, Neutrum: das → des."
+        },
+        {
+          "id": "a2-02-d11",
+          "type": "transform",
+          "prompt": "von + Dativ → Genitiv: 'das Buch von meinem Vater' → ____",
+          "answer": [
+            "das Buch meines Vaters"
+          ],
+          "why": "Genitivattribut: meines Vaters."
+        },
+        {
+          "id": "a2-02-d12",
+          "type": "fill",
+          "prompt": "Außerhalb ____ Stadtgrenzen.",
+          "answer": [
+            "der"
+          ],
+          "why": "außerhalb + Genitiv, Feminin: die → der."
+        }
+      ]
+    },
+    {
+      "id": "a2-03-praeteritum",
+      "order": 3,
+      "title": "Präteritum: слабые и сильные",
+      "subtitle": "Endungen -te/-ten, сильные глаголы (Abult), смешанные",
+      "topics": [
+        "praeteritum_weak",
+        "praeteritum_strong"
+      ],
+      "prereq": [
+        "a1-04-praesens-starke",
+        "a1-17-perfekt"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Präteritum (1. Vergangenheit) — בעיקר в письменной речи. Slabe: Stamm + -te. Starke: Ablaut (Vokalwechsel). Gemischte: Ablaut + -te."
+        },
+        {
+          "kind": "rule",
+          "title": "Schwache Verben",
+          "text": "ich machte, du machtest, er machte, wir machten, ihr machtet, sie machten. Bei -t/-d/-n/-m: -ete (arbeitete)."
+        },
+        {
+          "kind": "rule",
+          "title": "Starke Verben (wichtige)",
+          "text": "fahren→fuhr, geben→gab, kommen→kam, laufen→lief, lesen→las, nehmen→nahm, sprechen→sprach, trinken→trank, finden→fand, gehen→ging, stehen→stand, liegen→lag, sitzen→saß."
+        },
+        {
+          "kind": "rule",
+          "title": "Gemischte Verben",
+          "text": "bringen→brachte, denken→dachte, kennen→kannte, wissen→wusste, rennen→rannte, nennen→nannte. Ablaut + schwache Endung."
+        },
+        {
+          "kind": "table",
+          "ref": "praeteritum_weak"
+        },
+        {
+          "kind": "table",
+          "ref": "praeteritum_strong"
+        },
+        {
+          "kind": "example",
+          "de": "Ich machte die Tür auf. Er ging nach Hause. Wir dachten an dich. Sie kannte ihn nicht.",
+          "ru": "Я открыл дверь. Он пошёл домой. Мы думали о тебе. Она его не знала.",
+          "note": "machte (schwach), ging (stark), dachten (gemischt), kannte (gemischt)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-03-d01",
+          "type": "choice",
+          "prompt": "Ich ____ (machen) die Hausaufgaben.",
+          "options": [
+            "machte",
+            "machtest",
+            "machten",
+            "machen"
+          ],
+          "answer": [
+            "machte"
+          ],
+          "why": "Schwaches Verb: ich machte."
+        },
+        {
+          "id": "a2-03-d02",
+          "type": "choice",
+          "prompt": "Er ____ (gehen) nach Berlin.",
+          "options": [
+            "ging",
+            "gingst",
+            "gingen",
+            "geht"
+          ],
+          "answer": [
+            "ging"
+          ],
+          "why": "Stark: gehen → er ging."
+        },
+        {
+          "id": "a2-03-d03",
+          "type": "choice",
+          "prompt": "Wir ____ (arbeiten) gestern lange.",
+          "options": [
+            "arbeiteten",
+            "arbeitetet",
+            "arbeitet",
+            "arbeitete"
+          ],
+          "answer": [
+            "arbeiteten"
+          ],
+          "why": "Schwaches Verb auf -t: wir arbeiteten (Verbindungs-e)."
+        },
+        {
+          "id": "a2-03-d04",
+          "type": "fill",
+          "prompt": "Du ____ (bringen) das Buch.",
+          "answer": [
+            "brachtest"
+          ],
+          "why": "Gemischt: bringen → du brachtest."
+        },
+        {
+          "id": "a2-03-d05",
+          "type": "choice",
+          "prompt": "Sie ____ (wissen) die Antwort nicht.",
+          "options": [
+            "wusste",
+            "wusstest",
+            "wussten",
+            "weiß"
+          ],
+          "answer": [
+            "wusste"
+          ],
+          "why": "Gemischt: wissen → er/sie/es wusste."
+        },
+        {
+          "id": "a2-03-d06",
+          "type": "fill",
+          "prompt": "Wir ____ (finden) den Weg nicht.",
+          "answer": [
+            "fanden"
+          ],
+          "why": "Stark: finden → wir fanden (Ablaut i→a)."
+        },
+        {
+          "id": "a2-03-d07",
+          "type": "choice",
+          "prompt": "Er ____ (rennen) schnell.",
+          "options": [
+            "rannte",
+            "ranntest",
+            "rannten",
+            "rennt"
+          ],
+          "answer": [
+            "rannte"
+          ],
+          "why": "Gemischt: rennen → er rannte."
+        },
+        {
+          "id": "a2-03-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'gestern / kam / er / spät / an'",
+          "answer": [
+            "Gestern kam er spät an."
+          ],
+          "why": "Präteritum: kam (V2) — an (Ende, trennbar)."
+        },
+        {
+          "id": "a2-03-d09",
+          "type": "fill",
+          "prompt": "Ich ____ (denken) an dich.",
+          "answer": [
+            "dachte"
+          ],
+          "why": "Gemischt: denken → ich dachte."
+        },
+        {
+          "id": "a2-03-d10",
+          "type": "choice",
+          "prompt": "Sie ____ (kennen) sich gut.",
+          "options": [
+            "kannten",
+            "kannte",
+            "kennst",
+            "kenne"
+          ],
+          "answer": [
+            "kannten"
+          ],
+          "why": "Gemischt: sie kannten (Plural)."
+        },
+        {
+          "id": "a2-03-d11",
+          "type": "transform",
+          "prompt": "Präsens → Präteritum: 'ich schlafe' → ____",
+          "answer": [
+            "ich schlief"
+          ],
+          "why": "Stark: schlafen → ich schlief (a→ie)."
+        },
+        {
+          "id": "a2-03-d12",
+          "type": "fill",
+          "prompt": "Er ____ (nennen) den Namen.",
+          "answer": [
+            "nannte"
+          ],
+          "why": "Gemischt: nennen → er nannte."
+        }
+      ]
+    },
+    {
+      "id": "a2-04-perfekt-vs-praeteritum",
+      "order": 4,
+      "title": "Perfekt vs Präteritum: что когда говорят",
+      "subtitle": "Модальные, haben/sein, schriftlich vs mündlich",
+      "topics": [
+        "perfekt_vs_praeteritum"
+      ],
+      "prereq": [
+        "a2-03-praeteritum",
+        "a1-17-perfekt"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Perfekt = gesprochenes Präteritum (mündlich). Präteritum = schriftlich, erzählerisch. Ausnahmen: haben, sein, Modale → oft Präteritum auch im Gespräch."
+        },
+        {
+          "kind": "rule",
+          "title": "haben/sein im Präteritum",
+          "text": "ich hatte/war, du hattest/warst, er hatte/war... — sehr häufig auch mündlich."
+        },
+        {
+          "kind": "rule",
+          "title": "Modale im Präteritum",
+          "text": "ich konnte/musste/wollte/sollte/durfte/mochte — häufiger als Perfekt (habe gekonnt etc.)."
+        },
+        {
+          "kind": "rule",
+          "title": "Schriftlich",
+          "text": "In Texten, Nachrichten, Märchen: Präteritum. Im Gespräch: Perfekt (außer haben/sein/Modale)."
+        },
+        {
+          "kind": "example",
+          "de": "Ich war gestern zu Hause. (Prät.) Ich habe gearbeitet. (Perf.) Er konnte nicht kommen. (Prät.) Wir haben gegessen. (Perf.)",
+          "ru": "Я был вчера дома. Я работал. Он не мог прийти. Мы ели.",
+          "note": "war/hatte/könnte → Prät. auch mündlich. gearbeitet/gegessen → Perf. mündlich."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-04-d01",
+          "type": "choice",
+          "prompt": "Mündlich: 'Ich ____ gestern zu Hause.'",
+          "options": [
+            "war",
+            "bin gewesen",
+            "war gewesen",
+            "gewesen"
+          ],
+          "answer": [
+            "war"
+          ],
+          "why": "sein → Präteritum auch mündlich: ich war."
+        },
+        {
+          "id": "a2-04-d02",
+          "type": "choice",
+          "prompt": "Mündlich: 'Er ____ nicht kommen.'",
+          "options": [
+            "konnte",
+            "hat gekonnt",
+            "konntest",
+            "konnten"
+          ],
+          "answer": [
+            "konnte"
+          ],
+          "why": "Modale → Präteritum: konnte."
+        },
+        {
+          "id": "a2-04-d03",
+          "type": "choice",
+          "prompt": "Schriftlich (Erzählung): 'Wir ____ nach Berlin.'",
+          "options": [
+            "fuhren",
+            "sind gefahren",
+            "fahren",
+            "gefahren"
+          ],
+          "answer": [
+            "fuhren"
+          ],
+          "why": "Erzählung → Präteritum: fuhren."
+        },
+        {
+          "id": "a2-04-d04",
+          "type": "fill",
+          "prompt": "Mündlich: 'Wir ____ Pizza gegessen.'",
+          "answer": [
+            "haben"
+          ],
+          "why": "essen → Perfekt mündlich: haben gegessen."
+        },
+        {
+          "id": "a2-04-d05",
+          "type": "choice",
+          "prompt": "Er ____ keine Zeit. (haben, mündlich)",
+          "options": [
+            "hatte",
+            "hat gehabt",
+            "habe",
+            "hatte gehabt"
+          ],
+          "answer": [
+            "hatte"
+          ],
+          "why": "haben → Präteritum auch mündlich: hatte."
+        },
+        {
+          "id": "a2-04-d06",
+          "type": "fill",
+          "prompt": "Mündlich: 'Du ____ (müssen) warten.'",
+          "answer": [
+            "musstest"
+          ],
+          "why": "Modale → Präteritum: musstest."
+        },
+        {
+          "id": "a2-04-d07",
+          "type": "choice",
+          "prompt": "In einer E-Mail: 'Ich ____ das Buch gelesen.'",
+          "options": [
+            "habe",
+            "hatte",
+            "lese",
+            "las"
+          ],
+          "answer": [
+            "habe"
+          ],
+          "why": "Perfekt auch in informellem Schreiben (E-Mail/Chat)."
+        },
+        {
+          "id": "a2-04-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'gestern / war / ich / krank'",
+          "answer": [
+            "Gestern war ich krank."
+          ],
+          "why": "Präteritum: war (V2)."
+        },
+        {
+          "id": "a2-04-d09",
+          "type": "choice",
+          "prompt": "Mündlich: 'Sie ____ (wollen) nicht gehen.'",
+          "options": [
+            "wollte",
+            "hat gewollt",
+            "will",
+            "wollten"
+          ],
+          "answer": [
+            "wollte"
+          ],
+          "why": "wollen → Präteritum: wollte."
+        },
+        {
+          "id": "a2-04-d10",
+          "type": "transform",
+          "prompt": "Präteritum → Perfekt (mündlich): 'Er las das Buch.' → ____",
+          "answer": [
+            "Er hat das Buch gelesen."
+          ],
+          "why": "lesen (transitiv) → Perfekt mündlich: hat gelesen."
+        },
+        {
+          "id": "a2-04-d11",
+          "type": "fill",
+          "prompt": "Erzählung: 'Plötzlich ____ (kommen) er rein.'",
+          "answer": [
+            "kam"
+          ],
+          "why": "Erzählung → Präteritum: kam."
+        },
+        {
+          "id": "a2-04-d12",
+          "type": "choice",
+          "prompt": "Was ist typisch MÜNDLICH?",
+          "options": [
+            "Ich war da.",
+            "Ich bin da gewesen.",
+            "Ich war da gewesen.",
+            "Ich bin da."
+          ],
+          "answer": [
+            "Ich war da."
+          ],
+          "why": "sein → Präteritum mündlich. Perfekt 'bin gewesen' möglich, aber 'war' häufiger."
+        }
+      ]
+    },
+    {
+      "id": "a2-05-reflexive",
+      "order": 5,
+      "title": "Возвратные глаголы",
+      "subtitle": "sich waschen, sich beeilen, sich freuen — Akk vs Dat",
+      "topics": [
+        "reflexive_verbs"
+      ],
+      "prereq": [
+        "a2-01-dativ"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Reflexive Verben: Subjekt und Objekt sind identisch. Im Deutschen oft obligatorisch (sich beeilen), im Russischen nicht всегда."
+        },
+        {
+          "kind": "rule",
+          "title": "Reflexivpronomen",
+          "text": "Akk: mich, dich, sich, uns, euch, sich. Dat: mir, dir, sich, uns, euch, sich. Dat nur bei Verben mit Dativobjekt (sich vorstellen, sich merken)."
+        },
+        {
+          "kind": "rule",
+          "title": "Wichtige reflexive Verben",
+          "text": "Akk: sich waschen, sich beeilen, sich freuen, sich erinnern, sich entscheiden, sich treffen, sich setzen, sich legen. Dat: sich vorstellen, sich merken, sich vornehmen, sich wünschen."
+        },
+        {
+          "kind": "table",
+          "ref": "reflexivpronomen"
+        },
+        {
+          "kind": "example",
+          "de": "Ich wasche mich. Er beeilt sich. Wir freuen uns. Ich stelle mir das vor.",
+          "ru": "Я моюсь. Он спешит. Мы радуемся. Я это себе представляю.",
+          "note": "waschen/beeilen/freuen + Akk. vorstellen + Dat."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-05-d01",
+          "type": "choice",
+          "prompt": "Ich ____ (sich waschen) jeden Morgen.",
+          "options": [
+            "wasche mich",
+            "wasche mir",
+            "wäsche mich",
+            "wäsche mir"
+          ],
+          "answer": [
+            "wasche mich"
+          ],
+          "why": "sich waschen + Akk: ich wasche mich."
+        },
+        {
+          "id": "a2-05-d02",
+          "type": "choice",
+          "prompt": "Er ____ (sich beeilen) sehr.",
+          "options": [
+            "beeilt sich",
+            "beeilt mir",
+            "beeilt dich",
+            "beeilt uns"
+          ],
+          "answer": [
+            "beeilt sich"
+          ],
+          "why": "3. Pers. Sg. Reflexivpronomen: sich."
+        },
+        {
+          "id": "a2-05-d03",
+          "type": "choice",
+          "prompt": "Wir ____ (sich freuen) auf das Wochenende.",
+          "options": [
+            "freuen uns",
+            "freuen euch",
+            "freuen sich",
+            "freue mich"
+          ],
+          "answer": [
+            "freuen uns"
+          ],
+          "why": "1. Pers. Pl: uns. freuen + Akk."
+        },
+        {
+          "id": "a2-05-d04",
+          "type": "fill",
+          "prompt": "Ich ____ (sich vorstellen) das nicht.",
+          "answer": [
+            "stelle mir"
+          ],
+          "why": "sich vorstellen + Dat: ich stelle mir vor."
+        },
+        {
+          "id": "a2-05-d05",
+          "type": "choice",
+          "prompt": "Du ____ (sich erinnern) an mich?",
+          "options": [
+            "erinnerst dich",
+            "erinnerst dir",
+            "erinnert dich",
+            "erinnert dir"
+          ],
+          "answer": [
+            "erinnerst dich"
+          ],
+          "why": "sich erinnern + Akk: du erinnerst dich."
+        },
+        {
+          "id": "a2-05-d06",
+          "type": "fill",
+          "prompt": "Sie ____ (sich treffen) mit Freunden.",
+          "answer": [
+            "trifft sich"
+          ],
+          "why": "sich treffen + Akk: sie trifft sich."
+        },
+        {
+          "id": "a2-05-d07",
+          "type": "choice",
+          "prompt": "Er ____ (sich merken) die Nummer.",
+          "options": [
+            "merkt sich",
+            "merkt dir",
+            "merkt mir",
+            "merke mir"
+          ],
+          "answer": [
+            "merkt sich"
+          ],
+          "why": "sich merken + Dat? NEIN! sich merken nimmt AKK: merkt sich. (nur sich vorstellen/vornehmen/wünschen = Dat)."
+        },
+        {
+          "id": "a2-05-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'sich / setzt / er / auf / den / Stuhl'",
+          "answer": [
+            "Er setzt sich auf den Stuhl."
+          ],
+          "why": "sich setzen + Akk: er setzt sich."
+        },
+        {
+          "id": "a2-05-d09",
+          "type": "fill",
+          "prompt": "Wir ____ (sich vornehmen) mehr Sport zu treiben.",
+          "answer": [
+            "nehmen uns vor"
+          ],
+          "why": "sich vornehmen + Dat: wir nehmen uns vor."
+        },
+        {
+          "id": "a2-05-d10",
+          "type": "choice",
+          "prompt": "____ (sich wünschen) ich mir ein Auto.",
+          "options": [
+            "Wünsche",
+            "Wünsche mir",
+            "Wünsche sich",
+            "Wünsche dir"
+          ],
+          "answer": [
+            "Wünsche mir"
+          ],
+          "why": "sich wünschen + Dat: ich wünsche mir."
+        },
+        {
+          "id": "a2-05-d11",
+          "type": "transform",
+          "prompt": "Aktiv → Reflexiv: 'Ich wasche das Auto.' → 'Ich ____ '",
+          "answer": [
+            "wasche mich"
+          ],
+          "why": "sich waschen (Reflexiv) vs waschen (transitiv)."
+        },
+        {
+          "id": "a2-05-d12",
+          "type": "fill",
+          "prompt": "Er ____ (sich entscheiden) für das Angebot.",
+          "answer": [
+            "entscheidet sich"
+          ],
+          "why": "sich entscheiden + Akk: er entscheidet sich."
+        }
+      ]
+    },
+    {
+      "id": "a2-06-adjektiv-bestimmt",
+      "order": 6,
+      "title": "Окончания прилагательных после определённого артикля",
+      "subtitle": "Слабое склонение: -e (Nom Sg, Akk Fem/Neut) / -en (остальные)",
+      "topics": [
+        "adj_decl_definite"
+      ],
+      "prereq": [
+        "a1-08-artikel"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nach bestimmtem Artikel (der/die/das/den/dem/des) haben Adjektive nur ZWEI Formen: -e und -en."
+        },
+        {
+          "kind": "rule",
+          "title": "-e nur in 5 Zellen",
+          "text": "Nominativ alle 3 Genera (der gute Wein, die gute Suppe, das gute Bier) + Akkusativ Feminin (die gute Suppe) + Akkusativ Neutrum (das gute Bier)."
+        },
+        {
+          "kind": "rule",
+          "title": "-en in den anderen 11 Zellen",
+          "text": "Akk Mask (den guten Wein), Dat alle (dem guten Wein, der guten Suppe, dem guten Bier, den guten Weinen), Gen alle (des guten Weines, der guten Suppe, des guten Bieres, der guten Weine)."
+        },
+        {
+          "kind": "table",
+          "ref": "adj_decl_definite"
+        },
+        {
+          "kind": "example",
+          "de": "Der gute Wein schmeckt. Ich trinke den guten Wein. Ich gebe dem guten Wein Zeit. Der Geschmack des guten Weines.",
+          "ru": "Хорошее вино вкусно. Я пью хорошее вино. Я даю хорошему вину время. Вкус хорошего вина.",
+          "note": "Nom/Acc Neut/Fem: -e. Acc Mask/Dat/Gen: -en."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-06-d01",
+          "type": "choice",
+          "prompt": "Der ____ Wein (gut, Nom Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Nom Mask nach bestimmtem Artikel: -e."
+        },
+        {
+          "id": "a2-06-d02",
+          "type": "choice",
+          "prompt": "Die ____ Suppe (gut, Nom Fem)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Nom Fem: -e."
+        },
+        {
+          "id": "a2-06-d03",
+          "type": "choice",
+          "prompt": "Das ____ Bier (gut, Nom Neut)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Nom Neut: -e."
+        },
+        {
+          "id": "a2-06-d04",
+          "type": "choice",
+          "prompt": "Den ____ Wein (gut, Akk Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Akk Mask: -en."
+        },
+        {
+          "id": "a2-06-d05",
+          "type": "choice",
+          "prompt": "Die ____ Suppe (gut, Akk Fem)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Akk Fem = Nom: -e."
+        },
+        {
+          "id": "a2-06-d06",
+          "type": "choice",
+          "prompt": "Das ____ Bier (gut, Akk Neut)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Akk Neut = Nom: -e."
+        },
+        {
+          "id": "a2-06-d07",
+          "type": "choice",
+          "prompt": "Dem ____ Wein (gut, Dat Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Dat: immer -en."
+        },
+        {
+          "id": "a2-06-d08",
+          "type": "choice",
+          "prompt": "Der ____ Suppe (gut, Dat Fem)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Dat: immer -en."
+        },
+        {
+          "id": "a2-06-d09",
+          "type": "choice",
+          "prompt": "Des ____ Weines (gut, Gen Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Gen: immer -en."
+        },
+        {
+          "id": "a2-06-d10",
+          "type": "fill",
+          "prompt": "Den ____ Weinen (gut, Dat Pl)",
+          "answer": [
+            "guten"
+          ],
+          "why": "Dat Plural: den guten Weinen (-en)."
+        },
+        {
+          "id": "a2-06-d11",
+          "type": "transform",
+          "prompt": "Nom → Akk: 'der gute Mann' → ____",
+          "answer": [
+            "den guten Mann"
+          ],
+          "why": "Mask Akk: der→den, Adj: gute→guten."
+        },
+        {
+          "id": "a2-06-d12",
+          "type": "fill",
+          "prompt": "Die ____ Frauen (schön, Nom/Akk Pl)",
+          "answer": [
+            "schönen"
+          ],
+          "why": "Plural nach bestimmtem Artikel: immer -en."
+        }
+      ]
+    },
+    {
+      "id": "a2-07-adjektiv-unbestimmt",
+      "order": 7,
+      "title": "Окончания после неопределённого артикля и без артикля",
+      "subtitle": "Смешанное (ein) и сильное (null) склонение",
+      "topics": [
+        "adj_decl_indefinite",
+        "adj_decl_none"
+      ],
+      "prereq": [
+        "a2-06-adjektiv-bestimmt"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nach unbestimmtem Artikel (ein/kein/mein...) und ohne Artikel andere Endungen."
+        },
+        {
+          "kind": "rule",
+          "title": "Gemischt (nach ein/kein/mein...)",
+          "text": "Nom: -er/-e/-es (ein guter Wein, eine gute Suppe, ein gutes Bier). Akk: -en/-e/-es (einen guten Wein, eine gute Suppe, ein gutes Bier). Dat/Gen: immer -en (einem guten Wein, einer guten Suppe, eines guten Weines). Plural wie nach bestimmtem: -en."
+        },
+        {
+          "kind": "rule",
+          "title": "Stark (ohne Artikel)",
+          "text": "Adjektiv nimmt Endungen des bestimmten Artikels: Nom -er/-e/-es/-e, Akk -en/-e/-es/-e, Dat -em/-er/-em/-en, Gen -en/-er/-en/-er."
+        },
+        {
+          "kind": "table",
+          "ref": "adj_decl_indefinite"
+        },
+        {
+          "kind": "table",
+          "ref": "adj_decl_none"
+        },
+        {
+          "kind": "example",
+          "de": "Ein guter Wein. Ich trinke einen guten Wein. Guter Wein ist teuer. Ich trinke guten Wein.",
+          "ru": "Хорошее вино. Я пью хорошее вино. Хорошее вино дорогое. Я пью хорошее вино.",
+          "note": "Nach ein: Nom Mask -er. Ohne Artikel: Nom Mask -er (wie der)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-07-d01",
+          "type": "choice",
+          "prompt": "Ein ____ Wein (gut, Nom Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guter"
+          ],
+          "why": "Nach ein, Nom Mask: -er (wie der)."
+        },
+        {
+          "id": "a2-07-d02",
+          "type": "choice",
+          "prompt": "Eine ____ Suppe (gut, Nom Fem)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Nach ein, Nom Fem: -e (wie die)."
+        },
+        {
+          "id": "a2-07-d03",
+          "type": "choice",
+          "prompt": "Ein ____ Bier (gut, Nom Neut)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gutes"
+          ],
+          "why": "Nach ein, Nom Neut: -es (wie das)."
+        },
+        {
+          "id": "a2-07-d04",
+          "type": "choice",
+          "prompt": "Einen ____ Wein (gut, Akk Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Akk Mask nach ein: -en."
+        },
+        {
+          "id": "a2-07-d05",
+          "type": "choice",
+          "prompt": "Einem ____ Wein (gut, Dat Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Dat nach ein: immer -en."
+        },
+        {
+          "id": "a2-07-d06",
+          "type": "choice",
+          "prompt": "Ohne Artikel: ____ Wein (gut, Nom Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guter"
+          ],
+          "why": "Stark: Nom Mask -er (wie der)."
+        },
+        {
+          "id": "a2-07-d07",
+          "type": "choice",
+          "prompt": "Ohne Artikel: ____ Suppe (gut, Nom Fem)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gute"
+          ],
+          "why": "Stark: Nom Fem -e (wie die)."
+        },
+        {
+          "id": "a2-07-d08",
+          "type": "choice",
+          "prompt": "Ohne Artikel: ____ Bier (gut, Nom Neut)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gutes"
+          ],
+          "why": "Stark: Nom Neut -es (wie das)."
+        },
+        {
+          "id": "a2-07-d09",
+          "type": "choice",
+          "prompt": "Ohne Artikel: ____ Wein (gut, Akk Mask)",
+          "options": [
+            "gute",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "guten"
+          ],
+          "why": "Stark: Akk Mask -en (wie den)."
+        },
+        {
+          "id": "a2-07-d10",
+          "type": "choice",
+          "prompt": "Ohne Artikel: ____ Wein (gut, Dat Mask)",
+          "options": [
+            "gutem",
+            "guten",
+            "guter",
+            "gutes"
+          ],
+          "answer": [
+            "gutem"
+          ],
+          "why": "Stark: Dat Mask -em (wie dem)."
+        },
+        {
+          "id": "a2-07-d11",
+          "type": "fill",
+          "prompt": "Ohne Artikel: ____ Weines (gut, Gen Mask)",
+          "answer": [
+            "guten"
+          ],
+          "why": "Stark: Gen Mask/Neut -en (wie des)."
+        },
+        {
+          "id": "a2-07-d12",
+          "type": "transform",
+          "prompt": "Mit 'ein' → ohne Artikel: 'ein guter Wein' → ____",
+          "answer": [
+            "guter Wein"
+          ],
+          "why": "Ohne Artikel: starkes Ende -er bei Nom Mask."
+        }
+      ]
+    },
+    {
+      "id": "a2-08-komparativ",
+      "order": 8,
+      "title": "Степени сравнения",
+      "subtitle": "Komparativ (-er), Superlativ (am -sten), Umlaut, unregelmässige",
+      "topics": [
+        "adj_komparation"
+      ],
+      "prereq": [
+        "a2-07-adjektiv-unbestimmt"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Komparativ: Adjektiv + -er (größer, schneller). Superlativ: am + Adjektiv + -sten (am größten). Bei Monosyllaben oft Umlaut."
+        },
+        {
+          "kind": "rule",
+          "title": "Regelmässig",
+          "text": "groß → größer → am größten. schnell → schneller → am schnellsten."
+        },
+        {
+          "kind": "rule",
+          "title": "Umlaut bei Monosyllaben",
+          "text": "groß→größer, alt→älter, jung→jünger, lang→länger, kurz→kürzer, stark→stärker, warm→wärmer, kalt→kälter, hoch→höher, nah→näher."
+        },
+        {
+          "kind": "rule",
+          "title": "Unregelmässige",
+          "text": "gut → besser → am besten. viel → mehr → am meisten. gern → lieber → am liebsten. hoch → höher → am höchsten. nah → näher → am nächsten."
+        },
+        {
+          "kind": "rule",
+          "title": "Endung -el/-er/-en",
+          "text": "teuer → teurer (e fällt weg). dunkel → dunkler (e fällt weg)."
+        },
+        {
+          "kind": "table",
+          "ref": "adj_komparation"
+        },
+        {
+          "kind": "example",
+          "de": "Das Auto ist schneller als das Fahrrad. Das ist das teuerste Auto. Ich mag ihn lieber.",
+          "ru": "Машина быстрее велосипеда. Это самая дорогая машина. Я люблю его больше.",
+          "note": "schneller (Komparativ), teuerste (Superlativ attributiv), lieber (unregelmässig)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-08-d01",
+          "type": "choice",
+          "prompt": "Komparativ von 'groß':",
+          "options": [
+            "großer",
+            "größer",
+            "grösser",
+            "mehr groß"
+          ],
+          "answer": [
+            "größer"
+          ],
+          "why": "Umlaut: groß → größer."
+        },
+        {
+          "id": "a2-08-d02",
+          "type": "choice",
+          "prompt": "Superlativ von 'schnell' (prädikativ):",
+          "options": [
+            "am schnellste",
+            "am schnellsten",
+            "am schnellst",
+            "meist schnell"
+          ],
+          "answer": [
+            "am schnellsten"
+          ],
+          "why": "am + Adj + -sten."
+        },
+        {
+          "id": "a2-08-d03",
+          "type": "choice",
+          "prompt": "Komparativ von 'gut':",
+          "options": [
+            "guter",
+            "besser",
+            "mehr gut",
+            "gut"
+          ],
+          "answer": [
+            "besser"
+          ],
+          "why": "Unregelmässig: gut → besser."
+        },
+        {
+          "id": "a2-08-d04",
+          "type": "fill",
+          "prompt": "Superlativ von 'viel' (prädikativ): am ____",
+          "answer": [
+            "meisten"
+          ],
+          "why": "viel → mehr → am meisten."
+        },
+        {
+          "id": "a2-08-d05",
+          "type": "choice",
+          "prompt": "Komparativ von 'teuer':",
+          "options": [
+            "teuerer",
+            "teurer",
+            "teuerster",
+            "mehr teuer"
+          ],
+          "answer": [
+            "teurer"
+          ],
+          "why": "Auf -er: e fällt weg → teurer."
+        },
+        {
+          "id": "a2-08-d06",
+          "type": "fill",
+          "prompt": "Superlativ von 'dunkel' (attributiv, Nom Neut): das ____ Zimmer",
+          "answer": [
+            "dunkelste"
+          ],
+          "why": "dunkel → dunkler → dunkelst + Adjektivendung: dunkelste."
+        },
+        {
+          "id": "a2-08-d07",
+          "type": "choice",
+          "prompt": "Komparativ von 'nah':",
+          "options": [
+            "naher",
+            "näher",
+            "mehr nah",
+            "nahster"
+          ],
+          "answer": [
+            "näher"
+          ],
+          "why": "Umlaut: nah → näher."
+        },
+        {
+          "id": "a2-08-d08",
+          "type": "fill",
+          "prompt": "Er ist ____ als ich. (groß)",
+          "answer": [
+            "größer"
+          ],
+          "why": "Komparativ + als: größer als."
+        },
+        {
+          "id": "a2-08-d09",
+          "type": "choice",
+          "prompt": "Ich mag Kaffee ____ als Tee. (gern)",
+          "options": [
+            "lieber",
+            "mehr gern",
+            "gerner",
+            "am liebsten"
+          ],
+          "answer": [
+            "lieber"
+          ],
+          "why": "gern → lieber (unregelmässig)."
+        },
+        {
+          "id": "a2-08-d10",
+          "type": "transform",
+          "prompt": "Positiv → Komparativ → Superlativ: 'klein'",
+          "answer": [
+            "kleiner, am kleinsten"
+          ],
+          "why": "Regelmässig: klein → kleiner → am kleinsten."
+        },
+        {
+          "id": "a2-08-d11",
+          "type": "fill",
+          "prompt": "Das ist ____ Buch, das ich kenne. (gut, Superlativ attributiv)",
+          "answer": [
+            "das beste"
+          ],
+          "why": "gut → besser → beste + Adjektivendung (bestimmt): das beste."
+        },
+        {
+          "id": "a2-08-d12",
+          "type": "choice",
+          "prompt": "Komparativ von 'hoch':",
+          "options": [
+            "höher",
+            "hocher",
+            "mehr hoch",
+            "hochst"
+          ],
+          "answer": [
+            "höher"
+          ],
+          "why": "Umlaut: hoch → höher."
+        }
+      ]
+    },
+    {
+      "id": "a2-09-nebensaetze",
+      "order": 9,
+      "title": "Придаточные: dass, weil, wenn, als",
+      "subtitle": "Глагол в конце, Konjunktoren, V2 im Hauptsatz",
+      "topics": [
+        "nebensatz_wortstellung",
+        "konnektoren_uebersicht"
+      ],
+      "prereq": [
+        "a1-12-satzstellung-v2",
+        "a2-03-praeteritum"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nebensätze (придаточные) beginnen mit Konjunktion (dass, weil, wenn, als, obwohl...). Alle konjugierten Verben stehen AM ENDE."
+        },
+        {
+          "kind": "rule",
+          "title": "Wortstellung",
+          "text": "Konjunktion — Subjekt — Objekt/Adverbiale — Verb (konjugiert). Bei mehreren Verben: letztes = konjugiert."
+        },
+        {
+          "kind": "rule",
+          "title": "Wichtige Konjunktionen",
+          "text": "dass (Objektsatz), weil (Kausalsatz), wenn (Konditionalsatz/wiederholte Vergangenheit), als (einmalige Vergangenheit), obwohl (Konzessivsatz), ob (Indirekte Ja/Nein-Frage), damit (Finalsatz)."
+        },
+        {
+          "kind": "rule",
+          "title": "Hauptsatz nach Nebensatz",
+          "text": "Wenn Nebensatz voransteht → ganzer Nebensatz = Position 1 → Verb an Position 2 im Hauptsatz: 'Weil es regnet, bleibe ich zu Hause.'"
+        },
+        {
+          "kind": "table",
+          "ref": "nebensatz_wortstellung"
+        },
+        {
+          "kind": "table",
+          "ref": "konnektoren_uebersicht"
+        },
+        {
+          "kind": "example",
+          "de": "Ich denke, dass er kommt. Weil es regnet, bleibe ich. Wenn ich Zeit habe, lese ich. Als er ankam, aßen wir.",
+          "ru": "Я думаю, что он придёт. Поскольку идёт дождь, я остаюсь. Если у меня есть время, я читаю. Когда он пришёл, мы ели.",
+          "note": "Verb am Ende: kommt, bleibe, habe, kam."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-09-d01",
+          "type": "choice",
+          "prompt": "Ich denke, dass er ____ . (kommen)",
+          "options": [
+            "kommt",
+            "kam",
+            "kommen",
+            "gekommen"
+          ],
+          "answer": [
+            "kommt"
+          ],
+          "why": "Nebensatz: Verb am Ende (Präsens: kommt)."
+        },
+        {
+          "id": "a2-09-d02",
+          "type": "choice",
+          "prompt": "Ich bleibe zu Hause, weil es ____ . (regnen)",
+          "options": [
+            "regnet",
+            "regnete",
+            "regnen",
+            "geregnet"
+          ],
+          "answer": [
+            "regnet"
+          ],
+          "why": "weil + Nebensatz: Verb am Ende (regnet)."
+        },
+        {
+          "id": "a2-09-d03",
+          "type": "choice",
+          "prompt": "Wenn ich Zeit ____ , lese ich. (haben)",
+          "options": [
+            "habe",
+            "hatte",
+            "haben",
+            "gehabt"
+          ],
+          "answer": [
+            "habe"
+          ],
+          "why": "wenn + Nebensatz: Verb am Ende (habe)."
+        },
+        {
+          "id": "a2-09-d04",
+          "type": "fill",
+          "prompt": "Als er ____ , aßen wir. (ankommen, Präteritum)",
+          "answer": [
+            "ankam"
+          ],
+          "why": "als (einmalig Vergangenheit) + Präteritum am Ende: ankam."
+        },
+        {
+          "id": "a2-09-d05",
+          "type": "choice",
+          "prompt": "Obwohl er krank ____ , geht er arbeiten. (sein)",
+          "options": [
+            "ist",
+            "war",
+            "sei",
+            "wäre"
+          ],
+          "answer": [
+            "ist"
+          ],
+          "why": "obwohl + Nebensatz: Verb am Ende (ist)."
+        },
+        {
+          "id": "a2-09-d06",
+          "type": "fill",
+          "prompt": "Ich weiß nicht, ob er ____ . (kommen)",
+          "answer": [
+            "kommt"
+          ],
+          "why": "ob (indirekte Ja/Nein-Frage): Verb am Ende."
+        },
+        {
+          "id": "a2-09-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'regnet / weil / es / , / bleibe / ich / zu / Hause'",
+          "answer": [
+            "Weil es regnet, bleibe ich zu Hause."
+          ],
+          "why": "Nebensatz voran → Position 1 → Hauptsatz V2: bleibe ich."
+        },
+        {
+          "id": "a2-09-d08",
+          "type": "choice",
+          "prompt": "Er lernt Deutsch, damit er ____ . (bestehen)",
+          "options": [
+            "besteht",
+            "bestand",
+            "bestehen",
+            "bestanden"
+          ],
+          "answer": [
+            "besteht"
+          ],
+          "why": "damit + Nebensatz: Verb am Ende (besteht)."
+        },
+        {
+          "id": "a2-09-d09",
+          "type": "fill",
+          "prompt": "Wenn er ____ (kommen) will, sage ich Bescheid.",
+          "answer": [
+            "kommen"
+          ],
+          "why": "Modal + Infinitiv im Nebensatz: konjugiertes Modal (will) am Ende, Infinitiv davor."
+        },
+        {
+          "id": "a2-09-d10",
+          "type": "transform",
+          "prompt": "Hauptsatz → Nebensatz mit 'dass': 'Er kommt.' → 'Ich denke, dass er ____ '",
+          "answer": [
+            "kommt"
+          ],
+          "why": "dass + Nebensatz: Verb am Ende."
+        },
+        {
+          "id": "a2-09-d11",
+          "type": "choice",
+          "prompt": "____ es regnet, bleibe ich zu Hause.",
+          "options": [
+            "Weil",
+            "Wenn",
+            "Als",
+            "Obwohl"
+          ],
+          "answer": [
+            "Weil"
+          ],
+          "why": "Kausaler Grund: weil."
+        },
+        {
+          "id": "a2-09-d12",
+          "type": "fill",
+          "prompt": "____ er jung war, wohnte er in Berlin. (einmalig Vergangenheit)",
+          "answer": [
+            "Als"
+          ],
+          "why": "als für einmalige Vergangenheit."
+        }
+      ]
+    },
+    {
+      "id": "a2-10-tekamolo",
+      "order": 10,
+      "title": "Порядок слов TeKaMoLo",
+      "subtitle": "Temporal → Kausal → Modal → Lokal",
+      "topics": [
+        "tekomolo"
+      ],
+      "prereq": [
+        "a1-12-satzstellung-v2",
+        "a2-09-nebensaetze"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "TeKaMoLo = neutrale Reihenfolge der Adverbiale im Mittelfeld (nach Verb, vor Endklammern)."
+        },
+        {
+          "kind": "rule",
+          "title": "Reihenfolge",
+          "text": "1. Temporal (Wann? gestern, oft, um 10 Uhr). 2. Kausal (Warum? deshalb, wegen...). 3. Modal (Wie? gerne, schnell, zu Fuß). 4. Lokal (Wo/Wohin? in Berlin, nach Hause)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ausnahmen",
+          "text": "Für Betonung kann Reihenfolge geändert werden. Ortsangabe VOR Richtungsangabe (Wo? vor Wohin?)."
+        },
+        {
+          "kind": "table",
+          "ref": "tekomolo"
+        },
+        {
+          "kind": "example",
+          "de": "Ich fahre morgen (Te) mit dem Zug (Mo) nach Berlin (Lo). Er kommt nicht, weil er krank ist (Ka).",
+          "ru": "Я еду завтра на поезде в Берлин. Он не придёт, потому что болен.",
+          "note": "Te (morgen) vor Mo (mit dem Zug) vor Lo (nach Berlin). Ka oft als Nebensatz."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-10-d01",
+          "type": "choice",
+          "prompt": "Ich fahre ____ nach Berlin. (morgen / mit dem Zug)",
+          "options": [
+            "morgen mit dem Zug",
+            "mit dem Zug morgen",
+            "mit morgen dem Zug",
+            "morgen Zug mit dem"
+          ],
+          "answer": [
+            "morgen mit dem Zug"
+          ],
+          "why": "Te (morgen) vor Mo (mit dem Zug)."
+        },
+        {
+          "id": "a2-10-d02",
+          "type": "choice",
+          "prompt": "Er lernt ____ Deutsch. (gerne / schnell / zu Hause)",
+          "options": [
+            "gerne schnell zu Hause",
+            "schnell gerne zu Hause",
+            "zu Hause gerne schnell"
+          ],
+          "answer": [
+            "gerne schnell zu Hause"
+          ],
+          "why": "Mo (gerne) vor Mo (schnell) vor Lo (zu Hause)."
+        },
+        {
+          "id": "a2-10-d03",
+          "type": "choice",
+          "prompt": "Wir treffen uns ____ . (gestern / im Café / lange)",
+          "options": [
+            "gestern lange im Café",
+            "lange gestern im Café",
+            "im Café gestern lange"
+          ],
+          "answer": [
+            "gestern lange im Café"
+          ],
+          "why": "Te (gestern) vor Mo (lange) vor Lo (im Café)."
+        },
+        {
+          "id": "a2-10-d04",
+          "type": "fill",
+          "prompt": "Er kommt ____ . (nicht / heute / weil er krank ist)",
+          "answer": [
+            "heute nicht, weil er krank ist"
+          ],
+          "why": "Te (heute) vor Negation (nicht) vor Ka (Nebensatz)."
+        },
+        {
+          "id": "a2-10-d05",
+          "type": "choice",
+          "prompt": "Wo steht 'in Berlin' im Satz 'Ich wohne seit 2020 in Berlin'?",
+          "options": [
+            "ganz am Ende",
+            "vor 'seit 2020'",
+            "nach dem Verb"
+          ],
+          "answer": [
+            "ganz am Ende"
+          ],
+          "why": "Lokal (Lo) ganz am Ende nach Te (seit 2020)."
+        },
+        {
+          "id": "a2-10-d06",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'gestern / ich / habe / schnell / gearbeitet / zu / Hause'",
+          "answer": [
+            "Gestern habe ich schnell zu Hause gearbeitet."
+          ],
+          "why": "Te (gestern) V2 (habe ich) Mo (schnell) Lo (zu Hause) Partizip (gearbeitet)."
+        },
+        {
+          "id": "a2-10-d07",
+          "type": "fill",
+          "prompt": "Er fährt ____ . (morgen / mit dem Auto / nach München)",
+          "answer": [
+            "morgen mit dem Auto nach München"
+          ],
+          "why": "Te → Mo → Lo."
+        },
+        {
+          "id": "a2-10-d08",
+          "type": "choice",
+          "prompt": "Was steht zuerst: 'gerne' oder 'in der Küche'?",
+          "options": [
+            "gerne",
+            "in der Küche",
+            "beides gleich",
+            "kommt darauf an"
+          ],
+          "answer": [
+            "gerne"
+          ],
+          "why": "Modal (gerne) vor Lokal (in der Küche)."
+        },
+        {
+          "id": "a2-10-d09",
+          "type": "transform",
+          "prompt": "Umstellen (Betonung auf Zeit): 'Ich gehe heute ins Kino.' → ____",
+          "answer": [
+            "Heute gehe ich ins Kino."
+          ],
+          "why": "Te voran → Inversion."
+        },
+        {
+          "id": "a2-10-d10",
+          "type": "fill",
+          "prompt": "Wir essen ____ . (oft / zusammen / zu Hause)",
+          "answer": [
+            "oft zusammen zu Hause"
+          ],
+          "why": "Te (oft) → Mo (zusammen) → Lo (zu Hause)."
+        }
+      ]
+    },
+    {
+      "id": "a2-11-praepositionen-genitiv",
+      "order": 11,
+      "title": "Предлоги с Genitiv",
+      "subtitle": "wegen, trotz, während, statt, innerhalb, außerhalb, aufgrund",
+      "topics": [
+        "praep_genitiv"
+      ],
+      "prereq": [
+        "a2-02-genitiv"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Präpositionen, die Genitiv verlangen. In der Umgangssprache oft mit Dativ, im Schriftlichen streng Genitiv."
+        },
+        {
+          "kind": "rule",
+          "title": "Liste",
+          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund, anlässlich, kraft, laut, vermittels, zufolge (nachgestellt)."
+        },
+        {
+          "kind": "rule",
+          "title": "Kasus im Genitiv",
+          "text": "Mask/Neut: des + -s/-es. Fem: der. Pl: der."
+        },
+        {
+          "kind": "table",
+          "ref": "praep_genitiv"
+        },
+        {
+          "kind": "example",
+          "de": "Wegen des Regens bleibe ich drinnen. Trotz des Wetters fahren wir. Während der Woche arbeite ich.",
+          "ru": "Из-за дождя я остаюсь внутри. Несмотря на погоду, мы едем. В течение недели я работаю.",
+          "note": "wegen/trotz/während + Genitiv. Mask: des Regens, des Wetters."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-11-d01",
+          "type": "choice",
+          "prompt": "Wegen ____ Regens bleiben wir zu Hause.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "wegen + Genitiv, Maskulin: der → des."
+        },
+        {
+          "id": "a2-11-d02",
+          "type": "choice",
+          "prompt": "Trotz ____ Schmerzen geht er arbeiten.",
+          "options": [
+            "der",
+            "des",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "der"
+          ],
+          "why": "Plural Genitiv: die → der."
+        },
+        {
+          "id": "a2-11-d03",
+          "type": "choice",
+          "prompt": "Während ____ Woche habe ich gearbeitet.",
+          "options": [
+            "der",
+            "des",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "der"
+          ],
+          "why": "während + Genitiv, Feminin: die → der."
+        },
+        {
+          "id": "a2-11-d04",
+          "type": "fill",
+          "prompt": "Statt ____ Kaffee trinke ich Tee.",
+          "answer": [
+            "des"
+          ],
+          "why": "statt + Genitiv, Maskulin: der → des."
+        },
+        {
+          "id": "a2-11-d05",
+          "type": "choice",
+          "prompt": "Innerhalb ____ Jahres.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "innerhalb + Genitiv, Neutrum: das → des."
+        },
+        {
+          "id": "a2-11-d06",
+          "type": "fill",
+          "prompt": "Außerhalb ____ Stadt.",
+          "answer": [
+            "der"
+          ],
+          "why": "außerhalb + Genitiv, Feminin: die → der."
+        },
+        {
+          "id": "a2-11-d07",
+          "type": "choice",
+          "prompt": "Aufgrund ____ Wetters.",
+          "options": [
+            "des",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "aufgrund + Genitiv, Neutrum: das → des."
+        },
+        {
+          "id": "a2-11-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'des / wegen / Wetters / ich / bleibe / zu / Hause'",
+          "answer": [
+            "Wegen des Wetters bleibe ich zu Hause."
+          ],
+          "why": "Präpositionalgruppe voran → V2 im Hauptsatz."
+        },
+        {
+          "id": "a2-11-d09",
+          "type": "choice",
+          "prompt": "Umgangssprachlich oft mit welchem Kasus?",
+          "options": [
+            "Dativ",
+            "Akkusativ",
+            "Nominativ",
+            "Genitiv"
+          ],
+          "answer": [
+            "Dativ"
+          ],
+          "why": "Umgangssprachlich: wegen dem Regen (Dativ), aber schriftlich Genitiv."
+        },
+        {
+          "id": "a2-11-d10",
+          "type": "transform",
+          "prompt": "von + Dativ → Genitiv-Präposition: 'von meinem Vater wegen' → ____",
+          "answer": [
+            "wegen meines Vaters"
+          ],
+          "why": "wegen + Genitiv: meines Vaters."
+        },
+        {
+          "id": "a2-11-d11",
+          "type": "fill",
+          "prompt": "Anlässlich ____ Jubiläums.",
+          "answer": [
+            "des"
+          ],
+          "why": "anlässlich + Genitiv, Neutrum: das → des."
+        },
+        {
+          "id": "a2-11-d12",
+          "type": "choice",
+          "prompt": "Folge ____ Anordnung. (kraft)",
+          "options": [
+            "der",
+            "des",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "der"
+          ],
+          "why": "kraft + Genitiv, Feminin: die → der."
+        }
+      ]
+    },
+    {
+      "id": "a2-12-relativsaetze",
+      "order": 12,
+      "title": "Относительные придаточные (Relativsätze)",
+      "subtitle": "Relativpronomen der/die/das, Präpositionen + Relativpronomen",
+      "topics": [
+        "relativpronomen",
+        "relativsaetze"
+      ],
+      "prereq": [
+        "a2-09-nebensaetze",
+        "a1-08-artikel"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Relativsätze bestimmen ein Nomen näher. Relativpronomen = bestimmter Artikel, aber Genitiv: dessen/deren, Dativ Plural: denen."
+        },
+        {
+          "kind": "rule",
+          "title": "Relativpronomen",
+          "text": "Nom: der/die/das/die. Akk: den/die/das/die. Dat: dem/der/dem/denen. Gen: dessen/deren/desen/deren."
+        },
+        {
+          "kind": "rule",
+          "title": "Präposition + Relativpronomen",
+          "text": "Die Präposition steht VOR dem Relativpronomen: 'der Mann, mit dem ich spreche' (mit wem?). Kasus durch Präposition bestimmt."
+        },
+        {
+          "kind": "rule",
+          "title": "Wortstellung",
+          "text": "Wie Nebensatz: Relativpronomen (Pos 1) — Rest — Verb am Ende."
+        },
+        {
+          "kind": "table",
+          "ref": "relativpronomen"
+        },
+        {
+          "kind": "example",
+          "de": "Der Mann, der da steht, ist mein Vater. Das Buch, das ich lese, ist spannend. Die Frau, mit der ich spreche.",
+          "ru": "Мужчина, который там стоит — мой отец. Книга, которую я читаю, интересная. Женщина, с которой я говорю.",
+          "note": "der (Nom Mask), das (Akk Neut), mit der (Dat Fem + Präposition)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-12-d01",
+          "type": "choice",
+          "prompt": "Der Mann, ____ da steht, ist mein Vater.",
+          "options": [
+            "der",
+            "die",
+            "das",
+            "den"
+          ],
+          "answer": [
+            "der"
+          ],
+          "why": "Relativpronomen Nom Mask: der."
+        },
+        {
+          "id": "a2-12-d02",
+          "type": "choice",
+          "prompt": "Das Buch, ____ ich lese, ist neu.",
+          "options": [
+            "der",
+            "die",
+            "das",
+            "den"
+          ],
+          "answer": [
+            "das"
+          ],
+          "why": "Relativpronomen Akk Neut: das."
+        },
+        {
+          "id": "a2-12-d03",
+          "type": "choice",
+          "prompt": "Die Frau, ____ ich helfe, ist nett.",
+          "options": [
+            "der",
+            "die",
+            "das",
+            "dem"
+          ],
+          "answer": [
+            "der"
+          ],
+          "why": "helfen + Dat → Relativpronomen Dat Fem: der."
+        },
+        {
+          "id": "a2-12-d04",
+          "type": "fill",
+          "prompt": "Der Mann, mit ____ ich spreche, ...",
+          "answer": [
+            "dem"
+          ],
+          "why": "mit + Dat → dem (Mask)."
+        },
+        {
+          "id": "a2-12-d05",
+          "type": "choice",
+          "prompt": "Das Kind, ____ Buch das ist, ...",
+          "options": [
+            "dessen",
+            "deren",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "dessen"
+          ],
+          "why": "Genitiv Mask/Neut: dessen."
+        },
+        {
+          "id": "a2-12-d06",
+          "type": "fill",
+          "prompt": "Die Frau, ____ Buch das ist, ...",
+          "answer": [
+            "deren"
+          ],
+          "why": "Genitiv Fem/Pl: deren."
+        },
+        {
+          "id": "a2-12-d07",
+          "type": "choice",
+          "prompt": "Die Kinder, ____ ich helfe, ...",
+          "options": [
+            "denen",
+            "den",
+            "der",
+            "dem"
+          ],
+          "answer": [
+            "denen"
+          ],
+          "why": "Dat Plural: denen."
+        },
+        {
+          "id": "a2-12-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'das / ist / das / Buch / ich / lese / ,'",
+          "answer": [
+            "Das ist das Buch, das ich lese."
+          ],
+          "why": "Relativsatz: das (Relativpronomen) — ich — lese (Verb am Ende)."
+        },
+        {
+          "id": "a2-12-d09",
+          "type": "fill",
+          "prompt": "Der Stuhl, auf ____ er sitzt, ...",
+          "answer": [
+            "dem"
+          ],
+          "why": "auf + Dat → dem (Mask/Neut)."
+        },
+        {
+          "id": "a2-12-d10",
+          "type": "choice",
+          "prompt": "Die Stadt, ____ ich geboren bin, ...",
+          "options": [
+            "in der",
+            "in die",
+            "in dem",
+            "in das"
+          ],
+          "answer": [
+            "in der"
+          ],
+          "why": "in + Dat (Wo?) → in der (Fem)."
+        },
+        {
+          "id": "a2-12-d11",
+          "type": "transform",
+          "prompt": "Zwei Sätze verbinden: 'Der Mann ist mein Vater. Er steht da.' → ____",
+          "answer": [
+            "Der Mann, der da steht, ist mein Vater."
+          ],
+          "why": "Relativsatz mit Nom Mask 'der'."
+        },
+        {
+          "id": "a2-12-d12",
+          "type": "fill",
+          "prompt": "Das Haus, vor ____ wir stehen, ...",
+          "answer": [
+            "dem"
+          ],
+          "why": "vor + Dat → dem (Neut)."
+        }
+      ]
+    },
+    {
+      "id": "a2-13-infinitiv-zu",
+      "order": 13,
+      "title": "Infinitiv с zu: um...zu, ohne...zu, statt...zu",
+      "subtitle": "Endstellung, mit/ohne 'zu', Trennbare Verben",
+      "topics": [
+        "infinitive_zu"
+      ],
+      "prereq": [
+        "a2-09-nebensaetze",
+        "a1-14-trennbare-verben"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Infinitivkonstruktionen mit 'zu' ersetzen oft Nebensätze. 'zu' steht vor dem Infinitiv (bei trennbaren: zwischen Präfix und Stamm)."
+        },
+        {
+          "kind": "rule",
+          "title": "um ... zu (Zweck)",
+          "text": "Ich lerne, um die Prüfung zu bestehen. Subjekt = Hauptsatz-Subjekt."
+        },
+        {
+          "kind": "rule",
+          "title": "ohne ... zu",
+          "text": "Er ging weg, ohne sich zu verabschieden."
+        },
+        {
+          "kind": "rule",
+          "title": "statt ... zu",
+          "text": "Er ruft an, statt zu schreiben."
+        },
+        {
+          "kind": "rule",
+          "title": "Trennbare Verben",
+          "text": "zu steht zwischen Präfix und Stamm: aufstehen → aufzustehen, einkaufen → einzukaufen."
+        },
+        {
+          "kind": "rule",
+          "title": "Ohne 'zu'",
+          "text": "Nach Modalverben, lassen, hören, sehen, helfen (optional), bleiben, gehen, kommen (Richtung)."
+        },
+        {
+          "kind": "example",
+          "de": "Ich versuche, Deutsch zu lernen. Er hat vor, nach Berlin zu fahren. Wir essen, statt zu kochen.",
+          "ru": "Я пытаюсь выучить немецкий. Он собирается поехать в Берлин. Мы едим, вместо того чтобы готовить.",
+          "note": "versuchen + zu, vorhaben + zu, essen statt zu kochen."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-13-d01",
+          "type": "choice",
+          "prompt": "Ich lerne, ____ die Prüfung zu bestehen.",
+          "options": [
+            "um",
+            "ohne",
+            "statt",
+            "zu"
+          ],
+          "answer": [
+            "um"
+          ],
+          "why": "Zweck: um ... zu."
+        },
+        {
+          "id": "a2-13-d02",
+          "type": "choice",
+          "prompt": "Er ging weg, ____ sich zu verabschieden.",
+          "options": [
+            "um",
+            "ohne",
+            "statt",
+            "zu"
+          ],
+          "answer": [
+            "ohne"
+          ],
+          "why": "ohne ... zu."
+        },
+        {
+          "id": "a2-13-d03",
+          "type": "choice",
+          "prompt": "Er ruft an, ____ zu schreiben.",
+          "options": [
+            "um",
+            "ohne",
+            "statt",
+            "zu"
+          ],
+          "answer": [
+            "statt"
+          ],
+          "why": "statt ... zu."
+        },
+        {
+          "id": "a2-13-d04",
+          "type": "fill",
+          "prompt": "Ich habe vor, ____ nach Berlin. (fahren)",
+          "answer": [
+            "zu fahren"
+          ],
+          "why": "vorhaben + zu + Infinitiv."
+        },
+        {
+          "id": "a2-13-d05",
+          "type": "choice",
+          "prompt": "Trennbar: 'aufstehen' → mit 'zu':",
+          "options": [
+            "auf zu stehen",
+            "aufzustehen",
+            "zu aufstehen",
+            "aufstehen zu"
+          ],
+          "answer": [
+            "aufzustehen"
+          ],
+          "why": "zu zwischen Präfix und Stamm: aufzustehen."
+        },
+        {
+          "id": "a2-13-d06",
+          "type": "fill",
+          "prompt": "Er versucht, das Fenster ____ . (zumachen)",
+          "answer": [
+            "zuzumachen"
+          ],
+          "why": "zumachen → zuzumachen."
+        },
+        {
+          "id": "a2-13-d07",
+          "type": "choice",
+          "prompt": "Ohne 'zu': 'Ich ____ ihn kommen sehen.'",
+          "options": [
+            "lasse",
+            "höre",
+            "sehe",
+            "helfe"
+          ],
+          "answer": [
+            "sehe"
+          ],
+          "why": "sehen/hören/lassen + Infinitiv OHNE zu."
+        },
+        {
+          "id": "a2-13-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'zu / lernen / ich / versuche / Deutsch'",
+          "answer": [
+            "Ich versuche, Deutsch zu lernen."
+          ],
+          "why": "versuchen + zu + Infinitiv am Ende."
+        },
+        {
+          "id": "a2-13-d09",
+          "type": "fill",
+          "prompt": "Wir beginnen, ____ . (arbeiten)",
+          "answer": [
+            "zu arbeiten"
+          ],
+          "why": "beginnen + zu + Infinitiv."
+        },
+        {
+          "id": "a2-13-d10",
+          "type": "transform",
+          "prompt": "Nebensatz → Infinitiv: 'Ich hoffe, dass ich komme.' → 'Ich hoffe, ____ '",
+          "answer": [
+            "zu kommen"
+          ],
+          "why": "Gleiches Subjekt → Infinitivkonstruktion."
+        },
+        {
+          "id": "a2-13-d11",
+          "type": "choice",
+          "prompt": "Er hat keine Lust, ____ . (aufzustehen)",
+          "options": [
+            "aufzustehen",
+            "auf zu stehen",
+            "zu aufstehen",
+            "aufstehen"
+          ],
+          "answer": [
+            "aufzustehen"
+          ],
+          "why": "Lust haben + Infinitiv mit zu: aufzustehen."
+        },
+        {
+          "id": "a2-13-d12",
+          "type": "fill",
+          "prompt": "Ohne ____ , kann man nicht leben. (essen)",
+          "answer": [
+            "zu essen"
+          ],
+          "why": "ohne ... zu + Infinitiv."
+        }
+      ]
+    },
+    {
+      "id": "a2-14-passiv-praesens",
+      "order": 14,
+      "title": "Пассив в Präsens",
+      "subtitle": "werden + Partizip II, Subjekt = Akkusativobjekt",
+      "topics": [
+        "passiv_zeiten"
+      ],
+      "prereq": [
+        "a1-17-perfekt",
+        "a2-03-praeteritum"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passiv: Fokus auf Handlung, nicht auf Täter. Bildung: werden (konjugiert) + Partizip II. Akkusativobjekt wird Subjekt."
+        },
+        {
+          "kind": "rule",
+          "title": "Präsens Passiv",
+          "text": "ich werde gemacht, du wirst gemacht, er wird gemacht, wir werden gemacht, ihr werdet gemacht, sie werden gemacht."
+        },
+        {
+          "kind": "rule",
+          "title": "Umwandlung Aktiv → Passiv",
+          "text": "Aktiv: Jemand baut das Haus. Passiv: Das Haus wird gebaut. Täter (von wem?) optional: von + Dat."
+        },
+        {
+          "kind": "rule",
+          "title": "Nur transitive Verben",
+          "text": "Nur Verben mit Akkusativobjekt können passiviert werden. Intransitive (gehen, schlafen) → kein Passiv (außer unpersönlich: wird getanzt)."
+        },
+        {
+          "kind": "table",
+          "ref": "passiv_zeiten"
+        },
+        {
+          "kind": "example",
+          "de": "Das Haus wird gebaut. Die Tür wird geöffnet. Viele Autos werden hier produziert.",
+          "ru": "Дом строится. Дверь открывается. Здесь производят много машин.",
+          "note": "wird + Partizip II. Subjekt = ehemaliges Akkusativobjekt."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-14-d01",
+          "type": "choice",
+          "prompt": "Das Haus ____ gebaut. (Präsens Passiv)",
+          "options": [
+            "wird",
+            "werde",
+            "werden",
+            "wurde"
+          ],
+          "answer": [
+            "wird"
+          ],
+          "why": "3. Pers. Sg: wird + Partizip II."
+        },
+        {
+          "id": "a2-14-d02",
+          "type": "choice",
+          "prompt": "Die Briefe ____ geschrieben. (Plural)",
+          "options": [
+            "wird",
+            "werde",
+            "werden",
+            "wurde"
+          ],
+          "answer": [
+            "werden"
+          ],
+          "why": "Plural: werden + Partizip II."
+        },
+        {
+          "id": "a2-14-d03",
+          "type": "choice",
+          "prompt": "Aktiv: 'Er öffnet die Tür.' → Passiv:",
+          "options": [
+            "Die Tür wird geöffnet.",
+            "Die Tür wird öffnen.",
+            "Die Tür wird geöffnet werden.",
+            "Die Tür öffnet sich."
+          ],
+          "answer": [
+            "Die Tür wird geöffnet."
+          ],
+          "why": "Akkusativobjekt (die Tür) → Subjekt, werden + Partizip II."
+        },
+        {
+          "id": "a2-14-d04",
+          "type": "fill",
+          "prompt": "Das Auto ____ repariert. (Präsens Passiv)",
+          "answer": [
+            "wird"
+          ],
+          "why": "3. Pers. Sg Neutrum: wird."
+        },
+        {
+          "id": "a2-14-d05",
+          "type": "choice",
+          "prompt": "Von wem? → ____ + Dativ",
+          "options": [
+            "von",
+            "durch",
+            "bei",
+            "mit"
+          ],
+          "answer": [
+            "von"
+          ],
+          "why": "Täter im Passiv: von + Dativ (von mir, von der Firma)."
+        },
+        {
+          "id": "a2-14-d06",
+          "type": "fill",
+          "prompt": "Die E-Mail ____ gerade ____ . (schreiben, Präsens Passiv)",
+          "answer": [
+            "wird geschrieben"
+          ],
+          "why": "wird + Partizip II."
+        },
+        {
+          "id": "a2-14-d07",
+          "type": "choice",
+          "prompt": "Welches Verb kann NICHT passiviert werden?",
+          "options": [
+            "bauen",
+            "schreiben",
+            "schlafen",
+            "öffnen"
+          ],
+          "answer": [
+            "schlafen"
+          ],
+          "why": "Intransitiv (kein Akkusativobjekt) → kein persönliches Passiv."
+        },
+        {
+          "id": "a2-14-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'wird / das / Buch / gelesen'",
+          "answer": [
+            "Das Buch wird gelesen."
+          ],
+          "why": "Subjekt (Das Buch) — wird — Partizip II (gelesen)."
+        },
+        {
+          "id": "a2-14-d09",
+          "type": "fill",
+          "prompt": "Hier ____ Deutsch ____ . (sprechen, Präsens Passiv)",
+          "answer": [
+            "wird gesprochen"
+          ],
+          "why": "Unpersönliches Passiv: wird + Partizip II."
+        },
+        {
+          "id": "a2-14-d10",
+          "type": "transform",
+          "prompt": "Aktiv → Passiv: 'Man produziert hier Autos.' → ____",
+          "answer": [
+            "Hier werden Autos produziert."
+          ],
+          "why": "man → unpersönlich, Akk-Objekt (Autos) → Subjekt Plural: werden."
+        },
+        {
+          "id": "a2-14-d11",
+          "type": "choice",
+          "prompt": "Präteritum Passiv: 'Das Haus ____ gebaut.'",
+          "options": [
+            "wird",
+            "wurde",
+            "worden",
+            "wurden"
+          ],
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum: wurde + Partizip II."
+        },
+        {
+          "id": "a2-14-d12",
+          "type": "fill",
+          "prompt": "Perfekt Passiv: 'Das Haus ____ gebaut ____ .'",
+          "answer": [
+            "ist worden"
+          ],
+          "why": "Perfekt Passiv: ist + Partizip II + worden (nicht geworden!)."
+        }
+      ]
+    },
+    {
+      "id": "a2-15-n-deklination",
+      "order": 15,
+      "title": "N-Деклинация",
+      "subtitle": "der Herr, des/dem/den Herrn — schwache Maskulina",
+      "topics": [
+        "n_deklination"
+      ],
+      "prereq": [
+        "a1-07-plural",
+        "a2-01-dativ"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "N-Deklination (schwache Maskulina): im Singular alle Kasus außer Nominativ haben -n/-en. Plural immer auf -n."
+        },
+        {
+          "kind": "rule",
+          "title": "Wörter",
+          "text": "der Herr, der Junge, der Mensch, der Student, der Polizist, der Nachbar, der Kunde, der Patient, der Assistent, der Astronom, der Bote, der Christ, der Demokrat, der Diplomat, der Elefant, der Experte, der Franzose, der Gedanke, der Geograf, der Graf, der Held, der Kollege, der Komet, der Löwe, der Name, der Narr, der Oberst, der Philosoph, der Prinz, der Riese, der Tourist, der Zeuge."
+        },
+        {
+          "kind": "rule",
+          "title": "Endungen",
+          "text": "Nom Sg: der Herr. Akk/Dat/Gen Sg: den/dem/des Herrn. Plural: die Herrn (alle Kasus -n)."
+        },
+        {
+          "kind": "table",
+          "ref": "n_deklination"
+        },
+        {
+          "kind": "example",
+          "de": "Ich sehe den Herrn. Ich gebe dem Herrn das Buch. Das ist das Auto des Herrn. Die Herrn kommen.",
+          "ru": "Я вижу господина. Я даю господину книгу. Это машина господина. Господа приходят.",
+          "why": "Akk/Dat/Gen Sg: -n. Plural: -n."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-15-d01",
+          "type": "choice",
+          "prompt": "Ich sehe ____ Herrn. (Akk)",
+          "options": [
+            "den",
+            "dem",
+            "des",
+            "der"
+          ],
+          "answer": [
+            "den"
+          ],
+          "why": "Akk Sg: den Herrn."
+        },
+        {
+          "id": "a2-15-d02",
+          "type": "choice",
+          "prompt": "Ich gebe ____ Herrn das Buch. (Dat)",
+          "options": [
+            "den",
+            "dem",
+            "des",
+            "der"
+          ],
+          "answer": [
+            "dem"
+          ],
+          "why": "Dat Sg: dem Herrn."
+        },
+        {
+          "id": "a2-15-d03",
+          "type": "choice",
+          "prompt": "Das ist das Auto ____ Herrn. (Gen)",
+          "options": [
+            "den",
+            "dem",
+            "des",
+            "der"
+          ],
+          "answer": [
+            "des"
+          ],
+          "why": "Gen Sg: des Herrn (ohne -s am Nomen, da N-Deklination)."
+        },
+        {
+          "id": "a2-15-d04",
+          "type": "fill",
+          "prompt": "Plural Nom: die ____",
+          "answer": [
+            "Herrn"
+          ],
+          "why": "Plural: die Herrn."
+        },
+        {
+          "id": "a2-15-d05",
+          "type": "choice",
+          "prompt": "Plural Dat: ____ Herrn",
+          "options": [
+            "den",
+            "dem",
+            "des",
+            "der"
+          ],
+          "answer": [
+            "den"
+          ],
+          "why": "Dat Pl: den Herrn (+ -n an Nomen)."
+        },
+        {
+          "id": "a2-15-d06",
+          "type": "fill",
+          "prompt": "Ich helfe ____ Studenten. (Dat Sg)",
+          "answer": [
+            "dem"
+          ],
+          "why": "Student (N-Deklination) → dem Studenten."
+        },
+        {
+          "id": "a2-15-d07",
+          "type": "choice",
+          "prompt": "Welches Wort gehört NICHT zur N-Deklination?",
+          "options": [
+            "der Student",
+            "der Lehrer",
+            "der Name",
+            "der Mensch"
+          ],
+          "answer": [
+            "der Lehrer"
+          ],
+          "why": "Lehrer ist regulär (der Lehrer, des Lehrers). N-Deklination: Student, Name, Mensch."
+        },
+        {
+          "id": "a2-15-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'dem / Jungen / gebe / ich / den / Ball'",
+          "answer": [
+            "Ich gebe dem Jungen den Ball."
+          ],
+          "why": "Junge (N-Deklination) → dem Jungen (Dat)."
+        },
+        {
+          "id": "a2-15-d09",
+          "type": "fill",
+          "prompt": "Der ____ (Nachbar, Gen Sg) Auto ist rot.",
+          "answer": [
+            "Nachbarn"
+          ],
+          "why": "Gen Sg N-Deklination: des Nachbarn."
+        },
+        {
+          "id": "a2-15-d10",
+          "type": "choice",
+          "prompt": "Wir sehen die ____ (Kunde, Pl Akk).",
+          "options": [
+            "Kunden",
+            "Kunde",
+            "Kund",
+            "Kunds"
+          ],
+          "answer": [
+            "Kunden"
+          ],
+          "why": "Plural Akk: die Kunden."
+        },
+        {
+          "id": "a2-15-d11",
+          "type": "transform",
+          "prompt": "Nom Sg → Gen Sg: 'der Mensch' → ____",
+          "answer": [
+            "des Menschen"
+          ],
+          "why": "N-Deklination: des Menschen (kein -s, aber -n)."
+        },
+        {
+          "id": "a2-15-d12",
+          "type": "fill",
+          "prompt": "Ich danke ____ Polizisten. (Dat Sg)",
+          "answer": [
+            "dem"
+          ],
+          "why": "Polizist (N-Deklination) → dem Polizisten."
+        }
+      ]
+    },
+    {
+      "id": "a2-16-verben-praepositionen",
+      "order": 16,
+      "title": "Глаголы с фиксированными предлогами",
+      "subtitle": "warten auf, denken an, sich freuen auf/über, Angst haben vor...",
+      "topics": [
+        "prepositional_verbs"
+      ],
+      "prereq": [
+        "a1-15-praepositionen",
+        "a2-05-reflexive"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Viele Verben verlangen eine bestimmte Präposition + Kasus. Diese muss auswendig gelernt werden."
+        },
+        {
+          "kind": "rule",
+          "title": "Akkusativ",
+          "text": "warten auf, denken an, glauben an, achten auf, hören auf, verzichten auf, sich freuen auf, sich vorbereiten auf, sich verlassen auf."
+        },
+        {
+          "kind": "rule",
+          "title": "Dativ",
+          "text": "helfen bei, teilnehmen an, arbeiten an, leiden an, sterben an, zweifeln an, sich erinnern an, sich gewöhnen an, sich kümmern um, sich bemühen um, sich sorgen um, sich freuen über, sich ärgern über, sich wundern über, Angst haben vor, warnen vor, fliehen vor."
+        },
+        {
+          "kind": "rule",
+          "title": "Genitiv",
+          "text": "gedenken, bedürfen (selten)."
+        },
+        {
+          "kind": "rule",
+          "title": "Da-/Wo-Komposita",
+          "text": "Bei Sachen: darauf, daran, damit, davon, worauf, woran, wovon. Bei Personen: Präposition + Pronomen (auf ihn, an sie)."
+        },
+        {
+          "kind": "table",
+          "ref": "da_wo_komposita"
+        },
+        {
+          "kind": "example",
+          "de": "Ich warte auf den Bus. Er denkt an seine Mutter. Ich freue mich auf das Wochenende. Er hat Angst vor Spinnen.",
+          "ru": "Я жду автобус. Он думает о маме. Я радуюсь выходным. Он боится пауков.",
+          "note": "warten auf + Akk, denken an + Akk, freuen auf + Akk, Angst haben vor + Dat."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-16-d01",
+          "type": "choice",
+          "prompt": "Ich warte ____ den Bus. (auf + Akk)",
+          "options": [
+            "auf",
+            "an",
+            "bei",
+            "für"
+          ],
+          "answer": [
+            "auf"
+          ],
+          "why": "warten auf + Akkusativ."
+        },
+        {
+          "id": "a2-16-d02",
+          "type": "choice",
+          "prompt": "Er denkt ____ seine Mutter. (an + Akk)",
+          "options": [
+            "an",
+            "auf",
+            "von",
+            "über"
+          ],
+          "answer": [
+            "an"
+          ],
+          "why": "denken an + Akkusativ."
+        },
+        {
+          "id": "a2-16-d03",
+          "type": "choice",
+          "prompt": "Ich freue mich ____ das Wochenende. (auf + Akk)",
+          "options": [
+            "auf",
+            "über",
+            "an",
+            "für"
+          ],
+          "answer": [
+            "auf"
+          ],
+          "why": "sich freuen auf (Zukunft) + Akk."
+        },
+        {
+          "id": "a2-16-d04",
+          "type": "fill",
+          "prompt": "Er hat Angst ____ Spinnen. (vor + Dat)",
+          "answer": [
+            "vor"
+          ],
+          "why": "Angst haben vor + Dativ."
+        },
+        {
+          "id": "a2-16-d05",
+          "type": "choice",
+          "prompt": "Wir sprechen ____ das Wetter. (über + Akk)",
+          "options": [
+            "über",
+            "von",
+            "an",
+            "auf"
+          ],
+          "answer": [
+            "über"
+          ],
+          "why": "sprechen über + Akkusativ."
+        },
+        {
+          "id": "a2-16-d06",
+          "type": "fill",
+          "prompt": "Er denkt ____ die Prüfung. (nach + Dat? nein, an + Akk)",
+          "answer": [
+            "an"
+          ],
+          "why": "denken an + Akk."
+        },
+        {
+          "id": "a2-16-d07",
+          "type": "choice",
+          "prompt": "Ich kümmere mich ____ den Rest. (um + Akk)",
+          "options": [
+            "um",
+            "für",
+            "an",
+            "bei"
+          ],
+          "answer": [
+            "um"
+          ],
+          "why": "sich kümmern um + Akk."
+        },
+        {
+          "id": "a2-16-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'an / denkt / er / seine / Mutter'",
+          "answer": [
+            "Er denkt an seine Mutter."
+          ],
+          "why": "denken an + Akk: an seine Mutter."
+        },
+        {
+          "id": "a2-16-d09",
+          "type": "fill",
+          "prompt": "Sie freut sich ____ das Geschenk. (über + Akk, Vergangenheit/Ergebnis)",
+          "answer": [
+            "über"
+          ],
+          "why": "sich freuen über (Vergangenheit/Gegenwart) + Akk."
+        },
+        {
+          "id": "a2-16-d10",
+          "type": "choice",
+          "prompt": "Da-Kompositum für 'warten auf + das':",
+          "options": [
+            "darauf",
+            "dafür",
+            "daran",
+            "dagegen"
+          ],
+          "answer": [
+            "darauf"
+          ],
+          "why": "warten auf + es → darauf."
+        },
+        {
+          "id": "a2-16-d11",
+          "type": "transform",
+          "prompt": "Persönlich → Da-Kompositum: 'Ich warte auf ihn.' → 'Ich warte ____ '",
+          "answer": [
+            "auf ihn"
+          ],
+          "why": "Bei Personen: Präposition + Personalpronomen (nicht da-/wo-)."
+        },
+        {
+          "id": "a2-16-d12",
+          "type": "fill",
+          "prompt": "Er warnt mich ____ der Gefahr. (vor + Dat)",
+          "answer": [
+            "vor"
+          ],
+          "why": "warnen vor + Dativ."
+        }
+      ]
+    },
+    {
+      "id": "a2-17-partizip-ii-adjektiv",
+      "order": 17,
+      "title": "Partizip II как прилагательное",
+      "subtitle": "das gebrochene Bein, die geöffnete Tür — Deklination wie Adjektiv",
+      "topics": [
+        "partizip_ii",
+        "adj_decl_definite"
+      ],
+      "prereq": [
+        "a2-06-adjektiv-bestimmt",
+        "a1-17-perfekt"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Partizip II kann als Attribut vor dem Nomen stehen und dekliniert sich wie ein Adjektiv."
+        },
+        {
+          "kind": "rule",
+          "title": "Bildung",
+          "text": "Partizip II + Adjektivendung: das gebrochene Bein, die geöffnete Tür, den geschriebenen Brief."
+        },
+        {
+          "kind": "rule",
+          "title": "Bedeutung",
+          "text": "Passivisch/abgeschlossen: das gebrochene Bein (das Bein wurde gebrochen), die geöffnete Tür (die Tür wurde geöffnet)."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip I vs II",
+          "text": "Partizip I (lesend) = aktiv/gleichzeitig. Partizip II (gelesen) = passiv/abgeschlossen."
+        },
+        {
+          "kind": "table",
+          "ref": "partizip_ii"
+        },
+        {
+          "kind": "example",
+          "de": "Das gekochte Ei ist fertig. Ich lese den geschriebenen Brief. Die verlorene Zeit kommt nicht zurück.",
+          "ru": "Сваренное яйцо готово. Я читаю написанное письмо. Потерянное время не вернётся.",
+          "note": "gekocht (Partizip II) + Adjektivendung (-e/-en)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-17-d01",
+          "type": "choice",
+          "prompt": "Das ____ Ei (kochen, Partizip II, Nom Neut)",
+          "options": [
+            "gekocht",
+            "gekochte",
+            "gekochtes",
+            "gekochten"
+          ],
+          "answer": [
+            "gekochte"
+          ],
+          "why": "Nom Neut nach bestimmtem Artikel: -e."
+        },
+        {
+          "id": "a2-17-d02",
+          "type": "choice",
+          "prompt": "Ich esse das ____ Ei. (Akk Neut)",
+          "options": [
+            "gekocht",
+            "gekochte",
+            "gekochtes",
+            "gekochten"
+          ],
+          "answer": [
+            "gekochte"
+          ],
+          "why": "Akk Neut = Nom: -e."
+        },
+        {
+          "id": "a2-17-d03",
+          "type": "choice",
+          "prompt": "Der ____ Brief (schreiben, Partizip II, Nom Mask)",
+          "options": [
+            "geschrieben",
+            "geschriebene",
+            "geschriebenen",
+            "geschriebenes"
+          ],
+          "answer": [
+            "geschriebene"
+          ],
+          "why": "Nom Mask: -e."
+        },
+        {
+          "id": "a2-17-d04",
+          "type": "fill",
+          "prompt": "Ich lese den ____ Brief. (Akk Mask)",
+          "answer": [
+            "geschriebenen"
+          ],
+          "why": "Akk Mask: -en."
+        },
+        {
+          "id": "a2-17-d05",
+          "type": "choice",
+          "prompt": "Die ____ Tür (öffnen, Partizip II, Nom Fem)",
+          "options": [
+            "geöffnet",
+            "geöffnete",
+            "geöffneten",
+            "geöffnetes"
+          ],
+          "answer": [
+            "geöffnete"
+          ],
+          "why": "Nom Fem: -e."
+        },
+        {
+          "id": "a2-17-d06",
+          "type": "fill",
+          "prompt": "Ohne Artikel: ____ Wasser (kochen, Partizip II, Nom Neut)",
+          "answer": [
+            "gekochtes"
+          ],
+          "why": "Ohne Artikel, stark: Nom Neut -es."
+        },
+        {
+          "id": "a2-17-d07",
+          "type": "choice",
+          "prompt": "Partizip I oder II? 'Das ____ Kind schläft.' (schlafen)",
+          "options": [
+            "schlafend",
+            "geschlafen",
+            "schläft",
+            "schlief"
+          ],
+          "answer": [
+            "schlafend"
+          ],
+          "why": "Aktiv/gleichzeitig → Partizip I: schlafend."
+        },
+        {
+          "id": "a2-17-d08",
+          "type": "fill",
+          "prompt": "Das ____ Fenster (brechen, Partizip II, Nom Neut)",
+          "answer": [
+            "zerbrochene"
+          ],
+          "why": "brechen → zerbrochen (untrennbar: zer- + Partizip II). Nom Neut: -e."
+        },
+        {
+          "id": "a2-17-d09",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'das / ist / gekochte / Ei / das'",
+          "answer": [
+            "Das ist das gekochte Ei."
+          ],
+          "why": "Partizip II als Adjektiv: das gekochte Ei."
+        },
+        {
+          "id": "a2-17-d10",
+          "type": "choice",
+          "prompt": "Die ____ Zeit (verlieren, Partizip II, Nom Fem)",
+          "options": [
+            "verloren",
+            "verlorene",
+            "verlorenen",
+            "verlornes"
+          ],
+          "answer": [
+            "verlorene"
+          ],
+          "why": "verlieren → verloren. Nom Fem: -e."
+        },
+        {
+          "id": "a2-17-d11",
+          "type": "transform",
+          "answer": [
+            "gekochte"
+          ],
+          "why": "Passiv Partizip II → Adjektivattribut.",
+          "prompt": "Passiv → Partizip II Adjektiv: 'Das Ei wird gekocht.' → 'Das ____ Ei'"
+        },
+        {
+          "id": "a2-17-d12",
+          "type": "fill",
+          "prompt": "Der ____ Mann (suchen, Partizip II, Nom Mask)",
+          "answer": [
+            "gesuchte"
+          ],
+          "why": "suchen → gesucht. Nom Mask: -e."
+        }
+      ]
+    },
+    {
+      "id": "a2-18-konjunktionen",
+      "order": 18,
+      "title": "Координирующие и адвербиальные коннекторы",
+      "subtitle": "und/aber/oder/denn/sondern, deshalb/trotzdem/zwar...aber",
+      "topics": [
+        "konnektoren_uebersicht"
+      ],
+      "prereq": [
+        "a2-09-nebensaetze",
+        "a2-10-tekamolo"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Konnektoren verbinden Sätze oder Satzteile. Drei Gruppen: koordinierend (Pos 0), adverbiell (Pos 1 → V2), subordnierend (Nebensatz, Verb am Ende)."
+        },
+        {
+          "kind": "rule",
+          "title": "Koordinierend (0)",
+          "text": "und, aber, oder, denn, sondern. Keine Änderung der Wortstellung: 'Ich lerne und er liest.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Adverbiell (1)",
+          "text": "deshalb, trotzdem, jedoch, dennoch, außerdem, dann, später. Stehen an Pos 1 → V2: 'Es regnet. Deshalb bleibe ich.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Subordinierend",
+          "text": "dass, weil, wenn, als, obwohl, ob, damit. Nebensatz: Verb am Ende."
+        },
+        {
+          "kind": "rule",
+          "title": "denn vs weil",
+          "text": "denn = koordinierend (Pos 0, Hauptsatz). weil = subordinierend (Nebensatz, Verb am Ende)."
+        },
+        {
+          "kind": "table",
+          "ref": "konnektoren_uebersicht"
+        },
+        {
+          "kind": "example",
+          "de": "Ich lerne und er liest. Es regnet, deshalb bleibe ich. Ich bleibe, weil es regnet. Er ist krank, aber er arbeitet.",
+          "ru": "Я учусь, и он читает. Идёт дождь, поэтому я остаюсь. Я остаюсь, потому что идёт дождь. Он болен, но работает.",
+          "note": "und/aber/denn = 0-Position. deshalb/trotzdem = 1. Position (V2). weil/obwohl = Nebensatz."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-18-d01",
+          "type": "choice",
+          "prompt": "Ich lerne ____ er liest.",
+          "options": [
+            "und",
+            "aber",
+            "oder",
+            "denn"
+          ],
+          "answer": [
+            "und"
+          ],
+          "why": "Koordinierend, Pos 0: keine Wortstellungsänderung."
+        },
+        {
+          "id": "a2-18-d02",
+          "type": "choice",
+          "prompt": "Er ist krank, ____ er arbeitet.",
+          "options": [
+            "aber",
+            "denn",
+            "und",
+            "oder"
+          ],
+          "answer": [
+            "aber"
+          ],
+          "why": "aber = Kontrast, koordinierend."
+        },
+        {
+          "id": "a2-18-d03",
+          "type": "choice",
+          "prompt": "Es regnet. ____ bleibe ich zu Hause.",
+          "options": [
+            "Deshalb",
+            "Weil",
+            "Wenn",
+            "Obwohl"
+          ],
+          "answer": [
+            "Deshalb"
+          ],
+          "why": "Adverbiell, Pos 1 → V2: Deshalb bleibe ich."
+        },
+        {
+          "id": "a2-18-d04",
+          "type": "fill",
+          "prompt": "Er hat kein Geld, ____ er kauft das Auto nicht.",
+          "answer": [
+            "denn"
+          ],
+          "why": "denn = Kausal, aber koordinierend (Hauptsatz)."
+        },
+        {
+          "id": "a2-18-d05",
+          "type": "choice",
+          "prompt": "Ich bleibe zu Hause, ____ es regnet.",
+          "options": [
+            "weil",
+            "denn",
+            "deshalb",
+            "trotzdem"
+          ],
+          "answer": [
+            "weil"
+          ],
+          "why": "weil = subordinierend, Nebensatz (Verb am Ende)."
+        },
+        {
+          "id": "a2-18-d06",
+          "type": "choice",
+          "prompt": "Er ist müde, ____ er geht joggen.",
+          "options": [
+            "trotzdem",
+            "deshalb",
+            "weil",
+            "denn"
+          ],
+          "answer": [
+            "trotzdem"
+          ],
+          "why": "trotzdem = Konzessiv, adverbiell, Pos 1 → V2."
+        },
+        {
+          "id": "a2-18-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'regnet / es / , / deshalb / bleibe / ich / zu / Hause'",
+          "answer": [
+            "Es regnet, deshalb bleibe ich zu Hause."
+          ],
+          "why": "Hauptsatz, dann adverbieller Konnektor voran → V2."
+        },
+        {
+          "id": "a2-18-d08",
+          "type": "fill",
+          "prompt": "Er lernt viel, ____ er besteht die Prüfung. (Zweck)",
+          "answer": [
+            "damit"
+          ],
+          "why": "damit = Finalsatz, Nebensatz (Verb am Ende)."
+        },
+        {
+          "id": "a2-18-d09",
+          "type": "choice",
+          "prompt": "____ er krank ist, geht er arbeiten.",
+          "options": [
+            "Obwohl",
+            "Weil",
+            "Wenn",
+            "Als"
+          ],
+          "answer": [
+            "Obwohl"
+          ],
+          "why": "obwohl = Konzessivsatz, Nebensatz."
+        },
+        {
+          "id": "a2-18-d10",
+          "type": "transform",
+          "prompt": "'Weil es regnet' (Nebensatz) → Hauptsatz mit 'denn':",
+          "answer": [
+            "Es regnet, denn ich bleibe zu Hause."
+          ],
+          "why": "denn koordiniert zwei Hauptsätze."
+        },
+        {
+          "id": "a2-18-d11",
+          "type": "fill",
+          "prompt": "Er kommt nicht, ____ er krank ist.",
+          "answer": [
+            "weil"
+          ],
+          "why": "Kausal, Nebensatz: weil."
+        },
+        {
+          "id": "a2-18-d12",
+          "type": "choice",
+          "prompt": "Was steht an Pos 0?",
+          "options": [
+            "und",
+            "deshalb",
+            "weil",
+            "trotzdem"
+          ],
+          "answer": [
+            "und"
+          ],
+          "why": "Koordinierende Konnektoren (und, aber, oder, denn, sondern) stehen an Pos 0."
+        }
+      ]
+    }
+  ]
+}
