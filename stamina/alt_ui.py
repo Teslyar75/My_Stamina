@@ -931,7 +931,7 @@ WALL_DIR = Path(__file__).resolve().parent / "assets" / "alt_wallpapers"
 WALL_DIM = 0.35
 # Отсек без своих обоев берёт панорамы родственного (пока своих картинок нет)
 # Лаборатория рисует свой фон на холсте (туманность); чужие панорамы не подставляем.
-WALL_ALIAS = {"docs": "comm", "terraformer": "lab"}
+WALL_ALIAS = {"docs": "comm", "terraformer": "lab", "languages": "english"}
 
 
 def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:

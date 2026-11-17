@@ -79,7 +79,7 @@ def path(screen: str | None) -> list[tuple[str, str]]:
 
 # Зоны с постоянной клавишей вне счёта Ctrl+1…9: остальные нумеруются по порядку,
 # поэтому новая зона не сдвигает привычные Ctrl+N (НАСТРОЙКИ остаются Ctrl+9).
-FIXED_HOTKEYS = {"lab": "0", "terraformer": None, "languages": None}
+FIXED_HOTKEYS = {"lab": "0", "terraformer": None, "languages": None, "settings": "9"}
 
 
 def zone_hotkeys(names: list[str]) -> list[tuple[str, str]]:
