@@ -5,15 +5,12 @@
 from __future__ import annotations
 
 import tkinter as tk
-from tkinter import ttk
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, MUTED, PANEL, PANEL_HI, RED, TEXT, px
-from stamina.languages.core import get_registry, LanguageProgress
 from stamina.languages.core.progress import LanguageProgress
-from stamina import pilots
 
 
 class GrammarPage:
@@ -318,7 +315,8 @@ class GrammarPage:
             from stamina.languages.speech import speak
             from stamina.english.tts import TTS
             if TTS.available():
-                HudButton(top, "🔊", lambda t=block.get("de", ""): speak(t, "de"),
+                de_text = block.get("de", "")
+                HudButton(top, "🔊", lambda t=de_text: speak(t, "de"),
                           height=24, font_size=8, width=32).pack(side=tk.RIGHT, padx=px(4))
         except Exception:
             pass

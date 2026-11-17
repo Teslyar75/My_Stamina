@@ -161,7 +161,9 @@ class ReadingPage(tk.Frame):
         shown = self.vocab.get_word(word.slug)
         self.word.configure(text=getattr(shown, "lemma", word.lemma))
         self.meta.configure(text=f"#{word.frequency_rank or 0} · {(word.pos or '').upper()}")
-        ru = ", ".join((word.translations.get("ru") or [])[:3]) or _t("перевода нет")
+        from stamina.languages.core.sqlite_vocab import gloss_lang, glosses
+        ru = ", ".join(glosses(word, gloss_lang(self.progress.settings if self.progress else None))) \
+            or _t("перевода нет")
         self.gloss.configure(text=ru)
         if done:
             self.quality.configure(text=_t("КАЧЕСТВО {0}/{1}").format(done["filled"], done["goal"]))

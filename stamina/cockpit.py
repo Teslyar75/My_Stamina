@@ -93,7 +93,10 @@ class Cockpit(tk.Tk):
         if self._languages_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(languages_hook.KEY, languages_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
-        # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        # Английский только через «Иностранные языки» — убираем из шапки, экран остаётся lazy.
+        if self._languages_cls is not None and self._english_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != english_hook.KEY]
+        # зоны в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"

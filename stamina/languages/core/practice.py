@@ -68,7 +68,8 @@ class MissionGenerator:
         return self._make_mission(word, "choice", review=False)
 
     def _make_mission(self, word: WordEntry, mode: str, review: bool) -> Mission:
-        translations = word.translations.get("ru") or [word.lemma]
+        from stamina.languages.core.sqlite_vocab import gloss_lang, glosses
+        translations = glosses(word, gloss_lang(self.settings)) or [word.lemma]
         expected = translations[0]
 
         if mode == "choice":

@@ -419,9 +419,10 @@ class MatchReadout(tk.Canvas):
 
     SEG = 20
 
-    def __init__(self, master, height=86) -> None:
+    def __init__(self, master, height=86, compact: bool = False) -> None:
         bg = master.cget("bg")
         super().__init__(master, bg=bg, highlightthickness=0, bd=0, height=px(height))
+        self.compact = compact        # низкая полоса: подпись, процент, вердикт и шкала в 46 px
         self._base_h = px(height)     # высота по умолчанию — когда итога нет
         self._want_h = self._base_h   # высота под длинную заметку (после переноса строк)
         self.data = None
@@ -449,20 +450,23 @@ class MatchReadout(tk.Canvas):
         self.create_polygon(chamfer(1, 1, w - 2, h - 2, px(10)), fill=blend(col, PANEL, 0.88), outline=col)
         self.create_rectangle(px(2), px(8), px(6), h - px(8), fill=col, outline="")
         label = tr_("САМООЦЕНКА") if selfr else tr_("СОВПАДЕНИЕ")
+        if self.compact:
+            # низкая полоса: всё в две строки, без заметки — высоту задаёт вызывающий экран
+            self.create_text(px(14), px(15), text=f"{label}:", anchor="w", fill=MUTED,
+                             font=theme.font(8, True))
+            self.create_text(px(14) + px(96), px(15), text=f"{score}%", anchor="w", fill=col,
+                             font=theme.font(15, True, mono=True))
+            self.create_text(w - px(10), px(15), text=verdict, anchor="e", fill=col,
+                             font=theme.font(10, True))
+            self._bar(px(14), w - px(10), px(30), px(38), score, col)
+            self._fit_height(self._base_h)
+            return
         self.create_text(px(16), px(22), text=f"{label}:", anchor="w", fill=MUTED, font=theme.font(10, True))
         self.create_text(px(16) + px(118), px(22), text=f"{score}%", anchor="w", fill=col,
                          font=theme.font(24, True, mono=True))
         self.create_text(w - px(12), px(22), text=verdict, anchor="e", fill=col, font=theme.font(14, True))
         # сегментная шкала
-        x1, x2, y1, y2 = px(16), w - px(12), px(42), px(52)
-        sw = (x2 - x1) / self.SEG
-        lit = round(self.SEG * score / 100)
-        for i in range(self.SEG):
-            self.create_rectangle(x1 + i * sw + 1, y1, x1 + (i + 1) * sw - 2, y2,
-                                  fill=col if i < lit else BG2, outline="" if i < lit else LINE)
-        for thr in (60, 85):
-            x = x1 + (x2 - x1) * thr / 100
-            self.create_line(x, y1 - px(3), x, y2 + px(3), fill=TEXT)
+        self._bar(px(16), w - px(12), px(42), px(52), score, col)
         if marks:
             ok = sum(1 for _t, m in marks if m)
             miss = [t for t, m in marks if not m]
@@ -491,6 +495,17 @@ class MatchReadout(tk.Canvas):
                          font=theme.font(9))
         # базовая высота рассчитана на одну строку — растём на каждую следующую
         self._fit_height(self._base_h + (len(rows) - 1) * font.metrics("linespace"))
+
+    def _bar(self, x1, x2, y1, y2, score, col) -> None:
+        """Сегментная шкала с отметками порогов 60% и 85% — общая для полной и низкой полосы."""
+        sw = (x2 - x1) / self.SEG
+        lit = round(self.SEG * score / 100)
+        for i in range(self.SEG):
+            self.create_rectangle(x1 + i * sw + 1, y1, x1 + (i + 1) * sw - 2, y2,
+                                  fill=col if i < lit else BG2, outline="" if i < lit else LINE)
+        for thr in (60, 85):
+            x = x1 + (x2 - x1) * thr / 100
+            self.create_line(x, y1 - px(3), x, y2 + px(3), fill=TEXT)
 
     def _fit_height(self, need: int) -> None:
         """Подогнать высоту под содержимое один раз (без дребезга перерисовок)."""

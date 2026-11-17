@@ -887,6 +887,7 @@ def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: 
 COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
     "starship": {
         "bridge": ("ХОДОВАЯ РУБКА · ОБЗОРНЫЙ ИЛЛЮМИНАТОР", "CYAN"),
+        "languages": ("ЛИНГВОМОДУЛЬ · ПАНЕЛЬ ЯЗЫКОВ", "GREEN"),
         "english": ("ОТСЕК СВЯЗИ С ЗЕМЛЁЙ · ЛИНГВОМОДУЛЬ", "GREEN"),
         "speedread": ("ГИПЕРДВИГАТЕЛЬНЫЙ ОТСЕК", "PURPLE"),
         "lounge": ("ОРАНЖЕРЕЯ · КАЮТ-КОМПАНИЯ", "GREEN"),
@@ -900,6 +901,7 @@ COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
     },
     "steampunk": {
         "bridge": ("КОТЕЛЬНАЯ · ГЛАВНЫЙ ПАРОВОЙ ПУЛЬТ", "AMBER"),
+        "languages": ("ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ", "GREEN"),
         "english": ("БИБЛИОТЕКА ПУТЕШЕСТВЕННИКА", "TEXT"),
         "speedread": ("ЧАСОВАЯ МАСТЕРСКАЯ", "AMBER"),
         "lounge": ("ЧАЙНЫЙ САЛОН", "GREEN"),
@@ -929,7 +931,7 @@ WALL_DIR = Path(__file__).resolve().parent / "assets" / "alt_wallpapers"
 WALL_DIM = 0.35
 # Отсек без своих обоев берёт панорамы родственного (пока своих картинок нет)
 # Лаборатория рисует свой фон на холсте (туманность); чужие панорамы не подставляем.
-WALL_ALIAS = {"docs": "comm", "terraformer": "lab"}
+WALL_ALIAS = {"docs": "comm", "terraformer": "lab", "languages": "english"}
 
 
 def wallpaper_paths(profile: str, zone: str | None) -> list[Path]:

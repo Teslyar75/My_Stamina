@@ -55,25 +55,40 @@ class HoldGrab:
 class SpeechCheck(tk.Frame):
     """API: .mic, .match, .note; toggle(), reset(), clear(), evaluate(), judge(), hint_down/up()."""
 
-    def __init__(self, master, ctx, on_result, bg=None) -> None:
+    def __init__(self, master, ctx, on_result, bg=None, compact: bool = False) -> None:
         bg = bg or master.cget("bg")
         super().__init__(master, bg=bg)
+        self.compact = compact        # низкая полоса: итог, заметка и микрофон в одну высоту (~50 px)
         self.ctx = ctx
         self.grid_columnconfigure(0, weight=1)
         left = tk.Frame(self, bg=bg)
         left.grid(row=0, column=0, sticky="nsew")
-        self.keys = L(left, _t("M — микрофон · T (держать) — подсказка · ≥80% — дальше"),
-                      fg=MUTED, size=8, bg=bg)
-        self.keys.pack(anchor="w")
-        self.hint = L(left, "", fg=AMBER, size=10, bg=bg, wraplength=px(560), justify="left")
-        self.hint.pack(anchor="w")
-        self.match = MatchReadout(left)
-        self.match.pack(fill=tk.X, pady=(px(4), 0))
-        self.note = L(left, "", fg=MUTED, size=9, bg=bg, wraplength=px(560), justify="left")
-        self.note.pack(anchor="w")
+        if compact:
+            # Итог слева, подсказка/заметка рядом, микрофон справа — как в компактном сканере
+            self.match = MatchReadout(left, height=46, compact=True)
+            self.match.pack(side=tk.LEFT, anchor="nw")
+            self.text = tk.Frame(left, bg=bg)
+            self.text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(px(10), 0))
+            self.keys = L(self.text, _t("M — микрофон · T (держать) — подсказка · ≥80% — дальше"),
+                          fg=MUTED, size=8, bg=bg)
+            self.keys.pack(anchor="w")
+            self.hint = L(self.text, "", fg=AMBER, size=9, bg=bg, wraplength=px(520), justify="left")
+            self.note = L(self.text, "", fg=MUTED, size=8, bg=bg, wraplength=px(520), justify="left")
+            self.note.pack(anchor="w")
+        else:
+            self.keys = L(left, _t("M — микрофон · T (держать) — подсказка · ≥80% — дальше"),
+                          fg=MUTED, size=8, bg=bg)
+            self.keys.pack(anchor="w")
+            self.hint = L(left, "", fg=AMBER, size=10, bg=bg, wraplength=px(560), justify="left")
+            self.hint.pack(anchor="w")
+            self.match = MatchReadout(left)
+            self.match.pack(fill=tk.X, pady=(px(4), 0))
+            self.note = L(left, "", fg=MUTED, size=9, bg=bg, wraplength=px(560), justify="left")
+            self.note.pack(anchor="w")
         self.mic: MicPanel | None = None
         if hasattr(ctx, "asr"):
-            self.mic = MicPanel(self, ctx, on_result, bg=bg)
+            self.mic = MicPanel(self, ctx, on_result, bg=bg, compact=compact,
+                                live_master=self.text if compact else None)
             self.mic.grid(row=0, column=1, sticky="n", padx=px(10))
         else:
             L(self, _t("Микрофон доступен в приложении"), fg=MUTED, size=8,
@@ -98,9 +113,13 @@ class SpeechCheck(tk.Frame):
     # -- подсказка T ----------------------------------------------------------
     def hint_down(self, text: str) -> None:
         self.hint.configure(text=text or _t("подсказки нет"))
+        if self.compact and not self.hint.winfo_manager():
+            self.hint.pack(after=self.keys, anchor="w")   # низкая полоса растёт только на время подсказки
 
     def hint_up(self) -> None:
         self.hint.configure(text="")
+        if self.compact and self.hint.winfo_manager():
+            self.hint.pack_forget()
 
     HoldGrab = HoldGrab  # SpeechCheck.HoldGrab — общий помощник удержания подсказки
 

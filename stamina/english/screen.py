@@ -19,11 +19,13 @@ from .progress import Progress
 from .tts import TTS
 from .ui import L, entry
 from .vocab import Vocab
+from .pages_grammar import GrammarPage
 
 SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("НАБОРЫ")), ("scanner", t("СКАНЕР")),
             ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
             ("book", t("ИЗ КНИГИ")),
-            ("lists", t("ОТСЕКИ")), ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ"))]
+            ("lists", t("ОТСЕКИ")), ("log", t("ЖУРНАЛ")), ("settings", t("НАСТРОЙКИ")),
+            ("grammar", t("ГРАММАТИКА"))]
 
 
 class EnglishScreen(tk.Frame):
@@ -127,6 +129,7 @@ class EnglishScreen(tk.Frame):
             "book": BookCardsPage(self.body, self),
             "lists": ListsPage(self.body, self), "log": LogPage(self.body, self),
             "settings": SettingsPage(self.body, self),
+            "grammar": GrammarPage(self.body, self),
         }
         for p in self.pages.values():
             p.grid(row=0, column=0, sticky="nsew")
@@ -166,6 +169,9 @@ class EnglishScreen(tk.Frame):
         if prev != name:
             old = self.pages.get(prev) if prev else None
             if old is not None:
+                close = getattr(old, "close_portal", None)
+                if callable(close):
+                    close()                 # портал спряжения живёт только на своей вкладке
                 old.grid_remove()
             page.grid(row=0, column=0, sticky="nsew")
         scan = self.pages.get("scanner")

@@ -27,6 +27,7 @@ DEFAULT_SETTINGS = {
     "warehouse_passes": 2,
     "quality_goal": 20,
     "cefr_unlock_pct": 80,
+    "gloss_lang": "ui",
 }
 
 

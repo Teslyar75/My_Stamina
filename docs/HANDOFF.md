@@ -1,14 +1,11 @@
 ﻿# Handoff
 
-Goal: зелёный CI на master после merge PR #45.
+Goal: PR #48 в `master`, зелёный CI.
 
 Done:
-- i18n: 281 ключей (reading_page, vim_trainer, languages/screen…) в ru/en/uk/de; ci_gate i18n зелёный.
-- Ruff (stamina, tools, tests, main.py): неиспользуемые импорты, Path в screen.py, bold в trainer.py.
-- Ветка agent/orion/ci-i18n-ruff, локально ci_gate зелёный.
+- PR **#48** обновлён (описание, заголовок): https://github.com/Teslyar75/My_Stamina/pull/48
+- Ruff: `grammar_page`, DE `grammar_engine`, тесты gloss/de — CI lint/gate.
 
-Next: push, PR в master; позже — нормальный MT для uk/de (сейчас fallback = русский ключ).
-
-Decisions: uk/de для новых строк = русский ключ (placeholder-safe), en частично с MyMemory до прерывания + fallback.
+Next: push коммита CI, merge #48 после зелёных checks; контент EGIU по уровням.
 
 Problems: нет.

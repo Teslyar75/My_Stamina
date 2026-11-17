@@ -1,0 +1,46 @@
+{
+  "level": "B2",
+  "title": "Upper-intermediate Grammar (Essential Grammar in Use - Murphy)",
+  "lesson_overview": "B2 level covers nuanced structures for confident communication in complex contexts, including mixed conditionals and advanced modals.",
+  "topics": [
+    {
+      "name": "Mixed Conditionals",
+      "focus": "Unreal past with present result",
+      "lesson_text": "Mixed conditionals combine different time references in the if-clause and main clause. Present result of past condition: If I had accepted that job, I would be living in London now. Past result of present condition: If I knew his number, I would have called him yesterday. Structure: if + past perfect, would + base verb (present result). if + present, would have + past participle (past result). Also: unless, as long as, in case with mixed meanings. Note: Not all mixed conditional combinations are equally common; some sound more natural than others.",
+      "examples": ["If I had taken that job, I would be living in London now.", "If I knew his number, I would have called him yesterday.", "If she hadn't missed the train, she would be here by now."],
+      "exercise_types": ["identify_mixed_conditional", "sentence_transform", "create_conditional", "correct_mistake"],
+      "key_concepts": ["if + past perfect, would + base", "present result of past condition", "past result of present condition"],
+      "total_exercises": 10
+    },
+    {
+      "name": "Inversion",
+      "focus": "Not only, hardly/scarce, so rare a...that",
+      "lesson_text": "Inverted word order after negative adverbs/expressions for emphasis. After 'not only': 'Not only + auxiliary verb + subject + main verb, but also...'. After 'hardly/scarce/barely': 'Hardly + auxiliary + subject + when/than + clause'. After 'so + a/an + adjective + singular countable noun': 'So rare a student that...'. Other expressions: 'at no time', 'on no condition', 'under no circumstances'. Normal order: I have never seen him. Inverted: Never have I seen him. Note: Inversion is formal style, common in written English, especially literature and journalism.",
+      "examples": ["Not only he came, but also his brother.", "Hardly had I arrived when the phone rang.", "So exhausted was he that he could not walk."],
+      "exercise_types": ["transform_to_inversion", "choose_right", "identify_expression", "sentence_transform"],
+      "key_concepts": ["not only...but also", "hardly/rarely/barely inversion", "formal written style"],
+      "total_exercises": 8
+    },
+    {
+      "name": "Subjunctive",
+      "focus": "It's time, as if/as though, wish",
+      "lesson_text": "Subjunctive mood expresses wishes, hypotheses, demands, suggestions. 'It's time' + past simple for present/future: It's time you went. 'I wish' + past simple/past perfect for present/unreal: I wish I spoke French. 'As if/as though' + past simple for imagined present: He looks as if he knew the answer. 'Would rather' + past simple for preference: I'd rather you went now. Note: Past form of 'be' is 'were' for all persons in subjunctive: If I were you. 'Wish' with would for annoying habit: I wish he would stop smoking.",
+      "examples": ["It's time you went to bed.", "I wish I had more free time.", "He looks as if he knew the answer.", "I'd rather you didn't smoke."],
+      "exercise_types": ["identify_subjunctive", "transform", "choose_right", "correct_mistake"],
+      "key_concepts": ["it's time", "I wish", "as if/as though", "would rather"],
+      "total_exercises": 7
+    },
+    {
+      "name": "Advanced Modals",
+      "focus": "might, should, ought to, had better",
+      "lesson_text": "Might: weaker possibility than could/may, reported speech past of can: He said he might come. Should: advice, recommendation, logical deduction: You should see a doctor. Ought to: similar to should, slightly more formal, moral obligation. Had better: strong advice for specific situation, negative consequence: You had better study or you'll fail. Needn't: not necessary (no need to). Must vs have to: must = personal obligation, have to = external requirement. Note: Ought to + base verb, not 'to'. Had better + base verb (no 'to'). Negative: hadn't better or you'll regret it.",
+      "examples": ["You might be right.", "You should take an umbrella.", "You ought to apologize.", "You had better hurry or you'll be late."],
+      "exercise_types": ["choose_right", "transform", "correct_mistake", "matching"],
+      "key_concepts": ["might/should/ought to/had better", "must vs have to", "necessity vs advice"],
+      "total_exercises": 9
+    }
+  ],
+  "total_exercises": 34,
+  "cefr_description": "Can interact with a degree of fluency and spontaneity that makes regular interaction with native speakers quite possible.",
+  "reference_unit": "Units 13-16, Essential Grammar in Use (Murphy)"
+}

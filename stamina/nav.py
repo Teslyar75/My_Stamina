@@ -1,6 +1,6 @@
 """Навигация по зонам (порт web shell/zones.ts + routes.ts).
 
-Зоны в шапке: МОСТИК, АНГЛИЙСКИЙ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, ЭФИР, ДОКУМЕНТЫ, ОРИОН,
+Зоны в шапке: МОСТИК, ИНОСТРАННЫЕ ЯЗЫКИ, СКОРОЧТЕНИЕ, ОТДЫХ, РАДИОРУБКА, ЭФИР, ДОКУМЕНТЫ, ОРИОН,
 ЛАБОРАТОРИЯ, НАСТРОЙКИ.
 Миссии, Свой текст, Бортжурнал и Настройки мостика — подменю Мостика.
 Под шапкой — строка пути «МОСТИК › БОРТЖУРНАЛ» с кликабельными частями.
@@ -11,7 +11,8 @@ from __future__ import annotations
 
 from stamina.i18n import t
 
-ZONE_ORDER = ("bridge", "english", "languages", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab",
+# «Английский» не в шапке: вход через «Иностранные языки», экран english — lazy.
+ZONE_ORDER = ("bridge", "languages", "speedread", "lounge", "radio", "comm", "docs", "orion", "lab",
               "terraformer", "settings")
 
 # подменю Мостика: (экран, подпись)
@@ -48,6 +49,8 @@ def zone_of(screen: str | None) -> str | None:
     """Зона, которой принадлежит экран (None — экран вне зон: справка, доска почёта)."""
     if screen in _BRIDGE_SCREENS:
         return "bridge"
+    if screen == "english":
+        return "languages"
     if screen in ZONE_TITLES:
         return screen
     return None
@@ -65,6 +68,8 @@ def path(screen: str | None) -> list[tuple[str, str]]:
     zone = zone_of(screen)
     if zone is None:
         return [(t(EXTRA_TITLES.get(screen, screen.upper())), screen)]
+    if screen == "english":
+        return [(t(ZONE_TITLES["languages"]), "languages"), (t(ZONE_TITLES["english"]), "english")]
     segs = [(t(ZONE_TITLES[zone]), zone)]
     if zone == "bridge" and screen != "bridge":
         title = dict(BRIDGE_LEAVES)[screen]
@@ -74,7 +79,7 @@ def path(screen: str | None) -> list[tuple[str, str]]:
 
 # Зоны с постоянной клавишей вне счёта Ctrl+1…9: остальные нумеруются по порядку,
 # поэтому новая зона не сдвигает привычные Ctrl+N (НАСТРОЙКИ остаются Ctrl+9).
-FIXED_HOTKEYS = {"lab": "0", "terraformer": None, "languages": None}
+FIXED_HOTKEYS = {"lab": "0", "terraformer": None, "languages": None, "settings": "9"}
 
 
 def zone_hotkeys(names: list[str]) -> list[tuple[str, str]]:

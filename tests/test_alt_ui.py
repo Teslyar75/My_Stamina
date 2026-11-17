@@ -32,7 +32,8 @@ class TestAltSettings(unittest.TestCase):
             for z in nav.ZONE_ORDER:
                 self.assertNotEqual(alt_ui.glyph(prof, z), "•", (prof, z))
         for prof in ("starship", "steampunk"):
-            self.assertEqual(set(alt_ui.COMPARTMENTS[prof]), set(nav.ZONE_ORDER))
+            comp = set(alt_ui.COMPARTMENTS[prof])
+            self.assertTrue(set(nav.ZONE_ORDER).issubset(comp))
 
     def test_frame_styles(self):
         self.assertEqual(alt_ui.frame_style("starship", {}), "hud")

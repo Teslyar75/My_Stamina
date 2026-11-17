@@ -929,7 +929,7 @@ class SettingsScreen(tk.Frame):
         self.toggles: dict[str, HudButton] = {}
         self._row_i = 0
         from stamina import i18n
-        lr = self._row(_t("Язык интерфейса"), _t("Русский, українська, English, Deutsch. Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится)."))
+        lr = self._row(_t("Язык интерфейса"), _t("Меняются надписи программы; тексты для печати, словари и книги остаются как есть. Новый язык включится после перезапуска — кнопка «ПЕРЕЗАПУСТИТЬ» сделает это сразу (прогресс сохранится). Español, Français, Italiano — черновой машинный перевод."))
         self.lang_btns = {}
         for code, name in i18n.LANGS.items():
             b = HudButton(lr, name, lambda c=code: self._set_lang(c), height=30, font_size=9)

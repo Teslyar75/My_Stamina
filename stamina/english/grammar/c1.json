@@ -1,0 +1,46 @@
+{
+  "level": "C1",
+  "title": "Advanced Grammar (Essential Grammar in Use - Murphy)",
+  "lesson_overview": "C1 level covers nuanced meanings, complex structures, and register awareness for sophisticated academic and professional communication.",
+  "topics": [
+    {
+      "name": "Nuanced Modals",
+      "focus": "subtlety of meaning, deduction, necessity",
+      "lesson_text": "Modal verbs with fine distinctions in meaning. Might vs may: might = slightly less probable, more tentative. Must vs have to: must = personal conviction, strong deduction; have to = external obligation. Can't vs couldn't: can't = present ability impossibility; couldn't = past ability impossibility. Needn't vs don't have to: needn't = unnecessary (don't need to), don't have to = not required. Should have + past participle = criticism of past action: You should have told me. Could have + past participle = missed possibility. May have + past participle = deduction about past. Note: Modals often interchangeable with slight nuance differences; context determines best choice.",
+      "examples": ["You look tired. You might be working too hard.", "He isn't here. He must have gone home.", "You should have called me yesterday.", "It could have been worse."],
+      "exercise_types": ["choose_right", "deduce_meaning", "transform", "correct_mistake"],
+      "key_concepts": ["modal nuance", "deduction certainty", "past criticism"],
+      "total_exercises": 11
+    },
+    {
+      "name": "Complex Structures",
+      "focus": "participle clauses, non-defining relative clauses",
+      "lesson_text": "Participle clauses (-ing/-ed) for concise information: The man waiting at the station is my father (active participle). The excited children running in the park (active). The bored students listening to the lecture (passive). Reduced relative clauses: The book (which) I bought is interesting. Non-defining relative clauses: extra information, commas: My brother, who lives in London, is a doctor. Defining vs non-defining: essential vs extra info. Participle clauses without subject change: Seeing is believing. Note: Participle clauses must have different subject from main clause.",
+      "examples": ["Opening the door, she went out.", "The movie, directed by Spielberg, was excellent.", "The audience fascinated by the performance gave a standing ovation."],
+      "exercise_types": ["reduce_relative", "identify_participle", "transform", "correct_mistake"],
+      "key_concepts": ["participle clauses", "non-defining relative", "subject consistency"],
+      "total_exercises": 12
+    },
+    {
+      "name": "Register",
+      "focus": "formal/informal, literary everyday",
+      "lesson_text": "Register variation based on context, audience, purpose. Formal: passive structures, complex sentences, impersonal structures, sophisticated vocabulary (receive vs get, commence vs start). Informal: phrasal verbs, simple sentences, colloquial expressions, contractions. Literary: archaic vocabulary, inverted structures, complex syntax. Everyday: neutral, direct. Register markers: formal connectives (therefore, furthermore), informal linkers (so, anyway). Note: Same meaning can be expressed differently depending on register; academic writing requires formal register, casual conversation allows informal.",
+      "examples": ["Formal: I would be grateful if you could reply. Informal: Reply if you can.", "Literary: 'Twas the night before Christmas. Everyday: It was Christmas Eve."],
+      "exercise_types": ["identify_register", "transform_register", "choose_appropriate", "correct_mistake"],
+      "key_concepts": ["formal vs informal markers", "academic style", "context-appropriate"],
+      "total_exercises": 8
+    },
+    {
+      "name": "Ellipsis & Substitution",
+      "focus": "clause ellipsis, nominal ellipsis",
+      "lesson_text": "Ellipsis: omitting repeated words/clauses with same meaning. Nominal ellipsis: 'The red car is faster than the green (car).' Verbless clauses: 'Happy to help.' After 'so', 'such', 'as': 'He is so good a player (that) we all admire him.' Substitution one/ones: 'I prefer the red one.' do-support substitution: 'I like tea.' 'So do I.' Note: Ellipsis common in informal speech and writing; substitution avoids repetition. Must maintain clarity and not create ambiguity. Note: 'so...that' structure with ellipsis: 'It was such a good film (that) I saw it twice.'",
+      "examples": ["I like this shirt more than that (one).", "She is a better singer than I (am).", "Such was the success that everyone celebrated."],
+      "exercise_types": ["identify_ellipsis", "complete_with_ellipsis", "transform", "choose_substitution"],
+      "key_concepts": ["clause ellipsis", "nominal ellipsis", "substitution one/ones"],
+      "total_exercises": 6
+    }
+  ],
+  "total_exercises": 37,
+  "cefr_description": "Can express ideas fluently and spontaneously without much obvious searching for expressions.",
+  "reference_unit": "Units 17-20, Essential Grammar in Use (Murphy)"
+}

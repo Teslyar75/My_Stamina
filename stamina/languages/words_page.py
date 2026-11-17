@@ -12,8 +12,9 @@ from tkinter import simpledialog
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
-from stamina.languages.core.sqlite_vocab import PORTION, count_band, portion_slugs, word_line
-from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, TEXT, px
+from stamina.languages.core.sqlite_vocab import PORTION, count_band, portion_slugs
+from stamina.languages.ui import WordTile
+from stamina.theme import AMBER, BG, CYAN, GREEN, PANEL, TEXT, px
 
 LEVELS = ("A1", "A2", "B1", "B2", "C1", "C2")
 COLS = 6
@@ -47,7 +48,7 @@ class WordsPage(tk.Frame):
         self._n_blocks = 0
         self.scanner = None
         self.focus_index = 0
-        self._tiles: dict[int, tk.Frame] = {}
+        self._tiles: dict[int, WordTile] = {}
 
         self.lev = HudPanel(self, _t("УРОВНИ · CEFR"))
         self.lev.pack(fill=tk.X, padx=px(12), pady=px(4))
@@ -258,19 +259,9 @@ class WordsPage(tk.Frame):
         self.pg.configure(text=_t("СТР. {0} / {1}").format(self.page + 1, pages))
 
     def _paint_focus(self) -> None:
-        per = COLS * self.rows
-        chunk = self.words[self.page * per:(self.page + 1) * per]
+        """Обводку плитки держит она сама: AMBER — фокус, GREEN — выучено."""
         for index, tile in self._tiles.items():
-            if index == self.focus_index:
-                color = AMBER
-            elif index < len(chunk) and self._done(chunk[index].slug):
-                color = GREEN
-            else:
-                color = CYAN
-            try:
-                tile.configure(highlightbackground=color)
-            except tk.TclError:
-                pass
+            tile.set_focus(index == self.focus_index)
 
     def on_key(self, event) -> None:
         """Стрелки водят по плиткам, Enter — сканер, Space — «знаю»."""
@@ -316,31 +307,49 @@ class WordsPage(tk.Frame):
         self.focus_index = idx % per
         self._render_grid()
 
-    def _tile(self, word, index: int = 0) -> tk.Frame:
-        known = self._done(word.slug)
-        box = tk.Frame(
-            self.gridf, bg=PANEL,
-            highlightbackground=GREEN if known else CYAN,
-            highlightthickness=1,
+    def _tile(self, word, index: int = 0) -> WordTile:
+        """Плитка как в английском отсеке: ранг, часть речи, уровень, оборот, отсеки."""
+        return WordTile(
+            self.gridf, word, index=index,
+            is_known=self._done,
+            in_lists=self._in_lists,
+            on_open=lambda item, i: self._click_word(item, i),
+            on_known=self._toggle,
+            on_list=self._tile_list,
+            on_menu=self._context_menu,
+            lang=self._gloss_lang(),
         )
-        head, _, ru = word_line(word).partition(" — ")
-        top = tk.Frame(box, bg=PANEL)
-        top.pack(fill=tk.X, padx=px(4), pady=(px(4), 0))
-        title = tk.Label(top, text=head, bg=PANEL, fg=GREEN if known else TEXT,
-                         font=theme.font(12, True), anchor="w")
-        title.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        mark = tk.Label(top, text="✓" if known else "·", bg=PANEL,
-                        fg=GREEN if known else MUTED, font=theme.font(10, True))
-        mark.pack(side=tk.RIGHT)
-        gloss = tk.Label(box, text=ru, bg=PANEL, fg=MUTED, font=theme.font(9),
-                         anchor="w", wraplength=px(150))
-        gloss.pack(fill=tk.X, padx=px(6), pady=(0, px(6)))
-        for widget in (box, title, gloss, top):
-            widget.bind("<Button-1>", lambda _e, item=word, i=index: self._click_word(item, i))
-            widget.bind("<Button-3>", lambda e, item=word: self._context_menu(e, item))
-        mark.bind("<Button-1>", lambda _e, slug=word.slug: self._toggle(slug))
-        mark.bind("<Button-3>", lambda e, item=word: self._context_menu(e, item))
-        return box
+
+    def _gloss_lang(self) -> str:
+        """Перевод на языке интерфейса (если пилот не выбрал другой в настройках)."""
+        from stamina.languages.core.sqlite_vocab import gloss_lang
+        return gloss_lang(self.progress.settings if self.progress else None)
+
+    def _in_lists(self, slug: str) -> bool:
+        if self.progress is None:
+            return False
+        try:
+            return bool(self.progress.lists_of(slug))
+        except Exception:  # noqa: BLE001 — прогресс мог не знать слова
+            return False
+
+    def _tile_list(self, slug: str, event) -> None:
+        """Клик по «⊞ В ОТСЕКЕ» на лице плитки: быстро положить/убрать слово."""
+        if self.progress is None:
+            return
+        menu = tk.Menu(self, tearoff=0)
+        for item in self.progress.lists:
+            inside = slug in item.get("slugs", [])
+            menu.add_command(
+                label=("✓ " if inside else "   ") + (item.get("name") or item.get("id", "")),
+                command=lambda lid=item["id"]: self._toggle_list(lid, slug),
+            )
+        menu.add_separator()
+        menu.add_command(label=_t("➕ НОВЫЙ ОТСЕК"), command=lambda: self._new_list_for(slug))
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
 
     def _click_word(self, word, index: int) -> None:
         self.focus_index = index
