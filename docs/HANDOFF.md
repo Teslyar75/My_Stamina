@@ -1,14 +1,13 @@
 ﻿# Handoff
 
-Goal: английский только через «Иностранные языки»; грамматика EGIC C2 — порционная загрузка (след. задача).
+Goal: грамматика без зависаний; push ветки с навигацией и грамматикой.
 
 Done:
-- `stamina/nav.py`: `english` убран из `ZONE_ORDER`; `zone_of("english")` → `languages`;
-  крошки `ИНОСТРАННЫЕ ЯЗЫКИ › АНГЛИЙСКИЙ`.
-- `stamina/cockpit.py`: при загруженных languages+english убрать `english` из шапки, lazy-экран остаётся.
-- `stamina/alt_ui.py`: зона `languages` в COMPARTMENTS (starship/steampunk).
-- Тесты: `test_web_nav_port`, `test_alt_ui`.
+- `GrammarPage`: оболочка сразу, JSON в фоне, темы порциями (`after`), кэш `load_grammar`.
+- Убраны `init_grammar_tab` + автопереход на «Грамматика» при входе в английский.
+- `tests/test_english_grammar.py`, i18n ключи грамматики (все локали).
+- Ранее: english только через «Иностранные языки» (коммит 348d186).
 
-Next: порционная подгрузка раздела «Грамматика» (не блокировать UI); затем push/PR.
+Next: push `agent/orion/english-grammar`, PR в master; дальше — полный контент EGIU по уровням.
 
 Problems: нет.

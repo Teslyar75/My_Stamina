@@ -19,7 +19,7 @@ from .progress import Progress
 from .tts import TTS
 from .ui import L, entry
 from .vocab import Vocab
-from .pages_grammar import init_grammar_tab
+from .pages_grammar import GrammarPage
 
 SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("НАБОРЫ")), ("scanner", t("СКАНЕР")),
             ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
@@ -62,7 +62,6 @@ class EnglishScreen(tk.Frame):
               justify="left").place(relx=0.5, rely=0.4, anchor="center")
             return
         self._build()
-        init_grammar_tab(self)
 
     def page_help_key(self) -> str:
         sub = self.current or "overview"
@@ -130,6 +129,7 @@ class EnglishScreen(tk.Frame):
             "book": BookCardsPage(self.body, self),
             "lists": ListsPage(self.body, self), "log": LogPage(self.body, self),
             "settings": SettingsPage(self.body, self),
+            "grammar": GrammarPage(self.body, self),
         }
         for p in self.pages.values():
             p.grid(row=0, column=0, sticky="nsew")

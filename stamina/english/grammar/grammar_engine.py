@@ -1,6 +1,7 @@
 """Gramma r Engine - generates exercises from grammar JSON files."""
 import json
 import random
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -8,6 +9,7 @@ from typing import Any, Dict, List, Optional
 GRAAMMAR_DIR = Path(__file__).parent
 
 
+@lru_cache(maxsize=8)
 def load_grammar(level: str) -> Dict[str, Any]:
     """Load grammar file for given CEFR level."""
     path = GRAAMMAR_DIR / f"{level.lower()}.json"
