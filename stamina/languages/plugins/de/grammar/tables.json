@@ -120,6 +120,45 @@
       "note": "wer/wen/wem/wessen — только для одушевлённых; was — для неодушевлённых."
     },
     {
+      "id": "alphabet_overview",
+      "level": "A1",
+      "title": "Алфавит и особенности написания",
+      "columns": ["Буква", "Имя", "Пример", "Примечание"],
+"rows": [
+        ["A a", "Aa", "Apfel", "—"],
+        ["B b", "Be", "Buch", "—"],
+        ["C c", "Tse", "Computer", "—"],
+        ["D d", "De", "Dach", "—"],
+        ["E e", "Ee", "Essen", "—"],
+        ["F f", "Ef", "Fisch", "—"],
+        ["G g", "Ge", "Glas", "—"],
+        ["H h", "Haa", "Haus", "—"],
+        ["I i", "Ii", "ich", "—"],
+        ["J j", "Jott", "ja", "—"],
+        ["K k", "Kaa", "Kind", "—"],
+        ["L l", "El", "Lampe", "—"],
+        ["M m", "Em", "Mann", "—"],
+        ["N n", "En", "Nase", "—"],
+        ["O o", "Oo", "Obst", "—"],
+        ["P p", "Pe", "Papa", "—"],
+        ["Q q", "Qu", "Qual", "immer mit u"],
+        ["R r", "Er", "Radio", "—"],
+        ["S s", "Es", "See", "—"],
+        ["T t", "Te", "Tag", "—"],
+        ["U u", "Uu", "Uhr", "—"],
+        ["V v", "Vau", "Vater", "—"],
+        ["W w", "We", "Wasser", "—"],
+        ["X x", "Iks", "Xylophon", "—"],
+        ["Y y", "Ypsilon", "Yoga", "—"],
+        ["Z z", "Zett", "Zahn", "—"],
+        ["Ä ä", "Ä", "Äpfel", "Umlaut"],
+        ["Ö ö", "Ö", "Öl", "Umlaut"],
+        ["Ü ü", "Ü", "über", "Umlaut"],
+        ["ß", "Eszett", "Straße", "nach langem Vokal/Diphthong"]
+      ],
+      "note": "Ä/Ö/Ü = Umlaute. ß (Eszett) после длинных гласных/дифтонгов. В Швейцарии ß не используется."
+    },
+    {
       "id": "noun_gender_endings",
       "level": "A1",
       "title": "Род существительного: подсказки по окончаниям",
@@ -199,10 +238,10 @@
       "title": "Склонение прилагательных после определённого артикля (слабое)",
       "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
       "rows": [
-        ["Nominativ", "der gute Wein", "die gute Suppe", "das gute Bier", "die guten Weine"],
-        ["Akkusativ", "den guten Wein", "die gute Suppe", "das gute Bier", "die guten Weine"],
-        ["Dativ", "dem guten Wein", "der guten Suppe", "dem guten Bier", "den guten Weinen"],
-        ["Genitiv", "des guten Weines", "der guten Suppe", "des guten Bieres", "der guten Weine"]
+        ["Nominativ", "der gute Name", "die gute Suppe", "das gute Auge", "die guten Namen"],
+        ["Akkusativ", "den guten Namen", "die gute Suppe", "das gute Auge", "die guten Namen"],
+        ["Dativ", "dem guten Namen", "der guten Suppe", "dem guten Auge", "den guten Namen"],
+        ["Genitiv", "des guten Namens", "der guten Suppe", "des guten Auges", "der guten Namen"]
       ],
       "note": "Только две формы: -e (Nom Sg всех родов, Akk Fem/Neut) и -en (остальные 12 клеток)."
     },

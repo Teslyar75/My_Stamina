@@ -83,6 +83,7 @@ class LanguageProgress:
             "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}},
             "verb_scores": {},
             "book_sentences": {"books": {}, "cards": {}, "stats": {"flips": 0, "ok": 0, "by_day": {}}},
+            "grammar": {},
         }
         for k, v in base.items():
             d.setdefault(k, v)
@@ -317,3 +318,31 @@ class LanguageProgress:
             if slug and slug not in out:
                 out.append(slug)
         return out
+
+    # -- грамматика ---------------------------------------------------------
+    def record_grammar(self, lesson_id: str, correct: int, total: int) -> None:
+        """Записать результат урока грамматики."""
+        score = correct / total if total > 0 else 0.0
+        entry = self.data["grammar"].get(lesson_id, {})
+        entry["done"] = score >= 0.8
+        entry["score"] = score
+        entry["best"] = max(entry.get("best", 0.0), score)
+        entry["ts"] = time.time()
+        entry["attempts"] = entry.get("attempts", 0) + 1
+        self.data["grammar"][lesson_id] = entry
+
+        # XP за первый проход
+        if entry["done"] and entry["attempts"] == 1:
+            self.add_xp(10, f"grammar:{lesson_id}")
+
+        self.save()
+
+    def grammar_done(self, lesson_id: str) -> bool:
+        """Проверить, пройден ли урок (score >= 0.8)."""
+        entry = self.data["grammar"].get(lesson_id, {})
+        return entry.get("score", 0.0) >= 0.8
+
+    def grammar_summary(self, level: str, lesson_ids: list[str]) -> tuple[int, int]:
+        """Сколько уроков пройдено из скольких для уровня."""
+        done = sum(1 for lid in lesson_ids if self.grammar_done(lid))
+        return done, len(lesson_ids)

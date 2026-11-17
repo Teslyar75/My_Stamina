@@ -7,6 +7,21 @@ from stamina.languages.core.base import (
     LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
     VoicesConfig, BestPractices, WordEntry,
 )
+from stamina.languages.plugins.de.grammar_engine import GermanGrammarEngine
+
+# Тематика по уходу (Pflege) для отсека: живёт отдельно от уроков A1–C2.
+PFLEGE_TOPICS = {
+    "partizipialattribute_pflege": {
+        "source": "https://pflege.jaeckels.net/partizipialattribute",
+        "exercises": ["choose_partizip", "identify_partizip", "transform_pflegebericht"],
+        "vocab": ["der Bewohner", "die Pflegekraft", "stürzen", "versorgen", "mobilisieren",
+                  "die Vitalzeichen", "der Sturzsensor", "neurologische наблюдение"],
+    },
+    "pflegebericht_schreiben": {
+        "template": "Sturzbericht, Wundversorgung, Übergabe",
+        "exercises": ["fill_report", "convert_to_partizip"],
+    },
+}
 
 
 class GermanVocabSource(VocabSource):
@@ -32,119 +47,6 @@ class GermanVocabSource(VocabSource):
 
     def get_slugs_by_freq_band(self, band: str) -> list[str]:
         return [w.slug for w in self._words.values() if w.frequency_band == band]
-
-
-class GermanGrammarEngine(GrammarEngine):
-    TOPICS = {
-        "A1": [
-            ("gender_patterns", "Роды существительных: паттерны суффиксов", ["choice", "color_code"]),
-            ("nominative_accusative", "Именительный и винительный падежи", ["declension", "choice"]),
-            ("present_weak", "Настоящее время: слабые глаголы", ["conjugation"]),
-            ("present_strong", "Настоящее время: сильные глаголы (аблаут)", ["conjugation"]),
-            ("separable_verbs", "Разделимые глаголы (trennbare Verben)", ["split", "conjugation"]),
-            ("modal_verbs", "Модальные глаголы", ["conjugation", "choice"]),
-            ("perfekt_haben_sein", "Perfekt: выбор вспомогательного (haben/sein)", ["choice", "conjugation"]),
-            ("prepositions_acc", "Предлоги с винительным (DOGFU)", ["choice", "fill"]),
-            ("prepositions_dat", "Предлоги с дательным (ABMSVZ)", ["choice", "fill"]),
-            ("wechselfral_prep", "Wechselpräpositionen (в Akk/Dat)", ["choice", "transform"]),
-            ("word_order_v2", "Порядок слов V2 в главных", ["reorder"]),
-            ("questions", "Вопросы (да/нет и W-вопросы)", ["reorder", "choice"]),
-            ("negation", "Отрицание (kein/nicht)", ["choice", "transform"]),
-            ("possessive_articles", "Притяжательные артикли", ["declension"]),
-            ("plural_nouns", "Множественное число существительных", ["choice", "transform"]),
-            ("adjective_declination_weak", "Склонение прилагательных (слабое)", ["declension"]),
-        ],
-        "A2": [
-            ("dative_case", "Дательный падеж: артикли, местоимения, предлоги", ["declension", "choice"]),
-            ("genitive_case", "Родительный падеж: артикли, предлоги", ["declension", "choice"]),
-            ("prateritum", "Präteritum (простое прошлое)", ["conjugation", "choice"]),
-            ("perfekt_vs_prateritum", "Perfekt vs Präteritum (устная/письменная)", ["choice"]),
-            ("reflexive_verbs", "Возвратные глаголы", ["conjugation", "choice"]),
-            ("adjective_declination_strong_mixed", "Склонение прилагательных (сильное/смешанное)", ["declension"]),
-            ("comparative", "Сравнительная и превосходная степень", ["transform", "choice"]),
-            ("subordinate_clauses", "Придаточные предложения (dass, weil, wenn, als)", ["reorder", "choice"]),
-            ("tekamolo", "Порядок слов Tekamolo", ["reorder"]),
-            ("prepositions_gen", "Предлоги с родительным (WWST)", ["choice"]),
-            ("relative_clauses", "Определительные придаточные (Relativsätze)", ["reorder", "choice"]),
-            ("infinitive_zu", "Инфинитив с zu (um...zu, ohne...zu)", ["transform", "choice"]),
-            ("passive_present", "Пассив настоящее (werden + Partizip II)", ["transform"]),
-            ("n_declension", "N-деклинация (der Herr, des Herrn)", ["declension"]),
-            ("partizip_ii_adjective", "Partizip II как прилагательное", ["choice", "transform"]),
-            ("prepositional_verbs", "Глаголы с предлогом (warten auf, denken an)", ["choice", "fill"]),
-        ],
-        "B1": [
-            ("konjunktiv_ii_present", "Konjunktiv II настоящего (würde + Infinitiv)", ["conjugation", "transform"]),
-            ("konjunktiv_ii_past", "Konjunktiv II прошедшего (wäre gewesen)", ["conjugation", "transform"]),
-            ("passive_alternatives", "Альтернативы пассиву (sich lassen, man)", ["transform", "choice"]),
-            ("partizip_i_adjective", "Partizip I как прилагатие (der schlafende Hund)", ["choice", "transform"]),
-            ("partizip_ii_adjective", "Partizip II как прилагатие (das gebrochene Bein)", ["choice", "transform"]),
-            ("partizipialattribute", "Partizipialattribute (причастные определения)", ["identify", "transform"]),
-            ("partizipialattribute_extended", "Расширенные Partizipialattribute (der auf dem Boden liegende)", ["identify", "transform"]),
-            ("prepositional_objects", "Предложные дополнения (Verben mit Präposition)", ["choice", "fill"]),
-            ("da_wo_compounds", "Da-/Wo-компOUNDS (darauf, woran)", ["choice", "transform"]),
-            ("conditional", "Условные предложения (Wenn-Sätze)", ["transform", "choice"]),
-            ("indirect_questions", "Косвенные вопросы", ["reorder", "choice"]),
-            ("modal_particles", "Модальные частицы (ja, doch, mal, schon, eben, halt)", ["choice", "explain"]),
-        ],
-        "B2": [
-            ("konjunktiv_i", "Konjunktiv I (косвенная речь)", ["transform", "choice"]),
-            ("passive_prateritum", "Пассив Präteritum (wurde + Partizip II)", ["transform"]),
-            ("participle_clauses", "Причастные обороты (verkürzte Nebensätze)", ["transform", "identify"]),
-            ("nominalization", "Номинализация (das Lesen, das Gelesene)", ["transform"]),
-            ("prepositional_adverbs", "Предложные наречия", ["choice"]),
-            ("concessive", "Уступительные предложения (obwohl, selbst wenn)", ["transform"]),
-            ("final", "Целевые предложения (damit, um...zu)", ["transform"]),
-        ],
-        "C1": [
-            ("sophisticated_syntax", "Сложный синтаксис", ["transform"]),
-            ("academic_register", "Научный стиль", ["choice"]),
-        ],
-        "C2": [
-            ("near_native_nuance", "Близкое к носителю нюансирование", ["choice", "explain"]),
-        ],
-    }
-
-    PFLEGE_TOPICS = {
-        "partizipialattribute_pflege": {
-            "source": "https://pflege.jaeckels.net/partizipialattribute",
-            "exercises": ["choose_partizip", "identify_partizip", "transform_pflegebericht"],
-            "vocab": ["der Bewohner", "die Pflegekraft", "stürzen", "versorgen", "mobilisieren",
-                      "die Vitalzeichen", "der Sturzsensor", "neurologische Beobachtung"],
-        },
-        "pflegebericht_schreiben": {
-            "template": "Sturzbericht, Wundversorgung, Übergabe",
-            "exercises": ["fill_report", "convert_to_partizip"],
-        },
-    }
-
-    def get_topics(self, cefr: str) -> list:
-        topics = []
-        for level, items in self.TOPICS.items():
-            if self._cefr_order(level) <= self._cefr_order(cefr):
-                for tid, name, types in items:
-                    topics.append({"id": tid, "name": name, "cefr": level, "types": types})
-        return topics
-
-    def _cefr_order(self, level: str) -> int:
-        return {"A1": 0, "A2": 1, "B1": 2, "B2": 3, "C1": 4, "C2": 5}.get(level, 0)
-
-    def generate_exercise(self, topic_id: str, difficulty: str, seed: int):
-        import random
-        random.seed(seed)
-        return {
-            "id": f"{topic_id}_{seed}",
-            "topic_id": topic_id,
-            "type": "choice",
-            "prompt": f"Übung: {topic_id}",
-            "expected_answer": "answer",
-            "options": ["opt1", "opt2", "opt3", "opt4"],
-        }
-
-    def validate_answer(self, exercise: dict, answer: str):
-        return {"correct": answer == exercise["expected_answer"], "score": 1.0 if answer == exercise["expected_answer"] else 0.0}
-
-    def get_explanation(self, topic_id: str, learner_lang: str) -> str:
-        return f"Erklärung für {topic_id} auf {learner_lang}"
 
 
 class GermanPlugin(LanguagePlugin):

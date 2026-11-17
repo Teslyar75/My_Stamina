@@ -1,0 +1,572 @@
+{
+  "version": 1,
+  "level": "A1",
+  "lessons": [
+    {
+      "id": "a1-01-alphabet-laute",
+      "order": 1,
+      "title": "Алфавит и звуки",
+      "subtitle": "Буквы, умлауты, ß, произношение ch, r, долгота гласных",
+      "topics": ["alphabet", "umlaute", "scharfes_s", "ch_laut", "r_laut", "vokal_laenge"],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Немецкий алфавит состоит из 26 основных букв плюс 3 умлаута (ä, ö, ü) и ß (Eszett / scharfes S)."},
+        {"kind": "rule", "title": "Умлауты", "text": "ä = [ɛ] как в 'Männer', ö = [ø] как in 'schön', ü = [y] как in 'für'. Если нет умлаута, пишутся ae, oe, ue."},
+        {"kind": "rule", "title": "ß (Eszett)", "text": "Пишется после длинных гласных и дифтонгов: Straße, groß, weiß. После коротких гласных — ss: Fluss, muss. В Швейцарии ß не используется, всегда ss."},
+        {"kind": "rule", "title": "ch — два звука", "text": "После a, o, u, au — хлюпкий [x] (Bach, Buch). После e, i, ä, ö, ü, ei, eu — мягкий [ç] (ich, mich, Bücher)."},
+        {"kind": "rule", "title": "r — вибрационный или увularный", "text": "В начале слова и после согласных — [ʁ] или [r] (rot, Brot). В конце слога и перед согласными — вокализируется [ɐ] (kurz, Tür)."},
+        {"kind": "rule", "title": "Долгота гласных", "text": "Гласная длинная: если за ней один согласный + гласная (kaufen), h после гласной (kahl), двойная гласная (Boot), или в конце слова (du). Короткая — если за ней два и более согласных (kann, kurz)."},
+        {"kind": "table", "ref": "alphabet_overview"},
+        {"kind": "example", "de": "Ich heiße Müller und wohne in Köln.", "ru": "Меня зовут Мюллер, я живу в Кёльне.", "note": "ß после долгой гласной, ö = oe, ü = ue"}
+      ],
+      "drills": [
+        {"id": "a1-01-d01", "type": "choice", "prompt": "Wie schreibt man: 'Strasse' oder 'Straße'?", "options": ["Straße", "Strasse", "Straβe"], "answer": ["Straße"], "why": "Nach langem Vokal (a) und vor t kommt ß."},
+        {"id": "a1-01-d02", "type": "choice", "prompt": "Welches Wort hat den [ç]-Laut (ich-Laut)?", "options": ["Bach", "Buch", "ich", "Koch"], "answer": ["ich"], "why": "Nach i (Vorderzungenvokal) ist ch = [ç]."},
+        {"id": "a1-01-d03", "type": "choice", "prompt": "Wie wird 'Männer' ohne Umlaut geschrieben?", "options": ["Maner", "Maenner", "Männer"], "answer": ["Maenner"], "why": "ä = ae, wenn Umlaut nicht verfügbar."},
+        {"id": "a1-01-d04", "type": "fill", "prompt": "Das Kind ist sehr ____ (groß).", "answer": ["groß", "gross"], "why": "ß nach langem Vokal (o)."},
+        {"id": "a1-01-d05", "type": "fill", "prompt": "Er trinkt gern ____ (Bier).", "answer": ["Bier"], "why": "ie = langer Vokal [i:]."},
+        {"id": "a1-01-d06", "type": "identify", "prompt": "In welchem Wort ist das 'r' vokalisch [ɐ]?", "options": ["rot", "Brot", "Tür", "braun"], "answer": ["Tür"], "why": "Am Silbenende vor Konsonant wird r vokalisiert."},
+        {"id": "a1-01-d07", "type": "choice", "prompt": "Welches Wort hat kurzen Vokal?", "options": ["Tag", "Tage", "Tasse", "Taler"], "answer": ["Tasse"], "why": "Nach kurzem Vokal folgen zwei Konsonanten (ss)."},
+        {"id": "a1-01-d08", "type": "fill", "prompt": "Schreiben Sie mit Umlaut: 'Muller' → ____", "answer": ["Müller"], "why": "u → ü, wenn Umlaut verfügbar."},
+        {"id": "a1-01-d09", "type": "choice", "prompt": "Aussprache von 'China':", "options": ["[çiːna]", "[kiːna]", "[ʃiːna]", "[xiːna]"], "answer": ["[çiːna]"], "why": "ch vor i = [ç] (ich-Laut)."},
+        {"id": "a1-01-d10", "type": "transform", "prompt": "Umwandlung: 'Fuss' → mit Umlaut (Plural)", "answer": ["Füße", "Fuesse"], "why": "Umlaut im Plural: u → ü, ß → ss (kurzer Vokal im Plural)."},
+        {"id": "a1-01-d11", "type": "choice", "prompt": "Wie viele Buchstaben hat das deutsche Alphabet (ohne Umlaute/ß)?", "options": ["26", "28", "29", "30"], "answer": ["26"], "why": "26 Grundbuchstaben + 3 Umlaute + ß."},
+        {"id": "a1-01-d12", "type": "fill", "prompt": "Der Fluss ____ (heißen) Rhein.", "answer": ["heißt"], "why": "ß nach langem Vokal (ie), 3. Pers. Sg. -t."}
+      ]
+    },
+    {
+      "id": "a1-02-personalpronomen-sein",
+      "order": 2,
+      "title": "Личные местоимения и глагол sein",
+      "subtitle": "ich/du/er/sie/es/wir/ihr/sie + bin/bist/ist/sind/seid/sind",
+      "topics": ["personalpronomen", "sein_praesens"],
+      "prereq": ["a1-01-alphabet-laute"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "Личные местоимения в Nominativ: ich, du, er, sie, es, wir, ihr, sie/Sie. Глагол sein (быть) — самый важный и неправильный глагол."},
+        {"kind": "rule", "title": "Спряжение sein", "text": "ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind. Формы 1/3 лица ед.ч. не имеют окончаний."},
+        {"kind": "rule", "title": "Sie (формальное 'Вы')", "text": "Sie с большой буквы = формальное обращение (Единственное и Множественное). Спрягается как 3. лицо мн.ч. (sie sind)."},
+        {"kind": "table", "ref": "personalpronomen"},
+        {"kind": "table", "ref": "sein_haben_werden"},
+        {"kind": "example", "de": "Ich bin Student. Du bist nett. Er ist müde. Wir sind bereit.", "ru": "Я студент. Ты милый. Он уставший. Мы готовы.", "note": "sein verbindet Subjekt mit Prädikativ (Nominativ)."}
+      ],
+      "drills": [
+        {"id": "a1-02-d01", "type": "choice", "prompt": "Ich ____ Student.", "options": ["bin", "bist", "ist", "sind"], "answer": ["bin"], "why": "ich → bin."},
+        {"id": "a1-02-d02", "type": "choice", "prompt": "Du ____ sehr nett.", "options": ["bin", "bist", "ist", "seid"], "answer": ["bist"], "why": "du → bist."},
+        {"id": "a1-02-d03", "type": "choice", "prompt": "Meine Eltern ____ in Berlin.", "options": ["bin", "bist", "ist", "sind"], "answer": ["sind"], "why": "Plural (sie) → sind."},
+        {"id": "a1-02-d04", "type": "fill", "prompt": "Wir ____ fertig.", "answer": ["sind"], "why": "wir → sind."},
+        {"id": "a1-02-d05", "type": "fill", "prompt": "Sie (formal) ____ Herr Müller.", "answer": ["sind"], "why": "Sie (höflich) → sind."},
+        {"id": "a1-02-d06", "type": "choice", "prompt": "Das Kind ____ klein.", "options": ["bin", "bist", "ist", "sind"], "answer": ["ist"], "why": "es (das Kind) → ist."},
+        {"id": "a1-02-d07", "type": "fill", "prompt": "Ihr ____ spät dran.", "answer": ["seid"], "why": "ihr → seid."},
+        {"id": "a1-02-d08", "type": "reorder", "prompt": "Wörter ordnen: 'ist / mein / Bruder / müde'", "answer": ["Mein Bruder ist müde."], "why": "V2: Subjekt (Mein Bruder) — Verb (ist) — Prädikativ."},
+        {"id": "a1-02-d09", "type": "choice", "prompt": "Welches Pronomen ist formales 'Sie'?", "options": ["sie (klein)", "Sie (groß)", "du", "ihr"], "answer": ["Sie (groß)"], "why": "Großgeschriebenes Sie = höfliche Anrede."},
+        {"id": "a1-02-d10", "type": "fill", "prompt": "Er ____ nicht da.", "answer": ["ist"], "why": "er → ist."},
+        {"id": "a1-02-d11", "type": "choice", "prompt": "Übersetzung: 'Мы дома.'", "options": ["Wir sind zu Hause.", "Wir sind Hause.", "Wir sind zu hause."], "answer": ["Wir sind zu Hause."], "why": "zu Hause (Zusammenschreibung), wir → sind."},
+        {"id": "a1-02-d12", "type": "transform", "prompt": "Frage bilden: 'Du bist müde.' → ____", "answer": ["Bist du müde?"], "why": "Ja/Nein-Frage: Verb an Position 1."}
+      ]
+    },
+    {
+      "id": "a1-03-praesens-regelmaessig",
+      "order": 3,
+      "title": "Präsens: правильные глаголы",
+      "subtitle": "Endungen -e/-st/-t/-en/-t/-en, Verben auf -t/-d/-n/-m",
+      "topics": ["praesens_weak", "praesens_endungen"],
+      "prereq": ["a1-02-personalpronomen-sein"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Правильные (слабые) глаголы образуют Präsens по единой схеме: стям + окончания."},
+        {"kind": "rule", "title": "Окончания", "text": "ich -e, du -st, er/sie/es -t, wir -en, ihr -t, sie/Sie -en. 1 и 3 лицо мн.ч. совпадают с инфинитивом."},
+        {"kind": "rule", "title": "Verbindungs-e", "text": "Если стяг заканчивается на -t, -d, -n, -m (außer -rn), перед -st und -t добавляется -e-: arbeiten → du arbeitest, er arbeitet."},
+        {"kind": "rule", "title": "Verben auf -eln/-ern", "text": "Im 1. Pers. Sg. fällt das e des Stamms weg: handeln → ich handle, lächeln → ich lächle."},
+        {"kind": "table", "ref": "praesens_weak"},
+        {"kind": "example", "de": "Ich lerne Deutsch. Du machst Hausaufgaben. Er arbeitet heute nicht.", "ru": "Я учу немецкий. Ты делаешь домашку. Он сегодня не работает.", "note": "arbeite (ich), arbeitest (du), arbeitet (er) — Verbindungs-e."}
+      ],
+      "drills": [
+        {"id": "a1-03-d01", "type": "choice", "prompt": "Ich ____ (lernen) Deutsch.", "options": ["lerne", "lernst", "lernt", "lernen"], "answer": ["lerne"], "why": "ich + -e."},
+        {"id": "a1-03-d02", "type": "choice", "prompt": "Du ____ (machen) die Tür zu.", "options": ["mache", "machst", "macht", "machen"], "answer": ["machst"], "why": "du + -st."},
+        {"id": "a1-03-d03", "type": "choice", "prompt": "Er ____ (spielen) Fußball.", "options": ["spiele", "spielst", "spielt", "spielen"], "answer": ["spielt"], "why": "er/sie/es + -t."},
+        {"id": "a1-03-d04", "type": "fill", "prompt": "Wir ____ (kommen) morgen.", "answer": ["kommen"], "why": "wir + -en = Infinitiv."},
+        {"id": "a1-03-d05", "type": "fill", "prompt": "Ihr ____ (trinken) Kaffee.", "answer": ["trinkt"], "why": "ihr + -t."},
+        {"id": "a1-03-d06", "type": "choice", "prompt": "Sie (formal) ____ (arbeiten) hier.", "options": ["arbeite", "arbeitest", "arbeitet", "arbeiten"], "answer": ["arbeiten"], "why": "Sie → 3. Pl. → -en."},
+        {"id": "a1-03-d07", "type": "fill", "prompt": "Ich ____ (arbeiten) lange.", "answer": ["arbeite"], "why": "Stamm auf -t → ich arbeite (kein Verbindungs-e bei ich)."},
+        {"id": "a1-03-d08", "type": "choice", "prompt": "Du ____ (arbeiten) zu viel.", "options": ["arbeitest", "arbeitst", "arbeitet", "arbetest"], "answer": ["arbeitest"], "why": "Stamm auf -t → Verbindungs-e vor -st: arbeitest."},
+        {"id": "a1-03-d09", "type": "choice", "prompt": "Er ____ (arbeiten) nicht.", "options": ["arbeite", "arbeitest", "arbeitet", "arbeiten"], "answer": ["arbeitet"], "why": "Stamm auf -t → Verbindungs-e vor -t: arbeitet."},
+        {"id": "a1-03-d10", "type": "fill", "prompt": "Wir ____ (handeln) schnell.", "answer": ["handeln"], "why": "wir + -en."},
+        {"id": "a1-03-d11", "type": "choice", "prompt": "Ich ____ (lächeln) oft.", "options": ["lächele", "lächelst", "lächelt", "lächeln"], "answer": ["lächele"], "why": "Verben auf -eln: ich lächle (Stamm-e fällt weg)."},
+        {"id": "a1-03-d12", "type": "transform", "prompt": "Aussage → Frage: 'Du spielst Tennis.' → ____", "answer": ["Spielst du Tennis?"], "why": "Verb an Position 1, Subjekt nach Verb."},
+        {"id": "a1-03-d13", "type": "fill", "prompt": "Die Kinder ____ (spielen) im Garten.", "answer": ["spielen"], "why": "sie (Plural) → -en."},
+        {"id": "a1-03-d14", "type": "choice", "prompt": "Welche Form ist falsch?", "options": ["ich mache", "du machst", "er machst", "wir machen"], "answer": ["er machst"], "why": "er → macht (nicht machst)."}
+      ]
+    },
+    {
+      "id": "a1-04-praesens-starke",
+      "order": 4,
+      "title": "Präsens: сильные глаголы с чередованием",
+      "subtitle": "a→ä, e→i, e→ie nur in 2./3. Pers. Sg.",
+      "topics": ["praesens_strong", "vokalwechsel"],
+      "prereq": ["a1-03-praesens-regelmaessig"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Сильные глаголы меняют корневой гласный в 2. и 3. лице единственного числа. Остальные формы как у правильных глаголов."},
+        {"kind": "rule", "title": "Типы чередования", "text": "a → ä (fahren, schlafen, waschen), e → i (geben, helfen, treffen), e → ie (lesen, sehen, empfehlen)."},
+        {"kind": "rule", "title": "Kein Umlaut bei a→ä, wenn Stamm auf -au", "text": "laufen → du läufst, aber: saugen → du saugst (kein Umlaut)."},
+        {"kind": "table", "ref": "praesens_strong"},
+        {"kind": "example", "de": "Ich fahre nach Berlin. Du liest ein Buch. Er sieht fern. Wir essen zu Mittag.", "ru": "Я еду в Берлин. Ты читаешь книгу. Он смотрит телевизор. Мы обедаем.", "note": "fahre (ich), fährst (du), fährt (er) — nur 2./3. Sg. Umlaut."}
+      ],
+      "drills": [
+        {"id": "a1-04-d01", "type": "choice", "prompt": "Du ____ (fahren) nach Hause.", "options": ["fahre", "fährst", "fährt", "fahrt"], "answer": ["fährst"], "why": "a → ä in 2. Pers. Sg."},
+        {"id": "a1-04-d02", "type": "choice", "prompt": "Er ____ (lesen) die Zeitung.", "options": ["lese", "liest", "lest", "lesen"], "answer": ["liest"], "why": "e → ie in 3. Pers. Sg."},
+        {"id": "a1-04-d03", "type": "choice", "prompt": "Ich ____ (geben) dir das Buch.", "options": ["gebe", "gibst", "gibt", "geben"], "answer": ["gebe"], "why": "1. Pers. Sg. ohne Umlaut: ich gebe."},
+        {"id": "a1-04-d04", "type": "fill", "prompt": "Wir ____ (schlafen) lange.", "answer": ["schlafen"], "why": "1. Pers. Pl. = Infinitiv, kein Umlaut."},
+        {"id": "a1-04-d05", "type": "fill", "prompt": "Ihr ____ (treffen) euch um 10 Uhr.", "answer": ["trefft"], "why": "ihr + -t, Stamm e → i nur in 2./3. Sg."},
+        {"id": "a1-04-d06", "type": "choice", "prompt": "Sie ____ (sehen) den Film.", "options": ["sehe", "siehst", "sieht", "sehen"], "answer": ["sehen"], "why": "Sie (Plural) → sehen, kein Umlaut."},
+        {"id": "a1-04-d07", "type": "fill", "prompt": "Du ____ (sprechen) sehr schnell.", "answer": ["sprichst"], "why": "e → i: du sprichst."},
+        {"id": "a1-04-d08", "type": "choice", "prompt": "Er ____ (laufen) schnell.", "options": ["laufe", "läufst", "läuft", "laufen"], "answer": ["läuft"], "why": "a → ä: er läuft."},
+        {"id": "a1-04-d09", "type": "reorder", "prompt": "Wörter ordnen: 'isst / der / Mann / einen / Apfel'", "answer": ["Der Mann isst einen Apfel."], "why": "essen → isst (e→i), V2-Stellung."},
+        {"id": "a1-04-d10", "type": "fill", "prompt": "Wir ____ (empfehlen) dieses Restaurant.", "answer": ["empfehlen"], "why": "1. Pers. Pl. = Infinitiv."},
+        {"id": "a1-04-d11", "type": "choice", "prompt": "Welches Verb hat KEINEN Vokalwechsel?", "options": ["fahren", "laufen", "kaufen", "schlafen"], "answer": ["kaufen"], "why": "au → kein Umlaut (kaufen, saugen, bauen)."},
+        {"id": "a1-04-d12", "type": "transform", "prompt": "ich lese → du ____", "answer": ["liest"], "why": "e → ie in 2. Pers. Sg."},
+        {"id": "a1-04-d13", "type": "fill", "prompt": "Das Kind ____ (schlafen) schon.", "answer": ["schläft"], "why": "3. Pers. Sg.: a → ä."},
+        {"id": "a1-04-d14", "type": "choice", "prompt": "ich helfe → er ____", "options": ["hilft", "helfst", "hilfst", "helft"], "answer": ["hilft"], "why": "e → i in 3. Pers. Sg."}
+      ]
+    },
+    {
+      "id": "a1-05-haben-modalverben",
+      "order": 5,
+      "title": "Глагол haben и модальные глаголы",
+      "subtitle": "haben, können, müssen, wollen, sollen, dürfen, mögen",
+      "topics": ["haben_praesens", "modalverben"],
+      "prereq": ["a1-03-praesens-regelmaessig"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "haben (иметь) и модальные глаголы имеют неправильное спряжение в единственном числе."},
+        {"kind": "rule", "title": "haben", "text": "ich habe, du hast, er/sie/es hat, wir haben, ihr habt, sie/Sie haben. 2./3. Pers. Sg. без -b- (hast, hat)."},
+        {"kind": "rule", "title": "Модальные глаголы", "text": "können, müssen, wollen, sollen, dürfen, mögen. В Ед.ч. 1/3 лица без окончаний (-t/-st), часто с Umlaut (kann, muss, will, soll, darf, mag). wollen — без Umlaut."},
+        {"kind": "rule", "title": "Синтаксис модальных", "text": "Модальный глагол на позиции 2 (спряжённый), инфинитив основного глагола в конце предложения: Ich muss arbeiten."},
+        {"kind": "table", "ref": "sein_haben_werden"},
+        {"kind": "table", "ref": "modalverben"},
+        {"kind": "example", "de": "Ich habe ein Auto. Du kannst Deutsch. Er muss gehen. Wir wollen bleiben.", "ru": "У меня есть машина. Ты умеешь немецкий. Он должен идти. Мы хотим остаться.", "note": "haben = Besitz; Modale + Infinitiv am Satzende."}
+      ],
+      "drills": [
+        {"id": "a1-05-d01", "type": "choice", "prompt": "Ich ____ (haben) eine Frage.", "options": ["habe", "hast", "hat", "haben"], "answer": ["habe"], "why": "ich → habe."},
+        {"id": "a1-05-d02", "type": "choice", "prompt": "Du ____ (haben) Zeit.", "options": ["habe", "hast", "hat", "habt"], "answer": ["hast"], "why": "du → hast (ohne -b-)."},
+        {"id": "a1-05-d03", "type": "choice", "prompt": "Er ____ (können) schwimmen.", "options": ["kann", "kannst", "können", "könnt"], "answer": ["kann"], "why": "er → kann (1/3 Sg. ohne Endung, mit Umlaut)."},
+        {"id": "a1-05-d04", "type": "fill", "prompt": "Wir ____ (müssen) nach Hause.", "answer": ["müssen"], "why": "wir → müssen (Infinitivform)."},
+        {"id": "a1-05-d05", "type": "fill", "prompt": "Ihr ____ (wollen) Kaffee trinken.", "answer": ["wollt"], "why": "ihr → wollt (Regelendung -t, kein Umlaut)."},
+        {"id": "a1-05-d06", "type": "choice", "prompt": "Sie ____ (dürfen) hier rauchen.", "options": ["darf", "darfst", "dürfen", "dürft"], "answer": ["dürfen"], "why": "Sie (Plural) → dürfen."},
+        {"id": "a1-05-d07", "type": "fill", "prompt": "Ich ____ (mögen) Schokolade.", "answer": ["mag"], "why": "ich → mag (Umlaut, keine Endung)."},
+        {"id": "a1-05-d08", "type": "reorder", "prompt": "Wörter ordnen: 'muss / ich / jetzt / gehen'", "answer": ["Ich muss jetzt gehen."], "why": "V2: Ich muss — jetzt gehen (Infinitiv am Ende)."},
+        {"id": "a1-05-d09", "type": "choice", "prompt": "Er ____ (sollen) anrufen.", "options": ["soll", "sollst", "sollen", "sollt"], "answer": ["soll"], "why": "er → soll (1/3 Sg. ohne Endung)."},
+        {"id": "a1-05-d10", "type": "fill", "prompt": "Wir ____ (haben) kein Geld.", "answer": ["haben"], "why": "wir → haben."},
+        {"id": "a1-05-d11", "type": "transform", "prompt": "Aussage → Verneinung: 'Ich kann kommen.' → ____", "answer": ["Ich kann nicht kommen."], "why": "nicht vor dem Infinitiv am Satzende."},
+        {"id": "a1-05-d12", "type": "fill", "prompt": "Du ____ (sollen) das machen.", "answer": ["sollst"], "why": "du → sollst."},
+        {"id": "a1-05-d13", "type": "choice", "prompt": "Welches Modalverb hat KEINEN Umlaut im Singular?", "options": ["können", "müssen", "wollen", "dürfen"], "answer": ["wollen"], "why": "wollen → will/willst/will (kein Umlaut)."},
+        {"id": "a1-05-d14", "type": "reorder", "prompt": "Wörter ordnen: 'möchte / ich / Wasser / trinken' (mögen Konj. II)", "answer": ["Ich möchte Wasser trinken."], "why": "möchte (Konj. II von mögen) + Infinitiv am Ende."}
+      ]
+    },
+    {
+      "id": "a1-06-genus",
+      "order": 6,
+      "title": "Род существительного",
+      "subtitle": "der / die / das и подсказки по окончаниям",
+      "topics": ["noun_gender_endings"],
+      "prereq": ["a1-03-praesens-regelmaessig"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "В немецком у каждого существительного свой род: maskulin (der), feminin (die), neutrum (das). Род нужно учить вместе со словом."},
+        {"kind": "rule", "title": "Надёжные суффиксы", "text": "Женский род (-ung, -heit, -keit, -schaft, -ion/-tion, -ei, -ie, -ik, -ur, -enz/-anz) — почти 100%. Мужской (-er für Berufe, -ling, -ismus, -ist, -or). Средний (-chen, -lein, -ment, -tum, -um, -o, -ma)."},
+        {"kind": "rule", "title": "Природа", "text": "Мужчины/профессии → meist der (der Mann, der Lehrer). Женщины → meist die (die Frau, die Ärztin). Детские/маленькие → oft das (das Kind, das Mädchen)."},
+        {"kind": "table", "ref": "noun_gender_endings"},
+        {"kind": "example", "de": "Die Zeitung liegt auf dem Tisch. Das Mädchen ist klein. Der Lehrer kommt.", "ru": "Газета лежит на столе. Девочка маленькая. Учитель приходит.", "note": "-ung → die, -chen → das, -er (Beruf) → der."}
+      ],
+      "drills": [
+        {"id": "a1-06-d01", "type": "choice", "prompt": "____ Zeitung liegt auf dem Tisch.", "options": ["der", "die", "das"], "answer": ["die"], "why": "-ung → immer Feminin (die)."},
+        {"id": "a1-06-d02", "type": "fill", "prompt": "____ Wohnung ist neu. (Nominativ)", "answer": ["die"], "why": "Wohnung → die (feminin)."},
+        {"id": "a1-06-d03", "type": "choice", "prompt": "____ Kind spielt im Garten.", "options": ["der", "die", "das"], "answer": ["das"], "why": "Kind → das (Neutrum)."},
+        {"id": "a1-06-d04", "type": "fill", "prompt": "____ Lehrer unterrichtet Deutsch.", "answer": ["der"], "why": "Lehrer (Beruf, männlich) → der."},
+        {"id": "a1-06-d05", "type": "choice", "prompt": "Welches Wort ist Neutrum?", "options": ["die Freiheit", "das Mädchen", "der Student", "die Universität"], "answer": ["das Mädchen"], "why": "-chen → immer Neutrum."},
+        {"id": "a1-06-d06", "type": "fill", "prompt": "____ Gesundheit ist wichtig.", "answer": ["die"], "why": "-heit → Feminin (die)."},
+        {"id": "a1-06-d07", "type": "choice", "prompt": "____ Computer ist kaputt.", "options": ["der", "die", "das"], "answer": ["der"], "why": "-er (Gerät/Bezeichnung) → meist Maskulin."},
+        {"id": "a1-06-d08", "type": "fill", "prompt": "____ Information ist neu.", "answer": ["die"], "why": "-ion → Feminin (die)."},
+        {"id": "a1-06-d09", "type": "choice", "prompt": "____ Problem haben wir gelöst.", "options": ["der", "die", "das"], "answer": ["das"], "why": "-ma (griechisch) → Neutrum (das Problem, das Thema)."},
+        {"id": "a1-06-d10", "type": "fill", "prompt": "____ Bruder heißt Thomas.", "answer": ["der"], "why": "männliche Person → der."},
+        {"id": "a1-06-d11", "type": "choice", "prompt": "____ Schmetterling fliegt weg.", "options": ["der", "die", "das"], "answer": ["der"], "why": "-ling → Maskulin."},
+        {"id": "a1-06-d12", "type": "transform", "prompt": "Nominativ → Akkusativ: 'der Tisch' → ____", "answer": ["den Tisch"], "why": "Maskulin Akkusativ: der → den."}
+      ]
+    },
+    {
+      "id": "a1-07-plural",
+      "order": 7,
+      "title": "Множественное число",
+      "subtitle": "Основные модели: -e, -er, -n/-en, -s, Umlaut, Nullendung",
+      "topics": ["plural_patterns"],
+      "prereq": ["a1-06-genus"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Множественное число в немецком образуется по нескольким моделям. Окончание и возможный Umlaut нужно выучить для каждого слова."},
+        {"kind": "rule", "title": "Частые модели", "text": "-e (oft mit Umlaut): der Tag → die Tage. -er (oft mit Umlaut): das Kind → die Kinder. -n/-en: die Frau → die Frauen, der Name → die Namen. -s: fremde Wörter (das Auto → die Autos). Nullendung (oft mit Umlaut): der Lehrer → die Lehrer."},
+        {"kind": "rule", "title": "Dativ Plural", "text": "Im Dativ Plural IMMER -n an das Nomen (wenn nicht schon -n/-s endet): den Kindern, den Lehrern, den Autos."},
+        {"kind": "table", "ref": "plural_patterns"},
+        {"kind": "example", "de": "Die Kinder spielen. Die Bücher liegen auf dem Tisch. Ich sehe die Autos.", "ru": "Дети играют. Книги лежат на столе. Я вижу машины.", "note": "Kinder (Umlaut + -er), Bücher (Umlaut + -er), Autos (-s)."}
+      ],
+      "drills": [
+        {"id": "a1-07-d01", "type": "choice", "prompt": "Plural von 'der Tag':", "options": ["die Tage", "die Tager", "die Tagen", "die Tag"], "answer": ["die Tage"], "why": "Tag → Tage (-e, oft mit Umlaut bei monosyllabischen)."},
+        {"id": "a1-07-d02", "type": "choice", "prompt": "Plural von 'das Kind':", "options": ["die Kinds", "die Kinder", "die Kinde", "die Kind"], "answer": ["die Kinder"], "why": "Kind → Kinder (Umlaut + -er)."},
+        {"id": "a1-07-d03", "type": "choice", "prompt": "Plural von 'die Frau':", "options": ["die Fraus", "die Frauen", "die Fraue", "die Frau"], "answer": ["die Frauen"], "why": "Frau → Frauen (-n)."},
+        {"id": "a1-07-d04", "type": "fill", "prompt": "Plural von 'der Name': die ____", "answer": ["Namen"], "why": "Name → Namen (-n im Plural, N-Deklination)."},
+        {"id": "a1-07-d05", "type": "choice", "prompt": "Plural von 'das Auto':", "options": ["die Auto", "die Autos", "die Autoen", "die Auten"], "answer": ["die Autos"], "why": "Fremdwörter auf Vokal → -s."},
+        {"id": "a1-07-d06", "type": "fill", "prompt": "Plural von 'der Lehrer': die ____", "answer": ["Lehrer"], "why": "Nullendung (oft mit Umlaut, aber Lehrer ohne Umlaut)."},
+        {"id": "a1-07-d07", "type": "choice", "prompt": "Dativ Plural von 'die Kinder':", "options": ["den Kind", "den Kindern", "die Kinder", "die Kindern"], "answer": ["den Kindern"], "why": "Dativ Plural immer -n: den Kindern."},
+        {"id": "a1-07-d08", "type": "fill", "prompt": "Dativ Plural von 'die Autos': den ____", "answer": ["Autos"], "why": "Auf -s endende Nomen bekommen KEIN -n im Dativ Plural."},
+        {"id": "a1-07-d09", "type": "choice", "prompt": "Plural von 'der Apfel':", "options": ["die Apfeln", "die Äpfel", "die Apfel", "die Apfler"], "answer": ["die Äpfel"], "why": "Umlaut + -e: Apfel → Äpfel."},
+        {"id": "a1-07-d10", "type": "fill", "prompt": "Plural von 'die Mutter': die ____", "answer": ["Mütter"], "why": "Umlaut + -er: Mutter → Mütter."},
+        {"id": "a1-07-d11", "type": "choice", "prompt": "Plural von 'das Buch':", "options": ["die Büchern", "die Bücher", "die Bucher", "die Buchs"], "answer": ["die Bücher"], "why": "Umlaut + -er: Buch → Bücher."},
+        {"id": "a1-07-d12", "type": "transform", "prompt": "Einzahl → Mehrzahl: 'der Stuhl' → ____", "answer": ["die Stühle"], "why": "Umlaut + -e: Stuhl → Stühle."}
+      ]
+    },
+    {
+      "id": "a1-08-artikel",
+      "order": 8,
+      "title": "Определённый и неопределённый артикль",
+      "subtitle": "der/die/das — ein/eine/ein, склонение по падежам",
+      "topics": ["articles_definite", "articles_indefinite"],
+      "prereq": ["a1-07-plural"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Артикли склоняются по падежам. Определённый (der/die/das) и неопределённый (ein/eine/ein) имеют разные формы."},
+        {"kind": "rule", "title": "Bestimmter Artikel", "text": "Nom: der/die/das/die. Akk: den/die/das/die. Dat: dem/der/dem/den. Gen: des/der/des/der."},
+        {"kind": "rule", "title": "Unbestimmter Artikel", "text": "Nom: ein/eine/ein/—. Akk: einen/eine/ein/—. Dat: einem/einer/einem/—. Gen: eines/einer/eines/—. Im Plural kein unbestimmter Artikel."},
+        {"kind": "rule", "title": "kein", "text": "Склоняется как ein, aber im Plural wie der: keine."},
+        {"kind": "table", "ref": "articles_definite"},
+        {"kind": "table", "ref": "articles_indefinite"},
+        {"kind": "example", "de": "Ich sehe den Mann. Ich gebe dem Kind ein Buch. Das ist das Haus meines Vaters.", "ru": "Я вижу мужчину. Я даю ребёнку книгу. Это дом моего отца.", "note": "den (Akk mask), dem (Dat neut), des (Gen mask)."}
+      ],
+      "drills": [
+        {"id": "a1-08-d01", "type": "choice", "prompt": "Ich sehe ____ Mann. (Akkusativ)", "options": ["der", "den", "dem", "des"], "answer": ["den"], "why": "Maskulin Akkusativ: der → den."},
+        {"id": "a1-08-d02", "type": "choice", "prompt": "Ich gebe ____ Frau das Buch. (Dativ)", "options": ["die", "der", "dem", "den"], "answer": ["der"], "why": "Feminin Dativ: die → der."},
+        {"id": "a1-08-d03", "type": "choice", "prompt": "Das ist ____ Haus meines Bruders. (Genitiv)", "options": ["das", "des", "dem", "der"], "answer": ["des"], "why": "Neutrum Genitiv: das → des (+ -s am Nomen)."},
+        {"id": "a1-08-d04", "type": "fill", "prompt": "Ich kaufe ____ Apfel. (Akkusativ, unbestimmt)", "answer": ["einen"], "why": "Maskulin Akkusativ unbestimmt: ein → einen."},
+        {"id": "a1-08-d05", "type": "choice", "prompt": "Er hilft ____ Kind. (Dativ, bestimmt)", "options": ["dem", "den", "das", "des"], "answer": ["dem"], "why": "Neutrum Dativ: dem."},
+        {"id": "a1-08-d06", "type": "fill", "prompt": "Ohne ____ Geld geht es nicht. (Akkusativ, negativ)", "answer": ["kein"], "why": "kein wie ein: Akk. Neutrum = kein."},
+        {"id": "a1-08-d07", "type": "choice", "prompt": "Die Blumen sind für ____ Mutter. (Akkusativ)", "options": ["meine", "meiner", "meinem", "meines"], "answer": ["meine"], "why": "Feminin Akkusativ: meine (wie die)."},
+        {"id": "a1-08-d08", "type": "fill", "prompt": "Wir sprechen mit ____ Freunden. (Dativ Plural)", "answer": ["den"], "why": "Dativ Plural: den + -n an Nomen (Freunden)."},
+        {"id": "a1-08-d09", "type": "choice", "prompt": "____ Buch liegt auf dem Tisch. (Nominativ)", "options": ["ein", "eine", "einen", "einer"], "answer": ["ein"], "why": "Neutrum Nominativ: ein."},
+        {"id": "a1-08-d10", "type": "fill", "prompt": "Das ist das Auto ____ Vaters. (Genitiv)", "answer": ["meines"], "why": "Maskulin Genitiv: mein → meines (+ -s am Nomen: Vaters)."},
+        {"id": "a1-08-d11", "type": "choice", "prompt": "Ich habe ____ Zeit. (Akkusativ, Feminin)", "options": ["keine", "kein", "keiner", "keinem"], "answer": ["keine"], "why": "Feminin Akkusativ: keine."},
+        {"id": "a1-08-d12", "type": "transform", "prompt": "Nominativ → Akkusativ: 'eine Frau' → ____", "answer": ["eine Frau"], "why": "Feminin Akkusativ = Nominativ: eine."}
+      ]
+    },
+    {
+      "id": "a1-09-nominativ-akkusativ",
+      "order": 9,
+      "title": "Nominativ и Akkusativ",
+      "subtitle": "Подлежащее vs прямое дополнение, Verben mit Akkusativ",
+      "topics": ["nominative_accusative"],
+      "prereq": ["a1-08-artikel"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Nominativ = подлежащее (Wer/Was?). Akkusativ = прямое дополнение (Wen/Was?). Только мужской род меняет форму в Akkusativ (der → den)."},
+        {"kind": "rule", "title": "Verben mit Akkusativ", "text": "Die meisten transitiven Verben: haben, sehen, lesen, kaufen, essen, trinken, verstehen, finden, kennen, besuchen, hören, treffen, fragen, lieben, hassen."},
+        {"kind": "rule", "title": "Verben mit Dativ", "text": "Wichtige Ausnahmen: helfen, danken, folgen, gefallen, gehören, glauben, gratulieren, passieren, schaden, vertrauen, verzeihen, begegnen — nehmen Dativ!"},
+        {"kind": "table", "ref": "articles_definite"},
+        {"kind": "example", "de": "Der Mann sieht die Frau. Ich habe den Schlüssel. Er hilft dem Kind.", "ru": "Мужчина видит женщину. У меня есть ключ. Он помогает ребёнку.", "note": "sehen + Akk, haben + Akk, helfen + Dat."}
+      ],
+      "drills": [
+        {"id": "a1-09-d01", "type": "choice", "prompt": "Ich sehe ____ Hund. (Akkusativ)", "options": ["der", "den", "dem", "ein"], "answer": ["den"], "why": "sehen + Akkusativ, Maskulin: der → den."},
+        {"id": "a1-09-d02", "type": "choice", "prompt": "Er kauft ____ Auto. (Akkusativ)", "options": ["das", "den", "dem", "des"], "answer": ["das"], "why": "Neutrum Akkusativ = Nominativ: das."},
+        {"id": "a1-09-d03", "type": "choice", "prompt": "Wir besuchen ____ Großeltern. (Akkusativ Plural)", "options": ["die", "der", "den", "das"], "answer": ["die"], "why": "Plural Akkusativ = Nominativ: die."},
+        {"id": "a1-09-d04", "type": "fill", "prompt": "Er hilft ____ Freund. (Dativ)", "answer": ["dem"], "why": "helfen + Dativ, Maskulin: der → dem."},
+        {"id": "a1-09-d05", "type": "choice", "prompt": "Das Buch gefällt ____ Mädchen. (Dativ)", "options": ["das", "dem", "den", "die"], "answer": ["dem"], "why": "gefallen + Dativ, Neutrum: das → dem."},
+        {"id": "a1-09-d06", "type": "fill", "prompt": "Ich frage ____ Lehrer. (Akkusativ)", "answer": ["den"], "why": "fragen + Akkusativ, Maskulin: der → den."},
+        {"id": "a1-09-d07", "type": "choice", "prompt": "Welches Verb nimmt Dativ?", "options": ["sehen", "haben", "helfen", "lesen"], "answer": ["helfen"], "why": "helfen, danken, folgen + Dativ."},
+        {"id": "a1-09-d08", "type": "reorder", "prompt": "Wörter ordnen: 'den / ich / Mann / sehe'", "answer": ["Ich sehe den Mann."], "why": "V2: Ich sehe — den Mann (Akkusativ)."},
+        {"id": "a1-09-d09", "type": "fill", "prompt": "Er hat ____ Schwester. (Akkusativ)", "answer": ["eine"], "why": "haben + Akk, Feminin: eine (wie Nominativ)."},
+        {"id": "a1-09-d10", "type": "choice", "prompt": "Wir danken ____ Eltern. (Dativ Plural)", "options": ["den", "die", "der", "dem"], "answer": ["den"], "why": "Dativ Plural: den + -n (Eltern)."},
+        {"id": "a1-09-d11", "type": "transform", "prompt": "Aktiv → Passiv-Prädikat: 'Ich sehe den Mann' → 'Der Mann ____ gesehen.'", "answer": ["wird"], "why": "Passiv: Subjekt = Akkusativobjekt, werden + Partizip II."},
+        {"id": "a1-09-d12", "type": "fill", "prompt": "Er hört ____ Musik. (Akkusativ)", "answer": ["die"], "why": "hören + Akk, Feminin: die."}
+      ]
+    },
+    {
+      "id": "a1-10-negation",
+      "order": 10,
+      "title": "Отрицание: nicht и kein",
+      "subtitle": "Позиция nicht, отличие kein/неin",
+      "topics": ["negation"],
+      "prereq": ["a1-09-nominativ-akkusativ"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "kein отрицает существительное (нет никакого...), nicht отрицает всё остальное (глагол, прилагательное, наречие, предлогную группу, всё предложение)."},
+        {"kind": "rule", "title": "Position von nicht", "text": "Nach Zeitangaben, vor Ortsangaben, vor Präpositionalergänzungen, am Satzende bei Verneinung des ganzen Satzes. Vor Partizip II im Perfekt."},
+        {"kind": "rule", "title": "kein", "text": "Skлоняется wie ein/eine/ein. В Plural: keine."},
+        {"kind": "table", "ref": "articles_kein"},
+        {"kind": "example", "de": "Ich habe kein Auto. Ich rauche nicht. Er kommt heute nicht. Das ist nicht mein Buch.", "ru": "У меня нет машины. Я не курю. Он сегодня не придёт. Это не моя книга.", "why": "kein + Nomen, nicht + Verb/Adverb/Präpositionalgruppe."}
+      ],
+      "drills": [
+        {"id": "a1-10-d01", "type": "choice", "prompt": "Ich habe ____ Zeit.", "options": ["keine", "nicht", "kein", "nicht die"], "answer": ["keine"], "why": "kein + Nomen (Zeit, Feminin) → keine."},
+        {"id": "a1-10-d02", "type": "choice", "prompt": "Er raucht ____ .", "options": ["kein", "nicht", "keine", "nicht das"], "answer": ["nicht"], "why": "Verneinung des Verbs → nicht."},
+        {"id": "a1-10-d03", "type": "choice", "prompt": "Das ist ____ mein Buch.", "options": ["kein", "nicht", "keine", "nicht das"], "answer": ["nicht"], "why": "Verneinung des Possessivartikels → nicht."},
+        {"id": "a1-10-d04", "type": "fill", "prompt": "Wir fahren ____ nach Berlin.", "answer": ["nicht"], "why": "Verneinung der Präpositionalgruppe → nicht vor der Präposition."},
+        {"id": "a1-10-d05", "type": "choice", "prompt": "Er hat ____ Geld.", "options": ["kein", "nicht", "keine", "nicht das"], "answer": ["kein"], "why": "kein + Nomen (Geld, Neutrum) → kein."},
+        {"id": "a1-10-d06", "type": "fill", "prompt": "Sie isst ____ Fleisch.", "answer": ["kein"], "why": "kein + Nomen (Fleisch, Neutrum) → kein."},
+        {"id": "a1-10-d07", "type": "choice", "prompt": "Position von 'nicht': 'Ich gehe heute ____ ins Kino.'", "options": ["nicht", "nicht heute", "heute nicht"], "answer": ["heute nicht"], "why": "Nach Zeitangabe (heute) → nicht."},
+        {"id": "a1-10-d08", "type": "fill", "prompt": "Er hat das Buch ____ gelesen. (Perfekt)", "answer": ["nicht"], "why": "Vor Partizip II im Perfekt: nicht gelesen."},
+        {"id": "a1-10-d09", "type": "choice", "prompt": "Wir haben ____ Kinder. (Plural)", "options": ["kein", "keine", "nicht", "nicht die"], "answer": ["keine"], "why": "Plural: keine Kinder."},
+        {"id": "a1-10-d10", "type": "transform", "prompt": "Aussage → Verneinung: 'Ich kaufe ein Buch.' → ____", "answer": ["Ich kaufe kein Buch."], "why": "Akkusativobjekt → kein."},
+        {"id": "a1-10-d11", "type": "fill", "prompt": "Das schmeckt ____ gut.", "answer": ["nicht"], "why": "Verneinung des Adjektivs/Adverbs → nicht."},
+        {"id": "a1-10-d12", "type": "choice", "prompt": "Er ist ____ zu Hause.", "options": ["kein", "nicht", "keine", "nicht das"], "answer": ["nicht"], "why": "Verneinung der Ortsangabe/Prädikativs → nicht."}
+      ]
+    },
+    {
+      "id": "a1-11-possessiv",
+      "order": 11,
+      "title": "Притяжательные артикли",
+      "subtitle": "mein, dein, sein, ihr, unser, euer, Ihr — склонение",
+      "topics": ["possessivartikel"],
+      "prereq": ["a1-08-artikel"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "Притяжательные артикли (mein, dein, sein, ihr, unser, euer, Ihr) склоняются как ein/kein."},
+        {"kind": "rule", "title": "Deklination", "text": "Nom: mein/meine/mein/meine. Akk: meinen/meine/mein/meine. Dat: meinem/meiner/meinem/meinen. Gen: meines/meiner/meines/meiner."},
+        {"kind": "rule", "title": "euer", "text": "Im Obliquus (Akk/Dat/Gen) fällt das Stamm-e weg: dein → deine, aber euer → deine, deines, deinem, deinen."},
+        {"kind": "table", "ref": "possessivartikel"},
+        {"kind": "example", "de": "Das ist mein Buch. Ich sehe deinen Bruder. Wir helfen unserem Vater.", "ru": "Это моя книга. Я вижу твоего брата. Мы помогаем нашему отцу.", "note": "mein (Nom Neutrum), deinen (Akk Mask), unserem (Dat Mask)."}
+      ],
+      "drills": [
+        {"id": "a1-11-d01", "type": "choice", "prompt": "Das ist ____ Buch. (mein, Neutrum Nom)", "options": ["mein", "meine", "meinen", "meiner"], "answer": ["mein"], "why": "Neutrum Nominativ: mein."},
+        {"id": "a1-11-d02", "type": "choice", "prompt": "Ich sehe ____ Vater. (mein, Maskulin Akk)", "options": ["mein", "meine", "meinen", "meiner"], "answer": ["meinen"], "why": "Maskulin Akkusativ: mein → meinen."},
+        {"id": "a1-11-d03", "type": "choice", "prompt": "Wir helfen ____ Mutter. (unser, Feminin Dat)", "options": ["unser", "unsere", "unserer", "unserem"], "answer": ["unserer"], "why": "Feminin Dativ: unser → unserer."},
+        {"id": "a1-11-d04", "type": "fill", "prompt": "Er liebt ____ Frau. (sein, Akk)", "answer": ["seine"], "why": "Feminin Akkusativ = Nominativ: seine."},
+        {"id": "a1-11-d05", "type": "choice", "prompt": "Das ist ____ Haus. (euer, Neutrum Nom)", "options": ["euer", "eure", "euren", "eurer"], "answer": ["euer"], "why": "Neutrum Nominativ: euer (Stamm-e bleibt)."},
+        {"id": "a1-11-d06", "type": "fill", "prompt": "Ich rufe ____ Eltern an. (euer, Akk Plural)", "answer": ["eure"], "why": "Akkusativ Plural: euer → eure (Stamm-e fällt weg)."},
+        {"id": "a1-11-d07", "type": "choice", "prompt": "Wir danken ____ Lehrer. (Ihr, Maskulin Dat)", "options": ["Ihrem", "Ihren", "Ihrer", "Ihres"], "answer": ["Ihrem"], "why": "Formales Ihr: Maskulin Dativ → Ihrem."},
+        {"id": "a1-11-d08", "type": "fill", "prompt": "Ohne ____ Hilfe geht es nicht. (mein, Feminin Gen)", "answer": ["meiner"], "why": "Feminin Genitiv: mein → meiner."},
+        {"id": "a1-11-d09", "type": "choice", "prompt": "____ Auto ist neu. (dein, Neutrum Nom)", "options": ["dein", "deine", "deinen", "deiner"], "answer": ["dein"], "why": "Neutrum Nominativ: dein."},
+        {"id": "a1-11-d10", "type": "transform", "prompt": "Nominativ → Akkusativ: 'mein Bruder' → ____", "answer": ["meinen Bruder"], "why": "Maskulin Akkusativ: mein → meinen."},
+        {"id": "a1-11-d11", "type": "fill", "prompt": "Wir besuchen ____ Großeltern. (unser, Akk Plural)", "answer": ["unsere"], "why": "Akkusativ Plural: unser → unsere."},
+        {"id": "a1-11-d12", "type": "choice", "prompt": "Er spricht mit ____ Freund. (sein, Maskulin Dat)", "options": ["seinem", "seinen", "seiner", "seines"], "answer": ["seinem"], "why": "Maskulin Dativ: sein → seinem."}
+      ]
+    },
+    {
+      "id": "a1-12-satzstellung-v2",
+      "order": 12,
+      "title": "Порядок слов: V2 в главном предложении",
+      "subtitle": "Глагол строго на 2-й позиции, тема на 1-й",
+      "topics": ["satzstellung_v2"],
+      "prereq": ["a1-03-praesens-regelmaessig"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "В главном предложении спряжённый глагол СТРОГО на второй позиции. На первой позиции может стоять подлежащее, дополнение или обстоятельство."},
+        {"kind": "rule", "title": "V2-Regel", "text": "Pos 1: Thema (beliebig). Pos 2: konjugiertes Verb. Pos 3+: Rest. Am Ende: Infinitiv, Partizip II, trennbare Präfixe."},
+        {"kind": "rule", "title": "Inversion", "text": "Wenn nicht das Subjekt auf Pos 1 steht → Inversion (Verb vor Subjekt): 'Heute lerne ich.' (nicht 'Heute ich lerne')."},
+        {"kind": "table", "ref": "satzstellung_v2"},
+        {"kind": "example", "de": "Ich lerne Deutsch. Heute lerne ich Deutsch. Deutsch lerne ich heute.", "ru": "Я учу немецкий. Сегодня учу я немецкий. Немецкий учу я сегодня.", "note": "Verb immer Position 2. Subjekt nach Verb bei Inversion."}
+      ],
+      "drills": [
+        {"id": "a1-12-d01", "type": "choice", "prompt": "Heute ____ ich Deutsch.", "options": ["lerne", "lernt", "lernen", "lernst"], "answer": ["lerne"], "why": "V2: Heute (Pos 1) — lerne (Pos 2) — ich (Pos 3)."},
+        {"id": "a1-12-d02", "type": "reorder", "prompt": "Wörter ordnen: 'gestern / haben / wir / gearbeitet'", "answer": ["Gestern haben wir gearbeitet."], "why": "Perfekt: haben (Pos 2) — wir — gearbeitet (Ende)."},
+        {"id": "a1-12-d03", "type": "choice", "prompt": "Morgen ____ wir nach Berlin.", "options": ["fahren", "fährt", "fährst", "fahre"], "answer": ["fahren"], "why": "wir → fahren (Pos 2 nach Morgen)."},
+        {"id": "a1-12-d04", "type": "fill", "prompt": "Das Buch ____ ich gern.", "answer": ["lese"], "why": "Objekt voran → Inversion: lese ich."},
+        {"id": "a1-12-d05", "type": "choice", "prompt": "In der Küche ____ meine Mutter.", "options": ["kocht", "kochen", "koche", "kochst"], "answer": ["kocht"], "why": "3. Pers. Sg. (meine Mutter) → kocht."},
+        {"id": "a1-12-d06", "type": "reorder", "prompt": "Wörter ordnen: 'muss / ich / jetzt / gehen'", "answer": ["Ich muss jetzt gehen."], "why": "Subjekt zuerst (keine Inversion): Ich muss — jetzt gehen."},
+        {"id": "a1-12-d07", "type": "fill", "prompt": "Deutsch ____ er sehr gut.", "answer": ["spricht"], "why": "Objekt voran → spricht er."},
+        {"id": "a1-12-d08", "type": "choice", "prompt": "Welcher Satz ist falsch?", "options": ["Ich gehe heute.", "Heute gehe ich.", "Heute ich gehe.", "Gehe ich heute?"], "answer": ["Heute ich gehe."], "why": "Nach Pos 1 (Heute) muss Verb folgen (gehe), nicht Subjekt."},
+        {"id": "a1-12-d09", "type": "fill", "prompt": "Nach der Arbeit ____ ich müde.", "answer": ["bin"], "why": "Präpositionalgruppe voran → bin ich."},
+        {"id": "a1-12-d10", "type": "transform", "prompt": "Aussage → Frage: 'Du kommst morgen.' → ____", "answer": ["Kommst du morgen?"], "why": "Ja/Nein-Frage: Verb an Pos 1."},
+        {"id": "a1-12-d11", "type": "choice", "prompt": "Wohin ____ du heute?", "options": ["fährst", "fahren", "fährt", "fahre"], "answer": ["fährst"], "why": "W-Frage: Wohin (Pos 1) — fährst (Pos 2) — du."},
+        {"id": "a1-12-d12", "type": "fill", "prompt": "Sehr gut ____ er Deutsch.", "answer": ["spricht"], "why": "Adverbial voran → spricht er."}
+      ]
+    },
+    {
+      "id": "a1-13-fragen",
+      "order": 13,
+      "title": "Вопросы: Ja/Nein и W-вопросы",
+      "subtitle": "Verb an Position 1, W-Wort an Position 1",
+      "topics": ["fragesatz", "frageworter"],
+      "prereq": ["a1-12-satzstellung-v2"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "Ja/Nein-Fragen: Verb an Position 1. W-Fragen: Fragewort an Position 1, Verb an Position 2."},
+        {"kind": "rule", "title": "Ja/Nein-Frage", "text": "Verb — Subjekt — Rest: 'Lernst du Deutsch?'"},
+        {"kind": "rule", "title": "W-Frage", "text": "W-Wort — Verb — Subjekt — Rest: 'Was lernst du?' Subjektfragen (wer/was): 'Wer kommt?' (Verb an Pos 2)."},
+        {"kind": "rule", "title": "Entscheidungsfragen mit oder", "text": "Verb — Subjekt — ... oder ...?: 'Trinkst du Tee oder Kaffee?'" },
+        {"kind": "table", "ref": "fragesatz"},
+        {"kind": "example", "de": "Lernst du Deutsch? Was lernst du? Wer kommt? Wann fährst du?", "ru": "Учишь ты немецкий? Что ты учишь? Кто придёт? Когда ты едешь?", "note": "Ja/Nein: Verb zuerst. W-Frage: W-Wort zuerst."}
+      ],
+      "drills": [
+        {"id": "a1-13-d01", "type": "choice", "prompt": "____ du Deutsch?", "options": ["Lernst", "Lernst du", "Lernst du Deutsch", "Du lernst"], "answer": ["Lernst"], "why": "Ja/Nein-Frage: Verb an Position 1."},
+        {"id": "a1-13-d02", "type": "choice", "prompt": "____ lernst du?", "options": ["Was", "Wer", "Wann", "Wie"], "answer": ["Was"], "why": "W-Frage nach Objekt: Was."},
+        {"id": "a1-13-d03", "type": "choice", "prompt": "____ kommt morgen?", "options": ["Wer", "Was", "Wann", "Wo"], "answer": ["Wer"], "why": "Subjektfrage nach Person: Wer."},
+        {"id": "a1-13-d04", "type": "fill", "prompt": "____ fährst du nach Berlin?", "answer": ["Wann"], "why": "Frage nach Zeit: Wann."},
+        {"id": "a1-13-d05", "type": "choice", "prompt": "____ gehst du?", "options": ["Wohin", "Wo", "Woher", "Wann"], "answer": ["Wohin"], "why": "Frage nach Richtung: Wohin."},
+        {"id": "a1-13-d06", "type": "fill", "prompt": "____ kommst du?", "answer": ["Woher"], "why": "Frage nach Herkunft: Woher."},
+        {"id": "a1-13-d07", "type": "choice", "prompt": "____ lernst du Deutsch?", "options": ["Warum", "Wann", "Wo", "Wer"], "answer": ["Warum"], "why": "Frage nach Grund: Warum."},
+        {"id": "a1-13-d08", "type": "reorder", "prompt": "Wörter ordnen: 'wie / geht / es / dir'", "answer": ["Wie geht es dir?"], "why": "W-Frage: Wie (Pos 1) — geht (Pos 2) — es (Subjekt) — dir."},
+        {"id": "a1-13-d09", "type": "choice", "prompt": "Trinkst du ____ Kaffee?", "options": ["Tee oder", "oder Tee", "Tee, oder", "oder, Tee"], "answer": ["Tee oder"], "why": "Entscheidungsfrage: ... Tee oder Kaffee?"},
+        {"id": "a1-13-d10", "type": "transform", "prompt": "Aussage → W-Frage: 'Er wohnt in Berlin.' (wo) → ____", "answer": ["Wo wohnt er?"], "why": "Wo (Pos 1) — wohnt (Pos 2) — er."},
+        {"id": "a1-13-d11", "type": "fill", "prompt": "____ ist dein Name?", "answer": ["Wie"], "why": "Wie ist dein Name? (фиксированное выражение)."},
+        {"id": "a1-13-d12", "type": "choice", "prompt": "____ Buch liest du?", "options": ["Welches", "Wer", "Was", "Wann"], "answer": ["Welches"], "why": "Welcher/welche/welches = который (выбор из множества)."}
+      ]
+    },
+    {
+      "id": "a1-14-trennbare-verben",
+      "order": 14,
+      "title": "Разделимые приставки",
+      "subtitle": "ab-, an-, auf-, aus-, ein-, los-, mit-, nach-, vor-, weg-, zu-, zurück-",
+      "topics": ["trennbare_verben"],
+      "prereq": ["a1-03-praesens-regelmaessig"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Глаголы с разделимой приставкой (trennbare Verben): в главном предложении приставка уходит в конец."},
+        {"kind": "rule", "title": "Hauptsatz", "text": "Ich stehe um 7 Uhr auf. (stehen + auf → stehe ... auf)"},
+        {"kind": "rule", "title": "Nebensatz / Infinitiv", "text": "In Nebensätzen und mit zu-Infinitive bleibt die Vorsilbe am Verb: ..., dass er aufsteht / aufzustehen."},
+        {"kind": "rule", "title": "Wichtige Präfixe", "text": "ab-, an-, auf-, aus-, ein-, los-, mit-, nach-, vor-, weg-, zu-, zurück-. Не разделяются: be-, ent-, er-, ge-, ver-, zer-, miss-."},
+        {"kind": "table", "ref": "trennbare_verben"},
+        {"kind": "example", "de": "Ich stehe um 6 auf. Er ruft mich an. Wir kaufen ein. Sie kommt zurück.", "ru": "Я встаю в 6. Он мне звонит. Мы покупаем. Она возвращается.", "note": "V2: stehe ... auf, ruft ... an, kaufen ... ein."}
+      ],
+      "drills": [
+        {"id": "a1-14-d01", "type": "choice", "prompt": "Ich ____ um 7 Uhr auf. (aufstehen)", "options": ["stehe", "stehe auf", "aufstehe", "steh auf"], "answer": ["stehe"], "why": "V2: stehe (Pos 2) — ... — auf (Ende)."},
+        {"id": "a1-14-d02", "type": "fill", "prompt": "Er ____ mich an. (anrufen)", "answer": ["ruft"], "why": "ruft ... an (Präfix an ans Ende)."},
+        {"id": "a1-14-d03", "type": "choice", "prompt": "Wir ____ heute nicht ein. (einkaufen)", "options": ["kaufen", "kaufen ein", "einkaufen", "kauf ein"], "answer": ["kaufen"], "why": "kaufen ... ein."},
+        {"id": "a1-14-d04", "type": "fill", "prompt": "Sie ____ morgen zurück. (zurückkommen)", "answer": ["kommt"], "why": "kommt ... zurück."},
+        {"id": "a1-14-d05", "type": "choice", "prompt": "Im Nebensatz: '..., dass er ____ ' (aufstehen)", "options": ["aufsteht", "steht auf", "auf steht", "steht"], "answer": ["aufsteht"], "why": "Im Nebensatz Präfix am Verb: aufsteht."},
+        {"id": "a1-14-d06", "type": "fill", "prompt": "Er hat vor, ____ . (aufstehen, Infinitiv mit zu)", "answer": ["aufzustehen"], "why": "zu-Infinitiv: aufzustehen (zu zwischen Präfix und Stamm)."},
+        {"id": "a1-14-d07", "type": "choice", "prompt": "Welches Präfix ist NICHT trennbar?", "options": ["ab-", "an-", "ver-", "auf-"], "answer": ["ver-"], "why": "ver- gehört zu den untrennbaren Präfixen (be-, ent-, er-, ge-, ver-, zer-, miss-)."},
+        {"id": "a1-14-d08", "type": "reorder", "prompt": "Wörter ordnen: 'ab / fährt / der / Zug / um / 8 / Uhr'", "answer": ["Der Zug fährt um 8 Uhr ab."], "why": "fährt (V2) — um 8 Uhr — ab (Ende)."},
+        {"id": "a1-14-d09", "type": "fill", "prompt": "Wir ____ das Licht aus. (ausmachen)", "answer": ["machen"], "why": "machen ... aus."},
+        {"id": "a1-14-d10", "type": "choice", "prompt": "Er ____ mit dem Rauchen auf. (aufhören)", "options": ["hört", "hört auf", "aufhört", "hör auf"], "answer": ["hört"], "why": "hört ... auf."},
+        {"id": "a1-14-d11", "type": "transform", "prompt": "Hauptsatz → Nebensatz: 'Ich stehe auf.' → '..., dass ich ____ '", "answer": ["aufstehe"], "why": "Im Nebensatz Präfix am Verb."},
+        {"id": "a1-14-d12", "type": "fill", "prompt": "Sie ____ die Tür zu. (zumachen)", "answer": ["macht"], "why": "macht ... zu."}
+      ]
+    },
+    {
+      "id": "a1-15-praepositionen",
+      "order": 15,
+      "title": "Предлоги с Akkusativ и Dativ",
+      "subtitle": "DOGFU (Akk) и ABMSVZ (Dat)",
+      "topics": ["praep_akkusativ", "praep_dativ"],
+      "prereq": ["a1-09-nominativ-akkusativ"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "Предлоги определяют падеж следующего существительного. Есть предлоги только с Akkusativ, только с Dativ и wechselnde (Wechselpräpositionen)."},
+        {"kind": "rule", "title": "Akkusativ (DOGFU + bis + entlang)", "text": "durch, für, gegen, ohne, um, bis, entlang. Эзоним: DOGFU."},
+        {"kind": "rule", "title": "Dativ (ABMSVZ + gegenüber)", "text": "aus, bei, mit, nach, seit, von, zu, gegenüber. Эзоним: ABMSVZ."},
+        {"kind": "rule", "title": "nach + Land/Stadt", "text": "nach Deutschland, nach Berlin (ohne Artikel). in die Schweiz (feminin Länder mit Artikel)."},
+        {"kind": "table", "ref": "praep_akkusativ"},
+        {"kind": "table", "ref": "praep_dativ"},
+        {"kind": "example", "de": "Ich gehe durch den Park. Er kommt mit dem Auto. Wir fahren nach Berlin.", "ru": "Я иду через парк. Он приезжает на машине. Мы едем в Берлин.", "note": "durch + Akk, mit + Dat, nach + Stadt ohne Artikel."}
+      ],
+      "drills": [
+        {"id": "a1-15-d01", "type": "choice", "prompt": "Ich gehe ____ den Park. (durch)", "options": ["durch das", "durch dem", "durch den", "durch die"], "answer": ["durch den"], "why": "durch + Akkusativ, Maskulin: den."},
+        {"id": "a1-15-d02", "type": "choice", "prompt": "Er kommt ____ dem Auto. (mit)", "options": ["mit das", "mit dem", "mit den", "mit der"], "answer": ["mit dem"], "why": "mit + Dativ, Neutrum: dem."},
+        {"id": "a1-15-d03", "type": "choice", "prompt": "Wir fahren ____ Berlin. (nach)", "options": ["nach dem", "nach den", "nach", "nach das"], "answer": ["nach"], "why": "nach + Stadt/Land ohne Artikel."},
+        {"id": "a1-15-d04", "type": "fill", "prompt": "Das Geschenk ist ____ dich. (für)", "answer": ["für"], "why": "für + Akkusativ: für dich."},
+        {"id": "a1-15-d05", "type": "choice", "prompt": "Er ist ____ Hause. (zu)", "options": ["zu dem", "zu den", "zum", "zur"], "answer": ["zum"], "why": "zu + dem = zum (Kontraktion). Maskulin/Neutrum Dativ."},
+        {"id": "a1-15-d06", "type": "fill", "prompt": "Wir gehen ____ die Brücke. (über, Richtung)", "answer": ["über"], "why": "über + Akkusativ (Richtung: Wohin?)."},
+        {"id": "a1-15-d07", "type": "choice", "prompt": "Seit ____ Jahren lerne ich Deutsch. (seit)", "options": ["zwei", "dreien", "zweien", "zweier"], "answer": ["zwei"], "why": "seit + Dativ, aber Zahl zwei unveränderlich. (seit zwei Jahren — Dativ Plural -n an Nomen)."},
+        {"id": "a1-15-d08", "type": "fill", "prompt": "Er kommt ____ dem Arzt. (von)", "answer": ["von"], "why": "von + Dativ: vom (von dem) Arzt."},
+        {"id": "a1-15-d09", "type": "choice", "prompt": "Ohne ____ geht es nicht. (ohne, Akk)", "options": ["dich", "dir", "dein", "deine"], "answer": ["dich"], "why": "ohne + Akkusativ: dich."},
+        {"id": "a1-15-d10", "type": "transform", "prompt": "Akkusativ → Dativ: 'für den Mann' → '____ dem Mann' (für → ?)", "answer": ["für"], "why": "für bleibt Akkusativ. (Trickfrage: für nicht wechselbar)."},
+        {"id": "a1-15-d11", "type": "fill", "prompt": "Gegen ____ Uhr kommen wir. (gegen, Zeit)", "answer": ["10"], "why": "gegen + Akkusativ bei Zeitangaben: gegen 10 Uhr."},
+        {"id": "a1-15-d12", "type": "choice", "prompt": "Das Haus liegt ____ dem Fluss. (an, Ort → Dat)", "options": ["an dem", "an den", "am", "an das"], "answer": ["am"], "why": "an + Dativ (Wo?) → an dem = am."}
+      ]
+    },
+    {
+      "id": "a1-16-wechselpraepositionen",
+      "order": 16,
+      "title": "Девять «двойных» предлогов (Wechselpräpositionen)",
+      "subtitle": "an, auf, hinter, in, neben, über, unter, vor, zwischen — Akk (Wohin?) / Dat (Wo?)",
+      "topics": ["wechselpraepositionen"],
+      "prereq": ["a1-15-praepositionen"],
+      "minutes": 15,
+      "theory": [
+        {"kind": "text", "text": "9 Wechselpräpositionen: an, auf, hinter, in, neben, über, unter, vor, zwischen. Akkusativ = Richtung (Wohin?), Dativ = Ort (Wo?)."},
+        {"kind": "rule", "title": "Akkusativ: Bewegung hin", "text": "Ich hänge das Bild an die Wand. (Wohin? an die Wand)"},
+        {"kind": "rule", "title": "Dativ: Ort", "text": "Das Bild hängt an der Wand. (Wo? an der Wand)"},
+        {"kind": "rule", "title": "Kontraktionen", "text": "an dem = am, in dem = im, in das = ins, an das = ans, auf das = aufs, unter das = unters, über das = übers, vor das = vors, hinter das = hinters, zu dem = zum, zu der = zur, bei dem = beim."},
+        {"kind": "table", "ref": "wechselpraepositionen"},
+        {"kind": "example", "de": "Ich stelle die Tasse auf den Tisch. Die Tasse steht auf dem Tisch.", "ru": "Я ставлю чашку на стол. Чашка стоит на столе.", "note": "stelle (Aktion) → Akk (auf den). steht (Zustand) → Dat (auf dem)."}
+      ],
+      "drills": [
+        {"id": "a1-16-d01", "type": "choice", "prompt": "Ich gehe ____ die Schule. (in, Richtung)", "options": ["in die", "in der", "in das", "ins"], "answer": ["in die"], "why": "in + Akkusativ (Wohin?): in die Schule. Feminin."},
+        {"id": "a1-16-d02", "type": "choice", "prompt": "Ich bin ____ der Schule. (in, Ort)", "options": ["in die", "in der", "im", "ins"], "answer": ["in der"], "why": "in + Dativ (Wo?): in der Schule."},
+        {"id": "a1-16-d03", "type": "choice", "prompt": "Er legt das Buch ____ den Tisch. (auf, Richtung)", "options": ["auf dem", "auf den", "aufs", "auf das"], "answer": ["auf den"], "why": "auf + Akkusativ (Wohin?): auf den Tisch. Maskulin."},
+        {"id": "a1-16-d04", "type": "fill", "prompt": "Das Buch liegt ____ dem Tisch. (auf, Ort)", "answer": ["auf dem"], "why": "auf + Dativ (Wo?): auf dem Tisch."},
+        {"id": "a1-16-d05", "type": "choice", "prompt": "Wir hängen das Bild ____ die Wand. (an, Richtung)", "options": ["an der", "an die", "ans", "an das"], "answer": ["an die"], "why": "an + Akkusativ (Wohin?): an die Wand. Feminin."},
+        {"id": "a1-16-d06", "type": "fill", "prompt": "Das Bild hängt ____ der Wand. (an, Ort)", "answer": ["an der"], "why": "an + Dativ (Wo?): an der Wand."},
+        {"id": "a1-16-d07", "type": "choice", "prompt": "Er stellt sich ____ mich. (neben, Richtung)", "options": ["neben mir", "neben mich", "neben dem", "neben den"], "answer": ["neben mich"], "why": "neben + Akkusativ (Wohin?): neben mich."},
+        {"id": "a1-16-d08", "type": "choice", "prompt": "Er steht ____ mir. (neben, Ort)", "options": ["neben mir", "neben mich", "neben dem", "neben den"], "answer": ["neben mir"], "why": "neben + Dativ (Wo?): neben mir (Dativpronomen)."},
+        {"id": "a1-16-d09", "type": "choice", "prompt": "Die Katze springt ____ den Tisch. (unter, Richtung)", "options": ["unter dem", "unter den", "unters", "unter das"], "answer": ["unter den"], "why": "unter + Akkusativ (Wohin?): unter den Tisch."},
+        {"id": "a1-16-d10", "type": "fill", "prompt": "Die Katze schläft ____ dem Tisch. (unter, Ort)", "answer": ["unter dem"], "why": "unter + Dativ (Wo?): unter dem Tisch."},
+        {"id": "a1-16-d11", "type": "choice", "prompt": "Wir gehen ____ das Haus. (vor, Richtung)", "options": ["vor dem", "vor den", "vors", "vor das"], "answer": ["vors"], "why": "vor + Akkusativ (Wohin?): vor das = vors Haus."},
+        {"id": "a1-16-d12", "type": "transform", "prompt": "Aktion → Zustand: 'Ich setze mich auf den Stuhl.' → 'Ich sitze ____ Stuhl.'", "answer": ["auf dem"], "why": "setzen (Aktion, Akk) → sitzen (Zustand, Dat): auf dem Stuhl."}
+      ]
+    },
+    {
+      "id": "a1-17-perfekt",
+      "order": 17,
+      "title": "Perfekt с haben и sein",
+      "subtitle": "Вспомогательные глаголы, Partizip II, выбор haben/sein",
+      "topics": ["perfekt_haben_sein", "partizip_ii"],
+      "prereq": ["a1-05-haben-modalverben", "a1-04-praesens-starke"],
+      "minutes": 18,
+      "theory": [
+        {"kind": "text", "text": "Perfekt = gesprochenes Präteritum. Bildet sich: haben/sein (konjugiert) + Partizip II (am Satzende)."},
+        {"kind": "rule", "title": "haben", "text": "Die meisten Verben: transitiv, reflexiv, modal. Ich habe gearbeitet."},
+        {"kind": "rule", "title": "sein", "text": "Bewegung (Wohin?): gehen, kommen, fahren, fliegen, laufen, schwimmen, reisen. Zustandsänderung: aufstehen, einschlafen, aufwachen, sterben. + sein, bleiben, werden, passieren."},
+        {"kind": "rule", "title": "Partizip II", "text": "Schwache: ge- + Stamm + -t (gemacht). Starke: ge- + Stamm + -en (gegangen). Gemischte: ge- + Stamm + -t (gebracht). Untrennbare: ohne ge- (besucht). -ieren: ohne ge- (studiert). Trennbare: Präfix + ge- (aufgestanden)."},
+        {"kind": "table", "ref": "perfekt_haben_sein"},
+        {"kind": "table", "ref": "partizip_ii"},
+        {"kind": "example", "de": "Ich habe gearbeitet. Er ist nach Hause gegangen. Wir haben gegessen. Sie ist eingeschlafen.", "ru": "Я работал. Он пошёл домой. Мы ели. Она уснула.", "note": "haben + Partizip II (schwach), sein + Partizip II (stark, Bewegung)."}
+      ],
+      "drills": [
+        {"id": "a1-17-d01", "type": "choice", "prompt": "Ich ____ gearbeitet. (Perfekt)", "options": ["habe", "bin", "hast", "bist"], "answer": ["habe"], "why": "arbeiten → haben (keine Bewegung/Zustandsänderung)."},
+        {"id": "a1-17-d02", "type": "choice", "prompt": "Er ____ nach Hause gegangen. (Perfekt)", "options": ["hat", "ist", "habe", "bin"], "answer": ["ist"], "why": "gehen (Bewegung Wohin?) → sein."},
+        {"id": "a1-17-d03", "type": "choice", "prompt": "Wir ____ gegessen. (Perfekt)", "options": ["haben", "sind", "hat", "ist"], "answer": ["haben"], "why": "essen (transitiv) → haben."},
+        {"id": "a1-17-d04", "type": "fill", "prompt": "Sie ____ eingeschlafen. (Perfekt)", "answer": ["ist"], "why": "einschlafen (Zustandsänderung) → sein."},
+        {"id": "a1-17-d05", "type": "choice", "prompt": "Partizip II von 'machen':", "options": ["gemacht", "gemachen", "gemakt", "macht"], "answer": ["gemacht"], "why": "Schwaches Verb: ge- + mach + -t."},
+        {"id": "a1-17-d06", "type": "fill", "prompt": "Partizip II von 'gehen': ____", "answer": ["gegangen"], "why": "Starkes Verb: ge- + gang + -en."},
+        {"id": "a1-17-d07", "type": "choice", "prompt": "Partizip II von 'bringen':", "options": ["gebracht", "gebrungen", "gebraucht", "brachte"], "answer": ["gebracht"], "why": "Gemischtes Verb: ge- + brach + -t."},
+        {"id": "a1-17-d08", "type": "fill", "prompt": "Partizip II von 'studieren': ____", "answer": ["studiert"], "why": "Verben auf -ieren: ohne ge-, nur -t."},
+        {"id": "a1-17-d09", "type": "choice", "prompt": "Partizip II von 'aufstehen':", "options": ["aufgestanden", "gestanden auf", "auf gestanden", "gestanden"], "answer": ["aufgestanden"], "why": "Trennbar: Präfix + ge- + Stamm + -en: auf-ge-standen."},
+        {"id": "a1-17-d10", "type": "reorder", "prompt": "Wörter ordnen: 'hat / er / das / Buch / gelesen'", "answer": ["Er hat das Buch gelesen."], "why": "V2: hat — er — das Buch — gelesen (Ende)."},
+        {"id": "a1-17-d11", "type": "fill", "prompt": "Wir ____ nach Berlin gefahren. (Perfekt)", "answer": ["sind"], "why": "fahren (Bewegung) → sein."},
+        {"id": "a1-17-d12", "type": "choice", "prompt": "Er ____ den Film gesehen. (Perfekt)", "options": ["hat", "ist", "habe", "bin"], "answer": ["hat"], "why": "sehen (transitiv) → haben."},
+        {"id": "a1-17-d13", "type": "fill", "prompt": "Ich ____ aufgewacht. (Perfekt)", "answer": ["bin"], "why": "aufwachen (Zustandsänderung) → sein."},
+        {"id": "a1-17-d14", "type": "transform", "prompt": "Präsens → Perfekt: 'Ich kaufe ein.' → ____", "answer": ["Ich habe eingekauft."], "why": "kaufen (transitiv) → haben, trennbar: eingekauft."}
+      ]
+    },
+    {
+      "id": "a1-18-zeitangaben",
+      "order": 18,
+      "title": "Время: am, um, im, seit, vor",
+      "subtitle": "Привязка времени: Uhrzeit, Wochentage, Monate, Dauer, Vergangenheit",
+      "topics": ["zeitangaben"],
+      "prereq": ["a1-15-praepositionen", "a1-17-perfekt"],
+      "minutes": 12,
+      "theory": [
+        {"kind": "text", "text": "Временные предлоги определяют падеж и употребление."},
+        {"kind": "rule", "title": "um + Uhrzeit", "text": "um 8 Uhr, um 10.30 Uhr (genauer Zeitpunkt)."},
+        {"kind": "rule", "title": "am + Wochentag / Datum", "text": "am Montag, am 5. Mai (Tage, Daten)."},
+        {"kind": "rule", "title": "im + Monat / Jahr / Jahreszeit", "text": "im Januar, im Jahr 2024, im Sommer (Monate, Jahre, Jahreszeiten)."},
+        {"kind": "rule", "title": "seit + Zeitpunkt (Dauer bis jetzt)", "text": "seit Montag, seit 2020, seit 2 Jahren (Präsens/Perfekt: ich lerne seit ... / ich habe seit ... gelernt)."},
+        {"kind": "rule", "title": "vor + Zeitspanne (Vergangenheit)", "text": "vor 2 Tagen, vor einem Jahr (Präteritum/Perfekt: ich kam vor ... / ich bin vor ... gekommen)."},
+        {"kind": "example", "de": "Ich komme um 8 Uhr. Am Montag habe ich Zeit. Im Sommer fahren wir weg. Ich lerne seit Januar Deutsch. Er kam vor einer Stunde.", "ru": "Я приду в 8. В понедельник у меня есть время. Лето мы уезжаем. Я учу немецкий с января. Он пришёл час назад.", "note": "um (Uhrzeit), am (Tag), im (Monat/Jahr), seit (Dauer ab Zeitpunkt), vor (Zeitspanne zurück)."}
+      ],
+      "drills": [
+        {"id": "a1-18-d01", "type": "choice", "prompt": "Wir treffen uns ____ 10 Uhr.", "options": ["um", "am", "im", "seit"], "answer": ["um"], "why": "um + genaue Uhrzeit."},
+        {"id": "a1-18-d02", "type": "choice", "prompt": "Am ____ habe ich Geburtstag.", "options": ["Montag", "Januar", "2024", "Sommer"], "answer": ["Montag"], "why": "am + Wochentag."},
+        {"id": "a1-18-d03", "type": "choice", "prompt": "Im ____ fahre ich in Urlaub.", "options": ["Montag", "August", "10 Uhr", "gestern"], "answer": ["August"], "why": "im + Monat."},
+        {"id": "a1-18-d04", "type": "fill", "prompt": "Seit ____ lerne ich Deutsch.", "answer": ["Januar"], "why": "seit + Zeitpunkt (Dauer bis jetzt)."},
+        {"id": "a1-18-d05", "type": "choice", "prompt": "Vor ____ war ich in Berlin.", "options": ["einer Woche", "einen Woche", "einem Woche", "ein Woche"], "answer": ["einer Woche"], "why": "vor + Dativ: vor einer Woche."},
+        {"id": "a1-18-d06", "type": "fill", "prompt": "____ Montag, den 5. Mai.", "answer": ["Am"], "why": "am + Datum."},
+        {"id": "a1-18-d07", "type": "choice", "prompt": "____ dem Jahr 2020 wohne ich hier.", "options": ["Seit", "Vor", "Im", "Am"], "answer": ["Seit"], "why": "seit + Zeitpunkt (Dativ): seit dem Jahr 2020."},
+        {"id": "a1-18-d08", "type": "choice", "prompt": "____ zwei Tagen war das.", "options": ["Seit", "Vor", "Im", "Am"], "answer": ["Vor"], "why": "vor + Zeitspanne (Vergangenheit)."},
+        {"id": "a1-18-d09", "type": "fill", "prompt": "Im ____ 2024.", "answer": ["Jahr"], "why": "im + Jahr."},
+        {"id": "a1-18-d10", "type": "transform", "prompt": "Präsens → Perfekt mit 'seit': 'Ich lerne seit Januar.' → ____", "answer": ["Ich habe seit Januar gelernt."], "why": "Perfekt mit seit: habe ... gelernt."},
+        {"id": "a1-18-d11", "type": "choice", "prompt": "Um wie viel Uhr ____ du?", "options": ["kommst", "komm", "kommt", "kammst"], "answer": ["kommst"], "why": "W-Frage: um wie viel Uhr (Pos 1) — kommst (Pos 2) — du."},
+        {"id": "a1-18-d12", "type": "fill", "prompt": "Wir sehen uns ____ Sommer.", "answer": ["im"], "why": "im + Jahreszeit."}
+      ]
+    }
+  ]
+}
