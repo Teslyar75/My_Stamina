@@ -5,7 +5,6 @@
 """
 from __future__ import annotations
 
-import pytest
 
 from stamina import i18n
 from stamina.languages.core.base import WordEntry

@@ -4,8 +4,6 @@ from __future__ import annotations
 import json
 import random
 from pathlib import Path
-from typing import Any
-from functools import lru_cache
 
 from stamina.languages.core.base import (
     GrammarEngine, GrammarTopic, Exercise, ValidationResult

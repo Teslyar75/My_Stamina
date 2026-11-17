@@ -306,7 +306,6 @@ class TestGrammarUISmoke:
     def test_page_builds_and_renders(self, tk_root):
         """Страница строится, список уроков непуст, урок открывается."""
         from stamina.languages.plugins.de import GermanPlugin
-        from stamina.languages.core import get_registry
         from stamina import pilots
         import tempfile
         from pathlib import Path
