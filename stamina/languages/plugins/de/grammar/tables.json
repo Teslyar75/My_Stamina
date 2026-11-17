@@ -1,0 +1,729 @@
+{
+  "version": 1,
+  "tables": [
+    {
+      "id": "articles_definite",
+      "level": "A1",
+      "title": "Определённый артикль",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "der", "die", "das", "die"],
+        ["Akkusativ", "den", "die", "das", "die"],
+        ["Dativ", "dem", "der", "dem", "den + n"],
+        ["Genitiv", "des + s", "der", "des + s", "der"]
+      ],
+      "note": "Dativ Plural: к существительному добавляется -n, если его ещё нет."
+    },
+    {
+      "id": "articles_indefinite",
+      "level": "A1",
+      "title": "Неопределённый артикль",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "ein", "eine", "ein", "—"],
+        ["Akkusativ", "einen", "eine", "ein", "—"],
+        ["Dativ", "einem", "einer", "einem", "—"],
+        ["Genitiv", "eines", "einer", "eines", "—"]
+      ],
+      "note": "В Plural неопределённый артикль отсутствует."
+    },
+    {
+      "id": "articles_kein",
+      "level": "A1",
+      "title": "Отрицательный артикль kein",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "kein", "keine", "kein", "keine"],
+        ["Akkusativ", "keinen", "keine", "kein", "keine"],
+        ["Dativ", "keinem", "keiner", "keinem", "keinen + n"],
+        ["Genitiv", "keines", "keiner", "keines", "keiner"]
+      ],
+      "note": "Склоняется как неопределённый артикль, в Plural как определённый."
+    },
+    {
+      "id": "possessivartikel",
+      "level": "A1",
+      "title": "Притяжательные артикли (mein, dein, sein, ihr, unser, euer, Ihr)",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "mein", "meine", "mein", "meine"],
+        ["Akkusativ", "meinen", "meine", "mein", "meine"],
+        ["Dativ", "meinem", "meiner", "meinem", "meinen + n"],
+        ["Genitiv", "meines", "meiner", "meines", "meiner"]
+      ],
+      "note": "Для unser, euer, Ihr — те же окончания. euer в oblique: eure- (deine, deines, deinem...)."
+    },
+    {
+      "id": "personalpronomen",
+      "level": "A1",
+      "title": "Личные местоимения",
+      "columns": ["Nominativ", "Akkusativ", "Dativ", "Genitiv (selten)"],
+      "rows": [
+        ["ich", "mich", "mir", "meiner"],
+        ["du", "dich", "dir", "deiner"],
+        ["er", "ihn", "ihm", "seiner"],
+        ["sie", "sie", "ihr", "ihrer"],
+        ["es", "es", "ihm", "seiner"],
+        ["wir", "uns", "uns", "unser"],
+        ["ihr", "euch", "euch", "euer"],
+        ["sie/Sie", "sie/Sie", "ihnen/Ihnen", "ihrer/Ihrer"]
+      ],
+      "note": "Genitiv почти не используется в речи, заменяется притяжательными артиклами."
+    },
+    {
+      "id": "reflexivpronomen",
+      "level": "A2",
+      "title": "Возвратные местоимения",
+      "columns": ["Nominativ", "Akkusativ", "Dativ"],
+      "rows": [
+        ["ich", "mich", "mir"],
+        ["du", "dich", "dir"],
+        ["er/sie/es", "sich", "sich"],
+        ["wir", "uns", "uns"],
+        ["ihr", "euch", "euch"],
+        ["sie/Sie", "sich", "ihnen/Ihnen"]
+      ],
+      "note": "В дативе только для глаголов с дативным дополнением (sich vorstellen, sich merken)."
+    },
+    {
+      "id": "relativpronomen",
+      "level": "B1",
+      "title": "Относительные местоимения",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "der", "die", "das", "die"],
+        ["Akkusativ", "den", "die", "das", "die"],
+        ["Dativ", "dem", "der", "dem", "denen"],
+        ["Genitiv", "dessen", "deren", "dessen", "deren"]
+      ],
+      "note": "Genitiv: dessen (м/ср), deren (ж/мн). В дативе Plural — denen."
+    },
+    {
+      "id": "frageworter",
+      "level": "A1",
+      "title": "Вопросительные слова",
+      "columns": ["Слово", "Перевод", "Пример"],
+      "rows": [
+        ["wer", "кто (Nom)", "Wer kommt?"],
+        ["wen", "кого (Akk)", "Wen siehst du?"],
+        ["wem", "кому (Dat)", "Wem hilfst du?"],
+        ["wessen", "чей (Gen)", "Wessen Buch ist das?"],
+        ["was", "что", "Was machst du?"],
+        ["wo", "где", "Wo wohnst du?"],
+        ["wohin", "куда", "Wohin gehst du?"],
+        ["woher", "откуда", "Woher kommst du?"],
+        ["wann", "когда", "Wann fährst du?"],
+        ["warum", "почему", "Warum lernst du Deutsch?"],
+        ["wie", "как", "Wie geht es dir?"],
+        ["welcher/welche/welches", "какой", "Welches Buch liest du?"]
+      ],
+      "note": "wer/wen/wem/wessen — только для одушевлённых; was — для неодушевлённых."
+    },
+    {
+      "id": "alphabet_overview",
+      "level": "A1",
+      "title": "Алфавит и особенности написания",
+      "columns": ["Буква", "Имя", "Пример", "Примечание"],
+"rows": [
+        ["A a", "Aa", "Apfel", "—"],
+        ["B b", "Be", "Buch", "—"],
+        ["C c", "Tse", "Computer", "—"],
+        ["D d", "De", "Dach", "—"],
+        ["E e", "Ee", "Essen", "—"],
+        ["F f", "Ef", "Fisch", "—"],
+        ["G g", "Ge", "Glas", "—"],
+        ["H h", "Haa", "Haus", "—"],
+        ["I i", "Ii", "ich", "—"],
+        ["J j", "Jott", "ja", "—"],
+        ["K k", "Kaa", "Kind", "—"],
+        ["L l", "El", "Lampe", "—"],
+        ["M m", "Em", "Mann", "—"],
+        ["N n", "En", "Nase", "—"],
+        ["O o", "Oo", "Obst", "—"],
+        ["P p", "Pe", "Papa", "—"],
+        ["Q q", "Qu", "Qual", "immer mit u"],
+        ["R r", "Er", "Radio", "—"],
+        ["S s", "Es", "See", "—"],
+        ["T t", "Te", "Tag", "—"],
+        ["U u", "Uu", "Uhr", "—"],
+        ["V v", "Vau", "Vater", "—"],
+        ["W w", "We", "Wasser", "—"],
+        ["X x", "Iks", "Xylophon", "—"],
+        ["Y y", "Ypsilon", "Yoga", "—"],
+        ["Z z", "Zett", "Zahn", "—"],
+        ["Ä ä", "Ä", "Äpfel", "Umlaut"],
+        ["Ö ö", "Ö", "Öl", "Umlaut"],
+        ["Ü ü", "Ü", "über", "Umlaut"],
+        ["ß", "Eszett", "Straße", "nach langem Vokal/Diphthong"]
+      ],
+      "note": "Ä/Ö/Ü = Umlaute. ß (Eszett) после длинных гласных/дифтонгов. В Швейцарии ß не используется."
+    },
+    {
+      "id": "noun_gender_endings",
+      "level": "A1",
+      "title": "Род существительного: подсказки по окончаниям",
+      "columns": ["Род", "Окончание/Сuffix", "Примеры"],
+      "rows": [
+        ["Maskulin (der)", "-er (Berufe)", "der Lehrer, der Computer"],
+        ["Maskulin (der)", "-ling", "der Lehrling, der Schmetterling"],
+        ["Maskulin (der)", "-ismus", "der Journalismus, der Tourismus"],
+        ["Maskulin (der)", "-ist", "der Tourist, der Pianist"],
+        ["Maskulin (der)", "-or", "der Professor, der Doktor"],
+        ["Feminin (die)", "-ung", "die Zeitung, die Wohnung"],
+        ["Feminin (die)", "-heit / -keit", "die Gesundheit, die Freiheit"],
+        ["Feminin (die)", "-schaft", "die Freundschaft, die Wissenschaft"],
+        ["Feminin (die)", "-ion / -tion", "die Information, die Nation"],
+        ["Feminin (die)", "-ei", "die Bäckerei, die Malerei"],
+        ["Feminin (die)", "-ie", "die Familie, die Theorie"],
+        ["Feminin (die)", "-ik", "die Musik, die Politik"],
+        ["Feminin (die)", "-ur", "die Natur, die Kultur"],
+        ["Feminin (die)", "-enz / -anz", "die Differenz, die Bedeutung"],
+        ["Neutrum (das)", "-chen / -lein", "das Mädchen, das Fräulein"],
+        ["Neutrum (das)", "-ment", "das Instrument, das Dokument"],
+        ["Neutrum (das)", "-tum", "das Eigentum, das Christentum"],
+        ["Neutrum (das)", "-um", "das Museum, das Zentrum"],
+        ["Neutrum (das)", "-o", "das Auto, das Kino"],
+        ["Neutrum (das)", "-ma", "das Problem, das Thema"]
+      ],
+      "note": "Правила работают в 80-90% случаев. Исключения: der See (озеро) vs das Meer (море)."
+    },
+    {
+      "id": "plural_patterns",
+      "level": "A1",
+      "title": "Множественное число: основные модели",
+      "columns": ["Модель", "Окончание", "Umlaut", "Примеры"],
+      "rows": [
+        ["-e", "+e", "часто", "der Tag → die Tage, der Hund → die Hunde"],
+        ["-er", "+er", "часто", "das Kind → die Kinder, der Mann → die Männer"],
+        ["-n / -en", "+n/en", "нет", "die Frau → die Frauen, der Name → die Namen"],
+        ["-s", "+s", "нет", "das Auto → die Autos, das Hotel → die Hotels"],
+        ["-0 (без изменения)", "—", "часто м/ср", "der Lehrer → die Lehrer, das Fenster → die Fenster"],
+        ["Umlaut + -e", "+e", "да", "der Stuhl → die Stühle, der Vater → die Väter"],
+        ["Umlaut + -er", "+er", "да", "das Haus → die Häuser, das Buch → die Bücher"],
+        ["Umlaut + -n", "+n", "да", "der Bruder → die Brüder"],
+        ["-en (слова на -e)", "+en", "нет", "die Lampe → die Lampen"],
+        ["-n (жен. род на -in)", "+nen", "нет", "die Studentin → die Studentinnen"]
+      ],
+      "note": "Иностранные слова часто делают Plural на -s. Составные существительные плюрализуют последнюю часть."
+    },
+    {
+      "id": "n_deklination",
+      "level": "A2",
+      "title": "N-деклинация (слабые существительные)",
+      "columns": ["", "Singular", "Plural"],
+      "rows": [
+        ["Nominativ", "der Herr", "die Herrn"],
+        ["Akkusativ", "den Herrn", "die Herrn"],
+        ["Dativ", "dem Herrn", "den Herren + n"],
+        ["Genitiv", "des Herrn", "der Herren"]
+      ],
+      "note": "Слова: der Herr, der Junge, der Mensch, der Student, der Polizist, der Nachbar, der Kunde, der Patient, der Assistent, der Astronom, der Bote, der Christ, der Demokrat, der Diplomat, der Elefant, der Experte, der Franzose, der Gedanke, der Geograf, der Graf, der Held, der Hose, der Kollege, der Komet, der Kunde, der Löwe, der Name, der Narr, der Oberst, der Philosoph, der Polizist, der Prinz, der Riese, der Student, der Tourist, der Zeuge. В Plural все на -n/-en."
+    },
+    {
+      "id": "kasus_uebersicht",
+      "level": "A2",
+      "title": "Падежи: обзор функций",
+      "columns": ["Падеж", "Вопрос", "Функция", "Пример"],
+      "rows": [
+        ["Nominativ", "Wer/Was?", "Подлежащее", "Der Mann schläft."],
+        ["Akkusativ", "Wen/Was?", "Прямое дополнение", "Ich sehe den Mann."],
+        ["Dativ", "Wem?", "Косвенное дополнение", "Ich helfe dem Mann."],
+        ["Genitiv", "Wessen?", "Определение (принадлежность)", "Das Buch des Mannes."]
+      ],
+      "note": "Некоторые глаголы требуют Dativ (helfen, danken, folgen) или Genitiv (gedenken, bedürfen)."
+    },
+    {
+      "id": "adj_decl_definite",
+      "level": "A2",
+      "title": "Склонение прилагательных после определённого артикля (слабое)",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "der gute Name", "die gute Suppe", "das gute Auge", "die guten Namen"],
+        ["Akkusativ", "den guten Namen", "die gute Suppe", "das gute Auge", "die guten Namen"],
+        ["Dativ", "dem guten Namen", "der guten Suppe", "dem guten Auge", "den guten Namen"],
+        ["Genitiv", "des guten Namens", "der guten Suppe", "des guten Auges", "der guten Namen"]
+      ],
+      "note": "Только две формы: -e (Nom Sg всех родов, Akk Fem/Neut) и -en (остальные 12 клеток)."
+    },
+    {
+      "id": "adj_decl_indefinite",
+      "level": "A2",
+      "title": "Склонение прилагательных после неопределённого артикля (смешанное)",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "ein guter Wein", "eine gute Suppe", "ein gutes Bier", "keine guten Weine"],
+        ["Akkusativ", "einen guten Wein", "eine gute Suppe", "ein gutes Bier", "keine guten Weine"],
+        ["Dativ", "einem guten Wein", "einer guten Suppe", "einem guten Bier", "keinen guten Weinen"],
+        ["Genitiv", "eines guten Weines", "einer guten Suppe", "eines guten Bieres", "keiner guten Weine"]
+      ],
+      "note": "Nom: -er/-e/-es; Akk: -en/-e/-es; Dat/Gen: всегда -en. В Plural как после определённого (keine/meine + -en)."
+    },
+    {
+      "id": "adj_decl_none",
+      "level": "B1",
+      "title": "Склонение прилагательных без артикля (сильное)",
+      "columns": ["", "Maskulin", "Feminin", "Neutrum", "Plural"],
+      "rows": [
+        ["Nominativ", "guter Wein", "gute Suppe", "gutes Bier", "gute Weine"],
+        ["Akkusativ", "guten Wein", "gute Suppe", "gutes Bier", "gute Weine"],
+        ["Dativ", "gutem Wein", "guter Suppe", "gutem Bier", "guten Weinen"],
+        ["Genitiv", "guten Weines", "guter Suppe", "guten Bieres", "guter Weine"]
+      ],
+      "note": "Принимает окончания определённого артикля: Nom -er/-e/-es/-e, Akk -en/-e/-es/-e, Dat -em/-er/-em/-en, Gen -en/-er/-en/-er."
+    },
+    {
+      "id": "adj_komparation",
+      "level": "A2",
+      "title": "Степени сравнения прилагательных",
+      "columns": ["Позитив", "Компаратив", "Суператив", "Тип"],
+      "rows": [
+        ["groß", "größer", "am größten", "регулярный + Umlaut"],
+        ["klein", "kleiner", "am kleinsten", "регулярный"],
+        ["schnell", "schneller", "am schnellsten", "регулярный"],
+        ["gut", "besser", "am besten", "нерегулярный"],
+        ["viel", "mehr", "am meisten", "нерегулярный"],
+        ["gern", "lieber", "am liebsten", "нерегулярный (наречие)"],
+        ["hoch", "höher", "am höchsten", "Umlaut + -er/-st"],
+        ["nah", "näher", "am nächsten", "Umlaut + -er/-st"],
+        ["teuer", "teurer", "am teuersten", "на -er: только -r/-st"],
+        ["dunkel", "dunkler", "am dunkelsten", "на -el: e выпадает"]
+      ],
+      "note": "Монослоги часто делают Umlaut. На -el/-er/-en в сравнительной степени e выпадает (dunkler, teurer)."
+    },
+    {
+      "id": "praesens_weak",
+      "level": "A1",
+      "title": "Präsens: правильные (слабые) глаголы",
+      "columns": ["Person", "machen", "lernen", "spielen", "arbeiten", "Endung"],
+      "rows": [
+        ["ich", "mache", "lerne", "spiele", "arbeite", "-e"],
+        ["du", "machst", "lernst", "spielst", "arbeitest", "-st"],
+        ["er/sie/es", "macht", "lernt", "spielt", "arbeitet", "-t"],
+        ["wir", "machen", "lernen", "spielen", "arbeiten", "-en"],
+        ["ihr", "macht", "lernt", "spielt", "arbeitet", "-t"],
+        ["sie/Sie", "machen", "lernen", "spielen", "arbeiten", "-en"]
+      ],
+      "note": "На -t/-d/-n/-m перед -st/-t добавляется -e- (arbeitest, arbeitet)."
+    },
+    {
+      "id": "praesens_strong",
+      "level": "A1",
+      "title": "Präsens: сильные глаголы с чередованием",
+      "columns": ["Person", "fahren (a→ä)", "nehmen (e→i)", "laufen (a→ä)", "sprechen (e→i)", "lesen (e→ie)"],
+      "rows": [
+        ["ich", "fahre", "nehme", "laufe", "spreche", "lese"],
+        ["du", "fährst", "nimmst", "läufst", "sprichst", "liest"],
+        ["er/sie/es", "fährt", "nimmt", "läuft", "spricht", "liest"],
+        ["wir", "fahren", "nehmen", "laufen", "sprechen", "lesen"],
+        ["ihr", "fahrt", "nehmt", "lauft", "sprecht", "lest"],
+        ["sie/Sie", "fahren", "nehmen", "laufen", "sprechen", "lesen"]
+      ],
+      "note": "Чередование только в 2-м и 3-м лице Ед. числа. Типы: a→ä, e→i, e→ie."
+    },
+    {
+      "id": "sein_haben_werden",
+      "level": "A1",
+      "title": "Глаголы sein, haben, werden в Präsens",
+      "columns": ["Person", "sein", "haben", "werden"],
+      "rows": [
+        ["ich", "bin", "habe", "werde"],
+        ["du", "bist", "hast", "wirst"],
+        ["er/sie/es", "ist", "hat", "wird"],
+        ["wir", "sind", "haben", "werden"],
+        ["ihr", "seid", "habt", "werdet"],
+        ["sie/Sie", "sind", "haben", "werden"]
+      ],
+      "note": "sein/haben/werden — полностью неправильные. werden также служит вспомогательным для Futur I и Passiv."
+    },
+    {
+      "id": "modalverben",
+      "level": "A1",
+      "title": "Модальные глаголы в Präsens",
+      "columns": ["Person", "können", "müssen", "wollen", "sollen", "dürfen", "mögen"],
+      "rows": [
+        ["ich", "kann", "muss", "will", "soll", "darf", "mag"],
+        ["du", "kannst", "musst", "willst", "sollst", "darfst", "magst"],
+        ["er/sie/es", "kann", "muss", "will", "soll", "darf", "mag"],
+        ["wir", "können", "müssen", "wollen", "sollen", "dürfen", "mögen"],
+        ["ihr", "könnt", "müsst", "wollt", "sollt", "dürft", "mögt"],
+        ["sie/Sie", "können", "müssen", "wollen", "sollen", "dürfen", "mögen"]
+      ],
+      "note": "В Ед.ч. нет окончаний -t/-st в 1/3 лице; Umlaut в kann/muss/will/soll/darf/mag (кроме wollen)."
+    },
+    {
+      "id": "trennbare_verben",
+      "level": "A1",
+      "title": "Разделимые глаголы (trennbare Verben)",
+      "columns": ["Приставка", "Глагол", "Пример (ich)", "Пример (er)", "Пример (Perfekt)"],
+      "rows": [
+        ["ab-", "abfahren", "ich fahre ab", "er fährt ab", "ist abgefahren"],
+        ["an-", "anrufen", "ich rufe an", "er ruft an", "hat angerufen"],
+        ["auf-", "aufstehen", "ich stehe auf", "er steht auf", "ist aufgestanden"],
+        ["aus-", "ausgehen", "ich gehe aus", "er geht aus", "ist ausgegangen"],
+        ["ein-", "einkaufen", "ich kaufe ein", "er kauft ein", "hat eingekauft"],
+        ["los-", "losfahren", "ich fahre los", "er fährt los", "ist losgefahren"],
+        ["mit-", "mitkommen", "ich komme mit", "er kommt mit", "ist mitgekommen"],
+        ["nach-", "nachdenken", "ich denke nach", "er denkt nach", "hat nachgedacht"],
+        ["vor-", "vorlesen", "ich lese vor", "er liest vor", "hat vorgelesen"],
+        ["weg-", "weglaufen", "ich laufe weg", "er läuft weg", "ist weggelaufen"],
+        ["zu-", "zumachen", "ich mache zu", "er macht zu", "hat zugemacht"],
+        ["zurück-", "zurückkommen", "ich komme zurück", "er kommt zurück", "ist zurückgekommen"]
+      ],
+      "note": "Вhauptsatz приставка в конце; в Nebensatz и Infinitiv — вместе (..., dass er anruft / anzurufen)."
+    },
+    {
+      "id": "praeteritum_weak",
+      "level": "A2",
+      "title": "Präteritum: слабые глаголы",
+      "columns": ["Person", "machen", "lernen", "arbeiten", "Endung"],
+      "rows": [
+        ["ich", "machte", "lernte", "arbeitete", "-te"],
+        ["du", "machtest", "lerntest", "arbeitetest", "-test"],
+        ["er/sie/es", "machte", "lernte", "arbeitete", "-te"],
+        ["wir", "machten", "lernten", "arbeiteten", "-ten"],
+        ["ihr", "machtet", "lerntet", "arbeitetet", "-tet"],
+        ["sie/Sie", "machten", "lernten", "arbeiteten", "-ten"]
+      ],
+      "note": "На -t/-d/-n/-m добавляется -e- (arbeitete). В письме чаще, в речи — Perfekt."
+    },
+    {
+      "id": "praeteritum_strong",
+      "level": "A2",
+      "title": "Präteritum: сильные и смешанные глаголы",
+      "columns": ["Инфинитив", "ich/er/sie/es", "wir/ihr/sie", "Partizip II", "Тип"],
+      "rows": [
+        ["fahren", "fuhr", "fuhren", "gefahren", "сильный (a→u)"],
+        ["geben", "gab", "gaben", "gegeben", "сильный (e→a)"],
+        ["helfen", "half", "halfen", "geholfen", "сильный (e→a)"],
+        ["kommen", "kam", "kamen", "gekommen", "сильный (o→a)"],
+        ["laufen", "lief", "liefen", "gelaufen", "сильный (a→ie)"],
+        ["lesen", "las", "lasen", "gelesen", "сильный (e→a)"],
+        ["nehmen", "nahm", "nahmen", "genommen", "сильный (e→a)"],
+        ["sprechen", "sprach", "sprachen", "gesprochen", "сильный (e→a)"],
+        ["trinken", "trank", "tranken", "getrunken", "сильный (i→a)"],
+        ["finden", "fand", "fanden", "gefunden", "сильный (i→a)"],
+        ["bringen", "brachte", "brachten", "gebracht", "смешанный"],
+        ["denken", "dachte", "dachten", "gedacht", "смешанный"],
+        ["kennen", "kannte", "kannten", "gekannt", "смешанный"],
+        ["wissen", "wusste", "wussten", "gewusst", "смешанный"],
+        ["rennen", "rannte", "rannten", "gerannt", "смешанный"],
+        ["nennen", "nannte", "nannten", "genannt", "смешанный"]
+      ],
+      "note": "Смешанные:stem меняется как у сильных, но окончания слабые (-te/-ten)."
+    },
+    {
+      "id": "perfekt_haben_sein",
+      "level": "A1",
+      "title": "Perfekt: выбор вспомогательного (haben / sein)",
+      "columns": ["Группа", "Глаголы", "Вспомогательный", "Пример"],
+      "rows": [
+        ["Движение (Wohin?)", "gehen, kommen, fahren, fliegen, laufen, schwimmen, reisen", "sein", "ich bin gegangen"],
+        ["Смена состояния", "aufstehen, einschlafen, aufwachen, sterben, werden", "sein", "er ist eingeschlafen"],
+        ["sein, bleiben, werden, passieren", "—", "sein", "ich bin geblieben"],
+        ["Все остальные (переходные, рефлексивные, модальные)", "machen, kaufen, lesen, sich waschen, können, müssen", "haben", "ich habe gemacht"],
+        ["Непереходные без движения/смены", "schlafen, sitzen, stehen, liegen, wohnen, arbeiten", "haben", "ich habe geschlafen"]
+      ],
+      "note": "Regel: sein — только при движении к цели или смене состояния. В Süddeutschland/Österreich: sitzen/stehen/liegen → sein."
+    },
+    {
+      "id": "partizip_ii",
+      "level": "A2",
+      "title": "Partizip II: правила образования",
+      "columns": ["Тип", "Правило", "Примеры"],
+      "rows": [
+        ["Слабые (ge- + stem + -t)", "ge-mach-t, ge-lern-t, ge-arbeit-et", "gemacht, gelernt, gearbeitet"],
+        ["Слабые на -ieren (без ge-)", "studi-ert, telefon-iert, passiert", "studiert, telefoniert, passiert"],
+        ["Сильные (ge- + stem + -en)", "ge-fahr-en, ge-gang-en, ge-seh-en", "gefahren, gegangen, gesehen"],
+        ["Смешанные (ge- + stem + -t)", "ge-brach-t, ge-dach-t, ge-nann-t", "gebracht, gedacht, genannt"],
+        ["Разделимые (приставка + ge- + stem)", "ab-ge-fahr-en, an-ge-ruf-en", "abgefahren, angerufen"],
+        ["Неразделимые (без ge-)", "be-such-t, ver-kauf-t, er-zähl-t", "besucht, verkauft, erzählt"],
+        ["Модальные (в Perfekt заменяются Infinitiv)", "habe machen können, habe gehen wollen", "gekönnt, gewollt (редко)"]
+      ],
+      "note": "ge- не ставится перед неразделимыми приставками (be-, ent-, er-, ge-, ver-, zer-, miss-) и перед -ieren."
+    },
+    {
+      "id": "konjunktiv_ii",
+      "level": "B1",
+      "title": "Konjunktiv II: формы",
+      "columns": ["Глагол", "Präsens (würde + Inf)", "Präteritum-Form", "Perfekt (wäre/hätte)"],
+      "rows": [
+        ["sein", "würde sein", "wäre", "wäre gewesen"],
+        ["haben", "würde haben", "hätte", "hätte gehabt"],
+        ["werden", "würde werden", "würde", "wäre geworden"],
+        ["können", "würde können", "könnte", "hätte gekonnt"],
+        ["müssen", "würde müssen", "müsste", "hätte gemusst"],
+        ["wollen", "würde wollen", "wollte", "hätte gewollt"],
+        ["sollen", "würde sollen", "sollte", "hätte gesollt"],
+        ["dürfen", "würde dürfen", "dürfte", "hätte gedurft"],
+        ["machen", "würde machen", "machte", "hätte gemacht"],
+        ["gehen", "würde gehen", "ginge", "wäre gegangen"]
+      ],
+      "note": "В речи почти всегда würde + Infinitiv. Формы Präteritum (wäre, hätte, könnte) — для sein/haben/модальных."
+    },
+    {
+      "id": "konjunktiv_i",
+      "level": "B2",
+      "title": "Konjunktiv I (косвенная речь)",
+      "columns": ["Person", "sein", "haben", "machen", "können", "Endung"],
+      "rows": [
+        ["ich", "sei", "habe", "mache", "könne", "-e"],
+        ["du", "seiest", "habest", "machest", "könnest", "-est"],
+        ["er/sie/es", "sei", "habe", "mache", "könne", "-e"],
+        ["wir", "seien", "haben", "machen", "können", "-en"],
+        ["ihr", "seiet", "habet", "machet", "könnet", "-et"],
+        ["sie/Sie", "seien", "haben", "machen", "können", "-en"]
+      ],
+      "note": "Только 3-е лицо ед.ч. отличается от Indikativ (er mache vs er macht). В косвенной рече при совпадении — Konjunktiv II."
+    },
+    {
+      "id": "passiv_zeiten",
+      "level": "B2",
+      "title": "Пассив во всех временах (werden + Partizip II)",
+      "columns": ["Время", "Aktiv", "Passiv", "Пример Passiv"],
+      "rows": [
+        ["Präsens", "man macht / er macht", "wird gemacht", "Das Haus wird gebaut."],
+        ["Präteritum", "man machte / er machte", "wurde gemacht", "Das Haus wurde gebaut."],
+        ["Perfekt", "man hat gemacht / er hat gemacht", "ist gemacht worden", "Das Haus ist gebaut worden."],
+        ["Plusquamperfekt", "man hatte gemacht", "war gemacht worden", "Das Haus war gebaut worden."],
+        ["Futur I", "man wird machen", "wird gemacht werden", "Das Haus wird gebaut werden."],
+        ["Futur II", "man wird gemacht haben", "wird gemacht worden sein", "Das Haus wird gebaut worden sein."]
+      ],
+      "note": "Perfekt пассива: ist + Partizip II + worden (не geworden). Subjekt пассива = объект актива."
+    },
+    {
+      "id": "imperativ",
+      "level": "A1",
+      "title": "Императив",
+      "columns": ["Форма", "Regel", "Примеры (machen, sein, fahren, arbeiten)"],
+      "rows": [
+        ["du (неформально)", "Stammform без -st, без Umlaut", "mach, sei, fahr, arbeite"],
+        ["ihr (неформально пл.)", "wie Präsens ihr", "macht, seid, fahrt, arbeitet"],
+        ["Sie (формально)", "wie Präsens Sie + Sie", "machen Sie, seien Sie, fahren Sie, arbeiten Sie"],
+        ["wir (включающее)", "wie Präsens wir + wir", "machen wir, seien wir, fahren wir, arbeiten wir"]
+      ],
+      "note": "du-императив: Umlaut убирается (du fährst → fahr!). На -eln/-ern: e остаётся (handeln → handle)."
+    },
+    {
+      "id": "praep_akkusativ",
+      "level": "A1",
+      "title": "Предлоги с Аkkusativ (DOGFU)",
+      "columns": ["Предлог", "Перевод", "Пример"],
+      "rows": [
+        ["durch", "через", "durch den Park"],
+        ["für", "для", "für dich"],
+        ["gegen", "против / около (времени)", "gegen die Wand, gegen 10 Uhr"],
+        ["ohne", "без", "ohne dich"],
+        ["um", "вокруг / в (времени)", "um den See, um 8 Uhr"],
+        ["bis", "до (места/времени)", "bis Berlin, bis morgen"],
+        ["entlang", "вдоль (после существительного)", "den Fluss entlang"]
+      ],
+      "note": "Эзоним: DOGFU (durch, für, gegen, ohne, um) + bis + entlang."
+    },
+    {
+      "id": "praep_dativ",
+      "level": "A1",
+      "title": "Предлоги с Dativ (ABMSVZ)",
+      "columns": ["Предлог", "Перевод", "Пример"],
+      "rows": [
+        ["aus", "из (места/материала)", "aus dem Haus, aus Holz"],
+        ["bei", "у / при / рядом с", "bei mir, bei der Arbeit"],
+        ["mit", "с (совместно)", "mit dem Auto, mit Freunden"],
+        ["nach", "после / в (страну/направление)", "nach dem Essen, nach Berlin"],
+        ["seit", "с (времени)", "seit Montag, seit 2 Jahren"],
+        ["von", "от / от (кем)", "von hier, von meinem Vater"],
+        ["zu", "к (человеку/цели)", "zu Hause, zum Bahnhof"],
+        ["gegenüber", "напротив", "gegenüber dem Hotel"]
+      ],
+      "note": "Эзоним: ABMSVZ (aus, bei, mit, nach, seit, von, zu) + gegenüber. nach + страна/город без артикля."
+    },
+    {
+      "id": "praep_genitiv",
+      "level": "B1",
+      "title": "Предлоги с Genitiv",
+      "columns": ["Предлог", "Перевод", "Пример"],
+      "rows": [
+        ["wegen", "из-за / по причине", "wegen des Regens"],
+        ["trotz", "несмотря на", "trotz des Regens"],
+        ["während", "во время", "während der Woche"],
+        ["statt / anstatt", "вместо", "statt des Kaffees"],
+        ["innerhalb", "внутри (времени/пространства)", "innerhalb einer Stunde"],
+        ["außerhalb", "снаружи / за пределами", "außerhalb der Stadt"],
+        ["aufgrund", "ввиду / на основании", "aufgrund des Wetters"]
+      ],
+      "note": "В устной речи часто с Dativ (wegen dem Regen). В писменном — строго Genitiv."
+    },
+    {
+      "id": "wechselpraepositionen",
+      "level": "A1",
+      "title": "Wechselpräpositionen (Akkusativ / Dativ)",
+      "columns": ["Предлог", "Akkusativ (Wohin?)", "Dativ (Wo?)", "Пример Akk", "Пример Dat"],
+      "rows": [
+        ["an", "к вертикальной поверхности", "у вертикальной поверхности", "an die Wand hängen", "an der Wand hängen"],
+        ["auf", "на горизонтальную поверхность", "на горизонтальной поверхности", "auf den Tisch legen", "auf dem Tisch liegen"],
+        ["hinter", "позади (направление)", "позади (место)", "hinter das Haus gehen", "hinter dem Haus stehen"],
+        ["in", "в (внутрь)", "в (внутри)", "in die Schule gehen", "in der Schule sein"],
+        ["neben", "рядом (направление)", "рядом (место)", "neben ihn setzen", "neben ihm sitzen"],
+        ["über", "над (направление)", "над (место)", "über den Tisch hängen", "über dem Tisch hängen"],
+        ["unter", "под (направление)", "под (место)", "unter den Tisch legen", "unter dem Tisch liegen"],
+        ["vor", "перед (направление)", "перед (место)", "vor das Haus stellen", "vor dem Haus stehen"],
+        ["zwischen", "между (направление)", "между (место)", "zwischen die Stühle setzen", "zwischen den Stühlen sitzen"]
+      ],
+      "note": "Akkusativ = направление движения (Wohin?), Dativ = статичное место (Wo?). Все 9 предлогов обязательны."
+    },
+    {
+      "id": "satzstellung_v2",
+      "level": "A1",
+      "title": "Порядок слов: V2 в главном предложении",
+      "columns": ["Позиция", "Элемент", "Пример 1", "Пример 2"],
+      "rows": [
+        ["1", "Тема (подл./доп./обст.)", "Ich", "Heute"],
+        ["2", "Спряжённый глагол", "lerne", "lerne"],
+        ["3+", "Остальное (доп., обст., инф.)", "Deutsch", "ich Deutsch"],
+        ["End", "Инфинитив / Partizip II / приставка", "—", "—"]
+      ],
+      "rows_full": [
+        ["", "", "Ich lerne Deutsch.", "Heute lerne ich Deutsch."],
+        ["", "", "Das Buch lese ich.", "Gestern habe ich das Buch gelesen."],
+        ["", "", "Morgen fahre ich nach Berlin.", "Nach Berlin fahre ich morgen."]
+      ],
+      "note": "Спряжённый глагол СТРОГО на 2-й позиции. Тема может быть любым членом предложения."
+    },
+    {
+      "id": "satzklammer",
+      "level": "A2",
+      "title": "Скобка предложения (Satzklammer)",
+      "columns": ["Конструкция", "Левый край (Pos 2)", "Правый край (Ende)", "Пример"],
+      "rows": [
+        ["Модальный + Infinitiv", "модальный", "инфинитив", "Ich muss arbeiten."],
+        ["Perfekt", "haben/sein", "Partizip II", "Ich habe gearbeitet."],
+        ["Futur I", "werden", "инфинитив", "Ich werde arbeiten."],
+        ["Passiv", "werden", "Partizip II", "Ich werde gesehen."],
+        ["Разделимый глагол", "глагол без приставки", "приставка", "Ich stehe um 7 auf."],
+        ["zu-Infinitiv", "главный глагол", "um ... zu + Inf", "Ich versuche zu schlafen."]
+      ],
+      "note": "В главном предложении: спряжённый глагол на Pos 2, вторая часть в конце."
+    },
+    {
+      "id": "tekomolo",
+      "level": "A2",
+      "title": "Порядок дополнений: TeKaMoLo",
+      "columns": ["Порядок", "Тип", "Вопрос", "Пример"],
+      "rows": [
+        ["1. Te", "Temporal (время)", "Wann?", "gestern, um 10 Uhr, oft"],
+        ["2. Ka", "Kausal (причина)", "Warum?", "deshalb, wegen des Regens"],
+        ["3. Mo", "Modal (образ действия)", "Wie?", "gerne, schnell, zu Fuß"],
+        ["4. Lo", "Lokal (место)", "Wo? Wohin?", "in Berlin, nach Hause"]
+      ],
+      "note": "Порядок относительно свободен для акцента, но TeKaMoLo — нейтральный. Место перед направлением (Wo? vor Wohin?)."
+    },
+    {
+      "id": "nebensatz_wortstellung",
+      "level": "A2",
+      "title": "Порядок слов в придаточном предложении",
+      "columns": ["Союз", "Тип", "Позиция спряжённого глагола", "Пример"],
+      "rows": [
+        ["dass", "объектное", "в конце", "Ich denke, dass er kommt."],
+        ["weil", "причинное", "в конце", "Ich bleibe, weil es regnet."],
+        ["wenn", "условное/временн.", "в конце", "Wenn ich Zeit habe, lese ich."],
+        ["als", "однократное прошлое", "в конце", "Als er ankam, aßen wir."],
+        ["obwohl", "уступительное", "в конце", "Er kommt, obwohl er krank ist."],
+        ["ob", "косвенный вопрос", "в конце", "Ich weiß nicht, ob er kommt."],
+        ["damit", "целевое", "в конце", "Ich lerne, damit ich bestehe."]
+      ],
+      "note": "В придаточном ВСЕ спряжённые глаголы в конце (последний — спряжённый)."
+    },
+    {
+      "id": "fragesatz",
+      "level": "A1",
+      "title": "Вопросительные предложения",
+      "columns": ["Тип", "Порядок", "Пример"],
+      "rows": [
+        ["Ja/Nein-Frage", "Verb — Subjekt — ...", "Lernst du Deutsch?"],
+        ["W-Frage (с вопросит. словом)", "W-Wort — Verb — Subjekt — ...", "Was lernst du?"],
+        ["Subjektfrage (wer/was)", "Wer/Was — Verb — ...", "Wer kommt?"],
+        ["Entscheidungsfrage mit oder", "Verb — Subjekt — ... oder ...?", "Trinkst du Tee oder Kaffee?"]
+      ],
+      "note": "В Ja/Nein-фразе глагол на 1-й позиции. В W-фразах вопросительное слово на 1-й, глагол на 2-й."
+    },
+    {
+      "id": "negation",
+      "level": "A1",
+      "title": "Отрицание: nicht и kein",
+      "columns": ["Тип", "Правило", "Пример"],
+      "rows": [
+        ["kein + существительное", "как неопределённый артикль", "Ich habe kein Auto."],
+        ["nicht + глагол/прилагат./наречие", "обычно перед отрицаемым", "Ich lerne nicht."],
+        ["nicht + предлог. дополнение", "перед предлогом", "Ich fahre nicht nach Berlin."],
+        ["nicht + всё предложение", "в конце", "Er kommt heute nicht."],
+        ["Position von nicht", "после временных, перед локальными", "Ich gehe heute nicht ins Kino."]
+      ],
+      "note": "kein отрицает существительное (нет никакого...), nicht — всё остальное. nicht перед Partizip II в Perfekt."
+    },
+    {
+      "id": "konnektoren_uebersicht",
+      "level": "B1",
+      "title": "Соединительные слова (Konnektoren)",
+      "columns": ["Тип", "Слова", "Порядок слов", "Пример"],
+      "rows": [
+        ["Координирующие (0 позиция)", "und, aber, oder, denn, sondern", "V2 (как главное)", "Ich lerne und er liest."],
+        ["Адвербиальные (1-я позиция)", "deshalb, trotzdem, jedoch, trotzdem, außerdem", "V2 (глагол на 2-й)", "Es regnet. Deshalb bleibe ich."],
+        ["Субординирующие (в конце)", "dass, weil, wenn, als, obwohl, ob, damit", "глагол в конце", "Ich bleibe, weil es regnet."]
+      ],
+      "note": "denn — координирующий (Pos 0), weil — субординирующий (глагол в конце). trotzdem/dennoch — адвербиальные."
+    },
+    {
+      "id": "da_wo_komposita",
+      "level": "B1",
+      "title": "Da-/Wo-компOUNDS",
+      "columns": ["Тип", "Образование", "Примеры", "Перевод"],
+      "rows": [
+        ["da- + предлог", "да + предлог (r при гласном)", "daran, darauf, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darauf", "об этом, на этом, за это..."],
+        ["wo- + предлог", "wo + предлог (r при гласном)", "woran, worauf, wofür, wovon, wozu, wogegen, worin", "о чём, на чем, за что..."]
+      ],
+      "note": "da- = на него/её/их (указательное), wo- = вопросительное. Только с предлогами, требующими Akk/Dat."
+    },
+    {
+      "id": "partizipialattribute",
+      "level": "B1",
+      "title": "Partizipialattribute (причастные определения)",
+      "columns": ["Тип", "Образование", "Пример", "Перевод"],
+      "rows": [
+        ["Partizip I (aktiv)", "Infinitiv + -d", "das schlafende Kind", "спящий ребёнок"],
+        ["Partizip II (passiv)", "ge- + stem + -t/-en", "das gebrochene Bein", "сломанная нога"],
+        ["Расширенное (Partizip I)", "Adv + Partizip I", "das auf dem Boden liegende Buch", "лежащая на полу книга"],
+        ["Расширенное (Partizip II)", "Adv + Partizip II", "der von mir gekaufte Wagen", "купленный мной автомобиль"]
+      ],
+      "note": "Склоняются как прилагательные. Partizip I = одновременное действие, Partizip II = завершённое/пассивное."
+    },
+    {
+      "id": "nominalisierung",
+      "level": "B2",
+      "title": "Номинализация (Verben → Substantive)",
+      "columns": ["Тип", "Образование", "Пример (Verb)", "Пример (Nomen)"],
+      "rows": [
+        ["Infinitiv als Nomen", "Великая буква + Infinitiv", "lesen", "das Lesen"],
+        ["Partizip I als Nomen", "Partizip I + -e + декл.", "sterben", "der Sterbende"],
+        ["Partizip II als Nomen", "Partizip II + -e + декл.", "verletzen", "der Verletzte"],
+        ["Abstraktum mit -ung/-heit/-keit", "Суффикс", "entscheiden", "die Entscheidung"]
+      ],
+      "note": "Номинализированные инфинитивы — среднего рода (das Lesen). Partizip I/II склоняются как прилагательные."
+    },
+    {
+      "id": "funktionsverbgefuege",
+      "level": "B2",
+      "title": "Функциональные глагольные сочетания (Funktionsverbgefüge)",
+      "columns": ["FVG", "Простой глагол", "Пример"],
+      "rows": [
+        ["in Frage kommen", "geeignet sein", "Das kommt in Frage."],
+        ["zur Verfügung stellen", "geben / bereitstellen", "Wir stellen das zur Verfügung."],
+        ["in Betracht ziehen", "erwägen", "Wir ziehen das in Betracht."],
+        ["Unterschrift leisten", "unterschreiben", "Er leistet Unterschrift."],
+        ["Abhilfe schaffen", "helfen / beheben", "Das schafft Abhilfe."],
+        ["Entscheidung treffen", "entscheiden", "Wir treffen die Entscheidung."],
+        ["Kenntnis nehmen", "erfahren / zur Kenntnis nehmen", "Ich nehme davon Kenntnis."],
+        ["Anwendung finden", "angewendet werden", "Das findet Anwendung."]
+      ],
+      "note": "Глагол (leisten, stellen, treffen, schaffen) теряет лексическое значение, смысл несёт существительное."
+    }
+  ]
+}

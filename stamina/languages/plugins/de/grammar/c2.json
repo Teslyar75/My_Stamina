@@ -1,0 +1,793 @@
+{
+  "version": 1,
+  "level": "C2",
+  "lessons": [
+    {
+      "id": "c2-01-nuancen",
+      "order": 1,
+      "title": "Тонкие различия близких слов",
+      "subtitle": "synonyme Verben/Adjektive, Registerunterschiede, Kollokationen",
+      "topics": [
+        "wortbildung"
+      ],
+      "prereq": [
+        "c1-06-wortbildung",
+        "c1-03-akademisch"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "C2: Feinheiten der Bedeutung, Register (formell/umgangssprachlich), feste Kollokationen, stilistische Nuancen."
+        },
+        {
+          "kind": "rule",
+          "title": "Verben: sehen/anschauen/betrachten/beobachten",
+          "text": "sehen = unwillkürlich. anschauen = bewusst, kurz. betrachten = länger, aufmerksam. beobachten = systematisch, über Zeit."
+        },
+        {
+          "kind": "rule",
+          "title": "Verben: fragen/bitten/ersuchen/auffordern",
+          "text": "fragen = neutral. bitten = höflich, Bitte. ersuchen = formell, behördlich. auffordern = autoritär, offiziell."
+        },
+        {
+          "kind": "rule",
+          "title": "Adjektive: groß/großartig/gewaltig/riesig",
+          "text": "grß = physisch. großartig = bewundernd. gewaltig = beeindruckend, oft negativ. riesig = sehr groß (umgangssprachlich)."
+        },
+        {
+          "kind": "rule",
+          "title": "Kollokationen (feste Verbindungen)",
+          "text": "eine Entscheidung treffen (nicht *machen), zur Kenntnis nehmen (nicht *wissen), in Frage kommen (nicht *fragen), Anwendung finden (nicht *finden)."
+        },
+        {
+          "kind": "rule",
+          "title": "Register: formell vs umgangssprachlich",
+          "text": "erhalten (formell) vs bekommen (neutral) vs kriegen (umgangssprachlich). verfügen über (formell) vs haben (neutral)."
+        },
+        {
+          "kind": "example",
+          "de": "Er betrachtet das Bild. (nicht *anschaut lange). Die Behörde ersucht um Auskunft. (nicht *fragt). Eine große Entscheidung treffen. Er verfügt über gute Kenntnisse. (formell)",
+          "ru": "Он рассматривает картину. Ведомство запрашивает сведения. Принять важное решение. Он обладает хорошими знаниями (офиц.).",
+          "note": "betrachten > anschauen. ersuchen > fragen. treffen > machen. verfügen über > haben."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-01-d01",
+          "type": "choice",
+          "prompt": "Bewusst, kurz hinschauen:",
+          "options": [
+            "sehen",
+            "anschauen",
+            "betrachten",
+            "beobachten"
+          ],
+          "answer": [
+            "anschauen"
+          ],
+          "why": "anschauen = bewusst, kurz."
+        },
+        {
+          "id": "c2-01-d02",
+          "type": "choice",
+          "prompt": "Systematisch, über Zeit:",
+          "options": [
+            "sehen",
+            "anschauen",
+            "betrachten",
+            "beobachten"
+          ],
+          "answer": [
+            "beobachten"
+          ],
+          "why": "beobachten = systematisch, über Zeit."
+        },
+        {
+          "id": "c2-01-d03",
+          "type": "choice",
+          "prompt": "Formell, behördlich 'fragen':",
+          "options": [
+            "bitten",
+            "ersuchen",
+            "auffordern",
+            "fragen"
+          ],
+          "answer": [
+            "ersuchen"
+          ],
+          "why": "ersuchen = formell, behördlich."
+        },
+        {
+          "id": "c2-01-d04",
+          "type": "fill",
+          "prompt": "Autoritär, offiziell 'fragen': ____",
+          "answer": [
+            "auffordern"
+          ],
+          "why": "auffordern = autoritär, offiziell."
+        },
+        {
+          "id": "c2-01-d05",
+          "type": "choice",
+          "prompt": "Bewundernd 'groß':",
+          "options": [
+            "groß",
+            "großartig",
+            "gewaltig",
+            "riesig"
+          ],
+          "answer": [
+            "großartig"
+          ],
+          "why": "großartig = bewundernd."
+        },
+        {
+          "id": "c2-01-d06",
+          "type": "fill",
+          "prompt": "Kollokation: 'eine Entscheidung ____ ' (nicht machen)",
+          "answer": [
+            "treffen"
+          ],
+          "why": "eine Entscheidung treffen (FVG)."
+        },
+        {
+          "id": "c2-01-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'zur / nimmt / er / Kenntnis / es'",
+          "answer": [
+            "Er nimmt es zur Kenntnis."
+          ],
+          "why": "zur Kenntnis nehmen (FVG)."
+        },
+        {
+          "id": "c2-01-d08",
+          "type": "choice",
+          "prompt": "Formell für 'bekommen':",
+          "options": [
+            "erhalten",
+            "kriegen",
+            "empfangen",
+            "nehmen"
+          ],
+          "answer": [
+            "erhalten"
+          ],
+          "why": "erhalten = formell."
+        },
+        {
+          "id": "c2-01-d09",
+          "type": "fill",
+          "prompt": "Umgangssprachlich für 'haben': ____ über",
+          "answer": [
+            "verfügen"
+          ],
+          "why": "verfügen über = formell für 'haben'."
+        },
+        {
+          "id": "c2-01-d10",
+          "type": "transform",
+          "prompt": "Umgangssprachlich → Formell: 'Er kriegt das Geld.' → ____",
+          "answer": [
+            "Er erhält das Geld."
+          ],
+          "why": "kriegen → erhalten."
+        },
+        {
+          "id": "c2-01-d11",
+          "type": "choice",
+          "prompt": "'In Frage kommen' =",
+          "options": [
+            "geeignet sein",
+            "fragen",
+            "in Frage stellen",
+            "kommen"
+          ],
+          "answer": [
+            "geeignet sein"
+          ],
+          "why": "FVG: in Frage kommen."
+        },
+        {
+          "id": "c2-01-d12",
+          "type": "fill",
+          "prompt": "Adjektiv: 'sehr groß' (umgangssprachlich): ____",
+          "answer": [
+            "riesig"
+          ],
+          "why": "riesig = sehr groß, umgangssprachlich."
+        }
+      ]
+    },
+    {
+      "id": "c2-02-idiomatik",
+      "order": 2,
+      "title": "Идиомы и коллокации",
+      "subtitle": "Feste Ausdrücke, Bildlichkeit, Phraseme, Redewendungen",
+      "topics": [
+        "funktionsverbgefuege"
+      ],
+      "prereq": [
+        "c2-01-nuancen",
+        "b2-08-funktionsverbgefuege"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Idiome = feste Ausdrücke, deren Bedeutung nicht aus den Einzelwörtern ableitbar ist. Phraseme = teilidiomatisch. Kollokationen = häufige Wortverbindungen."
+        },
+        {
+          "kind": "rule",
+          "title": "Vollidiome (Bedeutung nicht ableitbar)",
+          "text": "ins Gras beißen (sterben), den Löffel abgeben (sterben), das Handtuch werfen (aufgeben), um den heißen Brei reden (nicht direkt sagen), den Nagel auf den Kopf treffen (genau richtig)."
+        },
+        {
+          "kind": "rule",
+          "title": "Phraseme (teilweise idiomatisch)",
+          "text": "eine Rolle spielen, in Frage stellen, zu Rate ziehen, ins Gewicht fallen, die Fäden ziehen, das Ruder herumreißen."
+        },
+        {
+          "kind": "rule",
+          "title": "Kollokationen (häufige Kombinationen)",
+          "text": "schwer wiegen, große Bedeutung haben, in Betracht ziehen, Anwendung finden, Rechnung tragen."
+        },
+        {
+          "kind": "rule",
+          "title": "Redewendungen mit Körperteilen",
+          "text": "den Kopf verlieren (Panik), die Zähne zusammenbeißen (durchhalten), ein Auge zudrücken (tolerieren), die Finger kreuzen (hoffen), ins Fettnäpfchen treten (Fehler machen)."
+        },
+        {
+          "kind": "example",
+          "de": "Er hat den Löffel abgegeben. (gestorben). Um den heißen Brei reden. (nicht direkt). Die Fäden ziehen. (hinter den Kulissen steuern). Ins Fettnäpfchen treten. (peinlicher Fehler).",
+          "ru": "Он сдал кончики. (умер). Ходить вокруг да около. (не по существу). Пускать нити. (управлять тайно). Наступать на грабли. (глупая ошибка).",
+          "note": "Idiome nicht wörtlich übersetzbar. Phraseme teilweise. Kollokationen = Statistik."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-02-d01",
+          "type": "choice",
+          "prompt": "'Ins Gras beißen' bedeutet:",
+          "options": [
+            "sterben",
+            "fallen",
+            "essen",
+            "schlafen"
+          ],
+          "answer": [
+            "sterben"
+          ],
+          "why": "Vollidiom: sterben."
+        },
+        {
+          "id": "c2-02-d02",
+          "type": "choice",
+          "prompt": "'Den Nagel auf den Kopf treffen' =",
+          "options": [
+            "genau richtig liegen",
+            "Nagel einschlagen",
+            "Fehler machen",
+            "bauen"
+          ],
+          "answer": [
+            "genau richtig liegen"
+          ],
+          "why": "Idiom: den Kern treffen."
+        },
+        {
+          "id": "c2-02-d03",
+          "type": "choice",
+          "prompt": "'Um den heißen Brei reden' =",
+          "options": [
+            "nicht direkt sagen",
+            "kochen",
+            "essen",
+            "streiten"
+          ],
+          "answer": [
+            "nicht direkt sagen"
+          ],
+          "why": "Idiom: umschreiben, nicht zum Punkt kommen."
+        },
+        {
+          "id": "c2-02-d04",
+          "type": "fill",
+          "prompt": "'Das Handtuch ____ ' = aufgeben",
+          "answer": [
+            "werfen"
+          ],
+          "why": "das Handtuch werfen = aufgeben (Boxen)."
+        },
+        {
+          "id": "c2-02-d05",
+          "type": "choice",
+          "prompt": "'Die Fäden ziehen' bedeutet:",
+          "options": [
+            "hinter den Kulissen steuern",
+            "nähen",
+            "Fäden spannen",
+            "warten"
+          ],
+          "answer": [
+            "hinter den Kulissen steuern"
+          ],
+          "why": "Phrasem: die eigentliche Macht ausüben."
+        },
+        {
+          "id": "c2-02-d06",
+          "type": "fill",
+          "prompt": "'In ____ stellen' = bezweifeln",
+          "answer": [
+            "Frage"
+          ],
+          "why": "in Frage stellen = bezweifeln."
+        },
+        {
+          "id": "c2-02-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'Löffel / den / abgegeben / hat / er'",
+          "answer": [
+            "Er hat den Löffel abgegeben."
+          ],
+          "why": "Idiom: den Löffel abgeben."
+        },
+        {
+          "id": "c2-02-d08",
+          "type": "choice",
+          "prompt": "'Ins Fettnäpfchen treten' =",
+          "options": [
+            "peinlichen Fehler machen",
+            "kochen",
+            "fett werden",
+            "tanzen"
+          ],
+          "answer": [
+            "peinlichen Fehler machen"
+          ],
+          "why": "Idiom: soziale Blamage."
+        },
+        {
+          "id": "c2-02-d09",
+          "type": "fill",
+          "prompt": "'Ein Auge ____ ' = tolerieren",
+          "answer": [
+            "zudrücken"
+          ],
+          "why": "ein Auge zudrücken = tolerieren, ignorieren."
+        },
+        {
+          "id": "c2-02-d10",
+          "type": "transform",
+          "prompt": "Wörtlich → Idiom: 'Er stirbt.' → 'Er ____ '",
+          "answer": [
+            "beißt ins Gras"
+          ],
+          "why": "Idiom für sterben."
+        },
+        {
+          "id": "c2-02-d11",
+          "type": "choice",
+          "prompt": "'Zu Rate ziehen' =",
+          "options": [
+            "um Rat fragen",
+            "ziehen",
+            "raten",
+            "Ratgeber"
+          ],
+          "answer": [
+            "um Rat fragen"
+          ],
+          "why": "Phrasem: um Rat fragen."
+        },
+        {
+          "id": "c2-02-d12",
+          "type": "fill",
+          "prompt": "'Die Zähne ____ ' = durchhalten",
+          "answer": [
+            "zusammenbeißen"
+          ],
+          "why": "die Zähne zusammenbeißen = durchhalten, ausharren."
+        }
+      ]
+    },
+    {
+      "id": "c2-03-stilregister",
+      "order": 3,
+      "title": "Стилистические регистры",
+      "subtitle": "Hochsprache, Umgangssprache, Fachsprache, Jugendslang, Netzhaut",
+      "topics": [
+        "wortbildung"
+      ],
+      "prereq": [
+        "c2-01-nuancen",
+        "c2-02-idiomatik",
+        "c1-03-akademisch"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Stilregister = Sprachvarietäten nach Situation, Thema, Medium. C2 beherrscht Registerwechsel bewusst."
+        },
+        {
+          "kind": "rule",
+          "title": "Hochsprache (gehoben)",
+          "text": "Archaismen, komplexe Syntax, Nominalstil, Konjunktiv I, Fremdwörter. 'Es sei dahingestellt, ob...' 'Der Beschluss bedarf der Genehmigung.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Standardsprache (schriftlich/mündlich)",
+          "text": "Klare Grammatik, moderate Fremdwörter, Verbalstil. 'Es ist unklar, ob...' 'Der Beschluss muss genehmigt werden.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Umgangssprache (mündlich, privat)",
+          "text": "Kurzformen, Partikeln, elliptisch, idiomatisch. 'Is unklar, ob...' 'Der Beschluss muss genehmigt werden, gell?'"
+        },
+        {
+          "kind": "rule",
+          "title": "Fachsprache / Behördendeutsch",
+          "text": "Präzision, Nominalstil, Passiv, Definitionen. 'Die Antragstellung erfolgt formgebunden.' 'Eine Genehmigungspflicht besteht.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Jugendslang / Netzhaut",
+          "text": "Anglizismen, Verkürzungen, Neologismen, Ironie. 'Das ist cringe.' 'Ich bin down.' 'No cap.' 'Ehrenmann.'"
+        },
+        {
+          "kind": "example",
+          "de": "Hoch: Es sei dahingestellt. Standard: Es ist unklar. Umgangssprachlich: Is unklar. Behörde: Die Klärung erfolgt. Jugend: Das ist cringe.",
+          "ru": "Высокий: Предстоит решить. Стандарт: Неясно. Разговорный: Неясно. Канцелярит: Прояснение производится. Молодёжь: Это кринж.",
+          "note": "Registerwechsel = stilistische Kompetenz."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-03-d01",
+          "type": "choice",
+          "prompt": "Hochsprache: 'Es ____ dahingestellt, ob...'",
+          "options": [
+            "sei",
+            "ist",
+            "wäre",
+            "war"
+          ],
+          "answer": [
+            "sei"
+          ],
+          "why": "Konjunktiv I in hochsprachlicher Koncession."
+        },
+        {
+          "id": "c2-03-d02",
+          "type": "choice",
+          "prompt": "Behördendeutsch: 'Die ____ erfolgt formgebunden.'",
+          "options": [
+            "Antragstellung",
+            "Antrag",
+            "Anträge",
+            "Antragstellenden"
+          ],
+          "answer": [
+            "Antragstellung"
+          ],
+          "why": "Nominalisierung: Antragstellung (Substantiv)."
+        },
+        {
+          "id": "c2-03-d03",
+          "type": "choice",
+          "prompt": "Umgangssprache: '____ unklar, ob...'",
+          "options": [
+            "Is",
+            "Es ist",
+            "Es sei",
+            "Ist"
+          ],
+          "answer": [
+            "Is"
+          ],
+          "why": "Kurzform 'Is' für 'Es ist'."
+        },
+        {
+          "id": "c2-03-d04",
+          "type": "fill",
+          "prompt": "Jugendslang: 'Das ist ____ ' (peinlich/fremdschämen)",
+          "answer": [
+            "cringe"
+          ],
+          "why": "cringe = peinlich, fremdschämen (aus engl.)."
+        },
+        {
+          "id": "c2-03-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'Genehmigung / der / Beschluss / bedarf / der'",
+          "answer": [
+            "Der Beschluss bedarf der Genehmigung."
+          ],
+          "why": "Behördendeutsch: bedarf + Genitiv."
+        },
+        {
+          "id": "c2-03-d06",
+          "type": "choice",
+          "prompt": "Standardsprache: 'Es ____ unklar, ob...'",
+          "options": [
+            "ist",
+            "sei",
+            "wäre",
+            "war"
+          ],
+          "answer": [
+            "ist"
+          ],
+          "why": "Indikativ, neutral."
+        },
+        {
+          "id": "c2-03-d07",
+          "type": "fill",
+          "prompt": "Fachsprache Medizin: 'Der Patient ____ (verstorben)'",
+          "answer": [
+            "verstarb"
+          ],
+          "why": "verstarb (formell) vs starb (neutral) vs ist gestorben (Perfekt)."
+        },
+        {
+          "id": "c2-03-d08",
+          "type": "choice",
+          "prompt": "Jugendslang: 'Ich bin ____ ' (einverstanden/bereit)",
+          "options": [
+            "down",
+            "up",
+            "out",
+            "in"
+          ],
+          "answer": [
+            "down"
+          ],
+          "why": "down = einverstanden, dabei (aus engl.)."
+        },
+        {
+          "id": "c2-03-d09",
+          "type": "transform",
+          "prompt": "Behördendeutsch → Standard: 'Die Antragstellung erfolgt schriftlich.' → ____",
+          "answer": [
+            "Man muss den Antrag schriftlich stellen."
+          ],
+          "why": "Nominalstil → Verbalstil."
+        },
+        {
+          "id": "c2-03-d10",
+          "type": "fill",
+          "prompt": "Umgangssprache: 'Der Beschluss muss genehmigt werden, ____ ?'",
+          "answer": [
+            "gell"
+          ],
+          "why": "gell = Partikel für Bestätigung (süddeutsch/österreichisch)."
+        },
+        {
+          "id": "c2-03-d11",
+          "type": "choice",
+          "prompt": "'No cap' (Jugendslang) =",
+          "options": [
+            "kein Lüge / ehrlich",
+            "keine Mütze",
+            "kein Limit",
+            "kein Problem"
+          ],
+          "answer": [
+            "kein Lüge / ehrlich"
+          ],
+          "why": "cap = Lüge (US-Slang), no cap = kein Lüge, echt."
+        },
+        {
+          "id": "c2-03-d12",
+          "type": "fill",
+          "prompt": "Registerwechsel bewusst: 'Formell: ____ , Umgangssprachlich: ____ ' (erhalten/bekommen)",
+          "answer": [
+            "erhalten / bekommen"
+          ],
+          "why": "erhalten (formell) vs bekommen (neutral/umgangssprachlich)."
+        }
+      ]
+    },
+    {
+      "id": "c2-04-fehleranalyse",
+      "order": 4,
+      "title": "Typische Fehler und wie man sie erkennt",
+      "subtitle": "Interferenzfehler, Hyperkorrektur, Falsche Freunde, Syntaxfallen",
+      "topics": [
+        "konjunktiv_ii",
+        "passiv_zeiten",
+        "wortbildung"
+      ],
+      "prereq": [
+        "c2-03-stilregister",
+        "c1-03-akademisch",
+        "b2-09-passiv-modal"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "C2-Fehleranalyse: Erkennen und Korrigieren typischer Fehler von Lernern (auch fortgeschrittenen)."
+        },
+        {
+          "kind": "rule",
+          "title": "Interferenz (Muttersprache)",
+          "text": "Russisch: 'Ich bin einverstanden' (richtig) vs 'Ich stimme zu' (richtig). Falsch: 'Ich bin einverstanden mit dir' (lieber: 'Ich stimme dir zu'). 'Ich habe Recht' vs 'Ich liege richtig'."
+        },
+        {
+          "kind": "rule",
+          "title": "Hyperkorrektur",
+          "text": "Überkorrektur: 'wen' statt 'wem' (wem = Dativ!). 'Der Mann, den ich helfe' (falsch, helfen + Dat → dem). 'Ich rate dir zu kommen' (richtig: rate dir, zu kommen)."
+        },
+        {
+          "kind": "rule",
+          "title": "Falsche Freunde (Deutsch-Russisch)",
+          "text": "aktuell = gegenwärtig (nicht *aktuell = wirklich). eventuell = möglicherweise (nicht *эвентуально = случайно). konfus = verwirrt (nicht *конфуз = смущённый). symmetrisch = symmetrisch (ok)."
+        },
+        {
+          "kind": "rule",
+          "title": "Syntaxfallen",
+          "text": "V2-Verletzung: 'Heute ich gehe' (falsch). Präpositionalfall: 'Ich warte auf ihn' (nicht *auf er). Konjunktiv: 'Wenn ich wäre' (falsch: 'wäre ich'). Passiv: 'ist geworden' statt 'ist worden'."
+        },
+        {
+          "kind": "rule",
+          "title": "Kasusfehler bei Verben",
+          "text": "helfen + Dat (nicht Akk), danken + Dat, folgen + Dat, gefallen + Dat. 'Ich helfe ihn' → falsch: 'Ich helfe ihm'."
+        },
+        {
+          "kind": "example",
+          "de": "Falsch: 'Ich helfe ihn.' Richtig: 'Ich helfe ihm.' Falsch: 'Wenn ich wäre reich.' Richtig: 'Wäre ich reich.' Falsch: 'Das ist geworden.' Richtig: 'Das ist geworden.' (Partizip II) / 'Das ist worden.' (Passiv Perfekt).",
+          "ru": "Ошибка: 'Я помогаю ему (Akk)'. Правильно: 'Ich helfe ihm (Dat)'. Ошибка: 'Wenn ich wäre reich'. Правильно: 'Wäre ich reich'.",
+          "note": "Kasus (helfen + Dat), V2, Konjunktiv II Wortstellung, Passiv Perfekt (worden)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-04-d01",
+          "type": "choice",
+          "prompt": "Kasus bei 'helfen': 'Ich helfe ____ '",
+          "options": [
+            "ihm",
+            "ihn",
+            "er",
+            "sein"
+          ],
+          "answer": [
+            "ihm"
+          ],
+          "why": "helfen + Dativ."
+        },
+        {
+          "id": "c2-04-d02",
+          "type": "choice",
+          "prompt": "Konjunktiv II Wortstellung: '____ ich reich, ____ ich reisen.'",
+          "options": [
+            "Wäre / würde",
+            "Wenn ich / würde",
+            "Wäre / würde ich",
+            "Wenn ich wäre / würde ich"
+          ],
+          "answer": [
+            "Wäre / würde"
+          ],
+          "why": "Wäre ich reich (Inversion), würde ich reisen. Oder: Wenn ich reich wäre, würde ich reisen."
+        },
+        {
+          "id": "c2-04-d03",
+          "type": "choice",
+          "prompt": "Passiv Perfekt: 'Das Haus ____ gebaut ____ .'",
+          "options": [
+            "ist worden",
+            "ist geworden",
+            "hat gebaut",
+            "wurde gebaut"
+          ],
+          "answer": [
+            "ist worden"
+          ],
+          "why": "Passiv Perfekt: ist + Partizip II + worden."
+        },
+        {
+          "id": "c2-04-d04",
+          "type": "fill",
+          "prompt": "Falscher Freund: 'aktuell' bedeutet ____ (nicht 'wirklich')",
+          "answer": [
+            "gegenwärtig"
+          ],
+          "why": "aktuell = gegenwärtig, jetzt."
+        },
+        {
+          "id": "c2-04-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'heute / gehe / ich / nicht / spazieren'",
+          "answer": [
+            "Heute gehe ich nicht spazieren."
+          ],
+          "why": "V2: Heute (Pos 1) — gehe (Pos 2) — ich (Pos 3)."
+        },
+        {
+          "id": "c2-04-d06",
+          "type": "choice",
+          "prompt": "Hyperkorrektur: 'Der Mann, ____ ich helfe' → richtig:",
+          "options": [
+            "dem",
+            "den",
+            "der",
+            "wem"
+          ],
+          "answer": [
+            "dem"
+          ],
+          "why": "helfen + Dat → dem."
+        },
+        {
+          "id": "c2-04-d07",
+          "type": "fill",
+          "prompt": "Konjunktiv II Vergangenheit: 'Wenn er ____ (kommen) ____ (gewesen), ____ er ____ (sehen).'",
+          "answer": [
+            "gekommen wäre, hätte er gesehen"
+          ],
+          "why": "Typ 3: wäre + Partizip II, hätte + Partizip II."
+        },
+        {
+          "id": "c2-04-d08",
+          "type": "choice",
+          "prompt": "Falscher Freund: 'eventuell' =",
+          "options": [
+            "möglicherweise",
+            "zufällig",
+            "schließlich",
+            "tatsächlich"
+          ],
+          "answer": [
+            "möglicherweise"
+          ],
+          "why": "eventuell = möglicherweise."
+        },
+        {
+          "id": "c2-04-d09",
+          "type": "transform",
+          "prompt": "Fehler korrigieren: 'Ich rate dir, dass du kommst.' → ____",
+          "answer": [
+            "Ich rate dir, zu kommen."
+          ],
+          "why": "raten + Dat + zu-Infinitiv (nicht dass-Satz)."
+        },
+        {
+          "id": "c2-04-d10",
+          "type": "fill",
+          "prompt": "Kasus: 'Das gefällt ____ ' (mir/mich)",
+          "answer": [
+            "mir"
+          ],
+          "why": "gefallen + Dativ."
+        },
+        {
+          "id": "c2-04-d11",
+          "type": "choice",
+          "prompt": "V2-Fehler: 'Gestern ich ging.' → Richtig:",
+          "options": [
+            "Gestern ging ich.",
+            "Ich ging gestern.",
+            "Ging ich gestern.",
+            "Gestern ich ging."
+          ],
+          "answer": [
+            "Gestern ging ich."
+          ],
+          "why": "V2: Gestern (Pos 1) — ging (Pos 2) — ich (Pos 3)."
+        },
+        {
+          "id": "c2-04-d12",
+          "type": "fill",
+          "prompt": "Passiv Präteritum: 'Der Brief ____ geschrieben.'",
+          "answer": [
+            "wurde"
+          ],
+          "why": "wurde + Partizip II."
+        }
+      ]
+    }
+  ]
+}
