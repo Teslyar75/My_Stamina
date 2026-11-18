@@ -1,6 +1,6 @@
 ﻿# Handoff
 
-Goal: контент EGIU по уровням — уроки грамматики в «Английском» (ветка `agent/orion/english-grammar`).
+Goal: уроки грамматики в «Английском» — **слиты в `master`** (коммит `6ef138b`, ветка `agent/orion/english-grammar`).
 
 Done:
 - PR **#48** смержен в `master` (навигация EN, GrammarPage, i18n, hotkeys/тесты).
@@ -20,8 +20,8 @@ Done:
   - i18n: 11 ключей во всех 7 словарях; `python tools/ci_gate.py --only i18n --only dep` → «ГАТ: зелёный».
 
 Next:
-- Коммит ветки и слияние в `master` (после зелёного гейта).
 - По желанию: озвучка теории целиком (сейчас 🔊 только у примеров), фильтр «показать непройденные».
+- `git push` — по команде пилота: локальный `master` ушёл вперёд `origin/master`.
 
 Problems:
 - Полный `python -m pytest tests/ -q` на этой машине не укладывается в 15 минут (GUI-части);
