@@ -1,0 +1,75 @@
+{
+ "n": 76,
+ "level": "A2",
+ "module": "quantity",
+ "title": "some и any",
+ "en": "some and any",
+ "summary": "Some в утверждении, any в отрицании и вопросе — и почему в вежливой просьбе снова звучит some.",
+ "can_do": [
+  "Выбрать some или any по типу предложения.",
+  "Использовать any в значении «любой».",
+  "Объяснить, почему в просьбе говорят some."
+ ],
+ "theory": [
+  {
+   "h": "Основное деление",
+   "p": "Some живёт в утвердительных фразах, any — в отрицательных и в вопросах. Это деление не про количество, а про тип предложения: I have some money. I don't have any money. Do you have any money?",
+   "formula": "some — утверждение · any — отрицание и вопрос"
+  },
+  {
+   "h": "Таблица решений",
+   "p": "Пять строк закрывают почти все случаи. Исключение только одно — просьба и предложение, там снова some.",
+   "table": {
+    "head": ["Предложение", "Слово", "Пример"],
+    "rows": [
+     ["утверждение", "some", "There are some eggs."],
+     ["отрицание", "any", "There aren't any eggs."],
+     ["вопрос", "any", "Are there any eggs?"],
+     ["просьба, предложение", "some", "Would you like some tea?"],
+     ["«любой»", "any", "Any student can join."]
+    ]
+   }
+  },
+  {
+   "h": "Some в просьбах",
+   "p": "Если мы просим или предлагаем, ставим some: Can I have some water? Would you like some cake? Здесь нет настоящего сомнения, есть вежливое действие, поэтому правило вопроса отступает.",
+   "formula": "Can I have some water? · Would you like some cake?"
+  },
+  {
+   "h": "Any в значении «любой»",
+   "p": "В утвердительной фразе any значит «любой, всякий»: You can take any seat. Any child knows this. В речи на any падает ударение, и смысл сразу понятен.",
+   "formula": "Take any seat. · Any bus goes to the centre."
+  },
+  {
+   "h": "Составные слова",
+   "p": "Те же правила работают для something и anything, somebody и anybody, somewhere и anywhere. И так же в просьбах появляется some: Would you like something to drink?",
+   "formula": "something / anything · somebody / anybody · somewhere / anywhere"
+  }
+ ],
+ "examples": [
+  {"en": "I need some sugar for the cake.", "ru": "Мне нужен сахар для торта."},
+  {"en": "We don't have any milk.", "ru": "У нас нет молока."},
+  {"en": "Do you have any questions?", "ru": "У вас есть вопросы?"},
+  {"en": "Would you like some coffee?", "ru": "Хотите кофе?"},
+  {"en": "You can sit in any chair.", "ru": "Можете сесть на любой стул."},
+  {"en": "There is something in the box.", "ru": "В коробке что-то есть."}
+ ],
+ "traps": [
+  {"bad": "I don't have some money.", "good": "I don't have any money.", "why": "В отрицании нужен any, а не some."},
+  {"bad": "Do you have some brothers?", "good": "Do you have any brothers?", "why": "Обычный вопрос — any; some только в просьбе или предложении."},
+  {"bad": "Any people were waiting outside.", "good": "Some people were waiting outside.", "why": "В утверждении «несколько» — some; any значило бы «любые»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I have ___ questions about the lesson.", "options": ["any", "some", "a"], "a": 1, "why": "Утверждение, множественное — some."},
+  {"type": "choice", "q": "There isn't ___ bread in the kitchen.", "options": ["some", "any", "no"], "a": 1, "why": "Отрицание — any."},
+  {"type": "choice", "q": "Would you like ___ water?", "options": ["any", "some", "a"], "a": 1, "why": "Предложение угощения — some."},
+  {"type": "choice", "q": "Is there ___ milk in the fridge?", "options": ["some", "any", "no"], "a": 1, "why": "Вопрос — any."},
+  {"type": "choice", "q": "___ student can use the library.", "options": ["Some", "Any", "A"], "a": 1, "why": "«Любой студент» — any student."},
+  {"type": "choice", "q": "We bought ___ fruit at the market.", "options": ["any", "a", "some"], "a": 2, "why": "Утверждение с неисчисляемым — some fruit."},
+  {"type": "gap", "q": "I don't need ___ help, thank you.", "a": ["any"], "why": "Отрицание с not — any."},
+  {"type": "gap", "q": "Are there ___ messages for me?", "a": ["any"], "why": "Обычный вопрос — any."},
+  {"type": "translate", "q": "У нас нет сахара.", "a": ["we don't have any sugar", "we do not have any sugar", "we have no sugar", "we haven't got any sugar"], "why": "Отрицание: not any или no."},
+  {"type": "translate", "q": "Хочешь кофе?", "a": ["would you like some coffee", "do you want some coffee"], "why": "Предложение — some coffee."
+  }
+ ]
+}

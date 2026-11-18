@@ -8,10 +8,10 @@ from stamina.storage import DEFAULT_SETTINGS
 
 class NavTest(unittest.TestCase):
     def test_eight_zones_in_order(self):
-        self.assertEqual(nav.zones(), ["bridge", "english", "speedread", "lounge", "radio", "comm",
+        self.assertEqual(nav.zones(), ["bridge", "languages", "speedread", "lounge", "radio", "comm",
                                        "docs", "orion", "lab", "terraformer", "settings"])
         # незагрузившийся раздел пропадает, мостик и настройки — всегда
-        self.assertEqual(nav.zones({"english"}), ["bridge", "english", "settings"])
+        self.assertEqual(nav.zones({"english"}), ["bridge", "settings"])
         # «ЭФИР» — своя зона (порт I-001: пилоты переписываются в общем канале)
         self.assertEqual(nav.zones({"comm"}), ["bridge", "comm", "settings"])
         self.assertEqual(nav.zone_of("comm"), "comm")
@@ -24,6 +24,10 @@ class NavTest(unittest.TestCase):
         # «ДОКУМЕНТЫ» — тексты, диктовка и снимки пилота
         self.assertEqual(nav.zones({"docs"}), ["bridge", "docs", "settings"])
         self.assertEqual(nav.path("docs"), [("ДОКУМЕНТЫ", "docs")])
+
+    def test_english_under_languages(self):
+        self.assertEqual(nav.zone_of("english"), "languages")
+        self.assertEqual(nav.path("english"), [("ИНОСТРАННЫЕ ЯЗЫКИ", "languages"), ("АНГЛИЙСКИЙ", "english")])
 
     def test_bridge_submenu_belongs_to_bridge(self):
         for leaf, _title in nav.BRIDGE_LEAVES:
@@ -169,7 +173,7 @@ class CockpitKeyboardTest(unittest.TestCase):
     def test_zones_and_subtabs(self):
         a = self.app
         self.assertEqual([s for s, _ in a.SCREENS][0], "bridge")
-        self.assertEqual(len(a.SCREENS), 11)   # + «Лаборатория» (Ctrl+0)
+        self.assertEqual(len(a.SCREENS), 11)   # + «ИНОСТРАННЫЕ ЯЗЫКИ», «Лаборатория» (Ctrl+0)
         a.show("missions")
         a.cycle_subtab(1)
         self.assertEqual(a.current, "cargo")

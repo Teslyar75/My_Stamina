@@ -1,0 +1,2303 @@
+{
+  "version": 1,
+  "level": "B1",
+  "lessons": [
+    {
+      "id": "b1-01-konjunktiv-ii",
+      "order": 1,
+      "title": "Konjunktiv II: вежливость и желания",
+      "subtitle": "würde + Infinitiv, wäre/hätte/könnte/müsste/wollte/sollte/dürfte/mochte",
+      "topics": [
+        "konjunktiv_ii"
+      ],
+      "prereq": [
+        "a2-03-praeteritum",
+        "a1-05-haben-modalverben"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Konjunktiv II drückt Unwirklichkeit, Höflichkeit, Wünsche, Ratschläge aus. Zwei Formen: würde + Infinitiv (für fast alle Verben) und Präteritum-Form (bei sein, haben, Modalen)."
+        },
+        {
+          "kind": "rule",
+          "title": "würde + Infinitiv",
+          "text": "ich würde machen, du würdest machen, er würde machen... — für alle Verben außer sein/haben/Modale."
+        },
+        {
+          "kind": "rule",
+          "title": "Präteritum-Formen (häufig)",
+          "text": "sein → wäre, haben → hätte, können → könnte, müssen → müsste, wollen → wollte, sollen → sollte, dürfen → dürfte, mögen → mochte. Diese Formen statt würde + Inf."
+        },
+        {
+          "kind": "rule",
+          "title": "Verwendung",
+          "text": "Höflichkeit: Ich möchte... / Könnten Sie... Wünsche: Ich wäre gern... Irreal: Wenn ich Zeit hätte, käme ich. Ratschläge: An deiner Stelle würde ich..."
+        },
+        {
+          "kind": "table",
+          "ref": "konjunktiv_ii"
+        },
+        {
+          "kind": "example",
+          "de": "Ich würde gern kommen. Könnten Sie mir helfen? Wenn ich reich wäre, würde ich reisen. An deiner Stelle würde ich das machen.",
+          "ru": "Я бы с удовольствием пришёл. Не могли бы вы мне помочь? Если бы я был богат, я бы путешествовал. На твоём месте я бы это сделал.",
+          "note": "würde + Inf, Prät-Formen (wäre, könnte), irrealer Bedingungssatz."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-01-d01",
+          "type": "choice",
+          "prompt": "Ich ____ gern kommen. (würde + Inf)",
+          "options": [
+            "würde",
+            "würdest",
+            "würdet",
+            "würden"
+          ],
+          "answer": [
+            "würde"
+          ],
+          "why": "ich → würde."
+        },
+        {
+          "id": "b1-01-d02",
+          "type": "choice",
+          "prompt": "Er ____ (können) dir helfen. (Konj. II)",
+          "options": [
+            "könnte",
+            "würde können",
+            "könnt",
+            "kann"
+          ],
+          "answer": [
+            "könnte"
+          ],
+          "why": "können → Präteritum-Form: könnte (häufiger als würde können)."
+        },
+        {
+          "id": "b1-01-d03",
+          "type": "choice",
+          "prompt": "Wenn ich Zeit ____ , käme ich. (haben)",
+          "options": [
+            "hätte",
+            "hatte",
+            "habe",
+            "würde haben"
+          ],
+          "answer": [
+            "hätte"
+          ],
+          "why": "haben → Präteritum-Form: hätte."
+        },
+        {
+          "id": "b1-01-d04",
+          "type": "fill",
+          "prompt": "An deiner Stelle ____ ich das machen. (würde)",
+          "answer": [
+            "würde"
+          ],
+          "why": "ich → würde."
+        },
+        {
+          "id": "b1-01-d05",
+          "type": "choice",
+          "prompt": "____ Sie mir bitte helfen? (können, höflich)",
+          "options": [
+            "Könnten",
+            "Können",
+            "Würden können",
+            "Könnt"
+          ],
+          "answer": [
+            "Könnten"
+          ],
+          "why": "Höflichkeit: Konj. II von können → Könnten."
+        },
+        {
+          "id": "b1-01-d06",
+          "type": "fill",
+          "prompt": "Ich ____ (sein) gern Pilot. (Konj. II)",
+          "answer": [
+            "wäre"
+          ],
+          "why": "sein → wäre."
+        },
+        {
+          "id": "b1-01-d07",
+          "type": "choice",
+          "prompt": "Wir ____ (müssen) warten. (Konj. II)",
+          "options": [
+            "müssten",
+            "würden müssen",
+            "mussten",
+            "müssen"
+          ],
+          "answer": [
+            "müssten"
+          ],
+          "why": "müssen → Präteritum-Form: müssten."
+        },
+        {
+          "id": "b1-01-d08",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'würde / ich / das / nicht / machen'",
+          "answer": [
+            "Ich würde das nicht machen."
+          ],
+          "why": "V2: Ich würde — das nicht machen."
+        },
+        {
+          "id": "b1-01-d09",
+          "type": "fill",
+          "prompt": "Wenn er ____ (wollen) kommen, ____ er kommen. (würde)",
+          "answer": [
+            "wollte, würde"
+          ],
+          "why": "wollen → wollte; Hauptsatz: würde."
+        },
+        {
+          "id": "b1-01-d10",
+          "type": "choice",
+          "prompt": "Ich ____ (sollen) das tun. (Konj. II)",
+          "options": [
+            "sollte",
+            "würde sollen",
+            "sollt",
+            "soll"
+          ],
+          "answer": [
+            "sollte"
+          ],
+          "why": "sollen → Präteritum-Form: sollte."
+        },
+        {
+          "id": "b1-01-d11",
+          "type": "transform",
+          "prompt": "Indikativ → Konj. II (Höflichkeit): 'Ich will ein Wasser.' → ____",
+          "answer": [
+            "Ich möchte ein Wasser."
+          ],
+          "why": "wollen → möchte (Konj. II Prät-Form)."
+        },
+        {
+          "id": "b1-01-d12",
+          "type": "fill",
+          "prompt": "Wenn ich ____ (haben) Geld, ____ ich reisen. (würde)",
+          "answer": [
+            "hätte, würde"
+          ],
+          "why": "haben → hätte; Hauptsatz: würde."
+        }
+      ]
+    },
+    {
+      "id": "b1-02-konjunktiv-ii-vergangenheit",
+      "order": 2,
+      "title": "Konjunktiv II der Vergangenheit",
+      "subtitle": "hätte gemacht, wäre gegangen — irrealer Vergangenheit",
+      "topics": [
+        "konjunktiv_ii"
+      ],
+      "prereq": [
+        "b1-01-konjunktiv-ii",
+        "a1-17-perfekt"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Konjunktiv II Vergangenheit = hätte/ware + Partizip II. Drückt aus, dass etwas in der Vergangenheit NICHT passiert ist (aber gewollt/geplant war)."
+        },
+        {
+          "kind": "rule",
+          "title": "Bildung",
+          "text": "hätte/ware (Konj. II Präteritum von haben/sein) + Partizip II: ich hätte gemacht, ich wäre gegangen."
+        },
+        {
+          "kind": "rule",
+          "title": "Wahl von haben/sein",
+          "text": "Wie im Perfekt: transitive/Reflexive → hätte. Bewegung/Zustandsänderung → wäre. Modale: hätte gekonnt, hätte gemusst..."
+        },
+        {
+          "kind": "rule",
+          "title": "Verwendung",
+          "text": "Bedauern: Ich hätte das nicht gesagt. Irrealer Bedingungssatz Typ 3: Wenn ich Zeit gehabt hätte, wäre ich gekommen. Vermutung: Er wäre wohl gekommen."
+        },
+        {
+          "kind": "table",
+          "ref": "konjunktiv_ii"
+        },
+        {
+          "kind": "example",
+          "de": "Ich hätte das nicht gesagt. Wenn er früher gekommen wäre, hätte er sie getroffen. Er wäre gern gekommen, aber er hatte keine Zeit.",
+          "ru": "Я бы этого не сказал. Если бы он пришёл раньше, он бы её встретил. Он бы с удовольствием пришёл, но у него не было времени.",
+          "note": "hätte gesagt, wäre gekommen — Konj. II Vergangenheit."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-02-d01",
+          "type": "choice",
+          "prompt": "Ich ____ das nicht gesagt. (hätte + Partizip II)",
+          "options": [
+            "hätte",
+            "habe",
+            "hatte",
+            "würde haben"
+          ],
+          "answer": [
+            "hätte"
+          ],
+          "why": "Konj. II von haben: hätte."
+        },
+        {
+          "id": "b1-02-d02",
+          "type": "choice",
+          "prompt": "Er ____ gegangen. (wäre + Partizip II)",
+          "options": [
+            "wäre",
+            "war",
+            "ist",
+            "würde sein"
+          ],
+          "answer": [
+            "wäre"
+          ],
+          "why": "Konj. II von sein: wäre."
+        },
+        {
+          "id": "b1-02-d03",
+          "type": "choice",
+          "prompt": "Wir ____ (machen) das gern. (hätte + Partizip II)",
+          "options": [
+            "hätten gemacht",
+            "hätten machen",
+            "würden gemacht",
+            "haben gemacht"
+          ],
+          "answer": [
+            "hätten gemacht"
+          ],
+          "why": "hätten (wir) + Partizip II (gemacht)."
+        },
+        {
+          "id": "b1-02-d04",
+          "type": "fill",
+          "prompt": "Wenn ich Zeit ____ , ____ ich gekommen. (haben → hätte, sein → wäre)",
+          "answer": [
+            "gehabt hätte, wäre"
+          ],
+          "why": "Typ 3: wenn ich Zeit gehabt hätte (hätte + Partizip II), wäre ich gekommen (wäre + Partizip II)."
+        },
+        {
+          "id": "b1-02-d05",
+          "type": "choice",
+          "prompt": "Sie ____ (können) kommen. (hätte + Partizip II)",
+          "options": [
+            "hätte gekonnt",
+            "hätte können",
+            "könnte",
+            "hat gekonnt"
+          ],
+          "answer": [
+            "hätte gekonnt"
+          ],
+          "why": "Modale im Konj. II Vergangenheit: hätte + Partizip II (gekönnt)."
+        },
+        {
+          "id": "b1-02-d06",
+          "type": "fill",
+          "prompt": "Er ____ (wollen) das kaufen. (hätte + Partizip II)",
+          "answer": [
+            "hätte gewollt"
+          ],
+          "why": "wollen → hätte gewollt."
+        },
+        {
+          "id": "b1-02-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'hätte / ich / das / gewusst / , / wäre / ich / gekommen'",
+          "answer": [
+            "Hätte ich das gewusst, wäre ich gekommen."
+          ],
+          "why": "Bedingungssatz Typ 3: hätte + Partizip II, wäre + Partizip II."
+        },
+        {
+          "id": "b1-02-d08",
+          "type": "fill",
+          "prompt": "Ich ____ (sollen) das machen. (hätte + Partizip II)",
+          "answer": [
+            "hätte gesollt"
+          ],
+          "why": "sollen → hätte gesollt."
+        },
+        {
+          "id": "b1-02-d09",
+          "type": "choice",
+          "prompt": "Bedauern: 'Ich ____ (nicht / machen).'",
+          "options": [
+            "hätte nicht gemacht",
+            "hätte nicht machen",
+            "habe nicht gemacht",
+            "machte nicht"
+          ],
+          "answer": [
+            "hätte nicht gemacht"
+          ],
+          "why": "Konj. II Vergangenheit für Bedauern."
+        },
+        {
+          "id": "b1-02-d10",
+          "type": "transform",
+          "prompt": "Perfekt → Konj. II Vergangenheit: 'Er hat gearbeitet.' → ____",
+          "answer": [
+            "Er hätte gearbeitet."
+          ],
+          "why": "hat → hätte, Partizip II bleibt."
+        },
+        {
+          "id": "b1-02-d11",
+          "type": "fill",
+          "prompt": "Wenn sie ____ (wissen), ____ sie geholfen. (hätte, wäre)",
+          "answer": [
+            "gewusst hätte, hätte"
+          ],
+          "why": "wissen → hätte gewusst; helfen (transitiv) → hätte geholfen."
+        },
+        {
+          "id": "b1-02-d12",
+          "type": "choice",
+          "prompt": "Er ____ (müssen) warten. (hätte + Partizip II)",
+          "options": [
+            "hätte gemusst",
+            "hätte müssen",
+            "musste",
+            "müsste"
+          ],
+          "answer": [
+            "hätte gemusst"
+          ],
+          "why": "müssen → hätte gemusst."
+        }
+      ]
+    },
+    {
+      "id": "b1-03-passiv-zeiten",
+      "order": 3,
+      "title": "Пассив во всех временах",
+      "subtitle": "werden + Partizip II, Präteritum: wurde, Perfekt: ist ... geworden",
+      "topics": [
+        "passiv_zeiten"
+      ],
+      "prereq": [
+        "a2-14-passiv-praesens",
+        "a2-03-praeteritum",
+        "a1-17-perfekt"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passiv in allen Zeiten: werden (konjugiert) + Partizip II. Subjekt = ehemaliges Akkusativobjekt."
+        },
+        {
+          "kind": "rule",
+          "title": "Übersicht",
+          "text": "Präsens: wird gemacht. Präteritum: wurde gemacht. Perfekt: ist gemacht worden. Plusquamperfekt: war gemacht worden. Futur I: wird gemacht werden. Futur II: wird gemacht worden sein."
+        },
+        {
+          "kind": "rule",
+          "title": "Perfekt Passiv: ist ... worden",
+          "text": "NICHT 'ist ... geworden'! → ist gemacht worden. Partizip II von werden = geworden, aber im Passiv Perfekt: worden."
+        },
+        {
+          "kind": "rule",
+          "title": "Modalverben + Passiv",
+          "text": "muss gemacht werden, kann gemacht werden, soll gemacht werden. Modal (konjugiert) + Partizip II + werden (Infinitiv)."
+        },
+        {
+          "kind": "table",
+          "ref": "passiv_zeiten"
+        },
+        {
+          "kind": "example",
+          "de": "Das Haus wird gebaut. Das Haus wurde gebaut. Das Haus ist gebaut worden. Das Haus muss gebaut werden.",
+          "ru": "Дом строится. Дом строился. Дом построен. Дом должен быть построен.",
+          "note": "wird/wurde/ist ... worden/muss ... werden."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-03-d01",
+          "type": "choice",
+          "prompt": "Das Haus ____ gebaut. (Präsens Passiv)",
+          "options": [
+            "wird",
+            "wurde",
+            "ist",
+            "war"
+          ],
+          "answer": [
+            "wird"
+          ],
+          "why": "Präsens Passiv: wird + Partizip II."
+        },
+        {
+          "id": "b1-03-d02",
+          "type": "choice",
+          "prompt": "Das Haus ____ gebaut. (Präteritum Passiv)",
+          "options": [
+            "wird",
+            "wurde",
+            "ist",
+            "war"
+          ],
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum Passiv: wurde + Partizip II."
+        },
+        {
+          "id": "b1-03-d03",
+          "type": "choice",
+          "prompt": "Das Haus ____ gebaut ____ . (Perfekt Passiv)",
+          "options": [
+            "ist worden",
+            "ist geworden",
+            "hat gebaut",
+            "wurde gebaut"
+          ],
+          "answer": [
+            "ist worden"
+          ],
+          "why": "Perfekt Passiv: ist + Partizip II + worden."
+        },
+        {
+          "id": "b1-03-d04",
+          "type": "fill",
+          "prompt": "Das Haus ____ gebaut ____ . (Plusquamperfekt Passiv)",
+          "answer": [
+            "war worden"
+          ],
+          "why": "Plusquamperfekt Passiv: war + Partizip II + worden."
+        },
+        {
+          "id": "b1-03-d05",
+          "type": "choice",
+          "prompt": "Das Haus ____ gebaut ____ . (Futur I Passiv)",
+          "options": [
+            "wird gebaut werden",
+            "wird gebaut",
+            "ist gebaut werden",
+            "wurde gebaut werden"
+          ],
+          "answer": [
+            "wird gebaut werden"
+          ],
+          "why": "Futur I Passiv: wird + Partizip II + werden."
+        },
+        {
+          "id": "b1-03-d06",
+          "type": "fill",
+          "prompt": "Der Brief ____ lesen ____ . (müssen, Passiv)",
+          "answer": [
+            "muss gelesen werden"
+          ],
+          "why": "Modal + Passiv: muss + Partizip II + werden."
+        },
+        {
+          "id": "b1-03-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'worden / ist / das / Buch / gelesen'",
+          "answer": [
+            "Das Buch ist gelesen worden."
+          ],
+          "why": "Perfekt Passiv: ist + Partizip II + worden."
+        },
+        {
+          "id": "b1-03-d08",
+          "type": "choice",
+          "prompt": "Aktiv: 'Man baut das Haus.' → Passiv:",
+          "options": [
+            "Das Haus wird gebaut.",
+            "Das Haus wird bauen.",
+            "Man wird das Haus gebaut.",
+            "Das Haus baut sich."
+          ],
+          "answer": [
+            "Das Haus wird gebaut."
+          ],
+          "why": "Akk-Objekt → Subjekt, werden + Partizip II."
+        },
+        {
+          "id": "b1-03-d09",
+          "type": "fill",
+          "prompt": "Die Tür ____ geöffnet. (Präteritum Passiv)",
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum: wurde + Partizip II."
+        },
+        {
+          "id": "b1-03-d10",
+          "type": "transform",
+          "prompt": "Präsens → Präteritum Passiv: 'Das Haus wird gebaut.' → ____",
+          "answer": [
+            "Das Haus wurde gebaut."
+          ],
+          "why": "wird → wurde."
+        },
+        {
+          "id": "b1-03-d11",
+          "type": "choice",
+          "prompt": "Futur II Passiv: 'Das Haus ____ gebaut ____ ____ .'",
+          "options": [
+            "wird gebaut worden sein",
+            "wird gebaut werden",
+            "ist gebaut worden",
+            "wurde gebaut"
+          ],
+          "answer": [
+            "wird gebaut worden sein"
+          ],
+          "why": "Futur II: wird + Partizip II + worden + sein."
+        },
+        {
+          "id": "b1-03-d12",
+          "type": "fill",
+          "prompt": "Es ____ getanzt. (unpersönliches Passiv, Präsens)",
+          "answer": [
+            "wird"
+          ],
+          "why": "Unpersönliches Passiv: es wird + Partizip II."
+        }
+      ]
+    },
+    {
+      "id": "b1-04-passiv-ersatz",
+      "order": 4,
+      "title": "Замена пассива: man, sich lassen, -bar",
+      "subtitle": "Aktiv statt Passiv, sich lassen (möglich), -bar (machbar)",
+      "topics": [
+        "passiv_alternatives"
+      ],
+      "prereq": [
+        "b1-03-passiv-zeiten"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Statt Passiv oft: man (unpersönlich), sich lassen (Möglichkeit), -bar-Adjektive (Eigenschaft)."
+        },
+        {
+          "kind": "rule",
+          "title": "man + Aktiv",
+          "text": "Passiv: 'Das wird gemacht.' → Aktiv: 'Man macht das.' Unpersönlich, Subjekt = man."
+        },
+        {
+          "kind": "rule",
+          "title": "sich lassen + Infinitiv",
+          "text": "Das lässt sich machen = Das kann gemacht werden. Nur mit Akkusativobjekt: Das Buch lässt sich lesen."
+        },
+        {
+          "kind": "rule",
+          "title": "-bar-Adjektive",
+          "text": "lesbar, machbar, essbar, trinkbar, sichtbar, hörbar, lösbar. Bedeutung: 'kann ... werden'. Attributiv oder prädikativ: 'Das ist lösbar.'"
+        },
+        {
+          "kind": "rule",
+          "title": "un- + -bar = nicht möglich",
+          "text": "unlesbar, unmachbar, ungelöst (Partizip II als Adjektiv)."
+        },
+        {
+          "kind": "example",
+          "de": "Man repariert das Auto. Das Auto lässt sich reparieren. Das Problem ist lösbar. Die Schrift ist unleserlich.",
+          "ru": "Машину ремонтируют. Машину можно отремонтировать. Проблема решаема. Почерк неразборчивый.",
+          "note": "man + Aktiv, sich lassen, -bar."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-04-d01",
+          "type": "choice",
+          "prompt": "Passiv: 'Das wird gemacht.' → Aktiv mit man:",
+          "options": [
+            "Man macht das.",
+            "Mann macht das.",
+            "Einer macht das.",
+            "Jemand macht das."
+          ],
+          "answer": [
+            "Man macht das."
+          ],
+          "why": "man (klein geschrieben) + Aktiv."
+        },
+        {
+          "id": "b1-04-d02",
+          "type": "choice",
+          "prompt": "Passiv: 'Das kann gemacht werden.' → sich lassen:",
+          "options": [
+            "Das lässt sich machen.",
+            "Das kann man machen.",
+            "Das ist machbar.",
+            "Das geht."
+          ],
+          "answer": [
+            "Das lässt sich machen."
+          ],
+          "why": "sich lassen + Infinitiv = kann gemacht werden."
+        },
+        {
+          "id": "b1-04-d03",
+          "type": "choice",
+          "prompt": "Adjektiv: 'kann gelesen werden' →",
+          "options": [
+            "lesbar",
+            "gelesen",
+            "lesend",
+            "lese"
+          ],
+          "answer": [
+            "lesbar"
+          ],
+          "why": "-bar-Adjektiv: lesbar."
+        },
+        {
+          "id": "b1-04-d04",
+          "type": "fill",
+          "prompt": "Das Problem ____ lösbar. (ist)",
+          "answer": [
+            "ist"
+          ],
+          "why": "Prädikativ: ist lösbar."
+        },
+        {
+          "id": "b1-04-d05",
+          "type": "choice",
+          "prompt": "Negation: 'kann nicht gemacht werden' →",
+          "options": [
+            "unmachbar",
+            "nicht machbar",
+            "beides möglich",
+            "unmöglich"
+          ],
+          "answer": [
+            "beides möglich"
+          ],
+          "why": "unmachbar oder nicht machbar."
+        },
+        {
+          "id": "b1-04-d06",
+          "type": "fill",
+          "prompt": "Die Suppe ____ essbar. (ist)",
+          "answer": [
+            "ist"
+          ],
+          "why": "essbar = kann gegessen werden."
+        },
+        {
+          "id": "b1-04-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'lässt / sich / das / Buch / lesen'",
+          "answer": [
+            "Das Buch lässt sich lesen."
+          ],
+          "why": "sich lassen Konstruktion."
+        },
+        {
+          "id": "b1-04-d08",
+          "type": "choice",
+          "prompt": "Was bedeutet 'hörbar'?",
+          "options": [
+            "kann gehört werden",
+            "wird gehört",
+            "hat gehört",
+            "hört"
+          ],
+          "answer": [
+            "kann gehört werden"
+          ],
+          "why": "-bar = kann ... werden."
+        },
+        {
+          "id": "b1-04-d09",
+          "type": "fill",
+          "prompt": "Man ____ das Auto reparieren. (können)",
+          "answer": [
+            "kann"
+          ],
+          "why": "man + Aktiv."
+        },
+        {
+          "id": "b1-04-d10",
+          "type": "transform",
+          "prompt": "Passiv → man-Aktiv: 'Die Tür wird geöffnet.' → ____",
+          "answer": [
+            "Man öffnet die Tür."
+          ],
+          "why": "man + Aktivverb."
+        },
+        {
+          "id": "b1-04-d11",
+          "type": "fill",
+          "prompt": "Der Text ____ lesbar. (nicht)",
+          "answer": [
+            "nicht"
+          ],
+          "why": "nicht lesbar = unlesbar."
+        },
+        {
+          "id": "b1-04-d12",
+          "type": "choice",
+          "prompt": "Welches Verb kann 'sich lassen'?",
+          "options": [
+            "schlafen",
+            "lesen",
+            "gehen",
+            "sein"
+          ],
+          "answer": [
+            "lesen"
+          ],
+          "why": "Nur transitive Verben (mit Akk-Objekt): lesen, machen, reparieren."
+        }
+      ]
+    },
+    {
+      "id": "b1-05-partizip-adjektiv",
+      "order": 5,
+      "title": "Partizip I und II als Adjektiv",
+      "subtitle": "der schlafende Hund (aktiv) vs das gebrochene Bein (passiv)",
+      "topics": [
+        "partizip_i_adjective",
+        "partizip_ii_adjective"
+      ],
+      "prereq": [
+        "a2-17-partizip-ii-adjektiv"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Partizip I = aktiv, gleichzeitig (schlafend = der schläft). Partizip II = passiv, abgeschlossen (gebrochen = wurde gebrochen). Beide deklinieren wie Adjektive."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip I",
+          "text": "Infinitiv + -d: lesend, schlafend, arbeitend. Bedeutung: die Handlung ausführend, gleichzeitig."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip II",
+          "text": "ge- + Stamm + -t/-en: gelesen, gearbeitet, gegangen. Bedeutung: die Handlung erleidend, abgeschlossen."
+        },
+        {
+          "kind": "rule",
+          "title": "Deklination",
+          "text": "Wie Adjektive: nach bestimmtem Artikel (schwach), unbestimmtem (gemischt), ohne Artikel (stark)."
+        },
+        {
+          "kind": "example",
+          "de": "Der schlafende Hund. Das geschriebene Buch. Ich sehe den lesenden Mann. Die gelesenen Bücher.",
+          "ru": "Спящая собака. Написанная книга. Я вижу читающего мужчину. Прочитанные книги.",
+          "note": "Partizip I: aktiv (schlafend = schläft). Partizip II: passiv (geschrieben = wurde geschrieben)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-05-d01",
+          "type": "choice",
+          "prompt": "Partizip I von 'schlafen':",
+          "options": [
+            "geschlafen",
+            "schlafend",
+            "schlafende",
+            "schläft"
+          ],
+          "answer": [
+            "schlafend"
+          ],
+          "why": "Infinitiv + -d: schlafend."
+        },
+        {
+          "id": "b1-05-d02",
+          "type": "choice",
+          "prompt": "Partizip II von 'brechen':",
+          "options": [
+            "brechend",
+            "gebrochen",
+            "brach",
+            "bricht"
+          ],
+          "answer": [
+            "gebrochen"
+          ],
+          "why": "Starke Verb: ge- + brach + -en = gebrochen."
+        },
+        {
+          "id": "b1-05-d03",
+          "type": "choice",
+          "prompt": "Der ____ Hund (schlafen, Partizip I, Nom Mask)",
+          "options": [
+            "schlafend",
+            "schlafende",
+            "schlafenden",
+            "schlafendes"
+          ],
+          "answer": [
+            "schlafende"
+          ],
+          "why": "Partizip I + Adjektivendung: Nom Mask nach bestimmtem Artikel = -e."
+        },
+        {
+          "id": "b1-05-d04",
+          "type": "fill",
+          "prompt": "Das ____ Bein (brechen, Partizip II, Nom Neut)",
+          "answer": [
+            "gebrochene"
+          ],
+          "why": "Partizip II + Adjektivendung: Nom Neut = -e."
+        },
+        {
+          "id": "b1-05-d05",
+          "type": "choice",
+          "prompt": "Bedeutung: 'der lesende Mann' =",
+          "options": [
+            "der Mann liest",
+            "der Mann wird gelesen",
+            "der Mann hat gelesen",
+            "der Mann las"
+          ],
+          "answer": [
+            "der Mann liest"
+          ],
+          "why": "Partizip I = aktiv, gleichzeitig."
+        },
+        {
+          "id": "b1-05-d06",
+          "type": "choice",
+          "prompt": "Bedeutung: 'das gelesene Buch' =",
+          "options": [
+            "das Buch liest",
+            "das Buch wird gelesen",
+            "das Buch hat gelesen",
+            "das Buch las"
+          ],
+          "answer": [
+            "das Buch wird gelesen"
+          ],
+          "why": "Partizip II = passiv, abgeschlossen."
+        },
+        {
+          "id": "b1-05-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'die / arbeitende / Frau / ist / müde'",
+          "answer": [
+            "Die arbeitende Frau ist müde."
+          ],
+          "why": "Partizip I als Attribut: die arbeitende Frau."
+        },
+        {
+          "id": "b1-05-d08",
+          "type": "fill",
+          "prompt": "Ich kaufe ____ Brot. (backen, Partizip II, Akk Neut)",
+          "answer": [
+            "gebackenes"
+          ],
+          "why": "Partizip II + Adjektivendung: Akk Neut = -es (ohne Artikel) oder -e (mit bestimmtem). Hier: ein gebackenes Brot."
+        },
+        {
+          "id": "b1-05-d09",
+          "type": "choice",
+          "prompt": "Partizip I von 'arbeiten':",
+          "options": [
+            "gearbeitet",
+            "arbeitend",
+            "arbeitende",
+            "arbeiteten"
+          ],
+          "answer": [
+            "arbeitend"
+          ],
+          "why": "Infinitiv + -d."
+        },
+        {
+          "id": "b1-05-d10",
+          "type": "transform",
+          "prompt": "Relativsatz → Partizip I: 'Der Mann, der liest' → ____",
+          "answer": [
+            "Der lesende Mann"
+          ],
+          "why": "Relativsatz (aktiv) → Partizip I."
+        },
+        {
+          "id": "b1-05-d11",
+          "type": "fill",
+          "prompt": "Das ____ Auto (reparieren, Partizip II, Nom Neut)",
+          "answer": [
+            "reparierte"
+          ],
+          "why": "reparieren → repariert. Nom Neut: -e."
+        },
+        {
+          "id": "b1-05-d12",
+          "type": "choice",
+          "prompt": "Welches Partizip drückt 'abgeschlossen' aus?",
+          "options": [
+            "Partizip I",
+            "Partizip II",
+            "beide",
+            "keines"
+          ],
+          "answer": [
+            "Partizip II"
+          ],
+          "why": "Partizip II = passiv/abgeschlossen."
+        }
+      ]
+    },
+    {
+      "id": "b1-06-partizipialattribute",
+      "order": 6,
+      "title": "Распространённые определения (Partizipialattribute)",
+      "subtitle": "der auf dem Boden liegende Ball, das von mir gekaufte Buch",
+      "topics": [
+        "partizipialattribute"
+      ],
+      "prereq": [
+        "b1-05-partizip-adjektiv",
+        "a2-12-relativsaetze"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Partizipialattribute = erweiterte Partizipien als Attribute vor dem Nomen. Struktur: Adverbialbestimmung + Partizip I/II."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip I (aktiv)",
+          "text": "der auf dem Boden liegende Ball (der Ball liegt auf dem Boden). Adverbial (Wo?) + Partizip I."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip II (passiv)",
+          "text": "das von mir gekaufte Buch (ich habe das Buch gekauft). Agent (von wem?) + Partizip II."
+        },
+        {
+          "kind": "rule",
+          "title": "Wortstellung",
+          "text": "Artikel — Adverbial — Partizip — Nomen. Deklination wie Adjektiv."
+        },
+        {
+          "kind": "rule",
+          "title": "Relativsatz → Partizipialattribut",
+          "text": "Der Ball, der auf dem Boden liegt → der auf dem Boden liegende Ball. Das Buch, das ich gekauft habe → das von mir gekaufte Buch."
+        },
+        {
+          "kind": "table",
+          "ref": "partizipialattribute"
+        },
+        {
+          "kind": "example",
+          "de": "Der auf dem Tisch liegende Apfel ist rot. Die von mir geschriebene E-Mail ist lang. Wir helfen dem in Not geratenen Mann.",
+          "ru": "Лежащий на столе яблоко красное. Написанное мной письмо длинное. Мы помогаем попавшему в беду мужчине.",
+          "note": "liegend (Partizip I, aktiv), geschrieben (Partizip II, passiv), geraten (Partizip II, unpersönlich)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-06-d01",
+          "type": "choice",
+          "prompt": "Der Ball ____ auf dem Boden liegt... → Partizip I:",
+          "options": [
+            "liegend",
+            "gelegen",
+            "lag",
+            "liegt"
+          ],
+          "answer": [
+            "liegend"
+          ],
+          "why": "Partizip I von liegen: liegend."
+        },
+        {
+          "id": "b1-06-d02",
+          "type": "choice",
+          "prompt": "Das Buch ____ ich gekauft habe → Partizip II:",
+          "options": [
+            "kaufend",
+            "gekauft",
+            "kaufte",
+            "kauft"
+          ],
+          "answer": [
+            "gekauft"
+          ],
+          "why": "Partizip II von kaufen: gekauft."
+        },
+        {
+          "id": "b1-06-d03",
+          "type": "choice",
+          "prompt": "Der ____ Ball (auf dem Boden / liegen, Partizip I, Nom Mask)",
+          "options": [
+            "auf dem Boden liegend",
+            "auf dem Boden liegende",
+            "auf dem Boden liegenden",
+            "auf dem Boden liegendes"
+          ],
+          "answer": [
+            "auf dem Boden liegende"
+          ],
+          "why": "Nom Mask nach bestimmtem Artikel: -e."
+        },
+        {
+          "id": "b1-06-d04",
+          "type": "fill",
+          "prompt": "Das ____ Buch (von mir / kaufen, Partizip II, Nom Neut)",
+          "answer": [
+            "von mir gekaufte"
+          ],
+          "why": "Nom Neut: -e."
+        },
+        {
+          "id": "b1-06-d05",
+          "type": "choice",
+          "prompt": "Ich sehe den ____ Mann (in Not / geraten, Partizip II, Akk Mask)",
+          "options": [
+            "in Not geraten",
+            "in Not geratene",
+            "in Not geratenen",
+            "in Not geratenes"
+          ],
+          "answer": [
+            "in Not geratenen"
+          ],
+          "why": "Akk Mask: -en."
+        },
+        {
+          "id": "b1-06-d06",
+          "type": "fill",
+          "prompt": "Wir helfen dem ____ Mann. (in Not / geraten, Partizip II, Dat Mask)",
+          "answer": [
+            "in Not geratenen"
+          ],
+          "why": "Dat: -en."
+        },
+        {
+          "id": "b1-06-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'der / auf / dem / Tisch / liegende / Apfel'",
+          "answer": [
+            "Der auf dem Tisch liegende Apfel"
+          ],
+          "why": "Artikel — Adverbial — Partizip — Nomen."
+        },
+        {
+          "id": "b1-06-d08",
+          "type": "choice",
+          "prompt": "Relativsatz → Partizipialattribut: 'Der Mann, der arbeitet' →",
+          "options": [
+            "Der arbeitende Mann",
+            "Der gearbeitete Mann",
+            "Der arbeitend Mann",
+            "Der arbeitet Mann"
+          ],
+          "answer": [
+            "Der arbeitende Mann"
+          ],
+          "why": "Aktiv → Partizip I."
+        },
+        {
+          "id": "b1-06-d09",
+          "type": "fill",
+          "prompt": "Relativsatz → Partizipialattribut: 'Das Buch, das ich lese' → Das ____ Buch",
+          "answer": [
+            "von mir gelesene"
+          ],
+          "why": "Passiv → Partizip II + von-Agent."
+        },
+        {
+          "id": "b1-06-d10",
+          "type": "transform",
+          "prompt": "Erweiterung: 'der schlafende Hund' → 'der auf dem Teppich ____ Hund'",
+          "answer": [
+            "schlafende"
+          ],
+          "why": "Adverbial (auf dem Teppich) vor Partizip I."
+        },
+        {
+          "id": "b1-06-d11",
+          "type": "fill",
+          "prompt": "Die ____ Frau (die / kochen / Partizip I, Nom Fem)",
+          "answer": [
+            "kochende"
+          ],
+          "why": "kochend + -e (Nom Fem)."
+        },
+        {
+          "id": "b1-06-d12",
+          "type": "choice",
+          "prompt": "Das ____ Problem (lösen / Partizip II, Nom Neut)",
+          "options": [
+            "gelöste",
+            "lösende",
+            "gelöst",
+            "lösend"
+          ],
+          "answer": [
+            "gelöste"
+          ],
+          "why": "lösen → gelöst. Nom Neut: -e."
+        }
+      ]
+    },
+    {
+      "id": "b1-07-da-wo",
+      "order": 7,
+      "title": "Da- und Wo-Komposita",
+      "subtitle": "darauf, woran, damit, davon, wozu, wogegen...",
+      "topics": [
+        "da_wo_komposita"
+      ],
+      "prereq": [
+        "a2-16-verben-praepositionen",
+        "a1-15-praepositionen"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Da-Komposita = Präposition + da(r) (Bezug auf Sache/Idee). Wo-Komposita = Frage: Präposition + wo(r). Nur bei Präpositionen mit Akk/Dat."
+        },
+        {
+          "kind": "rule",
+          "title": "Bildung",
+          "text": "da + Präposition (bei Vokal: dar-): daran, darauf, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. wo + Präposition: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter."
+        },
+        {
+          "kind": "rule",
+          "title": "Verwendung",
+          "text": "Da: Ich warte darauf. (statt: auf das). Wo: Worauf wartest du? (statt: auf was). Bei Personen: Präposition + Personalpronomen (auf ihn, mit ihr)."
+        },
+        {
+          "kind": "rule",
+          "title": "Verben mit festen Präpositionen",
+          "text": "denken an → daran denken. warten auf → darauf warten. sich freuen auf → sich darauf freuen. Angst haben vor → davor Angst haben."
+        },
+        {
+          "kind": "table",
+          "ref": "da_wo_komposita"
+        },
+        {
+          "kind": "example",
+          "de": "Ich warte auf den Bus → Ich warte darauf. Worauf wartest du? Ich freue mich auf das Fest → Ich freue mich darauf. Wovor hast du Angst?",
+          "ru": "Я жду автобус → Я жду его. На что ты ждешь? Я радуюсь празднику → Я радуюсь ему. Перед чем ты боишься?",
+          "note": "da(r) = auf es/das. wo(r) = auf was."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-07-d01",
+          "type": "choice",
+          "prompt": "Ich warte ____ . (auf + es)",
+          "options": [
+            "darauf",
+            "dafür",
+            "daran",
+            "dazu"
+          ],
+          "answer": [
+            "darauf"
+          ],
+          "why": "warten auf + es = darauf."
+        },
+        {
+          "id": "b1-07-d02",
+          "type": "choice",
+          "prompt": "Er denkt ____ . (an + es)",
+          "options": [
+            "daran",
+            "darauf",
+            "dafür",
+            "davon"
+          ],
+          "answer": [
+            "daran"
+          ],
+          "why": "denken an + es = daran."
+        },
+        {
+          "id": "b1-07-d03",
+          "type": "choice",
+          "prompt": "____ wartest du? (Frage: auf + was)",
+          "options": [
+            "Worauf",
+            "Woran",
+            "Wofür",
+            "Wovon"
+          ],
+          "answer": [
+            "Worauf"
+          ],
+          "why": "Frage zu warten auf: worauf."
+        },
+        {
+          "id": "b1-07-d04",
+          "type": "fill",
+          "prompt": "Ich freue mich ____ . (auf + es)",
+          "answer": [
+            "darauf"
+          ],
+          "why": "sich freuen auf + es = darauf."
+        },
+        {
+          "id": "b1-07-d05",
+          "type": "choice",
+          "prompt": "Er hat Angst ____ . (vor + es)",
+          "options": [
+            "davor",
+            "daran",
+            "darauf",
+            "davon"
+          ],
+          "answer": [
+            "davor"
+          ],
+          "why": "Angst haben vor + es = davor."
+        },
+        {
+          "id": "b1-07-d06",
+          "type": "fill",
+          "prompt": "____ hast du Angst? (Frage: vor + was)",
+          "answer": [
+            "Wovor"
+          ],
+          "why": "Frage zu Angst haben vor: wovor."
+        },
+        {
+          "id": "b1-07-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'darauf / ich / warte / , / weil / er / spät / kommt'",
+          "answer": [
+            "Ich warte darauf, weil er spät kommt."
+          ],
+          "why": "da-Kompositum im Hauptsatz."
+        },
+        {
+          "id": "b1-07-d08",
+          "type": "choice",
+          "prompt": "Bei Personen: 'Ich warte auf ____ ' (ihn)",
+          "options": [
+            "ihn",
+            "es",
+            "da",
+            "darauf"
+          ],
+          "answer": [
+            "ihn"
+          ],
+          "why": "Bei Personen: Präposition + Personalpronomen (nicht da-Kompositum)."
+        },
+        {
+          "id": "b1-07-d09",
+          "type": "fill",
+          "prompt": "Wir sprechen ____ . (über + es)",
+          "answer": [
+            "darüber"
+          ],
+          "why": "sprechen über + es = darüber."
+        },
+        {
+          "id": "b1-07-d10",
+          "type": "transform",
+          "prompt": "Frage bilden: 'Er denkt an das Auto.' → ____",
+          "answer": [
+            "Woran denkt er?"
+          ],
+          "why": "denken an + was → woran."
+        },
+        {
+          "id": "b1-07-d11",
+          "type": "choice",
+          "prompt": "Wofür = Frage zu:",
+          "options": [
+            "warten auf",
+            "denken an",
+            "sich freuen auf",
+            "sich vorbereiten auf"
+          ],
+          "answer": [
+            "sich vorbereiten auf"
+          ],
+          "why": "sich vorbereiten auf + was → wofür."
+        },
+        {
+          "id": "b1-07-d12",
+          "type": "fill",
+          "prompt": "Er hat sich ____ gewöhnt. (an + es)",
+          "answer": [
+            "daran"
+          ],
+          "why": "sich gewöhnen an + es = daran."
+        }
+      ]
+    },
+    {
+      "id": "b1-08-konditional",
+      "order": 8,
+      "title": "Условные предложения (Wenn-Sätze)",
+      "subtitle": "Typ 1 (wirklich), Typ 2 (unwirklich Gegenwart), Typ 3 (unwirklich Vergangenheit)",
+      "topics": [
+        "conditional"
+      ],
+      "prereq": [
+        "b1-01-konjunktiv-ii",
+        "b1-02-konjunktiv-ii-vergangenheit",
+        "a2-09-nebensaetze"
+      ],
+      "minutes": 20,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Drei Typen von Konditionalsätzen: Typ 1 (möglich), Typ 2 (unwirklich Gegenwart), Typ 3 (unwirklich Vergangenheit)."
+        },
+        {
+          "kind": "rule",
+          "title": "Typ 1: Wenn + Präsens, ... Präsens/Futur",
+          "text": "Wenn es regnet, bleibe ich zu Hause. / Wenn es regnet, werde ich zu Hause bleiben. Bedingung realistisch."
+        },
+        {
+          "kind": "rule",
+          "title": "Typ 2: Wenn + Konj. II (Präteritum), ... Konj. II (würde + Inf)",
+          "text": "Wenn ich Zeit hätte, würde ich kommen. Wenn ich reich wäre, würde ich reisen. Bedingung unwahrscheinlich/unwirklich."
+        },
+        {
+          "kind": "rule",
+          "title": "Typ 3: Wenn + Konj. II Vergangenheit (hätte/ware + Partizip II), ... Konj. II Vergangenheit",
+          "text": "Wenn ich Zeit gehabt hätte, wäre ich gekommen. Bedingung in der Vergangenheit nicht erfüllt."
+        },
+        {
+          "kind": "rule",
+          "title": "Wortstellung",
+          "text": "Wenn-Satz voran → ganzer Wenn-Satz = Pos 1 → Hauptsatz V2. Wenn-Satz nachgestellt → Hauptsatz normal, Wenn-Satz Verb am Ende."
+        },
+        {
+          "kind": "example",
+          "de": "Wenn es regnet, bleibe ich da. Wenn ich Zeit hätte, käme ich. Wenn er gekommen wäre, hätte ich ihn gesehen.",
+          "ru": "Если идёт дождь, останусь. Если бы у меня было время, пришёл бы. Если бы он пришёл, я бы его увидел.",
+          "note": "Typ 1: Präsens. Typ 2: Konj. II. Typ 3: Konj. II Vergangenheit."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-08-d01",
+          "type": "choice",
+          "prompt": "Typ 1: Wenn es ____ , bleibe ich zu Hause. (regnen)",
+          "options": [
+            "regnet",
+            "regnete",
+            "regnen würde",
+            "geregnet hätte"
+          ],
+          "answer": [
+            "regnet"
+          ],
+          "why": "Typ 1: Wenn + Präsens."
+        },
+        {
+          "id": "b1-08-d02",
+          "type": "choice",
+          "prompt": "Typ 2: Wenn ich Zeit ____ , ____ ich kommen. (haben → hätte, kommen → würde)",
+          "options": [
+            "hätte, würde",
+            "hatte, käme",
+            "habe, werde",
+            "haben würde, käme"
+          ],
+          "answer": [
+            "hätte, würde"
+          ],
+          "why": "Typ 2: Wenn + Konj. II (hätte), Hauptsatz: würde + Inf."
+        },
+        {
+          "id": "b1-08-d03",
+          "type": "choice",
+          "prompt": "Typ 3: Wenn ich Zeit ____ , ____ ich gekommen. (haben → gehabt hätte, sein → wäre)",
+          "options": [
+            "gehabt hätte, wäre",
+            "hatte, wäre",
+            "hätte, wäre",
+            "gehabt, wäre"
+          ],
+          "answer": [
+            "gehabt hätte, wäre"
+          ],
+          "why": "Typ 3: Wenn + Konj. II Vergangenheit (hätte + Partizip II), Hauptsatz: wäre + Partizip II."
+        },
+        {
+          "id": "b1-08-d04",
+          "type": "fill",
+          "prompt": "Wenn er ____ (kommen) würde, ____ ich ihn sehen. (würde)",
+          "answer": [
+            "käme, würde"
+          ],
+          "why": "Typ 2: Konj. II Präteritum (käme), Hauptsatz: würde."
+        },
+        {
+          "id": "b1-08-d05",
+          "type": "choice",
+          "prompt": "Wenn wir ____ (wissen) hätten, ____ wir geholfen. (hätten, hätten)",
+          "options": [
+            "gewusst hätten, hätten",
+            "wussten, würden",
+            "wissen, werden",
+            "gewusst, haben"
+          ],
+          "answer": [
+            "gewusst hätten, hätten"
+          ],
+          "why": "Typ 3: hätte + Partizip II in beiden Teilen."
+        },
+        {
+          "id": "b1-08-d06",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'würde / ich / kommen / , / wenn / ich / Zeit / hätte'",
+          "answer": [
+            "Wenn ich Zeit hätte, würde ich kommen."
+          ],
+          "why": "Wenn-Satz voran → Pos 1 → Hauptsatz V2: würde ich."
+        },
+        {
+          "id": "b1-08-d07",
+          "type": "fill",
+          "prompt": "____ er ____ (kommen), ____ ich ____ (gehen). (Typ 1)",
+          "answer": [
+            "Wenn er kommt, gehe ich"
+          ],
+          "why": "Typ 1: Präsens in beiden Teilen."
+        },
+        {
+          "id": "b1-08-d08",
+          "type": "choice",
+          "prompt": "Typ 2 mit 'sein': Wenn ich ____ , ____ ich glücklich. (sein → wäre, werden → würde)",
+          "options": [
+            "wäre, würde",
+            "war, wurde",
+            "bin, werde",
+            "sei, würde"
+          ],
+          "answer": [
+            "wäre, würde"
+          ],
+          "why": "sein → Konj. II: wäre."
+        },
+        {
+          "id": "b1-08-d09",
+          "type": "fill",
+          "prompt": "Wenn sie ____ (können) hätte, ____ sie ____ (machen). (Typ 3)",
+          "answer": [
+            "gekönnt hätte, hätte gemacht"
+          ],
+          "why": "Modale: hätte + Partizip II (gekönnt), Hauptsatz: hätte + Partizip II (gemacht)."
+        },
+        {
+          "id": "b1-08-d10",
+          "type": "transform",
+          "prompt": "Typ 1 → Typ 2: 'Wenn es regnet, bleibe ich.' → ____",
+          "answer": [
+            "Wenn es regnete, würde ich bleiben."
+          ],
+          "why": "Präsens → Konj. II (Präteritum/ würde)."
+        },
+        {
+          "id": "b1-08-d11",
+          "type": "choice",
+          "prompt": "Typ 3: 'Hätte ich das gewusst...' =",
+          "options": [
+            "Wenn ich das gewusst hätte...",
+            "Wenn ich das wüsste...",
+            "Wenn ich das weiß...",
+            "Als ich das wusste..."
+          ],
+          "answer": [
+            "Wenn ich das gewusst hätte..."
+          ],
+          "why": "Typ 3: Konj. II Vergangenheit."
+        },
+        {
+          "id": "b1-08-d12",
+          "type": "fill",
+          "prompt": "____ ich reich ____ , ____ ich ____ reisen. (Typ 2: sein, werden)",
+          "answer": [
+            "Wenn ich reich wäre, würde ich reisen"
+          ],
+          "why": "Typ 2: wäre, würde + Inf."
+        }
+      ]
+    },
+    {
+      "id": "b1-09-indirekte-fragen",
+      "order": 9,
+      "title": "Косвенные вопросы",
+      "subtitle": "ob (Ja/Nein), W-Fragen — Verb am Ende",
+      "topics": [
+        "indirect_questions"
+      ],
+      "prereq": [
+        "a2-09-nebensaetze",
+        "a1-13-fragen"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Indirekte Fragen werden als Nebensatz eingebaut: ob (bei Ja/Nein-Fragen) oder W-Fragewort. Verb steht AM ENDE."
+        },
+        {
+          "kind": "rule",
+          "title": "Ja/Nein-Frage → ob",
+          "text": "Direkt: 'Kommt er?' Indirekt: 'Ich weiß nicht, ob er kommt.' (nicht: ob kommt er)."
+        },
+        {
+          "kind": "rule",
+          "title": "W-Frage → W-Wort",
+          "text": "Direkt: 'Wo wohnt er?' Indirekt: 'Ich frage mich, wo er wohnt.' Verb am Ende."
+        },
+        {
+          "kind": "rule",
+          "title": "Einleitende Verben",
+          "text": "fragen, wissen, sagen, verstehen, sehen, hören, überlegen, entscheiden, nicht wissen."
+        },
+        {
+          "kind": "example",
+          "de": "Ich weiß nicht, ob er kommt. Kannst du mir sagen, wo der Bahnhof ist? Er fragt, wann der Zug fährt.",
+          "ru": "Я не знаю, придёт ли он. Можешь сказать, где вокзал? Он спрашивает, когда уходит поезд.",
+          "note": "ob + Nebensatz (Verb am Ende), W-Wort + Nebensatz (Verb am Ende)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-09-d01",
+          "type": "choice",
+          "prompt": "Direkt: 'Kommt er?' → Indirekt: 'Ich weiß nicht, ____ '",
+          "options": [
+            "ob er kommt",
+            "ob kommt er",
+            "wenn er kommt",
+            "dass er kommt"
+          ],
+          "answer": [
+            "ob er kommt"
+          ],
+          "why": "ob + Nebensatz, Verb am Ende."
+        },
+        {
+          "id": "b1-09-d02",
+          "type": "choice",
+          "prompt": "Direkt: 'Wo wohnt er?' → Indirekt: 'Ich frage mich, ____ '",
+          "options": [
+            "wo er wohnt",
+            "wo wohnt er",
+            "wo er wohnen",
+            "wo er wohnte"
+          ],
+          "answer": [
+            "wo er wohnt"
+          ],
+          "why": "W-Wort + Nebensatz, Verb am Ende."
+        },
+        {
+          "id": "b1-09-d03",
+          "type": "choice",
+          "prompt": "Direkt: 'Wann fährt der Zug?' → Indirekt: 'Er fragt, ____ '",
+          "options": [
+            "wann der Zug fährt",
+            "wann fährt der Zug",
+            "wann der Zug fahren",
+            "wann fuhr der Zug"
+          ],
+          "answer": [
+            "wann der Zug fährt"
+          ],
+          "why": "W-Wort + Nebensatz, Verb am Ende."
+        },
+        {
+          "id": "b1-09-d04",
+          "type": "fill",
+          "prompt": "Ich verstehe nicht, ____ er das macht. (warum)",
+          "answer": [
+            "warum"
+          ],
+          "why": "W-Frage: warum + Nebensatz."
+        },
+        {
+          "id": "b1-09-d05",
+          "type": "choice",
+          "prompt": "Er kann nicht sagen, ____ er right hat. (ob)",
+          "options": [
+            "ob",
+            "wenn",
+            "dass",
+            "weil"
+          ],
+          "answer": [
+            "ob"
+          ],
+          "why": "Ja/Nein-Frage → ob."
+        },
+        {
+          "id": "b1-09-d06",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'nicht / weiß / ich / ob / er / kommt'",
+          "answer": [
+            "Ich weiß nicht, ob er kommt."
+          ],
+          "why": "Hauptsatz V2, ob-Nebensatz Verb am Ende."
+        },
+        {
+          "id": "b1-09-d07",
+          "type": "fill",
+          "prompt": "Kannst du mir sagen, ____ der Supermarkt ist? (wo)",
+          "answer": [
+            "wo"
+          ],
+          "why": "W-Frage: wo + Nebensatz."
+        },
+        {
+          "id": "b1-09-d08",
+          "type": "choice",
+          "prompt": "Direkt: 'Hat er Zeit?' → Indirekt: 'Ich frage mich, ____ '",
+          "options": [
+            "ob er Zeit hat",
+            "ob hat er Zeit",
+            "dass er Zeit hat",
+            "wenn er Zeit hat"
+          ],
+          "answer": [
+            "ob er Zeit hat"
+          ],
+          "why": "ob + Nebensatz, Verb am Ende."
+        },
+        {
+          "id": "b1-09-d09",
+          "type": "fill",
+          "prompt": "Er überlegt, ____ er ____ soll. (was / machen)",
+          "answer": [
+            "was er machen"
+          ],
+          "why": "W-Frage: was + Nebensatz."
+        },
+        {
+          "id": "b1-09-d10",
+          "type": "transform",
+          "prompt": "Direkte Frage → Indirekte: 'Was kostet das?' → 'Ich frage, ____ '",
+          "answer": [
+            "was das kostet"
+          ],
+          "why": "W-Wort + Nebensatz, Verb am Ende."
+        },
+        {
+          "id": "b1-09-d11",
+          "type": "choice",
+          "prompt": "Einleitendes Verb für indirekte Fragen:",
+          "options": [
+            "fragen",
+            "laufen",
+            "schlafen",
+            "essen"
+          ],
+          "answer": [
+            "fragen"
+          ],
+          "why": "fragen, wissen, sagen, verstehen..."
+        },
+        {
+          "id": "b1-09-d12",
+          "type": "fill",
+          "prompt": "Ich weiß nicht, ____ er ____ . (ob / kommen)",
+          "answer": [
+            "ob er kommt"
+          ],
+          "why": "Ja/Nein-Frage → ob + Nebensatz."
+        }
+      ]
+    },
+    {
+      "id": "b1-10-modalpartikeln",
+      "order": 10,
+      "title": "Модальные частицы",
+      "subtitle": "ja, doch, mal, schon, eben, halt, nur, bloß, auch, ruhig",
+      "topics": [
+        "modal_particles"
+      ],
+      "prereq": [
+        "a2-10-tekamolo",
+        "a2-18-konjunktionen"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Modalpartikeln sind kleine Wörter, die die Einstellung des Sprechers ausdrücken (Betontung, Abschwächung, Ärger, Freude). Sie verändern nicht den Satzbau."
+        },
+        {
+          "kind": "rule",
+          "title": "ja / doch",
+          "text": "ja = Bestätigung, Erwartung: 'Das ist ja schön!' doch = Widerspruch/Korrektur: 'Das ist doch nicht wahr!' (Entgegensetzung zu Erwartung)."
+        },
+        {
+          "kind": "rule",
+          "title": "mal / schon",
+          "text": "mal = Abschwächung, freundlich: 'Warten Sie mal!' schon = Betonung, Erwartung: 'Das hast du schon verstanden.'"
+        },
+        {
+          "kind": "rule",
+          "title": "eben / halt",
+          "text": "eben/halte = Resignation, Tatsachenfeststellung: 'Das ist eben so.' 'Das ist halt so.' (akzeptieren, was nicht änderbar)."
+        },
+        {
+          "kind": "rule",
+          "title": "nur / bloß",
+          "text": "nur/bloß = Einschränkung, Warnung: 'Fass das nicht an!' 'Komm nur rein!' (Einladung)."
+        },
+        {
+          "kind": "example",
+          "de": "Komm mal rein! Das ist ja toll! Das geht doch nicht! Das hast du schon verstanden. Das ist eben so. Fass das bloß nicht an!",
+          "ru": "Заходи! Это ж классно! Это же не пойдёт! Ты же понял. Так вот и есть. Только не трогай!",
+          "note": "Modalpartikeln stehen im Mittelfeld (nach Subjekt/Verb), nie am Satzanfang."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-10-d01",
+          "type": "choice",
+          "prompt": "Betonung, positive Überraschung: 'Das ist ____ toll!'",
+          "options": [
+            "ja",
+            "doch",
+            "mal",
+            "schon"
+          ],
+          "answer": [
+            "ja"
+          ],
+          "why": "ja = positive Überraschung/Bestätigung."
+        },
+        {
+          "id": "b1-10-d02",
+          "type": "choice",
+          "prompt": "Widerspruch: 'Das stimmt ____ nicht!'",
+          "options": [
+            "ja",
+            "doch",
+            "mal",
+            "schon"
+          ],
+          "answer": [
+            "doch"
+          ],
+          "why": "doch = Korrektur/Widerspruch."
+        },
+        {
+          "id": "b1-10-d03",
+          "type": "choice",
+          "prompt": "Freundliche Aufforderung: 'Warten Sie ____ !'",
+          "options": [
+            "mal",
+            "doch",
+            "schon",
+            "eben"
+          ],
+          "answer": [
+            "mal"
+          ],
+          "why": "mal = Abschwächung, freundlich."
+        },
+        {
+          "id": "b1-10-d04",
+          "type": "fill",
+          "prompt": "Erwartung/Bestätigung: 'Das hast du ____ verstanden.'",
+          "answer": [
+            "schon"
+          ],
+          "why": "schon = Erwartung, 'wie erwartet'."
+        },
+        {
+          "id": "b1-10-d05",
+          "type": "choice",
+          "prompt": "Resignation: 'Das ist ____ so.'",
+          "options": [
+            "eben",
+            "mal",
+            "doch",
+            "ja"
+          ],
+          "answer": [
+            "eben"
+          ],
+          "why": "eben/halte = Resignation, 'nicht zu ändern'."
+        },
+        {
+          "id": "b1-10-d06",
+          "type": "fill",
+          "prompt": "Einladung: 'Komm ____ rein!'",
+          "answer": [
+            "nur"
+          ],
+          "why": "nur = Einladung, Ermutigung."
+        },
+        {
+          "id": "b1-10-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'ist / das / ja / toll'",
+          "answer": [
+            "Das ist ja toll!"
+          ],
+          "why": "Modalpartikel im Mittelfeld (nach Verb)."
+        },
+        {
+          "id": "b1-10-d08",
+          "type": "choice",
+          "prompt": "Warnung: 'Fass das ____ nicht an!'",
+          "options": [
+            "bloß",
+            "mal",
+            "schon",
+            "eben"
+          ],
+          "answer": [
+            "bloß"
+          ],
+          "why": "bloß/nur = Warnung, Einschränkung."
+        },
+        {
+          "id": "b1-10-d09",
+          "type": "fill",
+          "prompt": "Das geht ____ nicht! (Widerspruch)",
+          "answer": [
+            "doch"
+          ],
+          "why": "doch = Widerspruch."
+        },
+        {
+          "id": "b1-10-d10",
+          "type": "transform",
+          "prompt": "Ohne Partikel → mit 'mal': 'Warten Sie!' → ____",
+          "answer": [
+            "Warten Sie mal!"
+          ],
+          "why": "mal = freundlicher Ton."
+        },
+        {
+          "id": "b1-10-d11",
+          "type": "choice",
+          "prompt": "'Das ist halt so' = Bedeutung:",
+          "options": [
+            "Freude",
+            "Widerspruch",
+            "Resignation",
+            "Aufforderung"
+          ],
+          "answer": [
+            "Resignation"
+          ],
+          "why": "halt/eben = Resignation, Akzeptanz."
+        },
+        {
+          "id": "b1-10-d12",
+          "type": "fill",
+          "prompt": "Das hast du ____ gemacht! (Bestätigung/Lob)",
+          "answer": [
+            "ja"
+          ],
+          "why": "ja = Lob, Bestätigung."
+        }
+      ]
+    },
+    {
+      "id": "b1-11-verben-praepositionen-2",
+      "order": 11,
+      "title": "Глаголы с предлогами (Fortsetzung)",
+      "subtitle": "sich interessieren für, sich bewerben um, sich kümmern um, abhängen von...",
+      "topics": [
+        "prepositional_verbs"
+      ],
+      "prereq": [
+        "a2-16-verben-praepositionen",
+        "b1-07-da-wo"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Weitere wichtige Verben mit festen Präpositionen. Viele sind reflexiv."
+        },
+        {
+          "kind": "rule",
+          "title": "Akkusativ",
+          "text": "sich interessieren für, sich bewerben um, sich kümmern um, sich bemühen um, sich sorgen um, sich entscheiden für, sich erinnern an (Akk), sich gewöhnen an, sich verlassen auf, verzichten auf, achten auf."
+        },
+        {
+          "kind": "rule",
+          "title": "Dativ",
+          "text": "abhängen von, teilnehmen an, arbeiten an, leiden an, sterben an, zweifeln an, sich einigen auf (Akk!), sich freuen über/auf, sich ärgern über, sich wundern über, Angst haben vor, warnen vor."
+        },
+        {
+          "kind": "rule",
+          "title": "Da-/Wo-Komposita",
+          "text": "Bei Sachen: sich dafür interessieren, woran denkst du? Bei Personen: sich für ihn interessieren, mit ihr sprechen."
+        },
+        {
+          "kind": "example",
+          "de": "Ich interessiere mich für Kunst. Er bewirbt sich um die Stelle. Es hängt vom Wetter ab. Wir kümmern uns um den Rest.",
+          "ru": "Я интересуюсь искусством. Он подаёт заявку на должность. Это зависит от погоды. Мы заботимся о остальном.",
+          "note": "interessieren für + Akk, bewerben um + Akk, abhängen von + Dat."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-11-d01",
+          "type": "choice",
+          "prompt": "Ich interessiere mich ____ Kunst. (für)",
+          "options": [
+            "für",
+            "an",
+            "auf",
+            "über"
+          ],
+          "answer": [
+            "für"
+          ],
+          "why": "sich interessieren für + Akk."
+        },
+        {
+          "id": "b1-11-d02",
+          "type": "choice",
+          "prompt": "Er bewirbt sich ____ die Stelle. (um)",
+          "options": [
+            "um",
+            "für",
+            "an",
+            "auf"
+          ],
+          "answer": [
+            "um"
+          ],
+          "why": "sich bewerben um + Akk."
+        },
+        {
+          "id": "b1-11-d03",
+          "type": "choice",
+          "prompt": "Es hängt ____ dem Wetter ab. (von)",
+          "options": [
+            "von",
+            "an",
+            "auf",
+            "über"
+          ],
+          "answer": [
+            "von"
+          ],
+          "why": "abhängen von + Dat."
+        },
+        {
+          "id": "b1-11-d04",
+          "type": "fill",
+          "prompt": "Wir kümmern uns ____ den Rest. (um)",
+          "answer": [
+            "um"
+          ],
+          "why": "sich kümmern um + Akk."
+        },
+        {
+          "id": "b1-11-d05",
+          "type": "choice",
+          "prompt": "Sie freut sich ____ das Wochenende. (auf, Zukunft)",
+          "options": [
+            "auf",
+            "über",
+            "an",
+            "für"
+          ],
+          "answer": [
+            "auf"
+          ],
+          "why": "sich freuen auf (Zukunft) + Akk."
+        },
+        {
+          "id": "b1-11-d06",
+          "type": "fill",
+          "prompt": "Er ärgert sich ____ den Lärm. (über)",
+          "answer": [
+            "über"
+          ],
+          "why": "sich ärgern über + Akk."
+        },
+        {
+          "id": "b1-11-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'mich / für / interessiere / ich / Kunst'",
+          "answer": [
+            "Ich interessiere mich für Kunst."
+          ],
+          "why": "Reflexivverb + Präposition + Akk."
+        },
+        {
+          "id": "b1-11-d08",
+          "type": "choice",
+          "prompt": "Da-Kompositum: 'Ich interessiere mich dafür.' = Ich interessiere mich ____ ",
+          "options": [
+            "für es",
+            "für das",
+            "für ihn",
+            "für sie"
+          ],
+          "answer": [
+            "für es"
+          ],
+          "why": "dafür = für es (Sache)."
+        },
+        {
+          "id": "b1-11-d09",
+          "type": "fill",
+          "prompt": "Er hat sich ____ die Stelle beworben. (um)",
+          "answer": [
+            "um"
+          ],
+          "why": "sich bewerben um + Akk."
+        },
+        {
+          "id": "b1-11-d10",
+          "type": "transform",
+          "prompt": "Frage: 'Worauf wartest du?' → Antwort: 'Ich warte ____ '",
+          "answer": [
+            "darauf"
+          ],
+          "why": "warten auf + es = darauf."
+        },
+        {
+          "id": "b1-11-d11",
+          "type": "choice",
+          "prompt": "Bei Personen: 'Ich warte auf ____ ' (ihn)",
+          "options": [
+            "ihn",
+            "es",
+            "darauf",
+            "da"
+          ],
+          "answer": [
+            "ihn"
+          ],
+          "why": "Bei Personen: Präposition + Personalpronomen."
+        },
+        {
+          "id": "b1-11-d12",
+          "type": "fill",
+          "prompt": "Sie hat Angst ____ die Prüfung. (vor)",
+          "answer": [
+            "vor"
+          ],
+          "why": "Angst haben vor + Dat."
+        }
+      ]
+    },
+    {
+      "id": "b1-12-konnektoren",
+      "order": 12,
+      "title": "Сложные коннекторы: obwohl, trotzdem, dennoch, während",
+      "subtitle": "Konzessiv, temporal, kausal — Wortstellung",
+      "topics": [
+        "konnektoren_uebersicht"
+      ],
+      "prereq": [
+        "b1-09-indirekte-fragen",
+        "b1-10-modalpartikeln",
+        "a2-18-konjunktionen"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Erweiterte Konnektoren für argumentative Texte."
+        },
+        {
+          "kind": "rule",
+          "title": "obwohl (subordinierend)",
+          "text": "Nebensatz, Verb am Ende: 'Obwohl es regnet, gehe ich spazieren.' = Konzessivsatz."
+        },
+        {
+          "kind": "rule",
+          "title": "trotzdem / dennoch (adverbiell)",
+          "text": "Hauptsatz, Pos 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.' Bedeutung: trotz gegenteiliger Erwartung."
+        },
+        {
+          "kind": "rule",
+          "title": "während (subordinierend + adverbiell)",
+          "text": "Als Konjunktion: 'Während er schläft, lese ich.' (zeitlich, Nebensatz). Als Adverb: 'Er schläft. Währenddessen lese ich.'"
+        },
+        {
+          "kind": "rule",
+          "title": "denn vs weil",
+          "text": "denn = koordinierend (Pos 0): 'Ich gehe, denn es regnet.' weil = subordinierend: 'Ich gehe nicht, weil es regnet.'"
+        },
+        {
+          "kind": "example",
+          "de": "Obwohl er müde ist, arbeitet er. Er ist müde, trotzdem arbeitet er. Während ich lese, schläft er. Ich bleibe, denn es regnet.",
+          "ru": "Хотя он уставший, он работает. Он уставший, тем не менее работает. Пока я читаю, он спит. Я остаюсь, потому что дождь.",
+          "note": "obwohl = Nebensatz. trotzdem = Hauptsatz (V2). während = beides."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-12-d01",
+          "type": "choice",
+          "prompt": "Nebensatz, Konzession: '____ er müde ist, arbeitet er.'",
+          "options": [
+            "Obwohl",
+            "Weil",
+            "Wenn",
+            "Als"
+          ],
+          "answer": [
+            "Obwohl"
+          ],
+          "why": "obwohl = Konzessivsatz, Verb am Ende."
+        },
+        {
+          "id": "b1-12-d02",
+          "type": "choice",
+          "prompt": "Hauptsatz, Kontrast: 'Er ist müde, ____ arbeitet er.'",
+          "options": [
+            "trotzdem",
+            "obwohl",
+            "weil",
+            "denn"
+          ],
+          "answer": [
+            "trotzdem"
+          ],
+          "why": "trotzdem = adverbiell, Pos 1 → V2."
+        },
+        {
+          "id": "b1-12-d03",
+          "type": "choice",
+          "prompt": "Zeitgleichheit, Nebensatz: '____ ich lese, schläft er.'",
+          "options": [
+            "Während",
+            "Weil",
+            "Wenn",
+            "Als"
+          ],
+          "answer": [
+            "Während"
+          ],
+          "why": "während als Konjunktion = zeitgleich, Nebensatz."
+        },
+        {
+          "id": "b1-12-d04",
+          "type": "fill",
+          "prompt": "Koordinierend, Kausal: 'Ich bleibe, ____ es regnet.'",
+          "answer": [
+            "denn"
+          ],
+          "why": "denn = koordinierend (Pos 0), zwei Hauptsätze."
+        },
+        {
+          "id": "b1-12-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'trotzdem / gehe / ich / spazieren / , / es / regnet'",
+          "answer": [
+            "Es regnet, trotzdem gehe ich spazieren."
+          ],
+          "why": "Hauptsatz, dann adverbiell voran → V2."
+        },
+        {
+          "id": "b1-12-d06",
+          "type": "choice",
+          "prompt": "Welcher Konnektor steht an Pos 0?",
+          "options": [
+            "und",
+            "trotzdem",
+            "obwohl",
+            "deshalb"
+          ],
+          "answer": [
+            "und"
+          ],
+          "why": "Koordinierend (und, aber, oder, denn, sondern) = Pos 0."
+        },
+        {
+          "id": "b1-12-d07",
+          "type": "fill",
+          "prompt": "Er arbeitet, ____ er krank ist. (trotz)",
+          "answer": [
+            "obwohl"
+          ],
+          "why": "obwohl = Konzessivsatz (Nebensatz)."
+        },
+        {
+          "id": "b1-12-d08",
+          "type": "choice",
+          "prompt": "'Trotzdem' und 'dennoch' — Unterschied:",
+          "options": [
+            "kein Unterschied",
+            "trotzdem formeller",
+            "dennoch formeller",
+            "trotzdem nur mündlich"
+          ],
+          "answer": [
+            "dennoch formeller"
+          ],
+          "why": "dennoch = gehobener, trotzdem = häufiger mündlich."
+        },
+        {
+          "id": "b1-12-d09",
+          "type": "transform",
+          "prompt": "'Obwohl es regnet, gehe ich.' → mit 'trotzdem':",
+          "answer": [
+            "Es regnet, trotzdem gehe ich."
+          ],
+          "why": "Nebensatz → Hauptsatz mit adverbiell."
+        },
+        {
+          "id": "b1-12-d10",
+          "type": "fill",
+          "prompt": "____ er schläft, lese ich. (zeitgleich)",
+          "answer": [
+            "Während"
+          ],
+          "why": "während als Konjunktion."
+        },
+        {
+          "id": "b1-12-d11",
+          "type": "choice",
+          "prompt": "Adverbial: 'Er schläft. ____ lese ich.'",
+          "options": [
+            "Währenddessen",
+            "Während",
+            "Weil",
+            "Obwohl"
+          ],
+          "answer": [
+            "Währenddessen"
+          ],
+          "why": "während als Adverb = währenddessen."
+        },
+        {
+          "id": "b1-12-d12",
+          "type": "transform",
+          "prompt": "'Weil es regnet, bleibe ich.' → mit 'denn':",
+          "answer": [
+            "Es regnet, denn ich bleibe."
+          ],
+          "why": "weil (Nebensatz) → denn (koordinierend, zwei Hauptsätze)."
+        }
+      ]
+    }
+  ]
+}

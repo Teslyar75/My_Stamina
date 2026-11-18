@@ -1,0 +1,74 @@
+{
+ "n": 75,
+ "level": "A2",
+ "module": "quantity",
+ "title": "one и ones: чтобы не повторять",
+ "en": "one/ones",
+ "summary": "Короткая замена длинному слову: the red one, the small ones — предмет уже назван, повторять не нужно.",
+ "can_do": [
+  "Заменить названное существительное на one или ones.",
+  "Сказать «какой из двух»: the big one.",
+  "Понять, когда one не нужен вовсе."
+ ],
+ "theory": [
+  {
+   "h": "One вместо предмета",
+   "p": "Когда предмет уже назван, второй раз его можно не повторять: вместо the red car — the red one. Так делают после прилагательных, после this и that, после which и the.",
+   "formula": "the red car → the red one · the old books → the old ones"
+  },
+  {
+   "h": "Один или много",
+   "p": "Форма зависит от того, сколько предметов: один — one, несколько — ones. Прилагательное при этом не меняется.",
+   "table": {
+    "head": ["Что заменяем", "Форма", "Пример"],
+    "rows": [
+     ["один предмет", "one", "the black one"],
+     ["несколько", "ones", "the black ones"],
+     ["после this / that", "one", "I like this one."],
+     ["после which", "one / ones", "Which ones do you want?"]
+    ]
+   }
+  },
+  {
+   "h": "One почти всегда с уточнением",
+   "p": "Само по себе one в роли замены звучит странно. Обычно перед ним стоит the, this, that, which или прилагательное: the big one, this one, which one, the blue ones.",
+   "formula": "the big one · this one · which one"
+  },
+  {
+   "h": "Где one лишний",
+   "p": "После притяжательных my, your, Tom's и после some, any слово one не ставят: говорят my car, а не my one; some books, а не some ones. С числами тоже: two books.",
+   "formula": "my car (не my one) · some books (не some ones)"
+  },
+  {
+   "h": "Второе значение one",
+   "p": "У слова one есть и книжное значение «человек вообще»: One should be careful. В живой речи чаще говорят you. И, конечно, one остаётся числом: one, two, three.",
+   "formula": "One should be polite. · one of my friends"
+  }
+ ],
+ "examples": [
+  {"en": "I don't like this hat. Show me the brown one.", "ru": "Мне не нравится эта шляпа. Покажите коричневую."},
+  {"en": "These shoes are too small. Do you have bigger ones?", "ru": "Эти туфли малы. У вас есть больше?"},
+  {"en": "Which one do you prefer?", "ru": "Какой вы предпочитаете?"},
+  {"en": "The new phone is cheaper than the old one.", "ru": "Новый телефон дешевле старого."},
+  {"en": "I'll take the blue ones, please.", "ru": "Я возьму синие, пожалуйста."},
+  {"en": "The first question was easy, the second one was hard.", "ru": "Первый вопрос был лёгким, второй — трудным."}
+ ],
+ "traps": [
+  {"bad": "I don't like my one.", "good": "I don't like mine.", "why": "После притяжательного one не ставят; без предмета нужна форма mine."},
+  {"bad": "I like these blue one.", "good": "I like these blue ones.", "why": "Несколько предметов требуют ones."},
+  {"bad": "Which one book do you want?", "good": "Which one do you want?", "why": "One уже заменяет book, повторять слово не нужно."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'd like the small ___.", "options": ["one", "ones", "it"], "a": 0, "why": "Один предмет — one."},
+  {"type": "choice", "q": "These trousers are nice, but I prefer those black ___.", "options": ["one", "ones", "it"], "a": 1, "why": "Брюки во множественном — ones."},
+  {"type": "choice", "q": "Which ___ do you like best?", "options": ["one", "ones", "it"], "a": 0, "why": "Вопрос об одном предмете — which one."},
+  {"type": "choice", "q": "My phone is old. I need a new ___.", "options": ["ones", "one", "it"], "a": 1, "why": "Замена одного предмета — a new one."},
+  {"type": "choice", "q": "The red apples are sweeter than the green ___.", "options": ["one", "ones", "it"], "a": 1, "why": "Яблок много — the green ones."},
+  {"type": "gap", "q": "I don't like this coat. Show me that ___.", "a": ["one"], "why": "Один предмет — that one."},
+  {"type": "gap", "q": "Do you have these shoes in bigger ___?", "a": ["ones"], "why": "Shoes во множественном — bigger ones."},
+  {"type": "gap", "q": "The first film was boring, the second ___ was great.", "a": ["one"], "why": "Один фильм — the second one."},
+  {"type": "translate", "q": "Мне нравится синяя рубашка, а не красная.", "a": ["i like the blue shirt not the red one", "i like the blue shirt and not the red one"], "why": "Второе слово shirt заменяем на one."},
+  {"type": "translate", "q": "Какие из них ты хочешь? (о туфлях)", "a": ["which ones do you want"], "why": "О туфлях во множественном — which ones."
+  }
+ ]
+}

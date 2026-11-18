@@ -1,0 +1,77 @@
+{
+ "n": 5,
+ "level": "A1",
+ "module": "present",
+ "title": "Present Simple: I do, I work, I like",
+ "en": "I do / work / like (present simple)",
+ "summary": "Как говорить о привычках и фактах: I work, he works — и откуда у he берётся это -s.",
+ "can_do": [
+  "Рассказать о привычках и распорядке дня.",
+  "Поставить -s в правильную форму: works, watches, studies.",
+  "Сказать, как часто что-то происходит: I usually get up at seven."
+ ],
+ "theory": [
+  {
+   "h": "Когда нужен Present Simple",
+   "p": "Present Simple описывает то, что происходит вообще: привычки, повторяющиеся действия, факты и расписания. Это не про эту минуту, а про «всегда так» или «обычно так».",
+   "formula": "I drink coffee every morning. · The shop opens at nine."
+  },
+  {
+   "h": "Форма глагола",
+   "p": "С I, you, we, they глагол стоит в словарной форме. С he, she, it к нему прибавляется -s. Это единственное изменение, зато самое частое.",
+   "table": {
+    "head": ["Кто", "Глагол", "Пример"],
+    "rows": [
+     ["I / you / we / they", "work без -s", "They work here."],
+     ["he / she / it", "works с -s", "She works here."]
+    ]
+   }
+  },
+  {
+   "h": "Как приклеивается -s",
+   "p": "У большинства глаголов всё просто, но четыре случая требуют внимания: шипящие получают -es, конечная y после согласной превращается в -ies, а go, do и have меняются целиком.",
+   "table": {
+    "head": ["Глагол", "Форма с -s"],
+    "rows": [
+     ["work, live", "works, lives"],
+     ["watch, finish", "watches, finishes"],
+     ["study, carry", "studies, carries"],
+     ["go, do, have", "goes, does, has"]
+    ]
+   }
+  },
+  {
+   "h": "Наречия частоты",
+   "p": "Always, usually, often, sometimes, never показывают, что действие повторяется. Они стоят перед смысловым глаголом, но после be: I usually walk, но I am usually tired.",
+   "formula": "I usually get up at seven. · He is always late."
+  },
+  {
+   "h": "be здесь не нужен",
+   "p": "Если в предложении есть действие, be рядом с ним не ставят. Профессию можно назвать двумя способами, но не смешивая их в одной фразе.",
+   "formula": "He is a driver. (кто он) · He drives a bus. (что делает)"
+  }
+ ],
+ "examples": [
+  {"en": "I live in a small town.", "ru": "Я живу в маленьком городе."},
+  {"en": "My sister works in a bank.", "ru": "Моя сестра работает в банке."},
+  {"en": "We usually have lunch at one.", "ru": "Мы обычно обедаем в час."},
+  {"en": "He never drinks coffee.", "ru": "Он никогда не пьёт кофе."},
+  {"en": "The train leaves at six.", "ru": "Поезд отправляется в шесть."}
+ ],
+ "traps": [
+  {"bad": "He work every day.", "good": "He works every day.", "why": "С he, she, it глагол всегда получает -s."},
+  {"bad": "She go to school.", "good": "She goes to school.", "why": "go в третьем лице превращается в goes."},
+  {"bad": "I am work in an office.", "good": "I work in an office.", "why": "be и смысловой глагол вместе не ставят."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ in a hospital.", "options": ["work", "works", "working"], "a": 1, "why": "she = третье лицо, нужен works."},
+  {"type": "choice", "q": "They ___ football on Sundays.", "options": ["plays", "play", "are play"], "a": 1, "why": "they — форма без -s."},
+  {"type": "choice", "q": "My brother ___ two languages.", "options": ["speak", "speaks", "speaking"], "a": 1, "why": "my brother = he, поэтому speaks."},
+  {"type": "choice", "q": "I ___ coffee every morning.", "options": ["drinks", "drink", "drinking"], "a": 1, "why": "I берёт форму без -s."},
+  {"type": "choice", "q": "Anna ___ to work by bus.", "options": ["go", "goes", "gos"], "a": 1, "why": "go с she превращается в goes."},
+  {"type": "gap", "q": "Tom ___ (watch) TV in the evening.", "a": ["watches"], "why": "watch оканчивается на шипящий, поэтому watches."},
+  {"type": "gap", "q": "We ___ (study) English at school.", "a": ["study"], "why": "we — форма без -s: study."},
+  {"type": "translate", "q": "Он работает в банке.", "a": ["he works in a bank"], "why": "he даёт works, а место с артиклем a: in a bank."},
+  {"type": "translate", "q": "Я обычно встаю в семь.", "a": ["i usually get up at seven", "i usually get up at 7"], "why": "Usually стоит перед глаголом: I usually get up at seven."}
+ ]
+}

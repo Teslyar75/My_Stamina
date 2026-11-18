@@ -22,6 +22,8 @@
 | `starship/english_3.jpg` | [Lights of Java.jpg](https://commons.wikimedia.org/wiki/File:Lights_of_Java.jpg) | NASA | Public domain |
 | `starship/english_4.jpg` | [Egypt’s Nile River stretches is pictured at night from the International Space Station (iss073e0422279).jpg](https://commons.wikimedia.org/wiki/File:Egypt%E2%80%99s_Nile_River_stretches_is_pictured_at_night_from_the_International_Space_Station_(iss073e0422279).jpg) | NASA Johnson Space Center | Public domain |
 | `starship/lounge.jpg` | [ISS-54 Veggie-03 with lettuce plants.jpg](https://commons.wikimedia.org/wiki/File:ISS-54_Veggie-03_with_lettuce_plants.jpg) | NASA | Public domain |
+| `starship/languages.jpg` | [ISS-43 Earth view from the cupola onboard the ISS.jpg](https://commons.wikimedia.org/wiki/File:ISS-43_Earth_view_from_the_cupola_onboard_the_ISS.jpg) | NASA/Scott Kelly | Public domain |
+| `starship/languages_2.jpg` | [International Space Station star trails - JSC2012E039800.jpg](https://commons.wikimedia.org/wiki/File:International_Space_Station_star_trails_-_JSC2012E039800.jpg) | NASA/Don Pettit | Public domain |
 | `starship/lounge_2.jpg` | [ISS-44 VEGGIE Red Romaine Lettuce.jpg](https://commons.wikimedia.org/wiki/File:ISS-44_VEGGIE_Red_Romaine_Lettuce.jpg) | NASA | Public domain |
 | `starship/lounge_3.jpg` | [Veggie plants.jpg](https://commons.wikimedia.org/wiki/File:Veggie_plants.jpg) | NASA | Public domain |
 | `starship/lounge_4.jpg` | [ISS-20 Crew members share a meal at a galley in the Unity node of the International Space Station.jpg](https://commons.wikimedia.org/wiki/File:ISS-20_Crew_members_share_a_meal_at_a_galley_in_the_Unity_node_of_the_International_Space_Station.jpg) | National Aeronautics and Space Administration (NASA). | Public domain |
@@ -215,6 +217,8 @@
 | `zen_garden/english_2.jpg` | [20190705 Kenroku-en-7.jpg](https://commons.wikimedia.org/wiki/File:20190705_Kenroku-en-7.jpg) | Balon Greyjoy | CC0 |
 | `zen_garden/english_3.jpg` | [Ritsurin.JPG](https://commons.wikimedia.org/wiki/File:Ritsurin.JPG) | Leela Soden | CC BY-SA 3.0 |
 | `zen_garden/speedread.jpg` | [Bamboo Forest, Arashiyama, Kyoto, Japan.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_Forest,_Arashiyama,_Kyoto,_Japan.jpg) | Basile Morin | CC BY-SA 4.0 |
+| `zen_garden/languages.jpg` | [Portland Japanese Garden October 2019 005.jpg](https://commons.wikimedia.org/wiki/File:Portland_Japanese_Garden_October_2019_005.jpg) | King of Hearts | CC BY-SA 4.0 |
+| `zen_garden/languages_2.jpg` | [20190705 Kenroku-en-7.jpg](https://commons.wikimedia.org/wiki/File:20190705_Kenroku-en-7.jpg) | Balon Greyjoy | CC0 |
 | `zen_garden/speedread_2.jpg` | [Bamboo grove (phyllostachys viridiglaucescens) in the Botanical Garden of the University of Vienna in Vienna, Austria-stems PNr°1051.jpg](https://commons.wikimedia.org/wiki/File:Bamboo_grove_(phyllostachys_viridiglaucescens)_in_the_Botanical_Garden_of_the_University_of_Vienna_in_Vienna,_Austria-stems_PNr%C2%B01051.jpg) | D-Kuru | CC BY-SA 4.0 |
 | `zen_garden/speedread_3.jpg` | [Arashiyama-Bamboo-Grove-Sunset.jpg](https://commons.wikimedia.org/wiki/File:Arashiyama-Bamboo-Grove-Sunset.jpg) | Bjørn Christian Tørrissen | CC BY-SA 4.0 |
 | `zen_garden/lounge.jpg` | [Japanese tea house - Toulouse - 2013-12-21.jpg](https://commons.wikimedia.org/wiki/File:Japanese_tea_house_-_Toulouse_-_2013-12-21.jpg) | PierreSelim | CC BY 3.0 |

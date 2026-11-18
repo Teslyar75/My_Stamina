@@ -1,0 +1,72 @@
+{
+ "n": 22,
+ "level": "A1",
+ "module": "passive",
+ "title": "Страдательный залог (2): все времена",
+ "en": "be done / been done (passive 2)",
+ "summary": "Как рассказать о результате, планах и правилах, когда действие совершается над предметом.",
+ "can_do": [
+  "Сказать, что работу уже сделали, через has been done.",
+  "Пообещать, что что-то будет сделано: will be done.",
+  "Передать правило или требование: must be signed, can be used."
+ ],
+ "theory": [
+  {
+   "h": "Меняется только be",
+   "p": "У пассива крепкий каркас: смысловой глагол всегда стоит в третьей форме и никогда не двигается. Всё остальное делает be — он принимает форму нужного времени и берёт на себя вспомогательные слова. Запомнив это, вы соберёте любую страдательную фразу.",
+   "formula": "The house has been painted. · The work will be done. · The form must be signed."
+  },
+  {
+   "h": "Перфект: has been done",
+   "p": "Если важен результат к сегодняшнему моменту, be превращается в been, а перед ним ставят has или have. Получается три слова: have плюс been плюс третья форма. Момент в прошлом при этом не называется, потому что интересен именно итог.",
+   "formula": "The house has been painted. · The letters have been sent. · The report has been written."
+  },
+  {
+   "h": "Будущее и модальные глаголы",
+   "p": "В будущем перед be ставят will, и be остаётся чистым be, без всяких форм. С модальными глаголами происходит то же самое: can, must, should, may требуют после себя просто be и третью форму. Никакого been здесь не нужно.",
+   "table": {
+    "head": ["Форма", "Как строится", "Пример"],
+    "rows": [
+     ["Present perfect", "has / have been + V3", "The house has been painted."],
+     ["Future", "will be + V3", "The bridge will be built next year."],
+     ["Modal", "can / must be + V3", "The form must be signed."],
+     ["Past perfect", "had been + V3", "The car had been sold before we came."]
+    ]
+   }
+  },
+  {
+   "h": "Been — это третья форма be",
+   "p": "Многие путают been и being. Been — третья форма глагола be, она нужна после have. Being — форма с -ing, она встречается в длительных временах и после предлогов. В пассиве с перфектом место только для been.",
+   "formula": "It has been done. · It is being done. · It had been done."
+  },
+  {
+   "h": "Отрицание и вопрос",
+   "p": "Отрицание делается через not после первого вспомогательного слова: hasn't been done, will not be done, must not be used. В вопросе это же первое слово выходит вперёд: Has it been done? Will it be done? Was the letter sent?"
+  }
+ ],
+ "examples": [
+  {"en": "The house has been painted.", "ru": "Дом уже покрасили."},
+  {"en": "All the tickets have been sold.", "ru": "Все билеты проданы."},
+  {"en": "The new school will be built next year.", "ru": "Новую школу построят в следующем году."},
+  {"en": "This form must be signed by Friday.", "ru": "Эту форму нужно подписать до пятницы."},
+  {"en": "The work hasn't been finished yet.", "ru": "Работа ещё не закончена."},
+  {"en": "Has the report been sent?", "ru": "Отчёт уже отправили?"}
+ ],
+ "traps": [
+  {"bad": "The house has painted.", "good": "The house has been painted.", "why": "В перфектном пассиве обязательно есть been: has been painted."},
+  {"bad": "The work will done tomorrow.", "good": "The work will be done tomorrow.", "why": "После will нужен be, иначе фраза остаётся без глагола-связки."},
+  {"bad": "It has being done.", "good": "It has been done.", "why": "Being — форма с -ing, после have стоит только been."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The letter ___ already.", "options": ["has sent", "has been sent", "have been sent"], "a": 1, "why": "The letter — единственное число: has been sent."},
+  {"type": "choice", "q": "The new school ___ next year.", "options": ["will be built", "will built", "will be build"], "a": 0, "why": "Будущее плюс пассив: will be плюс built."},
+  {"type": "choice", "q": "The form must ___ by the manager.", "options": ["be signed", "signed", "is signed"], "a": 0, "why": "После must всегда be, потом третья форма: be signed."},
+  {"type": "choice", "q": "The work ___ yet.", "options": ["hasn't finished", "hasn't been finished", "didn't been finished"], "a": 1, "why": "Yet и результат — перфектный пассив: hasn't been finished."},
+  {"type": "choice", "q": "The car ___ before we arrived.", "options": ["had been sold", "has been sold", "was been sold"], "a": 0, "why": "Действие до другого прошлого: had been sold."},
+  {"type": "gap", "q": "The house ___ (paint) this week.", "a": ["has been painted"], "why": "Результат к сейчас: has been painted."},
+  {"type": "gap", "q": "These documents ___ (send) tomorrow.", "a": ["will be sent"], "why": "Будущее и пассив: will be sent."},
+  {"type": "translate", "q": "Дом уже покрасили.", "a": ["the house has been painted", "the house has already been painted"], "why": "Результат к сейчас: has been painted."},
+  {"type": "translate", "q": "Работа будет сделана завтра.", "a": ["the work will be done tomorrow"], "why": "Будущий пассив: will be done."},
+  {"type": "translate", "q": "Эту форму нужно подписать.", "a": ["this form must be signed"], "why": "Правило с модальным глаголом: must be signed."}
+ ]
+}

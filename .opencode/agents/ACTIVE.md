@@ -6,6 +6,7 @@
 | Агент | Что делает | Файлы | Начато |
 |---|---|---|---|
 | Орион (командир) | предложения из `docs/ORION_PROPOSALS_2026-10-20.md`: дисциплина агентов (2.1–2.3) | `AGENTS.md`, `tools/snapshot.ps1`, `.opencode/agents/ACTIVE.md` | 2026-10-20 12:40 |
+| Орион (командир) | мост GitHub: мёртвый токен называть мёртвым (401 «Bad credentials»), а не «мало прав» | `stamina/ship_chat.py`, `stamina/agent_connect.py`, `stamina/orion_screen.py`, `tests/test_agent_voice.py`, `stamina/i18n/*.json` | 2026-11-15 18:25 |
 | Qoder | P0 по внешнему аудиту: канал обновлений + конвейер качества. Ветку `agent/qoder/desktop-fixes` не сливаю, `master` не тронут. Отчёт: `.opencode/agents/QODER_DESKTOP_CHANGES_2026-11-05.md` | `stamina/updater.py`, `tests/test_updater.py`, `tools/ci_gate.py`, `tools/dep_audit.py`, `pyproject.toml`, `requirements-dev.txt`, `.github/workflows/quality-gate.yml`, `.github/workflows/release.yml`, `AGENTS.md`, `.gitignore` | 2026-11-05 10:40 |
 
 ## Правила

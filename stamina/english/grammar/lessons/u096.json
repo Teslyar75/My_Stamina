@@ -1,0 +1,72 @@
+{
+ "n": 96,
+ "level": "B1",
+ "module": "order",
+ "title": "give, lend, pass, send, show",
+ "en": "give/lend/pass/send/show",
+ "summary": "У этих глаголов два дополнения, и их можно поставить в двух порядках — но не всегда и не с любым предлогом.",
+ "can_do": [
+  "Сказать «дай мне книгу» двумя способами.",
+  "Правильно выбрать to или for при втором порядке.",
+  "Различить lend и borrow — одолжить и занять."
+ ],
+ "theory": [
+  {
+   "h": "Два дополнения, два порядка",
+   "p": "Give, lend, pass, send, show, bring, tell, offer, teach принимают два дополнения: кому и что. Порядок может быть прямым (кому — что) или обратным (что — кому), но во втором случае появляется предлог to.",
+   "formula": "Give me the book. = Give the book to me."
+  },
+  {
+   "h": "Кому — через to",
+   "p": "Группа с to отвечает на вопрос «кому». В неё входят give, lend, pass, send, show, bring, tell, offer, teach. Именно to появляется, когда прямое дополнение идёт первым.",
+   "table": {
+    "head": ["Глагол", "Прямой порядок", "С to"],
+    "rows": [
+     ["give", "give me the key", "give the key to me"],
+     ["lend", "lend him a pen", "lend a pen to him"],
+     ["send", "send her a card", "send a card to her"],
+     ["show", "show us the way", "show the way to us"]
+    ]
+   }
+  },
+  {
+   "h": "Кому — через for",
+   "p": "Вторая группа значит «сделать что-то для кого-то», и в ней предлог for: buy, cook, get, make. Сравните: I bought her a present — I bought a present for her.",
+   "formula": "I bought her a present. = I bought a present for her."
+  },
+  {
+   "h": "Местоимение — только с to",
+   "p": "Если прямое дополнение выражено местоимением it или them, обратный порядок без предлога не работает. Правильно: Give it to me. Форма Give me it встречается в разговоре, но в учёбе её лучше не использовать.",
+   "formula": "Give it to me."
+  },
+  {
+   "h": "Lend и borrow",
+   "p": "Lend значит «дать взаймы, одолжить кому-то». Borrow значит «взять взаймы, занять у кого-то». Направление движения предмета противоположное, поэтому и предлог другой: lend to somebody, borrow from somebody.",
+   "formula": "Can you lend me ten pounds? · Can I borrow ten pounds from you?"
+  }
+ ],
+ "examples": [
+  {"en": "Can you lend me your pen?", "ru": "Можешь одолжить мне ручку?"},
+  {"en": "I sent my sister a postcard.", "ru": "Я отправил сестре открытку."},
+  {"en": "Please pass me the salt.", "ru": "Передай мне соль, пожалуйста."},
+  {"en": "She showed us her new flat.", "ru": "Она показала нам свою новую квартиру."},
+  {"en": "He gave the keys to the neighbour.", "ru": "Он отдал ключи соседу."}
+ ],
+ "traps": [
+  {"bad": "Can you borrow me your car?", "good": "Can you lend me your car?", "why": "Дать взаймы — lend, а borrow — взять взаймы."},
+  {"bad": "She explained me the rule.", "good": "She explained the rule to me.", "why": "explain не берёт двух дополнений без предлога."},
+  {"bad": "Give me it.", "good": "Give it to me.", "why": "С местоимением it нужен предлог to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Can you ___ me ten pounds until Friday?", "options": ["lend", "borrow", "give to"], "a": 0, "why": "Дать взаймы — lend."},
+  {"type": "choice", "q": "I ___ my mother a long letter.", "options": ["sended", "sent", "sent to"], "a": 1, "why": "Прямой порядок без to: sent my mother a letter."},
+  {"type": "choice", "q": "Please ___ the salt.", "options": ["pass to me", "me pass", "pass me"], "a": 2, "why": "Кому — что: pass me the salt."},
+  {"type": "choice", "q": "She ___ us her holiday photos.", "options": ["showed to", "showed", "show"], "a": 1, "why": "В прямой конструкции to не нужен."},
+  {"type": "choice", "q": "He ___ his old bike to his cousin.", "options": ["gave", "gave to", "gived"], "a": 0, "why": "to уже есть отдельно, значит просто gave."},
+  {"type": "gap", "q": "Could you lend ___ your umbrella? (I)", "a": ["me"], "why": "Кому — объектная форма me."},
+  {"type": "gap", "q": "I'll send the parcel ___ you tomorrow.", "a": ["to"], "why": "Обратный порядок требует to."},
+  {"type": "gap", "q": "She bought a present ___ her son.", "a": ["for"], "why": "buy — группа с for."},
+  {"type": "translate", "q": "Покажи мне свою новую машину.", "a": ["show me your new car", "show your new car to me"], "why": "show me your car или show your car to me."},
+  {"type": "translate", "q": "Он одолжил мне денег.", "a": ["he lent me some money", "he lent me money"], "why": "lend + кому + что, без to."}
+ ]
+}

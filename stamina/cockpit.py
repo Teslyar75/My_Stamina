@@ -12,8 +12,8 @@ from tkinter import messagebox
 from pathlib import Path
 
 from stamina import (APP_NAME, __version__, avatars, comm, comm_hook, english_hook, lounge_hook,
-                     missions, nav, docs_hook, orion_hook, lab_hook, terraformer_hook, pilots,
-                     radio_hook, speedread_hook, theme)
+                      missions, nav, docs_hook, orion_hook, lab_hook, terraformer_hook, pilots,
+                      radio_hook, speedread_hook, theme, languages_hook)
 from stamina.bridge import Bridge
 from stamina import safe_mode
 from stamina import ontop
@@ -89,7 +89,14 @@ class Cockpit(tk.Tk):
         if self._terraformer_cls is not None:
             self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
                 [(terraformer_hook.KEY, terraformer_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
-        # восемь зон в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
+        self._languages_cls = languages_hook.load_class()  # отсек «ИНОСТРАННЫЕ ЯЗЫКИ»
+        if self._languages_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != "settings"] + \
+                [(languages_hook.KEY, languages_hook.TITLE), ("settings", tr_("НАСТРОЙКИ"))]
+        # Английский только через «Иностранные языки» — убираем из шапки, экран остаётся lazy.
+        if self._languages_cls is not None and self._english_cls is not None:
+            self.SCREENS = [s for s in self.SCREENS if s[0] != english_hook.KEY]
+        # зоны в шапке (как в веб-версии); Миссии/Свой текст/Бортжурнал — подменю Мостика
         loaded = {s[0] for s in self.SCREENS}
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
@@ -447,6 +454,7 @@ class Cockpit(tk.Tk):
         self._lazy(orion_hook, self._orion_cls)
         self._lazy(lab_hook, self._lab_cls)
         self._lazy(terraformer_hook, self._terraformer_cls)
+        self._lazy(languages_hook, self._languages_cls)
         for scr in self.screens.values():
             scr.grid(row=0, column=0, sticky="nsew")
         # Сразу оставляем в раскладке один экран: невидимые Tk всё равно перерисовывает,
@@ -1399,6 +1407,8 @@ class Cockpit(tk.Tk):
             self.screens[speedread_hook.KEY].on_key(e)
         elif self.current == lounge_hook.KEY:
             self.screens[lounge_hook.KEY].on_key(e)
+        elif self.current == languages_hook.KEY:
+            self.screens[languages_hook.KEY].on_key(e)
         elif self.current == radio_hook.KEY:
             self.screens[radio_hook.KEY].on_key(e)
         elif self.current == comm_hook.KEY:

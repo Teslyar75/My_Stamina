@@ -1,0 +1,74 @@
+{
+ "n": 110,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "up, over, through: движение",
+ "en": "up/over/through",
+ "summary": "Предлоги движения: вверх по лестнице, через забор, сквозь туннель и вдоль берега — каждый предлог рисует свою траекторию.",
+ "can_do": [
+  "Описать маршрут через up, down, over, across и along.",
+  "Сказать «сквозь туннель» и «через реку» без путаницы.",
+  "Употребить past, когда кто-то проходит мимо."
+ ],
+ "theory": [
+  {
+   "h": "up и down",
+   "p": "up значит «вверх, по поверхности вверх»: up the stairs, up the hill. down — наоборот, вниз. Эти слова работают и как предлоги, и как наречия: go up, sit down.",
+   "formula": "up the stairs · down the hill · stand up · sit down"
+  },
+  {
+   "h": "over — через, поверх",
+   "p": "over показывает движение над чем-то, поверх препятствия: jump over the fence, walk over the bridge, fly over the city. Прямого контакта с препятствием нет.",
+   "formula": "jump over the fence · fly over the city"
+  },
+  {
+   "h": "through — сквозь что-то",
+   "p": "through значит «внутри и сквозь»: through the tunnel, through the forest, through the window. Важно, что предмет движется в объёме, а не над ним и не по поверхности.",
+   "formula": "go through the tunnel · walk through the forest"
+  },
+  {
+   "h": "Маршрут в таблице",
+   "p": "Соберите траектории в одну картину: вверх-вниз по поверхности, над препятствием, сквозь объём, поперёк и вдоль.",
+   "table": {
+    "head": ["Предлог", "Движение", "Пример"],
+    "rows": [
+     ["up / down", "вверх / вниз", "We walked up the hill."],
+     ["over", "через, поверх", "The dog jumped over the fence."],
+     ["through", "сквозь, внутри", "The train went through the tunnel."],
+     ["across", "поперёк, на другую сторону", "We swam across the river."],
+     ["along", "вдоль", "We walked along the beach."],
+     ["past", "мимо", "We drove past the school."]
+    ]
+   }
+  },
+  {
+   "h": "across и along",
+   "p": "across — поперёк, с одной стороны на другую: across the road, across the river. along — вдоль, по длине: along the river, along the street. Их легко спутать, потому что оба про поверхность.",
+   "formula": "swim across the river · walk along the river"
+  }
+ ],
+ "examples": [
+  {"en": "We walked up the hill to see the sunset.", "ru": "Мы поднялись на холм, чтобы посмотреть на закат."},
+  {"en": "The cat jumped over the fence.", "ru": "Кошка перепрыгнула через забор."},
+  {"en": "The train went through a long tunnel.", "ru": "Поезд проехал через длинный туннель."},
+  {"en": "We walked along the river for an hour.", "ru": "Мы шли вдоль реки целый час."},
+  {"en": "He ran past me without a word.", "ru": "Он пробежал мимо меня, не сказав ни слова."}
+ ],
+ "traps": [
+  {"bad": "We walked through the bridge.", "good": "We walked over the bridge.", "why": "По мосту идут поверху — over; through значит «сквозь»."},
+  {"bad": "The train went across the tunnel.", "good": "The train went through the tunnel.", "why": "Туннель проходят изнутри — through; across говорят про открытое пространство."},
+  {"bad": "She climbed on the hill.", "good": "She climbed up the hill.", "why": "Подъём — вверх, поэтому up; on значит «на поверхности»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The dog jumped ___ the fence and ran away.", "options": ["through", "over", "along"], "a": 1, "why": "Через препятствие поверху — over."},
+  {"type": "choice", "q": "We walked ___ the forest for two hours.", "options": ["over", "across", "through"], "a": 2, "why": "Внутри леса — through."},
+  {"type": "choice", "q": "The road goes ___ the river at that point.", "options": ["across", "through", "up"], "a": 0, "why": "С одного берега на другой — across."},
+  {"type": "choice", "q": "She ran ___ me and didn't say hello.", "options": ["past", "over", "along"], "a": 1, "why": "Мимо — это past."},
+  {"type": "choice", "q": "We went ___ the stairs to the roof.", "options": ["through", "up", "over"], "a": 1, "why": "По лестнице наверх — up."},
+  {"type": "gap", "q": "The children ran ___ the hill to the top.", "a": ["up"], "why": "Движение к вершине — up."},
+  {"type": "gap", "q": "We swam ___ the lake to the other side.", "a": ["across"], "why": "На другой берег — across."},
+  {"type": "gap", "q": "The plane flew ___ the city and we saw the lights.", "a": ["over"], "why": "Над городом — over."},
+  {"type": "translate", "q": "Мы переплыли реку.", "a": ["we swam across the river"], "why": "На другую сторону — across the river."},
+  {"type": "translate", "q": "Он прошёл через туннель.", "a": ["he walked through the tunnel", "he went through the tunnel"], "why": "Внутри туннеля — through."}
+ ]
+}

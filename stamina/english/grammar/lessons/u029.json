@@ -1,0 +1,67 @@
+{
+ "n": 29,
+ "level": "A1",
+ "module": "modals",
+ "title": "may и might: может быть",
+ "en": "may and might",
+ "summary": "Два коротких слова для честного «возможно»: когда событие не отменено, но и не обещано.",
+ "can_do": [
+  "Сказать, что что-то может произойти или уже происходит.",
+  "Отрицать осторожно: он может и не знать.",
+  "Вежливо спросить разрешение через May I ...?"
+ ],
+ "theory": [
+  {
+   "h": "Оба значит «возможно»",
+   "p": "May и might ставят событие под вопрос, но не отрицают его. После них глагол идёт в чистом виде — без to и без -s, как после любого модального глагола.",
+   "formula": "It may rain. · It might rain. · She may be at home."
+  },
+  {
+   "h": "Разница по степени уверенности",
+   "p": "Строгой границы нет. Might звучит чуть менее уверенно, а may чаще встречается в письменной и официальной речи. Для практики достаточно помнить, что оба варианта допустимы и оба понятны носителю.",
+   "table": {
+    "head": ["Уверенность", "Слово", "Пример"],
+    "rows": [
+     ["почти наверняка", "will", "She will come."],
+     ["возможно", "may / might", "She may come."],
+     ["возможно, но вряд ли", "might not", "She might not come."]
+    ]
+   }
+  },
+  {
+   "h": "Вопросы и отрицания",
+   "p": "Might в вопросах почти не встречается, may — только в очень вежливых просьбах. Отрицание may not или might not значит «может и не», а не «нельзя»; запрет передаётся другими словами.",
+   "formula": "May I ask a question? · He might not know."
+  },
+  {
+   "h": "Вторая работа may: разрешение",
+   "p": "May умеет давать формальное разрешение. В обычной речи на этом месте стоит can, но в объявлениях, инструкциях и на экзамене остаётся may — он звучит официальнее.",
+   "formula": "You may smoke outside. · Students may use dictionaries."
+  }
+ ],
+ "examples": [
+  {"en": "It may snow tomorrow.", "ru": "Завтра, возможно, пойдёт снег."},
+  {"en": "She might be late.", "ru": "Она может опоздать."},
+  {"en": "I might not come tonight.", "ru": "Возможно, я не приду сегодня."},
+  {"en": "May I come in?", "ru": "Можно войти?"},
+  {"en": "He may already know the answer.", "ru": "Возможно, он уже знает ответ."},
+  {"en": "They might be waiting outside.", "ru": "Возможно, они ждут на улице."}
+ ],
+ "traps": [
+  {"bad": "He may comes later.", "good": "He may come later.", "why": "После модального глагола нет -s."},
+  {"bad": "It may to rain.", "good": "It may rain.", "why": "После may и might нет to."},
+  {"bad": "He may not to know.", "good": "He may not know.", "why": "Not ставится сразу после may, дальше чистый глагол."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "It's cloudy. It ___ rain later.", "options": ["may", "is", "does"], "a": 0, "why": "Предположение о погоде: It may rain."},
+  {"type": "choice", "q": "She ___ not be at home now.", "options": ["might", "is", "does"], "a": 0, "why": "Осторожное отрицание: She might not be at home."},
+  {"type": "choice", "q": "___ I ask you a question?", "options": ["May", "Do", "Am"], "a": 0, "why": "Вежливая просьба о разрешении: May I ask?"},
+  {"type": "choice", "q": "They ___ come, but they're not sure.", "options": ["might", "must", "are"], "a": 0, "why": "Неуверенность — значит might."},
+  {"type": "choice", "q": "He ___ be busy, so try later.", "options": ["may", "is", "does"], "a": 0, "why": "Предположение о причине: He may be busy."},
+  {"type": "gap", "q": "We ___ (go) to the sea in July, but we haven't booked.", "a": ["may go", "might go"], "why": "Предположение: we may go или we might go."},
+  {"type": "gap", "q": "She ___ (not / know) about the meeting.", "a": ["might not know", "may not know"], "why": "Осторожное отрицание: might not know."},
+  {"type": "gap", "q": "___ I use your phone, please?", "a": ["may"], "why": "Разрешение просят через May I ...?"},
+  {"type": "translate", "q": "Возможно, он уже дома.", "a": ["he may already be at home", "he might already be at home", "he might be at home already"], "why": "May или might плюс be: He may already be at home."},
+  {"type": "translate", "q": "Возможно, я опоздаю.", "a": ["i may be late", "i might be late"], "why": "Предположение о себе: I may be late."}
+ ]
+}

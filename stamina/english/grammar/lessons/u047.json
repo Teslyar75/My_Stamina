@@ -1,0 +1,72 @@
+{
+ "n": 47,
+ "level": "A2",
+ "module": "questions",
+ "title": "what, which, how",
+ "en": "what / which / how",
+ "summary": "What спрашивает о чём угодно, which — о выборе из готового списка, а how растёт вместе с прилагательным: how old, how often.",
+ "can_do": [
+  "Выбрать what или which в зависимости от широты выбора.",
+  "Строить вопросы how old, how far, how often, how much.",
+  "Различить What is she like? и How is she? по смыслу."
+ ],
+ "theory": [
+  {
+   "h": "what — свободный выбор",
+   "p": "What используется, когда вариантов может быть сколько угодно и список не задан. Ответ на такой вопрос заранее неизвестен, поэтому подходит любое существительное.",
+   "formula": "What music do you like? · What's your favourite film?"
+  },
+  {
+   "h": "which — выбор из ограниченного набора",
+   "p": "Which появляется, когда выбор уже перед глазами или в разговоре: две дороги, три рубашки, несколько фильмов. Часто после which идёт of или существительное, которое задаёт этот набор.",
+   "table": {
+    "head": ["Ситуация", "Вопрос"],
+    "rows": [
+     ["Любой город мира", "What city do you want to visit?"],
+     ["Два города на выбор", "Which city do you prefer?"],
+     ["Всё меню", "What would you like?"],
+     ["Три блюда на столе", "Which one would you like?"]
+    ]
+   }
+  },
+  {
+   "h": "how + прилагательное или наречие",
+   "p": "Русские вопросы «сколько лет», «как часто», «как далеко» в английском строятся по одной модели: how плюс слово, которое уточняет, что именно мы измеряем. Эти пары надо знать наизусть, потому что дословно они не переводятся.",
+   "formula": "how old · how often · how far · how long · how much · how many · how tall · how fast"
+  },
+  {
+   "h": "What ... like? и How ...?",
+   "p": "Два похожих вопроса имеют разные смыслы. What is she like? спрашивает о характере, о человеке как о личности. How is she? — о самочувствии и делах. Ошибка здесь меняет тему разговора, поэтому важно различать.",
+   "formula": "What is she like? — She's kind and funny. · How is she? — She's fine, thanks."
+  },
+  {
+   "h": "Which one, what kind, what about",
+   "p": "Когда нужно уточнить выбор до одного предмета, добавляют one: which one. Вопросы what kind of и what about — готовые разговорные формулы, они не меняются по лицам и не требуют do.",
+   "formula": "Which one do you want? · What kind of car is it? · What about tomorrow?"
+  }
+ ],
+ "examples": [
+  {"en": "What do you usually do on Sundays?", "ru": "Что ты обычно делаешь по воскресеньям?"},
+  {"en": "Which of these two shirts do you like?", "ru": "Какая из этих двух рубашек тебе нравится?"},
+  {"en": "How often do you go to the gym?", "ru": "Как часто ты ходишь в спортзал?"},
+  {"en": "What is your new colleague like?", "ru": "Какой твой новый коллега по характеру?"},
+  {"en": "How far is the station from here?", "ru": "Как далеко отсюда до вокзала?"}
+ ],
+ "traps": [
+  {"bad": "How is your sister like?", "good": "What is your sister like?", "why": "О характере спрашивают what ... like, а не how."},
+  {"bad": "How much years do you study?", "good": "How many years do you study?", "why": "Years исчисляемое, поэтому how many."},
+  {"bad": "Which is your name?", "good": "What is your name?", "why": "Имя не выбирают из списка, здесь нужен what."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ of these three colours do you prefer?", "options": ["What", "Which", "How"], "a": 1, "why": "Выбор из трёх вариантов — which."},
+  {"type": "choice", "q": "___ often do you travel by train?", "options": ["What", "How", "Which"], "a": 1, "why": "Как часто — how often."},
+  {"type": "choice", "q": "___ is your new flat like?", "options": ["What", "How", "Which"], "a": 0, "why": "Описание через what ... like."},
+  {"type": "choice", "q": "___ many people live in this house?", "options": ["How", "What", "Which"], "a": 0, "why": "С исчисляемым количеством — how many."},
+  {"type": "choice", "q": "___ old is your grandfather?", "options": ["How", "What", "Which"], "a": 0, "why": "Возраст: how old."},
+  {"type": "gap", "q": "___ kind of music do you like?", "a": ["what"], "why": "What kind of — открытый выбор, список не задан."},
+  {"type": "gap", "q": "How ___ is it from here to the airport?", "a": ["far"], "why": "Расстояние спрашивают через how far."},
+  {"type": "gap", "q": "___ one do you want, the red one or the blue one?", "a": ["which"], "why": "Выбор из двух — which one."},
+  {"type": "translate", "q": "Как тебя зовут?", "a": ["what is your name", "what's your name"], "why": "Имя спрашивают через what."},
+  {"type": "translate", "q": "Какой ты человек по характеру?", "a": ["what are you like"], "why": "О характере — what ... like."}
+ ]
+}

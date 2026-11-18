@@ -14,7 +14,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
 
-from stamina import i18n, orion, owner_key, pilots
+from stamina import i18n, nav, orion, owner_key, pilots
 
 
 def _events(*lines) -> str:
@@ -719,7 +719,9 @@ class OrionScreenTest(unittest.TestCase):
         self.assertIn("orion", keys)
         self.assertLess(keys.index("orion"), keys.index("settings"))
         self.assertIn("orion", self.app.nav_buttons)
-        self.assertTrue(self.app.bind("<Control-Key-8>"))     # Ctrl+8 — восьмая зона
+        hotkeys = dict((name, key) for key, name in nav.zone_hotkeys(nav.zones()))
+        orion_key = hotkeys["orion"]
+        self.assertTrue(self.app.bind(f"<Control-Key-{orion_key}>"))
 
     def test_orion_zone_opens_with_subtabs(self):
         self.app.show("orion")

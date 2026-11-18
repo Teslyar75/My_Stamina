@@ -1,0 +1,78 @@
+{
+ "n": 8,
+ "level": "A1",
+ "module": "present",
+ "title": "Present Continuous или Present Simple",
+ "en": "I am doing и I do (сравнение)",
+ "summary": "Одно действие можно показать двумя способами: сейчас или вообще. Разница не в глаголе, а во взгляде на время.",
+ "can_do": [
+  "Выбрать нужное время по словам now или usually.",
+  "Сказать про временное: I'm living with friends this month.",
+  "Не ставить -ing с like, know и want."
+ ],
+ "theory": [
+  {
+   "h": "Два взгляда на одно действие",
+   "p": "Present Continuous смотрит на момент: сейчас, временно. Present Simple смотрит на привычку: всегда, обычно, регулярно. Одно и то же действие может попасть в оба времени, но смысл будет разный.",
+   "formula": "I'm reading a book now. · I read before bed every night."
+  },
+  {
+   "h": "Вся разница в таблице",
+   "p": "У этих времён разные формы, разные слова-подсказки и разные типичные ситуации. Держите таблицу перед глазами, пока выбор не станет автоматическим.",
+   "table": {
+    "head": ["Present Continuous", "Present Simple"],
+    "rows": [
+     ["сейчас, в эту минуту", "вообще, регулярно"],
+     ["now, at the moment", "every day, usually, never"],
+     ["am/is/are + -ing", "глагол, у he/she/it с -s"]
+    ]
+   }
+  },
+  {
+   "h": "Слова-подсказки",
+   "p": "В живой речи время часто выдаёт само себя одним словом. Достаточно услышать его, чтобы выбрать форму.",
+   "table": {
+    "head": ["Подсказка", "Время"],
+    "rows": [
+     ["now, right now, at the moment", "Continuous"],
+     ["today, this week", "Continuous, если это временно"],
+     ["every day, on Mondays, always", "Simple"],
+     ["usually, often, sometimes, never", "Simple"]
+    ]
+   }
+  },
+  {
+   "h": "Глаголы состояния",
+   "p": "Like, know, want, need, understand, believe описывают состояние, а не процесс. Даже если речь о текущей минуте, форма остаётся простой.",
+   "formula": "I want to sleep. · Do you understand me?"
+  },
+  {
+   "h": "Временное и постоянное",
+   "p": "I live in Moscow — постоянное. I'm living with friends this month — временно. Разница не в глаголе, а в том, как долго это длится.",
+   "formula": "She works in an office. · She's working from home today."
+  }
+ ],
+ "examples": [
+  {"en": "She's working from home today.", "ru": "Сегодня она работает из дома."},
+  {"en": "She usually works in an office.", "ru": "Обычно она работает в офисе."},
+  {"en": "I'm learning to drive this summer.", "ru": "Этим летом я учусь водить."},
+  {"en": "I don't drink coffee at night.", "ru": "Я не пью кофе на ночь."},
+  {"en": "Look, he's wearing a new coat.", "ru": "Смотри, он в новом пальто."}
+ ],
+ "traps": [
+  {"bad": "I am work now.", "good": "I'm working now.", "why": "После be нужен глагол с -ing, а не словарная форма."},
+  {"bad": "I am knowing the answer.", "good": "I know the answer.", "why": "know не ставят в Continuous."},
+  {"bad": "He is working here every day.", "good": "He works here every day.", "why": "Every day говорит о привычке, значит Simple."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Look, it ___ outside.", "options": ["rains", "is raining", "rain"], "a": 1, "why": "Look показывает момент речи, нужен Continuous."},
+  {"type": "choice", "q": "My father ___ to work by car every day.", "options": ["goes", "is going", "go"], "a": 0, "why": "Every day — привычка, поэтому Present Simple."},
+  {"type": "choice", "q": "Please be quiet. The baby ___.", "options": ["sleeps", "is sleeping", "sleep"], "a": 1, "why": "Действие идёт прямо сейчас."},
+  {"type": "choice", "q": "I ___ TV in the evening.", "options": ["watch usually", "usually watch", "am usually watching"], "a": 1, "why": "Usually стоит перед смысловым глаголом, время простое."},
+  {"type": "choice", "q": "She ___ the answer.", "options": ["is knowing", "knows", "know"], "a": 1, "why": "know не употребляют в Continuous, а she требует -s."},
+  {"type": "gap", "q": "We ___ (study) English now.", "a": ["are studying"], "why": "now — момент речи: are studying."},
+  {"type": "gap", "q": "He ___ (get up) at six every morning.", "a": ["gets up"], "why": "every morning — привычка, he требует -s."},
+  {"type": "translate", "q": "Я сейчас готовлю ужин.", "a": ["i am cooking dinner", "i'm cooking dinner"], "why": "Действие в моменте: I am cooking dinner."},
+  {"type": "translate", "q": "Обычно я хожу в школу пешком.", "a": ["i usually walk to school"], "why": "Usually + Present Simple."}
+ ]
+}

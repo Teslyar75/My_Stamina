@@ -1,0 +1,69 @@
+{
+ "n": 18,
+ "level": "A1",
+ "module": "perfect",
+ "title": "Present Perfect Continuous: I have been doing",
+ "en": "I have been doing (present perfect continuous)",
+ "summary": "Как сказать, что действие началось раньше и всё ещё идёт: I have been waiting for an hour.",
+ "can_do": [
+  "Сказать, сколько длится действие: I've been waiting for an hour.",
+  "Спросить о длительности: How long have you been learning English?",
+  "Отличить процесс от результата: have been painting и have painted."
+ ],
+ "theory": [
+  {
+   "h": "Длительность, а не результат",
+   "p": "Present Perfect Continuous говорит: действие началось раньше и всё ещё идёт. Нас интересует, как долго это продолжается, а не что получилось в итоге.",
+   "formula": "I have been waiting for an hour. · It has been raining all day."
+  },
+  {
+   "h": "Строение формы",
+   "p": "Три части: have или has, затем been, затем глагол с -ing. Been здесь не меняется, а выбор have или has зависит от действующего лица.",
+   "table": {
+    "head": ["Кто", "have / has been", "Пример"],
+    "rows": [
+     ["I / you / we / they", "have been", "We have been waiting."],
+     ["he / she / it", "has been", "She has been waiting."]
+    ]
+   }
+  },
+  {
+   "h": "Процесс или результат",
+   "p": "I have painted the wall значит «стена готова». I have been painting the wall значит «я красил, ещё не закончил». Одно время показывает итог, другое процесс.",
+   "formula": "She has written the letter. · She has been writing it all morning."
+  },
+  {
+   "h": "Слова длительности",
+   "p": "Это время почти всегда опирается на how long, for, since, all day, lately. Без указания срока оно звучит неуклюже и просит уточнения.",
+   "formula": "How long have you been learning English? · I've been living here since 2020."
+  },
+  {
+   "h": "Не для состояния",
+   "p": "Глаголы состояния know, like, want, belong сюда не ставят. Даже про долгий срок говорят просто и коротко.",
+   "formula": "I have known him for years. · I have had this car since May."
+  }
+ ],
+ "examples": [
+  {"en": "I've been looking for you everywhere.", "ru": "Я искал тебя повсюду."},
+  {"en": "She has been working since morning.", "ru": "Она работает с самого утра."},
+  {"en": "They've been living here for five years.", "ru": "Они живут здесь пять лет."},
+  {"en": "It has been snowing since yesterday.", "ru": "Снег идёт со вчерашнего дня."},
+  {"en": "How long have you been waiting?", "ru": "Сколько ты уже ждёшь?"}
+ ],
+ "traps": [
+  {"bad": "I am waiting for two hours.", "good": "I have been waiting for two hours.", "why": "Действие началось раньше и идёт до сих пор, нужен Perfect."},
+  {"bad": "I have been knowing her for years.", "good": "I have known her for years.", "why": "know не ставят в Continuous."},
+  {"bad": "She has been work all day.", "good": "She has been working all day.", "why": "После been нужен глагол с -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ for the bus for ten minutes.", "options": ["am waiting", "have been waiting", "wait"], "a": 1, "why": "Ожидание началось раньше и продолжается."},
+  {"type": "choice", "q": "It ___ since Monday.", "options": ["is raining", "has been raining", "rains"], "a": 1, "why": "since Monday задаёт срок до настоящего момента."},
+  {"type": "choice", "q": "She ___ here for three years.", "options": ["has been working", "is working", "works"], "a": 0, "why": "for three years требует Perfect Continuous."},
+  {"type": "choice", "q": "How long ___ you been learning English?", "options": ["do", "have", "are"], "a": 1, "why": "you берёт have, и в вопросе have идёт перед подлежащим."},
+  {"type": "choice", "q": "They have been ___ for us all morning.", "options": ["wait", "waiting", "waited"], "a": 1, "why": "После been нужна форма с -ing."},
+  {"type": "gap", "q": "He ___ (run) for half an hour.", "a": ["has been running"], "why": "he + has been, run удваивает n."},
+  {"type": "gap", "q": "We ___ (live) in this house since 2015.", "a": ["have been living", "have lived"], "why": "Оба времени верны: have been living или have lived."},
+  {"type": "translate", "q": "Я учу английский два года.", "a": ["i have been learning english for two years", "i've been learning english for two years"], "why": "have been learning плюс for two years."},
+  {"type": "translate", "q": "Снег идёт с утра.", "a": ["it has been snowing since morning", "it's been snowing since morning"], "why": "has been snowing plus since morning."}
+ ]
+}

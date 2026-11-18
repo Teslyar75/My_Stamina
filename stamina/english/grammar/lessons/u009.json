@@ -1,0 +1,70 @@
+{
+ "n": 9,
+ "level": "A1",
+ "module": "present",
+ "title": "I have и I have got",
+ "en": "I have / I've got",
+ "summary": "Как сказать, что у вас что-то есть, — двумя способами, которые значат одно и то же, но по-разному строят вопрос.",
+ "can_do": [
+  "Сказать, что у вас есть: I have a car, I've got a car.",
+  "Спросить, есть ли что-то: Have you got...? Do you have...?",
+  "Отличить «иметь» от «завтракать» и «принимать душ»."
+ ],
+ "theory": [
+  {
+   "h": "have значит «иметь»",
+   "p": "Have говорит о том, что у нас есть: вещи, родственники, время, болезни. В британском варианте чаще звучит have got, в американском просто have. Смысл один и тот же.",
+   "formula": "I have a car. · I've got a car."
+  },
+  {
+   "h": "Три формы рядом",
+   "p": "В утверждении have и have got взаимозаменяемы, а вот вопрос и отрицание строятся по-разному. Главное — не смешивать два набора в одной фразе.",
+   "table": {
+    "head": ["Утверждение", "Отрицание", "Вопрос"],
+    "rows": [
+     ["I have a car.", "I don't have a car.", "Do you have a car?"],
+     ["I've got a car.", "I haven't got a car.", "Have you got a car?"],
+     ["She has a dog.", "She doesn't have a dog.", "Does she have a dog?"]
+    ]
+   }
+  },
+  {
+   "h": "has для he, she, it",
+   "p": "В третьем лице have превращается в has. В форме с got это тоже работает: she has got, а в речи почти всегда she's got.",
+   "formula": "He has a bike. · She's got a bike. · It has two doors."
+  },
+  {
+   "h": "have плюс существительное — это действие",
+   "p": "В сочетаниях have breakfast, have a shower, have a good time глагол have значит «делать», а не «иметь». Тогда вопросы и отрицания строятся только через do, и got здесь не появляется.",
+   "formula": "I have breakfast at seven. · Do you have breakfast at home?"
+  },
+  {
+   "h": "Возраст не через have",
+   "p": "Русское «мне 25 лет» переводится через be. Have с годами — самая частая калька с русского, и звучит она очень заметно.",
+   "formula": "I am 25. · My sister is 30."
+  }
+ ],
+ "examples": [
+  {"en": "I've got two brothers.", "ru": "У меня два брата."},
+  {"en": "She has a new phone.", "ru": "У неё новый телефон."},
+  {"en": "We don't have any milk.", "ru": "У нас нет молока."},
+  {"en": "Have you got a minute?", "ru": "У тебя найдётся минутка?"},
+  {"en": "He has breakfast at eight.", "ru": "Он завтракает в восемь."}
+ ],
+ "traps": [
+  {"bad": "I have 25 years.", "good": "I'm 25.", "why": "Возраст в английском идёт через be, без years."},
+  {"bad": "I have got a shower every morning.", "good": "I have a shower every morning.", "why": "Действие с have не берёт got."},
+  {"bad": "Do you have got a pen?", "good": "Have you got a pen?", "why": "Два набора смешивать нельзя: либо have got, либо do you have."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ two cats.", "options": ["have", "has", "is"], "a": 1, "why": "she требует has."},
+  {"type": "choice", "q": "___ you got a pen?", "options": ["Do", "Have", "Are"], "a": 1, "why": "Вопрос к have got строится без do."},
+  {"type": "choice", "q": "I ___ any money.", "options": ["don't have", "haven't", "am not have"], "a": 0, "why": "Без got отрицание идёт через don't have."},
+  {"type": "choice", "q": "He ___ a shower every morning.", "options": ["has got", "has", "have"], "a": 1, "why": "Have a shower — действие, got здесь не нужен."},
+  {"type": "choice", "q": "___ she have a car?", "options": ["Does", "Has", "Is"], "a": 0, "why": "Вопрос к простому have: Does she have...?"},
+  {"type": "gap", "q": "They ___ (have) a small flat.", "a": ["have", "have got"], "why": "Оба варианта верны: they have или they have got."},
+  {"type": "gap", "q": "My sister ___ (have) long hair.", "a": ["has", "has got"], "why": "she требует has или has got."},
+  {"type": "translate", "q": "У меня есть собака.", "a": ["i have a dog", "i have got a dog", "i've got a dog"], "why": "I have a dog или I've got a dog."},
+  {"type": "translate", "q": "У него нет машины.", "a": ["he doesn't have a car", "he does not have a car", "he hasn't got a car", "he has not got a car"], "why": "Либо doesn't have, либо hasn't got."}
+ ]
+}

@@ -1,0 +1,92 @@
+{
+  "tables": [
+    {
+      "name": "Verb Tenses Summary",
+      "rows": [
+        ["Tense", "Form", "Use", "Signal Words"],
+        ["Present Simple", "I/you/we/they + verb\nhe/she/it + verb+s", "Habits, routines, facts", "always, usually, often"],
+        ["Present Continuous", "am/is/are + -ing", "Now, temporary", "now, today"],
+        ["Present Perfect", "have/has + past participle", "Past-present connection", "just, already, yet, for, since"],
+        ["Past Simple", "past form", "Completed past time", "yesterday, last week, in 2010"],
+        ["Past Continuous", "was/were + -ing", "Past background action", "at 8 pm yesterday"],
+        ["Future with will", "will + base verb", "Spontaneous, predictions", "maybe, perhaps"],
+        ["Future going to", "be + going to + base", "Plans, intentions", "intention, plan"],
+        ["Present Continuous (future)", "be + -ing", "Arrangements", "tomorrow, next week"]
+      ]
+    },
+    {
+      "name": "Irregular Verbs (Top 50)",
+      "rows": [
+        ["Base", "Past Simple", "Past Participle"],
+        ["be", "was/were", "been"],
+        ["have", "had", "had"],
+        ["do", "did", "done"],
+        ["say", "said", "said"],
+        ["go", "went", "gone"],
+        ["get", "got", "gotten/got"],
+        ["make", "made", "made"],
+        ["know", "knew", "known"],
+        ["take", "took", "taken"],
+        ["see", "saw", "seen"],
+        ["come", "came", "come"],
+        ["think", "thought", "thought"],
+        ["look", "looked", "looked"],
+        ["want", "wanted", "wanted"],
+        ["give", "gave", "given"],
+        ["use", "used", "used"],
+        ["find", "found", "found"],
+        ["tell", "told", "told"],
+        ["ask", "asked", "asked"],
+        ["work", "worked", "worked"],
+        ["seem", "seemed", "seemed"],
+        ["feel", "felt", "felt"],
+        ["try", "tried", "tried"],
+        ["leave", "left", "left"],
+        ["call", "called", "called"],
+        ["need", "needed", "needed"],
+        ["become", "became", "become"],
+        ["put", "put", "put"],
+        ["mean", "meant", "meant"],
+        ["keep", "kept", "kept"],
+        ["old", "older/elder", "oldest/eldest"],
+        ["young", "younger", "youngest"],
+        ["good", "better", "best"],
+        ["bad", "worse", "worst"],
+        ["many/much", "more", "most"],
+        ["little", "less", "least"],
+        ["old", "elder", "eldest"],
+        ["far", "farther/further", "farthest/furthest"]
+      ]
+    },
+    {
+      "name": "Conditionals Overview",
+      "rows": [
+        ["Type", "If Clause", "Main Clause", "Use"],
+        ["Zero", "Present Simple", "Present Simple", "General truths"],
+        ["First", "Present Simple", "will + base", "Real future"],
+        ["Second", "Past Simple", "would + base", "Unreal present"],
+        ["Third", "Past Perfect", "would have + PP", "Unreal past"],
+        ["Mixed 1", "Past Perfect", "would + base", "Present result of past"],
+        ["Mixed 2", "Present", "would have + PP", "Past result of present"]
+      ]
+    },
+    {
+      "name": "Modal Verbs",
+      "rows": [
+        ["Modal", "Meaning", "Example"],
+        ["can", "ability, permission", "I can swim."],
+        ["could", "past ability, possibility", "I could swim."],
+        ["may", "possibility, permission", "You may leave."],
+        ["might", "weaker possibility", "It might rain."],
+        ["must", "obligation, strong deduction", "You must go."],
+        ["have to", "external obligation", "I have to work."],
+        ["should", "advice, recommendation", "You should study."],
+        ["ought to", "similar to should", "You ought to apologize."],
+        ["had better", "strong advice", "You'd better hurry."],
+        ["can't", "inability", "I can't swim."],
+        ["mustn't", "prohibition", "You mustn't smoke."],
+        ["needn't", "not necessary", "You needn't worry."]
+      ]
+    }
+  ]
+}

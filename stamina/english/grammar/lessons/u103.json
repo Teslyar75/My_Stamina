@@ -1,0 +1,71 @@
+{
+ "n": 103,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "Предлоги времени: at, on, in",
+ "en": "at/on/in (time)",
+ "summary": "Три предлога времени по масштабу: at — точка на часах, on — день в календаре, in — месяц, год и время суток.",
+ "can_do": [
+  "Сказать время встречи: at seven, on Monday, in July.",
+  "Правильно назвать дату и время суток.",
+  "Не ставить предлог перед next, last и this."
+ ],
+ "theory": [
+  {
+   "h": "Три масштаба времени",
+   "p": "Английский выбирает предлог по размеру отрезка: чем короче и точнее момент, тем вероятнее at. День уже требует on, а всё, что длиннее дня, — in.",
+   "formula": "at — точка · on — день · in — период"
+  },
+  {
+   "h": "Таблица по масштабу",
+   "p": "Запомните три строки, и большинство случаев закроется: часы и моменты, дни и даты, длинные периоды.",
+   "table": {
+    "head": ["Предлог", "С чем", "Примеры"],
+    "rows": [
+     ["at", "час, момент", "at six o'clock, at midnight, at lunchtime"],
+     ["on", "день, дата", "on Monday, on 5 May, on my birthday"],
+     ["in", "месяц, год, сезон, часть дня", "in July, in 2024, in winter, in the morning"]
+    ]
+   }
+  },
+  {
+   "h": "Ночь — исключение",
+   "p": "С частями суток работает in: in the morning, in the afternoon, in the evening. Но ночь говорят через at: at night, без артикля. Так же at noon и at midnight.",
+   "formula": "in the morning · at night · at noon · at midnight"
+  },
+  {
+   "h": "at the weekend и on the weekend",
+   "p": "Британцы говорят at the weekend, американцы — on the weekend. Оба варианта правильные, выберите один и держитесь его. В обоих случаях артикль the обязателен.",
+   "formula": "at the weekend (BrE) · on the weekend (AmE)"
+  },
+  {
+   "h": "next, last, this — без предлога",
+   "p": "Перед next, last, this и every предлог не нужен: сами слова уже указывают на время. Это касается и next week, и last Monday, и this morning.",
+   "formula": "next Monday · last summer · this morning · every day (без at/on/in)"
+  }
+ ],
+ "examples": [
+  {"en": "The film starts at half past seven.", "ru": "Фильм начинается в половине восьмого."},
+  {"en": "I'll see you on Friday morning.", "ru": "Увидимся в пятницу утром."},
+  {"en": "Her birthday is in September.", "ru": "Её день рождения в сентябре."},
+  {"en": "He usually works at night.", "ru": "Он обычно работает ночью."},
+  {"en": "We met in 2019 and got married last spring.", "ru": "Мы познакомились в 2019 году и поженились прошлой весной."}
+ ],
+ "traps": [
+  {"bad": "I'll call you in Monday.", "good": "I'll call you on Monday.", "why": "Дни недели идут с on, а не с in."},
+  {"bad": "The meeting is on 10 o'clock.", "good": "The meeting is at 10 o'clock.", "why": "Точное время на часах — at."},
+  {"bad": "We'll meet in next week.", "good": "We'll meet next week.", "why": "next уже указывает на время, предлог перед ним не нужен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My birthday is ___ May.", "options": ["at", "on", "in"], "a": 2, "why": "Месяц — длинный период, значит in."},
+  {"type": "choice", "q": "The class starts ___ nine o'clock.", "options": ["in", "at", "on"], "a": 1, "why": "Точное время — at."},
+  {"type": "choice", "q": "We're meeting ___ Saturday.", "options": ["in", "at", "on"], "a": 2, "why": "День недели — on."},
+  {"type": "choice", "q": "She was born ___ 1998.", "options": ["at", "in", "on"], "a": 1, "why": "Год — in."},
+  {"type": "choice", "q": "I can't sleep ___ night.", "options": ["in", "on", "at"], "a": 2, "why": "Ночь — устойчивое at night."},
+  {"type": "gap", "q": "The concert is ___ Friday evening.", "a": ["on"], "why": "День с частью суток: on Friday evening."},
+  {"type": "gap", "q": "We usually go skiing ___ winter.", "a": ["in"], "why": "Сезон — in winter."},
+  {"type": "gap", "q": "I'll see you ___ lunchtime.", "a": ["at"], "why": "Момент в течение дня — at lunchtime."},
+  {"type": "translate", "q": "Фильм начинается в восемь часов.", "a": ["the film starts at eight o'clock", "the film starts at eight", "the film begins at eight o'clock", "the film begins at eight"], "why": "Точное время — at eight."},
+  {"type": "translate", "q": "Она родилась в мае.", "a": ["she was born in may"], "why": "Месяц — in May."}
+ ]
+}

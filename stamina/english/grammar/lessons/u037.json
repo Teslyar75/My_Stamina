@@ -1,0 +1,67 @@
+{
+ "n": 37,
+ "level": "A2",
+ "module": "there",
+ "title": "There is и There are",
+ "en": "there is / there are",
+ "summary": "Как сказать, что что-то где-то есть, не называя владельца: There is и There are.",
+ "can_do": [
+  "Сказать, что в комнате, в городе или в сумке что-то есть.",
+  "Спросить, есть ли рядом банк или свободное место.",
+  "Сказать, что чего-то нет, через there isn't и there's no."
+ ],
+ "theory": [
+  {
+   "h": "Русское «есть» по-английски",
+   "p": "В русском «на столе есть книга» держится на слове «есть». Англичане ставят на это место there и be, причём порядок жёсткий: сначала there, потом be, потом что именно и где.",
+   "formula": "There is a book on the table. · There are two chairs here."
+  },
+  {
+   "h": "is или are решает то, что после",
+   "p": "Форму выбирает предмет, который идёт после be, а не тот, о ком говорит собеседник. Одна вещь — is, несколько — are, неисчисляемое — тоже is.",
+   "table": {
+    "head": ["Что там", "be", "Пример"],
+    "rows": [
+     ["a lamp", "is", "There is a lamp in the room."],
+     ["two lamps", "are", "There are two lamps in the room."],
+     ["water", "is", "There is some water in the bottle."]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос и отрицание",
+   "p": "В вопросе there и be меняются местами, do не нужен. Отрицание строится двумя способами: через isn't с any или через there's no без артикля.",
+   "formula": "Is there a bank near here? · There aren't any chairs. · There's no milk."
+  },
+  {
+   "h": "there и it",
+   "p": "There сообщает о наличии: предмет только появляется в разговоре. It указывает на уже известный предмет и продолжает мысль. Первое предложение знакомит, второе описывает.",
+   "formula": "There is a cat in the garden. It is black."
+  }
+ ],
+ "examples": [
+  {"en": "There's a good cafe near my house.", "ru": "Рядом с моим домом есть хорошее кафе."},
+  {"en": "There are three people waiting.", "ru": "Там ждут три человека."},
+  {"en": "Is there a doctor on board?", "ru": "На борту есть врач?"},
+  {"en": "There isn't any sugar left.", "ru": "Сахара больше не осталось."},
+  {"en": "There are no tickets for tonight.", "ru": "На сегодня билетов нет."},
+  {"en": "How many rooms are there in the flat?", "ru": "Сколько комнат в квартире?"}
+ ],
+ "traps": [
+  {"bad": "There is two chairs here.", "good": "There are two chairs here.", "why": "chairs во множественном числе, значит are."},
+  {"bad": "There have a bank near here.", "good": "There is a bank near here.", "why": "Наличие передаёт there be, а не there have."},
+  {"bad": "There is a cat in the garden. There is black.", "good": "There is a cat in the garden. It is black.", "why": "Во второй фразе речь о том же предмете, поэтому нужно it."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There ___ a lamp on the desk.", "options": ["is", "are", "have"], "a": 0, "why": "lamp в единственном числе: there is."},
+  {"type": "choice", "q": "There ___ many mistakes in the text.", "options": ["are", "is", "has"], "a": 0, "why": "mistakes — множественное число: there are."},
+  {"type": "choice", "q": "___ there a lift in the building?", "options": ["Is", "Are", "Has"], "a": 0, "why": "lift в единственном числе: Is there a lift?"},
+  {"type": "choice", "q": "There ___ no milk in the fridge.", "options": ["is", "are", "have"], "a": 0, "why": "milk неисчисляемое, значит is."},
+  {"type": "choice", "q": "How many students ___ there in the class?", "options": ["are", "is", "have"], "a": 0, "why": "students во множественном числе: are there."},
+  {"type": "gap", "q": "There ___ (be) some books on the shelf.", "a": ["are"], "why": "books — множественное число: there are."},
+  {"type": "gap", "q": "There ___ (not / be) any coffee left.", "a": ["isn't", "is not"], "why": "coffee неисчисляемое: there isn't any coffee."},
+  {"type": "gap", "q": "___ (be) there a pharmacy near here?", "a": ["is"], "why": "Вопрос о единственном предмете: Is there a pharmacy?"},
+  {"type": "translate", "q": "В комнате есть два окна.", "a": ["there are two windows in the room"], "why": "Множественное число: There are two windows in the room."},
+  {"type": "translate", "q": "Здесь нет парковки.", "a": ["there is no parking here", "there isn't any parking here", "there is not any parking here"], "why": "Отрицание наличия: There is no parking here."}
+ ]
+}

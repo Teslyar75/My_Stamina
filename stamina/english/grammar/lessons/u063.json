@@ -1,0 +1,76 @@
+{
+ "n": 63,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "Возвратные местоимения: myself",
+ "en": "myself/yourself/themselves",
+ "summary": "Когда действие возвращается к самому делающему: I cut myself, they enjoyed themselves, she did it by herself.",
+ "can_do": [
+  "Сказать, что действие направлено на самого делающего.",
+  "Использовать myself после предлога и с глаголами вроде enjoy, hurt.",
+  "Различать «сам» в значении «без помощи» и «сам» как акцент."
+ ],
+ "theory": [
+  {
+   "h": "Действие на себя",
+   "p": "Если тот, кто делает, и тот, на кого делают, — одно лицо, обычная форма дополнения не подходит: I hurt me звучит странно. Нужна возвратная форма: I hurt myself.",
+   "formula": "I cut myself. · She looked at herself in the mirror."
+  },
+  {
+   "h": "Формы по лицам",
+   "p": "У you две формы: yourself об одном человеке и yourselves о нескольких. Остальные лица имеют по одной форме, и все они оканчиваются на self или selves.",
+   "table": {
+    "head": ["Лицо", "Форма", "Пример"],
+    "rows": [
+     ["I", "myself", "I taught myself."],
+     ["you (один)", "yourself", "Look after yourself."],
+     ["he", "himself", "He hurt himself."],
+     ["she", "herself", "She enjoyed herself."],
+     ["it", "itself", "The door opened by itself."],
+     ["we", "ourselves", "We enjoyed ourselves."],
+     ["they", "themselves", "They helped themselves."]
+    ]
+   }
+  },
+  {
+   "h": "by myself — один, без помощи",
+   "p": "By плюс возвратная форма значит «сам, своими силами» или «один». I did it by myself — никто не помогал. I did it myself — акцент на том, что это сделал именно я, а не кто-то другой.",
+   "formula": "I live by myself. · She wrote the report herself."
+  },
+  {
+   "h": "Глаголы, которым нужна форма «себя»",
+   "p": "Некоторые английские глаголы требуют возвратной формы там, где русский обходится без неё: enjoy yourself, help yourself за столом, behave yourself. Наоборот, wash, dress, shave обычно идут без неё.",
+   "formula": "Enjoy yourself! · Help yourself to the cake."
+  },
+  {
+   "h": "Где «себя» лишнее",
+   "p": "Meet, feel, wake up, concentrate по-английски не берут возвратного местоимения, хотя по-русски хочется сказать «встретились». We met at the station, а не We met ourselves. I feel better, а не I feel myself better.",
+   "formula": "We met at the station. · I feel much better."
+  }
+ ],
+ "examples": [
+  {"en": "Be careful, you can cut yourself.", "ru": "Осторожно, ты можешь порезаться."},
+  {"en": "They painted the kitchen themselves.", "ru": "Они сами покрасили кухню."},
+  {"en": "I live by myself in a small flat.", "ru": "Я живу один в маленькой квартире."},
+  {"en": "Help yourself to some tea.", "ru": "Угощайтесь чаем."},
+  {"en": "She taught herself to play the guitar.", "ru": "Она сама научилась играть на гитаре."},
+  {"en": "We really enjoyed ourselves at the party.", "ru": "Мы отлично провели время на вечеринке."}
+ ],
+ "traps": [
+  {"bad": "I cut me.", "good": "I cut myself.", "why": "Действие на себя требует возвратной формы."},
+  {"bad": "We met ourselves at the station.", "good": "We met at the station.", "why": "Meet не берёт «себя»: по-русски «встретились», по-английски просто met."},
+  {"bad": "She did it by himself.", "good": "She did it by herself.", "why": "Форма зависит от делающего: she даёт herself."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He fell and hurt ___.", "options": ["him", "his", "himself"], "a": 2, "why": "Он пострадал сам — himself."},
+  {"type": "choice", "q": "Girls, help ___ to the fruit.", "options": ["yourself", "yourselves", "themselves"], "a": 1, "why": "Обращение к нескольким — yourselves."},
+  {"type": "choice", "q": "I made this table ___.", "options": ["myself", "me", "mine"], "a": 0, "why": "«Сам» при I — myself."},
+  {"type": "choice", "q": "The cat washed ___ after dinner.", "options": ["itself", "himself", "themselves"], "a": 0, "why": "Животное — it, поэтому itself."},
+  {"type": "choice", "q": "They always enjoy ___ at the beach.", "options": ["them", "their", "themselves"], "a": 2, "why": "Enjoy oneself — устойчивое сочетание: themselves."},
+  {"type": "choice", "q": "She lives by ___ in London.", "options": ["her", "herself", "hers"], "a": 1, "why": "By + возвратная форма значит «одна»."},
+  {"type": "gap", "q": "Be careful with that knife — you'll cut ___.", "a": ["yourself"], "why": "Обращение к одному человеку — yourself."},
+  {"type": "gap", "q": "We built the garage ___ (we).", "a": ["ourselves"], "why": "Мы сами — ourselves."},
+  {"type": "gap", "q": "My brother taught ___ (he) to cook.", "a": ["himself"], "why": "Он научил себя — himself."},
+  {"type": "translate", "q": "Она сама это сделала.", "a": ["she did it herself", "she did it by herself"], "why": "«Сама» при she — herself."}
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "n": 35,
+ "level": "A2",
+ "module": "modals",
+ "title": "Повелительное наклонение",
+ "en": "imperative (do it, don't do it)",
+ "summary": "Как попросить, приказать и предупредить одной формой глагола — без подлежащего и без времени.",
+ "can_do": [
+  "Дать короткую команду или просьбу.",
+  "Запретить что-то через don't.",
+  "Позвать кого-то что-то сделать вместе: Let's ..."
+ ],
+ "theory": [
+  {
+   "h": "Чистый глагол",
+   "p": "Повелительное наклонение — это первая форма глагола без подлежащего. Ни do, ни you не нужны, а вежливость добавляется словом please, и от него фраза меняется сильнее, чем кажется.",
+   "formula": "Open the door. · Sit down, please. · Wait here."
+  },
+  {
+   "h": "Отрицание: don't",
+   "p": "Запрет и просьба не делать строятся через don't перед глаголом. В официальных надписях встречается полное do not, а иногда просто no с формой на -ing.",
+   "formula": "Don't touch it. · Don't be late. · Do not enter."
+  },
+  {
+   "h": "Три ступени вежливости",
+   "p": "Приказ и просьба различаются не грамматикой, а обёрткой. Чистый императив звучит как команда, please делает его просьбой, а could you и would you mind — вежливым оборотом.",
+   "table": {
+    "head": ["Форма", "Оттенок"],
+    "rows": [
+     ["Close the door.", "команда"],
+     ["Close the door, please.", "просьба"],
+     ["Could you close the door?", "вежливая просьба"]
+    ]
+   }
+  },
+  {
+   "h": "Be и Let's",
+   "p": "С be императив работает так же: Be careful, Be quiet. Оборот Let's приглашает сделать что-то вместе и включает говорящего, поэтому звучит дружелюбнее, чем приказ.",
+   "formula": "Be careful! · Let's go. · No smoking."
+  }
+ ],
+ "examples": [
+  {"en": "Please close the window.", "ru": "Пожалуйста, закрой окно."},
+  {"en": "Don't be afraid.", "ru": "Не бойся."},
+  {"en": "Let's take a taxi.", "ru": "Давай возьмём такси."},
+  {"en": "Turn left at the lights.", "ru": "На светофоре поверните налево."},
+  {"en": "Don't forget your passport.", "ru": "Не забудь паспорт."},
+  {"en": "Be quiet, the baby is sleeping.", "ru": "Тише, ребёнок спит."}
+ ],
+ "traps": [
+  {"bad": "You open the door!", "good": "Open the door!", "why": "В императиве подлежащее лишнее, you только добавляет раздражение."},
+  {"bad": "Don't to run.", "good": "Don't run.", "why": "После don't глагол идёт без to."},
+  {"bad": "Not touch the wire.", "good": "Don't touch the wire.", "why": "Отрицание императива строится через don't, а не через not."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ the light, please — it's dark.", "options": ["Turn on", "Turning on", "To turn on"], "a": 0, "why": "Императив — первая форма глагола: Turn on the light."},
+  {"type": "choice", "q": "___ be late for the interview.", "options": ["Don't", "Not", "No"], "a": 0, "why": "Отрицательный императив: Don't be late."},
+  {"type": "choice", "q": "___ careful — the floor is wet.", "options": ["Be", "Are", "Being"], "a": 0, "why": "Императив от be: Be careful."},
+  {"type": "choice", "q": "___ go to the beach this afternoon.", "options": ["Let's", "Let", "Lets"], "a": 0, "why": "Приглашение вместе: Let's go."},
+  {"type": "choice", "q": "___ smoking in this area.", "options": ["No", "Not", "Don't"], "a": 0, "why": "Надпись-запрет строится как No + -ing."},
+  {"type": "gap", "q": "___ (not / worry) about the money.", "a": ["don't worry", "do not worry"], "why": "Запрет: Don't worry."},
+  {"type": "gap", "q": "Please ___ (close) the door when you leave.", "a": ["close"], "why": "После please — первая форма глагола."},
+  {"type": "gap", "q": "___ (be) quiet, please — the exam is on.", "a": ["be"], "why": "Императив от be сохраняет форму be."},
+  {"type": "translate", "q": "Не забудь ключи.", "a": ["don't forget the keys", "do not forget the keys"], "why": "Отрицательный императив: Don't forget the keys."},
+  {"type": "translate", "q": "Давай встретимся в шесть.", "a": ["let's meet at six", "let us meet at six"], "why": "Приглашение: Let's meet at six."}
+ ]
+}

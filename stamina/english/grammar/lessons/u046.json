@@ -1,0 +1,72 @@
+{
+ "n": 46,
+ "level": "A2",
+ "module": "questions",
+ "title": "Вопросы с предлогом: Who ... to?",
+ "en": "questions with prepositions",
+ "summary": "Англичане оставляют предлог в конце вопроса, а не тащат его в начало — и терять этот предлог нельзя.",
+ "can_do": [
+  "Задать вопрос с предлогом в конце: Who are you waiting for?",
+  "Не терять предлог после глаголов look at, listen to, talk about.",
+  "Различить Where are you from? и Where do you come from?"
+ ],
+ "theory": [
+  {
+   "h": "Предлог не уезжает в начало",
+   "p": "В русском «С кем ты говорил?» начинается с предлога. В английском вопросительное слово идёт первым, а предлог остаётся рядом со своим глаголом — в конце фразы. Это не разговорная небрежность, а норма.",
+   "formula": "Who are you talking to? · What are you looking at?"
+  },
+  {
+   "h": "Предлог — часть глагола",
+   "p": "Многие английские глаголы без предлога просто не работают: look at, listen to, wait for, talk about, think about, belong to. Если предлог потерять, смысл меняется или фраза ломается, поэтому его убирать нельзя.",
+   "table": {
+    "head": ["Глагол", "Вопрос", "Перевод"],
+    "rows": [
+     ["wait for", "Who are you waiting for?", "Кого ты ждёшь?"],
+     ["listen to", "What are you listening to?", "Что ты слушаешь?"],
+     ["look for", "What are you looking for?", "Что ты ищешь?"],
+     ["think about", "What are you thinking about?", "О чём ты думаешь?"]
+    ]
+   }
+  },
+  {
+   "h": "Вопросительное слово + предлог в начале",
+   "p": "Формальный вариант всё же существует: предлог ставят перед who и what, обычно с whom. Так пишут в документах и учебниках, в живой речи звучит слишком книжно, поэтому активнее всего используется форма с предлогом в конце.",
+   "formula": "With whom did you go? (книжно) · Who did you go with? (обычно)"
+  },
+  {
+   "h": "Where from и Where to",
+   "p": "Вопросам о происхождении и направлении предлог тоже нужен, только в конце. Отдельные устойчивые пары вроде Where are you from? и Where are you going to? запоминают целиком, потому что они встречаются каждый день.",
+   "formula": "Where are you from? · Who does this bag belong to?"
+  },
+  {
+   "h": "Предлог остаётся, даже если вопрос длинный",
+   "p": "Даже когда перед who добавлено уточнение, конструкция не меняется: предлог по-прежнему стоит в конце. Не переставляйте ничего в начало — это самая заметная ошибка после русского языка.",
+   "formula": "Who did she go to the cinema with? · What kind of music do you listen to?"
+  }
+ ],
+ "examples": [
+  {"en": "Who are you waiting for?", "ru": "Кого ты ждёшь?"},
+  {"en": "What are you looking at?", "ru": "На что ты смотришь?"},
+  {"en": "Where are you from?", "ru": "Откуда ты?"},
+  {"en": "Who does this umbrella belong to?", "ru": "Кому принадлежит этот зонт?"},
+  {"en": "What kind of films do you like?", "ru": "Какие фильмы тебе нравятся?"}
+ ],
+ "traps": [
+  {"bad": "For who are you waiting?", "good": "Who are you waiting for?", "why": "Предлог остаётся в конце вопроса, а не идёт вперёд."},
+  {"bad": "What are you listening?", "good": "What are you listening to?", "why": "Listen без предлога to не работает: это часть глагола."},
+  {"bad": "From where you are?", "good": "Where are you from?", "why": "В вопросе с be сначала where are you, предлог в конце."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Who are you waiting ___?", "options": ["for", "to", "at"], "a": 0, "why": "Устойчивое wait for — ждать кого-то."},
+  {"type": "choice", "q": "What are you looking ___? I've lost my keys.", "options": ["after", "for", "at"], "a": 1, "why": "Look for — искать, look after — присматривать."},
+  {"type": "choice", "q": "Where do you come ___?", "options": ["from", "of", "away"], "a": 0, "why": "Come from — быть родом откуда-то."},
+  {"type": "choice", "q": "What are you thinking ___?", "options": ["about", "for", "on"], "a": 0, "why": "Think about — думать о чём-то."},
+  {"type": "choice", "q": "Who is she talking ___?", "options": ["to", "for", "from"], "a": 0, "why": "Talk to somebody — разговаривать с кем-то."},
+  {"type": "gap", "q": "Who does this book belong ___?", "a": ["to"], "why": "Belong to — принадлежать кому-то."},
+  {"type": "gap", "q": "What are you listening ___?", "a": ["to"], "why": "Listen to — слушать что-то."},
+  {"type": "gap", "q": "Where are you ___?", "a": ["from"], "why": "О происхождении спрашивают предлогом from в конце: Where are you from?"},
+  {"type": "translate", "q": "С кем ты разговариваешь?", "a": ["who are you talking to", "who are you talking with", "who do you talk to", "who are you speaking to"], "why": "Предлог to остаётся в конце вопроса."},
+  {"type": "translate", "q": "Что ты слушаешь?", "a": ["what are you listening to", "what do you listen to"], "why": "Listen to требует предлога в конце."}
+ ]
+}

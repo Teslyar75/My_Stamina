@@ -155,7 +155,11 @@ def need_hint(progress, robot_id: str) -> str:
                         )
         except Exception:
             pass
-        return t("🔒 Откроется после постройки платформы Железо или Кварц на тренажёре")
+        need = robot_need(progress, robot_id)
+        if need is not None:
+            prev, pct, now = need
+            return t("🔒 Откроется после {0}: нужно {1}% (сейчас {2}%)").format(prev, pct, now)
+        return t("🔒 Откроется после прохождения A1 на тренажёре")
     need = robot_need(progress, robot_id)
     if need is None:
         return ""

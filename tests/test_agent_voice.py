@@ -153,6 +153,29 @@ def test_send_maps_permission_errors_to_bridge_hint(monkeypatch):
     assert sc.is_permission_error(404) and not sc.is_permission_error(500, "boom")
 
 
+def test_dead_token_says_expired_not_forbidden(monkeypatch):
+    """401 «Bad credentials»: токен мёртв, а не «мало прав» — совет пилоту другой."""
+    def dead(*_a, **_k):
+        raise urllib.error.HTTPError("u", 401, "Unauthorized", {},
+                                     io.BytesIO(b'{"message":"Bad credentials","status":"401"}'))
+    monkeypatch.setattr(ac, "_opener", lambda: lambda req, timeout=0: dead())
+    ok, msg = ac.check(REC, key="t")
+    assert ok is False and "истёк" in msg and sc.TOKEN_SETTINGS in msg
+    out = sc.send(REC, "hi", token="t")
+    assert out["error"] == "bridge_token" and "Bad credentials" in out["detail"]
+    assert sc.is_dead_token(401) and sc.is_dead_token(None, "Bad credentials")
+    assert not sc.is_dead_token(403, "Forbidden")
+
+
+def test_github_error_message_reads_as_github():
+    """Тело ошибки GitHub больше не превращается в «no choices»."""
+    assert ac._error_message(b'{"message":"Bad credentials"}') == "Bad credentials"
+    assert ac._error_message(b'{"error":{"message":"quota"}}') == "quota"
+    assert ac._error_message(b'{"errors":[{"message":"Resource not accessible"}]}') == \
+        "Resource not accessible"
+    assert ac._error_message(b"<html>") == ""
+
+
 # ---------------------------------------------------------------- сообщения без запроса
 from pathlib import Path  # noqa: E402
 import tempfile  # noqa: E402

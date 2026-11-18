@@ -1,0 +1,71 @@
+{
+ "n": 48,
+ "level": "A2",
+ "module": "questions",
+ "title": "How long does it take?",
+ "en": "how long does it take?",
+ "summary": "Как спросить и сказать, сколько времени уходит на дорогу, работу или задачу — через глагол take.",
+ "can_do": [
+  "Спросить: How long does it take to get to the airport?",
+  "Ответить: It takes about thirty minutes.",
+  "Сказать, сколько времени это заняло у конкретного человека."
+ ],
+ "theory": [
+  {
+   "h": "take — это про время",
+   "p": "Когда речь о том, сколько времени требует дело, английский использует глагол take. Подлежащим становится it, а отрезок времени — дополнением. В русском «дорога занимает час» устроено так же, только глагол другой.",
+   "formula": "It takes twenty minutes. · It took two hours."
+  },
+  {
+   "h": "Вопрос целиком",
+   "p": "Вопрос собирается по обычному каркасу: сначала how long, потом does, потом it, потом take и цель с to. Именно так спрашивают о времени в пути или на работу. Оборот how much time тоже понятен, но звучит по-ученически, а how long — живая норма.",
+   "table": {
+    "head": ["Вопрос", "Ответ"],
+    "rows": [
+     ["How long does it take to get there?", "It takes about ten minutes."],
+     ["How long did it take to finish?", "It took three days."],
+     ["How long does the journey take?", "It takes an hour by train."]
+    ]
+   }
+  },
+  {
+   "h": "Кому именно нужно время",
+   "p": "Если время уходит у конкретного человека, он ставится между take и отрезком времени. Так фраза становится личной: не «это занимает час», а «у меня это заняло час».",
+   "formula": "It took me an hour. · It takes her forty minutes to get to work."
+  },
+  {
+   "h": "Времена меняют только take",
+   "p": "Меняется форма take: takes для настоящего с he/she/it, took для прошлого, will take для будущего. Остальная часть фразы не перестраивается, и это делает конструкцию очень удобной.",
+   "formula": "It takes ten minutes. · It took ten minutes. · It will take ten minutes."
+  },
+  {
+   "h": "Не путать с длительностью состояния",
+   "p": "Вопрос how long с Present Perfect спрашивает не о затратах времени, а о том, как долго что-то длится: How long have you been here? Если же речь именно о стоимости дела в минутах, нужен take.",
+   "formula": "How long have you lived here? (как долго живёшь) · How long does it take? (сколько времени нужно)"
+  }
+ ],
+ "examples": [
+  {"en": "How long does it take to get to the airport?", "ru": "Сколько времени ехать до аэропорта?"},
+  {"en": "It takes about half an hour by bus.", "ru": "На автобусе это занимает около получаса."},
+  {"en": "It took me two hours to write the report.", "ru": "На отчёт у меня ушло два часа."},
+  {"en": "How long did the journey take?", "ru": "Сколько длилась поездка?"},
+  {"en": "It won't take long, I promise.", "ru": "Это не займёт много времени, обещаю."}
+ ],
+ "traps": [
+  {"bad": "How much time does it need to get there?", "good": "How long does it take to get there?", "why": "О затратах времени по-английски спрашивают через how long и take."},
+  {"bad": "It takes me one hour for finish.", "good": "It takes me one hour to finish.", "why": "Цель выражается инфинитивом с to, а не предлогом for."},
+  {"bad": "How long it takes?", "good": "How long does it take?", "why": "В вопросе нужен вспомогательный does и начальная форма take."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How long ___ it take to get to the centre?", "options": ["does", "do", "is"], "a": 0, "why": "It в Present Simple: does it take."},
+  {"type": "choice", "q": "It ___ me an hour to cook dinner yesterday.", "options": ["takes", "took", "taking"], "a": 1, "why": "Прошлое: it took me an hour."},
+  {"type": "choice", "q": "The train ___ three hours from here.", "options": ["takes", "take", "is taking"], "a": 0, "why": "The train = it, Present Simple: takes."},
+  {"type": "choice", "q": "How long did it ___ to write the letter?", "options": ["take", "took", "takes"], "a": 0, "why": "После did глагол в начальной форме."},
+  {"type": "choice", "q": "It won't ___ long, don't worry.", "options": ["take", "takes", "took"], "a": 0, "why": "После will глагол в начальной форме."},
+  {"type": "gap", "q": "How long ___ it take to walk to the park?", "a": ["does"], "why": "It в Present Simple требует does."},
+  {"type": "gap", "q": "It ___ (take) us forty minutes to find the hotel.", "a": ["took"], "why": "Прошлое: it took us forty minutes."},
+  {"type": "gap", "q": "The flight ___ (take) about two hours.", "a": ["takes"], "why": "Настоящее, подлежащее it: takes."},
+  {"type": "translate", "q": "Сколько времени займёт дорога?", "a": ["how long does it take", "how long does the journey take", "how long will it take"], "why": "How long + does it take."},
+  {"type": "translate", "q": "У меня ушёл час, чтобы добраться домой.", "a": ["it took me an hour to get home", "it took me one hour to get home"], "why": "It took me + время + to get home."}
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "n": 27,
+ "level": "A1",
+ "module": "future",
+ "title": "will и shall: будущее простое",
+ "en": "will/shall (1)",
+ "summary": "Will для решений, которые рождаются прямо в разговоре: согласиться, предложить помощь, дать обещание.",
+ "can_do": [
+  "Принять решение на месте и сказать о нём через will.",
+  "Предложить помощь через I'll ... и Shall I ...?",
+  "Пообещать что-то и сократить will до 'll или won't."
+ ],
+ "theory": [
+  {
+   "h": "Форма одна на всех",
+   "p": "Will не меняется ни по лицам, ни по числам: I will, she will, they will. После него идёт голая форма глагола — без to, без -s и без окончания -ed. Это редкое место в английском, где не нужно думать о том, кто действует.",
+   "formula": "I'll call you. · He'll be late. · They'll come back."
+  },
+  {
+   "h": "Сокращения и won't",
+   "p": "В живой речи will прилипает к местоимению и превращается в 'll: I'll, she'll, we'll. Отрицание узнаётся труднее всего, потому что will not даёт won't — форму, которая на will совсем не похожа, и её надо просто запомнить.",
+   "formula": "I'll be there. · She'll help us. · We won't be late."
+  },
+  {
+   "h": "Решение рождается на ходу",
+   "p": "Главная работа will — оформить решение, которого секунду назад не было. Телефон звонит, вы говорите: I'll answer it. Выбираете еду в кафе — I'll have the soup. План тут не готовился заранее, он появился в момент речи.",
+   "table": {
+    "head": ["Что происходит", "Что говорите"],
+    "rows": [
+     ["звонит телефон", "I'll answer it."],
+     ["выбираете блюдо", "I'll have the soup, please."],
+     ["соглашаетесь помочь", "OK, I'll do it now."]
+    ]
+   }
+  },
+  {
+   "h": "Предложения и обещания",
+   "p": "С помощью will строятся две очень нужные фразы. Предложение помощи начинается с Shall I или Shall we, если действовать собираетесь вы сами. Обещание звучит как договор: I'll send it tonight — и это уже обязательство, а не мечта.",
+   "formula": "Shall I open the window? · Shall we take a taxi? · I'll send it tonight."
+  }
+ ],
+ "examples": [
+  {"en": "OK, I'll have the soup, please.", "ru": "Хорошо, я возьму суп."},
+  {"en": "The phone is ringing — I'll answer it.", "ru": "Телефон звонит, я отвечу."},
+  {"en": "Shall I carry your bag?", "ru": "Мне донести твою сумку?"},
+  {"en": "We'll send you the documents on Monday.", "ru": "Мы пришлём вам документы в понедельник."},
+  {"en": "I won't tell anyone, I promise.", "ru": "Я никому не скажу, обещаю."},
+  {"en": "Shall we meet at seven?", "ru": "Встретимся в семь?"}
+ ],
+ "traps": [
+  {"bad": "I will to call you.", "good": "I will call you.", "why": "После will инфинитив без to."},
+  {"bad": "She wills come.", "good": "She will come.", "why": "will не меняется по лицам, -s ему не нужен."},
+  {"bad": "I won't to tell him.", "good": "I won't tell him.", "why": "won't — это will not, дальше сразу смысловой глагол."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The phone is ringing. I ___ answer it.", "options": ["will", "am", "do"], "a": 0, "why": "Решение принято сейчас: I'll answer it."},
+  {"type": "choice", "q": "___ I get you a glass of water?", "options": ["Will", "Shall", "Do"], "a": 1, "why": "Предложение помощи: Shall I get you a glass of water?"},
+  {"type": "choice", "q": "OK, I ___ take the last one.", "options": ["will", "am", "do"], "a": 0, "why": "Решение в момент речи: I'll take it."},
+  {"type": "choice", "q": "I promise I ___ be late again.", "options": ["won't", "don't", "am not"], "a": 0, "why": "Обещание с отрицанием: I won't be late."},
+  {"type": "choice", "q": "She ___ come to the meeting — she told me.", "options": ["will", "wills", "is"], "a": 0, "why": "will не берёт -s: she will come."},
+  {"type": "gap", "q": "It's cold in here. ___ (shall) I close the window?", "a": ["shall"], "why": "Предложение действия: Shall I close the window?"},
+  {"type": "gap", "q": "Don't worry, I ___ (carry) your suitcase.", "a": ["will carry", "'ll carry"], "why": "Решение помочь: I'll carry your suitcase."},
+  {"type": "gap", "q": "We ___ (not / be) late — I've ordered a taxi.", "a": ["won't be", "will not be"], "why": "Отрицание: we won't be late."},
+  {"type": "translate", "q": "Я открою окно.", "a": ["i will open the window", "i'll open the window"], "why": "Решение в момент речи: I'll open the window."},
+  {"type": "translate", "q": "Мне помочь тебе?", "a": ["shall i help you", "shall i help you with that"], "why": "Предложение помощи: Shall I help you?"}
+ ]
+}

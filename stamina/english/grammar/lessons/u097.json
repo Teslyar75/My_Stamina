@@ -1,0 +1,79 @@
+{
+ "n": 97,
+ "level": "B1",
+ "module": "clauses",
+ "title": "and, but, or, so, because",
+ "en": "and/but/or/so/because",
+ "summary": "Пять коротких слов, которые склеивают две мысли в одну фразу: добавить, возразить, выбрать, назвать причину и следствие.",
+ "can_do": [
+  "Соединить две мысли через and и but в одном предложении.",
+  "Предложить выбор через or и объяснить причину через because.",
+  "Показать результат через so и не путать его с причиной."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужны связки",
+   "p": "Русское «и» может значить и добавление, и причину, и следствие. В английском для каждой связи есть своё слово, и от него меняется смысл: слушатель понимает, добавляете вы, возражаете или объясняете.",
+   "formula": "and = и · but = но · or = или · so = поэтому · because = потому что"
+  },
+  {
+   "h": "and и but: две части рядом",
+   "p": "and добавляет равноправную мысль, but ставит вторую часть напротив первой. Перед but запятая почти всегда уместна, перед and в короткой фразе — не нужна. Подлежащее во второй части можно не повторять.",
+   "formula": "I called him and he came. · I called him, but he didn't come."
+  },
+  {
+   "h": "or: выбор и «иначе»",
+   "p": "or ставит рядом две возможности. В вопросе это выбор, в утверждении — альтернатива. В значении «а то, иначе» or стоит перед предупреждением и почти всегда с запятой.",
+   "formula": "Tea or coffee? · Hurry up, or we'll be late."
+  },
+  {
+   "h": "because называет причину",
+   "p": "because вводит причину: сначала говорим, что случилось, потом почему. Придаточное с because может стоять и первым, тогда после него нужна запятая; перед самим because запятая не ставится.",
+   "formula": "I stayed home because it was raining. · Because it was raining, I stayed home."
+  },
+  {
+   "h": "so показывает результат",
+   "p": "so — это «поэтому, и вот что из этого вышло». Он смотрит вперёд, а because — назад, к уже названному. Русское «так что» ближе всего именно к so.",
+   "table": {
+    "head": ["Связка", "Что делает", "Пример"],
+    "rows": [
+     ["and", "добавляет", "She sings and plays the guitar."],
+     ["but", "противопоставляет", "He's small, but he's strong."],
+     ["or", "даёт выбор", "Call me or send a message."],
+     ["so", "показывает результат", "It was late, so we went home."],
+     ["because", "называет причину", "We went home because it was late."]
+    ]
+   }
+  },
+  {
+   "h": "so и because: как не перепутать",
+   "p": "Оба слова переводятся через «поэтому / потому что», и здесь чаще всего путаются. Проверка простая: причина всегда была раньше по времени, а результат случился после неё.",
+   "formula": "причина → so → результат: It rained, so we stayed in. · результат ← because ← причина: We stayed in because it rained."
+  }
+ ],
+ "examples": [
+  {"en": "I wanted to help, but I had no time.", "ru": "Я хотел помочь, но у меня не было времени."},
+  {"en": "We can walk or take the bus.", "ru": "Мы можем пойти пешком или поехать на автобусе."},
+  {"en": "She was tired, so she went to bed early.", "ru": "Она устала, поэтому легла спать рано."},
+  {"en": "I'm learning English because I need it for work.", "ru": "Я учу английский, потому что он нужен мне для работы."},
+  {"en": "Take a coat, or you'll get cold.", "ru": "Возьми куртку, а то замёрзнешь."},
+  {"en": "He opened the window and turned off the light.", "ru": "Он открыл окно и выключил свет."}
+ ],
+ "traps": [
+  {"bad": "It was raining, because we stayed at home.", "good": "It was raining, so we stayed at home.", "why": "Дождь — причина, а «остались дома» — результат. Значит, нужен so."},
+  {"bad": "Because I was tired, so I went to bed.", "good": "I was tired, so I went to bed.", "why": "so и because в одном предложении не встречаются: выбирают одну связку."},
+  {"bad": "I like tea, and I don't like coffee.", "good": "I like tea, but I don't like coffee.", "why": "Здесь противопоставление, а не добавление, поэтому but."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The room was small ___ very comfortable.", "options": ["so", "but", "because"], "a": 1, "why": "Уютность противопоставлена размеру — but."},
+  {"type": "choice", "q": "It was cold, ___ I put on my coat.", "options": ["because", "or", "so"], "a": 2, "why": "Пальто надели в результате холода — so."},
+  {"type": "choice", "q": "I stayed in bed ___ I felt ill.", "options": ["because", "so", "but"], "a": 0, "why": "Плохое самочувствие — причина, поэтому because."},
+  {"type": "choice", "q": "Would you like tea ___ coffee?", "options": ["and", "or", "so"], "a": 1, "why": "Выбор из двух вариантов — or."},
+  {"type": "choice", "q": "Hurry up, ___ we'll miss the train.", "options": ["and", "because", "or"], "a": 2, "why": "or здесь значит «а то, иначе»."},
+  {"type": "gap", "q": "I couldn't sleep ___ the neighbours were noisy.", "a": ["because"], "why": "Шумные соседи — причина, нужен because."},
+  {"type": "gap", "q": "He was late, ___ he missed the beginning of the film.", "a": ["so"], "why": "Опоздание дало результат, значит so."},
+  {"type": "gap", "q": "You can pay by card ___ in cash.", "a": ["or"], "why": "Две возможности — or."},
+  {"type": "translate", "q": "Я хотел пойти, но у меня не было времени.", "a": ["i wanted to go but i didn't have time", "i wanted to go, but i didn't have time", "i wanted to go but i had no time"], "why": "Противопоставление через but: I wanted to go, but I had no time."},
+  {"type": "translate", "q": "Шёл дождь, поэтому мы остались дома.", "a": ["it was raining so we stayed at home", "it was raining, so we stayed at home", "it rained so we stayed at home"], "why": "Сначала причина, потом so и результат."}
+ ]
+}

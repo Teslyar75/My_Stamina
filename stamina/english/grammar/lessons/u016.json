@@ -1,0 +1,70 @@
+{
+ "n": 16,
+ "level": "A1",
+ "module": "perfect",
+ "title": "Present Perfect: just, already, yet",
+ "en": "I've just / already / yet",
+ "summary": "Три слова для новостей: что-то только что случилось, уже случилось или ещё нет.",
+ "can_do": [
+  "Сказать, что только что что-то сделали: I've just eaten.",
+  "Сообщить, что дело уже готово: She's already left.",
+  "Сказать, что ещё не готово: I haven't finished yet."
+ ],
+ "theory": [
+  {
+   "h": "just значит только что",
+   "p": "Just стоит между have и смысловым глаголом и говорит, что действие случилось совсем недавно. В британском варианте это Present Perfect, в американском чаще Past Simple.",
+   "formula": "I've just finished. · She has just left."
+  },
+  {
+   "h": "already значит уже",
+   "p": "Already тоже занимает место в середине, между have и причастием. В утверждении он звучит нейтрально, а в вопросе добавляет удивление.",
+   "formula": "He has already eaten. · Have you already packed?"
+  },
+  {
+   "h": "yet живёт в конце",
+   "p": "Yet ставится в конец предложения: в отрицании он значит «ещё нет», в вопросе — «уже». В утверждении с yet не говорят.",
+   "formula": "I haven't finished yet. · Have you called her yet?"
+  },
+  {
+   "h": "Кто где стоит",
+   "p": "Место в предложении — главное, что нужно запомнить. Just и already идут в середину, yet всегда в конец.",
+   "table": {
+    "head": ["Слово", "Где стоит", "Пример"],
+    "rows": [
+     ["just", "между have и глаголом", "I've just eaten."],
+     ["already", "между have и глаголом", "She's already gone."],
+     ["yet", "в конце, в вопросе и отрицании", "They haven't come yet."]
+    ]
+   }
+  },
+  {
+   "h": "Зачем эти слова нужны",
+   "p": "Все три сообщают новость и связывают её с текущим моментом. Именно поэтому рядом с ними естественно звучит Present Perfect, а не Past Simple.",
+   "formula": "I've just seen the news. · We haven't decided yet."
+  }
+ ],
+ "examples": [
+  {"en": "I've just made coffee.", "ru": "Я только что сварил кофе."},
+  {"en": "She's already left the office.", "ru": "Она уже ушла из офиса."},
+  {"en": "We haven't booked the tickets yet.", "ru": "Мы ещё не забронировали билеты."},
+  {"en": "Have you finished the report yet?", "ru": "Ты уже закончил отчёт?"},
+  {"en": "He has just gone out.", "ru": "Он только что вышел."}
+ ],
+ "traps": [
+  {"bad": "I have already ate.", "good": "I have already eaten.", "why": "После have нужна третья форма eaten."},
+  {"bad": "I haven't finished already.", "good": "I haven't finished yet.", "why": "В отрицании «ещё нет» передаётся через yet."},
+  {"bad": "I just have seen him.", "good": "I have just seen him.", "why": "Just стоит после have, а не перед ним."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I've ___ finished. The ink is still wet.", "options": ["just", "yet", "never"], "a": 0, "why": "Свежие чернила показывают, что действие было только что."},
+  {"type": "choice", "q": "Have you sent the letter ___?", "options": ["already", "just", "yet"], "a": 2, "why": "В вопросе yet стоит в конце и значит «уже»."},
+  {"type": "choice", "q": "She has already ___ home.", "options": ["go", "went", "gone"], "a": 2, "why": "После has нужна третья форма gone."},
+  {"type": "choice", "q": "We haven't booked the hotel ___.", "options": ["already", "just", "yet"], "a": 2, "why": "В отрицании «ещё не» передаётся через yet в конце."},
+  {"type": "gap", "q": "I have just ___ (make) coffee.", "a": ["made"], "why": "make в третьей форме — made."},
+  {"type": "gap", "q": "They ___ (not / arrive) yet.", "a": ["haven't arrived", "have not arrived"], "why": "they + haven't + третья форма arrived."},
+  {"type": "gap", "q": "She has already ___ (do) the washing.", "a": ["done"], "why": "do в третьей форме — done."},
+  {"type": "translate", "q": "Я только что позвонил ему.", "a": ["i have just called him", "i've just called him"], "why": "have + just + called."},
+  {"type": "translate", "q": "Мы ещё не решили.", "a": ["we haven't decided yet", "we have not decided yet"], "why": "Отрицание в Perfect плюс yet в конце."}
+ ]
+}

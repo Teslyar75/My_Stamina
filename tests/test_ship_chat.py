@@ -141,7 +141,8 @@ def test_discussions_disabled_and_check(monkeypatch, store):
     err = urllib.error.HTTPError("u", 401, "x", {}, io.BytesIO(b'{"message":"Bad credentials"}'))
     monkeypatch.setattr(ac, "_opener", lambda: FakeGitHub({("POST", "hasDiscussionsEnabled"): err}))
     ok, msg = ac.check(REC, key="t")
-    assert not ok and "auth" in msg
+    # 401 «Bad credentials» — токен мёртв: совет «создайте новый», а не «добавьте прав»
+    assert not ok and "истёк" in msg and sc.TOKEN_SETTINGS in msg
 
 
 def test_pick_replies_markers_reply_to_and_login_fallback():

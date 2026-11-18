@@ -1,0 +1,71 @@
+{
+ "n": 106,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "Предлоги места: in, at, on",
+ "en": "in/at/on (place) 1",
+ "summary": "Внутри, на поверхности или в точке на карте: как выбрать между in, at и on, когда речь о месте.",
+ "can_do": [
+  "Сказать, что вещь лежит в сумке, на столе или у входа.",
+  "Объяснить, где вы находитесь: at work, in the office, on the bus.",
+  "Различить in the school и at school по смыслу."
+ ],
+ "theory": [
+  {
+   "h": "in — внутри",
+   "p": "in значит «внутри чего-то, в границах»: in the box, in the room, in the garden, in Moscow. Предмет со всех сторон окружён этим пространством.",
+   "formula": "in the box · in the room · in Russia"
+  },
+  {
+   "h": "on — на поверхности",
+   "p": "on ставится, когда предмет касается поверхности: on the table, on the wall, on the floor, on the ceiling. Сюда же попадают этажи и линии: on the third floor, on the river.",
+   "formula": "on the table · on the wall · on the second floor"
+  },
+  {
+   "h": "at — точка на карте",
+   "p": "at ставится, когда место важно как точка, а не как объём: at the door, at the bus stop, at the party, at the cinema. Внутрь мы не заглядываем, нам важно «здесь».",
+   "table": {
+    "head": ["Предлог", "Смысл", "Примеры"],
+    "rows": [
+     ["in", "внутри, в границах", "in the box, in the room, in Moscow"],
+     ["on", "на поверхности", "on the table, on the wall, on the floor"],
+     ["at", "точка, место действия", "at the door, at the bus stop, at the party"]
+    ]
+   }
+  },
+  {
+   "h": "at school и in the school",
+   "p": "С учреждениями работает тонкая разница. at school значит «в школе по делу» — на занятиях, на работе. in the school значит «внутри здания школы» — например, ремонт или экскурсия по коридорам.",
+   "formula": "at school (учёба) · in the school (в самом здании)"
+  },
+  {
+   "h": "Артикль при предлоге",
+   "p": "После in и on обычно нужен артикль или другой определитель: in a box, on the table. Без артикля остаются устойчивые сочетания вроде at work, at home, at school, in bed.",
+   "formula": "in a box · on the table · at work · at home · in bed"
+  }
+ ],
+ "examples": [
+  {"en": "The keys are in my bag.", "ru": "Ключи в моей сумке."},
+  {"en": "There's a picture on the wall.", "ru": "На стене висит картина."},
+  {"en": "I'll wait for you at the entrance.", "ru": "Я подожду тебя у входа."},
+  {"en": "She lives in Samara, on the fifth floor.", "ru": "Она живёт в Самаре, на пятом этаже."},
+  {"en": "We spent the day at the beach.", "ru": "Мы провели день на пляже."}
+ ],
+ "traps": [
+  {"bad": "The keys are on my bag.", "good": "The keys are in my bag.", "why": "Внутри сумки — in; on значит «на поверхности»."},
+  {"bad": "I live in the third floor.", "good": "I live on the third floor.", "why": "Этаж — это поверхность, поэтому on."},
+  {"bad": "There's a map in the wall.", "good": "There's a map on the wall.", "why": "Стена — поверхность, нужен on."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My passport is ___ my pocket.", "options": ["in", "on", "at"], "a": 0, "why": "Внутри кармана — in."},
+  {"type": "choice", "q": "There's a cup ___ the table.", "options": ["in", "at", "on"], "a": 2, "why": "Чашка стоит на поверхности — on."},
+  {"type": "choice", "q": "Let's meet ___ the cinema entrance.", "options": ["in", "at", "on"], "a": 1, "why": "Вход — точка встречи, поэтому at."},
+  {"type": "choice", "q": "She's ___ holiday in Spain.", "options": ["at", "on", "in"], "a": 1, "why": "Устойчивое on holiday."},
+  {"type": "choice", "q": "There are only three rooms ___ our flat.", "options": ["at", "on", "in"], "a": 2, "why": "Комнаты внутри квартиры — in."},
+  {"type": "gap", "q": "He's ___ the kitchen, making tea.", "a": ["in"], "why": "Внутри помещения — in."},
+  {"type": "gap", "q": "I put the photo ___ the wall.", "a": ["on"], "why": "Фотография на поверхности стены — on."},
+  {"type": "gap", "q": "We were ___ the bus stop at six.", "a": ["at"], "why": "Остановка как точка на карте — at."},
+  {"type": "translate", "q": "Книга на столе.", "a": ["the book is on the table"], "why": "На поверхности — on the table."},
+  {"type": "translate", "q": "Ключи в сумке.", "a": ["the keys are in my bag", "the keys are in the bag"], "why": "Внутри сумки — in."}
+ ]
+}

@@ -433,7 +433,8 @@ class OrionScreen(tk.Frame):
         self.shot_row = tk.Frame(bottom, bg=BG)
         # миниатюры всех приложенных картинок: клик — посмотреть, ✕ — снять одну
         self.shot_tray = compose.ShotTray(self.shot_row, bg=BG, size=72,
-                                          on_open=self._open_shot, on_drop=self._drop_shot)
+                                         on_open=self._open_shot, on_drop=self._drop_shot,
+                                         on_edit=self._edit_shot)
         self.shot_icon = self.shot_tray.frame
         self.shot_icon.pack(side=tk.LEFT)
         self.shot_label = _label(self.shot_row, "", fg=CYAN, size=9, bg=BG, anchor="w",
@@ -463,6 +464,10 @@ class OrionScreen(tk.Frame):
         self.entry.bind_text("<Control-Shift-S>", self._grab_window_shot)
         self.entry.bind_text("<Control-Shift-s>", self._grab_window_shot)
         self.entry.bind_text("<Button-3>", self._context_menu)
+        # Фокус мог уйти в живую линию или в кнопку — снимок всё равно должен
+        # прикрепляться к сообщению, а не теряться в недрах Text.
+        self.winfo_toplevel().bind("<Control-v>", self._paste_anywhere, add="+")
+        self.winfo_toplevel().bind("<Control-V>", self._paste_anywhere, add="+")
         # 📎 — приложить картинки с диска (как в чатах ИИ); Ctrl+V — из буфера
         self.attach_btn = HudButton(row, "📎", self._pick_images, height=36, font_size=11,
                                     width=36, color=CYAN)
@@ -571,6 +576,15 @@ class OrionScreen(tk.Frame):
             self.entry.focus_set()
         return "break"
 
+    def _paste_anywhere(self, event=None) -> str | None:
+        """Ctrl+V, когда фокус вне поля набора: снимок всё равно идёт к сообщению."""
+        if not self.winfo_ismapped():
+            return None
+        focus = self.focus_get()
+        if isinstance(focus, (tk.Entry, tk.Text)) and focus is not self.strip_orion:
+            return None                      # обычное поле — вставляет оно само
+        return self._paste_text(event)
+
     # -- снимки экрана -------------------------------------------------------
     def _grab_clipboard_shot(self) -> bool:
         """Картинка из буфера обмена (Win+Shift+S или файл из Проводника) → к сообщению."""
@@ -637,7 +651,7 @@ class OrionScreen(tk.Frame):
             n = len(self._pending_shots)
             self.shot_label.configure(
                 text=_t("📷 Приложено: {0}").format(n) + "\n"
-                     + _t("Картинки уйдут Ориону вместе с сообщением."))
+                     + _t("Клик по миниатюре — обрезать и повернуть. Картинки уйдут Ориону вместе с сообщением."))
             self._draw_shot_preview(self._pending_shots)
             self.shot_row.pack(fill=tk.X, pady=(px(4), 0), before=self.input_row)
         else:
@@ -667,6 +681,31 @@ class OrionScreen(tk.Frame):
         if not compose.open_image(self, path):
             self._hint(_t("Не удалось открыть снимок: {0}").format(Path(path).name), RED)
         return "break"
+
+    def _edit_shot(self, path: str) -> str:
+        """Предварительная редакция: обрезать, повернуть, убрать — до отправки."""
+        from stamina.shot_editor import ShotEditor
+        try:
+            ShotEditor(self, path, on_done=lambda result: self._shot_edited(path, result))
+        except Exception as exc:  # noqa: BLE001
+            self._hint(_t("Редактор не открылся: {0}").format(exc), RED)
+        return "break"
+
+    def _shot_edited(self, old_path: str, result) -> None:
+        """Результат редактора: новый файл вместо старого, пустая строка — снять."""
+        if result is None:
+            return
+        if not result:
+            self._drop_shot(old_path)
+            return
+        try:
+            index = self._pending_shots.index(old_path)
+        except ValueError:
+            self._pending_shots.append(result)
+        else:
+            self._pending_shots[index] = result
+        self._refresh_shot_row()
+        self._hint(_t("Снимок обновлён"), CYAN)
 
     def _context_menu(self, _e) -> str:
         """Контекстное меню для строки сообщения: Вставить."""
@@ -727,7 +766,7 @@ class OrionScreen(tk.Frame):
             pass
 
     def _strip_key(self, e) -> str | None:
-        """Ctrl+C / Ctrl+A в живой линии — по коду клавиши (работает и в русской раскладке)."""
+        """Ctrl+C / Ctrl+A / Ctrl+V в живой линии — по коду клавиши (работает и в русской раскладке)."""
         code = getattr(e, "keycode", 0)
         key = (getattr(e, "keysym", "") or "").lower()
         if code == 67 or key in ("c", "cyrillic_es"):
@@ -735,6 +774,10 @@ class OrionScreen(tk.Frame):
         if code == 65 or key in ("a", "cyrillic_ef"):
             self.strip_orion.tag_add(tk.SEL, "1.0", "end-1c")
             return "break"
+        if code == 86 or key in ("v", "cyrillic_em"):
+            # Клик по живой линии забирает фокус у поля набора — вставку всё равно
+            # отправляем туда: снимок или текст должны попасть в сообщение.
+            return self._paste_text(e)
         return None
 
     def _strip_copy(self) -> str:
@@ -2849,7 +2892,9 @@ class OrionScreen(tk.Frame):
             self._show_stop(False)
             err = sent.get("error") or "network"
             detail = f" ({sent['detail']})" if sent.get("detail") else ""
-            if err == "bridge_perm":
+            if err == "bridge_token":
+                note = ship_chat.token_hint() + detail
+            elif err == "bridge_perm":
                 note = ship_chat.permission_hint(sent.get("repo") or str(rec.get("bridge_repo") or ""),
                                                  sent.get("need") or "") + detail
             elif err == "config":

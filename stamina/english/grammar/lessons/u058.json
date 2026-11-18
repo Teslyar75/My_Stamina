@@ -1,0 +1,74 @@
+{
+ "n": 58,
+ "level": "A2",
+ "module": "verbs",
+ "title": "have: have breakfast, have a good time",
+ "en": "have (2): устойчивые сочетания",
+ "summary": "Have отвечает не только за владение: с ним говорят про еду, отдых, душ, разговор и хорошо проведённое время.",
+ "can_do": [
+  "Назвать приём пищи: have breakfast, have lunch.",
+  "Сказать, что хорошо провели время или приняли душ.",
+  "Задать вопрос в прошлом: Did you have a good time?"
+ ],
+ "theory": [
+  {
+   "h": "have + еда и напитки",
+   "p": "Всё, что человек ест и пьёт, присоединяется к have без артикля. Приёмы пищи идут как готовые пары, а с конкретным напитком появляется артикль a.",
+   "formula": "have breakfast · have lunch · have dinner · have a coffee · have a sandwich"
+  },
+  {
+   "h": "have + событие и опыт",
+   "p": "Целая группа выражений описывает действия, которые человек совершает над собой или вместе с другими: душ, отдых, разговор, вечеринка. Здесь have уже не про владение, но по-русски это чаще всего другой глагол.",
+   "table": {
+    "head": ["Выражение", "Перевод"],
+    "rows": [
+     ["have a shower", "принять душ"],
+     ["have a rest", "отдохнуть"],
+     ["have a look", "посмотреть, взглянуть"],
+     ["have a chat", "поговорить"],
+     ["have a good time", "хорошо провести время"],
+     ["have a party", "устроить вечеринку"]
+    ]
+   }
+  },
+  {
+   "h": "Вопросы и отрицания с have",
+   "p": "Когда have работает как обычный глагол, вопросы и отрицания строятся через do. Форма have не меняется, а время берёт на себя вспомогательный глагол.",
+   "formula": "Did you have a good time? · I didn't have breakfast. · Do you have a minute?"
+  },
+  {
+   "h": "have и have got — не одно и то же",
+   "p": "Have got говорит о владении и о состоянии, а have + существительное — о действии. Съесть завтрак нельзя через have got, а вот наличие машины можно передать обоими способами.",
+   "formula": "I have got a car. = I have a car. · I had breakfast. (не I have got breakfast)"
+  },
+  {
+   "h": "have to — отдельная история",
+   "p": "Сочетание have to значит «быть должным» и не имеет отношения к еде и отдыху. Сравнение двух фраз с одним словом помогает не путать обязанность с приёмом пищи.",
+   "formula": "I have to work today. (должен) · I have lunch at one. (обедаю)"
+  }
+ ],
+ "examples": [
+  {"en": "I usually have breakfast at seven.", "ru": "Я обычно завтракаю в семь."},
+  {"en": "Did you have a good time at the party?", "ru": "Ты хорошо провёл время на вечеринке?"},
+  {"en": "Let me have a look at your photos.", "ru": "Дай мне взглянуть на твои фотографии."},
+  {"en": "We had a long chat about work.", "ru": "Мы долго говорили о работе."},
+  {"en": "She has a shower every morning.", "ru": "Она принимает душ каждое утро."}
+ ],
+ "traps": [
+  {"bad": "I have got breakfast at eight.", "good": "I have breakfast at eight.", "why": "Have got — про владение, еду оно не описывает."},
+  {"bad": "Did you had a good weekend?", "good": "Did you have a good weekend?", "why": "После did глагол стоит в начальной форме."},
+  {"bad": "I made a shower this morning.", "good": "I had a shower this morning.", "why": "Душ «принимают» через have, а не через make."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I usually ___ breakfast at home.", "options": ["have", "make", "do"], "a": 0, "why": "Приём пищи — have breakfast."},
+  {"type": "choice", "q": "We ___ a great time in Sochi last summer.", "options": ["had", "did", "made"], "a": 0, "why": "Have a good time, Past Simple: had."},
+  {"type": "choice", "q": "Can I ___ a look at the menu?", "options": ["have", "make", "take"], "a": 0, "why": "Have a look — взглянуть."},
+  {"type": "choice", "q": "___ you have a shower this morning?", "options": ["Did", "Have", "Were"], "a": 0, "why": "Have как обычный глагол: вопрос через did."},
+  {"type": "choice", "q": "They ___ a party on Saturday.", "options": ["are having", "are making", "is having"], "a": 0, "why": "They + have a party, в продолженном: are having."},
+  {"type": "gap", "q": "I didn't ___ (have) lunch today.", "a": ["have"], "why": "После didn't глагол в начальной форме."},
+  {"type": "gap", "q": "Let's ___ a rest for ten minutes.", "a": ["have", "take"], "why": "Have a rest — отдохнуть."},
+  {"type": "gap", "q": "She ___ (have) a chat with her boss yesterday.", "a": ["had"], "why": "Past Simple: had a chat."},
+  {"type": "translate", "q": "Ты хорошо провёл время?", "a": ["did you have a good time", "did you have a nice time", "did you have a good time?"], "why": "Вопрос в прошлом через did + have."},
+  {"type": "translate", "q": "Я обычно обедаю в час.", "a": ["i usually have lunch at one", "i usually have lunch at 1", "i have lunch at one"], "why": "Have lunch без артикля, время через at."}
+ ]
+}

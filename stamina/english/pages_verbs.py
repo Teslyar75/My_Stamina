@@ -11,6 +11,7 @@ from . import quality, verbs
 from .check import SpeechCheck
 from .speech_std import is_hint_key, is_mic_key, passed
 from .ui import L, ScrollFrame, Strip
+from .verbs_portal import VerbsPortal, is_portal_key
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
 
@@ -37,6 +38,7 @@ class VerbsTab(tk.Frame):
         body.pack(fill=tk.BOTH, expand=True)
         self.body = body
         self.reference = None  # Справочник (pages_reference) создаём по первому открытию
+        self.portal = None     # Портал спряжения (verbs_portal) — тоже по первому открытию
         self.after_idle(self._bind_reference_key)
 
         left = tk.Frame(body, bg=BG, width=px(270))
@@ -247,6 +249,8 @@ class VerbsTab(tk.Frame):
                     return None
             except tk.TclError:
                 return None
+            if self.portal_open():
+                return "break"          # портал на весь экран — сначала выйти из него
             if self.reference is not None and self.reference.winfo_ismapped():
                 self.close_reference()
             else:
@@ -262,6 +266,46 @@ class VerbsTab(tk.Frame):
             self.reference.pack_forget()
         self.body.pack(fill=tk.BOTH, expand=True)
         self.refresh()
+
+    # -- портал спряжения -----------------------------------------------------
+    def portal_open(self) -> bool:
+        """Портал на весь экран сейчас открыт?"""
+        try:
+            return self.portal is not None and bool(self.portal.winfo_ismapped())
+        except tk.TclError:
+            return False
+
+    def open_portal(self) -> None:
+        """O / Ctrl+O — портал: 12 времён на одном экране, каждая плитка с озвучкой и проверкой."""
+        if self.portal is None:
+            self.portal = VerbsPortal(self.winfo_toplevel(), self.ctx, on_close=self.close_portal)
+        if self.mic is not None:
+            try:
+                self.mic.reset()
+            except Exception:  # noqa: BLE001
+                pass
+        self.portal.show(self.slug)
+
+    def close_portal(self) -> None:
+        """Вернуться из портала на вкладку: тот же глагол и оценки портала видны сразу."""
+        slug = self.portal.slug if self.portal is not None else ""
+        if slug and slug != self.slug:
+            self.select_verb(slug)
+        else:
+            self.refresh()
+        try:
+            self.focus_set()
+        except tk.TclError:
+            pass
+
+    def destroy(self):
+        if self.portal is not None:
+            try:
+                self.portal.destroy()
+            except tk.TclError:
+                pass
+            self.portal = None
+        super().destroy()
 
     # -- действия -------------------------------------------------------------
     def select_verb(self, slug: str) -> None:
@@ -332,7 +376,10 @@ class VerbsTab(tk.Frame):
         self._scroll_to_active()
 
     def on_key(self, e) -> None:
-        """M — микрофон (как во всех режимах), ↑/↓ — строка времени. Пробел не занят."""
+        """M — микрофон (как во всех режимах), ↑/↓ — строка времени. O — портал, Пробел не занят."""
+        if self.portal_open():
+            self.portal.on_key(e)
+            return
         if self.reference is not None and self.reference.winfo_ismapped():
             self.reference.on_key(e)
             return
@@ -347,8 +394,13 @@ class VerbsTab(tk.Frame):
         elif k == "up":
             self.select_row(max(self.active_si - 1, 0))
             self._scroll_to_active()
+        elif is_portal_key(e):
+            self.open_portal()
 
     def on_key_up(self, e) -> None:
+        if self.portal_open():
+            self.portal.on_key_up(e)
+            return
         if self.reference is not None and self.reference.winfo_ismapped():
             self.reference.on_key_up(e)
         elif is_hint_key(e):

@@ -40,7 +40,9 @@ class I18nTest(unittest.TestCase):
 
     def test_json_files(self):
         ru = json.loads((i18n.DIR / "ru.json").read_text(encoding="utf-8"))
-        for lang in ("uk", "en", "de"):
+        for lang in i18n.LANGS:
+            if lang == "ru":
+                continue
             tr = json.loads((i18n.DIR / f"{lang}.json").read_text(encoding="utf-8"))
             self.assertGreater(len(tr), len(ru) * 0.95, lang)
             for k, v in tr.items():

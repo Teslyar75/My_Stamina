@@ -1,0 +1,82 @@
+{
+ "n": 87,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "Степени сравнения",
+ "en": "comparative (older, more expensive)",
+ "summary": "Как сказать «старше» и «дороже»: короткие слова получают -er, длинные — слово more, а несколько слов вообще никого не слушаются.",
+ "can_do": [
+  "Образовать сравнительную степень от короткого и от длинного прилагательного.",
+  "Правильно писать bigger, easier, hotter.",
+  "Помнить исключения better, worse, further."
+ ],
+ "theory": [
+  {
+   "h": "Короткое слово — короче, длинное — длиннее",
+   "p": "Если прилагательное короткое, к нему прибавляется -er: old — older, cheap — cheaper. Если длинное, перед ним ставится more: expensive — more expensive. Делить слово пополам и делать и то и другое нельзя.",
+   "formula": "old — older · expensive — more expensive"
+  },
+  {
+   "h": "Орфография при -er",
+   "p": "Три правила закрывают почти все случаи. Немая -e уходит: nice — nicer. Конечная -y после согласной переходит в i: easy — easier. У коротких слов с ударным слогом удваивается последняя согласная: big — bigger, hot — hotter.",
+   "table": {
+    "head": ["Прилагательное", "Сравнительная", "Правило"],
+    "rows": [
+     ["big", "bigger", "удваиваем согласную"],
+     ["hot", "hotter", "удваиваем согласную"],
+     ["easy", "easier", "y переходит в i"],
+     ["nice", "nicer", "конечная e уходит"],
+     ["modern", "more modern", "длинное слово — more"]
+    ]
+   }
+  },
+  {
+   "h": "Исключения",
+   "p": "Пять частых слов образуют степень сравнения не по правилу, и ошибка в них слышна сразу. Их проще выучить как отдельный список и повторять вслух.",
+   "table": {
+    "head": ["Прилагательное", "Сравнительная", "Перевод"],
+    "rows": [
+     ["good", "better", "лучше"],
+     ["bad", "worse", "хуже"],
+     ["far", "further", "дальше"],
+     ["much / many", "more", "больше"],
+     ["little", "less", "меньше"]
+    ]
+   }
+  },
+  {
+   "h": "Никакого more bigger",
+   "p": "Показатель степени ставится один раз. Если уже есть -er, слово more лишнее. Если стоит more, окончание не нужно. Это правило работает без исключений и сразу выдаёт грамотную речь.",
+   "formula": "bigger (не more bigger) · more expensive (не more expensiver)"
+  },
+  {
+   "h": "Изменения в процессе",
+   "p": "С глаголом get или become сравнительная форма значит «становится всё ...»: getting better, getting colder. Это очень частая конструкция в живой речи, и она всегда без than.",
+   "formula": "Your English is getting better."
+  }
+ ],
+ "examples": [
+  {"en": "My car is older than yours.", "ru": "Моя машина старше твоей."},
+  {"en": "This test is easier than the last one.", "ru": "Этот тест легче предыдущего."},
+  {"en": "Today is hotter than yesterday.", "ru": "Сегодня жарче, чем вчера."},
+  {"en": "Her flat is more expensive than mine.", "ru": "Её квартира дороже моей."},
+  {"en": "Your English is getting better.", "ru": "Твой английский становится лучше."}
+ ],
+ "traps": [
+  {"bad": "This box is more big.", "good": "This box is bigger.", "why": "Короткое слово получает -er, а не more."},
+  {"bad": "He is more better today.", "good": "He is better today.", "why": "better уже сравнительная форма, more лишнее."},
+  {"bad": "He runs more fast than me.", "good": "He runs faster than me.", "why": "fast — короткое слово, значит faster."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This room is ___ than that one.", "options": ["bigger", "biger", "more big"], "a": 0, "why": "big удваивает согласную: bigger."},
+  {"type": "choice", "q": "The book was ___ than the film.", "options": ["interesting", "more interesting", "most interesting"], "a": 1, "why": "Длинное слово сравнивается через more."},
+  {"type": "choice", "q": "Her new phone is ___ than mine.", "options": ["better", "gooder", "more good"], "a": 0, "why": "good — better, исключение."},
+  {"type": "choice", "q": "The traffic is ___ in the morning.", "options": ["worse", "worser", "more bad"], "a": 0, "why": "bad — worse, форма уже сравнительная."},
+  {"type": "choice", "q": "This exercise is ___ than the previous one.", "options": ["easyer", "easier", "more easy"], "a": 1, "why": "y переходит в i: easier."},
+  {"type": "gap", "q": "My bag is ___ (heavy) than yours.", "a": ["heavier"], "why": "heavy заканчивается на -y: heavier."},
+  {"type": "gap", "q": "Winters here are ___ (cold) than in the south.", "a": ["colder"], "why": "cold — короткое слово: colder."},
+  {"type": "gap", "q": "This sofa is ___ (comfortable) than the old one.", "a": ["more comfortable"], "why": "comfortable — длинное слово: more comfortable."},
+  {"type": "translate", "q": "Москва больше, чем Казань.", "a": ["moscow is bigger than kazan"], "why": "big → bigger, сравнение через than."},
+  {"type": "translate", "q": "Этот фильм интереснее, чем тот.", "a": ["this film is more interesting than that one", "this movie is more interesting than that one"], "why": "interesting — более интересный: more interesting than."}
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "n": 36,
+ "level": "A2",
+ "module": "modals",
+ "title": "used to: раньше бывало",
+ "en": "I used to ...",
+ "summary": "Раньше было, а теперь нет: одна конструкция для старых привычек и прошлых состояний.",
+ "can_do": [
+  "Рассказать, что раньше делал регулярно, а теперь нет.",
+  "Построить вопрос Did you use to ...?",
+  "Отличить used to do от be used to doing."
+ ],
+ "theory": [
+  {
+   "h": "Формула used to + инфинитив",
+   "p": "Used to говорит о том, что было регулярным в прошлом и уже не происходит. После неё всегда инфинитив, а по лицам конструкция не меняется — she used to звучит так же, как I used to.",
+   "formula": "I used to smoke. · She used to live in Kazan."
+  },
+  {
+   "h": "В вопросах и отрицаниях теряется -d",
+   "p": "Как только появляется did, прошедшее время уже выражено, и used превращается в use. Это самая частая точка ошибок во всей теме, и её легко проверять взглядом на did.",
+   "table": {
+    "head": ["Тип", "Форма"],
+    "rows": [
+     ["утверждение", "I used to walk to school."],
+     ["вопрос", "Did you use to walk to school?"],
+     ["отрицание", "I didn't use to like coffee."]
+    ]
+   }
+  },
+  {
+   "h": "Только про прошлое",
+   "p": "У used to нет настоящего: конструкция описывает то, чего больше нет. Для нынешних привычек берут usually или обычный present simple, иначе смысл переворачивается.",
+   "formula": "I used to read at night. (раньше) · I usually read at night. (сейчас)"
+  },
+  {
+   "h": "Не путать с be used to",
+   "p": "Used to do значит «раньше делал», а be used to doing — «привык к». После второго идёт -ing, и разница в смысле огромная, хотя на слух обороты похожи.",
+   "formula": "I used to get up early. (раньше вставал) · I'm used to getting up early. (привык вставать)"
+  }
+ ],
+ "examples": [
+  {"en": "I used to play the guitar.", "ru": "Раньше я играл на гитаре."},
+  {"en": "She used to work in a bank.", "ru": "Раньше она работала в банке."},
+  {"en": "We didn't use to eat out much.", "ru": "Раньше мы редко ели вне дома."},
+  {"en": "Did you use to live here?", "ru": "Ты раньше здесь жил?"},
+  {"en": "This street used to be quiet.", "ru": "Раньше эта улица была тихой."},
+  {"en": "There used to be a shop here.", "ru": "Раньше здесь был магазин."}
+ ],
+ "traps": [
+  {"bad": "I used to playing football.", "good": "I used to play football.", "why": "После used to — инфинитив, а не форма на -ing."},
+  {"bad": "Did you used to work here?", "good": "Did you use to work here?", "why": "did уже несёт прошедшее время, поэтому used теряет -d."},
+  {"bad": "I use to smoke.", "good": "I used to smoke.", "why": "В утверждении пишется used, с -d на конце."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ to live in a village.", "options": ["used", "use", "am used"], "a": 0, "why": "Утверждение: I used to live."},
+  {"type": "choice", "q": "She ___ to have long hair.", "options": ["used", "use", "uses"], "a": 0, "why": "По лицам конструкция не меняется: she used to."},
+  {"type": "choice", "q": "___ you use to play chess?", "options": ["Did", "Do", "Were"], "a": 0, "why": "Вопрос в прошедшем: Did you use to play?"},
+  {"type": "choice", "q": "We didn't ___ to go out much.", "options": ["use", "used", "using"], "a": 0, "why": "После didn't форма use без -d."},
+  {"type": "choice", "q": "There ___ to be a cinema here.", "options": ["used", "use", "is used"], "a": 0, "why": "Оборот there used to be: раньше был."},
+  {"type": "gap", "q": "He ___ (use) to work night shifts.", "a": ["used"], "why": "Утверждение: he used to work."},
+  {"type": "gap", "q": "I ___ (not / use) to like fish.", "a": ["didn't use", "did not use"], "why": "Отрицание: I didn't use to like fish."},
+  {"type": "gap", "q": "My father ___ (use to) smoke a pipe.", "a": ["used to"], "why": "Полная конструкция в утверждении: used to smoke."},
+  {"type": "translate", "q": "Раньше я жил в Москве.", "a": ["i used to live in moscow"], "why": "Прошлая привычка: I used to live in Moscow."},
+  {"type": "translate", "q": "Ты раньше пил кофе?", "a": ["did you use to drink coffee"], "why": "Вопрос через did: Did you use to drink coffee?"}
+ ]
+}

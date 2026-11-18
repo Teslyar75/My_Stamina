@@ -1,0 +1,81 @@
+{
+ "n": 44,
+ "level": "A2",
+ "module": "questions",
+ "title": "Как строится вопрос: общие правила",
+ "en": "questions (1): общие правила",
+ "summary": "Один каркас, который работает почти во всех вопросах: вспомогательный глагол выходит вперёд, подлежащее идёт за ним.",
+ "can_do": [
+  "Построить общий вопрос с be, с модальным глаголом и с do/does/did.",
+  "Добавить вопросительное слово перед вспомогательным глаголом.",
+  "Не ставить в вопрос вторую форму глагола после did."
+ ],
+ "theory": [
+  {
+   "h": "Вопрос — это перестановка",
+   "p": "Английский вопрос почти всегда получается из утверждения перестановкой: первый вспомогательный глагол выходит перед подлежащим. Всё остальное остаётся на своих местах, и никаких дополнительных слов не требуется.",
+   "formula": "You are ready. → Are you ready? · She can drive. → Can she drive?"
+  },
+  {
+   "h": "Если вспомогательного нет, его приносят",
+   "p": "В Present и Past Simple вспомогательного глагола в утверждении нет, поэтому для вопроса его добавляют. Это do для I/you/we/they, does для he/she/it, did для прошлого. Смысловой глагол при этом теряет -s и вторую форму.",
+   "table": {
+    "head": ["Утверждение", "Вопрос"],
+    "rows": [
+     ["You work here.", "Do you work here?"],
+     ["She lives in Paris.", "Does she live in Paris?"],
+     ["He went home.", "Did he go home?"],
+     ["They are ready.", "Are they ready?"]
+    ]
+   }
+  },
+  {
+   "h": "Полный каркас с вопросительным словом",
+   "p": "Когда нужен не ответ да/нет, а подробность, перед вспомогательным глаголом встаёт вопросительное слово. Порядок остальных частей не меняется — это удобно запомнить одной схемой.",
+   "formula": "Where do you live? · When did she call? · Why is he late?"
+  },
+  {
+   "h": "Что нельзя делать в вопросе",
+   "p": "Три самые частые поломки: лишний do рядом с be, двойное прошедшее время после did и сохранение -s у глагола после does. Достаточно проверить эти три места, чтобы вопрос стал правильным.",
+   "table": {
+    "head": ["Неверно", "Верно"],
+    "rows": [
+     ["Do you are a student?", "Are you a student?"],
+     ["Did he went out?", "Did he go out?"],
+     ["Does she likes tea?", "Does she like tea?"]
+    ]
+   }
+  },
+  {
+   "h": "Один каркас на все времена",
+   "p": "Схема не меняется от времени: впереди вспомогательный глагол этого времени, за ним подлежащее, потом смысловой глагол. Меняется только сам вспомогательный, и вопрос собирается почти сам собой, без переучивания.",
+   "formula": "Are you working now? · Has she finished the report? · Will they come tomorrow?"
+  }
+ ],
+ "examples": [
+  {"en": "Do you play tennis?", "ru": "Ты играешь в теннис?"},
+  {"en": "Does your sister work here?", "ru": "Твоя сестра здесь работает?"},
+  {"en": "Did they like the food?", "ru": "Им понравилась еда?"},
+  {"en": "Where are my keys?", "ru": "Где мои ключи?"},
+  {"en": "Why did she leave so early?", "ru": "Почему она ушла так рано?"},
+  {"en": "Are you working this week?", "ru": "Ты работаешь на этой неделе?"}
+ ],
+ "traps": [
+  {"bad": "Do you are busy?", "good": "Are you busy?", "why": "Be сам образует вопрос, do рядом с ним лишний."},
+  {"bad": "Where you live?", "good": "Where do you live?", "why": "В Present Simple без вспомогательного вопроса не бывает."},
+  {"bad": "What time did the film started?", "good": "What time did the film start?", "why": "После did глагол стоит в начальной форме."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ your brother speak English?", "options": ["Do", "Does", "Is"], "a": 1, "why": "your brother = he, Present Simple: does."},
+  {"type": "choice", "q": "___ you at the party last night?", "options": ["Did", "Were", "Do"], "a": 1, "why": "Be в прошлом: were you."},
+  {"type": "choice", "q": "Where ___ she go yesterday?", "options": ["did", "does", "was"], "a": 0, "why": "yesterday — Past Simple, вопрос через did."},
+  {"type": "choice", "q": "___ they finished the report?", "options": ["Have", "Do", "Are"], "a": 0, "why": "Present Perfect: have they finished."},
+  {"type": "choice", "q": "What time ___ the train leave?", "options": ["does", "do", "is"], "a": 0, "why": "the train = it, Present Simple: does."},
+  {"type": "gap", "q": "___ (do) your parents live in the city?", "a": ["do"], "why": "parents = they, Present Simple: do."},
+  {"type": "gap", "q": "Why ___ (be) you so quiet today?", "a": ["are"], "why": "С be вопрос строится без do: why are you."},
+  {"type": "gap", "q": "___ he call you back yesterday?", "a": ["did"], "why": "Прошлое: did he call, глагол в начальной форме."},
+  {"type": "translate", "q": "Ты говоришь по-французски?", "a": ["do you speak french"], "why": "Present Simple: Do you speak French?"},
+  {"type": "translate", "q": "Где ты работаешь?", "a": ["where do you work", "where are you working"], "why": "Вопросительное слово + do + подлежащее + глагол."},
+  {"type": "translate", "q": "Она уже закончила отчёт?", "a": ["has she finished the report"], "why": "Present Perfect: have/has выходит вперёд, за ним подлежащее и причастие."}
+ ]
+}

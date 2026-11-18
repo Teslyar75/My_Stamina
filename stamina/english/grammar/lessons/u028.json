@@ -1,0 +1,73 @@
+{
+ "n": 28,
+ "level": "A1",
+ "module": "future",
+ "title": "will (2): предложения, обещания, решения",
+ "en": "will/shall (2)",
+ "summary": "Will для предсказаний и просьб, плюс главное различие темы: will в момент речи или going to для готового плана.",
+ "can_do": [
+  "Предсказать событие: I think it'll rain.",
+  "Вежливо попросить через Will you ...? и добавить please.",
+  "Выбрать между will и going to по тому, когда появилось решение."
+ ],
+ "theory": [
+  {
+   "h": "Предсказание — это догадка",
+   "p": "Когда мы говорим о будущем без плана и без подготовки, работает will. Сомнение или, наоборот, уверенность добавляют перед ним: I think, probably, I'm sure, I expect. В русском на этом месте часто стоит «наверное» или «думаю».",
+   "formula": "I think it'll rain tomorrow. · I'm sure she'll pass. · You'll love this place."
+  },
+  {
+   "h": "will или going to",
+   "p": "Разница не в грамматике, а в моменте выбора. Если решение родилось в разговоре — will. Если человек принёс готовый план — going to. И ещё один случай: когда на улице видно, что сейчас будет, тоже говорят going to.",
+   "table": {
+    "head": ["Случай", "Конструкция", "Пример"],
+    "rows": [
+     ["решение сейчас", "will", "OK, I'll take it."],
+     ["план заранее", "going to", "I'm going to move in May."],
+     ["видно по признакам", "going to", "Look at those clouds — it's going to rain."]
+    ]
+   }
+  },
+  {
+   "h": "Просьба через Will you",
+   "p": "Will you ...? — не вопрос о будущем, а вежливая просьба, особенно с please. Она мягче прямого приказа, но настойчивее вопроса с could, поэтому в незнакомой обстановке лучше добавить please или выбрать could.",
+   "formula": "Will you close the window, please? · Will you wait here for a minute?"
+  },
+  {
+   "h": "Кто действует: Shall I или Will you",
+   "p": "Два похожих оборота смотрят в разные стороны. Shall I ...? предлагает вашу помощь, и действовать будете вы. Will you ...? просит о помощи собеседника. Перепутать их — значит предложить человеку сделать то, что вы собирались сделать сами.",
+   "table": {
+    "head": ["Фраза", "Кто действует"],
+    "rows": [
+     ["Shall I open the window?", "я"],
+     ["Will you open the window?", "ты"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I think it'll be cold tonight.", "ru": "Думаю, ночью будет холодно."},
+  {"en": "I'm sure you'll find the keys.", "ru": "Я уверен, ты найдёшь ключи."},
+  {"en": "Look at the sky — it's going to rain.", "ru": "Посмотри на небо, сейчас пойдёт дождь."},
+  {"en": "We're going to move house in June.", "ru": "В июне мы переезжаем."},
+  {"en": "Will you close the door, please?", "ru": "Закроешь дверь, пожалуйста?"},
+  {"en": "Shall I call you a taxi?", "ru": "Мне вызвать тебе такси?"}
+ ],
+ "traps": [
+  {"bad": "Look at the clouds. It will rain.", "good": "Look at those clouds. It's going to rain.", "why": "Признаки видны прямо сейчас, поэтому going to."},
+  {"bad": "I'm going to answer it.", "good": "I'll answer it.", "why": "Решение принято в момент звонка, значит нужен will."},
+  {"bad": "Will you to open the window?", "good": "Will you open the window?", "why": "После will глагол идёт без to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I think she ___ like the present.", "options": ["will", "is", "does"], "a": 0, "why": "Предсказание после I think: she'll like it."},
+  {"type": "choice", "q": "Look at the traffic — we ___ be late.", "options": ["are going to", "will to", "are"], "a": 0, "why": "Причина видна сейчас: we're going to be late."},
+  {"type": "choice", "q": "___ you help me with the table, please?", "options": ["Will", "Do", "Are"], "a": 0, "why": "Вежливая просьба: Will you help me?"},
+  {"type": "choice", "q": "___ I make you a sandwich?", "options": ["Shall", "Will", "Do"], "a": 0, "why": "Предложение помощи: Shall I make you a sandwich?"},
+  {"type": "choice", "q": "Nobody knows what ___ happen next.", "options": ["will", "is", "does"], "a": 0, "why": "Предсказание без плана: what will happen."},
+  {"type": "gap", "q": "I'm sure they ___ (arrive) before dark.", "a": ["will arrive", "'ll arrive"], "why": "Предсказание с уверенностью: they'll arrive."},
+  {"type": "gap", "q": "Look at the sky. It ___ (going to) rain.", "a": ["is going to"], "why": "Признаки налицо: it's going to rain."},
+  {"type": "gap", "q": "Don't worry, everything ___ (be) fine.", "a": ["will be", "'ll be"], "why": "Предсказание: everything will be fine."},
+  {"type": "translate", "q": "Думаю, завтра будет тепло.", "a": ["i think it will be warm tomorrow", "i think it'll be warm tomorrow"], "why": "Предсказание: I think it'll be warm tomorrow."},
+  {"type": "translate", "q": "Ты закроешь окно, пожалуйста?", "a": ["will you close the window please", "will you close the window"], "why": "Просьба: Will you close the window, please?"}
+ ]
+}

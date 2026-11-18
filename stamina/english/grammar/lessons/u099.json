@@ -1,0 +1,72 @@
+{
+ "n": 99,
+ "level": "B1",
+ "module": "clauses",
+ "title": "if: условные предложения 1 типа",
+ "en": "if (1)",
+ "summary": "Как сказать «если ..., то ...» о реальном будущем: условие в настоящем времени, результат с will, просьбой или модальным глаголом.",
+ "can_do": [
+  "Строить реальное условие: If it rains, we'll stay in.",
+  "Давать указания на будущее: If you're tired, go to bed.",
+  "Говорить об общих закономерностях вроде If you heat ice, it melts."
+ ],
+ "theory": [
+  {
+   "h": "if открывает условие",
+   "p": "В условном предложении две части: условие с if и результат без него. Порядок свободный: результат может стоять и до условия, и после. Смысл от перестановки не меняется.",
+   "formula": "If it rains, we'll stay in. · We'll stay in if it rains."
+  },
+  {
+   "h": "Формула первого типа",
+   "p": "Первый тип — про реальное, выполнимое будущее. В части с if ставят present simple, в результате — will и глагол без to. Запятая нужна только тогда, когда if-часть идёт первой.",
+   "formula": "if + present simple, ... will + глагол"
+  },
+  {
+   "h": "После if нет will",
+   "p": "Самая частая ошибка: «if I will». По-русски «если я буду» подсказывает будущее время, но английское if его не терпит. В условии — настоящее время, will живёт только в результате.",
+   "formula": "If I see him, I'll tell him. (не if I will see him)"
+  },
+  {
+   "h": "Что может стоять в результате",
+   "p": "В результате не обязательно will. Там бывает повелительное наклонение, если это просьба или совет, и модальные глаголы can, must, should. Условие при этом остаётся в настоящем времени.",
+   "table": {
+    "head": ["Условие", "Результат", "Пример"],
+    "rows": [
+     ["present simple", "will + глагол", "If I have time, I'll call you."],
+     ["present simple", "повелительное", "If you're cold, close the window."],
+     ["present simple", "can / must", "If you want, you can come too."],
+     ["present simple", "present simple", "If you heat ice, it melts."]
+    ]
+   }
+  },
+  {
+   "h": "Общие истины без will",
+   "p": "Если речь не о будущем, а о законе природы или привычном порядке вещей, will не нужен и в результате: обе части стоят в настоящем времени.",
+   "formula": "If you press this button, the machine stops."
+  }
+ ],
+ "examples": [
+  {"en": "If I finish early, I'll go to the gym.", "ru": "Если закончу рано, пойду в зал."},
+  {"en": "If you need help, just ask.", "ru": "Если нужна помощь, просто попроси."},
+  {"en": "We'll miss the bus if we don't hurry.", "ru": "Мы опоздаем на автобус, если не поспешим."},
+  {"en": "If you press this button, the machine stops.", "ru": "Если нажать эту кнопку, машина останавливается."},
+  {"en": "If she calls, tell her I'm busy.", "ru": "Если она позвонит, скажи, что я занят."}
+ ],
+ "traps": [
+  {"bad": "If I will see him, I will tell him.", "good": "If I see him, I'll tell him.", "why": "После if — настоящее время, will только в результате."},
+  {"bad": "If I have finished the report, I will send it today.", "good": "If I finish the report, I'll send it today.", "why": "О будущем после if говорят в present simple, а не в present perfect."},
+  {"bad": "If you will be tired, go to bed.", "good": "If you are tired, go to bed.", "why": "В условии нет will: If you are tired."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "If it ___ tomorrow, we'll cancel the trip.", "options": ["will rain", "rains", "rained"], "a": 1, "why": "Условие о будущем — present simple: if it rains."},
+  {"type": "choice", "q": "I'll call you if I ___ any news.", "options": ["get", "will get", "got"], "a": 0, "why": "После if — present simple: if I get."},
+  {"type": "choice", "q": "If you ___ tired, go to bed.", "options": ["will be", "are", "were"], "a": 1, "why": "Реальное условие: if you are tired."},
+  {"type": "choice", "q": "We ___ late if the train is delayed.", "options": ["will be", "are", "would be"], "a": 0, "why": "Результат о будущем — will be."},
+  {"type": "choice", "q": "If you ___ the button, the light comes on.", "options": ["press", "will press", "pressed"], "a": 0, "why": "Общая закономерность: обе части в настоящем времени."},
+  {"type": "gap", "q": "If I ___ (have) time, I'll help you.", "a": ["have"], "why": "После if — present simple: if I have."},
+  {"type": "gap", "q": "We'll go out if the weather ___ (be) nice.", "a": ["is"], "why": "the weather = it, поэтому is."},
+  {"type": "gap", "q": "If you see Tom, ___ (tell) him about the meeting.", "a": ["tell"], "why": "В результате — повелительное наклонение без to."},
+  {"type": "translate", "q": "Если я увижу её, я передам ей сообщение.", "a": ["if i see her i will tell her", "if i see her i'll tell her", "if i see her i'll give her the message", "if i see her i will give her the message"], "why": "Если + настоящее, результат с will."},
+  {"type": "translate", "q": "Позвони мне, если опоздаешь.", "a": ["call me if you are late", "call me if you're late"], "why": "Результат-просьба, условие в настоящем времени."}
+ ]
+}

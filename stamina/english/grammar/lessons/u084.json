@@ -1,0 +1,78 @@
+{
+ "n": 84,
+ "level": "A2",
+ "module": "quantity",
+ "title": "few и little: мало",
+ "en": "few and little",
+ "summary": "«Мало» и «немного» — в английском это разные слова, и разница не в количестве, а в отношении говорящего к нему.",
+ "can_do": [
+  "Выбрать few или little по типу существительного.",
+  "Почувствовать разницу между few и a few, little и a little.",
+  "Сказать «мало» и «немного» про время, деньги, людей и вещи."
+ ],
+ "theory": [
+  {
+   "h": "Few для штук, little для вещества",
+   "p": "Few работает с исчисляемым множественным: few books, few people. Little работает с неисчисляемым: little time, little money. Это та же пара, что many и much, только со значением «мало».",
+   "table": {
+    "head": ["Слово", "С чем", "Пример"],
+    "rows": [
+     ["few", "исчисляемое", "few people"],
+     ["little", "неисчисляемое", "little time"]
+    ]
+   }
+  },
+  {
+   "h": "Артикль а меняет смысл на противоположный",
+   "p": "Без артикля few и little значат «мало, почти нет» — это плохая новость. С артиклем a few и a little значат «немного, но достаточно» — новость хорошая. Разница в одну букву, а смысл переворачивается.",
+   "table": {
+    "head": ["Форма", "Смысл", "Пример"],
+    "rows": [
+     ["few", "почти нет", "Few people came."],
+     ["a few", "несколько, хватит", "A few people came."],
+     ["little", "почти нет", "We have little time."],
+     ["a little", "немного, хватит", "We have a little time."]
+    ]
+   }
+  },
+  {
+   "h": "Only подчёркивает нехватку",
+   "p": "Слово only усиливает смысл: only a few значит «всего несколько», и это уже про нехватку, хотя артикль на месте. Так же работает only a little: «совсем немного».",
+   "formula": "Only a few students came."
+  },
+  {
+   "h": "Quite a few — наоборот",
+   "p": "Ловушка на ровном месте: quite a few значит «довольно много», а не «довольно мало». Английский здесь играет с интонацией, и это стоит просто запомнить.",
+   "formula": "Quite a few people came. (пришло много)"
+  },
+  {
+   "h": "Little бывает «маленький»",
+   "p": "С неисчисляемыми little — это «мало», но перед исчисляемым существительным в единственном числе little значит «маленький»: a little girl, a little house. Смысл подсказывает само существительное.",
+   "formula": "a little girl (девочка) · a little water (немного воды)"
+  }
+ ],
+ "examples": [
+  {"en": "There is little time left.", "ru": "Осталось мало времени."},
+  {"en": "We have a little milk in the fridge.", "ru": "У нас в холодильнике есть немного молока."},
+  {"en": "Few people came to the meeting.", "ru": "На собрание пришло мало людей."},
+  {"en": "I have a few questions about the task.", "ru": "У меня есть несколько вопросов по заданию."},
+  {"en": "He speaks a little French.", "ru": "Он немного говорит по-французски."}
+ ],
+ "traps": [
+  {"bad": "I have a few money.", "good": "I have a little money.", "why": "money неисчисляемое — little, а не few."},
+  {"bad": "There are little chairs in the hall.", "good": "There are few chairs in the hall.", "why": "chairs считаются — few."},
+  {"bad": "We need a few sugar for the cake.", "good": "We need a little sugar for the cake.", "why": "sugar неисчисляемое — a little."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There is ___ water in the bottle, so you can have some.", "options": ["little", "a little", "a few"], "a": 1, "why": "Вода есть, и её хватит: a little."},
+  {"type": "choice", "q": "___ people know this secret; it is almost unknown.", "options": ["Few", "A few", "Little"], "a": 0, "why": "«почти никто не знает» — few без артикля."},
+  {"type": "choice", "q": "I have ___ money, so I can't buy the ticket.", "options": ["a little", "little", "few"], "a": 1, "why": "Денег не хватает — little."},
+  {"type": "choice", "q": "She speaks ___ Spanish and can order coffee.", "options": ["little", "a little", "few"], "a": 1, "why": "Немного, но достаточно: a little Spanish."},
+  {"type": "choice", "q": "There were ___ chairs in the room, so two of us stood.", "options": ["few", "a few", "little"], "a": 0, "why": "Стульев не хватило — few."},
+  {"type": "gap", "q": "There are ___ apples in the bowl, so we can make a pie.", "a": ["a few"], "why": "Яблок достаточно — a few."},
+  {"type": "gap", "q": "I have very ___ free time this week.", "a": ["little"], "why": "free time неисчисляемое время — little."},
+  {"type": "gap", "q": "Only ___ students passed the test.", "a": ["a few"], "why": "«всего несколько» — only a few."},
+  {"type": "translate", "q": "У меня мало времени.", "a": ["i have little time", "i have very little time", "i've got little time"], "why": "time неисчисляемое, «мало» — little."},
+  {"type": "translate", "q": "В холодильнике есть немного молока.", "a": ["there is a little milk in the fridge", "there's a little milk in the fridge"], "why": "Немного, но есть — a little milk."}
+ ]
+}

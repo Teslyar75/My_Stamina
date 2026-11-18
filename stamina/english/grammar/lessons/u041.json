@@ -1,0 +1,72 @@
+{
+ "n": 41,
+ "level": "A2",
+ "module": "there",
+ "title": "Разделительные вопросы: isn't it?",
+ "en": "question tags",
+ "summary": "Маленькая бирка в конце предложения помогает переспросить и найти согласие — но только если глагол и знак в ней совпадут с началом.",
+ "can_do": [
+  "Добавить к утверждению бирку isn't it, don't you, are they.",
+  "Соблюсти правило зеркала: плюс — минус, минус — плюс.",
+  "Выбрать местоимение для бирки, когда в начале стоит имя."
+ ],
+ "theory": [
+  {
+   "h": "Что это за бирка",
+   "p": "В русском в конце фразы бросают «да?», «правда?», «не так ли?». В английском на это место встаёт короткий хвостик из вспомогательного глагола и местоимения. Он превращает утверждение в вопрос, на который ждут согласия.",
+   "formula": "It's cold today, isn't it? · You're Russian, aren't you?"
+  },
+  {
+   "h": "Правило зеркала",
+   "p": "Начало положительное — хвост отрицательный. Начало с not — хвост положительный. Перепутать полярность значит задать совсем другой вопрос, поэтому это правило соблюдают строго.",
+   "table": {
+    "head": ["Начало", "Хвост", "Пример"],
+    "rows": [
+     ["положительное", "отрицательный", "She is late, isn't she?"],
+     ["с not", "положительный", "She isn't late, is she?"],
+     ["положительное", "отрицательный", "You work here, don't you?"],
+     ["с not", "положительный", "You don't work here, do you?"]
+    ]
+   }
+  },
+  {
+   "h": "Хвост повторяет вспомогательный глагол",
+   "p": "Если в предложении есть am, is, are, was, were, have, will, can, то они же идут в хвост. Если вспомогательного нет, в хвосте появляется do, does или did — по времени и лицу.",
+   "formula": "They went home, didn't they? · He can drive, can't he? · We have met, haven't we?"
+  },
+  {
+   "h": "Подлежащее в хвосте — всегда местоимение",
+   "p": "Имя, название или слово-подлежащее в хвосте заменяется на he, she, it, they. Длинное подлежащее вроде your parents тоже сжимается до they, иначе хвост перестаёт быть коротким.",
+   "formula": "Anna is a doctor, isn't she? · Your parents are here, aren't they?"
+  },
+  {
+   "h": "Особые случаи, которые надо просто запомнить",
+   "p": "После I am хвост звучит aren't I — так принято, хотя логика подсказывает amn't. После let's идёт shall we, а после приказа — will you. Это три готовые формулы, их не выводят из правила.",
+   "formula": "I'm late, aren't I? · Let's go, shall we? · Open the window, will you?"
+  }
+ ],
+ "examples": [
+  {"en": "You're from Kazan, aren't you?", "ru": "Ты из Казани, верно?"},
+  {"en": "She doesn't eat meat, does she?", "ru": "Она не ест мясо, правда?"},
+  {"en": "They arrived yesterday, didn't they?", "ru": "Они приехали вчера, не так ли?"},
+  {"en": "I'm late again, aren't I?", "ru": "Я опять опоздал, да?"},
+  {"en": "Let's take a break, shall we?", "ru": "Давай сделаем перерыв, хорошо?"}
+ ],
+ "traps": [
+  {"bad": "You are a student, isn't it?", "good": "You are a student, aren't you?", "why": "Хвост повторяет глагол и подлежащее начала: are плюс you, а не it."},
+  {"bad": "She isn't here, isn't she?", "good": "She isn't here, is she?", "why": "Начало с not требует положительного хвоста."},
+  {"bad": "Tom likes tea, isn't he?", "good": "Tom likes tea, doesn't he?", "why": "В начале смысловой like без вспомогательного — в хвосте нужен doesn't."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You live in Moscow, ___ you?", "options": ["don't", "do", "aren't"], "a": 0, "why": "Начало положительное, Present Simple — хвост отрицательный don't."},
+  {"type": "choice", "q": "It's very hot today, ___ it?", "options": ["is", "isn't", "doesn't"], "a": 1, "why": "Начало с is, хвост отрицательный: isn't."},
+  {"type": "choice", "q": "She didn't call you, ___ she?", "options": ["did", "didn't", "does"], "a": 0, "why": "Начало с didn't требует положительного хвоста did."},
+  {"type": "choice", "q": "Your parents are on holiday, ___ they?", "options": ["aren't", "don't", "isn't"], "a": 0, "why": "Подлежащее заменяется на they, be даёт aren't."},
+  {"type": "choice", "q": "I'm late, ___ I?", "options": ["am not", "aren't", "don't"], "a": 1, "why": "После I am хвост всегда aren't I."},
+  {"type": "gap", "q": "Tom works here, ___ he?", "a": ["doesn't", "does not"], "why": "Present Simple с he: в хвосте doesn't."},
+  {"type": "gap", "q": "We haven't met before, ___ we?", "a": ["have"], "why": "Начало с haven't, хвост положительный have."},
+  {"type": "gap", "q": "Let's go home, ___ we?", "a": ["shall"], "why": "После let's принято shall we."},
+  {"type": "translate", "q": "Она врач, правда?", "a": ["she is a doctor, isn't she", "she's a doctor, isn't she", "she is a doctor, is she not"], "why": "Положительное начало, отрицательный хвост isn't she."},
+  {"type": "translate", "q": "Ты не забыл ключи, нет?", "a": ["you didn't forget the keys, did you", "you haven't forgotten the keys, have you"], "why": "Отрицание в начале требует положительного хвоста."}
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "n": 32,
+ "level": "A2",
+ "module": "modals",
+ "title": "should: стоит ли",
+ "en": "should",
+ "summary": "Совет без приказа: как сказать «тебе стоит» так, чтобы человек не обиделся.",
+ "can_do": [
+  "Дать совет и мягко предупредить.",
+  "Сказать, чего делать не стоит.",
+  "Спросить совета: Should I ...?"
+ ],
+ "theory": [
+  {
+   "h": "should — это совет",
+   "p": "Should ничего не запрещает и не обязывает, а рекомендует. После него глагол без to, форма одна на все лица, поэтому вся конструкция запоминается за минуту.",
+   "formula": "You should see a doctor. · She should take a rest."
+  },
+  {
+   "h": "Отрицание shouldn't",
+   "p": "Shouldn't значит «не стоит». Это мягче, чем mustn't: запрета нет, есть предупреждение о последствиях, и собеседник волен решать сам.",
+   "formula": "You shouldn't work so much. · He shouldn't eat so late."
+  },
+  {
+   "h": "Вопросы с should",
+   "p": "В вопросе should выходит вперёд. Так спрашивают именно совета, а не разрешения: разрешение просят через can или may, и это разные вещи даже по-русски.",
+   "table": {
+    "head": ["Вопрос", "Что значит"],
+    "rows": [
+     ["Should I call her?", "стоит ли мне ей позвонить"],
+     ["Can I call her?", "можно ли мне ей позвонить"]
+    ]
+   }
+  },
+  {
+   "h": "Шкала давления",
+   "p": "Полезно держать в голове три ступени: could советует очень мягко, should — уверенно, must — настойчиво. Выбор ступени и есть вежливость, грамматика тут одинаковая.",
+   "formula": "You could rest. < You should rest. < You must rest."
+  }
+ ],
+ "examples": [
+  {"en": "You should get more sleep.", "ru": "Тебе стоит больше спать."},
+  {"en": "He shouldn't drive so fast.", "ru": "Ему не стоит так быстро ездить."},
+  {"en": "Should I tell her the truth?", "ru": "Стоит ли мне сказать ей правду?"},
+  {"en": "We should leave before six.", "ru": "Нам стоит выехать до шести."},
+  {"en": "You shouldn't drink coffee at night.", "ru": "Тебе не стоит пить кофе на ночь."},
+  {"en": "I think you should apologise.", "ru": "Думаю, тебе стоит извиниться."}
+ ],
+ "traps": [
+  {"bad": "You should to rest.", "good": "You should rest.", "why": "После should глагол без to."},
+  {"bad": "He shoulds go home.", "good": "He should go home.", "why": "Модальные глаголы не меняются по лицам."},
+  {"bad": "You don't should smoke.", "good": "You shouldn't smoke.", "why": "Отрицание строится через not после should, do не нужен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You ___ see a dentist about that tooth.", "options": ["should", "should to", "are should"], "a": 0, "why": "Совет: should see, без to и без be."},
+  {"type": "choice", "q": "He ___ eat so much sugar.", "options": ["shouldn't", "doesn't should", "not should"], "a": 0, "why": "Отрицательный совет: shouldn't eat."},
+  {"type": "choice", "q": "___ I take an umbrella?", "options": ["Should", "Do", "Am"], "a": 0, "why": "Вопрос-совет: Should I take an umbrella?"},
+  {"type": "choice", "q": "We ___ book the tickets early.", "options": ["should", "shoulds", "are should"], "a": 0, "why": "should не меняется по лицам."},
+  {"type": "choice", "q": "You look tired. You ___ go to bed.", "options": ["should", "mustn't", "needn't"], "a": 0, "why": "Совет, а не запрет: should go to bed."},
+  {"type": "gap", "q": "You ___ (not / should) tell anyone about it.", "a": ["shouldn't", "should not"], "why": "Отрицание: you shouldn't tell."},
+  {"type": "gap", "q": "___ (should) we wait for him?", "a": ["should"], "why": "Вопрос начинается с should."},
+  {"type": "gap", "q": "She ___ (should) drink more water.", "a": ["should"], "why": "Совет с she: she should drink."},
+  {"type": "translate", "q": "Тебе стоит отдохнуть.", "a": ["you should have a rest", "you should rest", "you should take a rest"], "why": "Совет: You should have a rest."},
+  {"type": "translate", "q": "Ему не стоит так много работать.", "a": ["he shouldn't work so much", "he should not work so much"], "why": "Отрицательный совет: He shouldn't work so much."}
+ ]
+}

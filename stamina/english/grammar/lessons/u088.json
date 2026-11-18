@@ -1,0 +1,64 @@
+{
+ "n": 88,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "Сравнение с than",
+ "en": "than",
+ "summary": "Слово than склеивает две части сравнения, и с ним же связана путаница с then, которая встречается даже у опытных.",
+ "can_do": [
+  "Сравнить два человека или предмета через than.",
+  "Выбрать, что поставить после than: me или I am.",
+  "Не путать than «чем» и then «потом»."
+ ],
+ "theory": [
+  {
+   "h": "Две части и одно слово",
+   "p": "Сравнение всегда состоит из двух частей, и между ними стоит than: A is older than B. Прилагательное при этом уже в сравнительной форме, иначе сравнение не получится.",
+   "formula": "My brother is taller than me."
+  },
+  {
+   "h": "После than — me или I am",
+   "p": "В разговорной речи после than ставят объектную форму: taller than me, older than him. В формальной — подлежащее с вспомогательным глаголом: taller than I am, older than he is. Оба варианта грамотны, второй звучит книжнее.",
+   "formula": "She is taller than me. · She is taller than I am."
+  },
+  {
+   "h": "Than + количество",
+   "p": "Со словами more, less, fewer, older, cheaper than сравнивают числа и объёмы. С неисчисляемым — less, с исчисляемым — fewer, хотя в разговорной речи less часто стоит с обоими.",
+   "formula": "more than ten people · less time than before · fewer books than him"
+  },
+  {
+   "h": "Than и then — разные слова",
+   "p": "Than пишется с буквой a и значит «чем». Then пишется с e и значит «потом, тогда». На слух они почти одинаковы, поэтому проверять нужно по смыслу: если можно подставить «чем» — нужна a.",
+   "formula": "She is older than me. · We ate, then we left."
+  },
+  {
+   "h": "Сравнение действий",
+   "p": "Сравнивать можно не только предметы, но и действия, если при них есть наречие: I get up earlier than you do. Глагол после than может повторяться полностью или заменяться на do.",
+   "formula": "She speaks faster than I do."
+  }
+ ],
+ "examples": [
+  {"en": "He is taller than his father.", "ru": "Он выше своего отца."},
+  {"en": "I get up earlier than my brother.", "ru": "Я встаю раньше брата."},
+  {"en": "This hotel is more expensive than ours.", "ru": "Этот отель дороже нашего."},
+  {"en": "We have less time than I thought.", "ru": "У нас меньше времени, чем я думал."},
+  {"en": "She speaks faster than I do.", "ru": "Она говорит быстрее, чем я."}
+ ],
+ "traps": [
+  {"bad": "He is taller then me.", "good": "He is taller than me.", "why": "«чем» — это than, а then значит «потом»."},
+  {"bad": "My car is more fast than yours.", "good": "My car is faster than yours.", "why": "Короткое слово получает -er, а не more."},
+  {"bad": "She earns more money that I do.", "good": "She earns more money than I do.", "why": "that — «тот», сравнение требует than."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Anna is two years ___ than me.", "options": ["older", "old", "more old"], "a": 0, "why": "Перед than нужна сравнительная форма: older."},
+  {"type": "choice", "q": "I arrived ___ than the others.", "options": ["earlier", "early", "more early"], "a": 0, "why": "early → earlier, y переходит в i."},
+  {"type": "choice", "q": "Their flat is ___ than ours.", "options": ["biger", "bigger", "big"], "a": 1, "why": "big удваивает согласную: bigger."},
+  {"type": "choice", "q": "You speak English ___ than I do.", "options": ["good", "better", "best"], "a": 1, "why": "good — better, и это сравнение двух людей."},
+  {"type": "choice", "q": "Trains are ___ than planes.", "options": ["slow", "slower", "more slow"], "a": 1, "why": "slow — короткое слово: slower."},
+  {"type": "gap", "q": "My new job is ___ (bad) than the old one.", "a": ["worse"], "why": "bad — worse, исключение."},
+  {"type": "gap", "q": "This street is ___ (narrow) than that avenue.", "a": ["narrower"], "why": "narrow — короткое слово: narrower."},
+  {"type": "gap", "q": "She is ___ (careful) than her brother.", "a": ["more careful"], "why": "careful — длинное слово: more careful."},
+  {"type": "translate", "q": "Мой брат старше меня.", "a": ["my brother is older than me", "my brother is older than i am"], "why": "older than me или older than I am."},
+  {"type": "translate", "q": "Этот тест легче, чем тот.", "a": ["this test is easier than that one", "this test is easier than the other one"], "why": "easy → easier, сравнение через than."}
+ ]
+}

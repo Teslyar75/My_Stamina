@@ -1,0 +1,74 @@
+{
+ "n": 66,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Множественное число: cats, boxes, mice",
+ "en": "plural (множественное число)",
+ "summary": "Как из одного предмета сделать много: обычное -s, правила для -y и -f, и слова, которые меняются целиком.",
+ "can_do": [
+  "Образовать множественное число обычных существительных.",
+  "Правильно писать слова на -y, -f, -o, -s, -ch.",
+  "Узнавать главные исключения: men, women, children, feet."
+ ],
+ "theory": [
+  {
+   "h": "Обычное -s",
+   "p": "Почти все существительные получают -s: a book → books. Звук при этом выбирается сам, специально его не пишут. Артикль a исчезает: books, а не a books.",
+   "formula": "a car → cars · a table → tables"
+  },
+  {
+   "h": "Когда нужно -es",
+   "p": "После шипящих и свистящих звуков добавляют -es, иначе слово невозможно выговорить. Согласная плюс y превращается в ies, гласная плюс y остаётся с обычным s.",
+   "table": {
+    "head": ["Окончание", "Что делать", "Пример"],
+    "rows": [
+     ["-s, -ss, -sh, -ch, -x", "-es", "boxes, watches, buses"],
+     ["согласная + y", "-ies", "city → cities"],
+     ["гласная + y", "-s", "boy → boys"],
+     ["-f, -fe (часть слов)", "-ves", "shelf → shelves"],
+     ["-o (часть слов)", "-oes", "potato → potatoes"]
+    ]
+   }
+  },
+  {
+   "h": "Слова, которые меняются целиком",
+   "p": "Самые частые слова живут по старым правилам: man → men, woman → women, child → children, foot → feet, tooth → teeth, mouse → mice. Их учат как отдельные слова, а не по правилу.",
+   "formula": "man → men · child → children · foot → feet"
+  },
+  {
+   "h": "Слова без изменений",
+   "p": "Некоторые слова в множественном числе выглядят так же: sheep, deer, fish (когда говорят о количестве), а также названия на -ese: Chinese, Japanese. Понять число можно только по контексту и по глаголу.",
+   "formula": "one sheep — ten sheep · two Chinese students"
+  },
+  {
+   "h": "Та же s у глагола",
+   "p": "Буква s делает в английском две работы: у существительного значит «много», у глагола в Present Simple — «он, она, оно». My brother works здесь не «много работ», а «он работает». Смотрите, к какому слову приклеена s.",
+   "formula": "My brother works here. · My brothers work here."
+  }
+ ],
+ "examples": [
+  {"en": "There are three boxes in the hall.", "ru": "В прихожей три коробки."},
+  {"en": "My cousins live in two different cities.", "ru": "Мои двоюродные братья живут в двух разных городах."},
+  {"en": "Two women and three children came in.", "ru": "Вошли две женщины и трое детей."},
+  {"en": "The shelves are full of books.", "ru": "Полки полны книг."},
+  {"en": "We bought two kilos of tomatoes.", "ru": "Мы купили два килограмма помидоров."},
+  {"en": "Ten sheep were standing near the road.", "ru": "Возле дороги стояли десять овец."}
+ ],
+ "traps": [
+  {"bad": "three childs", "good": "three children", "why": "child — исключение, множественное число children."},
+  {"bad": "two citys", "good": "two cities", "why": "Согласная плюс y меняет y на ies."},
+  {"bad": "a books", "good": "books", "why": "Артикль a возможен только с единственным числом."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There are five ___ on the table.", "options": ["box", "boxs", "boxes"], "a": 2, "why": "После x добавляется es: boxes."},
+  {"type": "choice", "q": "My ___ are teachers.", "options": ["sister", "sisters", "sister's"], "a": 1, "why": "С are нужно множественное число sisters."},
+  {"type": "choice", "q": "Three ___ are playing outside.", "options": ["childs", "children", "childrens"], "a": 1, "why": "child даёт children, без второго s."},
+  {"type": "choice", "q": "We need two ___ of bread.", "options": ["loafs", "loaves", "loaf"], "a": 1, "why": "loaf меняет f на ves: loaves."},
+  {"type": "choice", "q": "These ___ are very busy today.", "options": ["cityes", "citys", "cities"], "a": 2, "why": "Согласная плюс y: city → cities."},
+  {"type": "gap", "q": "I saw two ___ (man) at the door.", "a": ["men"], "why": "man — исключение: men."},
+  {"type": "gap", "q": "There are many ___ (sheep) on the hill.", "a": ["sheep"], "why": "sheep не меняется во множественном числе."},
+  {"type": "gap", "q": "My ___ (foot) hurt after the long walk.", "a": ["feet"], "why": "foot — исключение: feet."},
+  {"type": "translate", "q": "У меня две сестры.", "a": ["i have two sisters", "i've got two sisters"], "why": "Множественное sisters, без артикля a."},
+  {"type": "translate", "q": "На столе три чашки.", "a": ["there are three cups on the table"], "why": "Много предметов — there are и cups."}
+ ]
+}

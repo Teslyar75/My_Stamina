@@ -1,0 +1,71 @@
+{
+ "n": 98,
+ "level": "B1",
+ "module": "clauses",
+ "title": "when: когда",
+ "en": "when ...",
+ "summary": "when работает и как вопрос «когда?», и как союз «когда ...»: разбираем оба случая и главное правило про будущее время.",
+ "can_do": [
+  "Спросить о времени через when и правильно построить вопрос.",
+  "Соединить два действия через when, не повторяя лишних слов.",
+  "Говорить о будущем после when без will."
+ ],
+ "theory": [
+  {
+   "h": "Два разных when",
+   "p": "when бывает вопросительным словом («когда?») и союзом, который присоединяет вторую часть предложения. В вопросе оно стоит первым и требует вспомогательного глагола, в роли союза — просто открывает придаточное.",
+   "formula": "When do you get up? (вопрос) · I get up when my alarm rings. (союз)"
+  },
+  {
+   "h": "Порядок частей свободный",
+   "p": "Придаточное с when можно поставить в начало или в конец, смысл не изменится. Если оно стоит первым, после него ставится запятая; если в конце — запятой нет.",
+   "formula": "When I got home, I called her. · I called her when I got home."
+  },
+  {
+   "h": "О будущем — без will",
+   "p": "Это главная ошибка русскоязычных: хочется поставить will в обе части. После when в значении «когда наступит» глагол стоит в настоящем времени, хотя речь идёт о будущем. Will остаётся только в главной части.",
+   "formula": "When I get home, I'll call you. (не when I will get home)"
+  },
+  {
+   "h": "Три времени — три схемы",
+   "p": "Схема с when не меняется, меняется только время глагола. Для привычки — present simple, для прошлого — past simple, для будущего — present simple плюс will во второй части.",
+   "table": {
+    "head": ["Ситуация", "Схема", "Пример"],
+    "rows": [
+     ["обычно", "when + present simple", "When it rains, I take the bus."],
+     ["было", "when + past simple", "When I was a child, I lived in Kazan."],
+     ["будет", "when + present, will в главной", "When she arrives, we'll start."]
+    ]
+   }
+  },
+  {
+   "h": "when или what time",
+   "p": "В вопросе о времени оба варианта возможны. when предпочтительнее, когда речь о дне, годе или периоде, а what time — когда нужен точный час по часам.",
+   "formula": "When did you move here? · What time does the shop open?"
+  }
+ ],
+ "examples": [
+  {"en": "When I get home, I'll make dinner.", "ru": "Когда приду домой, приготовлю ужин."},
+  {"en": "When did you start learning English?", "ru": "Когда ты начал учить английский?"},
+  {"en": "I was watching TV when the phone rang.", "ru": "Я смотрел телевизор, когда зазвонил телефон."},
+  {"en": "When it's hot, we go to the river.", "ru": "Когда жарко, мы ходим на реку."},
+  {"en": "She'll call you when she's ready.", "ru": "Она позвонит тебе, когда будет готова."}
+ ],
+ "traps": [
+  {"bad": "When I will finish, I'll text you.", "good": "When I finish, I'll text you.", "why": "О будущем после when говорят в настоящем времени, will не нужен."},
+  {"bad": "When you get up?", "good": "When do you get up?", "why": "В вопросе нужен вспомогательный глагол do перед подлежащим."},
+  {"bad": "When I came home, I have called her.", "good": "When I came home, I called her.", "why": "Речь о конкретном прошлом, поэтому past simple, а не present perfect."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'll text you when I ___ the airport.", "options": ["will reach", "reach", "reached"], "a": 1, "why": "После when о будущем — present simple: when I reach."},
+  {"type": "choice", "q": "___ did she move to London?", "options": ["When", "What", "Who"], "a": 0, "why": "Спрашиваем о времени — when."},
+  {"type": "choice", "q": "When I ___ a child, we lived by the sea.", "options": ["am", "was", "will be"], "a": 1, "why": "Прошлое и I — значит was."},
+  {"type": "choice", "q": "When the film ___, we went home.", "options": ["ended", "ends", "will end"], "a": 0, "why": "Действие в прошлом — ended."},
+  {"type": "choice", "q": "He always calls me when he ___ late.", "options": ["will be", "is", "was"], "a": 1, "why": "Привычка в настоящем времени — is."},
+  {"type": "gap", "q": "When it ___ (rain), the streets get empty.", "a": ["rains"], "why": "Обычная ситуация: he/she/it → rains."},
+  {"type": "gap", "q": "When she ___ (arrive), we'll have lunch.", "a": ["arrives"], "why": "После when о будущем — present simple: arrives."},
+  {"type": "gap", "q": "When ___ (you / meet) your wife?", "a": ["did you meet"], "why": "Вопрос о прошлом: When did you meet her?"},
+  {"type": "translate", "q": "Когда я приду домой, я позвоню тебе.", "a": ["when i get home i will call you", "when i get home i'll call you", "when i come home i'll call you", "when i get home, i'll call you"], "why": "После when — настоящее, will только в главной части."},
+  {"type": "translate", "q": "Когда ты начал работать здесь?", "a": ["when did you start working here"], "why": "Вопрос в past simple: did + start + working."}
+ ]
+}

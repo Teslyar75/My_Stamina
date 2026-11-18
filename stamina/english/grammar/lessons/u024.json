@@ -1,0 +1,74 @@
+{
+ "n": 24,
+ "level": "A1",
+ "module": "core",
+ "title": "Неправильные глаголы: как их учить",
+ "en": "regular and irregular verbs",
+ "summary": "Почему go превращается в went и gone, зачем нужны три формы и как запомнить их без зубрёжки в столбик.",
+ "can_do": [
+  "Назвать три формы у частых английских глаголов.",
+  "Выбрать правильную форму для прошедшего времени и для перфекта.",
+  "Писать формы с -ed без ошибок в удвоении и в окончании -y."
+ ],
+ "theory": [
+  {
+   "h": "У глагола три формы",
+   "p": "Английский глагол удобно держать в голове как три колонки: первая — словарная, вторая — для простого прошедшего, третья — для перфекта и пассива. У правильных глаголов вторая и третья совпадают, у неправильных каждая своя.",
+   "formula": "work — worked — worked · go — went — gone · see — saw — seen"
+  },
+  {
+   "h": "Таблица, к которой вы будете возвращаться",
+   "p": "Ниже пять самых частых глаголов. Выучите их наизусть, и вы закроете заметную часть повседневных фраз: рассказ о вчерашнем дне и разговор о том, что уже сделано.",
+   "table": {
+    "head": ["Первая", "Вторая", "Третья", "Перевод"],
+    "rows": [
+     ["work", "worked", "worked", "работать"],
+     ["go", "went", "gone", "идти"],
+     ["see", "saw", "seen", "видеть"],
+     ["take", "took", "taken", "брать"],
+     ["write", "wrote", "written", "писать"]
+    ]
+   }
+  },
+  {
+   "h": "Правильные: одна буква d решает всё",
+   "p": "Правильный глагол получает -ed, и это всё. Есть только три правила написания: немое e отпадает, конечная y после согласной превращается в i, а короткий слог с ударением удваивает конечную согласную.",
+   "formula": "live — lived · study — studied · stop — stopped · play — played"
+  },
+  {
+   "h": "Где какая форма стоит",
+   "p": "После have, has и had нужна третья форма, а в пассиве она идёт после be. В обычном рассказе о прошлом — вторая форма и никаких помощников. Если поставить вторую форму после have, фраза сразу режет слух носителю.",
+   "formula": "I went home. · I have gone home. · It was written by him."
+  },
+  {
+   "h": "Как учить, чтобы запомнилось",
+   "p": "Не учите глаголы по алфавиту. Группируйте их по звучанию: sing, sang, sung; drink, drank, drunk; begin, began, begun. Отдельная группа — те, у которых все три формы одинаковы: cut, put, let, cost. Так память цепляется за ритм, а не за список."
+  }
+ ],
+ "examples": [
+  {"en": "I went to the cinema last night.", "ru": "Вчера вечером я ходил в кино."},
+  {"en": "She has lost her keys.", "ru": "Она потеряла ключи."},
+  {"en": "We studied all evening.", "ru": "Мы занимались весь вечер."},
+  {"en": "He wrote a long letter.", "ru": "Он написал длинное письмо."},
+  {"en": "They stopped the car near the shop.", "ru": "Они остановили машину у магазина."},
+  {"en": "Have you ever been to London?", "ru": "Ты когда-нибудь был в Лондоне?"},
+  {"en": "I have never ridden a horse.", "ru": "Я никогда не катался на лошади."}
+ ],
+ "traps": [
+  {"bad": "I have went there.", "good": "I have gone there.", "why": "После have нужна третья форма gone, а не went."},
+  {"bad": "Yesterday I go to school.", "good": "Yesterday I went to school.", "why": "Слово yesterday требует второй формы."},
+  {"bad": "He studyed all night.", "good": "He studied all night.", "why": "Согласная перед y: study превращается в studied."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ to the cinema last night.", "options": ["go", "went", "gone"], "a": 1, "why": "Last night — прошедшее, вторая форма: went."},
+  {"type": "choice", "q": "She has ___ her keys.", "options": ["lose", "lost", "losed"], "a": 1, "why": "После has — третья форма: lost."},
+  {"type": "choice", "q": "We ___ English every day.", "options": ["study", "studied", "studies"], "a": 0, "why": "We с первой формой: study."},
+  {"type": "choice", "q": "He ___ the book yesterday.", "options": ["wrote", "written", "writes"], "a": 0, "why": "Вторая форма для прошлого: wrote."},
+  {"type": "choice", "q": "Have you ever ___ a horse?", "options": ["ride", "rode", "ridden"], "a": 2, "why": "После ever в перфекте — третья форма: ridden."},
+  {"type": "gap", "q": "They ___ (stop) the car near the shop.", "a": ["stopped"], "why": "Короткий слог удваивает согласную: stopped."},
+  {"type": "gap", "q": "She ___ (study) all evening yesterday.", "a": ["studied"], "why": "Y после согласной переходит в i: studied."},
+  {"type": "gap", "q": "I have ___ (be) to London.", "a": ["been"], "why": "Третья форма be — been."},
+  {"type": "translate", "q": "Я видел этот фильм.", "a": ["i saw this film", "i saw that film", "i have seen this film"], "why": "Вторая форма saw, либо перфект have seen."},
+  {"type": "translate", "q": "Он пошёл домой.", "a": ["he went home"], "why": "Past simple: went home."}
+ ]
+}

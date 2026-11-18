@@ -1,0 +1,72 @@
+{
+ "n": 74,
+ "level": "A2",
+ "module": "quantity",
+ "title": "this, that, these, those",
+ "en": "this/that/these/those",
+ "summary": "Рядом или далеко, один или много: четыре слова вместо русских «этот» и «тот».",
+ "can_do": [
+  "Показать предмет: this book, those shoes.",
+  "Согласовать указательное слово с глаголом: this is, these are.",
+  "Использовать this и that в рассказе и по телефону."
+ ],
+ "theory": [
+  {
+   "h": "Два вопроса: где и сколько",
+   "p": "This — близко, that — далеко. These — близко, но много, those — далеко и много. Других различий нет: ни рода, ни одушевлённости английский здесь не различает.",
+   "formula": "this book · that book · these books · those books"
+  },
+  {
+   "h": "Четыре формы",
+   "p": "Держите в голове квадрат из двух строк: близко и далеко, один и много. Тогда выбор происходит мгновенно, без перевода.",
+   "table": {
+    "head": ["", "один", "много"],
+    "rows": [
+     ["близко", "this", "these"],
+     ["далеко", "that", "those"]
+    ]
+   }
+  },
+  {
+   "h": "Согласование с глаголом",
+   "p": "This и that дружат с is и was, these и those — с are и were. This is my key. Those are my keys. Даже в разговорном Who's this? всегда is, потому что речь об одном человеке.",
+   "formula": "This is my bag. · These are my bags."
+  },
+  {
+   "h": "This и that в живой речи",
+   "p": "В рассказе this вводит новое, that отсылает к уже сказанному: and then this man came in. That was a strange day. По телефону представляются через this: Hello, this is Anna.",
+   "formula": "This is Anna speaking. · That was a great film."
+  },
+  {
+   "h": "Артикль и притяжательное не ставятся",
+   "p": "This, that, these, those сами работают как определитель, поэтому после них нельзя вставить my, the или Tom's. Или this book, или my book, но не this my book.",
+   "formula": "this book (не this my book)"
+  }
+ ],
+ "examples": [
+  {"en": "This coffee is too hot.", "ru": "Этот кофе слишком горячий."},
+  {"en": "Are those your shoes?", "ru": "Те туфли — ваши?"},
+  {"en": "These flowers are for you.", "ru": "Эти цветы для вас."},
+  {"en": "That was a good idea.", "ru": "Это была хорошая идея."},
+  {"en": "Hello, this is Kate speaking.", "ru": "Здравствуйте, это Кейт."},
+  {"en": "I don't like these photos.", "ru": "Мне не нравятся эти фотографии."}
+ ],
+ "traps": [
+  {"bad": "These is my friends.", "good": "These are my friends.", "why": "These — множественное, нужен are."},
+  {"bad": "This my bag is heavy.", "good": "This bag is heavy.", "why": "This и my вместе не ставят."},
+  {"bad": "That are my keys.", "good": "Those are my keys.", "why": "Несколько предметов — those, а не that."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ is my sister.", "options": ["These", "This", "Those"], "a": 1, "why": "Один человек рядом — this."},
+  {"type": "choice", "q": "___ shoes are too small.", "options": ["This", "These", "That"], "a": 1, "why": "Shoes во множественном, рядом — these."},
+  {"type": "choice", "q": "Look at ___ birds in the tree over there.", "options": ["this", "these", "those"], "a": 2, "why": "Далеко и много — those."},
+  {"type": "choice", "q": "Hello, ___ is Tom speaking.", "options": ["this", "these", "those"], "a": 0, "why": "По телефону представляются через this."},
+  {"type": "choice", "q": "___ was a very long day.", "options": ["These", "Those", "That"], "a": 2, "why": "О прошедшем дне говорят that was."},
+  {"type": "gap", "q": "___ are my keys. (near, plural)", "a": ["these"], "why": "Близко и много — these."},
+  {"type": "gap", "q": "___ is my new phone. (near, one)", "a": ["this"], "why": "Близко и один — this."},
+  {"type": "gap", "q": "Are ___ your books over there? (far, plural)", "a": ["those"], "why": "Далеко и много — those."},
+  {"type": "translate", "q": "Эти цветы очень красивые.", "a": ["these flowers are very beautiful", "these flowers are very nice"], "why": "Близко и много: these flowers are beautiful."},
+  {"type": "translate", "q": "То был хороший день.", "a": ["that was a good day"], "why": "О прошедшем и далёком: that was a good day."
+  }
+ ]
+}

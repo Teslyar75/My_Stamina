@@ -1,0 +1,72 @@
+{
+ "n": 107,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "Предлоги места: in, at, on (продолжение)",
+ "en": "in/at/on (place) 2",
+ "summary": "Угол комнаты и угол улицы, верх страницы и прибытие в город: тонкие случаи, где in, at и on уже не переводятся по схеме.",
+ "can_do": [
+  "Различить in the corner и on the corner.",
+  "Сказать «вверху страницы», «в середине комнаты», «в конце улицы».",
+  "Правильно построить arrive in и arrive at."
+ ],
+ "theory": [
+  {
+   "h": "Угол: in или on",
+   "p": "Угол внутри помещения — in the corner: лампа в углу комнаты. Угол улицы, где сходятся две дороги, — on the corner (в британском варианте также at the corner). Разница в том, внутри мы или на карте города.",
+   "formula": "a chair in the corner of the room · a café on the corner of the street"
+  },
+  {
+   "h": "Верх и середина",
+   "p": "Устойчивые сочетания с at: at the top of the page, at the bottom of the list, at the end of the street. Середина — через in: in the middle of the room.",
+   "formula": "at the top of the page · at the bottom · in the middle"
+  },
+  {
+   "h": "arrive in или arrive at",
+   "p": "После arrive предлог зависит от размера места: города и страны требуют in, здания и точки — at. Предлога to после arrive не бывает вообще, хотя по-русски мы говорим «приехал в аэропорт».",
+   "formula": "arrive in Moscow · arrive at the airport (не arrive to)"
+  },
+  {
+   "h": "Сводная таблица",
+   "p": "Эти сочетания лучше запомнить целиком: по отдельности in, at и on слишком общие, а в паре с существительным они дают устойчивый смысл.",
+   "table": {
+    "head": ["Выражение", "Значение", "Пример"],
+    "rows": [
+     ["in the corner", "в углу помещения", "There's a lamp in the corner of the room."],
+     ["on the corner", "на углу улицы", "The café is on the corner of Park Street."],
+     ["at the top of", "вверху страницы, горы", "Write your name at the top of the page."],
+     ["in the middle of", "в середине", "We sat in the middle of the room."]
+    ]
+   }
+  },
+  {
+   "h": "in the front of и in front of",
+   "p": "in the front of значит «в передней части чего-то», а in front of — «перед чем-то снаружи». Машина: I sat in the front of the car, но A tree stood in front of the car.",
+   "formula": "in the front of the bus (впереди, в салоне) · in front of the bus (перед автобусом)"
+  }
+ ],
+ "examples": [
+  {"en": "The shop is on the corner of Park Street.", "ru": "Магазин на углу Парковой улицы."},
+  {"en": "Write your name at the top of the page.", "ru": "Напиши своё имя вверху страницы."},
+  {"en": "There's a bike in the corner of the garage.", "ru": "В углу гаража стоит велосипед."},
+  {"en": "We arrived at the airport two hours early.", "ru": "Мы приехали в аэропорт за два часа."},
+  {"en": "They arrived in London on Sunday.", "ru": "Они приехали в Лондон в воскресенье."}
+ ],
+ "traps": [
+  {"bad": "We arrived to the hotel at ten.", "good": "We arrived at the hotel at ten.", "why": "После arrive с точкой или зданием ставят at, предлог to не нужен."},
+  {"bad": "The café is in the corner of the street.", "good": "The café is on the corner of the street.", "why": "Угол улицы — на карте города, поэтому on."},
+  {"bad": "I'll write it on the top of the page.", "good": "I'll write it at the top of the page.", "why": "Верх страницы — устойчивое at the top of."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The bank is ___ the corner of King Street and Long Road.", "options": ["in", "on", "at"], "a": 1, "why": "Угол улицы — on the corner."},
+  {"type": "choice", "q": "We arrived ___ the station late.", "options": ["to", "at", "in"], "a": 1, "why": "Здание и точка — arrive at."},
+  {"type": "choice", "q": "Write the date ___ the top of the page.", "options": ["on", "in", "at"], "a": 2, "why": "Верх страницы — at the top of."},
+  {"type": "choice", "q": "There's a small table ___ the corner of the room.", "options": ["on", "at", "in"], "a": 2, "why": "Угол внутри комнаты — in the corner."},
+  {"type": "choice", "q": "They arrived ___ Italy on Monday.", "options": ["at", "to", "in"], "a": 2, "why": "Страна — arrive in."},
+  {"type": "gap", "q": "The lamp stands ___ the corner of the room.", "a": ["in"], "why": "Угол помещения — in the corner."},
+  {"type": "gap", "q": "We arrived ___ the hotel at noon.", "a": ["at"], "why": "Отель как точка — arrive at."},
+  {"type": "gap", "q": "My name is ___ the top of the list.", "a": ["at"], "why": "Верх списка — at the top of."},
+  {"type": "translate", "q": "Мы приехали в Москву вчера.", "a": ["we arrived in moscow yesterday"], "why": "Город требует arrive in."},
+  {"type": "translate", "q": "Магазин на углу улицы.", "a": ["the shop is on the corner of the street", "the shop is at the corner of the street"], "why": "Угол улицы — on the corner (или at the corner)."}
+ ]
+}

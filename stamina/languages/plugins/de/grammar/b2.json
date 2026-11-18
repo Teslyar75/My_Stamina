@@ -1,0 +1,1955 @@
+{
+  "version": 1,
+  "level": "B2",
+  "lessons": [
+    {
+      "id": "b2-01-konjunktiv-i",
+      "order": 1,
+      "title": "Konjunktiv I и косвенная речь",
+      "subtitle": "Formen, Verwendung in indirekter Rede, Ersatz durch Konj. II bei Gleichheit",
+      "topics": [
+        "konjunktiv_i"
+      ],
+      "prereq": [
+        "b1-01-konjunktiv-ii",
+        "b1-09-indirekte-fragen"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Konjunktiv I wird hauptsächlich in der indirekten Rede verwendet. Formen: ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien. Nur 3. Pers. Sg. unterscheidet sich vom Indikativ (er sei vs er ist)."
+        },
+        {
+          "kind": "rule",
+          "title": "Bildung",
+          "text": "Stamm + -e/-est/-e/-en/-et/-en. sein: sei/seiest/sei/seien/seiet/seien. haben: habe/habest/habe/haben/habet/haben. Modale: könnte/könntest/könnte..."
+        },
+        {
+          "kind": "rule",
+          "title": "Indirekte Rede",
+          "text": "Direkt: 'Er sagt: \"Ich bin müde.\"' Indirekt: 'Er sagt, er sei müde.' (Konj. I). Wenn Konj. I = Indikativ → Konj. II: 'Er sagt, er habe Zeit' (habe = Indikativ) → 'Er sagt, er hätte Zeit'."
+        },
+        {
+          "kind": "rule",
+          "title": "Zeitformen",
+          "text": "Gegenwart: Konj. I Präsens. Vergangenheit: Konj. I Perfekt (habe gemacht → habe gemacht - gleich! → hätte gemacht). Zukunft: Konj. I Futur (werde machen → werde machen - gleich! → würde machen)."
+        },
+        {
+          "kind": "table",
+          "ref": "konjunktiv_i"
+        },
+        {
+          "kind": "example",
+          "de": "Er sagt: \"Ich bin müde.\" → Er sagt, er sei müde. Sie sagt: \"Ich habe gearbeitet.\" → Sie sagt, sie habe gearbeitet. (habe = Indikativ) → Sie sagt, sie hätte gearbeitet.",
+          "ru": "Он говорит: \"Я устал.\" → Он говорит, что он устал. Она говорит: \"Я работала.\" → Она говорит, что она работала. (habe = Indikativ) → Она говорит, что она бы поработала.",
+          "note": "Konj. I für indirekte Rede. Bei Gleichheit mit Indikativ → Konj. II."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-01-d01",
+          "type": "choice",
+          "prompt": "Konj. I von 'sein', 3. Pers. Sg.:",
+          "options": [
+            "ist",
+            "sei",
+            "wäre",
+            "war"
+          ],
+          "answer": [
+            "sei"
+          ],
+          "why": "Konj. I: er sei (vs Indikativ: er ist)."
+        },
+        {
+          "id": "b2-01-d02",
+          "type": "choice",
+          "prompt": "Konj. I von 'haben', 1. Pers. Sg.:",
+          "options": [
+            "habe",
+            "hätte",
+            "hatte",
+            "hat"
+          ],
+          "answer": [
+            "habe"
+          ],
+          "why": "Konj. I: ich habe (GLEICH Indikativ!)."
+        },
+        {
+          "id": "b2-01-d03",
+          "type": "choice",
+          "prompt": "Direkt: 'Er sagt: \"Ich bin müde.\"' → Indirekt:",
+          "options": [
+            "Er sagt, er sei müde.",
+            "Er sagt, er ist müde.",
+            "Er sagt, er wäre müde.",
+            "Er sagt, er war müde."
+          ],
+          "answer": [
+            "Er sagt, er sei müde."
+          ],
+          "why": "Konj. I in indirekter Rede: sei (unterscheidet sich von ist)."
+        },
+        {
+          "id": "b2-01-d04",
+          "type": "fill",
+          "prompt": "Direkt: 'Sie sagt: \"Ich habe Zeit.\"' → Indirekt: 'Sie sagt, sie ____ Zeit.' (Konj. I = Indikativ → Konj. II)",
+          "answer": [
+            "hätte"
+          ],
+          "why": "habe = Indikativ → Konj. II: hätte."
+        },
+        {
+          "id": "b2-01-d05",
+          "type": "choice",
+          "prompt": "Konj. I Perfekt: 'er habe gemacht' — Problem:",
+          "options": [
+            "gleich Indikativ",
+            "anders als Indikativ",
+            "nicht möglich",
+            "nur schriftlich"
+          ],
+          "answer": [
+            "gleich Indikativ"
+          ],
+          "why": "Konj. I Perfekt = Indikativ Perfekt → Ersatz durch Konj. II: hätte gemacht."
+        },
+        {
+          "id": "b2-01-d06",
+          "type": "fill",
+          "prompt": "Direkt: 'Er sagt: \"Ich werde kommen.\"' → Indirekt: 'Er sagt, er ____ kommen.' (Konj. I Futur = Indikativ → Konj. II)",
+          "answer": [
+            "würde"
+          ],
+          "why": "werde = Indikativ → Konj. II: würde."
+        },
+        {
+          "id": "b2-01-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'sagt / er / er / sei / müde'",
+          "answer": [
+            "Er sagt, er sei müde."
+          ],
+          "why": "Hauptsatz V2, Nebensatz Verb am Ende."
+        },
+        {
+          "id": "b2-01-d08",
+          "type": "choice",
+          "prompt": "Wann wird Konj. II statt Konj. I verwendet?",
+          "options": [
+            "immer",
+            "nie",
+            "wenn Konj. I = Indikativ",
+            "nur bei Modalen"
+          ],
+          "answer": [
+            "wenn Konj. I = Indikativ"
+          ],
+          "why": "Verwechslungsvermeidung: habe/hätte, werde/würde."
+        },
+        {
+          "id": "b2-01-d09",
+          "type": "fill",
+          "prompt": "Sie berichtet, er ____ (sein) krank. (Konj. I)",
+          "answer": [
+            "sei"
+          ],
+          "why": "sein → Konj. I: sei."
+        },
+        {
+          "id": "b2-01-d10",
+          "type": "transform",
+          "prompt": "Direkte Rede → Indirekte: 'Er fragt: \"Hast du Zeit?\"' → ____",
+          "answer": [
+            "Er fragt, ob ich Zeit habe."
+          ],
+          "why": "ob + Nebensatz, Konj. I (habe = Indikativ, aber bei Fragen oft Indikativ belassen oder Konj. II: hätte)."
+        },
+        {
+          "id": "b2-01-d11",
+          "type": "choice",
+          "prompt": "Konj. I von 'können', 3. Pers. Sg.:",
+          "options": [
+            "kann",
+            "könne",
+            "könnte",
+            "konnte"
+          ],
+          "answer": [
+            "könne"
+          ],
+          "why": "Konj. I: er könne (vs Indikativ: er kann)."
+        },
+        {
+          "id": "b2-01-d12",
+          "type": "fill",
+          "prompt": "Er behauptet, er ____ (wissen) die Antwort. (Konj. I)",
+          "answer": [
+            "wisse"
+          ],
+          "why": "wissen → Konj. I: wisse (vs Indikativ: weiß)."
+        }
+      ]
+    },
+    {
+      "id": "b2-02-passiv-vergangenheit",
+      "order": 2,
+      "title": "Пассив в Präteritum и Perfekt",
+      "subtitle": "wurde + Partizip II, ist ... worden",
+      "topics": [
+        "passiv_zeiten"
+      ],
+      "prereq": [
+        "b1-03-passiv-zeiten",
+        "b1-04-passiv-ersatz"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passiv Präteritum (schriftlich) und Perfekt (mündlich/schriftlich). Präteritum: wurde gemacht. Perfekt: ist gemacht worden (NICHT geworden!)."
+        },
+        {
+          "kind": "rule",
+          "title": "Präteritum Passiv",
+          "text": "ich wurde gemacht, du wurdest gemacht, er wurde gemacht... Entspricht Aktiv Präteritum: man machte / er machte."
+        },
+        {
+          "kind": "rule",
+          "title": "Perfekt Passiv",
+          "text": "ist + Partizip II + worden. NICHT 'ist ... geworden'! Beispiel: Das Haus ist gebaut worden."
+        },
+        {
+          "kind": "rule",
+          "title": "Unterschied Aktiv/Passiv Perfekt",
+          "text": "Aktiv: hat gemacht. Passiv: ist gemacht worden. Auxiliär: Aktiv haben, Passiv sein."
+        },
+        {
+          "kind": "table",
+          "ref": "passiv_zeiten"
+        },
+        {
+          "kind": "example",
+          "de": "Das Haus wurde 1990 gebaut. Das Haus ist gerade gebaut worden. Der Brief wurde geschrieben. Die E-Mail ist gesendet worden.",
+          "ru": "Дом был построен в 1990. Дом только что построен. Письмо было написано. Email была отправлена.",
+          "note": "wurde (Prät), ist ... worden (Perfekt)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-02-d01",
+          "type": "choice",
+          "prompt": "Präteritum Passiv: 'Das Haus ____ 1990 gebaut.'",
+          "options": [
+            "wird",
+            "wurde",
+            "ist",
+            "war"
+          ],
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum Passiv: wurde + Partizip II."
+        },
+        {
+          "id": "b2-02-d02",
+          "type": "choice",
+          "prompt": "Perfekt Passiv: 'Das Haus ____ gebaut ____ .'",
+          "options": [
+            "ist worden",
+            "ist geworden",
+            "hat gebaut",
+            "wurde gebaut"
+          ],
+          "answer": [
+            "ist worden"
+          ],
+          "why": "Perfekt Passiv: ist + Partizip II + worden."
+        },
+        {
+          "id": "b2-02-d03",
+          "type": "choice",
+          "prompt": "Aktiv Präteritum: 'Man baute das Haus.' → Passiv:",
+          "options": [
+            "Das Haus wurde gebaut.",
+            "Das Haus wird gebaut.",
+            "Das Haus ist gebaut worden.",
+            "Man baute das Haus."
+          ],
+          "answer": [
+            "Das Haus wurde gebaut."
+          ],
+          "why": "Aktiv Prät → Passiv Prät: wurde."
+        },
+        {
+          "id": "b2-02-d04",
+          "type": "fill",
+          "prompt": "Der Brief ____ gestern geschrieben. (Präteritum Passiv)",
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum Passiv: wurde."
+        },
+        {
+          "id": "b2-02-d05",
+          "type": "choice",
+          "prompt": "Perfekt Aktiv: 'Man hat das Haus gebaut.' → Passiv:",
+          "options": [
+            "Das Haus ist gebaut worden.",
+            "Das Haus wurde gebaut.",
+            "Das Haus wird gebaut.",
+            "Man hat das Haus gebaut."
+          ],
+          "answer": [
+            "Das Haus ist gebaut worden."
+          ],
+          "why": "Aktiv Perfekt (hat) → Passiv Perfekt (ist ... worden)."
+        },
+        {
+          "id": "b2-02-d06",
+          "type": "fill",
+          "prompt": "Die E-Mail ____ schon ____ . (senden, Perfekt Passiv)",
+          "answer": [
+            "ist gesendet worden"
+          ],
+          "why": "ist + Partizip II + worden."
+        },
+        {
+          "id": "b2-02-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'worden / ist / das / Buch / gelesen'",
+          "answer": [
+            "Das Buch ist gelesen worden."
+          ],
+          "why": "Perfekt Passiv Wortstellung."
+        },
+        {
+          "id": "b2-02-d08",
+          "type": "choice",
+          "prompt": "Warum NICHT 'ist gebaut geworden'?",
+          "options": [
+            "weil 'geworden' = Partizip II von 'werden'",
+            "weil 'geworden' falsch ist",
+            "weil Perfekt Passiv 'ist ... worden' heißt",
+            "beides richtig"
+          ],
+          "answer": [
+            "weil Perfekt Passiv 'ist ... worden' heißt"
+          ],
+          "why": "Feste Form: ist + Partizip II + worden."
+        },
+        {
+          "id": "b2-02-d09",
+          "type": "fill",
+          "prompt": "Das Auto ____ repariert. (Präteritum Passiv)",
+          "answer": [
+            "wurde"
+          ],
+          "why": "Präteritum Passiv."
+        },
+        {
+          "id": "b2-02-d10",
+          "type": "transform",
+          "prompt": "Aktiv Präteritum → Passiv Präteritum: 'Er öffnete die Tür.' → ____",
+          "answer": [
+            "Die Tür wurde geöffnet."
+          ],
+          "why": "Aktiv Prät → Passiv Prät."
+        },
+        {
+          "id": "b2-02-d11",
+          "type": "choice",
+          "prompt": "Plusquamperfekt Passiv:",
+          "options": [
+            "war gebaut worden",
+            "war gebaut geworden",
+            "wurde gebaut",
+            "ist gebaut worden"
+          ],
+          "answer": [
+            "war gebaut worden"
+          ],
+          "why": "war + Partizip II + worden."
+        },
+        {
+          "id": "b2-02-d12",
+          "type": "fill",
+          "prompt": "Die Tür ____ gerade ____ . (öffnen, Perfekt Passiv)",
+          "answer": [
+            "ist geöffnet worden"
+          ],
+          "why": "ist + Partizip II + worden."
+        }
+      ]
+    },
+    {
+      "id": "b2-03-partizipialsaetze",
+      "order": 3,
+      "title": "Свёрнутые придаточные (Partizipialsätze)",
+      "subtitle": "Partizip I statt Nebensatz (aktiv), Partizip II statt Passiv",
+      "topics": [
+        "partizipialattribute",
+        "partizipialattribute_extended"
+      ],
+      "prereq": [
+        "b1-06-partizipialattribute",
+        "b1-05-partizip-adjektiv"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Partizipialsätze ersetzen Nebensätze (Kürzung). Partizip I = aktiv (Subjekt = Subjekt des Hauptsatzes). Partizip II = passiv (Subjekt = Objekt des Hauptsatzes)."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip I (aktiv)",
+          "text": "Nebensatz: 'Während er las, schlief sie.' → Partizipialsatz: 'Lesend schlief sie.' / 'Beim Lesen schlief sie.' Subjekt identisch!"
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip II (passiv)",
+          "text": "Nebensatz: 'Als er gefragt wurde, antwortete er.' → Partizipialsatz: 'Gefragt, antwortete er.' / 'Auf die Frage hin antwortete er.' Subjekt = Objekt! (Passiv)."
+        },
+        {
+          "kind": "rule",
+          "title": "Einleitung",
+          "text": "Oft mit Präpositionen: beim/beim + Partizip I, nach + Partizip II, ohne + Partizip, statt + Partizip. Oder direkt am Satzanfang."
+        },
+        {
+          "kind": "rule",
+          "title": "Vorderes / hinteres Mittelfeld",
+          "text": "Am Satzanfang (Vorfeld): 'Lesend schlief sie.' Im Mittelfeld: 'Sie schlief, das Buch lesend.'"
+        },
+        {
+          "kind": "table",
+          "ref": "partizipialattribute"
+        },
+        {
+          "kind": "example",
+          "de": "Lesend vergaß er die Zeit. (aktiv) Gefragt, wusste er keine Antwort. (passiv) Ohne zu zögern, sprang er. (Infinitivgruppe)",
+          "ru": "Чтая, он забыл о времени. Спрошенный, он не знал ответа. Не раздумывая, он прыгнул.",
+          "note": "Partizip I: Subjekt handelt. Partizip II: Subjekt leidet."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-03-d01",
+          "type": "choice",
+          "prompt": "Nebensatz: 'Während er arbeitete, hörte er Musik.' → Partizip I:",
+          "options": [
+            "Arbeitend hörte er Musik.",
+            "Gearbeitet hörte er Musik.",
+            "Arbeitete hörte er Musik.",
+            "Arbeitet hörte er Musik."
+          ],
+          "answer": [
+            "Arbeitend hörte er Musik."
+          ],
+          "why": "Partizip I (aktiv): arbeitend. Subjekt identisch."
+        },
+        {
+          "id": "b2-03-d02",
+          "type": "choice",
+          "prompt": "Nebensatz: 'Als er gefragt wurde, antwortete er.' → Partizip II:",
+          "options": [
+            "Fragend antwortete er.",
+            "Gefragt antwortete er.",
+            "Fragte antwortete er.",
+            "Fragt antwortete er."
+          ],
+          "answer": [
+            "Gefragt antwortete er."
+          ],
+          "why": "Partizip II (passiv): gefragt. Subjekt = Objekt."
+        },
+        {
+          "id": "b2-03-d03",
+          "type": "choice",
+          "prompt": "Welcher Satz nutzt Partizip I richtig?",
+          "options": [
+            "Lesend das Buch, war es spannend.",
+            "Das Buch lesend, war es spannend.",
+            "Er las das Buch, lesend war es spannend.",
+            "Lesend las er das Buch."
+          ],
+          "answer": [
+            "Lesend las er das Buch."
+          ],
+          "why": "Subjekt (er) = Handelnder (lesend)."
+        },
+        {
+          "id": "b2-03-d04",
+          "type": "fill",
+          "prompt": "Nebensatz: 'Weil er müde war, ging er schlafen.' → Partizip II (passiv? nein, Adjektiv): '____ , ging er schlafen.'",
+          "answer": [
+            "Müde"
+          ],
+          "why": "Adjektiv/Partizip II als Ursache: Müde ging er schlafen."
+        },
+        {
+          "id": "b2-03-d05",
+          "type": "choice",
+          "prompt": "Partizipialsatz mit 'ohne': 'Er ging, ____ zu zögern.'",
+          "options": [
+            "ohne",
+            "ohne dass",
+            "ohne zu",
+            "damit"
+          ],
+          "answer": [
+            "ohne zu"
+          ],
+          "why": "ohne + Infinitiv (nicht Partizip!)."
+        },
+        {
+          "id": "b2-03-d06",
+          "type": "fill",
+          "prompt": "Nebensatz: 'Nachdem er gegessen hatte, ging er.' → Partizip II:",
+          "answer": [
+            "Gegessen, ging er."
+          ],
+          "why": "Partizip II Perfekt: gegessen (Vorzeitigkeit)."
+        },
+        {
+          "id": "b2-03-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'lesend / vergaß / er / die / Zeit'",
+          "answer": [
+            "Lesend vergaß er die Zeit."
+          ],
+          "why": "Partizip I im Vorfeld, Hauptsatz V2."
+        },
+        {
+          "id": "b2-03-d08",
+          "type": "choice",
+          "prompt": "Subjekt des Partizipialsatzes = Subjekt des Hauptsatzes →",
+          "options": [
+            "Partizip I (aktiv)",
+            "Partizip II (passiv)",
+            "Infinitiv",
+            "Relativsatz"
+          ],
+          "answer": [
+            "Partizip I (aktiv)"
+          ],
+          "why": "Identisches Subjekt → Partizip I."
+        },
+        {
+          "id": "b2-03-d09",
+          "type": "fill",
+          "prompt": "Nebensatz: 'Als das Buch geschrieben wurde, war er froh.' → Partizip II:",
+          "answer": [
+            "[Das Buch] geschrieben, war er froh."
+          ],
+          "why": "Partizip II passiv: das Buch wurde geschrieben → geschrieben."
+        },
+        {
+          "id": "b2-03-d10",
+          "type": "transform",
+          "prompt": "Nebensatz → Partizipialsatz: 'Weil er krank war, blieb er zu Hause.' → ____",
+          "answer": [
+            "Krank blieb er zu Hause."
+          ],
+          "why": "Adjektiv/Partizip II als Ursache im Vorfeld."
+        },
+        {
+          "id": "b2-03-d11",
+          "type": "choice",
+          "prompt": "Partizipialsatz mit 'statt': 'Er ging, ____ zu warten.'",
+          "options": [
+            "statt",
+            "statt dass",
+            "statt zu",
+            "anstatt"
+          ],
+          "answer": [
+            "statt zu"
+          ],
+          "why": "statt + Infinitiv."
+        },
+        {
+          "id": "b2-03-d12",
+          "type": "fill",
+          "prompt": "Nebensatz: 'Bevor er ging, aß er.' → Partizip II:",
+          "answer": [
+            "Gegessen, ging er."
+          ],
+          "why": "Vorzeitigkeit: Partizip II Perfekt."
+        }
+      ]
+    },
+    {
+      "id": "b2-04-nominalisierung",
+      "order": 4,
+      "title": "Номинализация (Verben → Substantive)",
+      "subtitle": "das Lesen, das Gelesene, der Verletzte — Deklination",
+      "topics": [
+        "nominalisierung"
+      ],
+      "prereq": [
+        "b1-05-partizip-adjektiv",
+        "a1-07-plural"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nomialisierung = Verben/Adjektive zu Substantiven machen. Drei Haupttypen: Infinitiv als Nomen, Partizip I/II als Nomen, Ableitung mit Suffixen."
+        },
+        {
+          "kind": "rule",
+          "title": "Infinitiv als Nomen",
+          "text": "Großschreibung + Artikel: das Lesen, das Schreiben, das Essen. Immer Neutrum (das). Deklination: des Lesens, dem Lesen, das Lesen. Plural selten."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip I als Nomen",
+          "text": "der Lesende, die Lesende, das Lesende. Bedeutung: 'der, der liest'. Deklination wie Adjektiv (stark/gemischt/schwach). Plural: die Lesenden."
+        },
+        {
+          "kind": "rule",
+          "title": "Partizip II als Nomen",
+          "text": "der Verletzte, die Verletzte, das Verletzte. Bedeutung: 'der, der verletzt wurde'. Deklination wie Adjektiv. Plural: die Verletzten."
+        },
+        {
+          "kind": "rule",
+          "title": "Suffixe",
+          "text": "-ung (die Entscheidung), -heit (die Gesundheit), -keit (die Freundlichkeit), -nis (das Ereignis), -tum (das Eigentum), -schaft (die Freundschaft)."
+        },
+        {
+          "kind": "table",
+          "ref": "nominalisierung"
+        },
+        {
+          "kind": "example",
+          "de": "Das Lesen macht Spaß. Der Verletzte wird ins Krankenhaus gebracht. Die Entscheidung fiel schwer. Das Gelesene habe ich verstanden.",
+          "ru": "Чтение приносит удовольствие. Пострадавший доставлен в больницу. Решение было трудным. Прочитанное я понял.",
+          "note": "das Lesen (Neutrum), der Verletzte (maskulin, wie Adjektiv dekliniert)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-04-d01",
+          "type": "choice",
+          "prompt": "Nomialisierung von 'lesen' (Infinitiv):",
+          "options": [
+            "das Lesen",
+            "der Lesen",
+            "die Lesen",
+            "lesen"
+          ],
+          "answer": [
+            "das Lesen"
+          ],
+          "why": "Infinitiv als Nomen → Neutrum (das)."
+        },
+        {
+          "id": "b2-04-d02",
+          "type": "choice",
+          "prompt": "Partizip I als Nomen: 'der ____ ' (lesen)",
+          "options": [
+            "Lesende",
+            "Lesen",
+            "Gelesene",
+            "Gelesen"
+          ],
+          "answer": [
+            "Lesende"
+          ],
+          "why": "Partizip I + -e + Deklination: der Lesende."
+        },
+        {
+          "id": "b2-04-d03",
+          "type": "choice",
+          "prompt": "Partizip II als Nomen: 'der ____ ' (verletzen)",
+          "options": [
+            "Verletzte",
+            "Verletzen",
+            "Verletzende",
+            "Verletzt"
+          ],
+          "answer": [
+            "Verletzte"
+          ],
+          "why": "Partizip II + -e + Deklination: der Verletzte."
+        },
+        {
+          "id": "b2-04-d04",
+          "type": "fill",
+          "prompt": "Nominalisierung mit -ung: 'entscheiden' → die ____",
+          "answer": [
+            "Entscheidung"
+          ],
+          "why": "-ung Suffix, Feminin."
+        },
+        {
+          "id": "b2-04-d05",
+          "type": "choice",
+          "prompt": "Genitiv von 'das Lesen':",
+          "options": [
+            "des Lesens",
+            "des Lesen",
+            "der Lesen",
+            "dem Lesen"
+          ],
+          "answer": [
+            "des Lesens"
+          ],
+          "why": "Genitiv Neutrum: des + -s."
+        },
+        {
+          "id": "b2-04-d06",
+          "type": "fill",
+          "prompt": "Plural von 'der Verletzte': die ____",
+          "answer": [
+            "Verletzten"
+          ],
+          "why": "N-Deklination: Plural auf -en."
+        },
+        {
+          "id": "b2-04-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'Spaß / macht / das / Lesen'",
+          "answer": [
+            "Das Lesen macht Spaß."
+          ],
+          "why": "Subjekt: das Lesen (Neutrum)."
+        },
+        {
+          "id": "b2-04-d08",
+          "type": "choice",
+          "prompt": "Was bedeutet 'der Studierende'?",
+          "options": [
+            "der Student (Beruf)",
+            "der, der studiert (gerade)",
+            "der, der studiert hat",
+            "das Studium"
+          ],
+          "answer": [
+            "der, der studiert (gerade)"
+          ],
+          "why": "Partizip I = aktiv, gleichzeitig."
+        },
+        {
+          "id": "b2-04-d09",
+          "type": "fill",
+          "prompt": "Nominalisierung: 'krank' → die ____",
+          "answer": [
+            "Krankheit"
+          ],
+          "why": "-heit Suffix."
+        },
+        {
+          "id": "b2-04-d10",
+          "type": "transform",
+          "prompt": "Verb → Nomen (Infinitiv): 'Er liest gern.' → ____",
+          "answer": [
+            "Das Lesen macht ihm Spaß."
+          ],
+          "why": "Infinitiv als Nomen: das Lesen."
+        },
+        {
+          "id": "b2-04-d11",
+          "type": "choice",
+          "prompt": "Deklination von 'der Lesende' (Dativ Sg):",
+          "options": [
+            "dem Lesenden",
+            "dem Lesende",
+            "den Lesenden",
+            "des Lesenden"
+          ],
+          "answer": [
+            "dem Lesenden"
+          ],
+          "why": "Wie Adjektiv schwach: dem Lesenden."
+        },
+        {
+          "id": "b2-04-d12",
+          "type": "fill",
+          "prompt": "Suffixed: 'frei' → die ____",
+          "answer": [
+            "Freiheit"
+          ],
+          "why": "-heit Suffix."
+        }
+      ]
+    },
+    {
+      "id": "b2-05-praepositionaladverbien",
+      "order": 5,
+      "title": "Предложные наречия (Präpositionaladverbien)",
+      "subtitle": "darauf, woran, hierbei, darin, dazu, darüber...",
+      "topics": [
+        "da_wo_komposita"
+      ],
+      "prereq": [
+        "b1-07-da-wo",
+        "b1-11-verben-praepositionen-2"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Präpositionaladverbien = da/wo/hier + Präposition. Ersetzen Präposition + Pronomen (es, das, dies)."
+        },
+        {
+          "kind": "rule",
+          "title": "da- + Präposition",
+          "text": "Bezug auf bekanntes Sachverhalt: darauf, daran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. Nur bei Sachen!"
+        },
+        {
+          "kind": "rule",
+          "title": "wo- + Präposition",
+          "text": "Frage: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter."
+        },
+        {
+          "kind": "rule",
+          "title": "hier- + Präposition",
+          "text": "Ortsnah: hierauf, hieran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter."
+        },
+        {
+          "kind": "rule",
+          "title": "Bei Personen",
+          "text": "KEIN da/wo/hier-Kompositum! → Präposition + Personalpronomen: auf ihn, mit ihr, für uns."
+        },
+        {
+          "kind": "table",
+          "ref": "da_wo_komposita"
+        },
+        {
+          "kind": "example",
+          "de": "Ich warte auf den Bus → Ich warte darauf. Worauf wartest du? Ich denke an dich → Ich denke an dich (Person!). Hierauf kann man sich verlassen.",
+          "ru": "Я жду автобус → Я жду его. На что ждешь? Я думаю о тебе → Я думаю о тебе (персона!). На это можно положиться.",
+          "note": "da(r) = auf es. Bei Personen: Präposition + Personalpronomen."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-05-d01",
+          "type": "choice",
+          "prompt": "Ich warte auf den Zug → Ich warte ____.",
+          "options": [
+            "darauf",
+            "dafür",
+            "daran",
+            "dazu"
+          ],
+          "answer": [
+            "darauf"
+          ],
+          "why": "warten auf + es = darauf."
+        },
+        {
+          "id": "b2-05-d02",
+          "type": "choice",
+          "prompt": "Er denkt an die Lösung → Er denkt ____.",
+          "options": [
+            "daran",
+            "darauf",
+            "dafür",
+            "davon"
+          ],
+          "answer": [
+            "daran"
+          ],
+          "why": "denken an + es = daran."
+        },
+        {
+          "id": "b2-05-d03",
+          "type": "choice",
+          "prompt": "Frage: 'Worauf wartest du?' Antwort: 'Ich warte ____.'",
+          "options": [
+            "darauf",
+            "dafür",
+            "daran",
+            "dazu"
+          ],
+          "answer": [
+            "darauf"
+          ],
+          "why": "Antwort auf wo-Frage mit da-Kompositum."
+        },
+        {
+          "id": "b2-05-d04",
+          "type": "fill",
+          "prompt": "Ich freue mich auf das Fest → Ich freue mich ____.",
+          "answer": [
+            "darauf"
+          ],
+          "why": "sich freuen auf + es = darauf."
+        },
+        {
+          "id": "b2-05-d05",
+          "type": "choice",
+          "prompt": "Bei Personen: 'Ich warte auf ____ ' (ihn)",
+          "options": [
+            "ihn",
+            "es",
+            "darauf",
+            "da"
+          ],
+          "answer": [
+            "ihn"
+          ],
+          "why": "Bei Personen KEIN da-Kompositum! → Präposition + Personalpronomen."
+        },
+        {
+          "id": "b2-05-d06",
+          "type": "fill",
+          "prompt": "Wir sprechen über das Problem → Wir sprechen ____.",
+          "answer": [
+            "darüber"
+          ],
+          "why": "sprechen über + es = darüber."
+        },
+        {
+          "id": "b2-05-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'darauf / ich / warte / , / weil / er / kommt'",
+          "answer": [
+            "Ich warte darauf, weil er kommt."
+          ],
+          "why": "da-Kompositum im Hauptsatz."
+        },
+        {
+          "id": "b2-05-d08",
+          "type": "choice",
+          "prompt": "Wo-Kompositum für 'sprechen über':",
+          "options": [
+            "worüber",
+            "woran",
+            "worauf",
+            "wofür"
+          ],
+          "answer": [
+            "worüber"
+          ],
+          "why": "sprechen über + was → worüber."
+        },
+        {
+          "id": "b2-05-d09",
+          "type": "fill",
+          "prompt": "Hier ____ kann man gut essen. (hier + auf → hierauf)",
+          "answer": [
+            "hierauf"
+          ],
+          "why": "hier + Präposition = Ortsnähe."
+        },
+        {
+          "id": "b2-05-d10",
+          "type": "transform",
+          "prompt": "Frage bilden: 'Er denkt an das Auto.' → ____",
+          "answer": [
+            "Woran denkt er?"
+          ],
+          "why": "denken an + was → woran."
+        },
+        {
+          "id": "b2-05-d11",
+          "type": "choice",
+          "prompt": "Welches da-Kompositum passt zu 'Angst haben vor'?",
+          "options": [
+            "davor",
+            "daran",
+            "darauf",
+            "dafür"
+          ],
+          "answer": [
+            "davor"
+          ],
+          "why": "Angst haben vor + es = davor."
+        },
+        {
+          "id": "b2-05-d12",
+          "type": "fill",
+          "prompt": "Er hat sich ____ gewöhnt. (an + es)",
+          "answer": [
+            "daran"
+          ],
+          "why": "sich gewöhnen an + es = daran."
+        }
+      ]
+    },
+    {
+      "id": "b2-06-konzessiv",
+      "order": 6,
+      "title": "Уступительные предложения",
+      "subtitle": "obwohl, selbst wenn, wenngleich, trotz + Genitiv",
+      "topics": [
+        "konnektoren_uebersicht"
+      ],
+      "prereq": [
+        "b1-12-konnektoren",
+        "a2-11-praepositionen-genitiv"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Konzessivsätze drücken eine Erwartung aus, die nicht erfüllt wird. Trotz gegenteiliger Umstände passiert etwas."
+        },
+        {
+          "kind": "rule",
+          "title": "obwohl (Konjunktion)",
+          "text": "Nebensatz, Verb am Ende: 'Obwohl es regnet, gehe ich spazieren.' Standard."
+        },
+        {
+          "kind": "rule",
+          "title": "selbst wenn (Konjunktion)",
+          "text": "Betonung: 'Selbst wenn es regnet, gehe ich spazieren.' = auch im Extremfall."
+        },
+        {
+          "kind": "rule",
+          "title": "wenngleich (Konjunktion)",
+          "text": "Gehoben, schriftlich: 'Wenngleich es regnet, gehe ich spazieren.' = obwohl."
+        },
+        {
+          "kind": "rule",
+          "title": "trotz + Genitiv (Präposition)",
+          "text": "Hauptsatz: 'Trotz des Regens gehe ich spazieren.' Umstellung: Trotz + Genitiv → obwohl + Nebensatz."
+        },
+        {
+          "kind": "rule",
+          "title": "trotzdem / dennoch (Adverb)",
+          "text": "Hauptsatz, Pos 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.'"
+        },
+        {
+          "kind": "example",
+          "de": "Obwohl er krank ist, arbeitet er. Selbst wenn es regnet, komme ich. Trotz des Wetters fahren wir. Er ist krank, trotzdem arbeitet er.",
+          "ru": "Хотя он болен, он работает. Даже если дождь, я приду. Несмотря на погоду, мы едем. Он болен, тем не менее работает.",
+          "note": "obwohl/selbst wenn/wenngleich = Nebensatz. trotz + Gen = Präposition. trotzdem = Adverb."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-06-d01",
+          "type": "choice",
+          "prompt": "Nebensatz, Konzession: '____ es regnet, gehe ich.'",
+          "options": [
+            "Obwohl",
+            "Trotz",
+            "Wegen",
+            "Weil"
+          ],
+          "answer": [
+            "Obwohl"
+          ],
+          "why": "obwohl = Konjunktion, Nebensatz."
+        },
+        {
+          "id": "b2-06-d02",
+          "type": "choice",
+          "prompt": "Betonung 'auch im Extremfall': '____ es regnet, gehe ich.'",
+          "options": [
+            "Selbst wenn",
+            "Obwohl",
+            "Weil",
+            "Wenn"
+          ],
+          "answer": [
+            "Selbst wenn"
+          ],
+          "why": "selbst wenn = Betonung, auch im Extremfall."
+        },
+        {
+          "id": "b2-06-d03",
+          "type": "choice",
+          "prompt": "Gehoben, schriftlich: '____ es regnet, gehe ich.'",
+          "options": [
+            "Wenngleich",
+            "Obwohl",
+            "Weil",
+            "Wenn"
+          ],
+          "answer": [
+            "Wenngleich"
+          ],
+          "why": "wenngleich = gehoben, schriftlich."
+        },
+        {
+          "id": "b2-06-d04",
+          "type": "fill",
+          "prompt": "Präposition + Genitiv: '____ des Regens gehe ich.'",
+          "answer": [
+            "Trotz"
+          ],
+          "why": "trotz + Genitiv."
+        },
+        {
+          "id": "b2-06-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'trotzdem / gehe / ich / spazieren / , / es / regnet'",
+          "answer": [
+            "Es regnet, trotzdem gehe ich spazieren."
+          ],
+          "why": "Adverb trotzdem, Pos 1 → V2."
+        },
+        {
+          "id": "b2-06-d06",
+          "type": "choice",
+          "prompt": "Umstellung: 'Trotz des Regens...' → Nebensatz:",
+          "options": [
+            "Obwohl es regnet...",
+            "Weil es regnet...",
+            "Wenn es regnet...",
+            "Als es regnete..."
+          ],
+          "answer": [
+            "Obwohl es regnet..."
+          ],
+          "why": "trotz + Gen → obwohl + Nebensatz."
+        },
+        {
+          "id": "b2-06-d07",
+          "type": "fill",
+          "prompt": "____ er krank ist, arbeitet er. (Konzession)",
+          "answer": [
+            "Obwohl"
+          ],
+          "why": "obwohl = Konzessivsatz."
+        },
+        {
+          "id": "b2-06-d08",
+          "type": "choice",
+          "prompt": "'Trotzdem' vs 'dennoch':",
+          "options": [
+            "kein Unterschied",
+            "trotzdem formeller",
+            "dennoch formeller",
+            "trotzdem nur schriftlich"
+          ],
+          "answer": [
+            "dennoch formeller"
+          ],
+          "why": "dennoch = gehobener Stil."
+        },
+        {
+          "id": "b2-06-d09",
+          "type": "transform",
+          "prompt": "'Obwohl es regnet, gehe ich.' → mit 'trotz':",
+          "answer": [
+            "Trotz des Regens gehe ich."
+          ],
+          "why": "obwohl + Nebensatz → trotz + Genitiv."
+        },
+        {
+          "id": "b2-06-d10",
+          "type": "fill",
+          "prompt": "____ es auch regnet, gehe ich. (Betonung)",
+          "answer": [
+            "Selbst wenn"
+          ],
+          "why": "selbst wenn = auch im Fall dass."
+        },
+        {
+          "id": "b2-06-d11",
+          "type": "choice",
+          "prompt": "Welcher Konnektor erfordert Genitiv?",
+          "options": [
+            "obwohl",
+            "trotz",
+            "trotzdem",
+            "wenngleich"
+          ],
+          "answer": [
+            "trotz"
+          ],
+          "why": "trotz ist Präposition mit Genitiv."
+        },
+        {
+          "id": "b2-06-d12",
+          "type": "transform",
+          "prompt": "'Trotz des Regens gehe ich.' → mit 'obwohl':",
+          "answer": [
+            "Obwohl es regnet, gehe ich."
+          ],
+          "why": "trotz + Gen → obwohl + Nebensatz."
+        }
+      ]
+    },
+    {
+      "id": "b2-07-final",
+      "order": 7,
+      "title": "Целевые предложения",
+      "subtitle": "damit, um...zu, zwecks + Genitiv",
+      "topics": [
+        "infinitive_zu"
+      ],
+      "prereq": [
+        "a2-13-infinitiv-zu",
+        "b1-08-konditional"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Finalsätze drücken einen Zweck/Ziel aus. Drei Hauptkonstruktionen."
+        },
+        {
+          "kind": "rule",
+          "title": "damit (Konjunktion)",
+          "text": "Nebensatz, Verb am Ende. Subjekt kann verschieden sein: 'Ich lerne, damit ich bestehe.' / 'Ich erkläre es, damit du es verstehst.'"
+        },
+        {
+          "kind": "rule",
+          "title": "um ... zu (Infinitivgruppe)",
+          "text": "Nur wenn Subjekt identisch! 'Ich lerne, um zu bestehen.' 'Ich rufe an, um zu fragen.'"
+        },
+        {
+          "kind": "rule",
+          "title": "zwecks + Genitiv (Präposition)",
+          "text": "Gehoben, schriftlich: 'Zwecks Klärung rufe ich an.' 'Er kommt zwecks Besprechung.'"
+        },
+        {
+          "kind": "rule",
+          "title": "zum + Infinitiv (Substantiviert)",
+          "text": "Zum Lesen braucht man Zeit. Zum Abschluss: ..."
+        },
+        {
+          "kind": "example",
+          "de": "Ich lerne, damit ich die Prüfung bestehe. Ich lerne, um die Prüfung zu bestehen. Zwecks Information rufe ich an. Zum Essen gehen wir ins Restaurant.",
+          "ru": "Я учусь, чтобы сдать экзамен. Я учусь, чтобы сдать экзамен. В целях информации звоню. На обед идём в ресторан.",
+          "note": "damit = Subjekt verschieden möglich. um...zu = Subjekt identisch. zwecks + Gen."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-07-d01",
+          "type": "choice",
+          "prompt": "Subjekt verschieden: 'Ich erkläre es, ____ du es verstehst.'",
+          "options": [
+            "damit",
+            "um zu",
+            "zwecks",
+            "dass"
+          ],
+          "answer": [
+            "damit"
+          ],
+          "why": "damit = Nebensatz, Subjekt kann verschieden sein."
+        },
+        {
+          "id": "b2-07-d02",
+          "type": "choice",
+          "prompt": "Subjekt identisch: 'Ich lerne, ____ zu bestehen.'",
+          "options": [
+            "um",
+            "damit",
+            "zwecks",
+            "dass"
+          ],
+          "answer": [
+            "um"
+          ],
+          "why": "um ... zu = Infinitivgruppe, Subjekt identisch."
+        },
+        {
+          "id": "b2-07-d03",
+          "type": "choice",
+          "prompt": "Präposition + Genitiv, gehoben: '____ Klärung rufe ich an.'",
+          "options": [
+            "Zwecks",
+            "Wegen",
+            "Trotz",
+            "Während"
+          ],
+          "answer": [
+            "Zwecks"
+          ],
+          "why": "zwecks + Genitiv."
+        },
+        {
+          "id": "b2-07-d04",
+          "type": "fill",
+          "prompt": "Ich rufe an, ____ zu fragen. (um)",
+          "answer": [
+            "um"
+          ],
+          "why": "Subjekt identisch (ich rufe an, ich frage) → um ... zu."
+        },
+        {
+          "id": "b2-07-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'damit / ich / bestehe / , / lerne / ich / , / die / Prüfung'",
+          "answer": [
+            "Ich lerne, damit ich die Prüfung bestehe."
+          ],
+          "why": "Hauptsatz V2, damit-Nebensatz Verb am Ende."
+        },
+        {
+          "id": "b2-07-d06",
+          "type": "choice",
+          "prompt": "Wann 'um ... zu' NICHT möglich?",
+          "options": [
+            "Subjekt identisch",
+            "Subjekt verschieden",
+            "Zukunft",
+            "Vergangenheit"
+          ],
+          "answer": [
+            "Subjekt verschieden"
+          ],
+          "why": "um ... zu nur bei identischem Subjekt."
+        },
+        {
+          "id": "b2-07-d07",
+          "type": "fill",
+          "prompt": "____ Besprechung kommt er. (zwecks)",
+          "answer": [
+            "Zwecks"
+          ],
+          "why": "zwecks + Genitiv."
+        },
+        {
+          "id": "b2-07-d08",
+          "type": "transform",
+          "prompt": "'Ich lerne, damit ich bestehe.' (Subjekt identisch) → mit 'um...zu':",
+          "answer": [
+            "Ich lerne, um zu bestehen."
+          ],
+          "why": "Subjekt identisch → Infinitivgruppe."
+        },
+        {
+          "id": "b2-07-d09",
+          "type": "choice",
+          "prompt": "Genitiv nach 'zwecks':",
+          "options": [
+            "zwecks der Klärung",
+            "zwecks die Klärung",
+            "zwecks den Klärung",
+            "zwecks dem Klärung"
+          ],
+          "answer": [
+            "zwecks der Klärung"
+          ],
+          "why": "zwechs + Genitiv (Feminin: der)."
+        },
+        {
+          "id": "b2-07-d10",
+          "type": "fill",
+          "prompt": "Er kommt ____ zu helfen. (um)",
+          "answer": [
+            "um"
+          ],
+          "why": "Subjekt identisch (er kommt, er hilft) → um ... zu."
+        },
+        {
+          "id": "b2-07-d11",
+          "type": "choice",
+          "prompt": "'Zum + Infinitiv' = Substantivierung:",
+          "options": [
+            "Zum Lesen braucht man Zeit.",
+            "Zum lese braucht man Zeit.",
+            "Zum gelesen braucht man Zeit.",
+            "Zum lesend braucht man Zeit."
+          ],
+          "answer": [
+            "Zum Lesen braucht man Zeit."
+          ],
+          "why": "zum + Infinitiv (substantiviert) = zum Lesen."
+        },
+        {
+          "id": "b2-07-d12",
+          "type": "transform",
+          "prompt": "'Zwecks Information rufe ich an.' → mit 'damit':",
+          "answer": [
+            "Ich rufe an, damit ich informiere."
+          ],
+          "why": "zwecks + Gen → damit + Nebensatz."
+        }
+      ]
+    },
+    {
+      "id": "b2-08-funktionsverbgefuege",
+      "order": 8,
+      "title": "Функциональные глагольные сочетания (FVG)",
+      "subtitle": "in Frage kommen, zur Verfügung stellen, in Betracht ziehen...",
+      "topics": [
+        "funktionsverbgefuege"
+      ],
+      "prereq": [
+        "b2-04-nominalisierung",
+        "b1-11-verben-praepositionen-2"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Funktionsverbgefüge = Lichtverb (machen, geben, stellen, kommen, leisten, treffen, schaffen, nehmen, finden) + Nomen. Das Lichtverb hat wenig eigene Bedeutung, die Bedeutung trägt das Nomen."
+        },
+        {
+          "kind": "rule",
+          "title": "Häufige FVG",
+          "text": "in Frage kommen (geeignet sein), zur Verfügung stellen (geben/bereitstellen), in Betracht ziehen (erwägen), Unterschrift leisten (unterschreiben), Abhilfe schaffen (helfen/beheben), Entscheidung treffen (entscheiden), Kenntnis nehmen (erfahren), Anwendung finden (angewendet werden), Wirkung zeigen (wirken), Rechnung tragen (berücksichtigen)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ersetzung durch einfaches Verb",
+          "text": "FVG → einfaches Verb: eine Entscheidung treffen → entscheiden. Anwendung finden → angewendet werden. In Frage kommen → geeignet sein."
+        },
+        {
+          "kind": "rule",
+          "title": "Grammatik",
+          "text": "Lichtverb wird konjugiert. Nomen behält Kasus (meist Akkusativ). Präpositionen festgelegt: in Frage kommen, zur Verfügung stellen, in Betracht ziehen."
+        },
+        {
+          "kind": "table",
+          "ref": "funktionsverbgefuege"
+        },
+        {
+          "kind": "example",
+          "de": "Das kommt in Frage. Wir stellen das zur Verfügung. Wir ziehen das in Betracht. Er leistet Unterschrift. Das schafft Abhilfe. Wir treffen die Entscheidung.",
+          "ru": "Это подходит. Мы предоставляем это. Мы рассматриваем это. Он подписывает. Это решает проблему. Мы принимаем решение.",
+          "note": "Lichtverb (kommen, stellen, ziehen, leisten, schaffen, treffen) + Nomen mit festen Präpositionen."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-08-d01",
+          "type": "choice",
+          "prompt": "Bedeutung: 'in Frage kommen' =",
+          "options": [
+            "geeignet sein",
+            "fragen",
+            "in Frage stellen",
+            "kommen"
+          ],
+          "answer": [
+            "geeignet sein"
+          ],
+          "why": "in Frage kommen = geeignet sein / in Betracht kommen."
+        },
+        {
+          "id": "b2-08-d02",
+          "type": "choice",
+          "prompt": "Bedeutung: 'zur Verfügung stellen' =",
+          "options": [
+            "geben / bereitstellen",
+            "zur Verfügung haben",
+            "verfügen",
+            "stellen"
+          ],
+          "answer": [
+            "geben / bereitstellen"
+          ],
+          "why": "zur Verfügung stellen = geben, bereitstellen."
+        },
+        {
+          "id": "b2-08-d03",
+          "type": "choice",
+          "prompt": "Bedeutung: 'in Betracht ziehen' =",
+          "options": [
+            "erwägen",
+            "betrachten",
+            "ziehen",
+            "in Betracht kommen"
+          ],
+          "answer": [
+            "erwägen"
+          ],
+          "why": "in Betracht ziehen = erwägen."
+        },
+        {
+          "id": "b2-08-d04",
+          "type": "fill",
+          "prompt": "Er ____ Unterschrift. (leisten)",
+          "answer": [
+            "leistet"
+          ],
+          "why": "Unterschrift leisten = unterschreiben."
+        },
+        {
+          "id": "b2-08-d05",
+          "type": "choice",
+          "prompt": "Einfaches Verb für 'Abhilfe schaffen':",
+          "options": [
+            "helfen / beheben",
+            "schaffen",
+            "abhelfen",
+            "helfen"
+          ],
+          "answer": [
+            "helfen / beheben"
+          ],
+          "why": "Abhilfe schaffen = helfen, beheben."
+        },
+        {
+          "id": "b2-08-d06",
+          "type": "fill",
+          "prompt": "Wir ____ die Entscheidung. (treffen)",
+          "answer": [
+            "treffen"
+          ],
+          "why": "Entscheidung treffen = entscheiden."
+        },
+        {
+          "id": "b2-08-d07",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'in / Frage / kommt / das'",
+          "answer": [
+            "Das kommt in Frage."
+          ],
+          "why": "FVG: in Frage kommen."
+        },
+        {
+          "id": "b2-08-d08",
+          "type": "choice",
+          "prompt": "Bedeutung: 'Kenntnis nehmen' =",
+          "options": [
+            "erfahren / zur Kenntnis nehmen",
+            "kennen",
+            "wissen",
+            "nehmen"
+          ],
+          "answer": [
+            "erfahren / zur Kenntnis nehmen"
+          ],
+          "why": "Kenntnis nehmen = erfahren, zur Kenntnis nehmen."
+        },
+        {
+          "id": "b2-08-d09",
+          "type": "fill",
+          "prompt": "Das ____ Anwendung. (finden)",
+          "answer": [
+            "findet"
+          ],
+          "why": "Anwendung finden = angewendet werden."
+        },
+        {
+          "id": "b2-08-d10",
+          "type": "transform",
+          "prompt": "FVG → einfaches Verb: 'Er trifft die Entscheidung.' → ____",
+          "answer": [
+            "Er entscheidet."
+          ],
+          "why": "Entscheidung treffen → entscheiden."
+        },
+        {
+          "id": "b2-08-d11",
+          "type": "choice",
+          "prompt": "Präposition bei 'in Frage kommen':",
+          "options": [
+            "in",
+            "an",
+            "auf",
+            "keine"
+          ],
+          "answer": [
+            "in"
+          ],
+          "why": "Feste Präposition: in Frage kommen."
+        },
+        {
+          "id": "b2-08-d12",
+          "type": "fill",
+          "prompt": "Wir ____ in Betracht. (ziehen)",
+          "answer": [
+            "ziehen"
+          ],
+          "why": "in Betracht ziehen = erwägen."
+        }
+      ]
+    },
+    {
+      "id": "b2-09-passiv-modal",
+      "order": 9,
+      "title": "Пассив с модальными глаголами",
+      "subtitle": "muss gemacht werden, kann gemacht werden, soll gemacht werden",
+      "topics": [
+        "passiv_zeiten"
+      ],
+      "prereq": [
+        "b2-02-passiv-vergangenheit",
+        "a1-05-haben-modalverben"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passiv mit Modalverben: Modal (konjugiert) + Partizip II + werden (Infinitiv). Struktur: Subjekt + Modal + Partizip II + werden."
+        },
+        {
+          "kind": "rule",
+          "title": "Bildung",
+          "text": "muss gemacht werden, kann gemacht werden, soll gemacht werden, will gemacht werden, darf gemacht werden, mag gemacht werden (selten)."
+        },
+        {
+          "kind": "rule",
+          "title": "Zeitformen",
+          "text": "Präsens: muss gemacht werden. Präteritum: musste gemacht werden. Perfekt: hat gemacht werden müssen (Doppelinfinitiv!). Futur: wird gemacht werden müssen."
+        },
+        {
+          "kind": "rule",
+          "title": "Perfekt: Doppelinfinitiv",
+          "text": "hat gemacht werden müssen (NICHT 'ist gemacht worden müssen'!). Modal + Passiv-Infinitiv → Doppelinfinitiv mit haben."
+        },
+        {
+          "kind": "rule",
+          "title": "Bedeutung",
+          "text": "Notwendigkeit (muss), Möglichkeit (kann), Sollenswert (soll), Erlaubnis (darf), Wunsch (will)."
+        },
+        {
+          "kind": "table",
+          "ref": "passiv_zeiten"
+        },
+        {
+          "kind": "example",
+          "de": "Das muss gemacht werden. Das kann gemacht werden. Das sollte gemacht werden. Das hat gemacht werden müssen.",
+          "ru": "Это должно быть сделано. Это можно сделать. Это следовало бы сделать. Это должно было быть сделано.",
+          "note": "Modal + Partizip II + werden. Perfekt: Doppelinfinitiv (hat ... müssen)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-09-d01",
+          "type": "choice",
+          "prompt": "Präsens Passiv mit Modal: 'Das ____ gemacht werden.'",
+          "options": [
+            "muss",
+            "musste",
+            "hat",
+            "ist"
+          ],
+          "answer": [
+            "muss"
+          ],
+          "why": "Präsens: Modal (muss) + Partizip II + werden."
+        },
+        {
+          "id": "b2-09-d02",
+          "type": "choice",
+          "prompt": "Präteritum Passiv mit Modal: 'Das ____ gemacht werden.'",
+          "options": [
+            "musste",
+            "muss",
+            "hatte",
+            "war"
+          ],
+          "answer": [
+            "musste"
+          ],
+          "why": "Präteritum: Modal (musste) + Partizip II + werden."
+        },
+        {
+          "id": "b2-09-d03",
+          "type": "choice",
+          "prompt": "Perfekt Passiv mit Modal: 'Das ____ gemacht werden ____ .'",
+          "options": [
+            "hat müssen",
+            "ist müssen",
+            "hatte müssen",
+            "wurde müssen"
+          ],
+          "answer": [
+            "hat müssen"
+          ],
+          "why": "Perfekt: Doppelinfinitiv mit haben (hat gemacht werden müssen)."
+        },
+        {
+          "id": "b2-09-d04",
+          "type": "fill",
+          "prompt": "Das ____ (können) gemacht werden.",
+          "answer": [
+            "kann"
+          ],
+          "why": "können → kann (Präsens)."
+        },
+        {
+          "id": "b2-09-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'muss / werden / das / gemacht'",
+          "answer": [
+            "Das muss gemacht werden."
+          ],
+          "why": "Subjekt + Modal + Partizip II + werden."
+        },
+        {
+          "id": "b2-09-d06",
+          "type": "choice",
+          "prompt": "Bedeutung: 'Das soll gemacht werden.'",
+          "options": [
+            "Empfehlung/Sollenswert",
+            "Notwendigkeit",
+            "Möglichkeit",
+            "Erlaubnis"
+          ],
+          "answer": [
+            "Empfehlung/Sollenswert"
+          ],
+          "why": "soll = Empfehlung, Sollenswert."
+        },
+        {
+          "id": "b2-09-d07",
+          "type": "fill",
+          "prompt": "Das ____ (dürfen) gemacht werden.",
+          "answer": [
+            "darf"
+          ],
+          "why": "dürfen → darf (Erlaubnis)."
+        },
+        {
+          "id": "b2-09-d08",
+          "type": "choice",
+          "prompt": "Futur Passiv mit Modal: 'Das ____ gemacht werden ____ .'",
+          "options": [
+            "wird müssen",
+            "hat müssen",
+            "ist müssen",
+            "wurde müssen"
+          ],
+          "answer": [
+            "wird müssen"
+          ],
+          "why": "wird + Partizip II + werden + Modal (Infinitiv)."
+        },
+        {
+          "id": "b2-09-d09",
+          "type": "transform",
+          "prompt": "Aktiv: 'Man muss das machen.' → Passiv mit Modal:",
+          "answer": [
+            "Das muss gemacht werden."
+          ],
+          "why": "man + Modal + Infinitiv → Passiv: Modal + Partizip II + werden."
+        },
+        {
+          "id": "b2-09-d10",
+          "type": "fill",
+          "prompt": "Das ____ (sollen) gemacht werden.",
+          "answer": [
+            "soll"
+          ],
+          "why": "sollen → soll."
+        },
+        {
+          "id": "b2-09-d11",
+          "type": "choice",
+          "prompt": "Perfekt: 'hat gemacht werden müssen' — warum 'hat' nicht 'ist'?",
+          "options": [
+            "weil Modal + Passiv = Doppelinfinitiv mit haben",
+            "weil 'ist' falsch klingt",
+            "weil Perfekt immer 'hat'",
+            "Zufall"
+          ],
+          "answer": [
+            "weil Modal + Passiv = Doppelinfinitiv mit haben"
+          ],
+          "why": "Doppelinfinitiv-Regel: hat + Partizip II + Modal (Infinitiv)."
+        },
+        {
+          "id": "b2-09-d12",
+          "type": "fill",
+          "prompt": "Das ____ (wollen) gemacht werden.",
+          "answer": [
+            "will"
+          ],
+          "why": "wollen → will (selten, aber möglich)."
+        }
+      ]
+    },
+    {
+      "id": "b2-10-relativ-erweitert",
+      "order": 10,
+      "title": "Сложные относительные придаточные",
+      "subtitle": "wo, was, Präposition + wo(r), Relativsatz mit Präposition",
+      "topics": [
+        "relativpronomen",
+        "da_wo_komposita"
+      ],
+      "prereq": [
+        "a2-12-relativsaetze",
+        "b1-07-da-wo",
+        "b2-05-praepositionaladverbien"
+      ],
+      "minutes": 18,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Erweiterte Relativsätze: Relativpronomen 'was' (bei unbestimmten Pronomina), 'wo' (Ortsangaben), Präposition + Relativpronomen."
+        },
+        {
+          "kind": "rule",
+          "title": "was (Relativpronomen)",
+          "text": "Nach unbestimmten Pronomina: alles, das, nichts, etwas, vieles, weniges. 'Alles, was er sagt, stimmt.' 'Das, was ich meine, ist...'"
+        },
+        {
+          "kind": "rule",
+          "title": "wo (Relativadverb)",
+          "text": "Bei Ortsangaben statt Präposition + Relativpronomen: 'Die Stadt, wo ich wohne' (statt: in der ich wohne). Auch bei zeitlichen: 'Der Tag, wo er kam.'"
+        },
+        {
+          "kind": "rule",
+          "title": "Präposition + Relativpronomen",
+          "text": "Die Präposition steht VOR dem Relativpronomen: 'Der Mann, mit dem ich spreche.' 'Das Haus, in dem ich wohne.' Kasus durch Präposition."
+        },
+        {
+          "kind": "rule",
+          "title": "Präposition + was/wo",
+          "text": "Bei unbestimmten: 'Worauf wartest du?' → 'Das, worauf ich warte...' Bei Ortsangaben: 'Wo er wohnt, ist schön.'"
+        },
+        {
+          "kind": "table",
+          "ref": "relativpronomen"
+        },
+        {
+          "kind": "table",
+          "ref": "da_wo_komposita"
+        },
+        {
+          "kind": "example",
+          "de": "Alles, was er sagt, ist wahr. Die Stadt, wo ich wohne, ist groß. Der Mann, mit dem ich spreche, ist nett. Das, woran ich denke, ist wichtig.",
+          "ru": "Всё, что он говорит, правда. Город, где я живу, большой. Мужчина, с которым я говорю, милый. То, о чём я думаю, важно.",
+          "note": "was = nach alles/nichts/etwas. wo = Ortsangabe. Präposition + Relativpronomen."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-10-d01",
+          "type": "choice",
+          "prompt": "Nach 'alles': 'Alles, ____ er sagt, stimmt.'",
+          "options": [
+            "was",
+            "das",
+            "wo",
+            "dass"
+          ],
+          "answer": [
+            "was"
+          ],
+          "why": "Nach unbestimmten Pronomina (alles, nichts, etwas) → was."
+        },
+        {
+          "id": "b2-10-d02",
+          "type": "choice",
+          "prompt": "Ortsangabe: 'Die Stadt, ____ ich wohne, ist groß.'",
+          "options": [
+            "wo",
+            "in der",
+            "in die",
+            "wohin"
+          ],
+          "answer": [
+            "wo"
+          ],
+          "why": "wo = Relativadverb für Ortsangaben (statt in der)."
+        },
+        {
+          "id": "b2-10-d03",
+          "type": "choice",
+          "prompt": "Präposition + Relativpronomen: 'Der Mann, ____ ich spreche, ...'",
+          "options": [
+            "mit dem",
+            "mit den",
+            "mit denen",
+            "mit welchem"
+          ],
+          "answer": [
+            "mit dem"
+          ],
+          "why": "mit + Dativ → mit dem (Maskulin)."
+        },
+        {
+          "id": "b2-10-d04",
+          "type": "fill",
+          "prompt": "Das Haus, ____ ich wohne, ... (in + dem)",
+          "answer": [
+            "in dem"
+          ],
+          "why": "in + Dativ (Wo?) → in dem."
+        },
+        {
+          "id": "b2-10-d05",
+          "type": "reorder",
+          "prompt": "Wörter ordnen: 'alles / was / er / sagt / , / ist / wahr'",
+          "answer": [
+            "Alles, was er sagt, ist wahr."
+          ],
+          "why": "Relativsatz mit 'was'."
+        },
+        {
+          "id": "b2-10-d06",
+          "type": "choice",
+          "prompt": "Zeitliche Angabe mit 'wo': 'Der Tag, ____ er kam, ...'",
+          "options": [
+            "wo",
+            "an dem",
+            "am",
+            "wann"
+          ],
+          "answer": [
+            "wo"
+          ],
+          "why": "wo auch für zeitliche Relativsätze (umgangssprachlich)."
+        },
+        {
+          "id": "b2-10-d07",
+          "type": "fill",
+          "prompt": "Das, ____ ich meine, ... (was)",
+          "answer": [
+            "was"
+          ],
+          "why": "Nach 'das' (Demonstrativpronomen) → was."
+        },
+        {
+          "id": "b2-10-d08",
+          "type": "choice",
+          "prompt": "Wo-Kompositum im Relativsatz: 'Das, ____ ich warte, ...'",
+          "options": [
+            "worauf",
+            "woran",
+            "wofür",
+            "wovon"
+          ],
+          "answer": [
+            "worauf"
+          ],
+          "why": "warten auf → worauf."
+        },
+        {
+          "id": "b2-10-d09",
+          "type": "transform",
+          "prompt": "'Die Stadt, in der ich wohne' → mit 'wo':",
+          "answer": [
+            "Die Stadt, wo ich wohne"
+          ],
+          "why": "Präposition + Relativpronomen → wo (Ortsangabe)."
+        },
+        {
+          "id": "b2-10-d10",
+          "type": "fill",
+          "prompt": "Nichts, ____ er tut, ist richtig. (was)",
+          "answer": [
+            "was"
+          ],
+          "why": "Nach 'nichts' → was."
+        },
+        {
+          "id": "b2-10-d11",
+          "type": "choice",
+          "prompt": "Präposition + Relativpronomen (Feminin, Akk): 'Die Frau, ____ ich sehe...'",
+          "options": [
+            "die",
+            "der",
+            "dem",
+            "den"
+          ],
+          "answer": [
+            "die"
+          ],
+          "why": "Feminin Akkusativ: die (ohne Präposition) / mit Präposition: Kasus durch Präposition."
+        },
+        {
+          "id": "b2-10-d12",
+          "type": "transform",
+          "prompt": "'Der Stuhl, auf dem ich sitze' → mit 'wo':",
+          "answer": [
+            "Der Stuhl, wo ich sitze"
+          ],
+          "why": "Ortsangabe → wo."
+        }
+      ]
+    }
+  ]
+}
