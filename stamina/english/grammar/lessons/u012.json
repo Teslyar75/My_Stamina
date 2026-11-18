@@ -1,0 +1,71 @@
+{
+ "n": 12,
+ "level": "A1",
+ "module": "past",
+ "title": "Отрицания и вопросы в Past Simple",
+ "en": "I didn't / Did you ...? (past simple)",
+ "summary": "Как сказать «я не пошёл» и «ты видел?» — с did, который забирает себе всё прошедшее время.",
+ "can_do": [
+  "Сказать, что действие не произошло: I didn't go.",
+  "Задать вопрос в прошлом: Did you see him?",
+  "Спросить где, когда, почему: Where did they go?"
+ ],
+ "theory": [
+  {
+   "h": "did забирает время",
+   "p": "В отрицании и вопросе Past Simple время несёт вспомогательный did, а смысловой глагол возвращается в начальную форму. Окончание -ed и неправильная форма при этом исчезают.",
+   "formula": "I didn't work. · Did you work?"
+  },
+  {
+   "h": "Три схемы",
+   "p": "Отрицание, вопрос и короткий ответ собираются вокруг did. Порядок слов простой и всегда одинаковый.",
+   "table": {
+    "head": ["Что строим", "Схема", "Пример"],
+    "rows": [
+     ["Отрицание", "didn't + глагол", "She didn't come."],
+     ["Вопрос", "Did + кто + глагол?", "Did she come?"],
+     ["Короткий ответ", "Yes, I did. / No, I didn't.", "Did you see it? Yes, I did."]
+    ]
+   }
+  },
+  {
+   "h": "Двойного прошлого не бывает",
+   "p": "Нельзя сказать didn't went или did you saw: did уже показал прошлое. Смысловой глагол должен быть в словарной форме.",
+   "formula": "I didn't go. · Did you see him?"
+  },
+  {
+   "h": "Вопросительное слово перед did",
+   "p": "Where, what, when, why ставятся в начало, а did идёт следом за ними. Дальше порядок не меняется.",
+   "formula": "Where did you go? · What did she say? · When did they arrive?"
+  },
+  {
+   "h": "С be did не работает",
+   "p": "Если в предложении был was или were, отрицание и вопрос строятся без did. Иначе получится конструкция, которой в английском нет.",
+   "formula": "I wasn't there. · Were you tired?"
+  }
+ ],
+ "examples": [
+  {"en": "I didn't sleep well.", "ru": "Я плохо спал."},
+  {"en": "She didn't answer my call.", "ru": "Она не ответила на мой звонок."},
+  {"en": "Did you like the film?", "ru": "Тебе понравился фильм?"},
+  {"en": "Where did they go?", "ru": "Куда они пошли?"},
+  {"en": "We didn't have time.", "ru": "У нас не было времени."}
+ ],
+ "traps": [
+  {"bad": "I didn't went home.", "good": "I didn't go home.", "why": "did уже показал прошлое, глагол остаётся чистым."},
+  {"bad": "Did you saw him?", "good": "Did you see him?", "why": "После did только начальная форма."},
+  {"bad": "Where you did go?", "good": "Where did you go?", "why": "Вопросительное слово, потом did, потом подлежащее."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ like the soup.", "options": ["don't", "didn't", "wasn't"], "a": 1, "why": "Речь о прошлом, поэтому didn't."},
+  {"type": "choice", "q": "___ you go to the party?", "options": ["Do", "Did", "Were"], "a": 1, "why": "Вопрос о прошлом строится с did."},
+  {"type": "choice", "q": "She ___ come to work yesterday.", "options": ["didn't", "don't", "wasn't"], "a": 0, "why": "come — обычный глагол, отрицание через didn't."},
+  {"type": "choice", "q": "Where ___ you put my keys?", "options": ["did", "do", "was"], "a": 0, "why": "После where идёт did."},
+  {"type": "choice", "q": "___ he call you last night?", "options": ["Did", "Does", "Was"], "a": 0, "why": "last night — прошлое, нужен did."},
+  {"type": "gap", "q": "I ___ (not / see) him at the meeting.", "a": ["didn't see", "did not see"], "why": "didn't + начальная форма see."},
+  {"type": "gap", "q": "When ___ they arrive?", "a": ["did"], "why": "Вопрос в прошлом: did перед подлежащим."},
+  {"type": "gap", "q": "We ___ (not / have) breakfast today.", "a": ["didn't have", "did not have"], "why": "have в отрицании прошлого: didn't have."},
+  {"type": "translate", "q": "Я не понял вопрос.", "a": ["i didn't understand the question", "i did not understand the question"], "why": "didn't + understand, артикль the перед question."},
+  {"type": "translate", "q": "Ты видел мой телефон?", "a": ["did you see my phone"], "why": "Did + you + see, без второй прошедшей формы."}
+ ]
+}

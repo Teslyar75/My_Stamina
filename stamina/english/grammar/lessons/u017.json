@@ -1,0 +1,69 @@
+{
+ "n": 17,
+ "level": "A1",
+ "module": "perfect",
+ "title": "Have you ever ...?",
+ "en": "Have you ever ...?",
+ "summary": "Как спросить про опыт: бывало ли с тобой такое вообще — без дат и без подробностей.",
+ "can_do": [
+  "Спросить про опыт: Have you ever been to Rome?",
+  "Ответить: Yes, I have или No, I've never been there.",
+  "Различить have been и have gone."
+ ],
+ "theory": [
+  {
+   "h": "ever значит хоть раз",
+   "p": "Вопрос Have you ever...? спрашивает про опыт: случалось ли такое с вами вообще, в любой момент жизни. Когда именно — неважно, и потому Perfect здесь естественен.",
+   "formula": "Have you ever been to London? · Have you ever eaten sushi?"
+  },
+  {
+   "h": "Как ответить",
+   "p": "Короткий ответ повторяет have или has. Если хочется рассказать подробности, добавляют Past Simple с указанием времени.",
+   "table": {
+    "head": ["Вопрос", "Короткий ответ", "Подробность"],
+    "rows": [
+     ["Have you ever ridden a horse?", "Yes, I have.", "I rode one last summer."],
+     ["Have you ever been to Rome?", "No, I haven't.", "I've never been there."]
+    ]
+   }
+  },
+  {
+   "h": "ever и never",
+   "p": "Ever живёт в вопросе, never — в утверждении. Одно отрицание на предложение: если уже есть never, второй not не нужен.",
+   "formula": "Have you ever been there? · I have never been there."
+  },
+  {
+   "h": "been и gone",
+   "p": "Have been to значит «был и вернулся». Have gone to значит «уехал и сейчас там». Разница в том, где человек находится в момент разговора.",
+   "formula": "She has been to Paris. · She has gone to Paris."
+  },
+  {
+   "h": "Опыт без даты",
+   "p": "Как только появляется точное время, Perfect уступает Past Simple — даже если вопрос всё ещё про опыт. Время важнее темы.",
+   "formula": "Have you ever seen this film? · Did you see it last night?"
+  }
+ ],
+ "examples": [
+  {"en": "Have you ever been to Japan?", "ru": "Ты когда-нибудь был в Японии?"},
+  {"en": "I've never eaten octopus.", "ru": "Я никогда не ел осьминога."},
+  {"en": "Has she ever worked abroad?", "ru": "Она когда-нибудь работала за границей?"},
+  {"en": "We've been to that museum twice.", "ru": "Мы были в этом музее дважды."},
+  {"en": "Have you ever lost your passport?", "ru": "Ты когда-нибудь терял паспорт?"}
+ ],
+ "traps": [
+  {"bad": "Have you ever went to Spain?", "good": "Have you ever been to Spain?", "why": "После have нужна третья форма been."},
+  {"bad": "I haven't never seen it.", "good": "I've never seen it.", "why": "Двойное отрицание в английском недопустимо."},
+  {"bad": "I have ever been to Paris.", "good": "I have been to Paris.", "why": "Ever ставится в вопрос, в утверждении он лишний."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Have you ever ___ to Italy?", "options": ["go", "went", "been"], "a": 2, "why": "Опыт поездки передаётся через have been to."},
+  {"type": "choice", "q": "I have ___ eaten Indian food.", "options": ["ever", "never", "yet"], "a": 1, "why": "В утверждении про отсутствие опыта нужен never."},
+  {"type": "choice", "q": "___ she ever worked in a hotel?", "options": ["Have", "Has", "Did"], "a": 1, "why": "she требует has."},
+  {"type": "choice", "q": "He has ___ to Berlin. He is there now.", "options": ["been", "gone", "went"], "a": 1, "why": "Он всё ещё там, значит gone, а не been."},
+  {"type": "choice", "q": "Have you ever ___ your keys?", "options": ["lose", "lost", "losing"], "a": 1, "why": "После have нужна третья форма lost."},
+  {"type": "gap", "q": "I ___ (never / try) sushi.", "a": ["have never tried"], "why": "have + never + третья форма tried."},
+  {"type": "gap", "q": "Have you ever ___ (be) to London?", "a": ["been"], "why": "Конструкция have been to требует been."},
+  {"type": "translate", "q": "Я никогда не был в Париже.", "a": ["i have never been to paris", "i've never been to paris"], "why": "have never been to, без второго отрицания."},
+  {"type": "translate", "q": "Ты когда-нибудь пробовал это блюдо?", "a": ["have you ever tried this dish", "have you ever tried this food"], "why": "Have you ever + третья форма tried."}
+ ]
+}

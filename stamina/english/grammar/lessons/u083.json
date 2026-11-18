@@ -1,0 +1,71 @@
+{
+ "n": 83,
+ "level": "A2",
+ "module": "quantity",
+ "title": "much, many, a lot of",
+ "en": "much/many/a lot of",
+ "summary": "«Много» по-английски зависит от того, что считают: штуки или вещество, и ещё от того, утверждение это или вопрос.",
+ "can_do": [
+  "Выбрать much или many по типу существительного.",
+  "Сказать «много» в утверждении через a lot of, а не через much.",
+  "Задать вопрос how much и how many без ошибок."
+ ],
+ "theory": [
+  {
+   "h": "Считаемое и несчитаемое",
+   "p": "Many работает с тем, что можно посчитать по штукам: many books, many people. Much работает с веществом и массой: much time, much water, much money. Одно слово — один тип существительного, и наоборот не бывает.",
+   "table": {
+    "head": ["Слово", "С чем", "Пример"],
+    "rows": [
+     ["many", "исчисляемое, множественное", "many friends"],
+     ["much", "неисчисляемое", "much time"],
+     ["a lot of", "и то и другое", "a lot of friends / a lot of time"]
+    ]
+   }
+  },
+  {
+   "h": "В утверждении лучше a lot of",
+   "p": "Much и many звучат книжно и слегка отрицательно, если стоят в обычном утверждении. В живой речи говорят a lot of или lots of: I have a lot of work. Much остаётся в вопросах, в отрицаниях и после very.",
+   "formula": "I have a lot of friends. (не I have many friends в разговоре)"
+  },
+  {
+   "h": "How much и how many",
+   "p": "Вопрос о количестве строится так же: how many — про штуки, how much — про вещество и цену. How much стоит ещё и в вопросе о деньгах, потому что деньги считают как массу.",
+   "formula": "How many students? · How much water? · How much is it?"
+  },
+  {
+   "h": "Much of the, many of the",
+   "p": "Если после much или many идёт of, дальше обязателен определитель: much of the time, many of my friends. Без of эти слова работают напрямую с существительным.",
+   "formula": "Many of my friends live abroad."
+  },
+  {
+   "h": "Much перед сравнительной степенью",
+   "p": "Much умеет усиливать сравнение и значит «намного»: much better, much more expensive. В этой роли он не связан с количеством и переводится не как «много», а как «гораздо».",
+   "formula": "This flat is much bigger than mine."
+  }
+ ],
+ "examples": [
+  {"en": "How many students are in the room?", "ru": "Сколько студентов в комнате?"},
+  {"en": "How much water do you drink every day?", "ru": "Сколько воды ты пьёшь каждый день?"},
+  {"en": "We don't have much time.", "ru": "У нас не много времени."},
+  {"en": "She has a lot of friends here.", "ru": "У неё здесь много друзей."},
+  {"en": "He doesn't eat many sweets.", "ru": "Он не ест много сладостей."}
+ ],
+ "traps": [
+  {"bad": "How many money do you have?", "good": "How much money do you have?", "why": "money — неисчисляемое, поэтому much."},
+  {"bad": "I have much friends here.", "good": "I have a lot of friends here.", "why": "В утверждении с исчисляемым — a lot of."},
+  {"bad": "She is much tall.", "good": "She is very tall.", "why": "Перед прилагательным без сравнения стоит very, а не much."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How ___ sugar do you take in your tea?", "options": ["many", "much", "a lot"], "a": 1, "why": "sugar неисчисляемое — much."},
+  {"type": "choice", "q": "How ___ people came to the party?", "options": ["much", "many", "a lot"], "a": 1, "why": "people считаются по штукам — many."},
+  {"type": "choice", "q": "There isn't ___ milk in the fridge.", "options": ["a few", "many", "much"], "a": 2, "why": "milk неисчисляемое, отрицание: much."},
+  {"type": "choice", "q": "___ people think the weather is getting worse.", "options": ["Many", "Much", "A much"], "a": 0, "why": "people — множественное число, в утверждении можно many."},
+  {"type": "choice", "q": "How ___ eggs do we need for the cake?", "options": ["much", "many", "a lot"], "a": 1, "why": "eggs считаются — how many."},
+  {"type": "gap", "q": "How ___ milk do we need for the cake?", "a": ["much"], "why": "milk неисчисляемое — how much."},
+  {"type": "gap", "q": "There aren't ___ shops in this village.", "a": ["many"], "why": "shops во множественном числе и отрицание: many."},
+  {"type": "gap", "q": "She has ___ of photos on her phone.", "a": ["a lot", "lots"], "why": "В утверждении — a lot of или lots of."},
+  {"type": "translate", "q": "У меня сегодня много работы.", "a": ["i have a lot of work today", "i have lots of work today", "i have a lot of work to do today"], "why": "work неисчисляемое, в утверждении a lot of."},
+  {"type": "translate", "q": "Сколько у тебя братьев?", "a": ["how many brothers do you have", "how many brothers have you got"], "why": "brothers считаются — how many."}
+ ]
+}

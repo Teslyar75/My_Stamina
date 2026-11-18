@@ -1,0 +1,75 @@
+{
+ "n": 59,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "Личные местоимения: I и me",
+ "en": "I/me, he/him, they/them",
+ "summary": "Кто действует и на кого действуют: почему «я» — это иногда I, а иногда me, и как не сказать «Me am tired».",
+ "can_do": [
+  "Различать форму подлежащего и форму дополнения: I и me, he и him.",
+  "Ставить нужную форму после глагола и после предлога: for me, with her.",
+  "Говорить «мы с сестрой», «он и я», не путая роль местоимения."
+ ],
+ "theory": [
+  {
+   "h": "Две работы одного местоимения",
+   "p": "Английское местоимение называет либо того, кто действует, либо того, на кого действие направлено. Для каждой работы есть своя форма. Русский тоже различает «я» и «меня», но в английском ошибка слышна сразу и звучит грубо.",
+   "formula": "I see him. · He sees me."
+  },
+  {
+   "h": "Таблица форм",
+   "p": "Запомните пары: первая форма — для действия, вторая — для всего остального. У it и you формы совпадают, поэтому с ними ошибиться труднее.",
+   "table": {
+    "head": ["Кто действует", "Кого / на кого", "Пример"],
+    "rows": [
+     ["I", "me", "I call you. / Call me."],
+     ["he", "him", "He helps us. / Help him."],
+     ["she", "her", "She knows me. / Ask her."],
+     ["we", "us", "We met them. / Join us."],
+     ["they", "them", "They saw me. / I saw them."],
+     ["you / it", "you / it", "You are late. / I like it."]
+    ]
+   }
+  },
+  {
+   "h": "После предлога — только вторая форма",
+   "p": "Предлог for, with, to, at, about, without требует формы «кого». Русское «для меня», «с ним» подсказывает правильный выбор: в английском здесь тоже me, him, her, us, them, а не I, he, she.",
+   "formula": "for me · with him · to her · without us · about them"
+  },
+  {
+   "h": "Два местоимения рядом",
+   "p": "Когда местоимений два, себя ставят последним — так принято и звучит вежливее. Форма зависит от роли всей пары: если пара действует, нужна I, если на пару направлено действие — me.",
+   "formula": "My friend and I are here. · They invited my friend and me."
+  },
+  {
+   "h": "С глаголом be — всегда первая форма",
+   "p": "Перед be стоит форма «кто», а не «кого». Поэтому Me am tired и Her is late неверны, даже если в песнях и шутках так иногда говорят. Проверка простая: подставьте is или are и послушайте, что выходит.",
+   "formula": "I am tired. · She is late. · They are ready."
+  }
+ ],
+ "examples": [
+  {"en": "I saw him at the station.", "ru": "Я видел его на вокзале."},
+  {"en": "She called me yesterday.", "ru": "Она позвонила мне вчера."},
+  {"en": "This present is for you and me.", "ru": "Этот подарок для тебя и меня."},
+  {"en": "We met them in the park.", "ru": "Мы встретили их в парке."},
+  {"en": "My sister and I live here.", "ru": "Мы с сестрой живём здесь."},
+  {"en": "Can you help us, please?", "ru": "Вы можете нам помочь, пожалуйста?"}
+ ],
+ "traps": [
+  {"bad": "Me and my brother went out.", "good": "My brother and I went out.", "why": "Себя ставят последним, а в роли подлежащего нужна форма I, не me."},
+  {"bad": "This is for he.", "good": "This is for him.", "why": "После предлога — только вторая форма: him, me, her, them."},
+  {"bad": "Me am tired.", "good": "I am tired.", "why": "С глаголом be местоимение всегда в форме подлежащего."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I don't know ___ very well.", "options": ["he", "him", "his"], "a": 1, "why": "После глагола know нужна форма дополнения — him."},
+  {"type": "choice", "q": "___ is my best friend.", "options": ["Her", "Him", "She"], "a": 2, "why": "Место перед глаголом — роль подлежащего, значит she."},
+  {"type": "choice", "q": "Come with ___!", "options": ["we", "us", "our"], "a": 1, "why": "После предлога with ставим us."},
+  {"type": "choice", "q": "Anna and ___ are late.", "options": ["me", "I", "my"], "a": 1, "why": "Пара выполняет действие, поэтому I, и оно идёт последним."},
+  {"type": "choice", "q": "I'll call ___ tomorrow.", "options": ["they", "them", "their"], "a": 1, "why": "После глагола call — форма дополнения them."},
+  {"type": "choice", "q": "This book is for ___, not for me.", "options": ["she", "her", "hers"], "a": 1, "why": "После предлога for нужна форма her, а hers работает без предлога."},
+  {"type": "gap", "q": "Where is Tom? I can't see ___.", "a": ["him"], "why": "See требует формы дополнения: him."},
+  {"type": "gap", "q": "My parents are in Italy. I miss ___.", "a": ["them"], "why": "Родители — they, после глагола miss — them."},
+  {"type": "gap", "q": "Give the key to ___ (I), please.", "a": ["me"], "why": "После предлога to — me."},
+  {"type": "translate", "q": "Она видела нас в парке.", "a": ["she saw us in the park"], "why": "Подлежащее she, дополнение us: she saw us in the park."}
+ ]
+}

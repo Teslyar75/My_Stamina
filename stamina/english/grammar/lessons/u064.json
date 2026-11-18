@@ -1,0 +1,73 @@
+{
+ "n": 64,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "Притяжательный падеж: Simon's",
+ "en": "'s (possessive)",
+ "summary": "Как сказать «книга Саймона» и «машина моих родителей»: апостроф с s вместо русского порядка слов.",
+ "can_do": [
+  "Присоединять 's к людям и животным.",
+  "Писать апостроф без лишнего s у множественного числа.",
+  "Говорить о вещах через of, когда 's не подходит."
+ ],
+ "theory": [
+  {
+   "h": "Порядок наоборот",
+   "p": "По-русски сначала предмет, потом владелец: книга Саймона. Английский переворачивает порядок: сначала владелец, потом предмет, а между ними 's.",
+   "formula": "Simon's book · my mother's car · the dog's tail"
+  },
+  {
+   "h": "Четыре случая написания",
+   "p": "Всё зависит от того, сколько владельцев и как оканчивается их слово. Главное — не добавлять второе s там, где уже есть множественное.",
+   "table": {
+    "head": ["Кто владеет", "Форма", "Пример"],
+    "rows": [
+     ["один человек", "'s", "Anna's phone"],
+     ["имя на -s", "'s или '", "James's car"],
+     ["множественное на -s", "'", "my parents' house"],
+     ["множественное без -s", "'s", "the children's room"]
+    ]
+   }
+  },
+  {
+   "h": "Где 's не работает",
+   "p": "С неодушевлёнными предметами 's почти не употребляют: говорят the door of the car, а не the car's door. Исключения — время и расстояние: today's news, a ten-minute walk.",
+   "formula": "the name of the street (не the street's name)"
+  },
+  {
+   "h": "Один апостроф на двоих",
+   "p": "Если несколько человек вместе владеют одной вещью, 's ставится только у последнего имени: Tom and Anna's flat. Если вещи разные, 's нужно каждому: Tom's and Anna's coats.",
+   "formula": "Tom and Anna's flat · Tom's and Anna's coats"
+  },
+  {
+   "h": "Дом и работа без слова",
+   "p": "После 's существительное можно не повторять, если речь о доме, магазине или кабинете: We're going to Simon's — к Саймону домой. I'm at the doctor's, at the baker's.",
+   "formula": "I'm at Tom's. · She's at the hairdresser's."
+  }
+ ],
+ "examples": [
+  {"en": "This is my sister's laptop.", "ru": "Это ноутбук моей сестры."},
+  {"en": "The children's toys are in the box.", "ru": "Детские игрушки в коробке."},
+  {"en": "My parents' house is very old.", "ru": "Дом моих родителей очень старый."},
+  {"en": "What is the name of this street?", "ru": "Как называется эта улица?"},
+  {"en": "I'm going to the doctor's.", "ru": "Я иду к врачу."},
+  {"en": "James's office is on the second floor.", "ru": "Офис Джеймса на втором этаже."}
+ ],
+ "traps": [
+  {"bad": "This is the Simon's book.", "good": "This is Simon's book.", "why": "Перед именем артикль не нужен: имя уже конкретное."},
+  {"bad": "my parents's house", "good": "my parents' house", "why": "Множественное на s получает только апостроф, без второго s."},
+  {"bad": "I like the car's colour.", "good": "I like the colour of the car.", "why": "С неодушевлёнными предметами лучше of, а не 's."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is ___ bike.", "options": ["Anna's", "Annas'", "of Anna"], "a": 0, "why": "Один владелец — Anna's."},
+  {"type": "choice", "q": "The ___ room is upstairs.", "options": ["childrens", "children's", "childrens'"], "a": 1, "why": "children — множественное без s, поэтому children's."},
+  {"type": "choice", "q": "My ___ car is red.", "options": ["parents", "parent's", "parents'"], "a": 2, "why": "Владельцев несколько, слово на s — только апостроф."},
+  {"type": "choice", "q": "We had dinner at ___.", "options": ["Tom", "Tom's", "Toms"], "a": 1, "why": "«У Тома» — Tom's, без повторения слова house."},
+  {"type": "choice", "q": "What is the name ___ this film?", "options": ["of", "'s", "from"], "a": 0, "why": "С предметами — конструкция the name of."},
+  {"type": "choice", "q": "Tom and Anna ___ flat is big.", "options": ["'s", "s'", "of"], "a": 0, "why": "Общая квартира — 's у последнего имени."},
+  {"type": "gap", "q": "This is ___ (my brother) car.", "a": ["my brother's"], "why": "Один владелец — my brother's car."},
+  {"type": "gap", "q": "The ___ (girls) bags are in the hall.", "a": ["girls'"], "why": "Множественное на s — только апостроф."},
+  {"type": "gap", "q": "I'm at the ___ (dentist).", "a": ["dentist's"], "why": "Кабинет врача называют через 's: the dentist's."},
+  {"type": "translate", "q": "Это комната моих детей.", "a": ["this is my children's room", "it is my children's room"], "why": "Children's room — 's у множественного без s."}
+ ]
+}

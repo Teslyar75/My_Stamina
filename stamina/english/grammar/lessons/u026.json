@@ -1,0 +1,72 @@
+{
+ "n": 26,
+ "level": "A1",
+ "module": "future",
+ "title": "I am going to: планы и намерения",
+ "en": "I'm going to do",
+ "summary": "Как сказать о своём решении заранее и как предупредить о том, что сейчас произойдёт.",
+ "can_do": [
+  "Рассказать о плане или намерении на будущее.",
+  "Сделать предсказание по тому, что видно прямо сейчас.",
+  "Построить вопрос и отрицание с going to."
+ ],
+ "theory": [
+  {
+   "h": "Решение уже принято",
+   "p": "Конструкция going to говорит о намерении, которое созрело до разговора. Вы уже решили купить телефон, начать учиться или переехать — и теперь просто сообщаете об этом. Внутри уже есть глагол go, поэтому после него идёт смысловой глагол в первой форме.",
+   "formula": "I'm going to buy a new phone. · She's going to study medicine."
+  },
+  {
+   "h": "Форма: be плюс going to",
+   "p": "Схема простая и не меняется: am, is или are, затем going to, затем глагол в первой форме. Отрицание ставит not после be, вопрос выносит be вперёд. Обратите внимание: going to никогда не стоит без be.",
+   "table": {
+    "head": ["Тип фразы", "Как строится", "Пример"],
+    "rows": [
+     ["Утверждение", "am / is / are going to + V1", "We are going to move."],
+     ["Отрицание", "be + not going to + V1", "He isn't going to help."],
+     ["Вопрос", "be + подлежащее + going to + V1", "Are you going to come?"]
+    ]
+   }
+  },
+  {
+   "h": "Предсказание по признаку",
+   "p": "Второе значение going to — вывод из того, что видно или известно сейчас. Тучи на небе, машина на полной скорости, человек с зонтом в ясный день: вы смотрите и говорите, что сейчас будет. Здесь going to сильнее, чем просто will, потому что у вас перед глазами доказательство.",
+   "formula": "Look at those clouds! It's going to rain. · He's going to fall!"
+  },
+  {
+   "h": "Going to или длительное время",
+   "p": "Обе формы говорят о будущем, но по-разному. Длительное время подчёркивает договорённость с кем-то и конкретное время в календаре. Going to подчёркивает ваше намерение, даже если никто о нём ещё не знает.",
+   "formula": "I'm meeting Anna at six. (уговор) · I'm going to sell my car. (намерение)"
+  },
+  {
+   "h": "Две буквы, которые часто теряют",
+   "p": "В конце конструкции всегда стоит to, и после него — первая форма глагола. Нельзя сказать going to bought или going buy. Если внутри уже есть go, to остаётся: I'm going to go home звучит нормально, хотя и выглядит громоздко.",
+   "formula": "I'm going to travel. · I'm going to go home. · She's going to be a doctor."
+  }
+ ],
+ "examples": [
+  {"en": "I'm going to buy a new phone.", "ru": "Я собираюсь купить новый телефон."},
+  {"en": "She's going to study medicine.", "ru": "Она собирается изучать медицину."},
+  {"en": "We're going to move to a new flat.", "ru": "Мы собираемся переехать в новую квартиру."},
+  {"en": "Look at the clouds! It's going to rain.", "ru": "Посмотри на тучи! Сейчас пойдёт дождь."},
+  {"en": "He isn't going to help us.", "ru": "Он не собирается нам помогать."},
+  {"en": "Are you going to come with us?", "ru": "Ты собираешься пойти с нами?"},
+  {"en": "They're going to get married in spring.", "ru": "Они собираются пожениться весной."}
+ ],
+ "traps": [
+  {"bad": "I going to buy a car.", "good": "I'm going to buy a car.", "why": "Без be конструкция рассыпается: нужен am перед going."},
+  {"bad": "She is going to bought a house.", "good": "She is going to buy a house.", "why": "После to всегда первая форма глагола."},
+  {"bad": "We are go to visit them.", "good": "We are going to visit them.", "why": "В конструкции стоит going с -ing, а не go."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Look at the clouds! It ___ rain.", "options": ["is going to", "goes to", "going to"], "a": 0, "why": "Предсказание по признаку: is going to rain."},
+  {"type": "choice", "q": "I ___ buy a new phone.", "options": ["am going to", "going to", "am go to"], "a": 0, "why": "Нужен be плюс going to: am going to."},
+  {"type": "choice", "q": "She ___ not going to help us.", "options": ["is", "does", "will"], "a": 0, "why": "Отрицание строится через is not going to."},
+  {"type": "choice", "q": "___ they going to move house?", "options": ["Are", "Do", "Will"], "a": 0, "why": "Вопрос выносит be вперёд: Are they going to."},
+  {"type": "choice", "q": "He is going ___ a doctor.", "options": ["to be", "be", "being"], "a": 0, "why": "После going нужен to и первая форма: to be."},
+  {"type": "gap", "q": "We ___ (visit) our grandparents next week.", "a": ["are going to visit", "'re going to visit"], "why": "Намерение во множественном числе: are going to visit."},
+  {"type": "gap", "q": "He ___ (not/study) medicine.", "a": ["isn't going to study", "is not going to study"], "why": "Отрицание: isn't going to study."},
+  {"type": "translate", "q": "Я собираюсь купить машину.", "a": ["i'm going to buy a car", "i am going to buy a car"], "why": "Намерение: am going to buy."},
+  {"type": "translate", "q": "Она собирается стать врачом.", "a": ["she is going to become a doctor", "she's going to be a doctor"], "why": "После to первая форма: be a doctor."}
+ ]
+}

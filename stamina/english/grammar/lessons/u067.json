@@ -1,0 +1,74 @@
+{
+ "n": 67,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Неисчисляемые существительные",
+ "en": "uncountable nouns",
+ "summary": "Воду, деньги и совет нельзя посчитать по одному: как говорить о количестве, если нет множественного числа.",
+ "can_do": [
+  "Отличить исчисляемое существительное от неисчисляемого.",
+  "Сказать количество через some, a piece of, a glass of.",
+  "Правильно согласовать глагол с news, money, advice."
+ ],
+ "theory": [
+  {
+   "h": "Что нельзя пересчитать",
+   "p": "Вода, деньги, совет, информация по-английски неисчисляемые. С ними не ставят a/an, не прибавляют -s, а глагол всегда в единственном числе. Русское «деньги» — множественное, английское money — нет.",
+   "formula": "water, money, advice, news, information, bread"
+  },
+  {
+   "h": "Считаем через упаковку",
+   "p": "Чтобы назвать количество, добавляют слово-меру: стакан, кусок, лист. Мера становится исчисляемой и получает множественное число, а вещество остаётся без s.",
+   "table": {
+    "head": ["Неисчисляемое", "Слово-мера", "Пример"],
+    "rows": [
+     ["water", "a glass of water", "two glasses of water"],
+     ["bread", "a piece of bread", "three pieces of bread"],
+     ["advice", "a piece of advice", "a good piece of advice"],
+     ["money", "a sum of money", "a large sum of money"],
+     ["furniture", "a piece of furniture", "some new furniture"]
+    ]
+   }
+  },
+  {
+   "h": "Глагол в единственном числе",
+   "p": "Неисчисляемое выглядит как одно слово, поэтому и глагол с ним в единственном числе: The news is good. Money isn't everything. Даже если по-русски мы говорим «новости» и «деньги».",
+   "formula": "The news is bad. · Money isn't everything."
+  },
+  {
+   "h": "Слова на -s, которые не множественные",
+   "p": "news, mathematics, physics, politics оканчиваются на s, но идут с глаголом в единственном числе. А trousers, scissors, glasses в значении «очки» — наоборот, всегда множественное: My glasses are broken.",
+   "formula": "The news is good. · My glasses are new."
+  },
+  {
+   "h": "Когда вещество становится порцией",
+   "p": "В кафе и магазине неисчисляемое легко превращается в исчисляемое: a coffee значит «чашка кофе», two teas — «две чашки чая». Так говорят постоянно, и это нормально.",
+   "formula": "Two coffees, please. · three teas"
+  }
+ ],
+ "examples": [
+  {"en": "I need some information about trains.", "ru": "Мне нужна информация о поездах."},
+  {"en": "There isn't much bread left.", "ru": "Хлеба почти не осталось."},
+  {"en": "The news was a real surprise.", "ru": "Новость была настоящим сюрпризом."},
+  {"en": "Can I have a glass of water?", "ru": "Можно мне стакан воды?"},
+  {"en": "She gave me a good piece of advice.", "ru": "Она дала мне хороший совет."},
+  {"en": "We bought some new furniture.", "ru": "Мы купили новую мебель."}
+ ],
+ "traps": [
+  {"bad": "I have a good news.", "good": "I have good news.", "why": "news неисчисляемое, артикль a с ним не ставится."},
+  {"bad": "The money are on the table.", "good": "The money is on the table.", "why": "money согласуется с глаголом в единственном числе."},
+  {"bad": "He gave me two advices.", "good": "He gave me two pieces of advice.", "why": "advice не имеет множественного числа, считаем через pieces."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I need ___ money for the ticket.", "options": ["a", "some", "many"], "a": 1, "why": "money неисчисляемое: some money."},
+  {"type": "choice", "q": "The news ___ very good today.", "options": ["are", "is", "be"], "a": 1, "why": "news идёт с глаголом в единственном числе."},
+  {"type": "choice", "q": "She gave me ___ advice.", "options": ["an", "a", "some"], "a": 2, "why": "advice неисчисляемое: some advice."},
+  {"type": "choice", "q": "We bought ___ furniture for the kitchen.", "options": ["a", "some", "many"], "a": 1, "why": "furniture неисчисляемое, many с ним не работает."},
+  {"type": "choice", "q": "My glasses ___ on the table.", "options": ["is", "are", "am"], "a": 1, "why": "glasses в значении «очки» — всегда множественное."},
+  {"type": "choice", "q": "There isn't ___ water in the bottle.", "options": ["many", "much", "few"], "a": 1, "why": "С неисчисляемым в отрицании — much."},
+  {"type": "gap", "q": "I'd like two ___ (piece) of bread.", "a": ["pieces"], "why": "Мера исчисляемая: two pieces of bread."},
+  {"type": "gap", "q": "The ___ (news) is on at nine o'clock.", "a": ["news"], "why": "news неисчисляемое и всегда с is."},
+  {"type": "translate", "q": "Мне нужен совет.", "a": ["i need some advice", "i need advice"], "why": "advice без артикля a и без s."},
+  {"type": "translate", "q": "В холодильнике немного молока.", "a": ["there is some milk in the fridge", "there's some milk in the fridge"], "why": "milk неисчисляемое: there is some milk."}
+ ]
+}

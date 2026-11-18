@@ -1,0 +1,72 @@
+{
+ "n": 113,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "Глагол + предлог",
+ "en": "verb + preposition",
+ "summary": "Английский глагол тащит за собой свой предлог, и его нельзя угадать по русскому переводу: listen to, wait for, depend on. Здесь те самые пары, которые нужны каждый день.",
+ "can_do": [
+  "Запомнить, какой предлог идёт после ходовых глаголов.",
+  "Не переводить предлог с русского на английский механически.",
+  "Задавать вопросы с предлогом в конце: What are you waiting for?"
+ ],
+ "theory": [
+  {
+   "h": "Предлог — часть глагола, а не отдельное слово",
+   "p": "В русском мы говорим «слушать музыку», «ждать автобус», «зависеть от погоды» — и предлог появляется по своему, русскому, правилу. В английском предлог приклеен к глаголу намертво: listen to music, wait for a bus, depend on the weather. Выучить надо вместе с глаголом, как одно слово, иначе речь выдаёт перевод с русского.",
+   "formula": "listen to music · wait for a bus · depend on the weather"
+  },
+  {
+   "h": "Частые пары, которые путают больше всего",
+   "p": "Ниже — глаголы, на которых спотыкаются почти все, потому что по-русски предлог не нужен или нужен другой. Смотрите на пары и запоминайте именно связку, а не отдельный глагол: ask for (просить что-то), look for (искать), listen to (слушать), explain something to somebody (объяснять кому-то).",
+   "table": {
+    "head": ["Глагол", "Предлог", "Пример"],
+    "rows": [
+     ["listen", "to", "I listen to podcasts in the car."],
+     ["wait", "for", "We are waiting for the bus."],
+     ["depend", "on", "It depends on the weather."],
+     ["belong", "to", "This bag belongs to Anna."],
+     ["look", "after", "She looks after her little brother."],
+     ["explain", "to", "Explain the rule to me, please."]
+    ]
+   }
+  },
+  {
+   "h": "arrive: in или at",
+   "p": "После arrive предлог обязателен, хотя по-русски мы говорим просто «приехал в Москву». С большими территориями — городами, странами — берём in, с точками на карте — вокзал, аэропорт, вечеринка — at. И никогда не говорите arrive to: это одна из самых заметных ошибок.",
+   "formula": "We arrived in Moscow at six. · They arrived at the station late."
+  },
+  {
+   "h": "Предлог уезжает в конец вопроса",
+   "p": "В разговорной речи предлог спокойно остаётся в конце: What are you looking for? Who did you talk to? Так звучит естественно, и переставлять его вперёд, как в учебнике, в обычном разговоре не нужно. В ответе предлог тоже никуда не исчезает: I'm looking for my keys.",
+   "formula": "What are you waiting for? · Who does this bike belong to? · I'm looking for my keys."
+  }
+ ],
+ "examples": [
+  {"en": "I listen to the radio every morning.", "ru": "Я слушаю радио каждое утро."},
+  {"en": "We waited for the train for twenty minutes.", "ru": "Мы ждали поезд двадцать минут."},
+  {"en": "Our plans depend on the weather.", "ru": "Наши планы зависят от погоды."},
+  {"en": "This dictionary belongs to the teacher.", "ru": "Этот словарь принадлежит преподавателю."},
+  {"en": "Who is looking after the children?", "ru": "Кто присматривает за детьми?"},
+  {"en": "They arrived in Berlin on Monday.", "ru": "Они приехали в Берлин в понедельник."},
+  {"en": "What are you looking for?", "ru": "Что ты ищешь?"}
+ ],
+ "traps": [
+  {"bad": "I listen music in the evening.", "good": "I listen to music in the evening.", "why": "После listen предлог to обязателен, по-русски его нет — отсюда ошибка."},
+  {"bad": "We are waiting our friends.", "good": "We are waiting for our friends.", "why": "wait for — целая связка, без for глагол не работает."},
+  {"bad": "She arrived to London yesterday.", "good": "She arrived in London yesterday.", "why": "Город — это in, а не to: arrive in / arrive at."},
+  {"bad": "Can you explain me this rule?", "good": "Can you explain this rule to me?", "why": "explain не берёт два дополнения подряд: нужно explain something to somebody."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I usually listen ___ music in the car.", "options": ["to", "for", "on"], "a": 0, "why": "listen to — устойчивая пара."},
+  {"type": "choice", "q": "We are waiting ___ the bus.", "options": ["to", "for", "at"], "a": 1, "why": "wait for — ждать что-то или кого-то."},
+  {"type": "choice", "q": "It depends ___ your decision.", "options": ["of", "from", "on"], "a": 2, "why": "depend on, а не «depend from», как подсказывает русское «зависеть от»."},
+  {"type": "choice", "q": "They arrived ___ Paris at noon.", "options": ["in", "to", "at"], "a": 0, "why": "Город — большая территория: arrive in Paris."},
+  {"type": "choice", "q": "Who does this umbrella belong ___?", "options": ["to", "for", "with"], "a": 0, "why": "belong to — принадлежать кому-то; предлог остаётся в конце вопроса."},
+  {"type": "gap", "q": "She ___ (look) after her grandmother every weekend.", "a": ["looks"], "why": "look after — связка, а -s появляется у глагола: she looks after."},
+  {"type": "gap", "q": "I ___ (wait) for you at the entrance.", "a": ["am waiting", "'m waiting"], "why": "Действие идёт сейчас: I am waiting for you."},
+  {"type": "gap", "q": "Please ___ (explain) this word to me.", "a": ["explain"], "why": "После please — первая форма: explain something to somebody."},
+  {"type": "translate", "q": "Я ищу свои ключи.", "a": ["i am looking for my keys", "i'm looking for my keys"], "why": "look for = искать, предлог for обязателен."},
+  {"type": "translate", "q": "Мы приехали в Москву вчера.", "a": ["we arrived in moscow yesterday"], "why": "arrive in + город, без to."}
+ ]
+}

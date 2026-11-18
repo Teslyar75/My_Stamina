@@ -65,6 +65,7 @@ class Progress:
                 "achievements": {}, "attempts": [], "review_done_days": [], "speech_best": {},
                 "warehouse": {"flips": 0, "ok": 0, "by_day": {}, "best": {}},
                 "verb_scores": {},
+                "grammar": {"units": {}},
                 "book_sentences": {"books": {}, "cards": {}, "stats": {"flips": 0, "ok": 0, "by_day": {}}}}
         for k, v in base.items():
             d.setdefault(k, v)
@@ -266,6 +267,41 @@ class Progress:
         by = self.data["xp"]["by_day"]
         d0 = dt.date.today()
         return [by.get((d0 - dt.timedelta(days=i)).isoformat(), 0) >= goal for i in range(days - 1, -1, -1)]
+
+    # -- уроки грамматики ----------------------------------------------------
+    def grammar_units(self) -> dict:
+        g = self.data.get("grammar")
+        if not isinstance(g, dict):
+            g = self.data["grammar"] = {"units": {}}
+        g.setdefault("units", {})
+        return g["units"]
+
+    def grammar_unit(self, n: int) -> dict:
+        return self.grammar_units().get(str(int(n)), {})
+
+    def grammar_done(self, n: int) -> bool:
+        return bool(self.grammar_unit(n).get("done"))
+
+    def grammar_done_count(self) -> int:
+        return sum(1 for u in self.grammar_units().values() if u.get("done"))
+
+    def grammar_mark(self, n: int, ok: int, total: int) -> bool:
+        """Записать итог урока. Возвращает True, если урок пройден впервые.
+
+        Пройденным считаем урок, где верно не меньше половины упражнений:
+        цель грамматики — не экзамен, а привычка разбирать правило.
+        """
+        units = self.grammar_units()
+        u = units.setdefault(str(int(n)), {})
+        first = not u.get("done")
+        u.update({"ok": int(ok), "total": int(total), "at": _today()})
+        if total > 0 and ok >= max(1, (total + 1) // 2):
+            u["done"] = True
+        self.save()
+        if first and u.get("done"):
+            self.award_once(f"grammar:{int(n)}", 25)
+            return True
+        return False
 
     # -- журнал ответов ------------------------------------------------------
     def record_attempt(self, slug: str, mode: str, task: str, correct: bool, q: int, score=None) -> None:

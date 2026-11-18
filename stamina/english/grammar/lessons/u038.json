@@ -1,0 +1,66 @@
+{
+ "n": 38,
+ "level": "A2",
+ "module": "there",
+ "title": "there в разных временах",
+ "en": "there was/were, there has/have been",
+ "summary": "То же there, но в прошлом и в перфекте: что было вчера и что уже успело появиться.",
+ "can_do": [
+  "Рассказать, что было или чего не было в прошлом.",
+  "Сказать, что к этому моменту что-то произошло.",
+  "Не путать there is с there was в рассказе о вчерашнем дне."
+ ],
+ "theory": [
+  {
+   "h": "Прошлое: was и were",
+   "p": "В прошедшем времени there работает так же, только be становится was или were. Выбор снова зависит от того, что идёт после: одна вещь или много.",
+   "formula": "There was a party last night. · There were a lot of people."
+  },
+  {
+   "h": "Перфект: has been и have been",
+   "p": "Если важен не момент, а результат к настоящему, появляется there has been или there have been. Третья форма be здесь — been, и без неё конструкция не собирается.",
+   "table": {
+    "head": ["Время", "Формула", "Пример"],
+    "rows": [
+     ["прошедшее", "there was / were", "There was a letter for you."],
+     ["перфект", "there has / have been", "There have been three calls."]
+    ]
+   }
+  },
+  {
+   "h": "Вопросы и отрицания",
+   "p": "Вопрос строится перестановкой: Was there ...? Have there been ...? Отрицание — wasn't, weren't, hasn't been, haven't been или оборот there was no без артикля.",
+   "formula": "Was there a problem? · There weren't any seats. · There has been no news."
+  },
+  {
+   "h": "Как не ошибиться во времени",
+   "p": "Если в предложении есть yesterday, last week или in 1990, настоящее время уже невозможно. В рассказе о прошлом there is звучит как ошибка, и слушатель сразу это замечает.",
+   "formula": "There were two chairs here yesterday."
+  }
+ ],
+ "examples": [
+  {"en": "There was a long queue at the bank.", "ru": "В банке была длинная очередь."},
+  {"en": "There were no seats left.", "ru": "Свободных мест не осталось."},
+  {"en": "There has been an accident on the road.", "ru": "На дороге произошла авария."},
+  {"en": "There have been two complaints this week.", "ru": "На этой неделе было две жалобы."},
+  {"en": "Was there a message for me?", "ru": "Мне было сообщение?"},
+  {"en": "There hasn't been any rain for a month.", "ru": "Месяц не было дождя."}
+ ],
+ "traps": [
+  {"bad": "There was many people.", "good": "There were many people.", "why": "people — множественное число, поэтому were."},
+  {"bad": "There have a lot of changes.", "good": "There have been a lot of changes.", "why": "В перфекте обязателен been: there have been."},
+  {"bad": "There is a party yesterday.", "good": "There was a party yesterday.", "why": "yesterday требует прошедшего времени."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There ___ a lot of snow last winter.", "options": ["was", "were", "is"], "a": 0, "why": "snow неисчисляемое, время прошедшее: there was."},
+  {"type": "choice", "q": "There ___ two messages for you.", "options": ["were", "was", "has"], "a": 0, "why": "messages — множественное число: there were."},
+  {"type": "choice", "q": "There ___ been no news from him.", "options": ["has", "have", "is"], "a": 0, "why": "news неисчисляемое: there has been no news."},
+  {"type": "choice", "q": "___ there a problem with the car?", "options": ["Was", "Were", "Did"], "a": 0, "why": "problem в единственном числе: Was there a problem?"},
+  {"type": "choice", "q": "There ___ no seats left, so we had to stand.", "options": ["were", "was", "are"], "a": 0, "why": "seats — множественное число, рассказ о прошлом: there were."},
+  {"type": "gap", "q": "There ___ (be) a cinema here in 1990.", "a": ["was"], "why": "Один объект в прошлом: there was."},
+  {"type": "gap", "q": "There ___ (be) a lot of tourists here last summer.", "a": ["were"], "why": "tourists — множественное число: there were."},
+  {"type": "gap", "q": "There ___ (be) three accidents since Monday.", "a": ["have been"], "why": "since Monday требует перфекта: there have been."},
+  {"type": "translate", "q": "Вчера здесь было много людей.", "a": ["there were a lot of people here yesterday", "there were many people here yesterday"], "why": "Прошлое с множественным числом: There were a lot of people here yesterday."},
+  {"type": "translate", "q": "В этом году было две встречи.", "a": ["there have been two meetings this year", "there were two meetings this year"], "why": "Перфект или прошедшее: There have been two meetings this year."}
+ ]
+}

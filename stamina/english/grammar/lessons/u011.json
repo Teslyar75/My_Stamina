@@ -1,0 +1,81 @@
+{
+ "n": 11,
+ "level": "A1",
+ "module": "past",
+ "title": "Past Simple: правильные и неправильные глаголы",
+ "en": "worked/got/went (past simple)",
+ "summary": "Как рассказать, что было вчера: одно окончание -ed для правильных глаголов и своя форма для каждого неправильного.",
+ "can_do": [
+  "Образовать прошлое с -ed: worked, lived, studied.",
+  "Узнавать частые неправильные формы: went, got, saw, had.",
+  "Рассказать короткую историю в Past Simple."
+ ],
+ "theory": [
+  {
+   "h": "Законченное действие в прошлом",
+   "p": "Past Simple говорит о том, что случилось и закончилось. Время обычно закрыто: вчера, в прошлом году, два дня назад. Продолжение в настоящем здесь не подразумевается.",
+   "formula": "I worked all day. · She went home."
+  },
+  {
+   "h": "-ed для правильных глаголов",
+   "p": "К правильному глаголу прибавляется -ed, но написание иногда меняется: тихая e не удваивается, короткий слог удваивает согласную, а y после согласной переходит в i.",
+   "table": {
+    "head": ["Глагол", "Прошлое"],
+    "rows": [
+     ["work", "worked"],
+     ["live", "lived"],
+     ["stop", "stopped"],
+     ["study", "studied"]
+    ]
+   }
+  },
+  {
+   "h": "Неправильные формы надо помнить",
+   "p": "У неправильных глаголов прошлое не собирается по правилу: у каждого своя форма. Их учат списком, но самые частые запоминаются быстро.",
+   "table": {
+    "head": ["Начальная форма", "Прошлое"],
+    "rows": [
+     ["go", "went"],
+     ["have", "had"],
+     ["see", "saw"],
+     ["get", "got"],
+     ["make", "made"],
+     ["say", "said"]
+    ]
+   }
+  },
+  {
+   "h": "Слова, которые выдают прошлое",
+   "p": "Yesterday, last week, in 2010, two days ago, when I was young — эти слова показывают, что время закрыто. Они почти всегда тянут за собой Past Simple.",
+   "formula": "I saw him yesterday. · We met two years ago."
+  },
+  {
+   "h": "Одна форма для всех лиц",
+   "p": "В отличие от be, у обычного глагола нет отдельных форм по лицам. I worked, she worked, they worked — окончание не меняется и -s не появляется.",
+   "formula": "He worked. · They worked. · You worked."
+  }
+ ],
+ "examples": [
+  {"en": "I watched a film last night.", "ru": "Вчера вечером я посмотрел фильм."},
+  {"en": "She got a new job in May.", "ru": "В мае она получила новую работу."},
+  {"en": "We went to the seaside in July.", "ru": "В июле мы ездили на море."},
+  {"en": "He studied French at school.", "ru": "Он учил французский в школе."},
+  {"en": "They came home late.", "ru": "Они пришли домой поздно."}
+ ],
+ "traps": [
+  {"bad": "I did worked.", "good": "I worked.", "why": "В утверждении did не нужен: время уже показано формой глагола."},
+  {"bad": "He goed to school.", "good": "He went to school.", "why": "go неправильный, у него форма went."},
+  {"bad": "Yesterday I go to the cinema.", "good": "Yesterday I went to the cinema.", "why": "Слово yesterday требует прошедшей формы."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ TV last night.", "options": ["watch", "watched", "watching"], "a": 1, "why": "last night — прошлое, правильный глагол получает -ed."},
+  {"type": "choice", "q": "She ___ to Paris last year.", "options": ["goed", "went", "go"], "a": 1, "why": "У go прошедшая форма went, а не goed."},
+  {"type": "choice", "q": "We ___ dinner at eight.", "options": ["have", "having", "had"], "a": 2, "why": "have в прошлом — had."},
+  {"type": "choice", "q": "He ___ football when he was a boy.", "options": ["played", "plays", "play"], "a": 0, "why": "when he was a boy — закрытое прошлое."},
+  {"type": "choice", "q": "They ___ a new car in June.", "options": ["buyed", "bought", "buy"], "a": 1, "why": "buy неправильный: bought."},
+  {"type": "gap", "q": "I ___ (see) him yesterday.", "a": ["saw"], "why": "see в прошлом — saw."},
+  {"type": "gap", "q": "Anna ___ (study) at the library.", "a": ["studied"], "why": "y после согласной переходит в i: studied."},
+  {"type": "translate", "q": "Вчера я работал дома.", "a": ["yesterday i worked at home", "i worked at home yesterday"], "why": "work + ed, at home без предлога in."},
+  {"type": "translate", "q": "Она пришла поздно.", "a": ["she came late", "she came home late"], "why": "come в прошлом — came."}
+ ]
+}

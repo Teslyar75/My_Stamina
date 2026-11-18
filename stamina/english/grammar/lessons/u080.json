@@ -1,0 +1,71 @@
+{
+ "n": 80,
+ "level": "A2",
+ "module": "quantity",
+ "title": "all и every",
+ "en": "all and every",
+ "summary": "«Все» и «каждый» — почти одно и то же по смыслу, но грамматика у них разная, и путать их дорого.",
+ "can_do": [
+  "Сказать «все студенты» и «каждый студент», не ошибаясь в числе.",
+  "Различить all day и every day — «весь день» и «каждый день».",
+  "Использовать all of us и all of the перед определителем."
+ ],
+ "theory": [
+  {
+   "h": "Два взгляда на одну компанию",
+   "p": "Об одной и той же группе можно сказать all или every. All смотрит на группу целиком и требует множественного числа. Every перебирает участников по одному и требует единственного. Смысл почти совпадает, форма — нет.",
+   "formula": "All the children were ready. · Every child was ready."
+  },
+  {
+   "h": "Every — всегда один",
+   "p": "После every существительное стоит только в единственном числе, и глагол тоже. Никакого every students не существует. Со all наоборот: all students, all the students — и глагол во множественном.",
+   "table": {
+    "head": ["Конструкция", "Число", "Пример"],
+    "rows": [
+     ["every student", "единственное", "Every student has a card."],
+     ["all students", "множественное", "All students need rest."],
+     ["all the students", "множественное", "All the students passed."]
+    ]
+   }
+  },
+  {
+   "h": "All of us, all of them",
+   "p": "Если после all идёт местоимение или определитель, между ними появляется of: all of us, all of them, all of the money. Без of all работает напрямую с существительным: all people, all cities.",
+   "formula": "All of us were invited. · All of the money is gone."
+  },
+  {
+   "h": "All day и every day — не одно и то же",
+   "p": "All day значит «весь день целиком, от утра до вечера». Every day значит «каждый день, день за днём». Одно слово меняет картину полностью, поэтому в таких фразах нужно слышать разницу.",
+   "formula": "I worked all day. (весь день) · I work every day. (каждый день)"
+  },
+  {
+   "h": "All с неисчисляемым",
+   "p": "Перед неисчисляемым существительным all значит «весь, всё»: all the water, all the time, all my money. Глагол при этом в единственном числе, потому что вещь одна.",
+   "formula": "All the water is cold."
+  }
+ ],
+ "examples": [
+  {"en": "All the students passed the exam.", "ru": "Все студенты сдали экзамен."},
+  {"en": "Every room has a window.", "ru": "В каждой комнате есть окно."},
+  {"en": "I work every day except Sunday.", "ru": "Я работаю каждый день, кроме воскресенья."},
+  {"en": "We spent all day at the beach.", "ru": "Мы провели весь день на пляже."},
+  {"en": "All of us want to go home.", "ru": "Мы все хотим домой."}
+ ],
+ "traps": [
+  {"bad": "Every students has a book.", "good": "Every student has a book.", "why": "После every только единственное число."},
+  {"bad": "All the student passed the exam.", "good": "All the students passed the exam.", "why": "All требует множественного числа."},
+  {"bad": "Every days I get up at six.", "good": "Every day I get up at six.", "why": "every day — устойчивое сочетание без -s."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ child in the class got a small present.", "options": ["All", "Every", "Much"], "a": 1, "why": "child в единственном числе — нужен every."},
+  {"type": "choice", "q": "___ the windows were open.", "options": ["Every", "All", "Each"], "a": 1, "why": "were и множественное число требуют all."},
+  {"type": "choice", "q": "He goes to the gym ___ day.", "options": ["all", "every", "whole"], "a": 1, "why": "«каждый день» — every day."},
+  {"type": "choice", "q": "We were at the beach ___ day on Saturday.", "options": ["all", "every", "each"], "a": 0, "why": "«весь день» — all day."},
+  {"type": "choice", "q": "___ of them were late for the meeting.", "options": ["Every", "All", "Each"], "a": 1, "why": "Перед ними of и were — значит all of them."},
+  {"type": "gap", "q": "___ the shops are closed today.", "a": ["all"], "why": "Множественное число и the — all the shops."},
+  {"type": "gap", "q": "He plays football ___ Sunday.", "a": ["every"], "why": "«каждое воскресенье» — every Sunday."},
+  {"type": "gap", "q": "I have been waiting for you ___ morning.", "a": ["all"], "why": "«всё утро» — all morning."},
+  {"type": "translate", "q": "Все мои друзья живут в Москве.", "a": ["all my friends live in moscow", "all of my friends live in moscow"], "why": "all my friends или all of my friends."},
+  {"type": "translate", "q": "Я звоню маме каждый день.", "a": ["i call my mother every day", "i phone my mother every day", "i call my mum every day"], "why": "«каждый день» — every day в конце предложения."}
+ ]
+}

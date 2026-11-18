@@ -1,0 +1,72 @@
+{
+ "n": 45,
+ "level": "A2",
+ "module": "questions",
+ "title": "Вопрос к подлежащему: who и what",
+ "en": "questions (2): who / what",
+ "summary": "Кто-то совершил действие — и вопрос о нём строится без do, потому что who само занимает место подлежащего.",
+ "can_do": [
+  "Спросить, кто сделал действие: Who called you?",
+  "Различить вопрос к подлежащему и вопрос к дополнению.",
+  "Задать вопрос What happened? без вспомогательного глагола."
+ ],
+ "theory": [
+  {
+   "h": "Два совершенно разных вопроса",
+   "p": "Слово who может занимать место подлежащего, а может — место дополнения. От этого зависит вся конструкция: в одном случае do не нужен, в другом он обязателен. Сравнение двух фраз с одним глаголом снимает путаницу сразу.",
+   "formula": "Who called you? (кто звонил) · Who did you call? (кому звонил ты)"
+  },
+  {
+   "h": "Вопрос к подлежащему — без do",
+   "p": "Если who или what заменяют того, кто действует, порядок слов остаётся как в утверждении: who + глагол + всё остальное. Вспомогательный глагол не появляется, а глагол сохраняет форму третьего лица единственного числа.",
+   "table": {
+    "head": ["Утверждение", "Вопрос к подлежащему"],
+    "rows": [
+     ["Somebody broke the window.", "Who broke the window?"],
+     ["Something happened.", "What happened?"],
+     ["Someone is waiting for you.", "Who is waiting for you?"],
+     ["Two people came.", "Who came?"]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос к дополнению — с do",
+   "p": "Если who или what заменяют того, на кого направлено действие, работает обычный каркас вопроса: вопросительное слово + do/does/did + подлежащее + глагол. Здесь глагол теряет -s и вторую форму.",
+   "formula": "Who did you meet? · What does she want? · Who do they know here?"
+  },
+  {
+   "h": "What как подлежащее",
+   "p": "What в роли подлежащего ведёт себя так же, как who: за ним сразу идёт глагол. Так задают вопросы о причине, событии или вещи, которая действует сама.",
+   "formula": "What makes you happy? · What went wrong? · What costs so much?"
+  },
+  {
+   "h": "How many и how much перед подлежащим",
+   "p": "Когда мы спрашиваем о количестве действующих, do тоже не нужен: how many + существительное + глагол. Это тот же вопрос к подлежащему, только с уточнением числа.",
+   "formula": "How many people came? · How much money is left?"
+  }
+ ],
+ "examples": [
+  {"en": "Who wrote this letter?", "ru": "Кто написал это письмо?"},
+  {"en": "Who did you invite to the party?", "ru": "Кого ты пригласил на праздник?"},
+  {"en": "What happened at the meeting?", "ru": "Что случилось на встрече?"},
+  {"en": "What do you do at weekends?", "ru": "Что ты делаешь по выходным?"},
+  {"en": "Who is playing the piano?", "ru": "Кто играет на пианино?"}
+ ],
+ "traps": [
+  {"bad": "Who did break the window?", "good": "Who broke the window?", "why": "Who — подлежащее, поэтому did не нужен."},
+  {"bad": "Who you met yesterday?", "good": "Who did you meet yesterday?", "why": "Who здесь дополнение: без did вопроса нет."},
+  {"bad": "What did happen?", "good": "What happened?", "why": "What — подлежащее, глагол стоит сразу за ним."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Who ___ this cake? It's delicious.", "options": ["made", "did make", "does make"], "a": 0, "why": "Who — подлежащее: who made, без did."},
+  {"type": "choice", "q": "Who ___ at the door?", "options": ["knocked", "did knock", "does knock"], "a": 0, "why": "Вопрос к подлежащему в прошлом: who knocked."},
+  {"type": "choice", "q": "Who ___ to the party last night?", "options": ["did you invite", "you invited", "invited you"], "a": 0, "why": "Who здесь дополнение, поэтому нужен вспомогательный did."},
+  {"type": "choice", "q": "What ___ to your car?", "options": ["happened", "did happen", "happens"], "a": 0, "why": "What — подлежащее, поэтому без вспомогательного."},
+  {"type": "choice", "q": "How many students ___ the exam?", "options": ["passed", "did pass", "did passed"], "a": 0, "why": "Вопрос к подлежащему с how many: passed."},
+  {"type": "gap", "q": "Who ___ (call) you last night?", "a": ["called"], "why": "Who — подлежащее, глагол в Past Simple без did."},
+  {"type": "gap", "q": "Who ___ (you / see) at the concert?", "a": ["did you see"], "why": "Who — дополнение, нужен did you see."},
+  {"type": "gap", "q": "What ___ (make) you think so?", "a": ["makes"], "why": "What — подлежащее в настоящем: makes."},
+  {"type": "translate", "q": "Кто тебе это сказал?", "a": ["who told you that", "who told you this", "who said that to you", "who said this to you"], "why": "Who — подлежащее: who told, без did."},
+  {"type": "translate", "q": "Кого ты видел вчера?", "a": ["who did you see yesterday", "whom did you see yesterday"], "why": "Who — дополнение: who did you see."}
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "n": 3,
+ "level": "A1",
+ "module": "present",
+ "title": "Present Continuous: I am doing",
+ "en": "I am doing (present continuous)",
+ "summary": "Что происходит прямо сейчас: am, is, are плюс глагол с -ing, и почему без этой связки фраза разваливается.",
+ "can_do": [
+  "Сказать, что делаете в эту минуту: I'm cooking.",
+  "Правильно образовать -ing: making, running, lying.",
+  "Сказать, что действие не идёт: I'm not working."
+ ],
+ "theory": [
+  {
+   "h": "Действие в моменте",
+   "p": "Present Continuous нужен, когда действие идёт сейчас, в момент речи, и ещё не закончилось. По-русски мы часто говорим просто «я читаю», а англичанин уточняет, что это происходит вот прямо сейчас.",
+   "formula": "I am reading. · She is cooking. · They are playing."
+  },
+  {
+   "h": "Две части, обе обязательны",
+   "p": "Форма собирается из be и смыслового глагола с -ing. Be подбирается по тому, о ком речь, а окончание -ing не меняется никогда.",
+   "table": {
+    "head": ["Кто", "be", "-ing", "Пример"],
+    "rows": [
+     ["I", "am", "reading", "I am reading."],
+     ["he / she / it", "is", "reading", "She is reading."],
+     ["you / we / they", "are", "reading", "They are reading."]
+    ]
+   }
+  },
+  {
+   "h": "Как получается -ing",
+   "p": "Правила простые, но их надо помнить руками: тихая e на конце уходит, короткий слог с одной согласной удваивает эту согласную, а -ie превращается в -y.",
+   "table": {
+    "head": ["Глагол", "Что делаем", "-ing"],
+    "rows": [
+     ["read, play", "просто прибавляем", "reading, playing"],
+     ["make, write", "убираем -e", "making, writing"],
+     ["run, sit", "удваиваем согласную", "running, sitting"],
+     ["lie, die", "-ie меняем на -y", "lying, dying"]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание живёт на be",
+   "p": "Частица not приклеивается к be, а глагол с -ing остаётся на месте. Порядок слов не меняется, просто между be и -ing появляется not.",
+   "formula": "I'm not working. · He isn't sleeping. · We aren't listening."
+  },
+  {
+   "h": "Глаголы, которые не любят -ing",
+   "p": "Like, know, want, need, understand, believe описывают состояние, а не процесс. Их обычно не ставят в Continuous, даже если речь о текущей минуте.",
+   "formula": "I know him. · I want water. · Do you understand me?"
+  }
+ ],
+ "examples": [
+  {"en": "I'm waiting for the bus.", "ru": "Я жду автобус."},
+  {"en": "She's talking on the phone.", "ru": "Она говорит по телефону."},
+  {"en": "It's raining again.", "ru": "Снова идёт дождь."},
+  {"en": "We aren't working today.", "ru": "Мы сегодня не работаем."},
+  {"en": "The children are playing outside.", "ru": "Дети играют на улице."}
+ ],
+ "traps": [
+  {"bad": "I reading a book.", "good": "I'm reading a book.", "why": "Без be формы -ing сами по себе не работают."},
+  {"bad": "He is runing.", "good": "He is running.", "why": "Короткий слог с одной согласной удваивает её: running."},
+  {"bad": "I am knowing her.", "good": "I know her.", "why": "know описывает состояние, Continuous с ним не говорят."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ watching TV now.", "options": ["am", "is", "are"], "a": 0, "why": "I всегда берёт am."},
+  {"type": "choice", "q": "My parents ___ cooking dinner.", "options": ["is", "am", "are"], "a": 2, "why": "my parents = they, поэтому are."},
+  {"type": "choice", "q": "She ___ writing a letter.", "options": ["am", "are", "is"], "a": 2, "why": "she = is."},
+  {"type": "choice", "q": "Look! It ___ snowing.", "options": ["is", "are", "am"], "a": 0, "why": "it = is."},
+  {"type": "choice", "q": "We ___ not listening to you.", "options": ["is", "are", "am"], "a": 1, "why": "we = are, отрицание ставится на be."},
+  {"type": "gap", "q": "Tom ___ (run) in the park now.", "a": ["is running"], "why": "Tom = he, глагол run удваивает n: is running."},
+  {"type": "gap", "q": "They ___ (make) a cake right now.", "a": ["are making"], "why": "they = are, make теряет e: making."},
+  {"type": "translate", "q": "Я сейчас пишу сообщение.", "a": ["i am writing a message", "i'm writing a message"], "why": "Действие в моменте: I am writing a message."},
+  {"type": "translate", "q": "Она не спит.", "a": ["she is not sleeping", "she isn't sleeping", "she's not sleeping"], "why": "Отрицание на be: she isn't sleeping."}
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "n": 49,
+ "level": "A2",
+ "module": "questions",
+ "title": "Вопросы в сложных предложениях",
+ "en": "questions (3): сложные предложения",
+ "summary": "Если вопрос вложен в другой вопрос или в вежливую фразу, порядок слов становится прямым и do исчезает.",
+ "can_do": [
+  "Задать вежливый вопрос: Do you know where he lives?",
+  "Не переставлять слова внутри придаточной части.",
+  "Спросить о условии или причине: Do you know if she is coming?"
+ ],
+ "theory": [
+  {
+   "h": "Вопрос внутри вопроса",
+   "p": "Сначала идёт вопрос к собеседнику, а уже внутри него — второй вопрос, который превращается в придаточное. Главная часть строится как обычно, а придаточная теряет вопросительный порядок слов.",
+   "formula": "Do you know where she is? (не where is she)"
+  },
+  {
+   "h": "Внутри — прямой порядок слов",
+   "p": "В придаточной части подлежащее возвращается на место перед глаголом, а вспомогательный do, does, did пропадает. Время и лицо при этом переносит на себя смысловой глагол.",
+   "table": {
+    "head": ["Прямой вопрос", "Вежливый вариант"],
+    "rows": [
+     ["Where does he live?", "Do you know where he lives?"],
+     ["What time is it?", "Could you tell me what time it is?"],
+     ["Did she call?", "Do you know if she called?"],
+     ["Why did they leave?", "I wonder why they left."]
+    ]
+   }
+  },
+  {
+   "h": "Готовые вежливые зачины",
+   "p": "Несколько фраз заменяют прямой вопрос, когда нужно спросить мягко или у незнакомого человека. После них всегда идёт прямой порядок слов, а в конце — обычная точка вместо вопросительного знака у придаточной части.",
+   "formula": "Do you know ...? · Could you tell me ...? · I wonder ... · I'd like to know ..."
+  },
+  {
+   "h": "Да или нет — через if",
+   "p": "Если вложенный вопрос был общим, вместо него ставится if или whether. Само придаточное строится как утверждение: подлежащее, потом глагол.",
+   "formula": "Do you know if he is at home? · I'm not sure whether they agree."
+  },
+  {
+   "h": "Вопрос к сложному предложению",
+   "p": "Когда спрашивают о части сложной фразы, вспомогательный глагол остаётся в главной части, а придаточное с when, if, because сохраняет прямой порядок. Именно здесь чаще всего ломается конструкция.",
+   "formula": "Where do you go when you're tired? · What do you do if it rains?"
+  }
+ ],
+ "examples": [
+  {"en": "Do you know where my glasses are?", "ru": "Ты не знаешь, где мои очки?"},
+  {"en": "Could you tell me what time the shop opens?", "ru": "Подскажите, во сколько открывается магазин?"},
+  {"en": "I wonder why she didn't come.", "ru": "Интересно, почему она не пришла."},
+  {"en": "Do you know if the train is late?", "ru": "Ты не знаешь, поезд опаздывает?"},
+  {"en": "What do you usually do when you have a day off?", "ru": "Что ты обычно делаешь, когда у тебя выходной?"}
+ ],
+ "traps": [
+  {"bad": "Do you know where is the station?", "good": "Do you know where the station is?", "why": "Внутри придаточного порядок слов прямой."},
+  {"bad": "Could you tell me where does he work?", "good": "Could you tell me where he works?", "why": "В придаточной части do не нужен, -s возвращается к глаголу."},
+  {"bad": "Do you know if is she coming?", "good": "Do you know if she is coming?", "why": "После if подлежащее идёт перед глаголом."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Do you know where my bag ___?", "options": ["is", "are", "does"], "a": 0, "why": "Внутри придаточного прямой порядок: where my bag is."},
+  {"type": "choice", "q": "Could you tell me what time the film ___?", "options": ["starts", "does start", "start"], "a": 0, "why": "Без do, глагол в форме третьего лица: starts."},
+  {"type": "choice", "q": "Do you know if she ___ to the party?", "options": ["come", "is coming", "she is coming"], "a": 1, "why": "После if подлежащее перед глаголом: if she is coming."},
+  {"type": "choice", "q": "I wonder why he ___ so early.", "options": ["left", "did leave", "does left"], "a": 0, "why": "did не нужен, время берёт на себя смысловой глагол."},
+  {"type": "choice", "q": "What do you do when you ___ sad?", "options": ["feel", "do feel", "are feel"], "a": 0, "why": "В придаточном с when порядок прямой."},
+  {"type": "gap", "q": "Do you know where Tom ___ (be)?", "a": ["is"], "why": "Прямой порядок: where Tom is."},
+  {"type": "gap", "q": "Could you tell me when the train ___ (leave)?", "a": ["leaves"], "why": "Без does, третье лицо: leaves."},
+  {"type": "gap", "q": "I'm not sure if he ___ (can) come tonight.", "a": ["can"], "why": "Модальный can после подлежащего: if he can come."},
+  {"type": "translate", "q": "Ты не знаешь, где он живёт?", "a": ["do you know where he lives", "do you know where he is living"], "why": "Придаточная часть без does: where he lives."},
+  {"type": "translate", "q": "Подскажите, когда начинается концерт.", "a": ["could you tell me when the concert starts", "can you tell me when the concert starts"], "why": "Вежливый зачин + прямой порядок слов."}
+ ]
+}

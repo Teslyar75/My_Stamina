@@ -1,0 +1,73 @@
+{
+ "n": 109,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "under, behind, opposite",
+ "en": "under/behind/opposite",
+ "summary": "Где именно находится предмет: под, за, напротив, рядом или между — без путаницы между opposite и in front of.",
+ "can_do": [
+  "Описать положение вещей: under the table, behind the house.",
+  "Сказать «напротив» через opposite и не добавить лишний to.",
+  "Различить opposite и in front of."
+ ],
+ "theory": [
+  {
+   "h": "under и behind",
+   "p": "under значит «прямо под чем-то, ниже и накрыто сверху»: the cat under the chair. behind — «за, позади»: the garden behind the house. Оба предлога работают без of.",
+   "formula": "under the chair · behind the house"
+  },
+  {
+   "h": "opposite",
+   "p": "opposite значит «напротив» — через дорогу, улицу или площадь, лицом к лицу. После него объект ставится сразу, без предлога to и без of.",
+   "formula": "The bank is opposite the park."
+  },
+  {
+   "h": "opposite и in front of",
+   "p": "in front of — «перед чем-то», когда обе вещи на одной стороне. opposite — когда они друг напротив друга, на разных сторонах. Дом напротив через улицу — opposite; машина перед домом на той же стороне — in front of.",
+   "formula": "in front of the house (рядом, перед фасадом) · opposite the house (через дорогу)"
+  },
+  {
+   "h": "next to, near, between",
+   "p": "next to значит «вплотную рядом», near — «где-то поблизости, недалеко», between — «между двумя». Между тремя и более предметами обычно говорят among.",
+   "table": {
+    "head": ["Предлог", "Значение", "Пример"],
+    "rows": [
+     ["under", "под", "The cat is under the table."],
+     ["behind", "за, позади", "The garden is behind the house."],
+     ["opposite", "напротив", "The bank is opposite the park."],
+     ["next to", "рядом, вплотную", "Sit next to me."],
+     ["between", "между двумя", "The café is between the bank and the shop."]
+    ]
+   }
+  },
+  {
+   "h": "Как не добавить лишнее",
+   "p": "Русские предлоги места часто составные («под», «за»), а английские — одно слово. После under, behind, opposite и near не нужны ни of, ни to: они уже включают в себя отношение к объекту.",
+   "formula": "under the table (не under of the table) · opposite the bank (не opposite to the bank)"
+  }
+ ],
+ "examples": [
+  {"en": "The cat is sleeping under the chair.", "ru": "Кошка спит под стулом."},
+  {"en": "There's a small garden behind the house.", "ru": "За домом есть небольшой сад."},
+  {"en": "The pharmacy is opposite the bus stop.", "ru": "Аптека напротив автобусной остановки."},
+  {"en": "Sit next to me, please.", "ru": "Сядь рядом со мной, пожалуйста."},
+  {"en": "The café is between the bank and the bookshop.", "ru": "Кафе между банком и книжным магазином."}
+ ],
+ "traps": [
+  {"bad": "The bank is opposite to the park.", "good": "The bank is opposite the park.", "why": "opposite ставится прямо перед объектом, без to."},
+  {"bad": "There is a garden behind of the house.", "good": "There is a garden behind the house.", "why": "behind — сам по себе предлог, of после него не нужен."},
+  {"bad": "The bus stop is in the front of the school.", "good": "The bus stop is in front of the school.", "why": "«Перед чем-то» — in front of; in the front of значит «в передней части»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The cat is sleeping ___ the table.", "options": ["under", "between", "opposite"], "a": 0, "why": "Под столом — under the table."},
+  {"type": "choice", "q": "The post office is ___ the bank — just across the road.", "options": ["behind", "opposite", "next to"], "a": 1, "why": "Через дорогу — opposite."},
+  {"type": "choice", "q": "There's a garden ___ the house, at the back.", "options": ["behind", "under", "between"], "a": 0, "why": "Позади дома — behind."},
+  {"type": "choice", "q": "Sit ___ me on the sofa, there's plenty of room.", "options": ["opposite", "next to", "under"], "a": 1, "why": "Рядом на диване — next to."},
+  {"type": "choice", "q": "The café is ___ the bank and the bookshop.", "options": ["between", "opposite", "under"], "a": 0, "why": "Между двумя объектами — between."},
+  {"type": "gap", "q": "The café is ___ the bank and the bookshop, so you can't miss it.", "a": ["between"], "why": "Два соседних объекта — between."},
+  {"type": "gap", "q": "Our garden is ___ the house, at the back.", "a": ["behind"], "why": "Позади дома — behind, без of."},
+  {"type": "gap", "q": "The station is ___ the market, just across the square.", "a": ["opposite"], "why": "Через площадь — opposite, без to."},
+  {"type": "translate", "q": "Собака под столом.", "a": ["the dog is under the table"], "why": "«Под» — under, без of."},
+  {"type": "translate", "q": "Аптека напротив школы.", "a": ["the pharmacy is opposite the school", "the chemist's is opposite the school"], "why": "opposite ставится без предлога to."}
+ ]
+}

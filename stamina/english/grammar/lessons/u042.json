@@ -1,0 +1,74 @@
+{
+ "n": 42,
+ "level": "A2",
+ "module": "there",
+ "title": "too, either, so am I, neither do I",
+ "en": "too / either / so am I / neither do I",
+ "summary": "Как быстро сказать «я тоже» и «я тоже нет» — без повторения всего предложения собеседника.",
+ "can_do": [
+  "Согласиться с утверждением через So am I или So do I.",
+  "Согласиться с отрицанием через Neither can I или Neither have I.",
+  "Выбрать too для положительной фразы и either для отрицательной."
+ ],
+ "theory": [
+  {
+   "h": "too и either — короткое эхо",
+   "p": "Самый простой способ согласиться — добавить в конец своё too, если фраза положительная, и either, если она с not. Порядок слов при этом не меняется, ничего переставлять не нужно.",
+   "formula": "I like jazz too. · I don't like jazz either."
+  },
+  {
+   "h": "So и Neither — согласие с инверсией",
+   "p": "Живее звучит отдельная реплика: So + вспомогательный глагол + подлежащее для положительного смысла, Neither + вспомогательный глагол + подлежащее для отрицательного. Глагол берётся тот же, что у собеседника.",
+   "table": {
+    "head": ["Собеседник", "Ваш ответ"],
+    "rows": [
+     ["I'm tired.", "So am I."],
+     ["I like coffee.", "So do I."],
+     ["I can swim.", "So can I."],
+     ["I don't eat meat.", "Neither do I."],
+     ["I'm not ready.", "Neither am I."],
+     ["I can't drive.", "Neither can I."]
+    ]
+   }
+  },
+  {
+   "h": "Главное — порядок слов",
+   "p": "В этих ответах подлежащее стоит после глагола, а не перед ним. Именно перестановка отличает So do I от обычного I do. Сравните с русским «и я тоже» — там порядок прямой, поэтому ошибка появляется сама собой.",
+   "formula": "So do I. (не So I do.) · Neither can she. (не Neither she can.)"
+  },
+  {
+   "h": "Какой глагол подставить",
+   "p": "Берём вспомогательный глагол из фразы собеседника: am, is, are, was, have, will, can, do. Если в его фразе вспомогательного не было, ставим do, does или did по времени и лицу.",
+   "formula": "She went home. — So did I. · He works late. — So does she."
+  },
+  {
+   "h": "Разговорные варианты",
+   "p": "В неформальной речи вместо всей конструкции говорят просто Me too и Me neither. Это нормально в разговоре с друзьями, но в письме и на экзамене лучше держаться полной формы с So и Neither.",
+   "formula": "Me too. = So do I. · Me neither. = Neither do I."
+  }
+ ],
+ "examples": [
+  {"en": "I love this song. — So do I.", "ru": "Обожаю эту песню. — Я тоже."},
+  {"en": "I'm not hungry. — Neither am I.", "ru": "Я не голоден. — Я тоже."},
+  {"en": "She can't come. — Neither can he.", "ru": "Она не может прийти. — Он тоже."},
+  {"en": "We went to the park yesterday. — So did we.", "ru": "Мы вчера ходили в парк. — Мы тоже."},
+  {"en": "I don't drink coffee either.", "ru": "Я тоже не пью кофе."}
+ ],
+ "traps": [
+  {"bad": "I don't like fish too.", "good": "I don't like fish either.", "why": "После отрицания ставится either, а не too."},
+  {"bad": "So I do.", "good": "So do I.", "why": "В ответе с So подлежащее идёт после глагола."},
+  {"bad": "Neither I can.", "good": "Neither can I.", "why": "Neither тоже требует инверсии: глагол перед местоимением."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm very tired. — ___ am I.", "options": ["So", "Neither", "Too"], "a": 0, "why": "Положительное высказывание, согласие через So."},
+  {"type": "choice", "q": "I can't swim. — ___ can I.", "options": ["So", "Neither", "Either"], "a": 1, "why": "Отрицание, согласие через Neither."},
+  {"type": "choice", "q": "She doesn't like horror films. — I don't like them ___.", "options": ["too", "either", "also"], "a": 1, "why": "В конце отрицательной фразы нужен either."},
+  {"type": "choice", "q": "We went to Italy last year. — So ___ we.", "options": ["do", "did", "are"], "a": 1, "why": "went — Past Simple, значит So did we."},
+  {"type": "choice", "q": "He has finished his work. — So ___ she.", "options": ["has", "does", "is"], "a": 0, "why": "Present Perfect: вспомогательный has повторяется, So has she."},
+  {"type": "gap", "q": "I'm not ready. — ___ am I.", "a": ["neither", "nor"], "why": "Согласие с отрицанием: Neither am I."},
+  {"type": "gap", "q": "Tom works at night. — So ___ Anna.", "a": ["does"], "why": "Present Simple с she: So does Anna."},
+  {"type": "gap", "q": "I didn't sleep well. — ___ did I.", "a": ["neither", "nor"], "why": "Отрицание + согласие: Neither did I."},
+  {"type": "translate", "q": "Я тоже люблю кофе.", "a": ["so do i", "i like coffee too", "i love coffee too"], "why": "Короткий ответ по модели So do I."},
+  {"type": "translate", "q": "Она тоже не была там.", "a": ["neither was she", "she wasn't there either", "she was not there either"], "why": "Согласие с отрицанием: Neither was she."}
+ ]
+}

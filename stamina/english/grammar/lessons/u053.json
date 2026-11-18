@@ -1,0 +1,72 @@
+{
+ "n": 53,
+ "level": "A2",
+ "module": "infinitive",
+ "title": "want и let: кого-то сделать что-то",
+ "en": "want somebody to / let somebody do",
+ "summary": "Когда действие выполняет не сам говорящий, а другой человек, между глаголами появляется его имя — и от первого глагола зависит, будет ли to.",
+ "can_do": [
+  "Сказать, чего вы хотите от другого: I want you to come.",
+  "Разрешить или заставить без to: let me go, make him smile.",
+  "Не строить фразу через that, как в русском «хочу, чтобы»."
+ ],
+ "theory": [
+  {
+   "h": "Схема с to: желание и просьба",
+   "p": "После want, ask, tell, need, expect, would like сначала называют человека, а потом ставят to и действие. По-русски это «хочу, чтобы он пришёл», но английское чтобы здесь не переводится словом that.",
+   "formula": "I want you to come. · She asked me to wait."
+  },
+  {
+   "h": "Схема без to: let и make",
+   "p": "Два глагола обходятся без частицы to: let разрешает, make заставляет. После них сразу идёт человек, а затем глагол в начальной форме. Это короткие, очень частые конструкции.",
+   "table": {
+    "head": ["Глагол", "Смысл", "Пример"],
+    "rows": [
+     ["want somebody to do", "хотеть, чтобы", "I want her to call me."],
+     ["ask somebody to do", "просить", "He asked us to sit down."],
+     ["let somebody do", "позволять", "Let me help you."],
+     ["make somebody do", "заставлять", "The film made me cry."]
+    ]
+   }
+  },
+  {
+   "h": "help — можно и так, и так",
+   "p": "После help частица to необязательна: оба варианта правильные, и в разговорной речи чаще обходятся без неё. Это единственный глагол в этой группе, который допускает выбор.",
+   "formula": "Can you help me carry this? = Can you help me to carry this?"
+  },
+  {
+   "h": "Отрицание ставится перед to",
+   "p": "Если нужно сказать «не делать», not встаёт перед инфинитивом, а не после человека. Это касается всех глаголов первой схемы, включая ask, tell и want.",
+   "formula": "I asked him not to smoke. · She told me not to worry."
+  },
+  {
+   "h": "Местоимение — в объектной форме",
+   "p": "В позиции между глаголами местоимение стоит в форме me, him, her, us, them, а не I, he, she. Это та же форма, что после предлога, и её легко проверить по звучанию.",
+   "formula": "They want us to stay. (не we) · Let them decide. (не they)"
+  }
+ ],
+ "examples": [
+  {"en": "I want you to meet my parents.", "ru": "Я хочу, чтобы ты познакомился с моими родителями."},
+  {"en": "She asked me to close the door.", "ru": "Она попросила меня закрыть дверь."},
+  {"en": "Let me carry your bag.", "ru": "Дай я понесу твою сумку."},
+  {"en": "His joke made everyone laugh.", "ru": "Его шутка рассмешила всех."},
+  {"en": "They told us not to be late.", "ru": "Они сказали нам не опаздывать."}
+ ],
+ "traps": [
+  {"bad": "I want that you come with me.", "good": "I want you to come with me.", "why": "После want нет that: сразу человек и to."},
+  {"bad": "Let me to help you.", "good": "Let me help you.", "why": "После let инфинитив без to."},
+  {"bad": "She made me to wait.", "good": "She made me wait.", "why": "Make тоже обходится без to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I want you ___ with me.", "options": ["to come", "come", "coming"], "a": 0, "why": "Want somebody to do."},
+  {"type": "choice", "q": "Let me ___ you with that box.", "options": ["to help", "help", "helping"], "a": 1, "why": "После let — глагол без to."},
+  {"type": "choice", "q": "The teacher made us ___ the text again.", "options": ["to read", "reading", "read"], "a": 2, "why": "Make somebody do — без to."},
+  {"type": "choice", "q": "She asked me ___ her later.", "options": ["call", "to call", "calling"], "a": 1, "why": "Ask somebody to do."},
+  {"type": "choice", "q": "My parents don't let me ___ out late.", "options": ["to go", "go", "going"], "a": 1, "why": "Let somebody do, без частицы to."},
+  {"type": "gap", "q": "We expect them ___ (arrive) at six.", "a": ["to arrive"], "why": "Expect somebody to do."},
+  {"type": "gap", "q": "Please let him ___ (explain) his idea.", "a": ["explain"], "why": "После let инфинитив без to."},
+  {"type": "gap", "q": "I told her ___ (not / worry) about it.", "a": ["not to worry"], "why": "Отрицание перед to: not to worry."},
+  {"type": "translate", "q": "Я хочу, чтобы ты позвонил мне.", "a": ["i want you to call me", "i want you to phone me", "i want you to ring me"], "why": "Want + человека + to + глагол, без that."},
+  {"type": "translate", "q": "Дай мне посмотреть.", "a": ["let me look", "let me have a look", "let me see", "let me take a look"], "why": "Let me + глагол без to."}
+ ]
+}

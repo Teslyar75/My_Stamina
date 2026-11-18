@@ -1,0 +1,75 @@
+{
+ "n": 72,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Артикль the: когда не нужен",
+ "en": "the (3)",
+ "summary": "Обобщение, имена, города, дни недели — места, где the только портит фразу.",
+ "can_do": [
+  "Говорить о вещах вообще без артикля.",
+  "Правильно употреблять имена, города и дни недели.",
+  "Не ставить the перед school, work, home в общих случаях."
+ ],
+ "theory": [
+  {
+   "h": "Обобщение — без артикля",
+   "p": "Когда речь о классе вещей вообще, артикль не нужен: Books are expensive. I like coffee. Life is short. The books здесь значило бы «те самые книги, о которых мы говорим».",
+   "formula": "Books are expensive. · I like music."
+  },
+  {
+   "h": "Где артикль не появляется",
+   "p": "Имена, города, дни, месяцы, языки и учебные предметы обходятся без артикля. Это самая частая зона ошибок у тех, кто привык ставить the «для солидности».",
+   "table": {
+    "head": ["Случай", "Артикль", "Пример"],
+    "rows": [
+     ["обобщение", "без", "Dogs are friendly."],
+     ["имя человека", "без", "Anna lives here."],
+     ["город, страна", "без", "Moscow, France"],
+     ["дни, месяцы", "без", "on Monday, in July"],
+     ["языки, предметы", "без", "I speak German. I study history."]
+    ]
+   }
+  },
+  {
+   "h": "Учреждения «по назначению»",
+   "p": "School, university, hospital, prison, church, bed, work, home идут без артикля, когда используются по прямому назначению: там учатся, лечатся, сидят, спят. С the они превращаются в здания.",
+   "formula": "He is in hospital. (лечится) · I went to the hospital to see him."
+  },
+  {
+   "h": "Артикль и притяжательное вместе не стоят",
+   "p": "Если перед существительным уже есть my, your, Tom's, this, some, то артикль не нужен. Нельзя сказать my the book или the my book: определитель может быть только один.",
+   "formula": "my book · Tom's car · this pen"
+  },
+  {
+   "h": "Завтрак, обед, ужин",
+   "p": "Приёмы пищи без уточнения идут без артикля: have breakfast, have lunch, have dinner. Но прилагательное или конкретный приём возвращают артикль: a quick lunch, the dinner was great.",
+   "formula": "I have breakfast at seven. · We had a quick lunch."
+  }
+ ],
+ "examples": [
+  {"en": "Life is too short for bad coffee.", "ru": "Жизнь слишком коротка для плохого кофе."},
+  {"en": "She speaks French and Spanish.", "ru": "Она говорит по-французски и по-испански."},
+  {"en": "We usually go to work by metro.", "ru": "Мы обычно ездим на работу на метро."},
+  {"en": "My grandfather is in hospital.", "ru": "Мой дедушка в больнице."},
+  {"en": "I'll see you on Friday.", "ru": "Увидимся в пятницу."},
+  {"en": "Children need a lot of sleep.", "ru": "Детям нужно много сна."}
+ ],
+ "traps": [
+  {"bad": "The life is beautiful.", "good": "Life is beautiful.", "why": "Обобщение идёт без артикля."},
+  {"bad": "I go to the bed at ten.", "good": "I go to bed at ten.", "why": "Bed в значении «спать» — без артикля."},
+  {"bad": "The Anna is my sister.", "good": "Anna is my sister.", "why": "Перед именем человека артикль не ставится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ dogs are usually friendly.", "options": ["The", "A", "no article"], "a": 2, "why": "Общее утверждение о собаках — без артикля."},
+  {"type": "choice", "q": "She speaks ___ Italian very well.", "options": ["the", "no article", "a"], "a": 1, "why": "Названия языков идут без артикля."},
+  {"type": "choice", "q": "We have ___ breakfast at eight.", "options": ["a", "no article", "the"], "a": 1, "why": "Have breakfast — устойчивое выражение без артикля."},
+  {"type": "choice", "q": "I'll see you on ___ Friday.", "options": ["the", "a", "no article"], "a": 2, "why": "Дни недели — без артикля."},
+  {"type": "choice", "q": "My brother is in ___ hospital. He broke his leg.", "options": ["no article", "the", "a"], "a": 0, "why": "Он лечится, а не посещает здание: in hospital."},
+  {"type": "gap", "q": "Write the article or 'no article': ___ books are expensive.", "a": ["no article"], "why": "Обобщение о книгах вообще — без артикля."},
+  {"type": "gap", "q": "We had ___ quick lunch and went out.", "a": ["a"], "why": "С прилагательным приём пищи снова требует артикля: a quick lunch."},
+  {"type": "gap", "q": "Write the article or 'no article': He goes to ___ work by bike.", "a": ["no article"], "why": "Go to work — без артикля."},
+  {"type": "translate", "q": "Она говорит по-немецки.", "a": ["she speaks german"], "why": "Язык без артикля: she speaks German."},
+  {"type": "translate", "q": "Жизнь прекрасна.", "a": ["life is beautiful", "life is wonderful"], "why": "Обобщение: life без the."
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "n": 2,
+ "level": "A1",
+ "module": "present",
+ "title": "Вопросы с be: Am I? Is she?",
+ "en": "am/is/are (questions)",
+ "summary": "Как спросить «Ты студент?», «Где ты?» и коротко ответить, не притаскивая в вопрос лишний do.",
+ "can_do": [
+  "Задать вопрос с am, is, are: Are you ready?",
+  "Спросить где, почему, сколько лет: Where is he? How old is she?",
+  "Ответить коротко: Yes, I am. No, she isn't."
+ ],
+ "theory": [
+  {
+   "h": "Вопрос начинается с be",
+   "p": "В вопросе be выходит на первое место, а тот, о ком речь, встаёт сразу после него. Порядок жёсткий: be, потом кто, потом всё остальное. Вспомогательный do здесь не появляется вообще.",
+   "formula": "Am I late? · Is she a doctor? · Are they at home?"
+  },
+  {
+   "h": "Какая форма идёт вперёд",
+   "p": "Форма be в вопросе та же, что и в утверждении: она зависит только от того, о ком речь. Меняется лишь место в предложении.",
+   "table": {
+    "head": ["Утверждение", "Вопрос"],
+    "rows": [
+     ["I am ready.", "Am I ready?"],
+     ["He is ready.", "Is he ready?"],
+     ["They are ready.", "Are they ready?"]
+    ]
+   }
+  },
+  {
+   "h": "Вопросительное слово впереди",
+   "p": "Where, what, why, who, how old ставятся перед be, а дальше порядок не меняется. Получается короткая лесенка: слово, be, кто, остальное.",
+   "formula": "Where are you? · Why is he sad? · What time is it?"
+  },
+  {
+   "h": "Короткий ответ",
+   "p": "На вопрос с be нельзя ответить просто yes или no. Нужно повторить местоимение и be. В отрицательном ответе be сжимается, а форма amn't не существует.",
+   "table": {
+    "head": ["Вопрос", "Да", "Нет"],
+    "rows": [
+     ["Are you tired?", "Yes, I am.", "No, I'm not."],
+     ["Is he here?", "Yes, he is.", "No, he isn't."],
+     ["Are they ready?", "Yes, they are.", "No, they aren't."]
+    ]
+   }
+  },
+  {
+   "h": "Чем это отличается от do",
+   "p": "Вопрос с do нужен, когда в предложении есть действие: Do you work? Вопрос с be нужен, когда действия нет: Are you a driver? Перепутать их значит спросить о другом.",
+   "formula": "Are you a student? (кто ты) · Do you study here? (что делаешь)"
+  }
+ ],
+ "examples": [
+  {"en": "Are you from Spain?", "ru": "Ты из Испании?"},
+  {"en": "Is your sister a teacher?", "ru": "Твоя сестра учительница?"},
+  {"en": "Where is my phone?", "ru": "Где мой телефон?"},
+  {"en": "Why are you late?", "ru": "Почему ты опоздал?"},
+  {"en": "Is it cold outside?", "ru": "На улице холодно?"}
+ ],
+ "traps": [
+  {"bad": "Do you are tired?", "good": "Are you tired?", "why": "be сам строит вопрос, do ему не нужен."},
+  {"bad": "Yes, I do.", "good": "Yes, I am.", "why": "Короткий ответ повторяет тот глагол, который был в вопросе."},
+  {"bad": "No, I amn't.", "good": "No, I'm not.", "why": "Формы amn't в английском нет."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you ready to go?", "options": ["Are", "Is", "Am"], "a": 0, "why": "you требует are, и в вопросе are идёт первым."},
+  {"type": "choice", "q": "___ your brother at home?", "options": ["Are", "Is", "Am"], "a": 1, "why": "your brother = he, поэтому is."},
+  {"type": "choice", "q": "Where ___ my keys?", "options": ["is", "are", "am"], "a": 1, "why": "keys во множественном числе, значит are."},
+  {"type": "choice", "q": "___ I late?", "options": ["Am", "Is", "Are"], "a": 0, "why": "I всегда идёт с am."},
+  {"type": "choice", "q": "Why ___ they so quiet?", "options": ["is", "am", "are"], "a": 2, "why": "they требует are."},
+  {"type": "gap", "q": "___ (be) she a nurse?", "a": ["is"], "why": "she = is, и в вопросе is стоит первым."},
+  {"type": "gap", "q": "What time ___ (be) the lesson?", "a": ["is"], "why": "the lesson = it, поэтому is."},
+  {"type": "translate", "q": "Ты голоден?", "a": ["are you hungry"], "why": "Вопрос с be: Are you hungry?"},
+  {"type": "translate", "q": "Где твоя сумка?", "a": ["where is your bag", "where's your bag"], "why": "Where + is + your bag."}
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "n": 73,
+ "level": "A2",
+ "module": "nouns",
+ "title": "the с географическими названиями",
+ "en": "the (4): география",
+ "summary": "Почему France без the, а the USA с ним: короткое правило для стран, рек, гор и морей.",
+ "can_do": [
+  "Сказать, где в географии нужен the.",
+  "Правильно говорить о странах, городах и озёрах.",
+  "Отличить the Netherlands от Germany и the Alps от Everest."
+ ],
+ "theory": [
+  {
+   "h": "Города и страны — обычно без the",
+   "p": "Большинство стран, городов, континентов и островов идут без артикля: Russia, France, Moscow, Paris, Africa, Sicily. По-русски мы говорим «в России», и хочется добавить the, но он не нужен.",
+   "formula": "in Russia · in Paris · in Africa"
+  },
+  {
+   "h": "Что с the, а что без",
+   "p": "Правило простое: the появляется там, где название описывает группу или множество. Реки, моря и горные цепи — тоже «множество воды или гор».",
+   "table": {
+    "head": ["Группа", "the?", "Примеры"],
+    "rows": [
+     ["большинство стран", "нет", "France, Japan, Brazil"],
+     ["страны-группы", "да", "the USA, the UK, the Netherlands"],
+     ["города", "нет", "London, Cairo"],
+     ["реки, моря, океаны", "да", "the Volga, the Pacific"],
+     ["горные цепи", "да", "the Alps, the Urals"],
+     ["отдельные горы", "нет", "Everest, Elbrus"],
+     ["озёра", "нет", "Lake Baikal, Lake Geneva"]
+    ]
+   }
+  },
+  {
+   "h": "Почему the USA",
+   "p": "The нужен там, где в названии видно множественное число или of: the United States (штаты), the United Kingdom, the Netherlands (низкие земли), the Philippines. Полное имя подсказывает артикль.",
+   "formula": "the United States of America → the USA"
+  },
+  {
+   "h": "Реки и моря всегда с the",
+   "p": "Вода на карте почти всегда с артиклем: реки, моря, океаны, каналы, проливы. Исключение — отдельные озёра: Lake Baikal без the, но the Great Lakes, потому что их несколько.",
+   "formula": "the Thames · the Mediterranean · Lake Baikal"
+  },
+  {
+   "h": "Части света",
+   "p": "The нужен, когда речь о части света с уточнением of: in the north of Spain, in the south of France. Без of появляется прилагательное, и артикль исчезает: in northern Spain.",
+   "formula": "in the north of Spain · in northern Spain"
+  }
+ ],
+ "examples": [
+  {"en": "She has never been to Japan.", "ru": "Она никогда не была в Японии."},
+  {"en": "The Thames flows through London.", "ru": "Темза течёт через Лондон."},
+  {"en": "He lives in the Netherlands.", "ru": "Он живёт в Нидерландах."},
+  {"en": "We climbed Elbrus last summer.", "ru": "Мы поднялись на Эльбрус прошлым летом."},
+  {"en": "The Alps are covered with snow.", "ru": "Альпы покрыты снегом."},
+  {"en": "Lake Baikal is the deepest lake in the world.", "ru": "Байкал — самое глубокое озеро в мире."}
+ ],
+ "traps": [
+  {"bad": "I live in the Russia.", "good": "I live in Russia.", "why": "Обычные страны идут без the."},
+  {"bad": "He is from USA.", "good": "He is from the USA.", "why": "Названия-группы требуют the: the USA, the UK."},
+  {"bad": "The Everest is very high.", "good": "Everest is very high.", "why": "Отдельные горы без the; the только у горных цепей."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We are going to ___ France in June.", "options": ["the", "a", "no article"], "a": 2, "why": "Обычная страна — без артикля."},
+  {"type": "choice", "q": "___ United States is a big country.", "options": ["A", "The", "no article"], "a": 1, "why": "Название-группа — the United States."},
+  {"type": "choice", "q": "The longest river in Russia is ___ Volga.", "options": ["a", "the", "no article"], "a": 1, "why": "Реки всегда с the."},
+  {"type": "choice", "q": "They climbed ___ Mont Blanc last summer.", "options": ["the", "a", "no article"], "a": 2, "why": "Отдельная гора — без артикля."},
+  {"type": "choice", "q": "I have never seen ___ Black Sea.", "options": ["a", "the", "no article"], "a": 1, "why": "Море — с the."},
+  {"type": "choice", "q": "___ Alps are in Europe.", "options": ["A", "The", "no article"], "a": 1, "why": "Горная цепь — the Alps."},
+  {"type": "gap", "q": "He lives in ___ Netherlands.", "a": ["the"], "why": "Страна-группа: the Netherlands."},
+  {"type": "gap", "q": "Write the article or 'no article': She comes from ___ Brazil.", "a": ["no article"], "why": "Обычная страна — без артикля."},
+  {"type": "translate", "q": "Он живёт в Нидерландах.", "a": ["he lives in the netherlands"], "why": "The Netherlands — всегда с the."},
+  {"type": "translate", "q": "Темза протекает через Лондон.", "a": ["the thames flows through london", "the river thames flows through london"], "why": "Река с the, город без артикля."
+  }
+ ]
+}

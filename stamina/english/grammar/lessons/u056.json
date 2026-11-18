@@ -1,0 +1,72 @@
+{
+ "n": 56,
+ "level": "A2",
+ "module": "verbs",
+ "title": "Глагол get",
+ "en": "get",
+ "summary": "Один короткий глагол закрывает десяток русских: получать, становиться, добираться, покупать — и с прилагательным он тоже работает.",
+ "can_do": [
+  "Сказать, что получили или купили что-то.",
+  "Передать изменение состояния: get tired, get better.",
+  "Рассказать, как добрались до места: get to work, get home."
+ ],
+ "theory": [
+  {
+   "h": "get = получать, доставать, покупать",
+   "p": "С существительным get значит получить или приобрести. В этом смысле он заменяет сразу receive и buy, поэтому в разговорной речи встречается постоянно.",
+   "formula": "I got a letter from her. · Where did you get that coat?"
+  },
+  {
+   "h": "get + прилагательное = становиться",
+   "p": "Перед прилагательным get означает изменение: стало холоднее, стало лучше, устал постепенно. Это самая частая модель, и её удобно запомнить как формулу.",
+   "table": {
+    "head": ["Фраза", "Перевод"],
+    "rows": [
+     ["get tired", "устать"],
+     ["get better", "поправиться, улучшиться"],
+     ["get dark", "стемнеть"],
+     ["get ready", "приготовиться"]
+    ]
+   }
+  },
+  {
+   "h": "get to и get home",
+   "p": "О значении «добраться» get требует to перед местом. Исключения те же, что у go: home, here и there обходятся без предлога, потому что ведут себя как наречия.",
+   "formula": "How do I get to the station? · I got home at nine."
+  },
+  {
+   "h": "Вверх, вниз и в транспорт",
+   "p": "Несколько частых фраз с частицами описывают движение и посадку. Их значения лучше выучить готовыми, потому что дословный перевод сбивает.",
+   "formula": "get up — встать · get on — сесть в транспорт · get off — выйти · get out — выйти наружу"
+  },
+  {
+   "h": "have got — это про владение",
+   "p": "Конструкция have got по смыслу равна have, но строится с got: I've got a car. В вопросах и отрицаниях got тоже остаётся. Get с прилагательным и have got — разные вещи, их не стоит смешивать.",
+   "formula": "I've got a new phone. · Have you got a minute? — Sorry, I haven't."
+  }
+ ],
+ "examples": [
+  {"en": "I got your message this morning.", "ru": "Я получил твоё сообщение утром."},
+  {"en": "It's getting dark, let's go home.", "ru": "Темнеет, пойдём домой."},
+  {"en": "How can I get to the airport?", "ru": "Как мне добраться до аэропорта?"},
+  {"en": "I usually get up at seven.", "ru": "Я обычно встаю в семь."},
+  {"en": "She's got two brothers.", "ru": "У неё два брата."}
+ ],
+ "traps": [
+  {"bad": "How do I get the airport?", "good": "How do I get to the airport?", "why": "Перед местом нужен предлог to."},
+  {"bad": "I got home to at ten.", "good": "I got home at ten.", "why": "Home не берёт предлог to, а at указывает на время."},
+  {"bad": "I'm get tired.", "good": "I'm getting tired.", "why": "После be нужна форма -ing, а изменение состояния передаёт get."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Where did you ___ this jacket?", "options": ["get", "got", "getting"], "a": 0, "why": "После did глагол в начальной форме: get."},
+  {"type": "choice", "q": "It ___ cold in the evening.", "options": ["gets", "get", "is get"], "a": 0, "why": "It + прилагательное: gets cold."},
+  {"type": "choice", "q": "She ___ tired after the long walk.", "options": ["got", "get", "gets"], "a": 0, "why": "Прошлое: she got tired — она устала."},
+  {"type": "choice", "q": "I ___ up at six every morning.", "options": ["get", "gets", "getting"], "a": 0, "why": "I в Present Simple: get up."},
+  {"type": "choice", "q": "___ you got a pen? — Yes, here you are.", "options": ["Have", "Do", "Are"], "a": 0, "why": "Have got в вопросе начинается с have."},
+  {"type": "gap", "q": "We ___ (get) home very late yesterday.", "a": ["got"], "why": "Past Simple: got home, без to."},
+  {"type": "gap", "q": "She is ___ (get) better after the operation.", "a": ["getting"], "why": "После be нужна форма -ing: is getting better."},
+  {"type": "gap", "q": "Let's go home — it is ___ dark.", "a": ["getting"], "why": "Изменение состояния: it is getting dark."},
+  {"type": "translate", "q": "Как добраться до вокзала?", "a": ["how do i get to the station", "how can i get to the station", "how do i get to the railway station"], "why": "Get to + место."},
+  {"type": "translate", "q": "У меня есть новая машина.", "a": ["i have got a new car", "i've got a new car", "i have a new car"], "why": "Владение: have got или have."}
+ ]
+}

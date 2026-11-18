@@ -1,0 +1,77 @@
+{
+ "n": 4,
+ "level": "A1",
+ "module": "present",
+ "title": "Вопросы в Present Continuous",
+ "en": "are you doing? (present continuous questions)",
+ "summary": "Как спросить «Ты сейчас работаешь?» и «Что ты делаешь?» — с be впереди, без do и без перестановки глагола.",
+ "can_do": [
+  "Спросить, что человек делает прямо сейчас.",
+  "Задать вопрос с what, where, why: Why are you laughing?",
+  "Ответить коротко: Yes, I am. No, she isn't."
+ ],
+ "theory": [
+  {
+   "h": "be выходит вперёд",
+   "p": "Вопрос в Present Continuous строится так же, как вопрос с be: сначала am, is или are, потом тот, о ком речь, потом глагол с -ing. Смысловой глагол не двигается с места, а do вообще не нужен.",
+   "formula": "Are you working? · Is she sleeping? · Am I dreaming?"
+  },
+  {
+   "h": "Три формы be в вопросе",
+   "p": "Меняется только be. Глагол с -ing остаётся неизменным, независимо от того, кто действует.",
+   "table": {
+    "head": ["Кто", "Вопрос"],
+    "rows": [
+     ["I", "Am I working?"],
+     ["he / she / it", "Is he working?"],
+     ["you / we / they", "Are they working?"]
+    ]
+   }
+  },
+  {
+   "h": "Вопросительное слово перед be",
+   "p": "What, where, who, why ставятся в самое начало, а be с подлежащим идёт следом. Именно здесь чаще всего ломается порядок слов.",
+   "formula": "What are you doing? · Where is he going? · Why is she crying?"
+  },
+  {
+   "h": "Короткий ответ",
+   "p": "Короткий ответ повторяет be из вопроса и не трогает -ing. Нельзя ответить Yes, I do, если спрашивали Are you...",
+   "table": {
+    "head": ["Вопрос", "Да", "Нет"],
+    "rows": [
+     ["Are you reading?", "Yes, I am.", "No, I'm not."],
+     ["Is it working?", "Yes, it is.", "No, it isn't."],
+     ["Are they coming?", "Yes, they are.", "No, they aren't."]
+    ]
+   }
+  },
+  {
+   "h": "Do you work или Are you working",
+   "p": "Эти два вопроса похожи только на слух. Do you work here спрашивает про работу вообще, Are you working now — про эту минуту. Выбор вопроса меняет смысл ответа.",
+   "formula": "Do you work here? (вообще) · Are you working now? (сейчас)"
+  }
+ ],
+ "examples": [
+  {"en": "Are you waiting for me?", "ru": "Ты меня ждёшь?"},
+  {"en": "Is your phone working?", "ru": "Твой телефон работает?"},
+  {"en": "What are you reading?", "ru": "Что ты читаешь?"},
+  {"en": "Where is she going?", "ru": "Куда она идёт?"},
+  {"en": "Why are they shouting?", "ru": "Почему они кричат?"}
+ ],
+ "traps": [
+  {"bad": "Do you are working?", "good": "Are you working?", "why": "be строит вопрос сам, do рядом с ним лишний."},
+  {"bad": "What you are doing?", "good": "What are you doing?", "why": "После вопросительного слова be идёт перед подлежащим."},
+  {"bad": "Yes, I do.", "good": "Yes, I am.", "why": "Ответ повторяет be, а не do."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you listening to me?", "options": ["Are", "Do", "Is"], "a": 0, "why": "you = are, do в Continuous не нужен."},
+  {"type": "choice", "q": "___ he wearing a jacket?", "options": ["Are", "Is", "Do"], "a": 1, "why": "he = is."},
+  {"type": "choice", "q": "What ___ you doing?", "options": ["are", "do", "is"], "a": 0, "why": "you = are, и be стоит перед подлежащим."},
+  {"type": "choice", "q": "Where ___ they going?", "options": ["is", "do", "are"], "a": 2, "why": "they = are."},
+  {"type": "choice", "q": "___ I sitting in your seat?", "options": ["Am", "Is", "Do"], "a": 0, "why": "I = am."},
+  {"type": "gap", "q": "What ___ (be) she cooking?", "a": ["is"], "why": "she = is, и в вопросе is идёт перед подлежащим."},
+  {"type": "gap", "q": "___ (be) you waiting for the bus?", "a": ["are"], "why": "you = are."},
+  {"type": "translate", "q": "Ты сейчас работаешь?", "a": ["are you working", "are you working now"], "why": "Вопрос в Continuous: Are you working (now)?"},
+  {"type": "translate", "q": "Что он делает?", "a": ["what is he doing", "what's he doing"], "why": "What + is + he + doing."}
+ ]
+}

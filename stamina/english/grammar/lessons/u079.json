@@ -1,0 +1,71 @@
+{
+ "n": 79,
+ "level": "A2",
+ "module": "quantity",
+ "title": "somebody, anybody, nobody",
+ "en": "somebody/anybody/nobody",
+ "summary": "Кто-то, кто-нибудь и никто: три слова для людей, которые подчиняются тем же правилам, что some, any и no.",
+ "can_do": [
+  "Сказать «кто-то», «кто-нибудь», «никто», не задумываясь о типе предложения.",
+  "Отличить anybody в значении «любой» от anybody в значении «кто-нибудь».",
+  "Правильно согласовать глагол с somebody и nobody."
+ ],
+ "theory": [
+  {
+   "h": "Семья на -body и на -one",
+   "p": "Для людей есть две одинаковые по смыслу серии: somebody и someone, anybody и anyone, nobody и no one. Выбор между ними — дело вкуса, на смысл он не влияет. Правила же те же, что у some, any и no.",
+   "table": {
+    "head": ["Группа", "Человек", "Вещь", "Место"],
+    "rows": [
+     ["some-", "somebody", "something", "somewhere"],
+     ["any-", "anybody", "anything", "anywhere"],
+     ["no-", "nobody", "nothing", "nowhere"]
+    ]
+   }
+  },
+  {
+   "h": "Somebody — когда речь о конкретном, но неизвестном",
+   "p": "В утвердительных предложениях мы говорим somebody: есть человек, мы просто не знаем его имени. После somebody глагол всегда в единственном числе, потому что речь об одном человеке.",
+   "formula": "Somebody is waiting for you."
+  },
+  {
+   "h": "Anybody — в вопросах и после not",
+   "p": "В вопросах и в отрицаниях с not используется anybody. Это тот же закон, что с some и any: вопрос и отрицание выбирают any-форму, утверждение — some-форму.",
+   "formula": "Does anybody know him? · I didn't meet anybody."
+  },
+  {
+   "h": "Anybody может значить «любой»",
+   "p": "В утвердительном предложении anybody иногда означает не «кто-нибудь», а «любой человек вообще». Смысл подсказывает контекст: если речь о том, что доступно всем, — это «любой».",
+   "formula": "Anybody can learn to swim."
+  },
+  {
+   "h": "Nobody вместо not anybody",
+   "p": "Если хочется поставить отрицание в начало, берём nobody и убираем not: не Not anybody came, а Nobody came. Отрицание в предложении остаётся одно.",
+   "formula": "Nobody came. = Not anybody came. (так не говорят)"
+  }
+ ],
+ "examples": [
+  {"en": "Somebody is waiting for you outside.", "ru": "Кто-то ждёт тебя на улице."},
+  {"en": "Does anybody here speak Italian?", "ru": "Кто-нибудь здесь говорит по-итальянски?"},
+  {"en": "I didn't meet anybody at the station.", "ru": "Я никого не встретил на вокзале."},
+  {"en": "Nobody wants to work on Sunday.", "ru": "Никто не хочет работать в воскресенье."},
+  {"en": "Anybody can learn to swim.", "ru": "Любой может научиться плавать."}
+ ],
+ "traps": [
+  {"bad": "Somebody are knocking at the door.", "good": "Somebody is knocking at the door.", "why": "somebody — один человек, глагол в единственном числе."},
+  {"bad": "Anybody doesn't know him.", "good": "Nobody knows him.", "why": "С not используем anybody, без not — nobody."},
+  {"bad": "Nobody of my friends came.", "good": "None of my friends came.", "why": "«Никто из» — это none of, а не nobody of."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There is ___ at the door. He wants to speak to you.", "options": ["somebody", "anybody", "nobody"], "a": 0, "why": "Утверждение о конкретном человеке — somebody."},
+  {"type": "choice", "q": "Is there ___ I can do to help you?", "options": ["something", "anything", "nothing"], "a": 1, "why": "Вопрос требует any-формы: anything."},
+  {"type": "choice", "q": "I knocked twice, but ___ opened the door.", "options": ["somebody", "anybody", "nobody"], "a": 2, "why": "Дверь не открыли — nobody."},
+  {"type": "choice", "q": "___ can answer this question; it is very easy.", "options": ["Somebody", "Anybody", "Nobody"], "a": 1, "why": "Здесь anybody = любой человек."},
+  {"type": "choice", "q": "She lives ___ near London.", "options": ["somewhere", "anywhere", "nowhere"], "a": 0, "why": "Утверждение о месте — somewhere."},
+  {"type": "gap", "q": "___ called you five minutes ago, but he didn't leave a name.", "a": ["somebody", "someone"], "why": "Утверждение: somebody или someone."},
+  {"type": "gap", "q": "I knocked at the door, but ___ opened it.", "a": ["nobody", "no one"], "why": "Никто не открыл — nobody."},
+  {"type": "gap", "q": "Does ___ want a cup of tea?", "a": ["anybody", "anyone"], "why": "Вопрос: anybody или anyone."},
+  {"type": "translate", "q": "Кто-то стучит в дверь.", "a": ["somebody is knocking at the door", "someone is knocking at the door", "somebody's knocking at the door"], "why": "somebody + is: один человек."},
+  {"type": "translate", "q": "Ты кого-нибудь видел?", "a": ["did you see anybody", "did you see anyone", "have you seen anybody", "have you seen anyone"], "why": "Вопрос требует any-формы: anybody или anyone."}
+ ]
+}

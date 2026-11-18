@@ -1,0 +1,66 @@
+{
+ "n": 34,
+ "level": "A2",
+ "module": "modals",
+ "title": "would и would like",
+ "en": "would / would like",
+ "summary": "Вежливое «хотел бы» и воображаемое «бы»: would прячет и просьбу, и мечту.",
+ "can_do": [
+  "Вежливо попросить вещь или услугу через I'd like.",
+  "Предложить что-то собеседнику: Would you like ...?",
+  "Поговорить о воображаемой ситуации со словом if."
+ ],
+ "theory": [
+  {
+   "h": "would like вместо хочу",
+   "p": "Would like — вежливая форма want. После неё идёт либо существительное, либо инфинитив с to. Сокращение 'd почти не слышно, но на письме оно обязательно: иначе will like получает другой смысл.",
+   "formula": "I'd like a coffee. · I'd like to book a table."
+  },
+  {
+   "h": "Предложение, а не вопрос",
+   "p": "Would you like ...? ничего не спрашивает о вкусах, а предлагает. Поэтому ответ короткий: Yes, please. или No, thanks. Вопрос о вкусах строится иначе, с do.",
+   "table": {
+    "head": ["Фраза", "Когда говорят"],
+    "rows": [
+     ["Would you like some tea?", "предлагают"],
+     ["Do you like tea?", "спрашивают о вкусе"]
+    ]
+   }
+  },
+  {
+   "h": "would для воображаемого",
+   "p": "Второе значение would — нереальное или маловероятное: I would live by the sea. В таких фразах он часто идёт рядом с if и переводится частицей «бы».",
+   "formula": "If I had time, I would travel. · I'd help you, but I'm busy."
+  },
+  {
+   "h": "Отрицание и запрет на лишнее to",
+   "p": "Отрицание — wouldn't. После would нет to, кроме устойчивого would like to, потому что там to относится уже к смысловому глаголу. Проверять просто: есть ли после would отдельное действие.",
+   "formula": "I wouldn't do that. · Would you like to come? · I'd rather stay home."
+  }
+ ],
+ "examples": [
+  {"en": "I'd like a glass of water, please.", "ru": "Я бы хотел стакан воды, пожалуйста."},
+  {"en": "Would you like to join us?", "ru": "Не хотите присоединиться к нам?"},
+  {"en": "She'd like to learn Italian.", "ru": "Она хотела бы выучить итальянский."},
+  {"en": "I wouldn't buy that flat.", "ru": "Я бы не стал покупать ту квартиру."},
+  {"en": "If I were you, I'd say no.", "ru": "На твоём месте я бы отказался."},
+  {"en": "Would you like some cake?", "ru": "Хотите торта?"}
+ ],
+ "traps": [
+  {"bad": "I would like to a coffee.", "good": "I would like a coffee.", "why": "To нужен только перед глаголом, перед существительным его нет."},
+  {"bad": "I will like a coffee.", "good": "I'd like a coffee.", "why": "Вежливая просьба — would like; will like значит «полюблю»."},
+  {"bad": "Would you like some tea? — Yes, I like.", "good": "Would you like some tea? — Yes, please.", "why": "Короткий ответ на предложение — please или thanks, а не like."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ like a table for two, please.", "options": ["would", "will", "am"], "a": 0, "why": "Вежливая просьба: I'd like a table."},
+  {"type": "choice", "q": "___ you like to come with us?", "options": ["Would", "Do", "Are"], "a": 0, "why": "Предложение: Would you like to come?"},
+  {"type": "choice", "q": "She ___ like to change her ticket.", "options": ["would", "will", "does"], "a": 0, "why": "would не меняется по лицам: she would like."},
+  {"type": "choice", "q": "I ___ do that if I were you.", "options": ["wouldn't", "don't", "won't"], "a": 0, "why": "Воображаемая ситуация: I wouldn't do that."},
+  {"type": "choice", "q": "Would you like ___ tea?", "options": ["some", "any", "a"], "a": 0, "why": "В предложении ждут согласия, поэтому some."},
+  {"type": "gap", "q": "We ___ (would) like to book a room.", "a": ["would", "'d"], "why": "Полная форма would и сокращение 'd обе верны."},
+  {"type": "gap", "q": "___ you like something to eat?", "a": ["would"], "why": "Вопрос-предложение начинается с would."},
+  {"type": "gap", "q": "He ___ (not / would) like to talk about it.", "a": ["wouldn't", "would not"], "why": "Отрицание: he wouldn't like."},
+  {"type": "translate", "q": "Я бы хотел чашку кофе.", "a": ["i would like a cup of coffee", "i'd like a cup of coffee"], "why": "Вежливая просьба: I'd like a cup of coffee."},
+  {"type": "translate", "q": "Хотите посмотреть наш сад?", "a": ["would you like to see our garden"], "why": "Предложение: Would you like to see our garden?"}
+ ]
+}

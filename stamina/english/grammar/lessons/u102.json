@@ -1,0 +1,71 @@
+{
+ "n": 102,
+ "level": "B1",
+ "module": "clauses",
+ "title": "where, when, whose",
+ "en": "where/when/whose (relative 2)",
+ "summary": "Ещё три слова для уточнений: место через where, время через when, принадлежность через whose.",
+ "can_do": [
+  "Сказать «город, где я родился» и «день, когда мы встретились».",
+  "Сказать «девушка, чей брат ...» через whose.",
+  "Не ставить лишний предлог после where."
+ ],
+ "theory": [
+  {
+   "h": "where — про место",
+   "p": "where присоединяет уточнение о месте и уже содержит в себе «в котором, на котором». Поэтому после него не нужен предлог in или at.",
+   "formula": "the house where I grew up · the café where we met"
+  },
+  {
+   "h": "when — про время",
+   "p": "when присоединяет уточнение о времени: день, год, момент. Вместо него в разговорной речи часто говорят that или вообще ничего не ставят.",
+   "formula": "the day when we met = the day that we met = the day we met"
+  },
+  {
+   "h": "whose — про принадлежность",
+   "p": "whose значит «чей» и ставится прямо перед существительным: whose brother, whose car. Слово работает и для людей, и для вещей: a company whose products we use.",
+   "formula": "the girl whose brother plays in our team"
+  },
+  {
+   "h": "Три слова в одной таблице",
+   "p": "Выбор зависит от того, что именно уточняется: место, время или владелец. Ошибки обычно не в самом слове, а в лишнем предлоге рядом с ним.",
+   "table": {
+    "head": ["Слово", "Уточняет", "Пример"],
+    "rows": [
+     ["where", "место", "This is the town where I was born."],
+     ["when", "время", "I remember the day when we met."],
+     ["whose", "владельца", "She's the girl whose brother plays here."]
+    ]
+   }
+  },
+  {
+   "h": "Если убрать where, вернётся предлог",
+   "p": "Сравните две равные по смыслу фразы. С where предлог не нужен, без where он обязателен и стоит в конце: the house I grew up in.",
+   "formula": "the house where I grew up = the house I grew up in"
+  }
+ ],
+ "examples": [
+  {"en": "This is the town where I was born.", "ru": "Это город, где я родился."},
+  {"en": "I remember the day when we first met.", "ru": "Я помню день, когда мы впервые встретились."},
+  {"en": "She's the girl whose brother plays in our team.", "ru": "Это девушка, чей брат играет в нашей команде."},
+  {"en": "We found a café where you can sit outside.", "ru": "Мы нашли кафе, где можно сидеть на улице."},
+  {"en": "I know a shop where they repair watches.", "ru": "Я знаю мастерскую, где чинят часы."}
+ ],
+ "traps": [
+  {"bad": "This is the house where I live in.", "good": "This is the house where I live.", "why": "where уже значит «в котором», предлог in лишний."},
+  {"bad": "The girl who's brother is a doctor lives here.", "good": "The girl whose brother is a doctor lives here.", "why": "who's = who is; притяжательное «чей» — это whose."},
+  {"bad": "I remember the day which we met.", "good": "I remember the day when we met.", "why": "О времени говорят when (или that), а which без предлога здесь не подходит."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is the village ___ my grandmother lives.", "options": ["which", "where", "when"], "a": 1, "why": "Уточняем место — where."},
+  {"type": "choice", "q": "I'll never forget the day ___ I got my diploma.", "options": ["where", "when", "whose"], "a": 1, "why": "Уточняем время — when."},
+  {"type": "choice", "q": "That's the man ___ car was stolen.", "options": ["who", "whose", "which"], "a": 1, "why": "Машина принадлежит ему — whose car."},
+  {"type": "choice", "q": "We need a room ___ we can work quietly.", "options": ["where", "which", "whose"], "a": 0, "why": "Место для работы — where (или that ... in)."},
+  {"type": "choice", "q": "Do you know the person ___ wrote this letter?", "options": ["whose", "which", "who"], "a": 2, "why": "О человеке-подлежащем — who."},
+  {"type": "gap", "q": "This is the café ___ (where/when) we had lunch.", "a": ["where"], "why": "Место — where, без предлога in."},
+  {"type": "gap", "q": "He's the boy ___ (whose/who's) father is a pilot.", "a": ["whose"], "why": "«Чей отец» — whose father."},
+  {"type": "gap", "q": "I remember the evening ___ (where/when) she called me.", "a": ["when"], "why": "Время — when."},
+  {"type": "translate", "q": "Это дом, где я вырос.", "a": ["this is the house where i grew up", "this is the house i grew up in"], "why": "where или предлог in в конце без where."},
+  {"type": "translate", "q": "Я знаю девушку, чья мама работает здесь.", "a": ["i know the girl whose mother works here", "i know a girl whose mother works here"], "why": "Принадлежность — whose mother."}
+ ]
+}

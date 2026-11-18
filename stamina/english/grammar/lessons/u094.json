@@ -1,0 +1,71 @@
+{
+ "n": 94,
+ "level": "B1",
+ "module": "order",
+ "title": "Куда ставить always, usually, often",
+ "en": "always/usually/often (позиция)",
+ "summary": "Наречия частоты любят середину предложения, но у середины три разных места — и выбор зависит от глагола.",
+ "can_do": [
+  "Поставить always, usually, often в правильное место.",
+  "Различить позицию при обычном глаголе, при be и при вспомогательном.",
+  "Не путать наречия частоты с обстоятельствами времени вроде yesterday."
+ ],
+ "theory": [
+  {
+   "h": "Три места, одно правило",
+   "p": "Место зависит от того, из чего состоит сказуемое. Перед обычным глаголом наречие стоит впереди, после be — позади, а при вспомогательном — между вспомогательным и смысловым глаголом. Три случая закрывают всю тему.",
+   "table": {
+    "head": ["Сказуемое", "Место наречия", "Пример"],
+    "rows": [
+     ["обычный глагол", "перед ним", "I always drink coffee."],
+     ["be", "после него", "She is usually at home."],
+     ["вспомогательный + глагол", "между ними", "He has never been there."]
+    ]
+   }
+  },
+  {
+   "h": "Самые частые слова",
+   "p": "В эту группу входят always, usually, often, sometimes, seldom, rarely, never. Все они отвечают на вопрос «как часто» и ведут себя одинаково, поэтому выучить позицию нужно один раз для всех.",
+   "formula": "always · usually · often · sometimes · never"
+  },
+  {
+   "h": "Never уже отрицательное",
+   "p": "Never значит «никогда» и само содержит отрицание. Поэтому с ним не ставят not: правильно He never smokes, а не He doesn't never smoke. Это тот же закон одного отрицания, что с nobody.",
+   "formula": "He never smokes."
+  },
+  {
+   "h": "В вопросе — тоже перед глаголом",
+   "p": "В вопросе наречие частоты остаётся перед смысловым глаголом, но после подлежащего: Do you often go there? Порядок do — подлежащее — наречие — глагол сохраняется.",
+   "formula": "Do you often go there?"
+  },
+  {
+   "h": "Yesterday и today — не из этой группы",
+   "p": "Слова yesterday, today, tomorrow, last week указывают на конкретное время, а не на частоту. Они стоят в конце или в начале предложения и в середину не просятся.",
+   "formula": "I saw her yesterday. (не I yesterday saw her)"
+  }
+ ],
+ "examples": [
+  {"en": "I always drink coffee in the morning.", "ru": "Я всегда пью кофе утром."},
+  {"en": "She is usually at home in the evening.", "ru": "Обычно она дома вечером."},
+  {"en": "We don't often go to the cinema.", "ru": "Мы нечасто ходим в кино."},
+  {"en": "He has never been to London.", "ru": "Он никогда не был в Лондоне."},
+  {"en": "They sometimes eat out on Fridays.", "ru": "Иногда они ужинают в кафе по пятницам."}
+ ],
+ "traps": [
+  {"bad": "I drink always coffee in the morning.", "good": "I always drink coffee in the morning.", "why": "Наречие частоты стоит перед смысловым глаголом."},
+  {"bad": "He always is late.", "good": "He is always late.", "why": "С be наречие идёт после него."},
+  {"bad": "We go often to the park.", "good": "We often go to the park.", "why": "often ставится перед go, а не после."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ to the gym after work.", "options": ["usually goes", "goes usually", "usually go"], "a": 0, "why": "Наречие перед смысловым глаголом, goes с -s."},
+  {"type": "choice", "q": "My brother ___ late for dinner.", "options": ["always is", "is always", "always be"], "a": 1, "why": "После be наречие ставится следом."},
+  {"type": "choice", "q": "He ___ smoked a cigarette in his life.", "options": ["never has", "has never", "never"], "a": 1, "why": "Между вспомогательным has и смысловым глаголом."},
+  {"type": "choice", "q": "We ___ out on Sundays.", "options": ["sometimes eat", "eat sometimes", "sometimes eating"], "a": 0, "why": "Перед глаголом, в основной форме."},
+  {"type": "choice", "q": "I ___ at six o'clock.", "options": ["am always up", "always am up", "am up always"], "a": 0, "why": "С be наречие идёт после am."},
+  {"type": "gap", "q": "I ___ get up early. (always)", "a": ["always"], "why": "Перед смысловым глаголом get."},
+  {"type": "gap", "q": "She is ___ late for class. (never)", "a": ["never"], "why": "После be — never, без not."},
+  {"type": "gap", "q": "We have ___ talked about it. (often)", "a": ["often"], "why": "Между have и talked."},
+  {"type": "translate", "q": "Я обычно встаю в семь.", "a": ["i usually get up at seven", "i usually get up at 7"], "why": "usually перед get up."},
+  {"type": "translate", "q": "Он всегда опаздывает.", "a": ["he is always late", "he's always late"], "why": "С be наречие после глагола: is always late."}
+ ]
+}

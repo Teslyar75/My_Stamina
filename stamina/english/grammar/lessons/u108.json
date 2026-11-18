@@ -1,0 +1,72 @@
+{
+ "n": 108,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "to, in, at: куда и где",
+ "en": "to/in/at",
+ "summary": "Один и тот же объект требует разных предлогов: to — когда идём куда-то, at или in — когда уже там.",
+ "can_do": [
+  "Отличить «куда» от «где»: go to work и be at work.",
+  "Сказать go home и go abroad без лишнего to.",
+  "Употребить into, когда важно движение внутрь."
+ ],
+ "theory": [
+  {
+   "h": "Два вопроса — два предлога",
+   "p": "to отвечает на вопрос «куда?», in и at — на вопрос «где?». Один и тот же объект в одной фразе идёт с to, в другой — с at: going to the shop и at the shop.",
+   "formula": "I'm going to the shop. (куда) · I'm at the shop. (где)"
+  },
+  {
+   "h": "Куда и где: пары",
+   "p": "Устойчивые сочетания удобно держать парами. Тогда предлог не приходится выбирать заново каждый раз.",
+   "table": {
+    "head": ["Куда? (to)", "Где? (at / in)"],
+    "rows": [
+     ["go to work", "be at work"],
+     ["go to school", "be at school"],
+     ["go to bed", "be in bed"],
+     ["go to the doctor", "be at the doctor's"]
+    ]
+   }
+  },
+  {
+   "h": "home и abroad — без to",
+   "p": "Со словами home, abroad, upstairs, downstairs предлог to не нужен: go home, come home, go abroad. Это наречия, они сами указывают направление.",
+   "formula": "I'm going home. · She went abroad. (не to home, не to abroad)"
+  },
+  {
+   "h": "into — движение внутрь",
+   "p": "into подчёркивает, что кто-то оказался внутри: he walked into the room, she got into the car. В обычном go to этого оттенка нет, поэтому into в простых фразах не обязателен.",
+   "formula": "go to the room (нейтрально) · walk into the room (внутрь)"
+  },
+  {
+   "h": "Артикль после to",
+   "p": "С to обычно нужен артикль или другой определитель: go to the bank, go to a café. Но go to work, go to school, go to bed, go to university идут без артикля — это устойчивые сочетания.",
+   "formula": "go to the bank · go to work · go to bed"
+  }
+ ],
+ "examples": [
+  {"en": "I'm going to the market. Do you need anything?", "ru": "Я иду на рынок. Тебе что-нибудь нужно?"},
+  {"en": "She's at work until eight.", "ru": "Она на работе до восьми."},
+  {"en": "We went home after the concert.", "ru": "После концерта мы пошли домой."},
+  {"en": "He's in bed with a cold.", "ru": "Он лежит в постели с простудой."},
+  {"en": "They moved to another city last year.", "ru": "В прошлом году они переехали в другой город."}
+ ],
+ "traps": [
+  {"bad": "I'm going to home.", "good": "I'm going home.", "why": "home здесь наречие, предлог to ему не нужен."},
+  {"bad": "She is to work now.", "good": "She is at work now.", "why": "Речь о месте, а не о направлении: at work."},
+  {"bad": "He goes to the bed at eleven.", "good": "He goes to bed at eleven.", "why": "В устойчивом go to bed артикль не ставится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I usually go ___ bed at eleven.", "options": ["to the", "to", "at"], "a": 1, "why": "Устойчивое go to bed — без артикля."},
+  {"type": "choice", "q": "She's ___ school right now.", "options": ["to", "at", "into"], "a": 1, "why": "«Где» — at school."},
+  {"type": "choice", "q": "We're going ___ Italy in June.", "options": ["in", "at", "to"], "a": 2, "why": "Направление — to Italy."},
+  {"type": "choice", "q": "They went ___ the cinema last night.", "options": ["to", "at", "in"], "a": 0, "why": "Куда — to the cinema."},
+  {"type": "choice", "q": "I'm ___ the doctor's at four.", "options": ["to", "at", "into"], "a": 1, "why": "«Где» — at the doctor's."},
+  {"type": "gap", "q": "I'm going ___ the airport now.", "a": ["to"], "why": "Направление движения — to."},
+  {"type": "gap", "q": "She's ___ home today.", "a": ["at"], "why": "«Дома» — at home."},
+  {"type": "gap", "q": "Let's go ___ the beach before lunch.", "a": ["to"], "why": "Куда — to the beach."},
+  {"type": "translate", "q": "Я иду домой.", "a": ["i'm going home", "i am going home"], "why": "go home без to."},
+  {"type": "translate", "q": "Она на работе.", "a": ["she is at work", "she's at work"], "why": "«Где» — at work."}
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "n": 77,
+ "level": "A2",
+ "module": "quantity",
+ "title": "no, none, not any",
+ "en": "no / none / not any",
+ "summary": "Три способа сказать «нет»: no money, none of them, not any — и почему два отрицания в одном предложении невозможны.",
+ "can_do": [
+  "Сказать «нет времени» через no и not any.",
+  "Использовать none в значении «ни один из».",
+  "Не допускать двойного отрицания."
+ ],
+ "theory": [
+  {
+   "h": "No перед существительным",
+   "p": "No значит «совсем нет» и ставится прямо перед существительным: no money, no time, no friends. Артикль после no не нужен, глагол при этом остаётся утвердительным.",
+   "formula": "There is no milk. · I have no time."
+  },
+  {
+   "h": "Not any — то же самое иначе",
+   "p": "Not any значит то же, что no, но требует глагола с not. Смысл одинаковый, структура разная, и смешивать их нельзя.",
+   "table": {
+    "head": ["Способ", "Пример", "Когда удобно"],
+    "rows": [
+     ["no + существительное", "There is no milk.", "коротко, книжно"],
+     ["not any + существительное", "There isn't any milk.", "обычная речь"],
+     ["none (of ...)", "None of them came.", "без существительного после"]
+    ]
+   }
+  },
+  {
+   "h": "None — «ни один»",
+   "p": "None работает самостоятельно, без существительного сразу после себя, и чаще всего с of: none of my friends, none of the shops. В коротком ответе тоже: How many? — None.",
+   "formula": "None of my friends came. · How much money? — None."
+  },
+  {
+   "h": "Отрицание не удваивают",
+   "p": "В английском одно отрицание на предложение: либо no, none, nothing, nobody, либо not. Фраза I don't have no money считается грубой ошибкой, хотя в русском двойное отрицание — норма.",
+   "formula": "I have no money. / I don't have any money."
+  },
+  {
+   "h": "Короткие ответы без not",
+   "p": "В ответах одно слово уже содержит отрицание, поэтому not не нужен: How many? — None. What? — Nothing. Who? — Nobody. Добавлять not к ним не надо.",
+   "formula": "— What did you say? — Nothing."
+  }
+ ],
+ "examples": [
+  {"en": "There is no milk in the fridge.", "ru": "В холодильнике нет молока."},
+  {"en": "I have no time today.", "ru": "У меня сегодня нет времени."},
+  {"en": "We don't have any money left.", "ru": "У нас не осталось денег."},
+  {"en": "None of the students were late.", "ru": "Ни один из студентов не опоздал."},
+  {"en": "How many tickets are left? — None.", "ru": "Сколько билетов осталось? — Ни одного."},
+  {"en": "There is nothing in the box.", "ru": "В коробке ничего нет."}
+ ],
+ "traps": [
+  {"bad": "I don't have no money.", "good": "I don't have any money.", "why": "Двойное отрицание недопустимо: либо no, либо not any."},
+  {"bad": "None my friends came.", "good": "None of my friends came.", "why": "После none нужен of и определитель."},
+  {"bad": "There is not milk in the fridge.", "good": "There is no milk in the fridge.", "why": "Not не ставится прямо перед существительным; нужно no или isn't any."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There is ___ time to lose.", "options": ["not", "no", "none"], "a": 1, "why": "Перед существительным time — no."},
+  {"type": "choice", "q": "We don't have ___ milk.", "options": ["no", "any", "none"], "a": 1, "why": "После don't — any, иначе получится двойное отрицание."},
+  {"type": "choice", "q": "___ of my friends likes football.", "options": ["No", "None", "Any"], "a": 1, "why": "Перед of — none of my friends."},
+  {"type": "choice", "q": "I have ___ idea what to do.", "options": ["any", "none", "no"], "a": 2, "why": "No idea — устойчивое сочетание с no."},
+  {"type": "choice", "q": "How many people came? — ___.", "options": ["Nothing", "Nobody", "None"], "a": 2, "why": "Вопрос how many требует ответа none."},
+  {"type": "choice", "q": "There was ___ food in the house.", "options": ["none", "no", "not"], "a": 1, "why": "Перед существительным food — no."},
+  {"type": "gap", "q": "She has ___ brothers or sisters.", "a": ["no"], "why": "Перед существительным в значении «нет» — no."},
+  {"type": "gap", "q": "There isn't ___ cheese left.", "a": ["any"], "why": "После isn't — any cheese."},
+  {"type": "translate", "q": "У меня нет времени.", "a": ["i have no time", "i don't have any time", "i do not have any time", "i haven't got any time"], "why": "No time или not any time, но не оба отрицания сразу."},
+  {"type": "translate", "q": "Ни один из моих друзей не пришёл.", "a": ["none of my friends came", "none of my friends has come"], "why": "None of my friends + утвердительный глагол."
+  }
+ ]
+}

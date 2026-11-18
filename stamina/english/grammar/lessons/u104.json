@@ -1,0 +1,72 @@
+{
+ "n": 104,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "from ... to, until, since, for",
+ "en": "for/since/until",
+ "summary": "Как назвать начало и конец отрезка, сказать «до самого вечера», «с 2018 года» и «в течение трёх дней».",
+ "can_do": [
+  "Назвать рамки времени: from nine to six.",
+  "Сказать, до какого момента длилось действие: until midnight.",
+  "Различить точку старта (since) и длительность (for)."
+ ],
+ "theory": [
+  {
+   "h": "from ... to: от и до",
+   "p": "Рамки отрезка задаются парой from ... to. Второй предлог можно заменить на until, если важен именно предел, после которого действие прекращается.",
+   "formula": "from nine to six · from Monday to Friday · from nine until six"
+  },
+  {
+   "h": "until и till",
+   "p": "until значит «до какого-то момента»: действие продолжается и обрывается в этой точке. till — то же самое, но разговорнее; в письме чаще until.",
+   "formula": "I worked until midnight. · Wait till I come back."
+  },
+  {
+   "h": "since — точка старта",
+   "p": "since ставится перед моментом, когда что-то началось: since 2010, since Monday, since I was a child. С ним обычно идёт present perfect: действие началось тогда и длится до сих пор.",
+   "formula": "I've lived here since 2015."
+  },
+  {
+   "h": "for — длина отрезка",
+   "p": "for отвечает на вопрос «как долго» и требует отрезка: for two hours, for a week, for ages. Точка и длина — главное различие между since и for.",
+   "table": {
+    "head": ["Предлог", "Что после него", "Пример"],
+    "rows": [
+     ["from ... to", "начало и конец", "I work from nine to six."],
+     ["until / till", "последний момент", "I worked until midnight."],
+     ["since", "точка старта", "I've known him since 2010."],
+     ["for", "длина отрезка", "I've known him for ten years."]
+    ]
+   }
+  },
+  {
+   "h": "Длительность или момент",
+   "p": "Русское «в течение» тянет за собой for, а «с тех пор как» — since. Если сомневаетесь, задайте вопрос: «как долго?» — for, «с какого времени?» — since.",
+   "formula": "for three days (как долго) · since Monday (с какого времени)"
+  }
+ ],
+ "examples": [
+  {"en": "The shop is open from nine to six.", "ru": "Магазин открыт с девяти до шести."},
+  {"en": "I waited for her until ten o'clock.", "ru": "Я ждал её до десяти."},
+  {"en": "We've lived in this flat since 2018.", "ru": "Мы живём в этой квартире с 2018 года."},
+  {"en": "She's been ill for three days.", "ru": "Она болеет уже три дня."},
+  {"en": "I'll be away from Monday to Wednesday.", "ru": "Меня не будет с понедельника по среду."}
+ ],
+ "traps": [
+  {"bad": "I've lived here for 2018.", "good": "I've lived here since 2018.", "why": "Год — это точка старта, поэтому since."},
+  {"bad": "I've known her since ten years.", "good": "I've known her for ten years.", "why": "Отрезок времени требует for."},
+  {"bad": "I waited until two hours.", "good": "I waited for two hours.", "why": "until ставится перед моментом, длительность — с for."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We've been friends ___ 2015.", "options": ["for", "since", "until"], "a": 1, "why": "Год — точка старта, значит since."},
+  {"type": "choice", "q": "I studied ___ three hours.", "options": ["since", "for", "from"], "a": 1, "why": "Длительность — for three hours."},
+  {"type": "choice", "q": "The bank works ___ nine to five.", "options": ["from", "since", "until"], "a": 0, "why": "Рамки отрезка начинаются с from."},
+  {"type": "choice", "q": "Wait ___ I get back.", "options": ["for", "until", "since"], "a": 1, "why": "Ждать до момента возвращения — until."},
+  {"type": "choice", "q": "She hasn't called me ___ Monday.", "options": ["for", "since", "until"], "a": 1, "why": "С понедельника — точка старта, since."},
+  {"type": "gap", "q": "He's worked here ___ (for/since) five years.", "a": ["for"], "why": "Пять лет — длительность, for."},
+  {"type": "gap", "q": "I haven't seen him ___ (for/since) last winter.", "a": ["since"], "why": "Прошлая зима — точка старта, since."},
+  {"type": "gap", "q": "The museum is open ___ ten to six.", "a": ["from"], "why": "Пара from ... to задаёт рамки."},
+  {"type": "translate", "q": "Я живу здесь с 2020 года.", "a": ["i have lived here since 2020", "i've lived here since 2020", "i have been living here since 2020"], "why": "Точка старта — since 2020, время present perfect."},
+  {"type": "translate", "q": "Она ждала меня два часа.", "a": ["she waited for me for two hours"], "why": "wait for somebody + for two hours."}
+ ]
+}

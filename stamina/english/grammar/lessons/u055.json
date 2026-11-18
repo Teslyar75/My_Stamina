@@ -1,0 +1,72 @@
+{
+ "n": 55,
+ "level": "A2",
+ "module": "verbs",
+ "title": "Глагол go",
+ "en": "go",
+ "summary": "Go не любит предлогов там, где их ждут: go home, go swimming, go to work — три разных схемы на один глагол.",
+ "can_do": [
+  "Сказать, куда вы идёте, с to и без to.",
+  "Назвать занятия через go + -ing: go shopping, go running.",
+  "Употребить go с прилагательным в значении «становиться»."
+ ],
+ "theory": [
+  {
+   "h": "go to + место",
+   "p": "Перед местом обычно стоит to: go to work, go to the cinema, go to Paris. Артикль или его отсутствие решает не go, а само существительное, поэтому меняется только хвост фразы.",
+   "formula": "I go to work at eight. · We went to the cinema last night."
+  },
+  {
+   "h": "go home — без to",
+   "p": "Слово home ведёт себя как наречие, а не как существительное, поэтому to перед ним не нужен. Это одно из самых частых исключений, и звучит оно в речи постоянно.",
+   "formula": "I'm going home. (не to home) · She went home early."
+  },
+  {
+   "h": "go + -ing = занятие",
+   "p": "Активные занятия и походы по делам оформляются через форму -ing без предлога. Так строится целая группа бытовых фраз, и они запоминаются как одно целое.",
+   "table": {
+    "head": ["Фраза", "Перевод"],
+    "rows": [
+     ["go shopping", "пойти за покупками"],
+     ["go swimming", "пойти поплавать"],
+     ["go running", "пойти на пробежку"],
+     ["go sightseeing", "пойти осматривать город"]
+    ]
+   }
+  },
+  {
+   "h": "go + прилагательное = становиться",
+   "p": "С прилагательными go означает изменение состояния, обычно к худшему: go bad, go wrong, go grey, go mad. Это разговорная модель, но она встречается очень часто.",
+   "formula": "The milk has gone bad. · Everything went wrong."
+  },
+  {
+   "h": "been и gone — разные новости",
+   "p": "Have gone значит уехал и сейчас там. Have been значит съездил и уже вернулся. Разница важна в разговоре о человеке, которого ждут.",
+   "formula": "She has gone to Berlin. (она там) · She has been to Berlin. (уже вернулась)"
+  }
+ ],
+ "examples": [
+  {"en": "I usually go to work by bus.", "ru": "Я обычно езжу на работу на автобусе."},
+  {"en": "Let's go home, I'm tired.", "ru": "Пойдём домой, я устал."},
+  {"en": "We go swimming every Sunday.", "ru": "Мы ходим плавать каждое воскресенье."},
+  {"en": "The fish has gone bad.", "ru": "Рыба испортилась."},
+  {"en": "He has gone to the shop.", "ru": "Он ушёл в магазин."}
+ ],
+ "traps": [
+  {"bad": "I'm going to home.", "good": "I'm going home.", "why": "Home здесь наречие, предлог to не нужен."},
+  {"bad": "We go to shopping on Saturdays.", "good": "We go shopping on Saturdays.", "why": "Занятия оформляются через go + -ing без предлога."},
+  {"bad": "She is gone to Paris, so she isn't here.", "good": "She has gone to Paris, so she isn't here.", "why": "Уехала и не вернулась — Present Perfect have/has gone."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I have to go ___ now, it's late.", "options": ["to home", "home", "at home"], "a": 1, "why": "Go home — без предлога to."},
+  {"type": "choice", "q": "They go ___ every Friday evening.", "options": ["to swim", "swimming", "swim"], "a": 1, "why": "Занятие: go swimming."},
+  {"type": "choice", "q": "We went ___ the theatre last week.", "options": ["to", "in", "at"], "a": 0, "why": "Go to + место."},
+  {"type": "choice", "q": "The milk has ___ bad.", "options": ["gone", "got", "been"], "a": 0, "why": "Go bad — испортиться, с прилагательным нужен gone."},
+  {"type": "choice", "q": "She isn't here. She ___ to the bank.", "options": ["has been", "has gone", "is going"], "a": 1, "why": "Её сейчас нет — has gone."},
+  {"type": "gap", "q": "Do you want to go ___ (shop) with me?", "a": ["shopping"], "why": "Go + -ing: go shopping."},
+  {"type": "gap", "q": "I usually go ___ bed at eleven.", "a": ["to"], "why": "Go to bed — устойчивое выражение с to."},
+  {"type": "gap", "q": "Everything went ___ at the interview. (not right)", "a": ["wrong"], "why": "Go wrong — пойти не так."},
+  {"type": "translate", "q": "Пойдём домой.", "a": ["let's go home", "let us go home", "let's go back home"], "why": "Go home без to."},
+  {"type": "translate", "q": "Он ходил в кино вчера.", "a": ["he went to the cinema yesterday", "he went to the movies yesterday"], "why": "Go to + место, Past Simple: went."}
+ ]
+}

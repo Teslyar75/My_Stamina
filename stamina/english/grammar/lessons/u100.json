@@ -1,0 +1,71 @@
+{
+ "n": 100,
+ "level": "B1",
+ "module": "clauses",
+ "title": "if: условные предложения 2 типа",
+ "en": "if (2)",
+ "summary": "Как говорить о нереальном и маловероятном: «если бы у меня было время, я бы пришёл» — past simple в условии и would в результате.",
+ "can_do": [
+  "Сказать, что было бы, если бы обстоятельства сложились иначе.",
+  "Дать совет через If I were you, I'd ...",
+  "Отличить реальное условие первого типа от нереального второго."
+ ],
+ "theory": [
+  {
+   "h": "Когда условие нереальное",
+   "p": "Второй тип — про то, чего нет сейчас или что очень маловероятно. Человек не говорит, что это невозможно в принципе, он просто представляет другую ситуацию: If I had a car — а машины у меня нет.",
+   "formula": "If I had a car, I'd drive to work."
+  },
+  {
+   "h": "Формула второго типа",
+   "p": "Условие уходит в прошлое время, результат получает would и глагол без to. Настоящее время при этом не меняется по смыслу: речь всё равно о сейчас или о будущем.",
+   "formula": "if + past simple, ... would + глагол"
+  },
+  {
+   "h": "Сокращения в результате",
+   "p": "would почти всегда сжимается: I'd, you'd, she'd, we'd, they'd. В разговоре это норма, полная форма звучит книжно. Отрицание — wouldn't.",
+   "formula": "I would → I'd · would not → wouldn't"
+  },
+  {
+   "h": "В if-части нет would",
+   "p": "Русское «если бы я бы имел» подталкивает поставить would дважды. В английском would стоит только в результате, а в условии — обычный past simple.",
+   "formula": "If I had time, I'd come. (не if I would have time)"
+  },
+  {
+   "h": "were вместо was и совет",
+   "p": "С I, he, she, it в учебной норме в условии ставят were: If I were you. Оборот If I were you, I'd ... — стандартный способ дать совет.",
+   "table": {
+    "head": ["Условие", "Результат", "Что это значит"],
+    "rows": [
+     ["If I had a car,", "I'd drive to work.", "машины у меня нет"],
+     ["If I knew her number,", "I'd call her.", "номера я не знаю"],
+     ["If I were you,", "I'd say no.", "совет собеседнику"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "If I had more money, I'd travel a lot.", "ru": "Было бы у меня больше денег, я бы много путешествовал."},
+  {"en": "If I were you, I'd apologise.", "ru": "На твоём месте я бы извинился."},
+  {"en": "She would help if you asked her.", "ru": "Она бы помогла, если бы ты её попросил."},
+  {"en": "If we lived closer, we'd meet more often.", "ru": "Если бы мы жили ближе, мы бы виделись чаще."},
+  {"en": "What would you do if you lost your job?", "ru": "Что бы ты сделал, если бы потерял работу?"}
+ ],
+ "traps": [
+  {"bad": "If I would have time, I would come.", "good": "If I had time, I'd come.", "why": "В условии второго типа — past simple, would только в результате."},
+  {"bad": "If I would be you, I would wait.", "good": "If I were you, I'd wait.", "why": "После if — were, а не would be."},
+  {"bad": "If I had a car, I will drive you home.", "good": "If I had a car, I'd drive you home.", "why": "Нереальное условие требует would в результате, а не will."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "If I ___ a car, I'd drive you home.", "options": ["had", "have", "would have"], "a": 0, "why": "Нереальное условие — past simple: if I had."},
+  {"type": "choice", "q": "If I were you, I ___ say sorry.", "options": ["will", "would", "did"], "a": 1, "why": "Совет If I were you, I'd ... — с would."},
+  {"type": "choice", "q": "She ___ more if she had time.", "options": ["reads", "would read", "will read"], "a": 1, "why": "Результат второго типа — would read."},
+  {"type": "choice", "q": "What ___ you do if you won the lottery?", "options": ["will", "would", "did"], "a": 1, "why": "Вопрос о воображаемом — what would you do."},
+  {"type": "choice", "q": "If we ___ in Paris, we'd visit the Louvre every week.", "options": ["live", "lived", "would live"], "a": 1, "why": "После if — past simple: if we lived."},
+  {"type": "gap", "q": "If I ___ (know) the answer, I'd tell you.", "a": ["knew"], "why": "Нереальное условие: if I knew."},
+  {"type": "gap", "q": "If she ___ (be) here, she'd explain everything.", "a": ["were", "was"], "why": "В условии с she норма — were, разговорный вариант — was."},
+  {"type": "gap", "q": "I ___ (go) with you if I had a ticket.", "a": ["would go", "'d go"], "why": "Результат с would: I would go."},
+  {"type": "translate", "q": "На твоём месте я бы извинился.", "a": ["if i were you i'd apologise", "if i were you i would apologise", "if i were you i'd apologize", "if i were you i would apologize"], "why": "Совет: If I were you, I'd apologise."},
+  {"type": "translate", "q": "Если бы у меня было время, я бы пришёл.", "a": ["if i had time i would come", "if i had time i'd come", "if i had the time i would come", "if i had the time i'd come"], "why": "if + past simple, результат с would."}
+ ]
+}

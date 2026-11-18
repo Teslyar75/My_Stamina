@@ -1,0 +1,76 @@
+{
+ "n": 60,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "Притяжательные: my, his, their",
+ "en": "my/his/their (possessive adjectives)",
+ "summary": "«Мой», «его», «их» стоят перед предметом и не меняются по числу: my book и my books — одна форма.",
+ "can_do": [
+  "Сказать, чья это вещь: my phone, her name, their car.",
+  "Выбрать форму по владельцу, а не по предмету.",
+  "Отличить притяжательное its от сокращения it's."
+ ],
+ "theory": [
+  {
+   "h": "Место перед предметом",
+   "p": "Притяжательное слово отвечает на вопрос «чей» и всегда стоит перед существительным. Между ним и предметом можно вставить только прилагательное: my new phone. Артикль рядом с ним не ставится.",
+   "formula": "my house · her car · our tickets"
+  },
+  {
+   "h": "Все формы",
+   "p": "Форм ровно семь, и каждая относится к владельцу. Список короткий, его стоит выучить как таблицу умножения: дальше он работает всю жизнь.",
+   "table": {
+    "head": ["Кто владеет", "Форма", "Пример"],
+    "rows": [
+     ["I", "my", "my bag"],
+     ["he", "his", "his bag"],
+     ["she", "her", "her bag"],
+     ["it", "its", "its name"],
+     ["we", "our", "our bag"],
+     ["they", "their", "their bag"],
+     ["you", "your", "your bag"]
+    ]
+   }
+  },
+  {
+   "h": "Форма не зависит от предмета",
+   "p": "Английское my не согласуется с числом предмета: my book и my books — одна и та же форма. Меняется только существительное. Это главное отличие от русского, где «свой» подстраивается под род и число.",
+   "formula": "my pen — my pens · his car — his cars"
+  },
+  {
+   "h": "Смотрите на владельца",
+   "p": "Выбор формы зависит от того, кто владеет, а не от того, чем владеют. Владелец мужчина — his, женщина — her, предмет или животное — its, группа людей — their.",
+   "formula": "Tom loves his dog. · Anna loves her dog."
+  },
+  {
+   "h": "its и it's — разные слова",
+   "p": "Без апострофа its значит «его, её» для предмета. С апострофом it's — сокращение от it is или it has. Проверка надёжная: если можно подставить it is, пишите с апострофом.",
+   "formula": "The cat likes its food. · It's cold today."
+  }
+ ],
+ "examples": [
+  {"en": "My parents live in a small town.", "ru": "Мои родители живут в маленьком городке."},
+  {"en": "He forgot his umbrella at work.", "ru": "Он забыл свой зонт на работе."},
+  {"en": "Their children go to the same school.", "ru": "Их дети ходят в одну и ту же школу."},
+  {"en": "Is this your coat?", "ru": "Это ваше пальто?"},
+  {"en": "The dog is looking for its ball.", "ru": "Собака ищет свой мяч."},
+  {"en": "We clean our flat on Saturdays.", "ru": "Мы убираем квартиру по субботам."}
+ ],
+ "traps": [
+  {"bad": "He lost him keys.", "good": "He lost his keys.", "why": "«Его» перед предметом — his; him — форма дополнения."},
+  {"bad": "It's name is Rex.", "good": "Its name is Rex.", "why": "Апостроф превращает its в it is, а здесь нужно притяжательное."},
+  {"bad": "This is she bag.", "good": "This is her bag.", "why": "«Её» перед предметом — her; she — форма подлежащего."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is ___ house.", "options": ["we", "our", "us"], "a": 1, "why": "Перед существительным — притяжательное our."},
+  {"type": "choice", "q": "Tom is looking for ___ phone.", "options": ["he", "him", "his"], "a": 2, "why": "Владелец Том, перед предметом — his."},
+  {"type": "choice", "q": "Anna visits ___ grandmother every Sunday.", "options": ["her", "she", "hers"], "a": 0, "why": "Перед существительным grandmother — her."},
+  {"type": "choice", "q": "The team changed ___ name.", "options": ["it's", "its", "it"], "a": 1, "why": "Притяжательное без апострофа: its name."},
+  {"type": "choice", "q": "___ children are at school.", "options": ["They", "Them", "Their"], "a": 2, "why": "Перед существительным children — their."},
+  {"type": "gap", "q": "I always forget ___ (I) keys at home.", "a": ["my"], "why": "Перед keys — my."},
+  {"type": "gap", "q": "The children finished ___ (they) homework.", "a": ["their"], "why": "Владельцы — they, перед homework — their."},
+  {"type": "gap", "q": "Paul and ___ (he) sister live in Prague.", "a": ["his"], "why": "Сестра Пола — his sister."},
+  {"type": "translate", "q": "Его родители — врачи.", "a": ["his parents are doctors"], "why": "Притяжательное his плюс множественное parents."},
+  {"type": "translate", "q": "Мы любим нашу собаку.", "a": ["we love our dog", "we love our dog very much"], "why": "We + our перед существительным."}
+ ]
+}

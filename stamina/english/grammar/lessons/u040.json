@@ -1,0 +1,72 @@
+{
+ "n": 40,
+ "level": "A2",
+ "module": "there",
+ "title": "Короткие ответы: Yes, I do",
+ "en": "short answers",
+ "summary": "Как отвечать на вопрос одним-двумя словами, не повторяя всё предложение целиком, и почему Yes, I'm звучит неверно.",
+ "can_do": [
+  "Ответить на общий вопрос кратко: Yes, I do / No, she isn't.",
+  "Правильно выбрать глагол для ответа, не повторяя смысловой.",
+  "Сокращать только отрицательный ответ, а не положительный."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужен короткий ответ",
+   "p": "В русском на вопрос «Ты устал?» спокойно отвечают «Да» или «Нет». В английском одно слово Yes звучит слишком резко, поэтому к нему добавляют маленькое эхо вопроса — тот глагол, с которого вопрос начинается.",
+   "formula": "Are you tired? — Yes, I am. / Do you smoke? — No, I don't."
+  },
+  {
+   "h": "Первый глагол вопроса и отвечает",
+   "p": "В коротком ответе нет смыслового глагола, только вспомогательный. Смотрите на первый глагол вопроса: он же идёт в ответ, а подлежащее заменяется местоимением.",
+   "table": {
+    "head": ["Вопрос", "Да", "Нет"],
+    "rows": [
+     ["Are you ready?", "Yes, I am.", "No, I'm not."],
+     ["Do you like tea?", "Yes, I do.", "No, I don't."],
+     ["Did she call?", "Yes, she did.", "No, she didn't."],
+     ["Have they arrived?", "Yes, they have.", "No, they haven't."]
+    ]
+   }
+  },
+  {
+   "h": "Положительный ответ не сокращают",
+   "p": "Это главная ловушка. В утвердительном коротком ответе глагол остаётся полным: Yes, I am, а не Yes, I'm. Отрицательный ответ, наоборот, обычно сжимается: No, I'm not. Формы amn't в английском нет вообще.",
+   "formula": "Yes, I am. (не I'm) · No, I'm not. (не I amn't)"
+  },
+  {
+   "h": "Be и модальные отвечают сами",
+   "p": "Когда в вопросе уже стоит am, is, are или модальный глагол can, must, will, do не нужен: вспомогательный глагол повторяется как есть. Do появляется только там, где в вопросе его не было — в Present и Past Simple.",
+   "formula": "Is it cold? — Yes, it is. · Can she swim? — No, she can't. · Does he work? — Yes, he does."
+  },
+  {
+   "h": "Ответ на вопрос с you",
+   "p": "Если спрашивают про вас, в ответе меняется местоимение: Are you a doctor? — Yes, I am. А если спрашивают про третьего человека, в ответе остаётся he, she, it, they, потому что отвечающий просто подтверждает факт.",
+   "formula": "Are you busy? — Yes, I am. · Is Tom busy? — Yes, he is."
+  }
+ ],
+ "examples": [
+  {"en": "Do you speak Spanish? — Yes, I do.", "ru": "Ты говоришь по-испански? — Да."},
+  {"en": "Is she at home? — No, she isn't.", "ru": "Она дома? — Нет."},
+  {"en": "Did you enjoy the film? — Yes, I did.", "ru": "Тебе понравился фильм? — Да."},
+  {"en": "Can you help me? — Sorry, I can't.", "ru": "Можешь мне помочь? — Извини, не могу."},
+  {"en": "Has he finished? — Yes, he has.", "ru": "Он закончил? — Да."}
+ ],
+ "traps": [
+  {"bad": "Yes, I'm.", "good": "Yes, I am.", "why": "В положительном коротком ответе сокращать нельзя, только в отрицательном."},
+  {"bad": "Do you like coffee? — Yes, I like.", "good": "Do you like coffee? — Yes, I do.", "why": "В ответе повторяют вспомогательный do, а не смысловой like."},
+  {"bad": "Is she a nurse? — Yes, she does.", "good": "Is she a nurse? — Yes, she is.", "why": "Если вопрос начинается с is, ответ держится на is: do здесь не появляется."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Do you live here? — Yes, I ___.", "options": ["am", "do", "like"], "a": 1, "why": "Вопрос с do, значит ответ тоже с do."},
+  {"type": "choice", "q": "Is your brother a pilot? — Yes, he ___.", "options": ["is", "does", "has"], "a": 0, "why": "Вопрос начинается с is, ответ продолжает is."},
+  {"type": "choice", "q": "Did they call you? — No, they ___.", "options": ["don't", "didn't", "aren't"], "a": 1, "why": "Вопрос в Past Simple — отрицание didn't."},
+  {"type": "choice", "q": "Can you swim? — No, I ___.", "options": ["can't", "don't", "am not"], "a": 0, "why": "Модальный can отвечает сам: can't."},
+  {"type": "choice", "q": "Have you seen this film? — Yes, I ___.", "options": ["do", "have", "am"], "a": 1, "why": "Present Perfect: вспомогательный have повторяется."},
+  {"type": "gap", "q": "Are you hungry? — Yes, I ___ (be).", "a": ["am"], "why": "Короткий положительный ответ без сокращения: I am."},
+  {"type": "gap", "q": "Does she work on Sundays? — No, she ___.", "a": ["doesn't", "does not"], "why": "Отрицание в Present Simple: doesn't."},
+  {"type": "gap", "q": "Was it cold yesterday? — No, it ___.", "a": ["wasn't", "was not"], "why": "Past Simple с be: wasn't."},
+  {"type": "translate", "q": "Ты меня понимаешь? — Да.", "a": ["do you understand me? yes, i do", "do you understand me? - yes, i do", "do you understand me? yes i do"], "why": "Вопрос через do, короткий ответ Yes, I do."},
+  {"type": "translate", "q": "Он готов? — Нет.", "a": ["is he ready? no, he isn't", "is he ready? no, he is not", "is he ready? - no, he isn't"], "why": "Be отвечает сам: No, he isn't."}
+ ]
+}

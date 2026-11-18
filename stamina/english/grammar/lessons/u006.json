@@ -1,0 +1,69 @@
+{
+ "n": 6,
+ "level": "A1",
+ "module": "present",
+ "title": "Отрицания в Present Simple: I don't",
+ "en": "I don't ... (present simple negative)",
+ "summary": "Как сказать «я не люблю», «она не работает» — и почему в отрицании исчезает -s.",
+ "can_do": [
+  "Сказать, что вы чего-то не делаете: I don't eat meat.",
+  "Правильно выбрать don't или doesn't.",
+  "Пользоваться частыми фразами: I don't know, I don't think so."
+ ],
+ "theory": [
+  {
+   "h": "do plus not",
+   "p": "Отрицание в Present Simple строится через do not или don't перед смысловым глаголом. Сам глагол остаётся в начальной форме и никаких окончаний не получает.",
+   "formula": "I don't work on Sundays. · She doesn't live here."
+  },
+  {
+   "h": "don't или doesn't",
+   "p": "Выбор помощника зависит только от того, кто действует. С he, she, it нужен doesn't, со всеми остальными don't.",
+   "table": {
+    "head": ["Кто", "Отрицание", "Пример"],
+    "rows": [
+     ["I / you / we / they", "don't", "We don't smoke."],
+     ["he / she / it", "doesn't", "He doesn't smoke."]
+    ]
+   }
+  },
+  {
+   "h": "-s уже внутри doesn't",
+   "p": "В отрицании окончание -s переезжает в doesn't, и смысловой глагол его теряет. Двух -s в одной фразе не бывает.",
+   "formula": "He doesn't work. · She doesn't drive. · It doesn't matter."
+  },
+  {
+   "h": "Частые фразы целиком",
+   "p": "Некоторые отрицания встречаются так часто, что их удобнее запомнить готовыми кусками. В них don't работает как часть выражения, а не как отдельная конструкция.",
+   "formula": "I don't know. · I don't think so. · I don't understand. · I don't mind."
+  },
+  {
+   "h": "Полная и краткая форма",
+   "p": "Don't и doesn't — разговорный вариант, do not и does not — письменный, официальный или подчёркнуто вежливый. Смысл при этом абсолютно одинаковый.",
+   "formula": "I don't agree. · I do not agree, sir."
+  }
+ ],
+ "examples": [
+  {"en": "I don't like cold weather.", "ru": "Я не люблю холодную погоду."},
+  {"en": "She doesn't eat meat.", "ru": "Она не ест мясо."},
+  {"en": "We don't have a car.", "ru": "У нас нет машины."},
+  {"en": "He doesn't know my name.", "ru": "Он не знает моего имени."},
+  {"en": "They don't work on Saturdays.", "ru": "Они не работают по субботам."}
+ ],
+ "traps": [
+  {"bad": "He doesn't works here.", "good": "He doesn't work here.", "why": "-s уже есть в doesn't, глагол остаётся чистым."},
+  {"bad": "I not like tea.", "good": "I don't like tea.", "why": "Одного not мало, ему нужен помощник do."},
+  {"bad": "She don't drive.", "good": "She doesn't drive.", "why": "she требует doesn't."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ like fish.", "options": ["don't", "doesn't", "am not"], "a": 0, "why": "I берёт don't."},
+  {"type": "choice", "q": "He ___ speak French.", "options": ["don't", "doesn't", "not"], "a": 1, "why": "he требует doesn't."},
+  {"type": "choice", "q": "They ___ live in London.", "options": ["doesn't", "don't", "aren't"], "a": 1, "why": "they берёт don't."},
+  {"type": "choice", "q": "My mother ___ drive a car.", "options": ["don't", "doesn't", "isn't"], "a": 1, "why": "my mother = she, поэтому doesn't."},
+  {"type": "choice", "q": "We ___ watch TV in the morning.", "options": ["doesn't", "don't", "not do"], "a": 1, "why": "we — don't, и порядок do + not + глагол."},
+  {"type": "gap", "q": "She ___ (not / know) the answer.", "a": ["doesn't know", "does not know"], "why": "she + doesn't, глагол без -s."},
+  {"type": "gap", "q": "I ___ (not / want) any sugar.", "a": ["don't want", "do not want"], "why": "I + don't + want."},
+  {"type": "translate", "q": "Он не работает по воскресеньям.", "a": ["he doesn't work on sundays", "he does not work on sundays"], "why": "doesn't work, on Sundays."},
+  {"type": "translate", "q": "Мы не понимаем.", "a": ["we don't understand", "we do not understand"], "why": "we + don't + understand."}
+ ]
+}

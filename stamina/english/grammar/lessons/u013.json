@@ -1,0 +1,69 @@
+{
+ "n": 13,
+ "level": "A1",
+ "module": "past",
+ "title": "Past Continuous: I was doing",
+ "en": "I was doing (past continuous)",
+ "summary": "Что происходило в определённый момент в прошлом: was или were плюс глагол с -ing, как камера, включённая в прошлом.",
+ "can_do": [
+  "Сказать, что вы делали в семь часов: At seven I was driving.",
+  "Описать фон событий: It was raining.",
+  "Задать вопрос: What were you doing at noon?"
+ ],
+ "theory": [
+  {
+   "h": "Действие тянулось",
+   "p": "Past Continuous показывает действие, которое шло в какой-то момент в прошлом. Мы как будто переносим камеру в прошлое и смотрим, что там происходило, не подводя итог.",
+   "formula": "At eight I was having dinner. · They were playing chess."
+  },
+  {
+   "h": "was или were плюс -ing",
+   "p": "Форма собирается из прошедшего be и глагола с -ing. Окончание -ing то же самое, что в Present Continuous.",
+   "table": {
+    "head": ["Кто", "be", "-ing", "Пример"],
+    "rows": [
+     ["I / he / she / it", "was", "reading", "She was reading."],
+     ["you / we / they", "were", "reading", "They were reading."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание и вопрос",
+   "p": "Not приклеивается к was или were, а в вопросе be выходит вперёд. Смысловой глагол с -ing не меняется.",
+   "formula": "I wasn't sleeping. · Were you listening? Yes, I was."
+  },
+  {
+   "h": "Точка на оси времени",
+   "p": "Рядом почти всегда стоит указание момента: at seven o'clock, at that moment, all evening, when you called. Без такой точки предложение звучит незаконченным.",
+   "formula": "At seven I was driving to work. · All evening it was raining."
+  },
+  {
+   "h": "Только для процессов",
+   "p": "Если действие описывает состояние, а не процесс, Continuous не используют. Know, like, want в Past Continuous выглядят как ошибка.",
+   "formula": "I knew him well. · I wanted to help."
+  }
+ ],
+ "examples": [
+  {"en": "At ten I was still working.", "ru": "В десять я ещё работал."},
+  {"en": "She was cooking when I came in.", "ru": "Она готовила, когда я вошёл."},
+  {"en": "They were watching a film at nine.", "ru": "В девять они смотрели фильм."},
+  {"en": "I wasn't listening to the radio.", "ru": "Я не слушал радио."},
+  {"en": "What were you doing at noon?", "ru": "Что ты делал в полдень?"}
+ ],
+ "traps": [
+  {"bad": "I was work all evening.", "good": "I was working all evening.", "why": "После was нужен глагол с -ing, а не словарная форма."},
+  {"bad": "They was playing outside.", "good": "They were playing outside.", "why": "they требует were."},
+  {"bad": "I was knowing him well.", "good": "I knew him well.", "why": "know описывает состояние, для него есть только Past Simple."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "At eight I ___ breakfast.", "options": ["had", "was having", "were having"], "a": 1, "why": "Действие шло в восемь, I берёт was."},
+  {"type": "choice", "q": "They ___ football at five.", "options": ["was playing", "were playing", "played"], "a": 1, "why": "they берёт were, а момент указан."},
+  {"type": "choice", "q": "She ___ when the phone rang.", "options": ["slept", "was sleeping", "were sleeping"], "a": 1, "why": "Сон был процессом в момент звонка."},
+  {"type": "choice", "q": "We ___ TV at that moment.", "options": ["were watching", "was watching", "watch"], "a": 0, "why": "we требует were."},
+  {"type": "choice", "q": "It ___ when we left.", "options": ["rained", "was raining", "were raining"], "a": 1, "why": "it берёт was, а дождь был процессом."},
+  {"type": "gap", "q": "I ___ (read) a book at nine.", "a": ["was reading"], "why": "at nine — момент в прошлом, I was reading."},
+  {"type": "gap", "q": "The children ___ (play) in the garden.", "a": ["were playing"], "why": "the children = they, поэтому were playing."},
+  {"type": "translate", "q": "В семь я ехал на работу.", "a": ["at seven i was driving to work", "at 7 i was driving to work"], "why": "Процесс в прошлом: I was driving to work."},
+  {"type": "translate", "q": "Мы не спали.", "a": ["we were not sleeping", "we weren't sleeping"], "why": "Отрицание на were: we weren't sleeping."}
+ ]
+}

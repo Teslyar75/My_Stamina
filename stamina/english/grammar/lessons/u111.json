@@ -1,0 +1,73 @@
+{
+ "n": 111,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "on, at, by, with, about",
+ "en": "on/at/by/with/about",
+ "summary": "Транспорт без артикля, отпуск, возраст, инструмент и тема разговора: пять предлогов, которые чаще всего нужны в бытовой речи.",
+ "can_do": [
+  "Сказать, как вы добираетесь: by bus, by car, on foot.",
+  "Назвать возраст и состояние: at the age of six, on holiday.",
+  "Сказать, чем что-то делают (with) и о чём говорят (about)."
+ ],
+ "theory": [
+  {
+   "h": "by и транспорт",
+   "p": "Перед транспортом by ставится без артикля: by car, by bus, by train, by plane, by bike. Если появляется артикль или притяжательное, предлог меняется: in my car, on the bus. Пешком — только on foot.",
+   "table": {
+    "head": ["Как", "Выражение", "Пример"],
+    "rows": [
+     ["на машине", "by car / in a car", "I usually go to work by car."],
+     ["на автобусе", "by bus / on the bus", "She went there by bus."],
+     ["пешком", "on foot", "We came here on foot."],
+     ["на велосипеде", "by bike / on my bike", "He goes to school by bike."]
+    ]
+   }
+  },
+  {
+   "h": "on: состояния и темы",
+   "p": "on стоит в устойчивых сочетаниях про занятия и состояния: on holiday, on business, on TV, on the radio, on the phone, on purpose. Артикль в них чаще не нужен, но он есть в on the phone и on the radio.",
+   "formula": "on holiday · on business · on TV · on the phone"
+  },
+  {
+   "h": "at: возраст и цифры",
+   "p": "at нужен, когда называют возраст и измеряемые показатели: at the age of thirty, at 60 kilometres an hour. Сюда же at first, at last и at the moment.",
+   "formula": "at the age of thirty · at 100 kilometres an hour"
+  },
+  {
+   "h": "with: вместе и инструмент",
+   "p": "with значит «вместе с кем-то» и «при помощи чего-то»: a walk with friends, cut it with a knife. Один и тот же предлог закрывает оба смысла, разница только в контексте.",
+   "formula": "I went there with my brother. · He opened the tin with a knife."
+  },
+  {
+   "h": "about: о чём",
+   "p": "about ставится перед темой разговора, мысли или книги: talk about work, think about the future, a film about space. По-русски здесь «о» или «про», по-английски всегда about.",
+   "formula": "talk about it · a book about history"
+  }
+ ],
+ "examples": [
+  {"en": "I usually go to work by bus.", "ru": "Я обычно езжу на работу на автобусе."},
+  {"en": "She learnt to drive at the age of thirty.", "ru": "Она научилась водить в тридцать лет."},
+  {"en": "We're on holiday until Monday.", "ru": "Мы в отпуске до понедельника."},
+  {"en": "He cut the bread with a long knife.", "ru": "Он нарезал хлеб длинным ножом."},
+  {"en": "We talked about your idea for an hour.", "ru": "Мы целый час говорили о твоей идее."}
+ ],
+ "traps": [
+  {"bad": "I go to work by a car.", "good": "I go to work by car.", "why": "После by перед транспортом артикль не ставится."},
+  {"bad": "We came here by foot.", "good": "We came here on foot.", "why": "Пешком — устойчивое on foot, а не by foot."},
+  {"bad": "I heard it in the TV.", "good": "I heard it on TV.", "why": "Телевидение и радио — on TV, on the radio."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She goes to school ___ bike.", "options": ["on", "by", "with"], "a": 1, "why": "Транспорт без артикля — by bike."},
+  {"type": "choice", "q": "We came home ___ foot.", "options": ["by", "on", "with"], "a": 1, "why": "Пешком — on foot."},
+  {"type": "choice", "q": "He learnt to swim ___ the age of five.", "options": ["in", "on", "at"], "a": 2, "why": "Возраст — at the age of."},
+  {"type": "choice", "q": "I heard the news ___ the radio.", "options": ["in", "on", "at"], "a": 1, "why": "Радио — on the radio."},
+  {"type": "choice", "q": "She wrote the letter ___ a pencil.", "options": ["by", "with", "on"], "a": 1, "why": "Инструмент — with a pencil."},
+  {"type": "choice", "q": "They are ___ holiday in Turkey.", "options": ["at", "in", "on"], "a": 2, "why": "Отпуск — on holiday."},
+  {"type": "gap", "q": "We travelled to Paris ___ plane.", "a": ["by"], "why": "Транспорт без артикля — by plane."},
+  {"type": "gap", "q": "He opened the tin ___ a knife.", "a": ["with"], "why": "Инструмент — with a knife."},
+  {"type": "gap", "q": "She is ___ business in Berlin this week.", "a": ["on"], "why": "Командировка — on business."},
+  {"type": "translate", "q": "Я езжу на работу на автобусе.", "a": ["i go to work by bus", "i usually go to work by bus"], "why": "by bus, без артикля."},
+  {"type": "translate", "q": "Мы говорили о тебе.", "a": ["we talked about you", "we spoke about you", "we were talking about you"], "why": "Тема разговора — about."}
+ ]
+}

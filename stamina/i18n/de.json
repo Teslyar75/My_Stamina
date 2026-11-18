@@ -3165,5 +3165,16 @@
  "🗑 УБРАТЬ СНИМОК": "🗑 REMOVE SHOT",
  "🤖 ЗАСЕЛИТЬ АГЕНТА": "🤖 AGENTEN ANDOCKEN",
  "ЛИНГВОМОДУЛЬ · ПАНЕЛЬ ЯЗЫКОВ": "SPRACHMODUL · SPRACHPANEL",
- "ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ": "POLYGLOTTHALLE · ATLAS DER SPRACHEN"
+ "ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ": "POLYGLOTTHALLE · ATLAS DER SPRACHEN",
+ "ЦЕЛЬ УРОКА": "LERNZIEL",
+ "ПРИМЕРЫ": "BEISPIELE",
+ "ЧАСТЫЕ ОШИБКИ": "TYPISCHE FEHLER",
+ "УПРАЖНЕНИЯ": "ÜBUNGEN",
+ "НЕВЕРНО": "FALSCH",
+ "ПРОЙДЕНО": "GESCHAFFT",
+ "Урок {0} из {1}": "Lektion {0} von {1}",
+ "Загрузка урока…": "Lektion wird geladen…",
+ "Верно: {0} из {1}": "Richtig: {0} von {1}",
+ "Выберите урок слева": "Lektion links auswählen",
+ "Ответ: {0}": "Antwort: {0}"
 }

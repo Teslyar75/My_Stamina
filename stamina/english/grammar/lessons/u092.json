@@ -1,0 +1,64 @@
+{
+ "n": 92,
+ "level": "B1",
+ "module": "adjectives",
+ "title": "too: слишком",
+ "en": "too",
+ "summary": "Too значит «слишком, больше чем нужно», и это совсем не то же самое, что very — разница видна в каждой фразе.",
+ "can_do": [
+  "Сказать «слишком холодно», «слишком дорого» без лишних слов.",
+  "Выбрать между too much и too many.",
+  "Объяснить, к чему это приводит: too tired to work."
+ ],
+ "theory": [
+  {
+   "h": "Too — не very",
+   "p": "Very просто усиливает признак: very hot — очень жарко. Too добавляет оттенок «и это мешает»: too hot — слишком жарко, так некомфортно. Поэтому too в комплиментах не ставят.",
+   "formula": "very hot (очень) · too hot (слишком)"
+  },
+  {
+   "h": "Too + прилагательное или наречие",
+   "p": "Перед признаком too просто стоит впереди, и никак иначе: too cold, too expensive, too slowly. Фразы вроде much too в разговорной речи допустимы, но much expensive без too — ошибка.",
+   "formula": "too cold · too late · too slowly"
+  },
+  {
+   "h": "Too much и too many",
+   "p": "С количеством работают две формы. Too much — с неисчисляемым: too much water, too much noise. Too many — с исчисляемым множественным: too many people, too many mistakes. Это та же пара, что much и many.",
+   "formula": "too much water · too many people"
+  },
+  {
+   "h": "Too ... to do",
+   "p": "Оборот с инфинитивом показывает результат: too tired to work — так устал, что не могу работать. Частица not здесь не нужна, потому что «не» уже заложено в смысле too.",
+   "formula": "I'm too tired to cook."
+  },
+  {
+   "h": "Too или not enough",
+   "p": "Это две стороны одной ситуации. Too heavy значит «тяжелее, чем нужно», not light enough значит «недостаточно легкий». Смысл почти один, но выбирают обычно тот, что короче.",
+   "formula": "The box is too heavy to lift. = It isn't light enough to lift."
+  }
+ ],
+ "examples": [
+  {"en": "It's too cold to go out.", "ru": "Слишком холодно, чтобы идти гулять."},
+  {"en": "You work too much.", "ru": "Ты слишком много работаешь."},
+  {"en": "There were too many people on the bus.", "ru": "В автобусе было слишком много людей."},
+  {"en": "The coffee is too sweet for me.", "ru": "Кофе для меня слишком сладкий."},
+  {"en": "I'm too tired to cook tonight.", "ru": "Я слишком устал, чтобы сегодня готовить."}
+ ],
+ "traps": [
+  {"bad": "This dress is too much expensive.", "good": "This dress is too expensive.", "why": "Перед прилагательным хватает одного too."},
+  {"bad": "It's too much hot today.", "good": "It's too hot today.", "why": "much не ставится перед прилагательным без сравнения."},
+  {"bad": "I have too much friends.", "good": "I have too many friends.", "why": "friends считаются по штукам — too many."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "It's ___ hot to sleep.", "options": ["too", "enough", "much"], "a": 0, "why": "«слишком жарко» — too hot."},
+  {"type": "choice", "q": "There are ___ cars in the centre.", "options": ["too much", "too many", "too"], "a": 1, "why": "cars исчисляемое — too many."},
+  {"type": "choice", "q": "He drinks ___ coffee.", "options": ["too many", "too much", "too"], "a": 1, "why": "coffee неисчисляемое — too much."},
+  {"type": "choice", "q": "I'm ___ tired to walk home.", "options": ["enough", "too", "very much"], "a": 1, "why": "too + прилагательное + to do."},
+  {"type": "choice", "q": "This bag is ___ heavy for me to carry.", "options": ["too", "enough", "so much"], "a": 0, "why": "Слишком тяжёлая — too heavy."},
+  {"type": "gap", "q": "The box is ___ heavy for me to lift.", "a": ["too"], "why": "«слишком тяжёлый» — too heavy."},
+  {"type": "gap", "q": "Don't put ___ sugar in my tea.", "a": ["too much"], "why": "sugar неисчисляемое — too much."},
+  {"type": "gap", "q": "There are ___ people here, so let's go outside.", "a": ["too many"], "why": "people считаются — too many."},
+  {"type": "translate", "q": "Я слишком устал, чтобы работать.", "a": ["i am too tired to work", "i'm too tired to work"], "why": "too tired + to work."},
+  {"type": "translate", "q": "Она слишком много говорит.", "a": ["she talks too much", "she speaks too much"], "why": "«слишком много» с действием — too much."}
+ ]
+}

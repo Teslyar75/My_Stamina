@@ -1,0 +1,71 @@
+{
+ "n": 25,
+ "level": "A1",
+ "module": "future",
+ "title": "Present Continuous о будущем",
+ "en": "I'm doing something tomorrow (future)",
+ "summary": "Как рассказать о договорённости на завтра, не используя ни одного будущего глагола.",
+ "can_do": [
+  "Сказать о встрече или поездке, которая уже согласована.",
+  "Добавить к настоящему времени слово tomorrow или on Monday.",
+  "Отличить действие сейчас от договорённости на будущее."
+ ],
+ "theory": [
+  {
+   "h": "Настоящая форма, будущий смысл",
+   "p": "Английский часто говорит о будущем в форме настоящего длительного времени. Работает это только тогда, когда дело уже решено и договорено: есть время, место или другой человек, с которым вы условились. Это не мечта, а расписание.",
+   "formula": "I'm meeting Anna tomorrow. · We're flying to Rome on Friday."
+  },
+  {
+   "h": "Как строится",
+   "p": "Схема та же, что и для действия сейчас: am, is или are плюс глагол с -ing. Разницу делает не форма, а слово в конце фразы — tomorrow, tonight, next week, on Monday. Именно оно переводит всю фразу в будущее.",
+   "table": {
+    "head": ["Предложение", "О чём речь", "Подсказка"],
+    "rows": [
+     ["I'm working now.", "действие идёт прямо сейчас", "now"],
+     ["I'm working tomorrow.", "договорённость на завтра", "tomorrow"],
+     ["We're flying on Friday.", "куплены билеты", "on Friday"]
+    ]
+   }
+  },
+  {
+   "h": "Кто договаривался",
+   "p": "Главное отличие от простого намерения — участие другого человека или готовый билет. Если вы договорились с врачом, с другом, с клиентом или у вас на руках бронь, смело берите длительную форму. Если решение родилось только сейчас, в момент разговора, эта форма не подходит.",
+   "formula": "I'm seeing the dentist at five. · They're getting married in June."
+  },
+  {
+   "h": "Предсказания здесь не работают",
+   "p": "Длительное время не умеет предсказывать и обещать. Фразы про погоду, про будущее вообще или про обещание строятся иначе — через will или going to. Если вы скажете, что завтра пойдёт дождь в длительной форме, получится, будто дождь у вас в календаре.",
+   "formula": "It will rain tomorrow. (предсказание) · I'm seeing him tomorrow. (договорённость)"
+  },
+  {
+   "h": "Отрицание и вопрос",
+   "p": "В отрицании not встаёт после am, is или are, а в вопросе эта же форма выходит на первое место. Время в конце фразы остаётся на своём месте и подсказывает собеседнику, что речь о будущем.",
+   "formula": "I'm not working tomorrow. · Are you coming tonight? · What are you doing this evening?"
+  }
+ ],
+ "examples": [
+  {"en": "I'm meeting Tom at six.", "ru": "В шесть я встречаюсь с Томом."},
+  {"en": "We're flying to Paris on Monday.", "ru": "В понедельник мы летим в Париж."},
+  {"en": "She's having lunch with her boss tomorrow.", "ru": "Завтра она обедает с начальником."},
+  {"en": "They're getting married in June.", "ru": "В июне они женятся."},
+  {"en": "I'm not working this weekend.", "ru": "В эти выходные я не работаю."},
+  {"en": "Are you coming to the party tonight?", "ru": "Ты придёшь сегодня на вечеринку?"}
+ ],
+ "traps": [
+  {"bad": "I meet the doctor tomorrow morning.", "good": "I'm meeting the doctor tomorrow morning.", "why": "Договорённость требует длительной формы, иначе звучит как привычка."},
+  {"bad": "I will meeting Anna tonight.", "good": "I'm meeting Anna tonight.", "why": "После will не бывает -ing: либо will meet, либо am meeting."},
+  {"bad": "It is raining tomorrow.", "good": "It will rain tomorrow.", "why": "Погода — предсказание, длительная форма для него не годится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ my dentist tomorrow.", "options": ["see", "am seeing", "will seeing"], "a": 1, "why": "Есть запись на приём — договорённость: am seeing."},
+  {"type": "choice", "q": "We ___ to Paris on Monday.", "options": ["fly", "are flying", "flying"], "a": 1, "why": "Билеты уже есть: are flying."},
+  {"type": "choice", "q": "She ___ not coming to the party.", "options": ["is", "does", "will"], "a": 0, "why": "Длительная форма отрицается через is not."},
+  {"type": "choice", "q": "___ you meeting Anna tonight?", "options": ["Are", "Do", "Will"], "a": 0, "why": "Вопрос к длительной форме начинается с are."},
+  {"type": "choice", "q": "What ___ you doing this evening?", "options": ["are", "do", "will"], "a": 0, "why": "Вопрос о планах на вечер: are you doing."},
+  {"type": "gap", "q": "I ___ (meet) Tom at six.", "a": ["am meeting", "'m meeting"], "why": "Договорённая встреча: am meeting."},
+  {"type": "gap", "q": "They ___ (not/fly) tomorrow.", "a": ["aren't flying", "are not flying"], "why": "Отрицание длительной формы: aren't flying."},
+  {"type": "translate", "q": "Завтра я обедаю с мамой.", "a": ["i'm having lunch with my mum tomorrow", "i am having lunch with my mum tomorrow"], "why": "Договорённость: am having lunch."},
+  {"type": "translate", "q": "Мы уезжаем в пятницу.", "a": ["we are leaving on friday", "we're leaving on friday"], "why": "План с датой: are leaving on Friday."}
+ ]
+}

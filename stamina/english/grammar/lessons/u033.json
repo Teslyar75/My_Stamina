@@ -1,0 +1,66 @@
+{
+ "n": 33,
+ "level": "A2",
+ "module": "modals",
+ "title": "have to: приходится",
+ "en": "I have to ...",
+ "summary": "Когда обязанность приходит извне — правила, работа, закон — англичане говорят have to, а не must.",
+ "can_do": [
+  "Сказать, что вам приходится что-то делать.",
+  "Отличить «не обязан» от «нельзя».",
+  "Рассказать о прошлой обязанности через had to."
+ ],
+ "theory": [
+  {
+   "h": "Обычный глагол, а не модальный",
+   "p": "Have to ведёт себя как have: берёт do в вопросах и отрицаниях, меняется по лицам и по временам. Именно поэтому у него есть has to и had to — то, чего must дать не может.",
+   "formula": "I have to work. · She has to wear a uniform. · Do you have to go?"
+  },
+  {
+   "h": "have to или must",
+   "p": "Have to — обязанность извне, must — решение изнутри. В живой речи граница размывается, но в учебных заданиях её держат, поэтому лучше сразу привыкнуть к этому различию.",
+   "table": {
+    "head": ["Откуда обязанность", "Конструкция", "Пример"],
+    "rows": [
+     ["правила, другие люди", "have to", "I have to wear a tie at work."],
+     ["сам решил", "must", "I must call my sister."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание: не надо",
+   "p": "Don't have to значит «не обязан», а не «нельзя». Mustn't запрещает, don't have to освобождает, и путать их в переводе — одна из самых заметных ошибок русскоязычных.",
+   "formula": "You don't have to come. (можешь не приходить) · You mustn't come. (приходить нельзя)"
+  },
+  {
+   "h": "Прошлое и будущее",
+   "p": "В прошедшем have to превращается в had to, в будущем — в will have to. Поскольку must так не умеет, had to остаётся единственным способом сказать «пришлось».",
+   "formula": "I had to pay a fine. · I'll have to leave early."
+  }
+ ],
+ "examples": [
+  {"en": "I have to get up at six.", "ru": "Мне приходится вставать в шесть."},
+  {"en": "She has to work on Saturdays.", "ru": "Ей приходится работать по субботам."},
+  {"en": "Do you have to wear a uniform?", "ru": "Тебе обязательно носить форму?"},
+  {"en": "We didn't have to pay for parking.", "ru": "Нам не пришлось платить за парковку."},
+  {"en": "I'll have to call you back.", "ru": "Мне придётся перезвонить."},
+  {"en": "He had to sell his car.", "ru": "Ему пришлось продать машину."}
+ ],
+ "traps": [
+  {"bad": "I have to work yesterday.", "good": "I had to work yesterday.", "why": "В прошедшем have to превращается в had to."},
+  {"bad": "She have to go.", "good": "She has to go.", "why": "he, she, it требуют has to."},
+  {"bad": "You don't have to smoke here.", "good": "You mustn't smoke here.", "why": "Запрет — mustn't; don't have to значит «не обязан»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ get up early tomorrow.", "options": ["has to", "have to", "is have to"], "a": 0, "why": "she требует has to."},
+  {"type": "choice", "q": "___ you have to work this weekend?", "options": ["Do", "Are", "Have"], "a": 0, "why": "Вопрос строится через do: Do you have to work?"},
+  {"type": "choice", "q": "We ___ wait for two hours yesterday.", "options": ["had to", "have to", "must"], "a": 0, "why": "Прошлое: had to wait."},
+  {"type": "choice", "q": "You ___ bring food — we'll order pizza.", "options": ["don't have to", "mustn't", "can't"], "a": 0, "why": "Приносить не обязательно: don't have to."},
+  {"type": "choice", "q": "He ___ to wear a suit at work.", "options": ["has", "have", "is"], "a": 0, "why": "В устойчивой конструкции нужен have/has: he has to wear."},
+  {"type": "gap", "q": "I ___ (not / have to) cook tonight.", "a": ["don't have to", "do not have to"], "why": "Отрицание через do: I don't have to cook."},
+  {"type": "gap", "q": "They ___ (have to) leave before dark.", "a": ["have to"], "why": "they — множественное число: have to."},
+  {"type": "gap", "q": "She ___ (have to) work last Sunday.", "a": ["had to"], "why": "Прошлое: had to work."},
+  {"type": "translate", "q": "Мне приходится рано вставать.", "a": ["i have to get up early"], "why": "Обязанность извне: I have to get up early."},
+  {"type": "translate", "q": "Нам не пришлось ждать.", "a": ["we didn't have to wait", "we did not have to wait"], "why": "Прошлое без обязанности: We didn't have to wait."}
+ ]
+}

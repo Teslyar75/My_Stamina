@@ -1,0 +1,72 @@
+{
+ "n": 70,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Артикль the: основное правило",
+ "en": "the (1)",
+ "summary": "Одно правило на все случаи: the, когда предмет определён — и вы, и собеседник имеете в виду один и тот же.",
+ "can_do": [
+  "Понять, когда предмет считается определённым.",
+  "Ставить the при уточнении: the man in the hat.",
+  "Использовать the с единственным в мире и с превосходной степенью."
+ ],
+ "theory": [
+  {
+   "h": "Определённость — это про собеседника",
+   "p": "The ставят, когда слушатель понимает, о каком именно предмете речь. Неважно, один он в мире или их много; важно, что мы имеем в виду конкретный. The man over there — сразу понятно, о ком.",
+   "formula": "the man over there · the keys on the table"
+  },
+  {
+   "h": "Четыре причины сказать the",
+   "p": "Почти все случаи сводятся к четырём: предмет уже назван, у него есть уточнение, он единственный, он ясен из обстановки.",
+   "table": {
+    "head": ["Почему the", "Пример"],
+    "rows": [
+     ["уже упоминали", "I bought a coat. The coat is warm."],
+     ["есть уточнение", "the girl in the red dress"],
+     ["единственный в своём роде", "the sun, the sky, the moon"],
+     ["ясно из ситуации", "Please close the door."]
+    ]
+   }
+  },
+  {
+   "h": "Уточнение стоит после",
+   "p": "Часто the появляется потому, что сразу за существительным идёт уточнение: предлог места, of, придаточное. The book on the table, the end of the film, the man who called you.",
+   "formula": "the book on the table · the end of the film"
+  },
+  {
+   "h": "The плюс прилагательное",
+   "p": "The с прилагательным называет целую группу людей: the rich, the poor, the young, the old, the British. Глагол при этом во множественном числе: The rich are not always happy.",
+   "formula": "the young · the old · the British"
+  },
+  {
+   "h": "The и превосходная степень",
+   "p": "Перед превосходной степенью the почти обязателен: the best, the biggest, the most interesting. Такой предмет один — самый-самый, значит он определён.",
+   "formula": "the best day · the tallest building"
+  }
+ ],
+ "examples": [
+  {"en": "The shop on the corner is closed.", "ru": "Магазин на углу закрыт."},
+  {"en": "Please pass me the salt.", "ru": "Передайте мне соль, пожалуйста."},
+  {"en": "The sky is clear tonight.", "ru": "Небо сегодня ясное."},
+  {"en": "She is the youngest student in the group.", "ru": "Она самая младшая студентка в группе."},
+  {"en": "The people in the queue were quiet.", "ru": "Люди в очереди молчали."},
+  {"en": "I liked the ending of the film.", "ru": "Мне понравилась концовка фильма."}
+ ],
+ "traps": [
+  {"bad": "Please close door.", "good": "Please close the door.", "why": "Дверь одна и понятна обоим — нужен the."},
+  {"bad": "Sun is very hot today.", "good": "The sun is very hot today.", "why": "Единственное в мире всегда с the."},
+  {"bad": "She is best student in the class.", "good": "She is the best student in the class.", "why": "Превосходная степень требует the."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Can you open ___ window, please?", "options": ["a", "the", "an"], "a": 1, "why": "Окно в комнате одно и понятно обоим — the."},
+  {"type": "choice", "q": "___ moon is bright tonight.", "options": ["A", "The", "An"], "a": 1, "why": "Луна единственная — the."},
+  {"type": "choice", "q": "This is ___ most interesting book I have.", "options": ["a", "the", "an"], "a": 1, "why": "Превосходная степень most interesting — с the."},
+  {"type": "choice", "q": "I liked ___ music in that film.", "options": ["a", "the", "an"], "a": 1, "why": "Музыка конкретного фильма уточнена — the."},
+  {"type": "choice", "q": "___ rich should pay more taxes.", "options": ["A", "The", "An"], "a": 1, "why": "The + прилагательное называет группу людей."},
+  {"type": "gap", "q": "He is ___ tallest boy in the class.", "a": ["the"], "why": "Превосходная степень tallest — с the."},
+  {"type": "gap", "q": "Look at ___ girl in the blue coat.", "a": ["the"], "why": "Уточнение in the blue coat делает предмет определённым."},
+  {"type": "translate", "q": "Небо сегодня серое.", "a": ["the sky is grey today", "the sky is gray today"], "why": "Небо единственное в своём роде — the sky."},
+  {"type": "translate", "q": "Она лучшая ученица в классе.", "a": ["she is the best student in the class", "she is the best pupil in the class"], "why": "Превосходная степень: the best student."}
+ ]
+}
