@@ -170,9 +170,12 @@ class EnglishScreen(tk.Frame):
             return
         if name == "grammar":
             self._ensure_grammar()
-        for p in self.pages.values():          # фокус-режим не переживает смену вкладки
-            if getattr(p, "_focus", None) is not None:
-                p.toggle_focus(False)
+        for pg in self.pages.values():          # фокус-режим не переживает смену вкладки
+            if getattr(pg, "_focus", None) is not None:
+                try:
+                    pg.toggle_focus(False, remember=False)
+                except TypeError:
+                    pg.toggle_focus(False)
         prev = self.current
         self.current = name
         page = self.pages[name]
@@ -189,6 +192,11 @@ class EnglishScreen(tk.Frame):
             scan._cancel_fit_jobs()
         if hasattr(page, "refresh"):
             page.refresh()
+        if name == "grammar" and hasattr(page, "apply_session_focus"):
+            try:
+                page.after_idle(page.apply_session_focus)
+            except tk.TclError:
+                page.apply_session_focus()
         if name == "scanner" and hasattr(page, "_fit_normal"):
             try:
                 page.after_idle(lambda: page._fit_normal(force=True))
@@ -200,6 +208,47 @@ class EnglishScreen(tk.Frame):
         hook = getattr(self.app, "_alt_page_hook", None)   # есть только в alt-оболочке
         if hook is not None:
             hook()
+        if prev != name:
+            from stamina.nav_back import notify
+            notify(self.app)
+
+    def snapshot_place(self):
+        from stamina import english_hook
+        from stamina.nav_back import Place
+
+        return Place(screen=english_hook.KEY, sub=self.current or "overview")
+
+    def restore_place(self, place) -> None:
+        if place.sub:
+            self.show(place.sub)
+
+    def handle_back(self) -> bool:
+        """Закрыть портал/справку/урок грамматики или уйти со сканера слова."""
+        if not self._built:
+            return False
+        page = self.pages.get(self.current)
+        if page is None:
+            return False
+        portal_open = getattr(page, "portal_open", None)
+        if callable(portal_open) and portal_open():
+            page.close_portal()
+            return True
+        ref = getattr(page, "reference", None)
+        if ref is not None:
+            try:
+                if ref.winfo_ismapped():
+                    page.close_reference()
+                    return True
+            except tk.TclError:
+                pass
+        if self.current == "grammar":
+            hb = getattr(page, "handle_back", None)
+            if callable(hb) and hb():
+                return True
+        if self.current == "scanner" and hasattr(page, "go_back") and getattr(page, "slug", None):
+            page.go_back()
+            return True
+        return False
 
     # рабочие страницы и их предельная ширина (для alt-оболочки; классика не вызывает)
     WORK_PAGES = {"review": 840, "book": 820, "practice": 1040, "sets": 4000}  # sets: альт — без баннера, 24 карты в окно
@@ -477,9 +526,15 @@ class EnglishScreen(tk.Frame):
         if not self._built:
             return
         from .speech_std import typing_in
+        page = self.pages.get(self.current)
+        # Грамматика: Ctrl+O / двойной Esc работают и из поля ввода; O/Щ — только вне Entry.
+        if self.current == "grammar" and page is not None and hasattr(page, "on_key"):
+            if page.on_key(e) == "break":
+                return
         if typing_in(e.widget):
             return                      # пробел и буквы в поле ввода — это текст
-        page = self.pages.get(self.current)
+        if self.current == "grammar":
+            return
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
 

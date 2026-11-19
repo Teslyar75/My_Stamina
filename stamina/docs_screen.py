@@ -263,7 +263,7 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
     def in_focus(self) -> bool:
         return self._focus is not None
 
-    def toggle_focus(self, on: bool | None = None) -> None:
+    def toggle_focus(self, on: bool | None = None, **_kw) -> None:
         from stamina.english.ui import FocusMode
         on = (self._focus is None) if on is None else on
         if on and self._focus is None:
@@ -1114,6 +1114,12 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         if refocus:
             self.toggle_focus(True)     # справка открыта/закрыта — фокус пересобираем
         self.text.focus_set()
+
+    def handle_back(self) -> bool:
+        if getattr(self, "_help_on", False):
+            self.toggle_help(False)
+            return True
+        return False
 
     def update_empty_hint(self) -> None:
         if self.text.get("1.0", "end-1c").strip() or self.text.dump("1.0", "end", image=True):

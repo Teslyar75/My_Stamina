@@ -42,6 +42,9 @@ class Cockpit(tk.Tk):
         self.translator = None
         self.current: str | None = None
         self._prev_screen: str | None = None
+        from stamina.nav_back import BackStack
+        self.back_stack = BackStack()
+        self._back_restoring = False
         self._last_action = None      # для F5: функция перезапуска
         self.pilot = pilots.active()  # None — режим без экипажа (миграция не удалась)
         self._update_title()
@@ -600,10 +603,64 @@ class Cockpit(tk.Tk):
             except tk.TclError:
                 pass
 
+
+    def _exit_screen_focus(self, screen_name: str | None) -> None:
+        """Снять фокус-режим текущего отсека и восстановить шапку."""
+        if not screen_name:
+            return
+        scr = self.screens.get(screen_name)
+        if scr is None:
+            return
+        if getattr(scr, "focus_active", lambda: False)():
+            if hasattr(scr, "pages"):
+                page = scr.pages.get(getattr(scr, "current", None))
+                if page is not None and hasattr(page, "toggle_focus"):
+                    try:
+                        page.toggle_focus(False, remember=False)
+                    except TypeError:
+                        page.toggle_focus(False)
+                    return
+            if hasattr(scr, "toggle_focus"):
+                try:
+                    scr.toggle_focus(False, remember=False)
+                except TypeError:
+                    scr.toggle_focus(False)
+                return
+        if getattr(scr, "in_focus", lambda: False)():
+            try:
+                scr.toggle_focus(False, remember=False)
+            except TypeError:
+                scr.toggle_focus(False)
+
+    def _handle_focus_escape(self) -> bool:
+        """Esc в фокусе: грамматика — двойной Esc; сканер и документы — один Esc."""
+        scr = self.screens.get(self.current)
+        if scr is None:
+            return False
+        if self.current == english_hook.KEY and getattr(scr, "focus_active", lambda: False)():
+            page = scr.pages.get(scr.current) if hasattr(scr, "pages") else None
+            if page is not None and hasattr(page, "handle_focus_escape"):
+                return bool(page.handle_focus_escape())
+            if page is not None and hasattr(page, "toggle_focus"):
+                page.toggle_focus(False)
+                return True
+        if self.current == languages_hook.KEY and getattr(scr, "focus_active", lambda: False)():
+            if hasattr(scr, "handle_focus_escape"):
+                return bool(scr.handle_focus_escape())
+            if hasattr(scr, "toggle_focus"):
+                scr.toggle_focus(False)
+                return True
+        if self.current == docs_hook.KEY and getattr(scr, "in_focus", lambda: False)():
+            scr.toggle_focus(False)
+            return True
+        return False
+
     def show(self, name: str) -> None:
         if name == self.current:
             self._only_screen(name)      # экран уже открыт — просто убираем чужие
             return
+        # Смена отсека: выйти из фокуса/зенида, иначе шапка останется скрытой
+        self._exit_screen_focus(self.current)
         bridge: Bridge = self.screens["bridge"]
         if self.current == "bridge" and bridge.state in ("run", "ready") and name != "bridge":
             bridge.pause(tr_("Пауза — вы перешли в другой раздел"))
@@ -675,6 +732,74 @@ class Cockpit(tk.Tk):
                     sub = titles.get(scr_obj.current_tab, "")
                 orion_scr.on_zone_enter(zone or name, sub)
             self.focus_set()
+        self.record_place()
+
+    def record_place(self) -> None:
+        """Запомнить текущий отсек в истории Backspace (не во время go_back)."""
+        if getattr(self, "_back_restoring", False):
+            return
+        stack = getattr(self, "back_stack", None)
+        if stack is None:
+            return
+        place = self.snapshot_place()
+        if place is not None:
+            stack.arrive(place)
+
+    def snapshot_place(self):
+        from stamina.nav_back import snapshot_screen
+
+        name = self.current
+        if not name:
+            return None
+        screens = getattr(self, "screens", None) or {}
+        return snapshot_screen(name, screens.get(name))
+
+    def restore_place(self, place) -> None:
+        self._back_restoring = True
+        try:
+            if self.current != place.screen:
+                self.show(place.screen)
+            if self.current != place.screen:
+                return
+            scr = self.screens.get(place.screen)
+            rest = getattr(scr, "restore_place", None)
+            if callable(rest):
+                rest(place)
+            else:
+                show_tab = getattr(scr, "show_tab", None)
+                if callable(show_tab) and place.sub:
+                    show_tab(place.sub)
+            if getattr(self, "back_stack", None) is not None:
+                self.back_stack.here = place
+        finally:
+            self._back_restoring = False
+
+    def go_back(self, event=None) -> bool:
+        """Backspace: сначала закрыть подпанель, иначе предыдущий экран. На корне — ничего."""
+        from stamina.nav_back import backspace_edits_text
+
+        if event is not None and backspace_edits_text(self, event):
+            return False
+        scr = self.screens.get(self.current) if hasattr(self, "screens") else None
+        handle = getattr(scr, "handle_back", None)
+        if callable(handle) and handle():
+            return True
+        if event is not None:
+            widget = getattr(event, "widget", None)
+            try:
+                top = widget.winfo_toplevel() if widget is not None else None
+                if top is not None and top is not self:
+                    return False
+            except tk.TclError:
+                pass
+        stack = getattr(self, "back_stack", None)
+        if stack is None:
+            return False
+        place = stack.back()
+        if place is None:
+            return False
+        self.restore_place(place)
+        return True
 
     def update_comm_badge(self) -> None:
         """Эфир: если есть непрочитанные сообщения, кнопка раздела подсвечена янтарным."""
@@ -1369,16 +1494,8 @@ class Cockpit(tk.Tk):
         if e.keysym == "Escape" and vc is not None and vc.active():
             vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
             return "break"
-        if e.keysym == "Escape" and self.current == english_hook.KEY:
-            scr = self.screens.get(english_hook.KEY)
-            if scr is not None and getattr(scr, "focus_active", lambda: False)():
-                scr.pages[scr.current].toggle_focus(False)   # Esc в фокус-режиме — только выход из него
-                return "break"
-        if e.keysym == "Escape" and self.current == docs_hook.KEY:
-            scr = self.screens.get(docs_hook.KEY)
-            if scr is not None and getattr(scr, "in_focus", lambda: False)():
-                scr.toggle_focus(False)      # Документы: Esc — выход из фокус-режима
-                return "break"
+        if e.keysym == "Escape" and self._handle_focus_escape():
+            return "break"
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
@@ -1396,6 +1513,10 @@ class Cockpit(tk.Tk):
             return
         if self._chrome_hotkey(e):
             return "break"      # не даём тому же хоткею сработать ещё раз через bind_all
+        from stamina.nav_back import backspace_edits_text, is_back_key
+        if is_back_key(e) and not backspace_edits_text(self, e):
+            self.go_back(e)
+            return "break"
         if self.current == "bridge":
             from stamina.hud import HudButton
             if isinstance(self.focus_get(), HudButton):
