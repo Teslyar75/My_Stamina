@@ -49,3 +49,31 @@ def test_at_edge_and_own_binding(root):
     lbl.bind("<MouseWheel>", lambda e: "break")
     assert wheel_router._own_wheel(lbl)
     assert wheel_router.direction(type("E", (), {"num": 5, "delta": 0})()) == 1
+
+
+def test_install_survives_new_tk_after_destroy():
+    """После destroy() новый Tk() снова "." — роутер должен повеситься заново."""
+    try:
+        first = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    first.geometry("300x200")
+    wheel_router.install(first)
+    assert wheel_router.installed(first)
+    first.destroy()
+    nxt = tk.Tk()
+    nxt.geometry("300x200")
+    try:
+        assert not wheel_router.installed(nxt)
+        wheel_router.install(nxt)
+        assert wheel_router.installed(nxt)
+        cv, inner = _scroller(nxt)
+        nxt.update()
+        inner.winfo_children()[3].event_generate("<MouseWheel>", delta=-120)
+        nxt.update()
+        assert cv.yview()[0] > 0
+        inner.winfo_children()[3].event_generate("<Button-5>")
+        nxt.update()
+        assert cv.yview()[0] > 0
+    finally:
+        nxt.destroy()

@@ -27,6 +27,23 @@ from stamina.grammar_ui.focus import (
 LIST_CHUNK = 8
 LESSON_CHUNK = 2
 
+# Живые развороты и один bind_all на окно (маркер на toplevel).
+# needcleanup=0: команда не удаляется вместе с виджетом, пока жив интерпретатор.
+_PAGE_KEY_LIVE: list = []
+
+
+def _dispatch_page_key(event):
+    for spread in tuple(_PAGE_KEY_LIVE):
+        if not getattr(spread, "_page_keys_live", False):
+            continue
+        try:
+            result = spread._on_page_key(event)
+        except tk.TclError:
+            continue
+        if result == "break":
+            return "break"
+    return None
+
 
 class GrammarSpread(tk.Frame):
     """Двухпанельный разворот грамматики. Данные — только через catalog."""
@@ -122,6 +139,94 @@ class GrammarSpread(tk.Frame):
         # алиас для тестов: прокручиваемая область урока
         self.content = self
         self._rebuild_left_extra()
+        self._bind_page_keys()
+
+    _PAGE_KEYS = ("<Prior>", "<Next>", "<Home>", "<End>")
+    _ENTRY_CLASSES = ("Entry", "TEntry", "Text", "Spinbox", "TSpinbox")
+
+    def _bind_page_keys(self) -> None:
+        """PgUp/PgDn/Home/End крутят панель под курсором, если фокус не в поле ввода."""
+        self._page_keys_live = True
+        if self not in _PAGE_KEY_LIVE:
+            _PAGE_KEY_LIVE.append(self)
+        self.bind("<Destroy>", self._release_page_keys, add="+")
+        top = self.winfo_toplevel()
+        if getattr(top, "_grammar_page_keys_bound", False):
+            return
+        # needcleanup=0: команда живёт с интерпретатором, а не с виджетом
+        for seq in self._PAGE_KEYS:
+            self._bind(("bind", "all"), seq, _dispatch_page_key, add="+", needcleanup=0)
+        top._grammar_page_keys_bound = True
+
+    def _release_page_keys(self, event=None) -> None:
+        if event is not None and getattr(event, "widget", None) is not self:
+            return
+        self._page_keys_live = False
+        try:
+            _PAGE_KEY_LIVE.remove(self)
+        except ValueError:
+            pass
+
+    def _sf_of(self, widget):
+        x = widget
+        while x is not None:
+            if x is self._lesson_sf or x is self._list_sf:
+                return x
+            x = getattr(x, "master", None)
+        return None
+
+    def _page_key_target(self, event=None):
+        """ScrollFrame урока или списка под курсором (или виджет события); иначе None."""
+        try:
+            if not self.winfo_exists() or not self.winfo_viewable():
+                return None
+            focus = self.focus_get()
+            if focus is not None and str(focus.winfo_class()) in self._ENTRY_CLASSES:
+                return None
+            if event is not None and isinstance(getattr(event, "widget", None), tk.Misc):
+                found = self._sf_of(event.widget)
+                if found is not None:
+                    return found
+            x = y = None
+            if event is not None:
+                x = getattr(event, "x_root", None)
+                y = getattr(event, "y_root", None)
+            if x is None or y is None or (int(x) == 0 and int(y) == 0):
+                x, y = self.winfo_pointerx(), self.winfo_pointery()
+            for sf in (self._lesson_sf, self._list_sf):
+                if self._pointer_over(sf, int(x), int(y)):
+                    return sf
+        except tk.TclError:
+            return None
+        return None
+
+    @staticmethod
+    def _pointer_over(widget, x: int, y: int) -> bool:
+        try:
+            if not widget.winfo_ismapped():
+                return False
+            left, top = widget.winfo_rootx(), widget.winfo_rooty()
+            return left <= x < left + widget.winfo_width() and top <= y < top + widget.winfo_height()
+        except tk.TclError:
+            return False
+
+    def _on_page_key(self, event):
+        sf = self._page_key_target(event)
+        if sf is None:
+            return None
+        key = event.keysym
+        try:
+            if key in ("Prior", "Next"):
+                sf.canvas.yview_scroll(-1 if key == "Prior" else 1, "pages")
+            elif key == "Home":
+                sf.canvas.yview_moveto(0)
+            elif key == "End":
+                sf.canvas.yview_moveto(1)
+            else:
+                return None
+        except tk.TclError:
+            return None
+        return "break"
 
     def _rebuild_source_tabs(self) -> None:
         for w in self._tabs_host.winfo_children():

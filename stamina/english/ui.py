@@ -132,8 +132,10 @@ class ScrollFrame(tk.Frame):
         self.inner = tk.Frame(self.canvas, bg=bg)
         self._win = self.canvas.create_window(0, 0, window=self.inner, anchor="nw")
         self.canvas.configure(yscrollcommand=self.bar.set)
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        # Полоса первой: в узкой колонке (список уроков) pack(expand) холста
+        # иначе забирает всю ширину, и бар не получает место.
         self.bar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.autohide = False     # True: полоса только когда содержимое выше окна; inner тянется на всю высоту
         self.inner.bind("<Configure>", self._on_inner)
         self.canvas.bind("<Configure>", self._on_canvas)
@@ -171,11 +173,19 @@ class ScrollFrame(tk.Frame):
         from stamina import wheel_router
         if wheel_router.installed(self):
             return    # общий роутер уже крутит область под курсором; bind_all его бы стёр
-        self.bind_all("<MouseWheel>", self._wheel) if on else self.unbind_all("<MouseWheel>")
+        # Windows/macOS: <MouseWheel> (в т.ч. малый delta на тачпаде);
+        # Linux (X11, Tk 8.6): кнопки 4/5. Не дублируем, если роутер уже стоит.
+        for seq, fn in (("<MouseWheel>", self._wheel),
+                        ("<Button-4>", self._wheel),
+                        ("<Button-5>", self._wheel)):
+            self.bind_all(seq, fn) if on else self.unbind_all(seq)
 
     def _wheel(self, e) -> None:
+        from stamina import wheel_router
         if self.inner.winfo_height() > self.canvas.winfo_height():
-            self.canvas.yview_scroll(int(-e.delta / 120) * 3, "units")
+            d = wheel_router.direction(e)
+            if d:
+                self.canvas.yview_scroll(d * 3, "units")
 
     def top(self) -> None:
         self.canvas.yview_moveto(0)
