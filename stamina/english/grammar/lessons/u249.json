@@ -1,0 +1,80 @@
+{
+ "n": 249,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Глагол + предлог (4): of, for, from, on",
+ "en": "verb + preposition 4 (of/for/from/on)",
+ "summary": "Урок закрепляет сочетания глаголов с предлогами of, for, from, on: accuse of, apply for, suffer from, depend on и др. Учимся не путать предлоги, где русский язык подсказывает другой.",
+ "can_do": [
+  "Использовать accuse, suspect, remind, consist, approve, die, smell с предлогом of.",
+  "Правильно сочетать pay, thank, blame, apologise, apply, wait, look, care с for.",
+  "Говорить suffer, protect, prevent, borrow, recover, resign, translate с from.",
+  "Строить фразы с depend, insist, rely, base, concentrate, spend, congratulate на on."
+ ],
+ "theory": [
+  {
+   "h": "Глаголы с предлогом OF",
+   "p": "Группа of объединяет обвинение (accuse of, suspect of), напоминание (remind of), состав (consist of), одобрение (approve of), причину смерти (die of) и запах (smell of). В русском часто стоит «о/об» или без предлога, но английский требует строго of: accuse sb of theft, the soup smells of garlic.",
+   "formula": "accuse of · suspect of · remind of · consist of · approve of · die of · smell of"
+  },
+  {
+   "h": "Глаголы с предлогом FOR",
+   "p": "Предлог for отмечает цель или причину: pay for (платить за), thank for (благодарить за), blame for (винить за), apologise for (извиняться за), apply for (подавать заявление на), wait for (ждать), look for (искать), care for (заботиться/любить). После apologise и blame часто стоит герундий: apologised for being late.",
+   "formula": "pay for · thank for · blame for · apologise for · apply for · wait for · look for · care for"
+  },
+  {
+   "h": "Глаголы с предлогом FROM",
+   "p": "From указывает на источник или разделение: suffer from (страдать от), protect from (защищать от), prevent from (предотвращать/мешать), borrow from (занимать у), recover from (выздоравливать после), resign from (уходить в отставку с), translate from (переводить с). Важно: prevent sb from doing — с герундием.",
+   "formula": "suffer from · protect from · prevent from · borrow from · recover from · resign from · translate from"
+  },
+  {
+   "h": "Глаголы с предлогом ON",
+   "p": "On выражает зависимость или фокус внимания: depend on (зависеть от), insist on (настаивать на), rely on (полагаться на), base on (основываться на), concentrate on (сосредотачиваться на), spend on (тратить на), congratulate on (поздравлять с). Ошибка: depend of — неверно, только on. Insist on требует герундия: insisted on paying.",
+   "formula": "depend on · insist on · rely on · base on · concentrate on · spend on · congratulate on"
+  },
+  {
+   "h": "Типичные путаницы",
+   "p": "Русский язык часто не различает предлоги: «винить в/за» — accuse of / blame for; «зависеть от» — depend on (не of); «мешать» — prevent from (не to); «подавать на» — apply for (не to). После предлога всегда герундий: insist on doing, apologise for doing, prevent from doing. Запоминайте пары глагол+предлог как единые единицы.",
+   "formula": "accuse of ≠ blame for · depend on ≠ depend of · prevent from doing · apply for a job"
+  },
+  {
+   "h": "Сводная таблица",
+   "p": "Быстрая шпаргалка по группам для повторения.",
+   "table": {
+    "head": ["Предлог", "Глаголы", "Пример"],
+    "rows": [
+     ["of", "accuse, suspect, remind, consist, approve, die, smell", "He was accused of fraud."],
+     ["for", "pay, thank, blame, apologise, apply, wait, look, care", "I applied for the visa."],
+     ["from", "suffer, protect, prevent, borrow, recover, resign, translate", "She suffers from migraines."],
+     ["on", "depend, insist, rely, base, concentrate, spend, congratulate", "It depends on the traffic."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "The police accused him of speeding.", "ru": "Полиция обвинила его в превышении скорости."},
+  {"en": "This salad consists of tomatoes and cucumbers.", "ru": "Этот салат состоит из помидоров и огурцов."},
+  {"en": "Thank you for helping me with the project.", "ru": "Спасибо, что помог мне с проектом."},
+  {"en": "She apologised for arriving late.", "ru": "Она извинилась за то, что опоздала."},
+  {"en": "He suffers from insomnia.", "ru": "Он страдает бессонницей."},
+  {"en": "They prevented us from entering the building.", "ru": "Они не пустили нас в здание (помешали войти)."},
+  {"en": "The decision depends on the weather.", "ru": "Решение зависит от погоды."}
+ ],
+ "traps": [
+  {"bad": "He was accused for stealing.", "good": "He was accused of stealing.", "why": "Accuse требует of, а не for; blame используется с for."},
+  {"bad": "It depends of the price.", "good": "It depends on the price.", "why": "Depend всегда с on; of здесь грубая ошибка."},
+  {"bad": "They prevented me to go.", "good": "They prevented me from going.", "why": "Prevent sb from doing — только такая конструкция с герундием."},
+  {"bad": "I applied to the university.", "good": "I applied for the course.", "why": "Apply for — просить/подавать заявление на что-то; apply to — обращаться к кому-то."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "They suspected him ___ lying.", "options": ["of", "for", "from"], "a": 0, "why": "Suspect требует предлога of."},
+  {"type": "choice", "q": "I'm waiting ___ my friend.", "options": ["for", "to", "at"], "a": 0, "why": "Wait for — ждать кого-то/чего-то."},
+  {"type": "choice", "q": "Success depends ___ hard work.", "options": ["of", "on", "from"], "a": 1, "why": "Depend on — единственно верный вариант."},
+  {"type": "choice", "q": "She apologised ___ the mistake.", "options": ["for", "of", "on"], "a": 0, "why": "Apologise for — извиняться за что-то."},
+  {"type": "gap", "q": "He suffers ___ (hint: chronic pain) chronic back pain.", "a": ["from"], "why": "Suffer from — страдать чем-то."},
+  {"type": "gap", "q": "The book consists ___ (hint: three chapters) three chapters.", "a": ["of"], "why": "Consist of — состоять из."},
+  {"type": "gap", "q": "They prevented him ___ (hint: leaving early) leaving early.", "a": ["from"], "why": "Prevent from doing — мешать/предотвращать."},
+  {"type": "translate", "q": "Я подозреваю его в воровстве.", "a": ["I suspect him of theft", "I suspect him of stealing"], "why": "Suspect of + существительное/герундий."},
+  {"type": "translate", "q": "Мы поздравили её с победой.", "a": ["We congratulated her on her victory", "We congratulated her on winning"], "why": "Congratulate on + существительное/герундий."}
+ ]
+}

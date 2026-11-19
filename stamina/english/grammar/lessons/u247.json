@@ -1,0 +1,72 @@
+{
+ "n": 247,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Глагол + предлог (2): about, for, of, after",
+ "en": "verb + preposition 2 (about/for/of/after)",
+ "summary": "Многие глаголы требуют строго определённый предлог: think about, wait for, consist of, look after. Выбор предлога не всегда совпадает с русским, поэтому сочетания нужно запоминать как единые единицы.",
+ "can_do": [
+  "Использовать правильные предлоги после глаголов think, talk, worry, complain, dream.",
+  "Различать apply/wait/look/search/pay/ask/care/blame/forgive/thank/leave/apologise for.",
+  "Правильно строить фразы с consist/approve/smell/think/remind/accuse/die/take care of.",
+  "Не путать care about (волноваться) и take care of (заботиться), look for (искать) и look after (присматривать)."
+ ],
+ "theory": [
+  {
+   "h": "Глаголы с about: мысли, речь, эмоции",
+   "p": "Глаголы мышления, речи и эмоций требуют about: think about, talk about, know about, care about, worry about, complain about, dream about. В русском они часто идут без предлога (думать о чём → think about), поэтому русские говорящие часто опускают about: *think it вместо think about it.",
+   "formula": "think about it · talk about the problem · worry about money · complain about the noise"
+  },
+  {
+   "h": "Глаголы с for: цель, причина, адресат",
+   "p": "Группа с for: apply for, wait for, look for, search for, pay for, ask for, care for, blame for, forgive for, thank for, leave for, apologise for. В русском wait и look не требуют предлога, но в английском for обязателен: wait for the bus, look for keys.",
+   "formula": "apply for a job · wait for the bus · look for my keys · pay for dinner · apologise for the mistake"
+  },
+  {
+   "h": "Глаголы с of: состав, отношение, восприятие",
+   "p": "С of работают: consist of (состоять из), approve of (одобрять), smell of (пахнуть), think of (иметь мнение), remind of (напоминать), accuse of (обвинять), die of (умереть от), take care of (заботиться). Think of — мнение (What do you think of it?), think about — размышление. Take care of — действие, care about — чувство.",
+   "formula": "consist of three parts · approve of the plan · smell of smoke · remind me of home · take care of the children"
+  },
+  {
+   "h": "Глаголы с after: последовательность и уход",
+   "p": "После after главные глаголы: look after (присматривать) и run after (гнаться). Look after неразрывно: look after the baby, look after yourself. Run after — физическое преследование или метафора: run after success. Не путать: look after ≠ look for (искать).",
+   "formula": "look after the cat · look after yourself · run after the bus · run after money"
+  },
+  {
+   "h": "Ловушки: care about vs take care of, look for vs look after",
+   "p": "Care about = волноваться (I care about your opinion). Take care of = ухаживать, выполнять заботу (Take care of your health). Look for = искать (I'm looking for my phone). Look after = присматривать (Look after my bag). Перепутывание меняет смысл: *looking after keys = присматриваю за ключами.",
+   "formula": "care about nature · take care of a patient · look for a job · look after a child"
+  },
+  {
+   "h": "Порядок слов: глагол + объект + предлог",
+   "p": "Предлог всегда после глагола/объекта и перед существительным/герундием: complain about the noise, apologise for being late. Нельзя выносить предлог вперёд: *About what thinking? → What are you thinking about? В формальном стиле допустим предлог перед whom/which, в речи — в конце.",
+   "formula": "complain about it · apologise for coming late · consist of two parts · think of going"
+  }
+ ],
+ "examples": [
+  {"en": "I often think about my childhood.", "ru": "Я часто думаю о детстве."},
+  {"en": "She applied for a visa yesterday.", "ru": "Она подала заявку на визу вчера."},
+  {"en": "The team consists of ten players.", "ru": "Команда состоит из десяти игроков."},
+  {"en": "Who will look after the dog while we're away?", "ru": "Кто будет присматривать за собакой, пока нас нет?"},
+  {"en": "He apologised for being late.", "ru": "Он извинился за опоздание."},
+  {"en": "This smells of garlic.", "ru": "Это пахнет чесноком."},
+  {"en": "Don't worry about the result.", "ru": "Не волнуйся о результате."}
+ ],
+ "traps": [
+  {"bad": "I'm waiting the bus.", "good": "I'm waiting for the bus.", "why": "Wait требует for; без предлога глагол меняет значение на «обслуживать» (wait tables)."},
+  {"bad": "The soup consists from vegetables.", "good": "The soup consists of vegetables.", "why": "Consist всегда с of; from используется с made (made from)."},
+  {"bad": "I'm looking after my keys.", "good": "I'm looking for my keys.", "why": "Look after = присматривать, look for = искать. Перепутывание меняет смысл."},
+  {"bad": "He accused me for stealing.", "good": "He accused me of stealing.", "why": "Accuse требует of; for здесь невозможен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I often ___ my childhood.", "options": ["think about", "think of", "think for"], "a": 0, "why": "Think about = размышлять, вспоминать; think of = иметь мнение."},
+  {"type": "choice", "q": "She ___ the position last week.", "options": ["applied for", "applied to", "applied"], "a": 0, "why": "Apply for a job/position — стандартная коллокация."},
+  {"type": "choice", "q": "The committee ___ five experts.", "options": ["consists of", "consists from", "consists in"], "a": 0, "why": "Consist только с of."},
+  {"type": "choice", "q": "Can you ___ my cat this weekend?", "options": ["look after", "look for", "look at"], "a": 0, "why": "Look after = присматривать; look for = искать."},
+  {"type": "gap", "q": "We need to ___ (pay) the tickets before Friday.", "a": ["pay for"], "why": "Pay for something — платить за что-то."},
+  {"type": "gap", "q": "He ___ (apologise) ___ (for) breaking the vase.", "a": ["apologised for"], "why": "Apologise for doing something — извиняться за действие."},
+  {"type": "gap", "q": "This shampoo ___ (smell) ___ (of) coconuts.", "a": ["smells of"], "why": "Smell of — пахнуть чем-то."},
+  {"type": "translate", "q": "Я волнуюсь за его здоровье.", "a": ["I care about his health", "I'm worried about his health"], "why": "Care about = волноваться, быть неравнодушным; worry about тоже подходит."},
+  {"type": "translate", "q": "Кто будет присматривать за детьми?", "a": ["Who will look after the children?", "Who's going to look after the kids?"], "why": "Look after — присматривать, заботиться; не путать с look for."}
+ ]
+}

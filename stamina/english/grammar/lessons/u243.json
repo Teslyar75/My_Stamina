@@ -1,0 +1,79 @@
+{
+ "n": 243,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Существительное + предлог",
+ "en": "noun + preposition",
+ "summary": "Многие существительные требуют строго определённый предлог: reason for, cause of, solution to. Ошибка в предлоге меняет смысл или делает фразу неграмотной.",
+ "can_do": [
+  "Выбирать правильный предлог после существительных причины, реакции и отношения.",
+  "Различать connection with и connection between в зависимости от контекста.",
+  "Использовать increase/decrease in, damage to, advantage of без ошибок.",
+  "Говорить о возможностях, потребностях и уважении с верными предлогами."
+ ],
+ "theory": [
+  {
+   "h": "Причина, причина, решение — разные предлоги",
+   "p": "Reason всегда требует for: the reason for the delay. Cause сочетается с of: the cause of the fire. Solution и answer берут to: a solution to the problem, the answer to the question. В русском все три могут переводиться «причина», но в английском предлог фиксирован.",
+   "formula": "reason for · cause of · solution to · answer to"
+  },
+  {
+   "h": "Реакция, отношение, приглашение",
+   "p": "Reaction и attitude требуют to (attitude допускает towards): reaction to the news, attitude to/towards work. Invitation также управляет to: an invitation to the party. Предлог for здесь невозможен — он меняет смысл на «для чего предназначено».",
+   "formula": "reaction to · attitude to/towards · invitation to"
+  },
+  {
+   "h": "Отношения и связь: with или between",
+   "p": "Relationship всегда с with: relationship with my colleagues. Connection выбирает предлог по логике: connection with — связь с чем-то/кем-то (у меня связь с ним), connection between — связь между двумя объектами (связь между ценой и качеством).",
+   "table": {
+    "head": ["Существительное", "Предлог", "Пример"],
+    "rows": [
+     ["relationship", "with", "relationship with her"],
+     ["connection", "with", "connection with the server"],
+     ["connection", "between", "connection between A and B"]
+    ]
+   }
+  },
+  {
+   "h": "Изменения, ущерб, разница",
+   "p": "Increase и decrease требуют in: an increase in prices, a decrease in temperature. Damage управляет to: damage to the car. Difference всегда стоит с between: the difference between the two options. Предлог from после difference возможен только в разговорном английском, в тестах — ошибка.",
+   "formula": "increase in · decrease in · damage to · difference between"
+  },
+  {
+   "h": "Преимущество, фото, пример, опыт",
+   "p": "Advantage, photo, example, experience объединяет предлог of: advantage of the method, photo of my family, example of good practice, experience of working abroad. Опыт также может стоять с in (experience in teaching), но of указывает на конкретный случай.",
+   "formula": "advantage of · photo of · example of · experience of"
+  },
+  {
+   "h": "Возможность, потребность, спрос, уважение",
+   "p": "Opportunity допускает for и of: opportunity for a break, opportunity of a lifetime — разница в оттенке (для чего vs какая возможность). Need и demand строго с for: need for change, demand for higher wages. Respect всегда требует for: respect for the rules.",
+   "formula": "opportunity for/of · need for · demand for · respect for"
+  }
+ ],
+ "examples": [
+  {"en": "The reason for the accident is still unknown.", "ru": "Причина аварии всё ещё неизвестна."},
+  {"en": "We need a solution to this problem.", "ru": "Нам нужно решение этой проблемы."},
+  {"en": "Her reaction to the news was calm.", "ru": "Её реакция на новости была спокойной."},
+  {"en": "There is a strong connection between smoking and cancer.", "ru": "Существует сильная связь между курением и раком."},
+  {"en": "The increase in fuel prices affected everyone.", "ru": "Рост цен на топливо затронул всех."},
+  {"en": "This job gives you the opportunity of a lifetime.", "ru": "Эта работа даёт возможность всей жизни."},
+  {"en": "We have great respect for your decision.", "ru": "Мы с большим уважением относимся к вашему решению."}
+ ],
+ "traps": [
+  {"bad": "The reason of the delay", "good": "The reason for the delay", "why": "Reason всегда требует for, of здесь грамматической ошибкой."},
+  {"bad": "Attitude for work", "good": "Attitude to work", "why": "Attitude управляет to или towards, for не используется."},
+  {"bad": "Connection with two countries", "good": "Connection between two countries", "why": "Когда речь о двух объектах, connection требует between."},
+  {"bad": "Damage on the car", "good": "Damage to the car", "why": "Damage сочетается только с to, on указывает на поверхность, а не на ущерб."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "What is the reason ___ the delay?", "options": ["for", "of", "to"], "a": 0, "why": "Reason всегда требует предлог for."},
+  {"type": "choice", "q": "We found a solution ___ the problem.", "options": ["for", "of", "to"], "a": 2, "why": "Solution и answer управляют предлогом to."},
+  {"type": "choice", "q": "There is a clear connection ___ smoking and lung cancer.", "options": ["with", "between", "to"], "a": 1, "why": "При перечислении двух объектов connection требует between."},
+  {"type": "choice", "q": "The company reported an increase ___ profits.", "options": ["in", "of", "to"], "a": 0, "why": "Increase и decrease всегда стоят с предлогом in."},
+  {"type": "gap", "q": "We have a good relationship ___ our neighbours.", "a": ["with"], "why": "Relationship всегда требует предлог with."},
+  {"type": "gap", "q": "The storm caused serious damage ___ the roof.", "a": ["to"], "why": "Damage управляет предлогом to."},
+  {"type": "gap", "q": "There is a growing demand ___ electric cars.", "a": ["for"], "why": "Need и demand строго требуют for."},
+  {"type": "translate", "q": "Её отношение к работе положительное.", "a": ["her attitude to work is positive", "her attitude towards work is positive"], "why": "Attitude требует to или towards."},
+  {"type": "translate", "q": "У нас есть возможность поехать за границу.", "a": ["we have the opportunity to go abroad", "we have an opportunity of going abroad"], "why": "Opportunity может сочетаться с to-инфинитивом или of + -ing, но не с for в этом контексте."}
+ ]
+}

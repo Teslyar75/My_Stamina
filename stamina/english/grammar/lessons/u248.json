@@ -1,0 +1,79 @@
+{
+ "n": 248,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Глагол + предлог (3): about и of",
+ "en": "verb + preposition 3 (about/of)",
+ "summary": "Разбираем, почему hear about — это узнать новость, а hear of — просто знать, что такое существует. И как не перепутать think about и think of, remind about и remind of.",
+ "can_do": [
+  "Различать hear about (узнать подробности) и hear of (знать о существовании).",
+  "Правильно выбирать между think about (обдумывать) и think of (вспомнить/иметь мнение).",
+  "Использовать remind about для задач и remind of для ассоциаций с людьми.",
+  "Строить фразы с complain to/about, warn about/of, dream of/about."
+ ],
+ "theory": [
+  {
+   "h": "Hear: about, of, from",
+   "p": "Hear about — узнать новость или подробности (I heard about the accident). Hear of — знать, что кто-то или что-то существует (Have you heard of this writer?). Hear from — получить письмо, звонок или весть от человека (I haven't heard from him lately). В русском часто одно «слышал», а в английском предлог меняет смысл.",
+   "table": {
+    "head": ["Предлог", "Смысл", "Пример"],
+    "rows": [
+     ["about", "узнать новость", "heard about the accident"],
+     ["of", "знать о существовании", "heard of that band"],
+     ["from", "получить весть", "heard from my friend"]
+    ]
+   }
+  },
+  {
+   "h": "Think: about vs of",
+   "p": "Think about — обдумывать, рассматривать вариант (I'm thinking about changing jobs). Think of — прийти в голову идея или выразить мнение (I thought of a good plan / What do you think of this film?). Если вы планируете — about, если вспомнили или оцениваете — of.",
+   "formula": "think about moving · think of a solution · think of him as a friend"
+  },
+  {
+   "h": "Remind: about vs of",
+   "p": "Remind someone about — напомнить о деле, встрече, обязанности (Remind me about the meeting). Remind someone of — вызвать ассоциацию с человеком или вещью (She reminds me of my sister). Предлог about указывает на задачу, of — на сходство или воспоминание.",
+   "formula": "remind me about the call · remind him of his father · remind you of the deadline"
+  },
+  {
+   "h": "Complain to someone about something",
+   "p": "Жалоба требует двух предлогов: complain to somebody (кому жалуетесь) и about something (на что). I complained to the manager about the noise. Нельзя сказать complain somebody или complain for. В русском «пожаловаться кому-то на что-то» — структура совпадает, но предлоги свои.",
+   "formula": "complain to the waiter about the food · complain to HR about the schedule"
+  },
+  {
+   "h": "Warn about / of",
+   "p": "Warn someone about / of danger — предупредить об опасности. About чаще для конкретной ситуации (warned us about the ice), of — для общей угрозы (warned of the risk). Предлог after warn не нужен: warn somebody, не warn to somebody. Ошибка: warn about на человека вместо warn somebody.",
+   "formula": "warn him about the dog · warn of strong winds · warn the children"
+  },
+  {
+   "h": "Dream of / about",
+   "p": "Dream of и dream about почти взаимозаменяемы: мечтать во сне или наяву. Dream of чуть чаще для больших жизненных целей (dream of becoming a pilot), about — для сюжетов снов (dreamed about flying). В разговорной речи разница стирается, можно использовать любой.",
+   "formula": "dream of travelling · dream about a big house · dream of success"
+  }
+ ],
+ "examples": [
+  {"en": "I heard about your promotion. Congratulations!", "ru": "Я узнал о твоём повышении. Поздравляю!"},
+  {"en": "Have you ever heard of this band?", "ru": "Ты когда-нибудь слышал об этой группе?"},
+  {"en": "I'm thinking about buying a new car.", "ru": "Я думаю купить новую машину."},
+  {"en": "What do you think of my idea?", "ru": "Как ты находишь мою идею?"},
+  {"en": "This song reminds me of my childhood.", "ru": "Эта песня напоминает мне о детстве."},
+  {"en": "Don't forget to remind me about the meeting.", "ru": "Не забудь напомнить мне о встрече."},
+  {"en": "They complained to the landlord about the broken heater.", "ru": "Они пожаловались хозяину на сломанный обогреватель."}
+ ],
+ "traps": [
+  {"bad": "I heard about that singer.", "good": "I heard of that singer.", "why": "Если просто знаете, что певец существует — of, а не about."},
+  {"bad": "I'm thinking of my homework.", "good": "I'm thinking about my homework.", "why": "Обдумываете задачу — about. Of — это мнение или внезапная мысль."},
+  {"bad": "He reminded me about his brother.", "good": "He reminded me of his brother.", "why": "Ассоциация с человеком — только of. About — для дел и задач."},
+  {"bad": "I complained the manager about the noise.", "good": "I complained to the manager about the noise.", "why": "Complain требует to перед человеком: complain to somebody about something."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I've never ___ that author before.", "options": ["heard about", "heard of", "heard from"], "a": 1, "why": "Узнать о существовании — heard of."},
+  {"type": "choice", "q": "What do you ___ the new colleague?", "options": ["think about", "think of", "think on"], "a": 1, "why": "Выразить мнение — think of."},
+  {"type": "choice", "q": "This place ___ me ___ my hometown.", "options": ["reminds ... about", "reminds ... of", "reminds ... for"], "a": 1, "why": "Ассоциация, сходство — reminds of."},
+  {"type": "choice", "q": "We decided to ___ the receptionist ___ the dirty room.", "options": ["complain ... about", "complain to ... about", "complain ... for"], "a": 1, "why": "Жалоба кому-то на что-то: complain to somebody about something."},
+  {"type": "gap", "q": "I haven't ___ ___ my brother since last week. (получить весть)", "a": ["heard from"], "why": "Hear from — получить письмо или звонок от кого-то."},
+  {"type": "gap", "q": "She is ___ ___ changing her job. (обдумывает)", "a": ["thinking about"], "why": "Обдумывание варианта — thinking about."},
+  {"type": "gap", "q": "The police ___ the drivers ___ the icy roads. (предупредили)", "a": ["warned ... about", "warned ... of"], "why": "Предупреждение об опасности: warned about / of."},
+  {"type": "translate", "q": "Эта песня напоминает мне о моём детстве.", "a": ["this song reminds me of my childhood"], "why": "Remind of — ассоциация с чем-то/кем-то."},
+  {"type": "translate", "q": "Мы пожаловались менеджеру на шум.", "a": ["we complained to the manager about the noise"], "why": "Жалоба кому-то на что-то: complain to somebody about something."}
+ ]
+}

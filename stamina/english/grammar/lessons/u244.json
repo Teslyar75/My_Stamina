@@ -1,0 +1,79 @@
+{
+ "n": 244,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Прилагательное + предлог (1)",
+ "en": "adjective + preposition 1",
+ "summary": "Многие прилагательные в английском требуют строго определённого предлога: afraid of, interested in, responsible for. Выбор предлога зависит от самого прилагательного, а не от русского перевода.",
+ "can_do": [
+  "Использовать правильный предлог после прилагательных чувств и оценки (afraid of, proud of, tired of).",
+  "Сочетать прилагательные реакции с with (angry with, disappointed with, bored with).",
+  "Говорить об интересе и участии через interested in, involved in, successful in.",
+  "Выражать причину, ответственность и пригодность с famous for, responsible for, good for."
+ ],
+ "theory": [
+  {
+   "h": "Предлог of после прилагательных",
+   "p": "Многие прилагательные, выражающие чувства или состояния, требуют предлога of: afraid of (бояться), fond of (любить), proud of (гордиться), ashamed of (стыдиться), jealous of (ревновать), envious of (завидовать), full of (полный), short of (не хватать), typical of (типичный для), capable of (способный), aware of (осознающий), conscious of (сознающий), tired of (уставший от). Конструкция nice/kind/silly of someone оценивает поступок человека.",
+   "formula": "afraid of spiders · fond of jazz · proud of you · tired of waiting"
+  },
+  {
+   "h": "Предлог with: отношение к человеку или ситуации",
+   "p": "Прилагательные, обозначающие реакцию на кого-то или что-то, часто берут with: angry with (злой на кого-то), pleased with (довольный), satisfied with (удовлетворённый), disappointed with (разочарованный), bored with (скучающий), crowded with (забитый людьми). В русском многие из них управляют дательным падежом без предлога, поэтому ошибка типична.",
+   "formula": "angry with him · pleased with the result · bored with the film"
+  },
+  {
+   "h": "Предлог in: интерес и участие",
+   "p": "Три ключевых прилагательных с in: interested in (интересующийся), involved in (вовлечённый в), successful in (успешный в). Предлог in здесь указывает на сферу деятельности или объект внимания. Не путать с interested by — так не говорят.",
+   "formula": "interested in history · involved in the project · successful in business"
+  },
+  {
+   "h": "Предлог for: причина, ответственность, пригодность",
+   "p": "Группа for включает famous for (знаменитый чем-то), responsible for (ответственный за), sorry for (жалкий/сожалеющий о), good for (полезный для), bad for (вредный для). Обратите внимание: sorry for выражает сочувствие или сожаление о случившемся, а sorry about — о факте.",
+   "formula": "famous for its beaches · responsible for the mistake · good for health"
+  },
+  {
+   "h": "Ловушки выбора предлога",
+   "p": "Одни и те же прилагательные могут менять предлог при смене смысла: angry with someone (злой на человека) но angry about something (злой из-за ситуации); good at (умеющий) vs good for (полезный). В этом юните фиксируем базовые пары, расширения — в следующих. Запоминайте словосочетание целиком, а не отдельное слово.",
+   "formula": "angry with him · angry about the delay · good at English · good for you"
+  },
+  {
+   "h": "Сводная таблица основных пар",
+   "table": {
+    "head": ["Предлог", "Прилагательные", "Пример"],
+    "rows": [
+     ["of", "afraid, fond, proud, ashamed, jealous, envious, full, short, typical, capable, aware, conscious, tired", "afraid of dogs"],
+     ["with", "angry, pleased, satisfied, disappointed, bored, crowded", "pleased with you"],
+     ["in", "interested, involved, successful", "interested in art"],
+     ["for", "famous, responsible, sorry, good, bad", "famous for coffee"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "She is afraid of spiders.", "ru": "Она боится пауков."},
+  {"en": "He is proud of his daughter.", "ru": "Он гордится дочерью."},
+  {"en": "They were disappointed with the service.", "ru": "Они были разочарованы сервисом."},
+  {"en": "I'm interested in photography.", "ru": "Я интересуюсь фотографией."},
+  {"en": "This restaurant is famous for its pizza.", "ru": "Этот ресторан славится своей пиццей."},
+  {"en": "Smoking is bad for your health.", "ru": "Курение вредно для твоего здоровья."},
+  {"en": "The room was crowded with people.", "ru": "Комната была забита людьми."}
+ ],
+ "traps": [
+  {"bad": "I am interesting in music.", "good": "I am interested in music.", "why": "Интересующийся — interested, а interesting — интересный (вызывает интерес)."},
+  {"bad": "He is angry with the weather.", "good": "He is angry about the weather.", "why": "На неодушевлённые объекты и ситуации angry требует about, with — только для людей."},
+  {"bad": "She is good in math.", "good": "She is good at math.", "why": "Умение и навык — good at, а good for — полезный для чего-то."},
+  {"bad": "They are responsible of the project.", "good": "They are responsible for the project.", "why": "Ответственность за что-то — только responsible for."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She is very fond ___ classical music.", "options": ["of", "on", "for"], "a": 0, "why": "fond требует of."},
+  {"type": "choice", "q": "They were disappointed ___ the results.", "options": ["with", "of", "in"], "a": 0, "why": "disappointed with — разочарован чем-то."},
+  {"type": "choice", "q": "He is responsible ___ the safety check.", "options": ["for", "of", "in"], "a": 0, "why": "responsible for — отвечает за."},
+  {"type": "choice", "q": "This exercise is good ___ practice.", "options": ["for", "at", "in"], "a": 0, "why": "good for — полезный для чего-то."},
+  {"type": "gap", "q": "I'm tired ___ (do) the same thing every day.", "a": ["doing"], "why": "После tired of используется герундий: tired of doing."},
+  {"type": "gap", "q": "She is capable ___ (solve) difficult problems.", "a": ["of solving", "of solving them"], "why": "Конструкция capable of требует герундия: capable of solving."},
+  {"type": "gap", "q": "The city is famous ___ its architecture.", "a": ["for"], "why": "Прилагательное famous управляет предлогом for."},
+  {"type": "translate", "q": "Он гордится своим сыном.", "a": ["he is proud of his son"], "why": "Гордиться кем-то — proud of + притяжательное."},
+  {"type": "translate", "q": "Я не заинтересован в политике.", "a": ["i am not interested in politics", "i'm not interested in politics"], "why": "Интересоваться чем-то — interested in."}
+ ]
+}

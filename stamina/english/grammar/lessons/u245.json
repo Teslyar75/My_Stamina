@@ -1,0 +1,73 @@
+{
+ "n": 245,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Прилагательное + предлог (2)",
+ "en": "adjective + preposition 2",
+ "summary": "Вторая группа прилагательных, требующих фиксированных предлогов: at, to, about, from. Важно отличать пары angry with/about, sorry for/about, good at/for.",
+ "can_do": [
+  "Использовать at с good, bad, surprised, shocked, amazed.",
+  "Сочетать to с married, engaged, similar, allergic, kind, used, close.",
+  "Выбирать about для angry, annoyed, worried, excited, sorry.",
+  "Различать angry with (человек) / about (ситуация) и good at (умение) / for (польза)."
+ ],
+ "theory": [
+  {
+   "h": "Предлог at: навыки и реакции",
+   "p": "Предлог at связывает прилагательные, описывающие навыки или эмоциональные реакции: good at, bad at, surprised at, shocked at, amazed at. После at всегда следует существительное или герундий: She is good at swimming. В русском здесь часто стоит «в» или «над», но английский требует именно at.",
+   "formula": "good at maths · bad at driving · surprised at the news · shocked at his behaviour · amazed at the result"
+  },
+  {
+   "h": "Предлог to: отношения, сходство, привычка",
+   "p": "Группа прилагательных с to выражает отношения, сходство или привычку: married to, engaged to, similar to, allergic to, kind to, rude to, nice to, used to, close to. Обратите внимание: used to здесь — прилагательное, а не модальный глагол, поэтому после to идёт существительное или -ing: I'm used to the noise.",
+   "formula": "married to a doctor · similar to mine · allergic to cats · kind to everyone · used to waking early"
+  },
+  {
+   "h": "Предлог about: эмоции по поводу события",
+   "p": "Эмоции, вызванные ситуацией или фактом, передаются через about: angry about, annoyed about, worried about, excited about, sorry about. После about ставим существительное или герундий: They are worried about the exam. В русском часто используется «о» или «из-за».",
+   "formula": "angry about the delay · annoyed about the mistake · worried about the future · excited about the trip · sorry about the mess"
+  },
+  {
+   "h": "Предлог from: сравнение",
+   "p": "Прилагательное different требует предлога from: different from. Это стандартный вариант для сравнения в британском английском: This result is different from the previous one. В американском варианте встречается different than, но для экзаменов и формального стиля норма — from.",
+   "formula": "different from yours · different from what I expected · slightly different from the original"
+  },
+  {
+   "h": "Ловушки выбора: with / about, for / about, at / for",
+   "p": "Три пары требуют внимания. Angry with a person (злюсь на человека) / angry about a thing (злюсь из-за вещи). Sorry for someone (жалею человека) / sorry about something (сожалею о событии). Good at (умею хорошо) / good for (полезно для): Exercise is good for health.",
+   "table": {
+    "head": ["Пара", "Вариант 1", "Вариант 2"],
+    "rows": [
+     ["angry", "with a person", "about a situation"],
+     ["sorry", "for someone", "about something"],
+     ["good", "at a skill", "for health / you"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "She is very good at languages.", "ru": "Она очень хорошо знает языки."},
+  {"en": "He is married to my cousin.", "ru": "Он женат на моей кузине."},
+  {"en": "We are excited about the concert.", "ru": "Мы взволнованы из-за концерта."},
+  {"en": "This bag is different from that one.", "ru": "Эта сумка отличается от той."},
+  {"en": "He was angry with his brother about the money.", "ru": "Он злился на брата из-за денег."},
+  {"en": "I feel sorry for him, but not sorry about the decision.", "ru": "Мне его жаль, но решение не жаль."}
+ ],
+ "traps": [
+  {"bad": "She is good for English.", "good": "She is good at English.", "why": "Good at — умение/навык, good for — польза (good for health)."},
+  {"bad": "I am angry about him.", "good": "I am angry with him.", "why": "На человека — angry with, о ситуации — angry about."},
+  {"bad": "I am sorry about him.", "good": "I am sorry for him.", "why": "Жалеть человека — sorry for, сожалеть о факте — sorry about."},
+  {"bad": "He is married with her.", "good": "He is married to her.", "why": "Married, engaged, similar, allergic требуют предлога to, а не with."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She is very good ___ mathematics.", "options": ["at", "in", "for"], "a": 0, "why": "Good at — навык, умение."},
+  {"type": "choice", "q": "My sister is married ___ a pilot.", "options": ["with", "to", "for"], "a": 1, "why": "Married to — стандартный предлог после married/engaged."},
+  {"type": "choice", "q": "The children are excited ___ the holiday.", "options": ["at", "about", "with"], "a": 1, "why": "Excited about — эмоция по поводу события."},
+  {"type": "choice", "q": "This result is different ___ the previous one.", "options": ["to", "than", "from"], "a": 2, "why": "Different from — норма британского английского для сравнения."},
+  {"type": "gap", "q": "I am not used ___ (get up) so early.", "a": ["getting up", "getting up early"], "why": "Used to + герундий: привыкание к процессу."},
+  {"type": "gap", "q": "Everyone was shocked ___ the news.", "a": ["at", "by"], "why": "Shocked at / surprised at — реакция на событие."},
+  {"type": "gap", "q": "Are you allergic ___ any medication?", "a": ["to"], "why": "Allergic to — единственный возможный предлог."},
+  {"type": "translate", "q": "Он зол на своего друга.", "a": ["he is angry with his friend"], "why": "На человека — angry with."},
+  {"type": "translate", "q": "Я сожалею об опоздании.", "a": ["i am sorry about the delay", "i'm sorry about the delay"], "why": "О событии/факте — sorry about."}
+ ]
+}
