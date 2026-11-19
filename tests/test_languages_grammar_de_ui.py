@@ -681,3 +681,74 @@ class TestCompatibility:
 class TestWordBankHelpers:
     def test_shuffled_is_deterministic(self):
         assert _shuffled(["a", "b", "c", "d"], "s") == _shuffled(["a", "b", "c", "d"], "s")
+
+class TestOpenSourceTabs:
+    """Вкладки Grimm / ZUM: список, ленивая загрузка, атрибуция CC BY."""
+
+    def test_tab_list_has_course_grimm_and_zum(self, board):
+        titles = [tab.title for tab in board.page.catalog.sources()]
+        assert titles == [
+            "Курс Star Typing",
+            "По методике Grimm Grammar — Техасский университет (COERLL), CC BY 4.0",
+            "По методике ZUM Deutsch Lernen, CC BY 4.0",
+        ]
+
+    def test_grimm_tab_loads_index_but_not_topics(self, board):
+        page = board.page
+        board.pump()
+        page.spread._select_source("grimm_grammar")
+        board.pump()
+        assert page.catalog.current_source_id() == "grimm_grammar"
+        bank = page.catalog._open
+        assert bank is not None
+        assert "grimm_grammar" in bank._index
+        assert "grimm_grammar" in bank._meta
+        units = [item for kind, item in page.spread._plan if kind == "unit"]
+        assert len(units) == 92
+        # как у Murphy, первая тема открывается сама — но не все 92 файла
+        loaded = bank.loaded_topic_ids("grimm_grammar")
+        assert set(loaded) <= {units[0]["id"]}
+        page.spread._open_unit("cas_01")
+        board.pump()
+        assert "cas_01" in bank.loaded_topic_ids("grimm_grammar")
+        assert len(bank.loaded_topic_ids("grimm_grammar")) <= 2
+
+    def test_grimm_topic_shows_attribution_and_original_url(self, board):
+        page = board.page
+        page.spread._select_source("grimm_grammar")
+        board.pump()
+        page.spread._open_unit("cas_01")
+        board.pump()
+        bank = page.catalog._open
+        assert "cas_01" in bank.loaded_topic_ids("grimm_grammar")
+        texts = _label_texts(page)
+        attr = bank.attribution_line("grimm_grammar", "ru")
+        assert attr
+        assert attr in texts
+        topic = bank.load_topic("grimm_grammar", "cas_01")
+        assert topic["original_url"] in texts
+        # объяснения Grimm остаются по-английски, без перевода
+        snippet = (topic["sections"][0].get("text") or "")[:80]
+        assert snippet
+        assert snippet in texts
+
+    def test_zum_tab_is_lazy_and_shows_attribution(self, board):
+        page = board.page
+        page.spread._select_source("zum_grammatik_kiste")
+        board.pump()
+        bank = page.catalog._open
+        units = [item for kind, item in page.spread._plan if kind == "unit"]
+        assert len(units) == 37
+        loaded = bank.loaded_topic_ids("zum_grammatik_kiste")
+        assert set(loaded) <= {units[0]["id"]}
+        first = units[0]["id"]
+        second = units[1]["id"]
+        page.spread._open_unit(second)
+        board.pump()
+        assert second in bank.loaded_topic_ids("zum_grammatik_kiste")
+        assert len(bank.loaded_topic_ids("zum_grammatik_kiste")) <= 2
+        first = second
+        texts = _label_texts(page)
+        assert bank.attribution_line("zum_grammatik_kiste", "ru") in texts
+        topic = bank.load_topic("zum_grammatik_kiste", first)
+        assert topic["original_url"] in texts

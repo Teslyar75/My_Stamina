@@ -177,7 +177,13 @@ class GrammarSpread(tk.Frame):
         self._index_error = None
         self._clear_lesson()
         self._update_book_label()
-        self._start_index()
+        # индекс вкладки маленький: грузим сразу, без гонки с фоновым потоком
+        try:
+            self.catalog.load_index()
+        except Exception as exc:  # noqa: BLE001
+            self._on_index(exc)
+            return
+        self._on_index(None)
 
     # -- жизненный цикл --------------------------------------------------------
     def refresh(self) -> None:
