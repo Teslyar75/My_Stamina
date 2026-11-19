@@ -164,6 +164,7 @@ class GrammarPage(tk.Frame):
               wraplength=px(230), justify="left").pack(anchor="w", padx=px(8), pady=px(8))
             return
         self._index_ready = True
+        self._update_book_label()
         self._update_counter()
         self._render_unit_list()
         if self._unit is None:
@@ -175,6 +176,8 @@ class GrammarPage(tk.Frame):
         """В шапке — книга текущего уровня: у A1–B1 красная, у B2 синяя."""
         lbl = getattr(self, "_book_lbl", None)
         if lbl is None:
+            return
+        if not self._index_ready and not gl.index_loaded():
             return
         try:
             units = gl.by_level(self._level)
@@ -474,7 +477,8 @@ class GrammarPage(tk.Frame):
             speaker = getattr(self.ctx, "audio_button", None)
             if callable(speaker):
                 try:
-                    speaker(row, "🔊", lambda s=ex.get("en", ""): s, height=22, font_size=8,
+                    spoken = ex.get("en", "")
+                    speaker(row, "🔊", lambda s=spoken: s, height=22, font_size=8,
                             width=30).pack(side=tk.RIGHT, padx=(px(4), 0))
                 except tk.TclError:
                     pass

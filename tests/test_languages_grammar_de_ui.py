@@ -395,7 +395,7 @@ class TestPractice:
         titles = [panel.title for panel in _panels(page)]
         assert "ПРАВИЛО" in titles
         texts = " ".join(label.cget("text") for label in _labels(page))
-        rule = next(block for block in lesson["theory"] if block.get("kind") == "rule")
+        rule = next(block for block in page.lesson["theory"] if block.get("kind") == "rule")
         assert rule["text"] in texts
 
         page._toggle_rule()

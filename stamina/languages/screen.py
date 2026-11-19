@@ -15,7 +15,6 @@ from stamina.languages.core import get_registry, LanguageProgress
 from stamina.languages.core.sqlite_vocab import word_line
 from stamina.languages.migrate import migrate_english_progress
 from stamina import pilots
-from stamina.languages.grammar_page import build_grammar_page
 
 
 SUBPAGES = [
@@ -983,5 +982,6 @@ class LanguagesScreen(tk.Frame):
 
     def _build_grammar(self, plugin, progress, vocab) -> None:
         """Построить страницу грамматики."""
+        from stamina.languages.grammar_page import build_grammar_page
         page = build_grammar_page(self.page_container, plugin, progress, self.app)
         # Страница сама упаковывается в build_grammar_page

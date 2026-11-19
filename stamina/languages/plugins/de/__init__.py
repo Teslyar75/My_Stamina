@@ -7,8 +7,6 @@ from stamina.languages.core.base import (
     LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
     VoicesConfig, BestPractices, WordEntry,
 )
-from stamina.languages.plugins.de.grammar_engine import GermanGrammarEngine
-
 # Тематика по уходу (Pflege) для отсека: живёт отдельно от уроков A1–C2.
 PFLEGE_TOPICS = {
     "partizipialattribute_pflege": {
@@ -85,6 +83,7 @@ class GermanPlugin(LanguagePlugin):
         return src
 
     def get_grammar_engine(self) -> GrammarEngine:
+        from stamina.languages.plugins.de.grammar_engine import GermanGrammarEngine
         return GermanGrammarEngine()
 
     def get_best_practices(self) -> BestPractices:

@@ -39,6 +39,20 @@ def load_index() -> dict[str, Any]:
         return json.load(f)
 
 
+def index_loaded() -> bool:
+    """Индекс уже в кэше: страница не должна читать его в конструкторе."""
+    return load_index.cache_info().currsize > 0
+
+
+@lru_cache(maxsize=1)
+def _lesson_filenames() -> frozenset[str]:
+    """Один проход по каталогу вместо сотен exists() на каждый uNNN.json."""
+    try:
+        return frozenset(p.name for p in DIR.iterdir() if p.suffix.lower() == ".json")
+    except OSError:
+        return frozenset()
+
+
 def modules() -> list[dict]:
     return list(load_index().get("modules") or [])
 
@@ -82,7 +96,7 @@ def of_book(book_id: str) -> list[dict]:
 
 
 def lesson_exists(n: int) -> bool:
-    return lesson_path(n).exists()
+    return lesson_path(n).name in _lesson_filenames()
 
 
 @lru_cache(maxsize=32)
@@ -118,7 +132,8 @@ def total() -> int:
 
 def available() -> int:
     """Сколько уроков уже написано (для честного «готово N из 115»)."""
-    return sum(1 for u in units() if lesson_exists(int(u["n"])))
+    names = _lesson_filenames()
+    return sum(1 for u in units() if lesson_path(int(u["n"])).name in names)
 
 
 def normalize(text: str) -> str:
