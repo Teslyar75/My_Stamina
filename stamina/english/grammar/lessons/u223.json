@@ -1,0 +1,87 @@
+{
+ "n": 223,
+ "level": "B2",
+ "module": "b-order",
+ "title": "Порядок слов (1): дополнение, место, время",
+ "en": "word order 1",
+ "summary": "В английском строгий порядок: глагол и дополнение рядом, место перед временем, наречия частотности встраиваются в цепочку глагола.",
+ "can_do": [
+  "Строить предложения по схеме подлежащее + глагол + дополнение + место + время.",
+  "Ставить наречия частотности (always, usually, never) перед смысловым глаголом и после be.",
+  "Размещать наречия образа действия (well, carefully) в конце предложения.",
+  "Выносить обстоятельство времени в начало для акцента без нарушения внутреннего порядка."
+ ],
+ "theory": [
+  {
+   "h": "Глагол и дополнение — неразлучная пара",
+   "p": "В английском глагол и его прямое дополнение стоят рядом, между ними нельзя вставлять обстоятельства. По-русски «Я очень люблю эту музыку» допускает разный порядок, но по-английски I like this music very much — единственный нейтральный вариант. Нарушение порядка делает фразу неестественной.",
+   "formula": "I like this music very much · She speaks English well · He bought a new car yesterday"
+  },
+  {
+   "h": "Место перед временем",
+   "p": "Обстоятельство места ставится раньше обстоятельства времени: I went to London last week. В русском порядок свободен, в английском — фиксирован для нейтральной речи. Перестановка (last week to London) возможна только для акцента на времени, но звучит как выделение.",
+   "formula": "I went to London last week · She arrived at the station at 5 · We met in Paris in 2010"
+  },
+  {
+   "h": "Наречия частотности: где их место",
+   "p": "Always, usually, often, sometimes, never встают перед смысловым глаголом, но после глагола be. В русском «Я всегда прихожу вовремя» и «Я прихожу всегда вовремя» равны, в английском только I always come on time. С be: She is never late.",
+   "table": {
+    "head": ["Тип глагола", "Позиция", "Пример"],
+    "rows": [
+     ["смысловой", "перед глаголом", "I often go there"],
+     ["be", "после be", "She is always late"],
+     ["вспомогательный", "после вспомогательного", "I have never seen it"]
+    ]
+   }
+  },
+  {
+   "h": "Наречия образа действия и степени",
+   "p": "Well, badly, fast, carefully обычно стоят в конце предложения, после дополнения или глагола, если дополнения нет. Нельзя писать He speaks well English — только He speaks English well. Very much тоже в конце: I like it very much.",
+   "formula": "He speaks English well · She drives carefully · I like this music very much"
+  },
+  {
+   "h": "Обстоятельства времени в начале и в конце",
+   "p": "Время можно поставить в начало для фокуса: Yesterday I went to London. Тогда порядок места и времени внутри предложения не меняется: Yesterday I went to London (не Yesterday I went last week to London). В конце время стоит после места.",
+   "formula": "Yesterday I went to London. · Last week she arrived at the station. · In 2010 we met in Paris."
+  },
+  {
+   "h": "Краткая таблица порядка",
+   "p": "Базовая схема: Подлежащее + Глагол + Дополнение + Место + Время. Наречия частотности встраиваются в цепочку глагола. Нарушение порядка не делает предложение неграмматичным, но меняет акцент или звучит инородчески.",
+   "table": {
+    "head": ["Позиция", "Элемент", "Пример"],
+    "rows": [
+     ["1", "Подлежащее", "I"],
+     ["2", "Глагол (+ частотность)", "usually go"],
+     ["3", "Дополнение", "to work"],
+     ["4", "Место", "by bus"],
+     ["5", "Время", "in the morning"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I like this music very much.", "ru": "Мне очень нравится эта музыка."},
+  {"en": "She went to London last week.", "ru": "Она поехала в Лондон на прошлой неделе."},
+  {"en": "He always arrives on time.", "ru": "Он всегда приходит вовремя."},
+  {"en": "They speak English well.", "ru": "Они хорошо говорят по-английски."},
+  {"en": "Yesterday we met at the station.", "ru": "Вчера мы встретились на вокзале."},
+  {"en": "She is never late.", "ru": "Она никогда не опаздывает."}
+ ],
+ "traps": [
+  {"bad": "I like very much this music.", "good": "I like this music very much.", "why": "Дополнение не может отделяться от глагола обстоятельством степени."},
+  {"bad": "I went last week to London.", "good": "I went to London last week.", "why": "В нейтральной речи место стоит перед временем."},
+  {"bad": "He speaks well English.", "good": "He speaks English well.", "why": "Наречие образа действия ставится после дополнения, а не перед ним."},
+  {"bad": "She comes always late.", "good": "She always comes late.", "why": "Наречия частотности встают перед смысловым глаголом."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ this music very much.", "options": ["like", "like very much", "very much like"], "a": 0, "why": "Глагол и дополнение рядом: I like this music very much."},
+  {"type": "choice", "q": "She went ___ last week.", "options": ["to London", "last week to London", "London last week"], "a": 0, "why": "Место (to London) перед временем (last week)."},
+  {"type": "choice", "q": "He ___ arrives on time.", "options": ["always", "comes always", "always comes"], "a": 0, "why": "Наречие частотности before main verb: He always arrives..."},
+  {"type": "choice", "q": "They speak English ___.", "options": ["well", "good", "well English"], "a": 0, "why": "Наречие образа действия в конце: speak English well."},
+  {"type": "gap", "q": "I ___ (go) to work by bus every morning.", "a": ["go"], "why": "Порядок: подлежащее + глагол + место + время."},
+  {"type": "gap", "q": "She ___ (be) never late for meetings.", "a": ["is"], "why": "После be стоит never: She is never late."},
+  {"type": "gap", "q": "We ___ (meet) in Paris in 2010.", "a": ["met"], "why": "Место (in Paris) перед временем (in 2010)."},
+  {"type": "translate", "q": "Мне очень нравится этот фильм.", "a": ["I like this film very much", "I really like this film"], "why": "Дополнение сразу после глагола, very much в конце."},
+  {"type": "translate", "q": "Она вчера приехала в Москву.", "a": ["She arrived in Moscow yesterday", "Yesterday she arrived in Moscow"], "why": "Место перед временем или время в начале для акцента."}
+ ]
+}

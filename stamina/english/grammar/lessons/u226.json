@@ -1,0 +1,79 @@
+{
+ "n": 226,
+ "level": "B2",
+ "module": "b-order",
+ "title": "even: даже",
+ "en": "even",
+ "summary": "Even усиливает неожиданность: ставится перед словом, которое удивляет. Работает с прилагательными, сравнительными, в союзах even though/if/when и в отрицании not even.",
+ "can_do": [
+  "Поставить even перед самым неожиданным словом в предложении.",
+  "Использовать even с прилагательными и сравнительными степенями (even better).",
+  "Строить союзы even though, even if, even when для уступки и условия.",
+  "Отличать even от also: even — удивление, also — просто добавление."
+ ],
+ "theory": [
+  {
+   "h": "Позиция even: перед фокусом удивления",
+   "p": "Even всегда стоит непосредственно перед словом, делающим ситуацию неожиданной. Even John came — неожиданно, что Джон; John even came — неожиданен сам факт прихода. В русском «даже» сдвигается так же.",
+   "formula": "Even John came. · John even came. · She even speaks Chinese."
+  },
+  {
+   "h": "Even с прилагательными и сравнительными",
+   "p": "Перед прилагательным или сравнительной степенью even усиливает неожиданность качества: even colder — даже холоднее. Не путать с even more/less: even more interesting — ещё более интересно. В русском часто добавляют «ещё».",
+   "formula": "even better · even more difficult · even less likely"
+  },
+  {
+   "h": "Союзы even though, even if, even when",
+   "p": "Even усиливает союзы уступки и условия. Even though = хотя (факт), even if = даже если (условие), even when = даже когда (время). После союза полное предложение с подлежащим и глаголом.",
+   "table": {
+    "head": ["Союз", "Значение", "Пример"],
+    "rows": [
+     ["even though", "хотя (факт)", "Even though he's rich, he drives an old car."],
+     ["even if", "даже если (условие)", "Even if you apologise, I won't forgive."],
+     ["even when", "даже когда (время)", "Even when busy, she answers emails."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание not even",
+   "p": "Not even усиливает отрицание: He didn't even say hello — он даже не поздоровался. Позиция: not even перед глаголом или фразой. Не путать с even not (редко). В русском «даже не» стоит так же.",
+   "formula": "He didn't even call. · Not even a child could solve it. · She doesn't even know my name."
+  },
+  {
+   "h": "Even vs also: удивление против добавления",
+   "p": "Even отмечает неожиданность: Even the teacher didn't know — даже учитель не знал. Also просто добавляет: The teacher also didn't know — учитель тоже не знал. Нельзя комбинировать: *Even I also know.",
+   "formula": "Even Tom came. (неожиданно) · Tom also came. (тоже) · Not: Even Tom also came."
+  },
+  {
+   "h": "Even в начале предложения",
+   "p": "Even может открывать предложение, если фокус на подлежащем: Even experts make mistakes. В середине перед глаголом: Experts even make mistakes — эксперты даже ошибаются. Порядок слов меняет смысл.",
+   "formula": "Even experts make mistakes. · Experts even make mistakes. · Even a child understands this."
+  }
+ ],
+ "examples": [
+  {"en": "Even my brother liked the film.", "ru": "Даже моему брату понравился фильм."},
+  {"en": "It was even colder than yesterday.", "ru": "Было даже холоднее, чем вчера."},
+  {"en": "Even though it was late, she called.", "ru": "Хотя было поздно, она позвонила."},
+  {"en": "He didn't even look at me.", "ru": "Он даже не посмотрел на меня."},
+  {"en": "Even a child can do it.", "ru": "Даже ребёнок может это сделать."},
+  {"en": "She speaks even French.", "ru": "Она говорит даже по-французски."},
+  {"en": "Even if you hurry, you'll be late.", "ru": "Даже если поторопишься, опоздаешь."}
+ ],
+ "traps": [
+  {"bad": "He even not came.", "good": "He didn't even come.", "why": "Отрицание требует вспомогательного did: didn't even come, не even not."},
+  {"bad": "Even I also know the answer.", "good": "Even I know the answer.", "why": "Even и also вместе не ставятся: выберите either even (удивление) или also (добавление)."},
+  {"bad": "It was even more better.", "good": "It was even better.", "why": "Сравнительная степень уже содержит more, не дублируйте: even better, не even more better."},
+  {"bad": "Even when he is tired, but he works.", "good": "Even when he is tired, he works.", "why": "Even when уже выражает уступку, союз but лишний."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ the teacher didn't know the answer.", "options": ["Even", "Also", "Even also"], "a": 0, "why": "Even перед подлежащим показывает неожиданность: Even the teacher didn't know."},
+  {"type": "choice", "q": "It was ___ expensive than I expected.", "options": ["even more", "even", "more even"], "a": 0, "why": "Перед сравнительной степенью: even more expensive."},
+  {"type": "choice", "q": "___ it rained, we went for a walk.", "options": ["Even though", "Even if", "Even when"], "a": 0, "why": "Факт в прошлом: even though it rained (хотя шёл дождь)."},
+  {"type": "choice", "q": "She didn't ___ say thank you.", "options": ["even", "also", "not even"], "a": 0, "why": "После didn't ставится even: didn't even say."},
+  {"type": "gap", "q": "The test was ___ (easy) than the last one — even a child could pass.", "a": ["easier", "more easy"], "why": "Сравнительная степень: easier, и even усиливает: even easier."},
+  {"type": "gap", "q": "___ (if) you run, you'll miss the train.", "a": ["Even if"], "why": "Условие: Even if you run."},
+  {"type": "gap", "q": "He speaks English, French, and ___ German.", "a": ["even"], "why": "Перечисление с неожиданным добавлением: and even German."},
+  {"type": "translate", "q": "Даже мой брат пришёл на вечеринку.", "a": ["Even my brother came to the party.", "My brother even came to the party."], "why": "Even перед подлежащим: Even my brother came. Если фокус на действии: My brother even came."},
+  {"type": "translate", "q": "Она не позвонила мне даже.", "a": ["She didn't even call me.", "She didn't call me even."], "why": "Стандартный порядок: didn't even call. В конце even звучит неестественно."}
+ ]
+}
