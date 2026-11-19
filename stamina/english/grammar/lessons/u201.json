@@ -1,0 +1,74 @@
+{
+ "n": 201,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "none, nothing, nobody",
+ "en": "no/none/any, nothing/nobody",
+ "summary": "Как сказать «ничего», «никто» и «нисколько» по-английски — и почему двойное отрицание здесь запрещено.",
+ "can_do": [
+  "Заменить not any на no перед существительным.",
+  "Сказать «нисколько» словом none и ответить им на вопрос сколько.",
+  "Употребить nothing и nobody как подлежащее с глаголом в единственном числе.",
+  "Перестроить фразу так, чтобы отрицание осталось только одно."
+ ],
+ "theory": [
+  {
+   "h": "No значит not any",
+   "p": "Отрицание можно построить двумя способами: с not any и с no. I don't have any money и I have no money значат одно и то же. No ставится прямо перед существительным, артикль после него не нужен, а глагол остаётся в утвердительной форме.",
+   "formula": "I have no money. · There are no tickets left. · She has no brothers."
+  },
+  {
+   "h": "None — отдельное слово",
+   "p": "Когда существительное уже названо или понятно из разговора, вместо no плюс существительное говорят none. Это местоимение, оно работает само по себе и часто идёт с of. На вопрос «сколько?» короткий ответ — просто None.",
+   "formula": "How much bread is there? — None. · None of the shops were open. · I asked for help, but none came."
+  },
+  {
+   "h": "Три способа сказать «нет»",
+   "p": "Разница между no, none и nothing держится на одном: есть ли рядом существительное. Если существительное названо — no перед ним. Если не названо — none. Если речь о вещи без числа и без названия — nothing.",
+   "table": {
+    "head": ["О чём речь", "С существительным", "Без существительного"],
+    "rows": [
+     ["деньги", "no money / not any money", "none"],
+     ["билеты", "no tickets / not any tickets", "none of them"],
+     ["человек", "no person / not any person", "nobody / no one"],
+     ["вещь", "no thing / not any thing", "nothing"]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание только одно",
+   "p": "В английском два отрицания в одном простом предложении не уживаются. Если в предложении уже есть not, то вместо nothing и nobody ставим anything и anybody: I didn't say anything. Либо убираем not и оставляем nothing: I said nothing. Выбор всегда один из двух.",
+   "formula": "I didn't see anybody. · I saw nobody. · Nothing happened."
+  },
+  {
+   "h": "Никто и ничто в роли подлежащего",
+   "p": "Nobody, nothing и no one — это единственное число, поэтому глагол при них получает окончание -s: nobody knows, nothing works. Порядок слов прямой, без do и без not: подлежащее, потом глагол. Вопрос с таким подлежащим звучит как утверждение.",
+   "formula": "Nobody knows the answer. · Nothing works in this office. · No one was at home."
+  }
+ ],
+ "examples": [
+  {"en": "There are no tickets left for tonight.", "ru": "На сегодня билетов не осталось."},
+  {"en": "None of my friends came to the party.", "ru": "Ни один из моих друзей не пришёл на вечеринку."},
+  {"en": "I didn't understand anything he said.", "ru": "Я ничего не понял из того, что он сказал."},
+  {"en": "Nothing interesting happened yesterday.", "ru": "Вчера не случилось ничего интересного."},
+  {"en": "Nobody told me about the meeting.", "ru": "Никто не сказал мне о встрече."},
+  {"en": "How much time do we have? — None.", "ru": "Сколько у нас времени? — Нисколько."}
+ ],
+ "traps": [
+  {"bad": "I didn't see nobody.", "good": "I didn't see anybody.", "why": "Два отрицания подряд запрещены: либо not anybody, либо nobody без not."},
+  {"bad": "Nobody don't know the answer.", "good": "Nobody knows the answer.", "why": "Nobody уже отрицательное, do и not ему не нужны."},
+  {"bad": "I have no any money.", "good": "I have no money.", "why": "No и any рядом не ставятся: либо no money, либо not any money."},
+  {"bad": "None of students came.", "good": "None of the students came.", "why": "После none of нужен определитель: the, my, these."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There is ___ milk in the fridge, so we need to buy some.", "options": ["no", "none", "not"], "a": 0, "why": "Перед существительным milk ставится no."},
+  {"type": "choice", "q": "How many tickets are left? — ___ at all.", "options": ["No", "None", "Nothing"], "a": 1, "why": "Существительное не названо, ответ на «сколько» — none."},
+  {"type": "choice", "q": "I didn't say ___ about it, I promise.", "options": ["nothing", "anything", "something"], "a": 1, "why": "После didn't нужно anything, иначе получится двойное отрицание."},
+  {"type": "choice", "q": "___ knows the answer to this question.", "options": ["Nobody", "Nobody doesn't", "Not nobody"], "a": 0, "why": "Nobody — подлежащее в единственном числе, без второго отрицания."},
+  {"type": "gap", "q": "She has ___ (no) brothers or sisters.", "a": ["no"], "why": "No перед существительным, артикль не нужен."},
+  {"type": "gap", "q": "___ (none) of the shops were open yesterday.", "a": ["none"], "why": "None of the + множественное число, глагол were."},
+  {"type": "gap", "q": "There is ___ (nothing/nobody) to worry about.", "a": ["nothing"], "why": "Речь о вещи, а не о человеке, — nothing."},
+  {"type": "translate", "q": "Я ничего не видел.", "a": ["i saw nothing", "i didn't see anything", "i did not see anything"], "why": "Одно отрицание: saw nothing или didn't see anything."},
+  {"type": "translate", "q": "Никто не пришёл на встречу.", "a": ["nobody came to the meeting", "no one came to the meeting"], "why": "Nobody или no one как подлежащее, глагол в прошедшем без not."}
+ ]
+}

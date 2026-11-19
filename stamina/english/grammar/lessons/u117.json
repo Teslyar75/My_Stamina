@@ -1,0 +1,83 @@
+{
+ "n": 117,
+ "level": "B2",
+ "module": "b-now",
+ "title": "Present Simple: регулярное действие",
+ "en": "present simple",
+ "summary": "Простое время для привычек, фактов и расписания: когда появляется -s и зачем нужен do или does.",
+ "can_do": [
+  "Образовать утверждение, вопрос и отрицание в простом настоящем времени.",
+  "Добавлять -s и -es там, где подлежащее he, she или it.",
+  "Рассказать о привычках, правилах и расписании транспорта."
+ ],
+ "theory": [
+  {
+   "h": "Что делает простое время",
+   "p": "Present simple отвечает на вопрос «вообще, всегда, регулярно». Им говорят о привычках, о том, что повторяется каждую неделю, о фактах природы и о расписании, которое не зависит от нас. Действие при этом не обязано происходить в момент речи: оно происходит в жизни.",
+   "formula": "I get up at seven. · Water boils at 100 degrees. · The film starts at nine."
+  },
+  {
+   "h": "Форма и злополучная -s",
+   "p": "Глагол совпадает с начальной формой во всех лицах, кроме третьего единственного числа. Там появляется -s или -es, и пропустить её — самая частая ошибка на этом уровне. После шипящих и свистящих звуков, а также после -o пишется -es, а конечная -y после согласной превращается в -i.",
+   "table": {
+    "head": ["Кто", "Форма", "Пример"],
+    "rows": [
+     ["I / you / we / they", "work", "They work in an office."],
+     ["he / she / it", "works", "She works in a bank."],
+     ["watch / finish / go", "-es", "He watches the news."],
+     ["study / carry", "-ies", "She studies law."],
+     ["have", "has", "He has two cars."]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос и отрицание: работает do",
+   "p": "Как только появляется do или does, смысловой глагол возвращается в начальную форму. Вся грамматическая работа ложится на помощника, и -s у основного глагола больше не нужна. Это правило нарушают чаще всего: does he works — неверно, хотя логика подсказывает обратное.",
+   "formula": "Do you work here? · Does she work here? · I don't work here. · She doesn't work here."
+  },
+  {
+   "h": "Наречия частоты и их место",
+   "p": "Always, usually, often, sometimes, rarely и never показывают, как часто всё происходит. Они стоят перед смысловым глаголом, но после be. Выражения вроде every day или once a week обычно уезжают в конец предложения, и это касается и вопросов.",
+   "table": {
+    "head": ["Наречие", "Место", "Пример"],
+    "rows": [
+     ["usually", "перед глаголом", "I usually walk to work."],
+     ["never", "перед глаголом", "He never eats meat."],
+     ["always", "после be", "She is always late."],
+     ["every day", "в конце", "We check the mail every day."]
+    ]
+   }
+  },
+  {
+   "h": "Расписание сильнее человека",
+   "p": "Поезда, самолёты, киносеансы и уроки живут по расписанию, поэтому о будущем в таком случае говорят в простом настоящем времени. Это не ошибка, а норма: мы сообщаем не о своём намерении, а о том, что записано в графике и от нас не зависит.",
+   "formula": "The train leaves at 7:15. · The concert starts at eight. · My shift begins at six."
+  }
+ ],
+ "examples": [
+  {"en": "I usually get up at six.", "ru": "Я обычно встаю в шесть."},
+  {"en": "She works for a small company.", "ru": "Она работает в маленькой компании."},
+  {"en": "Do you speak German?", "ru": "Ты говоришь по-немецки?"},
+  {"en": "He doesn't drink coffee.", "ru": "Он не пьёт кофе."},
+  {"en": "Water boils at 100 degrees.", "ru": "Вода кипит при ста градусах."},
+  {"en": "The last bus leaves at midnight.", "ru": "Последний автобус уходит в полночь."}
+ ],
+ "traps": [
+  {"bad": "She work in a bank.", "good": "She works in a bank.", "why": "Третье лицо единственного числа требует -s."},
+  {"bad": "Does he works here?", "good": "Does he work here?", "why": "После does глагол стоит в начальной форме."},
+  {"bad": "He don't like coffee.", "good": "He doesn't like coffee.", "why": "Для he, she, it помощник does, отрицание doesn't."},
+  {"bad": "I am go to the gym every day.", "good": "I go to the gym every day.", "why": "Привычка — простое время, be здесь лишний."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My sister ___ in a hospital.", "options": ["work", "works", "working"], "a": 1, "why": "my sister = she, значит works."},
+  {"type": "choice", "q": "___ your parents live in Moscow?", "options": ["Do", "Does", "Are"], "a": 0, "why": "parents = they, помощник do."},
+  {"type": "choice", "q": "The shop ___ at nine every morning.", "options": ["open", "opens", "is opening"], "a": 1, "why": "Расписание и единственное число: opens."},
+  {"type": "choice", "q": "He ___ coffee at all.", "options": ["doesn't like", "don't like", "isn't like"], "a": 0, "why": "Отрицание для he — doesn't плюс начальная форма."},
+  {"type": "gap", "q": "Anna ___ (go) to the gym twice a week.", "a": ["goes"], "why": "go после гласной получает -es: goes."},
+  {"type": "gap", "q": "We ___ (not / watch) TV in the morning.", "a": ["don't watch", "do not watch"], "why": "we — помощник do, глагол без окончания."},
+  {"type": "gap", "q": "Water ___ (boil) at 100 degrees.", "a": ["boils"], "why": "Факт природы и единственное число: boils."},
+  {"type": "translate", "q": "Он работает в банке.", "a": ["he works in a bank"], "why": "he + works, артикль a перед профессией."},
+  {"type": "translate", "q": "Ты часто звонишь родителям?", "a": ["do you often call your parents", "do you call your parents often"], "why": "Вопрос через do, often перед глаголом."},
+  {"type": "translate", "q": "Мой автобус уходит в семь.", "a": ["my bus leaves at seven"], "why": "Расписание — простое настоящее: leaves."}
+ ]
+}

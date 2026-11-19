@@ -1,0 +1,80 @@
+{
+ "n": 165,
+ "level": "B2",
+ "module": "b-questions",
+ "title": "Вопросы (2): косвенные",
+ "en": "questions 2 (do you know where…?)",
+ "summary": "Как вежливо спросить через do you know или could you tell me и при этом не потерять правильный порядок слов внутри вопроса.",
+ "can_do": [
+  "Задать вежливый вопрос через do you know, could you tell me, I wonder.",
+  "Сохранить прямой порядок слов внутри придаточной части.",
+  "Убрать do, does и did там, где вопрос уже спрятан в другом вопросе.",
+  "Спросить о да или нет через if и whether."
+ ],
+ "theory": [
+  {
+   "h": "Вежливый вопрос состоит из двух слоёв",
+   "p": "Сначала идёт рамка: do you know, could you tell me, can you tell me, I wonder, have you any idea. Потом — сам вопрос, но уже не как вопрос, а как придаточная часть. Именно из-за этой рамки английская фраза кажется длиннее русской, зато звучит мягко.",
+   "formula": "Do you know where he lives? · Could you tell me what time it is? · I wonder why she left."
+  },
+  {
+   "h": "Внутри — порядок слов утверждения",
+   "p": "Самая частая ошибка — оставить в середине вопросительный порядок. После where, what, how подлежащее стоит перед глаголом, а не после него. Сравните прямой вопрос и вежливый: меняется только рамка, а внутренний порядок становится обычным.",
+   "table": {
+    "head": ["Прямой вопрос", "Вежливый вопрос"],
+    "rows": [
+     ["Where is the station?", "Do you know where the station is?"],
+     ["What time does it open?", "Could you tell me what time it opens?"],
+     ["How much does it cost?", "Do you know how much it costs?"],
+     ["Why did she leave?", "I wonder why she left."]
+    ]
+   }
+  },
+  {
+   "h": "Никакого do, does, did внутри",
+   "p": "Как только вопрос оказался внутри другого вопроса, помощник do исчезает. Смысловой глагол получает нужное окончание или форму прошедшего времени сам. Это касается и специальных вопросов, и вопросов о да или нет.",
+   "formula": "Do you know what he wants? (не what does he want) · Can you tell me where they went? · I don't know if she likes it."
+  },
+  {
+   "h": "Вопрос о да или нет: if или whether",
+   "p": "Если прямой вопрос не начинался с вопросительного слова, в вежливой форме появляется if или whether. Whether звучит формальнее и удобен, когда рядом стоит ещё одна мысль. После них порядок слов тоже прямой.",
+   "formula": "I wonder if she is coming. · Do you know whether the shop is open? · Could you tell me if this seat is free?"
+  },
+  {
+   "h": "Готовые конструкции для города и услуг",
+   "p": "В путешествии половина вопросов строится по шаблону: как пройти, сколько стоит, когда закрывается. Полезно помнить целые куски, а не собирать их каждый раз заново, потому что в них порядок слов уже закреплён.",
+   "formula": "Do you know how to get to the airport? · Have you any idea how much it costs? · Can you tell me where to park? · Do you know when the next train leaves?"
+  },
+  {
+   "h": "What do you think — вопрос в вопросе",
+   "p": "С фразой do you think вопросительное слово выходит в самое начало, хотя по смыслу относится к придаточной части. Получается what do you think I should do, а не do you think what I should do. После think снова прямой порядок слов.",
+   "formula": "What do you think I should do? · Where do you think he is? · Who do you think will win? · How much do you think it costs?"
+  }
+ ],
+ "examples": [
+  {"en": "Do you know where the bank is?", "ru": "Вы не знаете, где находится банк?"},
+  {"en": "Could you tell me what time it is?", "ru": "Не могли бы вы сказать, который час?"},
+  {"en": "I wonder if she is still working here.", "ru": "Интересно, работает ли она ещё здесь."},
+  {"en": "Do you know how much this costs?", "ru": "Вы знаете, сколько это стоит?"},
+  {"en": "What do you think I should do?", "ru": "Как ты думаешь, что мне делать?"},
+  {"en": "Can you tell me where to buy tickets?", "ru": "Подскажите, где купить билеты?"}
+ ],
+ "traps": [
+  {"bad": "Do you know where is the station?", "good": "Do you know where the station is?", "why": "Внутри вежливого вопроса порядок слов прямой, без инверсии."},
+  {"bad": "Could you tell me what does it cost?", "good": "Could you tell me what it costs?", "why": "Did и does внутри придаточной части не нужны, глагол получает окончание сам."},
+  {"bad": "I wonder where did he go.", "good": "I wonder where he went.", "why": "Прошедшее время выражается самим глаголом, помощник did убирают."},
+  {"bad": "Do you think what I should do?", "good": "What do you think I should do?", "why": "С think вопросительное слово идёт в начало предложения."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Do you know where ___?", "options": ["is the bank", "the bank is", "does the bank"], "a": 1, "why": "Внутри придаточной части подлежащее перед глаголом: where the bank is."},
+  {"type": "choice", "q": "Could you tell me what time ___?", "options": ["does the film start", "the film starts", "starts the film"], "a": 1, "why": "Прямой порядок слов и present simple без does: what time the film starts."},
+  {"type": "choice", "q": "I wonder ___ she is coming tonight.", "options": ["if", "that", "does"], "a": 0, "why": "Вопрос о да или нет присоединяется через if."},
+  {"type": "choice", "q": "What ___ you think I should do?", "options": ["do", "does", "are"], "a": 0, "why": "Основной вопрос строится с do: What do you think…?"},
+  {"type": "gap", "q": "Do you know where he ___ (live)?", "a": ["lives"], "why": "Present simple, he — окончание -s, без does."},
+  {"type": "gap", "q": "Could you tell me how much this coat ___ (cost)?", "a": ["costs"], "why": "Внутри косвенного вопроса глагол согласуется с coat: it costs."},
+  {"type": "gap", "q": "I don't know ___ (he / be) at home.", "a": ["if he is", "whether he is"], "why": "Вопрос о да или нет: if he is или whether he is."},
+  {"type": "translate", "q": "Вы не знаете, где находится вокзал?", "a": ["do you know where the station is"], "why": "Вежливая рамка плюс прямой порядок слов внутри."},
+  {"type": "translate", "q": "Не могли бы вы сказать, сколько это стоит?", "a": ["could you tell me how much it costs", "can you tell me how much it costs"], "why": "Could you tell me и costs без does."},
+  {"type": "translate", "q": "Как ты думаешь, где он?", "a": ["where do you think he is"], "why": "Вопросительное слово впереди: where do you think he is?"}
+ ]
+}

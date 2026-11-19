@@ -1,0 +1,77 @@
+{
+ "n": 147,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "must, mustn't, needn't",
+ "en": "must, mustn't, needn't",
+ "summary": "Mustn't запрещает, needn't освобождает. Перепутать их — значит сказать почти противоположное тому, что хотели.",
+ "can_do": [
+  "Запретить действие через mustn't.",
+  "Сказать, что действие необязательно, через needn't и don't have to.",
+  "Отличить needn't have done от didn't need to.",
+  "Употребить need как обычный глагол с -s и с do."
+ ],
+ "theory": [
+  {
+   "h": "Три разные вещи, а не одно отрицание",
+   "p": "Русское «не надо» покрывает и запрет, и отсутствие необходимости, поэтому легко сказать не то. В английском это два разных слова. Mustn't значит «нельзя, запрещено», needn't и don't have to значат «можно не делать, это не обязательно».",
+   "table": {
+    "head": ["Форма", "Смысл", "Пример"],
+    "rows": [
+     ["must", "обязан сделать", "You must sign here."],
+     ["mustn't", "запрещено", "You mustn't smoke here."],
+     ["needn't", "не обязан", "You needn't wait."],
+     ["don't have to", "не обязан, то же", "You don't have to wait."]
+    ]
+   }
+  },
+  {
+   "h": "Почему mustn't — не отрицание must",
+   "p": "Логика простая: отрицание обязанности даёт свободу, а не запрет. Если снять долг «заплатить», получится «можешь не платить», а не «платить нельзя». Поэтому mustn't пришлось занять отдельное место — запрета, и к needn't оно отношения не имеет.",
+   "formula": "You mustn't pay. (платить нельзя) · You needn't pay. (можешь не платить)"
+  },
+  {
+   "h": "Needn't — про настоящее и будущее",
+   "p": "Needn't ставится перед глаголом без to и не требует do. Это модальный глагол, у него нет -s и нет прошедшей формы. Для прошлого используется отдельная конструкция с have, и она значит не то, что вы могли бы подумать.",
+   "formula": "You needn't come tomorrow. · He needn't worry. · We needn't book a table."
+  },
+  {
+   "h": "Needn't have done — сделали зря",
+   "p": "Конструкция needn't have плюс третья форма говорит: действие уже совершено, а необходимости в нём не было. Это сожаление о потраченных силах, иногда с лёгкой досадой. Русский аналог — «зря сделал».",
+   "formula": "You needn't have cooked — we'd already eaten. · I needn't have booked tickets."
+  },
+  {
+   "h": "Needn't have done и didn't need to",
+   "p": "Разница тонкая, но важная. Needn't have done — действие состоялось и оказалось лишним. Didn't need to — необходимости не было, и обычно действие не совершалось. Если человек остался дома, он didn't need to go, а если сходил зря, то needn't have gone.",
+   "formula": "I needn't have gone to the shop. (сходил зря) · I didn't need to go to the shop. (не было нужды, и я не пошёл)"
+  },
+  {
+   "h": "Need как обычный глагол",
+   "p": "Кроме модального needn't есть обычный глагол need to: он спрягается, берёт -s в третьем лице и строится через do. Смысл — «нужно», без оттенка «можно не». Сравните he needs to rest — ему нужно отдохнуть, и he needn't rest — ему не обязательно отдыхать.",
+   "formula": "She needs to see a doctor. · Do I need to bring anything? · I don't need to explain."
+  }
+ ],
+ "examples": [
+  {"en": "You mustn't use your phone during the exam.", "ru": "На экзамене нельзя пользоваться телефоном."},
+  {"en": "You needn't bring anything — we have everything.", "ru": "Вам не нужно ничего приносить, у нас всё есть."},
+  {"en": "We needn't have hurried; the train was late.", "ru": "Зря мы спешили — поезд опоздал."},
+  {"en": "I didn't need to show my passport at the border.", "ru": "На границе мне не понадобилось показывать паспорт."},
+  {"en": "She needs to see a doctor about that cough.", "ru": "Ей нужно показаться врачу из-за этого кашля."}
+ ],
+ "traps": [
+  {"bad": "You mustn't come if you're busy.", "good": "You needn't come if you're busy.", "why": "Mustn't — запрет, а здесь речь о том, что приходить не обязательно."},
+  {"bad": "You needn't to pay now.", "good": "You needn't pay now.", "why": "После needn't инфинитив идёт без to."},
+  {"bad": "I needn't have gone to the shop, so I stayed at home.", "good": "I didn't need to go to the shop, so I stayed at home.", "why": "Needn't have done — действие уже сделано зря; если не пошёл, нужно didn't need to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You ___ touch that wire — it's live.", "options": ["needn't", "mustn't", "don't have to"], "a": 1, "why": "Запрет — mustn't."},
+  {"type": "choice", "q": "You ___ book a table; the restaurant is never full.", "options": ["mustn't", "needn't", "must"], "a": 1, "why": "Нет необходимости — needn't."},
+  {"type": "choice", "q": "I ___ have bought so much bread — nobody ate it.", "options": ["needn't", "mustn't", "didn't need"], "a": 0, "why": "Купил зря — needn't have bought."},
+  {"type": "choice", "q": "We ___ to leave a tip; service was included.", "options": ["didn't need", "needn't", "mustn't"], "a": 0, "why": "После needn't to не бывает, а по смыслу нужно didn't need to."},
+  {"type": "gap", "q": "You ___ (must / not) tell anyone about this — it's a secret.", "a": ["mustn't", "must not"], "why": "Запрет — mustn't."},
+  {"type": "gap", "q": "You ___ (not / need) to bring a towel; the hotel provides them.", "a": ["don't need", "do not need"], "why": "Обычный глагол need to в отрицании требует do."},
+  {"type": "gap", "q": "She ___ (need) to renew her visa before June.", "a": ["needs"], "why": "Обычный глагол в третьем лице берёт -s."},
+  {"type": "translate", "q": "Тебе не обязательно приходить завтра.", "a": ["you needn't come tomorrow", "you don't have to come tomorrow", "you do not have to come tomorrow"], "why": "Отсутствие необходимости — needn't или don't have to."},
+  {"type": "translate", "q": "Ей не нужно было покупать билеты — вход был свободный.", "a": ["she needn't have bought the tickets", "she needn't have bought tickets"], "why": "Билеты куплены зря — needn't have bought."}
+ ]
+}

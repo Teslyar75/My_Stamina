@@ -1,0 +1,78 @@
+{
+ "n": 208,
+ "level": "B2",
+ "module": "b-relative",
+ "title": "Относительные предложения (2)",
+ "en": "relative clauses 2",
+ "summary": "Что делать с предлогом: оставить его в конце придаточного или вынести вперёд вместе с which и whom. Плюс the day, the reason и глаголы без предлога.",
+ "can_do": [
+  "Поставить предлог в конец придаточного: the hotel we stayed at.",
+  "Перестроить фразу формально: the hotel at which we stayed.",
+  "Сказать the day we met и the reason why без местоимения.",
+  "Отличить глаголы, которым предлог не нужен."
+ ],
+ "theory": [
+  {
+   "h": "Предлог любит конец",
+   "p": "Если глагол в придаточном требует предлога, в живой речи предлог уезжает в самый конец: the hotel we stayed at, the person I spoke to. Так говорят везде, и это не ошибка, а норма. Предлог при этом не исчезает: без at фраза станет неверной.",
+   "formula": "the hotel we stayed at · the person I spoke to · the book I told you about"
+  },
+  {
+   "h": "Формальный вариант: at which, to whom",
+   "p": "В письменном и официальном стиле предлог остаётся впереди и тянет за собой which или whom. Порядок такой: предлог, местоимение, подлежащее, глагол. Так пишут в договорах, статьях и на табличках, но в разговоре это звучит слишком тяжело.",
+   "table": {
+    "head": ["Разговорно", "Формально", "Перевод"],
+    "rows": [
+     ["the hotel we stayed at", "the hotel at which we stayed", "отель, в котором мы жили"],
+     ["the person I spoke to", "the person to whom I spoke", "человек, с которым я говорил"],
+     ["the problem we talked about", "the problem about which we talked", "проблема, о которой мы говорили"]
+    ]
+   }
+  },
+  {
+   "h": "Чего нельзя делать с that и who",
+   "p": "После that, who и which в роли подлежащего предлог вперёд не выносится. Фраза the man to who I spoke неверна: либо to whom, либо предлог в конце. И нельзя ставить предлог перед that вообще: the book about that — так не говорят.",
+   "formula": "the man I spoke to · the man to whom I spoke · the book we talked about"
+  },
+  {
+   "h": "The day, the time, the reason",
+   "p": "После существительных времени и причины относительное местоимение можно не ставить совсем: the day we met, the year he was born, the reason she left. Формально добавляют that или why, но в обычной речи обходятся без них, и это звучит естественно.",
+   "formula": "the day we met · the year he was born · the reason why she left"
+  },
+  {
+   "h": "Глаголы, которым предлог не нужен",
+   "p": "Часть глаголов предлога не требует: enter a room, discuss a problem, marry someone, answer a question. Тогда и в придаточном предлога нет: the room we entered, the problem we discussed. А listen to, look at, wait for, depend on предлог держат крепко — он остаётся в конце.",
+   "formula": "the room we entered · the problem we discussed · the music we listened to · the bus we were waiting for"
+  },
+  {
+   "h": "Порядок слов и артикль",
+   "p": "Артикль стоит при главном существительном, до придаточного, и в придаточном не повторяется. Внутри придаточного порядок прямой, а предлог в конце не меняет его: подлежащее, глагол, дополнение, предлог. Инверсии здесь нет.",
+   "formula": "The house we lived in was old. · The man I told you about called me."
+  }
+ ],
+ "examples": [
+  {"en": "This is the hotel we stayed at last summer.", "ru": "Это отель, в котором мы жили прошлым летом."},
+  {"en": "The person I spoke to was very helpful.", "ru": "Человек, с которым я говорил, очень помог."},
+  {"en": "The problem about which we talked is still open.", "ru": "Проблема, о которой мы говорили, всё ещё не решена."},
+  {"en": "I still remember the day we met.", "ru": "Я до сих пор помню день, когда мы познакомились."},
+  {"en": "The room we entered was completely empty.", "ru": "Комната, в которую мы вошли, была совершенно пуста."},
+  {"en": "The music we listened to was from Brazil.", "ru": "Музыка, которую мы слушали, была из Бразилии."}
+ ],
+ "traps": [
+  {"bad": "The man to who I spoke was polite.", "good": "The man to whom I spoke was polite.", "why": "После предлога нужен whom, а не who."},
+  {"bad": "The hotel which we stayed was cheap.", "good": "The hotel which we stayed at was cheap.", "why": "Stay требует предлога at, он должен остаться в конце."},
+  {"bad": "The book about that we talked was mine.", "good": "The book we talked about was mine.", "why": "Предлог перед that не ставится."},
+  {"bad": "The music which we listened was loud.", "good": "The music we listened to was loud.", "why": "Listen to — предлог обязателен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The house ___ we lived in was very small.", "options": ["which", "who", "whose"], "a": 0, "why": "Дом — вещь, в придаточном дополнение при предлоге: which или ничего."},
+  {"type": "choice", "q": "The colleague ___ I spoke to was from Canada.", "options": ["who", "which", "what"], "a": 0, "why": "Человек, предлог в конце — who или that."},
+  {"type": "choice", "q": "The hotel ___ which we stayed was quite cheap.", "options": ["at", "in", "to"], "a": 0, "why": "Формальный вариант: предлог впереди — the hotel at which we stayed."},
+  {"type": "choice", "q": "I can't remember the reason ___ she left.", "options": ["why", "what", "which"], "a": 0, "why": "The reason why — стандартное сочетание."},
+  {"type": "gap", "q": "The restaurant ___ (which) we ate at was expensive.", "a": ["which", "that"], "why": "Дополнение при предлоге, предлог остаётся в конце."},
+  {"type": "gap", "q": "The problem ___ (which) we discussed is solved.", "a": ["which", "that"], "why": "Discuss не требует предлога, поэтому он не появляется."},
+  {"type": "gap", "q": "The bus ___ (which) we were waiting for was late.", "a": ["which", "that"], "why": "Wait for держит предлог, он уходит в конец."},
+  {"type": "translate", "q": "Это человек, с которым я работаю.", "a": ["this is the man i work with", "this is the man that i work with", "this is the man who i work with"], "why": "Предлог with в конце придаточного."},
+  {"type": "translate", "q": "Я не помню день, когда мы встретились.", "a": ["i don't remember the day we met", "i don't remember the day when we met"], "why": "The day we met или the day when we met, без предлога."}
+ ]
+}

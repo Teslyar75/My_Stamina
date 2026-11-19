@@ -1,0 +1,183 @@
+{
+  "id": "vi_01",
+  "title": "Verbs: Essen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb essen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nessen • to eat\n\nich esse | wir essen\n\ndu isst | ihr esst\n\ner/sie/es isst | sie essen\n\ndie böse Königin | Was isst du, Heidrun? | What are you eating, Heidrun?\n\ndie alte Hexe | Ich esse einen Apfel. Äpfel sind sehr gesund! | I am eating an apple. Apples are very healthy!\n\ndie böse Königin | Tja, meistens schon, aber du sollst vorsichtig sein. Ich habe neulich eine Geschichte gelesen: Eine junge Frau isst einen Apfel und fällt sofort tot um! Tragisch, sage ich dir ... Ach, wen interessiert's? Was essen wir zu Abend? | Well, most often yes, but you should be careful. I read a story recently: a young woman eats an apple, and falls immediately to the ground, dead! Tragic, I tell you ... Ah, who cares? What are we eating for dinner?\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\ndas Essen | meal\n\ndie Esskultur | gastronomy\n\nder Esstisch | table\n\nessbar | edible\n\ndas Esszimmer | dining room\n\nfun phrases\n\nsie isst mit sehr langen Zähnen | she's eating really slowly\n(because she doesn't like the food)\n\nsie hat ihr Mittag rückwärts gegessen | she threw up her lunch\n\nzu Abend essen | to eat dinner (supper)\n\ner isst die Speisekarte rauf und runter! | he is eating everything from the menu!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich esse",
+      "en": "wir essen"
+    },
+    {
+      "de": "du isst",
+      "en": "ihr esst"
+    },
+    {
+      "de": "er/sie/es isst",
+      "en": "sie essen"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Was isst du, Heidrun?"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Ich esse einen Apfel. Äpfel sind sehr gesund!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Tja, meistens schon, aber du sollst vorsichtig sein. Ich habe neulich eine Geschichte gelesen: Eine junge Frau isst einen Apfel und fällt sofort tot um! Tragisch, sage ich dir ... Ach, wen interessiert's? Was essen wir zu Abend?"
+    },
+    {
+      "de": "das Essen",
+      "en": "meal"
+    },
+    {
+      "de": "die Esskultur",
+      "en": "gastronomy"
+    },
+    {
+      "de": "der Esstisch",
+      "en": "table"
+    },
+    {
+      "de": "essbar",
+      "en": "edible"
+    },
+    {
+      "de": "das Esszimmer",
+      "en": "dining room"
+    },
+    {
+      "de": "sie isst mit sehr langen Zähnen",
+      "en": "she's eating really slowly\n(because she doesn't like the food)"
+    },
+    {
+      "de": "sie hat ihr Mittag rückwärts gegessen",
+      "en": "she threw up her lunch"
+    },
+    {
+      "de": "zu Abend essen",
+      "en": "to eat dinner (supper)"
+    },
+    {
+      "de": "er isst die Speisekarte rauf und runter!",
+      "en": "he is eating everything from the menu!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Was ___ wir heute Abend, Liebling?",
+      "a": "essen",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz: Ich ___ eine Pizza mit Schinken und extra Käse; aber weil du wieder Diät machst, habe ich keine Ahnung was du ___.",
+      "a": [
+        "esse",
+        "isst"
+      ],
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Und was ___ ihr, meine kleinen Freunde? Soll ich euch etwas kochen?",
+      "a": "esst",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "die Zwerge: Ach, danke, heute nicht. Wir ___ heute Chinesisch; wir haben vom Restaurant verschiedene Speisen nach Hause gebracht.",
+      "a": "essen",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe: Schneewittchen, ___ du diesen schönen, roten Apfel?",
+      "a": "isst",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Nein, danke! Ich ___ nichts, was Sie gekocht oder sogar nur berührt haben(or even just touched)!",
+      "a": "esse",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Herr Froschkönig, was ___ Sie heute Abend?",
+      "a": "essen",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "der Froschkönig: Sehr witzig! Ich ___ wieder diese dumme Fliegesuppe (fly-soup)! Wenn ich doch nur ein Prinz sein könnte (if only I could be a prince)!",
+      "a": "esse",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "der Froschkönig: Ein Prinz ___ Fleisch, Kartoffeln, Salat, Hühnersuppe und Kuchen! Frösche ___ nur Fliegen! So unfair!",
+      "a": [
+        "isst",
+        "essen"
+      ],
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe: Kinder, ___ ihr dieses Stück Schokolade von meinem Haus?",
+      "a": "esst",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel: Nein, danke! Ich ___ keine Süßigkeiten, und Gretel ___ nur Bio!",
+      "a": [
+        "esse",
+        "isst"
+      ],
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe: Na so was! Ein Kind, das keine Schokolade ___! Gottseidank muß ich nicht mehr von Zauberei leben (thank heavens I don't have to make a living from wizardry).",
+      "a": "isst",
+      "set_id": "vi_01_01_fib",
+      "set_title": "Übung: Mahlzeit",
+      "prompt": "Scenario: It's dinner time. Everybody is cooking or eating at the castle. Figure out what's going on by filling in the blanks with the correct forms of the verb essen."
+    }
+  ]
+}

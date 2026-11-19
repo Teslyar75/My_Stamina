@@ -1,0 +1,222 @@
+{
+  "id": "vsub_04",
+  "title": "Verbs: Konjunktiv I",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_04.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Konjunktiv I, the less frequently used of the two types of subjunctive, is used to express indirect, or reported, speech. It is mainly used in newspaper articles and news reports to indicate, for the sake of objectivity, that which is being reported is not necessarily what is actually known.\n\nWolfdietrich | Rotkäppchen meinte, ich sei ein Bösewicht und du seiest ein Snob! | Little Red Riding Hood thinks (that) I am a bad guy and (that) you are a snob!\n\nWolfgang | Ich meine, sie habe kein Herz. | I think (that) she has no heart."
+    },
+    {
+      "heading": "Der Konjunktiv im Präsens",
+      "text": "Konjunktiv I is formed from the present tense of the verb (the 1st form, hence the name Konjunktiv I).\n\nTypically only the third person singular form is used in Konjunktiv I; when German speakers want to talk about other forms in the subjunctive, they use Konjunktiv II.\n\nThe present tense of Konjunktiv I is formed by adding an -e to the stem of the infinitive:\n\nExample: haben | Example: sollen | Example: geben\n\ninfinitive | = | haben | infinitive | = | sollen | infinitive | = | geben\n\nstem | = | hab- | stem | = | soll- | stem | = | geb-\n\nstem + -e | = | habe | stem + -e | = | solle | stem + -e | = | gebe\n\nSein, however, is used in Konjunktiv I in all of its forms, not just in the third person singular.\n\nsingular | plural\n\nich sei | wir seien\n\ndu sei(e)st | ihr sei(e)t\n\ner sei\nsie sei\nes sei | sie seien\nSie seien\n\nder Froschkönig | Mein Arzt behauptete, für den Frauenjäger gebe es endlich ein Heilmittel! | My doctor claims (that) there is finally a cure for the womanizer!\n\nAschenputtel | Echt? Ich habe neulich in der Zeitung gelesen, solche Männer seien unheilbar. | Really? I read in the newspaper recently (that) such men are incurable.\n\nder Froschkönig | Vielleicht hast du Recht, Aschenputtel. Aber ich bin kein Mann. Ich bin ein Frosch! | Maybe you are right, Cinderella. But I'm no man. I'm a frog!\n\nKonjunktiv I in the present tense is also used to express the future:\n\nDornröschen | Hast du gehört, Rapunzel? Im Fernsehen wurde berichtet, dass es heute Abend schneien solle! | Have you heard, Rapunzel? It was reported on TV (that) it is supposed to snow tonight!\n\nRapunzel | Ja, das habe ich gehört! Und es werde auch furchtbar kalt! Meine Haare werden mich warm halten. | Yes, I already heard! And it's going to get terribly cold, too! My hair will keep me warm."
+    },
+    {
+      "heading": "Konjunktiv in der Vergangenheit",
+      "text": "The past tense of Konjunktiv I is formed by using the auxiliary sei or habe and the past participle form of the verb.\n\nExample: sein | Example: haben\n\nauxiliary | = | sei | auxiliary | = | habe\n\npast participle | = | gewesen | past participle | = | gehabt\n\nauxiliary + past participle | = | sei gewesen | auxiliary + past participle | = | habe gehabt\n\nSchneewittchen | Chef sagte, er habe heute Morgen eine Menge Gold in den Bergen gefunden. | Doc said (that) he found a lot of gold in the mountains this morning.\n\ndas brave Mädchen | Ha! Ein Nichts! Als ich bei Frau Holle war, wurde ich von einem Goldregen bedeckt! | Ha! That's nothing! When I was at Frau Holle's, I was covered in a shower of gold!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Wolfdietrich",
+      "en": "Rotkäppchen meinte, ich sei ein Bösewicht und du seiest ein Snob!"
+    },
+    {
+      "de": "Wolfgang",
+      "en": "Ich meine, sie habe kein Herz."
+    },
+    {
+      "de": "=",
+      "en": "infinitive"
+    },
+    {
+      "de": "=",
+      "en": "stem"
+    },
+    {
+      "de": "=",
+      "en": "stem + -e"
+    },
+    {
+      "de": "singular",
+      "en": "plural"
+    },
+    {
+      "de": "ich sei",
+      "en": "wir seien"
+    },
+    {
+      "de": "du sei(e)st",
+      "en": "ihr sei(e)t"
+    },
+    {
+      "de": "er sei\nsie sei\nes sei",
+      "en": "sie seien\nSie seien"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Mein Arzt behauptete, für den Frauenjäger gebe es endlich ein Heilmittel!"
+    },
+    {
+      "de": "Aschenputtel",
+      "en": "Echt? Ich habe neulich in der Zeitung gelesen, solche Männer seien unheilbar."
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Vielleicht hast du Recht, Aschenputtel. Aber ich bin kein Mann. Ich bin ein Frosch!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Hast du gehört, Rapunzel? Im Fernsehen wurde berichtet, dass es heute Abend schneien solle!"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Ja, das habe ich gehört! Und es werde auch furchtbar kalt! Meine Haare werden mich warm halten."
+    },
+    {
+      "de": "=",
+      "en": "auxiliary"
+    },
+    {
+      "de": "=",
+      "en": "past participle"
+    },
+    {
+      "de": "=",
+      "en": "auxiliary + past participle"
+    },
+    {
+      "de": "Schneewittchen",
+      "en": "Chef sagte, er habe heute Morgen eine Menge Gold in den Bergen gefunden."
+    },
+    {
+      "de": "das brave Mädchen",
+      "en": "Ha! Ein Nichts! Als ich bei Frau Holle war, wurde ich von einem Goldregen bedeckt!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "More appropriate for gossip:",
+      "options": [
+        "a. Der Jäger sei in die Grossmutter verliebt.",
+        "b. Der Jäger ist in die Grossmutter verliebt."
+      ],
+      "a": "a. Der Jäger sei in die Grossmutter verliebt.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "More appropriate for gossip:",
+      "options": [
+        "a. Schneewittchen käuft ein neues Auto.",
+        "b. Schneewittchen kaufe ein neues Auto."
+      ],
+      "a": "b. Schneewittchen kaufe ein neues Auto.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "More appropriate for gossip:",
+      "options": [
+        "a. Rotkäppchen mag den Wolf nicht.",
+        "b. Rotkäppchen möge den Wolf nicht."
+      ],
+      "a": "b. Rotkäppchen möge den Wolf nicht.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "More appropriate for gossip:",
+      "options": [
+        "a. Frau Holle finde das brave Mädchen verwöhnt.",
+        "b. Frau Holle findet das brave Mädchen verwöhnt."
+      ],
+      "a": "a. Frau Holle finde das brave Mädchen verwöhnt.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "More appropriate for gossip:",
+      "options": [
+        "a. Wolfdietrich liest gern Liebesromane.",
+        "b. Wolfdietrich lese gern Liebesromane."
+      ],
+      "a": "b. Wolfdietrich lese gern Liebesromane.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "What happened today, according to the evening news:",
+      "options": [
+        "a. Im Wald habe ein Wolf ein kleines Kind aufgefressen.",
+        "b. Im Wald hat ein Wolf ein kleines Kind auffressen."
+      ],
+      "a": "a. Im Wald habe ein Wolf ein kleines Kind aufgefressen.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "What happened today, according to the evening news:",
+      "options": [
+        "a. Ein Esel sei mit dem Bus gefahren.",
+        "b. Ein Esel ist mit dem Bus gefahren."
+      ],
+      "a": "a. Ein Esel sei mit dem Bus gefahren.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "What happened today, according to the evening news:",
+      "options": [
+        "a. Eine Journalistin habe ihre Glasschuhe verliert.",
+        "b. Eine Journalistin habe ihre Glasschuhe verloren."
+      ],
+      "a": "b. Eine Journalistin habe ihre Glasschuhe verloren.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "What happened today, according to the evening news:",
+      "options": [
+        "a. Zwei Kinder sind vor einer bösen Hexe weggelaufen.",
+        "b. Zwei Kinder seien vor einer bösen Hexe weggelaufen."
+      ],
+      "a": "b. Zwei Kinder seien vor einer bösen Hexe weggelaufen.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    },
+    {
+      "type": "choice",
+      "q": "What happened today, according to the evening news:",
+      "options": [
+        "a. Ein Frosch habe fünf Frauen geküsst.",
+        "b. Ein Frosch habe fünf Frauen küssen."
+      ],
+      "a": "a. Ein Frosch habe fünf Frauen geküsst.",
+      "set_id": "vsub_04_01_mcr",
+      "set_title": "Übung - Kaffeeklatsch im Turm 1",
+      "prompt": "Dornröschen and company are whiling the day away with a juicy gossip-fest, and the young women are reporting what they heard around the castle today. From each pair of sentences below, select the one that is more appropriate to use when – as is typical for gossip – some of the sources of gossip wish to remain anonymous or are a bit shady ..."
+    }
+  ]
+}

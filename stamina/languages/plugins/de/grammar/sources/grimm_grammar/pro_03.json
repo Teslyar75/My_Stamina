@@ -1,0 +1,318 @@
+{
+  "id": "pro_03",
+  "title": "Pronouns: Personalpronomen im Akkusativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_03.html",
+  "explanation_lang": "en",
+  "section": "Pronouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Just like in English, personal pronouns in German are used to replace nouns once they have already been mentioned, including people, animals, objects, or abstract ideas. You have already learned about these pronouns in the nominative case (where they were the subject of a sentence), and now you can learn about them when they are the direct object of a sentence or the object of the prepositions durch, für, gegen, ohne, and um."
+    },
+    {
+      "heading": "Direct objects",
+      "text": "Just like nouns that are the direct objects of a sentence or a phrase, pronouns also change from the nominative to the accusative case.\n\nRotkäppchens Mutter | Rotkäppchen, wenn du und Gretel den Wolf seht oder wenn ihr ihn trefft, geht einfach weiter und haltet nicht an! | Little Red Riding Hood, if you see the wolf or if you meet him, just keep on going and do not stop!\n\nRotkäppchen | Ja, ja, Mutti, das hast du schon gesagt. Du kennst mich doch, ich bin nicht mehr so naiv! | Yeah, yeah, mom, you have already said that. But you know me, I am not so naive anymore!\n\nRotkäppchens Mutter | Dich kenne ich, Liebling, aber du kennst Gretel. Sie ist nicht vorsichtig genug. Eines Tages frisst sie dann eine Hexe oder ein Wolf! | I know you, darling, but you know Gretel, she is not careful enough. Someday then a witch or a wolf will eat her!\n\nAs you may have noticed among these examples, only some of the pronouns have a new form (marked in blue), while some of the accusative pronouns look exactly like the nominative pronouns."
+    },
+    {
+      "heading": "Pronouns in the accusative case",
+      "text": "singular | plural\n\n1st person | mich (me) | uns (us)\n\n2nd person | dich (you) | euch (y'all)\n\n3rd person masculine | ihn (him)\n\n3rd person feminine | sie (her) | sie (them)\n\n3rd person neuter | es (it)\n\nformal | Sie (you)"
+    },
+    {
+      "heading": "Objects of prepositions",
+      "text": "The accusative case is used not only when the noun or pronoun is the direct object of a sentence or a clause, but also when it follows certain prepositions: durch, für, gegen, ohne, and um. There are also a handful of prepositions – called two-way prepositions or Wechselpräpositionen – that sometimes take the accusative.\n\nRotkäppchen | Pssst ... Gretel kommt uns gerade entgegen. Ich möchte die Vergangenheit für sie nicht aufrühren! | Hush ... Gretel is coming towards us. I don't want to stir up the past for her.\n\nGretel | Hallo Rotkäppchen! Bist du bereit? Dann gehen wir los. Aber ich habe eine große Bitte: Der Wald ist sehr dunkel heute, können wir lieber um ihn spazieren und nicht durch ihn? | Hi Little Red Riding Hood! Are you ready? Then let's go. But I have a big favor to ask you: The forest is very dark today, could we go around it instead and not through it?\n\nRotkäppchens Mutter | OK, Mädels, seid vorsichtig und ruft mich an, wenn ihr beim Kino ankommt. Du hast doch dein Handy, Rotkäppchen, oder? Ohne es darfst du nicht ausgehen! Das weißt du. | OK, girls, be careful and call me when you get to the movie theater. You have your cell phone, right, Little Red Riding Hood? Without it you are not allowed to go out. You know that."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Rotkäppchen, wenn du und Gretel den Wolf seht oder wenn ihr ihn trefft, geht einfach weiter und haltet nicht an!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Ja, ja, Mutti, das hast du schon gesagt. Du kennst mich doch, ich bin nicht mehr so naiv!"
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Dich kenne ich, Liebling, aber du kennst Gretel. Sie ist nicht vorsichtig genug. Eines Tages frisst sie dann eine Hexe oder ein Wolf!"
+    },
+    {
+      "de": "1st person",
+      "en": "mich (me)"
+    },
+    {
+      "de": "2nd person",
+      "en": "dich (you)"
+    },
+    {
+      "de": "3rd person masculine",
+      "en": "ihn (him)"
+    },
+    {
+      "de": "3rd person feminine",
+      "en": "sie (her)"
+    },
+    {
+      "de": "es (it)",
+      "en": "3rd person neuter"
+    },
+    {
+      "de": "formal",
+      "en": "Sie (you)"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Pssst ... Gretel kommt uns gerade entgegen. Ich möchte die Vergangenheit für sie nicht aufrühren!"
+    },
+    {
+      "de": "Gretel",
+      "en": "Hallo Rotkäppchen! Bist du bereit? Dann gehen wir los. Aber ich habe eine große Bitte: Der Wald ist sehr dunkel heute, können wir lieber um ihn spazieren und nicht durch ihn?"
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "OK, Mädels, seid vorsichtig und ruft mich an, wenn ihr beim Kino ankommt. Du hast doch dein Handy, Rotkäppchen, oder? Ohne es darfst du nicht ausgehen! Das weißt du."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Rotkäppchens Mutter bleibt zu Hause. Die zwei Mädchen gehen ohne sie ins Kino.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Sie gehen um den Wald herum; er ist wirklich dunkel, wie Gretel gesagt hat.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Auf dem Weg erzählt Rotkäppchen eine Geschichte über Rumpelstilzchen; Gretel findet sie sehr grausam.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Vor dem Kino steht der Wolf, aber die beiden Mädchen sehen ihn nicht, weil sie mitten in einer Diskussion sind.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Sie kaufen ihre Eintrittskarten und gehen ins Kino hinein. Es ist sehr modern mit Balkonen und einem kleinen Restaurant.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Der Raum wird dunkel und der Film beginnt.\" Liebst du mich?\" Bei diesen Worten stöhnt der Wolf auf (groans), weil er Schnulzen (chick-flicks) nicht mag.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Er meint (he thinks): \"Ich will meine Vergangenheit zurück haben!!!\"",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Der Wolf hasst den Film! Nach 5 Minuten kann er ihn nicht mehr ertragen (stand it).",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Er steht auf und wartet auf die Mädchen vor dem Kino. Sie kommen erst nach 8 Stunden heraus!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Sie haben gemogelt (they cheated) und haben 4 Filme mit einer Eintrittskarte geschaut!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Weil seine Beine eingeschlafen sind (his legs fell asleep), kann das arme Tier nicht verschwinden (disappear)! Aber die Mädchen bemerken (notice) es gar nicht!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Der Hauptdarsteller im Film war sehr gutaussehend (handsome), und die Mädchen haben fanden ihn absolute sexy.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_03_01_mcr",
+      "set_title": "Übung 1: Rotkäppchen und Gretel gehen ins Kino",
+      "prompt": "Decide whether the underlined pronouns are in the nominative or the accusative case. Make a note of why you decided on this answer. Choose the correct case from multiple choice options."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Ich finde ___ gleichzeitig (simultaneously) grausam und dumm.",
+      "a": "sie",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Meinst du, Gretel, dass die Leser ___ auch doof finden?",
+      "a": "uns",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Ich glaube nicht. Wir sind süß und jung und sogar Opferfiguren (victim figures). Aber Rumpelstilzchen, man muss ___ hassen, weil er das Kind der Königin wegnehmen wollte (he wanted to take the queen's baby).",
+      "a": "es",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Nein, ich habe ___ noch nicht gesehen. Aber siehst du den Wolf, er steht hinter uns in der Schlange!",
+      "a": "ihn",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Ja, ich sehe ___. Also, tun wir so, als ob wir diesen Hollywood Film sehen wollten, okay? Wenn er uns folgen will (if he wants to follow us), dann muss er sich an unsere Spielregeln halten (he has to play by our rules)!",
+      "a": "ihn",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Du musst auch noch deine Mutti anrufen! Oder ruft sie ___ an?",
+      "a": "dich",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Wie lange will er noch warten? Hat er Liebesfilme gern??? Ist der Wolf nicht gegen ___?",
+      "a": "sie",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Ja, doch, doch, er steht schon auf. Jetzt können wir ohne ___ den anderen Film sehen! Und noch dreimal, wenn er wirklich sehr gut ist.",
+      "a": "ihn",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Mensch, das dumme Tier ist wieder da. Siehst du ___? Auf der anderen Seite der Straße.",
+      "a": "es",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Ja. Meine Mutter hat gesagt, dass ich einfach weitergehen muss und gar nicht anhalten darf. Also, wir tun so, als ob wir den Wolf gar nicht sehen könnten und gehen lieber um ___ herum.",
+      "a": "ihn",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel: Und jetzt müssen wir sehr schnell nach Hause, wo deine Mutter ___ erwartet.",
+      "a": "uns",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchens Mutter: Wo wart ihr? Ich habe ___ schon vor 6 Stunden erwartet (expected)! Rotkäppchen, warum hast du dein Handy ausgeschaltet?",
+      "a": "euch",
+      "set_id": "pro_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct accusative pronouns in the following dialogs. Watch out for the nouns to which they refer (in the sentences before or after) since pronouns only make sense in the relation to the nouns they replace. These nouns also help you identify the correct gender."
+    }
+  ]
+}

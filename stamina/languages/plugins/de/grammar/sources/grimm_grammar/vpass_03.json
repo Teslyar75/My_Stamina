@@ -1,0 +1,258 @@
+{
+  "id": "vpass_03",
+  "title": "Verbs: Das Passiv in der Vergangenheit",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_03.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Voice is a grammatical category that describes the relationship between a verb and its subject. As outlined in Passiv im Präsens, if the subject is acting, the voice is active, but if the subject is being acted upon, the voice is passive. The passive voice is used when there is a general subject (e.g., people, one) or when the agent of the action is not known or not important.\n\nPassive voice is used mostly in journalistic or scientific writing, and is a rather formal stylistic element.\n\nActive voice | Der Mann hat einige Rapunzeln aus dem Garten gestohlen. | The man stole a few lamb's lettuce from the garden.\n\nPassive voice | Einige Rapunzeln sind aus dem Garten der alten Hexe gestohlen worden. | A few lamb's lettuce were stolen from the old witch's garden.\n\nIn the first example above, the man (i.e., the agent) steals the lamb's lettuce (i.e., acts upon the direct object). In the second example, the agent is not named (if you were the man, would you want anybody to know what you did??); the new subject is the lamb's lettuce: we know that it was stolen. The emphasis is what was stolen, and what happened rather than who did the stealing. That comes later, when the man has his comeuppance ..."
+    },
+    {
+      "heading": "Stating agency",
+      "text": "Stating the agent in a passive construction - with the use of the dative preposition von (by) or the accusative preposition durch - is the same in the past tense as in the present tense.\n\nThe agent is a person or persons:\n\nPassive voice + agent | Leider wurde der Mann von der alten Hexe erwischt. | Unfortunately, the man was caught by the old witch.\n\nThe agent is an inanimate force (i.e., the weather):\n\nPassive voice +\ninanimate agent | Das Abendessen wurde durch die Unbeholfenheit des Mannes in Gefahr gebracht. Wer solch eine habgierige Frau hat, sollte ein erfolgreicher Dieb sein! | The dinner was jeopardized by the man's clumsiness. He who has such a greedy wife should be a more successful thief!"
+    },
+    {
+      "heading": "Das Imperfekt",
+      "text": "In the simple past tense, the auxiliary verb werden is conjugated in the simple past (i.e., wurde, wurden, etc.). You may remember that the simple past - das Imperfekt - is used mostly in written or formal narratives. In spoken language people typically avoid the passive, or if they use it in the past tense, they use the present perfect form (see below).\n\nSofort nach ihrer Geburt wurde Rapunzel von der Hexe 'adoptiert'. | Immediately after her birth, Rapunzel was 'adopted' by the witch.\n\nAls das kleine Mädchen 12 Jahre alt wurde, wurde es in den Turm geschlossen. | When the little girl turned 12 years old, she was locked in the tower.\n\nDie Haare des Mädchens wurden heruntergelassen, wenn die Hexe hinaufklettern wollte. | The girl's hair was let down whenever the witch wanted to climb up.\n\nwerden • to become\n\nich wurde | wir wurden\n\ndu wurdest | ihr wurdet\n\ner/sie/es wurde | sie wurden"
+    },
+    {
+      "heading": "Das Perfekt",
+      "text": "In the present perfect tense, the auxiliary verb werden is conjugated in the present perfect (i.e., ist geworden, sind geworden, etc.). However, the past participle geworden is always abbreviated as worden in the passive voice.\n\nIf a speaker cannot avoid the passive voice in spoken language, this conversational past form - das Perfekt - is used instead of the Imperfekt form, which is the more formal of the two (see above).\n\nEines Tages ist Rapunzel von einem Königssohn gesehen worden; sie verliebten sich natürlich ineinander. | One day, the beautiful girl was seen by a young king; they fell in love with each other, of course.\n\nAber dann sind Rapunzels Haare geschnitten worden, damit der Königssohn nicht mehr hinaufklettern konnte. | But then Rapunzel's hair was cut so that the young king could not climb up anymore.\n\nwerden • to become\n\nich bin geworden | wir sind geworden\n\ndu bist geworden | ihr seid geworden\n\ner/sie/es ist geworden | sie sind geworden"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Active voice",
+      "en": "Der Mann hat einige Rapunzeln aus dem Garten gestohlen."
+    },
+    {
+      "de": "Passive voice",
+      "en": "Einige Rapunzeln sind aus dem Garten der alten Hexe gestohlen worden."
+    },
+    {
+      "de": "Passive voice + agent",
+      "en": "Leider wurde der Mann von der alten Hexe erwischt."
+    },
+    {
+      "de": "Passive voice +\ninanimate agent",
+      "en": "Das Abendessen wurde durch die Unbeholfenheit des Mannes in Gefahr gebracht. Wer solch eine habgierige Frau hat, sollte ein erfolgreicher Dieb sein!"
+    },
+    {
+      "de": "Sofort nach ihrer Geburt wurde Rapunzel von der Hexe 'adoptiert'.",
+      "en": "Immediately after her birth, Rapunzel was 'adopted' by the witch."
+    },
+    {
+      "de": "Als das kleine Mädchen 12 Jahre alt wurde, wurde es in den Turm geschlossen.",
+      "en": "When the little girl turned 12 years old, she was locked in the tower."
+    },
+    {
+      "de": "Die Haare des Mädchens wurden heruntergelassen, wenn die Hexe hinaufklettern wollte.",
+      "en": "The girl's hair was let down whenever the witch wanted to climb up."
+    },
+    {
+      "de": "ich wurde",
+      "en": "wir wurden"
+    },
+    {
+      "de": "du wurdest",
+      "en": "ihr wurdet"
+    },
+    {
+      "de": "er/sie/es wurde",
+      "en": "sie wurden"
+    },
+    {
+      "de": "Eines Tages ist Rapunzel von einem Königssohn gesehen worden; sie verliebten sich natürlich ineinander.",
+      "en": "One day, the beautiful girl was seen by a young king; they fell in love with each other, of course."
+    },
+    {
+      "de": "Aber dann sind Rapunzels Haare geschnitten worden, damit der Königssohn nicht mehr hinaufklettern konnte.",
+      "en": "But then Rapunzel's hair was cut so that the young king could not climb up anymore."
+    },
+    {
+      "de": "ich bin geworden",
+      "en": "wir sind geworden"
+    },
+    {
+      "de": "du bist geworden",
+      "en": "ihr seid geworden"
+    },
+    {
+      "de": "er/sie/es ist geworden",
+      "en": "sie sind geworden"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Am nächsten Tag stahl der Mann wieder eine Hand voll Rapunzeln.",
+      "options": [
+        "a. Am nächsten Tag wurden wieder eine Hand voll Rapunzeln gestohlen.",
+        "b. Am nächsten Tag wurde wieder eine Hand voll Rapunzeln gestohlen."
+      ],
+      "a": "b. Am nächsten Tag wurde wieder eine Hand voll Rapunzeln gestohlen.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Aber diesmal sah die Fee den Mann!",
+      "options": [
+        "a. Aber diesmal wurde der Mann gesehen!",
+        "b. Aber diesmal ist der Mann gesehen!"
+      ],
+      "a": "a. Aber diesmal wurde der Mann gesehen!",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Die Fee befahl dem Mann, das Kind aufzugeben.",
+      "options": [
+        "a. Dem Mann wurde befehlen, das Kind aufzugeben.",
+        "b. Dem Mann wurde befohlen, das Kind aufzugeben."
+      ],
+      "a": "b. Dem Mann wurde befohlen, das Kind aufzugeben.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Die Fee nannte das Kind Rapunzel, und nahm es weg.",
+      "options": [
+        "a. Das Kind wurde Rapunzel genennt, und es wurde weggenimmt.",
+        "b. Das Kind wurde Rapunzel genannt, und es wurde weggenommen."
+      ],
+      "a": "b. Das Kind wurde Rapunzel genannt, und es wurde weggenommen.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Sie sperrte Rapunzel in einen Turm ein.",
+      "options": [
+        "a. Rapunzel wurde in einen Turm eingesperrt.",
+        "b. Rapunzel ist in einen Turm eingesperrt."
+      ],
+      "a": "a. Rapunzel wurde in einen Turm eingesperrt.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Das Kind lies seine Haare herunter, wenn die Hexe danach rief.",
+      "options": [
+        "a. Die Haare wurden heruntergelassen, wenn die Hexe danach rief.",
+        "b. Die Haar wurde heruntergelassen, wenn die Hexe danach rief."
+      ],
+      "a": "a. Die Haare wurden heruntergelassen, wenn die Hexe danach rief.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Im Turm sang Rapunzel viele süße Lieder.",
+      "options": [
+        "a. Im Turm wurden viele süße Lieder von Rapunzel gesungen.",
+        "b. Im Turm sind viele süße Lieder von Rapunzel gesungen."
+      ],
+      "a": "a. Im Turm wurden viele süße Lieder von Rapunzel gesungen.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Ein Königssohn hat das Singen gehört; dann hat er das Mädchen gesehen.",
+      "options": [
+        "a. Das Singen ist gehört worden; dann ist das Mädchen gesehen worden.",
+        "b. Das Singen ist gehört geworden; dann ist das Mädchen gesehen geworden."
+      ],
+      "a": "a. Das Singen ist gehört worden; dann ist das Mädchen gesehen worden.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Etwas später hat der Königssohn Rapunzel geschwängert (impregnated).",
+      "options": [
+        "a. Etwas später wurde Rapunzel vom Königssohn geschwängert worden.",
+        "b. Etwas später ist Rapunzel vom Königssohn geschwängert worden."
+      ],
+      "a": "b. Etwas später ist Rapunzel vom Königssohn geschwängert worden.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Die Hexe hat die Haare des Mädchens abgeschnitten, damit der Königssohn nicht mehr hinaufklettern konnte.",
+      "options": [
+        "a. Die Haare des Mädchens sind abgeschnitten worden, damit der Königssohn nicht mehr hinaufklettern konnte.",
+        "b. Die Haare des Mädchens ist abgeschnitten worden, damit der Königssohn nicht mehr hinaufklettern konnte."
+      ],
+      "a": "a. Die Haare des Mädchens sind abgeschnitten worden, damit der Königssohn nicht mehr hinaufklettern konnte.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Die Hexe ist sehr böse gewesen, und sie hat das Mädchen in eine Wüste (wilderness) geschickt.",
+      "options": [
+        "a. Die Hexe ist sehr böse gewesen, und das Mädchen ist in eine Wüstenei geschickt worden.",
+        "b. Die Hexe ist sehr böse gewesen, und das Mädchen wird in eine Wüstenei geschickt geworden."
+      ],
+      "a": "a. Die Hexe ist sehr böse gewesen, und das Mädchen ist in eine Wüstenei geschickt worden.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Eines Tages hat die Hexe die abgeschnittenen Haare heruntergelassen, um den Königssohn zu fassen.",
+      "options": [
+        "a. Eines Tages wurden die abgeschnittenen Haare heruntergelassen worden, um den Königssohn zu fassen.",
+        "b. Eines Tages sind die abgeschnittenen Haare heruntergelassen worden, um den Königssohn zu fassen."
+      ],
+      "a": "b. Eines Tages sind die abgeschnittenen Haare heruntergelassen worden, um den Königssohn zu fassen.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Die Dornen unten am Turm haben dem Königssohn die Augen ausgestochen, und er ist blind geworden.",
+      "options": [
+        "a. Die Augen des Königssohns sind ausgestochen worden, und er ist blind geworden.",
+        "b. Die Augen des Königssohns ist ausgestochen worden, und er ist blind geworden."
+      ],
+      "a": "a. Die Augen des Königssohns sind ausgestochen worden, und er ist blind geworden.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    },
+    {
+      "type": "choice",
+      "q": "Wie durch ein Wunder (miraculously) hat er Rapunzel und ihre zwei Kinder gefunden; Rapunzel hat natürlich geweint, und die Tränen haben die Augen des Prinzen geheilt.",
+      "options": [
+        "a. Wie durch ein Wunder ist Rapunzel und ihre zwei Kinder gefunden geworden; Rapunzel hat natürlich geweint, und dadurch sind die Augen des Prinzen geheilt worden.",
+        "b. Wie durch ein Wunder sind Rapunzel und ihre zwei Kinder gefunden worden; sie hat natürlich geweint, und die Augen des Prinzen sind dadurch geheilt worden."
+      ],
+      "a": "b. Wie durch ein Wunder sind Rapunzel und ihre zwei Kinder gefunden worden; sie hat natürlich geweint, und die Augen des Prinzen sind dadurch geheilt worden.",
+      "set_id": "vpass_03_01_mcr",
+      "set_title": "Übung - Was ist passiert?",
+      "prompt": "What happened after Rapunzel's mother had eaten her salad? Choose the correct passive construction for each active voice sentence below to find out."
+    }
+  ]
+}

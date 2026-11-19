@@ -1,0 +1,74 @@
+{
+ "n": 206,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "each и every",
+ "en": "each and every",
+ "summary": "Каждый по отдельности или все вместе: чем each отличается от every, почему after each of нужен артикль и куда ставить each в предложении.",
+ "can_do": [
+  "Выбрать each или every по смыслу.",
+  "Построить each of the и every one of.",
+  "Поставить each после подлежащего и в конце предложения.",
+  "Употребить each other вместо «друг друга»."
+ ],
+ "theory": [
+  {
+   "h": "По одному или все вместе",
+   "p": "Each выделяет членов группы по отдельности, каждого самого по себе: each student got a card — каждый взял свою карточку. Every собирает группу в целое, «все до одного»: every student passed. Иногда разница невелика, но когда важна индивидуальность, выбирают each.",
+   "formula": "Each child received a gift. · Every child received a gift. · Each of them has a different task."
+  },
+  {
+   "h": "Each of требует артикля, every of не существует",
+   "p": "После each of обязательно идёт определитель и множественное число: each of the students, each of my friends. Глагол при этом остаётся в единственном. Словосочетания every of в английском нет: вместо него every one of the students или просто every student.",
+   "table": {
+    "head": ["Конструкция", "Правильно", "Неправильно"],
+    "rows": [
+     ["each + существительное", "each student", "each students"],
+     ["each of + определитель", "each of the students", "each of students"],
+     ["every + существительное", "every student", "every of the students"],
+     ["every one of", "every one of them", "every of them"]
+    ]
+   }
+  },
+  {
+   "h": "Куда ставить each",
+   "p": "Each, как и all, может уехать от существительного. После подлежащего оно стоит перед смысловым глаголом и после be: they each paid ten pounds, they are each responsible. В конце предложения each значит «с каждого»: ten pounds each. Every так свободно двигаться не умеет.",
+   "formula": "They each paid ten pounds. · The tickets cost ten pounds each. · We are each responsible for one part."
+  },
+  {
+   "h": "Each other — друг друга",
+   "p": "Оборот each other значит «друг друга» и требует как минимум двух участников. Форма всегда одна: each other, без -s на конце и без артикля. One another — то же самое, только формальнее и чаще для групп больше двух.",
+   "formula": "They help each other. · We write to each other every week. · The students know one another well."
+  },
+  {
+   "h": "Только исчисляемое и только единственное",
+   "p": "И each, и every работают с исчисляемыми в единственном числе и берут глагол в единственном: each book is, every book is. С неисчисляемым они не сочетаются, там нужен all: all the money, а не every money. И после each и every никогда не ставится артикль.",
+   "formula": "Each book is different. · Every coin was counted. · All the money was spent."
+  }
+ ],
+ "examples": [
+  {"en": "Each of the rooms has its own bathroom.", "ru": "В каждой из комнат есть своя ванная."},
+  {"en": "Every room has a view of the sea.", "ru": "Из каждой комнаты видно море."},
+  {"en": "They each paid twenty euros for the ticket.", "ru": "Каждый из них заплатил за билет двадцать евро."},
+  {"en": "The lessons last an hour each.", "ru": "Каждое занятие длится час."},
+  {"en": "My sisters phone each other every day.", "ru": "Мои сёстры звонят друг другу каждый день."},
+  {"en": "Every one of the students passed the test.", "ru": "Все до одного студенты сдали тест."}
+ ],
+ "traps": [
+  {"bad": "Each of students got a book.", "good": "Each of the students got a book.", "why": "После each of нужен определитель the, my или these."},
+  {"bad": "Every of them agreed.", "good": "Every one of them agreed.", "why": "Сочетания every of нет, нужно every one of."},
+  {"bad": "Each students have a task.", "good": "Each student has a task.", "why": "Each требует единственного числа и глагола с -s."},
+  {"bad": "They help each others.", "good": "They help each other.", "why": "Each other не получает -s на конце."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ of the two candidates was interviewed separately.", "options": ["Each", "Every", "All"], "a": 0, "why": "Двое и по отдельности — each; every of не существует."},
+  {"type": "choice", "q": "___ employee must wear a badge.", "options": ["Every", "Each of", "All"], "a": 0, "why": "Прямо перед существительным в единственном — every."},
+  {"type": "choice", "q": "The tickets cost five pounds ___.", "options": ["each", "every", "all"], "a": 0, "why": "«С каждого» в конце предложения — each."},
+  {"type": "choice", "q": "My parents write to ___ every week.", "options": ["each other", "each others", "the each other"], "a": 0, "why": "«Друг другу» — each other, без -s и без артикля."},
+  {"type": "gap", "q": "___ (each) of my brothers lives in a different city.", "a": ["each"], "why": "Each of my + множественное число, глагол в единственном."},
+  {"type": "gap", "q": "I go to the gym ___ (every) other day.", "a": ["every"], "why": "Every other day — через день."},
+  {"type": "gap", "q": "We ___ (each) received a separate room.", "a": ["each"], "why": "Each после подлежащего перед смысловым глаголом."},
+  {"type": "translate", "q": "Каждый из студентов получил задание.", "a": ["each of the students got a task", "each of the students received a task"], "why": "Each of the students, глагол в единственном числе."},
+  {"type": "translate", "q": "Мы видим друг друга каждый день.", "a": ["we see each other every day", "we see one another every day"], "why": "Each other или one another, без артикля."}
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "n": 177,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Глагол + предлог + -ing",
+ "en": "verb + preposition + -ing",
+ "summary": "Почему после think of, insist on и apologize for идёт -ing: как предлог внутри глагола диктует форму следующего слова.",
+ "can_do": [
+  "Употреблять -ing после глагола с предлогом: think of, insist on, apologize for.",
+  "Помнить предлоги, которые требуют самые частые глаголы.",
+  "Строить отрицание через not перед -ing.",
+  "Отличать глаголы с предлогом от глаголов с to-инфинитивом."
+ ],
+ "theory": [
+  {
+   "h": "Предлог открывает дверь для -ing",
+   "p": "Некоторые английские глаголы не работают в одиночку: после них нужен предлог. А после предлога может стоять только существительное или его замена — форма на -ing. Инфинитив туда не проходит.",
+   "formula": "He apologized for being late. · She insists on paying. · I'm thinking of changing jobs."
+  },
+  {
+   "h": "Кто с каким предлогом дружит",
+   "p": "Предлог не выводится из русского перевода, его запоминают вместе с глаголом. Ниже — те, что встречаются каждый день; учите их сразу целой фразой, а не по отдельности.",
+   "table": {
+    "head": ["Глагол + предлог", "Пример"],
+    "rows": [
+     ["apologize for", "He apologized for shouting."],
+     ["insist on", "She insisted on walking home."],
+     ["think of / dream of", "I dream of living by the sea."],
+     ["succeed in", "They succeeded in finding a flat."],
+     ["rely on / depend on", "We rely on him finishing on time."],
+     ["accuse somebody of", "They accused her of lying."],
+     ["prevent somebody from", "The rain prevented us from going out."],
+     ["look forward to", "I look forward to hearing from you."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание — перед -ing",
+   "p": "Частица not встаёт между предлогом и -ing-формой, а не перед глаголом и не после него. Смысл при этом остаётся тем же, меняется только полярность.",
+   "formula": "He apologized for not calling. · She insisted on not taking the money. · I'm thinking of not going."
+  },
+  {
+   "h": "to — предлог или частица",
+   "p": "В look forward to, object to и be used to слово to — предлог, поэтому дальше -ing. В want to, decide to, hope to это частица инфинитива, и после неё стоит обычный глагол. Один и тот же to ведёт себя по-разному.",
+   "formula": "I'm looking forward to seeing you. · I want to see you. · We object to changing the plan."
+  },
+  {
+   "h": "Глаголы без предлога",
+   "p": "Не все глаголы требуют предлог. Enjoy, avoid, finish, suggest, mind, practise берут -ing напрямую, а want, hope, decide, promise, refuse — инфинитив. Поэтому enjoy to read и decide doing — одинаково неверно.",
+   "formula": "I enjoy reading. · We decided to stay. · She suggested going out."
+  }
+ ],
+ "examples": [
+  {"en": "He apologized for being late.", "ru": "Он извинился за опоздание."},
+  {"en": "She insisted on paying for dinner.", "ru": "Она настояла на том, чтобы заплатить за ужин."},
+  {"en": "I'm thinking of moving to Berlin.", "ru": "Я подумываю переехать в Берлин."},
+  {"en": "Thank you for helping me.", "ru": "Спасибо, что помогли мне."},
+  {"en": "They accused him of stealing the money.", "ru": "Его обвинили в краже денег."},
+  {"en": "We're looking forward to meeting you.", "ru": "Мы с нетерпением ждём встречи с вами."}
+ ],
+ "traps": [
+  {"bad": "He apologized to be late.", "good": "He apologized for being late.", "why": "Apologize требует for, а после предлога — -ing."},
+  {"bad": "She insisted to pay.", "good": "She insisted on paying.", "why": "Insist идёт с предлогом on, поэтому дальше paying."},
+  {"bad": "I look forward to see you.", "good": "I look forward to seeing you.", "why": "В look forward to слово to — предлог, значит нужна форма seeing."},
+  {"bad": "They accused him for stealing.", "good": "They accused him of stealing.", "why": "Accuse somebody of something — предлог of, не for."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm thinking ___ changing my job.", "options": ["of", "to", "for"], "a": 0, "why": "Think of doing something — подумывать о чём-то."},
+  {"type": "choice", "q": "She insisted ___ paying for everyone.", "options": ["to", "on", "for"], "a": 1, "why": "Insist on + -ing: insisted on paying."},
+  {"type": "choice", "q": "We're looking forward to ___ from you.", "options": ["hear", "hearing", "heard"], "a": 1, "why": "Look forward to — to-предлог, поэтому hearing."},
+  {"type": "choice", "q": "He apologized ___ not answering my email.", "options": ["for", "of", "about"], "a": 0, "why": "Apologize for + -ing: apologized for not answering."},
+  {"type": "gap", "q": "They succeeded in ___ (find) a cheaper flat.", "a": ["finding"], "why": "Succeed in + -ing: succeeded in finding."},
+  {"type": "gap", "q": "Thank you for ___ (send) the documents.", "a": ["sending"], "why": "После предлога for глагол стоит в форме sending."},
+  {"type": "gap", "q": "The rain prevented us from ___ (go) out.", "a": ["going"], "why": "Prevent somebody from + -ing."},
+  {"type": "translate", "q": "Он извинился за опоздание.", "a": ["he apologized for being late", "he apologised for being late"], "why": "Apologize for + -ing: for being late."},
+  {"type": "translate", "q": "Я с нетерпением жду встречи с тобой.", "a": ["i'm looking forward to meeting you", "i am looking forward to meeting you", "i look forward to meeting you"], "why": "Look forward to + -ing: to meeting you."}
+ ]
+}

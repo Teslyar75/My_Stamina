@@ -1,0 +1,74 @@
+{
+ "n": 159,
+ "level": "B2",
+ "module": "b-passive",
+ "title": "Пассив (3): все времена",
+ "en": "passive 3",
+ "summary": "Вся система пассива на одной таблице, два дополнения и два пассива, разговорное get и глаголы, которые пассив не терпят.",
+ "can_do": [
+  "Собрать пассив в любом времени по одной формуле.",
+  "Перестроить фразу с двумя дополнениями двумя способами.",
+  "Употребить разговорный пассив с get.",
+  "Узнать глаголы, которые не ставятся в пассив."
+ ],
+ "theory": [
+  {
+   "h": "Одна формула на все времена",
+   "p": "Вся система сводится к простому правилу: be в нужном времени плюс V3. Время показывает именно be, смысловой глагол не меняется. Если вы умеете образовать нужное время от be, вы умеете образовать пассив — остальное механически.",
+   "table": {
+    "head": ["Время", "Пассив", "Пример"],
+    "rows": [
+     ["present simple", "am/is/are + V3", "The office is cleaned daily."],
+     ["past simple", "was/were + V3", "The office was cleaned yesterday."],
+     ["present perfect", "has/have been + V3", "The office has been cleaned."],
+     ["past perfect", "had been + V3", "The office had been cleaned."],
+     ["future", "will be + V3", "The office will be cleaned."],
+     ["modal", "must/can be + V3", "The office must be cleaned."]
+    ]
+   }
+  },
+  {
+   "h": "Два дополнения — два пассива",
+   "p": "Глаголы give, send, show, offer, tell, pay могут иметь два дополнения: кому и что. Поэтому из одной активной фразы получаются две пассивные. Чаще выбирают пассив от человека, потому что он ближе к началу и звучит естественнее.",
+   "formula": "They gave him a prize. → He was given a prize. · A prize was given to him."
+  },
+  {
+   "h": "get вместо be в разговоре",
+   "p": "В неформальной речи вместо be часто ставят get: got fired, got paid, got caught. Смысл тот же, тон проще и живее. Особенно охотно get берут, когда речь о неприятности: he got hit, my bike got stolen.",
+   "formula": "He got fired last week. · I got paid on Friday. · My bike got stolen."
+  },
+  {
+   "h": "Не все глаголы терпят пассив",
+   "p": "Пассив возможен только там, где есть дополнение, на которое можно перекинуть внимание. Happen, arrive, come, die, seem, belong не имеют такого дополнения, поэтому в пассиве не употребляются. Фраза the accident was happened — типичная ошибка русскоязычных, которые мыслят «аварию случили».",
+   "formula": "The accident happened. (не was happened) · He arrived late. (не was arrived) · She died in 1990."
+  },
+  {
+   "h": "Пассив в связках: to be done, being done",
+   "p": "После предлогов, прилагательных и некоторых глаголов пассив стоит в форме to be + V3 или being + V3. Это те же кирпичи, только в другой позиции: I want to be paid, I don't like being ignored, the idea of being watched.",
+   "formula": "I want to be paid on time. · She hates being interrupted. · The risk of being caught was high."
+  }
+ ],
+ "examples": [
+  {"en": "I was asked a lot of questions at the interview.", "ru": "На собеседовании мне задали много вопросов."},
+  {"en": "He was given a second chance.", "ru": "Ему дали второй шанс."},
+  {"en": "The accident happened at midnight.", "ru": "Авария случилась в полночь."},
+  {"en": "My bike got stolen last week.", "ru": "Мой велосипед украли на прошлой неделе."},
+  {"en": "She hates being interrupted.", "ru": "Она не выносит, когда её перебивают."}
+ ],
+ "traps": [
+  {"bad": "The accident was happened yesterday.", "good": "The accident happened yesterday.", "why": "Happen непереходный, у него нет дополнения — пассив невозможен."},
+  {"bad": "My car got stole last night.", "good": "My car got stolen last night.", "why": "После get тоже нужна третья форма: stolen."},
+  {"bad": "He was gave a prize.", "good": "He was given a prize.", "why": "После be — V3: give — gave — given."},
+  {"bad": "We were arrived at six.", "good": "We arrived at six.", "why": "Arrive не переходный глагол, пассив с ним не строится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ a lot of questions at the interview.", "options": ["asked", "was asked", "was asking"], "a": 1, "why": "Меня спрашивали: was asked."},
+  {"type": "choice", "q": "The accident ___ last night.", "options": ["was happened", "happened", "is happened"], "a": 1, "why": "Happen не употребляется в пассиве."},
+  {"type": "choice", "q": "My bike ___ last week.", "options": ["got stolen", "got steal", "was stole"], "a": 0, "why": "Разговорный пассив: get + V3, stolen."},
+  {"type": "choice", "q": "The results ___ tomorrow morning.", "options": ["will announce", "will be announced", "are announce"], "a": 1, "why": "Будущее в пассиве: will be announced."},
+  {"type": "gap", "q": "We ___ (give) two tickets at the entrance.", "a": ["were given"], "why": "Past simple passive: were given."},
+  {"type": "gap", "q": "The letter ___ (send) to him yesterday.", "a": ["was sent"], "why": "Past simple passive: was sent."},
+  {"type": "translate", "q": "Мне задали три вопроса.", "a": ["i was asked three questions"], "why": "Человек как подлежащее: I was asked three questions."},
+  {"type": "translate", "q": "Ему дали второй шанс.", "a": ["he was given a second chance", "a second chance was given to him"], "why": "Два пассива от give: he was given / a chance was given to him."}
+ ]
+}

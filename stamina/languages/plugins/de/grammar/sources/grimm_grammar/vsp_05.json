@@ -1,0 +1,138 @@
+{
+  "id": "vsp_05",
+  "title": "Verbs: Das Imperfekt - Sein",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_05.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The simple past of sein is used in both written and spoken language in the past tense. While ich bin ... gewesen is gaining some traction in colloquial speech, at this point it is still more common to hear ich war to say \"I was ...\"\n\nsein • be\n\nich war | wir waren\n\ndu warst | ihr wart\n\ner/sie/es war | sie waren\n\nFrau Holle war in ihrem Haus, als das brave Mädchen in den Brunnen fiel. | Frau Holle was in her house when the good girl fell in the well.\n\nDas Mädchen, wie erwartet, war sehr brav und hat die Brötchen, die im Backofen waren, herausgeholt, als sie das Mädchen um Hilfe gebeten haben. | The girl, not unexpectedly, was very good and took out the rolls that were in the oven when they called to her for help.\n\nSie hat alles weiterhin so schön gemacht, und am Ende sagte Frau Holle: \"Weil du so brav warst, kriegst du von mir viel Gold.\" | She continued to do everything so nicely, so at the end Frau Holle said to her: Because you were so good, you will get a lot of gold from me."
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich war",
+      "en": "wir waren"
+    },
+    {
+      "de": "du warst",
+      "en": "ihr wart"
+    },
+    {
+      "de": "er/sie/es war",
+      "en": "sie waren"
+    },
+    {
+      "de": "Frau Holle war in ihrem Haus, als das brave Mädchen in den Brunnen fiel.",
+      "en": "Frau Holle was in her house when the good girl fell in the well."
+    },
+    {
+      "de": "Das Mädchen, wie erwartet, war sehr brav und hat die Brötchen, die im Backofen waren, herausgeholt, als sie das Mädchen um Hilfe gebeten haben.",
+      "en": "The girl, not unexpectedly, was very good and took out the rolls that were in the oven when they called to her for help."
+    },
+    {
+      "de": "Sie hat alles weiterhin so schön gemacht, und am Ende sagte Frau Holle: \"Weil du so brav warst, kriegst du von mir viel Gold.\"",
+      "en": "She continued to do everything so nicely, so at the end Frau Holle said to her: Because you were so good, you will get a lot of gold from me."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Eines Tages stand das brave Mädchen wieder zu Hause vor der Tür; sie ___ mit Gold bedeckt (covered).",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Ihre Stiefmutter rief: Wo ___ du? Wer soll uns Wasser holen? Wer soll uns das Essen bringen?",
+      "a": "warst",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Das brave Mädchen: Ich ___ bei Frau Holle und habe alles gemacht, was Leute von mir erwarteten (expected of me).",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Die Stiefschwester: Wir ___ gar nicht neugierig (curious)! Aber jetzt will ich auch so viel Gold! Ich laufe sofort zum Brunnen und werfe mich hinein!",
+      "a": "waren",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Die Stiefmutter: ___ ihr am selben Ort? Warum bist du mit Pech (tar) bedeckt?",
+      "a": "wart",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Das faule Mädchen: Ja, ja, Mutti, ich ___ auch bei der Frau Holle, aber ich musste so viele Hausarbeiten machen!!!",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Die Stiefmutter: Ja, Liebling, du ___ nicht für solche schwere Arbeit geeignet (meant for this hard job)! Setzt dich auf das Sofa, ich bringe dir etwas Wasser.",
+      "a": "warst",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Wie ___ es zu Hause? Hat es dir da gut gefallen?",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "das brave Mädchen: Ja, sehr ... Meine Stiefmutter und Stiefschwestern ___ so enttäuscht, dass sie kein Gold bekommen haben!",
+      "a": "waren",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Ja, und deine Stiefschwester konnte vom Sofa nicht mehr aufstehen ... Sie ___ selbst noch diesen Morgen am selben Ort!",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "das brave Mädchen: Nur deswegen wollte ich nach Hause! Schadenfreude, wie man sagt, ist die schönste Freude ... Entschuldigung, das ___ nicht sehr nett von mir!",
+      "a": "war",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Nett nicht, aber verständlich. Und jetzt brauchst du unbedingt einen Namen. Die Gebrüder Grimm ___ nicht sehr kreativ: Viele Märchenfiguren haben keine Namen!",
+      "a": "waren",
+      "set_id": "vsp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out why on earth the good girl went back to her evil (of course) stepmother and stepsister, when she had such a good life with Frau Holle ... and find out also why she returned to her benefactress ... Fill in the blanks with the correct simple past forms of sein."
+    }
+  ]
+}

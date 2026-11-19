@@ -1,0 +1,73 @@
+{
+ "n": 133,
+ "level": "B2",
+ "module": "b-verbs",
+ "title": "used to: раньше бывало",
+ "en": "used to",
+ "summary": "Как рассказать о привычках и состояниях прошлого, которых больше нет: раньше курил, раньше жил здесь.",
+ "can_do": [
+  "Сказать, что раньше было привычкой, а теперь нет.",
+  "Задать вопрос Did you use to...? и построить отрицание.",
+  "Отличить used to от be used to doing.",
+  "Рассказать о прошлых состояниях: used to live, used to be."
+ ],
+ "theory": [
+  {
+   "h": "used to + инфинитив",
+   "p": "Конструкция used to плюс глагол в начальной форме говорит о прошлой привычке или прошлом состоянии, которого сейчас уже нет. Важно именно это «раньше, а теперь нет»: без него фраза теряет смысл.",
+   "formula": "I used to smoke. · She used to live in Kyiv. · There used to be a shop here."
+  },
+  {
+   "h": "Только прошлое",
+   "p": "У used to нет настоящего времени. Для нынешних привычек говорят usually или present simple. Если нужно будущее, тоже не получится: used to существует только в прошедшем.",
+   "formula": "I usually get up at seven. · I used to get up at six."
+  },
+  {
+   "h": "Формы и вопросы",
+   "p": "В утверждении пишется used to с d. В отрицании и вопросе появляется did, и тогда d исчезает: didn't use to, did you use to. Это самая частая орфографическая ловушка темы.",
+   "table": {
+    "head": ["Форма", "Пример", "Смысл"],
+    "rows": [
+     ["утверждение", "He used to play tennis.", "раньше играл"],
+     ["отрицание", "He didn't use to play tennis.", "раньше не играл"],
+     ["вопрос", "Did he use to play tennis?", "играл ли он раньше"],
+     ["состояние", "There used to be a cinema here.", "раньше был кинотеатр"]
+    ]
+   }
+  },
+  {
+   "h": "used to и would",
+   "p": "Would тоже умеет описывать прошлые повторяющиеся действия, особенно если рядом стоит every summer, every evening. Но would не годится для состояний: нельзя сказать would have или would be про прошлое владение и признак.",
+   "formula": "We would go to the beach every summer. · I used to have a bike. (не would have)"
+  },
+  {
+   "h": "Не путать с be used to doing",
+   "p": "Похожая на вид конструкция be used to плюс ing значит «привык к чему-то» и относится к настоящему. Она описывает не прошлую привычку, а нынешнее удобство или привыкание.",
+   "formula": "I'm used to getting up early. · She was used to working alone."
+  }
+ ],
+ "examples": [
+  {"en": "I used to play the guitar, but I sold it.", "ru": "Раньше я играл на гитаре, но продал её."},
+  {"en": "There used to be a bakery on this corner.", "ru": "Раньше на этом углу была пекарня."},
+  {"en": "Did you use to work in a bank?", "ru": "Ты раньше работал в банке?"},
+  {"en": "We didn't use to eat out much.", "ru": "Раньше мы нечасто ели в кафе."},
+  {"en": "He isn't used to working night shifts.", "ru": "Он не привык работать в ночные смены."},
+  {"en": "My grandfather would tell us stories every evening.", "ru": "Мой дед каждый вечер рассказывал нам истории."}
+ ],
+ "traps": [
+  {"bad": "I use to smoke.", "good": "I used to smoke.", "why": "В утверждении пишется used to, с d."},
+  {"bad": "Did you used to live here?", "good": "Did you use to live here?", "why": "После did возвращается use без d."},
+  {"bad": "I am used to smoke.", "good": "I am used to smoking.", "why": "Be used to требует ing: привык к чему-то."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ play football every weekend, but I don't anymore.", "options": ["used to", "use to", "am used to"], "a": 0, "why": "Прошлая привычка: used to."},
+  {"type": "choice", "q": "She ___ have long hair when she was young.", "options": ["used to", "use to", "would"], "a": 0, "why": "Состояние в прошлом — used to, не would."},
+  {"type": "choice", "q": "___ you use to work in a bank?", "options": ["Did", "Do", "Were"], "a": 0, "why": "Вопрос в прошлом строится через did."},
+  {"type": "choice", "q": "He isn't used to ___ up so early.", "options": ["get", "getting", "got"], "a": 1, "why": "Be used to + ing: привык к чему-то."},
+  {"type": "gap", "q": "There ___ (use to) be a cinema on this street.", "a": ["used to"], "why": "Раньше был — used to be."},
+  {"type": "gap", "q": "We ___ (not / use to) eat out much.", "a": ["didn't use to", "did not use to"], "why": "Отрицание: didn't use to, без d."},
+  {"type": "gap", "q": "My grandfather ___ (use to) tell us stories every evening.", "a": ["used to"], "why": "Прошлая привычка: used to tell."},
+  {"type": "translate", "q": "Раньше я жил в Минске.", "a": ["i used to live in minsk"], "why": "Прошлое состояние: used to live."},
+  {"type": "translate", "q": "Ты раньше курил?", "a": ["did you use to smoke"], "why": "Вопрос: did you use to."}
+ ]
+}

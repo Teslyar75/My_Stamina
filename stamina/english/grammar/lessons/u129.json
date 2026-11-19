@@ -1,0 +1,74 @@
+{
+ "n": 129,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Perfect или Past (2)",
+ "en": "present perfect and past 2",
+ "summary": "Сегодня, на этой неделе, в этом году — отрезок ещё не закрыт, и тогда нужен perfect; а вчерашний день уже закрыт.",
+ "can_do": [
+  "Сказать, что сделано сегодня, и что делалось вчера.",
+  "Поставить just, already и yet в правильное место в предложении.",
+  "Различить have been to и have gone to.",
+  "Построить фразу This is the first time I have..."
+ ],
+ "theory": [
+  {
+   "h": "Незаконченный отрезок времени",
+   "p": "Если период ещё продолжается, мы смотрим на него изнутри и считаем всё, что успели: сегодня, на этой неделе, в этом месяце, в этом году, за последнее время. Для такого счёта нужен present perfect, потому что день или год ещё не закончились.",
+   "formula": "I've drunk three cups of coffee today. · She has read two books this month."
+  },
+  {
+   "h": "Отрезок закрылся — возвращается past",
+   "p": "То же самое «сегодня» может стать закрытым периодом: если сейчас вечер, то утро уже прошло, и про него говорят в past simple. Сравнение помогает понять, что выбор времени зависит от момента разговора, а не от слова в предложении.",
+   "formula": "I've seen Tom this morning. (сейчас ещё утро) · I saw Tom this morning. (сейчас вечер)"
+  },
+  {
+   "h": "just, already, yet, ago",
+   "p": "Эти четыре слова часто решают, какое время выбрать. Just, already и yet тянутся к perfect, потому что связывают событие с сейчас. Ago, наоборот, отмеряет время от прошлого момента и требует past simple.",
+   "table": {
+    "head": ["Слово", "Где стоит", "Смысл", "Пример"],
+    "rows": [
+     ["just", "между have и глаголом", "только что", "I've just spoken to her."],
+     ["already", "так же, в утверждении", "уже, раньше ожидаемого", "He has already left."],
+     ["yet", "в конце вопроса и отрицания", "уже / ещё нет", "Have you finished yet?"],
+     ["ago", "с past simple", "тому назад", "She left an hour ago."]
+    ]
+   }
+  },
+  {
+   "h": "have been to и have gone to",
+   "p": "Разница не в грамматике, а в том, где человек сейчас. Been to значит «побывал и вернулся», это про опыт. Gone to значит «уехал и находится там», поэтому о человеке, которого нет рядом, говорят именно так.",
+   "formula": "She has been to Paris twice. (она уже дома) · She has gone to Paris. (она сейчас там)"
+  },
+  {
+   "h": "This is the first time...",
+   "p": "После оборотов this is the first time, it's the second time, it's the best thing ставится present perfect: опыт считается до нынешнего момента. Это устойчивая конструкция, и past simple здесь звучит как ошибка.",
+   "formula": "This is the first time I've driven a car. · It's the second time he has called today."
+  }
+ ],
+ "examples": [
+  {"en": "I've had two meetings today and I'm exhausted.", "ru": "У меня сегодня было две встречи, и я вымотан."},
+  {"en": "She has just sent the invoice.", "ru": "Она только что отправила счёт."},
+  {"en": "We haven't decided yet.", "ru": "Мы ещё не решили."},
+  {"en": "He has gone to the gym, so he won't answer.", "ru": "Он ушёл в спортзал, так что не ответит."},
+  {"en": "This is the first time I've seen snow in April.", "ru": "Я впервые вижу снег в апреле."},
+  {"en": "I saw her at the station this morning.", "ru": "Я видел её на вокзале сегодня утром."}
+ ],
+ "traps": [
+  {"bad": "I have seen him this morning.", "good": "I saw him this morning.", "why": "Если утро уже прошло, отрезок закрыт и нужен past simple."},
+  {"bad": "He has just left ten minutes ago.", "good": "He left ten minutes ago.", "why": "Just и ago не ставятся вместе: ago требует past."},
+  {"bad": "She has been to Paris, she is still there.", "good": "She has gone to Paris, she is still there.", "why": "Been значит «побывала и вернулась», gone — «сейчас там»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ two coffees today, and it's only noon.", "options": ["drank", "have drunk", "had drunk"], "a": 1, "why": "День ещё не закончился — perfect."},
+  {"type": "choice", "q": "We ___ to the cinema last night.", "options": ["have been", "went", "have gone"], "a": 1, "why": "Last night — закрытый период, past simple."},
+  {"type": "choice", "q": "Have you finished the report ___?", "options": ["already", "yet", "just"], "a": 1, "why": "В вопросе «уже?» — yet в конце."},
+  {"type": "choice", "q": "She has ___ left, so you can still catch her.", "options": ["yet", "just", "ago"], "a": 1, "why": "Только что ушла — just."},
+  {"type": "choice", "q": "Tom isn't here. He ___ to the gym.", "options": ["has been", "has gone", "went"], "a": 1, "why": "Его нет рядом, он там — has gone."},
+  {"type": "gap", "q": "I ___ (not / speak) to him yet.", "a": ["haven't spoken", "have not spoken"], "why": "Yet с отрицанием — present perfect."},
+  {"type": "gap", "q": "They ___ (arrive) an hour ago.", "a": ["arrived"], "why": "Ago — точный отсчёт от прошлого, past simple."},
+  {"type": "gap", "q": "This is the first time I ___ (try) oysters.", "a": ["have tried"], "why": "После this is the first time — perfect."},
+  {"type": "translate", "q": "Я уже пообедал.", "a": ["i have already had lunch", "i've already had lunch", "i have already eaten"], "why": "Already в утверждении, perfect."},
+  {"type": "translate", "q": "Она ушла на работу, её сейчас нет.", "a": ["she has gone to work", "she's gone to work"], "why": "Она там, поэтому has gone."}
+ ]
+}

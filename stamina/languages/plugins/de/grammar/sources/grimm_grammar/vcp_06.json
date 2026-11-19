@@ -1,0 +1,302 @@
+{
+  "id": "vcp_06",
+  "title": "Verbs: Das Perfekt - -ieren Verben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_06.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The participle forms of verbs can be used to build the conversational past, the past perfect and the subjunctive mood. They can also be used as adjectives.\n\nA handful of German verbs that end in -ieren – -isieren/-ifizieren are related endings and behave the same way – end in the -t suffix like regular verbs, but they do not take the ge- prefix when forming the participle:\n\ndie Hexe | Dieses letzte Feuer hat mich total deprimiert! | This last fire totally demoralized me!\n\ndie böse Königin | Das soll's auch! Wir haben die Küche erst im Oktober renoviert! | And it should! We just renovated the kitchen in October!\n\ndie Hexe | Ja, ja, ich weiß, ich weiß! Du hast mich schon genug kritisiert! | Yes, I know, I know! You've already criticized me enough!\n\ndie böse Königin | So ein Mist! Warum hat dich unser Cartoonist bloß nicht vom Bild radiert?!? | Crap! Why didn't our cartoonist erase you from the picture?!?!\n\ndie Hexe | Mensch, du bist so gemein! | Man, are you ever mean!\n\nForming the -ieren participles:\n\n1) take the infinitive | dekorieren (decorate)\n\n2) remove the | -en | suffix | dekorier\n\n3) add | -t | suffix | dekoriert\n\narrangieren (arrange: music) | => | hat arrangiert\n\nbuchstabieren (spell, as in letters) | => | hat buchstabiert\n\ndekorieren (deocrate) | => | hat dekoriert\n\ndemarkieren (demarcate) | => | hat demarkiert\n\ndemaskieren (unmask, reveal, expose) | => | hat demaskiert\n\ndemokratisieren (democratize) | => | hat demokratisiert\n\ndominieren (dominate) | => | hat dominiert\n\ndeprimieren (depress) | => | hat deprimiert\n\nengagieren (engage, e.g., in discussion) | => | hat engagiert\n\nidentifizieren (identify) | => | hat identifiziert\n\ninformieren (inform) | => | hat informiert\n\nisolieren (isolate) | => | hat isoliert\n\nkapieren (get, understand – slang!) | => | hat kapiert\n\nkombinieren (combine) | => | hat kombiniert\n\nkritisieren (criticize) | => | hat kritisiert\n\nmanipulieren (mainpulate) | => | hat manipuliert\n\nmoralisieren (moralize) | => | hat moralisiert\n\npassieren (happen) | => | ist passiert (SEIN)\n\n(an/aus) probieren (try on/out) | => | hat (an/aus) probiert\n\nradieren (erase) | => | hat radiert\n\nrasieren (shave) | => | hat rasiert\n\nreagieren (react to) | => | hat reagiert\n\nrenovieren (renovate) | => | hat renoviert\n\nreparieren (repair) | => | hat repariert\n\nruinieren (ruin) | => | hat ruiniert\n\nseparieren (separate) | => | hat separiert\n\ntabuisieren (make tabu) | => | hat tabuisiert\n\ntelefonieren (make a phone call) | => | hat telefoniert\n\nThese verbs do not get a ge- prefix even if they are preceded by a separable prefix (anprobieren => hat anprobiert)."
+    }
+  ],
+  "examples": [
+    {
+      "de": "die Hexe",
+      "en": "Dieses letzte Feuer hat mich total deprimiert!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Das soll's auch! Wir haben die Küche erst im Oktober renoviert!"
+    },
+    {
+      "de": "die Hexe",
+      "en": "Ja, ja, ich weiß, ich weiß! Du hast mich schon genug kritisiert!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "So ein Mist! Warum hat dich unser Cartoonist bloß nicht vom Bild radiert?!?"
+    },
+    {
+      "de": "die Hexe",
+      "en": "Mensch, du bist so gemein!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Privatdetektiv: Guten Tag, ich bin Journalist von der Frankfurter Allgemeinen Zeitung. Bitte schön, was ist hier ___?",
+      "a": "passiert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Also, wir haben unsere Küche im Oktober neu ___: neue Wände, neue Fenster, alles neu!",
+      "a": "renoviert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe: Ja, und wir haben die Küche mit dem Badezimmer ___.",
+      "a": "kombiniert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Der Privatdetektiv: Merkwürdig (strange) ... Und die Farben (colors)! Lila und gold und grün! Haben Sie Ihre Wohnung selbst ___?",
+      "a": "dekoriert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe: Natürlich, wir sind beide sehr begabt (talented). Also, gerade vor dem Feuer haben Babsi und ich mit einer Kollegin in der Schweiz ___; wir haben noch keine Internetverbindung.",
+      "a": "telefoniert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Ja, diese Kollegin, Heidrun und ich haben einige neue Lieder für unsere Musical 'Herzdame' (Queen of Hearts) ___.",
+      "a": "arrangiert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Der Privatdetektiv: Ich kann kaum warten! Also, jemand hat mich darüber ___, dass dies schon das fünfte Feuer in Ihrer Wohnung war. Was sagen Sie dazu?",
+      "a": "informiert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe: Gar nichts! Unsere unglücklichen Unfälle (accidents) haben die Nachrichten lang genug ___. Die Schlagzeilen (headlines) verspotteten (ridiculed) uns das ganze Jahr!",
+      "a": "dominiert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Heidrun, erwähne (mention) dieses Thema nicht! Wir haben es doch ___!",
+      "a": "tabuisiert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe: Es ist wirklich traurig (sad)! Die anderen Märchenfiguren haben uns wegen (because of) dieser Unfälle völlig ___.",
+      "a": "isoliert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Der Privatdetektiv: Haben Sie ihre Versicherungsfirma mit diesen Unfällen ___, um immer wieder mehr Geld zu kriegen?",
+      "a": "manipuliert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Was Sie nicht sagen! Wir haben die Ursache (source) des Feuers ___. Unsere Stimme (voice) hat eine elektronische Funktionsstörung (malfunction) verursacht (cause).",
+      "a": "identifiziert",
+      "options": [
+        "tabuisieren",
+        "arrangieren",
+        "isolieren",
+        "passieren",
+        "renovieren",
+        "identifizieren",
+        "dominieren",
+        "kombinieren",
+        "manipulieren",
+        "dekorieren",
+        "informieren",
+        "telefonieren"
+      ],
+      "set_id": "vcp_06_01_fib",
+      "set_title": "Übung",
+      "prompt": "The insurance agency is getting really suspicious and sent a private detective before they reimburse the witch and the queen this time. Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences – and to find out what the witch and the queen tell the detective."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+ "n": 141,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "can, could, be able to",
+ "en": "can, could, be able to",
+ "summary": "Can говорит об умении сейчас, could — об умении вообще в прошлом, а be able to выручает там, где can не спрягается.",
+ "can_do": [
+  "Сказать, что умеете делать сейчас, через can без лишнего to.",
+  "Различить общее умение в прошлом и разовый успех.",
+  "Образовать будущее и перфект через be able to.",
+  "Объяснить, почему с глаголами чувств говорят can see, а не see."
+ ],
+ "theory": [
+  {
+   "h": "Can — самый рабочий инструмент",
+   "p": "Can ставится прямо перед глаголом, без to, и не требует do в вопросах и отрицаниях. Это самая частая форма для умения и возможности в настоящем. Отрицание can't в живой речи звучит почти как «кант», и это нормально.",
+   "formula": "I can swim. · Can you drive? · I can't come today."
+  },
+  {
+   "h": "Прошлое: could — про умение вообще",
+   "p": "Если речь о том, что человек умел в какой-то период жизни, спокойно ставьте could. Это фон, а не отдельный случай: умел читать в пять лет, мог часами гулять, хорошо играл в шахматы. Никакого «удалось» здесь нет.",
+   "formula": "When I was a child, I could climb trees. · She could read at five."
+  },
+  {
+   "h": "Один раз получилось — не could",
+   "p": "Когда речь о конкретном случае, где усилие увенчалось успехом, англичане скажут was able to или managed to. Could здесь звучит странно, потому что описывает способность, а не результат. В отрицании разница стирается: couldn't подходит и для умения, и для единичной неудачи.",
+   "table": {
+    "head": ["Ситуация", "Форма", "Пример"],
+    "rows": [
+     ["умение вообще в прошлом", "could", "I could read at five."],
+     ["один раз получилось", "was able to / managed to", "I was able to open the jar."],
+     ["не получилось", "couldn't / wasn't able to", "I couldn't open the jar."]
+    ]
+   }
+  },
+  {
+   "h": "Be able to — когда can не спрягается",
+   "p": "У can нет будущего, перфекта и инфинитива: нельзя сказать will can или have could. На эти места встаёт be able to, и be меняется как обычный глагол. После других модальных тоже используется эта конструкция: might be able to, should be able to.",
+   "formula": "I'll be able to help tomorrow. · She has been able to work since May. · I might be able to come."
+  },
+  {
+   "h": "Can с глаголами чувств",
+   "p": "С see, hear, smell, taste, feel англичане почти всегда говорят can, когда речь о том, что воспринимается прямо сейчас. Это не про умение, а про то, что происходит в момент речи, поэтому настоящее продолженное здесь тоже не нужно.",
+   "formula": "I can see the sea from here. · I can't hear you — the line is bad."
+  }
+ ],
+ "examples": [
+  {"en": "She can speak three languages fluently.", "ru": "Она свободно говорит на трёх языках."},
+  {"en": "When I was a student, I could stay up all night.", "ru": "Студентом я мог не спать всю ночь."},
+  {"en": "The door was stuck, but he managed to open it.", "ru": "Дверь заклинило, но ему удалось её открыть."},
+  {"en": "I'll be able to give you an answer on Friday.", "ru": "Я смогу дать вам ответ в пятницу."},
+  {"en": "I can hear the rain on the roof.", "ru": "Я слышу, как дождь стучит по крыше."}
+ ],
+ "traps": [
+  {"bad": "I can to swim.", "good": "I can swim.", "why": "После can инфинитив идёт без to."},
+  {"bad": "Yesterday I could finish the report.", "good": "Yesterday I managed to finish the report.", "why": "Один успешный раз — was able to или managed to; could — об умении вообще."},
+  {"bad": "I will can help you.", "good": "I'll be able to help you.", "why": "У can нет будущей формы, поэтому нужен be able to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ play the piano when she was six.", "options": ["can", "could", "was able"], "a": 1, "why": "Умение в прошлом — could."},
+  {"type": "choice", "q": "I ___ see the mountains from my window.", "options": ["can", "can to", "am able"], "a": 0, "why": "С глаголами чувств — can, без to."},
+  {"type": "choice", "q": "It was a hard exam, but she ___ pass it.", "options": ["could", "was able to", "can"], "a": 1, "why": "Разовый успех в прошлом — was able to."},
+  {"type": "gap", "q": "Next year I ___ (be) able to work full time.", "a": ["will be"], "why": "Будущее умение — will be able to."},
+  {"type": "gap", "q": "He ___ (can / not) swim when he was five.", "a": ["couldn't", "could not"], "why": "Отрицание умения в прошлом — couldn't."},
+  {"type": "gap", "q": "Since May she ___ (be) able to work from home.", "a": ["has been"], "why": "Перфект требует be able to: has been able to."},
+  {"type": "translate", "q": "Я умею готовить, но не умею печь.", "a": ["i can cook but i can't bake", "i can cook but i cannot bake"], "why": "Умение в настоящем — can и can't."},
+  {"type": "translate", "q": "Вчера мне удалось поймать такси.", "a": ["yesterday i managed to catch a taxi", "yesterday i was able to catch a taxi", "i managed to catch a taxi yesterday"], "why": "Единичный успех — managed to или was able to."}
+ ]
+}

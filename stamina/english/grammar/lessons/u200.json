@@ -1,0 +1,80 @@
+{
+ "n": 200,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "some и any",
+ "en": "some and any",
+ "summary": "Some и any переводятся одинаково, а выбирает их тип предложения. Разбираем просьбы, предложения и слова вроде somebody и anywhere.",
+ "can_do": [
+  "Выбрать some или any по типу предложения.",
+  "Попросить и предложить что-то через some.",
+  "Сказать «кто-то», «где-то», «что-нибудь» сложными словами с some и any.",
+  "Понять, когда any значит «любой», а не «никакой»."
+ ],
+ "theory": [
+  {
+   "h": "Смысл один, условия разные",
+   "p": "Some и any значат одно и то же — «сколько-то», «какие-то». Выбирает их не смысл, а тип фразы: в утверждении обычно some, в отрицании и в вопросе — any. Этого правила хватает в большинстве случаев, поэтому начинать надо с него.",
+   "formula": "I have some questions. · I don't have any questions. · Do you have any questions?"
+  },
+  {
+   "h": "Some возвращается в просьбы и предложения",
+   "p": "Когда мы просим, предлагаем или ждём согласия, вопрос звучит мягко и получает some. Could you give me some water? Would you like some tea? Здесь any прозвучал бы холодно и безразлично, поэтому в живом разговоре его почти не услышишь.",
+   "formula": "Would you like some coffee? · Can I have some water, please? · Could you lend me some money?"
+  },
+  {
+   "h": "С какими словами они работают",
+   "p": "Оба слова ставятся перед множественным числом и перед неисчисляемым. И оба заменяют артикль: после some и any не появляется a или an, потому что some уже значит «сколько-то». Если предмет один, нужен именно артикль: a book, а не some book.",
+   "table": {
+    "head": ["Что после", "Со some", "С any"],
+    "rows": [
+     ["множественное число", "some books", "any books"],
+     ["неисчисляемое", "some water", "any water"],
+     ["of + the / my / these", "some of the books", "any of the books"]
+    ]
+   }
+  },
+  {
+   "h": "Кто-то и что-нибудь",
+   "p": "Со сложными словами правило то же: something, someone, somebody, somewhere в утверждении, anything, anyone, anybody, anywhere в отрицании и вопросе. Пишутся они слитно, в одно слово, и требуют глагола в единственном числе: somebody is waiting, а не somebody are waiting.",
+   "table": {
+    "head": ["Утверждение", "Отрицание и вопрос"],
+    "rows": [
+     ["somebody called you", "did anybody call me?"],
+     ["something happened", "nothing happened / didn't anything happen"],
+     ["somewhere quiet", "anywhere in the city"]
+    ]
+   }
+  },
+  {
+   "h": "Any значит «любой»",
+   "p": "В утверждении any тоже встречается, но тогда он переводится «любой, всякий», а не «никакой». Смысл становится другим: any student can join — любой студент, без разницы какой. Сравните с some students can join — некоторые студенты, но не все.",
+   "formula": "Any child can learn this. · You can come any day. · Some students passed, but not all."
+  }
+ ],
+ "examples": [
+  {"en": "I need some help with this exercise.", "ru": "Мне нужна помощь с этим упражнением."},
+  {"en": "We don't have any milk left.", "ru": "У нас не осталось молока."},
+  {"en": "Would you like some tea?", "ru": "Хотите чаю?"},
+  {"en": "Is there anybody at home?", "ru": "Кто-нибудь есть дома?"},
+  {"en": "Somebody has taken my umbrella.", "ru": "Кто-то взял мой зонт."},
+  {"en": "Any student can use the library.", "ru": "Любой студент может пользоваться библиотекой."}
+ ],
+ "traps": [
+  {"bad": "I don't have some money.", "good": "I don't have any money.", "why": "В отрицании уже есть not, поэтому нужно any, а не some."},
+  {"bad": "Do you have some questions?", "good": "Do you have any questions?", "why": "Обычный вопрос — это any; some в вопросе только для просьбы и предложения."},
+  {"bad": "I have some a books.", "good": "I have some books.", "why": "Some сам заменяет артикль, a или an с ним не ставится."},
+  {"bad": "Somebody have called you.", "good": "Somebody has called you.", "why": "Слова с some и any — единственное число, поэтому has, а не have."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm thirsty. Can I have ___ water, please?", "options": ["any", "some", "a"], "a": 1, "why": "Просьба, ждём согласия — some."},
+  {"type": "choice", "q": "We didn't buy ___ bread this morning.", "options": ["some", "any", "no"], "a": 1, "why": "После didn't идёт any: didn't buy any bread."},
+  {"type": "choice", "q": "___ student can use the library for free.", "options": ["Any", "Some", "No"], "a": 0, "why": "Any здесь значит «любой», это утверждение с обобщением."},
+  {"type": "choice", "q": "There is ___ at the door and he wants to talk to you.", "options": ["somebody", "anybody", "nobody"], "a": 0, "why": "Утверждение — somebody, одним словом."},
+  {"type": "gap", "q": "She has ___ (some/any) interesting ideas about it.", "a": ["some"], "why": "Утвердительное предложение — some."},
+  {"type": "gap", "q": "Is there ___ (some/any) milk in the fridge?", "a": ["any"], "why": "Обычный вопрос — any."},
+  {"type": "gap", "q": "I need ___ (some/any) sugar for the cake.", "a": ["some"], "why": "Утверждение с неисчисляемым — some."},
+  {"type": "translate", "q": "У нас нет времени.", "a": ["we have no time", "we don't have any time", "we haven't got any time"], "why": "Отрицание: no или not any, но не some."},
+  {"type": "translate", "q": "Хочешь немного сока?", "a": ["would you like some juice", "do you want some juice"], "why": "Предложение угощения — some даже в вопросе."}
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "n": 238,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Место: in, at, on (1)",
+ "en": "in/at/on (place) 1",
+ "summary": "В английском устойчивые выражения с in, at, on не всегда следуют логике «внутри/на/в точке». На B2 нужно знать фиксированные фразы: in bed, on the bus, at home и др.",
+ "can_do": [
+  "Использовать in с bed, hospital, prison, sky, world, queue, photo, newspaper.",
+  "Говорить on a bus/train/plane, on the left/right, on the first floor, on a list, on the way.",
+  "Правильно строить at home/work/school (без the), at a concert, at someone's house.",
+  "Различать in hospital (пациент) и at the hospital (в здании)."
+ ],
+ "theory": [
+  {
+   "h": "Общая логика и зафиксированные случаи",
+   "p": "Предлоги in, at, on в значении места часто выбираются не по геометрии, а по устойчивым выражениям. In подразумевает «внутри объёма или области», on — «на поверхности или линии», at — «в точке или на мероприятии». Но в B2 важнее выучить список фраз, где выбор зафиксирован навсегда.",
+   "formula": "in the box · on the table · at the station"
+  },
+  {
+   "h": "Выражения с in: от кровати до неба",
+   "p": "In bed, in hospital, in prison — здесь нет артикля, потому что речь о состоянии (лечишься, спишь, отбываешь), а не о здании. То же in the sky, in the world, in a queue, in a photo / picture, in the newspaper — мы внутри образа, списка или пространства.",
+   "formula": "in bed · in hospital · in prison · in the sky · in the world · in a queue · in a photo · in the newspaper"
+  },
+  {
+   "h": "Выражения с on: транспорт, этажи и списки",
+   "p": "На общественном транспорте всегда on: on a bus, on a train, on a plane (но in a car / taxi — маленькое замкнутое пространство). Направления: on the left / right. Этажи: on the first floor. Списки и пути: on a list, on the way.",
+   "formula": "on a bus · on a train · on a plane · on the left · on the right · on the first floor · on a list · on the way"
+  },
+  {
+   "h": "Выражения с at: дома, на работе, на мероприятии",
+   "p": "At home, at work, at school — без the, это режим пребывания, а не конкретное здание. At a concert, at a party, at the match — вы на событии. At someone's house — у кого-то в гостях. Артикль the здесь не нужен, если это не конкретное здание как объект.",
+   "formula": "at home · at work · at school · at a concert · at a party · at the match · at my sister's house"
+  },
+  {
+   "h": "Ловушки: in hospital vs at the hospital",
+   "p": "In hospital = я пациент (в британском варианте). At the hospital = я в здании (посетитель, врач, курьер). Аналогично in school / at school (учёба vs здание), in bed / on the bed (сплю vs сижу на кровати). Контекст решает, какой предлог уместен.",
+   "formula": "in hospital (patient) · at the hospital (visitor) · in bed (sleeping) · on the bed (sitting)"
+  },
+  {
+   "h": "Сводная таблица для запоминания",
+   "p": "Таблица собирает основные фиксированные выражения этого юнита. Запоминайте их как готовые блоки, а не как правило «внутри/на/в».",
+   "table": {
+    "head": ["Предлог", "Выражения", "Пример"],
+    "rows": [
+     ["in", "bed, hospital, prison, sky, world, queue, photo, newspaper", "She is in hospital."],
+     ["on", "bus, train, plane, left/right, floor, list, way", "We met on the train."],
+     ["at", "home, work, school, concert, party, someone's house", "I'll be at work until six."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "She is in bed already.", "ru": "Она уже в кровати (спит)."},
+  {"en": "He spent a year in prison.", "ru": "Он провёл год в тюрьме."},
+  {"en": "I saw your photo in the newspaper.", "ru": "Я видел твою фотографию в газете."},
+  {"en": "We met on the train to Edinburgh.", "ru": "Мы встретились в поезде в Эдинбург."},
+  {"en": "Their flat is on the third floor.", "ru": "Их квартира на третьем этаже."},
+  {"en": "I'll be at work until six.", "ru": "Я буду на работе до шести."},
+  {"en": "She's at her sister's house tonight.", "ru": "Сегодня вечером она у сестры дома."}
+ ],
+ "traps": [
+  {"bad": "I am at hospital.", "good": "I am in hospital.", "why": "In hospital — пациент (британский вариант), at the hospital — просто в здании."},
+  {"bad": "We went in the bus.", "good": "We went on the bus.", "why": "Общественный транспорт всегда требует on: on a bus, on a train, on a plane."},
+  {"bad": "The picture is at the wall.", "good": "The picture is on the wall.", "why": "Стена — вертикальная поверхность, поэтому on, а не at."},
+  {"bad": "He is in home.", "good": "He is at home.", "why": "Дома как режим пребывания — at home без артикля."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She is ___ bed with flu.", "options": ["in", "at", "on"], "a": 0, "why": "In bed — устойчивое выражение для состояния «лежит в кровати/спит»."},
+  {"type": "choice", "q": "I read about it ___ the newspaper.", "options": ["in", "on", "at"], "a": 0, "why": "В газете/журнале — in the newspaper."},
+  {"type": "choice", "q": "We were ___ the plane for ten hours.", "options": ["in", "on", "at"], "a": 1, "why": "Самолёт, поезд, автобус — на общественном транспорте on."},
+  {"type": "choice", "q": "My parents are ___ home now.", "options": ["in", "at", "on"], "a": 1, "why": "At home — дома (режим), без артикля the."},
+  {"type": "gap", "q": "There are many stars ___ the sky tonight. (hint: небо)", "a": ["in the sky"], "why": "In the sky — зафиксированное выражение."},
+  {"type": "gap", "q": "I'll meet you ___ the concert entrance. (hint: мероприятие)", "a": ["at the concert", "at the concert entrance"], "why": "На концерте/мероприятии — at a concert / at the concert."},
+  {"type": "gap", "q": "Your name is ___ the list. (hint: список)", "a": ["on the list"], "why": "В списке — on a list / on the list."},
+  {"type": "translate", "q": "Мой брат в тюрьме.", "a": ["my brother is in prison"], "why": "In prison — состояние заключённого, без артикля."},
+  {"type": "translate", "q": "Мы ехали в поезде.", "a": ["we travelled on the train", "we went on the train"], "why": "Поезд — общественный транспорт, поэтому on the train."}
+ ]
+}

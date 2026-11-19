@@ -1,0 +1,78 @@
+{
+ "n": 161,
+ "level": "B2",
+ "module": "b-passive",
+ "title": "have something done: мне это сделали",
+ "en": "have something done",
+ "summary": "Как сказать, что работу выполнил кто-то другой: I had my hair cut, she's having her nails done — и почему это не перфект.",
+ "can_do": [
+  "Сказать, что услугу выполнил кто-то другой.",
+  "Построить конструкцию have + объект + V3 в любом времени.",
+  "Задать вопрос и построить отрицание через do/does/did.",
+  "Отличить have something done от перфекта have done."
+ ],
+ "theory": [
+  {
+   "h": "Смысл: не сам, а мне сделали",
+   "p": "По-русски «я подстригся» звучит одинаково, сам ты это сделал или в парикмахерской. Английский различает: I cut my hair — сам взял ножницы, I had my hair cut — подстригли в салоне. Конструкция нужна всюду, где работа выполняется специалистом.",
+   "formula": "I cut my hair. (сам) · I had my hair cut. (в парикмахерской)"
+  },
+  {
+   "h": "Формула: have + объект + V3",
+   "p": "Между have и третьей формой стоит предмет, над которым производят действие. Порядок жёсткий: сначала have, потом объект, потом V3. Меняется только have, оно и показывает время.",
+   "formula": "I had my car repaired. · She has her nails done. · We will have the house painted."
+  },
+  {
+   "h": "Времена и модальные",
+   "p": "Have ведёт себя как обычный глагол: has для третьего лица, had для прошлого, will have для будущего, have been having для процесса. После модального — have без изменений.",
+   "table": {
+    "head": ["Время", "Форма", "Пример"],
+    "rows": [
+     ["present", "have/has + объект + V3", "She has her hair done weekly."],
+     ["past", "had + объект + V3", "I had my car repaired."],
+     ["perfect", "have/has had + объект + V3", "He has had his roof fixed."],
+     ["future", "will have + объект + V3", "We will have the flat painted."],
+     ["modal", "must/can have + объект + V3", "You must have your eyes tested."]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос и отрицание — через do",
+   "p": "Have в этой конструкции ведёт себя как смысловой глагол, поэтому вопрос и отрицание строятся с do, does, did. Фраза had you your hair cut звучит по-старинному и в современном языке не используется.",
+   "formula": "Did you have your hair cut? · Where did you have it made? · I didn't have my car washed."
+  },
+  {
+   "h": "get something done и неприятности",
+   "p": "В разговорной речи have легко заменяется на get: I got my hair cut. Кроме услуг, конструкция умеет описывать неприятность, которая случилась с человеком: he had his wallet stolen, she had her bike damaged. По-русски это «у него украли кошелёк».",
+   "formula": "I got my hair cut. · He had his wallet stolen. · She got her phone repaired."
+  },
+  {
+   "h": "Не путать с перфектом",
+   "p": "Have done и have something done выглядят похоже, но значат разное. I had repaired my car — я сам починил машину до какого-то момента, это past perfect. I had my car repaired — машину починили мне, это каузатив. Порядок слов и наличие объекта решают всё.",
+   "formula": "I had repaired my car. (сам, past perfect) · I had my car repaired. (мне починили)"
+  }
+ ],
+ "examples": [
+  {"en": "I had my hair cut yesterday.", "ru": "Меня вчера подстригли."},
+  {"en": "She is having her nails done.", "ru": "Ей сейчас делают маникюр."},
+  {"en": "We must have our flat painted.", "ru": "Нам нужно покрасить квартиру (с помощью мастеров)."},
+  {"en": "Did you have your eyes tested?", "ru": "Вам проверяли зрение?"},
+  {"en": "He had his wallet stolen on the bus.", "ru": "У него украли кошелёк в автобусе."}
+ ],
+ "traps": [
+  {"bad": "I cut my hair yesterday.", "good": "I had my hair cut yesterday.", "why": "Если стригли в салоне, нужна конструкция have something done."},
+  {"bad": "I have repaired my car at the garage.", "good": "I had my car repaired at the garage.", "why": "Have + V3 — это перфект «я сам», а речь о работе мастеров."},
+  {"bad": "I had cut my hair.", "good": "I had my hair cut.", "why": "Пропущен объект: между had и V3 должен стоять предмет."},
+  {"bad": "Had you your hair cut?", "good": "Did you have your hair cut?", "why": "Вопрос строится через did, а не перестановкой have."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I need to ___ my eyes tested.", "options": ["have", "make", "do"], "a": 0, "why": "Каузатив: have + объект + V3."},
+  {"type": "choice", "q": "She ___ her nails done yesterday.", "options": ["had", "has", "did"], "a": 0, "why": "Прошлое: had + объект + done."},
+  {"type": "choice", "q": "Where did you ___ your hair cut?", "options": ["have", "had", "having"], "a": 0, "why": "После did — инфинитив have."},
+  {"type": "choice", "q": "He ___ his wallet stolen on the bus.", "options": ["had", "has", "was"], "a": 0, "why": "Неприятность: he had his wallet stolen."},
+  {"type": "gap", "q": "She is having her dress ___ (make) for the wedding.", "a": ["made"], "why": "После объекта — третья форма: made."},
+  {"type": "gap", "q": "I must ___ my watch repaired.", "a": ["have", "get"], "why": "После модального — have/get + объект + V3."},
+  {"type": "translate", "q": "Я подстригся вчера (в парикмахерской).", "a": ["i had my hair cut yesterday", "i got my hair cut yesterday"], "why": "Have/get something done: had my hair cut."},
+  {"type": "translate", "q": "Нам покрасили дом.", "a": ["we had our house painted", "we had the house painted", "we got our house painted"], "why": "Каузатив в прошедшем: had our house painted."}
+ ]
+}

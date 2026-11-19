@@ -1,0 +1,72 @@
+{
+ "n": 250,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Глагол + предлог (5): in, into, with, to, on",
+ "en": "verb + preposition 5 (in/into/with/to/on)",
+ "summary": "В этом уроке разбираем, какие глаголы требуют предлогов in, into, with, to, on, и почему нельзя их путать — особенно in и into.",
+ "can_do": [
+  "Подбирать правильный предлог после глаголов believe, succeed, specialize и других.",
+  "Различать in (состояние) и into (движение или превращение).",
+  "Использовать compare with / compare to, agree with / agree to без ошибок.",
+  "Строить фразы вроде rely on, insist on, concentrate on в речи и письме."
+ ],
+ "theory": [
+  {
+   "h": "Глаголы с in: состояние и участие",
+   "p": "Предлог in после глагола показывает, во что кто-то верит, в чём преуспевает или в какой сфере специализируется: believe in ghosts, succeed in business, specialize in law. Также participate in meeting и result in changes — здесь in связывает действие с окружением, где оно происходит.",
+   "formula": "believe in · succeed in · specialize in · participate in · result in"
+  },
+  {
+   "h": "Глаголы с into: движение и превращение",
+   "p": "Into всегда подразумевает направление внутрь или изменение состояния: break into a house, crash into a tree, bump into an old friend. Глаголы divide, translate, talk также берут into, когда речь о преобразовании или убеждении: divide the cake into pieces, translate the text into English, talk someone into going.",
+   "formula": "break into · crash into · bump into · divide into · translate into · talk into"
+  },
+  {
+   "h": "Глаголы с with: взаимодействие и снабжение",
+   "p": "With выражает контакт, совместное действие или снабжение чем-то: collide with a car, provide someone with information, supply the hospital with equipment. Fill the glass with water, charge someone with a task, deal with a problem. Agree with a person, но agree to a proposal. Compare with — искать сходства, compare to — делать аналогию.",
+   "formula": "collide with · provide with · supply with · fill with · charge with · deal with · agree with · compare with"
+  },
+  {
+   "h": "Глаголы с to: направление, принадлежность, реакция",
+   "p": "To после глагола указывает адресата действия или объект отношения: prefer tea to coffee, explain the rule to students, invite friends to dinner. Listen to music, belong to a club, react to the news. Важно: explain something to someone, а не explain someone.",
+   "formula": "prefer to · explain to · invite to · listen to · belong to · react to"
+  },
+  {
+   "h": "Глаголы с on: зависимость и фокус внимания",
+   "p": "On связывает глагол с тем, от чего зависит результат или на чём сосредоточено внимание: concentrate on work, depend on the weather, insist on paying. Live on a salary, congratulate on success, spend money on books, rely on a friend. Предлог on здесь не заменяется ни на about, ни на in.",
+   "formula": "concentrate on · depend on · insist on · live on · congratulate on · spend on · rely on"
+  },
+  {
+   "h": "In или into: статика против динамики",
+   "p": "Главная ловушка — смешивать in и into. In отвечает на вопрос «где?» (состояние): he is in the room, she believes in magic. Into отвечает на «куда?» (движение): he came into the room, she talked him into staying. Если нет движения или превращения, into не ставим.",
+   "formula": "in the room (где?) · into the room (куда?) · believe in (состояние) · talk into (убедить)"
+  }
+ ],
+ "examples": [
+  {"en": "I don't believe in ghosts.", "ru": "Я не верю в привидения."},
+  {"en": "She succeeded in passing the exam.", "ru": "Ей удалось сдать экзамен."},
+  {"en": "He talked me into buying a new car.", "ru": "Он уговорил меня купить новую машину."},
+  {"en": "This key belongs to the front door.", "ru": "Этот ключ принадлежит входной двери."},
+  {"en": "We must concentrate on the main problem.", "ru": "Мы должны сосредоточиться на главной проблеме."},
+  {"en": "The results depend on the weather.", "ru": "Результаты зависят от погоды."},
+  {"en": "They provide students with books.", "ru": "Они снабжают студентов книгами."}
+ ],
+ "traps": [
+  {"bad": "I believe into ghosts.", "good": "I believe in ghosts.", "why": "Believe — статический глагол, требует in, into здесь невозможен."},
+  {"bad": "He explained me the rule.", "good": "He explained the rule to me.", "why": "Explain требует to перед адресатом: explain something to someone."},
+  {"bad": "I prefer coffee than tea.", "good": "I prefer coffee to tea.", "why": "После prefer сравнение строится через to, а не than."},
+  {"bad": "The success depends from your effort.", "good": "The success depends on your effort.", "why": "Depend всегда с on, never from."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She specializes ___ corporate law.", "options": ["in", "into", "on"], "a": 0, "why": "Specialize требует in: specialize in something."},
+  {"type": "choice", "q": "The car crashed ___ a tree.", "options": ["in", "into", "on"], "a": 1, "why": "Crash с движением внутрь — into."},
+  {"type": "choice", "q": "I agree ___ your proposal.", "options": ["with", "to", "on"], "a": 1, "why": "Agree to a proposal / plan, но agree with a person."},
+  {"type": "choice", "q": "This book belongs ___ me.", "options": ["to", "with", "in"], "a": 0, "why": "Belong всегда с to."},
+  {"type": "gap", "q": "They succeeded ___ (pass) the test.", "a": ["in passing"], "why": "Succeed in + герундий."},
+  {"type": "gap", "q": "He talked her ___ (stay) longer.", "a": ["into staying"], "why": "Talk someone into doing something — уговорить кого-то сделать что-то."},
+  {"type": "gap", "q": "We rely ___ (you) completely.", "a": ["on you", "on your help"], "why": "Rely on someone/something — полагаться на кого-то/что-то."},
+  {"type": "translate", "q": "Результат зависит от погоды.", "a": ["the result depends on the weather"], "why": "Depend on — единственный вариант."},
+  {"type": "translate", "q": "Она уговорила его пойти с нами.", "a": ["she talked him into going with us", "she persuaded him to go with us"], "why": "Talk into + герундий — стандартная конструкция."}
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "n": 204,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "both, neither, either",
+ "en": "both / neither / either",
+ "summary": "Слова для двух: оба, любой из двух и ни один из двух. Разбираем место в предложении и парные союзы both ... and, neither ... nor.",
+ "can_do": [
+  "Сказать «оба» словом both без лишнего артикля.",
+  "Выбрать neither или either по смыслу.",
+  "Согласовать глагол после neither of и either of.",
+  "Построить отклик neither do I и neither ... nor."
+ ],
+ "theory": [
+  {
+   "h": "Both — это ровно два",
+   "p": "Both значит «оба» и работает только с двумя предметами и с множественным числом: both cars, both of my parents. Артикль перед both не ставится, он уходит после of: both the boys — плохо, both of the boys или both boys — хорошо.",
+   "formula": "Both restaurants are good. · Both of my parents are teachers. · Both answers were correct."
+  },
+  {
+   "h": "Either — любой из двух, neither — ни один",
+   "p": "Either берёт одного из пары, без разницы какого. Neither — его отрицание, «ни тот, ни другой», и второго not при нём быть не должно. Никогда не говорите neither ... not: отрицание уже внутри слова.",
+   "formula": "Either answer is fine. · Neither answer is correct. · Neither of them was ready."
+  },
+  {
+   "h": "Единственное или множественное",
+   "p": "Both требует множественного числа, either и neither тянут к единственному. После neither of the + множественное число глагол формально в единственном, хотя в разговоре слышно и were. В экзаменационном тексте безопаснее единственное.",
+   "table": {
+    "head": ["Слово", "Сколько предметов", "Глагол", "Пример"],
+    "rows": [
+     ["both", "два, оба", "множественное", "Both cars are new."],
+     ["either", "любой из двух", "единственное", "Either answer is fine."],
+     ["neither", "ни один из двух", "единственное", "Neither answer is right."]
+    ]
+   }
+  },
+  {
+   "h": "Парные союзы",
+   "p": "Both ... and соединяет двух участников, neither ... nor исключает обоих, either ... or оставляет выбор. Neither ... nor уже отрицательный, поэтому глагол идёт без not: neither Tom nor Anna came. В отклике на чужую реплику порядок слов обратный: neither do I, neither can she.",
+   "formula": "Both Tom and Anna came. · Neither Tom nor Anna came. · Either you or I will do it. · I can't swim. — Neither can I."
+  },
+  {
+   "h": "Место both в предложении",
+   "p": "Both, как и all, стоит после be и после вспомогательного глагола, но перед смысловым. We both like it, we are both tired, we have both read it. Фраза both we like it построена по русскому порядку и в английском не работает.",
+   "formula": "They both agreed. · They are both doctors. · They have both left."
+  }
+ ],
+ "examples": [
+  {"en": "Both of my sisters live in Berlin.", "ru": "Обе мои сестры живут в Берлине."},
+  {"en": "Neither of the answers was right.", "ru": "Ни один из ответов не был верным."},
+  {"en": "You can take either road, both lead to the station.", "ru": "Можно ехать по любой дороге, обе ведут к станции."},
+  {"en": "Neither my brother nor I like coffee.", "ru": "Ни мой брат, ни я не любим кофе."},
+  {"en": "We are both tired after the trip.", "ru": "Мы оба устали после поездки."},
+  {"en": "I don't like horror films. — Neither do I.", "ru": "Я не люблю ужасы. — Я тоже."}
+ ],
+ "traps": [
+  {"bad": "Both of students passed.", "good": "Both of the students passed.", "why": "После of нужен определитель: both of the students или both students."},
+  {"bad": "The both books are mine.", "good": "Both books are mine.", "why": "Артикль the перед both не ставится."},
+  {"bad": "Neither of them don't know.", "good": "Neither of them knows.", "why": "Neither уже отрицает, второй not не нужен."},
+  {"bad": "Neither I like it.", "good": "Neither do I like it. / Neither do I.", "why": "В отклике нужна инверсия: neither do I."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ of my parents speaks German, they only know Russian.", "options": ["Both", "Neither", "Either"], "a": 1, "why": "Ни один из двух не говорит по-немецки — neither, глагол в единственном числе."},
+  {"type": "choice", "q": "There are two lifts, so you can use ___ of them.", "options": ["either", "neither", "both"], "a": 0, "why": "Любой из двух — either of them."},
+  {"type": "choice", "q": "___ answers are correct, you can choose any.", "options": ["Both", "Either", "Neither"], "a": 0, "why": "Answers множественное число, оба верны — both."},
+  {"type": "choice", "q": "I can't drive. — ___ can I.", "options": ["Neither", "Either", "Both"], "a": 0, "why": "Отклик на отрицание: neither can I."},
+  {"type": "gap", "q": "___ (both) of the rooms have a balcony.", "a": ["both"], "why": "Both of the + множественное число, глагол have."},
+  {"type": "gap", "q": "___ (neither) of the two answers was correct.", "a": ["neither"], "why": "Ни один из двух — neither, глагол единственного числа."},
+  {"type": "gap", "q": "You can come on ___ (either) day, Monday or Tuesday.", "a": ["either"], "why": "Любой из двух дней — either."},
+  {"type": "translate", "q": "Оба моих брата работают в банке.", "a": ["both my brothers work in a bank", "both of my brothers work in a bank"], "why": "Both my или both of my, глагол во множественном числе."},
+  {"type": "translate", "q": "Ни один из них не был дома.", "a": ["neither of them was at home", "neither of them was home"], "why": "Neither of them + глагол в единственном, без второго отрицания."}
+ ]
+}

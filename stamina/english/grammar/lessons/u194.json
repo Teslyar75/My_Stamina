@@ -1,0 +1,74 @@
+{
+ "n": 194,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "Единственное и множественное",
+ "en": "singular and plural",
+ "summary": "Джинсы всегда во множественном, новости всегда в единственном: как считать слова, у которых число не совпадает с русским.",
+ "can_do": [
+  "Согласовывать глагол с парными существительными.",
+  "Не путать слова на -s, которые стоят в единственном числе.",
+  "Правильно говорить о людях и полиции.",
+  "Узнавать неправильные и неизменяемые формы множественного числа."
+ ],
+ "theory": [
+  {
+   "h": "Парные вещи — всегда множественное",
+   "p": "Брюки, джинсы, ножницы, очки и наушники состоят из двух частей, поэтому в английском они множественного числа и требуют множественного глагола: my jeans are, the scissors are. Если нужен один предмет, говорят a pair of, и тогда глагол зависит от pair.",
+   "table": {
+    "head": ["Слово", "Перевод", "Как считать"],
+    "rows": [
+     ["trousers", "брюки", "a pair of trousers"],
+     ["jeans", "джинсы", "two pairs of jeans"],
+     ["scissors", "ножницы", "a pair of scissors"],
+     ["glasses", "очки", "my glasses are new"],
+     ["headphones", "наушники", "these headphones are new"]
+    ]
+   }
+  },
+  {
+   "h": "Слова на -s, но в единственном числе",
+   "p": "News, physics, mathematics, economics, politics, athletics выглядят как множественное, но обозначают одно понятие и берут глагол в единственном числе: the news is good, physics is difficult. Буква s здесь не про количество, и это одна из самых частых ошибок.",
+   "formula": "The news is bad. · Physics is my favourite subject. · Politics is difficult to understand."
+  },
+  {
+   "h": "Люди и полиция",
+   "p": "People — множественное число, хотя и без -s: people are, many people. Один человек — a person, двое — two people. Police тоже всегда множественное: the police are looking for him, the police have arrested two men. Формы polices в этом значении не существует.",
+   "formula": "People are waiting outside. · One person was late. · The police have arrested two men."
+  },
+  {
+   "h": "Неправильные формы",
+   "p": "Часть существительных меняет корень: man — men, woman — women, child — children, foot — feet, tooth — teeth, mouse — mice, person — people. Эти формы надо выучить, правило с -s к ним не применяется, а childrens и peoples считаются грубыми ошибками.",
+   "formula": "two children · three women · four feet · five mice"
+  },
+  {
+   "h": "Формы, которые не меняются",
+   "p": "Некоторые слова одинаковы в обоих числах: sheep, fish, deer, series, species, means. Число видно только по контексту и по глаголу: one sheep is, ten sheep are. У fish в значении «виды рыб» есть форма fishes, но в обычной речи она почти не нужна.",
+   "formula": "A deer was standing near the road. · Ten deer were in the field."
+  }
+ ],
+ "examples": [
+  {"en": "My jeans are too tight.", "ru": "Мои джинсы слишком тесные."},
+  {"en": "Where are my glasses?", "ru": "Где мои очки?"},
+  {"en": "The news is surprisingly good.", "ru": "Новости на удивление хорошие."},
+  {"en": "People are waiting in the hall.", "ru": "Люди ждут в холле."},
+  {"en": "There were two children in the room.", "ru": "В комнате было двое детей."},
+  {"en": "Ten sheep were standing in the field.", "ru": "На поле стояли десять овец."}
+ ],
+ "traps": [
+  {"bad": "My jeans is new.", "good": "My jeans are new.", "why": "Парные вещи согласуются с множественным глаголом."},
+  {"bad": "The news are bad.", "good": "The news is bad.", "why": "News — единственное число, несмотря на -s."},
+  {"bad": "The police is coming.", "good": "The police are coming.", "why": "Police всегда множественное."},
+  {"bad": "Two childrens are playing.", "good": "Two children are playing.", "why": "Children уже множественное, -s не добавляется."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My glasses ___ broken.", "options": ["is", "are", "was"], "a": 1, "why": "Глаза как предмет очков — множественное число."},
+  {"type": "choice", "q": "The news ___ very good today.", "options": ["is", "are", "be"], "a": 0, "why": "News — единственное число."},
+  {"type": "choice", "q": "The police ___ looking for the car.", "options": ["is", "are", "was"], "a": 1, "why": "Police всегда множественное."},
+  {"type": "choice", "q": "I need ___ scissors.", "options": ["a", "a pair of", "pair"], "a": 1, "why": "Один предмет из пары — a pair of scissors."},
+  {"type": "gap", "q": "There ___ (be) two men at the door right now.", "a": ["are"], "why": "Two men — множественное число, время настоящее."},
+  {"type": "gap", "q": "Physics ___ (be) harder than maths.", "a": ["is"], "why": "Названия наук на -s стоят в единственном числе."},
+  {"type": "translate", "q": "Мои джинсы новые.", "a": ["my jeans are new"], "why": "Jeans — множественное число."},
+  {"type": "translate", "q": "Новости были плохими.", "a": ["the news was bad"], "why": "News — единственное число."}
+ ]
+}

@@ -182,6 +182,30 @@ class TestGermanGrammarEngine:
         assert "A1" in engine._lessons_cache
         assert len(lessons_a1) == 18
 
+    def test_lesson_loads_only_own_level(self, engine, monkeypatch):
+        """Поиск урока C2 не читает файлы A1–C1."""
+        reads: list[str] = []
+        orig = Path.read_text
+
+        def wrapped(self, *args, **kwargs):
+            reads.append(self.name)
+            return orig(self, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "read_text", wrapped)
+        lesson = engine.lesson("c2-01-nuancen")
+        assert lesson is not None
+        assert "c2.json" in reads
+        for other in ("a1.json", "a2.json", "b1.json", "b2.json", "c1.json"):
+            assert other not in reads
+
+    def test_lesson_summaries_omit_theory(self, engine):
+        cards = engine.lesson_summaries("A1")
+        assert len(cards) == 18
+        assert "theory" not in cards[0]
+        assert "drills" not in cards[0]
+        assert cards[0]["drill_count"] >= 1
+        assert cards[0]["id"]
+
     def test_generate_exercise_deterministic(self, engine):
         """Один seed = один результат, не трогает глобальный random."""
         ex1 = engine.generate_exercise("a1-06-genus", "easy", 42)
@@ -330,18 +354,18 @@ class TestGrammarUISmoke:
     def test_page_builds_with_six_levels(self, board):
         page, progress, pump = board
         assert page.frame.winfo_exists()
-        assert page.stage == "levels"
-        # Список уровней читает только манифест: тяжёлые файлы ещё не тронуты.
-        assert page.level_lessons == []
+        assert [code.upper() for code in page.catalog.levels] == ["A1", "A2", "B1", "B2", "C1", "C2"]
+        pump()
+        assert set(page.engine._lessons_cache) <= {"A1"}
         assert len(page.engine.lessons("A1")) == 18
 
     def test_lesson_list_opens_and_flushes_in_chunks(self, board):
         page, progress, pump = board
         page._show_lessons("A1")
-        assert page._pending, "список уроков рисуется порциями"
         pump()
-        assert page._pending == []
-        assert page.stage == "lessons"
+        assert "list" not in page.spread._jobs
+        assert len(page.spread._rows) == 18
+        assert page.stage in {"lesson", "list", "lessons"}
 
     def test_lesson_intro_explains_goal_and_traps(self, board):
         page, progress, pump = board
@@ -349,21 +373,20 @@ class TestGrammarUISmoke:
         pump()
         page._open_lesson(page.level_lessons[0])
         pump()
-        assert page.stage == "intro"
-        from stamina.hud import HudPanel
+        import tkinter as tk
 
-        titles = []
-
-        def walk(widget):
+        def walk(widget, acc):
             for child in widget.winfo_children():
-                if isinstance(child, HudPanel):
-                    titles.append(child.title)
-                walk(child)
+                if isinstance(child, tk.Label):
+                    acc.append(str(child.cget("text")))
+                walk(child, acc)
 
-        walk(page.content)
-        assert "ЧТО ВЫ ОСВОИТЕ" in titles
-        assert "МОСТИК RU/UA → DE" in titles
-        assert "ЛОВУШКА" in titles
+        labels = []
+        walk(page.content, labels)
+        texts = " ".join(labels)
+        assert "ЧТО ВЫ ОСВОИТЕ" in texts
+        assert "МОСТИК RU/UA → DE" in texts
+        assert "ЛОВУШКА" in texts
 
     def test_correct_answer_is_marked_correct(self, board):
         page, progress, pump = board
@@ -409,16 +432,21 @@ class TestGrammarUISmoke:
         page._start_practice()
         pump()
         first = page._current_drill()["id"]
-        page._next_drill()
+        expected = page._expected(page._current_drill())[0]
+        drill = page._current_drill()
+        if drill["type"] in ("choice", "identify"):
+            page._choose(expected, drill)
+        else:
+            page.drill_answer_var.set(expected)
+            page._check_answer(drill=drill)
         pump()
-        assert page.drill_index == 1
-        assert page._current_drill()["id"] != first or page.stage == "summary"
+        assert page._current_drill()["id"] != first
 
     def test_tables_mode_renders_single_table(self, board):
         page, progress, pump = board
         page._set_mode("tables")
         pump()
-        assert page.stage == "tables"
+        assert page.stage == "table"
         assert page.tables_container is not None
         assert page.tables_container.winfo_exists()
 

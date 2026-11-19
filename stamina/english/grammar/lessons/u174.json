@@ -1,0 +1,85 @@
+{
+ "n": 174,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "prefer и would rather",
+ "en": "prefer and would rather",
+ "summary": "Prefer сравнивает два варианта вообще, would rather выбирает один прямо сейчас. И у каждого свой предлог, свой глагол и свои правила.",
+ "can_do": [
+  "Сравнить два предмета через prefer A to B.",
+  "Сравнить два действия через prefer doing to doing.",
+  "Выбрать вариант через would rather do than do.",
+  "Сказать о желании другого человека через I'd rather you did."
+ ],
+ "theory": [
+  {
+   "h": "Prefer сравнивает два предмета через to",
+   "p": "Когда сравнивают два существительных, между ними ставят to, а не than. I prefer tea to coffee — я предпочитаю чай кофе. Слово than здесь невозможно, хотя по-русски хочется сказать «чем». Это одна из самых устойчивых ошибок.",
+   "formula": "I prefer tea to coffee. · She prefers the city to the countryside. · I prefer this flat to that one."
+  },
+  {
+   "h": "Два действия: prefer doing to doing",
+   "p": "Если сравнивают занятия, обе части ставят в форму на -ing, а между ними остаётся to. Второй вариант тоже получает -ing, даже если первое действие кажется главным. Предложение звучит ровно и симметрично.",
+   "formula": "I prefer driving to flying. · He prefers reading to watching TV. · They prefer walking to taking the bus."
+  },
+  {
+   "h": "Инфинитивный вариант: prefer to do rather than do",
+   "p": "Вместо формы на -ing можно построить сравнение через инфинитив, но тогда вторую часть вводят через rather than и базу без to. Смешивать две модели в одной фразе нельзя: либо doing to doing, либо to do rather than do.",
+   "formula": "I prefer to stay at home rather than go out. · She prefers to walk rather than drive."
+  },
+  {
+   "h": "Would rather — выбор сейчас, без to",
+   "p": "После would rather идёт базовая форма глагола без to. Конструкция значит «я бы лучше», и она относится к конкретному моменту. Сравнение присоединяют через than, и второй глагол тоже без to.",
+   "formula": "I'd rather stay at home. · I'd rather walk than take the bus. · Would you rather have tea or coffee?"
+  },
+  {
+   "h": "Would rather somebody did",
+   "p": "Если речь о желании, чтобы что-то сделал другой человек, после would rather ставят подлежащее и глагол в прошедшей форме. Прошедшая форма здесь не про прошлое, а про нереальность или вежливость. Отрицание — didn't.",
+   "table": {
+    "head": ["Фраза", "О ком речь", "Смысл"],
+    "rows": [
+     ["I'd rather you came tomorrow.", "вы", "приходите завтра, пожалуйста"],
+     ["I'd rather you didn't smoke here.", "вы", "не курите здесь"],
+     ["I'd rather she stayed at home.", "она", "пусть она останется"],
+     ["I'd rather they didn't know.", "они", "лучше им не знать"]
+    ]
+   }
+  },
+  {
+   "h": "Сожаление о прошлом: would rather have done",
+   "p": "Если человек жалеет о том, что уже случилось, используют would rather have и причастие прошедшего времени. Это значит «лучше бы я тогда сделал иначе». Конструкция встречается в разговорах о выборе и в упрёках самому себе.",
+   "formula": "I'd rather have taken the train. · She'd rather have stayed in bed. · I'd rather not have said that."
+  },
+  {
+   "h": "Prefer вообще, would rather сейчас",
+   "p": "Главное различие простое: prefer описывает постоянное предпочтение и часто допускает оба варианта действия, а would rather — конкретный выбор в данной ситуации. Поэтому в меню спрашивают would you rather, а о вкусах рассказывают prefer.",
+   "formula": "I prefer coffee. (вообще) · I'd rather have coffee now. (сейчас) · I prefer to eat at home. · I'd rather eat out tonight."
+  }
+ ],
+ "examples": [
+  {"en": "I prefer tea to coffee.", "ru": "Я предпочитаю чай кофе."},
+  {"en": "She prefers driving to flying.", "ru": "Она предпочитает ездить на машине, а не летать."},
+  {"en": "I'd rather stay at home tonight.", "ru": "Я бы лучше остался дома сегодня."},
+  {"en": "I'd rather walk than take the bus.", "ru": "Я бы лучше пошёл пешком, чем ехал на автобусе."},
+  {"en": "I'd rather you didn't smoke here.", "ru": "Я бы предпочёл, чтобы вы здесь не курили."},
+  {"en": "I'd rather have taken the train.", "ru": "Лучше бы я поехал на поезде."}
+ ],
+ "traps": [
+  {"bad": "I prefer tea than coffee.", "good": "I prefer tea to coffee.", "why": "Prefer сравнивает через to, а не через than."},
+  {"bad": "I'd rather to stay at home.", "good": "I'd rather stay at home.", "why": "После would rather инфинитив без to."},
+  {"bad": "I prefer reading than watching TV.", "good": "I prefer reading to watching TV.", "why": "В модели с -ing сравнение тоже идёт через to."},
+  {"bad": "I'd rather you don't smoke here.", "good": "I'd rather you didn't smoke here.", "why": "После I'd rather you нужна прошедшая форма глагола."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I prefer tea ___ coffee.", "options": ["to", "than", "over"], "a": 0, "why": "Prefer + существительное + to + существительное."},
+  {"type": "choice", "q": "I'd rather ___ at home tonight.", "options": ["stay", "to stay", "staying"], "a": 0, "why": "Would rather + база без to."},
+  {"type": "choice", "q": "I prefer driving ___ flying.", "options": ["to", "than", "instead"], "a": 0, "why": "Обе части в -ing, сравнение через to."},
+  {"type": "choice", "q": "I'd rather you ___ tell anyone.", "options": ["didn't", "don't", "won't"], "a": 0, "why": "После I'd rather you — прошедшая форма: didn't tell."},
+  {"type": "gap", "q": "She'd rather ___ (walk) than take the bus.", "a": ["walk"], "why": "Would rather + база, сравнение через than."},
+  {"type": "gap", "q": "I'd rather you ___ (come) tomorrow.", "a": ["came"], "why": "Желание о другом человеке: I'd rather you came."},
+  {"type": "gap", "q": "They prefer ___ (live) in the country.", "a": ["living", "to live"], "why": "Без сравнения допустимы обе формы: prefer living или prefer to live."},
+  {"type": "translate", "q": "Я предпочитаю чай кофе.", "a": ["i prefer tea to coffee"], "why": "Сравнение предметов через to."},
+  {"type": "translate", "q": "Я бы предпочёл остаться дома.", "a": ["i'd rather stay at home", "i would rather stay at home", "i'd prefer to stay at home"], "why": "Would rather + база или would prefer + to."},
+  {"type": "translate", "q": "Я бы предпочёл, чтобы ты не курил здесь.", "a": ["i'd rather you didn't smoke here", "i would rather you didn't smoke here"], "why": "I'd rather you + прошедшая форма."}
+ ]
+}

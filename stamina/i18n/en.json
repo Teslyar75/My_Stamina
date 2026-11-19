@@ -3208,5 +3208,10 @@
  "урок {0} из {1}": "lesson {0} of {1}",
  "Переведите на немецкий.": "Translate into German.",
  "Переведите на немецкий и впишите ответ.": "Translate into German and type the answer.",
- "Подсказка: в ответе только цифры.": "Hint: the answer is digits only."
+ "Подсказка: в ответе только цифры.": "Hint: the answer is digits only.",
+ "Таблица не найдена": "Table not found",
+ "Таблица: {0}": "Table: {0}",
+ "Курс Star Typing": "Star Typing course",
+ "Самопроверка": "Self-check",
+ "Темы": "Topics"
 }

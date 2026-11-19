@@ -1,0 +1,72 @@
+{
+ "n": 149,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "should (2): ожидание и удивление",
+ "en": "should 2",
+ "summary": "Тот же should умеет ждать событие по плану и удивляться поступку: почему, собственно, должно быть именно так?",
+ "can_do": [
+  "Сказать, что событие должно произойти по плану, через should be.",
+  "Заметить, что ожидаемое не случилось, через should have done.",
+  "Выразить удивление вопросом Why should ...?",
+  "Употребить should в обороте It's strange that ... should."
+ ],
+ "theory": [
+  {
+   "h": "Ожидание по плану",
+   "p": "Should может говорить не о моральном долге, а о том, что по расписанию, договорённости или расчёту так и должно быть. Оттенок важный: это не приказ и не гарантия, а ожидание. Если что-то пойдёт не так, вы удивитесь.",
+   "formula": "The train should be here by now. · The parcel should arrive today."
+  },
+  {
+   "h": "Ожидание, которое не сбылось",
+   "p": "Если ожидаемое время уже прошло, используется should have и третья форма. Это не упрёк человеку, как в советах, а констатация: по расчётам уже должно было случиться. Виновником может быть погода, почта, расписание — кто угодно.",
+   "formula": "The letter should have arrived two days ago. · The report should have been on my desk this morning."
+  },
+  {
+   "h": "Четыре оборота в одной таблице",
+   "p": "Все четыре конструкции опираются на одно значение — «так должно быть по ожиданию». Разница только в том, о настоящем речь или о прошлом и утверждаете вы это или удивляетесь.",
+   "table": {
+    "head": ["Фраза", "Что выражает", "Пример"],
+    "rows": [
+     ["should be", "ожидание по плану", "The parcel should arrive today."],
+     ["should have done", "ожидание не сбылось", "The parcel should have arrived yesterday."],
+     ["why should ...?", "удивление", "Why should I apologise?"],
+     ["It's strange that ... should", "удивление факту", "It's strange that he should refuse."]
+    ]
+   }
+  },
+  {
+   "h": "Why should ...? — несогласие в форме вопроса",
+   "p": "Вопрос why should ...? почти всегда звучит с вызовом: человек не видит причины и не согласен с ней. Это вежливая альтернатива прямому «с какой стати». Отдельно стоит оборот It's strange that ... should, где should делает факт ещё более удивительным.",
+   "formula": "Why should I pay for his mistake? · It's odd that she should say nothing."
+  },
+  {
+   "h": "If ... should — осторожное условие",
+   "p": "В формальной речи should заходит в придаточное условия и делает его менее вероятным и более вежливым. If you should need help значит «если вдруг понадобится». Смысл тот же, что у обычного if, но тон официальнее.",
+   "formula": "If you should change your mind, let me know. · Should you need anything, call me."
+  }
+ ],
+ "examples": [
+  {"en": "The plane should land at nine if the weather holds.", "ru": "Самолёт должен сесть в девять, если погода позволит."},
+  {"en": "The report should have been on my desk this morning.", "ru": "Отчёт ещё утром должен был лежать у меня на столе."},
+  {"en": "Why should I pay for his mistake?", "ru": "С какой стати я должен платить за его ошибку?"},
+  {"en": "It's odd that she should say nothing.", "ru": "Странно, что она ничего не говорит."},
+  {"en": "If you should change your mind, let me know.", "ru": "Если вдруг передумаете, дайте знать."}
+ ],
+ "traps": [
+  {"bad": "The train should arrive yesterday.", "good": "The train should have arrived yesterday.", "why": "Об ожидании в прошлом — should have и третья форма."},
+  {"bad": "Why should I to apologise?", "good": "Why should I apologise?", "why": "После should инфинитив без to."},
+  {"bad": "It's strange that he should refuses.", "good": "It's strange that he should refuse.", "why": "После should глагол стоит в начальной форме, без -s."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The documents ___ be ready by Friday — that's what they promised.", "options": ["should", "mustn't", "needn't"], "a": 0, "why": "Ожидание по обещанию — should be."},
+  {"type": "choice", "q": "The letter still isn't here; it ___ have arrived two days ago.", "options": ["should", "must", "can"], "a": 0, "why": "Ожидание не сбылось — should have arrived."},
+  {"type": "choice", "q": "Why ___ I explain myself to him?", "options": ["should", "ought", "am"], "a": 0, "why": "Удивление и несогласие — why should."},
+  {"type": "choice", "q": "It's surprising that he ___ so calm about it.", "options": ["should be", "should is", "should to be"], "a": 0, "why": "После should — be, без -s и без to."},
+  {"type": "gap", "q": "The guests ___ (should / be) here by eight — I booked the table for eight.", "a": ["should be"], "why": "Ожидание по плану — should be."},
+  {"type": "gap", "q": "The keys ___ (should / be) in this drawer, but I can't find them.", "a": ["should be"], "why": "По расчёту так, но ожидание не подтвердилось."},
+  {"type": "gap", "q": "If you ___ (should / need) anything, just call.", "a": ["should need"], "why": "Формальное условие с should."},
+  {"type": "translate", "q": "Поезд должен прибыть в шесть.", "a": ["the train should arrive at six", "the train should be arriving at six"], "why": "Ожидание по расписанию — should arrive."},
+  {"type": "translate", "q": "Странно, что он ничего не сказал.", "a": ["it's strange that he should say nothing", "it is strange that he should say nothing", "it's strange that he should not say anything"], "why": "Удивление факту — It's strange that ... should."}
+ ]
+}

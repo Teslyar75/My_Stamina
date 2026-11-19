@@ -1,0 +1,71 @@
+{
+ "n": 229,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "unless, as long as, provided",
+ "en": "unless / as long as / provided",
+ "summary": "Союзы unless, as long as, provided задают условия: действие произойдёт, если условие выполнено, или не произойдёт, если нет. После них всегда стоит настоящее время, даже если речь о будущем.",
+ "can_do": [
+  "Заменять if not на unless в утвердительных предложениях.",
+  "Выражать «пока» и «при условии, что» через as long as и provided.",
+  "Ставить Present Simple после этих союзов вместо будущего времени.",
+  "Различать случаи, где unless нельзя использовать (вопросы, would)."
+ ],
+ "theory": [
+  {
+   "h": "Unless — это «если не», но с нюансами",
+   "p": "Unless заменяет if not в утверждениях: I won't go unless you come = I won't go if you don't come. В вопросах и после would unless обычно не подходит: *Would you go unless he comes? — звучит неверно, лучше if he doesn't come. Unless подразумевает единственное исключение, при котором главное действие не случится.",
+   "formula": "I'll stay unless it rains. · Unless you hurry, you'll be late."
+  },
+  {
+   "h": "As long as и so long as — «пока» и «при условии»",
+   "p": "As long as / so long as подчеркивают, что действие продолжится или состоится, пока условие выполняется. Смысл близок к provided, но с оттенком длительности: You can stay as long as you like. После них используется настоящее время с будущим смыслом, как и после if.",
+   "formula": "You can borrow my car as long as you drive carefully. · So long as it doesn't rain, we'll play outside."
+  },
+  {
+   "h": "Provided (that) и providing (that) — формальное «при условии»",
+   "p": "Provided (that) / providing (that) звучат официальнее и обозначают строгое условие: I'll agree provided you pay now. Слово that часто опускают. Providing чуть менее формально, чем provided. Во всех случаях в придаточном стоит настоящее время.",
+   "formula": "Provided (that) you finish on time, we'll go. · Providing the weather holds, we'll leave tomorrow."
+  },
+  {
+   "h": "Настоящее время вместо will после всех этих слов",
+   "p": "В придаточных условия после unless, as long as, provided, providing английский требует Present Simple (или Present Perfect), а не will. Это общее правило для союзов условия: We'll eat unless he arrives late. Нельзя сказать *unless he will arrive. Perfect добавляет оттенок завершённости: provided you have finished.",
+   "formula": "I'll call you unless something goes wrong. · Provided she has finished by 5, we can leave."
+  },
+  {
+   "h": "Unless vs If not: где не взаимозаменяемы",
+   "p": "Unless не используется, когда условие нереально или речь о гипотезе с would: I'd be surprised unless he came — ошибка, нужно if he didn't come. Также unless не подходит для вопросов с ожиданием согласия: *You'll come unless you're busy? — лучше Won't you come if you're busy? В этих контекстах только if not.",
+   "formula": "If he didn't help, I'd fail. (не unless) · What will you do if it rains? (не unless)"
+  },
+  {
+   "h": "Порядок слов и запятые",
+   "p": "Придаточное может стоять в начале или в конце предложения. Если условие идёт первым — ставится запятая: Unless you study, you'll fail. / You'll fail unless you study. As long as и provided ведут себя идентично. Запятая разделяет части только когда условие предшествует главному.",
+   "formula": "Unless it rains, we'll walk. · We'll walk unless it rains."
+  }
+ ],
+ "examples": [
+  {"en": "I'll be there unless something urgent comes up.", "ru": "Я буду там, если не случится ничего срочного."},
+  {"en": "You can use my laptop as long as you are careful.", "ru": "Ты можешь пользоваться моим ноутбуком, пока ты осторожен."},
+  {"en": "Provided (that) you finish the report, we can leave early.", "ru": "При условии, что ты закончишь отчёт, мы сможем уйти раньше."},
+  {"en": "We won't start unless everyone arrives on time.", "ru": "Мы не начнём, пока все не придут вовремя."},
+  {"en": "Providing the weather stays fine, the match will go ahead.", "ru": "При условии, что погода держится хорошей, матч состоится."},
+  {"en": "Unless you have a ticket, you can't enter.", "ru": "Если у тебя нет билета, войти нельзя."}
+ ],
+ "traps": [
+  {"bad": "I'll go unless it will rain.", "good": "I'll go unless it rains.", "why": "После unless (как после if) будущее выражается настоящим временем."},
+  {"bad": "Would you buy it unless it was cheap?", "good": "Would you buy it if it wasn't cheap?", "why": "В нереальных условиях с would unless не используется, нужен if."},
+  {"bad": "You can't pass provided you don't study.", "good": "You can't pass unless you study.", "why": "Provided означает «при условии что ДА», а здесь условие отрицательное — нужен unless."},
+  {"bad": "As long as you will wait, I'll be ready soon.", "good": "As long as you wait, I'll be ready soon.", "why": "После as long as не ставим will, только настоящее время."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I won't sign the contract ___ I read it first.", "options": ["unless", "provided", "as long as"], "a": 0, "why": "Unless = если не: не подпишу, если не прочитаю."},
+  {"type": "choice", "q": "You can stay here ___ you keep quiet.", "options": ["unless", "provided", "as long as"], "a": 2, "why": "As long as подчеркивает длительность: пока ты тихий."},
+  {"type": "choice", "q": "___ you finish on time, we'll go to the cinema.", "options": ["Unless", "Provided", "As long as"], "a": 1, "why": "Provided в начале предложения ставит формальное положительное условие."},
+  {"type": "choice", "q": "We'll have a picnic ___ the weather is good.", "options": ["unless", "provided", "as long as"], "a": 2, "why": "As long as / provided подходят для положительного условия. Unless означает «если не»."},
+  {"type": "gap", "q": "I'll lend you the money ___ (provide) you pay me back next week.", "a": ["provided", "providing"], "why": "Provided/providing that — при условии что. That опускается."},
+  {"type": "gap", "q": "Don't call me ___ (unless) it's an emergency.", "a": ["unless"], "why": "Unless = если только не / кроме случая. Не звони, если только не ЧП."},
+  {"type": "gap", "q": "You can borrow the car ___ (as long as) you return it by 6.", "a": ["as long as", "so long as"], "why": "As long as — пока / при условии что."},
+  {"type": "translate", "q": "Мы не поедем, если не перестанет дождь.", "a": ["we won't go unless it stops raining", "we will not go unless it stops raining"], "why": "Unless it stops = если не прекратится. Настоящее время после unless."},
+  {"type": "translate", "q": "Ты можешь остаться, пока хочешь.", "a": ["you can stay as long as you want", "you can stay as long as you like"], "why": "As long as you want — пока ты хочешь."}
+ ]
+}

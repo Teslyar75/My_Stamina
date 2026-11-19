@@ -1,0 +1,186 @@
+{
+  "id": "no_02",
+  "title": "Nouns: Genus der Substantive",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/no_02.html",
+  "explanation_lang": "en",
+  "section": "Nouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "In a rare bow to logic, German noun genders actually make sense when they match the biological gender of the noun.\n\nder Vater (the father) | die Mutter (the mother)\n\nder Sohn (the son) | die Tochter (the daughter)\n\nOther times the genders are pretty randomly assigned. Only one thing is for sure: every German noun has a grammatical gender, which you should learn just like you learn the plural form (because there is no real logic to either one!). The genders are indicated with an article preceding the noun: der for masculine, die for feminine and das for neuter nouns.\n\nMasculine\n\nder Tisch (the table)\n\nder Bach (the creek)\n\nder Wein (the wine)\n\nFeminine\n\ndie Tür (the door)\n\ndie Blume (the flower)\n\ndie Brille (the eyeglasses, in German this is a singular noun!)\n\nNeuter\n\ndas Messer (the knife)\n\ndas Nachthemd (the nightgown)\n\ndas Käppchen (the cap)\n\nAlthough you do have to memorize noun genders, there are some other hints that can help you remember if a noun is der, die or das. Check this out:\n\nIf the noun ends in -er, -en, -ig, -ling, -us, -mus, -or, chances are it's masculine.\n\n(der Jäger, der Materialismus)\n\nIf the noun ends in -in, -ion, -ung, -heit, -keit, -schaft, -ei, -ur, -ik, -tät, -anz, -enz, -ie, it's feminine.\n\n(die Prinzessin, die Nation, die Gesundheit)\n\nIf the noun ends in -tum, -chen, -lein, -ment, -um (-erl, -le, -el, -li = dialect variants), it's neuter.\n\n(das Königtum, das Medikament)\n\nAnd sometimes Germans themselves can't agree on the noun gender! This can happen when new words are borrowed from other languages and adopted into German, like the word for yogurt: some Germans call it das Joghurt (northern Germany) and der Joghurt (southern Germany)."
+    }
+  ],
+  "examples": [
+    {
+      "de": "der Vater (the father)",
+      "en": "die Mutter (the mother)"
+    },
+    {
+      "de": "der Sohn (the son)",
+      "en": "die Tochter (the daughter)"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "___ Mutter gibt Rotkäppchen ein Stück Kuchen und eine Flasche Wein.",
+      "a": "die",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Mädchen soll sie zu ihrer Großmutter bringen.",
+      "a": "das",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Aber ___ Wolf wartet auf (waits for) Rotkäppchen.",
+      "a": "der",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Er sagt: \"___ Blumen riechen sehr gut. Du solltest einige sammeln (gather)!\"",
+      "a": "die",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Großmutter wartet auf ihr Enkelkind (grandchild), aber statt ihr kommt ___ Wolf.",
+      "a": [
+        "die",
+        "der"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Haus steht in der Mitte des Waldes.",
+      "a": "das",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Wolf klopft an ___ Tür, und Großmutter lädt ihn ein (invites him in).",
+      "a": [
+        "der",
+        "die"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Er kommt in ___ kleine Stube (room) und frißt ___ alte Frau auf.",
+      "a": [
+        "die",
+        "die"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen kommt mit dem Korb und den Blumen, und sieht, daß ____ Ohren und ___ Augen von ihrer Großmutter sehr groß sind.",
+      "a": [
+        "die",
+        "die"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Das war natürlich nicht ___ Großmutter, sondern (but) ___ Wolf!",
+      "a": [
+        "die",
+        "der"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ böse Tier frißt auch sie auf.",
+      "a": "das",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Jäger hört zu und denkt: Wie ___ alte Frau schnarcht (snores)!",
+      "a": [
+        "der",
+        "die"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Im Haus liegt ___ Wolf im Bett!",
+      "a": "der",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Schere (scissors) liegt auf dem Tisch und er schneidet den Bauch des Wolfes auf (cuts open).",
+      "a": "die",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "___ Großmutter und ___ kleine Mädchen springen aus seinem Bauch.",
+      "a": [
+        "die",
+        "das"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen holte einige große Steine und ___ Jäger füllte dem Wolf den Leib.",
+      "a": "der",
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    },
+    {
+      "type": "gap",
+      "q": "Als ___ Wolf aufwachte, wollte er fortspringen aber ___ Steine waren sehr schwer und er starb (died).",
+      "a": [
+        "der",
+        "die"
+      ],
+      "set_id": "no_02_01_fib",
+      "set_title": "Übung: Das Leben im Schloß (Noun Genders and Articles)",
+      "prompt": "During a recent group therapy session, Little Red Riding Hood, her grandmother, and the hunter try to recall the details of their harrowing run-in with the wolf (initially, they had repressed all memories of this traumatic experience). The psychologist takes notes on what happened that fateful day. Please fill in the missing articles."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+ "n": 183,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Обороты с -ing",
+ "en": "-ing clauses",
+ "summary": "Как целое действие уместить в одно слово: -ing вместо подлежащего, после предлогов и в начале фразы вместо целого придаточного.",
+ "can_do": [
+  "Назвать действие подлежащим через -ing.",
+  "Ставить -ing после before, after, without, by и instead of.",
+  "Сокращать придаточное через оборот с -ing в начале фразы.",
+  "Показать, что одно действие было раньше другого, через having done."
+ ],
+ "theory": [
+  {
+   "h": "Действие как подлежащее",
+   "p": "Когда нужно говорить о действии вообще, английский превращает глагол в существительное через -ing. Такое слово становится подлежащим и требует глагола в единственном числе, даже если речь о многих случаях.",
+   "formula": "Smoking is bad for you. · Learning a language takes time. · Swimming keeps me fit."
+  },
+  {
+   "h": "После предлогов и союзов",
+   "p": "После предлога другая форма и не появится: before, after, without, by, instead of, in spite of требуют -ing. Союзы before и after ведут себя как предлоги, если после них нет своего подлежащего.",
+   "table": {
+    "head": ["Оборот", "Что значит", "Пример"],
+    "rows": [
+     ["-ing как подлежащее", "название действия", "Smoking is harmful."],
+     ["before / after + -ing", "до или после действия", "After finishing work, she went home."],
+     ["without + -ing", "действие не произошло", "He left without saying goodbye."],
+     ["by + -ing", "способ действия", "You can save time by planning."],
+     ["-ing в начале фразы", "одновременное действие или причина", "Walking home, I met Ann."],
+     ["having + -ing", "действие раньше главного", "Having eaten, we left."]
+    ]
+   }
+  },
+  {
+   "h": "Оборот вместо придаточного",
+   "p": "Фразу While I was walking home, I met Ann можно сжать: Walking home, I met Ann. Оборот с -ing берёт на себя роль времени или причины, а главное предложение остаётся неизменным. Важно, чтобы действующее лицо в обеих частях было одним и тем же.",
+   "formula": "Walking home, I met Ann. · Feeling tired, she went to bed. · Being late, he missed the bus."
+  },
+  {
+   "h": "Одна ошибка — два подлежащих",
+   "p": "Если в обороте и в главной части действуют разные люди, фраза становится бессмысленной: получается, что устал не тот, кто лёг спать. В таком случае оборот не сокращают, а оставляют полное придаточное с союзом.",
+   "formula": "Feeling tired, I went to bed. · Because she felt tired, we went home. (не Feeling tired, we went home)"
+  },
+  {
+   "h": "Having done — на шаг раньше",
+   "p": "Когда одно действие закончилось до другого, используют having и третью форму глагола. Это подчёркивает порядок событий и звучит книжнее, чем обычное after doing, но смысл передаёт точнее.",
+   "formula": "Having finished the report, he went home. · Having lost the key, she called a locksmith."
+  }
+ ],
+ "examples": [
+  {"en": "Smoking is bad for your health.", "ru": "Курение вредно для здоровья."},
+  {"en": "After finishing work, she went home.", "ru": "Закончив работу, она пошла домой."},
+  {"en": "He left without saying goodbye.", "ru": "Он ушёл, не попрощавшись."},
+  {"en": "Walking home, I met an old friend.", "ru": "Идя домой, я встретил старого друга."},
+  {"en": "Having eaten, we went for a walk.", "ru": "Поев, мы пошли гулять."},
+  {"en": "You can learn words by reading.", "ru": "Слова можно учить, читая."}
+ ],
+ "traps": [
+  {"bad": "Smoke is bad for your health.", "good": "Smoking is bad for your health.", "why": "Речь о действии вообще, поэтому нужно smoking."},
+  {"bad": "He left without say goodbye.", "good": "He left without saying goodbye.", "why": "После предлога without ставится -ing."},
+  {"bad": "After finish the report, she went home.", "good": "After finishing the report, she went home.", "why": "После after в роли предлога нужна форма finishing."},
+  {"bad": "Feeling tired, the film was boring.", "good": "Feeling tired, I found the film boring.", "why": "Действующее лицо в обеих частях должно совпадать."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ is bad for your health.", "options": ["Smoke", "Smoking", "To smoking"], "a": 1, "why": "Действие как подлежащее — smoking."},
+  {"type": "choice", "q": "She left without ___ goodbye.", "options": ["say", "saying", "to say"], "a": 1, "why": "После предлога without — форма saying."},
+  {"type": "choice", "q": "___ tired, he went to bed early.", "options": ["Feel", "Feeling", "To feel"], "a": 1, "why": "Оборот причины: feeling tired = потому что устал."},
+  {"type": "choice", "q": "After ___ the report, she sent it to the manager.", "options": ["finish", "finishing", "to finish"], "a": 1, "why": "After как предлог требует finishing."},
+  {"type": "gap", "q": "___ (learn) a language takes time.", "a": ["learning"], "why": "Подлежащее-действие: learning a language."},
+  {"type": "gap", "q": "He improved his English by ___ (watch) films.", "a": ["watching"], "why": "Способ действия: by watching."},
+  {"type": "gap", "q": "___ (finish) the report, he went home.", "a": ["having finished"], "why": "Отчёт закончен раньше ухода: having finished."},
+  {"type": "translate", "q": "Курить вредно.", "a": ["smoking is bad for you", "smoking is harmful", "smoking is bad for your health"], "why": "Действие как подлежащее: smoking is bad."},
+  {"type": "translate", "q": "Он ушёл, не попрощавшись.", "a": ["he left without saying goodbye", "he left without saying good bye"], "why": "Without + -ing: without saying goodbye."}
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "n": 119,
+ "level": "B2",
+ "module": "b-now",
+ "title": "Continuous и Simple: разница (2)",
+ "en": "present continuous and present simple 2",
+ "summary": "Глаголы состояния — know, want, belong — и те, у которых с -ing меняется смысл: think, have, see.",
+ "can_do": [
+  "Узнавать глаголы, которые не ставятся в длительное время.",
+  "Различать два смысла у think, have, see, taste и be.",
+  "Выбирать форму по тому, состояние это или действие."
+ ],
+ "theory": [
+  {
+   "h": "Состояние нельзя увидеть в процессе",
+   "p": "Часть глаголов описывает не действие, а состояние: знание, желание, принадлежность, вкус, стоимость. Такое нельзя начать или прервать, поэтому форма -ing к ним не подходит. В русском мы тоже не говорим «я знаюсь» — язык просто не даёт такой формы.",
+   "table": {
+    "head": ["Группа", "Глаголы", "Пример"],
+    "rows": [
+     ["мысли", "know, believe, understand, remember", "I understand the rule."],
+     ["желания", "want, need, prefer", "He needs a break."],
+     ["принадлежность", "belong, own, contain", "The box contains old photos."],
+     ["чувства и оценка", "like, love, hate, seem, cost", "It costs too much."]
+    ]
+   }
+  },
+  {
+   "h": "Глаголы с двумя смыслами",
+   "p": "Самые хитрые глаголы умеют быть и состоянием, и действием. В первом случае нужно простое время, во втором — длительное. Смысл при этом меняется, поэтому выбор формы — не формальность, а часть сообщения, без которой собеседник поймёт вас неправильно.",
+   "table": {
+    "head": ["Глагол", "Состояние", "Действие"],
+    "rows": [
+     ["think", "I think it's a good idea.", "I'm thinking about it."],
+     ["have", "She has two brothers.", "She's having lunch."],
+     ["see", "I see the problem.", "I'm seeing the doctor tomorrow."],
+     ["taste", "The soup tastes great.", "He's tasting the soup."],
+     ["be", "He is polite.", "He's being polite today."]
+    ]
+   }
+  },
+  {
+   "h": "Why are you being so kind?",
+   "p": "Особый случай — be. В простом времени он описывает постоянное свойство человека, а в длительном — поведение здесь и сейчас, часто с оттенком «это на тебя не похоже». Такая форма звучит мягче упрёка и понятна только из контекста, поэтому её любят в разговоре.",
+   "formula": "You're being silly. (сейчас) · You're silly. (вообще такой человек) · She's being careful with the details."
+  },
+  {
+   "h": "Разговорные исключения",
+   "p": "В рекламе и в живой речи можно услышать I'm loving it или I'm liking this song. Это эмоциональное усиление, а не норма литературного языка. В экзаменационном тексте и в деловой переписке по-прежнему пишут I love it и I like it, и проверяющие считают это единственно верным.",
+   "formula": "I'm loving this series. (неформально) · I love this series. (нейтрально)"
+  },
+  {
+   "h": "Как проверить себя",
+   "p": "Задайте вопрос: это можно увидеть в процессе или это состояние? Если перед вами знание, чувство, принадлежность — берите простое время. Если человек что-то делает руками, головой или телом — длительное. И помните, что несколько глаголов меняют смысл вместе с формой.",
+   "formula": "I have a car. (у меня есть) · I'm having a shower. (принимаю душ)"
+  }
+ ],
+ "examples": [
+  {"en": "I know what you mean.", "ru": "Я понимаю, что ты имеешь в виду."},
+  {"en": "She's having lunch with a client.", "ru": "Она обедает с клиентом."},
+  {"en": "Do you believe him?", "ru": "Ты ему веришь?"},
+  {"en": "I'm thinking about your offer.", "ru": "Я обдумываю твоё предложение."},
+  {"en": "This coffee tastes bitter.", "ru": "Этот кофе горький на вкус."},
+  {"en": "He's being very quiet today.", "ru": "Он сегодня очень тихий."},
+  {"en": "The room contains forty chairs.", "ru": "В зале сорок стульев."}
+ ],
+ "traps": [
+  {"bad": "I am knowing the answer.", "good": "I know the answer.", "why": "know — состояние, форма -ing с ним не употребляется."},
+  {"bad": "She is having two brothers.", "good": "She has two brothers.", "why": "В смысле «иметь, владеть» — только простое время."},
+  {"bad": "I'm believing you.", "good": "I believe you.", "why": "believe не бывает длительным."},
+  {"bad": "I am seeing the sea from my window.", "good": "I see the sea from my window.", "why": "see в смысле «видеть» — состояние, а continuous значит «встречаюсь»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ what you mean, but I disagree.", "options": ["am understanding", "understand", "understands"], "a": 1, "why": "understand — состояние, только простое время."},
+  {"type": "choice", "q": "We ___ dinner right now, can I call you back?", "options": ["have", "are having", "has"], "a": 1, "why": "have dinner — действие, поэтому длительное время."},
+  {"type": "choice", "q": "This perfume ___ like roses.", "options": ["smells", "is smelling", "smell"], "a": 0, "why": "smell в смысле «пахнуть» — состояние, простое время."},
+  {"type": "choice", "q": "She ___ a flat in the centre.", "options": ["is owning", "own", "owns"], "a": 2, "why": "own — принадлежность, только простое время с -s."},
+  {"type": "gap", "q": "I ___ (not / believe) his story.", "a": ["don't believe", "do not believe"], "why": "believe — состояние, отрицание через do."},
+  {"type": "gap", "q": "He ___ (have) a shower at the moment.", "a": ["is having"], "why": "have a shower — действие, значит is having."},
+  {"type": "gap", "q": "This box ___ (contain) old letters.", "a": ["contains"], "why": "contain — состояние, простое время с -s."},
+  {"type": "translate", "q": "Я не понимаю этот вопрос.", "a": ["i don't understand this question", "i do not understand this question"], "why": "understand не ставится в -ing, отрицание через do."},
+  {"type": "translate", "q": "Она сейчас обедает с клиентом.", "a": ["she is having lunch with a client", "she's having lunch with a client"], "why": "have lunch — действие, поэтому present continuous."},
+  {"type": "translate", "q": "Я считаю, что ты прав.", "a": ["i think you are right", "i think you're right"], "why": "think в смысле «считать» — состояние, без -ing."}
+ ]
+}

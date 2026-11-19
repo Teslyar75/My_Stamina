@@ -1,0 +1,79 @@
+{
+ "n": 225,
+ "level": "B2",
+ "module": "b-order",
+ "title": "still, yet, already",
+ "en": "still, yet, already",
+ "summary": "Still, yet, already показывают отношение действия к ожиданию: still — продолжение, yet — ожидание в вопросах и отрицаниях, already — выполнение раньше срока.",
+ "can_do": [
+  "Ставить still перед смысловым глаголом и после be для продолжения действия.",
+  "Использовать yet в конце вопросов и отрицаний с Present Perfect.",
+  "Различать I still don't know (продолжаю не знать) и I don't know yet (пока не знаю, но ожидаю).",
+  "Поставить already перед смысловым глаголом или в конец предложения для факта раньше плана."
+ ],
+ "theory": [
+  {
+   "h": "Still — действие продолжается",
+   "p": "Still означает «всё ещё» — действие или состояние длится дольше ожидаемого. В утверждении still перед смысловым глаголом, после be и модальных: She still works here. He is still sleeping. В отрицании остаётся на месте: I still don't understand. В вопросе редко, обычно в начале: Do you still live there?",
+   "formula": "She still works here. · He is still sleeping. · I still don't know. · Do you still live there?"
+  },
+  {
+   "h": "Yet — ожидание результата",
+   "p": "Yet в утверждениях почти не используется. В вопросах и отрицаниях с Present Perfect yet в конце означает «уже» (вопрос) или «ещё» (отрицание): Have you finished yet? — I haven't finished yet. В Past Simple yet возможен в отрицании (амер. вариант): I didn't see him yet.",
+   "formula": "Have you finished yet? · I haven't finished yet. · Has the train arrived yet? · She hasn't called yet."
+  },
+  {
+   "h": "Already — раньше ожидания",
+   "p": "Already означает «уже», «раньше плана». В утверждении перед смысловым глаголом (после be/модальных) или в конце для усиления: She has already left. He is already here. I've done it already. В вопросах выражает удивление: Have you already eaten? В отрицании не используется.",
+   "formula": "She has already left. · He is already here. · I've done it already. · Have you already eaten?"
+  },
+  {
+   "h": "Позиция слов: сравнение",
+   "p": "Still и already ведут себя похоже — оба перед смысловым глаголом и после be/модальных. Yet всегда в конце. В отрицании still сохраняет позицию, yet уходит в конец, already исчезает. Таблица показывает типичные места для Present Perfect.",
+   "table": {
+    "head": ["Слово", "Утверждение", "Отрицание", "Вопрос"],
+    "rows": [
+     ["still", "She still hasn't called", "She still hasn't called", "Does she still work here?"],
+     ["yet", "—", "She hasn't called yet", "Has she called yet?"],
+     ["already", "She has already called", "—", "Has she already called?"]
+    ]
+   }
+  },
+  {
+   "h": "Not… any more / any longer — прекращение",
+   "p": "Чтобы сказать, что действие больше не происходит, используют not… any more / any longer в конце: I don't smoke any more. She doesn't live here any longer. Any longer чуть формальнее. Still not и not… yet здесь не подходят — они про ожидание, а не об окончание привычки.",
+   "formula": "I don't smoke any more. · She doesn't work here any longer. · We don't go there any more."
+  },
+  {
+   "h": "I still don't vs I don't… yet",
+   "p": "I still don't know = я всё ещё не знаю (продолжение состояния, возможно, раздражает). I don't know yet = я пока не знаю, но ожидаю узнать (нейтрально). Still don't — акцент на длительности, don't… yet — на перспективе. Аналогично: He still hasn't replied (долго молчит) vs He hasn't replied yet (но ответит).",
+   "formula": "I still don't know. · I don't know yet. · He still hasn't replied. · He hasn't replied yet."
+  }
+ ],
+ "examples": [
+  {"en": "It's midnight and she is still working.", "ru": "Полночь, а она всё ещё работает."},
+  {"en": "Have you finished the report yet?", "ru": "Ты уже закончил отчёт?"},
+  {"en": "I haven't seen that film yet.", "ru": "Я ещё не видел тот фильм."},
+  {"en": "The train has already left.", "ru": "Поезд уже ушёл."},
+  {"en": "Do you still live in the same house?", "ru": "Ты всё ещё живёшь в том же доме?"},
+  {"en": "I don't eat meat any more.", "ru": "Я больше не ем мясо."},
+  {"en": "She still hasn't answered my email.", "ru": "Она всё ещё не ответила на моё письмо."}
+ ],
+ "traps": [
+  {"bad": "I have still not finished.", "good": "I still haven't finished.", "why": "Still в отрицании лучше ставить перед have: still haven't, а не have still not."},
+  {"bad": "Has he arrived already?", "good": "Has he arrived yet?", "why": "В обычном вопросе о факте используется yet, already — только с удивлением."},
+  {"bad": "She doesn't work here still.", "good": "She still doesn't work here.", "why": "Still в отрицании стоит перед вспомогательным: still doesn't."},
+  {"bad": "I haven't finished already.", "good": "I haven't finished yet.", "why": "Already не используется в отрицании, только yet."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "It's 10 p.m. and the children are ___ awake.", "options": ["still", "yet", "already"], "a": 0, "why": "Still после be означает продолжение состояния."},
+  {"type": "choice", "q": "Have you sent the email ___?", "options": ["still", "yet", "already"], "a": 1, "why": "В вопросе с Present Perfect в конце ставится yet."},
+  {"type": "choice", "q": "She has ___ finished her homework.", "options": ["still", "yet", "already"], "a": 2, "why": "Already перед смысловым глаголом — действие выполнено раньше ожидания."},
+  {"type": "choice", "q": "I ___ don't understand this rule.", "options": ["still", "yet", "already"], "a": 0, "why": "Still в отрицании перед вспомогательным: still don't."},
+  {"type": "gap", "q": "The meeting hasn't started ___.", "a": ["yet"], "why": "Отрицание с Present Perfect в конце — yet."},
+  {"type": "gap", "q": "He is ___ waiting for your answer.", "a": ["still"], "why": "Still после be для продолжения действия."},
+  {"type": "gap", "q": "We've ___ seen this movie twice.", "a": ["already"], "why": "Already перед смысловым глаголом — факт раньше плана."},
+  {"type": "translate", "q": "Я всё ещё не знаю, когда он приедет.", "a": ["I still don't know when he will arrive", "I still don't know when he arrives"], "why": "Still don't — продолжение незнания."},
+  {"type": "translate", "q": "Мы ещё не решили, куда поедем.", "a": ["We haven't decided yet where to go", "We haven't decided where to go yet"], "why": "Отрицание с Present Perfect — yet в конце."}
+ ]
+}

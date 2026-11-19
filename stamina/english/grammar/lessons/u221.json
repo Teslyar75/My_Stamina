@@ -1,0 +1,80 @@
+{
+ "n": 221,
+ "level": "B2",
+ "module": "b-comp",
+ "title": "as… as и than",
+ "en": "comparative 3 (as… as, than)",
+ "summary": "Урок разбирает сравнение равенства (as… as), неравенства (not as… as), множители (twice as… as), фразу the same as и выбор местоимений после as. Отдельно — правило: после сравнительной степени всегда than, после as — as.",
+ "can_do": [
+  "Строить утвердительные и отрицательные сравнения с as… as.",
+  "Использовать twice as… as, three times as… as для выражения кратности.",
+  "Говорить the same as вместо одинаковых прилагательных.",
+  "Правильно выбирать между as me и as I am в зависимости от регистра."
+ ],
+ "theory": [
+  {
+   "h": "Сравнение равенства: as … as",
+   "p": "В утверждении as ставится дважды: первый перед прилагательным/наречием, второй перед объектом сравнения. Конструкция означает «такой же… как». Работает с прилагательными (as tall as), наречиями (as quickly as), much/many (as much money as, as many friends as).",
+   "formula": "as tall as · as quickly as · as much as · as many as"
+  },
+  {
+   "h": "Отрицание: not as … as / not so … as",
+   "p": "Чтобы сказать «не такой… как», ставим not перед первым as: not as old as. Вариант not so… as тоже возможен, но звучит чуть более формально. Смысл: первый объект не достигает степени второго. Важно: после второго as объект сравнения стоит в объектном падеже (me, him) или с глаголом (as I am).",
+   "formula": "not as old as · not so fast as · not as many as"
+  },
+  {
+   "h": "Множители: twice as … as, three times as … as",
+   "p": "Для выражения кратности перед первым as ставим число: twice (два раза), three times (три раза), half (вполовину). Порядок слов: множитель + as + прилагательное + as. В русском часто говорят «в два раза выше», в английском — twice as high as.",
+   "formula": "twice as expensive as · three times as long as · half as much as"
+  },
+  {
+   "h": "То же самое: the same as",
+   "p": "Фраза the same as заменяет повторение прилагательного: this colour is the same as that colour. После as может идти существительное, местоимение или придаточное. Не говорят the same like — только as. Артикль the обязателен, так как речь об идентичности.",
+   "formula": "the same colour as · the same way as · the same age as"
+  },
+  {
+   "h": "Местоимения после as: as me или as I am",
+   "p": "В разговорной английской после as чаще ставят объектный падеж: as me, as him, as us. В более формальном или когда хочется подчеркнуть полноту сравнения, добавляют глагол: as I am, as he is. Обе формы правильны, но as I am звучит полнее. Ошибка: использовать подлежащий падеж без глагола (as I).",
+   "table": {
+    "head": ["Форма", "Пример"],
+    "rows": [
+     ["as + объектный", "He is as tall as me."],
+     ["as + подлежащее + глагол", "He is as tall as I am."],
+     ["разговорный вариант", "She runs as fast as him."],
+     ["формальный вариант", "She runs as fast as he does."]
+    ]
+   }
+  },
+  {
+   "h": "Than после сравнительной, as после as",
+   "p": "Жёсткое правило: если прилагательное в сравнительной степени (older, more interesting), после него всегда than. Если конструкция as… as, второй союз всегда as. Нельзя смешивать: older as, as older than — грубые ошибки. Проверяйте форму прилагательного перед выбором союза.",
+   "formula": "older than · as old as · more interesting than · as interesting as"
+  }
+ ],
+ "examples": [
+  {"en": "This book is as interesting as that one.", "ru": "Эта книга такая же интересная, как та."},
+  {"en": "My car is not as fast as yours.", "ru": "Моя машина не такая быстрая, как твоя."},
+  {"en": "The new model costs twice as much as the old one.", "ru": "Новая модель стоит в два раза дороже старой."},
+  {"en": "We have the same problem as they do.", "ru": "У нас та же проблема, что и у них."},
+  {"en": "She sings as beautifully as her sister does.", "ru": "Она поёт так же красиво, как её сестра."},
+  {"en": "He is taller than I am.", "ru": "Он выше меня."},
+  {"en": "It’s not so cold as it was yesterday.", "ru": "Сегодня не так холодно, как было вчера."}
+ ],
+ "traps": [
+  {"bad": "He is as taller than me.", "good": "He is taller than me.", "why": "Сравнительная степень требует than, а не as."},
+  {"bad": "This task is not so difficult as I thought.", "good": "This task is not as difficult as I thought.", "why": "В современном английском not as… as чаще, not so… as допустим, но звучит старомодно."},
+  {"bad": "My house is twice bigger than yours.", "good": "My house is twice as big as yours.", "why": "Множитель работает только с as… as, а не с сравнительной степенью."},
+  {"bad": "She is the same like her mother.", "good": "She is the same as her mother.", "why": "После the same только as, like здесь ошибка."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This film is ___ interesting ___ the book.", "options": ["as … as", "than … as", "as … than"], "a": 0, "why": "Равенство: as … as."},
+  {"type": "choice", "q": "My salary is not ___ high ___ yours.", "options": ["as … as", "so … than", "than … as"], "a": 0, "why": "Отрицание равенства: not as … as."},
+  {"type": "choice", "q": "The new phone costs three times ___ much ___ the old one.", "options": ["as … as", "than … as", "as … than"], "a": 0, "why": "Множитель требует as … as."},
+  {"type": "choice", "q": "We have ___ problem ___ they do.", "options": ["the same … as", "the same … than", "as … as"], "a": 0, "why": "Фиксированная фраза the same as."},
+  {"type": "gap", "q": "She speaks English ___ fluently ___ her brother (hint: equality).", "a": ["as … as"], "why": "Сравнение равенства наречий: as fluently as."},
+  {"type": "gap", "q": "This box is not ___ heavy ___ that one (hint: negative).", "a": ["as … as"], "why": "Отрицательное сравнение: not as heavy as."},
+  {"type": "gap", "q": "The journey took twice ___ long ___ we expected (hint: multiplier).", "a": ["as … as"], "why": "Множитель twice требует as … as."},
+  {"type": "translate", "q": "Мой брат такой же высокий, как я.", "a": ["my brother is as tall as me", "my brother is as tall as I am"], "why": "as … as + объектный падеж или полная форма."},
+  {"type": "translate", "q": "Эта задача не такая сложная, как вчерашняя.", "a": ["this task is not as difficult as yesterday's", "this task is not as difficult as the one yesterday"], "why": "Отрицание с as … as, второе as может подразумевать существительное."}
+ ]
+}

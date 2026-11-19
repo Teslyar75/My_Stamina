@@ -1,0 +1,170 @@
+{
+  "id": "vi_14",
+  "title": "Verbs: Werden",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_14.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb werden is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nwerden • to become\n\nich werde | wir werden\n\ndu wirst | ihr werdet\n\ner/sie/es wird | sie werden\n\nder Froschkönig | Ich werde Prinz! Ich werde Prinz! | I am becoming a prince! I am becoming a prince!\n\nder alte König | Wie wirst du Prinz? Wer will dich küssen? | How are you becoming a prince? Who wants to kiss you?\n\nder Froschkönig | Aha! Es ist fast Weihnachten, und in meinem Englischkurs haben wir gelernt, dass man unter dem Mistelzweig küssen muss. Und wie man weiß, wird der Frosch zum Prinzen, wenn eine Prinzessin ihn küsst. | Aha! It's almost Christmas, and in my English course we learned that you have to kiss under the mistletoe. And as you know, when a princess kisses a frog, the frog becomes a prince.\n\nder alte König | Mein Freund, du musst dich mit deinem Froschsein ernsthaft auseinandersetzen. Sonst wirst du nie glücklich! | My friend, you really need to get over your frog-ness. Otherwise you can never become happy!\n\nder Froschkönig | Ich gebe nie auf! | I am never giving up!\n\nIn the above examples the verb werden is the main verb of the sentence. It can also act as an auxiliary verb, however, when it helps form the future tense.\n\nBeware the false cognate: Unlike in English, where become means to turn into something (and in this sense it is synonymous with the verb get, as in get sick), in German only the verb werden indicates a change in personal state.\n\nBekommen means to receive, get (e.g. get a present) but never to turn into something (i.e., Der Froschkönig bekommt einen Prinzen means that he gets a prince for his birthday, but this present would not solve his existential problem. In truth, er will wieder Prinz werden: he wants to become a prince again).\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nRelated words\n\ndie Würde | dignitiy, worth, rank\n\nwürdelos | undignified, disgraceful\n\nwürdevoll | dignified, with dignity\n\nder Würdenträger | dignitary\n\nwürdigen | to recognize, appreciate\n\nFun phrases\n\ndas kann aber nett werden | this could get ugly\n\ndaraus kann man gar nicht klug werden | this makes no sense at all\n\njetzt wird's aber Tag! | what the heck?\n\nwas soll aus dir werden? | what is to become of you?\n\naus Liebe wird Hass | love turns into hate"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich werde",
+      "en": "wir werden"
+    },
+    {
+      "de": "du wirst",
+      "en": "ihr werdet"
+    },
+    {
+      "de": "er/sie/es wird",
+      "en": "sie werden"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Ich werde Prinz! Ich werde Prinz!"
+    },
+    {
+      "de": "der alte König",
+      "en": "Wie wirst du Prinz? Wer will dich küssen?"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Aha! Es ist fast Weihnachten, und in meinem Englischkurs haben wir gelernt, dass man unter dem Mistelzweig küssen muss. Und wie man weiß, wird der Frosch zum Prinzen, wenn eine Prinzessin ihn küsst."
+    },
+    {
+      "de": "der alte König",
+      "en": "Mein Freund, du musst dich mit deinem Froschsein ernsthaft auseinandersetzen. Sonst wirst du nie glücklich!"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Ich gebe nie auf!"
+    },
+    {
+      "de": "die Würde",
+      "en": "dignitiy, worth, rank"
+    },
+    {
+      "de": "würdelos",
+      "en": "undignified, disgraceful"
+    },
+    {
+      "de": "würdevoll",
+      "en": "dignified, with dignity"
+    },
+    {
+      "de": "der Würdenträger",
+      "en": "dignitary"
+    },
+    {
+      "de": "würdigen",
+      "en": "to recognize, appreciate"
+    },
+    {
+      "de": "das kann aber nett werden",
+      "en": "this could get ugly"
+    },
+    {
+      "de": "daraus kann man gar nicht klug werden",
+      "en": "this makes no sense at all"
+    },
+    {
+      "de": "jetzt wird's aber Tag!",
+      "en": "what the heck?"
+    },
+    {
+      "de": "was soll aus dir werden?",
+      "en": "what is to become of you?"
+    },
+    {
+      "de": "aus Liebe wird Hass",
+      "en": "love turns into hate"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Ich ___ Rechtsanwältin, dafür muss ich Jura studieren. Vielleicht in Würzburg?",
+      "a": "werde",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "die sieben Zwerge: Wir ___ Ingenieure und möchten neue Energiequellen entwickeln. Kohle ist sehr umweltschädlich.",
+      "a": "werden",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Liebling, du ___ Hausmann, nicht wahr?",
+      "a": "wirst",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz: Ich ___ lieber (prefer) Dichter (poet), wenn dir das Recht ist.",
+      "a": "werde",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Heidrun, du sollst dir viel Schminke kaufen. Dann ___ du vielleicht schöner.",
+      "a": "wirst",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe zu Schneewittchen (to Snow White): Sie ___ jeden Tag gemeiner (meaner)!",
+      "a": "wird",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Ich bin sehr froh, dass die Wölfe Vegetarier ___!",
+      "a": "werden",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe an Hänsel und Gretel: Ihr ___ dick, wenn ihr mein Häuslein aus Brot aufesst (eat up)!",
+      "a": "werdet",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Die Welt (world) ___ schön und weiß, wenn ich mein Bett aufschüttele (shake up). Vielleicht könnte ich als Innendekorateurin arbeiten, was meint ihr?",
+      "a": "wird",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    },
+    {
+      "type": "gap",
+      "q": "der alte König: Naja, und wir wissen alle was der Froschkönig ___: ein Prinz!",
+      "a": "wird",
+      "set_id": "vi_14_01_fib",
+      "set_title": "Übung - die Wende",
+      "prompt": "The days of fairy tales are far behind these characters, and they have a lot of adjustments to make to survive in the 21st century. Fill in the blanks with the correct forms of the verb werden, and find out how they plan to make it."
+    }
+  ]
+}

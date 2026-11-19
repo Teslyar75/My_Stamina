@@ -1,0 +1,265 @@
+{
+  "id": "pro_02",
+  "title": "Pronouns: Personalpronomen im Nominativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_02.html",
+  "explanation_lang": "en",
+  "section": "Pronouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Just like in English, personal pronouns in German are used to substitute nouns once they have already been mentioned, including people, animals, objects, or abstract ideas. There are nine basic personal pronouns in German. Well, sort of ..."
+    },
+    {
+      "heading": "er, sie, es",
+      "text": "Die Mutter geht heute auf den Markt. | The mother is going to the market today.\n\nSie geht heute auf den Markt. | She is going to the market today.\n\nDas Mädchen kommt mit. | The little girl goes along.\n\nEs kommt mit. | It goes along. (Mädchen is a neutral noun in German\nbecause of the 'chen' diminutive ending)\n\nDer Wolf folgt ihnen. | The wolf follows them.\n\nEr folgt ihnen. | He follows them."
+    },
+    {
+      "heading": "Another sie",
+      "text": "Die Mutter und Rotkäppchen kaufen eine Flasche Wein und frische Äpfel. | The mother and Little Red Riding Hood buy a bottle of wine and some fresh apples.\n\nSie kaufen eine Flasche Wein und frische Äpfel. | They buy a bottle of wine and some fresh apples.\n\nsie is used for both she and they, and you will need to figure out from the context who is actually shopping at the market. In this example the sie refers to both Little Red Riding Hood and her mom."
+    },
+    {
+      "heading": "ich, du",
+      "text": "Rotkäppchen | Mama, ich möchte Wein trinken! | Mama, I want to drink some wine.\n\nRotkäppchens Mutter | Wie bitte??? Du darfst erst Wein trinken, wenn du 16 Jahre alt bist! | Yeah, right. You will be allowed to drink wine only when you are 18 years old!\n\nRotkäppchen | Aber, Mama, das Gesetz betrifft Märchenfiguren doch nicht, oder? | But mama, the law doesn't apply to fairy tale characters, does it?"
+    },
+    {
+      "heading": "wir, ihr",
+      "text": "Rotkäppchen | Mama, darf ich mit Gretel ins Kino? Wir wollen den neuen Disneyfilm sehen! | Mama, can I go to the movies with Gretel? We want to see the new Disney film!\n\nRotkäppchens Mutter | Ihr dürft erst dann gehen, wenn ihr eure Aufsätze geschrieben habt. | You guys can go only when you have finished writing your essays.\n\nRotkäppchen | Unsere Aufsätze haben wir aber schon gestern geschrieben. Wir mussten \"Rotkäppchen\" aus der Perspektive des Wolfes neuschreiben. | But we already wrote our essays yesterday. We had to re-write \"Little Red Riding Hood\" from the perspective of the wolf!"
+    },
+    {
+      "heading": "When es is not es",
+      "text": "One big difference between German and English is the use of the pronoun es. In English, \"it\" is used whenever nouns do not have a biological gender. Therefore, any object or abstract noun will be considered \"it.\" (Where is the castle? It is ...)\n\nIn German, however, every noun has a grammatical gender (der, die, das). When you substitute a noun with a personal pronoun, you need to pay attention to the noun's grammatical gender, which sometimes produces results that may sound strange to you.\n\nGroßmutter | Rotkäppchen, hast du den Wolf gesehen? | Little Red Riding Hood, did you see the wolf?\n\nRotkäppchen | Ja, er war wieder am Rande des Waldes. Solch ein Versager! | Yes, it was at the edge of the forest again. What a loser!\n\nGroßmutter | Und wo ist die Flasche Wein? | And where is the bottle of wine?\n\nRotkäppchen | Sie ist in meinem Korb. | It is in my basket.\n\nSince wolf is a masculine noun, the masculine pronoun er substitutes it in the little girl's response. Next, the grandmother asks about the bottle of wine, feminine in German (die Flasche). Hence Little Red Riding Hood's response using sie. As a native speaker of English, you may want to choose the pronoun es (it) for any inanimate object (e.g., a bottle of wine), of course. Resist that urge, and don't worry: it takes a while to get used to German pronouns."
+    },
+    {
+      "heading": "Terms of address: Du, Ihr and Sie",
+      "text": "In German, there are three ways to address people you talk to:\n\nDu is the informal equivalent of single \"you.\" Du is reserved for friends, young people, children and pets.\n\nIhr is also informal, also means \"you\" but refers to more than one person. It is also used for friends, peers, people your own age, children and pets ... (think y'all)\n\nSie is the formal \"you\" and can be used when talking to one or more individuals. This is the appropriate expression to use when you meet other adults for the first time if you don't know them. Sie is a sign of respect, and is fairly common even among long-term acquaintances and work colleagues if they don't consider each other to be close friends.\n\nSie is the appropriate expression when you ask for help from sales persons, office clerks, your professors, strangers and people who are older than you.\n\nGroßmutter | Rotkäppchen, kannst du bitte den Tisch decken? | Little Red Riding Hood, can you please set the table?\n\nRotkäppchen | Natürlich. Herr Jäger, wo möchten Sie sitzen? | Of course. Mr. Hunter, where would you like to sit?\n\nJäger | Gegenüber der Tür, wenn möglich. | Across from the door, if possible.\n\nGroßmutter | Rotkäppchen, du und deine Mutti, ihr sollt mich öfters besuchen! | Little Red Riding Hood, you and your mom, you guys should visit me more often!\n\nRotkäppchen | Aber Großmutter, unsere Geschichte würde langweilig werden! | But grandmother, our story would become boring!\n\nGroßmutter | Aha, da hast du Recht! | Oh, yeah, you're right!"
+    },
+    {
+      "heading": "Nominative pronouns",
+      "text": "This table reviews the different pronouns in the nominative case and what they mean.\n\nsingular | plural\n\n1st person | ich (I) | wir (we)\n\n2nd person | du (you) | ihr (y'all)\n\n3rd person masculine | er (he)\n\n3rd person feminine | sie (she) | sie (they)\n\n3rd person neuter | es (it)\n\nformal | Sie (you)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Die Mutter geht heute auf den Markt.",
+      "en": "The mother is going to the market today."
+    },
+    {
+      "de": "Sie geht heute auf den Markt.",
+      "en": "She is going to the market today."
+    },
+    {
+      "de": "Das Mädchen kommt mit.",
+      "en": "The little girl goes along."
+    },
+    {
+      "de": "Es kommt mit.",
+      "en": "It goes along. (Mädchen is a neutral noun in German\nbecause of the 'chen' diminutive ending)"
+    },
+    {
+      "de": "Der Wolf folgt ihnen.",
+      "en": "The wolf follows them."
+    },
+    {
+      "de": "Er folgt ihnen.",
+      "en": "He follows them."
+    },
+    {
+      "de": "Die Mutter und Rotkäppchen kaufen eine Flasche Wein und frische Äpfel.",
+      "en": "The mother and Little Red Riding Hood buy a bottle of wine and some fresh apples."
+    },
+    {
+      "de": "Sie kaufen eine Flasche Wein und frische Äpfel.",
+      "en": "They buy a bottle of wine and some fresh apples."
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Mama, ich möchte Wein trinken!"
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Wie bitte??? Du darfst erst Wein trinken, wenn du 16 Jahre alt bist!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Aber, Mama, das Gesetz betrifft Märchenfiguren doch nicht, oder?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Mama, darf ich mit Gretel ins Kino? Wir wollen den neuen Disneyfilm sehen!"
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Ihr dürft erst dann gehen, wenn ihr eure Aufsätze geschrieben habt."
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Unsere Aufsätze haben wir aber schon gestern geschrieben. Wir mussten \"Rotkäppchen\" aus der Perspektive des Wolfes neuschreiben."
+    },
+    {
+      "de": "Großmutter",
+      "en": "Rotkäppchen, hast du den Wolf gesehen?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Ja, er war wieder am Rande des Waldes. Solch ein Versager!"
+    },
+    {
+      "de": "Großmutter",
+      "en": "Und wo ist die Flasche Wein?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Sie ist in meinem Korb."
+    },
+    {
+      "de": "Großmutter",
+      "en": "Rotkäppchen, kannst du bitte den Tisch decken?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Natürlich. Herr Jäger, wo möchten Sie sitzen?"
+    },
+    {
+      "de": "Jäger",
+      "en": "Gegenüber der Tür, wenn möglich."
+    },
+    {
+      "de": "Großmutter",
+      "en": "Rotkäppchen, du und deine Mutti, ihr sollt mich öfters besuchen!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Aber Großmutter, unsere Geschichte würde langweilig werden!"
+    },
+    {
+      "de": "Großmutter",
+      "en": "Aha, da hast du Recht!"
+    },
+    {
+      "de": "1st person",
+      "en": "ich (I)"
+    },
+    {
+      "de": "2nd person",
+      "en": "du (you)"
+    },
+    {
+      "de": "er (he)",
+      "en": "3rd person masculine"
+    },
+    {
+      "de": "3rd person feminine",
+      "en": "sie (she)"
+    },
+    {
+      "de": "es (it)",
+      "en": "3rd person neuter"
+    },
+    {
+      "de": "formal",
+      "en": "Sie (you)"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "___ bin völlig missverstanden.",
+      "a": "ich",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Zum Beispiel, heute sehe ___ Rotkäppchen im Wald.",
+      "a": "ich",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Dieses Mädchen! ___ hat wieder seinen schicken Rock und sein rotes Käppchen an.",
+      "a": "es",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Und der Wein! ___ riecht himmlisch (smells heavenly)! Und das Brot noch besser!",
+      "a": "er",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Natürlich bin ___ hungrig!",
+      "a": "ich",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Ich sage Rotkäppchen: \"___ musst Blumen sammeln, kleines Mädchen, für deine Großmutter.\"",
+      "a": "du",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Und Rotkäppchen, das freche (cheeky) Kind, antwortet:\" ___ ist allergisch auf Blumen!\"",
+      "a": "sie",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Meine Psychologin hat kein Mitleid (sympathy): ___ meint, ich soll Vegetarier werden, wie mein Bruder (become).",
+      "a": "sie",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Ich sagte ihr (said to her):\" ___ verstehen mich gar nicht! Aber sie lachte nur als ich weinte.\"",
+      "a": "Sie",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "___, mein Bruder und ich, böse Wölfe, Vegetarier?! Lächerlich (ridiculous).",
+      "a": "wir",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Die modernen Kinder haben keine Angst vor uns. ___ kennen alle Märchen, und wissen, dass das Böse immer besiegt wird (evil is always is defeated). Pech!",
+      "a": "sie",
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    },
+    {
+      "type": "gap",
+      "q": "Kinder, ich warne euch! ___ sollt nicht alles glauben (believe), was ___ lest!",
+      "a": [
+        "ihr",
+        "ihr"
+      ],
+      "set_id": "pro_02_01_fib",
+      "set_title": "Übung: Auszüge aus dem Tagebuch des armen Wolfs (from the poor wolf's diary)",
+      "prompt": "Please fill in the blanks with the correct personal pronoun. Watch out for the verbs, as their endings can help you decide which pronoun is needed. Also, look carefully at the nouns the pronouns refer to – there are often clues in preceding and following phrases!"
+    }
+  ]
+}

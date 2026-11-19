@@ -1,0 +1,79 @@
+{
+ "n": 209,
+ "level": "B2",
+ "module": "b-relative",
+ "title": "Относительные (3): whose, where",
+ "en": "relative clauses 3 (whose/whom/where)",
+ "summary": "Чей, у кого и где: whose вместо притяжательного, whom после предлога и where, которое уже содержит предлог.",
+ "can_do": [
+  "Сказать «чей» через whose без артикля после него.",
+  "Употребить whom после предлога в формальной фразе.",
+  "Описать место через where, не добавляя второй предлог.",
+  "Различить the house where и the house which."
+ ],
+ "theory": [
+  {
+   "h": "Whose — чей",
+   "p": "Whose заменяет притяжательное my, his, their: a man whose car was stolen. После whose сразу идёт существительное и обязательно без артикля — whose car, а не whose the car. Работает и с людьми, и с вещами: a company whose profits are falling.",
+   "formula": "a man whose car was stolen · a company whose profits are falling · the girl whose mother is a doctor"
+  },
+  {
+   "h": "Whom — только формально",
+   "p": "Whom — это форма who для дополнения. В живой речи её почти не услышишь: говорят the woman who I met или просто the woman I met. Зато после предлога в письменном стиле нужен именно whom: the person to whom I spoke. С who там будет ошибка.",
+   "formula": "the woman who I met · the woman whom I met · the person to whom I spoke"
+  },
+  {
+   "h": "Кто, кого, чей, где",
+   "p": "Четыре слова закрывают почти все случаи, и различаются они ролью в придаточном. Who — человек-подлежащее, whom — человек-дополнение, whose — принадлежность, where — место. Артикль при главном слове остаётся на месте и в придаточное не переезжает.",
+   "table": {
+    "head": ["Слово", "Когда нужно", "Пример"],
+    "rows": [
+     ["who", "человек-подлежащее или дополнение", "the man who called"],
+     ["whom", "человек после предлога, формально", "the man to whom I spoke"],
+     ["whose", "принадлежность", "the man whose car was stolen"],
+     ["where", "место", "the house where I grew up"]
+    ]
+   }
+  },
+  {
+   "h": "Where уже значит «в котором»",
+   "p": "Where включает в себя и предлог, и место, поэтому второй предлог в конце не нужен: the house where I live, а не the house where I live in. Если предлог хочется оставить, то вместо where ставят which: the house I live in или the house in which I live.",
+   "formula": "the hotel where we stayed · the hotel we stayed at · the hotel at which we stayed"
+  },
+  {
+   "h": "Порядок слов и артикль",
+   "p": "Whose и where стоят в начале придаточного, сразу после существительного. После where идёт обычное подлежащее, без инверсии: the town where she was born, а не where was born she. После whose существительное идёт без артикля, потому что whose сам занял его место.",
+   "formula": "The man whose car was stolen called the police. · The town where she was born is small."
+  },
+  {
+   "h": "Where о вещах и документах",
+   "p": "Where не всегда про географию. Оно годится для любого места в широком смысле: the point where we stopped, the situation where nobody wins, the website where I bought the ticket. В таких фразах where тоже заменяет in which и не требует предлога.",
+   "formula": "the point where we stopped · a situation where nobody wins · the site where I found it"
+  }
+ ],
+ "examples": [
+  {"en": "That's the man whose car was stolen.", "ru": "Это тот мужчина, чью машину украли."},
+  {"en": "This is the writer whose books I love.", "ru": "Это писатель, чьи книги я люблю."},
+  {"en": "The person to whom I spoke was the manager.", "ru": "Человек, с которым я говорил, был менеджером."},
+  {"en": "The house where I grew up is now a museum.", "ru": "Дом, где я вырос, теперь музей."},
+  {"en": "We found a café where they serve breakfast all day.", "ru": "Мы нашли кафе, где завтракают весь день."},
+  {"en": "The company whose website I used has gone bankrupt.", "ru": "Компания, сайтом которой я пользовался, обанкротилась."}
+ ],
+ "traps": [
+  {"bad": "The man which his car was stolen is my neighbour.", "good": "The man whose car was stolen is my neighbour.", "why": "Принадлежность передаёт whose, а не which his."},
+  {"bad": "The house where I live in is old.", "good": "The house where I live is old.", "why": "Where уже содержит in, второй предлог лишний."},
+  {"bad": "The man whose the car was stolen called us.", "good": "The man whose car was stolen called us.", "why": "После whose артикль не ставится."},
+  {"bad": "The town where was born she is small.", "good": "The town where she was born is small.", "why": "После where порядок прямой, без инверсии."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "That's the girl ___ brother plays in our team.", "options": ["whose", "who", "which"], "a": 0, "why": "Чей брат — whose brother, без артикля."},
+  {"type": "choice", "q": "The hotel ___ we stayed last year was wonderful.", "options": ["where", "which", "what"], "a": 0, "why": "Место без предлога в конце — where."},
+  {"type": "choice", "q": "The teacher ___ I spoke to was very patient.", "options": ["who", "whose", "where"], "a": 0, "why": "Человек-дополнение, предлог в конце — who или that."},
+  {"type": "choice", "q": "This is the office ___ I work.", "options": ["where", "which", "whose"], "a": 0, "why": "Место работы — where, без предлога in."},
+  {"type": "gap", "q": "The woman ___ (whose) daughter studies here is a doctor.", "a": ["whose"], "why": "Принадлежность: whose daughter."},
+  {"type": "gap", "q": "The town ___ (where) he was born has changed a lot.", "a": ["where"], "why": "Место — where, затем подлежащее he."},
+  {"type": "gap", "q": "The letter was sent by the lawyer to ___ (whom) it was addressed.", "a": ["whom"], "why": "После предлога to — форма whom."},
+  {"type": "translate", "q": "Это человек, чью машину украли.", "a": ["this is the man whose car was stolen", "this is the person whose car was stolen"], "why": "Whose car, без артикля."},
+  {"type": "translate", "q": "Я вырос в городе, где нет метро.", "a": ["i grew up in a city where there is no metro", "i grew up in a town where there is no metro"], "why": "Where заменяет in which, предлог в конце не нужен."}
+ ]
+}

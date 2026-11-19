@@ -1,0 +1,25 @@
+{
+  "id": "zum_grammatik_kiste",
+  "name": "Grammatik-Kiste",
+  "publisher": "ZUM Deutsch Lernen / Zentrale für Unterrichtsmedien im Internet e. V. (ZUM)",
+  "author": "Autorinnen und Autoren von ZUM Deutsch Lernen",
+  "url": "https://deutsch-lernen.zum.de/wiki/Grammatik-Kiste",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": {
+    "ru": "Grammatik-Kiste, ZUM Deutsch Lernen (Zentrale für Unterrichtsmedien im Internet e. V.), лицензия CC BY 4.0. См. также: https://deutsch-lernen.zum.de/wiki/%C3%9Cber_ZUM_Deutsch_Lernen",
+    "en": "Grammatik-Kiste, ZUM Deutsch Lernen (Zentrale für Unterrichtsmedien im Internet e. V.), licensed under CC BY 4.0. See also: https://deutsch-lernen.zum.de/wiki/%C3%9Cber_ZUM_Deutsch_Lernen",
+    "de": "Grammatik-Kiste, ZUM Deutsch Lernen (Zentrale für Unterrichtsmedien im Internet e. V.), lizenziert unter CC BY 4.0. Siehe auch: https://deutsch-lernen.zum.de/wiki/%C3%9Cber_ZUM_Deutsch_Lernen"
+  },
+  "retrieved": "2026-11-19",
+  "modifications": {
+    "ru": "Убраны навигация вики, шаблоны оформления и встроенные виджеты. Текст разделов и таблиц скопирован дословно; HTML/викиразметка преобразованы в простой текст. Интерактивные упражнения H5P и LearningApps в текст не разворачивались.",
+    "en": "Wiki navigation, layout templates and embedded widgets were removed. Section text and tables were copied verbatim; HTML/wikitext was converted to plain text. H5P and LearningApps exercises were not expanded into text.",
+    "de": "Wiki-Navigation, Layoutvorlagen und eingebettete Widgets wurden entfernt. Abschnittstexte und Tabellen wurden wörtlich übernommen; HTML/Wikitext wurde in Klartext umgewandelt. Interaktive H5P- und LearningApps-Übungen wurden nicht als Text aufgelöst."
+  },
+  "license_note": {
+    "ru": "По умолчанию материалы ZUM Deutsch Lernen стоят под CC BY 4.0; страницы с иной явно указанной лицензией пропущены.",
+    "en": "ZUM Deutsch Lernen content is CC BY 4.0 by default; pages clearly marked with a different licence were skipped.",
+    "de": "Inhalte von ZUM Deutsch Lernen stehen grundsätzlich unter CC BY 4.0; Seiten mit einer abweichend gekennzeichneten Lizenz wurden übersprungen."
+  }
+}

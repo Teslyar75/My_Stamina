@@ -1,0 +1,80 @@
+{
+ "n": 251,
+ "level": "B2",
+ "module": "b-phrasal",
+ "title": "Фразовые глаголы: сводка и тонкости",
+ "en": "phrasal verbs: review",
+ "summary": "Фразовые глаголы — это сочетания глагола и частицы, смысл которых часто не складывается из частей. Главное — знать, когда объект ставится внутри, а когда только после, и как работают трёхсловные конструкции.",
+ "can_do": [
+  "Различать отделяемые и неотделяемые фразовые глаголы.",
+  "Правильно ставить местоимение-объект внутри отделяемого глагола.",
+  "Использовать трёхсловные фразовые глаголы (look forward to, run out of и др.).",
+  "Не путать фразовый глагол с обычным глаголом + предлогом места."
+ ],
+ "theory": [
+  {
+   "h": "Что такое фразовый глагол",
+   "p": "Фразовый глагол — это устойчивое сочетание глагола и частицы (up, off, out, down), которое ведёт себя как один смысловой блок. Часто смысл не выводится из частей: give up — «сдаться», а не «давать вверх»; look up — «найти информацию», а не «смотреть вверх». В словаре такие глаголы ищут по основному глаголу.",
+   "formula": "give up · look up · put off · turn down · run out of"
+  },
+  {
+   "h": "Отделяемые: местоимение всегда внутри",
+   "p": "Если фразовый глагол отделяемый, объект-существительное можно поставить и до частицы, и после: turn off the light / turn the light off. Но если объект — личное местоимение (it, them, me), оно может стоять ТОЛЬКО между глаголом и частицей: turn it off. Написать turn off it — грубая ошибка.",
+   "formula": "turn off the light · turn the light off · turn it off"
+  },
+  {
+   "h": "Неотделяемые: объект только после",
+   "p": "Многие фразовые глаголы не разделяются — объект всегда идёт после частицы. Особенно это касается глаголов с предлогом: look after (заботиться), look for (искать), get on with (ладить). Нельзя сказать look him after или get him on with — только look after him, get on with him.",
+   "formula": "look after him · look for it · get on with them"
+  },
+  {
+   "h": "Трёхсловные: частица + предлог",
+   "p": "Существует группа из трёх слов: глагол + частица + предлог. После предлога всегда стоит герундий или существительное: look forward to meeting you, run out of money, come up with an idea, get on with your work. Нельзя опускать предлог или менять порядок.",
+   "table": {
+    "head": ["Глагол", "Смысл", "Пример"],
+    "rows": [
+     ["look forward to", "с нетерпением ждать", "look forward to seeing you"],
+     ["run out of", "закончиться", "we ran out of time"],
+     ["come up with", "придумать", "come up with a plan"],
+     ["get on with", "продолжать / ладить", "get on with your work"]
+    ]
+   }
+  },
+  {
+   "h": "Фразовый глагол или просто предлог места",
+   "p": "Не каждый глагол с частицей — фразовый. Сравните: turn on the light (включить свет — фразовый, смысл неочевиден) и turn on the corner (повернуть на угол — просто глагол + предлог места). Во втором случае частицу можно заменить другой предлог без потери смысла, а в первом — нет.",
+   "formula": "turn on the light · turn on the corner · look up the word · look up the stairs"
+  },
+  {
+   "h": "Тяжёлые объекты лучше после частицы",
+   "p": "Когда объект выражен длинной фразой, его удобнее ставить после частицы, иначе предложение становится громоздким: put off the meeting until tomorrow звучит лучше, чем put the meeting off until tomorrow. С короткими объектами порядок свободен, с длинными — предпочтительнее глагол + частица + объект.",
+   "formula": "put off the meeting · put the meeting off · put off our appointment until next week"
+  }
+ ],
+ "examples": [
+  {"en": "I gave up smoking last year.", "ru": "Я бросил курить в прошлом году."},
+  {"en": "Please turn it off before you leave.", "ru": "Пожалуйста, выключи это перед уходом."},
+  {"en": "We ran out of milk this morning.", "ru": "У нас закончилось молоко этим утром."},
+  {"en": "She looks after her younger brother.", "ru": "Она заботится о младшем брате."},
+  {"en": "I'm looking forward to seeing you.", "ru": "Я с нетерпением жду встречи с тобой."},
+  {"en": "He came up with a brilliant idea.", "ru": "Он придумал блестящую идею."},
+  {"en": "Don't put off your homework.", "ru": "Не откладывай домашнее задание."}
+ ],
+ "traps": [
+  {"bad": "Turn off it.", "good": "Turn it off.", "why": "Местоимение-объект в отделяемом фразовом глаголе всегда стоит между глаголом и частицей."},
+  {"bad": "Look him after.", "good": "Look after him.", "why": "Look after — неотделяемый глагол, объект только после частицы."},
+  {"bad": "I look forward to see you.", "good": "I look forward to seeing you.", "why": "После предлога to в трёхсловных глаголах нужен герундий, а не инфинитив."},
+  {"bad": "We ran out milk.", "good": "We ran out of milk.", "why": "Run out of — трёхсловный глагол, предлог of нельзя опускать."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Please ___ the light when you leave.", "options": ["turn off", "turn it off", "turn off it"], "a": 1, "why": "Местоимение it должно стоять между глаголом и частицей."},
+  {"type": "choice", "q": "We ___ milk, so I'll buy some.", "options": ["ran out", "ran out of", "ran out it"], "a": 1, "why": "Run out of — трёхсловный глагол, нужен предлог of."},
+  {"type": "choice", "q": "She ___ her grandmother every weekend.", "options": ["looks after", "looks her after", "looks after her"], "a": 0, "why": "Look after — неотделяемый, объект после частицы."},
+  {"type": "choice", "q": "I'm ___ to hearing from you.", "options": ["looking forward", "looking forward to", "look forward to"], "a": 1, "why": "Трёхсловный глагол look forward to требует герундия после to."},
+  {"type": "gap", "q": "Don't ___ (put off) your homework until Sunday.", "a": ["put off", "put it off"], "why": "Объект-существительное можно поставить после частицы: put off your homework."},
+  {"type": "gap", "q": "We ___ (run out of) coffee this morning.", "a": ["ran out of"], "why": "Run out of — трёхсловный глагол, форма прошедшего времени ran."},
+  {"type": "gap", "q": "She ___ (look after) the children while we were out.", "a": ["looked after"], "why": "Look after — неотделяемый, прошедшее время looked after."},
+  {"type": "translate", "q": "Я с нетерпением жду нашей встречи.", "a": ["i'm looking forward to our meeting", "i look forward to our meeting"], "why": "Look forward to + герундий/существительное."},
+  {"type": "translate", "q": "Он придумал хороший план.", "a": ["he came up with a good plan", "he has come up with a good plan"], "why": "Come up with — трёхсловный глагол «придумать»."}
+ ]
+}

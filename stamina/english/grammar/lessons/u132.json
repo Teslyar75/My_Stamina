@@ -1,0 +1,78 @@
+{
+ "n": 132,
+ "level": "B2",
+ "module": "b-verbs",
+ "title": "have и have got",
+ "en": "have and have got",
+ "summary": "Один глагол на владение, завтрак, душ и простуду — и разница между британским have got и нейтральным have.",
+ "can_do": [
+  "Сказать, что у вас есть, через have got и have.",
+  "Задать вопрос Have you got...? и Do you have...?",
+  "Отличить have как действие от have got как владение.",
+  "Употребить have с едой, отдыхом, душем и болезнями."
+ ],
+ "theory": [
+  {
+   "h": "Владение: have got и have",
+   "p": "В настоящем времени владение можно выразить двумя способами. Британцы чаще говорят have got, американцы и нейтральный письменный язык обходятся обычным have. Смысл одинаковый, разница только в регистре и в стране.",
+   "formula": "I've got a car. = I have a car. · She's got two sisters."
+  },
+  {
+   "h": "Вопросы и отрицания",
+   "p": "Если выбран вариант с got, то вопрос начинается с have, а отрицание строится через haven't. Если вариант без got, то работает do: do you have, don't have. Смешивать две схемы в одном предложении нельзя.",
+   "formula": "Have you got a pen? / Do you have a pen? · I haven't got time. / I don't have time."
+  },
+  {
+   "h": "Две системы в таблице",
+   "p": "Держите в голове, что это не два разных смысла, а две формы одного смысла. Выбирайте ту, которая соответствует вашему варианту английского, и не переключайтесь внутри диалога.",
+   "table": {
+    "head": ["Ситуация", "Британский вариант", "Нейтральный вариант"],
+    "rows": [
+     ["у меня есть машина", "I've got a car.", "I have a car."],
+     ["у тебя есть время?", "Have you got time?", "Do you have time?"],
+     ["у меня нет времени", "I haven't got time.", "I don't have time."],
+     ["в прошлом", "I had a car.", "I had a car."]
+    ]
+   }
+  },
+  {
+   "h": "have + действие, без got",
+   "p": "Когда have значит не «иметь», а «делать», got не нужен. Завтракать, принимать душ, хорошо проводить время, смотреть, отдыхать — всё это обычные действия, и в continuous они тоже возможны.",
+   "formula": "have breakfast · have a shower · have a good time · have a look · have a break"
+  },
+  {
+   "h": "Болезни и have got to",
+   "p": "Про болезнь говорят I've got a headache или I have a headache — это то же владение. А конструкция have got to значит «должен» и в разговоре заменяет must, особенно когда речь о планах на ближайшее время.",
+   "formula": "I've got a terrible headache. · I've got to go now. = I must go now."
+  },
+  {
+   "h": "Только настоящее",
+   "p": "Got живёт только в настоящем времени. В прошлом и будущем остаётся обычный have: I had, I'll have. Поэтому фраза со got про детство или про следующий год звучит как ошибка.",
+   "formula": "I had a bike when I was ten. · I'll have more time next week."
+  }
+ ],
+ "examples": [
+  {"en": "She's got a new laptop and she loves it.", "ru": "У неё новый ноутбук, и он ей очень нравится."},
+  {"en": "Do you have any questions?", "ru": "У вас есть вопросы?"},
+  {"en": "I usually have breakfast at seven.", "ru": "Обычно я завтракаю в семь."},
+  {"en": "We're having lunch with the clients today.", "ru": "Сегодня мы обедаем с клиентами."},
+  {"en": "He's got to leave early tomorrow.", "ru": "Ему нужно уйти пораньше завтра."},
+  {"en": "I had long hair when I was a student.", "ru": "У меня были длинные волосы, когда я учился."}
+ ],
+ "traps": [
+  {"bad": "I have got a shower every morning.", "good": "I have a shower every morning.", "why": "Душ — действие, а не владение, поэтому без got."},
+  {"bad": "I had got a bike when I was ten.", "good": "I had a bike when I was ten.", "why": "Got бывает только в настоящем времени."},
+  {"bad": "Have you a car?", "good": "Have you got a car?", "why": "В вопросе нужен либо got, либо do: Do you have a car?"}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ a new laptop.", "options": ["have got", "has got", "have"], "a": 1, "why": "She — третье лицо: has got."},
+  {"type": "choice", "q": "___ you got a minute?", "options": ["Do", "Have", "Are"], "a": 1, "why": "С got вопрос начинается с have."},
+  {"type": "choice", "q": "I ___ a shower before work every day.", "options": ["have got", "have", "am having"], "a": 1, "why": "Регулярное действие — have, без got."},
+  {"type": "choice", "q": "He ___ a bad cold, so he's staying at home.", "options": ["has got", "have got", "has"], "a": 0, "why": "Болезнь в настоящем: has got."},
+  {"type": "gap", "q": "They ___ (not / have got) any children.", "a": ["haven't got", "have not got"], "why": "Отрицание с got: haven't got."},
+  {"type": "gap", "q": "We ___ (have) dinner at eight every evening.", "a": ["have"], "why": "Еда — действие, present simple."},
+  {"type": "gap", "q": "I ___ (have got) a terrible headache.", "a": ["have got", "'ve got"], "why": "Владение в настоящем: have got."},
+  {"type": "translate", "q": "У неё есть машина.", "a": ["she has got a car", "she's got a car", "she has a car"], "why": "Владение: has got или has."},
+  {"type": "translate", "q": "Я обычно завтракаю в семь.", "a": ["i usually have breakfast at seven", "i usually have breakfast at 7"], "why": "Завтрак — действие have, без got."}
+ ]
+}

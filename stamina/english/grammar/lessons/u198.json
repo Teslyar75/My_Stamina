@@ -1,0 +1,82 @@
+{
+ "n": 198,
+ "level": "B2",
+ "module": "b-pronouns",
+ "title": "a friend of mine, my own, by myself",
+ "en": "a friend of mine / my own / by myself",
+ "summary": "Разбираем двойной притяжательный (a friend of mine), усиление принадлежности (my own) и два способа сказать «один/самостоятельно» (by myself, on my own).",
+ "can_do": [
+  "Правильно строить фразы типа a friend of mine, не путая с a friend of me.",
+  "Использовать my own для выражения «свой собственный» и отличать от просто my.",
+  "Выбирать между by myself (без помощи) и on my own (один/независимо).",
+  "Не смешивать возвратное myself и притяжательное my own."
+ ],
+ "theory": [
+  {
+   "h": "Двойной притяжательный: a friend of mine",
+   "p": "Конструкция a friend of mine означает «один из моих друзей». После of стоят только абсолютные притяжательные (mine, yours, his, hers, ours, theirs), не объектные (me, you, him). Два притяжательных знака здесь нормальны: a friend of mine = one of my friends.",
+   "formula": "a friend of mine · a colleague of yours · that idea of his"
+  },
+  {
+   "h": "My own — свой собственный, не чужой",
+   "p": "Слово own усиливает притяжательное: my own room — моя собственная комната, не общая и не чужой. В русском это «свой» или «собственный». Own стоит после притяжательного и перед существительным, артикль при этом опускается: my own car, not a car of my own.",
+   "formula": "my own room · her own decision · their own business"
+  },
+  {
+   "h": "By myself и on my own — один, без помощи",
+   "p": "Оба выражают одиночество или самостоятельность. By myself чаще подчёркивает отсутствие помощи: I did it by myself. On my own — физическое одиночество или независимость: I live on my own. После by/on стоит возвратное: by myself, by yourself, by himself.",
+   "formula": "I did it by myself. · She lives on her own. · We travelled by ourselves."
+  },
+  {
+   "h": "Myself (возвратное) против my own (собственный)",
+   "p": "Myself используется, когда действие возвращается к подлежащему: I cut myself. My own указывает на принадлежность: my own car. Нельзя сказать *I made it my own — нужно I made it myself (сделал сам) или it is my own (это моё).",
+   "formula": "I hurt myself. · This is my own idea. · Do it yourself."
+  },
+  {
+   "h": "On my own или by myself: в чём разница",
+   "p": "On my own чаще про образ жизни или чувство: I'm on my own now — я теперь на своей голове. By myself про способ действия: I fixed it by myself — починил без помощи. В отрицании by myself звучит естественнее: I can't do it by myself.",
+   "formula": "I'm on my own. · I did it by myself. · She went on her own."
+  },
+  {
+   "h": "Таблица: притяжательные после of",
+   "p": "После of в конструкции a friend of... стоят только абсолютные формы. Объектные (me, you, him, her, us, them) здесь грамматически неверны. Запомните пары: my—mine, your—yours, his—his, her—hers, our—ours, their—theirs.",
+   "table": {
+    "head": ["Притяжательное", "Абсолютная форма", "Пример"],
+    "rows": [
+     ["my", "mine", "a friend of mine"],
+     ["your", "yours", "a friend of yours"],
+     ["his", "his", "a friend of his"],
+     ["her", "hers", "a friend of hers"],
+     ["our", "ours", "a friend of ours"],
+     ["their", "theirs", "a friend of theirs"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "A friend of mine called me yesterday.", "ru": "Один из моих друзей позвонил вчера."},
+  {"en": "This is my own room, I don't share it.", "ru": "Это моя собственная комната, я её не делю."},
+  {"en": "I fixed the bike by myself.", "ru": "Я починил велосипед сам, без помощи."},
+  {"en": "She lives on her own in London.", "ru": "Она живёт одна в Лондоне."},
+  {"en": "He cut himself while cooking.", "ru": "Он порезал себя, готовя."},
+  {"en": "That idea of yours is brilliant.", "ru": "Твоя идея (идея твоя) блестящая."},
+  {"en": "We did it all by ourselves.", "ru": "Мы сделали всё сами."}
+ ],
+ "traps": [
+  {"bad": "a friend of me", "good": "a friend of mine", "why": "После of нужен абсолютный притяжательный (mine), а не объектный (me)."},
+  {"bad": "This is my own", "good": "This is mine / This is my own one", "why": "My own требует существительное после себя; если предмета нет, используйте mine."},
+  {"bad": "I did it by me", "good": "I did it by myself", "why": "После by в значении «сам» ставится возвратное местоимение (myself), а не объектное (me)."},
+  {"bad": "She lives by her own", "good": "She lives on her own", "why": "Для образа жизни «жить одна» используется on my own, а не by my own."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "A friend of ___ called me.", "options": ["mine", "me", "my"], "a": 0, "why": "После of нужен абсолютный притяжательный mine."},
+  {"type": "choice", "q": "This is ___ room, nobody else uses it.", "options": ["my own", "myself", "mine own"], "a": 0, "why": "My own + существительное = моя собственная комната."},
+  {"type": "choice", "q": "I repaired the car ___.", "options": ["by myself", "by me", "myself"], "a": 0, "why": "Без помощи — by myself."},
+  {"type": "choice", "q": "She lives ___ in a small flat.", "options": ["on her own", "by her own", "her own"], "a": 0, "why": "Образ жизни «жить одна» — on her own."},
+  {"type": "gap", "q": "That idea of ___ (you) is crazy.", "a": ["yours"], "why": "После of — yours."},
+  {"type": "gap", "q": "He cut ___ (he) while shaving.", "a": ["himself"], "why": "Возвратное действие — himself."},
+  {"type": "gap", "q": "We built this house ___ (we) without any help.", "a": ["by ourselves", "ourselves"], "why": "Без помощи — by ourselves."},
+  {"type": "translate", "q": "Один из моих друзей позвонил вчера.", "a": ["a friend of mine called yesterday", "a friend of mine phoned yesterday"], "why": "Конструкция a friend of mine = один из моих друзей."},
+  {"type": "translate", "q": "Я сделал это сам, без помощи.", "a": ["I did it by myself", "I did it on my own"], "why": "By myself подчёркивает отсутствие помощи."}
+ ]
+}

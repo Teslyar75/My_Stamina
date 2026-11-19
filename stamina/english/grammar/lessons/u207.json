@@ -1,0 +1,77 @@
+{
+ "n": 207,
+ "level": "B2",
+ "module": "b-relative",
+ "title": "Относительные предложения (1)",
+ "en": "relative clauses 1",
+ "summary": "Как соединить два предложения в одно: человек — who, вещь — which, и почему «который» нельзя переводить словом what.",
+ "can_do": [
+  "Присоединить описание к человеку через who и к вещи через which.",
+  "Выбрать that вместо who или which в разговорной фразе.",
+  "Убрать относительное местоимение, если оно дополнение.",
+  "Не повторять подлежащее внутри придаточного."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужны относительные предложения",
+   "p": "Они присоединяют описание прямо к существительному, чтобы не начинать новое предложение. По-русски мы говорим «человек, который живёт рядом», и по-английски схема та же, только «который» превращается в who или which. Выбор зависит от того, о человеке речь или о вещи.",
+   "formula": "the man who lives next door · the book which is on the table · the people who work here"
+  },
+  {
+   "h": "Кто и что",
+   "p": "Who — для людей, which — для вещей и животных. That нейтрально и подходит к обоим, но живёт в основном в разговорной речи и после слов вроде all, everything, nothing, the only. В формальном письме с людьми лучше who.",
+   "table": {
+    "head": ["О ком или о чём", "Подлежащее в придаточном", "Дополнение в придаточном"],
+    "rows": [
+     ["человек", "who / that", "who / that / ничего"],
+     ["вещь или животное", "which / that", "which / that / ничего"]
+    ]
+   }
+  },
+  {
+   "h": "Дополнение можно просто выбросить",
+   "p": "Если слово, к которому относится придаточное, внутри придаточного является дополнением, относительное местоимение необязательно: the book I bought, the woman I met. Смысл сохраняется полностью, и так говорит большинство носителей.",
+   "formula": "The film we watched was boring. · The woman I met was kind. · The book that I bought was expensive."
+  },
+  {
+   "h": "А подлежащее выбрасывать нельзя",
+   "p": "Если внутри придаточного нужен субъект действия, местоимение остаётся. The man lives next door — это отдельное утверждение, а нам нужно the man who lives next door. Без who предложение теряет связь и рассыпается на два куска.",
+   "formula": "the man who lives next door · the people who work here · the train which goes to Paris"
+  },
+  {
+   "h": "Порядок слов без повторов",
+   "p": "Внутри придаточного обычный прямой порядок: подлежащее, глагол, дополнение. Who уже является подлежащим, поэтому второе подлежащее не появляется. Фраза the man who he lives next door — самая частая ошибка русскоязычных, потому что в русском «который он живёт» тоже невозможно, а рука всё равно пишет he.",
+   "formula": "the man who lives next door · the woman who called you · the people who arrived late"
+  },
+  {
+   "h": "Артикль остаётся при главном слове",
+   "p": "Артикль ставится перед существительным, до придаточного, и от придаточного не зависит: the man who called, a man who lies. Внутри придаточного артикль у главного слова не повторяется, а после придаточного его тоже нет.",
+   "formula": "The woman who called is my aunt. · A person who lies is not a friend."
+  }
+ ],
+ "examples": [
+  {"en": "The man who lives next door is a doctor.", "ru": "Мужчина, который живёт по соседству, — врач."},
+  {"en": "I read the book which you recommended.", "ru": "Я прочитал книгу, которую ты посоветовал."},
+  {"en": "The people who work here are very friendly.", "ru": "Люди, которые здесь работают, очень дружелюбны."},
+  {"en": "This is the film that everyone is talking about.", "ru": "Это фильм, о котором все говорят."},
+  {"en": "The only thing that matters is your health.", "ru": "Единственное, что важно, — это твоё здоровье."},
+  {"en": "She is the teacher I told you about.", "ru": "Она та учительница, о которой я тебе говорил."}
+ ],
+ "traps": [
+  {"bad": "The man who he lives next door is a doctor.", "good": "The man who lives next door is a doctor.", "why": "Who уже подлежащее, второе he внутри придаточного лишнее."},
+  {"bad": "The book what I read was good.", "good": "The book that I read was good. / The book I read was good.", "why": "What не бывает относительным местоимением после существительного."},
+  {"bad": "The people which work here are friendly.", "good": "The people who work here are friendly.", "why": "Люди — это who, а which только для вещей."},
+  {"bad": "The woman I met her yesterday is my boss.", "good": "The woman I met yesterday is my boss.", "why": "Her внутри придаточного не нужно: дополнение уже заменено."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The girl ___ sits next to me is from Spain.", "options": ["who", "which", "what"], "a": 0, "why": "Человек в роли подлежащего — who."},
+  {"type": "choice", "q": "This is the phone ___ I bought last week.", "options": ["who", "which", "what"], "a": 1, "why": "Вещь — which или that, но не what."},
+  {"type": "choice", "q": "Everything ___ he said was true.", "options": ["that", "who", "what"], "a": 0, "why": "После everything естественно that."},
+  {"type": "choice", "q": "The film ___ we watched last night was boring.", "options": ["what", "which", "who"], "a": 1, "why": "Вещь-дополнение: which или that, но не what и не who."},
+  {"type": "gap", "q": "The woman ___ (who) called you is my sister.", "a": ["who", "that"], "why": "Человек-подлежащее: who или that, но не which."},
+  {"type": "gap", "q": "I didn't like the film ___ (which) we watched yesterday.", "a": ["which", "that"], "why": "Вещь-дополнение: which, that или ничего."},
+  {"type": "gap", "q": "The people ___ (who) live upstairs are very quiet.", "a": ["who", "that"], "why": "Люди-подлежащее: who или that."},
+  {"type": "translate", "q": "Мужчина, который живёт рядом, работает врачом.", "a": ["the man who lives next door works as a doctor", "the man that lives next door works as a doctor"], "why": "Who lives next door, без второго подлежащего."},
+  {"type": "translate", "q": "Это книга, которую я тебе советовал.", "a": ["this is the book i recommended to you", "this is the book that i recommended to you", "this is the book which i recommended to you"], "why": "Дополнение внутри придаточного, местоимение можно убрать."}
+ ]
+}

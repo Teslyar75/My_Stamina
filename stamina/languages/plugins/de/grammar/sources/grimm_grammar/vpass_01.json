@@ -1,0 +1,182 @@
+{
+  "id": "vpass_01",
+  "title": "Verbs: Das Passiv im Präsens",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Voice is a grammatical category that describes the relationship between a verb and its subject. Just like in English, this relationship in German can be active or passive. If the subject is acting, the voice is active, but if the subject is being acted upon, the voice is passive.\n\nActive voice | Der Mann stiehlt einige Rapunzeln aus dem Garten. | The man steals a few lamb's lettuce from the garden.\n\nPassive voice | Einige Rapunzeln werden aus dem Garten gestohlen. | A few lamb's lettuce are stolen from the garden.\n\nIn the first example above, the subject (i.e., the man) acts upon the direct object (i.e., steals the lamb's lettuce). In the second example, the subject is the lamb's lettuce: it is acted upon when it is stolen.\n\nThe subject is not mentioned in the second example. Leaving the agent responsible for the action out (i.e., using the passive voice) indicates that the agent is obvious, or insignificant, or altogether unknown. The Fairy Tale police would have used the passive voice until the identity of the Täter (criminal) was certain, and they just wanted to enter into their blog the fact that some rapunzel went missing from the witch's magic garden ..."
+    },
+    {
+      "heading": "Stating agency",
+      "text": "To state the agent in a passive construction, use the dative preposition von (by).\n\nPassive voice + agent | Leider wird der Mann von der alten Hexe erwischt und anschließend erpresst. | Unfortunately, the man is caught and subsequently blackmailed by the old witch.\n\nIf the agent is an inanimate force (i.e., the weather) use the accusative preposition durch.\n\nPassive voice +\ninanimate agent | Das Leben der Hexe wird durch Zauberei vereinfacht. Sie muss keine Minute im Garten verbringen, und trotzdem wachsen die Rapunzeln unglaublich schnell! | The witch's life is made easy by magic (with the help of magic). She doesn't have to spend a minute in her garden and her rapunzels still grow unbelieveably fast.\n\nAs you can see, the passive voice is formed with the auxiliary verb werden and the past participle of the main verb (i.e., stehlen => gestohlen in the examples above).\n\nThe passive voice uses all of the same tenses as the active voice, but the most frequently used tenses in the passive are the present, simple past, and present perfect tenses."
+    },
+    {
+      "heading": "Das Passiv im Präsens",
+      "text": "In the present tense, the auxiliary verb werden is conjugated in the present (i.e., wird, werden, etc.).\n\nEin Salat wird aus den Rapunzeln gemacht. Aber weder der Mann noch die Frau geben zu, wer den Salat vorbereitet hat! | A salad is made out of the lamb's lettuce. But neither the man nor the woman admits who made the salad!\n\nZur Strafe wird das Kind von seinen Eltern weggenommen. | As a punishment, the child is taken from its parents.\n\nwerden • to become\n\nich werde | wir werden\n\ndu wirst | ihr werdet\n\ner/sie/es wird | sie werden"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Active voice",
+      "en": "Der Mann stiehlt einige Rapunzeln aus dem Garten."
+    },
+    {
+      "de": "Passive voice",
+      "en": "Einige Rapunzeln werden aus dem Garten gestohlen."
+    },
+    {
+      "de": "Passive voice + agent",
+      "en": "Leider wird der Mann von der alten Hexe erwischt und anschließend erpresst."
+    },
+    {
+      "de": "Passive voice +\ninanimate agent",
+      "en": "Das Leben der Hexe wird durch Zauberei vereinfacht. Sie muss keine Minute im Garten verbringen, und trotzdem wachsen die Rapunzeln unglaublich schnell!"
+    },
+    {
+      "de": "Ein Salat wird aus den Rapunzeln gemacht. Aber weder der Mann noch die Frau geben zu, wer den Salat vorbereitet hat!",
+      "en": "A salad is made out of the lamb's lettuce. But neither the man nor the woman admits who made the salad!"
+    },
+    {
+      "de": "Zur Strafe wird das Kind von seinen Eltern weggenommen.",
+      "en": "As a punishment, the child is taken from its parents."
+    },
+    {
+      "de": "ich werde",
+      "en": "wir werden"
+    },
+    {
+      "de": "du wirst",
+      "en": "ihr werdet"
+    },
+    {
+      "de": "er/sie/es wird",
+      "en": "sie werden"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Zuerst holt der Mann eine Hand voll Rapunzeln.",
+      "options": [
+        "a. Zuerst wird eine Hand voll Rapunzeln geholt.",
+        "b. Zuerst ist eine Hand voll Rapunzeln geholt."
+      ],
+      "a": "a. Zuerst wird eine Hand voll Rapunzeln geholt.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Die Frau wäscht die Rapunzeln und reißt sie in Stücke.",
+      "options": [
+        "a. Die Stücke wird gewascht und in Rapunzel gerissen.",
+        "b. Die Rapunzeln werden gewaschen und in Stücke gerissen."
+      ],
+      "a": "b. Die Rapunzeln werden gewaschen und in Stücke gerissen.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Danach tut sie die Stücke in eine große Schüssel hinein.",
+      "options": [
+        "a. Dann werden die Stücke in eine große Schüssel hineingetan.",
+        "b. Dann wird die Stücke in eine große Schüssel hineingetan."
+      ],
+      "a": "a. Dann werden die Stücke in eine große Schüssel hineingetan.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Sie schneidet ein paar Tomaten und Zwiebel dazu.",
+      "options": [
+        "a. Ein paar Tomaten und Zwiebel sind dazugeschnitten.",
+        "b. Ein paar Tomaten und Zwiebel werden dazugeschnitten."
+      ],
+      "a": "b. Ein paar Tomaten und Zwiebel werden dazugeschnitten.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Dann wirft sie das Gemüse in die Salatschüssel.",
+      "options": [
+        "a. Dann wird dem Gemüse in die Salatschüssel geworfen.",
+        "b. Dann wird das Gemüse in die Salatschüssel geworfen."
+      ],
+      "a": "b. Dann wird das Gemüse in die Salatschüssel geworfen.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Zunächst macht sie eine Salatsoße aus Essig und Öl.",
+      "options": [
+        "a. Zunächst wird eine Salatsoße aus Essig und Öl zubereitet.",
+        "b. Zunächst werden eine Salatsoße aus Essig und Öl zubereitet."
+      ],
+      "a": "a. Zunächst wird eine Salatsoße aus Essig und Öl zubereitet.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Sie gießt die Salatsoße über den Salat.",
+      "options": [
+        "a. Die Salatsoße wird über den Salat gegießen.",
+        "b. Die Salatsoße wird über den Salat gegossen."
+      ],
+      "a": "b. Die Salatsoße wird über den Salat gegossen.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Als Croutons streut sie einige Brotkrümel darüber.",
+      "options": [
+        "a. Als Croutons wird einige Brotkrümel darüber gestreut.",
+        "b. Als Croutons werden einige Brotkrümel darüber gestreut."
+      ],
+      "a": "b. Als Croutons werden einige Brotkrümel darüber gestreut.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Die Frau legt einen Gabel und eine Serviette auf den Tisch.",
+      "options": [
+        "a. Eine Gabel und eine Serviette werden auf den Tisch gelegt.",
+        "b. Eine Gabel und eine Serviette werden auf den Tisch gelegen."
+      ],
+      "a": "a. Eine Gabel und eine Serviette werden auf den Tisch gelegt.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    },
+    {
+      "type": "choice",
+      "q": "Zuletzt isst sie den leckeren Salat.",
+      "options": [
+        "a. Zuletzt wird der leckere Salat gegessen.",
+        "b. Zuletzt ist der leckere Salat gegessen."
+      ],
+      "a": "a. Zuletzt wird der leckere Salat gegessen.",
+      "set_id": "vpass_01_01_mcr",
+      "set_title": "Übung 1 - Der Rapunzelsalat",
+      "prompt": "Rapunzel's mother is very hungry while she is pregnant with her. Select the correct rephrasing of the active voice sentence into the passive voice for each sentence below to see how Rapunzel's mother makes a salad out of lamb's lettuce from the garden next door."
+    }
+  ]
+}

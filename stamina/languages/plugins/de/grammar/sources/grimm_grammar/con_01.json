@@ -1,0 +1,85 @@
+{
+  "id": "con_01",
+  "title": "Conjunctions: Konjunktionen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/con_01.html",
+  "explanation_lang": "en",
+  "section": "Conjunctions",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Conjunctions are typically used either for stylistic purposes (to reduce redundancy or make our speech or writing more fluid) or to help identify closer relationships between ideas. These ideas can be envisioned as two sentences originally, that are combined for stylistic or emphatic reasons. Once they are connected, each original sentence becomes a clause.\n\n2 sentences:\n\nHänsel und Gretel müssen ihr Haus verlassen. | Hansel and Gretel have to leave their house.\n\nSie möchten lieber zu Hause bleiben. | They would prefer to stay at home.\n\n1 sentence with 2 clauses:\n\nHänsel und Gretel müssen ihr Haus verlassen, aber sie möchten lieber zu Hause bleiben. | Hansel and Gretel have to leave their house, but they would prefer to stay at home."
+    },
+    {
+      "heading": "Satzteile (Clauses)",
+      "text": "Conjunctions can connect two different types of clauses:\n\n1. Independent clauses are grammatically complete; that is, they have at least a subject, a verb and all the other words that come with the verb [called complements] such as direct and/or indirect objects. This is true even if there are two of them in the sentence.\n\nHänsel und Gretels Vater heiratet eine neue Frau, und das Leben der zwei Kinder wird unerträglich. | Hansel and Gretel's father marries a new woman, and the two children's life becomes impossible.\n\n2. Dependent clauses cannot stand on their own and need the support of an independent clause. Although they may have all necessary parts of a sentence (subject, verb, direct object, etc.), they become dependent on another clauses because the subordinating conjunction, which makes the connection between the two sentences stronger and explicit.\n\nHänsel und Gretels Vater heiratet eine neue Frau, obwohl diese die Kinder hasst. | Hansel and Gretel's father marries a new woman, although she hates the children.\n\nSometimes coordinating conjunctions connect shorter phrases:\n\nDie Geschwister verbringen die Nacht bei der Hexe und nicht zu Hause. | The siblings spend the night at the witch's house and not at home."
+    },
+    {
+      "heading": "Koordinierende Konjunktionen (Coordinating conjunctions)",
+      "text": "Coordinating conjunctions join equal clauses: either two independent clauses or two dependent clauses. The word order stays the same in each clause, with the verb in second position.\n\nDie Kinder sitzen am Feuer, und der Vater geht Holz hacken. | The children are sitting at the fire, and the father goes to cut wood.\n\nHänsel und Gretel warten den ganzen Nachmittag, aber ihr Vater kommt nicht zurück. | Hansel and Gretel wait all afternoon, but their father doesn't come back.\n\nEr hat kein Holz gehackt, sondern ist nach Hause zurückgegangen. | He didn't cut wood, but went home instead.\n\nEr hat seine Kinder im Wald gelassen, denn seine neue Frau hasste die Kinder und die Familie hatte nicht genug zu essen. | He left his children in the forest because his new wife hated them and they didn't have enough to eat (here, 'and' combines two dependent clauses)."
+    },
+    {
+      "heading": "Subordinierende Konjunktionen (Subordinating conjunctions)",
+      "text": "Subordinating conjunctions join unequal clauses: one independent and one dependent clause. The word order in the independent clause is the regular verb-in-second-position; the word order in the dependent clause changes, however, and the conjugated verb goes to the end of the clause\n\nAm ersten Tag finden die Kinder den Weg nach Hause zurück, weil Hänsel kleine Kieselsteine auf den Weg wirft. | On the first day the children find their way home, because Hansel threw pebbles on the path.\n\nDie Stiefmutter will die Kinder tiefer in den Wald führen, damit sie nicht wieder herausfinden. | The stepmother wants to take the children deeper into the woods, so that they can't find their way out again.\n\nDer Vater stimmt traurig zu, obwohl er seine Kinder sehr liebt. | The father consents, although he loves his children very much.\n\nUnd wir wissen alle Bescheid, was danach passiert. | And we all know for sure, what happens next."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Hänsel und Gretel müssen ihr Haus verlassen.",
+      "en": "Hansel and Gretel have to leave their house."
+    },
+    {
+      "de": "Sie möchten lieber zu Hause bleiben.",
+      "en": "They would prefer to stay at home."
+    },
+    {
+      "de": "Hänsel und Gretel müssen ihr Haus verlassen, aber sie möchten lieber zu Hause bleiben.",
+      "en": "Hansel and Gretel have to leave their house, but they would prefer to stay at home."
+    },
+    {
+      "de": "Hänsel und Gretels Vater heiratet eine neue Frau, und das Leben der zwei Kinder wird unerträglich.",
+      "en": "Hansel and Gretel's father marries a new woman, and the two children's life becomes impossible."
+    },
+    {
+      "de": "Hänsel und Gretels Vater heiratet eine neue Frau, obwohl diese die Kinder hasst.",
+      "en": "Hansel and Gretel's father marries a new woman, although she hates the children."
+    },
+    {
+      "de": "Die Geschwister verbringen die Nacht bei der Hexe und nicht zu Hause.",
+      "en": "The siblings spend the night at the witch's house and not at home."
+    },
+    {
+      "de": "Die Kinder sitzen am Feuer, und der Vater geht Holz hacken.",
+      "en": "The children are sitting at the fire, and the father goes to cut wood."
+    },
+    {
+      "de": "Hänsel und Gretel warten den ganzen Nachmittag, aber ihr Vater kommt nicht zurück.",
+      "en": "Hansel and Gretel wait all afternoon, but their father doesn't come back."
+    },
+    {
+      "de": "Er hat kein Holz gehackt, sondern ist nach Hause zurückgegangen.",
+      "en": "He didn't cut wood, but went home instead."
+    },
+    {
+      "de": "Er hat seine Kinder im Wald gelassen, denn seine neue Frau hasste die Kinder und die Familie hatte nicht genug zu essen.",
+      "en": "He left his children in the forest because his new wife hated them and they didn't have enough to eat (here, 'and' combines two dependent clauses)."
+    },
+    {
+      "de": "Am ersten Tag finden die Kinder den Weg nach Hause zurück, weil Hänsel kleine Kieselsteine auf den Weg wirft.",
+      "en": "On the first day the children find their way home, because Hansel threw pebbles on the path."
+    },
+    {
+      "de": "Die Stiefmutter will die Kinder tiefer in den Wald führen, damit sie nicht wieder herausfinden.",
+      "en": "The stepmother wants to take the children deeper into the woods, so that they can't find their way out again."
+    },
+    {
+      "de": "Der Vater stimmt traurig zu, obwohl er seine Kinder sehr liebt.",
+      "en": "The father consents, although he loves his children very much."
+    },
+    {
+      "de": "Und wir wissen alle Bescheid, was danach passiert.",
+      "en": "And we all know for sure, what happens next."
+    }
+  ],
+  "exercises": []
+}

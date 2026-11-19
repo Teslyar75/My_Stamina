@@ -1,0 +1,78 @@
+{
+ "n": 197,
+ "level": "B2",
+ "module": "b-pronouns",
+ "title": "Возвратные местоимения",
+ "en": "myself/yourself/themselves",
+ "summary": "Возвратные местоимения указывают, что действие направлено на самого субъекта: I cut myself. У них есть фиксированные фразы и глаголы, где они не нужны или необязательны.",
+ "can_do": [
+  "Образовать все восемь возвратных местоимений и использовать их, когда подлежащее и дополнение совпадают.",
+  "Говорить help yourself, enjoy yourself, behave yourself без ошибок.",
+  "Не ставить возвратное после feel, relax, concentrate, meet.",
+  "Различать themselves (себя) и each other (друг друга)."
+ ],
+ "theory": [
+  {
+   "h": "Когда нужны возвратные местоимения",
+   "p": "Если действие возвращается к подлежащему, ставим myself, yourself, himself, herself, itself, ourselves, yourselves, themselves: She cut herself while cooking. В русском это часто передаётся частицей -ся, но в английском местоимение обязательно, иначе смысл меняется: She cut her — она порезала другую.",
+   "formula": "I → myself · you → yourself · he → himself · she → herself · it → itself · we → ourselves · you → yourselves · they → themselves"
+  },
+  {
+   "h": "Фиксированные выражения с возвратными",
+   "p": "Некоторые фразы заучиваются целиком: help yourself (угощайся), enjoy yourself (проведи хорошо), behave yourself (веди себя хорошо), make yourself at home (чувствуй себя как дома). Здесь возвратное не заменяется на обычное объектное, даже если по-русски частицы -ся нет.",
+   "formula": "Help yourself to some cake. · Did you enjoy yourself? · Behave yourself!"
+  },
+  {
+   "h": "Глаголы, где возвратное не ставится",
+   "p": "После feel, relax, concentrate, meet, wash, dress, shave возвратное местоимение обычно опускается: I feel tired (не myself), She relaxed on the sofa. В русском эти глаголы часто имеют суффикс -ся, но в английском они уже выражают состояние или действие без дополнительного слова.",
+   "formula": "I feel good. · He relaxed after work. · Concentrate on the task. · We met at the station."
+  },
+  {
+   "h": "Глаголы, где возвратное необязательно",
+   "p": "С wash, dress, shave можно сказать и I washed, и I washed myself — разница в акценте. Без возвратного звучит естественнее для рутинных действий: He shaves every morning. С возвратным — когда важно подчеркнуть, что сделал сам, без помощи: The child dressed himself today.",
+   "formula": "I washed. / I washed myself. · He dressed quickly. · She shaved her legs."
+  },
+  {
+   "h": "Themselves vs each other",
+   "p": "Themselves — действие направлено на самих себя: They hurt themselves. Each other — взаимное действие между двумя и более: They helped each other. Не перепутывайте: They looked at themselves (в зеркало) и They looked at each other (друг на друга).",
+   "table": {
+    "head": ["Местоимение", "Смысл", "Пример"],
+    "rows": [
+     ["themselves", "себя (каждый свой)", "They blamed themselves."],
+     ["each other", "друг друга (взаимно)", "They blamed each other."]
+    ]
+   }
+  },
+  {
+   "h": "Возвратные для усиления (emphatic use)",
+   "p": "Иногда возвратное ставится после подлежащего или в конце предложения, чтобы подчеркнуть: «сам», «лично»: I did it myself. The Queen herself opened the hospital. В этом случае его можно убрать без потери грамматической правильности, но теряется оттенок личного участия.",
+   "formula": "I myself saw it. · She baked the cake herself. · The city itself is beautiful."
+  }
+ ],
+ "examples": [
+  {"en": "He cut himself while shaving.", "ru": "Он поранился, бреясь."},
+  {"en": "Please help yourself to some coffee.", "ru": "Угоститесь кофе, пожалуйста."},
+  {"en": "We really enjoyed ourselves at the party.", "ru": "Мы отлично провели время на вечеринке."},
+  {"en": "Don't worry, just relax.", "ru": "Не волнуйся, просто расслабься."},
+  {"en": "The children dressed themselves today.", "ru": "Дети сегодня оделись сами."},
+  {"en": "They don't like each other.", "ru": "Они не любят друг друга."},
+  {"en": "I'll do it myself.", "ru": "Я сделаю это сам."}
+ ],
+ "traps": [
+  {"bad": "I feel myself tired.", "good": "I feel tired.", "why": "После feel возвратное не ставится — глагол уже выражает состояние."},
+  {"bad": "They met themselves at the station.", "good": "They met at the station.", "why": "Meet не требует возвратного; themselves здесь означало бы, что они встретили сами себя."},
+  {"bad": "They looked at themselves.", "good": "They looked at each other.", "why": "Если смотрели друг на друга, нужно each other. Themselves — в зеркало."},
+  {"bad": "She concentrated herself on the book.", "good": "She concentrated on the book.", "why": "Concentrate не берёт возвратное местоимение."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She cut ___ while cooking.", "options": ["her", "herself", "she"], "a": 1, "why": "Действие возвращается к подлежащему — herself."},
+  {"type": "choice", "q": "Please help ___ to some salad.", "options": ["you", "yourself", "yours"], "a": 1, "why": "Фиксированная фраза help yourself."},
+  {"type": "choice", "q": "After work I just want to ___.", "options": ["relax myself", "relax", "relax me"], "a": 1, "why": "После relax возвратное не ставится."},
+  {"type": "choice", "q": "The two brothers don't like ___.", "options": ["themselves", "each other", "them"], "a": 1, "why": "Взаимное нелюбовь — each other."},
+  {"type": "gap", "q": "The child dressed ___ (he) without help.", "a": ["himself"], "why": "Подчеркиваем, что сделал сам — himself."},
+  {"type": "gap", "q": "We really enjoyed ___ at the concert.", "a": ["ourselves"], "why": "Фиксированная фраза enjoy ourselves."},
+  {"type": "gap", "q": "They met ___ at the conference last year.", "a": ["each other"], "why": "Взаимная встреча — each other."},
+  {"type": "translate", "q": "Я чувствую себя хорошо.", "a": ["I feel good", "I feel well"], "why": "Feel не требует возвратного: I feel good."},
+  {"type": "translate", "q": "Они винят друг друга.", "a": ["They blame each other"], "why": "Взаимное действие — each other, не themselves."}
+ ]
+}

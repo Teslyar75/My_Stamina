@@ -1,0 +1,83 @@
+{
+ "n": 213,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "Порядок прилагательных",
+ "en": "adjectives: word order",
+ "summary": "Несколько прилагательных перед существительным следуют строгому порядку: мнение, размер, возраст, форма, цвет, происхождение, материал, назначение. После глаголов-связок их соединяют союзом and.",
+ "can_do": [
+  "Выстроить прилагательные в правильном порядке перед существительным.",
+  "Ограничивать цепочку двумя-тремя прилагательными в устной речи.",
+  "Соединять прилагательные через and после be, look, feel.",
+  "Различать прилагательные мнения и факта по позиции в цепочке."
+ ],
+ "theory": [
+  {
+   "h": "Порядок: мнение — размер — возраст — форма — цвет — происхождение — материал — назначение",
+   "p": "Несколько прилагательных перед существительным идут в фиксированном порядке: мнение (beautiful), размер (large), возраст (old), форма (round), цвет (red), происхождение (Italian), материал (leather), назначение (sleeping). Нарушение порядка звучит неестественно.",
+   "formula": "a beautiful old Italian leather bag · a small round wooden table · a lovely new red cotton dress"
+  },
+  {
+   "h": "Прилагательные мнения и факта",
+   "p": "Субъективная оценка (lovely, awful) всегда стоит перед объективными признаками: размером, возрастом, цветом. Сравните: a nice big house — оценка перед размером. Перестановка меняет естественность фразы.",
+   "formula": "a lovely little village · an awful long meeting · a comfortable old armchair"
+  },
+  {
+   "h": "Не больше двух-трёх прилагательных",
+   "p": "В речи редко ставят более двух-трёх прилагательных подряд — фраза перегружается. Лучше вынести лишнее в отдельное предложение: a beautiful large Italian bag. It's red and round.",
+   "formula": "a beautiful old Italian bag · a small black leather jacket"
+  },
+  {
+   "h": "После глаголов-связок — через and",
+   "p": "После be, look, feel прилагательные соединяются союзом and: The bag is beautiful and expensive. Без and фраза звучит как сплошное перечисление, что нетипично для обычной речи.",
+   "formula": "The room was small and dark. · She looks tired and unhappy. · It feels soft and warm."
+  },
+  {
+   "h": "Определители и порядок",
+   "p": "Артикль, моё/твоё или числительное стоят перед всей цепочкой: my two old school friends. Порядок категорий прилагательных при этом не меняется, определитель относится ко всей группе.",
+   "formula": "my two old school friends · that beautiful big house · three small round tables"
+  },
+  {
+   "h": "Таблица порядка категорий",
+   "table": {
+    "head": ["Категория", "Примеры", "Позиция"],
+    "rows": [
+     ["Мнение", "beautiful, nice, awful", "1-я"],
+     ["Размер", "large, small, tiny", "2-я"],
+     ["Возраст", "old, new, ancient", "3-я"],
+     ["Форма", "round, square, flat", "4-я"],
+     ["Цвет", "red, blue, green", "5-я"],
+     ["Происхождение", "Italian, Russian, Chinese", "6-я"],
+     ["Материал", "leather, wooden, silk", "7-я"],
+     ["Назначение", "sleeping, walking, cooking", "8-я (перед существительным)"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "She bought a beautiful old Italian leather bag.", "ru": "Она купила красивую старую итальянскую кожаную сумку."},
+  {"en": "The house is large and old.", "ru": "Дом большой и старый."},
+  {"en": "A lovely little wooden box.", "ru": "Миленькая маленькая деревянная коробочка."},
+  {"en": "He wore a smart new black suit.", "ru": "Он носил строгий новый чёрный костюм."},
+  {"en": "The soup smells delicious and hot.", "ru": "Суп пахнет вкусно и горячо."},
+  {"en": "My two old school friends visited me.", "ru": "Мои два старых школьных друга навестили меня."},
+  {"en": "It's a nice round wooden table.", "ru": "Это красивый круглый деревянный стол."}
+ ],
+ "traps": [
+  {"bad": "a leather Italian old beautiful bag", "good": "a beautiful old Italian leather bag", "why": "Порядок категорий фиксирован: мнение → возраст → происхождение → материал."},
+  {"bad": "The bag is beautiful, expensive.", "good": "The bag is beautiful and expensive.", "why": "После глаголов-связок прилагательные соединяются союзом and."},
+  {"bad": "a big nice house", "good": "a nice big house", "why": "Оценка (nice) всегда перед размером (big)."},
+  {"bad": "a sleeping beautiful bag", "good": "a beautiful sleeping bag", "why": "Назначение (sleeping) стоит последним, перед существительным."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She bought a ___ bag.", "options": ["beautiful old Italian leather", "Italian leather beautiful old", "leather Italian old beautiful"], "a": 0, "why": "Порядок: мнение → возраст → происхождение → материал."},
+  {"type": "choice", "q": "The house is ___.", "options": ["large and old", "large old", "old large"], "a": 0, "why": "После be прилагательные соединяются and."},
+  {"type": "choice", "q": "It's a ___ table.", "options": ["nice round wooden", "round wooden nice", "wooden nice round"], "a": 0, "why": "Оценка (nice) → форма (round) → материал (wooden)."},
+  {"type": "choice", "q": "He has ___ friends.", "options": ["two old school", "old two school", "school old two"], "a": 0, "why": "Числительное → возраст → назначение."},
+  {"type": "gap", "q": "She wore a ___ (lovely / silk / red) dress.", "a": ["lovely red silk"], "why": "Оценка → цвет → материал."},
+  {"type": "gap", "q": "The box is ___ (small / wooden / square).", "a": ["small and square and wooden", "small, square and wooden"], "why": "После be перечисляем через and, порядок: размер → форма → материал."},
+  {"type": "gap", "q": "They live in a ___ (big / old / brick) house.", "a": ["big old brick"], "why": "Размер → возраст → материал."},
+  {"type": "translate", "q": "Она купила красивую старую итальянскую кожаную сумку.", "a": ["she bought a beautiful old Italian leather bag"], "why": "Порядок прилагательных: мнение → возраст → происхождение → материал."},
+  {"type": "translate", "q": "Суп вкусный и горячий.", "a": ["the soup is delicious and hot", "the soup tastes delicious and hot"], "why": "После связки прилагательные через and."}
+ ]
+}

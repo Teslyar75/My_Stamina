@@ -1,0 +1,70 @@
+{
+ "n": 152,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "Просьбы: Can you, Could you, Would you",
+ "en": "can you / could you / would you",
+ "summary": "Три способа попросить о помощи и разница между ними: где достаточно can, а где лучше could или would, чтобы не прозвучать грубо.",
+ "can_do": [
+  "Попросить о помощи нейтрально и вежливо.",
+  "Выбрать между can you, could you и would you по ситуации.",
+  "Задать просьбу мягко через Do you think you could и Would you mind.",
+  "Понять на слух, просьба перед вами или предложение."
+ ],
+ "theory": [
+  {
+   "h": "Одна просьба, три уровня вежливости",
+   "p": "По-русски мы смягчаем просьбу словами «пожалуйста», «будьте добры», «не могли бы вы». В английском ту же работу делает выбор модального глагола: can — простой и дружеский вариант, could — вежливее и безопаснее с незнакомыми, would — самый мягкий и чуть более официальный.",
+   "formula": "Can you open the window? · Could you open the window, please? · Would you open the window?"
+  },
+  {
+   "h": "Когда что выбрать",
+   "p": "С друзьями и коллегами, с которыми вы на короткой ноге, спокойно работает can. С незнакомым человеком, старшим по возрасту или в переписке с клиентом лучше взять could. Would you звучит ещё мягче и часто соседствует с please; в устной речи его нередко заменяют на Could you.",
+   "table": {
+    "head": ["Форма", "Тон", "Когда уместно"],
+    "rows": [
+     ["Can you...?", "простой, дружеский", "свои, коллеги, everyday"],
+     ["Could you...?", "вежливый, нейтральный", "незнакомые, работа, просьба о небольшом одолжении"],
+     ["Would you...?", "мягкий, официальный", "письма, клиенты, формальная ситуация"]
+    ]
+   }
+  },
+  {
+   "h": "Could здесь — не прошлое",
+   "p": "Главная ловушка: could в просьбе не означает прошлое время. Это тот же настоящий момент, только с оттенком вежливости. Сравните: Could you help me? — «не могли бы вы помочь», а не «могли ли вы когда-то помочь».",
+   "formula": "Could you help me? (сейчас, вежливо) · Could you help me yesterday? (так не говорят)"
+  },
+  {
+   "h": "После модального — голый инфинитив",
+   "p": "После can, could и would глагол идёт без to. Частица to появляется только в других конструкциях: Would you like to...? — это уже не просьба, а предложение. И отдельно стоит запомнить Would you mind, после которого нужен -ing.",
+   "formula": "Can you wait? · Would you like to wait? · Would you mind waiting?"
+  },
+  {
+   "h": "Мягкие обёртки для большой просьбы",
+   "p": "Если просьба крупная или неудобная, её прячут за вводной фразой. Do you think you could...? и I wonder if you could...? дают собеседнику пространство для отказа и звучат деликатно. Ответ на просьбу тоже короткий: Sure, Of course, I'm afraid I can't.",
+   "formula": "Do you think you could give me a hand? · I wonder if you could call me back. · Sure, no problem."
+  }
+ ],
+ "examples": [
+  {"en": "Can you pass me the salt, please?", "ru": "Передай мне соль, пожалуйста."},
+  {"en": "Could you speak a little more slowly?", "ru": "Не могли бы вы говорить чуть медленнее?"},
+  {"en": "Would you mind closing the door?", "ru": "Вы не против закрыть дверь?"},
+  {"en": "Do you think you could help me with this?", "ru": "Как думаешь, ты мог бы мне с этим помочь?"},
+  {"en": "Could I borrow your pen for a minute?", "ru": "Можно мне взять вашу ручку на минуту?"}
+ ],
+ "traps": [
+  {"bad": "Can you to help me?", "good": "Can you help me?", "why": "После модального глагола to не ставится: can help, could help, would help."},
+  {"bad": "Would you mind to wait?", "good": "Would you mind waiting?", "why": "Mind требует -ing, а не инфинитив: mind waiting, mind opening."},
+  {"bad": "Could you please closing the window?", "good": "Could you please close the window?", "why": "Please ничего не меняет в грамматике: после could всё равно голый инфинитив."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you pass me the salt, please?", "options": ["Could", "Are", "Do"], "a": 0, "why": "Просьба строится через модальный глагол: Could you pass...?"},
+  {"type": "choice", "q": "Would you mind ___ the window?", "options": ["to open", "opening", "open"], "a": 1, "why": "После would you mind — глагол с -ing: mind opening."},
+  {"type": "choice", "q": "___ I use your phone for a moment?", "options": ["Could", "Am", "Do"], "a": 0, "why": "Разрешение для себя просят через Could I...? или Can I...?"},
+  {"type": "choice", "q": "Can you ___ me with this bag?", "options": ["to help", "helping", "help"], "a": 2, "why": "После can — инфинитив без to: can help."},
+  {"type": "gap", "q": "___ you speak more slowly, please?", "a": ["could", "can", "would"], "why": "Вежливая просьба: Could you / Can you / Would you + инфинитив."},
+  {"type": "gap", "q": "Would you mind ___ (wait) a moment?", "a": ["waiting"], "why": "После mind — форма на -ing: mind waiting."},
+  {"type": "translate", "q": "Не могли бы вы закрыть дверь?", "a": ["could you close the door", "would you close the door", "can you close the door"], "why": "Просьба: Could you + инфинитив. Please можно добавить в конец."},
+  {"type": "translate", "q": "Вы не против подождать минуту?", "a": ["would you mind waiting a minute", "do you mind waiting a minute"], "why": "Would you mind + -ing: waiting a minute."}
+ ]
+}

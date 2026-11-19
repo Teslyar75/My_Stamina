@@ -1,0 +1,75 @@
+{
+ "n": 125,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Perfect Continuous и Perfect",
+ "en": "present perfect continuous and simple",
+ "summary": "Чем «я покрасил стену» отличается от «я красил стену»: результат против процесса, и когда годятся оба варианта.",
+ "can_do": [
+  "Различить законченный результат и незаконченный процесс.",
+  "Выбрать простой перфект там, где названо количество.",
+  "Правильно говорить о знакомстве и владении через have known и have had."
+ ],
+ "theory": [
+  {
+   "h": "Результат или процесс",
+   "p": "Оба времени смотрят в прошлое из настоящего, но по-разному. Простой перфект сообщает, что дело сделано. Длительный — что процесс шёл и, возможно, ещё не закончен. Одна и та же ситуация получает разный смысл в зависимости от выбранной формы.",
+   "formula": "I've painted the wall. (стена готова) · I've been painting the wall. (краска ещё сохнет)"
+  },
+  {
+   "h": "Сколько сделано и сколько времени",
+   "p": "Если в предложении есть количество — страницы, километры, чашки, письма, — нужен простой перфект: он подводит итог. Если важна длительность процесса, берут длительный. Смешивать эти две логики в одном предложении не стоит, хотя смысл кажется близким.",
+   "table": {
+    "head": ["Что важно", "Время", "Пример"],
+    "rows": [
+     ["количество", "perfect simple", "I've read fifty pages."],
+     ["длительность", "perfect continuous", "I've been reading for two hours."],
+     ["готовый результат", "perfect simple", "She has written the report."],
+     ["процесс без конца", "perfect continuous", "She has been writing all morning."]
+    ]
+   }
+  },
+  {
+   "h": "Когда разница почти исчезает",
+   "p": "С глаголами work, live, learn, teach, study оба варианта звучат нормально, если речь о длительности. Смысл при этом практически одинаковый, и носители выбирают форму по вкусу. Но как только появляется количество, длительный вариант отпадает.",
+   "formula": "I've worked here for ten years. · I've been working here for ten years. · I've written three letters."
+  },
+  {
+   "h": "Глаголы состояния — только простой",
+   "p": "Know, have, be, want, like и подобные не ставятся в длительную форму даже в перфекте. Поэтому «я знаю его много лет» передаётся через have known. Это же касается belong, contain, own и остальных глаголов состояния из второй темы этого модуля.",
+   "formula": "I've known him since school. · We've had this flat for years. · She has been at the office since nine."
+  },
+  {
+   "h": "Как выбрать за две секунды",
+   "p": "Спросите, что вы хотите подчеркнуть. Если ответ «уже готово» — простой перфект. Если «всё ещё делаю» — длительный. Если в предложении есть число или количество, почти всегда простой. Это короткое правило закрывает большинство сомнений на экзамене и в разговоре.",
+   "formula": "I've cleaned the kitchen. · I've been cleaning since lunch. · I've cleaned four rooms."
+  }
+ ],
+ "examples": [
+  {"en": "I've written the email, you can send it.", "ru": "Я написал письмо, можешь отправлять."},
+  {"en": "I've been writing emails all morning.", "ru": "Я всё утро пишу письма."},
+  {"en": "She has drunk three cups of coffee.", "ru": "Она выпила три чашки кофе."},
+  {"en": "She has been drinking coffee all day.", "ru": "Она весь день пьёт кофе."},
+  {"en": "We've been talking about it for hours.", "ru": "Мы говорим об этом уже несколько часов."},
+  {"en": "They've repaired the road at last.", "ru": "Они наконец отремонтировали дорогу."}
+ ],
+ "traps": [
+  {"bad": "I've been reading three books this month.", "good": "I've read three books this month.", "why": "С количеством нужен простой перфект."},
+  {"bad": "I have been knowing her for ten years.", "good": "I have known her for ten years.", "why": "know не употребляется в длительной форме даже в перфекте."},
+  {"bad": "I've painted the wall, so don't touch it, it's wet.", "good": "I've been painting the wall, so don't touch it, it's wet.", "why": "Краска ещё не высохла, процесс не закончен — длительный перфект."},
+  {"bad": "She has been finishing the report.", "good": "She has finished the report.", "why": "Завершённое действие требует простого перфекта."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ three chapters today.", "options": ["have been reading", "have read", "read"], "a": 1, "why": "Есть количество, значит простой перфект: have read."},
+  {"type": "choice", "q": "Sorry I'm late, I ___ for the bus.", "options": ["have waited", "have been waiting", "wait"], "a": 1, "why": "Важен процесс ожидания: have been waiting."},
+  {"type": "choice", "q": "She ___ the whole cake, so there's nothing left.", "options": ["has been eating", "has eaten", "ate"], "a": 1, "why": "Результат налицо и есть объект целиком: has eaten."},
+  {"type": "choice", "q": "My eyes hurt, I ___ at the screen all day.", "options": ["have looked", "have been looking", "look"], "a": 1, "why": "Длительный процесс с видимым следом: have been looking."},
+  {"type": "choice", "q": "They ___ the whole house, it looks new now.", "options": ["have painted", "have been painting", "paint"], "a": 0, "why": "Работа закончена, результат готов: have painted."},
+  {"type": "gap", "q": "I ___ (read) since morning, so I need a break.", "a": ["have been reading", "'ve been reading"], "why": "since morning и процесс — длительный перфект."},
+  {"type": "gap", "q": "He ___ (write) five emails today.", "a": ["has written"], "why": "Количество пять писем требует простого перфекта."},
+  {"type": "gap", "q": "The road is wet, it ___ (rain).", "a": ["has been raining"], "why": "След виден сейчас: has been raining."},
+  {"type": "translate", "q": "Я сегодня прочитал три главы.", "a": ["i have read three chapters today", "i've read three chapters today"], "why": "Количество прочитанного — простой перфект."},
+  {"type": "translate", "q": "Она весь день готовит.", "a": ["she has been cooking all day", "she's been cooking all day"], "why": "all day подчёркивает процесс: has been cooking."},
+  {"type": "translate", "q": "Мы ждём уже час.", "a": ["we have been waiting for an hour", "we've been waiting for an hour"], "why": "Длительность ожидания: have been waiting."}
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "n": 130,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Past Perfect: что было до",
+ "en": "past perfect",
+ "summary": "Как расставить два прошлых события по порядку: поезд уже ушёл, когда мы пришли на вокзал.",
+ "can_do": [
+  "Поставить два прошлых события в правильном порядке через had done.",
+  "Сказать, что уже произошло к определённому моменту: by the time, before.",
+  "Объяснить прошлое состояние причиной, которая случилась раньше.",
+  "Использовать оборот It was the first time he had..."
+ ],
+ "theory": [
+  {
+   "h": "Прошлое внутри прошлого",
+   "p": "Past perfect — это точка отсчёта в прошлом и ещё одно действие до неё. Схема простая: had плюс третья форма глагола. На русский такое предложение часто переводится обычным прошедшим, поэтому порядок событий приходится восстанавливать по смыслу.",
+   "formula": "When we arrived, the film had started. · She had left before the call."
+  },
+  {
+   "h": "Зачем нужен этот этаж",
+   "p": "Если рассказывать всё подряд в past simple, слушатель понимает события в том порядке, в каком они названы. Past perfect позволяет отступить назад и вставить предысторию, не ломая основную линию рассказа.",
+   "formula": "He had packed his bags before the taxi came. · The taxi came, and he packed his bags."
+  },
+  {
+   "h": "Формы",
+   "p": "Утверждение строится через had для всех лиц, отрицание — hadn't, вопрос — с had в начале. Краткий ответ тоже строится с had, а не с did, потому что это вспомогательный глагол perfect.",
+   "table": {
+    "head": ["Что нужно", "Форма", "Пример"],
+    "rows": [
+     ["утверждение", "had + V3", "They had eaten."],
+     ["отрицание", "hadn't + V3", "They hadn't eaten."],
+     ["вопрос", "Had + подлежащее + V3?", "Had they eaten?"],
+     ["краткий ответ", "Yes, I had. / No, I hadn't.", "Had you seen it? — Yes, I had."]
+    ]
+   }
+  },
+  {
+   "h": "by the time, already, before",
+   "p": "Маркеры помогают не ошибиться: by the time подводит черту под отрезком, already подчёркивает, что действие завершилось раньше ожидаемого, before прямо говорит о порядке. Все три естественно дружат с past perfect.",
+   "formula": "By the time we got there, the show had ended. · She had already left when I called."
+  },
+  {
+   "h": "It was the first time...",
+   "p": "Обороты it was the first time, it was the second time, it was the best film требуют past perfect, потому что опыт считается до того прошлого момента. Это зеркало конструкции this is the first time с present perfect.",
+   "formula": "It was the first time I had flown. · I had never seen the sea before that day."
+  },
+  {
+   "h": "Когда можно обойтись без had",
+   "p": "Если порядок и так очевиден из союзов then, after, before, носители часто оставляют past simple. Past perfect обязателен там, где без него смысл перепутается или где нужно специально подчеркнуть, что действие было раньше.",
+   "formula": "After he finished, he went home. · He had finished before I arrived."
+  }
+ ],
+ "examples": [
+  {"en": "The train had left when we reached the platform.", "ru": "Поезд уже ушёл, когда мы вышли на платформу."},
+  {"en": "I didn't know her name because we hadn't met.", "ru": "Я не знал её имени, потому что мы не были знакомы."},
+  {"en": "It was the first time he had spoken in public.", "ru": "Он впервые выступал перед публикой."},
+  {"en": "By the time I woke up, everyone had gone.", "ru": "К тому моменту, как я проснулся, все уже ушли."},
+  {"en": "She realized she had forgotten her passport.", "ru": "Она поняла, что забыла паспорт."},
+  {"en": "They had booked the table before the restaurant filled up.", "ru": "Они забронировали столик до того, как ресторан заполнился."}
+ ],
+ "traps": [
+  {"bad": "When I came, he already left.", "good": "When I came, he had already left.", "why": "Он ушёл до моего прихода — нужен past perfect."},
+  {"bad": "I had seen him yesterday.", "good": "I saw him yesterday.", "why": "Had нужен только когда есть вторая точка в прошлом."},
+  {"bad": "She had went home before I arrived.", "good": "She had gone home before I arrived.", "why": "После had — третья форма: gone, а не went."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "When we got to the station, the train ___.", "options": ["left", "has left", "had left"], "a": 2, "why": "Поезд ушёл раньше нашего прихода."},
+  {"type": "choice", "q": "I couldn't get in because I ___ my keys at home.", "options": ["left", "had left", "have left"], "a": 1, "why": "Ключи остались дома до того, как я подошёл к двери."},
+  {"type": "choice", "q": "It was the first time she ___ a plane.", "options": ["took", "has taken", "had taken"], "a": 2, "why": "It was the first time требует past perfect."},
+  {"type": "choice", "q": "By the time I finished, everyone ___.", "options": ["went", "had gone", "has gone"], "a": 1, "why": "By the time подводит черту, действие было раньше."},
+  {"type": "gap", "q": "He ___ (not / finish) the report before the meeting started.", "a": ["hadn't finished", "had not finished"], "why": "Отчёт не был готов к началу встречи."},
+  {"type": "gap", "q": "She told me she ___ (see) that film twice.", "a": ["had seen"], "why": "До момента рассказа она уже видела дважды."},
+  {"type": "gap", "q": "After we ___ (eat), we went for a walk.", "a": ["had eaten"], "why": "Сначала поели, потом пошли — past perfect."},
+  {"type": "translate", "q": "Когда я пришёл, они уже ушли.", "a": ["when i arrived they had already left", "when i came they had already left", "they had already left when i arrived"], "why": "Ушли до прихода: had already left."},
+  {"type": "translate", "q": "Я был уставшим, потому что работал весь день.", "a": ["i was tired because i had worked all day", "i was tired because i'd worked all day"], "why": "Работа была раньше состояния — past perfect."}
+ ]
+}

@@ -1,0 +1,298 @@
+{
+  "id": "vcp_03",
+  "title": "Verbs: Das Perfekt - Unregelmäßige Verben mit Haben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_03.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The participle forms of verbs can be used to build the conversational past, the past perfect and the subjunctive mood. They can also be used as adjectives. The conversational past is used just like the English simple past.\n\ndie alte Hexe | Mist! Ich habe wieder die kleinen Kinder getroffen! | Darn! I met the two kids again!\n\ndie böse Königin | Haben sie geschrien, als sie dich gesehen haben? | Did they scream when they saw you?\n\ndie alte Hexe | Nein! Sie haben Lebkuchen gegessen! In meinen schönsten Träumen habe ich sie gebraten und gefressen! Mit etwas Butter und Salz. | No, they were eating gingerbread! In my sweetest dreams I fried them and gobbled them up. With a bit of butter and salt.\n\ndie böse Königin | Ich kann dich gut verstehen! In meinen Träumen hat Schneewittchen mehrmals in den Apfel gebissen! Aber stattdessen muss ich sie jeden Tag sehen ... Bru-huh-huh-huh | I can totally relate! In my dreams Snow White bit into the apple several times! But instead I have to see her every day ... sob-sob-sob\n\nIrregular verbs form the participle by completely remodeling the infinitive form of the verb, and sadly – unlike regular verbs – there is no rule or guide as to how to form the irregular participles (hence the name \"irregular\"). You simply need to memorize irregular verbs; the only similarity is the ge- prefix and the -en suffix:\n\n1) take the infinitive | treffen (meet)\n\n2) remove the | -en | suffix | treff\n\n3) change stem vowel (as necessary) | troff\n\n4) add | ge- | prefix | getroff\n\n5) replace | -en | suffix | getroffen\n\nIrregular verbs that (can) have a direct object OR that do not denote an action that results in a change of state or being use haben as the auxiliary verb to form the conversational past.\n\nHere are some key participle forms you will need to memorize:\n\nbacken (bake) | => | hat gebacken\n\nbeißen (bite) | => | hat gebissen\n\nbieten (offer) | => | hat geboten\n\nbitten (ask, implore) | => | hat gebeten\n\nbraten (fry, roast) | => | hat gebraten\n\nbrechen (break) | => | hat gebrochen (this verb can be used with sein as well)\n\nessen (eat) | => | hat gegessen\n\nfangen (catch) | => | hat gefangen\n\nfinden (find) | => | hat gefunden\n\nfressen (eat, like an animal) | => | hat gefressen\n\ngeben (give) | => | hat gegeben\n\ngießen (pour/water) | => | hat gegossen\n\ngleichen (resemble) | => | hat geglichen\n\ngraben (dig) | => | hat gegraben\n\ngreifen (grab/grasp) | => | hat gegriffen\n\nheißen (be called) | => | hat geheißen\n\nhelfen (help) | => | hat geholfen\n\nlassen (let) | => | hat gelassen\n\nleiden (suffer) | => | hat gelitten\n\nlesen (read) | => | hat gelesen\n\nliegen (lie) | => | hat gelegen\n\nlügen (tell lies) | => | hat gelogen\n\nnehmen (take) | => | hat genommen\n\nraten (advise, guess) | => | hat geraten\n\nrufen (call) | => | hat gerufen\n\nscheinen (appear, shine) | => | hat geschienen\n\nschießen (shoot) | => | hat geschossen\n\nschlafen (sleep) | => | hat geschlafen\n\nschlagen (hit) | => | hat geschlagen\n\nschließen (close) | => | hat geschlossen\n\nschmeißen (throw, toss) | => | hat geschmissen\n\nschneiden (cut) | => | hat geschnitten\n\nschreiben (write) | => | hat geschrieben\n\nschreien (scream) | => | hat geschrien\n\nschweigen (keep quiet) | => | hat geschwiegen\n\nschwimmen (swim) | => | ist geschwommen\n\nschwören (swear) | => | hat geschworen\n\nsehen (see) | => | hat gesehen\n\nsingen (sing) | => | hat gesungen\n\nsitzen (sit) | => | hat gesessen (Bavaria: ist gesessen)\n\nsprechen (speak) | => | hat gesprochen\n\nstechen (stick, prick, sting) | => | hat gestochen\n\nstehen (stand) | => | hat gestanden (Bavaria: ist gestanden)\n\nstehlen (steal) | => | hat gestohlen\n\nstinken (stink) | => | hat gestunken\n\nstreiten (fight, argue) | => | hat gestritten\n\ntragen (carry, wear) | => | hat getragen\n\ntreffen (meet) | => | hat getroffen\n\ntreten (step, walk, kick) | => | hat getreten\n\ntrinken (drink) | => | hat getrunken\n\ntun (do, make) | => | hat getan\n\nverschwinden (disappear) | => | ist verschwunden\n\nwaschen (wash) | => | hat gewaschen\n\nwerfen (throw) | => | hat geworfen\n\nziehen (pull, move) | => | hat gezogen\n\nzwingen (force, compel) | => | hat gezwungen"
+    }
+  ],
+  "examples": [
+    {
+      "de": "die alte Hexe",
+      "en": "Mist! Ich habe wieder die kleinen Kinder getroffen!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Haben sie geschrien, als sie dich gesehen haben?"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Nein! Sie haben Lebkuchen gegessen! In meinen schönsten Träumen habe ich sie gebraten und gefressen! Mit etwas Butter und Salz."
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Ich kann dich gut verstehen! In meinen Träumen hat Schneewittchen mehrmals in den Apfel gebissen! Aber stattdessen muss ich sie jeden Tag sehen ... Bru-huh-huh-huh"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Ich habe mein Lebkuchenhaus schon vor mehreren Jahrhunderten ___ und mit Zucker dekoriert.",
+      "a": "gebacken",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Alle zwei oder drei Monate sind Kinder vorbeigekommen, die in den Lebkuchen ___ haben.",
+      "a": "gebissen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Ich habe die Kinder immer vor dem Haus ___.",
+      "a": "gefunden",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Später habe ich sie ins Haus gebracht und da haben sie einige Wochen lang viel ___, damit sie schön und dick werden konnten.",
+      "a": "gegessen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Dann habe ich sie ___, in meinen Ofen zu steigen (to climb into my oven), aber sie wollten das nie machen!!!",
+      "a": "gebeten",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages sind zwei Kinder gekommen; sie waren anders. Sie haben Hänsel und Gretel ___.",
+      "a": "geheißen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel hat in einem Käfig ___, und Gretel am Ofenrand.",
+      "a": "geschlafen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Am Ende des ersten Monats waren beide Kinder endlich dick genug, und ich wollte sie essen, aber sie haben mich in den Ofen ___!",
+      "a": "geworfen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Ich habe so laut wie möglich ___, und ein netter Jäger hat mich gehört.",
+      "a": "geschrieen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Er hat mich aus den Ofen ___.",
+      "a": "gezogen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Merkwürdigerweise (strangely) hat ihn seither niemand ___ ...",
+      "a": "gesehen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Ich habe ihm das Herz ___ ... hehehehe.",
+      "a": "gestohlen",
+      "options": [
+        "essen",
+        "heißen",
+        "schlafen",
+        "stehlen",
+        "beißen",
+        "schreien",
+        "bitten",
+        "backen",
+        "werfen",
+        "sehen",
+        "ziehen",
+        "finden"
+      ],
+      "set_id": "vcp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "At another therapy session, it's the witch's turn to try to get over her obsession with wanting to bake and eat small children. Fill in the blanks with the correct participle forms of the verbs from the word bank."
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+ "n": 122,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Present Perfect (1): результат",
+ "en": "present perfect 1",
+ "summary": "Прошлое с последствиями в настоящем: have с третьей формой, just, already и yet — и почему вчера здесь не работает.",
+ "can_do": [
+  "Сказать, что результат действия важен прямо сейчас.",
+  "Образовать перфект из have или has и третьей формы глагола.",
+  "Пользоваться just, already и yet в нужном месте предложения."
+ ],
+ "theory": [
+  {
+   "h": "Результат, который виден сейчас",
+   "p": "Настоящее совершенное время связывает прошлое с настоящим. Нас не интересует, когда именно всё случилось, — важен результат к текущему моменту: окно открыто, ключи потеряны, обед готов. Поэтому и перевод на русский часто звучит как «уже» или «только что».",
+   "formula": "I've lost my keys. · She has finished the report. · We've bought the tickets."
+  },
+  {
+   "h": "Форма: have плюс третья колонка",
+   "p": "Перфект собирается из have или has и причастия прошедшего времени. У правильных глаголов причастие совпадает со второй формой, у неправильных его надо помнить отдельно: go — went — gone, write — wrote — written. Путать вторую и третью форму — самая частая ошибка в этой теме.",
+   "table": {
+    "head": ["Кто", "Форма", "Пример"],
+    "rows": [
+     ["I / you / we / they", "have + V3", "They have arrived."],
+     ["he / she / it", "has + V3", "He has arrived."],
+     ["отрицание", "haven't / hasn't", "She hasn't called."],
+     ["вопрос", "have или has вперёд", "Have you eaten?"]
+    ]
+   }
+  },
+  {
+   "h": "just, already, yet",
+   "p": "Эти три слова почти всегда выдают перфект. Just значит «только что», already — «уже», причём чаще в утверждении, yet — «ещё» в отрицании и вопросе, и стоит в конце предложения. Русский перевод не всегда совпадает с английским порядком слов.",
+   "table": {
+    "head": ["Слово", "Где стоит", "Пример"],
+    "rows": [
+     ["just", "между have и V3", "I've just seen him."],
+     ["already", "между have и V3", "She has already left."],
+     ["yet", "в конце отрицания", "He hasn't called yet."],
+     ["yet", "в конце вопроса", "Have you finished yet?"]
+    ]
+   }
+  },
+  {
+   "h": "Когда перфект нельзя",
+   "p": "Если в предложении есть точное законченное время — yesterday, last year, in 2019, two hours ago, — перфект запрещён. Такое время отрезает прошлое от настоящего, а перфект живёт именно на стыке. В этом случае нужен past simple, каким бы важным ни казался результат.",
+   "formula": "I saw him yesterday. (не have seen) · She left two hours ago. · We met in 2018."
+  },
+  {
+   "h": "Как отличить на слух",
+   "p": "Задайте себе вопрос: важно, когда это было, или что получилось сейчас? Если важен момент — простое прошедшее. Если результат — перфект. Один и тот же факт можно сказать двумя способами, и смысл слегка сдвинется, поэтому выбор формы здесь содержательный.",
+   "formula": "I've broken my arm. (рука в гипсе сейчас) · I broke my arm last year. (просто факт биографии)"
+  }
+ ],
+ "examples": [
+  {"en": "I've just finished my coffee.", "ru": "Я только что допил кофе."},
+  {"en": "She has already sent the invoice.", "ru": "Она уже отправила счёт."},
+  {"en": "We haven't decided yet.", "ru": "Мы ещё не решили."},
+  {"en": "He has lost his passport.", "ru": "Он потерял паспорт."},
+  {"en": "Have you read my message?", "ru": "Ты прочитал моё сообщение?"},
+  {"en": "The taxi has arrived.", "ru": "Такси приехало."}
+ ],
+ "traps": [
+  {"bad": "I have finished the report yesterday.", "good": "I finished the report yesterday.", "why": "yesterday — законченное время, перфект с ним не употребляется."},
+  {"bad": "She has wrote three letters.", "good": "She has written three letters.", "why": "После have нужна третья форма written, а не вторая wrote."},
+  {"bad": "I have seen him last week.", "good": "I saw him last week.", "why": "last week закрывает прошлое, значит past simple."},
+  {"bad": "I haven't saw the film.", "good": "I haven't seen the film.", "why": "После haven't — причастие seen."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ my keys, I can't get in.", "options": ["lost", "have lost", "lose"], "a": 1, "why": "Результат важен сейчас: ключей нет, have lost."},
+  {"type": "choice", "q": "She ___ the email yet.", "options": ["didn't send", "hasn't sent", "doesn't send"], "a": 1, "why": "yet в отрицании — признак перфекта: hasn't sent."},
+  {"type": "choice", "q": "We have just ___ the news.", "options": ["heard", "hear", "hearing"], "a": 0, "why": "После have just нужна третья форма heard."},
+  {"type": "choice", "q": "He ___ to Rome last month.", "options": ["has gone", "went", "has been"], "a": 1, "why": "last month — законченное время, только past simple."},
+  {"type": "choice", "q": "They have already ___ dinner.", "options": ["had", "have", "having"], "a": 0, "why": "После have already — причастие had."},
+  {"type": "gap", "q": "I ___ (not / finish) the report yet.", "a": ["haven't finished", "have not finished"], "why": "yet требует перфекта: haven't finished."},
+  {"type": "gap", "q": "Look, somebody ___ (break) the window.", "a": ["has broken"], "why": "Результат налицо: окно разбито, has broken."},
+  {"type": "gap", "q": "She ___ (already / leave) the office.", "a": ["has already left"], "why": "already между has и третьей формой: has already left."},
+  {"type": "translate", "q": "Я только что видел его.", "a": ["i have just seen him", "i've just seen him"], "why": "just между have и seen."},
+  {"type": "translate", "q": "Мы ещё не решили.", "a": ["we haven't decided yet", "we have not decided yet"], "why": "yet в конце отрицательного предложения."},
+  {"type": "translate", "q": "Он потерял паспорт.", "a": ["he has lost his passport", "he's lost his passport"], "why": "Результат в настоящем: he has lost."}
+ ]
+}

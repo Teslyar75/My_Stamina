@@ -1,0 +1,81 @@
+{
+ "n": 241,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "on, in, at: другие значения",
+ "en": "on/in/at (other uses)",
+ "summary": "Предлоги on, in, at в устойчивых выражениях меняют значение: on holiday — в отпуске, in love — влюблённый, at speed — на скорости. Нужно запомнить коллокации, а не переводить предлоги буквально.",
+ "can_do": [
+  "Использовать on с holiday, business, strike, fire, phone, TV, purpose, the whole.",
+  "Говорить in cash, in love, in a hurry, in the rain, in my opinion, in ink.",
+  "Правильно строить фразы с at: at the age of, at speed, at least, good at, at first.",
+  "Различать on a diet и не говорить *in a diet."
+ ],
+ "theory": [
+  {
+   "h": "Выражения с on: состояние и способ",
+   "p": "On здесь означает «в процессе», «в состоянии» или «с помощью». On holiday/vacation — в отпуске, on business — в командировке, on strike — бастует, on fire — горит, on the phone — по телефону, on TV — по телевизору, on purpose — специально, on the whole — в целом. Артикль часто отсутствует, это просто заучиваемые пары.",
+   "formula": "on holiday · on business · on strike · on fire · on the phone · on TV · on purpose · on the whole"
+  },
+  {
+   "h": "Выражения с in: среда, материал, эмоции",
+   "p": "In показывает нахождение внутри чего-то абстрактного или материала. In cash — наличными (оплата), in love — влюблён, in a hurry — в спешке, in the rain — под дождём, in my opinion — по моему мнению, in ink — чернилами. Обратите внимание: in cash без артикля, а in a hurry — с неопределённым.",
+   "formula": "in cash · in love · in a hurry · in the rain · in my opinion · in ink"
+  },
+  {
+   "h": "Выражения с at: точка, уровень, оценка",
+   "p": "At фиксирует точку на шкале или момент. At the age of 20 — в возрасте 20 лет, at speed — на скорости, at least — по крайней мере, good at — хорошо умеет/разбирается в, at first — сначала. После good at всегда герундий или существительное: good at swimming, good at maths.",
+   "table": {
+    "head": ["Выражение", "Перевод", "Пример"],
+    "rows": [
+     ["at the age of", "в возрасте", "at the age of 18"],
+     ["at speed", "на скорости", "driving at speed"],
+     ["at least", "по крайней мере", "at least three hours"],
+     ["good at", "хорошо умеет", "good at languages"],
+     ["at first", "сначала", "at first I didn't understand"]
+    ]
+   }
+  },
+  {
+   "h": "Диета и похожие состояния: on a diet",
+   "p": "Только on a diet — на диете. In a diet не существует. Аналогично: on a trip — в поездке, on a course — на курсах, on a mission — в миссии. Предлог on здесь обозначает участие в организованном процессе с началом и концом.",
+   "formula": "on a diet · on a trip · on a course · on a mission"
+  },
+  {
+   "h": "Парные противопоставления: on time vs in time",
+   "p": "On time — вовремя, по расписанию (поезд пришёл on time). In time — успеть к чему-то, до дедлайна (arrived in time for the meeting). На русском оба часто «вовремя», но логика разная: on — попадание в точку плана, in — попадание в интервал до события.",
+   "formula": "The train arrived on time. · We got there in time for the start."
+  },
+  {
+   "h": "Частые ошибки: артикли и предлоги",
+   "p": "Не говорите *in holiday, *at business, *on love. Заучите блоки целиком. Вопрос «как заплатить?» — in cash / by card (но on the card — о способе оплаты через терминал). «По телевизору» — on TV, а не in TV. «Специально» — on purpose, по ошибке — by mistake (не *on mistake).",
+   "formula": "in cash / by card · on TV · on purpose · by mistake · on the whole"
+  }
+ ],
+ "examples": [
+  {"en": "She is on holiday in Spain this week.", "ru": "Эта неделя она в отпуске в Испании."},
+  {"en": "The building is on fire, call the brigade!", "ru": "Здание горит, вызывайте пожарных!"},
+  {"en": "I paid in cash because the terminal was broken.", "ru": "Я заплатил наличными, потому что терминал был сломан."},
+  {"en": "They fell in love at first sight.", "ru": "Они влюбились с первого взгляда."},
+  {"en": "At the age of thirty he changed his career.", "ru": "В тридцати лет он сменил карьеру."},
+  {"en": "She is good at solving complex problems.", "ru": "Она хорошо умеет решать сложные проблемы."},
+  {"en": "On the whole, the project was successful.", "ru": "В целом проект был успешным."}
+ ],
+ "traps": [
+  {"bad": "We are in holiday next week.", "good": "We are on holiday next week.", "why": "Отпуск — on holiday/vacation, in holiday не существует."},
+  {"bad": "He is good in English.", "good": "He is good at English.", "why": "После good всегда at, не in."},
+  {"bad": "I did it in purpose.", "good": "I did it on purpose.", "why": "Специально — on purpose; по ошибке — by mistake."},
+  {"bad": "She is on a diet since Monday.", "good": "She has been on a diet since Monday.", "why": "On a diet — правильный предлог, но с since нужен Present Perfect."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The firefighters arrived ___ time to save the house.", "options": ["in", "on", "at"], "a": 0, "why": "In time — успеть до критического момента."},
+  {"type": "choice", "q": "My brother is ___ business in Tokyo until Friday.", "options": ["on", "in", "at"], "a": 0, "why": "В командировке — on business."},
+  {"type": "choice", "q": "___ the age of 16 you can get a moped licence.", "options": ["In", "On", "At"], "a": 2, "why": "Возраст — at the age of."},
+  {"type": "choice", "q": "We usually pay ___ cash at the market.", "options": ["on", "in", "by"], "a": 1, "why": "Наличными — in cash."},
+  {"type": "gap", "q": "The match was shown ___ TV last night.", "a": ["on"], "why": "По телевизору — on TV."},
+  {"type": "gap", "q": "Don't write ___ pencil, use ___ ink.", "a": ["in", "in"], "why": "Материал письма — in pencil / in ink."},
+  {"type": "gap", "q": "___ first I didn't like the idea, but later I agreed.", "a": ["At"], "why": "Сначала — at first."},
+  {"type": "translate", "q": "Она влюблена в своего коллегу.", "a": ["she is in love with her colleague"], "why": "Влюблён — in love with."},
+  {"type": "translate", "q": "В целом, встреча прошла хорошо.", "a": ["on the whole the meeting went well", "on the whole, the meeting went well"], "why": "В целом — on the whole."}
+ ]
+}

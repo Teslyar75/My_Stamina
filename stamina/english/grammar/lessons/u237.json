@@ -1,0 +1,91 @@
+{
+ "n": 237,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Место: at, on, in",
+ "en": "at/on/in (place)",
+ "summary": "Предлоги места делят пространство на три типа: объём (in), поверхность (on) и точку (at). Выбор зависит от того, как мы воспринимаем объект — как контейнер, как плоскость или как координату на карте.",
+ "can_do": [
+  "Выбирать in для городов, стран, комнат и закрытых пространств.",
+  "Ставить on для поверхностей, линий, страниц и транспорта, по которому ходим.",
+  "Использовать at для адресов, остановок, событий и точек встречи.",
+  "Различать in the car / on the bus, at the corner / on the corner и другие пары."
+ ],
+ "theory": [
+  {
+   "h": "Объём, поверхность, точка",
+   "p": "In — внутри объёма: in a box, in a room, in Moscow. On — на поверхности или линии: on the table, on the wall, on page 5. At — точка на карте или место события: at the bus stop, at the door, at the party. В русском один предлог «в/на» часто закрывает все три, поэтому нужна английская логика.",
+   "formula": "in a room · on the wall · at the door"
+  },
+  {
+   "h": "Города, страны, здания — in",
+   "p": "Населённые пункты и здания — контейнеры: in London, in Russia, in the hospital. Даже большое здание имеет границы. Исключение — точка на фасаде: at the entrance, at the reception. Сравните: in the museum (внутри) vs at the museum (у входа или как ориентир).",
+   "formula": "in Paris · in the building · at the entrance"
+  },
+  {
+   "h": "Столы, стены, страницы, транспорт — on",
+   "p": "Любая плоскость или линия: on the table, on the floor, on the map, on the screen, on page 10, on the coast. Общий транспорт, по которому ходим: on the bus, on the train, on the plane. Личный авто — in: in the car, in a taxi (кабинка).",
+   "table": {
+    "head": ["Тип", "Предлог", "Примеры"],
+    "rows": [
+     ["Поверхность", "on", "on the table, on the wall"],
+     ["Страница/экран", "on", "on page 10, on the screen"],
+     ["Линия/граница", "on", "on the coast, on the border"],
+     ["Общий транспорт", "on", "on the bus, on the train"],
+     ["Личный транспорт", "in", "in the car, in a taxi"]
+    ]
+   }
+  },
+  {
+   "h": "Адреса, остановки, события — at",
+   "p": "Адрес с номером: at 22 Baker Street. Остановки как точки маршрута: at the bus stop, at the station. События и места встречи: at the party, at work, at school, at university. At home — исключение. Углы: at the corner (снаружи) vs in the corner (внутри комнаты).",
+   "formula": "at 10 Downing St · at the bus stop · at the party · at home · at the corner"
+  },
+  {
+   "h": "Кухня, кровать, зеркало — нюансы",
+   "p": "In the kitchen (комната), но at the kitchen table (за столом). In bed (под одеялом), on the bed (на покрывале). In the mirror / in the photo (внутри рамки). On the left / on the right (стороны). At the top / at the bottom / at the end (крайние точки). На воде: on the river (поверхность), in the river (погружен).",
+   "formula": "in bed · on the bed · in the mirror · on the left · at the top · on the river"
+  },
+  {
+   "h": "Шпаргалка для запоминания",
+   "p": "Группируйте по типу пространства: город — объём (in), стена — плоскость (on), остановка — точка (at). Если сомневаетесь, представьте объект в 3D: можно залезть внутрь — in; положить на верх — on; просто координата — at.",
+   "table": {
+    "head": ["in (объём)", "on (поверхность)", "at (точка)"],
+    "rows": [
+     ["in London", "on the wall", "at the door"],
+     ["in the room", "on the table", "at the bus stop"],
+     ["in the car", "on the bus", "at the station"],
+     ["in the book", "on page 5", "at the party"],
+     ["in hospital", "on the coast", "at work"],
+     ["in bed", "on the bed", "at home"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "She lives in a small village in Scotland.", "ru": "Она живёт в маленькой деревне в Шотландии."},
+  {"en": "The keys are on the table by the window.", "ru": "Ключи на столе у окна."},
+  {"en": "We met at the bus stop near the station.", "ru": "Мы встретились на автобусной остановке возле станции."},
+  {"en": "I read about it on page 12 of the newspaper.", "ru": "Я прочитал об этом на 12-й странице газеты."},
+  {"en": "He was sitting in the car waiting for me.", "ru": "Он сидел в машине и ждал меня."},
+  {"en": "There were many people at the concert last night.", "ru": "Вчера на концерте было много людей."},
+  {"en": "Turn left at the corner of the street.", "ru": "Поверни налево на углу улицы."}
+ ],
+ "traps": [
+  {"bad": "I live on Moscow.", "good": "I live in Moscow.", "why": "Города и страны — объёмные контейнеры, только in."},
+  {"bad": "He is in the bus.", "good": "He is on the bus.", "why": "Общий транспорт воспринимается как поверхность/платформа — on."},
+  {"bad": "We met in the party.", "good": "We met at the party.", "why": "Событие — точка во времени и пространстве, предлог at."},
+  {"bad": "The picture is in the wall.", "good": "The picture is on the wall.", "why": "Стена — вертикальная поверхность, вещи висят на ней."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My parents live ___ a small village in France.", "options": ["in", "on", "at"], "a": 0, "why": "Населённый пункт — объём, in."},
+  {"type": "choice", "q": "The cat is sleeping ___ the sofa.", "options": ["in", "on", "at"], "a": 1, "why": "Диван — поверхность, on."},
+  {"type": "choice", "q": "We arrived ___ the airport two hours early.", "options": ["in", "on", "at"], "a": 2, "why": "Аэропорт как точка маршрута — at."},
+  {"type": "choice", "q": "I left my phone ___ the car.", "options": ["in", "on", "at"], "a": 0, "why": "Личный автомобиль — замкнутое пространство, in."},
+  {"type": "gap", "q": "There is a beautiful painting ___ (the wall) in the living room.", "a": ["on the wall"], "why": "Картина висит на вертикальной поверхности — on the wall."},
+  {"type": "gap", "q": "She studies ___ (university) in London.", "a": ["at university"], "why": "Учеба как событие/место — at university (без артикля)."},
+  {"type": "gap", "q": "The ship is ___ (the sea) now, we can't contact them.", "a": ["at sea", "on the sea"], "why": "At sea — в море (плавание), on the sea — на поверхности; оба возможны, at sea чаще для 'в пути'."},
+  {"type": "translate", "q": "Мы встретимся у входа в музей.", "a": ["we will meet at the museum entrance", "we'll meet at the entrance to the museum"], "why": "Конкретная точка на здании — at the entrance."},
+  {"type": "translate", "q": "Вчера я был на вечеринке у Анны.", "a": ["i was at a party at Anna's yesterday", "i was at Anna's party yesterday"], "why": "Событие — at a party; место у кого-то дома — at Anna's (с 's)."}
+ ]
+}

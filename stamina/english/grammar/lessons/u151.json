@@ -1,0 +1,76 @@
+{
+ "n": 151,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "would: вежливость и привычки",
+ "en": "would",
+ "summary": "Would смягчает просьбу до почти неощутимой и превращает прошлое в череду привычных летних поездок.",
+ "can_do": [
+  "Попросить и предложить вежливо через Would you ...?",
+  "Отличить Would you like? от Do you like?",
+  "Рассказать о прошлых привычках через would.",
+  "Объяснить, почему о состояниях в прошлом говорят used to, а не would."
+ ],
+ "theory": [
+  {
+   "h": "Would you ...? — просьба без давления",
+   "p": "Вопрос с would you в начале — самый безопасный способ попросить. Он не предполагает, что человек обязан согласиться, и оставляет ему выход. Could you работает так же; разница скорее в привычке, чем в смысле.",
+   "formula": "Would you open the window, please? · Could you pass me the salt?"
+  },
+  {
+   "h": "Would you like? — предложение, а не вопрос о вкусе",
+   "p": "Конструкция would you like предлагает что-то прямо сейчас. Без like вопрос звучит иначе: do you like спрашивает о вкусах вообще. Ответ на предложение тоже особый: yes, please или no, thank you, а не yes, I like.",
+   "formula": "Would you like some coffee? (сейчас) · Do you like coffee? (вообще)"
+  },
+  {
+   "h": "Would you mind плюс -ing",
+   "p": "Оборот would you mind — очень вежливая просьба, построенная как вопрос о неудобстве. После mind глагол идёт с -ing. Ответ no, not at all значит «конечно, сделаю», и это часто сбивает изучающих с толку.",
+   "formula": "Would you mind closing the door? · Would you mind waiting a moment? · Do you mind if I sit here?"
+  },
+  {
+   "h": "Would о прошлых привычках",
+   "p": "Would умеет описывать повторяющиеся действия в прошлом. Это тёплый, немного литературный способ вспоминать: бывало, ходили, ездили каждое лето. Важно помнить ограничение — только действия, а не состояния.",
+   "formula": "Every summer we would drive to my grandmother's village. · As a child, I would play here for hours."
+  },
+  {
+   "h": "Would или used to",
+   "p": "Для привычных действий годятся оба варианта. Для состояний — жил, любил, был, знал — только used to, потому что would подчёркивает повторение, а не длительное состояние. Один раз в прошлом не описывает ни то, ни другое.",
+   "table": {
+    "head": ["Что описываем", "would", "used to"],
+    "rows": [
+     ["повторяющееся действие", "да", "да"],
+     ["состояние в прошлом", "нет", "да"],
+     ["один случай в прошлом", "нет", "нет"]
+    ]
+   }
+  },
+  {
+   "h": "Wouldn't — упрямство вещей и людей",
+   "p": "Отрицательная форма wouldn't в прошлом говорит не об отказе от привычки, а о том, что что-то не поддавалось. Так говорят о технике, дверях, машинах и упрямых людях. По-русски это «никак не», «ни за что не».",
+   "formula": "The engine wouldn't start. · He wouldn't listen to anyone."
+  }
+ ],
+ "examples": [
+  {"en": "Would you pass me the salt, please?", "ru": "Передайте мне соль, пожалуйста."},
+  {"en": "Would you like to join us for dinner?", "ru": "Не хотите присоединиться к нам на ужин?"},
+  {"en": "Would you mind speaking a little louder?", "ru": "Не могли бы вы говорить чуть громче?"},
+  {"en": "Every summer we would drive to my grandmother's village.", "ru": "Каждое лето мы ездили в деревню к бабушке."},
+  {"en": "The engine wouldn't start, so we walked.", "ru": "Двигатель не заводился, и мы пошли пешком."}
+ ],
+ "traps": [
+  {"bad": "Would you like some tea? — Yes, I like.", "good": "Would you like some tea? — Yes, please.", "why": "Would you like — предложение, на него отвечают please, а не like."},
+  {"bad": "I would live in Paris when I was a child.", "good": "I used to live in Paris when I was a child.", "why": "Состояния would не описывает, для них нужно used to."},
+  {"bad": "Would you mind to close the window?", "good": "Would you mind closing the window?", "why": "После would you mind глагол идёт с -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Would you mind ___ the window?", "options": ["to open", "opening", "open"], "a": 1, "why": "После mind — форма с -ing."},
+  {"type": "choice", "q": "___ you like to come with us?", "options": ["Would", "Do", "Are"], "a": 0, "why": "Предложение сейчас — Would you like."},
+  {"type": "choice", "q": "When I was a boy, we ___ go fishing every Sunday.", "options": ["would", "used", "will"], "a": 0, "why": "Повторяющееся действие в прошлом — would."},
+  {"type": "choice", "q": "I ___ to live by the sea, but now I prefer the city.", "options": ["would", "used", "was used"], "a": 1, "why": "Состояние в прошлом — used to live."},
+  {"type": "gap", "q": "Would you ___ (mind / wait) outside for a moment?", "a": ["mind waiting"], "why": "После mind нужен -ing."},
+  {"type": "gap", "q": "The computer ___ (would / not / start) this morning, so I called IT.", "a": ["wouldn't start", "would not start"], "why": "Техника не поддавалась — wouldn't start."},
+  {"type": "gap", "q": "We ___ (would / spend) every summer at my aunt's house.", "a": ["would spend"], "why": "Привычное действие в прошлом — would spend."},
+  {"type": "translate", "q": "Не могли бы вы говорить помедленнее?", "a": ["would you speak more slowly", "could you speak more slowly", "would you mind speaking more slowly"], "why": "Вежливая просьба — would или could you."},
+  {"type": "translate", "q": "В детстве мы часто играли в этом дворе.", "a": ["as children we would often play in this yard", "when we were children we would often play in this yard"], "why": "Повторяющееся действие в прошлом — would play."}
+ ]
+}

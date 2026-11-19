@@ -1,0 +1,170 @@
+{
+  "id": "vpass_04",
+  "title": "Verbs: Das Passiv: Alternative zum Passiv",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_04.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The passive voice is usually used when the agent (the person who does an action) is not clear, not important or not known.\n\nThis voice (e.g., Der junge Prinz wurde von der alten Hexe geblendet), as opposed to the active voice (e.g., Die Hexe hat den jungen Prinzen geblendet), is used in journalistic writing and formal scientific writing. There are, however, some alternative ways to avoid naming the agent:\n\nman\n\nreflexive constructions (with both transitive and intransitive verbs)\n\ninfinitive clauses\n\nsich lassen\n\nThese structures allow the speaker to avoid mentioning the subject (e.g., putting the blame on somebody) without having to use the passive voice (cumbersome, overly formal, etc.).\n\nactive voice | Rapunzel | Sie haben meinen Mann geblendet! | You blinded my husband!\n\nman | die alte Hexe | Angeblich! Aber kann man so etwas wirklich beweisen? | Allegedly! But how can you really prove something like that?\n\nreflexive construction | Rapunzel | Angeblich?!?! So etwas beweist sich ganz einfach! | Allegedly?!?! That can be proven really easily!\n\ninfintive clause | die alte Hexe | Tja, diese Frage bleibt noch zu beantworten. | Well, this question remains to be answered.\n\nsich lassen | Rapunzel | Und sie lässt sich schnell beantworten! Wir müssen einfach das originale Märchen von den Gebrüdern Grimm lesen! | And it can be answered really quickly! We only have to read the original fairy tale from the Grimm brothers!\n\nactive voice | die alte Hexe | Huch! Das habe ich ganz vergessen, ich habe eine Verabredung und muss sofort nach Hause! Tschüssi! | Yikes! I totally forgot, I have an appointment and have to go home immediately! Ba-bye!"
+    },
+    {
+      "heading": "Man",
+      "text": "Man is a pronoun that is the equivalent of the English man, one, they or you - an impersonal pronoun that refers to non-specified person(s). Because the objective of using these pronouns is to remove the emphasis of agency from an individual, it can be translated into English with a passive construction or by using any of the pronouns mentioned above (e.g., one, man, you, etc.).\n\nRapunzel | Hu! Das ist viel besser gelaufen, als ich gedacht hatte! Man kann nie wissen, wie sie auf solche Anklagen reagiert! | Whew! That went much better than I had expected! You can never tell how she'll react to such accusations!\n\nDornröschen | Ja, man sagt, dass die alte Hexe Hänsel und Gretel fast ins nächste Jahrhundert verhext hat, als sie sich bei ihr beschwert haben! | Yeah, it's said that when Hansel and Gretel complained to her, the old witch practically jinxed them into the next century!"
+    },
+    {
+      "heading": "Reflexive constructions",
+      "text": "Reflexive constructions typically suggest that something can be done. Any verb, hypothetically, can be used with the reflexive constructions, which have nothing to do with the actual reflexive verbs. Both transitive verbs (verbs that can take a direct object) and intransitive verbs (verbs that usually do not take a direct object) can be used in the reflexive constructions.\n\nRapunzel | Einmal wird sich die Gerechtigkeit finden! | Justice must prevail at some point!\n\nDornröschen | Meinst du, dass im 19. Jahrhundert die Leute wirklich meinten, dass solche brutalen Geschichten sich besser verkauften? Ein junger Mann geblendet?? Hunderte von toten Prinzen ... auch in meinem Märchen. Wahnsinn! | Do you think that people in the 19th century really thought that such brutal stories would sell better? A young man blinded?? Hundreds of princes in my tale too, who died ... Crazy!"
+    },
+    {
+      "heading": "Infinitive clauses",
+      "text": "Using infinitive clauses in lieu of the passive voice implies that something can, must or should be done. These clauses are most often introduced by sein, bleiben, stehen, gehen and the phrase es gibt (there is, there are). Note that in English, the German phrases are translated with the pronouns one, you, they, or with impersonal expressions such as It is ... (es gibt - the infinitive translated as can).\n\nRapunzel | Na, das Leid ist kaum zu ertragen! | Hmm ... one can barely stand the sorrow!\n\nDornröschen | Der Grund dafür ist in der deutschen Geschichte zu finden. Wir sind sehr schwer zu erschrecken, und um moralische Lektüren effektiv zu machen, mussten die Märchen ganz dunkel sein! Und es gibt gar nichts dagegen zu tun! Wir müssen diese tragischen Erinnerungen einfach ertragen! | The reason for this can be found in German history. It's difficult to scare us, so in order to make the moral tales effective, they had to be pretty dark! And there is nothing that can be done! We simply must bear these tragic memories!"
+    },
+    {
+      "heading": "Sich lassen",
+      "text": "This phrase - literally lets itself - can also be used instead of a passive, when the agent of an action is not known. It typically implies possibility, and is used almost exclusively when the subject is an inanimate object (i.e., not a person).\n\nRapunzel | Na, zumindest lässt sich dieses Genre gut verspotten! | Well, at least this genre lends itself well to ridicule!\n\nDornröschen | Das lässt sich bestreiten. Ich finde es gemein, dass man sich über den Schaden von anderen lustig macht. | That's debatable. I find it unkind that some people poke fun at other people's problems."
+    }
+  ],
+  "examples": [
+    {
+      "de": "active voice",
+      "en": "Rapunzel"
+    },
+    {
+      "de": "man",
+      "en": "die alte Hexe"
+    },
+    {
+      "de": "reflexive construction",
+      "en": "Rapunzel"
+    },
+    {
+      "de": "infintive clause",
+      "en": "die alte Hexe"
+    },
+    {
+      "de": "sich lassen",
+      "en": "Rapunzel"
+    },
+    {
+      "de": "active voice",
+      "en": "die alte Hexe"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Hu! Das ist viel besser gelaufen, als ich gedacht hatte! Man kann nie wissen, wie sie auf solche Anklagen reagiert!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Ja, man sagt, dass die alte Hexe Hänsel und Gretel fast ins nächste Jahrhundert verhext hat, als sie sich bei ihr beschwert haben!"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Einmal wird sich die Gerechtigkeit finden!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Meinst du, dass im 19. Jahrhundert die Leute wirklich meinten, dass solche brutalen Geschichten sich besser verkauften? Ein junger Mann geblendet?? Hunderte von toten Prinzen ... auch in meinem Märchen. Wahnsinn!"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Na, das Leid ist kaum zu ertragen!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Der Grund dafür ist in der deutschen Geschichte zu finden. Wir sind sehr schwer zu erschrecken, und um moralische Lektüren effektiv zu machen, mussten die Märchen ganz dunkel sein! Und es gibt gar nichts dagegen zu tun! Wir müssen diese tragischen Erinnerungen einfach ertragen!"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Na, zumindest lässt sich dieses Genre gut verspotten!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Das lässt sich bestreiten. Ich finde es gemein, dass man sich über den Schaden von anderen lustig macht."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Geheimnis wird gelöst: die Rapunzeln wurden vom auswegslosen Vater gestohlen! (sich lassen)\n\n___",
+      "a": "Das Geheimnis läßt sich lösen",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzels Haare werden nicht gefunden: melancholischer Prinz verschwindet in der Wüste (zu + Infinitiv)\n\n___",
+      "a": "Die Haaren von Rapunzel sind nicht zu finden",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Zauberei wird schnell gelernt: neue Hexenschule wird eröffnet! (reflexive Konstruktion)\n\n___",
+      "a": "Zauberei lernt sich schnell",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Pathologisches Konkurrenzdenken (competitiveness) wird als Grund für Mordversuch indentifiziert Böse Königin wird verhört (interrogated) (sich lassen)\n\n___",
+      "a": "Pathologisches Konkurrenzdenken läßt sich als Grund für Mordversuch identifiziert",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Eine neue Diät wird entdeckt: Essen vom Magen rausschneiden, Steine reintun. Kein Hunger mehr! (man)\n\n___",
+      "a": "Man entdeckt eine neue Diät",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Nichts kann getan werden: Froschkönig findet keine bereitwilligen Prinzessinen! (zu + Infinitiv; mit 'es gibt')\n\n___",
+      "a": "Es gibt nichts zu tun",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Rache wird befriedigt: Hexe löst Feueralarm aus (reflexive Konstruktion)\n\n___",
+      "a": "Rache befriedigt sich",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Sinkender Immobilienmarkt wird gerettet: Räuberhaus hat neue Eigentümer, höhere Nachbarschaftswerte (sich lassen)\n\n___",
+      "a": "Sinkender Immobilienmarkt läßt sich retten",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Eine Rettungsaktion wird wieder versucht: Dornröschen schläft weiter, Prinz #88 fällt vom Turm (man)\n\n___",
+      "a": "Man versucht wieder eine Rettungsaktion",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    },
+    {
+      "type": "gap",
+      "q": "Erbsen und Linsen werden täglich leicht sortieren: Drei zu Null, Aschenputtel (sich lassen)\n\n___",
+      "a": "Erbsen und Linsen lassen sich täglich leicht sortiert",
+      "set_id": "vpass_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Headline news ... The Grimmliches Bild (a gossipy tabloid newspaper) is ripping off the headlines from the much more elegant Grimmliches Abendblatt (which of course uses the passive voice). To meet their audience's needs, GB needs to convert the more formal passive voice to alternatives to the passive. Re-write the headlines using the alternatives to the passive as indicated after each sentence; re-write only the orange part(s)."
+    }
+  ]
+}

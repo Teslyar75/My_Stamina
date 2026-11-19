@@ -1,0 +1,80 @@
+{
+ "n": 246,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Глагол + предлог (1): to и at",
+ "en": "verb + preposition 1 (to/at)",
+ "summary": "Многие глаголы требуют фиксированного предлога: to или at. Выбор зависит от смысла — направление к кому-то (to) или направление взгляда/действия на кого-то (at).",
+ "can_do": [
+  "Использовать to после глаголов общения, принадлежности и предпочтения.",
+  "Ставить at после глаголов взгляда, крика, указания и броска в цель.",
+  "Различать shout to (чтобы услышали) и shout at (из гнева).",
+  "Правильно говорить arrive at a place / in a city, избегая arrive to."
+ ],
+ "theory": [
+  {
+   "h": "Глаголы общения и передачи — с to",
+   "p": "Когда мы говорим, пишем, слушаем, извиняемся или объясняем кому-то, нужен предлог to: talk to, speak to, listen to, write to, apologise to, explain something to. В русском эти глаголы часто управляют дательным падежом без предлога, поэтому ошибка «explain me» типична.",
+   "formula": "talk to · speak to · listen to · write to · apologise to · explain the rule to me"
+  },
+  {
+   "h": "Принадлежность, случаи и предпочтение — с to",
+   "p": "Belong to (принадлежать), happen to (случиться с кем-то) и prefer X to Y (предпочитать X Y) всегда берут to. Предлог не заменяется на for или than, хотя по-русски звучит «предпочитать чай кофе» без предлога.",
+   "formula": "This book belongs to me. · What happened to you? · I prefer tea to coffee."
+  },
+  {
+   "h": "Приглашения и знакомства — с to",
+   "p": "Invite to (приглашать куда-то/на что-то) и introduce to (представлять кого-то кому-то) требуют to. После introduce порядок: introduce somebody to somebody. Ошибка «introduce with» встречается под влиянием других языков.",
+   "formula": "invite to the party · introduce Tom to Anna · introduce myself to the group"
+  },
+  {
+   "h": "Взгляд, крик, указание и бросок — с at",
+   "p": "Глаголы направленного восприятия или действия к цели берут at: look at, stare at, glance at, smile at, laugh at, shout at, point at, aim at, throw at. Предлог показывает, на ком или чём фокусируется внимание или действие.",
+   "formula": "look at the picture · stare at me · shout at the children · throw a stone at the window"
+  },
+  {
+   "h": "Shout to vs shout at, throw to vs throw at",
+   "p": "Shout to — крикнуть кому-то, чтобы тот услышал (на расстоянии, нейтрально). Shout at — крикнуть на кого-то (гнев, упрек). Throw to — передать (мяч, ключи) кому-то в руки. Throw at — бросить в кого-то/что-то с намерением попасть или ударить.",
+   "table": {
+    "head": ["Глагол + предлог", "Смысл", "Пример"],
+    "rows": [
+     ["shout to", "чтобы услышали", "He shouted to me from the street."],
+     ["shout at", "из гнева / упрек", "Don't shout at the child."],
+     ["throw to", "передать в руки", "Throw the ball to me."],
+     ["throw at", "бросить в цель / кого-то", "He threw a stone at the dog."]
+    ]
+   }
+  },
+  {
+   "h": "Arrive at / in — не arrive to",
+   "p": "Глагол arrive требует at для точек (станция, аэропорт, дом,party) и in для крупных населённых пунктов (город, страна). Предлог to после arrive невозможен — это частая ошибка под влиянием go to / come to.",
+   "formula": "arrive at the station · arrive at the airport · arrive in Moscow · arrive in Russia"
+  }
+ ],
+ "examples": [
+  {"en": "I wrote to him last week.", "ru": "Я писал ему на прошлой неделе."},
+  {"en": "This car belongs to my brother.", "ru": "Эта машина принадлежит моему брату."},
+  {"en": "She apologised to me for the mistake.", "ru": "Она извинилась передо мной за ошибку."},
+  {"en": "Don't laugh at his mistakes.", "ru": "Не смейся над его ошибками."},
+  {"en": "He threw the keys to me.", "ru": "Он бросил мне ключи (передал)."},
+  {"en": "We arrived at the hotel late.", "ru": "Мы прибыли в отель поздно."},
+  {"en": "I prefer walking to driving.", "ru": "Я предпочитаю ходьбу вождению."}
+ ],
+ "traps": [
+  {"bad": "Can you explain me this rule?", "good": "Can you explain this rule to me?", "why": "Explain требует to перед лицом: explain something to somebody."},
+  {"bad": "She smiled to me warmly.", "good": "She smiled at me warmly.", "why": "Сmile — глагол взгляда/мимики, всегда с at."},
+  {"bad": "We arrived to London in the morning.", "good": "We arrived in London in the morning.", "why": "Arrive в городах и странах — arrive in, never arrive to."},
+  {"bad": "He shouted to me because he was angry.", "good": "He shouted at me because he was angry.", "why": "Гнев требует shout at; shout to — для связи на расстоянии."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I need to speak ___ the manager about my contract.", "options": ["to", "at", "with"], "a": 0, "why": "Speak to someone — обращение к человеку."},
+  {"type": "choice", "q": "Don't shout ___ the baby, she's sleeping.", "options": ["to", "at", "for"], "a": 1, "why": "Shout at — крик на кого-то (упрек/гнев)."},
+  {"type": "choice", "q": "This house belongs ___ my grandparents.", "options": ["to", "at", "with"], "a": 0, "why": "Belong to — принадлежит кому-то."},
+  {"type": "choice", "q": "We arrived ___ the station five minutes ago.", "options": ["to", "at", "in"], "a": 1, "why": "Arrive at для точек: станция, аэропорт, отель."},
+  {"type": "gap", "q": "She apologised ___ (to/at) me for being late.", "a": ["to"], "why": "Apologise to someone — извиняться перед кем-то."},
+  {"type": "gap", "q": "He threw the ball ___ (to/at) his friend across the yard.", "a": ["to"], "why": "Throw to — передать в руки, а не попасть."},
+  {"type": "gap", "q": "What happened ___ (to/at) your car? The door is dented.", "a": ["to"], "why": "Happen to — случиться с кем-то/чём-то."},
+  {"type": "translate", "q": "Я предпочитаю чай кофе.", "a": ["I prefer tea to coffee", "I prefer tea over coffee"], "why": "Prefer X to Y — предпочитать X Y."},
+  {"type": "translate", "q": "Не смотри на меня так.", "a": ["Don't look at me like that", "Don't look at me that way"], "why": "Look at — смотреть на кого-то/что-то."}
+ ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "det_07",
+  "title": "Determiners: Possessivpronomen Als Artikel - Genitiv",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/det_07.html",
+  "explanation_lang": "en",
+  "section": "Determiners",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Possessive pronouns are a type of determiner, similar in their function to definite and indefinite articles.\n\nThe genitive case is used to describe ownership, so the genitive possessive determiners also describe ownership.\n\nRotkäppchen musste zum Hause seiner Großmutter gehen. | Little Red Riding Hood had to go to her grandmother's house.\n\nDie Großmutter freut sich auf den Besuch ihres Enkelkindes. | The grandmother is looking forward to her grandchild's visit.\n\nsubjects: | Little Red Riding Hood (she has to go visit her grandmother) | the grandmother (she is looking forward to a visit)\n\ngenitive objects: | grandmother (LRRH is going to her house) | grandchild (grandma is looking forward to her visit)"
+    },
+    {
+      "heading": "Possessive determiners in the genitive case",
+      "text": "There are no 'basic' genitive forms of the possessive determiners, since the ending is influenced by the gender of the noun. So, here is the overview of what does happen:\n\nmasculine\nnoun follows\n(-es suffix +(e)s\non the noun) | feminine\nnoun follows\n(-er suffix) | neuter\nnoun follows\n(-es suffix + (e)s\non the noun) | plural\nnoun follows\n(-er suffix)\n\nmeines Wolfes | meiner Großmutter | meines Kindes | meiner Blumen\n\ndeines Wolfes | deiner Großmutter | deines Kindes | deiner Blumen\n\nseines Wolfes | seiner Großmutter | seines Kindes | seiner Blumen\n\nihres Wolfes | ihrer Großmutter | ihres Kindes | ihrer Blumen\n\nseines Wolfes | seiner Großmutter | seines Kindes | seiner Blumen\n\nuns(e)res Wolfes | uns(e)rer Großmutter | uns(e)res Kindes | uns(e)rer Blumen\n\neu(e)res Wolfes | eu(e)rer Großmutter | eu(e)res Kindes | eu(e)rer Blumen\n\nihres Wolfes | ihrer Großmutter | ihres Kindes | ihrer Blumen\n\nIhres Wolfes | Ihrer Großmutter | Ihres Kindes | Ihrer Blumen\n\nNotice that unser or euer can drop the original intermediate -e- with all genders in the genitive case! Masculine and neuter nouns that are one syllable long are often used with an -es instead of an -s suffix."
+    },
+    {
+      "heading": "Genitive prepositions and the possessive determiners",
+      "text": "You also use genitive possessive determiners following the genitive prepositions: anstatt, trotz, während, and wegen.\n\nWährend seines* Spaziergangs trifft Rotkäppchen einen Wolf. | During her walk, Little Red Riding Hood meets a wolf.\n\nDas Mädchen findet statt seiner Großmutter den Wolf im Bett vor. | The little girl finds the wolf in the bed instead of her grandmother.\n\n* Leider ist Rotkäppchen grammatisch neutrum (ergo das 'sein')"
+    },
+    {
+      "heading": "Possessive pronouns",
+      "text": "Possessive determiners can replace an entire noun phrase - as long as the referent is very clearly established (i.e., you know from a previous sentence or phrase what the pronoun refers to). In this case, the determiners become possessive pronouns. Here is an example set:\n\nDer Wolf ist verwirrt, und meint das alles ihm gehört ... und Rotkäppchen wird entschlossener.\n\nder Wolf | Rotkäppchen\n\nmasculine | Ich liege auf der Lauer im Schatten meines Waldes! | Im Schatten deines Waldes? Nein! Unseres! | In the shadows of your forest? No, of ours!\n\nfeminine | Das ist die Brille meiner Großmutter! | Deiner Großmutter? Nein, meiner! | Your grandmother's? No, mine!\n\nneuter | Ich freue mich auf den Geschmack meines Mittagessens! | Den Geschmack deines Mittagessens? Nein, meines! Oh, Moment mal, ich will meine Großmutter nicht essen! | The flavor of your lunch? No, mine! Oh, wait a minute, I don't want to eat my grandmother!\n\nplural | Hast du Angst vor dem Klang meiner großen Zähne? | Nein, aber hast du Angst vor dem Klang meiner? | No, but are you afraid of the sound of mine?\n\nThe endings on the possessive pronouns are the same as der-words in the dative case."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Rotkäppchen musste zum Hause seiner Großmutter gehen.",
+      "en": "Little Red Riding Hood had to go to her grandmother's house."
+    },
+    {
+      "de": "Die Großmutter freut sich auf den Besuch ihres Enkelkindes.",
+      "en": "The grandmother is looking forward to her grandchild's visit."
+    },
+    {
+      "de": "masculine\nnoun follows\n(-es suffix +(e)s\non the noun)",
+      "en": "feminine\nnoun follows\n(-er suffix)"
+    },
+    {
+      "de": "meines Wolfes",
+      "en": "meiner Großmutter"
+    },
+    {
+      "de": "deines Wolfes",
+      "en": "deiner Großmutter"
+    },
+    {
+      "de": "seines Wolfes",
+      "en": "seiner Großmutter"
+    },
+    {
+      "de": "ihres Wolfes",
+      "en": "ihrer Großmutter"
+    },
+    {
+      "de": "uns(e)res Wolfes",
+      "en": "uns(e)rer Großmutter"
+    },
+    {
+      "de": "eu(e)res Wolfes",
+      "en": "eu(e)rer Großmutter"
+    },
+    {
+      "de": "Ihres Wolfes",
+      "en": "Ihrer Großmutter"
+    },
+    {
+      "de": "Während seines* Spaziergangs trifft Rotkäppchen einen Wolf.",
+      "en": "During her walk, Little Red Riding Hood meets a wolf."
+    },
+    {
+      "de": "Das Mädchen findet statt seiner Großmutter den Wolf im Bett vor.",
+      "en": "The little girl finds the wolf in the bed instead of her grandmother."
+    },
+    {
+      "de": "masculine",
+      "en": "Ich liege auf der Lauer im Schatten meines Waldes!"
+    },
+    {
+      "de": "feminine",
+      "en": "Das ist die Brille meiner Großmutter!"
+    },
+    {
+      "de": "neuter",
+      "en": "Ich freue mich auf den Geschmack meines Mittagessens!"
+    },
+    {
+      "de": "plural",
+      "en": "Hast du Angst vor dem Klang meiner großen Zähne?"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Während ___ Spaziergangs begegnet Rotkäppchen dem Wolf.",
+      "a": "seines",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Wolf, trotz ___ unnatürlichen Schüchternheit (shyness), versucht mit dem Mädchen zu sprechen.",
+      "a": "seiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Aber Rotkäppchen hörte nicht auf die Worte ___ Mutter, und hielt nicht an.",
+      "a": "seiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Wolf versuchte es noch einmal: \"Rotkäppchen, möchtest du den Duft (fragrance) ___ Blumen riechen (smell)?\"",
+      "a": "meiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Aber Rotkäppchen fing an zu singen, und der Wolf wird immer trauriger: Und jetzt werd' ich noch mit dem wunderbaren Klang ___ Stimme gefoltert (tortured)!",
+      "a": "deiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Das Mädchen war aber gerissen (sly), und folgte jeder Bewegung ___ Verfolgers.",
+      "a": "seines",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die Sonne schien stark, und als die Hitze ___ Strahlen den Wolf müde gemacht hat, setzte sich auch das Mädchen unter einen Baum.",
+      "a": "ihrer",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Auf dem Weg zum Hause ___ Großmutter pflückte Rotkäppchen noch einige Blumen, und brachte sie zu ihrer Großmutter.",
+      "a": "seiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die beiden genossen den Geschmack ___ kalten Weines, und gaben auch dem Wolf ein bisschen davon ab.",
+      "a": "ihres",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die Versuchung (temptation) ___ Gastfreundschaft (hospitality) war zu groß für den Wolf, und der Tag war zu heiß. Also wurde er ganz schnell betrunken (drunk).",
+      "a": "ihrer",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Er hat die Stärke ___ Gefühle Rotkäppchen gegenüber unterschätzt (understimated), und er konnte sie nicht mehr geheimhalten.",
+      "a": "seiner",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen fand aber eine Beziehung zwischen sich und dem Wolf unmöglich, und die Gebrüder Grimm mussten die Handlung (plot) ___ Märchens ganz neu schreiben (re-write).",
+      "a": "ihres",
+      "set_id": "det_07_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct genitive possessive determiners to read a draft of the fairy tale that the Grimm Brothers ultimately decided not to publish ..."
+    }
+  ]
+}

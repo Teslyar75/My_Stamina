@@ -1,0 +1,73 @@
+{
+ "n": 135,
+ "level": "B2",
+ "module": "b-future",
+ "title": "going to: планы и предсказания",
+ "en": "going to",
+ "summary": "Планы, которые уже созрели, и предсказания по тому, что видно прямо сейчас: собираюсь продать машину, сейчас упаду.",
+ "can_do": [
+  "Рассказать о намерении, принятом до разговора.",
+  "Сделать предсказание по видимым признакам.",
+  "Сказать, что планировал, но передумал: was going to.",
+  "Построить вопрос и отрицание с going to."
+ ],
+ "theory": [
+  {
+   "h": "Намерение, которое уже созрело",
+   "p": "Going to говорит о плане, который существует в голове до момента разговора. Вы не решаете сейчас, вы сообщаете о готовом решении. Формула: am, is, are плюс going to плюс начальная форма глагола.",
+   "formula": "I'm going to sell my car. · We're going to move house next spring."
+  },
+  {
+   "h": "Предсказание по признакам",
+   "p": "Второе значение — вывод из того, что видно или известно сейчас. Тучи на небе, человек спотыкается, команда ведёт в счёте: признаки уже есть, и мы говорим, что произойдёт. Will здесь тоже возможен, но going to подчёркивает очевидность.",
+   "formula": "Look at those clouds. It's going to rain. · She's going to fall!"
+  },
+  {
+   "h": "Как строится",
+   "p": "В утверждении и отрицании going to стоит после am, is или are, а not ставится перед going. В вопросе am, is или are выходит вперёд. Сокращения в речи обязательны: I'm, we're, she's.",
+   "table": {
+    "head": ["Форма", "Пример", "Перевод"],
+    "rows": [
+     ["утверждение", "She's going to start a course.", "Она собирается начать курс."],
+     ["отрицание", "I'm not going to tell him.", "Я не собираюсь ему говорить."],
+     ["вопрос", "Are you going to come?", "Ты собираешься прийти?"],
+     ["прошлое", "I was going to call you.", "Я собирался тебе позвонить."]
+    ]
+   }
+  },
+  {
+   "h": "was going to: собирался, но не сделал",
+   "p": "В прошедшем времени going to часто означает неосуществлённое намерение. Из контекста понятно, что план не сработал: вы собирались, но забыли, передумали или помешали обстоятельства.",
+   "formula": "I was going to call you, but I forgot. · We were going to drive, but the car broke down."
+  },
+  {
+   "h": "Рядом с present continuous",
+   "p": "Оба варианта про будущее, но договорённость с конкретным временем и человеком чаще звучит в continuous, а голое намерение — в going to. Если вы уже оформили билеты и встречи, continuous точнее.",
+   "formula": "I'm going to start jogging. (решил) · I'm starting a new job on Monday. (уже оформлено)"
+  }
+ ],
+ "examples": [
+  {"en": "I'm going to learn Spanish this year.", "ru": "В этом году я собираюсь выучить испанский."},
+  {"en": "Look at the sky — it's going to snow.", "ru": "Посмотри на небо, сейчас пойдёт снег."},
+  {"en": "They're going to open a new branch in May.", "ru": "В мае они собираются открыть новый филиал."},
+  {"en": "We weren't going to stay, but we changed our minds.", "ru": "Мы не собирались оставаться, но передумали."},
+  {"en": "Are you going to accept the offer?", "ru": "Ты собираешься принять предложение?"},
+  {"en": "He's going to be a father in spring.", "ru": "Весной он станет отцом."}
+ ],
+ "traps": [
+  {"bad": "I am going to not tell him.", "good": "I'm not going to tell him.", "why": "Not ставится перед going, а не перед смысловым глаголом."},
+  {"bad": "Look at the sky! It will rain.", "good": "Look at the sky! It's going to rain.", "why": "Признак уже перед глазами — going to."},
+  {"bad": "I going to buy a car.", "good": "I'm going to buy a car.", "why": "Нужен глагол be: am, is или are."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Look at those clouds! It ___ rain.", "options": ["will", "is going to", "rains"], "a": 1, "why": "Признак налицо — going to."},
+  {"type": "choice", "q": "We ___ buy a new sofa — we've saved half the money.", "options": ["are going to", "will", "are"], "a": 0, "why": "План созрел заранее — going to."},
+  {"type": "choice", "q": "I ___ tell anyone, I promise.", "options": ["am not going to", "don't go to", "not going to"], "a": 0, "why": "Отрицание: am not going to."},
+  {"type": "choice", "q": "She ___ be a doctor when she grows up.", "options": ["is going to", "goes to", "will going to"], "a": 0, "why": "Намерение: is going to be."},
+  {"type": "gap", "q": "He ___ (sell) his bike next week.", "a": ["is going to sell", "is selling"], "why": "План на будущее: is going to sell."},
+  {"type": "gap", "q": "I ___ (not / going to) apologize.", "a": ["am not going to", "'m not going to"], "why": "Not перед going to."},
+  {"type": "gap", "q": "We ___ (going to / stay) at home tonight.", "a": ["are going to stay"], "why": "Намерение: are going to stay."},
+  {"type": "translate", "q": "Смотри, она сейчас упадёт!", "a": ["look she is going to fall", "look she's going to fall"], "why": "Предсказание по признаку — going to."},
+  {"type": "translate", "q": "Я собирался позвонить тебе, но забыл.", "a": ["i was going to call you but i forgot", "i was going to phone you but i forgot"], "why": "Неосуществлённое намерение: was going to."}
+ ]
+}

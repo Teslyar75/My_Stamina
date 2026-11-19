@@ -18,22 +18,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Konjunktiv II drückt Unwirklichkeit, Höflichkeit, Wünsche, Ratschläge aus. Zwei Formen: würde + Infinitiv (für fast alle Verben) und Präteritum-Form (bei sein, haben, Modalen)."
+          "text": "Конъюнктив II выражает нереальность, вежливость, желания, советы. Две формы: würde + инфинитив (для почти всех глаголов) и форма претеритума (для sein, haben, модальных глаголов)."
         },
         {
           "kind": "rule",
-          "title": "würde + Infinitiv",
-          "text": "ich würde machen, du würdest machen, er würde machen... — für alle Verben außer sein/haben/Modale."
+          "title": "Форма würde + инфинитив",
+          "text": "ich würde machen, du würdest machen, er würde machen... — для всех глаголов кроме sein/haben/модальных."
         },
         {
           "kind": "rule",
-          "title": "Präteritum-Formen (häufig)",
-          "text": "sein → wäre, haben → hätte, können → könnte, müssen → müsste, wollen → wollte, sollen → sollte, dürfen → dürfte, mögen → mochte. Diese Formen statt würde + Inf."
+          "title": "Претеритум-формы (часто используемые)",
+          "text": "sein → wäre, haben → hätte, können → könnte, müssen → müsste, wollen → wollte, sollen → sollte, dürfen → dürfte, mögen → mochte. Эти формы вместо würde + инфинитив."
         },
         {
           "kind": "rule",
-          "title": "Verwendung",
-          "text": "Höflichkeit: Ich möchte... / Könnten Sie... Wünsche: Ich wäre gern... Irreal: Wenn ich Zeit hätte, käme ich. Ratschläge: An deiner Stelle würde ich..."
+          "title": "Использование",
+          "text": "Вежливость: Ich möchte... / Könnten Sie... Желания: Ich wäre gern... Нереальность: Wenn ich Zeit hätte, käme ich. Советы: An deiner Stelle würde ich..."
         },
         {
           "kind": "table",
@@ -43,7 +43,7 @@
           "kind": "example",
           "de": "Ich würde gern kommen. Könnten Sie mir helfen? Wenn ich reich wäre, würde ich reisen. An deiner Stelle würde ich das machen.",
           "ru": "Я бы с удовольствием пришёл. Не могли бы вы мне помочь? Если бы я был богат, я бы путешествовал. На твоём месте я бы это сделал.",
-          "note": "würde + Inf, Prät-Formen (wäre, könnte), irrealer Bedingungssatz."
+          "note": "würde + инфинитив, формы претеритума (wäre, könnte), нереальное условное предложение."
         }
       ],
       "drills": [
@@ -60,7 +60,7 @@
           "answer": [
             "würde"
           ],
-          "why": "ich → würde."
+          "why": "Для ich используется форма würde."
         },
         {
           "id": "b1-01-d02",
@@ -75,7 +75,7 @@
           "answer": [
             "könnte"
           ],
-          "why": "können → Präteritum-Form: könnte (häufiger als würde können)."
+          "why": "Глагол können в форме претеритума: könnte (чаще, чем würde können)."
         },
         {
           "id": "b1-01-d03",
@@ -90,7 +90,7 @@
           "answer": [
             "hätte"
           ],
-          "why": "haben → Präteritum-Form: hätte."
+          "why": "Глагол haben в форме претеритума: hätte."
         },
         {
           "id": "b1-01-d04",
@@ -99,7 +99,7 @@
           "answer": [
             "würde"
           ],
-          "why": "ich → würde."
+          "why": "Для ich используется форма würde."
         },
         {
           "id": "b1-01-d05",
@@ -114,7 +114,7 @@
           "answer": [
             "Könnten"
           ],
-          "why": "Höflichkeit: Konj. II von können → Könnten."
+          "why": "Вежливость: конъюнктив II от können → Könnten."
         },
         {
           "id": "b1-01-d06",
@@ -123,7 +123,7 @@
           "answer": [
             "wäre"
           ],
-          "why": "sein → wäre."
+          "why": "Глагол sein → wäre."
         },
         {
           "id": "b1-01-d07",
@@ -138,7 +138,7 @@
           "answer": [
             "müssten"
           ],
-          "why": "müssen → Präteritum-Form: müssten."
+          "why": "Глагол müssen в форме претеритума: müssten."
         },
         {
           "id": "b1-01-d08",
@@ -147,7 +147,7 @@
           "answer": [
             "Ich würde das nicht machen."
           ],
-          "why": "V2: Ich würde — das nicht machen."
+          "why": "Порядок слов V2: Ich würde — das nicht machen."
         },
         {
           "id": "b1-01-d09",
@@ -156,7 +156,7 @@
           "answer": [
             "wollte, würde"
           ],
-          "why": "wollen → wollte; Hauptsatz: würde."
+          "why": "wollen → wollte; в главном предложении: würde."
         },
         {
           "id": "b1-01-d10",
@@ -171,7 +171,7 @@
           "answer": [
             "sollte"
           ],
-          "why": "sollen → Präteritum-Form: sollte."
+          "why": "Глагол sollen в форме претеритума: sollte."
         },
         {
           "id": "b1-01-d11",
@@ -180,7 +180,7 @@
           "answer": [
             "Ich möchte ein Wasser."
           ],
-          "why": "wollen → möchte (Konj. II Prät-Form)."
+          "why": "wollen → möchte (форма претеритума конъюнктива II)."
         },
         {
           "id": "b1-01-d12",
@@ -189,7 +189,7 @@
           "answer": [
             "hätte, würde"
           ],
-          "why": "haben → hätte; Hauptsatz: würde."
+          "why": "haben → hätte; в главном предложении: würde."
         }
       ]
     },
@@ -209,22 +209,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Konjunktiv II Vergangenheit = hätte/ware + Partizip II. Drückt aus, dass etwas in der Vergangenheit NICHT passiert ist (aber gewollt/geplant war)."
+          "text": "Конъюнктив II прошедшего = hätte/wäre + Partizip II. Выражает, что что-то в прошлом НЕ произошло (хотя было желано/запланировано)."
         },
         {
           "kind": "rule",
-          "title": "Bildung",
-          "text": "hätte/ware (Konj. II Präteritum von haben/sein) + Partizip II: ich hätte gemacht, ich wäre gegangen."
+          "title": "Образование",
+          "text": "hätte/wäre (конъюнктив II прошедшего от haben/sein) + Partizip II: ich hätte gemacht, ich wäre gegangen."
         },
         {
           "kind": "rule",
-          "title": "Wahl von haben/sein",
-          "text": "Wie im Perfekt: transitive/Reflexive → hätte. Bewegung/Zustandsänderung → wäre. Modale: hätte gekonnt, hätte gemusst..."
+          "title": "Выбор haben/sein",
+          "text": "Как в Перфекте: переходные/рефлексивные → hätte. Движение/изменение состояния → wären. Модальные: hätte gekonnt, hätte gemusst..."
         },
         {
           "kind": "rule",
-          "title": "Verwendung",
-          "text": "Bedauern: Ich hätte das nicht gesagt. Irrealer Bedingungssatz Typ 3: Wenn ich Zeit gehabt hätte, wäre ich gekommen. Vermutung: Er wäre wohl gekommen."
+          "title": "Использование",
+          "text": "Сожаление: Ich hätte das nicht gesagt. Нереальное условное предложение 3 типа: Wenn ich Zeit gehabt hätte, wäre ich gekommen. Допущение: Er wäre wohl gekommen."
         },
         {
           "kind": "table",
@@ -234,7 +234,7 @@
           "kind": "example",
           "de": "Ich hätte das nicht gesagt. Wenn er früher gekommen wäre, hätte er sie getroffen. Er wäre gern gekommen, aber er hatte keine Zeit.",
           "ru": "Я бы этого не сказал. Если бы он пришёл раньше, он бы её встретил. Он бы с удовольствием пришёл, но у него не было времени.",
-          "note": "hätte gesagt, wäre gekommen — Konj. II Vergangenheit."
+          "note": "hätte gesagt, wäre gekommen — конъюнктив II прошедшего времени."
         }
       ],
       "drills": [
@@ -251,7 +251,7 @@
           "answer": [
             "hätte"
           ],
-          "why": "Konj. II von haben: hätte."
+          "why": "Конъюнктив II от haben: hätte."
         },
         {
           "id": "b1-02-d02",
@@ -266,7 +266,7 @@
           "answer": [
             "wäre"
           ],
-          "why": "Konj. II von sein: wäre."
+          "why": "Конъюнктив II от sein: wäre."
         },
         {
           "id": "b1-02-d03",
@@ -281,7 +281,7 @@
           "answer": [
             "hätten gemacht"
           ],
-          "why": "hätten (wir) + Partizip II (gemacht)."
+          "why": "hätten (мы) + Partizip II (gemacht)."
         },
         {
           "id": "b1-02-d04",
@@ -290,7 +290,7 @@
           "answer": [
             "gehabt hätte, wäre"
           ],
-          "why": "Typ 3: wenn ich Zeit gehabt hätte (hätte + Partizip II), wäre ich gekommen (wäre + Partizip II)."
+          "why": "Тип 3: wenn ich Zeit gehabt hätte (hätte + Partizip II), wäre ich gekommen (wäre + Partizip II)."
         },
         {
           "id": "b1-02-d05",
@@ -305,7 +305,7 @@
           "answer": [
             "hätte gekonnt"
           ],
-          "why": "Modale im Konj. II Vergangenheit: hätte + Partizip II (gekönnt)."
+          "why": "Модальные в конъюнктиве II прошедшего: hätte + Partizip II (gekönnt)."
         },
         {
           "id": "b1-02-d06",
@@ -314,7 +314,7 @@
           "answer": [
             "hätte gewollt"
           ],
-          "why": "wollen → hätte gewollt."
+          "why": "wollen требует hätte + Partizip II (gewollt)."
         },
         {
           "id": "b1-02-d07",
@@ -323,7 +323,7 @@
           "answer": [
             "Hätte ich das gewusst, wäre ich gekommen."
           ],
-          "why": "Bedingungssatz Typ 3: hätte + Partizip II, wäre + Partizip II."
+          "why": "Условное предложение 3 типа: hätte + Partizip II, wären + Partizip II."
         },
         {
           "id": "b1-02-d08",
@@ -332,7 +332,7 @@
           "answer": [
             "hätte gesollt"
           ],
-          "why": "sollen → hätte gesollt."
+          "why": "sollen требует hätte + Partizip II (gesollt)."
         },
         {
           "id": "b1-02-d09",
@@ -347,7 +347,7 @@
           "answer": [
             "hätte nicht gemacht"
           ],
-          "why": "Konj. II Vergangenheit für Bedauern."
+          "why": "Конъюнктив II прошедшего для выражения сожаления."
         },
         {
           "id": "b1-02-d10",
@@ -356,7 +356,7 @@
           "answer": [
             "Er hätte gearbeitet."
           ],
-          "why": "hat → hätte, Partizip II bleibt."
+          "why": "hat → hätte, Partizip II остаётся."
         },
         {
           "id": "b1-02-d11",
@@ -365,7 +365,7 @@
           "answer": [
             "gewusst hätte, hätte"
           ],
-          "why": "wissen → hätte gewusst; helfen (transitiv) → hätte geholfen."
+          "why": "wissen → hätte gewusst; helfen (переходный) → hätte geholfen."
         },
         {
           "id": "b1-02-d12",
@@ -380,7 +380,7 @@
           "answer": [
             "hätte gemusst"
           ],
-          "why": "müssen → hätte gemusst."
+          "why": "müssen требует hätte + Partizip II (gemusst)."
         }
       ]
     },
@@ -401,22 +401,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Passiv in allen Zeiten: werden (konjugiert) + Partizip II. Subjekt = ehemaliges Akkusativobjekt."
+          "text": "Пассив во всех временах: werden (спряжённое) + Partizip II. Подлежащее = бывший аккузативный объект."
         },
         {
           "kind": "rule",
-          "title": "Übersicht",
-          "text": "Präsens: wird gemacht. Präteritum: wurde gemacht. Perfekt: ist gemacht worden. Plusquamperfekt: war gemacht worden. Futur I: wird gemacht werden. Futur II: wird gemacht worden sein."
+          "title": "Обзор",
+          "text": "Настоящее время: wird gemacht. Прошедшее время: wurde gemacht. Перфект: ist gemacht worden. Плюсквамперфект: war gemacht worden. Будущее I: wird gemacht werden. Будущее II: wird gemacht worden sein."
         },
         {
           "kind": "rule",
-          "title": "Perfekt Passiv: ist ... worden",
-          "text": "NICHT 'ist ... geworden'! → ist gemacht worden. Partizip II von werden = geworden, aber im Passiv Perfekt: worden."
+          "title": "Перфект пассива: ist ... worden",
+          "text": "НЕ 'ist ... geworden'! → ist gemacht worden. Partizip II глагола werden = geworden, но в пассиве перфекта: worden."
         },
         {
           "kind": "rule",
-          "title": "Modalverben + Passiv",
-          "text": "muss gemacht werden, kann gemacht werden, soll gemacht werden. Modal (konjugiert) + Partizip II + werden (Infinitiv)."
+          "title": "Модальные глаголы + пассив",
+          "text": "Модальный глагол (спряжённый) + Partizip II + werden (инфинитив)."
         },
         {
           "kind": "table",
@@ -426,7 +426,7 @@
           "kind": "example",
           "de": "Das Haus wird gebaut. Das Haus wurde gebaut. Das Haus ist gebaut worden. Das Haus muss gebaut werden.",
           "ru": "Дом строится. Дом строился. Дом построен. Дом должен быть построен.",
-          "note": "wird/wurde/ist ... worden/muss ... werden."
+          "note": "Формы: wird / wurde / ist ... worden / muss ... werden."
         }
       ],
       "drills": [
@@ -443,7 +443,7 @@
           "answer": [
             "wird"
           ],
-          "why": "Präsens Passiv: wird + Partizip II."
+          "why": "Настоящее время пассива: wird + Partizip II."
         },
         {
           "id": "b1-03-d02",
@@ -458,7 +458,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum Passiv: wurde + Partizip II."
+          "why": "Прошедшее время пассива: wurde + Partizip II."
         },
         {
           "id": "b1-03-d03",
@@ -473,7 +473,7 @@
           "answer": [
             "ist worden"
           ],
-          "why": "Perfekt Passiv: ist + Partizip II + worden."
+          "why": "Перфект пассива: ist + Partizip II + worden."
         },
         {
           "id": "b1-03-d04",
@@ -482,7 +482,7 @@
           "answer": [
             "war worden"
           ],
-          "why": "Plusquamperfekt Passiv: war + Partizip II + worden."
+          "why": "Плюсквамперфект пассива: war + Partizip II + worden."
         },
         {
           "id": "b1-03-d05",
@@ -497,7 +497,7 @@
           "answer": [
             "wird gebaut werden"
           ],
-          "why": "Futur I Passiv: wird + Partizip II + werden."
+          "why": "Будущее I пассива: wird + Partizip II + werden."
         },
         {
           "id": "b1-03-d06",
@@ -506,7 +506,7 @@
           "answer": [
             "muss gelesen werden"
           ],
-          "why": "Modal + Passiv: muss + Partizip II + werden."
+          "why": "Модальный + пассив: muss + Partizip II + werden."
         },
         {
           "id": "b1-03-d07",
@@ -515,7 +515,7 @@
           "answer": [
             "Das Buch ist gelesen worden."
           ],
-          "why": "Perfekt Passiv: ist + Partizip II + worden."
+          "why": "Перфект пассива: ist + Partizip II + worden."
         },
         {
           "id": "b1-03-d08",
@@ -530,7 +530,7 @@
           "answer": [
             "Das Haus wird gebaut."
           ],
-          "why": "Akk-Objekt → Subjekt, werden + Partizip II."
+          "why": "Аккузативный объект → подлежащее, werden + Partizip II."
         },
         {
           "id": "b1-03-d09",
@@ -539,7 +539,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum: wurde + Partizip II."
+          "why": "Прошедшее время: wurde + Partizip II."
         },
         {
           "id": "b1-03-d10",
@@ -548,7 +548,7 @@
           "answer": [
             "Das Haus wurde gebaut."
           ],
-          "why": "wird → wurde."
+          "why": "wird меняется на wurde."
         },
         {
           "id": "b1-03-d11",
@@ -563,7 +563,7 @@
           "answer": [
             "wird gebaut worden sein"
           ],
-          "why": "Futur II: wird + Partizip II + worden + sein."
+          "why": "Будущее II: wird + Partizip II + worden + sein."
         },
         {
           "id": "b1-03-d12",
@@ -572,7 +572,7 @@
           "answer": [
             "wird"
           ],
-          "why": "Unpersönliches Passiv: es wird + Partizip II."
+          "why": "Безличный пассив: es wird + Partizip II."
         }
       ]
     },
@@ -591,33 +591,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Statt Passiv oft: man (unpersönlich), sich lassen (Möglichkeit), -bar-Adjektive (Eigenschaft)."
+          "text": "Вместо пассива часто используют: man (безличное), sich lassen (возможность), прилагательные на -bar (свойство)."
         },
         {
           "kind": "rule",
-          "title": "man + Aktiv",
-          "text": "Passiv: 'Das wird gemacht.' → Aktiv: 'Man macht das.' Unpersönlich, Subjekt = man."
+          "title": "man + Актив",
+          "text": "Пассив: 'Das wird gemacht.' → Актив: 'Man macht das.' Безличное, подлежащее = man."
         },
         {
           "kind": "rule",
-          "title": "sich lassen + Infinitiv",
-          "text": "Das lässt sich machen = Das kann gemacht werden. Nur mit Akkusativobjekt: Das Buch lässt sich lesen."
+          "title": "sich lassen + инфинитив",
+          "text": "Das lässt sich machen = Das kann gemacht werden. Только с аккузативным объектом: Das Buch lässt sich lesen."
         },
         {
           "kind": "rule",
-          "title": "-bar-Adjektive",
-          "text": "lesbar, machbar, essbar, trinkbar, sichtbar, hörbar, lösbar. Bedeutung: 'kann ... werden'. Attributiv oder prädikativ: 'Das ist lösbar.'"
+          "title": "Прилагательные на -bar",
+          "text": "lesbar, machbar, essbar, trinkbar, sichtbar, hörbar, lösbar. Значение: 'может быть ...'. Атрибутивное или предикативное: 'Das ist lösbar.'"
         },
         {
           "kind": "rule",
-          "title": "un- + -bar = nicht möglich",
-          "text": "unlesbar, unmachbar, ungelöst (Partizip II als Adjektiv)."
+          "title": "un- + -bar = невозможно",
+          "text": "unlesbar, unmachbar, ungelöst (причастие II как прилагательное)."
         },
         {
           "kind": "example",
           "de": "Man repariert das Auto. Das Auto lässt sich reparieren. Das Problem ist lösbar. Die Schrift ist unleserlich.",
           "ru": "Машину ремонтируют. Машину можно отремонтировать. Проблема решаема. Почерк неразборчивый.",
-          "note": "man + Aktiv, sich lassen, -bar."
+          "note": "man + Актив, sich lassen, -bar."
         }
       ],
       "drills": [
@@ -634,7 +634,7 @@
           "answer": [
             "Man macht das."
           ],
-          "why": "man (klein geschrieben) + Aktiv."
+          "why": "man (с маленькой буквы) + актив."
         },
         {
           "id": "b1-04-d02",
@@ -649,7 +649,7 @@
           "answer": [
             "Das lässt sich machen."
           ],
-          "why": "sich lassen + Infinitiv = kann gemacht werden."
+          "why": "sich lassen + инфинитив = kann gemacht werden."
         },
         {
           "id": "b1-04-d03",
@@ -664,7 +664,7 @@
           "answer": [
             "lesbar"
           ],
-          "why": "-bar-Adjektiv: lesbar."
+          "why": "Прилагательное на -bar: lesbar."
         },
         {
           "id": "b1-04-d04",
@@ -673,7 +673,7 @@
           "answer": [
             "ist"
           ],
-          "why": "Prädikativ: ist lösbar."
+          "why": "Предикатив: ist lösbar."
         },
         {
           "id": "b1-04-d05",
@@ -688,7 +688,7 @@
           "answer": [
             "beides möglich"
           ],
-          "why": "unmachbar oder nicht machbar."
+          "why": "unmachbar или nicht machbar."
         },
         {
           "id": "b1-04-d06",
@@ -697,7 +697,7 @@
           "answer": [
             "ist"
           ],
-          "why": "essbar = kann gegessen werden."
+          "why": "essbar = может быть съедена."
         },
         {
           "id": "b1-04-d07",
@@ -706,7 +706,7 @@
           "answer": [
             "Das Buch lässt sich lesen."
           ],
-          "why": "sich lassen Konstruktion."
+          "why": "Конструкция sich lassen."
         },
         {
           "id": "b1-04-d08",
@@ -721,7 +721,7 @@
           "answer": [
             "kann gehört werden"
           ],
-          "why": "-bar = kann ... werden."
+          "why": "-bar = может быть ... / можно ..."
         },
         {
           "id": "b1-04-d09",
@@ -730,7 +730,7 @@
           "answer": [
             "kann"
           ],
-          "why": "man + Aktiv."
+          "why": "man + актив."
         },
         {
           "id": "b1-04-d10",
@@ -739,7 +739,7 @@
           "answer": [
             "Man öffnet die Tür."
           ],
-          "why": "man + Aktivverb."
+          "why": "man + активный глагол."
         },
         {
           "id": "b1-04-d11",
@@ -748,7 +748,7 @@
           "answer": [
             "nicht"
           ],
-          "why": "nicht lesbar = unlesbar."
+          "why": "nicht lesbar = unlesbar (нечитаемый)."
         },
         {
           "id": "b1-04-d12",
@@ -763,7 +763,7 @@
           "answer": [
             "lesen"
           ],
-          "why": "Nur transitive Verben (mit Akk-Objekt): lesen, machen, reparieren."
+          "why": "Только переходные глаголы (с аккузативным объектом): lesen, machen, reparieren."
         }
       ]
     },
@@ -783,28 +783,28 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Partizip I = aktiv, gleichzeitig (schlafend = der schläft). Partizip II = passiv, abgeschlossen (gebrochen = wurde gebrochen). Beide deklinieren wie Adjektive."
+          "text": "Причастие I = активное, одновременное (schlafend = der schläft). Причастие II = пассивное, завершённое (gebrochen = wurde gebrochen). Оба склоняются как прилагательные."
         },
         {
           "kind": "rule",
-          "title": "Partizip I",
-          "text": "Infinitiv + -d: lesend, schlafend, arbeitend. Bedeutung: die Handlung ausführend, gleichzeitig."
+          "title": "Причастие I",
+          "text": "Инфинитив + -d: lesend, schlafend, arbeitend. Значение: выполняет действие, одновременно."
         },
         {
           "kind": "rule",
-          "title": "Partizip II",
-          "text": "ge- + Stamm + -t/-en: gelesen, gearbeitet, gegangen. Bedeutung: die Handlung erleidend, abgeschlossen."
+          "title": "Причастие II",
+          "text": "ge- + основа + -t/-en: gelesen, gearbeitet, gegangen. Значение: действие пережито, завершено."
         },
         {
           "kind": "rule",
-          "title": "Deklination",
-          "text": "Wie Adjektive: nach bestimmtem Artikel (schwach), unbestimmtem (gemischt), ohne Artikel (stark)."
+          "title": "Склонение",
+          "text": "Как прилагательные: после определённого артикля (слабое), неопределённого (смешанное), без артикля (сильное)."
         },
         {
           "kind": "example",
           "de": "Der schlafende Hund. Das geschriebene Buch. Ich sehe den lesenden Mann. Die gelesenen Bücher.",
           "ru": "Спящая собака. Написанная книга. Я вижу читающего мужчину. Прочитанные книги.",
-          "note": "Partizip I: aktiv (schlafend = schläft). Partizip II: passiv (geschrieben = wurde geschrieben)."
+          "note": "Причастие I: активно (schlafend = schläft). Причастие II: пассивно (geschrieben = wurde geschrieben)."
         }
       ],
       "drills": [
@@ -821,7 +821,7 @@
           "answer": [
             "schlafend"
           ],
-          "why": "Infinitiv + -d: schlafend."
+          "why": "Инфинитив + -d: schlafend."
         },
         {
           "id": "b1-05-d02",
@@ -836,7 +836,7 @@
           "answer": [
             "gebrochen"
           ],
-          "why": "Starke Verb: ge- + brach + -en = gebrochen."
+          "why": "Неравномерный глагол: ge- + brach + -en = gebrochen."
         },
         {
           "id": "b1-05-d03",
@@ -851,7 +851,7 @@
           "answer": [
             "schlafende"
           ],
-          "why": "Partizip I + Adjektivendung: Nom Mask nach bestimmtem Artikel = -e."
+          "why": "Причастие I + прилагательное окончание: Nom Mask после определённого артикля = -e."
         },
         {
           "id": "b1-05-d04",
@@ -860,7 +860,7 @@
           "answer": [
             "gebrochene"
           ],
-          "why": "Partizip II + Adjektivendung: Nom Neut = -e."
+          "why": "Причастие II + прилагательное окончание: Nom Neut = -e."
         },
         {
           "id": "b1-05-d05",
@@ -875,7 +875,7 @@
           "answer": [
             "der Mann liest"
           ],
-          "why": "Partizip I = aktiv, gleichzeitig."
+          "why": "Причастие I = активно, одновременно."
         },
         {
           "id": "b1-05-d06",
@@ -890,7 +890,7 @@
           "answer": [
             "das Buch wird gelesen"
           ],
-          "why": "Partizip II = passiv, abgeschlossen."
+          "why": "Причастие II = пассивно, завершено."
         },
         {
           "id": "b1-05-d07",
@@ -899,7 +899,7 @@
           "answer": [
             "Die arbeitende Frau ist müde."
           ],
-          "why": "Partizip I als Attribut: die arbeitende Frau."
+          "why": "Причастие I как определение: die arbeitende Frau."
         },
         {
           "id": "b1-05-d08",
@@ -908,7 +908,7 @@
           "answer": [
             "gebackenes"
           ],
-          "why": "Partizip II + Adjektivendung: Akk Neut = -es (ohne Artikel) oder -e (mit bestimmtem). Hier: ein gebackenes Brot."
+          "why": "Причастие II + прилагательное окончание: Akk Neut = -es (без артикля) или -e (с определённым). Здесь: ein gebackenes Brot."
         },
         {
           "id": "b1-05-d09",
@@ -923,7 +923,7 @@
           "answer": [
             "arbeitend"
           ],
-          "why": "Infinitiv + -d."
+          "why": "Инфинитив + -d."
         },
         {
           "id": "b1-05-d10",
@@ -932,7 +932,7 @@
           "answer": [
             "Der lesende Mann"
           ],
-          "why": "Relativsatz (aktiv) → Partizip I."
+          "why": "Придаточное предложение (активное) → Причастие I."
         },
         {
           "id": "b1-05-d11",
@@ -941,7 +941,7 @@
           "answer": [
             "reparierte"
           ],
-          "why": "reparieren → repariert. Nom Neut: -e."
+          "why": "reparieren → repariert. Им. падеж, ср. род: -е."
         },
         {
           "id": "b1-05-d12",
@@ -956,7 +956,7 @@
           "answer": [
             "Partizip II"
           ],
-          "why": "Partizip II = passiv/abgeschlossen."
+          "why": "Причастие II = пассивное/завершённое."
         }
       ]
     },
@@ -976,27 +976,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Partizipialattribute = erweiterte Partizipien als Attribute vor dem Nomen. Struktur: Adverbialbestimmung + Partizip I/II."
+          "text": "Партиципальные атрибуты = расширенные причастия в роли определений перед существительным. Структура: обстоятельство + причастие I/II."
         },
         {
           "kind": "rule",
-          "title": "Partizip I (aktiv)",
-          "text": "der auf dem Boden liegende Ball (der Ball liegt auf dem Boden). Adverbial (Wo?) + Partizip I."
+          "title": "Причастие I (активный залог)",
+          "text": "der auf dem Boden liegende Ball (der Ball liegt auf dem Boden). Обстоятельство (Где?) + причастие I."
         },
         {
           "kind": "rule",
-          "title": "Partizip II (passiv)",
-          "text": "das von mir gekaufte Buch (ich habe das Buch gekauft). Agent (von wem?) + Partizip II."
+          "title": "Причастие II (пассивный залог)",
+          "text": "das von mir gekaufte Buch (ich habe das Buch gekauft). Агент (кем?) + причастие II."
         },
         {
           "kind": "rule",
-          "title": "Wortstellung",
-          "text": "Artikel — Adverbial — Partizip — Nomen. Deklination wie Adjektiv."
+          "title": "Порядок слов",
+          "text": "Артикль — обстоятельство — причастие — существительное. Склонение как у прилагательного."
         },
         {
           "kind": "rule",
-          "title": "Relativsatz → Partizipialattribut",
-          "text": "Der Ball, der auf dem Boden liegt → der auf dem Boden liegende Ball. Das Buch, das ich gekauft habe → das von mir gekaufte Buch."
+          "title": "Придаточное предложение → партиципальный атрибут",
+          "text": "Придаточное предложение: Der Ball, der auf dem Boden liegt → der auf dem Boden liegende Ball. Das Buch, das ich gekauft habe → das von mir gekaufte Buch."
         },
         {
           "kind": "table",
@@ -1006,7 +1006,7 @@
           "kind": "example",
           "de": "Der auf dem Tisch liegende Apfel ist rot. Die von mir geschriebene E-Mail ist lang. Wir helfen dem in Not geratenen Mann.",
           "ru": "Лежащий на столе яблоко красное. Написанное мной письмо длинное. Мы помогаем попавшему в беду мужчине.",
-          "note": "liegend (Partizip I, aktiv), geschrieben (Partizip II, passiv), geraten (Partizip II, unpersönlich)."
+          "note": "liegend (причастие I, активный залог), geschrieben (причастие II, пассивный залог), geraten (причастие II, безличный)."
         }
       ],
       "drills": [
@@ -1023,7 +1023,7 @@
           "answer": [
             "liegend"
           ],
-          "why": "Partizip I von liegen: liegend."
+          "why": "Причастие I от liegen: liegend."
         },
         {
           "id": "b1-06-d02",
@@ -1038,7 +1038,7 @@
           "answer": [
             "gekauft"
           ],
-          "why": "Partizip II von kaufen: gekauft."
+          "why": "Причастие II от kaufen: gekauft."
         },
         {
           "id": "b1-06-d03",
@@ -1053,7 +1053,7 @@
           "answer": [
             "auf dem Boden liegende"
           ],
-          "why": "Nom Mask nach bestimmtem Artikel: -e."
+          "why": "Им. падеж, мужской род после определённого артикля: -e."
         },
         {
           "id": "b1-06-d04",
@@ -1062,7 +1062,7 @@
           "answer": [
             "von mir gekaufte"
           ],
-          "why": "Nom Neut: -e."
+          "why": "Им. падеж, средний род: -e."
         },
         {
           "id": "b1-06-d05",
@@ -1077,7 +1077,7 @@
           "answer": [
             "in Not geratenen"
           ],
-          "why": "Akk Mask: -en."
+          "why": "Вин. падеж, мужской род: -en."
         },
         {
           "id": "b1-06-d06",
@@ -1086,7 +1086,7 @@
           "answer": [
             "in Not geratenen"
           ],
-          "why": "Dat: -en."
+          "why": "Дат. падеж: -en."
         },
         {
           "id": "b1-06-d07",
@@ -1095,7 +1095,7 @@
           "answer": [
             "Der auf dem Tisch liegende Apfel"
           ],
-          "why": "Artikel — Adverbial — Partizip — Nomen."
+          "why": "Артикль — обстоятельство — причастие — существительное."
         },
         {
           "id": "b1-06-d08",
@@ -1110,7 +1110,7 @@
           "answer": [
             "Der arbeitende Mann"
           ],
-          "why": "Aktiv → Partizip I."
+          "why": "Активный залог → причастие I."
         },
         {
           "id": "b1-06-d09",
@@ -1119,7 +1119,7 @@
           "answer": [
             "von mir gelesene"
           ],
-          "why": "Passiv → Partizip II + von-Agent."
+          "why": "Пассивный залог → причастие II + агент с von."
         },
         {
           "id": "b1-06-d10",
@@ -1128,7 +1128,7 @@
           "answer": [
             "schlafende"
           ],
-          "why": "Adverbial (auf dem Teppich) vor Partizip I."
+          "why": "Обстоятельство (auf dem Teppich) перед причастием I."
         },
         {
           "id": "b1-06-d11",
@@ -1137,7 +1137,7 @@
           "answer": [
             "kochende"
           ],
-          "why": "kochend + -e (Nom Fem)."
+          "why": "kochend + -e (им. падеж, женский род)."
         },
         {
           "id": "b1-06-d12",
@@ -1152,7 +1152,7 @@
           "answer": [
             "gelöste"
           ],
-          "why": "lösen → gelöst. Nom Neut: -e."
+          "why": "lösen → gelöst. Им. падеж, средний род: -e."
         }
       ]
     },
@@ -1172,22 +1172,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Da-Komposita = Präposition + da(r) (Bezug auf Sache/Idee). Wo-Komposita = Frage: Präposition + wo(r). Nur bei Präpositionen mit Akk/Dat."
+          "text": "Да-композита = предлог + да(р) (отсылка к вещи/идее). Во-композита = вопрос: предлог + во(р). Только с предлогами, требующими аккузатив или датив."
         },
         {
           "kind": "rule",
-          "title": "Bildung",
-          "text": "da + Präposition (bei Vokal: dar-): daran, darauf, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. wo + Präposition: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter."
+          "title": "Образование",
+          "text": "да + предлог (перед гласной: дар-): daran, darauf, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. во + предлог: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter."
         },
         {
           "kind": "rule",
-          "title": "Verwendung",
-          "text": "Da: Ich warte darauf. (statt: auf das). Wo: Worauf wartest du? (statt: auf was). Bei Personen: Präposition + Personalpronomen (auf ihn, mit ihr)."
+          "title": "Использование",
+          "text": "Да: Ich warte darauf. (вместо: auf das). Во: Worauf wartest du? (вместо: auf was). Для лиц: предлог + личное местоимение (auf ihn, mit ihr)."
         },
         {
           "kind": "rule",
-          "title": "Verben mit festen Präpositionen",
-          "text": "denken an → daran denken. warten auf → darauf warten. sich freuen auf → sich darauf freuen. Angst haben vor → davor Angst haben."
+          "title": "Глаголы с фиксированными предлогами",
+          "text": "denken an → daran denken (думать об → думать об этом). warten auf → darauf warten (ждать → ждать этого). sich freuen auf → sich darauf freuen (радоваться → радоваться этому). Angst haben vor → davor Angst haben (бояться → бояться этого)."
         },
         {
           "kind": "table",
@@ -1197,7 +1197,7 @@
           "kind": "example",
           "de": "Ich warte auf den Bus → Ich warte darauf. Worauf wartest du? Ich freue mich auf das Fest → Ich freue mich darauf. Wovor hast du Angst?",
           "ru": "Я жду автобус → Я жду его. На что ты ждешь? Я радуюсь празднику → Я радуюсь ему. Перед чем ты боишься?",
-          "note": "da(r) = auf es/das. wo(r) = auf was."
+          "note": "да(р) = auf es/das. во(р) = auf was."
         }
       ],
       "drills": [
@@ -1214,7 +1214,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "warten auf + es = darauf."
+          "why": "Глагол warten требует предлога auf, поэтому «на это» — darauf."
         },
         {
           "id": "b1-07-d02",
@@ -1229,7 +1229,7 @@
           "answer": [
             "daran"
           ],
-          "why": "denken an + es = daran."
+          "why": "Глагол denken требует предлога an, поэтому «об этом» — daran."
         },
         {
           "id": "b1-07-d03",
@@ -1244,7 +1244,7 @@
           "answer": [
             "Worauf"
           ],
-          "why": "Frage zu warten auf: worauf."
+          "why": "Вопрос к warten auf: worauf."
         },
         {
           "id": "b1-07-d04",
@@ -1253,7 +1253,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "sich freuen auf + es = darauf."
+          "why": "Глагол sich freuen требует предлога auf, поэтому «на это» — darauf."
         },
         {
           "id": "b1-07-d05",
@@ -1268,7 +1268,7 @@
           "answer": [
             "davor"
           ],
-          "why": "Angst haben vor + es = davor."
+          "why": "Выражение Angst haben требует предлога vor, поэтому «перед этим» — davor."
         },
         {
           "id": "b1-07-d06",
@@ -1277,7 +1277,7 @@
           "answer": [
             "Wovor"
           ],
-          "why": "Frage zu Angst haben vor: wovor."
+          "why": "Вопрос к Angst haben vor: wovor."
         },
         {
           "id": "b1-07-d07",
@@ -1286,7 +1286,7 @@
           "answer": [
             "Ich warte darauf, weil er spät kommt."
           ],
-          "why": "da-Kompositum im Hauptsatz."
+          "why": "Да-композитум в главном предложении."
         },
         {
           "id": "b1-07-d08",
@@ -1301,7 +1301,7 @@
           "answer": [
             "ihn"
           ],
-          "why": "Bei Personen: Präposition + Personalpronomen (nicht da-Kompositum)."
+          "why": "Для лиц: предлог + личное местоимение (не да-композитум)."
         },
         {
           "id": "b1-07-d09",
@@ -1310,7 +1310,7 @@
           "answer": [
             "darüber"
           ],
-          "why": "sprechen über + es = darüber."
+          "why": "Глагол sprechen требует предлога über, поэтому «об этом» — darüber."
         },
         {
           "id": "b1-07-d10",
@@ -1319,7 +1319,7 @@
           "answer": [
             "Woran denkt er?"
           ],
-          "why": "denken an + was → woran."
+          "why": "Глагол denken требует предлога an, вопрос «о чём» — woran."
         },
         {
           "id": "b1-07-d11",
@@ -1334,7 +1334,7 @@
           "answer": [
             "sich vorbereiten auf"
           ],
-          "why": "sich vorbereiten auf + was → wofür."
+          "why": "Глагол sich vorbereiten требует предлога auf, вопрос «для чего» — wofür."
         },
         {
           "id": "b1-07-d12",
@@ -1343,7 +1343,7 @@
           "answer": [
             "daran"
           ],
-          "why": "sich gewöhnen an + es = daran."
+          "why": "Глагол sich gewöhnen требует предлога an, поэтому «к этому» — daran."
         }
       ]
     },
@@ -1364,33 +1364,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Drei Typen von Konditionalsätzen: Typ 1 (möglich), Typ 2 (unwirklich Gegenwart), Typ 3 (unwirklich Vergangenheit)."
+          "text": "Три типа условных предложений: Тип 1 (возможное), Тип 2 (нереальное настоящее), Тип 3 (нереальное прошлое)."
         },
         {
           "kind": "rule",
-          "title": "Typ 1: Wenn + Präsens, ... Präsens/Futur",
-          "text": "Wenn es regnet, bleibe ich zu Hause. / Wenn es regnet, werde ich zu Hause bleiben. Bedingung realistisch."
+          "title": "Тип 1: Wenn + настоящее время, ... настоящее/будущее время",
+          "text": "Реальное условие: в придаточном предложении с Wenn стоит настоящее время, в главном — настоящее или будущее."
         },
         {
           "kind": "rule",
-          "title": "Typ 2: Wenn + Konj. II (Präteritum), ... Konj. II (würde + Inf)",
-          "text": "Wenn ich Zeit hätte, würde ich kommen. Wenn ich reich wäre, würde ich reisen. Bedingung unwahrscheinlich/unwirklich."
+          "title": "Тип 2: Wenn + Konjunktiv II (Präteritum), ... Konjunktiv II (würde + инфинитив)",
+          "text": "Нереальное условие настоящего: в придаточном — Konjunktiv II (обычно форма Präteritum), в главном — würde + инфинитив."
         },
         {
           "kind": "rule",
-          "title": "Typ 3: Wenn + Konj. II Vergangenheit (hätte/ware + Partizip II), ... Konj. II Vergangenheit",
-          "text": "Wenn ich Zeit gehabt hätte, wäre ich gekommen. Bedingung in der Vergangenheit nicht erfüllt."
+          "title": "Тип 3: Wenn + Konjunktiv II прошедшего (hätte/wäre + Partizip II), ... Konjunktiv II прошедшего",
+          "text": "Нереальное условие прошлого: в придаточном — hätte/wäre + Partizip II, в главном — тоже hätte/wäre + Partizip II. Условие в прошлом не выполнилось."
         },
         {
           "kind": "rule",
-          "title": "Wortstellung",
-          "text": "Wenn-Satz voran → ganzer Wenn-Satz = Pos 1 → Hauptsatz V2. Wenn-Satz nachgestellt → Hauptsatz normal, Wenn-Satz Verb am Ende."
+          "title": "Порядок слов",
+          "text": "Если придаточное с Wenn стоит впереди, оно занимает первую позицию → главное предложение V2. Если придаточное после главного — главное в обычном порядке, в придаточном глагол в конце."
         },
         {
           "kind": "example",
           "de": "Wenn es regnet, bleibe ich da. Wenn ich Zeit hätte, käme ich. Wenn er gekommen wäre, hätte ich ihn gesehen.",
           "ru": "Если идёт дождь, останусь. Если бы у меня было время, пришёл бы. Если бы он пришёл, я бы его увидел.",
-          "note": "Typ 1: Präsens. Typ 2: Konj. II. Typ 3: Konj. II Vergangenheit."
+          "note": "Тип 1: настоящее время. Тип 2: Konjunktiv II. Тип 3: Konjunktiv II прошедшего."
         }
       ],
       "drills": [
@@ -1407,7 +1407,7 @@
           "answer": [
             "regnet"
           ],
-          "why": "Typ 1: Wenn + Präsens."
+          "why": "Тип 1: Wenn + настоящее время."
         },
         {
           "id": "b1-08-d02",
@@ -1422,7 +1422,7 @@
           "answer": [
             "hätte, würde"
           ],
-          "why": "Typ 2: Wenn + Konj. II (hätte), Hauptsatz: würde + Inf."
+          "why": "Тип 2: Wenn + Konjunktiv II (hätte), главное предложение: würde + инфинитив."
         },
         {
           "id": "b1-08-d03",
@@ -1437,7 +1437,7 @@
           "answer": [
             "gehabt hätte, wäre"
           ],
-          "why": "Typ 3: Wenn + Konj. II Vergangenheit (hätte + Partizip II), Hauptsatz: wäre + Partizip II."
+          "why": "Тип 3: Wenn + Konjunktiv II прошедшего (hätte + Partizip II), главное предложение: wäre + Partizip II."
         },
         {
           "id": "b1-08-d04",
@@ -1446,7 +1446,7 @@
           "answer": [
             "käme, würde"
           ],
-          "why": "Typ 2: Konj. II Präteritum (käme), Hauptsatz: würde."
+          "why": "Тип 2: Konjunktiv II Präteritum (käme), главное предложение: würde."
         },
         {
           "id": "b1-08-d05",
@@ -1461,7 +1461,7 @@
           "answer": [
             "gewusst hätten, hätten"
           ],
-          "why": "Typ 3: hätte + Partizip II in beiden Teilen."
+          "why": "Тип 3: hätte + Partizip II в обеих частях."
         },
         {
           "id": "b1-08-d06",
@@ -1470,7 +1470,7 @@
           "answer": [
             "Wenn ich Zeit hätte, würde ich kommen."
           ],
-          "why": "Wenn-Satz voran → Pos 1 → Hauptsatz V2: würde ich."
+          "why": "Если придаточное с Wenn впереди → позиция 1 → главное предложение V2: würde ich."
         },
         {
           "id": "b1-08-d07",
@@ -1479,7 +1479,7 @@
           "answer": [
             "Wenn er kommt, gehe ich"
           ],
-          "why": "Typ 1: Präsens in beiden Teilen."
+          "why": "Тип 1: настоящее время в обеих частях."
         },
         {
           "id": "b1-08-d08",
@@ -1494,7 +1494,7 @@
           "answer": [
             "wäre, würde"
           ],
-          "why": "sein → Konj. II: wäre."
+          "why": "sein в Konjunktiv II — это wäre."
         },
         {
           "id": "b1-08-d09",
@@ -1503,7 +1503,7 @@
           "answer": [
             "gekönnt hätte, hätte gemacht"
           ],
-          "why": "Modale: hätte + Partizip II (gekönnt), Hauptsatz: hätte + Partizip II (gemacht)."
+          "why": "Модальные: hätte + Partizip II (gekönnt), главное предложение: hätte + Partizip II (gemacht)."
         },
         {
           "id": "b1-08-d10",
@@ -1512,7 +1512,7 @@
           "answer": [
             "Wenn es regnete, würde ich bleiben."
           ],
-          "why": "Präsens → Konj. II (Präteritum/ würde)."
+          "why": "Настоящее время → Konjunktiv II (Präteritum/ würde)."
         },
         {
           "id": "b1-08-d11",
@@ -1527,7 +1527,7 @@
           "answer": [
             "Wenn ich das gewusst hätte..."
           ],
-          "why": "Typ 3: Konj. II Vergangenheit."
+          "why": "Тип 3: Konjunktiv II прошедшего."
         },
         {
           "id": "b1-08-d12",
@@ -1536,7 +1536,7 @@
           "answer": [
             "Wenn ich reich wäre, würde ich reisen"
           ],
-          "why": "Typ 2: wäre, würde + Inf."
+          "why": "Тип 2: wäre, würde + инфинитив."
         }
       ]
     },
@@ -1556,28 +1556,28 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Indirekte Fragen werden als Nebensatz eingebaut: ob (bei Ja/Nein-Fragen) oder W-Fragewort. Verb steht AM ENDE."
+          "text": "Косвенные вопросы встраиваются как придаточное предложение: ob (для вопросов да/нет) или вопросительное слово. Глагол стоит В КОНЦЕ."
         },
         {
           "kind": "rule",
-          "title": "Ja/Nein-Frage → ob",
-          "text": "Direkt: 'Kommt er?' Indirekt: 'Ich weiß nicht, ob er kommt.' (nicht: ob kommt er)."
+          "title": "Вопрос да/нет → ob",
+          "text": "Прямой: 'Kommt er?' Косвенный: 'Ich weiß nicht, ob er kommt.' (не: ob kommt er)."
         },
         {
           "kind": "rule",
-          "title": "W-Frage → W-Wort",
-          "text": "Direkt: 'Wo wohnt er?' Indirekt: 'Ich frage mich, wo er wohnt.' Verb am Ende."
+          "title": "Вопрос с W-словом → W-слово",
+          "text": "Прямой: 'Wo wohnt er?' Косвенный: 'Ich frage mich, wo er wohnt.' Глагол в конце."
         },
         {
           "kind": "rule",
-          "title": "Einleitende Verben",
-          "text": "fragen, wissen, sagen, verstehen, sehen, hören, überlegen, entscheiden, nicht wissen."
+          "title": "Вводные глаголы",
+          "text": "fragen, wissen, sagen, verstehen, sehen, hören, überlegen, entscheiden, nicht wissen (спрашивать, знать, говорить, понимать, видеть, слышать, обдумывать, решать, не знать)."
         },
         {
           "kind": "example",
           "de": "Ich weiß nicht, ob er kommt. Kannst du mir sagen, wo der Bahnhof ist? Er fragt, wann der Zug fährt.",
           "ru": "Я не знаю, придёт ли он. Можешь сказать, где вокзал? Он спрашивает, когда уходит поезд.",
-          "note": "ob + Nebensatz (Verb am Ende), W-Wort + Nebensatz (Verb am Ende)."
+          "note": "ob + придаточное предложение (глагол в конце), W-слово + придаточное предложение (глагол в конце)."
         }
       ],
       "drills": [
@@ -1594,7 +1594,7 @@
           "answer": [
             "ob er kommt"
           ],
-          "why": "ob + Nebensatz, Verb am Ende."
+          "why": "ob + придаточное предложение, глагол в конце."
         },
         {
           "id": "b1-09-d02",
@@ -1609,7 +1609,7 @@
           "answer": [
             "wo er wohnt"
           ],
-          "why": "W-Wort + Nebensatz, Verb am Ende."
+          "why": "W-слово + придаточное предложение, глагол в конце."
         },
         {
           "id": "b1-09-d03",
@@ -1624,7 +1624,7 @@
           "answer": [
             "wann der Zug fährt"
           ],
-          "why": "W-Wort + Nebensatz, Verb am Ende."
+          "why": "W-слово + придаточное предложение, глагол в конце."
         },
         {
           "id": "b1-09-d04",
@@ -1633,7 +1633,7 @@
           "answer": [
             "warum"
           ],
-          "why": "W-Frage: warum + Nebensatz."
+          "why": "W-вопрос: warum + придаточное предложение."
         },
         {
           "id": "b1-09-d05",
@@ -1648,7 +1648,7 @@
           "answer": [
             "ob"
           ],
-          "why": "Ja/Nein-Frage → ob."
+          "why": "Вопрос да/нет → ob."
         },
         {
           "id": "b1-09-d06",
@@ -1657,7 +1657,7 @@
           "answer": [
             "Ich weiß nicht, ob er kommt."
           ],
-          "why": "Hauptsatz V2, ob-Nebensatz Verb am Ende."
+          "why": "Главное предложение V2, придаточное с ob — глагол в конце."
         },
         {
           "id": "b1-09-d07",
@@ -1666,7 +1666,7 @@
           "answer": [
             "wo"
           ],
-          "why": "W-Frage: wo + Nebensatz."
+          "why": "W-вопрос: wo + придаточное предложение."
         },
         {
           "id": "b1-09-d08",
@@ -1681,7 +1681,7 @@
           "answer": [
             "ob er Zeit hat"
           ],
-          "why": "ob + Nebensatz, Verb am Ende."
+          "why": "ob + придаточное предложение, глагол в конце."
         },
         {
           "id": "b1-09-d09",
@@ -1690,7 +1690,7 @@
           "answer": [
             "was er machen"
           ],
-          "why": "W-Frage: was + Nebensatz."
+          "why": "W-вопрос: was + придаточное предложение."
         },
         {
           "id": "b1-09-d10",
@@ -1699,7 +1699,7 @@
           "answer": [
             "was das kostet"
           ],
-          "why": "W-Wort + Nebensatz, Verb am Ende."
+          "why": "W-слово + придаточное предложение, глагол в конце."
         },
         {
           "id": "b1-09-d11",
@@ -1714,7 +1714,7 @@
           "answer": [
             "fragen"
           ],
-          "why": "fragen, wissen, sagen, verstehen..."
+          "why": "Глаголы введения косвенных вопросов: fragen, wissen, sagen, verstehen..."
         },
         {
           "id": "b1-09-d12",
@@ -1723,7 +1723,7 @@
           "answer": [
             "ob er kommt"
           ],
-          "why": "Ja/Nein-Frage → ob + Nebensatz."
+          "why": "Вопрос да/нет → ob + придаточное предложение."
         }
       ]
     },
@@ -1743,33 +1743,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Modalpartikeln sind kleine Wörter, die die Einstellung des Sprechers ausdrücken (Betontung, Abschwächung, Ärger, Freude). Sie verändern nicht den Satzbau."
+          "text": "Модальные частицы — это маленькие слова, выражающие отношение говорящего (усиление, смягчение, раздражение, радость). Они не меняют порядок слов в предложении."
         },
         {
           "kind": "rule",
           "title": "ja / doch",
-          "text": "ja = Bestätigung, Erwartung: 'Das ist ja schön!' doch = Widerspruch/Korrektur: 'Das ist doch nicht wahr!' (Entgegensetzung zu Erwartung)."
+          "text": "ja = подтверждение, ожидание: 'Das ist ja schön!' doch = возражение/исправление: 'Das ist doch nicht wahr!' (против ожидания)."
         },
         {
           "kind": "rule",
           "title": "mal / schon",
-          "text": "mal = Abschwächung, freundlich: 'Warten Sie mal!' schon = Betonung, Erwartung: 'Das hast du schon verstanden.'"
+          "text": "mal = смягчение, дружелюбно: 'Warten Sie mal!' schon = усиление, ожидание: 'Das hast du schon verstanden.'"
         },
         {
           "kind": "rule",
           "title": "eben / halt",
-          "text": "eben/halte = Resignation, Tatsachenfeststellung: 'Das ist eben so.' 'Das ist halt so.' (akzeptieren, was nicht änderbar)."
+          "text": "eben / halt = ресигнация, констатация факта: 'Das ist eben so.' 'Das ist halt so.' (принять то, что нельзя изменить)."
         },
         {
           "kind": "rule",
           "title": "nur / bloß",
-          "text": "nur/bloß = Einschränkung, Warnung: 'Fass das nicht an!' 'Komm nur rein!' (Einladung)."
+          "text": "nur / bloß = ограничение, предупреждение: 'Fass das nicht an!' 'Komm nur rein!' (приглашение)."
         },
         {
           "kind": "example",
           "de": "Komm mal rein! Das ist ja toll! Das geht doch nicht! Das hast du schon verstanden. Das ist eben so. Fass das bloß nicht an!",
           "ru": "Заходи! Это ж классно! Это же не пойдёт! Ты же понял. Так вот и есть. Только не трогай!",
-          "note": "Modalpartikeln stehen im Mittelfeld (nach Subjekt/Verb), nie am Satzanfang."
+          "note": "Модальные частицы стоят в миттельфельде (после подлежащего/глагола), никогда в начале предложения."
         }
       ],
       "drills": [
@@ -1786,7 +1786,7 @@
           "answer": [
             "ja"
           ],
-          "why": "ja = positive Überraschung/Bestätigung."
+          "why": "ja = положительное удивление/подтверждение."
         },
         {
           "id": "b1-10-d02",
@@ -1801,7 +1801,7 @@
           "answer": [
             "doch"
           ],
-          "why": "doch = Korrektur/Widerspruch."
+          "why": "doch = исправление/возражение."
         },
         {
           "id": "b1-10-d03",
@@ -1816,7 +1816,7 @@
           "answer": [
             "mal"
           ],
-          "why": "mal = Abschwächung, freundlich."
+          "why": "mal = смягчение, дружелюбно."
         },
         {
           "id": "b1-10-d04",
@@ -1825,7 +1825,7 @@
           "answer": [
             "schon"
           ],
-          "why": "schon = Erwartung, 'wie erwartet'."
+          "why": "schon = ожидание, «как и ожидалось»."
         },
         {
           "id": "b1-10-d05",
@@ -1840,7 +1840,7 @@
           "answer": [
             "eben"
           ],
-          "why": "eben/halte = Resignation, 'nicht zu ändern'."
+          "why": "eben/halt = ресигнация, «нельзя изменить»."
         },
         {
           "id": "b1-10-d06",
@@ -1849,7 +1849,7 @@
           "answer": [
             "nur"
           ],
-          "why": "nur = Einladung, Ermutigung."
+          "why": "nur = приглашение, поощрение."
         },
         {
           "id": "b1-10-d07",
@@ -1858,7 +1858,7 @@
           "answer": [
             "Das ist ja toll!"
           ],
-          "why": "Modalpartikel im Mittelfeld (nach Verb)."
+          "why": "Модальная частица в миттельфельде (после глагола)."
         },
         {
           "id": "b1-10-d08",
@@ -1873,7 +1873,7 @@
           "answer": [
             "bloß"
           ],
-          "why": "bloß/nur = Warnung, Einschränkung."
+          "why": "bloß/nur = предупреждение, ограничение."
         },
         {
           "id": "b1-10-d09",
@@ -1882,7 +1882,7 @@
           "answer": [
             "doch"
           ],
-          "why": "doch = Widerspruch."
+          "why": "doch = возражение."
         },
         {
           "id": "b1-10-d10",
@@ -1891,7 +1891,7 @@
           "answer": [
             "Warten Sie mal!"
           ],
-          "why": "mal = freundlicher Ton."
+          "why": "mal = дружелюбный тон."
         },
         {
           "id": "b1-10-d11",
@@ -1906,7 +1906,7 @@
           "answer": [
             "Resignation"
           ],
-          "why": "halt/eben = Resignation, Akzeptanz."
+          "why": "halt/eben = ресигнация, принятие."
         },
         {
           "id": "b1-10-d12",
@@ -1915,7 +1915,7 @@
           "answer": [
             "ja"
           ],
-          "why": "ja = Lob, Bestätigung."
+          "why": "ja = похвала, подтверждение."
         }
       ]
     },
@@ -1935,28 +1935,28 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Weitere wichtige Verben mit festen Präpositionen. Viele sind reflexiv."
+          "text": "Далее рассматриваются другие важные глаголы, которые всегда используются с определёнными предлогами. Большинство из них являются рефлексивными, то есть требуют возвратного местоимения sich."
         },
         {
           "kind": "rule",
-          "title": "Akkusativ",
-          "text": "sich interessieren für, sich bewerben um, sich kümmern um, sich bemühen um, sich sorgen um, sich entscheiden für, sich erinnern an (Akk), sich gewöhnen an, sich verlassen auf, verzichten auf, achten auf."
+          "title": "Винительный падеж (Akkusativ)",
+          "text": "Следующие глаголы требуют винительного падежа после предлога: sich interessieren für (интересоваться), sich bewerben um (подавать заявление на), sich kümmern um (заботиться о), sich bemühen um (стараться о/достать), sich sorgen um (беспокоиться о), sich entscheiden für (решиться на/выбрать), sich erinnern an (вспоминать о), sich gewöhnen an (привыкать к), sich verlassen auf (полагаться на), verzichten auf (отказываться от), achten auf (обращать внимание на). Запоминайте тройку: глагол + предлог + падеж."
         },
         {
           "kind": "rule",
-          "title": "Dativ",
-          "text": "abhängen von, teilnehmen an, arbeiten an, leiden an, sterben an, zweifeln an, sich einigen auf (Akk!), sich freuen über/auf, sich ärgern über, sich wundern über, Angst haben vor, warnen vor."
+          "title": "Дательный падеж (Dativ)",
+          "text": "Эти глаголы требуют дательного падежа: abhängen von (зависеть от), teilnehmen an (участвовать в), arbeiten an (работать над), leiden an (страдать от), sterben an (умереть от), zweifeln an (сомневаться в), sich einigen auf (договориться о — здесь винительный!), sich freuen über/auf (радоваться — über про прошлое/настоящее, auf про будущее), sich ärgern über (раздражаться из-за), sich wundern über (удивляться), Angst haben vor (бояться), warnen vor (предупреждать о). Обратите внимание на пару sich freuen: auf — ожидание, über — факт."
         },
         {
           "kind": "rule",
-          "title": "Da-/Wo-Komposita",
-          "text": "Bei Sachen: sich dafür interessieren, woran denkst du? Bei Personen: sich für ihn interessieren, mit ihr sprechen."
+          "title": "Да-/Во-композита (Da-/Wo-Komposita)",
+          "text": "Когда речь идёт о неодушевлённых предметах или целых предложениях, предлог соединяется с da-/wo-: sich dafür interessieren (интересоваться этим), woran denkst du? (о чём ты думаешь?). Для одушевлённых лиц используется предлог с личным местоимением: sich für ihn interessieren (интересоваться им), mit ihr sprechen (говорить с ней). Это аналогично русскому «думать о нём» vs «думать об этом»."
         },
         {
           "kind": "example",
           "de": "Ich interessiere mich für Kunst. Er bewirbt sich um die Stelle. Es hängt vom Wetter ab. Wir kümmern uns um den Rest.",
           "ru": "Я интересуюсь искусством. Он подаёт заявку на должность. Это зависит от погоды. Мы заботимся о остальном.",
-          "note": "interessieren für + Akk, bewerben um + Akk, abhängen von + Dat."
+          "note": "Здесь показаны три модели: interessieren für + винительный, bewerben um + винительный, abhängen von + дательный. В последнем примере vom = von + dem (сокращение предлога с артиклем)."
         }
       ],
       "drills": [
@@ -1973,7 +1973,7 @@
           "answer": [
             "für"
           ],
-          "why": "sich interessieren für + Akk."
+          "why": "Глагол sich interessieren требует предлога für и винительного падежа."
         },
         {
           "id": "b1-11-d02",
@@ -1988,7 +1988,7 @@
           "answer": [
             "um"
           ],
-          "why": "sich bewerben um + Akk."
+          "why": "Глагол sich bewerben требует предлога um и винительного падежа."
         },
         {
           "id": "b1-11-d03",
@@ -2003,7 +2003,7 @@
           "answer": [
             "von"
           ],
-          "why": "abhängen von + Dat."
+          "why": "Глагол abhängen требует предлога von и дательного падежа."
         },
         {
           "id": "b1-11-d04",
@@ -2012,7 +2012,7 @@
           "answer": [
             "um"
           ],
-          "why": "sich kümmern um + Akk."
+          "why": "Глагол sich kümmern требует предлога um и винительного падежа."
         },
         {
           "id": "b1-11-d05",
@@ -2027,7 +2027,7 @@
           "answer": [
             "auf"
           ],
-          "why": "sich freuen auf (Zukunft) + Akk."
+          "why": "Глагол sich freuen auf (будущее) требует винительного падежа."
         },
         {
           "id": "b1-11-d06",
@@ -2036,7 +2036,7 @@
           "answer": [
             "über"
           ],
-          "why": "sich ärgern über + Akk."
+          "why": "Глагол sich ärgern требует предлога über и винительного падежа."
         },
         {
           "id": "b1-11-d07",
@@ -2045,7 +2045,7 @@
           "answer": [
             "Ich interessiere mich für Kunst."
           ],
-          "why": "Reflexivverb + Präposition + Akk."
+          "why": "Рефлексивный глагол + предлог + винительный падеж."
         },
         {
           "id": "b1-11-d08",
@@ -2060,7 +2060,7 @@
           "answer": [
             "für es"
           ],
-          "why": "dafür = für es (Sache)."
+          "why": "dafür = für es (неодушевлённое)."
         },
         {
           "id": "b1-11-d09",
@@ -2069,7 +2069,7 @@
           "answer": [
             "um"
           ],
-          "why": "sich bewerben um + Akk."
+          "why": "Глагол sich bewerben требует предлога um и винительного падежа."
         },
         {
           "id": "b1-11-d10",
@@ -2078,7 +2078,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "warten auf + es = darauf."
+          "why": "Глагол warten требует предлога auf; с местоимением es образуется да-композитум darauf."
         },
         {
           "id": "b1-11-d11",
@@ -2093,7 +2093,7 @@
           "answer": [
             "ihn"
           ],
-          "why": "Bei Personen: Präposition + Personalpronomen."
+          "why": "Для лиц: предлог + личное местоимение."
         },
         {
           "id": "b1-11-d12",
@@ -2102,7 +2102,7 @@
           "answer": [
             "vor"
           ],
-          "why": "Angst haben vor + Dat."
+          "why": "Выражение Angst haben требует предлога vor и дательного падежа."
         }
       ]
     },
@@ -2123,33 +2123,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Erweiterte Konnektoren für argumentative Texte."
+          "text": "Расширенные коннекторы для аргументативных текстов."
         },
         {
           "kind": "rule",
-          "title": "obwohl (subordinierend)",
-          "text": "Nebensatz, Verb am Ende: 'Obwohl es regnet, gehe ich spazieren.' = Konzessivsatz."
+          "title": "obwohl (подчиняющий)",
+          "text": "Придаточное предложение, глагол в конце: 'Obwohl es regnet, gehe ich spazieren.' = уступительное придаточное."
         },
         {
           "kind": "rule",
-          "title": "trotzdem / dennoch (adverbiell)",
-          "text": "Hauptsatz, Pos 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.' Bedeutung: trotz gegenteiliger Erwartung."
+          "title": "trotzdem / dennoch (наречие)",
+          "text": "Главное предложение, позиция 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.' Смысл: вопреки противоположному ожиданию."
         },
         {
           "kind": "rule",
-          "title": "während (subordinierend + adverbiell)",
-          "text": "Als Konjunktion: 'Während er schläft, lese ich.' (zeitlich, Nebensatz). Als Adverb: 'Er schläft. Währenddessen lese ich.'"
+          "title": "während (подчиняющий союз + наречие)",
+          "text": "Как союз: 'Während er schläft, lese ich.' (одновременность, придаточное). Как наречие: 'Er schläft. Währenddessen lese ich.'"
         },
         {
           "kind": "rule",
           "title": "denn vs weil",
-          "text": "denn = koordinierend (Pos 0): 'Ich gehe, denn es regnet.' weil = subordinierend: 'Ich gehe nicht, weil es regnet.'"
+          "text": "denn = координирующий (позиция 0): 'Ich gehe, denn es regnet.' weil = подчиняющий: 'Ich gehe nicht, weil es regnet.'"
         },
         {
           "kind": "example",
           "de": "Obwohl er müde ist, arbeitet er. Er ist müde, trotzdem arbeitet er. Während ich lese, schläft er. Ich bleibe, denn es regnet.",
           "ru": "Хотя он уставший, он работает. Он уставший, тем не менее работает. Пока я читаю, он спит. Я остаюсь, потому что дождь.",
-          "note": "obwohl = Nebensatz. trotzdem = Hauptsatz (V2). während = beides."
+          "note": "obwohl = придаточное. trotzdem = главное предложение (V2). während = и то, и другое."
         }
       ],
       "drills": [
@@ -2166,7 +2166,7 @@
           "answer": [
             "Obwohl"
           ],
-          "why": "obwohl = Konzessivsatz, Verb am Ende."
+          "why": "obwohl = уступительное придаточное, глагол в конце."
         },
         {
           "id": "b1-12-d02",
@@ -2181,7 +2181,7 @@
           "answer": [
             "trotzdem"
           ],
-          "why": "trotzdem = adverbiell, Pos 1 → V2."
+          "why": "trotzdem = наречие, позиция 1 → V2."
         },
         {
           "id": "b1-12-d03",
@@ -2196,7 +2196,7 @@
           "answer": [
             "Während"
           ],
-          "why": "während als Konjunktion = zeitgleich, Nebensatz."
+          "why": "während как союз = одновременность, придаточное."
         },
         {
           "id": "b1-12-d04",
@@ -2205,7 +2205,7 @@
           "answer": [
             "denn"
           ],
-          "why": "denn = koordinierend (Pos 0), zwei Hauptsätze."
+          "why": "denn = координирующий (позиция 0), два главных предложения."
         },
         {
           "id": "b1-12-d05",
@@ -2214,7 +2214,7 @@
           "answer": [
             "Es regnet, trotzdem gehe ich spazieren."
           ],
-          "why": "Hauptsatz, dann adverbiell voran → V2."
+          "why": "Главное предложение, затем наречие впереди → V2."
         },
         {
           "id": "b1-12-d06",
@@ -2229,7 +2229,7 @@
           "answer": [
             "und"
           ],
-          "why": "Koordinierend (und, aber, oder, denn, sondern) = Pos 0."
+          "why": "Координирующие (und, aber, oder, denn, sondern) = позиция 0."
         },
         {
           "id": "b1-12-d07",
@@ -2238,7 +2238,7 @@
           "answer": [
             "obwohl"
           ],
-          "why": "obwohl = Konzessivsatz (Nebensatz)."
+          "why": "obwohl = уступительное придаточное (придаточное)."
         },
         {
           "id": "b1-12-d08",
@@ -2253,7 +2253,7 @@
           "answer": [
             "dennoch formeller"
           ],
-          "why": "dennoch = gehobener, trotzdem = häufiger mündlich."
+          "why": "dennoch = более официальный, trotzdem = чаще в устной речи."
         },
         {
           "id": "b1-12-d09",
@@ -2262,7 +2262,7 @@
           "answer": [
             "Es regnet, trotzdem gehe ich."
           ],
-          "why": "Nebensatz → Hauptsatz mit adverbiell."
+          "why": "Придаточное → главное предложение с наречием."
         },
         {
           "id": "b1-12-d10",
@@ -2271,7 +2271,7 @@
           "answer": [
             "Während"
           ],
-          "why": "während als Konjunktion."
+          "why": "während как союз."
         },
         {
           "id": "b1-12-d11",
@@ -2286,7 +2286,7 @@
           "answer": [
             "Währenddessen"
           ],
-          "why": "während als Adverb = währenddessen."
+          "why": "während как наречие = währenddessen."
         },
         {
           "id": "b1-12-d12",
@@ -2295,7 +2295,7 @@
           "answer": [
             "Es regnet, denn ich bleibe."
           ],
-          "why": "weil (Nebensatz) → denn (koordinierend, zwei Hauptsätze)."
+          "why": "weil (придаточное) → denn (координирующий, два главных предложения)."
         }
       ]
     }

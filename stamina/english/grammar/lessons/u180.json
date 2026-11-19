@@ -1,0 +1,73 @@
+{
+ "n": 180,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Прилагательное + to…",
+ "en": "adjective + to",
+ "summary": "Почему после glad, easy и surprised идёт to с глаголом, и когда между прилагательным и to появляется of или for.",
+ "can_do": [
+  "Отреагировать на новость через I'm glad to hear, I'm sorry to say.",
+  "Оценить действие оборотом It is easy to do.",
+  "Правильно выбрать of somebody или for somebody после прилагательного.",
+  "Сказать, кто был первым, последним или единственным, кто что-то сделал."
+ ],
+ "theory": [
+  {
+   "h": "Прилагательное плюс действие",
+   "p": "Когда прилагательное описывает нашу реакцию на действие, после него идёт to и глагол. Так работают glad, happy, sorry, surprised, relieved, disappointed. Само действие при этом воспринимается как факт, который уже случился или происходит.",
+   "formula": "I'm glad to see you. · She was surprised to hear the news. · We're sorry to say goodbye."
+  },
+  {
+   "h": "It is + прилагательное + to do",
+   "p": "Если оценивается действие вообще, а не человек, удобнее начать с it. Такое it не переводится: оно просто держит место подлежащего, пока настоящая информация идёт после прилагательного.",
+   "formula": "It's difficult to say. · It was nice to meet you. · It's dangerous to swim here."
+  },
+  {
+   "h": "Оценка действия и предмета",
+   "p": "Прилагательные easy, difficult, hard, impossible, safe, cheap, interesting могут относиться и к предмету, и к действию. С предметом фраза строится так: предмет плюс прилагательное плюс to и глагол. Русский перевод при этом начинается с «легко», «трудно».",
+   "formula": "This book is easy to read. · The box was too heavy to lift. · The task is impossible to finish today."
+  },
+  {
+   "h": "of somebody или for somebody",
+   "p": "Разница смысловая. Оборот с of оценивает человека и его поступок: kind of you, nice of her, silly of me. Оборот с for оценивает, насколько ситуация тяжела или важна для человека: difficult for me, important for you, unusual for him.",
+   "table": {
+    "head": ["Конструкция", "Пример", "О чём оценка"],
+    "rows": [
+     ["be + прилагательное + to do", "I'm glad to help.", "реакция самого говорящего"],
+     ["It is + прилагательное + of + somebody + to do", "It was kind of her to call.", "оценка человека"],
+     ["It is + прилагательное + for + somebody + to do", "It's hard for me to decide.", "оценка ситуации для человека"]
+    ]
+   }
+  },
+  {
+   "h": "Первый, последний, единственный",
+   "p": "После порядковых слов first, second, last, next и после only инфинитив с to обязателен. Получается короткая и очень английская конструкция, где человек назван, а действие уточняет его роль.",
+   "formula": "She was the first to arrive. · He was the last to leave. · I was the only one to notice."
+  }
+ ],
+ "examples": [
+  {"en": "I'm glad to see you again.", "ru": "Рад снова вас видеть."},
+  {"en": "She was surprised to get the job.", "ru": "Она удивилась, что получила работу."},
+  {"en": "It's easy to make a mistake here.", "ru": "Здесь легко ошибиться."},
+  {"en": "It was kind of you to help us.", "ru": "Было очень любезно с вашей стороны помочь нам."},
+  {"en": "It's important for me to sleep well.", "ru": "Мне важно хорошо спать."},
+  {"en": "He was the first to answer.", "ru": "Он ответил первым."}
+ ],
+ "traps": [
+  {"bad": "I'm glad seeing you.", "good": "I'm glad to see you.", "why": "После прилагательного реакции нужен инфинитив с to."},
+  {"bad": "It was kind for you to help.", "good": "It was kind of you to help.", "why": "Оценка человека и его поступка — через of somebody."},
+  {"bad": "This text is easy reading.", "good": "This text is easy to read.", "why": "Оценка предмета строится через to + глагол, а не через -ing."},
+  {"bad": "She was the first arrived.", "good": "She was the first to arrive.", "why": "После the first нужен инфинитив с to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm glad ___ you again.", "options": ["see", "to see", "seeing"], "a": 1, "why": "Реакция на действие: glad to see."},
+  {"type": "choice", "q": "It's difficult ___ this word.", "options": ["to pronounce", "pronounce", "pronouncing"], "a": 0, "why": "It is difficult to do something — оценка действия."},
+  {"type": "choice", "q": "It was kind ___ you to help us.", "options": ["of", "for", "to"], "a": 0, "why": "Kind of somebody — оценка человека."},
+  {"type": "choice", "q": "It's important ___ you to rest.", "options": ["of", "for", "to"], "a": 1, "why": "Important for somebody — важно для человека."},
+  {"type": "choice", "q": "She was the first ___ the answer.", "options": ["to find", "find", "finding"], "a": 0, "why": "The first + to + глагол: the first to find."},
+  {"type": "gap", "q": "This text is easy ___ (read).", "a": ["to read"], "why": "Оценка предмета: easy to read."},
+  {"type": "gap", "q": "I was surprised ___ (hear) the news.", "a": ["to hear"], "why": "Реакция на новость: surprised to hear."},
+  {"type": "translate", "q": "Приятно познакомиться.", "a": ["nice to meet you", "it's nice to meet you", "it is nice to meet you", "pleased to meet you"], "why": "Устойчивая фраза с инфинитивом: nice to meet you."},
+  {"type": "translate", "q": "Мне трудно это объяснить.", "a": ["it's difficult for me to explain it", "it is difficult for me to explain it", "it's hard for me to explain this"], "why": "Оценка ситуации для человека: difficult for me to explain."}
+ ]
+}

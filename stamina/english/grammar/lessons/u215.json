@@ -1,0 +1,67 @@
+{
+ "n": 215,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "Прилагательное и наречие (2)",
+ "en": "adjectives and adverbs 2",
+ "summary": "Особые пары наречий (hard/hardly, late/lately и др.), слова с одинаковой формой прилагательного и наречия (fast, hard, late, early), а также конструкции с hardly ever, hardly any, can hardly.",
+ "can_do": [
+  "Различать hard и hardly, late и lately, near и nearly, high и highly, free и freely.",
+  "Правильно использовать hardly ever, hardly any, can hardly без двойного отрицания.",
+  "Не путать I work hard (усердно) и I hardly work (едва работаю).",
+  "Ставить наречия образа действия на правильное место в предложении."
+ ],
+ "theory": [
+  {
+   "h": "Пары слов: одна форма — разный смысл",
+   "p": "Многие наречия образуются от прилагательных суффиксом -ly, но у некоторых пар смысл расходится так далеко, что это уже разные слова. Hard — усердно, hardly — едва; late — поздно, lately — в последнее время; near — близко, nearly — почти; high — высоко, highly — высоко (в переносном смысле); free — бесплатно, freely — свободно. В русском эти оттенки часто передаются разными корнями.",
+   "formula": "work hard · hardly know · arrive late · lately · near · nearly · think highly · speak freely"
+  },
+  {
+   "h": "Hardly ever, hardly any, can hardly",
+   "p": "Hardly — отрицательное наречие, поэтому с ним не нужен второй отрицание. Hardly ever — почти никогда, hardly any — почти никакой, can hardly — едва могу. В русском мы скажем «я почти не знаю», а не «я почти не не знаю». Глагол после hardly стоит в утвердительной форме.",
+   "formula": "I hardly ever go there. · There’s hardly any milk left. · I can hardly hear you."
+  },
+  {
+   "h": "Слова-хамелеоны: fast, hard, late, early",
+   "p": "Эти четыре слова не добавляют -ly, чтобы стать наречием — форма одна и та же. Fast — быстрый / быстро, hard — твёрдый / усердно, late — поздний / поздно, early — ранний / рано. Контекст показывает часть речи: a fast car (прил.) vs drive fast (нар.). Ошибка — писать fastly, hardly (в значении «усердно»), lately (в значении «поздно»).",
+   "formula": "a fast train · run fast · a hard exam · work hard · late arrival · come late · early morning · wake up early"
+  },
+  {
+   "h": "Порядок слов с наречиями образа действия",
+   "p": "Наречия образа действия (quickly, carefully, hard, fast) обычно стоят после глагола или после объекта, если объект короткий. Если объект длинный, наречие может встать перед глаголом для ясности. В русском порядок свободнее, в английском нарушение звучит небрежно: He speaks English well, не He well speaks English.",
+   "formula": "She sings beautifully. · He drove the car carefully. · They work hard. · Quickly she opened the letter."
+  },
+  {
+   "h": "Ловушка: I work hard vs I hardly work",
+   "p": "Разница в одном слове меняет смысл на противоположный. I work hard — я усердно работаю (hard = наречие образа действия). I hardly work — я почти не работаю (hardly = едва). В русском частица «едва» стоит перед глаголом, в английском hardly тоже перед глаголом, но hard после. Путаница приводит к комичным ошибкам: «Я усердно не работаю» вместо «Я почти не работаю».",
+   "formula": "I work hard. · I hardly work. · She tries hard. · She hardly tries."
+  }
+ ],
+ "examples": [
+  {"en": "He works hard but earns little.", "ru": "Он усердно работает, но зарабатывает мало."},
+  {"en": "I hardly know her.", "ru": "Я едва знаю её."},
+  {"en": "The train arrived late.", "ru": "Поезд прибыл поздно."},
+  {"en": "Lately I’ve been very busy.", "ru": "В последнее время я очень занят."},
+  {"en": "She can hardly wait.", "ru": "Она едва может ждать."},
+  {"en": "Fast cars consume more fuel.", "ru": "Быстрые машины потребляют больше топлива."},
+  {"en": "Don't drive fast in the city.", "ru": "Не ездьте быстро в городе."}
+ ],
+ "traps": [
+  {"bad": "I work hardly.", "good": "I work hard.", "why": "Hardly означает «едва», а не «усердно»."},
+  {"bad": "He came lately.", "good": "He came late.", "why": "Lately — «в последнее время», для «поздно» нужен late."},
+  {"bad": "She sings beautiful.", "good": "She sings beautifully.", "why": "Наречие образа действия требует -ly, если прилагательное не входит в список исключений."},
+  {"bad": "There are hardly no people.", "good": "There are hardly any people.", "why": "Hardly уже несёт отрицание, двойное отрицание не нужно."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He ___ knows the answer.", "options": ["hard", "hardly", "hardly ever"], "a": 1, "why": "Hardly = едва, hard = усердно."},
+  {"type": "choice", "q": "The meeting started ___.", "options": ["late", "lately", "early"], "a": 0, "why": "Late = поздно, lately = в последнее время."},
+  {"type": "choice", "q": "She speaks English ___.", "options": ["good", "well", "goodly"], "a": 1, "why": "Well — наречие от good, goodly не существует."},
+  {"type": "choice", "q": "We have ___ any milk left.", "options": ["hardly", "hardly any", "hardly no"], "a": 1, "why": "Hardly any — почти никакой, hardly no — ошибка двойного отрицания."},
+  {"type": "gap", "q": "I can ___ (hardly) hear you.", "a": ["hardly"], "why": "Can hardly — едва могу."},
+  {"type": "gap", "q": "The train arrived ___ (late).", "a": ["late"], "why": "Late — наречие, форма совпадает с прилагательным."},
+  {"type": "gap", "q": "He works ___ (hard).", "a": ["hard"], "why": "Hard — наречие образа действия, не hardily."},
+  {"type": "translate", "q": "Он усердно учится, но плохо знает грамматику.", "a": ["he studies hard but knows grammar poorly", "he studies hard but knows grammar badly"], "why": "Hard — усердно, poorly/badly — наречия."},
+  {"type": "translate", "q": "В последнее время я редко вижу его.", "a": ["lately I rarely see him", "I haven't seen him much lately"], "why": "Lately — в последнее время, требует Present Perfect или Present Perfect Continuous."}
+ ]
+}

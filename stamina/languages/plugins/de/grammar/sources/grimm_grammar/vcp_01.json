@@ -1,0 +1,369 @@
+{
+  "id": "vcp_01",
+  "title": "Verbs: Das Perfekt - Einführung",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Perfekt usage",
+      "text": "In order to describe actions that happened in the past, you can use the so-called Perfekt tense, which is used in conversations or informal writing.\n\nThe Perfekt tense is sometimes also called Present Perfect, but this name is misleading for American learners, since the English present perfect (Wolfgang has not eaten Little Red Riding Hood) has a slightly different meaning from the basic past tense (Wolfgang did not eat Little Red Riding Hood). In the first case, he still has hope ... in the second one, a completed situation (opportunity lost) in the past is simply described. In German the Perfekt, for the most part, has the same meaning as the Simple Past:\n\nWolfgang hat Rotkäppchen nicht gegessen. | = | Wolfgang aß Rotkäppchen nicht.\n\nWolfgang did not eat Little Red Riding Hood.\n\nThe Perfekt and the Simple Past forms are used in different types of interactions (informal/casual vs. formal). Sometimes the distinction is made between oral versus written use, but that is not quite accurate, because some types of writing are less formal (e.g., E-mail, a weblog) than some types of speaking (e.g., a formal lecture, accepting your Nobel prize, etc.). It is better to remember that the Perfekt is used for informal interaction, and Simple Past is more formal.\n\nYou can use any verb with the present perfect, but in High German (a type of \"standard\" German) some verbs are preferred in the simple past (and you might sound overly casual if you use these verbs with the Perfekt.\n\nhaben, sein, wissen + the modal verbs (dürfen, können, müssen, mögen, möchten, sollen, wollen)\n\nCertain dialects (e.g., Bavarian or Swiss or Austrian dialects), in contrast, prefer the Perfekt over the simple past, and younger speakers tend to emphasize the Perfekt as well.\n\nsuggested (simple past tense) | colloquial/regional (perfect tense) | english\n\nWolfgang war traurig; er hatte richtig Hunger. | Wolfgang ist traurig gewesen; er hat richtig Hunger gehabt. | Wolfgang was sad; he was really hungry.\n\nRotkäppchen hatte kein Mitleid; sie wollte nicht Wolfgangs Mittagessen werden. | Rotkäppchen hat kein Mitleid gehabt; es hat nicht Wolfgangs Mittagessen werden wollen. | Little Red Riding Hood had no sympathy; she did not want to become Wolfgang's lunch."
+    },
+    {
+      "heading": "Perfekt forms",
+      "text": "The Perfekt tense is formed by using the participle form of a verb, plus either haben or sein as a helping verb (also called auxiliary verbs)."
+    },
+    {
+      "heading": "Auxiliary (helping) verbs",
+      "text": "Haben is used as a helping verb when the main verb has or can have a direct object.\n\nDer Jäger hat Rotkäppchen und ihre Großmutter gerettet. Er hat sie aus dem Magen des Wolfs herausgeschnitten. | The hunter saved Little Red Riding Hood and her grandmother. He cut them out of the wolf's stomach.\n\nLittle Red Riding Hood and her grandmother are the direct objects of the verb \"to save\" in the first sentence, and them is the direct object of the verb \"to cut out\" in the second sentence.\n\nSein is used as a helping verb when the main verb expresses a change of state in one's physical or mental state, or in one's physical location (and in a few exceptions even when the verb doesn't take an object, and it doesn't describe change: bleiben, sein).\n\nDie arme Oma ist in Ohnmacht gefallen. Sie ist erst vier Stunden später wieder aufgewacht. | Poor Granny fainted. She reawakened only after about four hours."
+    },
+    {
+      "heading": "A few useful verbs with haben/sein",
+      "text": "haben | sein\n\nbringen (gebracht) | bring | aufspringen (aufgesprungen) | jump up\n\nessen (gegessen) | eat | aufstehen (aufgestanden) | wake up\n\nfinden (gefunden) | find | bleiben (geblieben) | stay\n\ngeben (gegeben) | give | einschlafen (eingeschlafen) | fall asleep\n\nlernen (gelernt) | learn | fahren (gefahren) | drive, go\n\nlesen (gelesen) | read | fliegen (geflogen) | fly\n\nsehen (gesehen) | see | gehen (gegangen) | go\n\nstehen (gestanden) | stand | kommen (gekommen) | come\n\ntragen (getragen) | write | laufen (gelaufen) | go, run\n\ntrinken (getrunken) | drink | werden (geworden) | become"
+    }
+  ],
+  "examples": [
+    {
+      "de": "suggested (simple past tense)",
+      "en": "colloquial/regional (perfect tense)"
+    },
+    {
+      "de": "Wolfgang war traurig; er hatte richtig Hunger.",
+      "en": "Wolfgang ist traurig gewesen; er hat richtig Hunger gehabt."
+    },
+    {
+      "de": "Rotkäppchen hatte kein Mitleid; sie wollte nicht Wolfgangs Mittagessen werden.",
+      "en": "Rotkäppchen hat kein Mitleid gehabt; es hat nicht Wolfgangs Mittagessen werden wollen."
+    },
+    {
+      "de": "Der Jäger hat Rotkäppchen und ihre Großmutter gerettet. Er hat sie aus dem Magen des Wolfs herausgeschnitten.",
+      "en": "The hunter saved Little Red Riding Hood and her grandmother. He cut them out of the wolf's stomach."
+    },
+    {
+      "de": "Die arme Oma ist in Ohnmacht gefallen. Sie ist erst vier Stunden später wieder aufgewacht.",
+      "en": "Poor Granny fainted. She reawakened only after about four hours."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Ich ___ sie schon am Rand des Waldes gesehen.",
+      "a": "habe",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Sie ___ einen roten Mantel und ein rotes Käppchen getragen.",
+      "a": "hat",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich fragte sie: \"Was ___ du in deinem Korb mitgebracht?\"",
+      "a": "hast",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen ___ mir aber keine Antwort gegeben.",
+      "a": "hat",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ sie später bei ihrer Großmutter wiedergesehen.",
+      "a": "habe",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Sie und Omi ___ das Brot gegessen, und den Wein getrunken.",
+      "a": "haben",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Nach dem Mittagessen ___ die beiden ein kurzes Schläfchen (nap) gemacht.",
+      "a": "haben",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ sie aufgefressen!",
+      "a": "habe",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Später ___ der Jäger an die Tür geklopft.",
+      "a": "hat",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Er ___ nicht gewußt, daß ich in Omas Nachthemd war ...",
+      "a": "hat",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich sagte ihm: Du ___ deinen letzten Atemzug (last breath) gegetan!",
+      "a": "hast",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Seine letzte Worte waren: Wolf, du ___ gewonnen!",
+      "a": "hast",
+      "set_id": "vcp_01_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Choose the correct forms of haben and fill in sentences to find out how the meeting with Rotkäppchen, her grandmother, and the hunter played out in Wolfgang's dreams ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ gerade von unserem Haus gekommen.",
+      "a": "bin",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Wolf, du ___ hast mich auf dem Pfad (path) im Wald getroffen, und hast mich gefragt, ob ich Blumen pflücken wollte.",
+      "a": "bist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich sagte ja, und du ___ so schnell wie der Wind vor mir weggelaufen.",
+      "a": "bist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ ganz langsam zu Omas Haus gegangen; es war ein wunderschöner Tag!",
+      "a": "bin",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Sie war noch im Bett! Ich dachte mir: \"Wie merkwürdig! Sie ___ noch nicht aufgestanden!\"",
+      "a": "ist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Als ich sie begrüßte, ___ sie nicht zu mir gekommen, sondern hat weiter im Bett gelegen!",
+      "a": "ist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich merkte (I noticed) auch, dass ihre Augen ganz groß geworden ___! Die ganze Sache wurde immer merkwürdiger!",
+      "a": "sind",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ zu ihrem Bett gegangen, und habe sie gefragt, wie es ihr ging.",
+      "a": "bin",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Sie ___ aufgesprungen, und hat mich einfach in den Mund gestopft! So was!?!",
+      "a": "ist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Zwei Minuten später sah ich meine Omi! Aha! Gottseidank ___ sie nicht verrückt geworden (go crazy).",
+      "a": "ist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ein paar Minuten später ___ alles wieder hell (bright) geworden: Der Jäger hat uns gerettet!",
+      "a": "ist",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Wir ___ sofort aus dem Magen des Wolfs herausgesprungen!",
+      "a": "sind",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger hat uns später erzählt: \"Ihr ___ ja echt ekelhaft (gross) gewesen ...\"",
+      "a": "seid",
+      "set_id": "vcp_01_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "At a therapy session, the wolf is finally about to find out how that fateful day looked like from Little Red Riding Hood's perspective. Choose the correct forms of sein and fill in sentences to find out ..."
+    },
+    {
+      "type": "gap",
+      "q": "Ja klar, ich ___ alles gesehen!",
+      "a": "habe",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Ich ___ hinter einem Baum gestanden und mir alles angeschaut!",
+      "a": "habe",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Die ganze Sache (the whole thing) ___ mich total fasziniert!",
+      "a": "hat",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Als der Wolf von Rotkäppchen weggegangen ___, ___ ich ihm gefolgt.",
+      "a": [
+        "ist",
+        "bin"
+      ],
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen, du ___ ahnungslos (without a clue) zu Omis Haus gegangen.",
+      "a": "bist",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Der Wolf ___ natürlich die Großmutter schon aufgefressen und sich in ihr Bett gelegt (lay down).",
+      "a": "hat",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen, du ___ gar nicht kapiert, dass es nicht deine Omi im Bett war!",
+      "a": "hast",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Damals ___ ihr, kleine Kinder, öfters im Wald herumgelaufen... Das ___ mir immer viel Spaß gemacht!",
+      "a": [
+        "seid",
+        "hat"
+      ],
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Ihr ___ mich nie gesehen, und ich konnte euch stundenlang erschrecken!",
+      "a": "habt",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Manche ___ nie wieder nach Hause gekommen, aber die Wölfe und ich hatten doch auch ein Recht zum Leben!",
+      "a": "sind",
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Diesmal ___ ich aber den Jäger gerufen, und er ___ fast sofort gekommen.",
+      "a": [
+        "habe",
+        "ist"
+      ],
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Die Großmutter und Rotkäppchen ___ aus dem Magen des Wolfs herausgesprungen, und ich ___ mich sehr gefreut!",
+      "a": [
+        "sind",
+        "habe"
+      ],
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    },
+    {
+      "type": "gap",
+      "q": "Seht ihr, einmal ___ mich der Wolf gebissen (bite), und jetzt ___ letztendlich die Zeit für meine Rache gekommen (arrive)! Hahaha!",
+      "a": [
+        "hat",
+        "ist"
+      ],
+      "set_id": "vcp_01_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "It is a real shock for everyone that the witch was a witness to all that happened in the forest! Why didn't she notify the authorities? Find out by filling in the blanks with the correct forms of haben or sein."
+    }
+  ]
+}

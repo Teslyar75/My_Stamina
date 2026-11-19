@@ -1,0 +1,79 @@
+{
+ "n": 219,
+ "level": "B2",
+ "module": "b-comp",
+ "title": "Сравнительная степень (1)",
+ "en": "comparative 1",
+ "summary": "Как образовывать сравнительную степень: короткие на -er, длинные через more, неправильные better/worse/farther. Усилители much/a bit и союз than.",
+ "can_do": [
+  "Образовывать сравнительную степень коротких и длинных прилагательных.",
+  "Использовать неправильные формы better, worse, farther/further.",
+  "Добавлять усилители much, a lot, far и ослабители a bit, slightly.",
+  "Строить предложения с than для сравнения двух объектов."
+ ],
+ "theory": [
+  {
+   "h": "Короткие прилагательные: суффикс -er",
+   "p": "Один слог (cheap, big) и некоторые двухсложные на -y, -er, -ow, -le берут -er. Y после согласной → i (easy → easier), согласная удваивается после короткого гласного (big → bigger), на -e добавляется r (large → larger).",
+   "formula": "cheap → cheaper · big → bigger · easy → easier · narrow → narrower · simple → simpler"
+  },
+  {
+   "h": "Длинные прилагательные: more + adjective",
+   "p": "Два и более слога, не входящие в короткие, образуют степень через more: more expensive, more interesting, more beautiful. Форма прилагательного не меняется. Нельзя: more cheaper, expensiver.",
+   "formula": "expensive → more expensive · interesting → more interesting · beautiful → more beautiful"
+  },
+  {
+   "h": "Неправильные формы",
+   "p": "Good → better, bad → worse, far → farther (расстояние) / further (дополнительно). Well (наречие) → better. Эти формы не сочетаются с more.",
+   "formula": "good → better · bad → worse · far → farther / further · well → better"
+  },
+  {
+   "h": "Сравнение двух объектов: than",
+   "p": "После сравнительной степени ставится than + второй объект. Порядок: подлежащее + глагол + сравнительная + than + объект. Местоимения в разговорной речи в объектном падеже (than me), в формальной — с глаголом (than I am).",
+   "formula": "She is taller than me. · This task is more difficult than that one. · He works harder than I do."
+  },
+  {
+   "h": "Усилители и ослабители",
+   "p": "Перед сравнительной степенью: much, a lot, far — большая разница (much cheaper); a little, a bit, slightly — небольшая (a bit more expensive). Very перед сравнительной не употребляется.",
+   "formula": "much cheaper · a lot more interesting · far better · a bit more expensive · slightly worse"
+  },
+  {
+   "h": "Правописание: удвоение и замена y",
+   "p": "После короткого гласного согласная удваивается (hot → hotter). На -y после согласной: y → i (heavy → heavier). На -e добавляется r (nice → nicer). Остальные просто -er (fast → faster).",
+   "table": {
+    "head": ["Тип", "Правило", "Примеры"],
+    "rows": [
+     ["CVC", "удвоение", "big → bigger, hot → hotter"],
+     ["-y после согласной", "y → i", "easy → easier, heavy → heavier"],
+     ["-e", "+ r", "large → larger, nice → nicer"],
+     ["остальные", "-er", "cheap → cheaper, fast → faster"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "This phone is cheaper than that one.", "ru": "Этот телефон дешевле того."},
+  {"en": "The test was more difficult than I expected.", "ru": "Тест был сложнее, чем я ожидал."},
+  {"en": "Your English is better than mine.", "ru": "Твой английский лучше моего."},
+  {"en": "It's much colder today than yesterday.", "ru": "Сегодня намного холоднее, чем вчера."},
+  {"en": "Could you speak a bit more slowly?", "ru": "Не могли бы вы говорить немного медленнее?"},
+  {"en": "Moscow is farther from here than St Petersburg.", "ru": "Москва дальше отсюда, чем Санкт-Петербург."}
+ ],
+ "traps": [
+  {"bad": "more cheaper", "good": "cheaper", "why": "Короткие прилагательные не сочетаются с more."},
+  {"bad": "expensiver", "good": "more expensive", "why": "Длинные прилагательные не берут -er."},
+  {"bad": "more better", "good": "better", "why": "Неправильные формы уже содержат сравнение, more лишний."},
+  {"bad": "He is more taller than me", "good": "He is taller than me", "why": "Двойное сравнение (more + -er) невозможно."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This laptop is ___ than that one.", "options": ["cheaper", "more cheap", "cheap"], "a": 0, "why": "Cheap — короткое прилагательное, степень на -er."},
+  {"type": "choice", "q": "The book is ___ than the film.", "options": ["more interesting", "interestinger", "more interest"], "a": 0, "why": "Interesting — длинное (3 слога), только more interesting."},
+  {"type": "choice", "q": "Your result is ___ than mine.", "options": ["better", "more good", "gooder"], "a": 0, "why": "Good — неправильное, сравнительная степень better."},
+  {"type": "choice", "q": "It's ___ colder today.", "options": ["much", "very", "more"], "a": 0, "why": "Перед сравнительной степенью усилитель: much / a lot / far."},
+  {"type": "gap", "q": "This road is ___ (narrow) than the main street.", "a": ["narrower"], "why": "Narrow — двухсложное на -ow, берёт -er: narrower."},
+  {"type": "gap", "q": "The second task was ___ (difficult) than the first.", "a": ["more difficult"], "why": "Difficult — длинное, сравнительная через more."},
+  {"type": "gap", "q": "She speaks English ___ (well) than her brother.", "a": ["better"], "why": "Well имеет неправильную сравнительную степень better."},
+  {"type": "translate", "q": "Этот дом выше того.", "a": ["this house is higher than that one", "this house is higher than that"], "why": "Higher than — сравнение через than."},
+  {"type": "translate", "q": "Сегодня немного теплее, чем вчера.", "a": ["it is a bit warmer today than yesterday", "today is a bit warmer than yesterday"], "why": "A bit warmer than — ослабитель a bit перед сравнительной."}
+ ]
+}

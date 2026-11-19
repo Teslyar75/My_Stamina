@@ -506,7 +506,7 @@
     {
       "id": "praep_akkusativ",
       "level": "A1",
-      "title": "Предлоги с Аkkusativ (DOGFU)",
+      "title": "Предлоги с Akkusativ (DOGFU)",
       "columns": ["Предлог", "Перевод", "Пример"],
       "rows": [
         ["durch", "через", "durch den Park"],
@@ -674,7 +674,7 @@
     {
       "id": "da_wo_komposita",
       "level": "B1",
-      "title": "Da-/Wo-компOUNDS",
+      "title": "Da-/Wo-композиты",
       "columns": ["Тип", "Образование", "Примеры", "Перевод"],
       "rows": [
         ["da- + предлог", "да + предлог (r при гласном)", "daran, darauf, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darauf", "об этом, на этом, за это..."],

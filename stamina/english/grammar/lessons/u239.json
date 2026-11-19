@@ -1,0 +1,79 @@
+{
+ "n": 239,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Место: in, at, on (2)",
+ "en": "in/at/on (place) 2",
+ "summary": "Уточняем предлоги места для конкретных ситуаций: внутри машины или снаружи здания, на поверхности бумаги, три смысла угла, середина и верха/низы, а также глагол arrive в городах и точках.",
+ "can_do": [
+  "Различать in the front/back of a car и at the front/back of a building.",
+  "Правильно использовать on the front/back of a letter/paper.",
+  "Выбирать между in/at/on the corner, in the middle, at the top/bottom, on the top of.",
+  "Говорить arrive in a city и arrive at a place без ошибки с to."
+ ],
+ "theory": [
+  {
+   "h": "Перед и сзади: машина против здания",
+   "p": "В машине сидят in the front / in the back — внутри салона. У здания, комнаты или группы людей внешняя сторона: at the front / at the back of the building. Русский «перед» и «сзади» одинаков, а английский делит по типу пространства.",
+   "formula": "in the front of the car · in the back of the car · at the front of the building · at the back of the room"
+  },
+  {
+   "h": "Лицевая и обратная сторона бумаги",
+   "p": "Письмо, страница, фотография — плоские предметы, у них нет «внутри», поэтому предлог on: on the front of the envelope, on the back of the photo. Сравните: in the front of the car (внутри) vs on the front of the paper (на поверхности).",
+   "formula": "on the front of the letter · on the back of the page · on the front of the photo"
+  },
+  {
+   "h": "Угол: in, at, on — разный смысл",
+   "p": "In the corner — внутри помещения (в углу комнаты). At the corner — у улицы, здания, стола (точка встречи). On the corner — здание, стоящее на углу улиц. В русском везде «в углу», в английском — три картины.",
+   "table": {
+    "head": ["Предлог", "Ситуация", "Пример"],
+    "rows": [
+     ["in", "внутри комнаты", "in the corner of the room"],
+     ["at", "у улицы/здания", "at the corner of the street"],
+     ["on", "здание на углу", "a shop on the corner"]
+    ]
+   }
+  },
+  {
+   "h": "Середина, верх, низ: in the middle, at the top/bottom, on the top of",
+   "p": "In the middle — внутри площади или группы. At the top/bottom — крайняя точка вертикали (верх/низ страницы, лестницы, горы). On the top of — на самой вершине предмета (на вершине холма, на крыше). Надпись на странице — at the top of the page.",
+   "formula": "in the middle of the room · at the top of the page · at the bottom of the stairs · on the top of the hill"
+  },
+  {
+   "h": "Arrive in a city, arrive at a place",
+   "p": "Большие населённые пункты (город, страна) — arrive in Moscow, arrive in Russia. Конкретные места (аэропорт, станция, дом, офис) — arrive at the airport, arrive at the station, arrive at work. Нельзя сказать arrive to.",
+   "formula": "arrive in London · arrive in England · arrive at the station · arrive at home · arrive at work"
+  },
+  {
+   "h": "Типичные путаницы и шпаргалка",
+   "p": "Не смешивайте in the front of the car (внутри) и at the front of the car (снаружи перед бампером). Угол: in — внутри, at — точка, on — здание. Arrive: in — город/страна, at — здание/точка. Предлог to после arrive не ставится.",
+   "formula": "in the front of the car ≠ at the front of the car · arrive in Paris ≠ arrive at the hotel"
+  }
+ ],
+ "examples": [
+  {"en": "We sat in the back of the car.", "ru": "Мы сидели на заднем сиденье машины."},
+  {"en": "There is a garden at the back of the house.", "ru": "За домом есть сад."},
+  {"en": "Write your name on the front of the envelope.", "ru": "Напишите имя на лице конверта."},
+  {"en": "He was standing at the corner of the street.", "ru": "Он стоял на углу улицы."},
+  {"en": "The shop is on the corner of High Street.", "ru": "Магазин находится на углу Хай-стрит."},
+  {"en": "The title is at the top of the page.", "ru": "Заголовок вверху страницы."},
+  {"en": "We arrived in Rome at noon.", "ru": "Мы прилетели в Рим в полдень."}
+ ],
+ "traps": [
+  {"bad": "We sat at the back of the car.", "good": "We sat in the back of the car.", "why": "Внутри салона машины — in, а не at."},
+  {"bad": "The picture is at the front of the paper.", "good": "The picture is on the front of the paper.", "why": "Поверхность бумаги — on."},
+  {"bad": "The hotel is in the corner of the street.", "good": "The hotel is on the corner of the street.", "why": "Здание на перекрёстке — on the corner."},
+  {"bad": "We arrived to Moscow yesterday.", "good": "We arrived in Moscow yesterday.", "why": "После arrive нет to: arrive in city, arrive at place."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We sat ___ the back of the car.", "options": ["in", "at", "on"], "a": 0, "why": "Внутри салона — in the back of the car."},
+  {"type": "choice", "q": "There is a large garden ___ the back of the house.", "options": ["in", "at", "on"], "a": 1, "why": "Снаружи здания — at the back of the house."},
+  {"type": "choice", "q": "Write the address ___ the front of the envelope.", "options": ["in", "at", "on"], "a": 2, "why": "Поверхность конверта — on the front."},
+  {"type": "choice", "q": "The bank is ___ the corner of Main Street.", "options": ["in", "at", "on"], "a": 2, "why": "Здание на углу улиц — on the corner."},
+  {"type": "gap", "q": "The title is printed ___ the top of the page. (hint: верхняя граница)", "a": ["at"], "why": "Граница страницы — at the top of the page."},
+  {"type": "gap", "q": "We ___ in Paris at 10 a.m. (hint: большой город)", "a": ["arrived"], "why": "Город — arrive in."},
+  {"type": "gap", "q": "The train ___ at the station five minutes ago. (hint: конкретное место)", "a": ["arrived"], "why": "Станция — arrive at."},
+  {"type": "translate", "q": "Мы приехали в аэропорт вовремя.", "a": ["we arrived at the airport on time", "we arrived at the airport in time"], "why": "Аэропорт — arrive at."},
+  {"type": "translate", "q": "На обратной стороне фотографии есть дата.", "a": ["there is a date on the back of the photo", "there's a date on the back of the photo"], "why": "Поверхность фото — on the back."}
+ ]
+}

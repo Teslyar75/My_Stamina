@@ -1,0 +1,83 @@
+{
+ "n": 173,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "-ing или to (3): like, would like",
+ "en": "verb + -ing or to 3",
+ "summary": "Do you like swimming — про удовольствие вообще, would you like to swim — про конкретное предложение сейчас. Чувствуете разницу?",
+ "can_do": [
+  "Сказать о привычном удовольствии через like + -ing.",
+  "Отличить like to do как привычку от простого вкуса.",
+  "Предложить что-то через would you like to do.",
+  "Употребить love, hate и would love с правильной формой."
+ ],
+ "theory": [
+  {
+   "h": "Like + -ing — удовольствие вообще",
+   "p": "Форма на -ing говорит о занятии, которое человек любит в принципе, без привязки к моменту. I like swimming значит, что плавание мне нравится как деятельность. Здесь можно добавить very much, а вот конкретное «сейчас» не подразумевается.",
+   "formula": "I like swimming. · She likes cooking. · Do you like working here? · He doesn't like waiting."
+  },
+  {
+   "h": "Like + to — привычка и выбор",
+   "p": "Инфинитив подчёркивает, что человек считает правильным или привычным делать так. I like to check my email first thing in the morning — это мой распорядок, а не хобби. В американском варианте обе формы часто смешивают, но в британском оттенок чувствуется.",
+   "table": {
+    "head": ["Фраза", "О чём речь", "Оттенок"],
+    "rows": [
+     ["I like swimming.", "занятие вообще", "мне нравится плавать"],
+     ["I like to swim before breakfast.", "привычка", "я привык плавать утром"],
+     ["Do you like cooking?", "вкус", "тебе нравится готовить"],
+     ["I like to cook on Sundays.", "распорядок", "по воскресеньям готовлю я"]
+    ]
+   }
+  },
+  {
+   "h": "Would like + to — желание здесь и сейчас",
+   "p": "С would like форма на -ing невозможна: только to и инфинитив. Конструкция звучит вежливо и относится к конкретному моменту, а не к жизни вообще. Именно так делают заказ в кафе и предложение что-то сделать.",
+   "formula": "I'd like to see the menu, please. · I'd like to ask a question. · We'd like to book a table for two."
+  },
+  {
+   "h": "Would you like или do you like",
+   "p": "Это разные вопросы, и путать их неудобно. Would you like to come — приглашение на конкретный случай. Do you like coming here — вопрос о вкусе, нравится ли вам бывать здесь в принципе. Ответ на первое — про сейчас, на второе — про привычку.",
+   "table": {
+    "head": ["Вопрос", "Что делает говорящий", "Возможный ответ"],
+    "rows": [
+     ["Would you like to come?", "приглашает", "Yes, I'd love to."],
+     ["Do you like coming here?", "спрашивает о вкусе", "Yes, I love it here."],
+     ["Would you like some tea?", "предлагает", "Yes, please."],
+     ["Do you like tea?", "спрашивает о предпочтении", "Yes, I drink it every day."]
+    ]
+   }
+  },
+  {
+   "h": "Love, hate, would love",
+   "p": "После love и hate возможны обе формы, и разница почти не ощущается. А вот с would love и would hate работает только инфинитив, как и с would like. Запомните пару: I'd love to come, а не I'd love coming.",
+   "formula": "I love reading. · I love to read on the train. · I'd love to come. · I'd hate to miss it."
+  }
+ ],
+ "examples": [
+  {"en": "I like swimming in the sea.", "ru": "Мне нравится плавать в море."},
+  {"en": "I like to check my email before breakfast.", "ru": "Я привык проверять почту перед завтраком."},
+  {"en": "I'd like to see the manager, please.", "ru": "Я хотел бы увидеть менеджера, пожалуйста."},
+  {"en": "Would you like to come with us?", "ru": "Хочешь пойти с нами?"},
+  {"en": "Do you like working here?", "ru": "Тебе нравится здесь работать?"},
+  {"en": "I'd love to meet your family.", "ru": "Я бы очень хотел познакомиться с твоей семьёй."}
+ ],
+ "traps": [
+  {"bad": "I would like seeing the menu.", "good": "I would like to see the menu.", "why": "После would like только to + инфинитив."},
+  {"bad": "Would you like coming to our party?", "good": "Would you like to come to our party?", "why": "Приглашение строится через would like to do."},
+  {"bad": "I'd love coming to your wedding.", "good": "I'd love to come to your wedding.", "why": "С would love нужен инфинитив, а не -ing."},
+  {"bad": "Do you like to come to our party tonight?", "good": "Would you like to come to our party tonight?", "why": "Приглашение на конкретный вечер — would you like, а не do you like."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Would you like ___ something to drink?", "options": ["to have", "having", "have"], "a": 0, "why": "Would like + to: would you like to have."},
+  {"type": "choice", "q": "___ you like to come to the cinema tonight?", "options": ["Would", "Do", "Are"], "a": 0, "why": "Приглашение на конкретный вечер: Would you like to come?"},
+  {"type": "choice", "q": "I wouldn't like ___ in your position.", "options": ["to be", "being", "be"], "a": 0, "why": "Wouldn't like + to: wouldn't like to be."},
+  {"type": "choice", "q": "She'd love ___ a horse one day.", "options": ["to have", "having", "have"], "a": 0, "why": "Would love требует инфинитив: would love to have."},
+  {"type": "gap", "q": "Do you like ___ (cook)?", "a": ["cooking", "to cook"], "why": "Вопрос о вкусе, допустимы обе формы, чаще -ing."},
+  {"type": "gap", "q": "I like ___ (get) up early and go for a run.", "a": ["to get", "getting"], "why": "Привычка, поэтому уместен инфинитив, но -ing тоже верно."},
+  {"type": "gap", "q": "I'd like ___ (ask) you a question.", "a": ["to ask"], "why": "Would like + to: I'd like to ask."},
+  {"type": "translate", "q": "Я хотел бы чашку чая.", "a": ["i'd like a cup of tea", "i would like a cup of tea"], "why": "Вежливое желание: I'd like…"},
+  {"type": "translate", "q": "Тебе нравится здесь работать?", "a": ["do you like working here", "do you like to work here"], "why": "Вопрос о вкусе: do you like + -ing."},
+  {"type": "translate", "q": "Я бы хотел, чтобы ты пришёл.", "a": ["i'd like you to come", "i would like you to come"], "why": "Would like + дополнение + to."}
+ ]
+}

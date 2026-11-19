@@ -1,0 +1,90 @@
+{
+ "n": 167,
+ "level": "B2",
+ "module": "b-questions",
+ "title": "Разделительные вопросы",
+ "en": "question tags",
+ "summary": "Короткий хвостик вроде isn't it или did they превращает утверждение в вопрос и выдаёт, чего собеседник на самом деле ждёт.",
+ "can_do": [
+  "Прицепить хвостик с правильным помощником и местоимением.",
+  "Перевернуть полярность: плюс к минусу, минус к плюсу.",
+  "Построить хвостик к let's, к приказу и к словам nobody, nothing.",
+  "Понять по интонации, спрашивают вас или просто ищут согласия."
+ ],
+ "theory": [
+  {
+   "h": "Хвостик всегда переворачивает полярность",
+   "p": "Если основное предложение положительное, хвостик отрицательный. Если в нём есть not, хвостик становится положительным. Это железное правило, и оно действует даже тогда, когда отрицание спрятано в слове never или hardly.",
+   "formula": "You're Russian, aren't you? · She doesn't smoke, does she? · He never calls, does he?"
+  },
+  {
+   "h": "Помощник берут из предложения",
+   "p": "В хвостике повторяют тот же вспомогательный глагол, что уже есть в предложении, и то же время. Если помощника нет, его создают через do, does или did. Подлежащее в хвостике всегда заменяют местоимением.",
+   "table": {
+    "head": ["Предложение", "Хвостик", "Почему"],
+    "rows": [
+     ["You can swim,", "can't you?", "модальный can"],
+     ["He has finished,", "hasn't he?", "перфект с have"],
+     ["It's cold,", "isn't it?", "глагол be"],
+     ["They went home,", "didn't they?", "past simple без помощника"],
+     ["She likes tea,", "doesn't she?", "present simple, she"]
+    ]
+   }
+  },
+  {
+   "h": "I'm — особый случай",
+   "p": "С формой am отрицательный хвостик выглядит нелогично: aren't I. Формы amn't I в стандартном английском нет, поэтому не пытайтесь её построить. Вежливые фразы вроде I'm late, aren't I? звучат совершенно нормально.",
+   "formula": "I'm late, aren't I? · I'm next, aren't I? · I am on the list, aren't I?"
+  },
+  {
+   "h": "Let's, приказы и слова nobody",
+   "p": "После let's ставят shall we, после приказа или просьбы — will you или won't you. Если подлежащее выражено словами nobody, nothing, everyone, в хвостике появляется they или it. Это не переводится дословно, но запоминается быстро.",
+   "table": {
+    "head": ["Начало фразы", "Хвостик"],
+    "rows": [
+     ["Let's go,", "shall we?"],
+     ["Open the window,", "will you?"],
+     ["Nobody called,", "did they?"],
+     ["Nothing happened,", "did it?"],
+     ["Everyone is ready,", "aren't they?"]
+    ]
+   }
+  },
+  {
+   "h": "Used to, have got, had better",
+   "p": "В этих конструкциях помощник берут из самой формы: did у used to, have у have got, had у had better. Ошибка появляется, когда от used to образуют хвостик через used, а от have got — через do.",
+   "formula": "He used to live here, didn't he? · You haven't got a car, have you? · You'd better hurry, hadn't you?"
+  },
+  {
+   "h": "Интонация решает, зачем нужен хвостик",
+   "p": "С падающей интонацией хвостик означает, что вы уверены и ждёте согласия. С восходящей — что вы действительно не знаете и спрашиваете. Отдельно стоит ехидное повторение вроде Oh, you have, have you? — так показывают сомнение или иронию.",
+   "formula": "It's cold, isn't it? (уверен) · It's cold, isn't it? (спрашиваю) · Oh, you've bought a car, have you?"
+  }
+ ],
+ "examples": [
+  {"en": "You're a teacher, aren't you?", "ru": "Ты ведь учитель, да?"},
+  {"en": "She doesn't eat meat, does she?", "ru": "Она ведь не ест мясо, правда?"},
+  {"en": "They arrived yesterday, didn't they?", "ru": "Они приехали вчера, не так ли?"},
+  {"en": "Let's take a break, shall we?", "ru": "Давай сделаем перерыв, хорошо?"},
+  {"en": "Nobody told you, did they?", "ru": "Тебе ведь никто не сказал?"},
+  {"en": "I'm on the list, aren't I?", "ru": "Я ведь в списке?"}
+ ],
+ "traps": [
+  {"bad": "You are Russian, isn't it?", "good": "You are Russian, aren't you?", "why": "Хвостик согласуется с подлежащим you, а не с безличным it."},
+  {"bad": "She likes tea, no?", "good": "She likes tea, doesn't she?", "why": "Русское «да?» переводится полноценным хвостиком с помощником."},
+  {"bad": "I'm late, amn't I?", "good": "I'm late, aren't I?", "why": "Для I am отрицательный хвостик — aren't I."},
+  {"bad": "Let's go, will we?", "good": "Let's go, shall we?", "why": "После let's положено shall we."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You're a doctor, ___?", "options": ["aren't you", "isn't it", "don't you"], "a": 0, "why": "Be и подлежащее you дают хвостик aren't you."},
+  {"type": "choice", "q": "She doesn't like fish, ___?", "options": ["does she", "isn't she", "doesn't she"], "a": 0, "why": "Отрицание в основной части, значит хвостик положительный: does she."},
+  {"type": "choice", "q": "Let's take a break, ___?", "options": ["shall we", "will we", "don't we"], "a": 0, "why": "После let's всегда shall we."},
+  {"type": "choice", "q": "Nobody called, ___?", "options": ["did they", "didn't they", "did it"], "a": 0, "why": "Nobody требует they, а отрицание в основе даёт положительный хвостик."},
+  {"type": "gap", "q": "He can drive, ___?", "a": ["can't he"], "why": "Модальный can и he: can't he."},
+  {"type": "gap", "q": "I'm late, ___?", "a": ["aren't i"], "why": "Особый случай: I'm даёт хвостик aren't I."},
+  {"type": "gap", "q": "They went home, ___?", "a": ["didn't they"], "why": "Past simple без помощника требует didn't they."},
+  {"type": "gap", "q": "You haven't got a car, ___?", "a": ["have you"], "why": "Have got даёт хвостик have you."},
+  {"type": "translate", "q": "Ты ведь живёшь здесь, да?", "a": ["you live here don't you"], "why": "Present simple, you: don't you."},
+  {"type": "translate", "q": "Она не звонила, правда?", "a": ["she didn't call did she"], "why": "Отрицание в основной части, хвостик did she."}
+ ]
+}

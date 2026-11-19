@@ -1,0 +1,87 @@
+{
+ "n": 166,
+ "level": "B2",
+ "module": "b-questions",
+ "title": "Вспомогательные глаголы и I think so",
+ "en": "auxiliary verbs / I think so",
+ "summary": "Зачем англичане повторяют do, have и can в коротких ответах и как одним словом согласиться, возразить или удивиться.",
+ "can_do": [
+  "Дать короткий ответ через вспомогательный глагол, а не через yes и no.",
+  "Согласиться через so do I и не согласиться через neither can she.",
+  "Заменить целую мысль через I think so, I hope not, I'm afraid so.",
+  "Переспросить от удивления коротким эхом вроде Is he?"
+ ],
+ "theory": [
+  {
+   "h": "Помощник держит всю фразу",
+   "p": "В коротком ответе англичанин не повторяет смысловой глагол, но обязательно повторяет помощника. Ответ из одного yes звучит резко и незаконченно, а иногда просто непонятно: собеседник ждёт подтверждения через do, have, can или be.",
+   "formula": "Have you finished? — Yes, I have. · Can she drive? — No, she can't. · Are you tired? — Yes, I am."
+  },
+  {
+   "h": "Как собрать короткий ответ",
+   "p": "Помощник берут из вопроса, а подлежащее заменяют местоимением. Если в вопросе был do, он же остаётся в ответе. Если вопрос был с be или модальным глаголом, повторяют именно их, без всякого do.",
+   "table": {
+    "head": ["Вопрос", "Положительный ответ", "Отрицательный ответ"],
+    "rows": [
+     ["Do you like it?", "Yes, I do.", "No, I don't."],
+     ["Is it raining?", "Yes, it is.", "No, it isn't."],
+     ["Have they arrived?", "Yes, they have.", "No, they haven't."],
+     ["Could he help?", "Yes, he could.", "No, he couldn't."]
+    ]
+   }
+  },
+  {
+   "h": "So do I и neither can she",
+   "p": "Чтобы присоединиться к чужой мысли, используют so плюс помощник плюс подлежащее. Для отрицания берут neither или nor, но порядок остаётся тем же: сначала помощник, потом тот, о ком речь. Помощник обязательно совпадает с исходным предложением.",
+   "table": {
+    "head": ["Собеседник говорит", "Вы соглашаетесь", "Смысл"],
+    "rows": [
+     ["I'm tired.", "So am I.", "я тоже устал"],
+     ["I love jazz.", "So do I.", "я тоже люблю джаз"],
+     ["I can't swim.", "Neither can I.", "я тоже не умею"],
+     ["She didn't come.", "Neither did I.", "я тоже не пришёл"]
+    ]
+   }
+  },
+  {
+   "h": "I think so и I hope not",
+   "p": "Слово so заменяет положительную мысль целиком, слово not — отрицательную. Сказать I think yes нельзя, это калька с русского. Если вы боитесь плохого исхода, выбирайте not, а не so.",
+   "formula": "Is he married? — I think so. · Will it rain? — I hope not. · Are they late? — I'm afraid so. · Did she call? — I don't think so."
+  },
+  {
+   "h": "Эхо-вопрос вместо вежливого молчания",
+   "p": "Когда хочется показать интерес или удивление, достаточно повторить помощника и местоимение. Такой короткий вопрос не требует полного предложения и звучит очень по-английски. В отрицании помощник тоже отрицательный.",
+   "formula": "He's leaving. — Is he? · I don't like it. — Don't you? · She can't come. — Can't she? · We've won. — Have you?"
+  },
+  {
+   "h": "Помощник вместо второго глагола",
+   "p": "Если смысл уже понятен, второй раз глагол не повторяют: хватает помощника. Это касается и сравнений, и отказов, и кратких реплик в диалоге. Фраза становится короче, но не теряет смысла.",
+   "formula": "She plays better than I do. · I could lend you the book, but I'd rather not. · He asked me to stay, but I didn't."
+  }
+ ],
+ "examples": [
+  {"en": "Do you like coffee? — Yes, I do.", "ru": "Ты любишь кофе? — Да."},
+  {"en": "I'm tired. — So am I.", "ru": "Я устал. — Я тоже."},
+  {"en": "She can't swim. — Neither can I.", "ru": "Она не умеет плавать. — Я тоже."},
+  {"en": "Will it be cold? — I hope not.", "ru": "Будет холодно? — Надеюсь, нет."},
+  {"en": "He's leaving. — Is he?", "ru": "Он уезжает. — Правда?"},
+  {"en": "They work harder than we do.", "ru": "Они работают больше нас."}
+ ],
+ "traps": [
+  {"bad": "Do you like it? — Yes, I like.", "good": "Do you like it? — Yes, I do.", "why": "В коротком ответе повторяют помощник, а не смысловой глагол."},
+  {"bad": "So I am.", "good": "So am I.", "why": "В конструкции so и neither помощник стоит перед подлежащим."},
+  {"bad": "Is she coming? — I think yes.", "good": "Is she coming? — I think so.", "why": "Вместо целой мысли ставят so, а не yes."},
+  {"bad": "I can't swim. — Neither I can.", "good": "I can't swim. — Neither can I.", "why": "После neither нужен обратный порядок: can I."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Do you like coffee? — Yes, I ___.", "options": ["do", "like", "am"], "a": 0, "why": "Вопрос с do, ответ тоже с do: Yes, I do."},
+  {"type": "choice", "q": "I'm tired. — So ___ I.", "options": ["am", "do", "have"], "a": 0, "why": "Исходное предложение с am, значит So am I."},
+  {"type": "choice", "q": "She can't swim. — Neither ___ I.", "options": ["can", "do", "am"], "a": 0, "why": "Помощник can сохраняется: Neither can I."},
+  {"type": "choice", "q": "Is he coming tonight? — I think ___.", "options": ["so", "yes", "that"], "a": 0, "why": "Положительную мысль заменяет so: I think so."},
+  {"type": "gap", "q": "Have you seen this film? — Yes, I ___.", "a": ["have"], "why": "Вопрос в present perfect, ответ через have."},
+  {"type": "gap", "q": "My brother doesn't eat meat. — Neither ___ I.", "a": ["do"], "why": "Present simple с doesn't, поэтому в ответе do."},
+  {"type": "gap", "q": "She has already left. — ___ she? I didn't know.", "a": ["has"], "why": "Эхо-вопрос повторяет помощника has."},
+  {"type": "translate", "q": "Я тоже люблю кофе.", "a": ["so do i", "i like coffee too", "i do too"], "why": "Согласие с положительной мыслью: So do I."},
+  {"type": "translate", "q": "Думаю, что да.", "a": ["i think so"], "why": "So заменяет целую положительную мысль."}
+ ]
+}

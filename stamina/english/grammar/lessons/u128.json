@@ -1,0 +1,76 @@
+{
+ "n": 128,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Perfect или Past (1)",
+ "en": "present perfect and past 1",
+ "summary": "Когда говорить I have done, а когда I did: опыт и свежая новость — perfect, конкретное время в прошлом — past.",
+ "can_do": [
+  "Рассказать об опыте, не называя времени: I've been to Berlin.",
+  "Отличить вопрос Have you ever been...? от вопроса When did you go...?",
+  "Перейти на past simple, как только появляется точное время.",
+  "Рассказать новость в perfect и продолжить деталями в past."
+ ],
+ "theory": [
+  {
+   "h": "Два разных взгляда на прошлое",
+   "p": "Perfect и past simple оба говорят о прошлом, но смотрят на него по-разному. Perfect важен тем, что получилось к настоящему моменту: у меня нет ключей именно сейчас. Past simple важен самим моментом в прошлом: ключи потерялись вчера, и дальше рассказ идёт про вчера.",
+   "formula": "I've lost my keys. (и сейчас не могу войти) · I lost my keys yesterday. (важно, что было вчера)"
+  },
+  {
+   "h": "Опыт и жизнь до нынешнего дня",
+   "p": "Когда речь идёт обо всём прожитом времени и точная дата не важна, работает perfect. Это ответ на вопрос «было ли такое в твоей жизни вообще». Сюда же относятся so far, up to now, never, ever и фразы вроде «я уже трижды был».",
+   "formula": "Have you ever been to Prague? · I've never eaten oysters. · She has written three novels so far."
+  },
+  {
+   "h": "Назвали время — переходим на past",
+   "p": "Как только в разговоре появляется конкретная точка или отрезок прошлого, perfect уступает место past simple. Yesterday, last week, in 2019, two years ago, when I was a child, on Friday — всё это закрывает дверь в настоящее и требует обычного прошедшего времени.",
+   "formula": "I've seen this film. · I saw it on Friday with my brother."
+  },
+  {
+   "h": "Новость и подробности",
+   "p": "Обычный порядок в живой речи такой: сначала новость в perfect, потому что она важна сейчас, потом вопросы и детали в past, потому что мы уходим в обстоятельства. Вопрос «How did it happen?» почти всегда идёт после perfect.",
+   "formula": "I've cut my finger. — How did you do that? — I was cutting bread."
+  },
+  {
+   "h": "Четыре типичные ситуации",
+   "p": "Сравните две колонки и обратите внимание, что меняется не смысл события, а точка зрения говорящего: интерес к результату сейчас или интерес к моменту тогда.",
+   "table": {
+    "head": ["Ситуация", "Время названо", "Время глагола", "Пример"],
+    "rows": [
+     ["опыт за всю жизнь", "нет", "perfect", "I've been to Rome."],
+     ["конкретная поездка", "in 2019", "past", "I went there in 2019."],
+     ["свежая новость", "только что", "perfect", "I've broken my glasses."],
+     ["подробности", "last night", "past", "I broke them last night."],
+     ["незаконченный период", "so far", "perfect", "She has sold ten cars so far."],
+     ["закрытый период", "last month", "past", "She sold ten cars last month."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I've been to Japan twice, but never in spring.", "ru": "Я дважды был в Японии, но никогда весной."},
+  {"en": "We've just finished the project.", "ru": "Мы только что закончили проект."},
+  {"en": "He wrote his first song when he was sixteen.", "ru": "Он написал первую песню, когда ему было шестнадцать."},
+  {"en": "Have you ever tried diving?", "ru": "Ты когда-нибудь пробовал нырять?"},
+  {"en": "She has changed her mind about the job.", "ru": "Она передумала насчёт работы."},
+  {"en": "They met at university in 2015.", "ru": "Они познакомились в университете в 2015 году."}
+ ],
+ "traps": [
+  {"bad": "I have seen him yesterday.", "good": "I saw him yesterday.", "why": "Yesterday — закрытое время, с ним только past simple."},
+  {"bad": "When have you arrived?", "good": "When did you arrive?", "why": "When спрашивает о конкретном моменте, поэтому нужен past."},
+  {"bad": "Have you ever went to Spain?", "good": "Have you ever been to Spain?", "why": "После have нужна третья форма: gone — уехал, been — побывал."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ my keys, so I can't get into the flat.", "options": ["lost", "have lost", "had lost"], "a": 1, "why": "Результат важен сейчас: ключей нет."},
+  {"type": "choice", "q": "We ___ to Italy in 2019.", "options": ["have gone", "went", "have been"], "a": 1, "why": "Назван год — значит past simple."},
+  {"type": "choice", "q": "Have you ever ___ sushi?", "options": ["eat", "ate", "eaten"], "a": 2, "why": "После have нужна третья форма: eaten."},
+  {"type": "choice", "q": "She ___ three novels so far.", "options": ["wrote", "has written", "had written"], "a": 1, "why": "So far — период не закончен, нужен perfect."},
+  {"type": "gap", "q": "They ___ (move) to London two years ago.", "a": ["moved"], "why": "Two years ago — точное время в прошлом."},
+  {"type": "gap", "q": "I ___ (not / see) that film yet.", "a": ["haven't seen", "have not seen"], "why": "Yet связывает прошлое с сейчас, поэтому perfect."},
+  {"type": "gap", "q": "When ___ (you / buy) this car?", "a": ["did you buy"], "why": "Вопрос с when — всегда past simple."},
+  {"type": "translate", "q": "Я потерял телефон вчера.", "a": ["i lost my phone yesterday", "i lost my mobile yesterday"], "why": "Yesterday требует past simple: I lost."},
+  {"type": "translate", "q": "Вы когда-нибудь были в Праге?", "a": ["have you ever been to prague"], "why": "Опыт без даты: have you ever been."},
+  {"type": "translate", "q": "Я только что закончил отчёт.", "a": ["i have just finished the report", "i've just finished the report"], "why": "Только что — perfect с just."}
+ ]
+}

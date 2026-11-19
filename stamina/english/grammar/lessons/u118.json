@@ -1,0 +1,76 @@
+{
+ "n": 118,
+ "level": "B2",
+ "module": "b-now",
+ "title": "Continuous и Simple: разница (1)",
+ "en": "present continuous and present simple 1",
+ "summary": "Разница между «делаю сейчас» и «делаю вообще»: как выбрать форму, когда обе звучат по-русски одинаково.",
+ "can_do": [
+  "Выбрать длительное или простое время по ситуации, а не по переводу.",
+  "Различить временную ситуацию и постоянное положение дел.",
+  "Показать раздражение через always с длительным временем."
+ ],
+ "theory": [
+  {
+   "h": "Два взгляда на одно действие",
+   "p": "Русское «я читаю» покрывает сразу две ситуации, и переводчик не подсказывает, какая из них имеется в виду. Английский требует выбрать: длительное время — процесс идёт прямо сейчас, простое — действие вообще, как привычка или факт. Ошибка в форме меняет смысл фразы.",
+   "table": {
+    "head": ["Ситуация", "Время", "Пример"],
+    "rows": [
+     ["прямо сейчас", "continuous", "I'm reading a report."],
+     ["каждый день", "simple", "I read the news every morning."],
+     ["вообще, как факт", "simple", "I read a lot."],
+     ["в этот период", "continuous", "I'm reading a long novel these days."]
+    ]
+   }
+  },
+  {
+   "h": "Период вокруг сейчас",
+   "p": "Длительное время не обязательно означает «в эту секунду». Если дело тянется несколько дней или недель и ещё не закончено, тоже нужен continuous. Простое время в таком случае звучало бы как постоянное свойство или привычка, а не как временное занятие на пару недель.",
+   "formula": "I'm writing a report this week. · She's preparing for an exam at the moment. · We're looking for a new flat."
+  },
+  {
+   "h": "Временно и постоянно",
+   "p": "Противопоставление «на время» и «навсегда» — самый надёжный ориентир. Работа официантом на лето, жизнь у родителей до переезда, курсы на два месяца — всё это длительное время. Профессия, место жительства, постоянные увлечения — простое.",
+   "table": {
+    "head": ["Временно", "Постоянно"],
+    "rows": [
+     ["She's working as a waitress this summer.", "She works as a teacher."],
+     ["I'm living with my parents until June.", "I live with my parents."],
+     ["He's taking a course in design.", "He studies design."]
+    ]
+   }
+  },
+  {
+   "h": "Always: привычка или жалоба",
+   "p": "Одно и то же слово always ведёт себя по-разному. С простым временем это спокойная констатация частоты. С длительным — эмоция, чаще всего раздражение: так говорят о привычке, которая злит. Тон задаёт именно форма глагола, а не само наречие.",
+   "formula": "He always leaves the door open. (просто факт) · He's always leaving the door open. (меня это бесит)"
+  }
+ ],
+ "examples": [
+  {"en": "I'm writing an email now.", "ru": "Я сейчас пишу письмо."},
+  {"en": "I write about ten emails a day.", "ru": "Я пишу около десяти писем в день."},
+  {"en": "She's staying with us this week.", "ru": "На этой неделе она живёт у нас."},
+  {"en": "She usually stays with her aunt.", "ru": "Обычно она живёт у тёти."},
+  {"en": "You're always interrupting me!", "ru": "Ты вечно меня перебиваешь!"},
+  {"en": "He always arrives on time.", "ru": "Он всегда приходит вовремя."}
+ ],
+ "traps": [
+  {"bad": "I read a book now, I'll call you later.", "good": "I'm reading a book now, I'll call you later.", "why": "now — действие идёт сейчас, нужно длительное время."},
+  {"bad": "She is work in a bank.", "good": "She works in a bank.", "why": "Постоянная работа — простое время, и be с ним не нужен."},
+  {"bad": "He is always leave his cup on the table.", "good": "He's always leaving his cup on the table.", "why": "После always в жалобе нужна форма -ing."},
+  {"bad": "We are go to the cinema every Friday.", "good": "We go to the cinema every Friday.", "why": "Регулярное действие — present simple без be."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I can't talk, I ___ dinner.", "options": ["cook", "am cooking", "cooks"], "a": 1, "why": "Разговор идёт сейчас, значит am cooking."},
+  {"type": "choice", "q": "My father ___ to work by car every day.", "options": ["is going", "goes", "go"], "a": 1, "why": "every day — привычка, простое время с -s."},
+  {"type": "choice", "q": "She ___ with her parents until she finds a flat.", "options": ["lives", "is living", "live"], "a": 1, "why": "Временное положение до переезда — длительное время."},
+  {"type": "choice", "q": "Look, the bus ___ .", "options": ["comes", "is coming", "come"], "a": 1, "why": "Автобус приближается на глазах — present continuous."},
+  {"type": "gap", "q": "I ___ (write) a report this week, so I'm busy.", "a": ["am writing"], "why": "Занятие этого периода, а не привычка: am writing."},
+  {"type": "gap", "q": "She usually ___ (take) the metro to work.", "a": ["takes"], "why": "usually — привычка, she требует -s."},
+  {"type": "gap", "q": "You ___ (always / talk) during films!", "a": ["are always talking"], "why": "Жалоба на привычку: always плюс длительное время."},
+  {"type": "translate", "q": "Я сейчас пишу отчёт.", "a": ["i am writing a report now", "i'm writing a report now"], "why": "now — действие в процессе: am writing."},
+  {"type": "translate", "q": "Она обычно ездит на работу на метро.", "a": ["she usually takes the metro to work", "she usually goes to work by metro"], "why": "Регулярное действие — простое время с -s."},
+  {"type": "translate", "q": "Ты вечно теряешь ключи!", "a": ["you are always losing your keys", "you're always losing your keys"], "why": "Раздражение: always плюс форма -ing."}
+ ]
+}

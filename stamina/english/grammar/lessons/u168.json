@@ -1,0 +1,89 @@
+{
+ "n": 168,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Глагол + -ing",
+ "en": "verb + -ing",
+ "summary": "Какие глаголы требуют после себя форму на -ing и почему после enjoy нельзя сказать to read, даже если очень хочется.",
+ "can_do": [
+  "Употребить -ing после enjoy, mind, suggest, avoid, finish, keep.",
+  "Узнать глагол с предлогом вроде give up или look forward to и добавить -ing.",
+  "Сказать отрицание через not + -ing.",
+  "Вежливо попросить через would you mind + -ing."
+ ],
+ "theory": [
+  {
+   "h": "Есть глаголы, которые берут только -ing",
+   "p": "После enjoy, mind, suggest, avoid, finish, keep, admit, deny, consider, imagine, risk, miss и practise инфинитив с to невозможен. Форма на -ing здесь не продолженное время, а обычное существительное со смыслом действия: чтение, ожидание, курение.",
+   "formula": "I enjoy reading. · She suggested going out. · He avoided answering. · We finished packing."
+  },
+  {
+   "h": "Глагол с предлогом тоже тянет -ing",
+   "p": "Give up, put off, carry on, look forward to, insist on, succeed in, think of, apologize for — все они заканчиваются предлогом, а после предлога глагол принимает форму на -ing. Здесь to в look forward to не инфинитивная частица, а предлог, и это ловушка номер один.",
+   "table": {
+    "head": ["Связка", "Пример", "Смысл"],
+    "rows": [
+     ["give up", "He gave up smoking.", "бросил курить"],
+     ["put off", "They put off making a decision.", "отложили решение"],
+     ["look forward to", "I look forward to seeing you.", "жду встречи"],
+     ["insist on", "She insisted on paying.", "настаивала на оплате"],
+     ["apologize for", "He apologized for being late.", "извинился за опоздание"]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание ставится перед -ing",
+   "p": "Если нужно сказать, что действие не происходило, not ставят прямо перед формой на -ing. Никакого вспомогательного глагола и никакого to при этом не появляется. Такая конструкция часто встречается после deny, regret, remember.",
+   "formula": "He denied taking the money. · She regrets not studying harder. · I enjoy not having to get up early."
+  },
+  {
+   "h": "Would you mind… — просьба без приказа",
+   "p": "Конструкция would you mind + -ing — мягкая просьба, буквально «вы не против». Ответ no, of course not означает согласие, а не отказ. Если спрашивают do you mind if I…, речь уже о вашем разрешении для себя.",
+   "formula": "Would you mind opening the window? · Would you mind waiting a moment? · Do you mind if I sit here?"
+  },
+  {
+   "h": "It's no use и there's no point in",
+   "p": "Эти обороты говорят, что действие бессмысленно, и после них тоже идёт -ing. По-русски мы скажем «бесполезно спорить», и в английском глагол ведёт себя как существительное. Форма на to здесь звучит неверно.",
+   "formula": "It's no use complaining. · There's no point in waiting. · It's not worth arguing about."
+  },
+  {
+   "h": "Как писать -ing",
+   "p": "Правила написания простые, но ошибки в них живут долго. Немое e убирают, конечную согласную удваивают после короткого ударного слога, а ie превращается в y. Британский вариант удваивает l в словах вроде travel.",
+   "table": {
+    "head": ["Инфинитив", "Форма на -ing", "Правило"],
+    "rows": [
+     ["make", "making", "немое e исчезает"],
+     ["stop", "stopping", "удваиваем согласную"],
+     ["lie", "lying", "ie переходит в y"],
+     ["travel", "travelling", "британское удвоение l"],
+     ["open", "opening", "ударение не на конце, не удваиваем"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I enjoy reading before bed.", "ru": "Мне нравится читать перед сном."},
+  {"en": "She suggested taking a taxi.", "ru": "Она предложила взять такси."},
+  {"en": "He gave up smoking last year.", "ru": "Он бросил курить в прошлом году."},
+  {"en": "I'm looking forward to seeing you.", "ru": "Я с нетерпением жду встречи с тобой."},
+  {"en": "Would you mind closing the door?", "ru": "Вы не против закрыть дверь?"},
+  {"en": "It's no use arguing with him.", "ru": "Бесполезно с ним спорить."}
+ ],
+ "traps": [
+  {"bad": "I enjoy to read.", "good": "I enjoy reading.", "why": "Enjoy требует -ing, инфинитив после него невозможен."},
+  {"bad": "She suggested to go out.", "good": "She suggested going out.", "why": "Suggest берёт -ing, а не to."},
+  {"bad": "I look forward to see you.", "good": "I look forward to seeing you.", "why": "To здесь предлог, поэтому нужна форма на -ing."},
+  {"bad": "He denied to take the money.", "good": "He denied taking the money.", "why": "Deny относится к глаголам с -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I enjoy ___ novels in the evening.", "options": ["reading", "to read", "read"], "a": 0, "why": "Enjoy + -ing: enjoy reading."},
+  {"type": "choice", "q": "She suggested ___ a taxi.", "options": ["taking", "to take", "take"], "a": 0, "why": "Suggest + -ing: suggested taking."},
+  {"type": "choice", "q": "I'm looking forward to ___ you.", "options": ["seeing", "to see", "see"], "a": 0, "why": "Look forward to — предлог to, дальше -ing."},
+  {"type": "choice", "q": "Would you mind ___ the door?", "options": ["closing", "to close", "close"], "a": 0, "why": "Would you mind + -ing: mind closing."},
+  {"type": "gap", "q": "He gave up ___ (smoke) two years ago.", "a": ["smoking"], "why": "Give up требует -ing: gave up smoking."},
+  {"type": "gap", "q": "It's no use ___ (argue) with him.", "a": ["arguing"], "why": "It's no use + -ing."},
+  {"type": "gap", "q": "They put off ___ (make) a decision.", "a": ["making"], "why": "Put off — глагол с предлогом, дальше -ing."},
+  {"type": "translate", "q": "Избегайте обсуждать это.", "a": ["avoid discussing it", "avoid talking about it"], "why": "Avoid + -ing, без to."},
+  {"type": "translate", "q": "Я с нетерпением жду встречи с тобой.", "a": ["i'm looking forward to seeing you", "i am looking forward to seeing you"], "why": "Look forward to + -ing."}
+ ]
+}

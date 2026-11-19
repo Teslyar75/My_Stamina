@@ -1,0 +1,77 @@
+{
+ "n": 157,
+ "level": "B2",
+ "module": "b-passive",
+ "title": "Пассив (1): is done, was done",
+ "en": "passive 1 (is done, was done)",
+ "summary": "Зачем менять «делают» на «делается»: пассив в настоящем и прошедшем, третья форма глагола и предлог by для того, кто действует.",
+ "can_do": [
+  "Образовать пассив настоящего и прошедшего времени.",
+  "Выбрать be в правильной форме и добавить V3.",
+  "Сказать, кем сделано, через by — или вовсе опустить деятеля.",
+  "Отличить правильную третью форму от формы на -ed."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужен пассив",
+   "p": "Иногда важно не кто сделал, а что произошло с предметом. По-русски мы говорим «дом построили в 1900 году», и кто именно строил, неважно. Английский в таком случае меняет точку зрения: предмет становится главным, а деятель уходит на второй план или исчезает совсем.",
+   "formula": "They built the house in 1900. → The house was built in 1900."
+  },
+  {
+   "h": "Формула: be + V3",
+   "p": "Пассив собирается из двух частей: глагол be в нужном времени и третья форма смыслового глагола. Меняется только be, а V3 остаётся на месте. Для правильных глаголов V3 совпадает с прошедшим временем, у неправильных её надо помнить.",
+   "formula": "is + made · was + built · are + sold · were + written"
+  },
+  {
+   "h": "Настоящее и прошедшее",
+   "p": "В present simple be становится am, is или are, в past simple — was или were. Всё остальное не меняется. Вопрос строится перестановкой be, отрицание добавляет not к be, а не к смысловому глаголу.",
+   "table": {
+    "head": ["Время", "Актив", "Пассив"],
+    "rows": [
+     ["present simple", "They clean the room.", "The room is cleaned."],
+     ["past simple", "They cleaned the room.", "The room was cleaned."],
+     ["вопрос", "Do they sell tickets?", "Are tickets sold?"],
+     ["отрицание", "They don't sell tickets.", "Tickets aren't sold."]
+    ]
+   }
+  },
+  {
+   "h": "Кто действует: by",
+   "p": "Если деятель всё-таки важен, его присоединяют через by. Но в живой речи такая конструкция встречается редко: если мы знаем, кто это, обычно проще сказать активом. Пассив с by уместен, когда деятель неожиданный или значимый: the novel was written by Orwell.",
+   "formula": "The novel was written by Orwell. · The cake was made by my sister. · This song is loved by millions."
+  },
+  {
+   "h": "Где пассив звучит естественно",
+   "p": "Новости, инструкции, научные тексты и описания процессов любят пассив: там неважно, кто именно выполняет действие. The bridge was opened in 2005. English is spoken all over the world. Такой текст звучит нейтрально и сосредоточен на факте.",
+   "formula": "The bridge was opened in 2005. · English is spoken all over the world. · The form must be signed."
+  },
+  {
+   "h": "Третья форма — не всегда -ed",
+   "p": "У неправильных глаголов V3 своя: write — wrote — written, build — built — built, make — made — made, sell — sold — sold. Ошибка с формой выдаёт пассив сразу, поэтому третью колонку таблицы неправильных глаголов стоит освежить.",
+   "formula": "write → written · build → built · make → made · sell → sold · speak → spoken"
+  }
+ ],
+ "examples": [
+  {"en": "This bridge was built in 1900.", "ru": "Этот мост построили в 1900 году."},
+  {"en": "Coffee is grown in Brazil.", "ru": "Кофе выращивают в Бразилии."},
+  {"en": "The letters were sent yesterday.", "ru": "Письма отправили вчера."},
+  {"en": "The room is cleaned every morning.", "ru": "Комнату убирают каждое утро."},
+  {"en": "This song was written by Lennon.", "ru": "Эту песню написал Леннон."}
+ ],
+ "traps": [
+  {"bad": "The house was build in 1990.", "good": "The house was built in 1990.", "why": "Нужна третья форма: build — built — built."},
+  {"bad": "The letter was wrote by Anna.", "good": "The letter was written by Anna.", "why": "Write — wrote — written; после be стоит written."},
+  {"bad": "English is speak all over the world.", "good": "English is spoken all over the world.", "why": "После be — причастие: spoken, а не инфинитив speak."},
+  {"bad": "The window was brokened yesterday.", "good": "The window was broken yesterday.", "why": "Break — broke — broken; формы brokened не существует."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This bridge ___ in 1900.", "options": ["built", "was built", "is build"], "a": 1, "why": "Прошлое + пассив: was + built."},
+  {"type": "choice", "q": "Coffee ___ in Brazil.", "options": ["grows", "is grown", "is growing"], "a": 1, "why": "Факт в настоящем: is + grown."},
+  {"type": "choice", "q": "The letters ___ yesterday.", "options": ["sent", "were sent", "are sent"], "a": 1, "why": "Yesterday требует прошедшего: were sent."},
+  {"type": "choice", "q": "The room ___ every day.", "options": ["cleans", "is cleaned", "cleaned"], "a": 1, "why": "Регулярное действие в настоящем: is cleaned."},
+  {"type": "gap", "q": "This song ___ (write) by Lennon.", "a": ["was written"], "why": "Past simple passive: was + written."},
+  {"type": "gap", "q": "The tickets ___ (sell) at the box office.", "a": ["are sold"], "why": "Present simple passive: are + sold."},
+  {"type": "translate", "q": "Этот дом построили в 1990 году.", "a": ["this house was built in 1990", "the house was built in 1990"], "why": "Пассив прошедшего: was built."},
+  {"type": "translate", "q": "Английский говорят во многих странах.", "a": ["english is spoken in many countries"], "why": "Пассив настоящего: is spoken."}
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "n": 148,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "should (1): совет",
+ "en": "should 1",
+ "summary": "Should — совет без давления: вы говорите, что считаете правильным, и оставляете человеку право решить самому.",
+ "can_do": [
+  "Дать совет через should и shouldn't.",
+  "Заменить should на ought to, не забыв про to.",
+  "Спросить совета через Should I ...? и Do you think I should ...?",
+  "Дать совет о прошлом через should have done."
+ ],
+ "theory": [
+  {
+   "h": "Совет, а не приказ",
+   "p": "Should занимает середину между «хорошо бы» и «надо». Говорящий высказывает своё мнение о правильном поступке, но не давит и не угрожает последствиями. Именно поэтому should так часто звучит в рекомендациях врача, преподавателя или коллеги.",
+   "formula": "You should rest. · You shouldn't work so late. · I think she should apply."
+  },
+  {
+   "h": "Линейка советов",
+   "p": "Совет можно дать с разной силой. Чем ближе к приказу, тем меньше у собеседника выбора. Полезно чувствовать этот ряд, чтобы не звучать грубее, чем хочется.",
+   "table": {
+    "head": ["Форма", "Оттенок", "Пример"],
+    "rows": [
+     ["should", "нейтральный совет", "You should rest."],
+     ["ought to", "то же, чуть книжнее", "You ought to rest."],
+     ["must", "сильное давление", "You must rest."],
+     ["Why don't you ...?", "предложение, мягко", "Why don't you rest?"]
+    ]
+   }
+  },
+  {
+   "h": "Как спросить совета",
+   "p": "Вопрос с should в начале — обычный способ попросить рекомендацию: Should I call him? Если хочется звучать осторожнее, добавьте оборот do you think. Отрицание в таком вопросе почти всегда переносится в главную часть: I don't think you should.",
+   "formula": "Should I tell her? · Do you think I should wait? · I don't think you should go."
+  },
+  {
+   "h": "Should have done — совет задним числом",
+   "p": "Когда момент упущен, should have плюс третья форма говорит: надо было, но не сделали. Это смесь совета и сожаления, иногда лёгкий упрёк. Обратная форма shouldn't have done значит «зря сделали».",
+   "formula": "I should have booked earlier. · You shouldn't have paid for me. · We should have left at six."
+  },
+  {
+   "h": "Мягкие обёртки для совета",
+   "p": "Голое you should может прозвучать как поучение, поэтому в разговоре его часто смягчают. Помогают maybe, perhaps, I'd say, а также вопрос вместо утверждения. Смысл остаётся, тон становится дружелюбнее.",
+   "formula": "Maybe you should talk to her. · I'd say you should wait a week. · Have you thought about asking him?"
+  }
+ ],
+ "examples": [
+  {"en": "You should drink more water in this heat.", "ru": "В такую жару тебе стоит пить больше воды."},
+  {"en": "I don't think you should lend him your car.", "ru": "Не думаю, что тебе стоит одалживать ему машину."},
+  {"en": "Should I tell her the truth?", "ru": "Мне стоит сказать ей правду?"},
+  {"en": "We should have left earlier — the traffic was awful.", "ru": "Надо было выехать раньше — пробки были ужасные."},
+  {"en": "You shouldn't have paid for me.", "ru": "Зря ты за меня заплатил."}
+ ],
+ "traps": [
+  {"bad": "You should to rest.", "good": "You should rest.", "why": "После should инфинитив без to; to есть только у ought to."},
+  {"bad": "He shoulds work harder.", "good": "He should work harder.", "why": "Модальный should не получает -s в третьем лице."},
+  {"bad": "You should went to the doctor.", "good": "You should have gone to the doctor.", "why": "Совет о прошлом строится через should have и третью форму."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You look pale — you ___ see a doctor.", "options": ["should", "shouldn't", "mustn't"], "a": 0, "why": "Совет в настоящем — should."},
+  {"type": "choice", "q": "I ___ have listened to your advice.", "options": ["should", "shouldn't", "mustn't"], "a": 0, "why": "Сожаление о несделанном — should have listened."},
+  {"type": "choice", "q": "___ I tell him what happened?", "options": ["Should", "Must", "Ought"], "a": 0, "why": "Просьба о совете — Should I; ought требует to."},
+  {"type": "choice", "q": "She ___ to apologise for being late.", "options": ["should", "ought", "must"], "a": 1, "why": "Ought to — вариант совета, и to здесь обязательно."},
+  {"type": "gap", "q": "You ___ (not / should) smoke in here — the children are asleep.", "a": ["shouldn't", "should not"], "why": "Отрицательный совет — shouldn't."},
+  {"type": "gap", "q": "I ___ (should / book) the tickets last week; now they're sold out.", "a": ["should have booked"], "why": "Совет о прошлом — should have booked."},
+  {"type": "gap", "q": "Do you think I ___ (should / take) the job?", "a": ["should take"], "why": "Вопрос о совете с вводным оборотом."},
+  {"type": "translate", "q": "Тебе следует больше отдыхать.", "a": ["you should rest more", "you ought to rest more"], "why": "Совет — should или ought to."},
+  {"type": "translate", "q": "Нам не следовало уходить так рано.", "a": ["we shouldn't have left so early", "we should not have left so early"], "why": "Упрёк о прошлом — shouldn't have left."}
+ ]
+}

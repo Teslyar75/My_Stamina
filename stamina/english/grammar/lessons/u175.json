@@ -1,0 +1,89 @@
+{
+ "n": 175,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Предлог + -ing",
+ "en": "preposition + -ing",
+ "summary": "После предлога английский глагол превращается в -ing: interested in learning, without saying, instead of waiting. Правило короткое, но спасает много фраз.",
+ "can_do": [
+  "Поставить -ing после любого предлога.",
+  "Употребить связки interested in, good at, tired of, instead of, without.",
+  "Отличить to-предлог от to-частицы в look forward to и be used to.",
+  "Сказать by doing, on doing и despite doing без ошибок."
+ ],
+ "theory": [
+  {
+   "h": "После предлога глагол становится существительным",
+   "p": "Предлог не может стоять перед инфинитивом, ему нужно существительное. Поэтому глагол после предлога принимает форму на -ing и ведёт себя как отглагольное существительное. Это правило работает без исключений и объясняет половину конструкций этого урока.",
+   "formula": "I'm interested in learning Spanish. · He left without saying goodbye. · Thank you for helping me."
+  },
+  {
+   "h": "Частые связки, которые стоит узнать целиком",
+   "p": "Некоторые сочетания встречаются постоянно, и их лучше запомнить как единое целое, а не собирать каждый раз. Каждая заканчивается предлогом, поэтому дальше всегда идёт -ing. Достаточно выучить десяток, чтобы говорить заметно свободнее.",
+   "table": {
+    "head": ["Связка", "Пример", "Смысл"],
+    "rows": [
+     ["interested in", "I'm interested in history.", "интересуюсь историей"],
+     ["good at", "She's good at solving problems.", "хорошо решает задачи"],
+     ["tired of", "I'm tired of waiting.", "устал ждать"],
+     ["instead of", "Instead of complaining, he helped.", "вместо того чтобы жаловаться"],
+     ["afraid of", "He's afraid of flying.", "боится летать"]
+    ]
+   }
+  },
+  {
+   "h": "By — способ, on — сразу после",
+   "p": "By + -ing отвечает на вопрос «как»: научился, делая что-то. On + -ing значит «сразу после»: on arriving home, she called me. Второй вариант книжный, но встречается в письмах и рассказах, поэтому узнавать его полезно.",
+   "formula": "I learned English by watching films. · You can save time by booking online. · On arriving home, she called me."
+  },
+  {
+   "h": "To бывает предлогом, а не частицей",
+   "p": "В look forward to, be used to, object to и in addition to слово to — предлог, потому что за ним идёт существительное или -ing. В I want to go то же to — частица перед инфинитивом. Различать их нужно по смыслу: если после to можно поставить существительное, это предлог.",
+   "formula": "I look forward to seeing you. · I'm used to working nights. · I object to paying extra. · I want to see you."
+  },
+  {
+   "h": "Used to do и be used to doing",
+   "p": "Это две совершенно разные конструкции, хотя выглядят похоже. Used to do — привычка в прошлом, которой больше нет. Be used to doing — быть привычным к чему-то сейчас. Отрицание и вопросы тоже строятся по-разному.",
+   "table": {
+    "head": ["Конструкция", "Пример", "Смысл"],
+    "rows": [
+     ["used to do", "I used to live in Kyiv.", "раньше жил, сейчас нет"],
+     ["be used to doing", "I'm used to living alone.", "привык жить один"],
+     ["didn't use to do", "I didn't use to like coffee.", "раньше не любил"],
+     ["get used to doing", "She's getting used to working nights.", "привыкает работать ночами"]
+    ]
+   }
+  },
+  {
+   "h": "Despite и in spite of",
+   "p": "После despite и in spite of идёт существительное или форма на -ing, но не целое предложение с подлежащим. По-русски «несмотря на то что» тянет за собой придаточное, и это провоцирует ошибку. Если нужен полноценный глагол, берут although.",
+   "formula": "Despite being tired, he kept working. · In spite of losing, they were happy. · Although he was tired, he kept working."
+  }
+ ],
+ "examples": [
+  {"en": "I'm interested in learning Spanish.", "ru": "Мне интересно учить испанский."},
+  {"en": "She's good at solving problems.", "ru": "Она хорошо решает задачи."},
+  {"en": "He left without saying goodbye.", "ru": "Он ушёл, не попрощавшись."},
+  {"en": "I'm looking forward to hearing from you.", "ru": "Жду вашего ответа."},
+  {"en": "I'm used to getting up early.", "ru": "Я привык рано вставать."},
+  {"en": "Despite being tired, he kept working.", "ru": "Несмотря на усталость, он продолжал работать."}
+ ],
+ "traps": [
+  {"bad": "I'm interested in to learn Spanish.", "good": "I'm interested in learning Spanish.", "why": "После предлога in нужна форма на -ing."},
+  {"bad": "I look forward to see you.", "good": "I look forward to seeing you.", "why": "To в look forward to — предлог, а не частица перед инфинитивом."},
+  {"bad": "I'm used to get up early.", "good": "I'm used to getting up early.", "why": "Be used to требует -ing, потому что to здесь предлог."},
+  {"bad": "He left without say goodbye.", "good": "He left without saying goodbye.", "why": "Without — предлог, дальше только -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm interested in ___ Spanish.", "options": ["learning", "to learn", "learn"], "a": 0, "why": "In — предлог, поэтому learning."},
+  {"type": "choice", "q": "She's good at ___ problems.", "options": ["solving", "to solve", "solve"], "a": 0, "why": "At — предлог, нужна форма на -ing."},
+  {"type": "choice", "q": "I'm looking forward to ___ from you.", "options": ["hearing", "hear", "be heard"], "a": 0, "why": "Look forward to + -ing: hearing."},
+  {"type": "choice", "q": "He left without ___ goodbye.", "options": ["saying", "to say", "say"], "a": 0, "why": "Without — предлог: without saying."},
+  {"type": "gap", "q": "I'm tired of ___ (wait) for the bus.", "a": ["waiting"], "why": "Tired of + -ing."},
+  {"type": "gap", "q": "She's used to ___ (work) nights.", "a": ["working"], "why": "Be used to + -ing: привыкла работать ночами."},
+  {"type": "gap", "q": "Instead of ___ (complain), he helped.", "a": ["complaining"], "why": "Instead of — предлог, дальше -ing."},
+  {"type": "gap", "q": "I learned to swim by ___ (watch) my brother.", "a": ["watching"], "why": "By + -ing описывает способ."},
+  {"type": "translate", "q": "Спасибо, что помог мне.", "a": ["thank you for helping me", "thanks for helping me"], "why": "For — предлог, поэтому helping."},
+  {"type": "translate", "q": "Он ушёл, не сказав ни слова.", "a": ["he left without saying a word"], "why": "Without + -ing: without saying."}
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "n": 116,
+ "level": "B2",
+ "module": "b-now",
+ "title": "Present Continuous: действие сейчас",
+ "en": "present continuous",
+ "summary": "Как сказать, что происходит прямо сейчас: am, is, are плюс -ing, временные ситуации и раздражение с always.",
+ "can_do": [
+  "Сказать, что происходит в момент речи, через am, is, are и -ing.",
+  "Правильно писать -ing: running, making, lying.",
+  "Отличить действие сейчас от временной ситуации на пару недель.",
+  "Передать раздражение через always и длительное время."
+ ],
+ "theory": [
+  {
+   "h": "Действие, которое идёт прямо сейчас",
+   "p": "Длительное время нужно, когда действие началось и ещё не закончилось в момент речи. Собеседник должен понять: это происходит на его глазах, здесь и сейчас. По-русски мы часто говорим просто «я читаю», и без контекста непонятно, читаю я сейчас или вообще люблю читать. Английский эту разницу показывает формой глагола.",
+   "formula": "I'm waiting for a taxi. · She's talking on the phone. · They're watching a film."
+  },
+  {
+   "h": "Форма: be плюс -ing",
+   "p": "Длительное время всегда собирается из двух частей: подходящая форма be и причастие с -ing. Ни одну часть нельзя выбросить, и именно на этом ломаются почти все русскоязычные ученики, потому что в русском достаточно одного слова.",
+   "table": {
+    "head": ["Кто", "be", "-ing", "Пример"],
+    "rows": [
+     ["I", "am", "working", "I am working."],
+     ["he / she / it", "is", "working", "She is working."],
+     ["you / we / they", "are", "working", "They are working."]
+    ]
+   }
+  },
+  {
+   "h": "Как писать -ing",
+   "p": "Правило простое, но забывается чаще всего. Немая -e в конце отпадает, короткий слог с одной согласной в конце удваивает эту согласную, а -ie превращается в -ying. Многосложные глаголы с ударением не на последнем слоге согласную не удваивают.",
+   "table": {
+    "head": ["Начальная форма", "-ing", "Почему"],
+    "rows": [
+     ["make", "making", "конечная -e исчезает"],
+     ["run", "running", "удваиваем n"],
+     ["begin", "beginning", "ударение на последнем слоге"],
+     ["visit", "visiting", "ударение не на конце"],
+     ["lie", "lying", "-ie переходит в -y"]
+    ]
+   }
+  },
+  {
+   "h": "Не только «в эту секунду»",
+   "p": "Длительное время годится и для того, что тянется несколько дней или недель вокруг настоящего момента: временная работа, жизнь у друзей, ремонт в квартире. Ещё оно показывает, что ситуация меняется на глазах: цены растут, город строится. А с always оно выражает раздражение повторяющейся привычкой.",
+   "formula": "I'm staying with friends this week. · Prices are rising. · He's always losing his keys."
+  },
+  {
+   "h": "Вопрос и отрицание",
+   "p": "В вопросе be выходит вперёд, а в отрицании после него ставится not. Смысловой глагол при этом не меняется: он остаётся в форме -ing. В разговорной речи почти всегда звучат сокращения isn't и aren't.",
+   "formula": "Are you listening to me? · What is she doing? · I'm not working today. · They aren't coming."
+  }
+ ],
+ "examples": [
+  {"en": "I'm waiting for the bus.", "ru": "Я жду автобус."},
+  {"en": "She's cooking dinner at the moment.", "ru": "Она сейчас готовит ужин."},
+  {"en": "Why are you laughing?", "ru": "Почему ты смеёшься?"},
+  {"en": "We're staying at a hotel this week.", "ru": "На этой неделе мы живём в отеле."},
+  {"en": "The weather is getting colder.", "ru": "Погода становится холоднее."},
+  {"en": "He's always leaving the light on.", "ru": "Он вечно оставляет свет включённым."}
+ ],
+ "traps": [
+  {"bad": "I work now, call me later.", "good": "I'm working now, call me later.", "why": "now требует длительного времени: действие идёт в момент речи."},
+  {"bad": "She is studing for her exam.", "good": "She is studying for her exam.", "why": "Конечная -y в study сохраняется: studying."},
+  {"bad": "What you are doing?", "good": "What are you doing?", "why": "В вопросе be идёт перед подлежащим."},
+  {"bad": "He is runing in the park.", "good": "He is running in the park.", "why": "Короткий слог с одной согласной удваивает её: running."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Look! The baby ___ .", "options": ["is sleeping", "sleeps", "sleep"], "a": 0, "why": "Прямо сейчас, на глазах — длительное время с is."},
+  {"type": "choice", "q": "Please be quiet, I ___ to concentrate.", "options": ["try", "am trying", "tries"], "a": 1, "why": "Действие идёт в момент речи: am trying."},
+  {"type": "choice", "q": "Why ___ at me like that?", "options": ["you are looking", "are you looking", "do you look"], "a": 1, "why": "Вопрос: be перед подлежащим, а не после."},
+  {"type": "choice", "q": "She ___ with her sister this month.", "options": ["stays", "is staying", "stay"], "a": 1, "why": "Временная ситуация на месяц — длительное время."},
+  {"type": "gap", "q": "I ___ (wait) for the bus right now.", "a": ["am waiting"], "why": "right now — действие в момент речи, am waiting."},
+  {"type": "gap", "q": "They ___ (not / work) today, it's a holiday.", "a": ["aren't working", "are not working"], "why": "Отрицание: are not working, в речи aren't working."},
+  {"type": "gap", "q": "Listen! Somebody ___ (sing) in the next room.", "a": ["is singing"], "why": "Somebody = he or she, поэтому is singing."},
+  {"type": "gap", "q": "My brother ___ (run) in the park at the moment.", "a": ["is running"], "why": "run удваивает n перед -ing: is running."},
+  {"type": "translate", "q": "Я сейчас готовлю ужин.", "a": ["i am cooking dinner now", "i'm cooking dinner now", "i am cooking dinner right now"], "why": "Действие сейчас: I am cooking / I'm cooking."},
+  {"type": "translate", "q": "Почему ты не слушаешь меня?", "a": ["why aren't you listening to me", "why are you not listening to me"], "why": "Вопрос с отрицанием: why aren't you listening."},
+  {"type": "translate", "q": "В этом месяце она живёт у друзей.", "a": ["she is living with friends this month", "this month she is living with friends"], "why": "Временная ситуация этого месяца — present continuous."}
+ ]
+}

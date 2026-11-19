@@ -1,0 +1,418 @@
+{
+  "id": "con_02",
+  "title": "Conjunctions: Negation",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/con_02.html",
+  "explanation_lang": "en",
+  "section": "Conjunctions",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "In German there are two main ways to express negation: by using the adverb nicht (not) or the indefinite article kein (no, not a, not any). However, nicht and kein are not interchangeable."
+    },
+    {
+      "heading": "Kein",
+      "text": "Kein is used to negate a noun that would otherwise be preceded by an indefinite article or by no article at all. It may be helpful for you to think of kein as the exact opposite of the indefinite article ein.\n\nDer König und die Königin sind traurig, denn sie haben kein Kind. | The king and queen are sad because they don't have a child.\n\n'Mach dir keine Sorgen,' sagt ein Frosch zu der Königin. 'Dein Wunsch wird bald erfüllt werden.' | 'Don't worry,' a frog tells the queen. 'Your wish will soon be granted.'\n\nKein agrees with the noun it introduces in gender and number, just like ein.\n\nNominative |\n\nAccusative |\n\nDative |\n\nGenitive\n\nMasculine | kein König | keinen König | keinem König | keines Königs | (king)\n\nFeminine | keine Königin | keine Königin | keiner Königin | keiner Königin | (queen)\n\nNeuter | kein Kind | kein Kind | keinem Kind | keines Kindes | (child)\n\nPlural | keine Sprüche | keine Sprüche | keinen Sprüchen | keiner Sprüche | (spells)\n\nrelated words\n\nkeinerlei | no ... what(so)ever\n\nkeinesfalls | on no account, under no circumstances\n\nkeineswegs | by no means, not at all\n\nfun phrases\n\nKein Wort mehr! | Not another word!\n\nKein anderer als ... | None other than ...\n\nEs kostet keine 10 Euro | It's less than 10 Euros\n\nAm Anfang des Märchens gibt es keinerlei Hoffnung, dass der König und die Königin je schwanger werden. | At the beginning of the fairy tale, there is no hope whatsoever that the king and queen will ever become pregnant.\n\nEin Kind adoptieren will die Königin aber keinesfalls! Sie wartet lieber. | But by no means does the queen want to adopt a child! She prefers to wait."
+    },
+    {
+      "heading": "Nicht",
+      "text": "Because kein is a type of article, it is used specifically with nouns. In contrast, nicht is an adverb, so it is used to modify many different parts of language, including: verbs, adjectives, other adverbs, prepositions, phrases, clauses, and sentences. A good rule of thumb is to use nicht whenever you can't use kein.\n\nDie 13. weise Frau ist nicht gutherzig wie die anderen weisen Frauen. | The thirteenth wisewoman is not kindhearted like the other wisewomen.\n\nSie wurde zum Fest nicht eingeladen, also ist sie natürlich wütend. | She was not invited to the party, so naturally she is furious.\n\nfun phrases\n\nBitte nicht! | Please don't!\n\nNicht, dass ich wüsste | Not that I know of\n\nNicht schlecht! | Not bad!\n\nNicht wahr? | Isn't it?\n\nIch auch nicht | Me neither"
+    },
+    {
+      "heading": "Other ways to express negation",
+      "text": "There are quite a few other ways to express negation besides using kein and nicht. Keep the following negatives in mind:\n\nniemals/nie | never\n\nnicht mehr | no longer, no more\n\ngar nicht/überhaupt nicht | not at all, absolutely not\n\nniemand | no one\n\nnichts | nothing\n\nweder ... noch | neither ... nor\n\ndoch | to answer yes in response to a negative statement or question\n\nNie in ihrem Leben hat die 13. weise Frau solch eine Demütigung erfahren. | Never in her life has the thirteenth wise woman experienced such a humiliation.\n\nSie versucht, ruhig zu bleiben, aber sie kann diese Demütigung nicht mehr aushalten. | She tries to stay calm, but she can endure the humiliation no longer.\n\nWill sie die Königstochter verschonen? Überhaupt nicht! | Will she spare the king's daughter? Absolutely not!\n\nNiemand weiß, was für ein Unheil die 13. weise Frau geplant hat. | No one knows what kind of mischief the thirteenth wise woman has planned.\n\nDeshalb kann das Königsreich nichts dagegen tun! | Thus the kingdom can do nothing to stop it!\n\nWeder der König noch die Königin versteht, warum die 13. weise Frau ihrem Kind schaden wollte. | Neither the king nor the queen understands why the thirteenth wise woman wanted to harm their child.\n\nEs gibt doch andere Feste! Warum muss sie ein Spielverderber sein? | There are, in fact, other parties. Why does she have to be such a spoilsport?"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Der König und die Königin sind traurig, denn sie haben kein Kind.",
+      "en": "The king and queen are sad because they don't have a child."
+    },
+    {
+      "de": "'Mach dir keine Sorgen,' sagt ein Frosch zu der Königin. 'Dein Wunsch wird bald erfüllt werden.'",
+      "en": "'Don't worry,' a frog tells the queen. 'Your wish will soon be granted.'"
+    },
+    {
+      "de": "Masculine",
+      "en": "kein König"
+    },
+    {
+      "de": "Feminine",
+      "en": "keine Königin"
+    },
+    {
+      "de": "Neuter",
+      "en": "kein Kind"
+    },
+    {
+      "de": "Plural",
+      "en": "keine Sprüche"
+    },
+    {
+      "de": "keinerlei",
+      "en": "no ... what(so)ever"
+    },
+    {
+      "de": "keinesfalls",
+      "en": "on no account, under no circumstances"
+    },
+    {
+      "de": "keineswegs",
+      "en": "by no means, not at all"
+    },
+    {
+      "de": "Kein Wort mehr!",
+      "en": "Not another word!"
+    },
+    {
+      "de": "Kein anderer als ...",
+      "en": "None other than ..."
+    },
+    {
+      "de": "Es kostet keine 10 Euro",
+      "en": "It's less than 10 Euros"
+    },
+    {
+      "de": "Am Anfang des Märchens gibt es keinerlei Hoffnung, dass der König und die Königin je schwanger werden.",
+      "en": "At the beginning of the fairy tale, there is no hope whatsoever that the king and queen will ever become pregnant."
+    },
+    {
+      "de": "Ein Kind adoptieren will die Königin aber keinesfalls! Sie wartet lieber.",
+      "en": "But by no means does the queen want to adopt a child! She prefers to wait."
+    },
+    {
+      "de": "Die 13. weise Frau ist nicht gutherzig wie die anderen weisen Frauen.",
+      "en": "The thirteenth wisewoman is not kindhearted like the other wisewomen."
+    },
+    {
+      "de": "Sie wurde zum Fest nicht eingeladen, also ist sie natürlich wütend.",
+      "en": "She was not invited to the party, so naturally she is furious."
+    },
+    {
+      "de": "Bitte nicht!",
+      "en": "Please don't!"
+    },
+    {
+      "de": "Nicht, dass ich wüsste",
+      "en": "Not that I know of"
+    },
+    {
+      "de": "Nicht schlecht!",
+      "en": "Not bad!"
+    },
+    {
+      "de": "Nicht wahr?",
+      "en": "Isn't it?"
+    },
+    {
+      "de": "Ich auch nicht",
+      "en": "Me neither"
+    },
+    {
+      "de": "niemals/nie",
+      "en": "never"
+    },
+    {
+      "de": "nicht mehr",
+      "en": "no longer, no more"
+    },
+    {
+      "de": "gar nicht/überhaupt nicht",
+      "en": "not at all, absolutely not"
+    },
+    {
+      "de": "niemand",
+      "en": "no one"
+    },
+    {
+      "de": "nichts",
+      "en": "nothing"
+    },
+    {
+      "de": "weder ... noch",
+      "en": "neither ... nor"
+    },
+    {
+      "de": "doch",
+      "en": "to answer yes in response to a negative statement or question"
+    },
+    {
+      "de": "Nie in ihrem Leben hat die 13. weise Frau solch eine Demütigung erfahren.",
+      "en": "Never in her life has the thirteenth wise woman experienced such a humiliation."
+    },
+    {
+      "de": "Sie versucht, ruhig zu bleiben, aber sie kann diese Demütigung nicht mehr aushalten.",
+      "en": "She tries to stay calm, but she can endure the humiliation no longer."
+    },
+    {
+      "de": "Will sie die Königstochter verschonen? Überhaupt nicht!",
+      "en": "Will she spare the king's daughter? Absolutely not!"
+    },
+    {
+      "de": "Niemand weiß, was für ein Unheil die 13. weise Frau geplant hat.",
+      "en": "No one knows what kind of mischief the thirteenth wise woman has planned."
+    },
+    {
+      "de": "Deshalb kann das Königsreich nichts dagegen tun!",
+      "en": "Thus the kingdom can do nothing to stop it!"
+    },
+    {
+      "de": "Weder der König noch die Königin versteht, warum die 13. weise Frau ihrem Kind schaden wollte.",
+      "en": "Neither the king nor the queen understands why the thirteenth wise woman wanted to harm their child."
+    },
+    {
+      "de": "Es gibt doch andere Feste! Warum muss sie ein Spielverderber sein?",
+      "en": "There are, in fact, other parties. Why does she have to be such a spoilsport?"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Der König und die Königin haben noch __________ Kind; sie sind traurig.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "b. kein",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Als die Königin sich eines Tages badet, kommt ein Frosch vorbei. Er verspricht, dass sie _________ länger warten muss: \"Bald wirst du eine Tochter zur Welt bringen.\"",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Das Kind ist so schön, dass der König seinen Augen _________ trauen kann.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Der König plant ein großes Fest; er scheut __________ Kosten. (to spare)",
+      "options": [
+        "a. nicht",
+        "b. keine"
+      ],
+      "a": "b. keine",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Zum Fest lädt er _________ nur seine Verwandte, Freunde und Bekannte, sondern auch die weisen Frauen.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Obwohl es dreizehn weisen Frauen im Königsreich gibt, darf der König _______ alle einladen, denn das Schloss hat nur zwölf goldene Teller.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Die 13. weise Frau bekommt ___________ Einladung, und sie wird böse.",
+      "options": [
+        "a. nicht",
+        "b. keine"
+      ],
+      "a": "b. keine",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Sie verhext das kleine Kind; es soll seinen 15. Geburtstag ________ überleben.",
+      "options": [
+        "a. nicht",
+        "b. keine"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Glücklicherweise hat die 12. weise Frau ihren Wunsch noch. Sie kann den bösen Spruch _________ aufheben, nur mildern.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Das Mädchen wird sich an einer Spindel stechen, aber es wird __________ Tod bewirken, sondern einen hundertjährigen tiefen Schlaf.",
+      "options": [
+        "a. nicht",
+        "b. keinen"
+      ],
+      "a": "b. keinen",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "An dem Tag, wo das Mädchen gerade 15 Jahre alt wird, sind der König und die Königin __________ zu Hause, und es sticht sich mit einer Spindel in die Finger.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Ein tiefer Schlaf verbreitet sich über das ganze Schloss; _________ einziges Blättchen regt sich noch (leaf still stirs).",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "b. kein",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Aber außerhalb des Schlosses wächst eine große Dornenhecke, und die ersten 20 Prinzen können die Prinzessin __________ erreichen (reach).",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "choice",
+      "q": "Endlich kommt ein Prinz, der sich vor die schreckliche Dornenhecke __________ fürchtet, und er rettet die Prinzessin und das ganze Königsreich.",
+      "options": [
+        "a. nicht",
+        "b. kein"
+      ],
+      "a": "a. nicht",
+      "set_id": "con_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the appropriate form of negation for each sentence to find out how the Sleeping Beauty fairy tale played out ... before Disney got their hands on it."
+    },
+    {
+      "type": "gap",
+      "q": "___ Baby ist schöner als die Königstochter.",
+      "a": "kein",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Aber die 13. weise Frau hat ___ Skrupel (scruples) und will es mit einer Spindel töten.",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Der König befehlt, dass alle Spindeln verbrannt werden sollen, und jetzt gibt es im Reich ___ Spindeln mehr ... außer einer!",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "An ihrem 15. Geburtstag findet Dornröschen ___ Menschen im Schloss.",
+      "a": "keinen",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Dornröschen spürt ___ Gefahr, also steigt es die Treppe eines alten Turmes hinauf und findet es ein Stübchen, in dem eine alte Frau spinnt.",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Weil das Mädchen naiv ist, hat es ___ Angst vor der Spindel.",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Es fühlt sich ___ Schmerz, als es die Spindel anrührt.",
+      "a": "keinen",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Dornröschen fällt in einen tiefen Schlief, aber es hat irgendwie ___ Träume.",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Die Dornenhecke, die um das Schloss herumwächst, lässt ___ Prinzen los.",
+      "a": "keine",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    },
+    {
+      "type": "gap",
+      "q": "Der letzte Prinz muss ___ bösen Drachen erschlagen; er hat einfach Glück, dass die hundert Jahre endlich vorbei sind und die Dornenhecke ihn durchlässt.",
+      "a": "keinen",
+      "set_id": "con_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the appropriate form of kein, and pay attention to the gender and number of the noun! If you do, you'll find out what horrors the prince had to face to rescue Sleeping Beauty – or was he just a lucky guy???"
+    }
+  ]
+}

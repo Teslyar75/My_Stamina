@@ -1,0 +1,354 @@
+{
+  "id": "pro_05",
+  "title": "Pronouns: Relativpronomen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_05.html",
+  "explanation_lang": "en",
+  "section": "Pronouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Relative pronouns are used generally for stylistic purposes; they help eliminate redundancy (of nouns) and connect ideas more smoothly.\n\nEs war einmal ein kleines Mädchen.\n\n+\nAlle hatten das Mädchen lieb. | => | Es war einmal ein kleines Mädchen, das alle lieb hatten.\n\nOnce upon a time, there was a little girl, whom everybody loved.\n\nIn other words, relative pronouns\n\nreplace a noun whose referent is clear (i.e., a noun that has already been mentioned in the earlier part of a sentence/clause or in a previous sentence)\n\nintroduce a clause (conceptually, an entire sentence) that describes a noun\n\nAm meisten hatte es die Großmutter lieb, die dem Mädchen einmal ein rotes Käppchen schenkte. | The grandmother, who gave her a little red hat, loved her most of all.\n\nEines Tages war die Großmutter krank, und Rotkäppchens Mutter gab dem Mädchen einen Korb, in den es ein Stück Kuchen und eine Flasche Wein tat. | One day the grandmother was sick, and Little Red Riding Hood's mother gave the little girl a basket, in which she put piece of cake and a bottle of wine.\n\nAuf dem Weg zu ihrer Großmutter begegnete Rotkäppchen dem Wolf, der ein sehr böses Tier war! | On the way to her grandmother's place, Little Red Riding Hood met the wolf, who was a very evil animal!"
+    },
+    {
+      "heading": "Word order",
+      "text": "There are two issues to consider in terms of word order when using relative pronouns: the word order in the relative (a type of subordinate) clause and the word order for the entire sentence."
+    },
+    {
+      "heading": "Word order in the relative clause",
+      "text": "The relative clause is introduced by either the relative pronoun or by a preposition + the relative pronoun. In German relative clauses, the conjugated verb typically goes to the end of the clause, although in some colloquial speech the word order is more relaxed. In more complex situations, such as a past subjunctive with a modal verb, the conjugated verb is placed before the double infinitive.\n\nIm Korb hatte Rotkäppchen einen Kuchen, | In the basket Little Red Riding Hood had a cake\n\nden es seiner Großmutter gebacken hatte. | that she baked for her grandmother.\n\nDer Wolf fragte Rotkäppchen über seine Großmutter aus, | The wolf asked Little Red Riding Hood about her grandmother,\n\nderen Haus er finden wollte. | whose house he wanted to find."
+    },
+    {
+      "heading": "Past subjunctive with a modal verb",
+      "text": "Wenn Rotkäppchen nur dem Wolf, dem es nicht hätte trauen sollen, | If only Little Red Riding Hood hadn't told the wolf, whom she should not have trusted,\n\nnicht von seiner Großmutter erzählt hätte! | about her grandmother!"
+    },
+    {
+      "heading": "When does the relative clause start with a preposition?",
+      "text": "This is a relatively easy question (no pun intended ...). Relative clauses replace an entire sentence. Relative pronouns replace the redundant noun in this entire sentence. If this redundant noun was connected to a preposition, the preposition moves with it to the relative clause as well, this time connected to the relative pronoun:\n\nWir wissen schon, dass der Wolf das Haus findet, in dem die Großmutter wohnt. | We already know that the wolf finds the house in which the grandmother lives.\n\n(original: Die Großmutter wohnt in dem Haus)\n\nDer Wolf entscheidet sich dafür, das Mädchen für das er sich sehr interessiert, | At first, the wolf decides to leave the little girl, in whom he is very interested,\n\nzuerst zurückzulassen, damit er die Großmutter sowie das Mädchen erwischen kann. | so that he can snatch up both the grandmother and the little girl.\n\n(original: Er interessiert sich für das Mädchen)"
+    },
+    {
+      "heading": "Overall word order",
+      "text": "The overall word order in a sentence that has a relative clause in it can follow two primary patterns. If the relative clause would separate a noun and only one or two short verbs at the end, then the relative clause is simply placed at the end of the sentence.\n\nRotkäppchen | Du wirst bestimmt das Haus finden, in dem meine Großmutter wohnt! | You will for sure find the house in which my grandmother lives!\n\nIf, however, the sentence continues on for a while after the noun, then the relative clause is embedded in that sentence and immediately follows the noun.\n\nder Wolf | Rotkäppchen, du solltest einen frischen Strauß von diesen Blumen, die ringsherum stehen, pflücken und deiner Großmutter mitbringen. | Little Red Riding Hood, you should take your grandmother a fresh bouquet of these flowers that are all around here."
+    },
+    {
+      "heading": "Relative pronouns",
+      "text": "In order to determine which relative pronoun you need to use, find out what the gender of the redundant noun is (will be the same in both original sentences), and find out what case the noun is in the sentence that will become the relative clause. In other words, the case and gender of the relative pronoun will match the case and gender of the noun in the replaced sentence!\n\nRotkäppchen geht immer tiefer in den Wald.\n\n+\nDer Wald wird natürlich immer dunkler. | => | Rotkäppchen geht immer tiefer in den Wald, der natürlich immer dunkler wird.\n\nLittle Red Riding Hood goes deeper and deeper into the forest, which gets darker and darker, of course.\n\nder Wald in the second sentence is masculine, nominative - therefore, the relative pronoun that replaces it has to be masculine, nominative as well.\n\nnominative | accusative | dative | genitive\n\nmasculine | der | den | dem | dessen\n\nfeminine | die | die | der | deren\n\nneuter | das | das | dem | dessen\n\nplural | die | die | denen | deren\n\npossible prepositions | durch, für, gegen, ohne, um, an, auf, hinter, in, neben, über, unter, vor, zwischen | aus, außer, bei, mit, nach, seit, von, zu, gegenüber, an, auf, hinter, in, neben, über, unter, vor, zwischen | (an)statt, trotz, während, wegen"
+    }
+  ],
+  "examples": [
+    {
+      "de": "=>",
+      "en": "Es war einmal ein kleines Mädchen.\n\n+\nAlle hatten das Mädchen lieb."
+    },
+    {
+      "de": "Am meisten hatte es die Großmutter lieb, die dem Mädchen einmal ein rotes Käppchen schenkte.",
+      "en": "The grandmother, who gave her a little red hat, loved her most of all."
+    },
+    {
+      "de": "Eines Tages war die Großmutter krank, und Rotkäppchens Mutter gab dem Mädchen einen Korb, in den es ein Stück Kuchen und eine Flasche Wein tat.",
+      "en": "One day the grandmother was sick, and Little Red Riding Hood's mother gave the little girl a basket, in which she put piece of cake and a bottle of wine."
+    },
+    {
+      "de": "Auf dem Weg zu ihrer Großmutter begegnete Rotkäppchen dem Wolf, der ein sehr böses Tier war!",
+      "en": "On the way to her grandmother's place, Little Red Riding Hood met the wolf, who was a very evil animal!"
+    },
+    {
+      "de": "Im Korb hatte Rotkäppchen einen Kuchen,",
+      "en": "In the basket Little Red Riding Hood had a cake"
+    },
+    {
+      "de": "den es seiner Großmutter gebacken hatte.",
+      "en": "that she baked for her grandmother."
+    },
+    {
+      "de": "Der Wolf fragte Rotkäppchen über seine Großmutter aus,",
+      "en": "The wolf asked Little Red Riding Hood about her grandmother,"
+    },
+    {
+      "de": "deren Haus er finden wollte.",
+      "en": "whose house he wanted to find."
+    },
+    {
+      "de": "Wenn Rotkäppchen nur dem Wolf, dem es nicht hätte trauen sollen,",
+      "en": "If only Little Red Riding Hood hadn't told the wolf, whom she should not have trusted,"
+    },
+    {
+      "de": "nicht von seiner Großmutter erzählt hätte!",
+      "en": "about her grandmother!"
+    },
+    {
+      "de": "Wir wissen schon, dass der Wolf das Haus findet, in dem die Großmutter wohnt.",
+      "en": "We already know that the wolf finds the house in which the grandmother lives."
+    },
+    {
+      "de": "Der Wolf entscheidet sich dafür, das Mädchen für das er sich sehr interessiert,",
+      "en": "At first, the wolf decides to leave the little girl, in whom he is very interested,"
+    },
+    {
+      "de": "zuerst zurückzulassen, damit er die Großmutter sowie das Mädchen erwischen kann.",
+      "en": "so that he can snatch up both the grandmother and the little girl."
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Du wirst bestimmt das Haus finden, in dem meine Großmutter wohnt!"
+    },
+    {
+      "de": "der Wolf",
+      "en": "Rotkäppchen, du solltest einen frischen Strauß von diesen Blumen, die ringsherum stehen, pflücken und deiner Großmutter mitbringen."
+    },
+    {
+      "de": "=>",
+      "en": "Rotkäppchen geht immer tiefer in den Wald.\n\n+\nDer Wald wird natürlich immer dunkler."
+    },
+    {
+      "de": "masculine",
+      "en": "der"
+    },
+    {
+      "de": "feminine",
+      "en": "die"
+    },
+    {
+      "de": "neuter",
+      "en": "das"
+    },
+    {
+      "de": "plural",
+      "en": "die"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Tief im Wald gibt es wunderschöne Blumen, die Rotkäppchen für seine Großmutter sammeln möchte.",
+      "options": [
+        "a. die Blumen",
+        "b. Rotkäppchen"
+      ],
+      "a": "a. die Blumen",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Der Wolf läuft zum Haus der Großmutter, die sehr krank ist und deswegen im Bett liegt.",
+      "options": [
+        "a. das Haus",
+        "b. die Großmutter"
+      ],
+      "a": "b. die Großmutter",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Der Wolf steht an der Tür, an die er gerade klopft.",
+      "options": [
+        "a. die Tür",
+        "b. er"
+      ],
+      "a": "a. die Tür",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Er sagt der Großmutter, dass er Rotkäppchen sei, das der Grossmutter Kuchen und Wein bringt.",
+      "options": [
+        "a. Rotkäppchen",
+        "b. die Großmutter"
+      ],
+      "a": "a. Rotkäppchen",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Zunächst geht der Wolf zum Bett, in dem die Großmutter liegt, und verschluckt sie, ohne ein Wort zu sprechen.",
+      "options": [
+        "a. der Wolf",
+        "b. das Bett"
+      ],
+      "a": "b. das Bett",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Danach zieht er sich ihre Kleider an, die dem Wolf merkwürdigerweise sehr gut passen!",
+      "options": [
+        "a. die Kleider",
+        "b. der Wolf"
+      ],
+      "a": "a. die Kleider",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Nicht viel später kommt das kleine Mädchen, auf das das böse Tier schon lange wartet.",
+      "options": [
+        "a. das Mädchen",
+        "b. das Tier"
+      ],
+      "a": "a. das Mädchen",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Rotkäppchen merkt was, weil die Atmosphäre bei der Großmutter, bei der es sonst gerne Zeit verbringt, beängstigend ist.",
+      "options": [
+        "a. die Großmutter",
+        "b. Rotkäppchen"
+      ],
+      "a": "a. die Großmutter",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Rotkäppchen geht zum Bett und zieht die Vorhänge (curtains) zurück, hinter denen seine 'Großmutter' liegt.",
+      "options": [
+        "a. das Bett",
+        "b. die Vorhänge"
+      ],
+      "a": "b. die Vorhänge",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "choice",
+      "q": "Das Mädchen bemerkt zuerst Großmutters große Ohren, deren Größe es ein bisschen verwirrte.",
+      "options": [
+        "a. Großmutter",
+        "b. die Ohren"
+      ],
+      "a": "b. die Ohren",
+      "set_id": "pro_05_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "What does the relative pronoun really mean? Choose the correct referent for each sentence below and continue reading about Little Red Riding Hood's adventures (oh, and of course about the wolf)."
+    },
+    {
+      "type": "gap",
+      "q": "Tja, ich habe grosse Ohren, mit ___ ich dich besser hören kann.",
+      "a": "denen",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Und ich habe ein grosses Maul, in ___ ich dich stopfen kann!",
+      "a": "das",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Wolf, ___ zuerst im Bett liegt, springt aus dem Bett und verschlingt (devours) das arme Mädchen.",
+      "a": "der",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Zunächst geht der Wolf, ___ Magen im Moment zu voll ist, zurück ins Bett und schläft ein.",
+      "a": "dessen",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Sein Schnarchen macht einen riesengroßen Lärm, ___ der Jäger schon aus zwei Kilometer hört.",
+      "a": "den",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger geht in Großmutters Haus und steht vor dem Bett, in ___ der Wolf ruhig schnarcht, und sieht den Wolf statt der Großmutter.",
+      "a": "dem",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Sein Gewehr, statt ___ er eine Schere benutzt, lässt er draußen, weil er die Großmutter nicht verletzten will.",
+      "a": "dessen",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Er schneidet den Magen des Wolfes auf, und Rotkäppchen und die Großmutter, ___ Leben er gerettet hat, sind ihm sehr dankbar.",
+      "a": "deren",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Das kleine Mädchen, ___ anscheinend schlauer ist als die beiden Erwachsenen zusammen, holt geschwind große Steine.",
+      "a": "das",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Diese Steine, ___ den Wolf später fast zum Ertrinken bringen, waren sehr schwer.",
+      "a": "die",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Nachher essen und trinken die drei die Sachen, ___ Rotkäppchen mitgebracht hatte: das Brot, den Kuchen und die Flasche Wein.",
+      "a": "die",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Dieses Märchen hat auch eine zweite Variante, in ___ Rotkäppchen dem Wolf nicht zuhört.",
+      "a": "der",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Die Großmutter, ___ Rotkäppchen auch in dieser Version besucht, stellt einen Topf voller Wasser auf den Ofen und kocht Würste.",
+      "a": "die",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    },
+    {
+      "type": "gap",
+      "q": "Wie ihr schon raten könnt, fällt der Wolf vom Dach in den Topf, in ___ die Großmutter die Würste kocht, und er ertrinkt (drowns).",
+      "a": "dem",
+      "set_id": "pro_05_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Fill in the blanks with the correct relative pronouns to finish Little Red Riding Hood's story. Watch out for the correct gender and case (the prepositions should help you decide too!)."
+    }
+  ]
+}

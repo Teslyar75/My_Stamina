@@ -1,0 +1,70 @@
+{
+ "n": 154,
+ "level": "B2",
+ "module": "b-cond",
+ "title": "if + Past и I wish",
+ "en": "if I knew / I wish I knew",
+ "summary": "Учимся говорить о нереальном настоящем: if I knew — «если бы я знал», и жалеть о нынешнем через I wish I knew, не путая это с прошлым.",
+ "can_do": [
+  "Строить нереальное условие о настоящем через if + past.",
+  "Выбирать между would, could и might в результате.",
+  "Жалеть о настоящем через I wish + past simple.",
+  "Давать совет через If I were you."
+ ],
+ "theory": [
+  {
+   "h": "Прошедшая форма — про сейчас",
+   "p": "If I knew her number — это не «если я знал раньше», а «если бы я знал сейчас». Форма past simple здесь только сигнал нереальности: на самом деле я номера не знаю. Такая же логика у if I had, if I lived, if it was.",
+   "formula": "If I knew her number, I would call her. (сейчас не знаю) · If I lived near work, I would walk."
+  },
+  {
+   "h": "Три варианта результата",
+   "p": "В главной части почти всегда стоит would, но не только он. Would — «сделал бы», could — «смог бы», might — «возможно, сделал бы». Выбор зависит от смысла, а не от правил: could и might звучат менее категорично.",
+   "table": {
+    "head": ["Форма", "Оттенок", "Пример"],
+    "rows": [
+     ["would + V1", "сделал бы наверняка", "I would buy it."],
+     ["could + V1", "смог бы, была бы возможность", "I could buy it."],
+     ["might + V1", "возможно, сделал бы", "I might buy it."]
+    ]
+   }
+  },
+  {
+   "h": "If I were you: вежливый совет",
+   "p": "Оборот if I were you — «на вашем месте» — тоже второй тип, только результат часто идёт с would. В разговорной речи вместо were допустимо was, но в письме и на экзамене лучше were. После этого оборота удобно давать советы, не давя на человека.",
+   "formula": "If I were you, I would wait a bit. · If I were you, I would ask for help."
+  },
+  {
+   "h": "I wish I knew: сожаление о настоящем",
+   "p": "Конструкция I wish + past simple означает «жаль, что сейчас не так». I wish I knew the answer — жаль, что я не знаю ответа. Никакого would после wish в этой модели нет: would там появляется только в другом значении, о нём отдельный урок.",
+   "formula": "I wish I knew the answer. · I wish I had more time. · I wish it wasn't so cold."
+  },
+  {
+   "h": "if only — то же самое, но сильнее",
+   "p": "If only — эмоциональный вариант wish: «если бы только». Грамматика та же, что после I wish, меняется только накал. If only I had a car — почти стон, а не спокойная констатация.",
+   "formula": "If only I had a car! · If only she were here. · I wish she were here."
+  }
+ ],
+ "examples": [
+  {"en": "If I knew the answer, I would tell you.", "ru": "Если бы я знал ответ, я бы сказал."},
+  {"en": "If we had more money, we could travel more.", "ru": "Если бы у нас было больше денег, мы могли бы больше путешествовать."},
+  {"en": "I wish I spoke German.", "ru": "Жаль, что я не говорю по-немецки."},
+  {"en": "If I were you, I would not worry.", "ru": "На вашем месте я бы не волновался."},
+  {"en": "I wish it wasn't so hot today.", "ru": "Жаль, что сегодня так жарко."}
+ ],
+ "traps": [
+  {"bad": "If I would know her number, I would call her.", "good": "If I knew her number, I would call her.", "why": "В части с if нет would: только past simple, даже если речь о нереальном."},
+  {"bad": "I wish I know the answer.", "good": "I wish I knew the answer.", "why": "После wish о настоящем — прошедшее время: knew, had, was."},
+  {"bad": "If I would be you, I would wait.", "good": "If I were you, I would wait.", "why": "Оборот фиксированный: if I were you, без would внутри."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "If I ___ a car, I would drive to work.", "options": ["have", "had", "would have"], "a": 1, "why": "Нереальное настоящее: if + past simple."},
+  {"type": "choice", "q": "I wish I ___ speak French.", "options": ["can", "could", "will"], "a": 1, "why": "После wish — could, если речь о нехватке умения сейчас."},
+  {"type": "choice", "q": "If I ___ you, I would take the job.", "options": ["am", "were", "would be"], "a": 1, "why": "Совет: if I were you."},
+  {"type": "choice", "q": "If I had more money, I ___ travel around the world.", "options": ["will", "would", "am"], "a": 1, "why": "Главная часть второго типа: would + инфинитив."},
+  {"type": "gap", "q": "I wish I ___ (have) a bigger flat.", "a": ["had"], "why": "Wish о настоящем: had, а не have."},
+  {"type": "gap", "q": "If she ___ (not / be) so busy, she would join us.", "a": ["wasn't", "was not", "weren't", "were not"], "why": "Отрицание в нереальном условии: wasn't / weren't."},
+  {"type": "translate", "q": "Если бы я знал её номер, я бы позвонил.", "a": ["if i knew her number i would call her", "if i knew her number i'd call her"], "why": "Второй тип: if + past simple, would + инфинитив."},
+  {"type": "translate", "q": "Жаль, что я не знаю ответа.", "a": ["i wish i knew the answer", "i wish that i knew the answer"], "why": "Сожаление о настоящем: I wish + past simple."}
+ ]
+}

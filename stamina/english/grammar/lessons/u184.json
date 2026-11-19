@@ -1,0 +1,83 @@
+{
+ "n": 184,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "Исчисляемые и неисчисляемые (1)",
+ "en": "countable and uncountable 1",
+ "summary": "Как отличить то, что можно посчитать по штукам, от того, что измеряют порциями, и почему от этого зависят артикли и глагол.",
+ "can_do": [
+  "Определить, исчисляемое существительное или нет.",
+  "Выбрать much или many, a little или a few.",
+  "Сказать, сколько вещества, через единицы измерения.",
+  "Поставить правильную форму глагола при неисчисляемом подлежащем."
+ ],
+ "theory": [
+  {
+   "h": "Штуки и вещество",
+   "p": "Исчисляемые существительные считают по одной штуке: a book, two books. Неисчисляемые называют вещество или массу и по штукам не считаются: water, bread, money. От этого зависит почти вся грамматика вокруг слова.",
+   "formula": "a book · two books · some water · a lot of money"
+  },
+  {
+   "h": "Четыре видимых отличия",
+   "p": "Разницу легко проверить по четырём признакам: артикль, множественное число, форма глагола и слово «сколько». Если хотя бы один признак не работает, существительное, скорее всего, неисчисляемое.",
+   "table": {
+    "head": ["Признак", "Исчисляемое", "Неисчисляемое"],
+    "rows": [
+     ["артикль a/an", "a book", "не говорят a water"],
+     ["множественное число", "books", "не говорят waters"],
+     ["глагол", "The books are new.", "The water is cold."],
+     ["сколько", "How many books?", "How much water?"]
+    ]
+   }
+  },
+  {
+   "h": "much, many, a little, a few",
+   "p": "Much и a little идут с неисчисляемыми, many и a few — с исчисляемыми во множественном числе. A lot of и lots of работают и там, и там, поэтому в разговоре встречаются чаще всего.",
+   "formula": "How much time? · How many people? · a little money · a few coins · a lot of work"
+  },
+  {
+   "h": "Порции и единицы измерения",
+   "p": "Неисчисляемое всё-таки можно посчитать, если добавить единицу: кусок, стакан, ломоть, упаковку. Само вещество остаётся в единственном числе, а множественное число получает единица.",
+   "table": {
+    "head": ["Вещество", "С единицей", "Пример"],
+    "rows": [
+     ["bread", "a loaf / a slice of bread", "I bought a loaf of bread."],
+     ["water", "a glass / a bottle of water", "Can I have a glass of water?"],
+     ["chocolate", "a bar of chocolate", "He ate a bar of chocolate."],
+     ["paper", "a sheet / a piece of paper", "Give me a sheet of paper."],
+     ["rice", "a packet of rice", "We need a packet of rice."]
+    ]
+   }
+  },
+  {
+   "h": "Неисчисляемое подлежащее — глагол в единственном",
+   "p": "Даже если вещества много, глагол и местоимение остаются в единственном числе. По-русски «деньги были» звучит нормально, по-английски money was. Это одна из самых заметных ошибок в речи.",
+   "formula": "The money is on the table. · The water was cold. · Where is my luggage?"
+  }
+ ],
+ "examples": [
+  {"en": "I need some information about the course.", "ru": "Мне нужна информация о курсе."},
+  {"en": "How much time do we have?", "ru": "Сколько у нас времени?"},
+  {"en": "There are a few chairs in the room.", "ru": "В комнате есть несколько стульев."},
+  {"en": "She bought two loaves of bread.", "ru": "Она купила два батона хлеба."},
+  {"en": "The money is in my bag.", "ru": "Деньги в моей сумке."},
+  {"en": "We don't have much furniture.", "ru": "У нас мало мебели."}
+ ],
+ "traps": [
+  {"bad": "I need an information.", "good": "I need some information.", "why": "Information неисчисляемое: артикль a/an с ним не ставится."},
+  {"bad": "How many money do you have?", "good": "How much money do you have?", "why": "Money неисчисляемое, поэтому much, а не many."},
+  {"bad": "The news are good.", "good": "The news is good.", "why": "News неисчисляемое и требует глагола в единственном числе."},
+  {"bad": "She gave me two breads.", "good": "She gave me two loaves of bread.", "why": "Bread неисчисляемое: считают не хлеб, а батоны."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How ___ money do you have?", "options": ["many", "much", "few"], "a": 1, "why": "Money неисчисляемое, поэтому much."},
+  {"type": "choice", "q": "There ___ some water in the bottle.", "options": ["are", "is", "be"], "a": 1, "why": "Water неисчисляемое, глагол в единственном числе."},
+  {"type": "choice", "q": "I have ___ questions about the task.", "options": ["much", "a little", "a few"], "a": 2, "why": "Questions исчисляемое во множественном числе: a few."},
+  {"type": "choice", "q": "How ___ books did you buy?", "options": ["much", "many", "a little"], "a": 1, "why": "Books исчисляемое, поэтому many."},
+  {"type": "gap", "q": "I don't have ___ time today.", "a": ["much"], "why": "Time неисчисляемое: not much time."},
+  {"type": "gap", "q": "She bought three ___ (loaf) of bread.", "a": ["loaves"], "why": "Множественное число получает единица: three loaves."},
+  {"type": "gap", "q": "There is only ___ milk in the fridge.", "a": ["a little"], "why": "Milk неисчисляемое: a little milk."},
+  {"type": "translate", "q": "Сколько у тебя денег?", "a": ["how much money do you have", "how much money have you got"], "why": "Money неисчисляемое: how much money."},
+  {"type": "translate", "q": "У меня мало времени.", "a": ["i have little time", "i have very little time", "i don't have much time"], "why": "Time неисчисляемое: little time или not much time."}
+ ]
+}

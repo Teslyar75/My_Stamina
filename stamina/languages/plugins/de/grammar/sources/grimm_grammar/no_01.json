@@ -1,0 +1,101 @@
+{
+  "id": "no_01",
+  "title": "Nouns: Substantive",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/no_01.html",
+  "explanation_lang": "en",
+  "section": "Nouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Nouns describe people, animals, things, concepts and ideas. Just as in English, German nouns can be common or proper, count or mass, singular or plural. German nouns, however, have two additional characteristics: they are always capitalized and they can be masculine, feminine or neuter:"
+    },
+    {
+      "heading": "Common vs. proper nouns",
+      "text": "Common nouns refer to a general person, animal, object or concept.\n\nder Korb | the basket\n\ndas Mädchen | the little girl\n\ndie Mutter | the mother\n\nProper nouns represent specific individuals or places.\n\nRotkäppchen | Little Red Riding Hood\n\nSchlossallee 18 | Schlossallee 18"
+    },
+    {
+      "heading": "Count vs. mass nouns",
+      "text": "Nouns can also be categorized according to whether they can be counted or not. Nouns that can be broken down into individuals are count nouns.\n\ndie Blume/die Blumen | the flower/the flowers\n\nNouns that denote items that cannot be broken down into individual units are mass nouns.\n\nRotkäppchens Großmutter trinkt gern Wein. | Little Red Riding Hood's grandmother likes to drink wine.\n\nDer Wolf ißt gern Fleisch. | The wolf likes to eat meat."
+    },
+    {
+      "heading": "Noun gender",
+      "text": "German nouns also all have a grammatical gender that sometimes overlaps with the biological gender (masculine or feminine), as in the following examples:\n\nder Jäger (masculine) | the hunter\n\ndie Großmutter (feminine) | the grandmother\n\nBut most often the grammatical gender is independent of biological gender, and the only thing to do with them is to learn them when you learn your vocabulary.\n\nder Wald (masculine) | the forest\n\ndie Tür (feminine) | the door\n\ndas Waldhaus (neuter) | the house in the forest"
+    },
+    {
+      "heading": "Noun plurals",
+      "text": "All nouns in German and English are marked for number: singular (one) or plural (more than one). Typically, in English there is some kind of ending that marks the plural, for example an -s: stone => stones; tree => trees. There can be other kinds of plural markers, such as a different word form as in child => children. In German the situation is the same, there is typically some kind of ending that indicates whether we are talking about one item or more:\n\nder Stein, die Steine | the stone, the stones\n\nder Baum, die Bäume | the tree, the trees\n\nMass nouns only have one form and cannot be made into the plural. Here are some examples from Rotkäppchen's life: der Lärm (noise).\n\nSimilarly, nouns that refer to abstract concepts do not have a plural:\n\nder Hass (hatred) | der Humor (sense of humor) | die Intelligenz (intelligence)\n\ndie Liebe (love) | die Verachtung (disdain)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "der Korb",
+      "en": "the basket"
+    },
+    {
+      "de": "das Mädchen",
+      "en": "the little girl"
+    },
+    {
+      "de": "die Mutter",
+      "en": "the mother"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Little Red Riding Hood"
+    },
+    {
+      "de": "Schlossallee 18",
+      "en": "Schlossallee 18"
+    },
+    {
+      "de": "die Blume/die Blumen",
+      "en": "the flower/the flowers"
+    },
+    {
+      "de": "Rotkäppchens Großmutter trinkt gern Wein.",
+      "en": "Little Red Riding Hood's grandmother likes to drink wine."
+    },
+    {
+      "de": "Der Wolf ißt gern Fleisch.",
+      "en": "The wolf likes to eat meat."
+    },
+    {
+      "de": "der Jäger (masculine)",
+      "en": "the hunter"
+    },
+    {
+      "de": "die Großmutter (feminine)",
+      "en": "the grandmother"
+    },
+    {
+      "de": "der Wald (masculine)",
+      "en": "the forest"
+    },
+    {
+      "de": "die Tür (feminine)",
+      "en": "the door"
+    },
+    {
+      "de": "das Waldhaus (neuter)",
+      "en": "the house in the forest"
+    },
+    {
+      "de": "der Stein, die Steine",
+      "en": "the stone, the stones"
+    },
+    {
+      "de": "der Baum, die Bäume",
+      "en": "the tree, the trees"
+    },
+    {
+      "de": "der Hass (hatred)",
+      "en": "der Humor (sense of humor)"
+    },
+    {
+      "de": "die Liebe (love)",
+      "en": "die Verachtung (disdain)"
+    }
+  ],
+  "exercises": []
+}

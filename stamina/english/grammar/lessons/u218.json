@@ -1,0 +1,80 @@
+{
+ "n": 218,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "quite, pretty, rather, fairly",
+ "en": "quite, pretty, rather, fairly",
+ "summary": "Наречия quite, pretty, rather, fairly меняют силу прилагательного: ослабляют или слегка усиливают. Quite с абсолютными прилагательными означает «совершенно», rather часто добавляет негативный оттенок, pretty — разговорное, fairly — умеренное.",
+ "can_do": [
+  "Использовать quite, pretty, rather, fairly для точной оценки качеств.",
+  "Различать quite с градабельными и абсолютными прилагательными.",
+  "Выбирать rather для выражения неожиданности или лёгкого недовольства.",
+  "Строить конструкцию quite a + существительное без ошибок."
+ ],
+ "theory": [
+  {
+   "h": "Четыре наречия, одна задача",
+   "p": "Все четыре слова стоят перед прилагательным и меняют его силу. Pretty и fairly обычно ослабляют: pretty good — «довольно хорошо», fairly easy — «достаточно легко». Quite и rather могут и ослаблять, и усиливать, в зависимости от прилагательного и интонации.",
+   "formula": "pretty good · fairly easy · quite tired · rather difficult"
+  },
+  {
+   "h": "Quite: два режима работы",
+   "p": "С градабельными прилагательными (tired, interesting) quite = «довольно»: quite tired — «довольно уставший». С абсолютными (impossible, right, dead) quite = «совершенно, полностью»: quite impossible — «абсолютно невозможно». В британском английском quite с градабельными часто слабее, чем very.",
+   "formula": "quite tired · quite interesting · quite impossible · quite right"
+  },
+  {
+   "h": "Rather: неожиданность и лёгкое негативное",
+   "p": "Rather добавляет оттенок неожиданности или недовольства: rather expensive — «꽤 дорого» (больше, чем хотелось). С негативными прилагательными (bad, difficult) rather усиливает: rather difficult — «довольно трудно». В позитивном контексте rather может звучать как комплимент: rather good — «неплохо».",
+   "formula": "rather expensive · rather difficult · rather good · rather a nuisance"
+  },
+  {
+   "h": "Pretty и fairly: разговорное и умеренное",
+   "p": "Pretty — разговорный вариант quite / fairly: pretty sure, pretty fast. Fairly — более формальное и умеренное: fairly certain, fairly well. Оба почти всегда ослабляют, редко усиливают. Pretty не используется с абсолютными прилагательными (*pretty impossible).",
+   "formula": "pretty sure · pretty fast · fairly certain · fairly well"
+  },
+  {
+   "h": "Конструкция quite a + существительное",
+   "p": "Перед существительным с неопределённым артиклем quite стоит до артикля: quite a nice day, quite a lot of time. Порядок: quite + a/an + прилагательное + существительное. С неисчисляемыми quite без артикля: quite a lot of money, quite some time.",
+   "formula": "quite a nice day · quite a lot of · quite a good idea · quite some time"
+  },
+  {
+   "h": "Сравнительная таблица",
+   "p": "Таблица показывает основные отличия в силе, оттенке и типичных сочетаниях.",
+   "table": {
+    "head": ["Наречие", "Сила", "Типичные прилагательные", "Пример"],
+    "rows": [
+     ["quite", "слабее very / полностью", "tired, interesting / impossible, right", "quite tired / quite right"],
+     ["rather", "неожиданно / слегка негативно", "expensive, difficult, good", "rather expensive / rather good"],
+     ["pretty", "разговорное, ослабляет", "sure, fast, good", "pretty sure / pretty good"],
+     ["fairly", "умеренное, нейтральное", "certain, well, easy", "fairly certain / fairly easy"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "The film was quite interesting.", "ru": "Фильм был довольно интересным."},
+  {"en": "It's quite impossible to finish on time.", "ru": "Совершенно невозможно закончить вовремя."},
+  {"en": "The coffee was rather hot.", "ru": "Кофе был довольно горячим (горячее, чем хотелось)."},
+  {"en": "She's pretty sure about the answer.", "ru": "Она довольно уверена в ответе."},
+  {"en": "He speaks fairly well for a beginner.", "ru": "Он говорит довольно хорошо для новичка."},
+  {"en": "We had quite a good time at the party.", "ru": "Мы довольно хорошо провели время на вечеринке."},
+  {"en": "It's rather a nuisance to wait so long.", "ru": "Долго ждать — довольно неприятно."}
+ ],
+ "traps": [
+  {"bad": "It's pretty impossible.", "good": "It's quite impossible.", "why": "Pretty не используется с абсолютными прилагательными (impossible, right, dead)."},
+  {"bad": "We had rather a good time.", "good": "We had quite a good time.", "why": "Конструкция quite a + noun; rather a не употребляется в этом значении."},
+  {"bad": "He was pretty exhausted.", "good": "He was quite exhausted.", "why": "Exhausted — абсолютное прилагательное, pretty с такими словами не сочетается."},
+  {"bad": "The test was fairly difficult, but I passed.", "good": "The test was rather difficult, but I passed.", "why": "Rather передаёт оттенок «труднее, чем ожидалось», fairly — нейтрально умеренно."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The task is ___ impossible to do alone.", "options": ["quite", "rather", "pretty", "fairly"], "a": 0, "why": "Impossible — абсолютное прилагательное, требует quite в значении «совершенно»."},
+  {"type": "choice", "q": "We had ___ wonderful evening together.", "options": ["quite a", "rather a", "pretty a", "fairly a"], "a": 0, "why": "Порядок слов: quite + a/an + прилагательное + существительное."},
+  {"type": "choice", "q": "The soup was ___ salty to eat.", "options": ["rather", "pretty", "fairly", "quite"], "a": 0, "why": "Rather добавляет негативный оттенок «слишком/больше, чем надо»."},
+  {"type": "choice", "q": "I'm ___ sure I left the keys on the table.", "options": ["pretty", "rather", "fairly", "quite"], "a": 0, "why": "Pretty sure — устойчивое разговорное выражение «довольно уверен»."},
+  {"type": "gap", "q": "The movie was ___ (negative nuance) boring, I almost fell asleep.", "a": ["rather"], "why": "Rather boring — скучнее, чем ожидалось, с легким недовольством."},
+  {"type": "gap", "q": "It's ___ a nice day for a walk. (quite a)", "a": ["quite a"], "why": "Конструкция quite a + adjective + noun."},
+  {"type": "gap", "q": "She is ___ (neutral, moderate) certain about the result.", "a": ["fairly"], "why": "Fairly — нейтральное, умеренное наречие для формального или спокойного высказывания."},
+  {"type": "translate", "q": "Это довольно хорошая идея.", "a": ["it's quite a good idea", "it is quite a good idea"], "why": "Quite a good idea — стандартный порядок слов с неопределённым артиклем."},
+  {"type": "translate", "q": "Фильм был довольно скучным (неожиданно скучным).", "a": ["the film was rather boring", "the movie was rather boring"], "why": "Rather boring передаёт оттенок неожиданности или лёгкого разочарования."}
+ ]
+}

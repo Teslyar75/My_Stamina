@@ -18,38 +18,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "C2: Feinheiten der Bedeutung, Register (formell/umgangssprachlich), feste Kollokationen, stilistische Nuancen."
+          "text": "C2: тонкости значения, регистр (формальный/разговорный), устойчивые коллокации, стилистические нюансы."
         },
         {
           "kind": "rule",
-          "title": "Verben: sehen/anschauen/betrachten/beobachten",
-          "text": "sehen = unwillkürlich. anschauen = bewusst, kurz. betrachten = länger, aufmerksam. beobachten = systematisch, über Zeit."
+          "title": "Глаголы: sehen / anschauen / betrachten / beobachten",
+          "text": "sehen = неосознанно (просто видеть). anschauen = осознанно, кратко. betrachten = дольше, внимательно. beobachten = систематически, во времени."
         },
         {
           "kind": "rule",
-          "title": "Verben: fragen/bitten/ersuchen/auffordern",
-          "text": "fragen = neutral. bitten = höflich, Bitte. ersuchen = formell, behördlich. auffordern = autoritär, offiziell."
+          "title": "Глаголы: fragen / bitten / ersuchen / auffordern",
+          "text": "fragen = нейтрально. bitten = вежливо, просьба. ersuchen = формально, ведомственно. auffordern = авторитарно, официально."
         },
         {
           "kind": "rule",
-          "title": "Adjektive: groß/großartig/gewaltig/riesig",
-          "text": "grß = physisch. großartig = bewundernd. gewaltig = beeindruckend, oft negativ. riesig = sehr groß (umgangssprachlich)."
+          "title": "Прилагательные: groß / großartig / gewaltig / riesig",
+          "text": "groß = физически. großartig = с восхищением. gewaltig = впечатляюще, часто негативно. riesig = очень большой (разговорно)."
         },
         {
           "kind": "rule",
-          "title": "Kollokationen (feste Verbindungen)",
-          "text": "eine Entscheidung treffen (nicht *machen), zur Kenntnis nehmen (nicht *wissen), in Frage kommen (nicht *fragen), Anwendung finden (nicht *finden)."
+          "title": "Коллокации (устойчивые сочетания)",
+          "text": "eine Entscheidung treffen (не *machen), zur Kenntnis nehmen (не *wissen), in Frage kommen (не *fragen), Anwendung finden (не *finden)."
         },
         {
           "kind": "rule",
-          "title": "Register: formell vs umgangssprachlich",
-          "text": "erhalten (formell) vs bekommen (neutral) vs kriegen (umgangssprachlich). verfügen über (formell) vs haben (neutral)."
+          "title": "Регистр: формальный vs разговорный",
+          "text": "erhalten (формально) vs bekommen (нейтрально) vs kriegen (разговорно). verfügen über (формально) vs haben (нейтрально)."
         },
         {
           "kind": "example",
           "de": "Er betrachtet das Bild. (nicht *anschaut lange). Die Behörde ersucht um Auskunft. (nicht *fragt). Eine große Entscheidung treffen. Er verfügt über gute Kenntnisse. (formell)",
           "ru": "Он рассматривает картину. Ведомство запрашивает сведения. Принять важное решение. Он обладает хорошими знаниями (офиц.).",
-          "note": "betrachten > anschauen. ersuchen > fragen. treffen > machen. verfügen über > haben."
+          "note": "betrachten — более длительное, чем anschauen. ersuchen — официальнее, чем fragen. treffen — правильный глагол для решения, не machen. verfügen über — официальный вариант haben."
         }
       ],
       "drills": [
@@ -66,7 +66,7 @@
           "answer": [
             "anschauen"
           ],
-          "why": "anschauen = bewusst, kurz."
+          "why": "anschauen = осознанно, кратко."
         },
         {
           "id": "c2-01-d02",
@@ -81,7 +81,7 @@
           "answer": [
             "beobachten"
           ],
-          "why": "beobachten = systematisch, über Zeit."
+          "why": "beobachten = систематически, во времени."
         },
         {
           "id": "c2-01-d03",
@@ -96,7 +96,7 @@
           "answer": [
             "ersuchen"
           ],
-          "why": "ersuchen = formell, behördlich."
+          "why": "ersuchen = формально, ведомственно."
         },
         {
           "id": "c2-01-d04",
@@ -105,7 +105,7 @@
           "answer": [
             "auffordern"
           ],
-          "why": "auffordern = autoritär, offiziell."
+          "why": "auffordern = авторитарно, официально."
         },
         {
           "id": "c2-01-d05",
@@ -120,7 +120,7 @@
           "answer": [
             "großartig"
           ],
-          "why": "großartig = bewundernd."
+          "why": "großartig = с восхищением."
         },
         {
           "id": "c2-01-d06",
@@ -129,7 +129,7 @@
           "answer": [
             "treffen"
           ],
-          "why": "eine Entscheidung treffen (FVG)."
+          "why": "eine Entscheidung treffen (устойчивое выражение)."
         },
         {
           "id": "c2-01-d07",
@@ -138,7 +138,7 @@
           "answer": [
             "Er nimmt es zur Kenntnis."
           ],
-          "why": "zur Kenntnis nehmen (FVG)."
+          "why": "zur Kenntnis nehmen (устойчивое выражение)."
         },
         {
           "id": "c2-01-d08",
@@ -153,7 +153,7 @@
           "answer": [
             "erhalten"
           ],
-          "why": "erhalten = formell."
+          "why": "erhalten = формально."
         },
         {
           "id": "c2-01-d09",
@@ -162,7 +162,7 @@
           "answer": [
             "verfügen"
           ],
-          "why": "verfügen über = formell für 'haben'."
+          "why": "verfügen über = формально для «иметь»."
         },
         {
           "id": "c2-01-d10",
@@ -171,7 +171,7 @@
           "answer": [
             "Er erhält das Geld."
           ],
-          "why": "kriegen → erhalten."
+          "why": "kriegen (разг.) → erhalten (офиц.)."
         },
         {
           "id": "c2-01-d11",
@@ -186,7 +186,7 @@
           "answer": [
             "geeignet sein"
           ],
-          "why": "FVG: in Frage kommen."
+          "why": "Устойчивое выражение: in Frage kommen."
         },
         {
           "id": "c2-01-d12",
@@ -195,7 +195,7 @@
           "answer": [
             "riesig"
           ],
-          "why": "riesig = sehr groß, umgangssprachlich."
+          "why": "riesig = очень большой, разговорно."
         }
       ]
     },
@@ -215,33 +215,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Idiome = feste Ausdrücke, deren Bedeutung nicht aus den Einzelwörtern ableitbar ist. Phraseme = teilidiomatisch. Kollokationen = häufige Wortverbindungen."
+          "text": "Идиомы = устойчивые выражения, значение которых не выводится из отдельных слов. Фраземи = частично идиоматичны. Коллокации = частые словосочетания."
         },
         {
           "kind": "rule",
-          "title": "Vollidiome (Bedeutung nicht ableitbar)",
-          "text": "ins Gras beißen (sterben), den Löffel abgeben (sterben), das Handtuch werfen (aufgeben), um den heißen Brei reden (nicht direkt sagen), den Nagel auf den Kopf treffen (genau richtig)."
+          "title": "Полные идиомы (значение не выводится)",
+          "text": "ins Gras beißen (умереть), den Löffel abgeben (умереть), das Handtuch werfen (сдаться), um den heißen Brei reden (не говорить прямо), den Nagel auf den Kopf treffen (попасть в точку)."
         },
         {
           "kind": "rule",
-          "title": "Phraseme (teilweise idiomatisch)",
-          "text": "eine Rolle spielen, in Frage stellen, zu Rate ziehen, ins Gewicht fallen, die Fäden ziehen, das Ruder herumreißen."
+          "title": "Фраземи (частично идиоматичны)",
+          "text": "eine Rolle spielen (играть роль), in Frage stellen (поставить под сомнение), zu Rate ziehen (обратиться за советом), ins Gewicht fallen (иметь значение), die Fäden ziehen (пускать нити), das Ruder herumreißen (перехватить управление)."
         },
         {
           "kind": "rule",
-          "title": "Kollokationen (häufige Kombinationen)",
-          "text": "schwer wiegen, große Bedeutung haben, in Betracht ziehen, Anwendung finden, Rechnung tragen."
+          "title": "Коллокации (частые сочетания)",
+          "text": "schwer wiegen (весить много / иметь большой вес), große Bedeutung haben (иметь большое значение), in Betracht ziehen (рассмотреть), Anwendung finden (найти применение), Rechnung tragen (принять во внимание)."
         },
         {
           "kind": "rule",
-          "title": "Redewendungen mit Körperteilen",
-          "text": "den Kopf verlieren (Panik), die Zähne zusammenbeißen (durchhalten), ein Auge zudrücken (tolerieren), die Finger kreuzen (hoffen), ins Fettnäpfchen treten (Fehler machen)."
+          "title": "Устойчивые выражения с частями тела",
+          "text": "den Kopf verlieren (паника), die Zähne zusammenbeißen (выдерживать), ein Auge zudrücken (закрывать глаза), die Finger kreuzen (надеяться), ins Fettnäpfchen treten (совершить ошибку)."
         },
         {
           "kind": "example",
           "de": "Er hat den Löffel abgegeben. (gestorben). Um den heißen Brei reden. (nicht direkt). Die Fäden ziehen. (hinter den Kulissen steuern). Ins Fettnäpfchen treten. (peinlicher Fehler).",
           "ru": "Он сдал кончики. (умер). Ходить вокруг да около. (не по существу). Пускать нити. (управлять тайно). Наступать на грабли. (глупая ошибка).",
-          "note": "Idiome nicht wörtlich übersetzbar. Phraseme teilweise. Kollokationen = Statistik."
+          "note": "Идиомы нельзя переводить дословно. Фраземи — частично. Коллокации — это статистика."
         }
       ],
       "drills": [
@@ -258,7 +258,7 @@
           "answer": [
             "sterben"
           ],
-          "why": "Vollidiom: sterben."
+          "why": "Полная идиома: умереть."
         },
         {
           "id": "c2-02-d02",
@@ -273,7 +273,7 @@
           "answer": [
             "genau richtig liegen"
           ],
-          "why": "Idiom: den Kern treffen."
+          "why": "Идиома: попасть в суть."
         },
         {
           "id": "c2-02-d03",
@@ -288,7 +288,7 @@
           "answer": [
             "nicht direkt sagen"
           ],
-          "why": "Idiom: umschreiben, nicht zum Punkt kommen."
+          "why": "Идиома: говорить обиняками, не подходить к сути."
         },
         {
           "id": "c2-02-d04",
@@ -297,7 +297,7 @@
           "answer": [
             "werfen"
           ],
-          "why": "das Handtuch werfen = aufgeben (Boxen)."
+          "why": "бросить полотенце = сдаться (бокс)."
         },
         {
           "id": "c2-02-d05",
@@ -312,7 +312,7 @@
           "answer": [
             "hinter den Kulissen steuern"
           ],
-          "why": "Phrasem: die eigentliche Macht ausüben."
+          "why": "Фразем: осуществлять реальную власть."
         },
         {
           "id": "c2-02-d06",
@@ -321,7 +321,7 @@
           "answer": [
             "Frage"
           ],
-          "why": "in Frage stellen = bezweifeln."
+          "why": "поставить под сомнение = сомневаться."
         },
         {
           "id": "c2-02-d07",
@@ -330,7 +330,7 @@
           "answer": [
             "Er hat den Löffel abgegeben."
           ],
-          "why": "Idiom: den Löffel abgeben."
+          "why": "Идиома: сдать ложку."
         },
         {
           "id": "c2-02-d08",
@@ -345,7 +345,7 @@
           "answer": [
             "peinlichen Fehler machen"
           ],
-          "why": "Idiom: soziale Blamage."
+          "why": "Идиома: социальная неловкость."
         },
         {
           "id": "c2-02-d09",
@@ -354,7 +354,7 @@
           "answer": [
             "zudrücken"
           ],
-          "why": "ein Auge zudrücken = tolerieren, ignorieren."
+          "why": "закрыть глаз = терпеть, игнорировать."
         },
         {
           "id": "c2-02-d10",
@@ -363,7 +363,7 @@
           "answer": [
             "beißt ins Gras"
           ],
-          "why": "Idiom für sterben."
+          "why": "Идиома для «умереть»."
         },
         {
           "id": "c2-02-d11",
@@ -378,7 +378,7 @@
           "answer": [
             "um Rat fragen"
           ],
-          "why": "Phrasem: um Rat fragen."
+          "why": "Фразем: спросить совета."
         },
         {
           "id": "c2-02-d12",
@@ -387,7 +387,7 @@
           "answer": [
             "zusammenbeißen"
           ],
-          "why": "die Zähne zusammenbeißen = durchhalten, ausharren."
+          "why": "сжать зубы = выдерживать, терпеть."
         }
       ]
     },
@@ -408,38 +408,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Stilregister = Sprachvarietäten nach Situation, Thema, Medium. C2 beherrscht Registerwechsel bewusst."
+          "text": "Стилистические регистры = языковые варианты в зависимости от ситуации, темы, средства коммуникации. На уровне C2 осознанно переключаешь регистры."
         },
         {
           "kind": "rule",
-          "title": "Hochsprache (gehoben)",
-          "text": "Archaismen, komplexe Syntax, Nominalstil, Konjunktiv I, Fremdwörter. 'Es sei dahingestellt, ob...' 'Der Beschluss bedarf der Genehmigung.'"
+          "title": "Высокий стиль (книжный)",
+          "text": "Архаизмы, сложный синтаксис, номинальный стиль, конъюнктив I, иностранные слова. 'Es sei dahingestellt, ob...' 'Der Beschluss bedarf der Genehmigung.'"
         },
         {
           "kind": "rule",
-          "title": "Standardsprache (schriftlich/mündlich)",
-          "text": "Klare Grammatik, moderate Fremdwörter, Verbalstil. 'Es ist unklar, ob...' 'Der Beschluss muss genehmigt werden.'"
+          "title": "Стандартный язык (письменный/устный)",
+          "text": "Чёткая грамматика, умеренное использование иностранных слов, вербальный стиль. 'Es ist unklar, ob...' 'Der Beschluss muss genehmigt werden.'"
         },
         {
           "kind": "rule",
-          "title": "Umgangssprache (mündlich, privat)",
-          "text": "Kurzformen, Partikeln, elliptisch, idiomatisch. 'Is unklar, ob...' 'Der Beschluss muss genehmigt werden, gell?'"
+          "title": "Разговорный стиль (устный, частный)",
+          "text": "Краткие формы, частицы, эллипсис, идиоматичность. 'Is unklar, ob...' 'Der Beschluss muss genehmigt werden, gell?'"
         },
         {
           "kind": "rule",
-          "title": "Fachsprache / Behördendeutsch",
-          "text": "Präzision, Nominalstil, Passiv, Definitionen. 'Die Antragstellung erfolgt formgebunden.' 'Eine Genehmigungspflicht besteht.'"
+          "title": "Профессиональный язык / Канцелярит",
+          "text": "Точность, номинальный стиль, пассив, определения. 'Die Antragstellung erfolgt formgebunden.' 'Eine Genehmigungspflicht besteht.'"
         },
         {
           "kind": "rule",
-          "title": "Jugendslang / Netzhaut",
-          "text": "Anglizismen, Verkürzungen, Neologismen, Ironie. 'Das ist cringe.' 'Ich bin down.' 'No cap.' 'Ehrenmann.'"
+          "title": "Молодёжный сленг / Сетевой сленг",
+          "text": "Англицизмы, сокращения, неологизмы, ирония. 'Das ist cringe.' 'Ich bin down.' 'No cap.' 'Ehrenmann.'"
         },
         {
           "kind": "example",
           "de": "Hoch: Es sei dahingestellt. Standard: Es ist unklar. Umgangssprachlich: Is unklar. Behörde: Die Klärung erfolgt. Jugend: Das ist cringe.",
           "ru": "Высокий: Предстоит решить. Стандарт: Неясно. Разговорный: Неясно. Канцелярит: Прояснение производится. Молодёжь: Это кринж.",
-          "note": "Registerwechsel = stilistische Kompetenz."
+          "note": "Смена регистра = стилистическая компетенция."
         }
       ],
       "drills": [
@@ -456,7 +456,7 @@
           "answer": [
             "sei"
           ],
-          "why": "Konjunktiv I in hochsprachlicher Koncession."
+          "why": "Конъюнктив I в высоком стиле для уступки."
         },
         {
           "id": "c2-03-d02",
@@ -471,7 +471,7 @@
           "answer": [
             "Antragstellung"
           ],
-          "why": "Nominalisierung: Antragstellung (Substantiv)."
+          "why": "Номинализация: Antragstellung (существительное)."
         },
         {
           "id": "c2-03-d03",
@@ -486,7 +486,7 @@
           "answer": [
             "Is"
           ],
-          "why": "Kurzform 'Is' für 'Es ist'."
+          "why": "Краткая форма 'Is' вместо 'Es ist'."
         },
         {
           "id": "c2-03-d04",
@@ -495,7 +495,7 @@
           "answer": [
             "cringe"
           ],
-          "why": "cringe = peinlich, fremdschämen (aus engl.)."
+          "why": "cringe = стыдно, испанское (из англ.)."
         },
         {
           "id": "c2-03-d05",
@@ -504,7 +504,7 @@
           "answer": [
             "Der Beschluss bedarf der Genehmigung."
           ],
-          "why": "Behördendeutsch: bedarf + Genitiv."
+          "why": "Канцелярит: bedarf + родительный падеж."
         },
         {
           "id": "c2-03-d06",
@@ -519,7 +519,7 @@
           "answer": [
             "ist"
           ],
-          "why": "Indikativ, neutral."
+          "why": "Индикатив, нейтрально."
         },
         {
           "id": "c2-03-d07",
@@ -528,7 +528,7 @@
           "answer": [
             "verstarb"
           ],
-          "why": "verstarb (formell) vs starb (neutral) vs ist gestorben (Perfekt)."
+          "why": "verstarb (официально) vs starb (нейтрально) vs ist gestorben (перфект)."
         },
         {
           "id": "c2-03-d08",
@@ -543,7 +543,7 @@
           "answer": [
             "down"
           ],
-          "why": "down = einverstanden, dabei (aus engl.)."
+          "why": "down = согласен, участвую (из англ.)."
         },
         {
           "id": "c2-03-d09",
@@ -552,7 +552,7 @@
           "answer": [
             "Man muss den Antrag schriftlich stellen."
           ],
-          "why": "Nominalstil → Verbalstil."
+          "why": "Номинальный стиль → вербальный стиль."
         },
         {
           "id": "c2-03-d10",
@@ -561,7 +561,7 @@
           "answer": [
             "gell"
           ],
-          "why": "gell = Partikel für Bestätigung (süddeutsch/österreichisch)."
+          "why": "gell = частица для подтверждения (южненемецкий/австрийский)."
         },
         {
           "id": "c2-03-d11",
@@ -576,7 +576,7 @@
           "answer": [
             "kein Lüge / ehrlich"
           ],
-          "why": "cap = Lüge (US-Slang), no cap = kein Lüge, echt."
+          "why": "cap = ложь (амер. сленг), no cap = не лгу, правда."
         },
         {
           "id": "c2-03-d12",
@@ -585,7 +585,7 @@
           "answer": [
             "erhalten / bekommen"
           ],
-          "why": "erhalten (formell) vs bekommen (neutral/umgangssprachlich)."
+          "why": "erhalten (официально) vs bekommen (нейтрально/разговорно)."
         }
       ]
     },
@@ -608,38 +608,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "C2-Fehleranalyse: Erkennen und Korrigieren typischer Fehler von Lernern (auch fortgeschrittenen)."
+          "text": "C2-анализ ошибок: распознавание и исправление типичных ошибок учащихся (в том числе продвинутых)."
         },
         {
           "kind": "rule",
-          "title": "Interferenz (Muttersprache)",
-          "text": "Russisch: 'Ich bin einverstanden' (richtig) vs 'Ich stimme zu' (richtig). Falsch: 'Ich bin einverstanden mit dir' (lieber: 'Ich stimme dir zu'). 'Ich habe Recht' vs 'Ich liege richtig'."
+          "title": "Интерференция (родной язык)",
+          "text": "Русский: 'Ich bin einverstanden' (правильно) vs 'Ich stimme zu' (правильно). Ошибка: 'Ich bin einverstanden mit dir' (лучше: 'Ich stimme dir zu'). 'Ich habe Recht' vs 'Ich liege richtig'."
         },
         {
           "kind": "rule",
-          "title": "Hyperkorrektur",
-          "text": "Überkorrektur: 'wen' statt 'wem' (wem = Dativ!). 'Der Mann, den ich helfe' (falsch, helfen + Dat → dem). 'Ich rate dir zu kommen' (richtig: rate dir, zu kommen)."
+          "title": "Гиперкоррекция",
+          "text": "Гиперкоррекция: 'wen' вместо 'wem' (wem = дательный!). 'Der Mann, den ich helfe' (ошибка, helfen + дат. → dem). 'Ich rate dir zu kommen' (правильно: rate dir, zu kommen)."
         },
         {
           "kind": "rule",
-          "title": "Falsche Freunde (Deutsch-Russisch)",
-          "text": "aktuell = gegenwärtig (nicht *aktuell = wirklich). eventuell = möglicherweise (nicht *эвентуально = случайно). konfus = verwirrt (nicht *конфуз = смущённый). symmetrisch = symmetrisch (ok)."
+          "title": "Ложные друзья (немецкий-русский)",
+          "text": "aktuell = gegenwärtig (не *aktuell = wirklich). eventuell = möglicherweise (не *эвентуально = случайно). konfus = verwirrt (не *конфуз = смущённый). symmetrisch = symmetrisch (ок)."
         },
         {
           "kind": "rule",
-          "title": "Syntaxfallen",
-          "text": "V2-Verletzung: 'Heute ich gehe' (falsch). Präpositionalfall: 'Ich warte auf ihn' (nicht *auf er). Konjunktiv: 'Wenn ich wäre' (falsch: 'wäre ich'). Passiv: 'ist geworden' statt 'ist worden'."
+          "title": "Синтаксические ловушки",
+          "text": "Нарушение V2: 'Heute ich gehe' (ошибка). Предложный падеж: 'Ich warte auf ihn' (не *auf er). Конъюнктив: 'Wenn ich wäre' (ошибка: 'wäre ich'). Пассив: 'ist geworden' вместо 'ist worden'."
         },
         {
           "kind": "rule",
-          "title": "Kasusfehler bei Verben",
-          "text": "helfen + Dat (nicht Akk), danken + Dat, folgen + Dat, gefallen + Dat. 'Ich helfe ihn' → falsch: 'Ich helfe ihm'."
+          "title": "Ошибки падежа при глаголах",
+          "text": "helfen + дат. (не винит.), danken + дат., folgen + дат., gefallen + дат. 'Ich helfe ihn' → ошибка: 'Ich helfe ihm'."
         },
         {
           "kind": "example",
           "de": "Falsch: 'Ich helfe ihn.' Richtig: 'Ich helfe ihm.' Falsch: 'Wenn ich wäre reich.' Richtig: 'Wäre ich reich.' Falsch: 'Das ist geworden.' Richtig: 'Das ist geworden.' (Partizip II) / 'Das ist worden.' (Passiv Perfekt).",
           "ru": "Ошибка: 'Я помогаю ему (Akk)'. Правильно: 'Ich helfe ihm (Dat)'. Ошибка: 'Wenn ich wäre reich'. Правильно: 'Wäre ich reich'.",
-          "note": "Kasus (helfen + Dat), V2, Konjunktiv II Wortstellung, Passiv Perfekt (worden)."
+          "note": "Падеж (helfen + дат.), V2, порядок слов в Конъюнктиве II, Пассив Перфект (worden)."
         }
       ],
       "drills": [
@@ -656,7 +656,7 @@
           "answer": [
             "ihm"
           ],
-          "why": "helfen + Dativ."
+          "why": "helfen + дательный падеж."
         },
         {
           "id": "c2-04-d02",
@@ -671,7 +671,7 @@
           "answer": [
             "Wäre / würde"
           ],
-          "why": "Wäre ich reich (Inversion), würde ich reisen. Oder: Wenn ich reich wäre, würde ich reisen."
+          "why": "Wäre ich reich (инверсия), würde ich reisen. Или: Wenn ich reich wäre, würde ich reisen."
         },
         {
           "id": "c2-04-d03",
@@ -686,7 +686,7 @@
           "answer": [
             "ist worden"
           ],
-          "why": "Passiv Perfekt: ist + Partizip II + worden."
+          "why": "Пассив перфект: ist + причастие II + worden."
         },
         {
           "id": "c2-04-d04",
@@ -695,7 +695,7 @@
           "answer": [
             "gegenwärtig"
           ],
-          "why": "aktuell = gegenwärtig, jetzt."
+          "why": "aktuell = gegenwärtig, сейчас."
         },
         {
           "id": "c2-04-d05",
@@ -704,7 +704,7 @@
           "answer": [
             "Heute gehe ich nicht spazieren."
           ],
-          "why": "V2: Heute (Pos 1) — gehe (Pos 2) — ich (Pos 3)."
+          "why": "V2: Heute (позиция 1) — gehe (позиция 2) — ich (позиция 3)."
         },
         {
           "id": "c2-04-d06",
@@ -719,7 +719,7 @@
           "answer": [
             "dem"
           ],
-          "why": "helfen + Dat → dem."
+          "why": "helfen + дат. → dem."
         },
         {
           "id": "c2-04-d07",
@@ -728,7 +728,7 @@
           "answer": [
             "gekommen wäre, hätte er gesehen"
           ],
-          "why": "Typ 3: wäre + Partizip II, hätte + Partizip II."
+          "why": "Тип 3: wären + причастие II, hätte + причастие II."
         },
         {
           "id": "c2-04-d08",
@@ -743,7 +743,7 @@
           "answer": [
             "möglicherweise"
           ],
-          "why": "eventuell = möglicherweise."
+          "why": "eventuell означает «возможно», а не «случайно»."
         },
         {
           "id": "c2-04-d09",
@@ -752,7 +752,7 @@
           "answer": [
             "Ich rate dir, zu kommen."
           ],
-          "why": "raten + Dat + zu-Infinitiv (nicht dass-Satz)."
+          "why": "raten + дат. + zu-инфинитив (не dass-придаточное)."
         },
         {
           "id": "c2-04-d10",
@@ -761,7 +761,7 @@
           "answer": [
             "mir"
           ],
-          "why": "gefallen + Dativ."
+          "why": "gefallen + дательный падеж."
         },
         {
           "id": "c2-04-d11",
@@ -776,7 +776,7 @@
           "answer": [
             "Gestern ging ich."
           ],
-          "why": "V2: Gestern (Pos 1) — ging (Pos 2) — ich (Pos 3)."
+          "why": "V2: Gestern (позиция 1) — ging (позиция 2) — ich (позиция 3)."
         },
         {
           "id": "c2-04-d12",
@@ -785,7 +785,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "wurde + Partizip II."
+          "why": "wurde + причастие II."
         }
       ]
     }

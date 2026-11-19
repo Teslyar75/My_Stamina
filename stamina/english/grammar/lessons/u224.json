@@ -1,0 +1,72 @@
+{
+ "n": 224,
+ "level": "B2",
+ "module": "b-order",
+ "title": "Порядок слов (2): наречия",
+ "en": "word order 2",
+ "summary": "Наречия в английском занимают фиксированные позиции: образа действия — в конце, частотности и степени — в середине после вспомогательных, фокусные — рядом с выделяемым словом.",
+ "can_do": [
+  "Ставить наречия образа действия в конец предложения.",
+  "Размещать наречия частотности и уверенности в mid-position после be/aux.",
+  "Использовать even, also, only рядом с нужным словом для точного смысла.",
+  "Правильно строить предложения с all и both в mid-position."
+ ],
+ "theory": [
+  {
+   "h": "Где ставятся наречия",
+   "p": "Порядок слов в английском строже, чем в русском: наречие не может плавать свободно по предложению. Его место определяется типом наречия — образ действия, частотность, степень — и структурой глагола: есть ли вспомогательный, be или модальный. Ошибка в позиции меняет смысл или звучит неестественно для носителя.",
+   "formula": "She sings beautifully. · He is always late. · They have probably left."
+  },
+  {
+   "h": "Наречия образа действия (how)",
+   "p": "Наречия вида действия (slowly, carefully, well, badly) чаще всего стоят в конце предложения — после глагола или объекта. Если глагол — be или есть вспомогательный/модальный, наречие может встать в mid-position (перед смысловым глаголом), но конец остаётся нейтральным и безопасным вариантом для большинства контекстов.",
+   "formula": "He drove carefully. · She is beautifully dressed. · They have carefully checked the data."
+  },
+  {
+   "h": "Наречия частотности (how often)",
+   "p": "Наречия частотности (always, usually, often, sometimes, never) занимают mid-position: строго после be, вспомогательного или модального, но перед смысловым глаголом. В отрицании often и sometimes могут стоять перед not для усиления (don't often go), а usually — только после not (don't usually go). Русский «обычно не» переводится как usually not.",
+   "formula": "She usually arrives early. · He is never late. · They don't usually complain."
+  },
+  {
+   "h": "Наречия степени уверенности",
+   "p": "Наречия степени уверенности (probably, certainly, definitely, surely) также идут в mid-position: после вспомогательного или модального, перед смысловым глаголом. В отрицании probably и definitely часто ставятся перед not (probably not), а certainly — после not (certainly not). Порядок меняет оттенок: I will probably not go звучит естественнее, чем I probably will not go.",
+   "formula": "It will probably rain. · She has definitely finished. · He certainly didn't know."
+  },
+  {
+   "h": "Фокусные наречия (even, also, only)",
+   "p": "Фокусные наречия even, also, only ставятся максимально близко к слову, которое выделяют. Сдвиг меняет смысл: Only I saw him (никто кроме меня) ≠ I only saw him (я лишь видел, не говорил) ≠ I saw only him (никого кроме него). В устной речи интонация помогает, в письме порядок слов — единственный маркер фокуса.",
+   "formula": "Only she knows the answer. · She only knows the answer. · She knows only the answer."
+  },
+  {
+   "h": "All и both в mid-position",
+   "p": "All и both ведут себя как наречия частотности: после be, вспомогательного или модального, перед смысловым глаголом. С местоимениями они часто стоят после: we all, they both. Типичная ошибка — поставить all перед be (All we are ready — неправильно). Правильно: We are all ready.",
+   "formula": "They have all arrived. · We are both tired. · The students all passed."
+  }
+ ],
+ "examples": [
+  {"en": "She usually finishes work at six.", "ru": "Обычно она заканчивает работу в шесть."},
+  {"en": "He has probably forgotten the meeting.", "ru": "Вероятно, он забыл о встрече."},
+  {"en": "They drove slowly because of the rain.", "ru": "Они ехали медленно из-за дождя."},
+  {"en": "I only asked for a glass of water.", "ru": "Я только попросил стакан воды."},
+  {"en": "We are all ready to start.", "ru": "Мы все готовы начать."},
+  {"en": "She certainly didn't mean to offend you.", "ru": "Она точно не хотела тебя обидеть."},
+  {"en": "Even John came to the party.", "ru": "Даже Джон пришёл на вечеринку."}
+ ],
+ "traps": [
+  {"bad": "He drives always fast.", "good": "He always drives fast.", "why": "Наречия частотности стоят перед смысловым глаголом, а не в конце предложения."},
+  {"bad": "She is probably not coming.", "good": "She probably isn't coming.", "why": "Probably лучше ставить после вспомогательного (isn't) или перед not с модальным (will probably not), но не между be и not."},
+  {"bad": "I only want to help.", "good": "I want only to help.", "why": "Only перед want означает «только хочу», перед to help — «только помочь». Ставьте only прямо перед выделяемым словом."},
+  {"bad": "All the students are not here.", "good": "Not all the students are here.", "why": "All... not двусмысленно (не все vs ни один). Для «не все» лучше Not all."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He ___ late for work.", "options": ["never is", "is never", "is ever"], "a": 1, "why": "Never стоит после be в mid-position: He is never late."},
+  {"type": "choice", "q": "They ___ finished the project.", "options": ["have probably", "probably have", "have probably not"], "a": 0, "why": "Probably после вспомогательного have: They have probably finished."},
+  {"type": "choice", "q": "___ approved the request.", "options": ["Only the manager", "The manager only", "Only manager"], "a": 0, "why": "Only перед существительным, которое выделяем: Only the manager."},
+  {"type": "choice", "q": "We ___ ready to leave.", "options": ["are all", "all are", "are both"], "a": 0, "why": "All после be: We are all ready."},
+  {"type": "gap", "q": "She answered the question ___ (correct).", "a": ["correctly"], "why": "Наречие образа действия в конце: answered correctly."},
+  {"type": "gap", "q": "He ___ (definitely) won't come tomorrow.", "a": ["definitely"], "why": "Definitely перед won't (will not) в mid-position: definitely won't."},
+  {"type": "gap", "q": "___ (even) my brother liked the film.", "a": ["Even"], "why": "Even перед подлежащим для выделения: Even my brother."},
+  {"type": "translate", "q": "Они обычно ужинают в семь.", "a": ["they usually have dinner at seven", "they usually dine at seven"], "why": "Usually в mid-position перед смысловым глаголом: usually have."},
+  {"type": "translate", "q": "Мы оба уставшие.", "a": ["we are both tired", "we're both tired"], "why": "Both после be: are both tired."}
+ ]
+}

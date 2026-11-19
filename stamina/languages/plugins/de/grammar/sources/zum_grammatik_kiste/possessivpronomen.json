@@ -1,0 +1,53 @@
+{
+  "id": "possessivpronomen",
+  "title": "Possessivpronomen",
+  "original_url": "https://deutsch-lernen.zum.de/wiki/Possessivpronomen",
+  "explanation_lang": "de",
+  "section": "Pronomen",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Possessivpronomen (besitzanzeigende Wörter) ersetzen ein Nomen und vermeiden so Wiederholungen des Nomens. Possesivpronomen stehen allein.\n\nBeispiel:\n\nDas ist meins.\n\nWenn ein besitzanzeigendes Wort vor einem Nomen steht, dieses also begleitet, dann sprechen wir von einem Possessivartikel. - Beispiel: Das ist mein Buch."
+    },
+    {
+      "heading": "Possessivpronomen und Possessivartikel",
+      "text": "Possessivpronomen\n\nersetzen bzw. vertreten das entsprechende Nomen,\n\nkönnen dekliniert (gefegt) werden: Sie stehen in verschiedenen Kasus,\n\ngeben eine Zugehörigkeit oder einen Besitz an: Wem gehört das Buch? - Das ist meins.\n\nPossessivartikel\n\nstehen in der Regel vor dem Substantiv (Nomen) und werden deshalb Begleiter bzw. Possessivartikel genannt,\n\nkönnen gebeugt (dekliniert) werden: Ich sehen meinen Bruder morgen."
+    },
+    {
+      "heading": "Possessivpronomen - Übersicht",
+      "text": "Bezugsperson | mask. | neutr. | femin. | Plural\n\nich | meiner | meins | meine | meine\n\nwir | unser | unser(e)s | unsere | unsere\n\nBeispiele | Tisch | Auto | Blume | Freunde\n\nich | meiner | meins | meine | meine\n\nwir | unser | unser(e)s | unsere | unsere\n\nDer Genitiv des Possessivpronomens wird nicht verwendet."
+    },
+    {
+      "heading": "Interaktive Übungen",
+      "text": "Interaktive Übungen\n\nPossessivpronomen (Interaktive Übungen)"
+    },
+    {
+      "heading": "Weiterführende Links",
+      "text": "Das Possessivpronomen (deutschplus)"
+    },
+    {
+      "heading": "Siehe auch",
+      "text": "Possessivartikel"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Bezugsperson",
+      "en": "mask."
+    },
+    {
+      "de": "ich",
+      "en": "meiner"
+    },
+    {
+      "de": "wir",
+      "en": "unser"
+    },
+    {
+      "de": "Beispiele",
+      "en": "Tisch"
+    }
+  ],
+  "exercises": []
+}

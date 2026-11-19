@@ -1,0 +1,71 @@
+{
+ "n": 199,
+ "level": "B2",
+ "module": "b-pronouns",
+ "title": "there и it",
+ "en": "there and it",
+ "summary": "Конструкция there is/are сообщает о существовании чего‑либо, а it служит формальным подлежащим для погоды, времени, расстояния и идентификации лиц.",
+ "can_do": [
+  "Говорить, что где‑то есть или происходит, с there is/are в разных временах.",
+  "Использовать it для описания погоды, времени, расстояния и оценки ситуаций.",
+  "Различать There's a man at the door (кто‑то там есть) и It's a man I know (это конкретный человек).",
+  "Строить фразы типа It takes … to …, It's a pity that …, there seems to be."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужен there is/are",
+   "p": "В английском нельзя просто сказать «В комнате стол» — нужен формальный подлежащий there. Конструкция there is/are ставится, когда мы сообщаем о появлении или наличии чего‑то нового: There is a letter on the table. В русском это часто соответствует предложениям с глаголом «есть» или обратным порядком слов.",
+   "formula": "There is a book. · There are two books. · There was a problem."
+  },
+  {
+   "h": "There в других временах и с модалями",
+   "p": "There работает не только в Present Simple. В прошедшем — there was/were, в будущем — there will be, с модалями — there must be, there can be, there seems to be. Порядок слов не меняется: there + глагол + подлежащее.",
+   "formula": "There will be a meeting. · There must be a mistake. · There seems to be no way out."
+  },
+  {
+   "h": "It как формальное подлежащее: погода, время, расстояние",
+   "p": "Когда речь о погоде, времени суток, дате или расстоянии, подлежащего нет — ставим it. Это не «он/она», а пустое место: It is raining, It is five o'clock, It is ten kilometres to the station. В русском такие предложения безличные.",
+   "formula": "It's cold. · It's Monday. · It's a long way from here."
+  },
+  {
+   "h": "It в оценочных конструкциях: It's nice to…, It takes…, It's a pity…",
+   "p": "It часто открывает предложение, где настоящий подлежащий — инфинитив или придаточное: It's nice to see you (реальный подлежащий — to see you), It takes an hour to get there, It's a pity that he left. Перевод часто начинается с безличного «хорошо», «жаль», «занимает».",
+   "formula": "It's good to know. · It takes time. · It's a shame that you can't come."
+  },
+  {
+   "h": "Идентификация: There's a man vs It's a man",
+   "p": "There's a man at the door — мы сообщаем о факте наличия человека (кто‑то там есть). It's a man I know — мы идентифицируем уже известного собеседника, указывая, кто именно это. Первый случай — existence, второй — identification.",
+   "formula": "There's someone at the door. · It's the postman. · There's a cat in the garden. · It's my cat."
+  },
+  {
+   "h": "Согласование there is/are с подлежащим",
+   "p": "Глагол согласуется с первым подлежащим после себя: There is a pen and two pencils (упрощённо is), но There are two pens and a pencil. В разговорной речи часто слышно There's a lot of people, хотя грамматически правильнее There are.",
+   "formula": "There is a cat. · There are cats. · There's a man and a woman."
+  }
+ ],
+ "examples": [
+  {"en": "There is a cafe near my house.", "ru": "Рядом с моим домом есть кафе."},
+  {"en": "There will be a test tomorrow.", "ru": "Завтра будет тест."},
+  {"en": "It takes twenty minutes to walk there.", "ru": "Дойти туда занимает двадцать минут."},
+  {"en": "It's a pity you didn't come.", "ru": "Жаль, что ты не пришёл."},
+  {"en": "There's someone at the door.", "ru": "Кто‑то у двери."},
+  {"en": "It's my brother on the phone.", "ru": "Это мой брат по телефону."}
+ ],
+ "traps": [
+  {"bad": "Is a cafe near here?", "good": "Is there a cafe near here?", "why": "В вопросах о наличии нужен there: Is there…?"},
+  {"bad": "It is a man at the door.", "good": "There is a man at the door.", "why": "It не используется для сообщения о появлении — только there is."},
+  {"bad": "There's my keys on the table.", "good": "There are my keys on the table.", "why": "Keys — множественное число, глагол должен быть are."},
+  {"bad": "There is raining.", "good": "It is raining.", "why": "Погода всегда с it, there здесь невозможен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ a lot of noise outside last night.", "options": ["There was", "It was", "There were"], "a": 0, "why": "Noise — неисчисляемое, прошлое время: There was."},
+  {"type": "choice", "q": "___ five kilometres to the nearest station.", "options": ["There is", "It is", "There are"], "a": 1, "why": "Расстояние требует it: It is five kilometres."},
+  {"type": "choice", "q": "___ a pity you missed the party.", "options": ["There is", "It is", "It has"], "a": 1, "why": "Оценочная конструкция: It's a pity that…"},
+  {"type": "choice", "q": "___ someone waiting for you in the hall.", "options": ["There is", "It is", "There are"], "a": 0, "why": "Сообщаем о наличии человека: There is someone."},
+  {"type": "gap", "q": "___ (be) a meeting tomorrow at ten.", "a": ["There will be"], "why": "Будущее время there: There will be."},
+  {"type": "gap", "q": "___ (take) about an hour to finish this.", "a": ["It takes"], "why": "Конструкция It takes time to do something."},
+  {"type": "gap", "q": "___ (seem) to be a mistake in the report.", "a": ["There seems"], "why": "Модальный смысл: there seems to be."},
+  {"type": "translate", "q": "Здесь нет никого.", "a": ["there is nobody here", "there isn't anyone here"], "why": "Отрицание наличия: there is nobody / there isn't anyone."},
+  {"type": "translate", "q": "Кто это звонит? — Это Анна.", "a": ["who is calling? it's anna", "who's calling? it's anna"], "why": "Идентификация по телефону: It's Anna."}
+ ]
+}

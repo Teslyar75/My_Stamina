@@ -1,0 +1,72 @@
+{
+ "n": 144,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "may и might (1): возможно",
+ "en": "may and might 1",
+ "summary": "May и might оставляют дверь открытой: вы не обещаете и не отказываете, а честно говорите, что не знаете.",
+ "can_do": [
+  "Сказать, что что-то возможно, через may и might.",
+  "Показать разную степень уверенности: might слабее, чем may.",
+  "Отрицать возможность через may not и might not, не превращая это в запрет.",
+  "Говорить о возможном в прошлом через may have done."
+ ],
+ "theory": [
+  {
+   "h": "Возможность без обещания",
+   "p": "May и might ставятся перед глаголом без to и выражают вероятность. Говорящий не берётся утверждать, что событие случится, но и не исключает его. В русском ближайшие слова — «возможно», «может быть», «вероятно».",
+   "formula": "It may rain later. · She might be at the library. · They might not come."
+  },
+  {
+   "h": "Где вы на шкале уверенности",
+   "p": "Слова выстраиваются в понятную лестницу от «точно да» до «точно нет». Полезно держать её в голове, потому что выбор слова — это и есть оценка вероятности, которую вы даёте собеседнику.",
+   "table": {
+    "head": ["Форма", "Степень уверенности", "Пример"],
+    "rows": [
+     ["will", "почти уверен, что да", "He'll come."],
+     ["may", "примерно половина", "He may come."],
+     ["might", "меньше половины", "He might come."],
+     ["won't", "почти уверен, что нет", "He won't come."]
+    ]
+   }
+  },
+  {
+   "h": "May и might почти равны",
+   "p": "В значении вероятности разница между ними невелика, и в разговорной речи might звучит чаще. Might не делает фразу прошлой: это по-прежнему догадка о настоящем или будущем. May чуть формальнее, его любят отчёты и прогнозы.",
+   "formula": "It may be true. = It might be true. · The results may take a week."
+  },
+  {
+   "h": "Отрицание: may not, а не mustn't",
+   "p": "May not и might not значат «возможно, это не так». Это не запрет и не приказ. Mustn't запрещает действие, поэтому фразы с ним переводятся совсем иначе. Сравните: It may not be true — возможно, это неправда; It mustn't be true — этого не должно быть правдой.",
+   "formula": "She may not know about it. · It might not be enough."
+  },
+  {
+   "h": "О прошлом: may have done",
+   "p": "Если догадка относится к прошлому, между модальным и смысловым глаголом встаёт have, а смысловой берёт третью форму. Might have done звучит как «возможно, так и было», и часто это объяснение без обвинения.",
+   "formula": "She might have missed the bus. · He may have forgotten. · They might not have received it."
+  }
+ ],
+ "examples": [
+  {"en": "Take an umbrella — it may rain later.", "ru": "Возьмите зонт, возможно, позже пойдёт дождь."},
+  {"en": "She might be at the library.", "ru": "Возможно, она в библиотеке."},
+  {"en": "I might not have time to finish this today.", "ru": "Возможно, у меня не будет времени закончить это сегодня."},
+  {"en": "He may have missed his connection in Vienna.", "ru": "Возможно, он опоздал на пересадку в Вене."},
+  {"en": "The results may take a week to arrive.", "ru": "Результаты, вероятно, придут только через неделю."}
+ ],
+ "traps": [
+  {"bad": "It can rain tomorrow.", "good": "It may rain tomorrow.", "why": "О вероятности в будущем говорят may или might; can о догадке не употребляется."},
+  {"bad": "He may be a doctor, I'm sure of it.", "good": "He must be a doctor, I'm sure of it.", "why": "May выражает сомнение, а не уверенность."},
+  {"bad": "She might can come later.", "good": "She might be able to come later.", "why": "Два модальных глагола рядом не ставятся, нужен be able to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Take an umbrella — it ___ rain later.", "options": ["can", "may", "must"], "a": 1, "why": "Вероятность в будущем — may."},
+  {"type": "choice", "q": "Don't wait for him: he ___ be late, I'm not sure.", "options": ["might", "must", "can't"], "a": 0, "why": "Говорящий не уверен, значит might."},
+  {"type": "choice", "q": "She ___ have taken the wrong train.", "options": ["may", "must to", "can"], "a": 0, "why": "Догадка о прошлом — may have taken."},
+  {"type": "choice", "q": "This ___ be the right address, but I'd check it again.", "options": ["must", "may", "can't"], "a": 1, "why": "Сомнение, а не уверенность — may."},
+  {"type": "gap", "q": "I'm not sure where he is. He ___ (might / be) still at work.", "a": ["might be", "may be"], "why": "Догадка о настоящем — might be."},
+  {"type": "gap", "q": "The keys aren't here. I ___ (may / leave) them in the car.", "a": ["may have left", "might have left"], "why": "Догадка о прошлом — may have left."},
+  {"type": "gap", "q": "She ___ (not / might / know) about the meeting — nobody called her.", "a": ["might not know", "may not know"], "why": "Отрицательная догадка — might not know, без запрета."},
+  {"type": "translate", "q": "Возможно, он опоздает.", "a": ["he may be late", "he might be late"], "why": "Вероятность в будущем — may или might."},
+  {"type": "translate", "q": "Возможно, она не получила сообщение.", "a": ["she may not have received the message", "she might not have received the message", "she may not have got the message"], "why": "Отрицательная догадка о прошлом — may not have received."}
+ ]
+}

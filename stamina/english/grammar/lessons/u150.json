@@ -1,0 +1,71 @@
+{
+ "n": 150,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "had better и it's time",
+ "en": "had better / it's time",
+ "summary": "Had better звучит как «иначе будет плохо», it's time — как «момент уже наступил, хватит ждать».",
+ "can_do": [
+  "Дать срочный совет через had better и 'd better not.",
+  "Сказать, что пора действовать, через it's time to do.",
+  "Упрекнуть в задержке через it's time you did.",
+  "Отличить силу had better от мягкого should."
+ ],
+ "theory": [
+  {
+   "h": "Had better — не про «лучше», а про «иначе будет плохо»",
+   "p": "По смыслу had better сильнее should: это совет с намёком на неприятные последствия. Если человек не послушает, случится что-то конкретное — опоздает на поезд, простудится, попадёт в беду. Отсюда и предупреждающий тон, который слышит собеседник.",
+   "formula": "You'd better see a doctor. · You'd better not be late again. · We'd better hurry."
+  },
+  {
+   "h": "Форма: had better плюс голый инфинитив",
+   "p": "После had better глагол идёт без to. В речи had почти всегда сокращается до 'd, а иногда исчезает совсем: you better go. Отрицание ставится перед глаголом — had better not, а не hadn't better. Вопроса эта конструкция обычно не образует.",
+   "formula": "You'd better take a coat. · She'd better not tell him. · I'd better go now."
+  },
+  {
+   "h": "It's time to do — просто пора",
+   "p": "Оборот it's time to плюс глагол говорит, что момент наступил, без указания, кто именно должен действовать. Если адресат важен, между time и инфинитивом вставляется for someone: it's time for you to go.",
+   "formula": "It's time to start. · It's time for us to leave. · It's time to make a decision."
+  },
+  {
+   "h": "It's time you did — прошедшая форма о настоящем",
+   "p": "После it's time you англичане ставят past simple, хотя речь о нынешнем моменте. Это способ сказать, что пора было ещё раньше, и в нём слышится лёгкий упрёк. Усиленные варианты it's about time и it's high time звучат ещё настойчивее.",
+   "formula": "It's time you went to bed. · It's about time she learned to drive. · It's high time we left."
+  },
+  {
+   "h": "Сравнение по силе",
+   "p": "Три способа подтолкнуть человека к действию различаются напором. Should советует, had better предупреждает, it's time констатирует, что ждать больше нельзя. Выбор задаёт тон разговора сильнее, чем сами слова.",
+   "table": {
+    "head": ["Фраза", "Сила", "Пример"],
+    "rows": [
+     ["should", "мягкий совет", "You should go to bed."],
+     ["had better", "срочно, иначе плохо", "You'd better go to bed now."],
+     ["it's time", "момент наступил", "It's time you went to bed."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "You'd better take a coat — it's freezing outside.", "ru": "Лучше возьми пальто, на улице мороз."},
+  {"en": "We'd better not wake the baby.", "ru": "Лучше не будить ребёнка."},
+  {"en": "It's time to start the meeting.", "ru": "Пора начинать совещание."},
+  {"en": "It's time you told him the truth.", "ru": "Пора бы тебе сказать ему правду."},
+  {"en": "It's about time she learned to drive.", "ru": "Давно пора ей научиться водить."}
+ ],
+ "traps": [
+  {"bad": "You had better to rest.", "good": "You'd better rest.", "why": "После had better инфинитив без to."},
+  {"bad": "It's time you go to bed.", "good": "It's time you went to bed.", "why": "После it's time you ставится past simple, хотя речь о настоящем."},
+  {"bad": "He has better study harder.", "good": "He had better study harder.", "why": "Форма устойчивая — had better, а не has better."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You ___ better check the oil before the trip.", "options": ["had", "have", "would"], "a": 0, "why": "Устойчивая форма — had better."},
+  {"type": "choice", "q": "It's time we ___ home.", "options": ["go", "went", "will go"], "a": 1, "why": "После it's time we — past simple."},
+  {"type": "choice", "q": "You'd ___ tell him — he'll find out anyway.", "options": ["better", "best", "well"], "a": 0, "why": "Сокращение от had better."},
+  {"type": "choice", "q": "It's high time she ___ a decision.", "options": ["makes", "made", "will make"], "a": 1, "why": "High time усиливает конструкцию, форма остаётся прошедшей."},
+  {"type": "gap", "q": "You ___ (had better / not) be late again.", "a": ["had better not"], "why": "Отрицание ставится после better."},
+  {"type": "gap", "q": "It's time you ___ (apologise) to her.", "a": ["apologised"], "why": "После it's time you — прошедшая форма."},
+  {"type": "gap", "q": "We ___ (had better / leave) now, or we'll miss the train.", "a": ["had better leave"], "why": "Had better плюс инфинитив без to."},
+  {"type": "translate", "q": "Тебе лучше не спорить с ним.", "a": ["you had better not argue with him", "you'd better not argue with him"], "why": "Срочный совет с отрицанием — had better not."},
+  {"type": "translate", "q": "Пора тебе ложиться спать.", "a": ["it's time you went to bed", "it is time you went to bed"], "why": "It's time you плюс past simple."}
+ ]
+}

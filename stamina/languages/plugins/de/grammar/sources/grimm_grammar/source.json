@@ -1,0 +1,20 @@
+{
+  "id": "grimm_grammar",
+  "name": "Grimm Grammar",
+  "publisher": "Center for Open Educational Resources and Language Learning (COERLL), University of Texas at Austin",
+  "author": "Zsuzsanna Abrams",
+  "url": "https://www.coerll.utexas.edu/gg/index.html",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": {
+    "ru": "Grimm Grammar © Zsuzsanna Abrams, COERLL, Техасский университет в Остине, лицензия CC BY 4.0.",
+    "en": "Grimm Grammar © Zsuzsanna Abrams, COERLL, The University of Texas at Austin, licensed under CC BY 4.0.",
+    "de": "Grimm Grammar © Zsuzsanna Abrams, COERLL, The University of Texas at Austin, lizenziert unter CC BY 4.0."
+  },
+  "retrieved": "2026-11-19",
+  "modifications": {
+    "ru": "Убраны навигация, вёрстка, аудио и изображения. Текст правил, примеров и упражнений скопирован дословно; HTML преобразован в простой текст.",
+    "en": "Navigation, layout, audio and images were removed. Explanations, examples and exercises were copied verbatim; HTML was converted to plain text.",
+    "de": "Navigation, Layout, Audio und Bilder wurden entfernt. Erklärungen, Beispiele und Übungen wurden wörtlich übernommen; HTML wurde in Klartext umgewandelt."
+  }
+}

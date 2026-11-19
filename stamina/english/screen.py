@@ -19,7 +19,6 @@ from .progress import Progress
 from .tts import TTS
 from .ui import L, entry
 from .vocab import Vocab
-from .pages_grammar import GrammarPage
 
 SUBPAGES = [("overview", t("ОБЗОР")), ("sets", t("НАБОРЫ")), ("scanner", t("СКАНЕР")),
             ("practice", t("МИССИИ")), ("review", t("ПРОВЕРКА СИСТЕМ")), ("warehouse", t("СКЛАД КАРТОЧЕК")),
@@ -129,7 +128,6 @@ class EnglishScreen(tk.Frame):
             "book": BookCardsPage(self.body, self),
             "lists": ListsPage(self.body, self), "log": LogPage(self.body, self),
             "settings": SettingsPage(self.body, self),
-            "grammar": GrammarPage(self.body, self),
         }
         for p in self.pages.values():
             p.grid(row=0, column=0, sticky="nsew")
@@ -156,10 +154,22 @@ class EnglishScreen(tk.Frame):
             rowh = max(rowh, bh)
         self._tabs.configure(height=y + rowh, width=1)
 
+    def _ensure_grammar(self) -> None:
+        """Грамматика собирается только при первом входе во вкладку, не при старте отсека."""
+        if "grammar" in self.pages:
+            return
+        from .pages_grammar import GrammarPage
+        page = GrammarPage(self.body, self)
+        page.grid(row=0, column=0, sticky="nsew")
+        page.grid_remove()
+        self.pages["grammar"] = page
+
     # -- навигация ------------------------------------------------------------------
     def show(self, name: str) -> None:
         if not self._built:
             return
+        if name == "grammar":
+            self._ensure_grammar()
         for p in self.pages.values():          # фокус-режим не переживает смену вкладки
             if getattr(p, "_focus", None) is not None:
                 p.toggle_focus(False)

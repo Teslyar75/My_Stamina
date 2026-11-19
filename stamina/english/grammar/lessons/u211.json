@@ -1,0 +1,79 @@
+{
+ "n": 211,
+ "level": "B2",
+ "module": "b-relative",
+ "title": "Обороты с -ing и -ed",
+ "en": "-ing and -ed clauses",
+ "summary": "Как сократить придаточное до пары слов: the woman walking past the window, the car stolen last night. Актив берёт -ing, пассив — -ed.",
+ "can_do": [
+  "Сократить who is doing до -ing-оборота после существительного.",
+  "Сократить пассив which was done до -ed-оборота.",
+  "Различить boiling water и boiled water по смыслу.",
+  "Построить -ing-оборот в начале предложения без ошибки в подлежащем."
+ ],
+ "theory": [
+  {
+   "h": "Придаточное можно сократить",
+   "p": "Вместо полного придаточного с who или which часто ставят короткий оборот: the woman who is walking → the woman walking. Оборот идёт сразу после существительного и работает как прилагательное, а глагол be из него исчезает.",
+   "formula": "the woman walking past the window · the bridge built in 1900"
+  },
+  {
+   "h": "Актив — ing, пассив — ed",
+   "p": "Смысл держится на залоге. Если предмет сам выполняет действие, берём -ing. Если действие выполняют с ним, берём третью форму: the car which was stolen → the car stolen. Русский язык этой разницы не подсказывает, поэтому правило надо держать в голове.",
+   "table": {
+    "head": ["Полное придаточное", "Сокращённый оборот", "Кто действует"],
+    "rows": [
+     ["the woman who is talking to Tom", "the woman talking to Tom", "сама говорит"],
+     ["the car which was stolen", "the car stolen last night", "с ней это сделали"],
+     ["the people who were waiting", "the people waiting outside", "сами ждут"],
+     ["the man who was injured", "the man injured in the crash", "с ним это случилось"]
+    ]
+   }
+  },
+  {
+   "h": "Непереходные глаголы показывают разницу наглядно",
+   "p": "Возьмите пару boil и fall: boiling water — вода кипит сейчас, boiled water — вода уже вскипячена. Falling leaves падают сами, fallen leaves уже лежат на земле. Форма -ing всегда про действие в процессе, форма -ed — про результат.",
+   "formula": "boiling water · boiled water · falling leaves · fallen leaves"
+  },
+  {
+   "h": "Время берётся из главного предложения",
+   "p": "В обороте нет своего глагола, поэтому время понятно только по контексту: the man standing at the door — тот, кто стоит или стоял. Если время важно, лучше не сокращать, а оставить полное придаточное с who was или who is.",
+   "formula": "the people invited to the party · the letter written yesterday · the man standing at the door"
+  },
+  {
+   "h": "Оборот в начале предложения",
+   "p": "Оборот с -ing может стоять и первым, если у него с главным предложением одно подлежащее: not knowing what to say, she kept silent. Ошибка появляется, когда подлежащие разные: walking home, the rain started — по-английски это значит, что дождь шёл домой.",
+   "formula": "Not knowing what to say, she kept silent. · Having finished the report, he went home."
+  },
+  {
+   "h": "Артикль и запятые",
+   "p": "Артикль остаётся при существительном, а оборот идёт после него, и запятые не нужны, если оборот короткий и уточняет, о каком именно предмете речь: the man standing there, a letter written in pencil. Запятые появятся только тогда, когда оборот вводный.",
+   "formula": "The man standing there is my uncle. · A letter written in pencil is easy to change."
+  }
+ ],
+ "examples": [
+  {"en": "The woman walking past the window is my neighbour.", "ru": "Женщина, проходящая мимо окна, — моя соседка."},
+  {"en": "The car stolen last night was found today.", "ru": "Машину, украденную вчера вечером, нашли сегодня."},
+  {"en": "The people waiting outside look cold.", "ru": "Люди, ждущие на улице, выглядят замёрзшими."},
+  {"en": "I don't like boiled water, I prefer cold drinks.", "ru": "Я не люблю кипячёную воду, предпочитаю холодные напитки."},
+  {"en": "The man injured in the crash is in hospital.", "ru": "Мужчина, пострадавший в аварии, в больнице."},
+  {"en": "Not knowing what to say, she just smiled.", "ru": "Не зная, что сказать, она просто улыбнулась."}
+ ],
+ "traps": [
+  {"bad": "The people waited outside look cold.", "good": "The people waiting outside look cold.", "why": "Люди ждут сами, поэтому нужен -ing."},
+  {"bad": "The man injuring in the accident is in hospital.", "good": "The man injured in the accident is in hospital.", "why": "Его травмировали, это пассив — третья форма injured."},
+  {"bad": "Walking home, the rain started.", "good": "Walking home, I got caught in the rain.", "why": "Подлежащее оборота и главного предложения должно совпадать."},
+  {"bad": "The car stealing last night was found.", "good": "The car stolen last night was found.", "why": "Машину украли, а не она украла, — stolen."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The bridge ___ in 1900 is still in use.", "options": ["built", "building", "build"], "a": 0, "why": "Мост построили — пассив, третья форма built."},
+  {"type": "choice", "q": "The girl ___ to music on the bench is my sister.", "options": ["listening", "listened", "listen"], "a": 0, "why": "Девочка слушает сама — -ing."},
+  {"type": "choice", "q": "Look at the ___ leaves on the ground.", "options": ["fallen", "falling", "fell"], "a": 0, "why": "Листья уже упали — результат, fallen."},
+  {"type": "choice", "q": "The documents ___ yesterday are on your desk.", "options": ["signed", "signing", "sign"], "a": 0, "why": "Документы подписали — пассив, signed."},
+  {"type": "gap", "q": "The man ___ (stand) at the door is my uncle.", "a": ["standing"], "why": "Он стоит сам — оборот с -ing: standing."},
+  {"type": "gap", "q": "The letter ___ (write) in pencil is easier to correct.", "a": ["written"], "why": "Письмо написали — третья форма written."},
+  {"type": "gap", "q": "The children ___ (play) in the yard are very noisy.", "a": ["playing"], "why": "Дети играют сами — playing."},
+  {"type": "translate", "q": "Женщина, сидящая у окна, читает книгу.", "a": ["the woman sitting by the window is reading a book", "the woman sitting at the window is reading a book"], "why": "Она сидит сама — оборот с -ing после существительного."},
+  {"type": "translate", "q": "Машина, украденная вчера, была найдена.", "a": ["the car stolen yesterday was found", "the car that was stolen yesterday was found"], "why": "Пассив: stolen, без be в обороте."}
+ ]
+}

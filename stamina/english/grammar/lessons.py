@@ -1,9 +1,13 @@
-"""Уроки грамматики «Английского»: индекс 115 юнитов и загрузка по одному.
+"""Уроки грамматики «Английского»: индекс 115 + 136 юнитов и загрузка по одному.
 
-Контент — учебный конспект по порядку тем Essential Grammar in Use (красный Мёрфи),
-написанный заново по-русски. Данные лежат рядом: lessons/index.json (лёгкий, 22 КБ)
-и lessons/uNNN.json (один урок, 2–4 КБ). Страница грузит индекс и уроки в фоне:
+Контент — учебный конспект по порядку тем Essential Grammar in Use (красный Мёрфи,
+115 юнитов, A1–B1) и English Grammar in Use (синий Мёрфи, 136 юнитов, B2).
+Тексты написаны заново по-русски. Данные лежат рядом: lessons/index.json и
+lessons/uNNN.json (один урок, 2–4 КБ). Страница грузит индекс и уроки в фоне:
 никаких тяжёлых чтений в главном потоке Tk.
+
+Внутри курса нумерация сквозная: красная книга — 1–115, синяя — 116–251.
+Поле `unit` хранит номер юнита внутри книги (1–115 и 1–136): его и видит пилот.
 """
 from __future__ import annotations
 
@@ -15,8 +19,10 @@ from typing import Any
 
 DIR = Path(__file__).parent / "lessons"
 INDEX_PATH = DIR / "index.json"
-TOTAL_UNITS = 115
-LEVELS = ("a1", "a2", "b1")
+RED_UNITS = 115
+BLUE_UNITS = 136
+TOTAL_UNITS = RED_UNITS + BLUE_UNITS
+LEVELS = ("a1", "a2", "b1", "b2")
 
 _APOSTROPHES = str.maketrans({"\u2019": "'", "\u2018": "'", "\u02bc": "'", "`": "'"})
 _SPACES = re.compile(r"\s+")
@@ -31,6 +37,20 @@ def load_index() -> dict[str, Any]:
     """Индекс курса: модули и список юнитов. Читается один раз за запуск."""
     with open(INDEX_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def index_loaded() -> bool:
+    """Индекс уже в кэше: страница не должна читать его в конструкторе."""
+    return load_index.cache_info().currsize > 0
+
+
+@lru_cache(maxsize=1)
+def _lesson_filenames() -> frozenset[str]:
+    """Один проход по каталогу вместо сотен exists() на каждый uNNN.json."""
+    try:
+        return frozenset(p.name for p in DIR.iterdir() if p.suffix.lower() == ".json")
+    except OSError:
+        return frozenset()
 
 
 def modules() -> list[dict]:
@@ -54,8 +74,29 @@ def by_level(level: str) -> list[dict]:
     return [u for u in units() if (u.get("level") or "").lower() == level]
 
 
+def books() -> list[dict]:
+    return list(load_index().get("books") or [])
+
+
+def book_of(n: int) -> dict:
+    """Книга, к которой относится юнит: `red` (A1–B1) или `blue` (B2)."""
+    info = unit_info(n) or {}
+    bid = info.get("book") or ("blue" if str(info.get("level", "")).lower() == "b2" else "red")
+    return next((b for b in books() if b.get("id") == bid), {"id": bid, "units": 0, "levels": []})
+
+
+def unit_number(n: int) -> int:
+    """Номер юнита внутри книги — то, что видит пилот (1–115 или 1–136)."""
+    info = unit_info(n) or {}
+    return int(info.get("unit") or n)
+
+
+def of_book(book_id: str) -> list[dict]:
+    return [u for u in units() if (u.get("book") or "red") == book_id]
+
+
 def lesson_exists(n: int) -> bool:
-    return lesson_path(n).exists()
+    return lesson_path(n).name in _lesson_filenames()
 
 
 @lru_cache(maxsize=32)
@@ -91,7 +132,8 @@ def total() -> int:
 
 def available() -> int:
     """Сколько уроков уже написано (для честного «готово N из 115»)."""
-    return sum(1 for u in units() if lesson_exists(int(u["n"])))
+    names = _lesson_filenames()
+    return sum(1 for u in units() if lesson_path(int(u["n"])).name in names)
 
 
 def normalize(text: str) -> str:
