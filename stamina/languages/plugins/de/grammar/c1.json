@@ -19,27 +19,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Nominalstil = viele Substantive, wenig Verben. Typisch für Behördensprache, Wissenschaft. Verbalstil = mehr Verben, direkter, verständlicher."
+          "text": "Номинальный стиль = много существительных, мало глаголов. Типичен для канцелярита и науки. Вербальный стиль = больше глаголов, прямой, понятный."
         },
         {
           "kind": "rule",
-          "title": "Nominalstil (Behördendeutsch)",
-          "text": "Die Durchführung der Prüfung erfolgt durch den Prüfer. (statt: Der Prüfer führt die Prüfung durch.)"
+          "title": "Номинальный стиль (канцелярит)",
+          "text": "Номинальный стиль: Die Durchführung der Prüfung erfolgt durch den Prüfer. (statt: Der Prüfer führt die Prüfung durch.)"
         },
         {
           "kind": "rule",
-          "title": "Verbalstil (besser)",
-          "text": "Der Prüfer prüft. / Die Prüfung wird durchgeführt. Aktiv, direkt."
+          "title": "Вербальный стиль (лучше)",
+          "text": "Вербальный стиль: Der Prüfer prüft. / Die Prüfung wird durchgeführt. Aktiv, direkt."
         },
         {
           "kind": "rule",
-          "title": "Umwandlung",
-          "text": "Substantiv + Lichtverb → Verb: Entscheidung treffen → entscheiden. In Frage kommen → geeignet sein. Zur Kenntnis nehmen → erfahren."
+          "title": "Преобразование",
+          "text": "Преобразование: Substantiv + Lichtverb → Verb: Entscheidung treffen → entscheiden. In Frage kommen → geeignet sein. Zur Kenntnis nehmen → erfahren."
         },
         {
           "kind": "rule",
-          "title": "Wann Nominalstil OK",
-          "text": "Wissenschaftliche Texte, Verträge, Gesetze (Präzision). In Alltag/Journalismus: Verbalstil bevorzugen."
+          "title": "Когда номинальный стиль уместен",
+          "text": "Когда номинальный стиль уместен: Wissenschaftliche Texte, Verträge, Gesetze (Präzision). In Alltag/Journalismus: Verbalstil bevorzugen."
         },
         {
           "kind": "table",
@@ -53,7 +53,7 @@
           "kind": "example",
           "de": "Nominal: Die Erstellung des Berichts erfolgt durch den Mitarbeiter. Verbal: Der Mitarbeiter erstellt den Bericht. Oder: Der Bericht wird erstellt.",
           "ru": "Номинальный: Составление отчёта производится сотрудником. Вербальный: Сотрудник составляет отчёт. Или: Отчёт составляется.",
-          "note": "Nominalstil = schwer lesbar. Verbalstil = klar."
+          "note": "Номинальный стиль = трудно читать. Вербальный стиль = понятно."
         }
       ],
       "drills": [
@@ -70,7 +70,7 @@
           "answer": [
             "Unterzeichnung"
           ],
-          "why": "Substantivierung: unterschreiben → die Unterzeichnung."
+          "why": "Существивирование: unterschreiben → die Unterzeichnung."
         },
         {
           "id": "c1-01-d02",
@@ -85,7 +85,7 @@
           "answer": [
             "erfahren"
           ],
-          "why": "zur Kenntnis nehmen → erfahren."
+          "why": "zur Kenntnis nehmen переводится как erfahren (узнать)."
         },
         {
           "id": "c1-01-d03",
@@ -100,7 +100,7 @@
           "answer": [
             "erwägen"
           ],
-          "why": "in Betracht ziehen = erwägen."
+          "why": "in Betracht ziehen означает erwägen (рассматривать, обдумывать)."
         },
         {
           "id": "c1-01-d04",
@@ -109,7 +109,7 @@
           "answer": [
             "entscheidet"
           ],
-          "why": "Entscheidung treffen → entscheiden."
+          "why": "Entscheidung treffen — это entscheiden (принимать решение)."
         },
         {
           "id": "c1-01-d05",
@@ -118,7 +118,7 @@
           "answer": [
             "Die Prüfung wird vom Prüfer durchgeführt."
           ],
-          "why": "Passiv statt Nominalstil mit FVG."
+          "why": "Пассив вместо номинального стиля с ФВГ."
         },
         {
           "id": "c1-01-d06",
@@ -133,7 +133,7 @@
           "answer": [
             "Gewährleistung"
           ],
-          "why": "sichern → die Gewährleistung (FVG: Gewährleistung bieten)."
+          "why": "sichern → die Gewährleistung (ФВГ: Gewährleistung bieten)."
         },
         {
           "id": "c1-01-d07",
@@ -142,7 +142,7 @@
           "answer": [
             "in Frage"
           ],
-          "why": "in Frage kommen = geeignet sein."
+          "why": "in Frage kommen = подходить / быть подходящим."
         },
         {
           "id": "c1-01-d08",
@@ -151,7 +151,7 @@
           "answer": [
             "Der Arzt untersucht... / Die Untersuchung wird durchgeführt."
           ],
-          "why": "Substantiv + Lichtverb → Verb."
+          "why": "Существительное + вспомогательный глагол → глагол."
         },
         {
           "id": "c1-01-d09",
@@ -166,7 +166,7 @@
           "answer": [
             "Wissenschaft/Verträge/Gesetze"
           ],
-          "why": "Präzision, Rechtssicherheit."
+          "why": "Точность, правовая безопасность."
         },
         {
           "id": "c1-01-d10",
@@ -175,7 +175,7 @@
           "answer": [
             "beantragen"
           ],
-          "why": "Antrag stellen = beantragen."
+          "why": "Antrag stellen — это beantragen (подавать заявление)."
         },
         {
           "id": "c1-01-d11",
@@ -190,7 +190,7 @@
           "answer": [
             "wirken"
           ],
-          "why": "Wirkung zeigen = wirken."
+          "why": "Wirkung zeigen означает wirken (действовать)."
         },
         {
           "id": "c1-01-d12",
@@ -199,7 +199,7 @@
           "answer": [
             "löst"
           ],
-          "why": "Lösung finden → lösen."
+          "why": "Lösung найти — это lösen (решать)."
         }
       ]
     },
@@ -220,33 +220,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "C1-Syntax: Kombination mehrerer Nebensätze, Infinitivgruppen und Partizipialkonstruktionen in einem Satz."
+          "text": "Синтаксис C1: сочетание нескольких придаточных предложений, инфинитивных групп и причастных конструкций в одном предложении."
         },
         {
           "kind": "rule",
-          "title": "Verschachtelte Nebensätze",
-          "text": "Nebensatz in Nebensatz: 'Ich denke, dass er sagt, dass er kommt.' Verb-Reihenfolge am Ende: kommt, sagt, denke."
+          "title": "Вложенные придаточные предложения",
+          "text": "Придаточное в придаточном: 'Ich denke, dass er sagt, dass er kommt.' Порядок глаголов в конце: kommt, sagt, denke."
         },
         {
           "kind": "rule",
-          "title": "Infinitivgruppen mit zu",
-          "text": "Mehrere zu-Infinitive: 'Er versucht, zu lernen, um zu bestehen.' Oder mit Objekt: 'Ich bitte ihn, zu kommen.'"
+          "title": "Инфинитивные группы с zu",
+          "text": "Несколько инфинитивов с zu: 'Er versucht, zu lernen, um zu bestehen.' Или с объектом: 'Ich bitte ihn, zu kommen.'"
         },
         {
           "kind": "rule",
-          "title": "Partizipialkonstruktionen",
-          "text": "Kombination: 'Nach dem Essen gegangen, ruhte er sich aus, ohne zu schlafen.' Partizip II + Partizip I + Infinitiv."
+          "title": "Причастные конструкции",
+          "text": "Комбинация: 'Nach dem Essen gegangen, ruhte er sich aus, ohne zu schlafen.' Причастие II + причастие I + инфинитив."
         },
         {
           "kind": "rule",
-          "title": "Satzklammern bei Komplexität",
-          "text": "Konjugiertes Verb Pos 2, Infinitiv/Partizip II/Präfix am Ende. Bei mehreren: letzte Position sammelt alle."
+          "title": "Рамка предложения при сложности",
+          "text": "Согласованный глагол на позиции 2, инфинитив/причастие II/префикс в конце. Если несколько: последняя позиция собирает все."
         },
         {
           "kind": "example",
           "de": "Ich denke, dass er sagt, dass er kommen will, ohne sich anzumelden. Nachdem er gegessen hatte, ging er schlafen, ohne zu lesen.",
           "ru": "Я думаю, что он говорит, что он хочет прийти, не регистрируясь. После того как он поел, он пошёл спать, не читая.",
-          "note": "Mehrere Ebenen: dass... dass... wollen... ohne... zu. Partizip II + Infinitiv."
+          "note": "Несколько уровней: dass... dass... wollen... ohne... zu. Причастие II + инфинитив."
         }
       ],
       "drills": [
@@ -263,7 +263,7 @@
           "answer": [
             "dass / dass"
           ],
-          "why": "Zwei dass-Nebensätze nacheinander."
+          "why": "Два придаточных предложения с dass подряд."
         },
         {
           "id": "c1-02-d02",
@@ -278,7 +278,7 @@
           "answer": [
             "will können müssen"
           ],
-          "why": "Modal + Infinitiv + Modal: will (konjugiert) + können + müssen (Infinitiv)."
+          "why": "Модальный + инфинитив + модальный: will (личная форма) + können + müssen (инфинитив)."
         },
         {
           "id": "c1-02-d03",
@@ -293,7 +293,7 @@
           "answer": [
             "ihn / ihn"
           ],
-          "why": "bitten + Akk + zu-Infinitiv: ich bitte ihn, zu kommen."
+          "why": "bitten + винительный падеж + zu-инфинитив: ich bitte ihn, zu kommen."
         },
         {
           "id": "c1-02-d04",
@@ -302,7 +302,7 @@
           "answer": [
             "Gegessen, schlafen"
           ],
-          "why": "Partizip II Perfekt (Vorzeitigkeit) + Infinitivgruppe."
+          "why": "Причастие II перфекта (предшествование) + инфинитивная группа."
         },
         {
           "id": "c1-02-d05",
@@ -311,7 +311,7 @@
           "answer": [
             "Er sagt, dass er kommen will, ohne sich anzumelden."
           ],
-          "why": "Hauptsatz V2, dass-Nebensatz, Infinitivgruppe am Ende."
+          "why": "Главное предложение V2, придаточное с dass, инфинитивная группа в конце."
         },
         {
           "id": "c1-02-d06",
@@ -326,7 +326,7 @@
           "answer": [
             "gelesen hatte, schlief"
           ],
-          "why": "Nebensatz (Nachdem...) + Hauptsatz. Oder Partizip II: 'Gelesen, schlief er.'"
+          "why": "Придаточное (Nachdem...) + главное предложение. Или причастие II: 'Gelesen, schlief er.'"
         },
         {
           "id": "c1-02-d07",
@@ -335,7 +335,7 @@
           "answer": [
             "ohne zu zögern, schnell laufend"
           ],
-          "why": "Infinitivgruppe (ohne zu) + Partizip I (laufend)."
+          "why": "Инфинитивная группа (ohne zu) + причастие I (laufend)."
         },
         {
           "id": "c1-02-d08",
@@ -350,7 +350,7 @@
           "answer": [
             "alle Verben am Ende"
           ],
-          "why": "Am Satzende sammeln sich: Infinitiv, Partizip II, Präfix, Modal-Infinitive."
+          "why": "В конце предложения собираются: инфинитив, причастие II, префикс, модальные инфинитивы."
         },
         {
           "id": "c1-02-d09",
@@ -359,7 +359,7 @@
           "answer": [
             "Gegessen, schlief er."
           ],
-          "why": "Partizip II Perfekt für Vorzeitigkeit."
+          "why": "Причастие II перфекта для выражения предшествования."
         },
         {
           "id": "c1-02-d10",
@@ -368,7 +368,7 @@
           "answer": [
             "ihm, es"
           ],
-          "why": "raten + Dat + Akk + zu-Infinitiv."
+          "why": "raten + дательный + винительный + zu-инфинитив."
         },
         {
           "id": "c1-02-d11",
@@ -383,7 +383,7 @@
           "answer": [
             "... will können müssen kommen"
           ],
-          "why": "Konjugiertes Modal (will) + Infinitiv (können) + Infinitiv (müssen) + Hauptverb (kommen)."
+          "why": "Согласованный модальный (will) + инфинитив (können) + инфинитив (müssen) + основной глагол (kommen)."
         },
         {
           "id": "c1-02-d12",
@@ -392,7 +392,7 @@
           "answer": [
             "Lesend, verstand er"
           ],
-          "why": "Partizip I (gleichzeitig) + Hauptsatz."
+          "why": "Причастие I (одновременность) + главное предложение."
         }
       ]
     },
@@ -415,33 +415,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Akademischer Stil: objektiv, präzise, zurückhaltend (Hedging). Vermeidung von 'ich', Nutzung von Passiv, Konjunktiv, Modalverben."
+          "text": "Академический стиль: объективный, точный, сдержанный (hedging). Избегание «я», использование пассива, конъюнктива, модальных глаголов."
         },
         {
           "kind": "rule",
-          "title": "Passiv statt 'man/ich'",
-          "text": "Nicht: 'Ich untersuche...' Sondern: 'Es wird untersucht...' / 'Die Daten wurden analysiert.'"
+          "title": "Пассив вместо «man/ich»",
+          "text": "Не: «Я исследую...» А: «Исследуется...» / «Данные были проанализированы.»"
         },
         {
           "kind": "rule",
-          "title": "Konjunktiv I für fremde Meinungen",
-          "text": "Nach Verben des Sagens/Denkens: 'Müller (2020) argumentiert, dass die These zutreffend sei.' (Konj. I)."
+          "title": "Конъюнктив I для чужих мнений",
+          "text": "После глаголов говорения/мышления: «Мюллер (2020) аргументирует, что эта тезис верен.» (Конъюнктив I)."
         },
         {
           "kind": "rule",
-          "title": "Hedging (Absicherung)",
-          "text": "Modalverben: könnte, dürfte, müsste, scheint, erscheint. 'Die Ergebnisse deuten darauf hin, dass...' statt 'Die Ergebnisse beweisen, dass...'"
+          "title": "Хеджинг (страховка)",
+          "text": "Модальные глаголы: könnte, dürfte, müsste, scheint, erscheint. «Результаты указывают на то, что...» вместо «Результаты доказывают, что...»"
         },
         {
           "kind": "rule",
-          "title": "Nominalisierung für Präzision",
-          "text": "Substantive statt Verben: 'Die Analyse der Daten' statt 'Wir analysieren die Daten.' Aber: nicht übertreiben (siehe Nominalstil)."
+          "title": "Номинализация для точности",
+          "text": "Существительные вместо глаголов: «Анализ данных» вместо «Мы анализируем данные.» Но: не переусердствуйте (см. номинальный стиль)."
         },
         {
           "kind": "example",
           "de": "Es lässt sich zeigen, dass die Hypothese zutreffend sein könnte. Müller (2020) argumentiert, dass die Methode geeignet sei. Die Daten wurden statistisch analysiert.",
           "ru": "Можно показать, что гипотеза может быть верной. Мюллер (2020) аргументирует, что метод подходит. Данные были статистически проанализированы.",
-          "note": "Passiv (lässt sich zeigen), Konj. I (sei), Modal (könnte), Hedging."
+          "note": "Пассив (lässt sich zeigen), Конъюнктив I (sei), Модальный (könnte), Хеджинг."
         }
       ],
       "drills": [
@@ -458,7 +458,7 @@
           "answer": [
             "Die Daten werden analysiert."
           ],
-          "why": "Passiv statt ich/man."
+          "why": "Пассив вместо ich/man."
         },
         {
           "id": "c1-03-d02",
@@ -473,7 +473,7 @@
           "answer": [
             "sei"
           ],
-          "why": "Konj. I nach Verben des Sagens: sei."
+          "why": "Конъюнктив I после глаголов говорения: sei."
         },
         {
           "id": "c1-03-d03",
@@ -488,7 +488,7 @@
           "answer": [
             "deuten"
           ],
-          "why": "deuten = vorsichtig, hedging."
+          "why": "deuten = осторожно, хеджинг."
         },
         {
           "id": "c1-03-d04",
@@ -497,7 +497,7 @@
           "answer": [
             "sein könnte"
           ],
-          "why": "könnte + Infinitiv = Möglichkeit."
+          "why": "könnte + инфинитив = возможность."
         },
         {
           "id": "c1-03-d05",
@@ -506,7 +506,7 @@
           "answer": [
             "Müller argumentiert, dass die These zutreffend sei."
           ],
-          "why": "Konj. I in indirekter Rede."
+          "why": "Конъюнктив I в косвенной речи."
         },
         {
           "id": "c1-03-d06",
@@ -521,7 +521,7 @@
           "answer": [
             "wurden"
           ],
-          "why": "Präteritum Passiv: wurden + Partizip II."
+          "why": "Пассив прошедшего времени: wurden + Partizip II."
         },
         {
           "id": "c1-03-d07",
@@ -530,7 +530,7 @@
           "answer": [
             "lässt zeigen"
           ],
-          "why": "sich zeigen lassen = sich ergeben, sich zeigen."
+          "why": "sich zeigen lassen = вытекать, показываться."
         },
         {
           "id": "c1-03-d08",
@@ -545,7 +545,7 @@
           "answer": [
             "Konj. II"
           ],
-          "why": "habe gemacht (Indikativ) → hätte gemacht (Konj. II)."
+          "why": "habe gemacht (индикатив) → hätte gemacht (конъюнктив II)."
         },
         {
           "id": "c1-03-d09",
@@ -554,7 +554,7 @@
           "answer": [
             "Es lässt sich zeigen, dass..."
           ],
-          "why": "Passiv + Hedging."
+          "why": "Пассив + хеджинг."
         },
         {
           "id": "c1-03-d10",
@@ -563,7 +563,7 @@
           "answer": [
             "zeigt"
           ],
-          "why": "Subjekt = Studie (nicht ich). Aktiv, aber objektiv."
+          "why": "Подлежащее = Studie (не ich). Актив, но объективно."
         },
         {
           "id": "c1-03-d11",
@@ -578,7 +578,7 @@
           "answer": [
             "könnte, dürfte, scheint"
           ],
-          "why": "Hedging = Vorsicht, Möglichkeit."
+          "why": "Хеджинг = осторожность, возможность."
         },
         {
           "id": "c1-03-d12",
@@ -587,7 +587,7 @@
           "answer": [
             "wisse"
           ],
-          "why": "wissen → Konj. I: wisse."
+          "why": "wissen → Конъюнктив I: wisse."
         }
       ]
     },
@@ -608,38 +608,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "C1-Konnektoren für komplexe Argumentation: Korrelative Konnektoren (Paare), graduell, kontrastiv."
+          "text": "C1-коннекторы для сложной аргументации: коррелятивные коннекторы (пары), градуальные, контрастивные."
         },
         {
           "kind": "rule",
-          "title": "zwar... aber",
-          "text": "Zugeständnis + Kontrast: 'Er ist zwar müde, aber er arbeitet weiter.' zwar im Nebensatz/Hauptsatz, aber im Hauptsatz."
+          "title": "zwar... aber — уступка и контраст",
+          "text": "Уступка + контраст: 'Er ist zwar müde, aber er arbeitet weiter.' zwar стоит в придаточном/главном предложении, aber — в главном."
         },
         {
           "kind": "rule",
-          "title": "nicht nur... sondern auch",
-          "text": "Ergänzung, Steigerung: 'Er kann nicht nur Deutsch, sondern auch Englisch.' Wortstellung: nicht nur + Teil 1, sondern auch + Teil 2."
+          "title": "nicht nur... sondern auch — дополнение, усиление",
+          "text": "Дополнение, усиление: 'Er kann nicht nur Deutsch, sondern auch Englisch.' Порядок слов: nicht nur + часть 1, sondern auch + часть 2."
         },
         {
           "kind": "rule",
-          "title": "je... desto / umso",
-          "text": "Proportionalität: 'Je mehr er lernt, desto besser wird er.' Je + Komparativ (Nebensatz), desto/umso + Komparativ (Hauptsatz)."
+          "title": "je... desto / umso — пропорциональность",
+          "text": "Пропорциональность: 'Je mehr er lernt, desto besser wird er.' Je + сравнительная степень (придаточное), desto/umso + сравнительная степень (главное предложение)."
         },
         {
           "kind": "rule",
-          "title": "einerseits... andererseits",
-          "text": "Abwägung: 'Einerseits will er gehen, andererseits muss er bleiben.' Oft mit Konjunktiv."
+          "title": "einerseits... andererseits — взвешивание",
+          "text": "Взвешивание: 'Einerseits will er gehen, andererseits muss er bleiben.' Часто с конъюнктивом."
         },
         {
           "kind": "rule",
-          "title": "weitere Paare",
-          "text": "sowohl... als auch (Beide), weder... noch (Keines), mal... mal (Abwechslung)."
+          "title": "Другие пары",
+          "text": "sowohl... als auch (оба), weder... noch (ни один), mal... mal (чередование)."
         },
         {
           "kind": "example",
           "de": "Er ist zwar müde, aber er arbeitet. Je mehr man übt, desto besser wird man. Einerseits reizt die Stelle, andererseits ist der Weg weit. Sowohl Peter als auch Maria kommen.",
           "ru": "Он хоть и уставший, но работает. Чем больше тренируешься, тем лучше. С одной стороны работа привлекает, с другой — далеко. И Петр, и Мария придут.",
-          "note": "Korrelative Konnektoren stehen paarweise, feste Wortstellung."
+          "note": "Коррелятивные коннекторы используются парно, фиксированный порядок слов."
         }
       ],
       "drills": [
@@ -656,7 +656,7 @@
           "answer": [
             "zwar / aber"
           ],
-          "why": "zwar... aber = Zugeständnis + Kontrast."
+          "why": "zwar... aber = уступка + контраст."
         },
         {
           "id": "c1-04-d02",
@@ -671,7 +671,7 @@
           "answer": [
             "nicht nur / sondern auch"
           ],
-          "why": "nicht nur... sondern auch = Steigerung."
+          "why": "nicht nur... sondern auch = усиление."
         },
         {
           "id": "c1-04-d03",
@@ -686,7 +686,7 @@
           "answer": [
             "Je / desto"
           ],
-          "why": "je + Komparativ (Nebensatz), desto/umso + Komparativ (Hauptsatz)."
+          "why": "je + сравнительная степень (придаточное), desto/umso + сравнительная степень (главное предложение)."
         },
         {
           "id": "c1-04-d04",
@@ -695,7 +695,7 @@
           "answer": [
             "Einer /ander"
           ],
-          "why": "einerseits... andererseits."
+          "why": "ПараKonнекторов: с одной стороны... с другой стороны (einerseits... andererseits)."
         },
         {
           "id": "c1-04-d05",
@@ -704,7 +704,7 @@
           "answer": [
             "Er kann nicht nur Deutsch, sondern auch Englisch."
           ],
-          "why": "Korrelatives Paar: nicht nur... sondern auch."
+          "why": "Коррелятивная пара: nicht nur... sondern auch."
         },
         {
           "id": "c1-04-d06",
@@ -719,7 +719,7 @@
           "answer": [
             "Sowohl / als auch"
           ],
-          "why": "sowohl... als auch = beide."
+          "why": "sowohl... als auch = оба."
         },
         {
           "id": "c1-04-d07",
@@ -728,7 +728,7 @@
           "answer": [
             "Zwar / aber"
           ],
-          "why": "zwar... aber."
+          "why": "zwar... aber выражает уступку и контраст."
         },
         {
           "id": "c1-04-d08",
@@ -743,7 +743,7 @@
           "answer": [
             "desto/umso"
           ],
-          "why": "desto oder umso austauschbar."
+          "why": "desto и umso взаимозаменяемы."
         },
         {
           "id": "c1-04-d09",
@@ -752,7 +752,7 @@
           "answer": [
             "Er ist zwar müde, aber er arbeitet."
           ],
-          "why": "zwar... aber verbindet Konzession und Kontrast."
+          "why": "zwar... aber соединяет уступку и контраст."
         },
         {
           "id": "c1-04-d10",
@@ -761,7 +761,7 @@
           "answer": [
             "Weder Peter noch Maria"
           ],
-          "why": "weder... noch = keines von beiden."
+          "why": "weder... noch = ни один из двух."
         },
         {
           "id": "c1-04-d11",
@@ -776,7 +776,7 @@
           "answer": [
             "Je + Komparativ (Nebensatz), desto + Komparativ (Hauptsatz)"
           ],
-          "why": "Je-Satz = Nebensatz (Verb am Ende), desto-Satz = Hauptsatz (V2)."
+          "why": "Предложение с je = придаточное (глагол в конце), предложение с desto = главное (V2)."
         },
         {
           "id": "c1-04-d12",
@@ -785,7 +785,7 @@
           "answer": [
             "mal / mal"
           ],
-          "why": "mal... mal = abwechselnd."
+          "why": "mal... mal = поочерёдно."
         }
       ]
     },
@@ -807,33 +807,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Modalität = Einstellung des Sprechers zum Sachverhalt. Epistemisch (Wahrscheinlichkeit): 'Er dürfte da sein.' Deontisch (Pflicht/Erlaubnis): 'Er muss gehen.' Konjunktiv II für Irrealität/Höflichkeit."
+          "text": "Модальность = отношение говорящего к факту. Эпистемическая (вероятность): «Er dürfte da sein.» Деонтическая (обязанность/разрешение): «Er muss gehen.» Конъюнктив II для ирреальности/вежливости."
         },
         {
           "kind": "rule",
-          "title": "Epistemisch (Vermutung)",
-          "text": "muss (fast sicher), dürfte (wahrscheinlich), sollte (erwartet), könnte (möglich), mag (konzediert). 'Er dürfte jetzt zu Hause sein.'"
+          "title": "Эпистемическое (предположение)",
+          "text": "muss (почти наверняка), dürfte (вероятно), sollte (ожидается), könnte (возможно), mag (признаётся). «Er dürfte jetzt zu Hause sein.»"
         },
         {
           "kind": "rule",
-          "title": "Deontisch (Pflicht/Erlaubnis)",
-          "text": "muss (Pflicht), soll (Empfehlung), darf (Erlaubnis), kann (Fähigkeit/Erlaubnis). 'Er muss Steuern zahlen.'"
+          "title": "Деонтическое (обязанность/разрешение)",
+          "text": "muss (обязанность), soll (рекомендация), darf (разрешение), kann (способность/разрешение). «Er muss Steuern zahlen.»"
         },
         {
           "kind": "rule",
-          "title": "Konjunktiv II der Modalverben",
-          "text": "könnte, müsste, sollte, dürfte, wollte, möchte. Höflichkeit, Irrealität, Ratschläge: 'Das müsste man machen.' 'Könnten Sie mir helfen?'"
+          "title": "Конъюнктив II модальных глаголов",
+          "text": "könnte, müsste, sollte, dürfte, wollte, möchte. Вежливость, ирреальность, советы: «Das müsste man machen.» «Könnten Sie mir helfen?»"
         },
         {
           "kind": "rule",
-          "title": "mag (Konj. I von mögen)",
-          "text": "Konjunktiv I: 'Es mag sein, dass...' = 'Es ist möglich, dass...' (konzediert, akademisch)."
+          "title": "mag (Конъюнктив I от mögen)",
+          "text": "Конъюнктив I: «Es mag sein, dass...» = «Es ist möglich, dass...» (признание, академический стиль)."
         },
         {
           "kind": "example",
           "de": "Er dürfte krank sein (Vermutung). Er muss ins Krankenhaus (Pflicht). Das sollte man machen (Empfehlung). Es mag sein, dass er recht hat (Konj. I, akademisch).",
           "ru": "Вероятно, он болен (предположение). Он должен в больницу (обязательность). Следует это сделать (рекомендация). Возможно, он прав (концессив, наука).",
-          "note": "Epistemisch vs deontisch. Konj. II für Höflichkeit/Irrealität. mag = Konj. I."
+          "note": "Эпистемическое против деонтического. Конъюнктив II для вежливости/ирреальности. mag = Конъюнктив I."
         }
       ],
       "drills": [
@@ -850,7 +850,7 @@
           "answer": [
             "muss"
           ],
-          "why": "muss = fast sicher (epistemisch)."
+          "why": "muss = почти наверняка (эпистемическое)."
         },
         {
           "id": "c1-05-d02",
@@ -865,7 +865,7 @@
           "answer": [
             "dürfte"
           ],
-          "why": "dürfte = wahrscheinlich (epistemisch)."
+          "why": "dürfte = вероятно (эпистемическое)."
         },
         {
           "id": "c1-05-d03",
@@ -880,7 +880,7 @@
           "answer": [
             "muss"
           ],
-          "why": "muss = Pflicht (deontisch)."
+          "why": "muss = обязанность (деонтическое)."
         },
         {
           "id": "c1-05-d04",
@@ -889,7 +889,7 @@
           "answer": [
             "Könnten"
           ],
-          "why": "Konj. II von können: Könnten."
+          "why": "Конъюнктив II от können: Könnten."
         },
         {
           "id": "c1-05-d05",
@@ -904,7 +904,7 @@
           "answer": [
             "mag"
           ],
-          "why": "mag = Konj. I von mögen: 'Es mag sein' = es ist möglich."
+          "why": "mag = Конъюнктив I от mögen: «Es mag sein» = это возможно."
         },
         {
           "id": "c1-05-d06",
@@ -913,7 +913,7 @@
           "answer": [
             "Das müsste man machen."
           ],
-          "why": "Konj. II von müssen: Empfehlung/Irrealität."
+          "why": "Конъюнктив II от müssen: рекомендация/ирреальность."
         },
         {
           "id": "c1-05-d07",
@@ -922,7 +922,7 @@
           "answer": [
             "sollte"
           ],
-          "why": "sollte = erwartet wird (epistemisch)."
+          "why": "sollte = ожидается (эпистемическое)."
         },
         {
           "id": "c1-05-d08",
@@ -937,7 +937,7 @@
           "answer": [
             "könnte"
           ],
-          "why": "könnte = möglich (epistemisch)."
+          "why": "könnte = возможно (эпистемическое)."
         },
         {
           "id": "c1-05-d09",
@@ -946,7 +946,7 @@
           "answer": [
             "Er muss krank sein."
           ],
-          "why": "muss epistemisch = fast sicher."
+          "why": "muss в эпистемическом значении = почти наверняка."
         },
         {
           "id": "c1-05-d10",
@@ -955,7 +955,7 @@
           "answer": [
             "solltest"
           ],
-          "why": "sollen → Konj. II: solltest (Ratschlag)."
+          "why": "sollen → Конъюнктив II: solltest (совет)."
         },
         {
           "id": "c1-05-d11",
@@ -970,7 +970,7 @@
           "answer": [
             "Das ist möglich / ich gestehe zu"
           ],
-          "why": "mag = Konj. I Konzession."
+          "why": "mag = Конъюнктив I уступки."
         },
         {
           "id": "c1-05-d12",
@@ -979,7 +979,7 @@
           "answer": [
             "hätte gekonnt, hätte"
           ],
-          "why": "Konj. II Vergangenheit: hätte + Partizip II."
+          "why": "Конъюнктив II прошедшего времени: hätte + Partizip II."
         }
       ]
     },
@@ -1001,38 +1001,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Deutsche Wortbildung: Präfixe (Veränderung der Bedeutung), Suffixe (Wortartänderung), Komposita (Zusammensetzungen)."
+          "text": "Немецкое словообразование: приставки (изменение значения), суффиксы (изменение части речи), композиты (составные слова)."
         },
         {
           "kind": "rule",
-          "title": "Präfixe (Verben)",
-          "text": "be- (transitivieren: liegen → belügen), ent- (Gegenteil/Entfernung: laden → entladen), er- (Erfolg/Inchoativ: finden → erfinden), ver- (Fehler/Richtung: laufen → verlaufen), zer- (Zerstörung: brechen → zerbrechen), miss- (Misslingen: verstehen → missverstehen)."
+          "title": "Приставки (глаголы)",
+          "text": "be- (переходный: liegen → belügen), ent- (противоположное/удаление: laden → entladen), er- (успех/начало действия: finden → erfinden), ver- (ошибка/направление: laufen → verlaufen), zer- (разрушение: brechen → zerbrechen), miss- (неудача: verstehen → missverstehen)."
         },
         {
           "kind": "rule",
-          "title": "Präfixe (Adjektive/Substantive)",
-          "text": "un- (Negation: glücklich → unglücklich), miss- (Miss-: Erfolg → Misserfolg), Haupt- (Haupt-: Stadt → Hauptstadt), Fehl- (Fehl-: Leitung → Fehlleitung)."
+          "title": "Приставки (прилагательные/существительные)",
+          "text": "un- (отрицание: glücklich → unglücklich), miss- (miss-: Erfolg → Misserfolg), Haupt- (главный-: Stadt → Hauptstadt), Fehl- (ошибочный-: Leitung → Fehlleitung)."
         },
         {
           "kind": "rule",
-          "title": "Suffixe (Substantive)",
-          "text": "-ung (Verben: entscheiden → Entscheidung), -heit/-keit (Adjektive: gesund → Gesundheit, frei → Freiheit), -nis (Adjektive/Verben: bitter → Bitternis, kennen → Kenntnis), -tum (Adjektive/Substantive: eigen → Eigentum), -schaft (Substantive: Freund → Freundschaft)."
+          "title": "Суффиксы (существительные)",
+          "text": "-ung (глаголы: entscheiden → Entscheidung), -heit/-keit (прилагательные: gesund → Gesundheit, frei → Freiheit), -nis (прилагательные/глаголы: bitter → Bitternis, kennen → Kenntnis), -tum (прилагательные/существительные: eigen → Eigentum), -schaft (существительные: Freund → Freundschaft)."
         },
         {
           "kind": "rule",
-          "title": "Suffixe (Adjektive)",
-          "text": "-bar (Möglichkeit: lesen → lesbar), -los (Fehlen: hoffen → hoffnungslos), -haft (Eigenschaft: Kind → kindhaft), -ig (Eigenschaft: mutig), -isch (Zugehörigkeit: deutsch)."
+          "title": "Суффиксы (прилагательные)",
+          "text": "-bar (возможность: lesen → lesbar), -los (отсутствие: hoffen → hoffnungslos), -haft (свойство: Kind → kindhaft), -ig (свойство: mutig), -isch (принадлежность: deutsch)."
         },
         {
           "kind": "rule",
-          "title": "Komposita",
-          "text": "Bestimmungswort + Grundwort: Hauptstadt, Handschuh, Zahnarzt. Fugenlaute: -n-, -s-, -en-, -e- (Hundehütte, Arbeitsamt, Gastgeber)."
+          "title": "Композиты",
+          "text": "Определяющее слово + основное слово: Hauptstadt, Handschuh, Zahnarzt. Соединительные звуки: -n-, -s-, -en-, -e- (Hundehütte, Arbeitsamt, Gastgeber)."
         },
         {
           "kind": "example",
           "de": "Entscheidung, Gesundheit, lesbar, hoffnungslos, Hauptstadt, Handschuh, missverstehen, erfinden, zerbrechen.",
           "ru": "Решение, здоровье, читаемый, безнадежный, столица, перчатка, неверно понять, изобретать, разбить.",
-          "note": "Präfixe verändern Bedeutung, Suffixe Wortart, Komposita = neue Wörter."
+          "note": "Приставки меняют значение, суффиксы — часть речи, композиты = новые слова."
         }
       ],
       "drills": [
@@ -1049,7 +1049,7 @@
           "answer": [
             "ent-"
           ],
-          "why": "entladen = ausladen, entfernen."
+          "why": "entladen = разгружать, удалять."
         },
         {
           "id": "c1-06-d02",
@@ -1064,7 +1064,7 @@
           "answer": [
             "ver-"
           ],
-          "why": "verlaufen = sich verlaufen, falsch laufen."
+          "why": "verlaufen = заблудиться, идти не туда."
         },
         {
           "id": "c1-06-d03",
@@ -1079,7 +1079,7 @@
           "answer": [
             "-heit"
           ],
-          "why": "gesund → Gesundheit."
+          "why": "gesund → Gesundheit (здоровье)."
         },
         {
           "id": "c1-06-d04",
@@ -1088,7 +1088,7 @@
           "answer": [
             "-bar"
           ],
-          "why": "lesbar = kann gelesen werden."
+          "why": "lesbar = можно прочитать."
         },
         {
           "id": "c1-06-d05",
@@ -1103,7 +1103,7 @@
           "answer": [
             "-los"
           ],
-          "why": "hoffnungslos = ohne Hoffnung."
+          "why": "hoffnungslos = без надежды."
         },
         {
           "id": "c1-06-d06",
@@ -1112,7 +1112,7 @@
           "answer": [
             "Hauptstadt"
           ],
-          "why": "Bestimmungswort (Haupt) + Grundwort (Stadt). Fugen-s: keins."
+          "why": "Определяющее слово (Haupt) + основное слово (Stadt). Фуген-с: отсутствует."
         },
         {
           "id": "c1-06-d07",
@@ -1127,7 +1127,7 @@
           "answer": [
             "Arbeitsamt"
           ],
-          "why": "Fugen-s: Arbeit + s + Amt."
+          "why": "Фуген-с: Arbeit + s + Amt."
         },
         {
           "id": "c1-06-d08",
@@ -1136,7 +1136,7 @@
           "answer": [
             "der Handschuh"
           ],
-          "why": "Kompositum: Hand + Schuh. Grundwort bestimmt Genus (der Schuh)."
+          "why": "Композитум: Hand + Schuh. Основное слово определяет род (der Schuh)."
         },
         {
           "id": "c1-06-d09",
@@ -1151,7 +1151,7 @@
           "answer": [
             "Misslingen"
           ],
-          "why": "missverstehen = falsch verstehen."
+          "why": "missverstehen = неправильно понимать."
         },
         {
           "id": "c1-06-d10",
@@ -1160,7 +1160,7 @@
           "answer": [
             "Entscheidung"
           ],
-          "why": "-ung Suffix für Verben."
+          "why": "-ung — суффикс для глаголов."
         },
         {
           "id": "c1-06-d11",
@@ -1175,7 +1175,7 @@
           "answer": [
             "Freiheit"
           ],
-          "why": "frei → Freiheit (-heit nach Adjektiven auf -ig, -lich, -sam, sonst -keit)."
+          "why": "frei → Freiheit (-heit после прилагательных на -ig, -lich, -sam, иначе -keit)."
         },
         {
           "id": "c1-06-d12",
@@ -1184,7 +1184,7 @@
           "answer": [
             "Handschuh"
           ],
-          "why": "Hand (Bestimmungswort) + Schuh (Grundwort) = Handschuh."
+          "why": "Hand (определяющее слово) + Schuh (основное слово) = Handschuh."
         }
       ]
     }
