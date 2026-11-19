@@ -875,5 +875,30 @@ class GrammarPage:
         self._sync()
 
 
+
+    def in_focus(self) -> bool:
+        return self.spread.in_focus()
+
+    def toggle_focus(self, on: bool | None = None, *, remember: bool = True) -> None:
+        self.spread.toggle_focus(on, remember=remember)
+
+    def apply_session_focus(self) -> None:
+        self.spread.apply_session_focus()
+
+    def handle_focus_escape(self) -> bool:
+        return self.spread.handle_focus_escape()
+
+    def on_key(self, e) -> str | None:
+        return self.spread.on_key(e)
+
+    @property
+    def _focus(self):
+        return self.spread._focus
+
+    @_focus.setter
+    def _focus(self, value) -> None:
+        self.spread._focus = value
+
+
 def build_grammar_page(parent, plugin, progress, app) -> GrammarPage:
     return GrammarPage(parent, plugin, progress, app)

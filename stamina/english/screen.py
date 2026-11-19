@@ -170,9 +170,12 @@ class EnglishScreen(tk.Frame):
             return
         if name == "grammar":
             self._ensure_grammar()
-        for p in self.pages.values():          # фокус-режим не переживает смену вкладки
-            if getattr(p, "_focus", None) is not None:
-                p.toggle_focus(False)
+        for pg in self.pages.values():          # фокус-режим не переживает смену вкладки
+            if getattr(pg, "_focus", None) is not None:
+                try:
+                    pg.toggle_focus(False, remember=False)
+                except TypeError:
+                    pg.toggle_focus(False)
         prev = self.current
         self.current = name
         page = self.pages[name]
@@ -189,6 +192,11 @@ class EnglishScreen(tk.Frame):
             scan._cancel_fit_jobs()
         if hasattr(page, "refresh"):
             page.refresh()
+        if name == "grammar" and hasattr(page, "apply_session_focus"):
+            try:
+                page.after_idle(page.apply_session_focus)
+            except tk.TclError:
+                page.apply_session_focus()
         if name == "scanner" and hasattr(page, "_fit_normal"):
             try:
                 page.after_idle(lambda: page._fit_normal(force=True))
@@ -477,9 +485,15 @@ class EnglishScreen(tk.Frame):
         if not self._built:
             return
         from .speech_std import typing_in
+        page = self.pages.get(self.current)
+        # Грамматика: Ctrl+O / двойной Esc работают и из поля ввода; O/Щ — только вне Entry.
+        if self.current == "grammar" and page is not None and hasattr(page, "on_key"):
+            if page.on_key(e) == "break":
+                return
         if typing_in(e.widget):
             return                      # пробел и буквы в поле ввода — это текст
-        page = self.pages.get(self.current)
+        if self.current == "grammar":
+            return
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
 

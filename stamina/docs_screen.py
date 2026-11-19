@@ -263,7 +263,7 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
     def in_focus(self) -> bool:
         return self._focus is not None
 
-    def toggle_focus(self, on: bool | None = None) -> None:
+    def toggle_focus(self, on: bool | None = None, **_kw) -> None:
         from stamina.english.ui import FocusMode
         on = (self._focus is None) if on is None else on
         if on and self._focus is None:
