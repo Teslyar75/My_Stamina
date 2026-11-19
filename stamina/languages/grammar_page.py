@@ -533,7 +533,9 @@ class GrammarPage:
     def _screen_lessons(self) -> None:
         level = self.level or self.current_level
         manifest = next((lvl for lvl in self.engine.levels() if lvl["code"] == level), {})
-        lessons = self.engine.lessons(level)  # читается только файл этого уровня
+        # Список — только карточки: полный JSON урока читается при открытии.
+        summaries = getattr(self.engine, "lesson_summaries", None)
+        lessons = summaries(level) if callable(summaries) else self.engine.lessons(level)
         self.level_lessons = lessons
         self.next_lesson_id = next(
             (lesson["id"] for lesson in lessons
@@ -559,12 +561,12 @@ class GrammarPage:
     def _start_self_check(self, level: str | None = None) -> None:
         """Смешанная проверка по пройденным урокам уровня — оценка уроков не меняется."""
         level = level or self.level or self.current_level
-        if not self.level_lessons or self.level != level:
-            self.level_lessons = self.engine.lessons(level)
         self.level = level
         self.current_level = level
+        # Список на экране — краткие карточки; для проверки нужны полные drills.
+        full_lessons = self.engine.lessons(level)
 
-        passed = [lesson for lesson in self.level_lessons
+        passed = [lesson for lesson in full_lessons
                   if self.progress and self.progress.grammar_done(lesson["id"])]
         pool = [drill for lesson in passed for drill in lesson.get("drills", [])]
         if not pool:
@@ -611,8 +613,9 @@ class GrammarPage:
         # значит раскладка списка не «дёргается» на каждой карточке.
         meta_text = lesson.get("subtitle", "")
         line = f"{meta_text} · " if meta_text else ""
+        n_drills = lesson.get("drill_count", len(lesson.get("drills") or []))
         line += (f"≈ {lesson.get('minutes', 10)} {_t('мин')} · "
-                 f"{_t('Упражнений: {0}').format(len(lesson.get('drills', [])))} · {status}")
+                 f"{_t('Упражнений: {0}').format(n_drills)} · {status}")
         meta_lbl = tk.Label(card, text=line, bg=PANEL, fg=color, font=theme.font(8),
                             anchor="w", justify="left")
         self._track(meta_lbl, 8, False, px(16))
@@ -627,6 +630,14 @@ class GrammarPage:
 
     def _open_lesson(self, lesson: dict) -> None:
         """Открыть урок: сначала цель, мостик RU/UA → DE и ловушка."""
+        # Карточка списка может быть краткой: полный урок — из движка, кроме самопроверки.
+        if lesson.get("scored") is not False:
+            loader = getattr(self.engine, "lesson", None)
+            lesson_id = lesson.get("id")
+            if callable(loader) and lesson_id:
+                full = loader(lesson_id)
+                if full:
+                    lesson = full
         self.lesson = lesson
         self.theory = lesson.get("theory", [])
         self.all_drills = lesson.get("drills", [])

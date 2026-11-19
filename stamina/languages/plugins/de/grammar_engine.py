@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import random
+from collections import OrderedDict
 from pathlib import Path
 
 from stamina.languages.core.base import (
@@ -18,8 +19,13 @@ class GermanGrammarEngine(GrammarEngine):
         self._courses: dict | None = None
         self._tables: dict | None = None
         self._bridges: dict[str, dict] | None = None
-        self._lessons_cache: dict[str, dict] = {}
+        # Полные файлы уровней — небольшой LRU: список держит только краткие карточки.
+        self._lessons_cache: OrderedDict[str, dict] = OrderedDict()
+        self._summaries_cache: dict[str, list[dict]] = {}
+        self._lesson_lru: OrderedDict[str, dict] = OrderedDict()
         self._levels_cache: list[dict] | None = None
+        self._level_lru_size = 2
+        self._lesson_lru_size = 8
 
     # ---------- Lazy loading helpers ----------
 
@@ -58,6 +64,7 @@ class GermanGrammarEngine(GrammarEngine):
     def _load_level(self, cefr: str) -> dict | None:
         """Load a single level file (a1.json, b2.json, etc.)."""
         if cefr in self._lessons_cache:
+            self._lessons_cache.move_to_end(cefr)
             return self._lessons_cache[cefr]
         courses = self._load_courses()
         level_info = next((lvl for lvl in courses.get("levels", []) if lvl["code"] == cefr), None)
@@ -66,10 +73,52 @@ class GermanGrammarEngine(GrammarEngine):
         path = self.folder / level_info["file"]
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-            self._lessons_cache[cefr] = data
-            return data
         except (OSError, json.JSONDecodeError):
             return None
+        self._lessons_cache[cefr] = data
+        self._lessons_cache.move_to_end(cefr)
+        while len(self._lessons_cache) > self._level_lru_size:
+            self._lessons_cache.popitem(last=False)
+        self._summaries_cache[cefr] = [
+            self._summarize(lesson, cefr) for lesson in data.get("lessons", [])
+        ]
+        return data
+
+    def _summarize(self, lesson: dict, cefr: str) -> dict:
+        """Карточка списка: без theory/drills, чтобы список не тащил весь уровень в виджеты."""
+        return {
+            "id": lesson.get("id"),
+            "order": lesson.get("order"),
+            "title": lesson.get("title"),
+            "subtitle": lesson.get("subtitle", ""),
+            "topics": list(lesson.get("topics") or []),
+            "prereq": list(lesson.get("prereq") or []),
+            "minutes": lesson.get("minutes", 10),
+            "level": lesson.get("level") or cefr,
+            "drill_count": len(lesson.get("drills") or []),
+        }
+
+    def _cefr_of(self, lesson_id: str) -> str | None:
+        """'a1-01-…' → 'A1'. Неизвестный префикс не сканирует все уровни."""
+        prefix = (lesson_id or "").split("-", 1)[0].upper()
+        known = {lvl["code"] for lvl in self._load_courses().get("levels", [])}
+        return prefix if prefix in known else None
+
+    def _remember_lesson(self, lesson_id: str, lesson: dict) -> dict:
+        self._lesson_lru[lesson_id] = lesson
+        self._lesson_lru.move_to_end(lesson_id)
+        while len(self._lesson_lru) > self._lesson_lru_size:
+            self._lesson_lru.popitem(last=False)
+        return lesson
+
+    def lesson_summaries(self, cefr: str) -> list[dict]:
+        """Краткий список уроков уровня: при первом заходе читается только его файл."""
+        if cefr in self._summaries_cache:
+            return list(self._summaries_cache[cefr])
+        data = self._load_level(cefr)
+        if not data:
+            return []
+        return list(self._summaries_cache.get(cefr) or [])
 
     # ---------- Public API (contract) ----------
 
@@ -205,15 +254,24 @@ class GermanGrammarEngine(GrammarEngine):
         return result
 
     def lesson(self, lesson_id: str) -> dict | None:
-        """Return a single lesson by its id."""
-        for lvl in self._load_courses().get("levels", []):
-            data = self._load_level(lvl["code"])
-            if data:
-                for lesson in data.get("lessons", []):
-                    if lesson["id"] == lesson_id:
-                        lesson_copy = dict(lesson)
-                        lesson_copy["level"] = lvl["code"]
-                        return lesson_copy
+        """Return a single lesson by its id. Читает только файл своего уровня."""
+        if not lesson_id:
+            return None
+        cached = self._lesson_lru.get(lesson_id)
+        if cached is not None:
+            self._lesson_lru.move_to_end(lesson_id)
+            return cached
+        cefr = self._cefr_of(lesson_id)
+        if not cefr:
+            return None
+        data = self._load_level(cefr)
+        if not data:
+            return None
+        for item in data.get("lessons", []):
+            if item.get("id") == lesson_id:
+                lesson_copy = dict(item)
+                lesson_copy["level"] = cefr
+                return self._remember_lesson(lesson_id, lesson_copy)
         return None
 
     def bridge(self, lesson_id: str) -> dict:
@@ -241,14 +299,17 @@ class GermanGrammarEngine(GrammarEngine):
 
     def _find_lesson_by_topic(self, topic_id: str) -> dict | None:
         """Find the lesson that contains the given topic_id."""
-        for lvl in self._load_courses().get("levels", []):
-            data = self._load_level(lvl["code"])
-            if data:
-                for lesson in data.get("lessons", []):
-                    if topic_id in lesson.get("topics", []):
-                        lesson_copy = dict(lesson)
-                        lesson_copy["level"] = lvl["code"]
-                        return lesson_copy
+        hinted = self._cefr_of(topic_id)
+        codes = [hinted] if hinted else [lvl["code"] for lvl in self._load_courses().get("levels", [])]
+        for code in codes:
+            data = self._load_level(code)
+            if not data:
+                continue
+            for lesson in data.get("lessons", []):
+                if topic_id in lesson.get("topics", []) or lesson.get("id") == topic_id:
+                    lesson_copy = dict(lesson)
+                    lesson_copy["level"] = code
+                    return lesson_copy
         return None
 
 

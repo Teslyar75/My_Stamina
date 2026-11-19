@@ -182,6 +182,30 @@ class TestGermanGrammarEngine:
         assert "A1" in engine._lessons_cache
         assert len(lessons_a1) == 18
 
+    def test_lesson_loads_only_own_level(self, engine, monkeypatch):
+        """Поиск урока C2 не читает файлы A1–C1."""
+        reads: list[str] = []
+        orig = Path.read_text
+
+        def wrapped(self, *args, **kwargs):
+            reads.append(self.name)
+            return orig(self, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "read_text", wrapped)
+        lesson = engine.lesson("c2-01-nuancen")
+        assert lesson is not None
+        assert "c2.json" in reads
+        for other in ("a1.json", "a2.json", "b1.json", "b2.json", "c1.json"):
+            assert other not in reads
+
+    def test_lesson_summaries_omit_theory(self, engine):
+        cards = engine.lesson_summaries("A1")
+        assert len(cards) == 18
+        assert "theory" not in cards[0]
+        assert "drills" not in cards[0]
+        assert cards[0]["drill_count"] >= 1
+        assert cards[0]["id"]
+
     def test_generate_exercise_deterministic(self, engine):
         """Один seed = один результат, не трогает глобальный random."""
         ex1 = engine.generate_exercise("a1-06-genus", "easy", 42)
