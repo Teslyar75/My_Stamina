@@ -1,0 +1,88 @@
+{
+ "n": 164,
+ "level": "B2",
+ "module": "b-questions",
+ "title": "Вопросы (1): общий каркас",
+ "en": "questions 1",
+ "summary": "Как собирать английский вопрос по деталям: где стоит помощник, зачем нужен do и почему предлог уезжает в конец.",
+ "can_do": [
+  "Построить общий и специальный вопрос в любом времени.",
+  "Выбрать do, does или did, когда другого помощника в предложении нет.",
+  "Отличить вопрос к подлежащему от вопроса к дополнению.",
+  "Поставить предлог в конец вопроса, как это делают носители."
+ ],
+ "theory": [
+  {
+   "h": "Каркас, который не меняется",
+   "p": "Английский вопрос держится на жёстком порядке: вопросительное слово, вспомогательный глагол, подлежащее, смысловой глагол. По-русски можно спросить «Ты где живёшь?», и это нормально. В английском такой свободный порядок невозможен: подлежащее обязано стоять после помощника.",
+   "formula": "Where do you live? · Did she call you? · What are you doing? · Why was he late?"
+  },
+  {
+   "h": "Do, does, did — когда помощника нет",
+   "p": "Если в предложении нет be, модального глагола или have, вопрос строят через do. Этот do не переводится, он только держит конструкцию. Выбор формы зависит от времени и от того, кто действует, а смысловой глагол после помощника всегда возвращается в базовую форму.",
+   "table": {
+    "head": ["Время и лицо", "Помощник", "Пример"],
+    "rows": [
+     ["present, I / you / we / they", "do", "Do you work here?"],
+     ["present, he / she / it", "does", "Does she work here?"],
+     ["past, все лица", "did", "Did they work here?"],
+     ["после помощника", "база", "Did she call? (не called)"]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос к подлежащему обходится без do",
+   "p": "Если мы спрашиваем, кто или что выполняет действие, вопросительное слово само занимает место подлежащего и помощник не нужен. Сравните две фразы с who: в одной действует неизвестный человек, в другой — вы сами. От этого зависит вся конструкция.",
+   "table": {
+    "head": ["Вопрос", "Где подлежащее", "Смысл"],
+    "rows": [
+     ["Who called you?", "who", "кто-то позвонил вам"],
+     ["Who did you call?", "you", "вы позвонили кому-то"],
+     ["What happened?", "what", "что-то случилось"],
+     ["What did you buy?", "you", "вы что-то купили"]
+    ]
+   }
+  },
+  {
+   "h": "Be и модальные сами встают вперёд",
+   "p": "Глагол be и модальные глаголы не нуждаются в do: они меняются местами с подлежащим. Так же ведёт себя have, когда он часть перфекта. Ошибка появляется, когда к готовому вопросу добавляют лишний do.",
+   "formula": "Are you ready? · Is she coming? · Can you swim? · Have you finished? · Do you have a car?"
+  },
+  {
+   "h": "Предлог уходит в конец",
+   "p": "В живом английском предлог почти всегда стоит в конце вопроса, а не перед вопросительным словом. Формальный вариант с предлогом впереди возможен, но звучит книжно, поэтому в разговоре его лучше не выбирать.",
+   "formula": "Who are you waiting for? · What are you looking at? · Which flat do you live in? · Where are you from?"
+  },
+  {
+   "h": "Отрицательный вопрос — это удивление",
+   "p": "Отрицательная форма вопроса строится через сокращённый помощник: didn't, isn't, don't. Такой вопрос звучит как удивление, сомнение или приглашение, а не как обычный запрос информации. Полную форму not в начале почти не используют.",
+   "formula": "Why didn't you call? · Isn't it cold today? · Don't you like coffee? · Didn't she tell you?"
+  }
+ ],
+ "examples": [
+  {"en": "Where do you usually have lunch?", "ru": "Где ты обычно обедаешь?"},
+  {"en": "Does your sister speak German?", "ru": "Твоя сестра говорит по-немецки?"},
+  {"en": "Who broke this window?", "ru": "Кто разбил это окно?"},
+  {"en": "What did you do at the weekend?", "ru": "Что ты делал на выходных?"},
+  {"en": "Who are you waiting for?", "ru": "Кого ты ждёшь?"},
+  {"en": "Why wasn't she at the meeting?", "ru": "Почему её не было на встрече?"}
+ ],
+ "traps": [
+  {"bad": "Where you are going?", "good": "Where are you going?", "why": "В вопросе помощник или be стоит перед подлежащим, инверсия обязательна."},
+  {"bad": "Does he works here?", "good": "Does he work here?", "why": "После does глагол теряет окончание и стоит в базовой форме."},
+  {"bad": "Who did call you?", "good": "Who called you?", "why": "Who здесь подлежащее, поэтому do не нужен."},
+  {"bad": "What are you waiting?", "good": "What are you waiting for?", "why": "Глагол wait требует предлога, и он остаётся в конце вопроса."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Where ___ you live?", "options": ["do", "does", "are"], "a": 0, "why": "You — форма do: Where do you live?"},
+  {"type": "choice", "q": "___ she work here?", "options": ["Do", "Does", "Is"], "a": 1, "why": "She — третье лицо, помощник does, глагол work без окончания."},
+  {"type": "choice", "q": "Who ___ you at the station?", "options": ["met", "did meet", "did met"], "a": 0, "why": "Who — подлежащее, помощник не нужен, сразу past simple met."},
+  {"type": "choice", "q": "What ___ you looking at?", "options": ["do", "are", "did"], "a": 1, "why": "Есть форма looking, значит нужен be: What are you looking at?"},
+  {"type": "gap", "q": "Where ___ (you / go) every morning?", "a": ["do you go"], "why": "Настоящее время, you — помощник do, затем go."},
+  {"type": "gap", "q": "___ (he / finish) the report yesterday?", "a": ["did he finish"], "why": "Вопрос в прошлом: did he finish, глагол в базовой форме."},
+  {"type": "gap", "q": "Why ___ (not / you / call) me?", "a": ["didn't you call"], "why": "Отрицательный вопрос в прошлом: didn't you call."},
+  {"type": "translate", "q": "Где ты живёшь?", "a": ["where do you live"], "why": "Специальный вопрос в present simple: where do you live?"},
+  {"type": "translate", "q": "Кто звонил тебе вчера?", "a": ["who called you yesterday"], "why": "Вопрос к подлежащему строится без did."},
+  {"type": "translate", "q": "На что ты смотришь?", "a": ["what are you looking at"], "why": "Предлог at остаётся в конце: what are you looking at?"}
+ ]
+}

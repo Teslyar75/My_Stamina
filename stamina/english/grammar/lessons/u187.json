@@ -1,0 +1,75 @@
+{
+ "n": 187,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "a/an и the",
+ "en": "a/an and the",
+ "summary": "Главная разница между артиклями: a — один из многих, the — тот самый. Как это работает при первом и втором упоминании.",
+ "can_do": [
+  "Поставить a при первом упоминании предмета.",
+  "Поставить the, когда предмет уже известен собеседнику.",
+  "Употреблять the с уникальными вещами, превосходной степенью и порядковыми числами.",
+  "Обойтись без артикля в обобщениях и с именами."
+ ],
+ "theory": [
+  {
+   "h": "Первое упоминание и второе",
+   "p": "Когда предмет появляется в разговоре впервые, слушатель о нём ещё не знает, поэтому ставится a или an. Как только предмет стал известен, он получает the. Этот переход — самый надёжный ориентир для начинающих.",
+   "formula": "I saw a dog in the park. The dog was very friendly. · She bought a car. The car is electric."
+  },
+  {
+   "h": "Один из многих или тот самый",
+   "p": "A/an выбирает любого представителя группы, the указывает на конкретный предмет. Иногда the опирается не на предыдущую фразу, а на саму ситуацию: оба собеседника видят дверь и понимают, о какой двери речь.",
+   "table": {
+    "head": ["Артикль", "Смысл", "Пример"],
+    "rows": [
+     ["a/an", "один из многих, слушателю не знаком", "I saw a dog in the park."],
+     ["the", "тот самый, уже упомянутый", "The dog was very friendly."],
+     ["the", "единственный в своём роде", "The sun is bright today."],
+     ["без артикля", "обобщение: множественное или неисчисляемое", "Dogs are loyal. Water is cheap."]
+    ]
+   }
+  },
+  {
+   "h": "the с уточнением, превосходной степенью и порядком",
+   "p": "Если после существительного стоит уточнение — of, придаточное с who или which, — предмет становится конкретным и получает the. То же происходит с превосходной степенью и порядковыми числами: они выделяют один предмет из всех.",
+   "formula": "the water in the kettle · the man who called · the best film · the first day"
+  },
+  {
+   "h": "a/an там, где речь о любом представителе",
+   "p": "Единственное исчисляемое существительное почти всегда требует артикль. A/an нужен в профессиях, в описаниях через восклицание и в выражениях частоты: он показывает, что речь об одном, любом таком предмете или одном случае из повторяющихся.",
+   "formula": "She's a teacher. · What a nice day! · twice a week · He works as a driver."
+  },
+  {
+   "h": "Когда артикль не нужен",
+   "p": "В обобщениях перед множественным числом и неисчисляемым артикль не ставится. Также обходятся без него с именами людей, названиями городов и большинства стран, но есть исключения вроде the USA и the UK, где the — часть названия.",
+   "formula": "Books are expensive. · I like coffee. · Anna lives in Paris. · the United States"
+  }
+ ],
+ "examples": [
+  {"en": "I saw a dog in the park.", "ru": "Я увидел собаку в парке."},
+  {"en": "The dog was very friendly.", "ru": "Собака была очень дружелюбной."},
+  {"en": "She's a teacher at my school.", "ru": "Она учитель в моей школе."},
+  {"en": "The sun is bright today.", "ru": "Сегодня яркое солнце."},
+  {"en": "He was the best student in the class.", "ru": "Он был лучшим учеником в классе."},
+  {"en": "Books are expensive these days.", "ru": "Книги сейчас дорогие."}
+ ],
+ "traps": [
+  {"bad": "I saw dog in the park.", "good": "I saw a dog in the park.", "why": "Исчисляемое в единственном числе требует артикль."},
+  {"bad": "I bought a book. A book was boring.", "good": "I bought a book. The book was boring.", "why": "Второе упоминание — уже известный предмет, нужен the."},
+  {"bad": "She is the engineer at a small company.", "good": "She is an engineer at a small company.", "why": "Речь об одном из многих инженеров, поэтому a или an."},
+  {"bad": "The dogs are loyal animals.", "good": "Dogs are loyal animals.", "why": "Обобщение во множественном числе — без артикля."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I saw a dog. ___ dog was very friendly.", "options": ["A", "The", "Some"], "a": 1, "why": "Второе упоминание — уже известный предмет: the dog."},
+  {"type": "choice", "q": "She's ___ teacher at my school.", "options": ["a", "the", "some"], "a": 0, "why": "Профессия, один из многих: a teacher."},
+  {"type": "choice", "q": "___ sun rises in the east.", "options": ["A", "The", "Some"], "a": 1, "why": "Единственное в своём роде: the sun."},
+  {"type": "choice", "q": "I don't like ___ coffee without milk.", "options": ["a", "the", "—"], "a": 2, "why": "Обобщение о неисчисляемом: без артикля."},
+  {"type": "choice", "q": "He was ___ best student in the class.", "options": ["a", "the", "some"], "a": 1, "why": "Превосходная степень: the best."},
+  {"type": "gap", "q": "We stayed at ___ hotel near the station.", "a": ["a"], "why": "Отель упомянут впервые: a hotel."},
+  {"type": "gap", "q": "Can you close ___ door, please?", "a": ["the"], "why": "Дверь понятна из ситуации: the door."},
+  {"type": "gap", "q": "She plays ___ piano very well.", "a": ["the"], "why": "С музыкальными инструментами устойчиво ставится the."},
+  {"type": "translate", "q": "Солнце сегодня яркое.", "a": ["the sun is bright today", "the sun is shining brightly today", "the sun is shining today"], "why": "Единственное в своём роде — the sun."},
+  {"type": "translate", "q": "Она работает в банке.", "a": ["she works in a bank", "she works at a bank"], "why": "Один из многих банков: a bank."}
+ ]
+}

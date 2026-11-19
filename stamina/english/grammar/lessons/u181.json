@@ -1,0 +1,85 @@
+{
+ "n": 181,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "afraid to do и afraid of doing",
+ "en": "afraid to do / afraid of -ing",
+ "summary": "Два разных страха: не решиться на действие и бояться того, что оно приведёт к неприятности. Разница видна по форме после afraid.",
+ "can_do": [
+  "Сказать, что не решаетесь что-то сделать, через afraid to do.",
+  "Сказать, чего боитесь, через afraid of + -ing или существительное.",
+  "Вежливо сообщить плохую новость оборотом I'm afraid.",
+  "Различать похожие пары sorry to и sorry for, interested to и interested in."
+ ],
+ "theory": [
+  {
+   "h": "Страх мешает действовать",
+   "p": "Конструкция afraid to do говорит не о самом действии, а о том, что человек не решается его начать. Страх стоит на входе: он боится последствий и поэтому не делает шаг. По-русски это часто «не решаюсь», «боюсь спросить».",
+   "formula": "I'm afraid to ask him. · She was afraid to open the door. · Don't be afraid to speak."
+  },
+  {
+   "h": "Страх перед тем, что случится",
+   "p": "Конструкция afraid of doing описывает страх перед самим процессом или его результатом. Человек может очень хотеть действовать, но боится, что всё кончится плохо: упадёт, ошибётся, опоздает. После of ставится -ing или существительное.",
+   "table": {
+    "head": ["Форма", "Смысл", "Пример"],
+    "rows": [
+     ["afraid to do", "не решается, избегает действия", "I'm afraid to ask him."],
+     ["afraid of doing", "боится, что действие приведёт к плохому", "I'm afraid of making a mistake."],
+     ["afraid of + существительное", "боится объекта", "She's afraid of dogs."],
+     ["I'm afraid (that) …", "вежливое «боюсь, что»", "I'm afraid I can't come."]
+    ]
+   }
+  },
+  {
+   "h": "Как выбрать за секунду",
+   "p": "Подставьте к фразе русское «не решаюсь». Если смысл сохраняется — нужна форма afraid to do. Если вместо этого получается «боюсь, что случится», ставьте afraid of doing. Оба варианта грамматически верны, разница только в том, где стоит страх.",
+   "formula": "I'm afraid to jump. (не решаюсь) · I'm afraid of falling. (боюсь упасть) · He's afraid of losing his job."
+  },
+  {
+   "h": "I'm afraid без всякого страха",
+   "p": "Очень часто afraid вообще не про испуг, а про вежливое извинение перед неприятной информацией. Так начинают отказ или сообщение плохой новости. Переводить это буквально «я боюсь» не нужно.",
+   "formula": "I'm afraid the train has left. · I'm afraid I don't know. · I'm afraid we're closed."
+  },
+  {
+   "h": "Та же логика у других прилагательных",
+   "p": "Пара to и -ing различает смысл не только у afraid. С инфинитивом обычно речь о реакции на факт, с предлогом и -ing — об отношении к занятию. Сравните пары в таблице и запомните именно смысл, а не перевод.",
+   "table": {
+    "head": ["Пара", "Что значит", "Пример"],
+    "rows": [
+     ["sorry to do", "сожалею о том, что сообщаю", "I'm sorry to hear that."],
+     ["sorry for doing", "извиняюсь за поступок", "I'm sorry for shouting."],
+     ["interested to do", "было интересно узнать", "I was interested to hear the news."],
+     ["interested in doing", "интересуюсь занятием", "I'm interested in learning German."],
+     ["anxious to do", "очень хочу", "She's anxious to start."],
+     ["anxious about", "волнуюсь из-за", "He's anxious about the exam."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I'm afraid to tell him the truth.", "ru": "Я не решаюсь сказать ему правду."},
+  {"en": "She's afraid of flying.", "ru": "Она боится летать."},
+  {"en": "He was afraid to say a word.", "ru": "Он не решался сказать ни слова."},
+  {"en": "I'm afraid I can't help you.", "ru": "Боюсь, что не смогу вам помочь."},
+  {"en": "They're afraid of losing their jobs.", "ru": "Они боятся потерять работу."},
+  {"en": "Don't be afraid to ask questions.", "ru": "Не бойтесь задавать вопросы."}
+ ],
+ "traps": [
+  {"bad": "She is afraid of to swim.", "good": "She is afraid of swimming.", "why": "После предлога of инфинитив не ставится, только -ing."},
+  {"bad": "I'm afraid to falling.", "good": "I'm afraid of falling.", "why": "Страх перед процессом — afraid of + -ing."},
+  {"bad": "I'm afraid that I can't to come.", "good": "I'm afraid that I can't come.", "why": "После can инфинитив идёт без to."},
+  {"bad": "He is afraid of speak in public.", "good": "He is afraid of speaking in public.", "why": "Предлог of требует формы speaking."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm afraid ___ him about it.", "options": ["to tell", "telling", "tell"], "a": 0, "why": "Не решаюсь сказать — afraid to do."},
+  {"type": "choice", "q": "She's afraid of ___ in the dark.", "options": ["walk", "walking", "to walk"], "a": 1, "why": "Страх перед действием — afraid of + -ing."},
+  {"type": "choice", "q": "I'm afraid I ___ make it tonight.", "options": ["can't", "don't", "not"], "a": 0, "why": "Вежливый отказ: I'm afraid I can't make it."},
+  {"type": "choice", "q": "I'm sorry ___ hear that.", "options": ["to", "for", "of"], "a": 0, "why": "Реакция на новость: sorry to hear."},
+  {"type": "gap", "q": "He's afraid of ___ (fall).", "a": ["falling"], "why": "Боится упасть — afraid of falling."},
+  {"type": "gap", "q": "Don't be afraid ___ (ask) questions.", "a": ["to ask"], "why": "Не бойтесь задавать — afraid to ask."},
+  {"type": "gap", "q": "She was afraid ___ (walk) home alone.", "a": ["to walk"], "why": "Не решалась идти — afraid to walk."},
+  {"type": "translate", "q": "Я боюсь высоты.", "a": ["i'm afraid of heights", "i am afraid of heights"], "why": "Страх перед объектом: afraid of + существительное."},
+  {"type": "translate", "q": "Боюсь, что не смогу прийти.", "a": ["i'm afraid i can't come", "i am afraid i can't come", "i'm afraid i cannot come"], "why": "Вежливое сообщение: I'm afraid I can't come."},
+  {"type": "translate", "q": "Я не решаюсь спросить.", "a": ["i'm afraid to ask", "i am afraid to ask"], "why": "Не решаюсь — afraid to + глагол."}
+ ]
+}

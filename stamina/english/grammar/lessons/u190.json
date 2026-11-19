@@ -1,0 +1,73 @@
+{
+ "n": 190,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "the (3): уточнение",
+ "en": "the 3 (children / the children)",
+ "summary": "Чем children отличаются от the children: как оборот с of, придаточное и превосходная степень делают предмет единственным.",
+ "can_do": [
+  "Понимать разницу между категорией и конкретными предметами.",
+  "Ставить the после уточнения с of и придаточного с who или that.",
+  "Употреблять the с превосходной степенью, порядковыми и словом only.",
+  "Не ставить the, когда речь идёт о категории в целом."
+ ],
+ "theory": [
+  {
+   "h": "Дети или эти дети",
+   "p": "Голое множественное число называет категорию: children — дети вообще, любой ребёнок. The children — конкретные дети, которых слушатель знает по ситуации. Разница не в количестве, а в определённости: о каких именно детях идёт речь.",
+   "formula": "Children love sweets. · The children are in the garden."
+  },
+  {
+   "h": "Уточнение через of",
+   "p": "Оборот с of превращает широкое понятие в конкретное: the name of the street, the end of the film, the owner of the shop. После такого уточнения the почти обязателен, ведь мы уже знаем, о чём именно говорим. Внутри самого оборота существительное тоже обычно получает артикль.",
+   "table": {
+    "head": ["Общее", "Уточнённое", "Почему the"],
+    "rows": [
+     ["a name", "the name of the street", "есть оборот с of"],
+     ["children", "the children in the garden", "уточнение места"],
+     ["a man", "the man who called you", "придаточное предложение"],
+     ["a day", "the best day", "превосходная степень"]
+    ]
+   }
+  },
+  {
+   "h": "Придаточное как уточнение",
+   "p": "Who, that или which после существительного делают его единственным: the man who called you — уже не любой мужчина, а тот самый. Поэтому the перед таким словом естественно и почти всегда верно. Без уточнения остаётся a man или просто man.",
+   "formula": "The woman who lives next door is a doctor. · I need the file that you sent on Monday."
+  },
+  {
+   "h": "Превосходная степень, порядковые, only",
+   "p": "The best, the first, the same, the only сами выделяют предмет из ряда, поэтому артикль the при них почти всегда. Исключение одно: притяжательное местоимение вместо артикля. My first job и his best friend звучат нормально, the my first job — нет.",
+   "formula": "the best film of the year · the first day · the same problem · the only person who knew"
+  },
+  {
+   "h": "Когда уточнения нет",
+   "p": "Если уточнения нет, the не появляется. I like children, Life is short, Prices are rising — это утверждения о категории, а не о конкретных людях и вещах. Ошибка the children are usually noisy возникает из привычки ставить артикль перед множественным числом.",
+   "formula": "I like children. · Life is short. · Prices are rising."
+  }
+ ],
+ "examples": [
+  {"en": "Children need a lot of sleep.", "ru": "Детям нужно много сна."},
+  {"en": "The children are playing in the garden.", "ru": "Дети играют в саду."},
+  {"en": "The name of the hotel was easy to remember.", "ru": "Название отеля было легко запомнить."},
+  {"en": "The man who called you is my uncle.", "ru": "Мужчина, который вам звонил, — мой дядя."},
+  {"en": "This is the best coffee in town.", "ru": "Это лучший кофе в городе."},
+  {"en": "It's the same story every morning.", "ru": "Каждое утро одна и та же история."}
+ ],
+ "traps": [
+  {"bad": "The children are usually noisy.", "good": "Children are usually noisy.", "why": "О категории в целом — без артикля."},
+  {"bad": "I like the children.", "good": "I like children.", "why": "The children — только конкретные дети, знакомые слушателю."},
+  {"bad": "He is best student in our group.", "good": "He is the best student in our group.", "why": "Превосходная степень требует the."},
+  {"bad": "The name of street is long.", "good": "The name of the street is long.", "why": "Внутри оборота с of существительное тоже получает артикль."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ children learn languages faster than adults.", "options": ["A", "The", "No article"], "a": 2, "why": "Речь о детях вообще, множественное без артикля."},
+  {"type": "choice", "q": "Where are ___ children? It's time for dinner.", "options": ["a", "the", "no article"], "a": 1, "why": "Речь о своих, конкретных детях — the."},
+  {"type": "choice", "q": "She is ___ best singer in the choir.", "options": ["a", "the", "no article"], "a": 1, "why": "Превосходная степень всегда с the."},
+  {"type": "choice", "q": "___ book that you gave me was boring.", "options": ["A", "The", "No article"], "a": 1, "why": "Придаточное that you gave me уточняет книгу."},
+  {"type": "gap", "q": "It was ___ first time I had flown.", "a": ["the"], "why": "Порядковое числительное ставится с the."},
+  {"type": "gap", "q": "He is ___ only person who knows the code.", "a": ["the"], "why": "Only выделяет предмет из ряда, поэтому the."},
+  {"type": "translate", "q": "Дети любят мороженое.", "a": ["children like ice cream", "children love ice cream"], "why": "Категория детей — без артикля."},
+  {"type": "translate", "q": "Это лучший день в моей жизни.", "a": ["this is the best day of my life", "it is the best day of my life"], "why": "Превосходная степень: the best day."}
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "n": 153,
+ "level": "B2",
+ "module": "b-cond",
+ "title": "if: первый и второй тип",
+ "en": "if I do and if I did",
+ "summary": "Как различить реальное условие в будущем и воображаемое в настоящем: if it rains или if it rained, и почему после if нельзя ставить will.",
+ "can_do": [
+  "Сказать о реальном будущем условии через if + present.",
+  "Построить нереальное условие через if + past и would.",
+  "Различить «может случиться» и «уже не случится».",
+  "Не ставить will и would в части с if."
+ ],
+ "theory": [
+  {
+   "h": "Два «если», и они про разное",
+   "p": "Английское if работает в двух режимах. В первом речь о реальном, вполне возможном будущем: «если пойдёт дождь, мы останемся дома». Во втором — о воображаемом настоящем: «если бы у меня было время, я бы читал». По-русски во втором случае почти всегда есть «бы», в английском его роль играет форма прошедшего времени.",
+   "formula": "If it rains, we will stay at home. (реально) · If it rained, we would stay at home. (воображаемо)"
+  },
+  {
+   "h": "Первый тип: if + настоящее, дальше will",
+   "p": "В части с if ставим present simple, а в главной — will и инфинитив. Логика такая: условие ещё не наступило, но мысленно мы уже стоим в нём, поэтому настоящее время. Will в части с if не нужен и звучит ошибкой.",
+   "table": {
+    "head": ["Тип", "Часть с if", "Главная часть", "Смысл"],
+    "rows": [
+     ["первый", "if + present simple", "will + инфинитив", "реально, возможно"],
+     ["второй", "if + past simple", "would + инфинитив", "воображаемо, маловероятно"]
+    ]
+   }
+  },
+  {
+   "h": "Второй тип: if + прошедшее, дальше would",
+   "p": "Форма прошедшего времени здесь не означает прошлое. If I had more time — «если бы у меня было больше времени» прямо сейчас. Главная часть берёт would, could или might плюс инфинитив без to: would — сделал бы, could — смог бы, might — возможно сделал бы.",
+   "formula": "If I had more time, I would learn Italian. · If we left now, we could catch the train."
+  },
+  {
+   "h": "Сравнение на одном примере",
+   "p": "Одна и та же мысль может стать реальной или нереальной — меняется только форма. Сравните: If I have time, I will call you — время может появиться, это план. If I had time, I would call you — времени нет, это мечта. Такое сравнение лучше всего показывает, зачем нужен второй тип.",
+   "formula": "If I have time, I will call you. · If I had time, I would call you."
+  },
+  {
+   "h": "Ещё два удобных оборота",
+   "p": "If I were you — «на вашем месте», так дают совет: If I were you, I would wait. В неформальной речи вместо were говорят was, но письменная норма предпочитает were. Второй оборот — It would be nice if... — вежливое пожелание, тоже второй тип.",
+   "formula": "If I were you, I would apologise. · It would be nice if you could come."
+  }
+ ],
+ "examples": [
+  {"en": "If it rains tomorrow, we will stay at home.", "ru": "Если завтра пойдёт дождь, мы останемся дома."},
+  {"en": "If you press this button, the machine stops.", "ru": "Если нажать эту кнопку, машина остановится."},
+  {"en": "If I had a car, I would drive to work.", "ru": "Если бы у меня была машина, я бы ездил на работу."},
+  {"en": "We could go out if the weather were better.", "ru": "Мы могли бы пойти гулять, если бы погода была лучше."},
+  {"en": "If I were you, I would take the job.", "ru": "На вашем месте я бы согласился на эту работу."}
+ ],
+ "traps": [
+  {"bad": "If it will rain, we will stay at home.", "good": "If it rains, we will stay at home.", "why": "После if будущее не ставится: условие идёт в present simple."},
+  {"bad": "If I would have money, I would buy a car.", "good": "If I had money, I would buy a car.", "why": "Would живёт только в главной части, в части с if — прошедшее время."},
+  {"bad": "If I will see him, I tell him.", "good": "If I see him, I will tell him.", "why": "Will нужен в результате, а не в условии; иначе фраза рассыпается."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "If you ___ hard, you will pass the exam.", "options": ["work", "will work", "worked"], "a": 0, "why": "Первый тип: в части с if — present simple, без will."},
+  {"type": "choice", "q": "If I ___ you, I would apologise.", "options": ["am", "were", "will be"], "a": 1, "why": "Совет через второй тип: if I were you."},
+  {"type": "choice", "q": "We could go to the beach if it ___ sunny.", "options": ["is", "were", "will be"], "a": 1, "why": "Нереальное условие: if + past, дальше could."},
+  {"type": "choice", "q": "If she ___ late, we will start without her.", "options": ["is", "will be", "were"], "a": 0, "why": "Реальное будущее условие: if + present simple."},
+  {"type": "gap", "q": "If it ___ (rain) tomorrow, we will cancel the trip.", "a": ["rains"], "why": "После if — present simple, несмотря на tomorrow."},
+  {"type": "gap", "q": "I would help you if I ___ (know) how.", "a": ["knew"], "why": "Второй тип: if + past simple, главная часть с would."},
+  {"type": "translate", "q": "Если будет хорошая погода, мы пойдём гулять.", "a": ["if the weather is good we will go for a walk", "if the weather is good we'll go for a walk"], "why": "Первый тип: if + present, will + инфинитив."},
+  {"type": "translate", "q": "Если бы у меня было больше времени, я бы читал больше.", "a": ["if i had more time i would read more", "if i had more time i'd read more"], "why": "Второй тип: if + past simple, would + инфинитив."}
+ ]
+}

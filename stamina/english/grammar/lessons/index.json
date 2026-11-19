@@ -1,120 +1,293 @@
 {
- "title": "Грамматика английского языка: 115 уроков",
- "source": "Состав курса повторяет порядок тем Essential Grammar in Use (R. Murphy, красный Мёрфи, 115 юнитов). Объяснения, примеры и упражнения написаны заново по-русски — это учебный конспект, а не текст книги.",
+ "title": "Essential Grammar in Use + English Grammar in Use",
+ "source": "Essential Grammar in Use (115 юнитов, A1–B1) и English Grammar in Use (136 юнитов, B2): конспект по порядку тем, тексты написаны заново.",
  "modules": [
   {
    "id": "present",
    "title": "Настоящее время",
    "en": "Present simple and continuous",
-   "about": "От be до I do: как сказать, что происходит сейчас и обычно."
+   "about": "От be до I do: как сказать, что происходит сейчас и обычно.",
+   "book": "red"
   },
   {
    "id": "past",
    "title": "Прошедшее время",
    "en": "Past simple and continuous",
-   "about": "Рассказ о том, что уже было: was/were, did, was doing."
+   "about": "Рассказ о том, что уже было: was/were, did, was doing.",
+   "book": "red"
   },
   {
    "id": "perfect",
    "title": "Present Perfect",
    "en": "Present perfect",
-   "about": "Мост между прошлым и настоящим: I have done, for/since, ever."
+   "about": "Мост между прошлым и настоящим: I have done, for/since, ever.",
+   "book": "red"
   },
   {
    "id": "passive",
    "title": "Страдательный залог",
    "en": "Passive",
-   "about": "Когда важно действие, а не тот, кто его сделал: it is done."
+   "about": "Когда важно действие, а не тот, кто его сделал: it is done.",
+   "book": "red"
   },
   {
    "id": "core",
    "title": "Каркас глагола",
    "en": "Be, do, have, irregular verbs",
-   "about": "Три глагола, на которых держится вся грамматика, и таблица неправильных глаголов."
+   "about": "Три глагола, на которых держится вся грамматика, и таблица неправильных глаголов.",
+   "book": "red"
   },
   {
    "id": "future",
    "title": "Будущее время",
    "en": "Future",
-   "about": "Планы, решения, обещания: I'm doing, going to, will."
+   "about": "Планы, решения, обещания: I'm doing, going to, will.",
+   "book": "red"
   },
   {
    "id": "modals",
    "title": "Модальные глаголы",
    "en": "Modal verbs",
-   "about": "can, must, should, have to, would: уметь, быть должным, стоит ли."
+   "about": "can, must, should, have to, would: уметь, быть должным, стоит ли.",
+   "book": "red"
   },
   {
    "id": "there",
    "title": "There, it и короткие ответы",
    "en": "There is, it, short answers",
-   "about": "Сказать «там есть», «это» и ответить одним словом."
+   "about": "Сказать «там есть», «это» и ответить одним словом.",
+   "book": "red"
   },
   {
    "id": "questions",
    "title": "Вопросы",
    "en": "Questions",
-   "about": "Порядок слов в вопросе, who/what, предлоги, косвенная речь."
+   "about": "Порядок слов в вопросе, who/what, предлоги, косвенная речь.",
+   "book": "red"
   },
   {
    "id": "infinitive",
    "title": "Инфинитив и -ing",
    "en": "Verb + to / -ing",
-   "about": "Когда to do, когда doing и почему это нельзя угадать."
+   "about": "Когда to do, когда doing и почему это нельзя угадать.",
+   "book": "red"
   },
   {
    "id": "verbs",
    "title": "Важные глаголы",
    "en": "go, get, do/make, have",
-   "about": "Четыре глагола, которые встречаются чаще всего — и чаще всего путаются."
+   "about": "Четыре глагола, которые встречаются чаще всего — и чаще всего путаются.",
+   "book": "red"
   },
   {
    "id": "pronouns",
    "title": "Местоимения",
    "en": "Pronouns",
-   "about": "I или me, my или mine, себя, Симонова книга."
+   "about": "I или me, my или mine, себя, Симонова книга.",
+   "book": "red"
   },
   {
    "id": "nouns",
    "title": "Существительные и артикли",
    "en": "Nouns and articles",
-   "about": "a/an, the, множественное, неисчисляемое, some."
+   "about": "a/an, the, множественное, неисчисляемое, some.",
+   "book": "red"
   },
   {
    "id": "quantity",
    "title": "Количество и указатели",
    "en": "Determiners and quantity",
-   "about": "this/that, some/any, much/many, few/little, both/either."
+   "about": "this/that, some/any, much/many, few/little, both/either.",
+   "book": "red"
   },
   {
    "id": "adjectives",
    "title": "Прилагательные и наречия",
    "en": "Adjectives and adverbs",
-   "about": "Степени сравнения, than, as ... as, too, enough."
+   "about": "Степени сравнения, than, as ... as, too, enough.",
+   "book": "red"
   },
   {
    "id": "order",
    "title": "Порядок слов",
    "en": "Word order",
-   "about": "Почему английское предложение лучше не переставлять."
+   "about": "Почему английское предложение лучше не переставлять.",
+   "book": "red"
   },
   {
    "id": "clauses",
    "title": "Сложное предложение",
    "en": "Conjunctions and clauses",
-   "about": "and/but/because, when, if, who/which — соединяем части."
+   "about": "and/but/because, when, if, who/which — соединяем части.",
+   "book": "red"
   },
   {
    "id": "prepositions",
    "title": "Предлоги",
    "en": "Prepositions",
-   "about": "at/on/in, for/since, under/behind, verb + preposition."
+   "about": "at/on/in, for/since, under/behind, verb + preposition.",
+   "book": "red"
   },
   {
    "id": "phrasal",
    "title": "Фразовые глаголы",
    "en": "Phrasal verbs",
-   "about": "Глагол + частица = новый смысл: get up, turn on, look after."
+   "about": "Глагол + частица = новый смысл: get up, turn on, look after.",
+   "book": "red"
+  },
+  {
+   "id": "b-now",
+   "title": "Настоящее время",
+   "en": "Present tenses",
+   "about": "Что происходит сейчас и что бывает всегда — на уровне intermediate.",
+   "book": "blue"
+  },
+  {
+   "id": "b-past",
+   "title": "Прошедшее время",
+   "en": "Past simple and continuous",
+   "about": "Рассказ о прошлом: did и was doing.",
+   "book": "blue"
+  },
+  {
+   "id": "b-perfect",
+   "title": "Perfect: связь времён",
+   "en": "Perfect tenses",
+   "about": "have done, have been doing, had done и как их не путать с past simple.",
+   "book": "blue"
+  },
+  {
+   "id": "b-verbs",
+   "title": "have и used to",
+   "en": "have and used to",
+   "about": "Два глагола, у которых в английском больше смысла, чем кажется.",
+   "book": "blue"
+  },
+  {
+   "id": "b-future",
+   "title": "Будущее",
+   "en": "The future",
+   "about": "will, shall, going to и настоящее время о планах.",
+   "book": "blue"
+  },
+  {
+   "id": "b-modals",
+   "title": "Модальные глаголы",
+   "en": "Modals",
+   "about": "must, can, may, should, would: уверенность, совет, разрешение.",
+   "book": "blue"
+  },
+  {
+   "id": "b-cond",
+   "title": "if и wish",
+   "en": "Conditionals and wish",
+   "about": "Три типа условий и сожаления.",
+   "book": "blue"
+  },
+  {
+   "id": "b-passive",
+   "title": "Пассив",
+   "en": "Passive",
+   "about": "is done, has been done, have something done.",
+   "book": "blue"
+  },
+  {
+   "id": "b-reported",
+   "title": "Косвенная речь",
+   "en": "Reported speech",
+   "about": "he said that…, he asked me…",
+   "book": "blue"
+  },
+  {
+   "id": "b-questions",
+   "title": "Вопросы",
+   "en": "Questions",
+   "about": "Каркас вопроса, косвенные вопросы, хвосты, короткие ответы.",
+   "book": "blue"
+  },
+  {
+   "id": "b-ing",
+   "title": "Глагол + -ing / to",
+   "en": "Verb forms",
+   "about": "Какая форма идёт после глагола, прилагательного и предлога.",
+   "book": "blue"
+  },
+  {
+   "id": "b-nouns",
+   "title": "Существительные",
+   "en": "Nouns",
+   "about": "Исчисляемые и неисчисляемые, множественное число, -'s.",
+   "book": "blue"
+  },
+  {
+   "id": "b-articles",
+   "title": "Артикли",
+   "en": "Articles",
+   "about": "a/an, the, без артикля — и имена с the.",
+   "book": "blue"
+  },
+  {
+   "id": "b-pronouns",
+   "title": "Местоимения",
+   "en": "Pronouns",
+   "about": "-self, a friend of mine, there и it.",
+   "book": "blue"
+  },
+  {
+   "id": "b-quant",
+   "title": "Количество",
+   "en": "Quantifiers",
+   "about": "some/any, much/many, all/every, both/neither.",
+   "book": "blue"
+  },
+  {
+   "id": "b-relative",
+   "title": "Относительные предложения",
+   "en": "Relative clauses",
+   "about": "who, that, which, whose, where.",
+   "book": "blue"
+  },
+  {
+   "id": "b-adj",
+   "title": "Прилагательные и наречия",
+   "en": "Adjectives and adverbs",
+   "about": "Порядок, boring/bored, so/such, enough/too.",
+   "book": "blue"
+  },
+  {
+   "id": "b-comp",
+   "title": "Степени сравнения",
+   "en": "Comparatives and superlatives",
+   "about": "cheaper, more expensive, the best, as… as.",
+   "book": "blue"
+  },
+  {
+   "id": "b-order",
+   "title": "Порядок слов",
+   "en": "Word order",
+   "about": "Где стоят дополнение, место, время и наречия.",
+   "book": "blue"
+  },
+  {
+   "id": "b-conj",
+   "title": "Связки и союзы",
+   "en": "Link words",
+   "about": "although, in case, unless, as if, by the time.",
+   "book": "blue"
+  },
+  {
+   "id": "b-prep",
+   "title": "Предлоги",
+   "en": "Prepositions",
+   "about": "Время, место, движение и предлог после слова.",
+   "book": "blue"
+  },
+  {
+   "id": "b-phrasal",
+   "title": "Фразовые глаголы",
+   "en": "Phrasal verbs",
+   "about": "Сводка и тонкости: что с чем сочетается.",
+   "book": "blue"
   }
  ],
  "units": [
@@ -123,805 +296,2281 @@
    "level": "A1",
    "module": "present",
    "title": "Глагол be: am, is, are",
-   "en": "am/is/are"
+   "en": "am/is/are",
+   "book": "red",
+   "unit": 1
   },
   {
    "n": 2,
    "level": "A1",
    "module": "present",
    "title": "Вопросы с be: Am I? Is she?",
-   "en": "am/is/are (questions)"
+   "en": "am/is/are (questions)",
+   "book": "red",
+   "unit": 2
   },
   {
    "n": 3,
    "level": "A1",
    "module": "present",
    "title": "Present Continuous: I am doing",
-   "en": "I am doing (present continuous)"
+   "en": "I am doing (present continuous)",
+   "book": "red",
+   "unit": 3
   },
   {
    "n": 4,
    "level": "A1",
    "module": "present",
    "title": "Вопросы в Present Continuous",
-   "en": "are you doing? (present continuous questions)"
+   "en": "are you doing? (present continuous questions)",
+   "book": "red",
+   "unit": 4
   },
   {
    "n": 5,
    "level": "A1",
    "module": "present",
    "title": "Present Simple: I do, I work, I like",
-   "en": "I do / work / like (present simple)"
+   "en": "I do / work / like (present simple)",
+   "book": "red",
+   "unit": 5
   },
   {
    "n": 6,
    "level": "A1",
    "module": "present",
    "title": "Отрицания в Present Simple: I don't",
-   "en": "I don't ... (present simple negative)"
+   "en": "I don't ... (present simple negative)",
+   "book": "red",
+   "unit": 6
   },
   {
    "n": 7,
    "level": "A1",
    "module": "present",
    "title": "Вопросы в Present Simple: Do you ...?",
-   "en": "Do you ...? (present simple questions)"
+   "en": "Do you ...? (present simple questions)",
+   "book": "red",
+   "unit": 7
   },
   {
    "n": 8,
    "level": "A1",
    "module": "present",
    "title": "Present Continuous или Present Simple",
-   "en": "I am doing и I do (сравнение)"
+   "en": "I am doing и I do (сравнение)",
+   "book": "red",
+   "unit": 8
   },
   {
    "n": 9,
    "level": "A1",
    "module": "present",
    "title": "I have и I have got",
-   "en": "I have / I've got"
+   "en": "I have / I've got",
+   "book": "red",
+   "unit": 9
   },
   {
    "n": 10,
    "level": "A1",
    "module": "past",
    "title": "Past Simple с be: was и were",
-   "en": "was/were"
+   "en": "was/were",
+   "book": "red",
+   "unit": 10
   },
   {
    "n": 11,
    "level": "A1",
    "module": "past",
    "title": "Past Simple: правильные и неправильные глаголы",
-   "en": "worked/got/went (past simple)"
+   "en": "worked/got/went (past simple)",
+   "book": "red",
+   "unit": 11
   },
   {
    "n": 12,
    "level": "A1",
    "module": "past",
    "title": "Отрицания и вопросы в Past Simple",
-   "en": "I didn't / Did you ...? (past simple)"
+   "en": "I didn't / Did you ...? (past simple)",
+   "book": "red",
+   "unit": 12
   },
   {
    "n": 13,
    "level": "A1",
    "module": "past",
    "title": "Past Continuous: I was doing",
-   "en": "I was doing (past continuous)"
+   "en": "I was doing (past continuous)",
+   "book": "red",
+   "unit": 13
   },
   {
    "n": 14,
    "level": "A1",
    "module": "past",
    "title": "Past Continuous или Past Simple",
-   "en": "I was doing и I did"
+   "en": "I was doing и I did",
+   "book": "red",
+   "unit": 14
   },
   {
    "n": 15,
    "level": "A1",
    "module": "perfect",
    "title": "Present Perfect: I have done",
-   "en": "I have done (present perfect 1)"
+   "en": "I have done (present perfect 1)",
+   "book": "red",
+   "unit": 15
   },
   {
    "n": 16,
    "level": "A1",
    "module": "perfect",
    "title": "Present Perfect: just, already, yet",
-   "en": "I've just / already / yet"
+   "en": "I've just / already / yet",
+   "book": "red",
+   "unit": 16
   },
   {
    "n": 17,
    "level": "A1",
    "module": "perfect",
    "title": "Have you ever ...?",
-   "en": "Have you ever ...?"
+   "en": "Have you ever ...?",
+   "book": "red",
+   "unit": 17
   },
   {
    "n": 18,
    "level": "A1",
    "module": "perfect",
    "title": "Present Perfect Continuous: I have been doing",
-   "en": "I have been doing (present perfect continuous)"
+   "en": "I have been doing (present perfect continuous)",
+   "book": "red",
+   "unit": 18
   },
   {
    "n": 19,
    "level": "A1",
    "module": "perfect",
    "title": "for, since, ago: сколько времени",
-   "en": "for / since / ago"
+   "en": "for / since / ago",
+   "book": "red",
+   "unit": 19
   },
   {
    "n": 20,
    "level": "A1",
    "module": "perfect",
    "title": "Present Perfect или Past Simple",
-   "en": "I have done и I did"
+   "en": "I have done и I did",
+   "book": "red",
+   "unit": 20
   },
   {
    "n": 21,
    "level": "A1",
    "module": "passive",
    "title": "Страдательный залог (1): is done, was done",
-   "en": "is done / was done (passive 1)"
+   "en": "is done / was done (passive 1)",
+   "book": "red",
+   "unit": 21
   },
   {
    "n": 22,
    "level": "A1",
    "module": "passive",
    "title": "Страдательный залог (2): все времена",
-   "en": "be done / been done (passive 2)"
+   "en": "be done / been done (passive 2)",
+   "book": "red",
+   "unit": 22
   },
   {
    "n": 23,
    "level": "A1",
    "module": "core",
    "title": "be, do, have: три главных глагола",
-   "en": "be / have / do (present and past)"
+   "en": "be / have / do (present and past)",
+   "book": "red",
+   "unit": 23
   },
   {
    "n": 24,
    "level": "A1",
    "module": "core",
    "title": "Неправильные глаголы: как их учить",
-   "en": "regular and irregular verbs"
+   "en": "regular and irregular verbs",
+   "book": "red",
+   "unit": 24
   },
   {
    "n": 25,
    "level": "A1",
    "module": "future",
    "title": "Present Continuous о будущем",
-   "en": "I'm doing something tomorrow (future)"
+   "en": "I'm doing something tomorrow (future)",
+   "book": "red",
+   "unit": 25
   },
   {
    "n": 26,
    "level": "A1",
    "module": "future",
    "title": "I am going to: планы и намерения",
-   "en": "I'm going to do"
+   "en": "I'm going to do",
+   "book": "red",
+   "unit": 26
   },
   {
    "n": 27,
    "level": "A1",
    "module": "future",
    "title": "will и shall: будущее простое",
-   "en": "will/shall (1)"
+   "en": "will/shall (1)",
+   "book": "red",
+   "unit": 27
   },
   {
    "n": 28,
    "level": "A1",
    "module": "future",
    "title": "will (2): предложения, обещания, решения",
-   "en": "will/shall (2)"
+   "en": "will/shall (2)",
+   "book": "red",
+   "unit": 28
   },
   {
    "n": 29,
    "level": "A1",
    "module": "modals",
    "title": "may и might: может быть",
-   "en": "may and might"
+   "en": "may and might",
+   "book": "red",
+   "unit": 29
   },
   {
    "n": 30,
    "level": "A1",
    "module": "modals",
    "title": "can и could: уметь и мочь",
-   "en": "can and could"
+   "en": "can and could",
+   "book": "red",
+   "unit": 30
   },
   {
    "n": 31,
    "level": "A2",
    "module": "modals",
    "title": "must, mustn't, needn't",
-   "en": "must / mustn't / needn't"
+   "en": "must / mustn't / needn't",
+   "book": "red",
+   "unit": 31
   },
   {
    "n": 32,
    "level": "A2",
    "module": "modals",
    "title": "should: стоит ли",
-   "en": "should"
+   "en": "should",
+   "book": "red",
+   "unit": 32
   },
   {
    "n": 33,
    "level": "A2",
    "module": "modals",
    "title": "have to: приходится",
-   "en": "I have to ..."
+   "en": "I have to ...",
+   "book": "red",
+   "unit": 33
   },
   {
    "n": 34,
    "level": "A2",
    "module": "modals",
    "title": "would и would like",
-   "en": "would / would like"
+   "en": "would / would like",
+   "book": "red",
+   "unit": 34
   },
   {
    "n": 35,
    "level": "A2",
    "module": "modals",
    "title": "Повелительное наклонение",
-   "en": "imperative (do it, don't do it)"
+   "en": "imperative (do it, don't do it)",
+   "book": "red",
+   "unit": 35
   },
   {
    "n": 36,
    "level": "A2",
    "module": "modals",
    "title": "used to: раньше бывало",
-   "en": "I used to ..."
+   "en": "I used to ...",
+   "book": "red",
+   "unit": 36
   },
   {
    "n": 37,
    "level": "A2",
    "module": "there",
    "title": "There is и There are",
-   "en": "there is / there are"
+   "en": "there is / there are",
+   "book": "red",
+   "unit": 37
   },
   {
    "n": 38,
    "level": "A2",
    "module": "there",
    "title": "there в разных временах",
-   "en": "there was/were, there has/have been"
+   "en": "there was/were, there has/have been",
+   "book": "red",
+   "unit": 38
   },
   {
    "n": 39,
    "level": "A2",
    "module": "there",
    "title": "It: формальное подлежащее",
-   "en": "it (formal subject)"
+   "en": "it (formal subject)",
+   "book": "red",
+   "unit": 39
   },
   {
    "n": 40,
    "level": "A2",
    "module": "there",
    "title": "Короткие ответы: Yes, I do",
-   "en": "short answers"
+   "en": "short answers",
+   "book": "red",
+   "unit": 40
   },
   {
    "n": 41,
    "level": "A2",
    "module": "there",
    "title": "Разделительные вопросы: isn't it?",
-   "en": "question tags"
+   "en": "question tags",
+   "book": "red",
+   "unit": 41
   },
   {
    "n": 42,
    "level": "A2",
    "module": "there",
    "title": "too, either, so am I, neither do I",
-   "en": "too / either / so am I / neither do I"
+   "en": "too / either / so am I / neither do I",
+   "book": "red",
+   "unit": 42
   },
   {
    "n": 43,
    "level": "A2",
    "module": "questions",
    "title": "Отрицание not",
-   "en": "not"
+   "en": "not",
+   "book": "red",
+   "unit": 43
   },
   {
    "n": 44,
    "level": "A2",
    "module": "questions",
    "title": "Как строится вопрос: общие правила",
-   "en": "questions (1): общие правила"
+   "en": "questions (1): общие правила",
+   "book": "red",
+   "unit": 44
   },
   {
    "n": 45,
    "level": "A2",
    "module": "questions",
    "title": "Вопрос к подлежащему: who и what",
-   "en": "questions (2): who / what"
+   "en": "questions (2): who / what",
+   "book": "red",
+   "unit": 45
   },
   {
    "n": 46,
    "level": "A2",
    "module": "questions",
    "title": "Вопросы с предлогом: Who ... to?",
-   "en": "questions with prepositions"
+   "en": "questions with prepositions",
+   "book": "red",
+   "unit": 46
   },
   {
    "n": 47,
    "level": "A2",
    "module": "questions",
    "title": "what, which, how",
-   "en": "what / which / how"
+   "en": "what / which / how",
+   "book": "red",
+   "unit": 47
   },
   {
    "n": 48,
    "level": "A2",
    "module": "questions",
    "title": "How long does it take?",
-   "en": "how long does it take?"
+   "en": "how long does it take?",
+   "book": "red",
+   "unit": 48
   },
   {
    "n": 49,
    "level": "A2",
    "module": "questions",
    "title": "Вопросы в сложных предложениях",
-   "en": "questions (3): сложные предложения"
+   "en": "questions (3): сложные предложения",
+   "book": "red",
+   "unit": 49
   },
   {
    "n": 50,
    "level": "A2",
    "module": "questions",
    "title": "Косвенная речь: he said that ...",
-   "en": "reported speech"
+   "en": "reported speech",
+   "book": "red",
+   "unit": 50
   },
   {
    "n": 51,
    "level": "A2",
    "module": "infinitive",
    "title": "Инфинитив и -ing: основы",
-   "en": "to + infinitive и -ing (1)"
+   "en": "to + infinitive и -ing (1)",
+   "book": "red",
+   "unit": 51
   },
   {
    "n": 52,
    "level": "A2",
    "module": "infinitive",
    "title": "Инфинитив или -ing: глаголы",
-   "en": "verb + to / verb + -ing (2)"
+   "en": "verb + to / verb + -ing (2)",
+   "book": "red",
+   "unit": 52
   },
   {
    "n": 53,
    "level": "A2",
    "module": "infinitive",
    "title": "want и let: кого-то сделать что-то",
-   "en": "want somebody to / let somebody do"
+   "en": "want somebody to / let somebody do",
+   "book": "red",
+   "unit": 53
   },
   {
    "n": 54,
    "level": "A2",
    "module": "infinitive",
    "title": "Инфинитив цели: зачем",
-   "en": "to ... (purpose)"
+   "en": "to ... (purpose)",
+   "book": "red",
+   "unit": 54
   },
   {
    "n": 55,
    "level": "A2",
    "module": "verbs",
    "title": "Глагол go",
-   "en": "go"
+   "en": "go",
+   "book": "red",
+   "unit": 55
   },
   {
    "n": 56,
    "level": "A2",
    "module": "verbs",
    "title": "Глагол get",
-   "en": "get"
+   "en": "get",
+   "book": "red",
+   "unit": 56
   },
   {
    "n": 57,
    "level": "A2",
    "module": "verbs",
    "title": "do и make: делать",
-   "en": "do and make"
+   "en": "do and make",
+   "book": "red",
+   "unit": 57
   },
   {
    "n": 58,
    "level": "A2",
    "module": "verbs",
    "title": "have: have breakfast, have a good time",
-   "en": "have (2): устойчивые сочетания"
+   "en": "have (2): устойчивые сочетания",
+   "book": "red",
+   "unit": 58
   },
   {
    "n": 59,
    "level": "A2",
    "module": "pronouns",
    "title": "Личные местоимения: I и me",
-   "en": "I/me, he/him, they/them"
+   "en": "I/me, he/him, they/them",
+   "book": "red",
+   "unit": 59
   },
   {
    "n": 60,
    "level": "A2",
    "module": "pronouns",
    "title": "Притяжательные: my, his, their",
-   "en": "my/his/their (possessive adjectives)"
+   "en": "my/his/their (possessive adjectives)",
+   "book": "red",
+   "unit": 60
   },
   {
    "n": 61,
    "level": "A2",
    "module": "pronouns",
    "title": "my или mine: два вида притяжательных",
-   "en": "mine/yours/hers (possessive pronouns)"
+   "en": "mine/yours/hers (possessive pronouns)",
+   "book": "red",
+   "unit": 61
   },
   {
    "n": 62,
    "level": "A2",
    "module": "pronouns",
    "title": "Все местоимения в одной таблице",
-   "en": "таблица местоимений"
+   "en": "таблица местоимений",
+   "book": "red",
+   "unit": 62
   },
   {
    "n": 63,
    "level": "A2",
    "module": "pronouns",
    "title": "Возвратные местоимения: myself",
-   "en": "myself/yourself/themselves"
+   "en": "myself/yourself/themselves",
+   "book": "red",
+   "unit": 63
   },
   {
    "n": 64,
    "level": "A2",
    "module": "pronouns",
    "title": "Притяжательный падеж: Simon's",
-   "en": "'s (possessive)"
+   "en": "'s (possessive)",
+   "book": "red",
+   "unit": 64
   },
   {
    "n": 65,
    "level": "A2",
    "module": "nouns",
    "title": "Артикль a / an",
-   "en": "a/an"
+   "en": "a/an",
+   "book": "red",
+   "unit": 65
   },
   {
    "n": 66,
    "level": "A2",
    "module": "nouns",
    "title": "Множественное число: cats, boxes, mice",
-   "en": "plural (множественное число)"
+   "en": "plural (множественное число)",
+   "book": "red",
+   "unit": 66
   },
   {
    "n": 67,
    "level": "A2",
    "module": "nouns",
    "title": "Неисчисляемые существительные",
-   "en": "uncountable nouns"
+   "en": "uncountable nouns",
+   "book": "red",
+   "unit": 67
   },
   {
    "n": 68,
    "level": "A2",
    "module": "nouns",
    "title": "some: немного, несколько",
-   "en": "some"
+   "en": "some",
+   "book": "red",
+   "unit": 68
   },
   {
    "n": 69,
    "level": "A2",
    "module": "nouns",
    "title": "Артикли a/an и the",
-   "en": "a/an and the"
+   "en": "a/an and the",
+   "book": "red",
+   "unit": 69
   },
   {
    "n": 70,
    "level": "A2",
    "module": "nouns",
    "title": "Артикль the: основное правило",
-   "en": "the (1)"
+   "en": "the (1)",
+   "book": "red",
+   "unit": 70
   },
   {
    "n": 71,
    "level": "A2",
    "module": "nouns",
    "title": "Артикль the: особые случаи",
-   "en": "the (2)"
+   "en": "the (2)",
+   "book": "red",
+   "unit": 71
   },
   {
    "n": 72,
    "level": "A2",
    "module": "nouns",
    "title": "Артикль the: когда не нужен",
-   "en": "the (3)"
+   "en": "the (3)",
+   "book": "red",
+   "unit": 72
   },
   {
    "n": 73,
    "level": "A2",
    "module": "nouns",
    "title": "the с географическими названиями",
-   "en": "the (4): география"
+   "en": "the (4): география",
+   "book": "red",
+   "unit": 73
   },
   {
    "n": 74,
    "level": "A2",
    "module": "quantity",
    "title": "this, that, these, those",
-   "en": "this/that/these/those"
+   "en": "this/that/these/those",
+   "book": "red",
+   "unit": 74
   },
   {
    "n": 75,
    "level": "A2",
    "module": "quantity",
    "title": "one и ones: чтобы не повторять",
-   "en": "one/ones"
+   "en": "one/ones",
+   "book": "red",
+   "unit": 75
   },
   {
    "n": 76,
    "level": "A2",
    "module": "quantity",
    "title": "some и any",
-   "en": "some and any"
+   "en": "some and any",
+   "book": "red",
+   "unit": 76
   },
   {
    "n": 77,
    "level": "A2",
    "module": "quantity",
    "title": "no, none, not any",
-   "en": "no / none / not any"
+   "en": "no / none / not any",
+   "book": "red",
+   "unit": 77
   },
   {
    "n": 78,
    "level": "A2",
    "module": "quantity",
    "title": "nobody и not anybody",
-   "en": "not anybody / nobody"
+   "en": "not anybody / nobody",
+   "book": "red",
+   "unit": 78
   },
   {
    "n": 79,
    "level": "A2",
    "module": "quantity",
    "title": "somebody, anybody, nobody",
-   "en": "somebody/anybody/nobody"
+   "en": "somebody/anybody/nobody",
+   "book": "red",
+   "unit": 79
   },
   {
    "n": 80,
    "level": "A2",
    "module": "quantity",
    "title": "all и every",
-   "en": "all and every"
+   "en": "all and every",
+   "book": "red",
+   "unit": 80
   },
   {
    "n": 81,
    "level": "A2",
    "module": "quantity",
    "title": "all, most, some, any, no",
-   "en": "all/most/some/any/no"
+   "en": "all/most/some/any/no",
+   "book": "red",
+   "unit": 81
   },
   {
    "n": 82,
    "level": "A2",
    "module": "quantity",
    "title": "both, either, neither",
-   "en": "both/either/neither"
+   "en": "both/either/neither",
+   "book": "red",
+   "unit": 82
   },
   {
    "n": 83,
    "level": "A2",
    "module": "quantity",
    "title": "much, many, a lot of",
-   "en": "much/many/a lot of"
+   "en": "much/many/a lot of",
+   "book": "red",
+   "unit": 83
   },
   {
    "n": 84,
    "level": "A2",
    "module": "quantity",
    "title": "few и little: мало",
-   "en": "few and little"
+   "en": "few and little",
+   "book": "red",
+   "unit": 84
   },
   {
    "n": 85,
    "level": "A2",
    "module": "adjectives",
    "title": "Прилагательные",
-   "en": "adjectives"
+   "en": "adjectives",
+   "book": "red",
+   "unit": 85
   },
   {
    "n": 86,
    "level": "A2",
    "module": "adjectives",
    "title": "Наречия",
-   "en": "adverbs"
+   "en": "adverbs",
+   "book": "red",
+   "unit": 86
   },
   {
    "n": 87,
    "level": "A2",
    "module": "adjectives",
    "title": "Степени сравнения",
-   "en": "comparative (older, more expensive)"
+   "en": "comparative (older, more expensive)",
+   "book": "red",
+   "unit": 87
   },
   {
    "n": 88,
    "level": "A2",
    "module": "adjectives",
    "title": "Сравнение с than",
-   "en": "than"
+   "en": "than",
+   "book": "red",
+   "unit": 88
   },
   {
    "n": 89,
    "level": "A2",
    "module": "adjectives",
    "title": "not as ... as",
-   "en": "not as ... as"
+   "en": "not as ... as",
+   "book": "red",
+   "unit": 89
   },
   {
    "n": 90,
    "level": "A2",
    "module": "adjectives",
    "title": "Превосходная степень",
-   "en": "superlative (the oldest)"
+   "en": "superlative (the oldest)",
+   "book": "red",
+   "unit": 90
   },
   {
    "n": 91,
    "level": "B1",
    "module": "adjectives",
    "title": "enough: достаточно",
-   "en": "enough"
+   "en": "enough",
+   "book": "red",
+   "unit": 91
   },
   {
    "n": 92,
    "level": "B1",
    "module": "adjectives",
    "title": "too: слишком",
-   "en": "too"
+   "en": "too",
+   "book": "red",
+   "unit": 92
   },
   {
    "n": 93,
    "level": "B1",
    "module": "order",
    "title": "Порядок слов в предложении",
-   "en": "word order (1)"
+   "en": "word order (1)",
+   "book": "red",
+   "unit": 93
   },
   {
    "n": 94,
    "level": "B1",
    "module": "order",
    "title": "Куда ставить always, usually, often",
-   "en": "always/usually/often (позиция)"
+   "en": "always/usually/often (позиция)",
+   "book": "red",
+   "unit": 94
   },
   {
    "n": 95,
    "level": "B1",
    "module": "order",
    "title": "still, yet, already",
-   "en": "still / yet / already"
+   "en": "still / yet / already",
+   "book": "red",
+   "unit": 95
   },
   {
    "n": 96,
    "level": "B1",
    "module": "order",
    "title": "give, lend, pass, send, show",
-   "en": "give/lend/pass/send/show"
+   "en": "give/lend/pass/send/show",
+   "book": "red",
+   "unit": 96
   },
   {
    "n": 97,
    "level": "B1",
    "module": "clauses",
    "title": "and, but, or, so, because",
-   "en": "and/but/or/so/because"
+   "en": "and/but/or/so/because",
+   "book": "red",
+   "unit": 97
   },
   {
    "n": 98,
    "level": "B1",
    "module": "clauses",
    "title": "when: когда",
-   "en": "when ..."
+   "en": "when ...",
+   "book": "red",
+   "unit": 98
   },
   {
    "n": 99,
    "level": "B1",
    "module": "clauses",
    "title": "if: условные предложения 1 типа",
-   "en": "if (1)"
+   "en": "if (1)",
+   "book": "red",
+   "unit": 99
   },
   {
    "n": 100,
    "level": "B1",
    "module": "clauses",
    "title": "if: условные предложения 2 типа",
-   "en": "if (2)"
+   "en": "if (2)",
+   "book": "red",
+   "unit": 100
   },
   {
    "n": 101,
    "level": "B1",
    "module": "clauses",
    "title": "who, that, which: кто и что",
-   "en": "who/that/which (relative 1)"
+   "en": "who/that/which (relative 1)",
+   "book": "red",
+   "unit": 101
   },
   {
    "n": 102,
    "level": "B1",
    "module": "clauses",
    "title": "where, when, whose",
-   "en": "where/when/whose (relative 2)"
+   "en": "where/when/whose (relative 2)",
+   "book": "red",
+   "unit": 102
   },
   {
    "n": 103,
    "level": "B1",
    "module": "prepositions",
    "title": "Предлоги времени: at, on, in",
-   "en": "at/on/in (time)"
+   "en": "at/on/in (time)",
+   "book": "red",
+   "unit": 103
   },
   {
    "n": 104,
    "level": "B1",
    "module": "prepositions",
    "title": "from ... to, until, since, for",
-   "en": "for/since/until"
+   "en": "for/since/until",
+   "book": "red",
+   "unit": 104
   },
   {
    "n": 105,
    "level": "B1",
    "module": "prepositions",
    "title": "before, after, during, while",
-   "en": "before/after/during/while"
+   "en": "before/after/during/while",
+   "book": "red",
+   "unit": 105
   },
   {
    "n": 106,
    "level": "B1",
    "module": "prepositions",
    "title": "Предлоги места: in, at, on",
-   "en": "in/at/on (place) 1"
+   "en": "in/at/on (place) 1",
+   "book": "red",
+   "unit": 106
   },
   {
    "n": 107,
    "level": "B1",
    "module": "prepositions",
    "title": "Предлоги места: in, at, on (продолжение)",
-   "en": "in/at/on (place) 2"
+   "en": "in/at/on (place) 2",
+   "book": "red",
+   "unit": 107
   },
   {
    "n": 108,
    "level": "B1",
    "module": "prepositions",
    "title": "to, in, at: куда и где",
-   "en": "to/in/at"
+   "en": "to/in/at",
+   "book": "red",
+   "unit": 108
   },
   {
    "n": 109,
    "level": "B1",
    "module": "prepositions",
    "title": "under, behind, opposite",
-   "en": "under/behind/opposite"
+   "en": "under/behind/opposite",
+   "book": "red",
+   "unit": 109
   },
   {
    "n": 110,
    "level": "B1",
    "module": "prepositions",
    "title": "up, over, through: движение",
-   "en": "up/over/through"
+   "en": "up/over/through",
+   "book": "red",
+   "unit": 110
   },
   {
    "n": 111,
    "level": "B1",
    "module": "prepositions",
    "title": "on, at, by, with, about",
-   "en": "on/at/by/with/about"
+   "en": "on/at/by/with/about",
+   "book": "red",
+   "unit": 111
   },
   {
    "n": 112,
    "level": "B1",
    "module": "prepositions",
    "title": "Прилагательное + предлог",
-   "en": "adjective + preposition"
+   "en": "adjective + preposition",
+   "book": "red",
+   "unit": 112
   },
   {
    "n": 113,
    "level": "B1",
    "module": "prepositions",
    "title": "Глагол + предлог",
-   "en": "verb + preposition"
+   "en": "verb + preposition",
+   "book": "red",
+   "unit": 113
   },
   {
    "n": 114,
    "level": "B1",
    "module": "phrasal",
    "title": "Фразовые глаголы (1)",
-   "en": "phrasal verbs (1)"
+   "en": "phrasal verbs (1)",
+   "book": "red",
+   "unit": 114
   },
   {
    "n": 115,
    "level": "B1",
    "module": "phrasal",
    "title": "Фразовые глаголы (2)",
-   "en": "phrasal verbs (2)"
+   "en": "phrasal verbs (2)",
+   "book": "red",
+   "unit": 115
+  },
+  {
+   "n": 116,
+   "level": "B2",
+   "module": "b-now",
+   "title": "Present Continuous: действие сейчас",
+   "en": "present continuous",
+   "book": "blue",
+   "unit": 1
+  },
+  {
+   "n": 117,
+   "level": "B2",
+   "module": "b-now",
+   "title": "Present Simple: регулярное действие",
+   "en": "present simple",
+   "book": "blue",
+   "unit": 2
+  },
+  {
+   "n": 118,
+   "level": "B2",
+   "module": "b-now",
+   "title": "Continuous и Simple: разница (1)",
+   "en": "present continuous and present simple 1",
+   "book": "blue",
+   "unit": 3
+  },
+  {
+   "n": 119,
+   "level": "B2",
+   "module": "b-now",
+   "title": "Continuous и Simple: разница (2)",
+   "en": "present continuous and present simple 2",
+   "book": "blue",
+   "unit": 4
+  },
+  {
+   "n": 120,
+   "level": "B2",
+   "module": "b-past",
+   "title": "Past Simple: что было",
+   "en": "past simple",
+   "book": "blue",
+   "unit": 5
+  },
+  {
+   "n": 121,
+   "level": "B2",
+   "module": "b-past",
+   "title": "Past Continuous: что происходило",
+   "en": "past continuous",
+   "book": "blue",
+   "unit": 6
+  },
+  {
+   "n": 122,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Present Perfect (1): результат",
+   "en": "present perfect 1",
+   "book": "blue",
+   "unit": 7
+  },
+  {
+   "n": 123,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Present Perfect (2): опыт и новость",
+   "en": "present perfect 2",
+   "book": "blue",
+   "unit": 8
+  },
+  {
+   "n": 124,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Present Perfect Continuous: сколько уже",
+   "en": "present perfect continuous",
+   "book": "blue",
+   "unit": 9
+  },
+  {
+   "n": 125,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Perfect Continuous и Perfect",
+   "en": "present perfect continuous and simple",
+   "book": "blue",
+   "unit": 10
+  },
+  {
+   "n": 126,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "How long have you…?",
+   "en": "how long have you been",
+   "book": "blue",
+   "unit": 11
+  },
+  {
+   "n": 127,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "For и since: сколько и с каких пор",
+   "en": "for and since",
+   "book": "blue",
+   "unit": 12
+  },
+  {
+   "n": 128,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Perfect или Past (1)",
+   "en": "present perfect and past 1",
+   "book": "blue",
+   "unit": 13
+  },
+  {
+   "n": 129,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Perfect или Past (2)",
+   "en": "present perfect and past 2",
+   "book": "blue",
+   "unit": 14
+  },
+  {
+   "n": 130,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Past Perfect: что было до",
+   "en": "past perfect",
+   "book": "blue",
+   "unit": 15
+  },
+  {
+   "n": 131,
+   "level": "B2",
+   "module": "b-perfect",
+   "title": "Past Perfect Continuous",
+   "en": "past perfect continuous",
+   "book": "blue",
+   "unit": 16
+  },
+  {
+   "n": 132,
+   "level": "B2",
+   "module": "b-verbs",
+   "title": "have и have got",
+   "en": "have and have got",
+   "book": "blue",
+   "unit": 17
+  },
+  {
+   "n": 133,
+   "level": "B2",
+   "module": "b-verbs",
+   "title": "used to: раньше бывало",
+   "en": "used to",
+   "book": "blue",
+   "unit": 18
+  },
+  {
+   "n": 134,
+   "level": "B2",
+   "module": "b-future",
+   "title": "Настоящее время о будущем",
+   "en": "present tenses for the future",
+   "book": "blue",
+   "unit": 19
+  },
+  {
+   "n": 135,
+   "level": "B2",
+   "module": "b-future",
+   "title": "going to: планы и предсказания",
+   "en": "going to",
+   "book": "blue",
+   "unit": 20
+  },
+  {
+   "n": 136,
+   "level": "B2",
+   "module": "b-future",
+   "title": "will и shall (1)",
+   "en": "will and shall 1",
+   "book": "blue",
+   "unit": 21
+  },
+  {
+   "n": 137,
+   "level": "B2",
+   "module": "b-future",
+   "title": "will и shall (2)",
+   "en": "will and shall 2",
+   "book": "blue",
+   "unit": 22
+  },
+  {
+   "n": 138,
+   "level": "B2",
+   "module": "b-future",
+   "title": "will или going to",
+   "en": "will and going to",
+   "book": "blue",
+   "unit": 23
+  },
+  {
+   "n": 139,
+   "level": "B2",
+   "module": "b-future",
+   "title": "when: будущее после when",
+   "en": "when I do / when I've done",
+   "book": "blue",
+   "unit": 24
+  },
+  {
+   "n": 140,
+   "level": "B2",
+   "module": "b-future",
+   "title": "if и when: в чём разница",
+   "en": "if and when",
+   "book": "blue",
+   "unit": 25
+  },
+  {
+   "n": 141,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "can, could, be able to",
+   "en": "can, could, be able to",
+   "book": "blue",
+   "unit": 26
+  },
+  {
+   "n": 142,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "could и could have",
+   "en": "could do and could have done",
+   "book": "blue",
+   "unit": 27
+  },
+  {
+   "n": 143,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "must и can't: уверенность",
+   "en": "must and can't",
+   "book": "blue",
+   "unit": 28
+  },
+  {
+   "n": 144,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "may и might (1): возможно",
+   "en": "may and might 1",
+   "book": "blue",
+   "unit": 29
+  },
+  {
+   "n": 145,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "may и might (2)",
+   "en": "may and might 2",
+   "book": "blue",
+   "unit": 30
+  },
+  {
+   "n": 146,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "have to и must",
+   "en": "have to and must",
+   "book": "blue",
+   "unit": 31
+  },
+  {
+   "n": 147,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "must, mustn't, needn't",
+   "en": "must, mustn't, needn't",
+   "book": "blue",
+   "unit": 32
+  },
+  {
+   "n": 148,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "should (1): совет",
+   "en": "should 1",
+   "book": "blue",
+   "unit": 33
+  },
+  {
+   "n": 149,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "should (2): ожидание и удивление",
+   "en": "should 2",
+   "book": "blue",
+   "unit": 34
+  },
+  {
+   "n": 150,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "had better и it's time",
+   "en": "had better / it's time",
+   "book": "blue",
+   "unit": 35
+  },
+  {
+   "n": 151,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "would: вежливость и привычки",
+   "en": "would",
+   "book": "blue",
+   "unit": 36
+  },
+  {
+   "n": 152,
+   "level": "B2",
+   "module": "b-modals",
+   "title": "Просьбы: Can you, Could you, Would you",
+   "en": "can you / could you / would you",
+   "book": "blue",
+   "unit": 37
+  },
+  {
+   "n": 153,
+   "level": "B2",
+   "module": "b-cond",
+   "title": "if: первый и второй тип",
+   "en": "if I do and if I did",
+   "book": "blue",
+   "unit": 38
+  },
+  {
+   "n": 154,
+   "level": "B2",
+   "module": "b-cond",
+   "title": "if + Past и I wish",
+   "en": "if I knew / I wish I knew",
+   "book": "blue",
+   "unit": 39
+  },
+  {
+   "n": 155,
+   "level": "B2",
+   "module": "b-cond",
+   "title": "Третий тип и сожаление",
+   "en": "if I had known / I wish I had known",
+   "book": "blue",
+   "unit": 40
+  },
+  {
+   "n": 156,
+   "level": "B2",
+   "module": "b-cond",
+   "title": "wish: пожелание и сожаление",
+   "en": "wish",
+   "book": "blue",
+   "unit": 41
+  },
+  {
+   "n": 157,
+   "level": "B2",
+   "module": "b-passive",
+   "title": "Пассив (1): is done, was done",
+   "en": "passive 1 (is done, was done)",
+   "book": "blue",
+   "unit": 42
+  },
+  {
+   "n": 158,
+   "level": "B2",
+   "module": "b-passive",
+   "title": "Пассив (2): been done, being done",
+   "en": "passive 2 (be done, been done)",
+   "book": "blue",
+   "unit": 43
+  },
+  {
+   "n": 159,
+   "level": "B2",
+   "module": "b-passive",
+   "title": "Пассив (3): все времена",
+   "en": "passive 3",
+   "book": "blue",
+   "unit": 44
+  },
+  {
+   "n": 160,
+   "level": "B2",
+   "module": "b-passive",
+   "title": "is said to: так говорят",
+   "en": "it is said that / he is said to",
+   "book": "blue",
+   "unit": 45
+  },
+  {
+   "n": 161,
+   "level": "B2",
+   "module": "b-passive",
+   "title": "have something done: мне это сделали",
+   "en": "have something done",
+   "book": "blue",
+   "unit": 46
+  },
+  {
+   "n": 162,
+   "level": "B2",
+   "module": "b-reported",
+   "title": "Косвенная речь (1)",
+   "en": "reported speech 1",
+   "book": "blue",
+   "unit": 47
+  },
+  {
+   "n": 163,
+   "level": "B2",
+   "module": "b-reported",
+   "title": "Косвенная речь (2): вопросы и просьбы",
+   "en": "reported speech 2",
+   "book": "blue",
+   "unit": 48
+  },
+  {
+   "n": 164,
+   "level": "B2",
+   "module": "b-questions",
+   "title": "Вопросы (1): общий каркас",
+   "en": "questions 1",
+   "book": "blue",
+   "unit": 49
+  },
+  {
+   "n": 165,
+   "level": "B2",
+   "module": "b-questions",
+   "title": "Вопросы (2): косвенные",
+   "en": "questions 2 (do you know where…?)",
+   "book": "blue",
+   "unit": 50
+  },
+  {
+   "n": 166,
+   "level": "B2",
+   "module": "b-questions",
+   "title": "Вспомогательные глаголы и I think so",
+   "en": "auxiliary verbs / I think so",
+   "book": "blue",
+   "unit": 51
+  },
+  {
+   "n": 167,
+   "level": "B2",
+   "module": "b-questions",
+   "title": "Разделительные вопросы",
+   "en": "question tags",
+   "book": "blue",
+   "unit": 52
+  },
+  {
+   "n": 168,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Глагол + -ing",
+   "en": "verb + -ing",
+   "book": "blue",
+   "unit": 53
+  },
+  {
+   "n": 169,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Глагол + to…",
+   "en": "verb + to",
+   "book": "blue",
+   "unit": 54
+  },
+  {
+   "n": 170,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "want you to: глагол + дополнение + to",
+   "en": "verb + object + to",
+   "book": "blue",
+   "unit": 55
+  },
+  {
+   "n": 171,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "-ing или to (1): remember, regret",
+   "en": "verb + -ing or to 1",
+   "book": "blue",
+   "unit": 56
+  },
+  {
+   "n": 172,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "-ing или to (2): try, need, help",
+   "en": "verb + -ing or to 2",
+   "book": "blue",
+   "unit": 57
+  },
+  {
+   "n": 173,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "-ing или to (3): like, would like",
+   "en": "verb + -ing or to 3",
+   "book": "blue",
+   "unit": 58
+  },
+  {
+   "n": 174,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "prefer и would rather",
+   "en": "prefer and would rather",
+   "book": "blue",
+   "unit": 59
+  },
+  {
+   "n": 175,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Предлог + -ing",
+   "en": "preposition + -ing",
+   "book": "blue",
+   "unit": 60
+  },
+  {
+   "n": 176,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "be used to и get used to",
+   "en": "be/get used to something",
+   "book": "blue",
+   "unit": 61
+  },
+  {
+   "n": 177,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Глагол + предлог + -ing",
+   "en": "verb + preposition + -ing",
+   "book": "blue",
+   "unit": 62
+  },
+  {
+   "n": 178,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Устойчивые выражения с -ing",
+   "en": "expressions + -ing",
+   "book": "blue",
+   "unit": 63
+  },
+  {
+   "n": 179,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "to, for, so that: зачем",
+   "en": "to, for, so that",
+   "book": "blue",
+   "unit": 64
+  },
+  {
+   "n": 180,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Прилагательное + to…",
+   "en": "adjective + to",
+   "book": "blue",
+   "unit": 65
+  },
+  {
+   "n": 181,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "afraid to do и afraid of doing",
+   "en": "afraid to do / afraid of -ing",
+   "book": "blue",
+   "unit": 66
+  },
+  {
+   "n": 182,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "see somebody do и doing",
+   "en": "see somebody do / doing",
+   "book": "blue",
+   "unit": 67
+  },
+  {
+   "n": 183,
+   "level": "B2",
+   "module": "b-ing",
+   "title": "Обороты с -ing",
+   "en": "-ing clauses",
+   "book": "blue",
+   "unit": 68
+  },
+  {
+   "n": 184,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "Исчисляемые и неисчисляемые (1)",
+   "en": "countable and uncountable 1",
+   "book": "blue",
+   "unit": 69
+  },
+  {
+   "n": 185,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "Исчисляемые и неисчисляемые (2)",
+   "en": "countable and uncountable 2",
+   "book": "blue",
+   "unit": 70
+  },
+  {
+   "n": 186,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "a/an и some с исчисляемыми",
+   "en": "countable nouns with a/an and some",
+   "book": "blue",
+   "unit": 71
+  },
+  {
+   "n": 187,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "a/an и the",
+   "en": "a/an and the",
+   "book": "blue",
+   "unit": 72
+  },
+  {
+   "n": 188,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "the (1): определённый артикль",
+   "en": "the 1",
+   "book": "blue",
+   "unit": 73
+  },
+  {
+   "n": 189,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "the (2): school и the school",
+   "en": "the 2 (school / the school)",
+   "book": "blue",
+   "unit": 74
+  },
+  {
+   "n": 190,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "the (3): уточнение",
+   "en": "the 3 (children / the children)",
+   "book": "blue",
+   "unit": 75
+  },
+  {
+   "n": 191,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "the (4): классы и группы",
+   "en": "the 4 (the giraffe / the old)",
+   "book": "blue",
+   "unit": 76
+  },
+  {
+   "n": 192,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "Имена и the (1)",
+   "en": "names with and without the 1",
+   "book": "blue",
+   "unit": 77
+  },
+  {
+   "n": 193,
+   "level": "B2",
+   "module": "b-articles",
+   "title": "Имена и the (2)",
+   "en": "names with and without the 2",
+   "book": "blue",
+   "unit": 78
+  },
+  {
+   "n": 194,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "Единственное и множественное",
+   "en": "singular and plural",
+   "book": "blue",
+   "unit": 79
+  },
+  {
+   "n": 195,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "Существительное + существительное",
+   "en": "noun + noun",
+   "book": "blue",
+   "unit": 80
+  },
+  {
+   "n": 196,
+   "level": "B2",
+   "module": "b-nouns",
+   "title": "-'s и of: чей",
+   "en": "-'s and of",
+   "book": "blue",
+   "unit": 81
+  },
+  {
+   "n": 197,
+   "level": "B2",
+   "module": "b-pronouns",
+   "title": "Возвратные местоимения",
+   "en": "myself/yourself/themselves",
+   "book": "blue",
+   "unit": 82
+  },
+  {
+   "n": 198,
+   "level": "B2",
+   "module": "b-pronouns",
+   "title": "a friend of mine, my own, by myself",
+   "en": "a friend of mine / my own / by myself",
+   "book": "blue",
+   "unit": 83
+  },
+  {
+   "n": 199,
+   "level": "B2",
+   "module": "b-pronouns",
+   "title": "there и it",
+   "en": "there and it",
+   "book": "blue",
+   "unit": 84
+  },
+  {
+   "n": 200,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "some и any",
+   "en": "some and any",
+   "book": "blue",
+   "unit": 85
+  },
+  {
+   "n": 201,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "none, nothing, nobody",
+   "en": "no/none/any, nothing/nobody",
+   "book": "blue",
+   "unit": 86
+  },
+  {
+   "n": 202,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "much, many, little, few",
+   "en": "much, many, little, few, a lot, plenty",
+   "book": "blue",
+   "unit": 87
+  },
+  {
+   "n": 203,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "all of, none of, most of",
+   "en": "all / no / none of",
+   "book": "blue",
+   "unit": 88
+  },
+  {
+   "n": 204,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "both, neither, either",
+   "en": "both / neither / either",
+   "book": "blue",
+   "unit": 89
+  },
+  {
+   "n": 205,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "all, every и whole",
+   "en": "all, every and whole",
+   "book": "blue",
+   "unit": 90
+  },
+  {
+   "n": 206,
+   "level": "B2",
+   "module": "b-quant",
+   "title": "each и every",
+   "en": "each and every",
+   "book": "blue",
+   "unit": 91
+  },
+  {
+   "n": 207,
+   "level": "B2",
+   "module": "b-relative",
+   "title": "Относительные предложения (1)",
+   "en": "relative clauses 1",
+   "book": "blue",
+   "unit": 92
+  },
+  {
+   "n": 208,
+   "level": "B2",
+   "module": "b-relative",
+   "title": "Относительные предложения (2)",
+   "en": "relative clauses 2",
+   "book": "blue",
+   "unit": 93
+  },
+  {
+   "n": 209,
+   "level": "B2",
+   "module": "b-relative",
+   "title": "Относительные (3): whose, where",
+   "en": "relative clauses 3 (whose/whom/where)",
+   "book": "blue",
+   "unit": 94
+  },
+  {
+   "n": 210,
+   "level": "B2",
+   "module": "b-relative",
+   "title": "Относительные (4): вводная информация",
+   "en": "relative clauses 4 (extra information)",
+   "book": "blue",
+   "unit": 95
+  },
+  {
+   "n": 211,
+   "level": "B2",
+   "module": "b-relative",
+   "title": "Обороты с -ing и -ed",
+   "en": "-ing and -ed clauses",
+   "book": "blue",
+   "unit": 96
+  },
+  {
+   "n": 212,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "boring и bored",
+   "en": "adjectives ending in -ing and -ed",
+   "book": "blue",
+   "unit": 97
+  },
+  {
+   "n": 213,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "Порядок прилагательных",
+   "en": "adjectives: word order",
+   "book": "blue",
+   "unit": 98
+  },
+  {
+   "n": 214,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "Прилагательное и наречие (1)",
+   "en": "adjectives and adverbs 1",
+   "book": "blue",
+   "unit": 99
+  },
+  {
+   "n": 215,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "Прилагательное и наречие (2)",
+   "en": "adjectives and adverbs 2",
+   "book": "blue",
+   "unit": 100
+  },
+  {
+   "n": 216,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "so и such",
+   "en": "so and such",
+   "book": "blue",
+   "unit": 101
+  },
+  {
+   "n": 217,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "enough и too",
+   "en": "enough and too",
+   "book": "blue",
+   "unit": 102
+  },
+  {
+   "n": 218,
+   "level": "B2",
+   "module": "b-adj",
+   "title": "quite, pretty, rather, fairly",
+   "en": "quite, pretty, rather, fairly",
+   "book": "blue",
+   "unit": 103
+  },
+  {
+   "n": 219,
+   "level": "B2",
+   "module": "b-comp",
+   "title": "Сравнительная степень (1)",
+   "en": "comparative 1",
+   "book": "blue",
+   "unit": 104
+  },
+  {
+   "n": 220,
+   "level": "B2",
+   "module": "b-comp",
+   "title": "Сравнительная степень (2)",
+   "en": "comparative 2",
+   "book": "blue",
+   "unit": 105
+  },
+  {
+   "n": 221,
+   "level": "B2",
+   "module": "b-comp",
+   "title": "as… as и than",
+   "en": "comparative 3 (as… as, than)",
+   "book": "blue",
+   "unit": 106
+  },
+  {
+   "n": 222,
+   "level": "B2",
+   "module": "b-comp",
+   "title": "Превосходная степень",
+   "en": "superlatives",
+   "book": "blue",
+   "unit": 107
+  },
+  {
+   "n": 223,
+   "level": "B2",
+   "module": "b-order",
+   "title": "Порядок слов (1): дополнение, место, время",
+   "en": "word order 1",
+   "book": "blue",
+   "unit": 108
+  },
+  {
+   "n": 224,
+   "level": "B2",
+   "module": "b-order",
+   "title": "Порядок слов (2): наречия",
+   "en": "word order 2",
+   "book": "blue",
+   "unit": 109
+  },
+  {
+   "n": 225,
+   "level": "B2",
+   "module": "b-order",
+   "title": "still, yet, already",
+   "en": "still, yet, already",
+   "book": "blue",
+   "unit": 110
+  },
+  {
+   "n": 226,
+   "level": "B2",
+   "module": "b-order",
+   "title": "even: даже",
+   "en": "even",
+   "book": "blue",
+   "unit": 111
+  },
+  {
+   "n": 227,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "although и despite",
+   "en": "although / though / even though, in spite of / despite",
+   "book": "blue",
+   "unit": 112
+  },
+  {
+   "n": 228,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "in case: на всякий случай",
+   "en": "in case",
+   "book": "blue",
+   "unit": 113
+  },
+  {
+   "n": 229,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "unless, as long as, provided",
+   "en": "unless / as long as / provided",
+   "book": "blue",
+   "unit": 114
+  },
+  {
+   "n": 230,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "as: когда, потому что, по мере того как",
+   "en": "as",
+   "book": "blue",
+   "unit": 115
+  },
+  {
+   "n": 231,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "like и as",
+   "en": "like and as",
+   "book": "blue",
+   "unit": 116
+  },
+  {
+   "n": 232,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "as if и as though",
+   "en": "as if / as though",
+   "book": "blue",
+   "unit": 117
+  },
+  {
+   "n": 233,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "for, during, while",
+   "en": "for, during and while",
+   "book": "blue",
+   "unit": 118
+  },
+  {
+   "n": 234,
+   "level": "B2",
+   "module": "b-conj",
+   "title": "by и until",
+   "en": "by and until, by the time",
+   "book": "blue",
+   "unit": 119
+  },
+  {
+   "n": 235,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Время: at, on, in",
+   "en": "at/on/in (time)",
+   "book": "blue",
+   "unit": 120
+  },
+  {
+   "n": 236,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "on time и in time",
+   "en": "on time / in time, at the end / in the end",
+   "book": "blue",
+   "unit": 121
+  },
+  {
+   "n": 237,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Место: at, on, in",
+   "en": "at/on/in (place)",
+   "book": "blue",
+   "unit": 122
+  },
+  {
+   "n": 238,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Место: in, at, on (1)",
+   "en": "in/at/on (place) 1",
+   "book": "blue",
+   "unit": 123
+  },
+  {
+   "n": 239,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Место: in, at, on (2)",
+   "en": "in/at/on (place) 2",
+   "book": "blue",
+   "unit": 124
+  },
+  {
+   "n": 240,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "to, at, in, into: движение",
+   "en": "to/at/in/into",
+   "book": "blue",
+   "unit": 125
+  },
+  {
+   "n": 241,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "on, in, at: другие значения",
+   "en": "on/in/at (other uses)",
+   "book": "blue",
+   "unit": 126
+  },
+  {
+   "n": 242,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "by и with",
+   "en": "by and with",
+   "book": "blue",
+   "unit": 127
+  },
+  {
+   "n": 243,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Существительное + предлог",
+   "en": "noun + preposition",
+   "book": "blue",
+   "unit": 128
+  },
+  {
+   "n": 244,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Прилагательное + предлог (1)",
+   "en": "adjective + preposition 1",
+   "book": "blue",
+   "unit": 129
+  },
+  {
+   "n": 245,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Прилагательное + предлог (2)",
+   "en": "adjective + preposition 2",
+   "book": "blue",
+   "unit": 130
+  },
+  {
+   "n": 246,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Глагол + предлог (1): to и at",
+   "en": "verb + preposition 1 (to/at)",
+   "book": "blue",
+   "unit": 131
+  },
+  {
+   "n": 247,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Глагол + предлог (2): about, for, of, after",
+   "en": "verb + preposition 2 (about/for/of/after)",
+   "book": "blue",
+   "unit": 132
+  },
+  {
+   "n": 248,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Глагол + предлог (3): about и of",
+   "en": "verb + preposition 3 (about/of)",
+   "book": "blue",
+   "unit": 133
+  },
+  {
+   "n": 249,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Глагол + предлог (4): of, for, from, on",
+   "en": "verb + preposition 4 (of/for/from/on)",
+   "book": "blue",
+   "unit": 134
+  },
+  {
+   "n": 250,
+   "level": "B2",
+   "module": "b-prep",
+   "title": "Глагол + предлог (5): in, into, with, to, on",
+   "en": "verb + preposition 5 (in/into/with/to/on)",
+   "book": "blue",
+   "unit": 135
+  },
+  {
+   "n": 251,
+   "level": "B2",
+   "module": "b-phrasal",
+   "title": "Фразовые глаголы: сводка и тонкости",
+   "en": "phrasal verbs: review",
+   "book": "blue",
+   "unit": 136
+  }
+ ],
+ "books": [
+  {
+   "id": "red",
+   "title": "Essential Grammar in Use",
+   "en": "red Murphy",
+   "units": 115,
+   "levels": [
+    "A1",
+    "A2",
+    "B1"
+   ]
+  },
+  {
+   "id": "blue",
+   "title": "English Grammar in Use",
+   "en": "blue Murphy",
+   "units": 136,
+   "levels": [
+    "B2"
+   ]
   }
  ]
 }

@@ -1,0 +1,77 @@
+{
+ "n": 210,
+ "level": "B2",
+ "module": "b-relative",
+ "title": "Относительные (4): вводная информация",
+ "en": "relative clauses 4 (extra information)",
+ "summary": "Запятые меняют смысл: defining называет нужный предмет, non-defining просто добавляет деталь. Разбираем that, which про всё предложение и two of whom.",
+ "can_do": [
+  "Поставить запятые вокруг вводного придаточного.",
+  "Запретить that в вводном придаточном и не выбрасывать местоимение.",
+  "Употребить which, когда речь обо всём предложении.",
+  "Построить two of whom и none of which."
+ ],
+ "theory": [
+  {
+   "h": "Два типа придаточных",
+   "p": "Определяющее придаточное сообщает, о ком именно речь, и без него фраза теряет смысл: the students who failed must retake the exam — речь только о тех, кто не сдал. Вводное придаточное просто добавляет информацию: my brother, who lives in London, is a doctor — брат один, и мы его и так знаем.",
+   "formula": "The students who failed must retake the exam. · My brother, who lives in London, is a doctor."
+  },
+  {
+   "h": "Запятые — главный признак",
+   "p": "На письме вводное придаточное выделяется запятыми с двух сторон, на слух — паузой и понижением тона. Если запятых нет, англичанин поймёт фразу как определяющую и решит, что братьев несколько. Запятая здесь несёт смысл, а не украшение.",
+   "formula": "My brother, who lives in London, is a doctor. · My brother who lives in London is a doctor."
+  },
+  {
+   "h": "That в вводном придаточном запрещено",
+   "p": "В вводном придаточном работают только who, which, whose, where. That там невозможно. И местоимение нельзя выбросить: my car, which I bought last year, is already broken. Без which получится два предложения, слепленных запятой.",
+   "table": {
+    "head": ["Тип", "Можно that", "Можно убрать местоимение", "Запятые"],
+    "rows": [
+     ["определяющее", "да", "да, если это дополнение", "нет"],
+     ["вводное", "нет", "нет", "с двух сторон"]
+    ]
+   }
+  },
+  {
+   "h": "Which про всё предложение",
+   "p": "В вводном придаточном which иногда относится не к существительному, а ко всей предыдущей мысли: he passed the exam, which surprised everyone. По-русски это «что» в начале придаточного. Заменять такое which на that нельзя, и запятая перед ним обязательна.",
+   "formula": "She was late, which annoyed the teacher. · He said nothing, which was strange."
+  },
+  {
+   "h": "Two of whom, none of which",
+   "p": "С количественными словами в вводном придаточном используется of whom для людей и of which для вещей: three sons, two of whom live abroad. После предлога с людьми всегда whom, не who. Число при этом остаётся тем же, что у главного слова.",
+   "formula": "He has three sons, two of whom live abroad. · She gave me two books, neither of which I liked."
+  },
+  {
+   "h": "Проверка запятыми",
+   "p": "Простой тест: уберите придаточное. Если предложение осталось верным и речь всё ещё о том же человеке — придаточное вводное, нужны запятые. Если смысл сломался или стало непонятно, о ком речь, — придаточное определяющее, и запятых нет.",
+   "formula": "The man who called was angry. · My father, who called, was angry."
+  }
+ ],
+ "examples": [
+  {"en": "My brother, who lives in London, is a doctor.", "ru": "Мой брат, который живёт в Лондоне, врач."},
+  {"en": "The book, which I bought yesterday, is already torn.", "ru": "Книга, которую я купил вчера, уже порвана."},
+  {"en": "He passed the exam, which surprised everybody.", "ru": "Он сдал экзамен, что всех удивило."},
+  {"en": "She has two daughters, both of whom are engineers.", "ru": "У неё две дочери, обе инженеры."},
+  {"en": "We visited three museums, none of which was open.", "ru": "Мы посетили три музея, ни один из которых не работал."},
+  {"en": "The students who failed must retake the test.", "ru": "Студенты, которые не сдали, должны пересдать."}
+ ],
+ "traps": [
+  {"bad": "My brother, that lives in London, is a doctor.", "good": "My brother, who lives in London, is a doctor.", "why": "В вводном придаточном that не используется."},
+  {"bad": "My car, I bought last year, is broken.", "good": "My car, which I bought last year, is broken.", "why": "В вводном придаточном местоимение убрать нельзя."},
+  {"bad": "He passed, that surprised everyone.", "good": "He passed, which surprised everyone.", "why": "Про всё предложение говорит только which."},
+  {"bad": "She has two sons, two of who live abroad.", "good": "She has two sons, two of whom live abroad.", "why": "После предлога of с людьми — whom."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My sister, ___ works in Paris, is coming home.", "options": ["who", "that", "which"], "a": 0, "why": "Вводное придаточное о человеке — who, that запрещено."},
+  {"type": "choice", "q": "The film, ___ we saw last week, was terrible.", "options": ["which", "that", "what"], "a": 0, "why": "Вводное придаточное о вещи — which."},
+  {"type": "choice", "q": "He forgot my birthday, ___ made me angry.", "options": ["which", "that", "who"], "a": 0, "why": "Относится ко всему предложению — which с запятой."},
+  {"type": "choice", "q": "We met two writers, both of ___ were young.", "options": ["whom", "who", "which"], "a": 0, "why": "After both of о людях — whom."},
+  {"type": "gap", "q": "This house, ___ (which) was built in 1900, needs repairs.", "a": ["which"], "why": "Вводное придаточное о вещи: which, that нельзя."},
+  {"type": "gap", "q": "My parents, ___ (who) live in the country, rarely visit us.", "a": ["who"], "why": "Вводное придаточное о людях — who."},
+  {"type": "gap", "q": "I bought four books, none of ___ (which) I have read yet.", "a": ["which"], "why": "None of which о вещах."},
+  {"type": "translate", "q": "Мой отец, который работает в банке, рано встаёт.", "a": ["my father, who works in a bank, gets up early", "my father who works in a bank gets up early"], "why": "Вводная информация о единственном отце — запятые и who."},
+  {"type": "translate", "q": "Он опоздал, что всех разозлило.", "a": ["he was late, which annoyed everyone", "he was late and that annoyed everyone"], "why": "Про всю ситуацию — which после запятой."}
+ ]
+}

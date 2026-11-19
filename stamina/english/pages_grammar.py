@@ -20,7 +20,7 @@ from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, MUTED, PANEL
 from stamina.english.grammar import lessons as gl
 from stamina.english.ui import L, ScrollFrame, entry
 
-LEVELS = ("a1", "a2", "b1")
+LEVELS = gl.LEVELS
 LIST_CHUNK = 8      # строк списка за один тик
 LESSON_CHUNK = 2    # блоков урока за один тик
 
@@ -54,7 +54,8 @@ class GrammarPage(tk.Frame):
         head = tk.Frame(self, bg=BG)
         head.grid(row=0, column=0, sticky="ew", padx=px(14), pady=(px(8), 0))
         L(head, _t("ГРАММАТИКА"), fg=AMBER, size=14, bold=True).pack(side=tk.LEFT)
-        L(head, "Essential Grammar in Use · 115", fg=MUTED, size=9).pack(side=tk.LEFT, padx=(px(10), 0))
+        self._book_lbl = L(head, "", fg=MUTED, size=9)
+        self._book_lbl.pack(side=tk.LEFT, padx=(px(10), 0))
         self._done_lbl = L(head, "", fg=MUTED, size=9)
         self._done_lbl.pack(side=tk.RIGHT)
 
@@ -68,6 +69,7 @@ class GrammarPage(tk.Frame):
         self._level_buttons[self._level].set_active(True)
         self._hint = L(bar, _t("Выберите урок слева"), fg=MUTED, size=8)
         self._hint.pack(side=tk.LEFT, padx=(px(10), 0))
+        self._update_book_label()
 
         body = tk.Frame(self, bg=BG)
         body.grid(row=2, column=0, sticky="nsew", padx=px(14), pady=(0, px(8)))
@@ -169,6 +171,23 @@ class GrammarPage(tk.Frame):
             if first:
                 self._open_unit(int(first[0]["n"]))
 
+    def _update_book_label(self) -> None:
+        """В шапке — книга текущего уровня: у A1–B1 красная, у B2 синяя."""
+        lbl = getattr(self, "_book_lbl", None)
+        if lbl is None:
+            return
+        try:
+            units = gl.by_level(self._level)
+            book = gl.book_of(int(units[0]["n"])) if units else {}
+        except Exception:  # noqa: BLE001
+            return
+        title = book.get("title") or "Essential Grammar in Use"
+        count = int(book.get("units") or 0)
+        try:
+            lbl.configure(text="{} · {}".format(title, count) if count else title)
+        except tk.TclError:
+            pass
+
     def _update_counter(self) -> None:
         try:
             done = len([u for u in gl.units() if self.ctx.progress.grammar_done(int(u["n"]))])
@@ -183,6 +202,7 @@ class GrammarPage(tk.Frame):
         self._level = level
         for lv, b in self._level_buttons.items():
             b.set_active(lv == level)
+        self._update_book_label()
         if not self._index_ready:
             return
         self._render_unit_list()
@@ -201,6 +221,7 @@ class GrammarPage(tk.Frame):
         self._level = level
         for lv, b in self._level_buttons.items():
             b.set_active(lv == level)
+        self._update_book_label()
         self._render_unit_list()
 
     def _render_unit_list(self) -> None:
@@ -244,7 +265,7 @@ class GrammarPage(tk.Frame):
         n = int(unit["n"])
         row = tk.Frame(host, bg=PANEL, cursor="hand2", highlightthickness=1, highlightbackground=LINE)
         row.pack(fill=tk.X, padx=px(6), pady=px(1))
-        num = L(row, f"{n:02d}", fg=MUTED, size=8, bold=True, mono=True, bg=PANEL)
+        num = L(row, f"{int(unit.get('unit') or n):02d}", fg=MUTED, size=8, bold=True, mono=True, bg=PANEL)
         num.pack(side=tk.LEFT, padx=(px(6), px(4)), pady=px(4), anchor="n")
         txt = tk.Label(row, text=unit.get("title", ""), fg=TEXT, bg=PANEL, font=theme.font(9),
                        justify="left", anchor="w", wraplength=px(196))
@@ -337,7 +358,8 @@ class GrammarPage(tk.Frame):
         self._data = data
         self._exercises = list(data.get("exercises") or [])
         self._answers = {}
-        self._hint.configure(text=_t("Урок {0} из {1}").format(n, gl.total()))
+        self._hint.configure(text=_t("Урок {0} из {1}").format(
+            gl.unit_number(n), int(gl.book_of(n).get("units") or gl.total())))
         pieces = self._lesson_pieces(data)
         self._piece_i = 0
         self._piece_token = token
@@ -381,7 +403,7 @@ class GrammarPage(tk.Frame):
         box.pack(fill=tk.X, padx=px(10), pady=(0, px(8)))
         top = tk.Frame(box, bg=PANEL)
         top.pack(fill=tk.X, padx=px(12), pady=(px(10), 0))
-        L(top, f"{int(data['n']):02d}", fg=AMBER, size=24, bold=True, mono=True, bg=PANEL).pack(side=tk.LEFT)
+        L(top, f"{gl.unit_number(int(data['n'])):02d}", fg=AMBER, size=24, bold=True, mono=True, bg=PANEL).pack(side=tk.LEFT)
         col = tk.Frame(top, bg=PANEL)
         col.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(px(10), 0))
         tk.Label(col, text=data.get("title", ""), fg=TEXT, bg=PANEL, font=theme.font(14, True),

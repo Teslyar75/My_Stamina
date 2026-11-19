@@ -1,0 +1,72 @@
+{
+ "n": 131,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Past Perfect Continuous",
+ "en": "past perfect continuous",
+ "summary": "Как показать, сколько времени что-то длилось до прошлого момента: он ждал два часа, когда пришёл автобус.",
+ "can_do": [
+  "Сказать, как долго действие длилось до точки в прошлом.",
+  "Объяснить прошлый результат через процесс, который шёл перед ним.",
+  "Отличить had been doing от had done.",
+  "Правильно употребить for и since с этим временем."
+ ],
+ "theory": [
+  {
+   "h": "Длительность до прошлого момента",
+   "p": "Past perfect continuous нужен, когда мы смотрим из прошлого на процесс, который шёл какое-то время до этого момента. Формула: had been плюс глагол с окончанием ing. Важна не точка, а сам отрезок и его длина.",
+   "formula": "He had been waiting for two hours when the bus came. · They had been driving all night."
+  },
+  {
+   "h": "Процесс объясняет результат",
+   "p": "Очень часто вторая фраза описывает видимый результат, а первая объясняет, чем он вызван. Земля мокрая, потому что дождь шёл до этого. Лицо красное, потому что человек бежал. Такой причинный смысл — главная работа этого времени.",
+   "formula": "The ground was wet because it had been raining. · She was out of breath — she had been running."
+  },
+  {
+   "h": "Четыре времени рядом",
+   "p": "Сравнение помогает увидеть разницу: past continuous — процесс в конкретный момент, past perfect continuous — процесс до момента, past perfect — результат до момента, past simple — просто факт.",
+   "table": {
+    "head": ["Время", "Пример", "Что показывает"],
+    "rows": [
+     ["past continuous", "He was working at six.", "процесс в момент"],
+     ["past perfect continuous", "He had been working since morning.", "процесс до момента"],
+     ["past perfect", "He had finished by six.", "результат до момента"],
+     ["past simple", "He worked all day.", "факт в прошлом"]
+    ]
+   }
+  },
+  {
+   "h": "for и since",
+   "p": "For называет длину отрезка: for two hours, for a week. Since называет точку старта: since morning, since 2019. Оба слова отлично работают с этим временем, а вопрос how long подсказывает, что нужна именно длительность.",
+   "formula": "How long had you been waiting? — For half an hour. · She had been living there since 2015."
+  },
+  {
+   "h": "Когда форма не нужна",
+   "p": "Глаголы состояния — know, have, be, like, belong — не любят ing. С ними ставят обычный past perfect: had known, had had, had been. Если же важно только, что действие завершилось, тоже хватает had done.",
+   "formula": "I had known her for years. · I had been knowing her — неверно."
+  }
+ ],
+ "examples": [
+  {"en": "She had been studying for six hours when she took a break.", "ru": "Она занималась шесть часов, когда сделала перерыв."},
+  {"en": "The road was icy because it had been snowing all night.", "ru": "Дорога была скользкой, потому что всю ночь шёл снег."},
+  {"en": "How long had they been dating before they married?", "ru": "Сколько они встречались до свадьбы?"},
+  {"en": "He had been trying to call her since morning.", "ru": "Он пытался дозвониться ей с самого утра."},
+  {"en": "We had been waiting for an hour when the announcement came.", "ru": "Мы ждали уже час, когда объявили посадку."}
+ ],
+ "traps": [
+  {"bad": "He had been knowing her for years.", "good": "He had known her for years.", "why": "Know — глагол состояния, ing с ним не употребляется."},
+  {"bad": "I had been waiting since two hours.", "good": "I had been waiting for two hours.", "why": "For — длина отрезка, since — точка старта."},
+  {"bad": "I had been finishing the report by six.", "good": "I had finished the report by six.", "why": "By + результат требует had done, а не процесса."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "When the guests arrived, she ___ for six hours.", "options": ["cooked", "had been cooking", "has been cooking"], "a": 1, "why": "Процесс длился до прихода гостей."},
+  {"type": "choice", "q": "The road was wet because it ___.", "options": ["rained", "had been raining", "was raining"], "a": 1, "why": "Дождь шёл до этого и оставил результат."},
+  {"type": "choice", "q": "He ___ for the company for ten years before he resigned.", "options": ["worked", "had been working", "has been working"], "a": 1, "why": "Длительность до прошлого события — had been working."},
+  {"type": "choice", "q": "How long ___ you been waiting before the doctor came?", "options": ["had", "have", "were"], "a": 0, "why": "Точка отсчёта в прошлом — had been waiting."},
+  {"type": "gap", "q": "They ___ (drive) all night when they finally stopped.", "a": ["had been driving"], "why": "Длительный процесс до остановки."},
+  {"type": "gap", "q": "She ___ (live) in Rome for five years before she moved.", "a": ["had been living", "had lived"], "why": "Пять лет до переезда: had been living или had lived."},
+  {"type": "gap", "q": "I ___ (not / sleep) well for weeks, so I was exhausted.", "a": ["hadn't been sleeping", "had not been sleeping"], "why": "Длительность до состояния усталости."},
+  {"type": "translate", "q": "Он ждал два часа, когда пришёл автобус.", "a": ["he had been waiting for two hours when the bus came", "he had been waiting for two hours when the bus arrived"], "why": "Процесс до момента в прошлом: had been waiting."},
+  {"type": "translate", "q": "Земля была мокрая, потому что шёл дождь.", "a": ["the ground was wet because it had been raining"], "why": "Дождь до этого — had been raining."}
+ ]
+}

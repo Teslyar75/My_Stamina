@@ -1,0 +1,79 @@
+{
+ "n": 137,
+ "level": "B2",
+ "module": "b-future",
+ "title": "will и shall (2)",
+ "en": "will and shall 2",
+ "summary": "Will не только про решение: с ним предсказывают, выражают уверенность и вежливо просят, а ещё описывают упрямые вещи.",
+ "can_do": [
+  "Сделать предсказание с I think, probably и I'm sure.",
+  "Сказать о будущем факте и о неизбежном событии.",
+  "Отказаться через won't и понять оттенок упрямства.",
+  "Употребить shall в предложении и в формальном тексте."
+ ],
+ "theory": [
+  {
+   "h": "Предсказание и уверенность",
+   "p": "Второе большое значение will — мнение о будущем. Рядом почти всегда стоят I think, I'm sure, probably, I expect, maybe. Это не план и не решение, а ваша оценка того, что случится.",
+   "formula": "I think it will snow tonight. · She'll probably be late. · I'm sure you'll pass."
+  },
+  {
+   "h": "Будущее как факт",
+   "p": "Will употребляется и тогда, когда будущее событие просто констатируется, без планов и предсказаний. Возраст, дата встречи, официальное событие — всё это факты, которые наступят сами.",
+   "formula": "I'll be thirty next year. · The meeting will be on Monday. · It will be dark soon."
+  },
+  {
+   "h": "Оттенки will и shall",
+   "p": "Таблица собирает случаи, которые легко перепутать. Обратите внимание на won't: это не только «не будет», но и «не желает», когда речь о человеке или упрямом предмете.",
+   "table": {
+    "head": ["Смысл", "Слово", "Пример"],
+    "rows": [
+     ["уверенность", "will", "He'll win the race."],
+     ["вероятность", "probably / I think", "I'll probably stay at home."],
+     ["отказ, упрямство", "won't", "The car won't start."],
+     ["предложение", "shall I / we", "Shall we begin?"],
+     ["формальное правило", "shall", "The tenant shall pay the rent."]
+    ]
+   }
+  },
+  {
+   "h": "Упрямые вещи и люди",
+   "p": "Фраза the door won't open значит «дверь не открывается, хотя я пытаюсь». Это живое, разговорное употребление, где won't описывает сопротивление предмета. О человеке I won't do it звучит как твёрдый отказ.",
+   "formula": "The door won't open. · My phone won't charge. · I won't apologize."
+  },
+  {
+   "h": "Will you...? — не всегда просьба",
+   "p": "Вопрос с will может быть просьбой, а может быть предложением угощения. Интонация и контекст решают: Will you have some tea? — это «не хотите ли чаю», а Will you pass the salt? — просьба передать соль.",
+   "formula": "Will you have some tea? (предложение) · Will you pass the salt? (просьба)"
+  },
+  {
+   "h": "Shall в официальном языке",
+   "p": "В договорах, правилах и инструкциях shall значит «обязан» и звучит строго. В обычной жизни так не говорят, но в документах эта форма жива и заменяет must.",
+   "formula": "The company shall provide the equipment. · The buyer shall pay within ten days."
+  }
+ ],
+ "examples": [
+  {"en": "I think the weather will improve tomorrow.", "ru": "Думаю, завтра погода улучшится."},
+  {"en": "She'll probably call in the evening.", "ru": "Она, вероятно, позвонит вечером."},
+  {"en": "The window won't close properly.", "ru": "Окно не закрывается как следует."},
+  {"en": "Shall we order dessert?", "ru": "Закажем десерт?"},
+  {"en": "I'm sure he'll understand.", "ru": "Я уверен, он поймёт."},
+  {"en": "The tenant shall keep the flat clean.", "ru": "Арендатор обязан содержать квартиру в чистоте."}
+ ],
+ "traps": [
+  {"bad": "I think he will probably to come.", "good": "I think he'll probably come.", "why": "После will — инфинитив без to."},
+  {"bad": "The car doesn't want to start.", "good": "The car won't start.", "why": "Про упрямый предмет говорят won't."},
+  {"bad": "I'm sure he will can do it.", "good": "I'm sure he can do it.", "why": "Два модальных глагола рядом не ставятся."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I think he ___ like the present.", "options": ["will", "shall", "is"], "a": 0, "why": "Мнение о будущем — will."},
+  {"type": "choice", "q": "The window ___ open — it's stuck.", "options": ["won't", "doesn't", "isn't"], "a": 0, "why": "Упрямый предмет: won't open."},
+  {"type": "choice", "q": "___ we start the meeting?", "options": ["Will", "Shall", "Do"], "a": 1, "why": "Предложение совместного действия — Shall we."},
+  {"type": "choice", "q": "I'll ___ be home before ten.", "options": ["probably", "probable", "may be"], "a": 0, "why": "Probably — наречие вероятности."},
+  {"type": "gap", "q": "I'm sure they ___ (arrive) on time.", "a": ["will arrive", "'ll arrive"], "why": "Уверенность в будущем — will arrive."},
+  {"type": "gap", "q": "___ you have some more tea?", "a": ["will"], "why": "Предложение угощения: Will you have...?"},
+  {"type": "gap", "q": "Don't call him now — he ___ (not / answer).", "a": ["won't answer", "will not answer"], "why": "Предсказание с отрицанием — won't answer."},
+  {"type": "translate", "q": "Я думаю, будет дождь.", "a": ["i think it will rain", "i think it'll rain"], "why": "Мнение о будущем: will rain."},
+  {"type": "translate", "q": "Дверь не открывается.", "a": ["the door won't open"], "why": "Сопротивление предмета — won't open."}
+ ]
+}

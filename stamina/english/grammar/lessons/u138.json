@@ -1,0 +1,75 @@
+{
+ "n": 138,
+ "level": "B2",
+ "module": "b-future",
+ "title": "will или going to",
+ "en": "will and going to",
+ "summary": "Одна картина будущего: will — решение на ходу и мнение, going to — готовый план и улики перед глазами.",
+ "can_do": [
+  "Выбрать will или going to по тому, когда принято решение.",
+  "Отличить предсказание-мнение от предсказания по уликам.",
+  "Заметить случаи, где оба варианта звучат нормально.",
+  "Не использовать going to в предложениях помощи."
+ ],
+ "theory": [
+  {
+   "h": "Решение: сейчас или раньше",
+   "p": "Главный водораздел простой. Если решение принимается в момент разговора, ставьте will. Если оно уже было принято до разговора, ставьте going to. Сравните два ответа на одну и ту же ситуацию: молоко закончилось, и вы либо решаете сходить сейчас, либо сообщаете о готовом плане.",
+   "formula": "We've run out of milk. — I'll buy some. · I'm going to buy some after work."
+  },
+  {
+   "h": "Предсказание: мнение или улика",
+   "p": "Для предсказаний работают оба, но по-разному. Will — это мнение, догадка, расчёт. Going to — вывод из того, что видно прямо сейчас. Если человек поскользнулся и падает, это улика, а не мнение.",
+   "formula": "I think she'll win. · She's ahead by ten points — she's going to win."
+  },
+  {
+   "h": "Сравнение по ситуациям",
+   "p": "Таблица помогает выбрать форму за секунду. Обратите внимание, что обещания и предложения помощи почти всегда остаются за will: going to в этой роли звучит не по-английски.",
+   "table": {
+    "head": ["Случай", "Выбираем", "Пример"],
+    "rows": [
+     ["решение в момент разговора", "will", "I'll have the fish."],
+     ["план, решённый раньше", "going to", "I'm going to have the fish."],
+     ["предсказание-мнение", "will", "I think he'll come."],
+     ["предсказание по уликам", "going to", "Look, he's going to fall."],
+     ["обещание", "will", "I'll be there at six."],
+     ["предложение помощи", "will / shall", "I'll carry it for you."]
+    ]
+   }
+  },
+  {
+   "h": "Когда разницы почти нет",
+   "p": "В нейтральных предсказаниях и простых сообщениях о будущем оба варианта допустимы, и носители выбирают по вкусу. Если сомневаетесь и нет явной улики, will звучит безопаснее и нейтральнее.",
+   "formula": "I'll see him tomorrow. · I'm going to see him tomorrow."
+  },
+  {
+   "h": "Что ломается при неверном выборе",
+   "p": "Ошибка не в грамматике, а в смысле. Going to в спонтанном решении звучит так, будто вы давно всё спланировали. Will при очевидной улике звучит легкомысленно, как будто вы не верите своим глазам.",
+   "formula": "— It's cold. — I'll close the window. (решил сейчас) · Look! He's going to fall! (улика)"
+  }
+ ],
+ "examples": [
+  {"en": "I'll get the phone — stay where you are.", "ru": "Я возьму трубку, оставайся на месте."},
+  {"en": "We're going to launch the app in March.", "ru": "В марте мы собираемся запустить приложение."},
+  {"en": "I think the film will be a hit.", "ru": "Думаю, фильм станет хитом."},
+  {"en": "Watch out! That glass is going to fall.", "ru": "Осторожно! Этот стакан сейчас упадёт."},
+  {"en": "I'll help you carry those boxes.", "ru": "Я помогу тебе нести эти коробки."},
+  {"en": "She's going to study abroad next year.", "ru": "В следующем году она собирается учиться за границей."}
+ ],
+ "traps": [
+  {"bad": "We've run out of milk. — I'm going to buy some.", "good": "We've run out of milk. — I'll buy some.", "why": "Решение родилось сейчас, в ответ на ситуацию."},
+  {"bad": "Look at him! He will fall!", "good": "Look at him! He's going to fall!", "why": "Признак перед глазами — going to."},
+  {"bad": "I'm going to help you with that bag.", "good": "I'll help you with that bag.", "why": "Предложение помощи в момент разговора — will."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "— I've forgotten my umbrella. — Don't worry, I ___ lend you mine.", "options": ["am going to", "will", "am lending"], "a": 1, "why": "Решение сейчас — will lend."},
+  {"type": "choice", "q": "We ___ get married next June — we've booked the church.", "options": ["will", "are going to", "shall"], "a": 1, "why": "План созрел заранее — going to."},
+  {"type": "choice", "q": "— It's cold in here. — ___ close the window.", "options": ["I'll", "I'm going to", "I shall"], "a": 0, "why": "Спонтанное решение — I'll."},
+  {"type": "choice", "q": "Look at that car! It ___ hit the tree!", "options": ["will", "is going to", "shall"], "a": 1, "why": "Улика налицо — going to."},
+  {"type": "gap", "q": "— The phone is ringing. — I ___ (get) it.", "a": ["will get", "'ll get"], "why": "Решение в момент речи — will get."},
+  {"type": "gap", "q": "They ___ (build) a new school here — the plans are ready.", "a": ["are going to build"], "why": "Готовый план — going to build."},
+  {"type": "gap", "q": "I ___ (not / tell) him — I promise.", "a": ["won't tell", "will not tell"], "why": "Обещание с отрицанием — won't tell."},
+  {"type": "translate", "q": "Смотри! Ты сейчас упадёшь.", "a": ["look you are going to fall", "look you're going to fall"], "why": "Предсказание по улике — going to."},
+  {"type": "translate", "q": "Я думаю, она согласится.", "a": ["i think she will agree", "i think she'll agree"], "why": "Мнение о будущем — will."}
+ ]
+}

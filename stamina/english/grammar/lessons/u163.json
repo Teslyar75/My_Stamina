@@ -1,0 +1,72 @@
+{
+ "n": 163,
+ "level": "B2",
+ "module": "b-reported",
+ "title": "Косвенная речь (2): вопросы и просьбы",
+ "en": "reported speech 2",
+ "summary": "Как пересказать вопрос без вопросительного порядка слов и попросить чужими словами: asked if, asked where, told somebody to do.",
+ "can_do": [
+  "Пересказать общий вопрос через if или whether.",
+  "Пересказать специальный вопрос с прямым порядком слов.",
+  "Передать просьбу и приказ через ask/tell + to.",
+  "Построить отрицательную просьбу через not to."
+ ],
+ "theory": [
+  {
+   "h": "Вопрос в пересказе перестаёт быть вопросом",
+   "p": "Главное отличие от прямой речи: в косвенном вопросе прямой порядок слов. Никакого do, does, did, никакой инверсии, никакого знака вопроса. Сначала подлежащее, потом глагол — как в обычном утверждении.",
+   "formula": "Where do you live? → He asked where I lived. · Are you ready? → She asked if I was ready."
+  },
+  {
+   "h": "Общий вопрос: if или whether",
+   "p": "Если вопрос был на да/нет, его присоединяют через if или whether. Whether звучит чуть формальнее и удобен, когда рядом есть ещё одно условие или перечисление. Порядок слов после них обычный, прямой.",
+   "table": {
+    "head": ["Тип вопроса", "Прямая речь", "Косвенная"],
+    "rows": [
+     ["общий", "Do you work here?", "He asked if I worked there."],
+     ["специальный", "Where do you work?", "He asked where I worked."],
+     ["с whether", "Are you coming or not?", "She asked whether I was coming."],
+     ["отрицание", "Why didn't you call?", "He asked why I hadn't called."]
+    ]
+   }
+  },
+  {
+   "h": "Время сдвигается так же, как в утверждениях",
+   "p": "Все ступени сдвига работают и здесь: present становится past, past — past perfect, will — would, can — could. При этом в косвенном вопросе не появляется that и не ставится вопросительный знак.",
+   "formula": "He asked where I had been. · She asked if I could help. · He asked when the train would leave."
+  },
+  {
+   "h": "Просьбы и приказы: ask/tell + to",
+   "p": "Просьбу передают через ask somebody to do, приказ или указание — через tell somebody to do. После to идёт инфинитив, а не целое предложение. Отрицание строится через not to, а не через don't.",
+   "formula": "He told me to wait. · She asked me to help her. · He told me not to be late."
+  },
+  {
+   "h": "Кто кого о чём попросил",
+   "p": "Ask и tell различаются не только вежливостью. Tell подразумевает, что у говорящего есть право требовать, ask — что он просит. Поэтому начальник tells, коллега asks. Глагол say в этой модели не работает: he said me to wait — ошибка.",
+   "formula": "The manager told us to send the report. · My neighbour asked me to feed the cat. · He asked me to wait outside."
+  }
+ ],
+ "examples": [
+  {"en": "He asked where I lived.", "ru": "Он спросил, где я живу."},
+  {"en": "She asked if I was ready.", "ru": "Она спросила, готов ли я."},
+  {"en": "He asked why I hadn't called.", "ru": "Он спросил, почему я не позвонил."},
+  {"en": "The teacher told us to be quiet.", "ru": "Учитель велел нам быть тише."},
+  {"en": "She asked me to help her with the bags.", "ru": "Она попросила меня помочь с сумками."}
+ ],
+ "traps": [
+  {"bad": "He asked me where did I live.", "good": "He asked me where I lived.", "why": "В косвенном вопросе прямой порядок слов, без did."},
+  {"bad": "She asked me if was I ready.", "good": "She asked me if I was ready.", "why": "После if подлежащее идёт перед глаголом, инверсии нет."},
+  {"bad": "He told me to not go.", "good": "He told me not to go.", "why": "Отрицательный инфинитив: not to + глагол."},
+  {"bad": "He asked me that I help him.", "good": "He asked me to help him.", "why": "Просьба передаётся через ask + to, а не через that."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He asked me where I ___.", "options": ["live", "lived", "did live"], "a": 1, "why": "Сдвиг времени и прямой порядок слов: where I lived."},
+  {"type": "choice", "q": "She asked ___ I was ready.", "options": ["that", "if", "what"], "a": 1, "why": "Общий вопрос присоединяется через if."},
+  {"type": "choice", "q": "He told me ___ wait outside.", "options": ["to", "for", "that"], "a": 0, "why": "Tell somebody to do: told me to wait."},
+  {"type": "choice", "q": "The teacher asked us ___ quiet.", "options": ["to be", "be", "that we are"], "a": 0, "why": "Ask somebody to do: asked us to be quiet."},
+  {"type": "gap", "q": "He asked me where I ___ (work).", "a": ["worked"], "why": "Present simple сдвигается в past simple."},
+  {"type": "gap", "q": "She told me ___ (not / be) late.", "a": ["not to be"], "why": "Отрицательная просьба: not to be."},
+  {"type": "translate", "q": "Он спросил, где я живу.", "a": ["he asked where i lived", "he asked me where i lived"], "why": "Косвенный вопрос без did: where I lived."},
+  {"type": "translate", "q": "Она попросила меня помочь ей.", "a": ["she asked me to help her"], "why": "Ask somebody to do: asked me to help her."}
+ ]
+}

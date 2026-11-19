@@ -1,0 +1,89 @@
+{
+ "n": 127,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "For и since: сколько и с каких пор",
+ "en": "for and since",
+ "summary": "For — отрезок, since — точка: как не сказать since three years и правильно назвать срок действия.",
+ "can_do": [
+  "Выбрать for или since по типу времени после предлога.",
+  "Назвать срок действия через перфект без ошибок в предлоге.",
+  "Присоединить к since целое предложение о моменте старта."
+ ],
+ "theory": [
+  {
+   "h": "Отрезок и точка",
+   "p": "Главное различие простое: for работает с длиной промежутка, since — с моментом, когда всё началось. Два часа, три года, неделя — это for. Два часа назад как точка, 2019 год, понедельник — это since. Достаточно задать один вопрос: можно ли сказать «в течение».",
+   "table": {
+    "head": ["Предлог", "С чем", "Примеры"],
+    "rows": [
+     ["for", "отрезок времени", "for two hours, for a week, for ten years"],
+     ["since", "точка отсчёта", "since Monday, since 2019, since April"],
+     ["since", "момент в прошлом", "since I moved here"]
+    ]
+   }
+  },
+  {
+   "h": "Как считать по-русски и по-английски",
+   "p": "Русское «с 2019 года» переводится через since, а «в течение трёх лет» — через for. Ошибка возникает, когда переводим слово «с» буквально, не глядя, что за ним стоит: дата или промежуток. Проверка одна: если по-русски можно вставить «в течение», значит for.",
+   "table": {
+    "head": ["По-русски", "По-английски"],
+    "rows": [
+     ["в течение двух часов", "for two hours"],
+     ["с двух часов", "since two o'clock"],
+     ["три года", "for three years"],
+     ["с прошлого года", "since last year"]
+    ]
+   }
+  },
+  {
+   "h": "Since плюс целое предложение",
+   "p": "После since может стоять не только дата, но и целая фраза: since I started this job, since he left, since we moved. В такой фразе глагол стоит в простом прошедшем, потому что назван момент старта. Главная часть при этом остаётся в перфекте.",
+   "formula": "I've been happy since I moved here. · She has changed since she had a child. · We've known each other since we were kids."
+  },
+  {
+   "h": "For иногда пропадает",
+   "p": "В неформальной речи с длительным перфектом for перед отрезком времени часто опускается: I've been waiting an hour. С since так поступить нельзя, потому что без него теряется точка отсчёта. В письменной речи for лучше оставлять, чтобы фраза звучала аккуратно.",
+   "formula": "I've been waiting an hour. (разговорно) · I've been waiting for an hour. (нейтрально) · I've been waiting since ten. (since обязателен)"
+  },
+  {
+   "h": "For не всегда про время",
+   "p": "Русское «для» тоже переводится через for, но это другой for — с существительным, а не со временем. Кроме того, есть предлог during, который идёт с событием: during the lesson, during the war. Смешивать временной отрезок и событие не стоит, хотя по-русски оба случая звучат похоже.",
+   "table": {
+    "head": ["Предлог", "С чем", "Пример"],
+    "rows": [
+     ["for", "длительность", "for three days"],
+     ["during", "событие", "during the meeting"],
+     ["for", "адресат", "a gift for you"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I've lived here for six years.", "ru": "Я живу здесь шесть лет."},
+  {"en": "She has worked here since 2019.", "ru": "Она работает здесь с 2019 года."},
+  {"en": "We've been waiting for twenty minutes.", "ru": "Мы ждём двадцать минут."},
+  {"en": "He hasn't called since Monday.", "ru": "Он не звонил с понедельника."},
+  {"en": "I've known her since we were at school.", "ru": "Я знаю её со школы."},
+  {"en": "They've been friends for ages.", "ru": "Они дружат целую вечность."}
+ ],
+ "traps": [
+  {"bad": "I have lived here since five years.", "good": "I have lived here for five years.", "why": "Пять лет — отрезок, значит for."},
+  {"bad": "She has been ill for last Monday.", "good": "She has been ill since last Monday.", "why": "Понедельник — точка отсчёта, значит since."},
+  {"bad": "We've been waiting since two hours.", "good": "We've been waiting for two hours.", "why": "Два часа — длительность, поэтому for."},
+  {"bad": "I have worked here for 2020.", "good": "I have worked here since 2020.", "why": "Год — точка старта, а не промежуток."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I've known him ___ ten years.", "options": ["since", "for", "during"], "a": 1, "why": "Десять лет — отрезок, нужен for."},
+  {"type": "choice", "q": "She has been off work ___ Monday.", "options": ["for", "since", "from"], "a": 1, "why": "Понедельник — точка отсчёта, нужен since."},
+  {"type": "choice", "q": "We've been driving ___ three hours.", "options": ["since", "during", "for"], "a": 2, "why": "Три часа — длительность, значит for."},
+  {"type": "choice", "q": "He has lived in Rome ___ 2015.", "options": ["for", "since", "in"], "a": 1, "why": "Год старта требует since."},
+  {"type": "choice", "q": "Nothing has changed ___ I left.", "options": ["for", "since", "during"], "a": 1, "why": "Перед целым предложением о моменте старта — since."},
+  {"type": "gap", "q": "I ___ (wait) here for twenty minutes.", "a": ["have been waiting", "'ve been waiting"], "why": "for twenty minutes и процесс до сейчас: have been waiting."},
+  {"type": "gap", "q": "They ___ (be) married since 2010.", "a": ["have been"], "why": "be в перфекте: have been, since 2010."},
+  {"type": "gap", "q": "She ___ (not / call) me for a week.", "a": ["hasn't called", "has not called"], "why": "Отрезок недели в отрицании: hasn't called."},
+  {"type": "translate", "q": "Я живу здесь с 2018 года.", "a": ["i have lived here since 2018", "i've lived here since 2018"], "why": "Год — точка старта, нужен since."},
+  {"type": "translate", "q": "Мы знаем друг друга десять лет.", "a": ["we have known each other for ten years", "we've known each other for ten years"], "why": "Десять лет — отрезок, нужен for."},
+  {"type": "translate", "q": "Он не звонил с понедельника.", "a": ["he hasn't called since monday", "he has not called since monday"], "why": "С понедельника — точка отсчёта, since."}
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "n": 124,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Present Perfect Continuous: сколько уже",
+ "en": "present perfect continuous",
+ "summary": "Сколько уже длится действие: have been doing — от прошлого до сейчас, с for и since и видимым следом.",
+ "can_do": [
+  "Сказать, как долго длится действие, через have been и -ing.",
+  "Объяснить недавнюю деятельность по её видимому результату.",
+  "Задать вопрос how long have you been и ответить на него."
+ ],
+ "theory": [
+  {
+   "h": "Действие, которое тянется до сих пор",
+   "p": "Это время отвечает на вопрос «сколько уже». Действие началось в прошлом и продолжается сейчас либо только что закончилось, оставив след. По-русски похожая конструкция звучит без связки: «я работаю здесь три года», и именно из-за этого перевода возникает ошибка.",
+   "formula": "I've been working here for three years. · She's been waiting since ten. · They've been living together for a year."
+  },
+  {
+   "h": "Форма: have been плюс -ing",
+   "p": "Собирается из трёх частей: have или has, неизменное been и глагол с -ing. Been здесь не переводится отдельно, это часть конструкции, а не глагол «быть» в значении «находиться». Выбрасывать его нельзя, иначе остаётся просто длительное время настоящего.",
+   "table": {
+    "head": ["Кто", "Форма", "Пример"],
+    "rows": [
+     ["I / you / we / they", "have been + -ing", "We have been waiting."],
+     ["he / she / it", "has been + -ing", "He has been waiting."],
+     ["отрицание", "haven't / hasn't been", "I haven't been sleeping well."],
+     ["вопрос", "have или has вперёд", "How long have you been waiting?"]
+    ]
+   }
+  },
+  {
+   "h": "След на человеке",
+   "p": "Второе значение — недавняя деятельность, результат которой виден прямо сейчас: человек запыхался, руки в краске, глаза красные. Время объясняет причину этого состояния, и по-русски мы сказали бы «ты что, бегал?». Именно поэтому форма так часто встречается в бытовых диалогах.",
+   "formula": "You're out of breath. Have you been running? · Her eyes are red; she's been crying. · The kitchen smells great — someone has been cooking."
+  },
+  {
+   "h": "Сколько и с каких пор",
+   "p": "Вопрос о длительности начинается с how long, а ответ содержит for с отрезком времени или since с точкой отсчёта. Без этого времени такие фразы просто не строятся: нельзя сказать I work here three years, если речь о периоде до сегодняшнего дня.",
+   "formula": "How long have you been learning English? · For six months. · Since January."
+  },
+  {
+   "h": "Что не любит эта форма",
+   "p": "Глаголы состояния остаются в простом перфекте: know, have, be, want. Сказать have been knowing нельзя, хотя по-русски «знаком уже десять лет» звучит совершенно естественно. Для них работает конструкция have known, и это надо просто запомнить.",
+   "formula": "I've known her for years. · We've had this car since 2017."
+  }
+ ],
+ "examples": [
+  {"en": "I've been learning German for two years.", "ru": "Я учу немецкий уже два года."},
+  {"en": "She's been working since early morning.", "ru": "Она работает с самого утра."},
+  {"en": "They've been renovating the flat all week.", "ru": "Всю неделю они делают ремонт."},
+  {"en": "Have you been waiting long?", "ru": "Ты долго ждёшь?"},
+  {"en": "He's been running, that's why he's so red.", "ru": "Он бегал, поэтому такой красный."},
+  {"en": "It's been raining since noon.", "ru": "Дождь идёт с полудня."}
+ ],
+ "traps": [
+  {"bad": "I am working here for three years.", "good": "I've been working here for three years.", "why": "Период до сегодня требует перфекта, а не настоящего длительного."},
+  {"bad": "She has been knowing him for years.", "good": "She has known him for years.", "why": "know — состояние, длительная форма невозможна даже в перфекте."},
+  {"bad": "He has been work all day.", "good": "He has been working all day.", "why": "После been нужна форма -ing."},
+  {"bad": "I have been waiting for two hours ago.", "good": "I have been waiting for two hours.", "why": "for плюс отрезок времени, ago здесь лишнее."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How long ___ English?", "options": ["do you learn", "have you been learning", "are you learning"], "a": 1, "why": "Вопрос о сроке до сейчас: have you been learning."},
+  {"type": "choice", "q": "She ___ since seven o'clock.", "options": ["is working", "has been working", "works"], "a": 1, "why": "since seven o'clock — процесс до настоящего: has been working."},
+  {"type": "choice", "q": "Your hands are dirty. What ___ ?", "options": ["have you been doing", "did you do", "do you do"], "a": 0, "why": "След виден сейчас, спрашиваем о деятельности: have you been doing."},
+  {"type": "choice", "q": "We ___ this flat for five years.", "options": ["are renting", "have been renting", "rent"], "a": 1, "why": "Длительность до настоящего: have been renting."},
+  {"type": "choice", "q": "It ___ all night.", "options": ["has been snowing", "is snowing", "snows"], "a": 0, "why": "Процесс с ночи до утра: has been snowing."},
+  {"type": "gap", "q": "I ___ (wait) for you for half an hour.", "a": ["have been waiting", "'ve been waiting"], "why": "for half an hour — длительность до сейчас."},
+  {"type": "gap", "q": "He ___ (not / feel) well lately.", "a": ["hasn't been feeling", "has not been feeling"], "why": "lately плюс длительное состояние: hasn't been feeling."},
+  {"type": "gap", "q": "They ___ (live) in Berlin since 2020.", "a": ["have been living", "'ve been living"], "why": "since 2020 — процесс до настоящего: have been living."},
+  {"type": "translate", "q": "Я учу английский уже три года.", "a": ["i have been learning english for three years", "i've been learning english for three years"], "why": "Длительность до сейчас: have been learning."},
+  {"type": "translate", "q": "Она работает с утра.", "a": ["she has been working since morning", "she's been working since morning"], "why": "since morning — процесс до настоящего."},
+  {"type": "translate", "q": "Ты долго ждёшь?", "a": ["have you been waiting long"], "why": "Вопрос о длительности ожидания в перфекте."}
+ ]
+}

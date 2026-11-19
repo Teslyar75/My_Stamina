@@ -1,0 +1,73 @@
+{
+ "n": 188,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "the (1): определённый артикль",
+ "en": "the 1",
+ "summary": "Почему во второй раз говорят the book, а в первый a book: как слушатель понимает, о каком именно предмете речь.",
+ "can_do": [
+  "Ставить the, когда предмет уже упоминали в разговоре.",
+  "Находить случаи, где предмет ясен из обстановки: дверь, свет, кухня.",
+  "Правильно говорить о солнце, луне, небе и море.",
+  "Не ставить the там, где речь идёт о любом предмете вообще."
+ ],
+ "theory": [
+  {
+   "h": "the — это «тот самый»",
+   "p": "Определённый артикль не делает слово важнее и не заменяет притяжательное местоимение. Он говорит слушателю: предмет уже известен, мы оба понимаем, о каком именно речь. По-русски на этом месте часто стоит «этот» или вообще ничего, но по-английски выбор артикля обязателен.",
+   "formula": "I met a woman. The woman was a doctor. · There's a cat on the sofa. The cat is asleep."
+  },
+  {
+   "h": "Первое упоминание и второе",
+   "p": "Новый предмет вводится через a или an. Как только он назван, он становится известным, и дальше идёт the. Это самый частый случай в рассказах и письмах: ввели героя, назвали вещь — и говорим о них как о знакомых.",
+   "table": {
+    "head": ["Что происходит", "Артикль", "Пример"],
+    "rows": [
+     ["предмет называют впервые", "a / an", "I need a pen."],
+     ["о нём говорят снова", "the", "The pen is on your desk."],
+     ["оба собеседника знают, о чём речь", "the", "See you at the station."],
+     ["речь о любом таком предмете", "a / an", "A good pen is expensive."]
+    ]
+   }
+  },
+  {
+   "h": "Понятно из обстановки",
+   "p": "Артикль не обязан опираться на предыдущую фразу. Если мы в квартире, то дверь, свет, кухня, ванная и пол там единственные, и the понятен без пояснений. Так же в городе: the centre, the station, the post office, если других рядом нет.",
+   "formula": "Can you turn off the light? · She's in the kitchen. · He left the key on the table."
+  },
+  {
+   "h": "Одно на весь мир",
+   "p": "Есть предметы в единственном числе для всех людей сразу: солнце, луна, небо, море, мир. Перед ними the ставится всегда, даже при первом упоминании. Сюда же организации в единственном числе: the government, the police, the army.",
+   "formula": "The sun rose at six. · The moon was bright last night. · The sea was cold."
+  },
+  {
+   "h": "Когда the не нужен",
+   "p": "Если предмет только называется, без указания на конкретный, the не нужен. Множественное число и неисчисляемые слова в общем смысле идут без артикля: books, water, information. Имена людей и большинство названий городов и стран тоже обходятся без the.",
+   "formula": "I need a chair. · Books are expensive. · Water boils at 100 degrees. · Anna lives in Moscow."
+  }
+ ],
+ "examples": [
+  {"en": "I saw a dog in the park. The dog was huge.", "ru": "Я увидел в парке собаку. Собака была огромная."},
+  {"en": "Can you close the door, please?", "ru": "Можешь закрыть дверь, пожалуйста?"},
+  {"en": "The sun came out after lunch.", "ru": "После обеда выглянуло солнце."},
+  {"en": "We stayed at a hotel. The hotel was near the beach.", "ru": "Мы жили в отеле. Отель был рядом с пляжем."},
+  {"en": "The moon was bright last night.", "ru": "Прошлой ночью луна была яркой."},
+  {"en": "Books are expensive in this shop.", "ru": "Книги в этом магазине дорогие."}
+ ],
+ "traps": [
+  {"bad": "I bought book yesterday.", "good": "I bought a book yesterday.", "why": "Исчисляемое в единственном числе не может стоять без артикля."},
+  {"bad": "I bought a book. A book was boring.", "good": "I bought a book. The book was boring.", "why": "Во второй раз предмет уже известен, поэтому the."},
+  {"bad": "Sun is very bright today.", "good": "The sun is very bright today.", "why": "Солнце одно на всех, артикль the обязателен."},
+  {"bad": "She is in kitchen.", "good": "She is in the kitchen.", "why": "Кухня в квартире одна, слушатель поймёт, о какой речь."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I bought a phone last week. ___ phone is already broken.", "options": ["A", "The", "No article"], "a": 1, "why": "Второе упоминание: предмет уже известен слушателю."},
+  {"type": "choice", "q": "There's ___ man at the door. He wants to speak to you.", "options": ["a", "the", "no article"], "a": 0, "why": "Мужчина упоминается впервые, поэтому a."},
+  {"type": "choice", "q": "___ moon is very bright tonight.", "options": ["A", "The", "No article"], "a": 1, "why": "Луна одна на весь мир — the moon."},
+  {"type": "choice", "q": "___ books are expensive here.", "options": ["A", "The", "No article"], "a": 2, "why": "Речь о книгах вообще, множественное число без артикля."},
+  {"type": "gap", "q": "We stayed in a small hotel. ___ hotel had a garden.", "a": ["the"], "why": "Отель уже назван, второе упоминание — the."},
+  {"type": "gap", "q": "He looked up and saw ___ moon.", "a": ["the"], "why": "Небесные тела единственные в своём роде."},
+  {"type": "translate", "q": "Закрой дверь, пожалуйста.", "a": ["close the door please", "close the door, please"], "why": "Дверь ясна из обстановки: close the door."},
+  {"type": "translate", "q": "Солнце было очень ярким.", "a": ["the sun was very bright"], "why": "Солнце одно, поэтому the sun."}
+ ]
+}

@@ -1,0 +1,80 @@
+{
+ "n": 171,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "-ing или to (1): remember, regret",
+ "en": "verb + -ing or to 1",
+ "summary": "Одна буква меняет время: remember doing — помню, что сделал, remember to do — не забудь сделать. То же с forget, stop и go on.",
+ "can_do": [
+  "Различить remember doing и remember to do по времени действия.",
+  "Употребить regret doing и формальное regret to say.",
+  "Понять stop doing и stop to do в живом тексте.",
+  "Отличить go on doing от go on to do и mean doing от mean to do."
+ ],
+ "theory": [
+  {
+   "h": "Форма на -ing смотрит назад",
+   "p": "Когда после глагола стоит -ing, действие уже произошло раньше. Remember doing значит хранить в памяти то, что было. Forget doing значит не помнить сделанного, хотя оно случилось. Время показывает сама форма на -ing, отдельное прошедшее не нужно.",
+   "formula": "I remember locking the door. · I'll never forget meeting her. · He forgot telling me about it."
+  },
+  {
+   "h": "To смотрит вперёд",
+   "p": "Инфинитив после этих глаголов означает действие, которое ещё предстоит или которое нужно не забыть. Remember to do — не забудь сделать. Forget to do — забыл сделать, и поэтому не сделал. Здесь to работает как стрелка в будущее.",
+   "table": {
+    "head": ["Фраза", "Когда действие", "Смысл"],
+    "rows": [
+     ["I remember locking the door.", "раньше", "помню, что закрыл"],
+     ["Remember to lock the door.", "потом", "не забудь закрыть"],
+     ["I forgot calling him.", "раньше", "забыл, что звонил"],
+     ["I forgot to call him.", "потом", "забыл позвонить"]
+    ]
+   }
+  },
+  {
+   "h": "Regret: сожаление и плохая новость",
+   "p": "Regret doing — жалеть о том, что уже сделано. Regret to say, regret to tell, regret to inform — формальный оборот, которым сообщают неприятную новость прямо сейчас. Второй вариант встречается в письмах и объявлениях, а не в разговорной речи.",
+   "formula": "I regret saying that. · She regrets not studying harder. · We regret to inform you that the flight is cancelled."
+  },
+  {
+   "h": "Stop: бросить или остановиться ради чего-то",
+   "p": "Stop doing значит прекратить действие совсем. Stop to do значит остановиться, чтобы сделать что-то другое: по пути домой остановился купить хлеба. Смысл фразы меняется полностью, и ошибка здесь стоит дорого.",
+   "formula": "He stopped smoking last year. · He stopped to smoke a cigarette. · We stopped to have lunch."
+  },
+  {
+   "h": "Go on: продолжать то же или перейти к следующему",
+   "p": "Go on doing — продолжать то же самое действие. Go on to do — закончить одно и перейти к другому. В лекции или на уроке эта разница слышна постоянно: сначала обсуждали одно, потом перешли к следующей теме.",
+   "formula": "She went on talking for an hour. · After the break we went on to discuss the next chapter."
+  },
+  {
+   "h": "Mean: значит или собирался",
+   "p": "Mean doing описывает последствие: такая работа означает много поездок. Mean to do говорит о намерении: я не хотел тебя обидеть. Отрицание I didn't mean to — самая частая фраза извинения.",
+   "formula": "This job means travelling a lot. · I didn't mean to hurt you. · Sorry, I didn't mean to break it."
+  }
+ ],
+ "examples": [
+  {"en": "I clearly remember locking the door.", "ru": "Я отлично помню, что закрыл дверь."},
+  {"en": "Please remember to water the plants.", "ru": "Пожалуйста, не забудь полить растения."},
+  {"en": "I regret saying that to her.", "ru": "Я жалею, что сказал ей это."},
+  {"en": "We regret to inform you that the flight is cancelled.", "ru": "С сожалением сообщаем, что рейс отменён."},
+  {"en": "He stopped smoking two years ago.", "ru": "Он бросил курить два года назад."},
+  {"en": "We stopped to buy some bread.", "ru": "Мы остановились, чтобы купить хлеба."},
+  {"en": "I didn't mean to offend you.", "ru": "Я не хотел тебя обидеть."}
+ ],
+ "traps": [
+  {"bad": "I remember to lock the door yesterday.", "good": "I remember locking the door yesterday.", "why": "Речь о прошлом действии, поэтому нужна форма на -ing."},
+  {"bad": "Please remember locking the door.", "good": "Please remember to lock the door.", "why": "Просьба на будущее требует to + инфинитив."},
+  {"bad": "He stopped to smoke last year and feels better.", "good": "He stopped smoking last year and feels better.", "why": "Если речь о том, что человек бросил, нужна форма на -ing."},
+  {"bad": "I regret to tell you that I forgot your birthday.", "good": "I regret telling you that.", "why": "Сожаление о прошлом — regret + -ing, а не формальная конструкция с to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I clearly remember ___ the door before leaving.", "options": ["locking", "to lock", "lock"], "a": 0, "why": "Помню о прошлом действии: remember locking."},
+  {"type": "choice", "q": "Please remember ___ the plants while I'm away.", "options": ["to water", "watering", "water"], "a": 0, "why": "Просьба на будущее: remember to water."},
+  {"type": "choice", "q": "He stopped ___ two years ago and feels much better.", "options": ["smoking", "to smoke", "smoke"], "a": 0, "why": "Он бросил курить, поэтому stop + -ing."},
+  {"type": "choice", "q": "After the break we went on ___ the next chapter.", "options": ["to discuss", "discussing", "discuss"], "a": 0, "why": "Перешли к следующей теме: go on to do."},
+  {"type": "gap", "q": "I regret ___ (say) that your application was unsuccessful.", "a": ["to say"], "why": "Формальное сообщение плохой новости: regret to say."},
+  {"type": "gap", "q": "She forgot ___ (lock) the window, so it stayed open all night.", "a": ["to lock"], "why": "Забыла сделать то, что нужно было: forget to lock."},
+  {"type": "gap", "q": "He went on ___ (talk) for another hour.", "a": ["talking"], "why": "Продолжал то же действие: go on talking."},
+  {"type": "translate", "q": "Не забудь позвонить маме.", "a": ["don't forget to call your mother", "don't forget to call mum", "remember to call your mother"], "why": "Задача на будущее: forget to do или remember to do."},
+  {"type": "translate", "q": "Я помню, как мы встретились в Париже.", "a": ["i remember meeting in paris", "i remember us meeting in paris"], "why": "Воспоминание о прошлом: remember + -ing."}
+ ]
+}

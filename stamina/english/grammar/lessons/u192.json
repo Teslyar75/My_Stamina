@@ -1,0 +1,73 @@
+{
+ "n": 192,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "Имена и the (1)",
+ "en": "names with and without the 1",
+ "summary": "Ошибки в the France и the Everest: какие географические названия берут артикль, а какие обходятся без него.",
+ "can_do": [
+  "Говорить о странах и городах без лишнего артикля.",
+  "Узнавать названия стран, которым the необходим.",
+  "Различать отдельную гору и горную цепь.",
+  "Правильно называть реки, моря, озёра и пустыни."
+ ],
+ "theory": [
+  {
+   "h": "Люди, города, страны — без the",
+   "p": "Имена людей, континенты, почти все страны, города и штаты идут без артикля: Anna, Paris, France, Brazil, Africa, Texas. Артикль здесь не опускают, его просто нет. По-русски то же самое, поэтому эта часть обычно не вызывает трудностей.",
+   "formula": "Anna lives in Paris. · We flew to Brazil. · Africa is a big continent."
+  },
+  {
+   "h": "Страны, у которых the есть",
+   "p": "The появляется, если в названии есть слово-государство: republic, kingdom, states, union, emirates, или если имя стоит во множественном числе. Отсюда the United States, the United Kingdom, the Netherlands, the Philippines, the Czech Republic.",
+   "table": {
+    "head": ["Без the", "С the", "Причина"],
+    "rows": [
+     ["France, Japan, Poland", "the Netherlands, the Philippines", "множественное число"],
+     ["Germany, Ireland", "the Republic of Ireland", "слово republic и оборот с of"],
+     ["America в разговоре", "the United States", "слово states"],
+     ["Russia, China", "the Russian Federation", "официальное название"]
+    ]
+   }
+  },
+  {
+   "h": "Горы, озёра, острова",
+   "p": "Отдельная вершина и отдельное озеро — без the: Everest, Kilimanjaro, Lake Baikal, Lake Michigan. Цепь гор и группа островов — с the: the Alps, the Andes, the Bahamas, the Canaries. Ориентир простой: один объект — без артикля, несколько в названии — the.",
+   "formula": "We climbed Everest last year. · The Alps are in Europe. · Lake Baikal is deep."
+  },
+  {
+   "h": "Реки, моря, океаны, пустыни, каналы",
+   "p": "Водные артерии и пустыни почти всегда с the: the Nile, the Amazon, the Thames, the Black Sea, the Pacific, the Sahara, the Suez Canal. Список большой и стабильный: если на карте это река, море, океан, канал или пустыня, ставьте the без колебаний.",
+   "formula": "The Volga flows into the Caspian Sea. · They crossed the Sahara."
+  },
+  {
+   "h": "Улицы, площади, парки, мосты",
+   "p": "Улицы, проспекты, площади, парки и мосты обычно без the: Oxford Street, Fifth Avenue, Red Square, Central Park, Brooklyn Bridge. Исключения — дороги с номером и пара лондонских названий: the M25, the A40, the High Street. Оборот с of снова требует the: the Tower of London.",
+   "formula": "She works on Oxford Street. · We met in Red Square. · The Tower of London is old."
+  }
+ ],
+ "examples": [
+  {"en": "We spent a week in Italy.", "ru": "Мы провели неделю в Италии."},
+  {"en": "She moved to the Netherlands.", "ru": "Она переехала в Нидерланды."},
+  {"en": "The Alps are covered with snow.", "ru": "Альпы покрыты снегом."},
+  {"en": "They sailed down the Nile.", "ru": "Они плыли вниз по Нилу."},
+  {"en": "He lives on Baker Street.", "ru": "Он живёт на Бейкер-стрит."},
+  {"en": "The USA is a big country.", "ru": "США — большая страна."}
+ ],
+ "traps": [
+  {"bad": "We travelled to the France.", "good": "We travelled to France.", "why": "Обычное название страны идёт без the."},
+  {"bad": "The Everest is the highest mountain.", "good": "Everest is the highest mountain.", "why": "Отдельная вершина называется без артикля."},
+  {"bad": "We swam in Nile.", "good": "We swam in the Nile.", "why": "Реки всегда с the."},
+  {"bad": "I live in Netherlands.", "good": "I live in the Netherlands.", "why": "Название во множественном числе требует the."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We are going to ___ Spain next summer.", "options": ["a", "the", "no article"], "a": 2, "why": "Обычная страна — без артикля."},
+  {"type": "choice", "q": "She comes from ___ United States.", "options": ["a", "the", "no article"], "a": 1, "why": "В названии есть states, поэтому the."},
+  {"type": "choice", "q": "They climbed ___ Everest last year.", "options": ["a", "the", "no article"], "a": 2, "why": "Отдельная гора — без the."},
+  {"type": "choice", "q": "The boat went down ___ Nile.", "options": ["a", "the", "no article"], "a": 1, "why": "Название реки всегда с the."},
+  {"type": "gap", "q": "My friend lives in ___ Netherlands.", "a": ["the"], "why": "Множественное название страны требует the."},
+  {"type": "gap", "q": "We walked along ___ Thames.", "a": ["the"], "why": "Река — the Thames."},
+  {"type": "translate", "q": "Мы поехали в Италию.", "a": ["we went to italy", "we travelled to italy"], "why": "Страна без артикля: to Italy."},
+  {"type": "translate", "q": "Альпы находятся в Европе.", "a": ["the alps are in europe"], "why": "Горная цепь с the, континент без."}
+ ]
+}

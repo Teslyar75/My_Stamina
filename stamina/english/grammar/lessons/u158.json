@@ -1,0 +1,73 @@
+{
+ "n": 158,
+ "level": "B2",
+ "module": "b-passive",
+ "title": "Пассив (2): been done, being done",
+ "en": "passive 2 (be done, been done)",
+ "summary": "Пассив за пределами простых времён: перфект с been done, процесс с being done, будущее will be done и модальные глаголы.",
+ "can_do": [
+  "Образовать пассив perfect через have/has been + V3.",
+  "Сказать о процессе в пассиве через is being / was being.",
+  "Построить пассив будущего и с модальными глаголами.",
+  "Не путать been и being в пассивной конструкции."
+ ],
+ "theory": [
+  {
+   "h": "Perfect: have been done",
+   "p": "Если результат важен к настоящему моменту, пассив берёт have или has плюс been плюс V3. The work has been finished — работу закончили, и сейчас она готова. В прошедшем перфекте have меняется на had: the report had been sent before the meeting.",
+   "formula": "The work has been finished. · The report had been sent before the meeting. · The letters haven't been opened."
+  },
+  {
+   "h": "Continuous: is being done",
+   "p": "Если действие идёт прямо сейчас, пассив получает being: is being repaired, was being painted. Это единственный способ сказать «дом сейчас ремонтируют», не называя ремонтников. Формула простая: be + being + V3, где be показывает время.",
+   "formula": "The road is being repaired. · The house was being painted when I arrived."
+  },
+  {
+   "h": "Будущее и модальные",
+   "p": "После will, can, must, should и других модальных пассив всегда выглядит одинаково: be плюс V3. Никакого been или being здесь не нужно, потому что модальный уже занял место времени.",
+   "table": {
+    "head": ["Время или модальный", "Пассив", "Пример"],
+    "rows": [
+     ["present perfect", "has/have been + V3", "The work has been done."],
+     ["past perfect", "had been + V3", "The work had been done."],
+     ["present continuous", "is/are being + V3", "The work is being done."],
+     ["past continuous", "was/were being + V3", "The work was being done."],
+     ["future simple", "will be + V3", "The work will be done."],
+     ["modal", "can/must be + V3", "The work must be done."]
+    ]
+   }
+  },
+  {
+   "h": "been или being — как не перепутать",
+   "p": "Been — это третья форма be, она нужна после have. Being — форма на -ing, она нужна после is или was. Поэтому has been done и is being done оба правильные, но означают разное: первое — уже сделано, второе — делается сейчас.",
+   "formula": "has been done (уже) · is being done (сейчас) · had been done (до того)"
+  },
+  {
+   "h": "Чего в пассиве не бывает",
+   "p": "Формы is been done не существует: после is не может стоять been. Также почти не встречается present perfect continuous passive — вместо the work has been being done говорят просто the work has been done. Это редкая конструкция, и обходиться без неё совершенно нормально.",
+   "formula": "The work has been done. (не has been being done) · The work is being done. (не is been done)"
+  }
+ ],
+ "examples": [
+  {"en": "The work has already been finished.", "ru": "Работу уже закончили."},
+  {"en": "The road is being repaired at the moment.", "ru": "Дорогу сейчас ремонтируют."},
+  {"en": "The new school will be opened next month.", "ru": "Новую школу откроют в следующем месяце."},
+  {"en": "When I arrived, the room was being cleaned.", "ru": "Когда я пришёл, комнату убирали."},
+  {"en": "The problem can be solved easily.", "ru": "Эту проблему легко решить."}
+ ],
+ "traps": [
+  {"bad": "The work is been finished.", "good": "The work has been finished.", "why": "Been идёт после have/has, а не после is."},
+  {"bad": "The road is repairing now.", "good": "The road is being repaired now.", "why": "Процесс в пассиве требует being + V3."},
+  {"bad": "The car will been repaired tomorrow.", "good": "The car will be repaired tomorrow.", "why": "После will — только be + V3, без been."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The report ___ already been sent.", "options": ["has", "have", "is"], "a": 0, "why": "The report — единственное число: has been sent."},
+  {"type": "choice", "q": "The bridge ___ repaired at the moment.", "options": ["is", "is being", "has being"], "a": 1, "why": "Процесс сейчас: is being repaired."},
+  {"type": "choice", "q": "The new school ___ opened next month.", "options": ["will be", "will", "is been"], "a": 0, "why": "Будущее в пассиве: will be + V3."},
+  {"type": "choice", "q": "When I arrived, the room ___ cleaned.", "options": ["was being", "was been", "has been"], "a": 0, "why": "Процесс в прошлом: was being cleaned."},
+  {"type": "gap", "q": "The letter ___ (already / send).", "a": ["has already been sent"], "why": "Present perfect passive: has already been sent."},
+  {"type": "gap", "q": "The problem can ___ (solve) easily.", "a": ["be solved"], "why": "После модального — be + V3: can be solved."},
+  {"type": "translate", "q": "Дорогу сейчас ремонтируют.", "a": ["the road is being repaired", "the road is being repaired now"], "why": "Процесс в пассиве: is being repaired."},
+  {"type": "translate", "q": "Работа уже сделана.", "a": ["the work has already been done", "the work has been done"], "why": "Perfect passive: has been done."}
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "n": 196,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "-'s и of: чей",
+ "en": "-'s and of",
+ "summary": "Машина сестры — sister's car, крыша дома — the roof of the house: как выбирать между притяжательным 's и оборотом с of.",
+ "can_do": [
+  "Ставить 's, когда владелец — человек или животное.",
+  "Писать s' у владельца во множественном числе.",
+  "Использовать of для частей предметов и абстракций.",
+  "Говорить о времени, городах и организациях через 's."
+ ],
+ "theory": [
+  {
+   "h": "Люди и животные берут 's",
+   "p": "Притяжательный 's ставят, когда владелец — человек или животное: my sister's room, the dog's tail, Tom's car. Порядок обратный русскому: сначала владелец, потом вещь. Артикль относится ко всей конструкции и стоит перед владельцем, а не перед предметом.",
+   "formula": "my sister's room · the dog's tail · Tom's car · the children's books"
+  },
+  {
+   "h": "Множественное число: s'",
+   "p": "Если владелец во множественном числе и уже оканчивается на -s, добавляется только апостроф: my parents' house, the students' results, the boys' team. Если множественное без -s, апостроф и s ставятся как обычно: the children's room, the men's changing room.",
+   "table": {
+    "head": ["Кто владелец", "Форма", "Пример"],
+    "rows": [
+     ["один человек", "'s", "the teacher's desk"],
+     ["множественное на -s", "s'", "the teachers' room"],
+     ["множественное без -s", "'s", "the children's room"],
+     ["имя на -s", "'s", "James's car"]
+    ]
+   }
+  },
+  {
+   "h": "Вещи и абстракции — через of",
+   "p": "Для неодушевлённых предметов обычнее оборот с of: the roof of the house, the end of the film, the name of the street. Сказать the house's roof можно, но звучит тяжелее, а the film's end почти всегда плохо. Порядок здесь прямой, как в русском.",
+   "formula": "the roof of the house · the end of the film · the colour of the walls"
+  },
+  {
+   "h": "Время, города, страны, организации",
+   "p": "Есть группа неодушевлённых слов, которые всё же берут 's: время (today's news, a week's holiday), города и страны (Moscow's streets, Russia's economy), организации (the company's rules). Это не исключение из логики, а расширение: у них как будто есть владелец.",
+   "formula": "today's news · a week's holiday · Moscow's streets · the company's rules"
+  },
+  {
+   "h": "'s или of: как выбрать",
+   "p": "Если владелец — человек, животное, время, город или организация, берите 's. Если речь о части предмета, содержании или названии, берите of. Иногда лучше третья форма — пара из двух существительных: the shop window звучит естественнее, чем the window of the shop.",
+   "formula": "my friend's car · the door of the car · the shop window"
+  },
+  {
+   "h": "At the doctor's",
+   "p": "Некоторые слова с 's обозначают не вещь, а место: at the doctor's, at the baker's, at my mother's. Здесь подразумевается дом или кабинет, и артикль the при этом остаётся. Так же at the hairdresser's — в парикмахерской, at Anna's — у Анны дома.",
+   "formula": "I'm at the doctor's. · We met at Anna's. · She's at the hairdresser's."
+  }
+ ],
+ "examples": [
+  {"en": "This is my sister's car.", "ru": "Это машина моей сестры."},
+  {"en": "The children's room is upstairs.", "ru": "Детская комната наверху."},
+  {"en": "My parents' house is old.", "ru": "Дом моих родителей старый."},
+  {"en": "The roof of the house is red.", "ru": "Крыша дома красная."},
+  {"en": "Today's news is sad.", "ru": "Сегодняшние новости печальные."},
+  {"en": "I'll be at the doctor's until five.", "ru": "Я буду у врача до пяти."}
+ ],
+ "traps": [
+  {"bad": "This is the car of my sister.", "good": "This is my sister's car.", "why": "Владелец-человек передаётся через 's, а не через of."},
+  {"bad": "My parents's house is big.", "good": "My parents' house is big.", "why": "Множественное на -s даёт только апостроф."},
+  {"bad": "The childrens' room is small.", "good": "The children's room is small.", "why": "Children — множественное без -s, поэтому добавляется 's."},
+  {"bad": "I liked the film's end.", "good": "I liked the end of the film.", "why": "У неодушевлённого предмета часть и граница — через of."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is ___ bike.", "options": ["my brother's", "my brothers", "my brother of"], "a": 0, "why": "Владелец-человек: brother's bike."},
+  {"type": "choice", "q": "___ house is near the park.", "options": ["My parents", "My parents'", "My parent's"], "a": 1, "why": "Родители во множественном на -s, поэтому только апостроф."},
+  {"type": "choice", "q": "I didn't like the end ___ the film.", "options": ["'s", "of", "from"], "a": 1, "why": "Часть неодушевлённого предмета — через of."},
+  {"type": "choice", "q": "We are waiting at ___.", "options": ["the doctor's", "the doctor", "doctor"], "a": 0, "why": "Место с 's сохраняет артикль: at the doctor's."},
+  {"type": "gap", "q": "The ___ (children) room is upstairs.", "a": ["children's", "childrens'"], "why": "Children — множественное без -s, поэтому children's."},
+  {"type": "gap", "q": "I read about it in ___ (today) newspaper.", "a": ["today's"], "why": "Время берёт 's: today's newspaper."},
+  {"type": "translate", "q": "Это машина моей сестры.", "a": ["this is my sister's car"], "why": "Владелец-человек: my sister's car."},
+  {"type": "translate", "q": "Крыша дома красная.", "a": ["the roof of the house is red", "the house's roof is red"], "why": "Часть здания — the roof of the house."}
+ ]
+}

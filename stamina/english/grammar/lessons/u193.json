@@ -1,0 +1,70 @@
+{
+ "n": 193,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "Имена и the (2)",
+ "en": "names with and without the 2",
+ "summary": "Магазины и компании без артикля, театры, музеи и газеты с the: как не ошибиться в названиях заведений и зданий.",
+ "can_do": [
+  "Называть магазины, банки и компании без артикля.",
+  "Ставить the перед театрами, музеями, отелями и газетами.",
+  "Различать Oxford University и the University of Oxford.",
+  "Узнавать оборот с of как надёжный признак the."
+ ],
+ "theory": [
+  {
+   "h": "Магазины, банки, компании — без the",
+   "p": "Названия магазинов, банков, авиакомпаний и фирм обычно идут без артикля: Harrods, Selfridges, Barclays Bank, British Airways, Toyota. Проверка простая: если перед нами имя бренда, а не описание заведения, артикль не нужен.",
+   "formula": "I bought this at Harrods. · She works for British Airways. · He banks with Barclays."
+  },
+  {
+   "h": "Театры, кино, музеи, отели, газеты — с the",
+   "p": "Заведения культуры и пресса ведут себя наоборот: the Odeon, the National Theatre, the British Museum, the Ritz, the Times. Причина историческая, но правило устойчивое: театр, кинотеатр, музей, отель и газета берут the.",
+   "formula": "We saw a play at the National Theatre. · The Times wrote about it. · They stayed at the Ritz."
+  },
+  {
+   "h": "Организации и объединения",
+   "p": "Союзы, партии и объединения — с the: the European Union, the Labour Party, the United Nations, the Red Cross, the BBC. Общий признак тот же, что у стран: слова union, party, united, organization, а также сокращения-названия тянут за собой артикль.",
+   "formula": "The UN was founded in 1945. · The Red Cross helps in disasters."
+  },
+  {
+   "h": "Университеты и здания",
+   "p": "Университет называется без артикля, если имя стоит первым: Oxford University, Cambridge University. Обратный порядок с of требует the: the University of Oxford. Со зданиями так же неоднородно: Buckingham Palace и Westminster Abbey без the, а the Eiffel Tower и the White House с the.",
+   "formula": "She studies at Oxford University. · He works at the University of Leeds. · We went up the Eiffel Tower."
+  },
+  {
+   "h": "Корабли, поезда, книги и фильмы",
+   "p": "Названия кораблей, поездов и самолётов всегда с the: the Titanic, the Orient Express, the Mayflower. У книг и фильмов артикль принадлежит названию, поэтому его пишут с заглавной буквы: The Lord of the Rings, The Matrix. Убирать его из названия нельзя, но и добавлять туда, где его нет, не нужно.",
+   "formula": "The Titanic sank in 1912. · We watched The Matrix again."
+  },
+  {
+   "h": "Оборот с of — самый надёжный признак",
+   "p": "Если имя построено как «что-то чего-то», артикль почти наверняка нужен: the Bank of England, the Tower of London, the University of Oxford, the Houses of Parliament. Это правило работает и там, где остальные признаки молчат, поэтому им стоит пользоваться в первую очередь.",
+   "formula": "the Bank of England · the Tower of London · the Houses of Parliament"
+  }
+ ],
+ "examples": [
+  {"en": "She works for British Airways.", "ru": "Она работает в British Airways."},
+  {"en": "We stayed at the Ritz.", "ru": "Мы остановились в «Ритце»."},
+  {"en": "He studies at Oxford University.", "ru": "Он учится в Оксфордском университете."},
+  {"en": "The Eiffel Tower is in Paris.", "ru": "Эйфелева башня находится в Париже."},
+  {"en": "The Times published the story.", "ru": "«Таймс» опубликовала эту историю."},
+  {"en": "The Titanic was a famous ship.", "ru": "«Титаник» был знаменитым кораблём."}
+ ],
+ "traps": [
+  {"bad": "I bought it at the Harrods.", "good": "I bought it at Harrods.", "why": "Магазины и компании называются без the."},
+  {"bad": "We saw a film at National Theatre.", "good": "We saw a film at the National Theatre.", "why": "Театры и музеи требуют the."},
+  {"bad": "She studies at the Oxford University.", "good": "She studies at Oxford University.", "why": "Имя перед словом university — без артикля."},
+  {"bad": "He works at University of Leeds.", "good": "He works at the University of Leeds.", "why": "Оборот с of требует the."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I bought this phone at ___ Harrods.", "options": ["a", "the", "no article"], "a": 2, "why": "Название магазина идёт без артикля."},
+  {"type": "choice", "q": "They stayed at ___ Ritz Hotel.", "options": ["a", "the", "no article"], "a": 1, "why": "Отели берут the."},
+  {"type": "choice", "q": "She studies at ___ Oxford University.", "options": ["a", "the", "no article"], "a": 2, "why": "Имя стоит первым, артикль не нужен."},
+  {"type": "choice", "q": "He works at ___ University of Leeds.", "options": ["a", "the", "no article"], "a": 1, "why": "Оборот с of требует the."},
+  {"type": "gap", "q": "We watched a play at ___ National Theatre.", "a": ["the"], "why": "Театр называется с the."},
+  {"type": "gap", "q": "The news was in ___ Times.", "a": ["the"], "why": "Газеты идут с the."},
+  {"type": "translate", "q": "Он работает в British Airways.", "a": ["he works for british airways"], "why": "Компания без артикля, предлог for."},
+  {"type": "translate", "q": "Мы поднялись на Эйфелеву башню.", "a": ["we went up the eiffel tower", "we climbed the eiffel tower"], "why": "Известное здание — the Eiffel Tower."}
+ ]
+}

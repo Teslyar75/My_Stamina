@@ -1,0 +1,79 @@
+{
+ "n": 172,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "-ing или to (2): try, need, help",
+ "en": "verb + -ing or to 2",
+ "summary": "Try doing — попробовать способ, try to do — попытаться. Need washing — вещь требует стирки, need to wash — вы сами берёте тряпку.",
+ "can_do": [
+  "Выбрать try doing или try to do по смыслу попытки.",
+  "Понять пассивный смысл need + -ing.",
+  "Сказать need to do, когда действие выполняет сам человек.",
+  "Употребить help с to и без to и выражение can't help doing."
+ ],
+ "theory": [
+  {
+   "h": "Try doing — проверяю, сработает ли",
+   "p": "Форма на -ing после try означает эксперимент: попробуйте сделать так и посмотрите, что выйдет. Совет «попробуй добавить мёда» — именно об этом. Никакого напряжения и усилия здесь нет, есть проверка варианта.",
+   "formula": "Try adding some honey to your tea. · Try restarting the computer. · I tried calling him, but he didn't answer."
+  },
+  {
+   "h": "Try to do — стараюсь, хотя трудно",
+   "p": "Инфинитив после try означает попытку с усилием: я старался открыть окно, но оно заклинило. Здесь важен результат и преодоление, а не эксперимент. Сравнение двух форм — самый быстрый способ почувствовать разницу.",
+   "table": {
+    "head": ["Фраза", "Что происходит", "Перевод"],
+    "rows": [
+     ["Try adding more salt.", "проверьте способ", "попробуйте добавить соли"],
+     ["I tried to lift the box.", "старался, не вышло", "я пытался поднять коробку"],
+     ["I tried calling her.", "проверил этот вариант", "я попробовал ей позвонить"],
+     ["Try to relax.", "приложите усилие", "постарайтесь расслабиться"]
+    ]
+   }
+  },
+  {
+   "h": "Need + -ing — вещь сама требует",
+   "p": "Когда говорят, что предмету нужно действие, используют need и форму на -ing: the room needs painting. Переводится пассивно: комнату нужно покрасить. Так же говорят о машине, рубашке, окнах и обо всём, что ждёт ухода.",
+   "formula": "The room needs painting. · My car needs washing. · These shoes need repairing."
+  },
+  {
+   "h": "Need to do — действует человек",
+   "p": "Если действие выполняет само подлежащее, нужно need to и инфинитив. Сравните: the car needs washing — машину моют, а I need to wash the car — я мою сам. Обе фразы правильные, но описывают разное.",
+   "formula": "I need to wash the car. · You need to see a doctor. · We need to book tickets in advance."
+  },
+  {
+   "h": "Help: to можно и не ставить",
+   "p": "После help допустимы обе формы, и смысл не меняется. Без to звучит немного разговорнее, с to — нейтральнее. Это редкий случай, когда выбор действительно свободный, поэтому не стоит тратить на него нервы.",
+   "formula": "She helped me carry the bags. · She helped me to carry the bags. · Can you help me move this table?"
+  },
+  {
+   "h": "Can't help doing — не могу удержаться",
+   "p": "Оборот can't help + -ing значит «не могу не». После него никогда не ставят to, потому что help здесь означает удержаться, а не помочь. Отдельно существует it can't be helped — тут уже ничего не поделаешь.",
+   "formula": "I couldn't help laughing. · She can't help worrying about him. · It can't be helped."
+  }
+ ],
+ "examples": [
+  {"en": "Try adding a little salt.", "ru": "Попробуйте добавить немного соли."},
+  {"en": "I tried to open the window, but it was stuck.", "ru": "Я пытался открыть окно, но оно заклинило."},
+  {"en": "The room needs painting.", "ru": "Комнату нужно покрасить."},
+  {"en": "I need to charge my phone.", "ru": "Мне нужно зарядить телефон."},
+  {"en": "She helped me carry the boxes.", "ru": "Она помогла мне нести коробки."},
+  {"en": "I couldn't help laughing.", "ru": "Я не мог не рассмеяться."}
+ ],
+ "traps": [
+  {"bad": "Try to add more salt, it might taste better.", "good": "Try adding more salt, it might taste better.", "why": "Совет-эксперимент требует try + -ing."},
+  {"bad": "The car needs to wash.", "good": "The car needs washing.", "why": "Машину моют, а не она моет себя: нужна форма на -ing."},
+  {"bad": "I couldn't help to laugh.", "good": "I couldn't help laughing.", "why": "Can't help + -ing, без to."},
+  {"bad": "He needs buying a new phone.", "good": "He needs to buy a new phone.", "why": "Человек сам совершает действие, поэтому need to do."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The room needs ___.", "options": ["painting", "to paint", "paint"], "a": 0, "why": "Комнату красят, поэтому need + -ing."},
+  {"type": "choice", "q": "I tried ___ the door, but it was locked.", "options": ["to open", "opening", "open"], "a": 0, "why": "Попытка с усилием: try to open."},
+  {"type": "choice", "q": "Try ___ some honey to your tea.", "options": ["adding", "to add", "add"], "a": 0, "why": "Совет-эксперимент: try adding."},
+  {"type": "choice", "q": "I couldn't help ___.", "options": ["laughing", "to laugh", "laugh"], "a": 0, "why": "Can't help + -ing: couldn't help laughing."},
+  {"type": "gap", "q": "My phone needs ___ (charge).", "a": ["charging"], "why": "Телефон не заряжает себя сам: need + -ing."},
+  {"type": "gap", "q": "She needs ___ (buy) a new coat.", "a": ["to buy"], "why": "Она сама совершает действие: need to buy."},
+  {"type": "gap", "q": "He tried ___ (lift) the box, but it was too heavy.", "a": ["to lift"], "why": "Старался, но не смог: try to lift."},
+  {"type": "translate", "q": "Эта рубашка требует стирки.", "a": ["this shirt needs washing", "this shirt needs to be washed"], "why": "Предмет требует действия: needs washing."},
+  {"type": "translate", "q": "Он помог мне нести сумки.", "a": ["he helped me carry the bags", "he helped me to carry the bags"], "why": "Help допускает обе формы: help somebody (to) do."}
+ ]
+}

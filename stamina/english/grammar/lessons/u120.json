@@ -1,0 +1,80 @@
+{
+ "n": 120,
+ "level": "B2",
+ "module": "b-past",
+ "title": "Past Simple: что было",
+ "en": "past simple",
+ "summary": "Как рассказать о законченном прошлом: вторая форма глагола, did в вопросах и маркеры вроде yesterday и ago.",
+ "can_do": [
+  "Образовать вторую форму правильных и неправильных глаголов.",
+  "Строить вопрос и отрицание в прошедшем через did.",
+  "Рассказать, что случилось вчера, в прошлом году или два дня назад."
+ ],
+ "theory": [
+  {
+   "h": "Законченное действие в прошлом",
+   "p": "Past simple нужен, когда действие закончилось и время известно или подразумевается. Это точка на линии времени, а не процесс. Если по-русски мы говорим «я посмотрел», «он пришёл», «они уехали», почти всегда речь идёт именно о прошедшем простом времени.",
+   "formula": "I watched the match last night. · She called me an hour ago. · They moved to Berlin in 2019."
+  },
+  {
+   "h": "Вторая форма: -ed или словарь",
+   "p": "Правильные глаголы берут окончание -ed, и с ним тоже есть тонкости: конечная -e не удваивается, -y после согласной переходит в -ied, короткий слог удваивает согласную. Неправильные формы надо знать наизусть: их около двухсот, но в бытовой речи постоянно нужны десятки.",
+   "table": {
+    "head": ["Начальная", "Past simple", "Правило"],
+    "rows": [
+     ["work", "worked", "обычное -ed"],
+     ["stop", "stopped", "удвоение согласной"],
+     ["study", "studied", "-y после согласной"],
+     ["go", "went", "неправильный"],
+     ["buy", "bought", "неправильный"],
+     ["teach", "taught", "неправильный"]
+    ]
+   }
+  },
+  {
+   "h": "Вопрос и отрицание: снова did",
+   "p": "В прошедшем времени помощник did забирает всё время себе, а смысловой глагол возвращается в начальную форму. Поэтому didn't went и did you saw — самые частые ошибки на этом шаге. Вторую форму ставят только в утверждении, где помощника нет.",
+   "formula": "Did you see him? · I didn't see him. · Where did they go? · She didn't answer."
+  },
+  {
+   "h": "Слова, которые выдают прошлое",
+   "p": "Маркеры помогают не ошибиться: yesterday, last week, two days ago, in 2015, when I was a child. Если в предложении есть такое указание на законченный период, настоящее совершенное время уже не подходит — нужен именно past simple, даже если результат кажется важным.",
+   "table": {
+    "head": ["Маркер", "Пример"],
+    "rows": [
+     ["yesterday", "I met her yesterday."],
+     ["last month", "We moved last month."],
+     ["two days ago", "He called two days ago."],
+     ["in 2018", "They got married in 2018."],
+     ["when I was ten", "I broke my arm when I was ten."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I finished the report yesterday.", "ru": "Я закончил отчёт вчера."},
+  {"en": "We went to Italy last summer.", "ru": "Прошлым летом мы ездили в Италию."},
+  {"en": "Did you like the film?", "ru": "Тебе понравился фильм?"},
+  {"en": "She didn't come to the meeting.", "ru": "Она не пришла на встречу."},
+  {"en": "He bought a new car two weeks ago.", "ru": "Он купил новую машину две недели назад."},
+  {"en": "When I was a child, we lived by the sea.", "ru": "В детстве мы жили у моря."}
+ ],
+ "traps": [
+  {"bad": "I didn't went to the party.", "good": "I didn't go to the party.", "why": "После didn't глагол возвращается в начальную форму."},
+  {"bad": "Did you saw him?", "good": "Did you see him?", "why": "did уже показывает прошлое, saw здесь лишнее."},
+  {"bad": "I have seen him yesterday.", "good": "I saw him yesterday.", "why": "yesterday — законченное время, перфект не подходит."},
+  {"bad": "He studyed all night.", "good": "He studied all night.", "why": "-y после согласной переходит в -ied."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We ___ to the theatre last Friday.", "options": ["go", "went", "have gone"], "a": 1, "why": "last Friday — законченное прошлое, вторая форма went."},
+  {"type": "choice", "q": "___ you finish the task?", "options": ["Did", "Do", "Have"], "a": 0, "why": "Вопрос о прошлом строится через did."},
+  {"type": "choice", "q": "She ___ the email at nine and went home.", "options": ["answered", "answers", "has answered"], "a": 0, "why": "Последовательность в прошлом, точное время: answered."},
+  {"type": "choice", "q": "They ___ married in 2018.", "options": ["get", "got", "have got"], "a": 1, "why": "in 2018 — точка в прошлом, форма got."},
+  {"type": "gap", "q": "I ___ (see) him at the station yesterday.", "a": ["saw"], "why": "see неправильный: saw, и yesterday подтверждает прошлое."},
+  {"type": "gap", "q": "We ___ (not / enjoy) the film at all.", "a": ["didn't enjoy", "did not enjoy"], "why": "Отрицание в прошлом: didn't плюс начальная форма."},
+  {"type": "gap", "q": "He ___ (buy) this flat three years ago.", "a": ["bought"], "why": "buy неправильный: bought, ago указывает на прошлое."},
+  {"type": "translate", "q": "Я звонил тебе вчера.", "a": ["i called you yesterday", "i phoned you yesterday"], "why": "yesterday — past simple: called."},
+  {"type": "translate", "q": "Она не пришла на встречу.", "a": ["she didn't come to the meeting", "she did not come to the meeting"], "why": "Отрицание через didn't плюс come."},
+  {"type": "translate", "q": "Мы переехали сюда в 2019 году.", "a": ["we moved here in 2019"], "why": "Год в прошлом — простая вторая форма moved."}
+ ]
+}

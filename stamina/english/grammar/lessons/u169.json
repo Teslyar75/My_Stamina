@@ -1,0 +1,79 @@
+{
+ "n": 169,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Глагол + to…",
+ "en": "verb + to",
+ "summary": "Глаголы решения, обещания и попытки требуют после себя to и базовую форму — и это совсем другая конструкция, чем -ing.",
+ "can_do": [
+  "Употребить to + инфинитив после decide, hope, promise, refuse, agree, plan, manage.",
+  "Сказать отрицание через decide not to do.",
+  "Отличить конструкцию с одним действующим лицом от want somebody to do.",
+  "Употребить seem, appear и happen + to без лишних слов."
+ ],
+ "theory": [
+  {
+   "h": "Глаголы намерения и обещания",
+   "p": "После decide, hope, promise, offer, agree, refuse, plan, expect, intend, manage, afford, learn, threaten и pretend идёт to и базовая форма глагола. По смыслу эти глаголы смотрят в будущее: решение ещё не выполнено, обещание ещё не сдержано.",
+   "formula": "I decided to stay. · She refused to help. · He promised to call. · We hope to move next year."
+  },
+  {
+   "h": "После to — только база",
+   "p": "Частица to не меняет глагол ни по времени, ни по лицу. Прошедшее время и лицо показывает первый глагол, а второй остаётся в словарной форме. Ошибка to went или to goes встречается чаще всего у тех, кто пытается согласовать оба глагола.",
+   "table": {
+    "head": ["Первый глагол", "Второй глагол", "Готово"],
+    "rows": [
+     ["I decided", "go", "I decided to go."],
+     ["She refused", "answer", "She refused to answer."],
+     ["They managed", "finish", "They managed to finish."],
+     ["He forgot", "call", "He forgot to call."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание — not to",
+   "p": "Отрицательный инфинитив ставится целиком перед to: decided not to go. Разрывать конструкцию и говорить decided to not go не стоит, хотя в живой речи такое иногда проскакивает. В учебной норме not идёт первым.",
+   "formula": "He decided not to go. · She promised not to be late. · They agreed not to tell anyone."
+  },
+  {
+   "h": "Один человек делает оба действия",
+   "p": "В этой модели деятель у обоих глаголов один и тот же. Если же действие должен выполнить кто-то другой, появляется дополнение и модель меняется на want somebody to do — это уже следующий урок. Пока достаточно чувствовать разницу: I want to go и I want you to go.",
+   "formula": "I want to go. (я иду) · I want you to go. (идёшь ты) · She hopes to pass. · She hopes that you will pass."
+  },
+  {
+   "h": "Seem, appear, happen + to",
+   "p": "Эти глаголы не выражают действия, а оценивают ситуацию, поэтому после них идёт to с любым нужным временем: to be, to have, to know. Конструкция заменяет целое придаточное и звучит короче, чем it seems that he is.",
+   "formula": "He seems to be tired. · She appears to know the answer. · I happened to meet him yesterday."
+  },
+  {
+   "h": "Manage и afford — про усилие и деньги",
+   "p": "Manage to do значит справиться, часто с трудом. Afford to do значит позволить себе по деньгам или времени, чаще всего в отрицании и в вопросах. Оба глагола не принимают -ing, хотя по-русски мы говорим «смог позволить».",
+   "formula": "Did you manage to finish? · We couldn't afford to buy a car. · She managed to catch the train."
+  }
+ ],
+ "examples": [
+  {"en": "They decided to cancel the trip.", "ru": "Они решили отменить поездку."},
+  {"en": "He refused to say anything.", "ru": "Он отказался что-либо говорить."},
+  {"en": "She promised not to be late.", "ru": "Она обещала не опаздывать."},
+  {"en": "We couldn't afford to buy a new car.", "ru": "Мы не могли позволить себе новую машину."},
+  {"en": "He seems to know the answer.", "ru": "Кажется, он знает ответ."},
+  {"en": "I happened to meet her at the airport.", "ru": "Я случайно встретил её в аэропорту."}
+ ],
+ "traps": [
+  {"bad": "I decided going home.", "good": "I decided to go home.", "why": "Decide требует to + инфинитив, а не -ing."},
+  {"bad": "She refused helping us.", "good": "She refused to help us.", "why": "Refuse относится к глаголам с to."},
+  {"bad": "He promised to not be late.", "good": "He promised not to be late.", "why": "Отрицательный инфинитив начинается с not to."},
+  {"bad": "We couldn't afford buying a house.", "good": "We couldn't afford to buy a house.", "why": "Afford берёт to + инфинитив."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "They decided ___ the trip.", "options": ["to cancel", "cancelling", "cancel"], "a": 0, "why": "Decide + to + база: to cancel."},
+  {"type": "choice", "q": "He refused ___ anything.", "options": ["to say", "saying", "say"], "a": 0, "why": "Refuse + to: refused to say."},
+  {"type": "choice", "q": "She promised ___ late.", "options": ["not to be", "to not be", "not being"], "a": 0, "why": "Отрицательный инфинитив: not to be."},
+  {"type": "choice", "q": "We couldn't afford ___ a new car.", "options": ["to buy", "buying", "buy"], "a": 0, "why": "Afford + to: afford to buy."},
+  {"type": "gap", "q": "I hope ___ (see) you soon.", "a": ["to see"], "why": "Hope + to + база."},
+  {"type": "gap", "q": "He managed ___ (finish) the report.", "a": ["to finish"], "why": "Manage + to: managed to finish."},
+  {"type": "gap", "q": "She seems ___ (know) the answer.", "a": ["to know"], "why": "Seem + to: seems to know."},
+  {"type": "translate", "q": "Он решил не ехать.", "a": ["he decided not to go", "he decided not to leave"], "why": "Decide + not to + база."},
+  {"type": "translate", "q": "Мы договорились встретиться в шесть.", "a": ["we agreed to meet at six"], "why": "Agree + to: agreed to meet."}
+ ]
+}

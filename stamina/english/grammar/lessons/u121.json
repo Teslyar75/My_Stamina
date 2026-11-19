@@ -1,0 +1,81 @@
+{
+ "n": 121,
+ "level": "B2",
+ "module": "b-past",
+ "title": "Past Continuous: что происходило",
+ "en": "past continuous",
+ "summary": "Что происходило в прошлом: was и were с -ing, фон для рассказа и действие, которое перебили звонком.",
+ "can_do": [
+  "Описать процесс, который шёл в определённый момент прошлого.",
+  "Соединить длинное действие с коротким через when и while.",
+  "Нарисовать фон рассказа перед тем, как перейти к событиям."
+ ],
+ "theory": [
+  {
+   "h": "Процесс в прошлом",
+   "p": "Past continuous показывает, что действие шло в определённый момент прошлого. Нас не интересует, когда оно началось и закончилось, — важен сам процесс в тот момент. По-русски в таких случаях часто говорят «я сидел и читал», «она шла домой», добавляя подробности.",
+   "table": {
+    "head": ["Кто", "Форма", "Пример"],
+    "rows": [
+     ["I / he / she / it", "was + -ing", "He was working."],
+     ["you / we / they", "were + -ing", "They were working."],
+     ["отрицание", "wasn't / weren't", "We weren't listening."],
+     ["вопрос", "was или were вперёд", "What were you doing?"]
+    ]
+   }
+  },
+  {
+   "h": "Действие и его прерывание",
+   "p": "Самое частое употребление — длинный процесс и короткое событие на его фоне. Процесс идёт в past continuous, событие — в past simple. Союз when вводит короткое событие, while — длинный процесс, и путать их не стоит.",
+   "formula": "I was cooking when the phone rang. · While she was talking, the lights went out."
+  },
+  {
+   "h": "Фон для рассказа",
+   "p": "Когда мы начинаем историю, сначала рисуем обстановку: было поздно, шёл дождь, люди стояли на остановке. Эти описания почти всегда в длительном времени. Дальше идут события, и они уже в простом прошедшем, потому что у каждого есть своё место на линии времени.",
+   "formula": "It was raining and people were hurrying home. Then a car stopped."
+  },
+  {
+   "h": "Два процесса одновременно",
+   "p": "Если два действия шли параллельно, оба стоят в длительном времени и соединяются через while. Если же одно действие короче и случилось внутри другого, длинное остаётся в continuous, а короткое уходит в simple. Последовательные события тоже требуют простого времени.",
+   "table": {
+    "head": ["Связь", "Форма", "Пример"],
+    "rows": [
+     ["параллельно", "while + continuous", "I was cooking while he was cleaning."],
+     ["одно внутри другого", "when + simple", "I was cooking when he arrived."],
+     ["последовательно", "simple + simple", "He arrived and we had dinner."]
+    ]
+   }
+  },
+  {
+   "h": "Глаголы состояния и здесь мешают",
+   "p": "Всё, что не любит -ing в настоящем времени, не любит его и в прошедшем. Вместо was knowing говорят knew, вместо was wanting — wanted. Если очень хочется поставить состояние в длительное время, почти наверняка нужна другая форма или другой глагол.",
+   "formula": "I knew the answer. · She wanted to help. · He had two tickets."
+  }
+ ],
+ "examples": [
+  {"en": "I was working when you called.", "ru": "Я работал, когда ты позвонил."},
+  {"en": "They were watching TV at nine.", "ru": "В девять они смотрели телевизор."},
+  {"en": "While she was cooking, I was cleaning.", "ru": "Пока она готовила, я убирал."},
+  {"en": "It was raining when we left.", "ru": "Когда мы вышли, шёл дождь."},
+  {"en": "What were you doing at midnight?", "ru": "Что ты делал в полночь?"},
+  {"en": "He was walking home, so he didn't hear the phone.", "ru": "Он шёл домой, поэтому не услышал звонка."}
+ ],
+ "traps": [
+  {"bad": "When you called, I cooked dinner.", "good": "When you called, I was cooking dinner.", "why": "Процесс был прерван звонком — нужен past continuous."},
+  {"bad": "I was knowing the answer.", "good": "I knew the answer.", "why": "know — глагол состояния, длительное время с ним не употребляется."},
+  {"bad": "While I cooked, he was reading.", "good": "While I was cooking, he was reading.", "why": "После while идёт процесс, а не однократное действие."},
+  {"bad": "She were waiting outside.", "good": "She was waiting outside.", "why": "she — единственное число, значит was."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ dinner when the lights went out.", "options": ["cooked", "was cooking", "have cooked"], "a": 1, "why": "Длинный процесс, который прервался: was cooking."},
+  {"type": "choice", "q": "They ___ football at five o'clock.", "options": ["played", "were playing", "play"], "a": 1, "why": "Процесс в конкретный момент прошлого: were playing."},
+  {"type": "choice", "q": "What ___ at ten last night?", "options": ["did you do", "were you doing", "have you done"], "a": 1, "why": "Вопрос о процессе в момент прошлого: were you doing."},
+  {"type": "choice", "q": "She ___ when I came in, so I didn't disturb her.", "options": ["works", "worked", "was working"], "a": 2, "why": "В момент моего прихода она была в процессе: was working."},
+  {"type": "gap", "q": "I ___ (not / listen), sorry.", "a": ["wasn't listening", "was not listening"], "why": "Отрицание процесса в прошлом: wasn't listening."},
+  {"type": "gap", "q": "They ___ (wait) for us at the entrance at seven.", "a": ["were waiting"], "why": "they требует were, процесс в семь часов."},
+  {"type": "gap", "q": "While she ___ (cook), the children were playing outside.", "a": ["was cooking"], "why": "После while — процесс: was cooking."},
+  {"type": "translate", "q": "Я мыл посуду, когда ты позвонил.", "a": ["i was washing the dishes when you called", "i was washing up when you called"], "why": "Процесс в past continuous, звонок в past simple."},
+  {"type": "translate", "q": "В восемь мы ехали домой.", "a": ["at eight we were driving home", "we were driving home at eight"], "why": "Процесс в конкретный момент прошлого: were driving."},
+  {"type": "translate", "q": "Что ты делал вчера в это время?", "a": ["what were you doing at this time yesterday"], "why": "Вопрос к процессу: what were you doing."}
+ ]
+}

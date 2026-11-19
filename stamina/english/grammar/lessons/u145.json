@@ -1,0 +1,64 @@
+{
+ "n": 145,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "may и might (2)",
+ "en": "may and might 2",
+ "summary": "То же слово просит разрешения, соглашается сквозь зубы и говорит «раз так, можно и пешком».",
+ "can_do": [
+  "Попросить разрешение через may I в официальной обстановке.",
+  "Отказать или разрешить в правилах и объявлениях.",
+  "Предложить решение через might as well, когда лучшего варианта нет.",
+  "Согласиться с фактом и возразить по сути через may ... but."
+ ],
+ "theory": [
+  {
+   "h": "Разрешение в официальной рамке",
+   "p": "May I — вежливая просьба о разрешении, уместная в кабинете, гостинице, на приёме. Can I звучит нейтральнее и годится в любой компании, could I — чуть мягче. Might I встречается редко и звучит подчёркнуто официально, почти по-старому.",
+   "formula": "May I ask a question? · Could I borrow your pen? · May we come in?"
+  },
+  {
+   "h": "Ответ и запрет в правилах",
+   "p": "Разрешение дают коротко: yes, of course или certainly. Отказ через no, you may not звучит сухо, как от родителя, поэтому в речи говорят I'm afraid not или you can't. Зато в письменных правилах may not — обычное дело: он сообщает, что делать нельзя.",
+   "formula": "May I leave early? — I'm afraid not. · Visitors may not smoke in the building."
+  },
+  {
+   "h": "Might as well — «можно и так»",
+   "p": "Конструкция might as well говорит: лучшего варианта нет, так что давайте сделаем это. Оттенок спокойного согласия с обстоятельствами, иногда с лёгким смирением. После as well идёт глагол без to.",
+   "formula": "The bus isn't coming, so we might as well walk. · I might as well stay — the meeting starts in ten minutes."
+  },
+  {
+   "h": "May ... but — уступка с возражением",
+   "p": "Оборот he may be clever, but he's lazy значит «пусть он и умный, но ленивый». Первая часть соглашается с фактом, вторая возражает по существу. Это вежливый способ спорить, не отрицая очевидного.",
+   "formula": "He may be young, but he knows the job. · It may be cheap, but the quality is poor."
+  },
+  {
+   "h": "May well — вполне вероятно",
+   "p": "Со словом well may усиливается и означает «вполне возможно», «очень даже». Разница с обычным may в уверенности: may well ближе к «я не удивлюсь, если так». Might well работает так же, но с чуть большей осторожностью.",
+   "formula": "She may well be right. · He might well have forgotten about us."
+  }
+ ],
+ "examples": [
+  {"en": "May I use your phone for a moment?", "ru": "Можно мне на минуту воспользоваться вашим телефоном?"},
+  {"en": "Visitors may not park in front of the gate.", "ru": "Посетителям нельзя парковаться перед воротами."},
+  {"en": "There's no bus, so we might as well walk.", "ru": "Автобуса нет, так что можем и пешком."},
+  {"en": "He may be young, but he knows the job.", "ru": "Пусть он молод, но дело знает."},
+  {"en": "She may well be the best candidate we have.", "ru": "Вполне возможно, она лучший кандидат из всех."}
+ ],
+ "traps": [
+  {"bad": "May you help me with this box?", "good": "Could you help me with this box?", "why": "May I — просьба о разрешении для себя; просьба к другому — could или would you."},
+  {"bad": "We may as well to stay here.", "good": "We might as well stay here.", "why": "После as well глагол идёт без to."},
+  {"bad": "May I to open the window?", "good": "May I open the window?", "why": "После may инфинитив без to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ I come in?", "options": ["May", "Do", "Will"], "a": 0, "why": "Вежливая просьба о разрешении — May I."},
+  {"type": "choice", "q": "The bus is gone, so we ___ as well take a taxi.", "options": ["might", "must", "should"], "a": 0, "why": "Нет лучшего варианта — might as well."},
+  {"type": "choice", "q": "He ___ be inexperienced, but he learns fast.", "options": ["may", "must", "can't"], "a": 0, "why": "Уступка с возражением — may ... but."},
+  {"type": "choice", "q": "Passengers ___ take one piece of hand luggage.", "options": ["may", "might", "mustn't"], "a": 0, "why": "Разрешение в правилах передаётся через may."},
+  {"type": "gap", "q": "___ (may / I) leave the table?", "a": ["may i"], "why": "May I — стандартная форма просьбы о разрешении."},
+  {"type": "gap", "q": "It's raining hard, so we ___ (might / as well / stay) at home.", "a": ["might as well stay"], "why": "Might as well плюс глагол без to."},
+  {"type": "gap", "q": "She ___ (may / well / be) right about the deadline.", "a": ["may well be"], "why": "May well усиливает вероятность."},
+  {"type": "translate", "q": "Можно мне взять вашу ручку?", "a": ["may i borrow your pen", "could i borrow your pen"], "why": "Просьба о разрешении — May I или Could I."},
+  {"type": "translate", "q": "Он может быть и прав, но решение уже принято.", "a": ["he may be right but the decision has been made", "he may be right but the decision is made"], "why": "Уступка строится через may ... but."}
+ ]
+}

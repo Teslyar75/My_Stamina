@@ -1,0 +1,70 @@
+{
+ "n": 155,
+ "level": "B2",
+ "module": "b-cond",
+ "title": "Третий тип и сожаление",
+ "en": "if I had known / I wish I had known",
+ "summary": "Как говорить о прошлом, которое уже не изменить: if I had known и I wish I had known — сослагательное наклонение для упущенных возможностей.",
+ "can_do": [
+  "Построить третье условие через if + past perfect и would have + V3.",
+  "Пожалеть о прошлом через I wish + past perfect.",
+  "Сравнить все три типа условия в одной фразе.",
+  "Сказать о смешанном случае: прошлая причина, нынешний результат."
+ ],
+ "theory": [
+  {
+   "h": "Условие, которое уже не сбудется",
+   "p": "Третий тип — про прошлое. В части с if стоит past perfect, то есть had плюс третья форма глагола, а в главной — would have плюс третья форма. Смысл: тогда что-то не сделали, и теперь об этом можно только сожалеть.",
+   "formula": "If I had known, I would have told you. · If we had left earlier, we would have caught the train."
+  },
+  {
+   "h": "Таблица: где что стоит",
+   "p": "Обе части смотрят в прошлое, но по-разному. В условии — had + V3, это действие, которое не произошло. В результате — would have + V3, это то, что было бы, если бы условие выполнилось. Сокращённо в речи: I'd have или I would've.",
+   "table": {
+    "head": ["Часть", "Форма", "Пример"],
+    "rows": [
+     ["if", "had + V3", "if she had called"],
+     ["результат", "would have + V3", "I would have answered"],
+     ["отрицание", "hadn't + V3", "if I hadn't forgotten"]
+    ]
+   }
+  },
+  {
+   "h": "Сожаление: I wish I had known",
+   "p": "Ту же мысль можно сказать без if: I wish + past perfect. Это значит «жаль, что тогда было не так». I wish I had studied harder — жалею, что не учился больше. Обратите внимание: в русском тут часто нет слова «бы», но английское past perfect обязательно.",
+   "formula": "I wish I had studied harder. · I wish I hadn't said that. · I wish you had told me."
+  },
+  {
+   "h": "Три типа рядом",
+   "p": "Один и тот же глагол call показывает разницу лучше объяснений. Первый тип — реальный план на будущее, второй — нереальное настоящее, третий — несбывшееся прошлое. Полезно проговорить эту лестницу вслух, пока она не станет автоматической.",
+   "formula": "If I have time, I will call. · If I had time, I would call. · If I had had time, I would have called."
+  },
+  {
+   "h": "Смешанный случай",
+   "p": "Иногда причина в прошлом, а результат — в настоящем. Тогда в главной части стоит would плюс инфинитив, без have: If I had studied medicine, I would be a doctor now. Условие в прошлом, следствие сегодня — это нормально и звучит естественно.",
+   "formula": "If I had studied medicine, I would be a doctor now. · If we hadn't missed the bus, we would be there already."
+  }
+ ],
+ "examples": [
+  {"en": "If I had known about the meeting, I would have come.", "ru": "Если бы я знал о встрече, я бы пришёл."},
+  {"en": "She would have passed the exam if she had studied more.", "ru": "Она сдала бы экзамен, если бы больше занималась."},
+  {"en": "I wish I hadn't said that.", "ru": "Жаль, что я это сказал."},
+  {"en": "If we had taken a taxi, we wouldn't have been late.", "ru": "Если бы мы взяли такси, мы бы не опоздали."},
+  {"en": "I wish you had told me earlier.", "ru": "Жаль, что ты не сказал мне раньше."}
+ ],
+ "traps": [
+  {"bad": "If I would have known, I would have told you.", "good": "If I had known, I would have told you.", "why": "В части с if — только had + V3, без would."},
+  {"bad": "I wish I studied harder at school.", "good": "I wish I had studied harder at school.", "why": "О прошлом после wish — past perfect, иначе выходит сожаление о настоящем."},
+  {"bad": "If she had called, I would told her.", "good": "If she had called, I would have told her.", "why": "В результате третьего типа нужен have: would have told."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "If I ___ about the meeting, I would have come.", "options": ["knew", "had known", "would know"], "a": 1, "why": "Третий тип: в части с if — past perfect."},
+  {"type": "choice", "q": "She would have passed the exam if she ___ more.", "options": ["studied", "had studied", "studies"], "a": 1, "why": "Условие в прошлом: had + V3."},
+  {"type": "choice", "q": "I wish I ___ my umbrella yesterday.", "options": ["took", "had taken", "take"], "a": 1, "why": "Сожаление о прошлом: wish + past perfect."},
+  {"type": "choice", "q": "If we had left earlier, we ___ the train.", "options": ["would catch", "would have caught", "caught"], "a": 1, "why": "Результат третьего типа: would have + V3."},
+  {"type": "gap", "q": "If you ___ (tell) me, I would have helped you.", "a": ["had told"], "why": "В условии третьего типа — had told."},
+  {"type": "gap", "q": "I wish I ___ (not / say) that.", "a": ["hadn't said", "had not said"], "why": "Отрицательное сожаление о прошлом: hadn't said."},
+  {"type": "translate", "q": "Если бы я знал раньше, я бы пришёл.", "a": ["if i had known earlier i would have come", "if i had known earlier i'd have come"], "why": "Третий тип: if + had known, would have come."},
+  {"type": "translate", "q": "Жаль, что я не выучил немецкий в школе.", "a": ["i wish i had learned german at school", "i wish i had learnt german at school"], "why": "Wish + past perfect: had learned / had learnt."}
+ ]
+}

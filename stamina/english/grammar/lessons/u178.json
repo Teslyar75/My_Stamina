@@ -1,0 +1,78 @@
+{
+ "n": 178,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "Устойчивые выражения с -ing",
+ "en": "expressions + -ing",
+ "summary": "Готовые обороты вроде it's no use, it's worth, can't help и be busy, где после предлога или устойчивого слова нужна форма на -ing.",
+ "can_do": [
+  "Сказать, что что-то бесполезно или стоит усилий, через it's no use и it's worth.",
+  "Выразить, что не можете удержаться или терпеть, через can't help и can't stand.",
+  "Рассказать о занятии через go -ing.",
+  "Правильно строить фразы с be busy, have difficulty и spend time."
+ ],
+ "theory": [
+  {
+   "h": "Обороты, в которых -ing зашит намертво",
+   "p": "Есть выражения, где форма на -ing не выбор, а часть конструкции. Менять её на инфинитив нельзя: it's no use to argue звучит как ошибка, а не как вариант. Учите такой оборот целиком, одним куском.",
+   "formula": "It's no use arguing. · There's no point in waiting. · It's worth trying."
+  },
+  {
+   "h": "Самые частые из них",
+   "p": "В таблице — обороты, которые в живой речи встречаются постоянно. В правой колонке видно, что после них всегда стоит -ing, даже если по-русски хочется поставить глагол в начальной форме.",
+   "table": {
+    "head": ["Оборот", "Пример", "Смысл"],
+    "rows": [
+     ["it's no use / no good", "It's no use arguing with him.", "бесполезно"],
+     ["there's no point in", "There's no point in waiting.", "нет смысла"],
+     ["it's worth", "It's worth trying.", "стоит того"],
+     ["can't help", "I can't help laughing.", "не могу удержаться"],
+     ["can't stand", "She can't stand waiting.", "терпеть не может"],
+     ["be busy", "He's busy writing reports.", "занят"],
+     ["have difficulty (in)", "I had difficulty finding the key.", "было трудно"],
+     ["spend / waste time", "We spent hours talking.", "тратить время"]
+    ]
+   }
+  },
+  {
+   "h": "can't help и can't stand — не про помощь",
+   "p": "Help в первом обороте значит «удержаться», а не «помочь»: I can't help laughing — я не могу не смеяться. Stand во втором значит «терпеть»: can't stand waiting — не выношу ожидания. Оба выражения эмоциональные и в письме звучат вполне нейтрально.",
+   "formula": "I can't help thinking about it. · He can't stand getting up early. · We couldn't help laughing."
+  },
+  {
+   "h": "go -ing — про занятия и развлечения",
+   "p": "Когда речь о подвижном досуге, после go идёт -ing: go swimming, go shopping, go fishing, go skiing. Инфинитив здесь не ставят. Но если у глагола есть конкретное место или цель, работает обычная конструкция с to.",
+   "formula": "We went swimming after work. · She goes jogging every morning. · I went to the shop to buy milk."
+  },
+  {
+   "h": "be busy, have difficulty, spend time",
+   "p": "Эти три оборота объединяет одно: действие после них оформляется через -ing, а не через инфинитив. В have difficulty предлог in часто опускают, смысл от этого не меняется, а форма на -ing остаётся.",
+   "formula": "I'm busy preparing dinner. · She had difficulty understanding him. · We wasted two hours arguing."
+  }
+ ],
+ "examples": [
+  {"en": "It's no use worrying about it now.", "ru": "Сейчас беспокоиться об этом бесполезно."},
+  {"en": "There's no point in arguing.", "ru": "Нет смысла спорить."},
+  {"en": "The film is worth watching.", "ru": "Фильм стоит посмотреть."},
+  {"en": "I can't help laughing at that photo.", "ru": "Я не могу не смеяться над этой фотографией."},
+  {"en": "He can't stand waiting in queues.", "ru": "Он терпеть не может стоять в очередях."},
+  {"en": "We went swimming in the lake.", "ru": "Мы ходили купаться на озеро."}
+ ],
+ "traps": [
+  {"bad": "It's no use to argue with him.", "good": "It's no use arguing with him.", "why": "После it's no use всегда -ing, инфинитив не ставится."},
+  {"bad": "I can't help to laugh.", "good": "I can't help laughing.", "why": "Can't help значит «не могу удержаться», после него -ing."},
+  {"bad": "She is busy to write a report.", "good": "She is busy writing a report.", "why": "Be busy + -ing: занята тем, что пишет."},
+  {"bad": "We went to swim in the river.", "good": "We went swimming in the river.", "why": "Про занятие говорят go -ing, а не go to do."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "It's no use ___ about the weather.", "options": ["complain", "complaining", "to complain"], "a": 1, "why": "It's no use + -ing: complaining."},
+  {"type": "choice", "q": "The book is worth ___ twice.", "options": ["read", "reading", "to read"], "a": 1, "why": "It's worth + -ing: worth reading."},
+  {"type": "choice", "q": "I can't help ___ when I see this video.", "options": ["smile", "smiling", "to smile"], "a": 1, "why": "Can't help + -ing: не могу не улыбаться."},
+  {"type": "choice", "q": "She can't stand ___ in long queues.", "options": ["to wait", "waiting", "wait"], "a": 1, "why": "Can't stand + -ing: терпеть не может ждать."},
+  {"type": "gap", "q": "There's no point in ___ (wait) for him.", "a": ["waiting"], "why": "После предлога in в этом обороте — waiting."},
+  {"type": "gap", "q": "I had difficulty ___ (find) your house.", "a": ["finding"], "why": "Have difficulty (in) + -ing: finding."},
+  {"type": "gap", "q": "They went ___ (ski) last weekend.", "a": ["skiing"], "why": "Занятие передаётся оборотом go skiing."},
+  {"type": "translate", "q": "Нет смысла ждать его.", "a": ["there's no point in waiting for him", "there is no point in waiting for him"], "why": "There's no point in + -ing: in waiting."},
+  {"type": "translate", "q": "Я занят подготовкой к экзамену.", "a": ["i'm busy preparing for the exam", "i am busy preparing for the exam", "i'm busy preparing for my exam"], "why": "Be busy + -ing: busy preparing."}
+ ]
+}

@@ -1,0 +1,80 @@
+{
+ "n": 139,
+ "level": "B2",
+ "module": "b-future",
+ "title": "when: будущее после when",
+ "en": "when I do / when I've done",
+ "summary": "После when, before и as soon as будущее не ставится: when I finish, а не when I will finish.",
+ "can_do": [
+  "Сказать о будущем в придаточном с when, after и before.",
+  "Употребить present perfect после when, если действие должно завершиться.",
+  "Отличить вопрос When will...? от придаточного с when.",
+  "Построить фразу с until, as soon as и while."
+ ],
+ "theory": [
+  {
+   "h": "Одно будущее на два предложения",
+   "p": "В английском будущее ставится только в главной части, а придаточное времени остаётся в настоящем. По-русски мы спокойно говорим «когда я приду, я позвоню», и в обеих частях будущее. По-английски will во второй части звучит как ошибка.",
+   "formula": "When I get home, I'll call you. · I'll call you when I get home."
+  },
+  {
+   "h": "when с present perfect",
+   "p": "Если нужно подчеркнуть, что к моменту в будущем действие уже закончится, после when ставят present perfect. Смысл тот же, что после after, но с акцентом на завершённость: когда уже закончу, тогда и отправлю.",
+   "formula": "When I've finished the report, I'll send it. · When I've seen the doctor, I'll text you."
+  },
+  {
+   "h": "Союзы времени",
+   "p": "Правило работает для всех союзов, которые вводят придаточное времени. Запомните их список и не ставьте will ни после одного из них: when, while, before, after, as soon as, until, till.",
+   "table": {
+    "head": ["Союз", "Значение", "Пример"],
+    "rows": [
+     ["when", "когда", "When I arrive, I'll text you."],
+     ["while", "пока, одновременно", "While you're cooking, I'll set the table."],
+     ["before", "до того как", "Before you leave, call me."],
+     ["after", "после того как", "After we eat, we'll go out."],
+     ["as soon as", "как только", "Call me as soon as you land."],
+     ["until", "до тех пор пока", "Wait until I come back."]
+    ]
+   }
+  },
+  {
+   "h": "Где will остаётся",
+   "p": "Will живёт в главной части, потому что именно она сообщает о будущем результате. Придаточное лишь называет условие или момент, поэтому обходится настоящим временем.",
+   "formula": "I'll tell him when he comes. · She'll call you before she leaves."
+  },
+  {
+   "h": "Вопрос и придаточное — разные вещи",
+   "p": "В прямом вопросе when работает как вопросительное слово, и will там нужен. В придаточном when — союз, и will исчезает. Сравнение помогает не путать эти две роли одного слова.",
+   "formula": "When will she arrive? (вопрос) · I'll call you when she arrives. (придаточное)"
+  },
+  {
+   "h": "Порядок частей свободный",
+   "p": "Придаточное может стоять до или после главной части, смысл не меняется. Если оно впереди, после него ставится запятая. Если позади — запятая обычно не нужна.",
+   "formula": "As soon as I finish, I'll write. · I'll write as soon as I finish."
+  }
+ ],
+ "examples": [
+  {"en": "When I get home, I'll call you.", "ru": "Когда приду домой, я тебе позвоню."},
+  {"en": "We'll start as soon as everyone arrives.", "ru": "Мы начнём, как только все придут."},
+  {"en": "Wait here until the light turns green.", "ru": "Ждите здесь, пока не загорится зелёный."},
+  {"en": "I'll send the file when I've checked it.", "ru": "Я отправлю файл, когда проверю его."},
+  {"en": "While you're cooking, I'll set the table.", "ru": "Пока ты готовишь, я накрою на стол."},
+  {"en": "She'll text us after she sees the doctor.", "ru": "Она напишет нам после того, как сходит к врачу."}
+ ],
+ "traps": [
+  {"bad": "When I will finish, I'll call you.", "good": "When I finish, I'll call you.", "why": "После when будущее не ставится."},
+  {"bad": "I'll wait here until you will come back.", "good": "I'll wait here until you come back.", "why": "Until вводит придаточное времени — present simple."},
+  {"bad": "As soon as I will arrive, I'll write.", "good": "As soon as I arrive, I'll write.", "why": "То же правило для as soon as."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'll call you when I ___ at the hotel.", "options": ["will arrive", "arrive", "am arriving"], "a": 1, "why": "Придаточное времени — present simple."},
+  {"type": "choice", "q": "We'll start dinner as soon as Dad ___.", "options": ["will come", "comes", "is coming"], "a": 1, "why": "As soon as требует настоящего времени."},
+  {"type": "choice", "q": "Wait here until the light ___ green.", "options": ["will turn", "turns", "is turning"], "a": 1, "why": "Until + present simple."},
+  {"type": "choice", "q": "___ you finish, send me the file.", "options": ["When", "While", "Until"], "a": 0, "why": "Момент завершения — when."},
+  {"type": "gap", "q": "When I ___ (finish) this book, I'll lend it to you.", "a": ["finish", "have finished"], "why": "После when — present simple или perfect."},
+  {"type": "gap", "q": "She'll text us after she ___ (see) the doctor.", "a": ["sees", "has seen"], "why": "After + настоящее время."},
+  {"type": "gap", "q": "I ___ (call) you before I leave.", "a": ["will call", "'ll call"], "why": "Будущее остаётся в главной части."},
+  {"type": "translate", "q": "Когда я приду домой, я тебе позвоню.", "a": ["when i get home i will call you", "i will call you when i get home", "when i get home i'll call you", "i'll call you when i get home"], "why": "When + present simple, will в главной части."},
+  {"type": "translate", "q": "Как только я закончу, я отправлю письмо.", "a": ["as soon as i finish i will send the letter", "i will send the letter as soon as i finish", "as soon as i've finished i'll send the letter"], "why": "As soon as + настоящее время, will в главной части."}
+ ]
+}

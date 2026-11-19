@@ -1,0 +1,75 @@
+{
+ "n": 205,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "all, every и whole",
+ "en": "all, every and whole",
+ "summary": "«Весь день», «все студенты», «каждый студент» — три разных английских слова, и каждое требует своего артикля и числа.",
+ "can_do": [
+  "Выбрать all, every или whole по числу существительного.",
+  "Правильно поставить артикль при all и whole.",
+  "Различить all day и the whole day.",
+  "Сказать о регулярности через every two days."
+ ],
+ "theory": [
+  {
+   "h": "All — про всё целиком или всех",
+   "p": "All работает с множественным числом и с неисчисляемым: all the students, all the water. Артикль ставится после all, а не перед ним. В устойчивых оборотах о времени артикль вообще не нужен: all day, all night, all week, all my life.",
+   "formula": "All the students left. · All the water was cold. · I worked all day."
+  },
+  {
+   "h": "Every — каждый без исключения",
+   "p": "Every ставится только с исчисляемым в единственном числе и требует глагола в единственном: every student has, every room was. Артикль с every не используется вообще, а с неисчисляемым это слово не работает: нельзя every water или every money.",
+   "formula": "Every student has a book. · Every room was clean. · I check my mail every morning."
+  },
+  {
+   "h": "Whole — только единственное и только с определителем",
+   "p": "Whole описывает один предмет целиком, поэтому требует единственного числа и определителя перед собой: the whole day, my whole life, this whole story. Со множественным числом whole не работает — там нужен all.",
+   "table": {
+    "head": ["Что говорим", "С all", "С whole"],
+    "rows": [
+     ["весь день", "all day", "the whole day"],
+     ["всё время", "all the time", "the whole time"],
+     ["вся моя жизнь", "all my life", "my whole life"],
+     ["все студенты", "all the students", "не говорят"],
+     ["вся книга", "all the book", "the whole book"]
+    ]
+   }
+  },
+  {
+   "h": "Порядок слов и артикль",
+   "p": "У all и whole артикль стоит в разных местах, и это главная ловушка. All the students — артикль после all. The whole class — артикль перед whole. Перед all и every артикля нет никогда: не the all students и не a every student. All может ещё стоять после подлежащего: we all know.",
+   "formula": "All the students left. · The whole class was silent. · We all know that."
+  },
+  {
+   "h": "Every два дня и каждые десять минут",
+   "p": "Every с числом или отрезком времени значит «каждые»: every two days, every ten minutes, every other day. Это про ритм, а не про количество предметов, поэтому число после every остаётся во множественном, а слово перед ним — в единственном.",
+   "formula": "The bus comes every ten minutes. · I see her every other day. · He calls me every two weeks."
+  }
+ ],
+ "examples": [
+  {"en": "All the shops were closed on Sunday.", "ru": "В воскресенье все магазины были закрыты."},
+  {"en": "Every student must bring a passport.", "ru": "Каждый студент должен принести паспорт."},
+  {"en": "I spent the whole day at the airport.", "ru": "Я провёл весь день в аэропорту."},
+  {"en": "She worked all night and looked terrible.", "ru": "Она работала всю ночь и выглядела ужасно."},
+  {"en": "We all agreed with the plan.", "ru": "Мы все согласились с планом."},
+  {"en": "The train leaves every thirty minutes.", "ru": "Поезд отправляется каждые тридцать минут."}
+ ],
+ "traps": [
+  {"bad": "The whole students passed.", "good": "All the students passed.", "why": "Whole не работает с множественным числом, там нужен all."},
+  {"bad": "I stayed at home whole day.", "good": "I stayed at home the whole day.", "why": "Перед whole нужен определитель: the whole day или all day."},
+  {"bad": "Every students have a book.", "good": "Every student has a book.", "why": "Every требует единственного числа и глагола с -s."},
+  {"bad": "The all students came.", "good": "All the students came.", "why": "Артикль идёт после all, а не перед ним."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ student in the class received a certificate.", "options": ["Every", "All", "Whole"], "a": 0, "why": "Student в единственном числе — every."},
+  {"type": "choice", "q": "I read ___ book in one evening.", "options": ["all", "the whole", "every"], "a": 1, "why": "Книга одна и целиком — the whole book."},
+  {"type": "choice", "q": "We walked ___ day without a break.", "options": ["all", "the whole", "every"], "a": 0, "why": "All day — устойчивый оборот без артикля."},
+  {"type": "choice", "q": "She visits her parents ___ two weeks.", "options": ["every", "all", "whole"], "a": 0, "why": "Регулярность — every two weeks."},
+  {"type": "gap", "q": "___ (all) the money was spent on the trip.", "a": ["all"], "why": "All the + неисчисляемое, артикль после all."},
+  {"type": "gap", "q": "___ (whole) the class was silent for a minute.", "a": ["the whole", "whole"], "why": "Весь класс целиком — the whole class."},
+  {"type": "gap", "q": "He checks his email ___ (every) hour.", "a": ["every"], "why": "Every hour — каждый час, единственное число."},
+  {"type": "translate", "q": "Все студенты сдали экзамен.", "a": ["all the students passed the exam", "all of the students passed the exam"], "why": "All the students, глагол во множественном числе."},
+  {"type": "translate", "q": "Я работал весь день.", "a": ["i worked all day", "i worked the whole day"], "why": "All day без артикля или the whole day с артиклем."}
+ ]
+}

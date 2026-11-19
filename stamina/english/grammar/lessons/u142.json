@@ -1,0 +1,70 @@
+{
+ "n": 142,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "could и could have",
+ "en": "could do and could have done",
+ "summary": "Could do открывает возможность сейчас, could have done говорит о двери, которая была открыта и осталась закрытой.",
+ "can_do": [
+  "Предложить вариант или мягко посоветовать через could.",
+  "Сказать, что что-то было возможно, но не случилось.",
+  "Отличить could have done от must have done и should have done.",
+  "Выразить мягкий упрёк, не переходя на прямую обиду."
+ ],
+ "theory": [
+  {
+   "h": "Could — не только про умение",
+   "p": "Кроме способности, could выражает возможность и предложение в настоящем и будущем. Это удобный способ сказать «можно так» или «а что если», не навязывая решение. Тон получается мягче, чем с can, и намного мягче, чем с must.",
+   "formula": "We could meet on Friday. · You could try the other number. · I could pick you up at six."
+  },
+  {
+   "h": "Could have done — возможность, которая не сбылась",
+   "p": "Конструкция could have плюс третья форма говорит: шанс был, но действие не произошло. Это не факт о мире, а мысль о несбывшемся варианте. По-русски мы скажем «мог бы», «можно было», и в этом «бы» вся суть.",
+   "formula": "I could have taken the job, but I moved abroad. · We could have walked — it wasn't far."
+  },
+  {
+   "h": "Три формы рядом",
+   "p": "Сравнение помогает не перепутать оттенки: could have — была возможность, should have — надо было, must have — наверняка было. Одна и та же ситуация звучит по-разному в зависимости от того, что вы хотите сказать о прошлом.",
+   "table": {
+    "head": ["Форма", "Смысл", "Пример"],
+    "rows": [
+     ["could have done", "было возможно, но не сделали", "I could have helped."],
+     ["should have done", "надо было сделать", "I should have helped."],
+     ["must have done", "наверняка сделали", "He must have helped."]
+    ]
+   }
+  },
+  {
+   "h": "Упрёк и сожаление",
+   "p": "В разговоре could have done часто звучит как упрёк: человек мог что-то сделать и не сделал. Степень обиды зависит от интонации, но грамматика уже содержит укор. С to have и эмоциональным глаголом конструкция выражает и сильное чувство: I could have cried.",
+   "formula": "You could have told me! · She could have warned us. · I could have cried."
+  },
+  {
+   "h": "Отрицание: couldn't have done",
+   "p": "С отрицанием конструкция означает «не может быть, чтобы это было»: вы не верите факту, потому что он противоречит известному. Это уже не про возможность, а про недоверие, и по смыслу она близка к can't have done.",
+   "formula": "She couldn't have known about the party. · They couldn't have finished so fast."
+  }
+ ],
+ "examples": [
+  {"en": "We could meet at seven if that suits you.", "ru": "Мы могли бы встретиться в семь, если вам подходит."},
+  {"en": "You could have asked me first.", "ru": "Мог бы сначала спросить меня."},
+  {"en": "I could have taken the job, but I moved abroad.", "ru": "Я мог бы взять ту работу, но уехал за границу."},
+  {"en": "She couldn't have known about the party.", "ru": "Не может быть, чтобы она знала о вечеринке."},
+  {"en": "He could have been a professional musician.", "ru": "Он мог бы стать профессиональным музыкантом."}
+ ],
+ "traps": [
+  {"bad": "I could meet her yesterday, so we talked for an hour.", "good": "I was able to meet her yesterday, so we talked for an hour.", "why": "Разовый успех в прошлом — was able to; could have done значило бы «не встретился»."},
+  {"bad": "She could have been at home, I'm sure of it.", "good": "She must have been at home, I'm sure of it.", "why": "Уверенный вывод о прошлом — must have been, а could have been оставляет сомнение."},
+  {"bad": "I could have done it tomorrow.", "good": "I could do it tomorrow.", "why": "Could have done смотрит только назад; о будущем — could do."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You ___ me about the change — I waited an hour.", "options": ["could tell", "could have told", "must have told"], "a": 1, "why": "Возможность была, но не использована — could have told."},
+  {"type": "choice", "q": "Don't worry, we ___ finish the project by Friday.", "options": ["could", "could have", "must have"], "a": 0, "why": "Речь о будущем, поэтому could без have."},
+  {"type": "choice", "q": "She ___ the news — nobody told her.", "options": ["couldn't have heard", "couldn't hear", "mustn't have heard"], "a": 0, "why": "Недоверие к прошлому факту — couldn't have heard."},
+  {"type": "gap", "q": "I ___ (could / save) money, but I spent it all.", "a": ["could have saved"], "why": "Была возможность отложить, но не вышло."},
+  {"type": "gap", "q": "You ___ (could / tell) me you were coming — I'd have cooked something.", "a": ["could have told"], "why": "Мягкий упрёк о несделанном — could have told."},
+  {"type": "gap", "q": "I ___ (could / be) a doctor, but I chose teaching.", "a": ["could have been"], "why": "Несбывшийся вариант в прошлом — could have been."},
+  {"type": "translate", "q": "Ты мог бы и предупредить меня.", "a": ["you could have warned me", "you could have told me"], "why": "Упрёк о прошлом — could have + третья форма."},
+  {"type": "translate", "q": "Мы могли бы поехать на море, но остались дома.", "a": ["we could have gone to the sea but we stayed at home", "we could have gone to the seaside but we stayed at home"], "why": "Возможность была, действие не совершилось."}
+ ]
+}

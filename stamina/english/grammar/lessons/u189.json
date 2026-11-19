@@ -1,0 +1,72 @@
+{
+ "n": 189,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "the (2): school и the school",
+ "en": "the 2 (school / the school)",
+ "summary": "Как различить «учится в школе» и «зашёл в школу»: артикль показывает, важна деятельность или само здание.",
+ "can_do": [
+  "Различать go to school и go to the school по смыслу.",
+  "Говорить о больнице, тюрьме и церкви без артикля и с артиклем.",
+  "Правильно употреблять bed, work, home, sea в устойчивых выражениях.",
+  "Объяснить, почему в одной фразе the нужен, а в другой нет."
+ ],
+ "theory": [
+  {
+   "h": "Здание или занятие",
+   "p": "Английский различает два взгляда на одно и то же место. Если человек там ради того, для чего место существует, артикль не нужен. Если речь о самом здании или о конкретном учреждении, появляется the. По-русски этого различия нет, поэтому его надо держать в голове.",
+   "formula": "She goes to school. (учится) · I went to the school to see the teacher. (в здание)"
+  },
+  {
+   "h": "Школа, колледж, университет",
+   "p": "Go to school значит учиться, be at school — находиться на занятиях. Как только появляется посторонний смысл или конкретное здание, нужно the: родитель идёт в школу к учителю, турист фотографирует школу, ремонтник пришёл чинить крыло.",
+   "table": {
+    "head": ["Без the", "С the", "Разница"],
+    "rows": [
+     ["go to school", "go to the school", "учёба против здания"],
+     ["be at university", "be at the university", "студент против посетителя"],
+     ["leave school", "leave the school", "закончил учёбу против вышел из здания"]
+    ]
+   }
+  },
+  {
+   "h": "Больница, тюрьма, церковь",
+   "p": "Тот же принцип: in hospital — лечится, in the hospital — внутри здания, например навещает или работает. In prison — отбывает срок, in the prison — посетитель или охранник. At church — на службе, at the church — просто в здании.",
+   "formula": "My brother is in hospital. · We visited him at the hospital. · He is in prison."
+  },
+  {
+   "h": "Кровать, работа, дом, море",
+   "p": "Go to bed — ложиться спать, sit on the bed — сидеть на конкретной кровати. Go to work — идти работать, go to the office — идти в офис. Go home — без артикля и без to. Go to sea — становиться моряком, go to the sea — поехать к морю.",
+   "formula": "He goes to bed at eleven. · The cat is on the bed. · I'm going to work."
+  },
+  {
+   "h": "Готовые выражения и конкретные предметы",
+   "p": "At work, at home, in town, at sea — цельные выражения о деятельности, их учат целиком. Если же нужен конкретный объект, добавляется the или притяжательное: at the office, in my town, on the ship. Смысл сразу меняется с «занят делом» на «находится в месте».",
+   "formula": "He's at work. · She's at home. · We spent the day in town."
+  }
+ ],
+ "examples": [
+  {"en": "She goes to school by bus.", "ru": "Она ездит в школу на автобусе."},
+  {"en": "I went to the school to talk to the teacher.", "ru": "Я пошёл в школу поговорить с учителем."},
+  {"en": "My father is in hospital.", "ru": "Мой отец в больнице, он лечится."},
+  {"en": "We visited him at the hospital.", "ru": "Мы навестили его в больнице."},
+  {"en": "He goes to bed at eleven.", "ru": "Он ложится спать в одиннадцать."},
+  {"en": "The cat is sleeping on the bed.", "ru": "Кошка спит на кровати."}
+ ],
+ "traps": [
+  {"bad": "She goes to the school every day.", "good": "She goes to school every day.", "why": "Если речь об учёбе, артикль не нужен: the school означало бы здание."},
+  {"bad": "My mother is in the hospital now.", "good": "My mother is in hospital now.", "why": "Если она пациент, говорят in hospital без артикля."},
+  {"bad": "I go to home after work.", "good": "I go home after work.", "why": "Home не берёт ни to, ни артикль."},
+  {"bad": "He is in the bed with flu.", "good": "He is in bed with flu.", "why": "Лежать больным — in bed, без артикля."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My sister goes ___ every morning.", "options": ["to school", "to the school", "to a school"], "a": 0, "why": "Она учится, поэтому to school без артикля."},
+  {"type": "choice", "q": "The plumber spent all morning in ___.", "options": ["hospital", "the hospital", "a hospital"], "a": 1, "why": "Речь о здании, где он работал: in the hospital."},
+  {"type": "choice", "q": "Jack is ___ university, he studies maths.", "options": ["at university", "at the university", "in university"], "a": 0, "why": "Быть студентом — at university без артикля."},
+  {"type": "choice", "q": "She was sent to ___ for two years.", "options": ["prison", "the prison", "a prison"], "a": 0, "why": "Отбывать срок — in/to prison без артикля."},
+  {"type": "gap", "q": "The children are at ___ today because it is a holiday.", "a": ["home"], "why": "At home — устойчивое выражение, артикль не нужен."},
+  {"type": "gap", "q": "After the accident he spent three weeks in ___.", "a": ["hospital"], "why": "Он был пациентом, поэтому in hospital."},
+  {"type": "translate", "q": "Она учится в университете.", "a": ["she is at university", "she studies at university", "she goes to university"], "why": "Учёба передаётся через at university, без артикля."},
+  {"type": "translate", "q": "Мы пошли в школу посмотреть спектакль.", "a": ["we went to the school to see a play", "we went to the school to watch a play"], "why": "Речь о здании, поэтому the school."}
+ ]
+}

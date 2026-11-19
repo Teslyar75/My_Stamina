@@ -1,0 +1,75 @@
+{
+ "n": 203,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "all of, none of, most of",
+ "en": "all / no / none of",
+ "summary": "Как сказать «все из них», «большинство моих друзей», «ни один из этих фильмов» — и когда после all нужен of, а когда нет.",
+ "can_do": [
+  "Поставить of после all, most, some и none там, где есть определитель.",
+  "Сказать общее утверждение без of: all students, most people.",
+  "Правильно согласовать глагол после none of.",
+  "Поставить all на нужное место в предложении."
+ ],
+ "theory": [
+  {
+   "h": "Of появляется не всегда",
+   "p": "All, most, some, none и half работают с of, если дальше идёт определитель: the, my, these, those, this. Если определителя нет и речь идёт обо всех вообще, of убирается и слово встаёт прямо перед существительным.",
+   "formula": "All of the students passed. · All students must register. · Most of my friends work here."
+  },
+  {
+   "h": "Что идёт до и после of",
+   "p": "После of обязательно нужен определитель, иначе фраза разваливается: не most of people, а most people или most of the people. Артикль не ставится перед all и most, он встаёт после of, потому что относится к существительному, а не к количественному слову.",
+   "table": {
+    "head": ["Без of", "С of", "Смысл"],
+    "rows": [
+     ["all children", "all of the children", "все дети"],
+     ["most people", "most of these people", "большинство людей"],
+     ["some books", "some of my books", "некоторые книги"],
+     ["no money", "none of the money", "нисколько денег"],
+     ["half an hour", "half of the cake", "половина часа / торта"]
+    ]
+   }
+  },
+  {
+   "h": "None of и глагол",
+   "p": "После none of с множественным числом глагол бывает и в единственном, и во множественном: none of the shops was open и none of the shops were open — оба варианта живые, второй чаще в разговоре. С неисчисляемым — только единственное число: none of the money is mine.",
+   "formula": "None of the shops were open. · None of them was ready. · None of the money is mine."
+  },
+  {
+   "h": "Место all в предложении",
+   "p": "All, как и both, не всегда стоит перед подлежащим. После be и вспомогательного глагола оно идёт за ними, а перед смысловым глаголом — перед ним. We all agreed, we are all tired, we have all read it. По-русски «мы все» стоит вместе, поэтому руки так и тянутся сказать all we.",
+   "formula": "We all agreed. · We are all tired. · We have all read it. · They all left early."
+  },
+  {
+   "h": "No и none of: короткая разница",
+   "p": "No идёт с существительным без артикля, none of требует определителя. И none может быть коротким ответом на вопрос, а no — не может: на «сколько?» отвечают none, на «есть ли?» — no, но чаще просто no, thanks.",
+   "formula": "There is no milk. · None of the milk is fresh. · How many came? — None."
+  }
+ ],
+ "examples": [
+  {"en": "All of the students passed the test.", "ru": "Все студенты сдали тест."},
+  {"en": "Most of my friends live abroad.", "ru": "Большинство моих друзей живут за границей."},
+  {"en": "None of these books is interesting.", "ru": "Ни одна из этих книг не интересна."},
+  {"en": "All children need sleep.", "ru": "Всем детям нужен сон."},
+  {"en": "Some of the money was stolen.", "ru": "Часть денег украли."},
+  {"en": "We are all ready to start.", "ru": "Мы все готовы начать."}
+ ],
+ "traps": [
+  {"bad": "All of students passed.", "good": "All of the students passed.", "why": "После of нужен определитель the, my или these."},
+  {"bad": "Most of people agree with you.", "good": "Most people agree with you.", "why": "Без определителя of убирается: most people."},
+  {"bad": "None of the money are mine.", "good": "None of the money is mine.", "why": "Money неисчисляемое, глагол только в единственном числе."},
+  {"bad": "All we are ready.", "good": "We are all ready.", "why": "All стоит после be, а не перед подлежащим."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ of the students in my group speak English well.", "options": ["Most", "Most of", "The most"], "a": 0, "why": "Перед of идёт most, артикль the здесь не нужен."},
+  {"type": "choice", "q": "___ people think that money brings happiness.", "options": ["Most of", "Most", "The most of"], "a": 1, "why": "Без определителя of не ставится: most people."},
+  {"type": "choice", "q": "None of the information ___ correct.", "options": ["are", "is", "were"], "a": 1, "why": "Information неисчисляемое, поэтому is."},
+  {"type": "choice", "q": "They ___ finished the report already.", "options": ["all have", "have all", "all are"], "a": 1, "why": "All идёт после вспомогательного have: have all finished."},
+  {"type": "gap", "q": "___ (all) of my friends were invited to the wedding.", "a": ["all"], "why": "All of my + множественное число."},
+  {"type": "gap", "q": "___ (none) of the shops were open on Sunday.", "a": ["none"], "why": "None of the + множественное число, глагол were."},
+  {"type": "gap", "q": "She spent ___ (half) of the money on clothes.", "a": ["half"], "why": "Half of the money — половина денег."},
+  {"type": "translate", "q": "Все мои друзья живут в Москве.", "a": ["all my friends live in moscow", "all of my friends live in moscow"], "why": "All my или all of my — оба варианта верны, глагол во множественном."},
+  {"type": "translate", "q": "Ни один из этих фильмов мне не нравится.", "a": ["none of these films appeals to me", "i don't like any of these films", "none of these films is interesting to me"], "why": "None of these + множественное число, одно отрицание."}
+ ]
+}

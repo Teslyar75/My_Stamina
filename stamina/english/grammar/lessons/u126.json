@@ -1,0 +1,81 @@
+{
+ "n": 126,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "How long have you…?",
+ "en": "how long have you been",
+ "summary": "Вопросы о сроке: как спросить «сколько ты уже» и почему после how long не говорят в простом настоящем.",
+ "can_do": [
+  "Задать вопрос how long have you been и понять ответ.",
+  "Различить срок уже идущего действия и время, нужное на задачу.",
+  "Ответить на вопрос о сроке через for, since или all my life."
+ ],
+ "theory": [
+  {
+   "h": "Вопрос, который начинается со срока",
+   "p": "How long переводится как «как долго» или «сколько уже». Если речь о действии, которое началось раньше и тянется до сих пор, после how long идёт перфект: простой или длительный. Выбор зависит от того, важно ли количество или сам процесс.",
+   "formula": "How long have you been working here? · How long have you had this car? · How long has she been waiting?"
+  },
+  {
+   "h": "Состояния — в простом перфекте",
+   "p": "С глаголами состояния используют простой перфект: have known, have had, have been. Длительный вариант с ними невозможен. По-русски мы говорим в настоящем времени — «я его знаю десять лет», — и это главный источник ошибки у русскоязычных.",
+   "table": {
+    "head": ["По-русски", "По-английски", "Ошибка"],
+    "rows": [
+     ["Я его знаю десять лет.", "I've known him for ten years.", "I know him for ten years."],
+     ["У меня эта машина с 2019.", "I've had this car since 2019.", "I have this car since 2019."],
+     ["Она в отпуске две недели.", "She has been on holiday for two weeks.", "She is on holiday for two weeks."]
+    ]
+   }
+  },
+  {
+   "h": "Ответ строится по-разному",
+   "p": "Ответ можно начать с for и отрезка времени, с since и точки отсчёта или с оборота all my life. В коротком разговоре for перед отрезком часто опускают: I've been waiting an hour. Вопрос можно уточнить через how long exactly, если важна точность.",
+   "formula": "For six months. · Since last May. · All my life. · I've been waiting an hour."
+  },
+  {
+   "h": "How long does it take — другой вопрос",
+   "p": "Не путайте срок уже идущего действия с временем, которое нужно на задачу вообще. Форма с do и take спрашивает о норме, а не о вашем личном процессе. Обе конструкции начинаются одинаково, но означают совершенно разное.",
+   "table": {
+    "head": ["Вопрос", "Смысл"],
+    "rows": [
+     ["How long have you been waiting?", "сколько ты уже ждёшь"],
+     ["How long does it take?", "сколько времени обычно нужно"],
+     ["How long did it take?", "сколько времени заняло тогда"]
+    ]
+   }
+  },
+  {
+   "h": "Типичный диалог",
+   "p": "На собеседовании, в разговоре с врачом и при знакомстве этот вопрос звучит постоянно. Поэтому стоит довести до автоматизма три заготовки: how long have you been, I've been и since с датой. Тогда ответ собирается без пауз и без перевода в голове.",
+   "formula": "How long have you been learning English? — For three years. · How long have you had these symptoms? — Since Monday."
+  }
+ ],
+ "examples": [
+  {"en": "How long have you been living here?", "ru": "Как давно ты здесь живёшь?"},
+  {"en": "How long have you known her?", "ru": "Как давно ты её знаешь?"},
+  {"en": "How long has he had that job?", "ru": "Как давно у него эта работа?"},
+  {"en": "I've been studying English since 2021.", "ru": "Я учу английский с 2021 года."},
+  {"en": "How long does the flight take?", "ru": "Сколько длится полёт?"},
+  {"en": "We've been friends for twenty years.", "ru": "Мы дружим двадцать лет."}
+ ],
+ "traps": [
+  {"bad": "How long do you know him?", "good": "How long have you known him?", "why": "Срок знакомства — перфект, а не простое настоящее."},
+  {"bad": "I am living here since 2020.", "good": "I have been living here since 2020.", "why": "since 2020 требует перфекта, а не настоящего длительного."},
+  {"bad": "How long have you been knowing her?", "good": "How long have you known her?", "why": "know — состояние, длительная форма невозможна."},
+  {"bad": "I work here for five years.", "good": "I've been working here for five years.", "why": "Период до сегодня передаётся перфектом."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How long ___ this computer?", "options": ["do you have", "have you had", "are you having"], "a": 1, "why": "Срок владения — простой перфект: have you had."},
+  {"type": "choice", "q": "How long ___ for the results?", "options": ["are you waiting", "have you been waiting", "do you wait"], "a": 1, "why": "Процесс ожидания до сейчас: have you been waiting."},
+  {"type": "choice", "q": "She ___ him since university.", "options": ["knows", "has known", "has been knowing"], "a": 1, "why": "know — состояние, значит простой перфект."},
+  {"type": "choice", "q": "How long ___ to get there?", "options": ["does it take", "has it taken", "is it taking"], "a": 0, "why": "Вопрос о норме времени, а не о процессе: does it take."},
+  {"type": "choice", "q": "We ___ in this house for ten years.", "options": ["live", "have been living", "are living"], "a": 1, "why": "for ten years до настоящего: have been living."},
+  {"type": "gap", "q": "How long ___ (you / work) at this company?", "a": ["have you worked", "have you been working"], "why": "Вопрос о сроке работы: have you worked или have you been working."},
+  {"type": "gap", "q": "I ___ (have) this bike since 2018.", "a": ["have had", "'ve had"], "why": "have — состояние, в перфекте have had."},
+  {"type": "gap", "q": "He ___ (not / see) his brother for two years.", "a": ["hasn't seen", "has not seen"], "why": "Срок без встреч: hasn't seen, а не hasn't been seeing."},
+  {"type": "translate", "q": "Как давно ты изучаешь немецкий?", "a": ["how long have you been learning german"], "why": "Вопрос о сроке процесса: how long have you been learning."},
+  {"type": "translate", "q": "Я знаю его с детства.", "a": ["i have known him since childhood", "i've known him since childhood"], "why": "know в перфекте: have known, since childhood."},
+  {"type": "translate", "q": "Сколько идёт этот фильм?", "a": ["how long does this film take", "how long is this film"], "why": "О длительности самого фильма спрашивают через does it take или is."}
+ ]
+}

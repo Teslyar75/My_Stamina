@@ -1,0 +1,87 @@
+{
+ "n": 185,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "Исчисляемые и неисчисляемые (2)",
+ "en": "countable and uncountable 2",
+ "summary": "Слова, которые по-русски считаются, а по-английски нет: advice, news, furniture, money. И существительные, у которых два разных смысла.",
+ "can_do": [
+  "Не ставить -s у advice, information, furniture и luggage.",
+  "Сказать «одна штука» через a piece of или an item of.",
+  "Различать пары вроде paper и a paper, glass и a glass.",
+  "Выбрать правильную форму глагола при таких подлежащих."
+ ],
+ "theory": [
+  {
+   "h": "Там, где русский ставит множественное",
+   "p": "Часть английских слов неисчисляема, хотя русский перевод спокойно считает их штуками. Advice, information, news, knowledge, progress, research не получают -s и не дружат с a/an. По-русски «советы» и «новости» — множественное, по-английски это масса.",
+   "formula": "He gave me some advice. · I need more information. · The news is good."
+  },
+  {
+   "h": "Как посчитать одну штуку",
+   "p": "Если очень нужно сказать «один совет» или «два багажа», добавьте единицу. Само слово остаётся в единственном числе, а число получает piece или item. Это универсальный способ обойти запрет на множественное число.",
+   "table": {
+    "head": ["Слово", "Одна штука", "Пример"],
+    "rows": [
+     ["advice", "a piece of advice", "That's a useful piece of advice."],
+     ["news", "a piece of news", "I have an interesting piece of news."],
+     ["furniture", "a piece of furniture", "We bought a few pieces of furniture."],
+     ["luggage", "a piece of luggage", "How many pieces of luggage do you have?"],
+     ["equipment", "a piece of equipment", "The lab has some new equipment."],
+     ["work", "a job", "I have a lot of work today."]
+    ]
+   }
+  },
+  {
+   "h": "Деньги, работа и дорожные пробки",
+   "p": "Money, work, homework, housework, traffic, weather, accommodation тоже неисчисляемые. С ними говорят much, little, a lot of, но не many и не a. Глагол при них стоит в единственном числе.",
+   "formula": "The traffic is terrible. · The weather was nice. · I have a lot of homework."
+  },
+  {
+   "h": "Одно слово — два смысла",
+   "p": "Некоторые существительные меняют разряд вместе со смыслом. В одном значении это вещество и масса, в другом — конкретный предмет, который считается. Смотрите на артикль: он подсказывает, в каком смысле слово употреблено.",
+   "table": {
+    "head": ["Слово", "Два смысла", "Пример"],
+    "rows": [
+     ["paper", "бумага / газета", "I need some paper. / I bought a paper."],
+     ["glass", "стекло / стакан", "The window is made of glass. / A glass of water, please."],
+     ["chicken", "курица как мясо / птица", "We had chicken for dinner. / The chickens are outside."],
+     ["business", "дело, бизнес / фирма", "Business is good. / He runs a small business."],
+     ["experience", "опыт / случай", "She has a lot of experience. / It was an interesting experience."],
+     ["room", "место / комната", "There's no room here. / We booked a room."]
+    ]
+   }
+  },
+  {
+   "h": "Глагол и местоимение",
+   "p": "Неисчисляемое подлежащее требует is или was, а местоимение при нём — it. Это правило не зависит от того, сколько вещества имеется в виду, и не меняется в прошедшем времени.",
+   "formula": "The news is bad. · The furniture was expensive. · Where is my luggage? — It's in the hall."
+  }
+ ],
+ "examples": [
+  {"en": "She gave me some useful advice.", "ru": "Она дала мне несколько полезных советов."},
+  {"en": "I have some good news for you.", "ru": "У меня для вас хорошие новости."},
+  {"en": "The furniture was very expensive.", "ru": "Мебель была очень дорогой."},
+  {"en": "How much luggage do you have?", "ru": "Сколько у вас багажа?"},
+  {"en": "We need some new equipment.", "ru": "Нам нужно новое оборудование."},
+  {"en": "It was an interesting experience.", "ru": "Это был интересный опыт."}
+ ],
+ "traps": [
+  {"bad": "He gave me a lot of advices.", "good": "He gave me a lot of advice.", "why": "Advice неисчисляемое: без -s и без a."},
+  {"bad": "The informations are incorrect.", "good": "The information is incorrect.", "why": "Information не имеет множественного числа и берёт глагол is."},
+  {"bad": "We bought a new furniture.", "good": "We bought some new furniture.", "why": "Furniture неисчисляемое, поэтому some, а не a."},
+  {"bad": "The news were surprising.", "good": "The news was surprising.", "why": "News — неисчисляемое, глагол в единственном числе."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She gave me a good piece of ___.", "options": ["advice", "advices", "advise"], "a": 0, "why": "После a piece of идёт неисчисляемое advice."},
+  {"type": "choice", "q": "The news ___ quite surprising.", "options": ["are", "is", "were"], "a": 1, "why": "News неисчисляемое: the news is."},
+  {"type": "choice", "q": "We bought some new ___.", "options": ["furnitures", "furniture", "a furniture"], "a": 1, "why": "Furniture неисчисляемое, без -s и без a."},
+  {"type": "choice", "q": "I need ___ information about the course.", "options": ["an", "some", "a"], "a": 1, "why": "Information неисчисляемое: some information."},
+  {"type": "choice", "q": "The window is made of ___.", "options": ["a glass", "glass", "glasses"], "a": 1, "why": "Материал — неисчисляемое glass, без артикля."},
+  {"type": "gap", "q": "He gave me two useful ___ (piece) of advice.", "a": ["pieces"], "why": "Считается единица: two pieces of advice."},
+  {"type": "gap", "q": "I need some ___ (information) about trains to Berlin.", "a": ["information"], "why": "Information неисчисляемое, форма не меняется."},
+  {"type": "gap", "q": "She has a lot of ___ (experience) in teaching.", "a": ["experience"], "why": "Опыт как стаж — неисчисляемое experience."},
+  {"type": "translate", "q": "Он дал мне несколько советов.", "a": ["he gave me some advice", "he gave me a few pieces of advice", "he gave me some pieces of advice"], "why": "Advice неисчисляемое: some advice или a few pieces of advice."},
+  {"type": "translate", "q": "У нас много мебели.", "a": ["we have a lot of furniture", "we have lots of furniture"], "why": "Furniture неисчисляемое: a lot of furniture."}
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "n": 146,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "have to и must",
+ "en": "have to and must",
+ "summary": "Must — когда «надо» решаете вы сами, have to — когда так сложились правила, работа или обстоятельства.",
+ "can_do": [
+  "Выбрать must, если обязанность исходит от говорящего.",
+  "Выбрать have to, если обязанность навязана извне.",
+  "Образовать прошедшее и будущее через had to и will have to.",
+  "Задать вопрос и построить отрицание с have to через do."
+ ],
+ "theory": [
+  {
+   "h": "Одна обязанность, два источника",
+   "p": "Must и have to переводятся одинаково — «должен», «надо», — но взгляд на обязанность у них разный. Must ставит говорящий: он сам решил, что так правильно, или у него есть власть так сказать. Have to описывает внешнюю силу: закон, начальника, расписание, обстоятельства.",
+   "formula": "You must call me tonight. (я так решил) · I have to wear a uniform at work. (такие правила)"
+  },
+  {
+   "h": "Четыре формы в таблице",
+   "p": "Разница видна в формах: have to спрягается как обычный глагол и легко уходит в прошлое и будущее, а must застывает в одной форме.",
+   "table": {
+    "head": ["Форма", "Источник обязанности", "Пример"],
+    "rows": [
+     ["must", "решает говорящий", "You must call me tonight."],
+     ["have to", "правила и обстоятельства", "I have to wear a uniform."],
+     ["had to", "то же в прошлом", "I had to work last Saturday."],
+     ["will have to", "то же в будущем", "You'll have to ask again tomorrow."]
+    ]
+   }
+  },
+  {
+   "h": "У must нет прошлого и будущего",
+   "p": "Must не умеет становиться прошедшим: формы musted не существует. Вместо неё — had to, вместо будущего — will have to. Это одна из самых частых ошибок именно потому, что по-русски «должен был» звучит как обычное прошедшее.",
+   "formula": "I had to leave early yesterday. · She'll have to wait until Monday."
+  },
+  {
+   "h": "Have to требует do",
+   "p": "Have to ведёт себя как нормальный глагол, поэтому вопросы и отрицания строятся через do, does, did. Вопрос do you have to звучит естественно, а do you must — ошибка. В третьем лице появляется has to.",
+   "formula": "Do you have to work this weekend? · She doesn't have to pay. · Did they have to wait?"
+  },
+  {
+   "h": "Must в правилах и have got to в речи",
+   "p": "В письменных правилах и объявлениях must встречается часто, хотя источник — внешний: автор текста говорит от лица организации. В живой британской речи have to часто заменяется на have got to, особенно в настоящем времени и в быстрых решениях.",
+   "formula": "Passengers must show a passport. · I've got to go now."
+  }
+ ],
+ "examples": [
+  {"en": "I must remember to call the bank.", "ru": "Мне надо не забыть позвонить в банк."},
+  {"en": "I have to be at the airport at six.", "ru": "Мне нужно быть в аэропорту в шесть."},
+  {"en": "We had to wait two hours for the doctor.", "ru": "Нам пришлось ждать врача два часа."},
+  {"en": "You'll have to renew your passport before the trip.", "ru": "Тебе придётся обновить паспорт до поездки."},
+  {"en": "Do you have to work this weekend?", "ru": "Тебе обязательно работать в эти выходные?"}
+ ],
+ "traps": [
+  {"bad": "I musted go home early.", "good": "I had to go home early.", "why": "У must нет прошедшей формы, её заменяет had to."},
+  {"bad": "Do you must wear a tie?", "good": "Do you have to wear a tie?", "why": "Вопросы об обязанности извне строятся через do и have to."},
+  {"bad": "I don't must work tomorrow.", "good": "I don't have to work tomorrow.", "why": "Отрицание have to идёт через do; mustn't значит совсем другое — запрет."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I couldn't come yesterday because I ___ work late.", "options": ["must", "had to", "have to"], "a": 1, "why": "Прошлая обязанность — had to."},
+  {"type": "choice", "q": "___ wear a uniform at your new job?", "options": ["Do you have to", "Do you must", "Have you to"], "a": 0, "why": "Вопрос с have to строится через do."},
+  {"type": "choice", "q": "Next term we ___ study two extra subjects.", "options": ["will have to", "will must", "must to"], "a": 0, "why": "Будущая обязанность — will have to."},
+  {"type": "choice", "q": "I ___ say, the food here is excellent.", "options": ["must", "have to", "had to"], "a": 0, "why": "Must say — устойчивое выражение собственного мнения."},
+  {"type": "gap", "q": "She ___ (have to) leave early yesterday.", "a": ["had to"], "why": "Прошедшее время обязанности — had to."},
+  {"type": "gap", "q": "We ___ (not / have to) pay — the entrance was free.", "a": ["didn't have to", "did not have to"], "why": "Отрицание в прошлом через did not have to."},
+  {"type": "gap", "q": "He ___ (have to) apologise, but he never did.", "a": ["had to"], "why": "Обязанность в прошлом — had to."},
+  {"type": "gap", "q": "I ___ (have to) finish this report today.", "a": ["have to"], "why": "Обязанность извне в настоящем — have to."},
+  {"type": "translate", "q": "Мне пришлось работать в субботу.", "a": ["i had to work on saturday", "i had to work saturday"], "why": "Прошлая обязанность — had to work."},
+  {"type": "translate", "q": "Завтра мне придётся встать рано.", "a": ["tomorrow i will have to get up early", "i will have to get up early tomorrow", "tomorrow i'll have to get up early"], "why": "Будущая обязанность — will have to."}
+ ]
+}

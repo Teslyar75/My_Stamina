@@ -1,0 +1,80 @@
+{
+ "n": 176,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "be used to и get used to",
+ "en": "be/get used to something",
+ "summary": "Как сказать, что вы к чему-то привыкли или только привыкаете, и почему после to здесь идёт -ing, а не инфинитив.",
+ "can_do": [
+  "Сказать, к чему вы уже привыкли, через be used to.",
+  "Рассказать, как привычка только складывается, через get used to.",
+  "Отличить привычку от прошлой привычки used to do.",
+  "Не путать эту конструкцию с be used for и use something to do."
+ ],
+ "theory": [
+  {
+   "h": "Привычка, а не действие",
+   "p": "Конструкция отвечает на вопрос «к чему вы привыкли». После to ставится существительное или -ing, потому что здесь to — предлог, а не частица инфинитива. Получается не «привык делать», а «привык к деланию».",
+   "formula": "I'm used to cold weather. · She's used to working nights. · They weren't used to the noise."
+  },
+  {
+   "h": "be и get: состояние и процесс",
+   "p": "Be used to описывает уже сложившееся состояние: человек привык, и его это больше не напрягает. Get used to показывает движение к этому состоянию: привычка появляется постепенно, прямо сейчас.",
+   "table": {
+    "head": ["Форма", "Смысл", "Пример"],
+    "rows": [
+     ["be used to + -ing", "уже привык", "I'm used to getting up early."],
+     ["get used to + -ing", "привыкаю сейчас", "I'm getting used to the new job."],
+     ["be used to + существительное", "привык к вещи", "He's used to the heat."],
+     ["get used to + существительное", "привыкает к вещи", "She's getting used to the city."]
+    ]
+   }
+  },
+  {
+   "h": "get used to — это длинный путь",
+   "p": "Процесс привыкания редко бывает мгновенным, поэтому get used to дружит со словами gradually, slowly, eventually и оборотом it takes time. Отрицание показывает, что привычка ещё не сложилась.",
+   "formula": "I'm getting used to it. · He gradually got used to the noise. · I still can't get used to the food."
+  },
+  {
+   "h": "После to — форма на -ing",
+   "p": "Даже если после to хочется поставить глагол, он превращается в -ing. С местоимением используется объектная форма: used to it, used to them. Именно здесь чаще всего ломается фраза у тех, кто учил used to do.",
+   "formula": "I'm used to it. · She's used to them. · I'm not used to driving on the left."
+  },
+  {
+   "h": "Три похожие формы с разным смыслом",
+   "p": "Внешне все три оборота крутятся вокруг used, но значат совершенно разное. Ошибка в одном слове меняет смысл с «привык» на «раньше делал» или на «используется для».",
+   "table": {
+    "head": ["Форма", "Что значит", "Пример"],
+    "rows": [
+     ["used to do", "делал раньше, теперь нет", "I used to smoke."],
+     ["be used to -ing", "привык", "I'm used to working late."],
+     ["be used for -ing", "используется для", "This room is used for meetings."],
+     ["use something to do", "использовать, чтобы", "I use this app to learn words."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "I'm used to getting up at six.", "ru": "Я привык вставать в шесть."},
+  {"en": "She isn't used to this climate yet.", "ru": "Она ещё не привыкла к этому климату."},
+  {"en": "I'm getting used to the new schedule.", "ru": "Я привыкаю к новому расписанию."},
+  {"en": "He got used to living alone.", "ru": "Он привык жить один."},
+  {"en": "We're used to it now.", "ru": "Мы к этому уже привыкли."}
+ ],
+ "traps": [
+  {"bad": "I am used to work late.", "good": "I am used to working late.", "why": "После to в этой конструкции идёт -ing: to — предлог, а не частица."},
+  {"bad": "I used to working nights.", "good": "I'm used to working nights.", "why": "Без be и с -ing фраза рассыпается: used to do — прошлая привычка, be used to -ing — привычка сейчас."},
+  {"bad": "I'm not used to drive on the left.", "good": "I'm not used to driving on the left.", "why": "Отрицание не меняет правило: после предлога to всё равно -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'm used to ___ up early.", "options": ["get", "getting", "got"], "a": 1, "why": "После предлога to нужна форма на -ing: used to getting up."},
+  {"type": "choice", "q": "He isn't used ___ the noise yet.", "options": ["to", "for", "with"], "a": 0, "why": "Привыкнуть к чему-то — be used to something."},
+  {"type": "choice", "q": "I ___ to smoke, but I gave up five years ago.", "options": ["used", "am used", "get used"], "a": 0, "why": "Прошлая привычка — used to do, без be."},
+  {"type": "choice", "q": "This room is used ___ meetings.", "options": ["for", "to", "of"], "a": 0, "why": "Назначение помещения — be used for + существительное."},
+  {"type": "gap", "q": "I'm getting used to ___ (work) nights.", "a": ["working"], "why": "Get used to — процесс привыкания, после to -ing."},
+  {"type": "gap", "q": "They weren't used to ___ (live) in a cold climate.", "a": ["living"], "why": "После предлога to глагол принимает форму living."},
+  {"type": "gap", "q": "My grandfather ___ (be) used to hard work.", "a": ["is", "was"], "why": "Он привык — состояние, поэтому be used to: is или was used to."},
+  {"type": "translate", "q": "Я привык рано вставать.", "a": ["i'm used to getting up early", "i am used to getting up early"], "why": "Привычка: be used to + -ing, а не инфинитив."},
+  {"type": "translate", "q": "Она постепенно привыкает к новой работе.", "a": ["she is getting used to her new job", "she's getting used to the new job", "she is getting used to the new job"], "why": "Процесс привыкания передаётся через get used to."}
+ ]
+}

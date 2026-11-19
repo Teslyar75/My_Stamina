@@ -1,0 +1,83 @@
+{
+ "n": 123,
+ "level": "B2",
+ "module": "b-perfect",
+ "title": "Present Perfect (2): опыт и новость",
+ "en": "present perfect 2",
+ "summary": "Опыт за всю жизнь и свежие новости: ever и never, been to против gone to, и оборот this is the first time.",
+ "can_do": [
+  "Спросить о жизненном опыте через have you ever.",
+  "Различить have been to и have gone to по смыслу.",
+  "Сообщить новость в перфекте и перейти к деталям в прошедшем."
+ ],
+ "theory": [
+  {
+   "h": "Опыт: было или не было",
+   "p": "Перфект говорит о жизненном опыте без указания времени. Нас интересует, случалось ли это вообще. Вопрос строится с ever, отрицательный ответ — с never, и оба слова ставятся между have и причастием. Дату при этом не называют, иначе перфект сломается.",
+   "table": {
+    "head": ["Вопрос", "Ответ", "Смысл"],
+    "rows": [
+     ["Have you ever been there?", "Yes, I have.", "бывал когда-то"],
+     ["Has he ever flown?", "No, he hasn't.", "никогда не летал"],
+     ["Have they ever met?", "Yes, they have.", "встречались раньше"]
+    ]
+   }
+  },
+  {
+   "h": "been to и gone to",
+   "p": "Разница маленькая по форме, но большая по смыслу. Have been to значит «бывал и вернулся», человек уже здесь. Have gone to значит «уехал и сейчас там». Перепутать — значит сообщить собеседнику неверный факт о местонахождении человека, а это уже не мелочь.",
+   "table": {
+    "head": ["Фраза", "Смысл"],
+    "rows": [
+     ["She has been to Paris.", "она там была и вернулась"],
+     ["She has gone to Paris.", "она уехала и сейчас в Париже"],
+     ["He has been in Paris for a week.", "он находится там неделю"]
+    ]
+   }
+  },
+  {
+   "h": "Новость и её результат",
+   "p": "Когда мы сообщаем свежую новость, в английском почти всегда звучит перфект: случилось что-то, и это важно прямо сейчас. Дальше, когда начинаются подробности, время переключается на простое прошедшее, потому что у деталей всегда есть точное время.",
+   "formula": "The train has just left. It left at 8:05, I'm afraid."
+  },
+  {
+   "h": "This is the first time",
+   "p": "Обороты с первым, вторым и лучшим разом требуют перфекта: это первый раз, когда я такое вижу. По-русски мы говорим в настоящем времени, а английский смотрит на опыт до настоящего момента, поэтому и форма получается особенная.",
+   "formula": "This is the first time I've flown. · It's the second time he has called today. · This is the best meal I've had in years."
+  },
+  {
+   "h": "recently, lately, so far",
+   "p": "Слова recently и lately значат «в последнее время» и дружат с перфектом. So far — «пока что», тоже подводит итог к настоящему моменту. С ними не называют конкретную дату, иначе перфект перестаёт работать и просит простое прошедшее.",
+   "formula": "I've been busy lately. · We've had three calls so far. · She has recently changed jobs."
+  }
+ ],
+ "examples": [
+  {"en": "Have you ever been to Lisbon?", "ru": "Ты когда-нибудь был в Лиссабоне?"},
+  {"en": "I've never seen snow.", "ru": "Я никогда не видел снега."},
+  {"en": "He has gone to the bank.", "ru": "Он ушёл в банк."},
+  {"en": "She has been to the bank twice today.", "ru": "Она дважды сегодня была в банке."},
+  {"en": "The company has announced a new product.", "ru": "Компания объявила о новом продукте."},
+  {"en": "This is the first time I've driven this car.", "ru": "Я впервые за рулём этой машины."},
+  {"en": "We've had two storms so far this month.", "ru": "В этом месяце уже было две бури."}
+ ],
+ "traps": [
+  {"bad": "I have ever been to London.", "good": "I have been to London.", "why": "ever нужен в вопросе, а не в утверждении."},
+  {"bad": "Have you ever went to Spain?", "good": "Have you ever been to Spain?", "why": "После have — третья форма: been, а не went."},
+  {"bad": "He has been to Paris last year.", "good": "He went to Paris last year.", "why": "last year — законченное время, перфект не подходит."},
+  {"bad": "She has gone to Paris, so she is here now.", "good": "She has been to Paris, so she is here now.", "why": "Если человек уже вернулся, нужен been to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Have you ever ___ in a helicopter?", "options": ["flown", "flew", "fly"], "a": 0, "why": "После have нужна третья форма flown."},
+  {"type": "choice", "q": "She isn't here, she ___ to the dentist.", "options": ["has been", "has gone", "went"], "a": 1, "why": "Её нет на месте — has gone to."},
+  {"type": "choice", "q": "This is the first time I ___ this dish.", "options": ["try", "have tried", "tried"], "a": 1, "why": "Оборот this is the first time требует перфекта."},
+  {"type": "choice", "q": "I've ___ been to Asia.", "options": ["ever", "never", "yet"], "a": 1, "why": "В утверждении об отсутствии опыта — never."},
+  {"type": "choice", "q": "The manager ___ just left, so you've missed him.", "options": ["has", "have", "is"], "a": 0, "why": "manager = he, значит has just left."},
+  {"type": "gap", "q": "I ___ (never / eat) octopus.", "a": ["have never eaten", "'ve never eaten"], "why": "Опыт: never между have и eaten."},
+  {"type": "gap", "q": "She ___ (be) to Rome three times.", "a": ["has been"], "why": "Бывала и возвращалась — has been to."},
+  {"type": "gap", "q": "They ___ (not / arrive) yet.", "a": ["haven't arrived", "have not arrived"], "why": "yet в отрицании: haven't arrived."},
+  {"type": "gap", "q": "Have you ever ___ (see) this film?", "a": ["seen"], "why": "После have ever — причастие seen."},
+  {"type": "translate", "q": "Ты когда-нибудь был в Лондоне?", "a": ["have you ever been to london"], "why": "Вопрос об опыте: have you ever been to."},
+  {"type": "translate", "q": "Я никогда не пробовал суши.", "a": ["i have never tried sushi", "i've never tried sushi"], "why": "never между have и tried."},
+  {"type": "translate", "q": "Она ушла на работу.", "a": ["she has gone to work", "she's gone to work"], "why": "Её нет здесь, она на работе: has gone."}
+ ]
+}

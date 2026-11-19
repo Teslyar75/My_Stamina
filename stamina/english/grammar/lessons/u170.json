@@ -1,0 +1,80 @@
+{
+ "n": 170,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "want you to: глагол + дополнение + to",
+ "en": "verb + object + to",
+ "summary": "Как сказать, что действие должен выполнить кто-то другой: I want you to come, she asked me to wait — и почему после make и let to не нужен.",
+ "can_do": [
+  "Построить фразу want, ask, tell, advise, remind с дополнением и to.",
+  "Сказать отрицание через warned him not to do.",
+  "Употребить make и let без to.",
+  "Отличить say и tell от модели с дополнением и to."
+ ],
+ "theory": [
+  {
+   "h": "Дополнение становится деятелем",
+   "p": "В этой конструкции между первым глаголом и to появляется человек. Именно он выполняет второе действие, а не тот, кто говорит. Сравните I want to go — иду я, и I want you to go — идёшь ты. Одно слово меняет исполнителя.",
+   "formula": "I want you to come. · She asked him to wait. · They told me to sit down."
+  },
+  {
+   "h": "Глаголы этой модели",
+   "p": "Чаще всего так работают want, expect, ask, tell, advise, remind, warn, persuade, teach, allow, invite, order и encourage. После дополнения всегда идёт to и базовая форма. Эти глаголы легко узнать по смыслу: они передают чужую волю или просьбу.",
+   "table": {
+    "head": ["Глагол", "Пример", "Оттенок"],
+    "rows": [
+     ["want", "I want you to stay.", "желание"],
+     ["ask", "She asked me to help.", "просьба"],
+     ["tell", "He told us to wait.", "указание"],
+     ["remind", "Remind me to call her.", "напоминание"],
+     ["warn", "They warned us not to swim.", "предупреждение"]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание — not to после дополнения",
+   "p": "Not ставится между дополнением и to и относится ко второму действию. Порядок такой: глагол, человек, not to, действие. Переставить not в начало нельзя, иначе фраза теряет смысл или становится неверной.",
+   "formula": "I warned him not to touch the wire. · She asked me not to tell anyone. · They advised us not to go there."
+  },
+  {
+   "h": "Make и let — без to",
+   "p": "После make в значении «заставить» и let в значении «разрешить» инфинитив идёт без to. Это исключение, которое нужно просто помнить. В пассиве make возвращает to: I was made to wait.",
+   "formula": "He made me wait. · Let me help you. · Don't make me laugh. · I was made to wait outside."
+  },
+  {
+   "h": "Help — можно и так, и так",
+   "p": "После help допустимы обе формы: с to и без. Смысл не меняется, разница только в степени формальности. В американском варианте чаще обходятся без to, в британском оба звучат нормально.",
+   "formula": "She helped me carry the bags. · She helped me to carry the bags. · Can you help me (to) move this table?"
+  },
+  {
+   "h": "Say, tell и suggest — другая логика",
+   "p": "Say и tell вводят целое предложение, а не инфинитив: he said that he was tired, he told me that he was tired. Suggest вообще не принимает дополнение с to: после него либо -ing, либо that с обычным глаголом. Поэтому she suggested me to go — ошибка.",
+   "formula": "He told me that he was tired. · He suggested going out. · He suggested that I should go."
+  }
+ ],
+ "examples": [
+  {"en": "I want you to meet my sister.", "ru": "Я хочу, чтобы ты познакомился с моей сестрой."},
+  {"en": "She asked me to close the window.", "ru": "Она попросила меня закрыть окно."},
+  {"en": "They warned us not to swim there.", "ru": "Они предупредили нас не плавать там."},
+  {"en": "He made me wait for an hour.", "ru": "Он заставил меня ждать час."},
+  {"en": "Let me help you with the bags.", "ru": "Давай я помогу тебе с сумками."},
+  {"en": "She helped me carry the boxes.", "ru": "Она помогла мне нести коробки."}
+ ],
+ "traps": [
+  {"bad": "I want that you help me.", "good": "I want you to help me.", "why": "После want нужна модель дополнение + to, а не that."},
+  {"bad": "He made me to wait.", "good": "He made me wait.", "why": "Make не берёт to перед инфинитивом."},
+  {"bad": "She suggested me to go.", "good": "She suggested that I should go.", "why": "Suggest не работает по модели с дополнением и to."},
+  {"bad": "He told to me to wait.", "good": "He told me to wait.", "why": "После tell сразу идёт человек, без предлога to."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I want ___ with us.", "options": ["you to come", "you come", "that you come"], "a": 0, "why": "Want + дополнение + to: want you to come."},
+  {"type": "choice", "q": "He made me ___ for two hours.", "options": ["wait", "to wait", "waiting"], "a": 0, "why": "После make инфинитив без to."},
+  {"type": "choice", "q": "She asked me ___ the door.", "options": ["to close", "close", "closing"], "a": 0, "why": "Ask somebody to do: asked me to close."},
+  {"type": "choice", "q": "Let me ___ you with that.", "options": ["help", "to help", "helping"], "a": 0, "why": "После let инфинитив без to."},
+  {"type": "gap", "q": "I warned him ___ (not / touch) the wire.", "a": ["not to touch"], "why": "Отрицание после дополнения: not to touch."},
+  {"type": "gap", "q": "My parents didn't let me ___ (go) out late.", "a": ["go"], "why": "Let + дополнение + база без to."},
+  {"type": "gap", "q": "They advised us ___ (book) early.", "a": ["to book"], "why": "Advise somebody to do: advised us to book."},
+  {"type": "translate", "q": "Она попросила меня подождать снаружи.", "a": ["she asked me to wait outside"], "why": "Ask somebody to do."},
+  {"type": "translate", "q": "Он заставил меня переделать работу.", "a": ["he made me do the work again", "he made me redo the work"], "why": "Make + дополнение + база без to."}
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "n": 191,
+ "level": "B2",
+ "module": "b-articles",
+ "title": "the (4): классы и группы",
+ "en": "the 4 (the giraffe / the old)",
+ "summary": "Как говорить о виде животных и о группах людей: the giraffe, giraffes, the rich, the French — и когда артикль не нужен.",
+ "can_do": [
+  "Называть вид животного в единственном и множественном числе.",
+  "Различать общий смысл и конкретную стаю или группу.",
+  "Говорить о группах людей через the с прилагательным.",
+  "Правильно выбирать между the French и Italians."
+ ],
+ "theory": [
+  {
+   "h": "Один зверь за весь вид",
+   "p": "Чтобы сказать что-то обо всём виде, можно взять существительное в единственном числе и поставить the: the giraffe, the tiger, the dolphin. Это книжный, почти энциклопедический стиль. В живой речи чаще множественное без артикля: giraffes, tigers, dolphins.",
+   "formula": "The giraffe is the tallest animal. · Giraffes live in Africa."
+  },
+  {
+   "h": "Тот же смысл во множественном",
+   "p": "Giraffes, dolphins, tigers — без артикля, когда речь о виде в целом. Русскоязычные часто переносят the механически, и получается the giraffes are tall — будто говорим о конкретных жирафах в зоопарке, а не о виде.",
+   "table": {
+    "head": ["Фраза", "О чём речь", "Стиль"],
+    "rows": [
+     ["The giraffe is tall.", "весь вид через одного", "книжный"],
+     ["Giraffes are tall.", "весь вид", "обычный"],
+     ["The giraffes are tall.", "конкретные жирафы", "конкретная ситуация"]
+    ]
+   }
+  },
+  {
+   "h": "The плюс прилагательное — группа людей",
+   "p": "The old, the young, the rich, the poor, the blind, the homeless — так называют группу людей одним словом, без существительного. Глагол после них во множественном числе: the rich are, the unemployed are. Об одном человеке так не говорят: старик — an old man, а не the old.",
+   "formula": "The rich get richer. · The homeless need help. · The young learn fast."
+  },
+  {
+   "h": "Национальности: the French, но Italians",
+   "p": "Названия наций делятся на две группы. Слова на -sh, -ch, -ese, -ss не берут -s и требуют the: the French, the Dutch, the Chinese, the Japanese, the Swiss. Слова на -an и -i образуют обычное множественное и в общем смысле идут без артикля: Italians, Russians, Germans.",
+   "formula": "The French drink a lot of coffee. · Italians love football. · The Swiss are punctual."
+  },
+  {
+   "h": "Не всякое прилагательное так работает",
+   "p": "Устойчивы только прилагательные о положении в обществе и состоянии: old, young, rich, poor, blind, deaf, sick, unemployed, homeless. Сказать the happy в значении «счастливые люди» нельзя, нужно happy people. Со временем список меняется, но выдумывать новые формы не стоит.",
+   "formula": "the poor · the unemployed · happy people · sick people"
+  }
+ ],
+ "examples": [
+  {"en": "The tiger is a strong animal.", "ru": "Тигр — сильное животное."},
+  {"en": "Tigers live in Asia.", "ru": "Тигры живут в Азии."},
+  {"en": "The old need our help.", "ru": "Пожилым нужна наша помощь."},
+  {"en": "The French make excellent bread.", "ru": "Французы делают отличный хлеб."},
+  {"en": "Russians read a lot.", "ru": "Русские много читают."},
+  {"en": "The rich are not always happy.", "ru": "Богатые не всегда счастливы."}
+ ],
+ "traps": [
+  {"bad": "The tigers are strong animals.", "good": "Tigers are strong animals.", "why": "О виде в целом множественное число идёт без the."},
+  {"bad": "The Frenchs are friendly.", "good": "The French are friendly.", "why": "The French — уже группа, -s не добавляется."},
+  {"bad": "The olds need help.", "good": "The old need help.", "why": "После the прилагательное не превращается в существительное с -s."},
+  {"bad": "The happy live longer.", "good": "Happy people live longer.", "why": "Не любое прилагательное образует группу после the."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ elephant is the largest land animal.", "options": ["A", "The", "No article"], "a": 1, "why": "Вид целиком в единственном числе — книжный стиль с the."},
+  {"type": "choice", "q": "___ are intelligent animals.", "options": ["The dolphins", "Dolphins", "A dolphin"], "a": 1, "why": "О виде в целом — множественное без артикля."},
+  {"type": "choice", "q": "___ French drink a lot of wine.", "options": ["A", "The", "No article"], "a": 1, "why": "Названия на -ch требуют the и не берут -s."},
+  {"type": "choice", "q": "___ young often learn faster than adults.", "options": ["A", "The", "No article"], "a": 1, "why": "The young — группа людей, прилагательное с the."},
+  {"type": "gap", "q": "In the book it says that ___ giraffe is the tallest animal.", "a": ["the"], "why": "Вид через одного представителя — the giraffe."},
+  {"type": "gap", "q": "Many people were poor, and ___ poor needed help.", "a": ["the"], "why": "The poor — группа людей."},
+  {"type": "translate", "q": "Тигры живут в Азии.", "a": ["tigers live in asia"], "why": "Вид в целом — множественное без артикля."},
+  {"type": "translate", "q": "Богатые не всегда счастливы.", "a": ["the rich are not always happy", "rich people are not always happy"], "why": "Группа людей через the плюс прилагательное."}
+ ]
+}

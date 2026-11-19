@@ -1,0 +1,73 @@
+{
+ "n": 134,
+ "level": "B2",
+ "module": "b-future",
+ "title": "Настоящее время о будущем",
+ "en": "present tenses for the future",
+ "summary": "Расписание и договорённость тоже про будущее: поезд уходит в семь, а в пятницу я встречаюсь с Аней.",
+ "can_do": [
+  "Сказать о будущем по расписанию через present simple.",
+  "Рассказать о договорённой встрече через present continuous.",
+  "Отличить расписание от личной договорённости.",
+  "Не путать договорённость с простым намерением."
+ ],
+ "theory": [
+  {
+   "h": "Расписание живёт в present simple",
+   "p": "Когда будущее определено графиком, законом или расписанием, англичане не ставят will. Поезд, самолёт, фильм, магазин, учебный год — всё это подчиняется расписанию, и глагол стоит в настоящем простом времени.",
+   "formula": "The train leaves at 7.30. · The film starts at nine. · The shop opens at ten."
+  },
+  {
+   "h": "Договорённость — present continuous",
+   "p": "Если вы уже договорились с человеком о времени и месте, используется present continuous. В предложении обычно есть будущее время или место, а сама форма выглядит как «делаю сейчас». Это нормально: контекст показывает, что речь о будущем.",
+   "formula": "I'm meeting Anna tomorrow. · We're flying to Berlin on Friday. · I'm seeing the dentist at four."
+  },
+  {
+   "h": "Что выбрать",
+   "p": "Посмотрите на таблицу как на четыре разные ситуации. Расписание не зависит от вас, договорённость зависит от двух людей, намерение живёт только в вашей голове, а обещание рождается в момент разговора.",
+   "table": {
+    "head": ["Что выражаем", "Форма", "Пример", "Подсказка"],
+    "rows": [
+     ["расписание", "present simple", "The plane lands at six.", "at six, on Monday"],
+     ["договорённость", "present continuous", "I'm seeing the doctor at four.", "tomorrow, at four"],
+     ["намерение", "going to", "I'm going to sell my car.", "решено заранее"],
+     ["обещание", "will", "I'll call you tonight.", "решение сейчас"]
+    ]
+   }
+  },
+  {
+   "h": "Договорённость или намерение",
+   "p": "Разница тонкая, но проверяемая: договорённость означает, что второй человек уже знает и согласен. Намерение означает, что вы решили, но ещё никому не сказали и ничего не забронировали.",
+   "formula": "I'm meeting Tom at six. (он знает, мы договорились) · I'm going to meet Tom soon. (решил, но не договорился)"
+  },
+  {
+   "h": "Почему не will",
+   "p": "Will в таких фразах звучит как предсказание или обещание, а не как факт расписания. Сравните: магазин закрывается по графику в девять, а не «обещает закрыться». Для графика выбирайте present simple.",
+   "formula": "The shop closes at nine. (по графику) · The shop will close soon. (предсказание)"
+  }
+ ],
+ "examples": [
+  {"en": "The meeting starts at nine sharp, so don't be late.", "ru": "Встреча начинается ровно в девять, так что не опаздывайте."},
+  {"en": "We're having lunch with Sarah tomorrow.", "ru": "Завтра мы обедаем с Сарой."},
+  {"en": "My course begins on 3 October.", "ru": "Мой курс начинается третьего октября."},
+  {"en": "I'm seeing the dentist at four.", "ru": "В четыре я у стоматолога."},
+  {"en": "The last train leaves at 11.40.", "ru": "Последний поезд уходит в 11:40."},
+  {"en": "They're getting married in June.", "ru": "В июне они женятся."}
+ ],
+ "traps": [
+  {"bad": "The train will leave at 7.30 according to the timetable.", "good": "The train leaves at 7.30 according to the timetable.", "why": "Расписание передаётся present simple."},
+  {"bad": "I meet Anna tomorrow at six.", "good": "I'm meeting Anna tomorrow at six.", "why": "Договорённость требует present continuous."},
+  {"bad": "The film is starting at eight every evening.", "good": "The film starts at eight every evening.", "why": "Регулярное расписание — simple, а не continuous."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "According to the timetable, the bus ___ at 6.40.", "options": ["leaves", "is leaving", "will leave"], "a": 0, "why": "Ссылка на расписание — present simple."},
+  {"type": "choice", "q": "I ___ my dentist tomorrow at ten.", "options": ["see", "am seeing", "will see"], "a": 1, "why": "Договорённая встреча — present continuous."},
+  {"type": "choice", "q": "The shop ___ at nine every evening.", "options": ["is closing", "closes", "will close"], "a": 1, "why": "Постоянный график — present simple."},
+  {"type": "choice", "q": "We ___ to Rome on Friday — the tickets are booked.", "options": ["fly", "are flying", "will fly"], "a": 1, "why": "Всё согласовано, билеты куплены — continuous."},
+  {"type": "gap", "q": "The course ___ (begin) on 3 October.", "a": ["begins"], "why": "Дата в расписании — present simple."},
+  {"type": "gap", "q": "I ___ (have) lunch with Sarah tomorrow.", "a": ["am having", "'m having"], "why": "Договорённость: am having lunch."},
+  {"type": "gap", "q": "The last train ___ (leave) at 11.40.", "a": ["leaves"], "why": "Расписание — leaves."},
+  {"type": "translate", "q": "Поезд отправляется в шесть.", "a": ["the train leaves at six", "the train leaves at 6"], "why": "Расписание: present simple."},
+  {"type": "translate", "q": "Завтра я обедаю с Аней.", "a": ["i am having lunch with anna tomorrow", "i'm having lunch with anna tomorrow"], "why": "Договорённость: present continuous."}
+ ]
+}

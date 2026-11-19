@@ -1,0 +1,71 @@
+{
+ "n": 140,
+ "level": "B2",
+ "module": "b-future",
+ "title": "if и when: в чём разница",
+ "en": "if and when",
+ "summary": "If оставляет событие под вопросом, when считает его решённым. Одна буква разницы меняет обещание.",
+ "can_do": [
+  "Выбрать if, когда неизвестно, случится ли событие.",
+  "Выбрать when, когда событие произойдёт обязательно.",
+  "Строить придаточное после if и when в настоящем времени, хотя речь идёт о будущем.",
+  "Задать вопрос с when, не путая его с придаточным времени."
+ ],
+ "theory": [
+  {
+   "h": "Два разных вопроса к одному событию",
+   "p": "По-русски «если» и «когда» различаются, и в английском тоже, но не по времени, а по уверенности. If оставляет вопрос открытым: мы не знаем, будет ли это вообще. When говорит: это точно случится, вопрос только в том, в какой момент. Сравните: If I see her, I'll tell her — может, и не увижу; When I see her, I'll tell her — увижу обязательно.",
+   "formula": "If I see her, I'll tell her. · When I see her, I'll tell her."
+  },
+  {
+   "h": "После if и when — настоящее, а смысл будущий",
+   "p": "Главная механическая ловушка: после if и when не ставят will, даже если речь о завтрашнем дне. Будущее остаётся только в главной части, а придаточное идёт в present simple. Правило работает и для when в значении «когда наступит», и для if в значении «если».",
+   "formula": "When you arrive, call me. · If it rains, we'll stay in."
+  },
+  {
+   "h": "If или when: короткая таблица",
+   "p": "Когда сомневаетесь, посмотрите на событие и спросите себя, знаете ли вы заранее, что оно произойдёт. Ответ «нет, это только возможность» даёт if, ответ «да, обязательно» даёт when.",
+   "table": {
+    "head": ["Слово", "Что известно", "Пример"],
+    "rows": [
+     ["if", "событие может не произойти", "If the shop is open, I'll buy bread."],
+     ["when", "событие произойдёт точно", "When the shop opens, I'll buy bread."],
+     ["if ... not", "условие-исключение", "If you don't hurry, we'll be late."]
+    ]
+   }
+  },
+  {
+   "h": "When — ещё и вопросительное слово",
+   "p": "Слово when живёт в двух ролях. В вопросе оно стоит в начале и требует will: When will the film start? В придаточном времени оно ведёт за собой настоящее: I'll call you when the film starts. Различить просто: если when — часть вопроса, а не придаточного, will остаётся на месте.",
+   "formula": "When will the film start? · I'll call you when the film starts."
+  },
+  {
+   "h": "Обе формы верны, но обещают разное",
+   "p": "Иногда и if, и when грамматически возможны в одной фразе, и тогда выбор — это вопрос смысла, а не правил. Собеседник слышит разницу: с if вы не обещаете, с when обещаете. Поэтому в договорённостях и просьбах выбирайте слово осознанно.",
+   "formula": "I'll be there if you need me. · I'll be there when you need me."
+  }
+ ],
+ "examples": [
+  {"en": "If you finish early, we can go out.", "ru": "Если закончишь раньше, можем куда-нибудь пойти."},
+  {"en": "When the meeting ends, I'll send you the notes.", "ru": "Когда совещание закончится, я пришлю вам заметки."},
+  {"en": "I don't know if she will agree.", "ru": "Я не знаю, согласится ли она."},
+  {"en": "When you've read the report, tell me what you think.", "ru": "Когда прочитаете отчёт, скажите, что думаете."},
+  {"en": "If the train is late, I'll wait at the cafe.", "ru": "Если поезд опоздает, подожду в кафе."}
+ ],
+ "traps": [
+  {"bad": "When I will come home, I will call you.", "good": "When I come home, I'll call you.", "why": "После when о будущем ставится настоящее время, will остаётся только в главной части."},
+  {"bad": "If I will have time, I'll help you.", "good": "If I have time, I'll help you.", "why": "С if действует то же правило: в придаточном никакого will."},
+  {"bad": "When I pass the exam, my father will buy me a bike.", "good": "If I pass the exam, my father will buy me a bike.", "why": "Результат не гарантирован, значит нужен if, а не when."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you finish early, we'll go for a walk.", "options": ["If", "When", "Unless"], "a": 0, "why": "Условие под вопросом — if."},
+  {"type": "choice", "q": "I'll call you the moment I ___ there.", "options": ["will get", "get", "got"], "a": 1, "why": "После союза времени — present simple, хотя речь о будущем."},
+  {"type": "choice", "q": "When ___ back, I'll start cooking.", "options": ["you will come", "you come", "you came"], "a": 1, "why": "В придаточном с when will не ставится."},
+  {"type": "choice", "q": "She ___ call you when she gets home.", "options": ["will", "is", "does"], "a": 0, "why": "Будущее живёт в главной части, поэтому will."},
+  {"type": "gap", "q": "If it ___ (rain) tomorrow, we'll cancel the picnic.", "a": ["rains"], "why": "Придаточное условия — present simple, третье лицо с -s."},
+  {"type": "gap", "q": "I'll give you the book when I ___ (see) you.", "a": ["see"], "why": "После when о будущем — настоящее время."},
+  {"type": "gap", "q": "When the film ___ (end), we'll go home.", "a": ["ends"], "why": "Придаточное времени в настоящем, фильм = it, поэтому ends."},
+  {"type": "translate", "q": "Если я увижу её, я скажу ей.", "a": ["if i see her i will tell her", "if i see her i'll tell her"], "why": "Условие — if, в придаточном настоящее, в главной части will."},
+  {"type": "translate", "q": "Когда ты закончишь, позвони мне.", "a": ["call me when you finish", "call me when you have finished"], "why": "Событие точно будет — when; после него настоящее время."}
+ ]
+}

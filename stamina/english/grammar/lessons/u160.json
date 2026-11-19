@@ -1,0 +1,72 @@
+{
+ "n": 160,
+ "level": "B2",
+ "module": "b-passive",
+ "title": "is said to: так говорят",
+ "en": "it is said that / he is said to",
+ "summary": "Как передать слухи и общее мнение, не называя источник: it is said that, he is said to be и оборот supposed to.",
+ "can_do": [
+  "Передать слух через it is said that.",
+  "Перестроить его в he is said to be без потери смысла.",
+  "Сказать о прошлом в этой конструкции через to have done.",
+  "Употребить supposed to для ожидания и правила."
+ ],
+ "theory": [
+  {
+   "h": "Две конструкции об одном",
+   "p": "Когда источник информации неизвестен или неважен, английский прячет его в пассив. Есть два способа: безличный it is said that he is rich и личный he is said to be rich. Второй короче и звучит более по-английски, поэтому в прессе преобладает именно он.",
+   "formula": "It is said that he is rich. · He is said to be rich."
+  },
+  {
+   "h": "Глаголы, которые так работают",
+   "p": "Конструкция не привязана к say. Тот же механизм у think, believe, report, know, expect, consider, suppose. It is believed that... / He is believed to... — стандартные обороты новостей и официальных текстов.",
+   "formula": "It is believed that she left the country. · She is believed to have left the country."
+  },
+  {
+   "h": "Время прячется в to-части",
+   "p": "Сама конструкция is said to стоит в настоящем, а время события выражает инфинитив. To be rich — сейчас богат. To have left — уже уехал. Если событие происходит позже, берут to be doing или простое to do.",
+   "table": {
+    "head": ["Что сообщают", "Форма", "Пример"],
+    "rows": [
+     ["сейчас", "is said to + V1", "He is said to be rich."],
+     ["уже произошло", "is said to have + V3", "He is said to have left."],
+     ["происходит", "is said to be + V-ing", "He is said to be living abroad."],
+     ["в прошлом сообщали", "was said to + V1", "He was said to be rich."]
+    ]
+   }
+  },
+  {
+   "h": "supposed to: ожидание и правило",
+   "p": "Отдельный и очень частый оборот — be supposed to. Он значит «предполагается, что», «так заведено»: the train is supposed to arrive at six. В отрицании и вопросе появляется оттенок «а вообще-то нельзя»: you're not supposed to park here.",
+   "formula": "The train is supposed to arrive at six. · You're not supposed to park here. · Is this supposed to be a joke?"
+  },
+  {
+   "h": "Зачем это нужно в речи",
+   "p": "Конструкция позволяет сослаться на общее мнение, не отвечая за него. Сказать he is said to be difficult — значит «о нём так говорят», а не «я так считаю». Это удобно в новостях, сплетнях и осторожных формулировках, где говорящий не хочет брать утверждение на себя.",
+   "formula": "The company is said to be losing money. · The castle is thought to be haunted."
+  }
+ ],
+ "examples": [
+  {"en": "It is said that the company is losing money.", "ru": "Говорят, что компания теряет деньги."},
+  {"en": "He is said to be one of the best doctors in the city.", "ru": "Говорят, он один из лучших врачей в городе."},
+  {"en": "The painting is believed to have been stolen in 1990.", "ru": "Считается, что картину украли в 1990 году."},
+  {"en": "The train is supposed to arrive at six.", "ru": "Поезд должен прибыть в шесть."},
+  {"en": "You're not supposed to smoke here.", "ru": "Здесь нельзя курить."}
+ ],
+ "traps": [
+  {"bad": "He is said that he is rich.", "good": "It is said that he is rich.", "why": "Либо it is said that..., либо he is said to be..., смешивать нельзя."},
+  {"bad": "He is said to left last year.", "good": "He is said to have left last year.", "why": "О прошлом — to have + V3, а не просто V3."},
+  {"bad": "The train is suppose to arrive at six.", "good": "The train is supposed to arrive at six.", "why": "В обороте be supposed to слово supposed всегда с -d."},
+  {"bad": "She is believed to living abroad.", "good": "She is believed to be living abroad.", "why": "После to нужен be перед -ing: to be living."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "It ___ that the company is losing money.", "options": ["says", "is said", "is saying"], "a": 1, "why": "Безличный пассив: it is said that."},
+  {"type": "choice", "q": "He is believed ___ abroad.", "options": ["to live", "to living", "live"], "a": 0, "why": "После is believed — to + инфинитив: to live."},
+  {"type": "choice", "q": "The painting is thought ___ stolen in 1990.", "options": ["to be", "to have been", "being"], "a": 1, "why": "Событие в прошлом: to have been stolen."},
+  {"type": "choice", "q": "You are ___ to switch off your phone during the flight.", "options": ["suppose", "supposed", "supposing"], "a": 1, "why": "Оборот be supposed to: supposed с -d."},
+  {"type": "gap", "q": "It ___ (report) that two people were injured.", "a": ["is reported", "was reported"], "why": "Безличный пассив: it is / was reported."},
+  {"type": "gap", "q": "She is known ___ (be) very kind.", "a": ["to be"], "why": "После is known — to be."},
+  {"type": "translate", "q": "Говорят, что он живёт в Лондоне.", "a": ["he is said to live in london", "it is said that he lives in london"], "why": "Две равноправные модели: he is said to live / it is said that he lives."},
+  {"type": "translate", "q": "Считается, что это лучший ресторан в городе.", "a": ["it is thought to be the best restaurant in the city", "it is considered to be the best restaurant in the city"], "why": "Безличный пассив с think или consider: it is thought/considered to be."}
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "n": 136,
+ "level": "B2",
+ "module": "b-future",
+ "title": "will и shall (1)",
+ "en": "will and shall 1",
+ "summary": "Решения, принятые в ту же секунду, обещания и предложения помощи — всё это will; а shall остался в вопросах.",
+ "can_do": [
+  "Принять решение прямо в момент разговора через will.",
+  "Пообещать, предложить помощь и попросить что-то.",
+  "Задать вопрос Shall I...? и Shall we...?",
+  "Сократить will до 'll в живой речи."
+ ],
+ "theory": [
+  {
+   "h": "Решение в момент речи",
+   "p": "Will нужен, когда решение рождается прямо сейчас, под влиянием ситуации. Телефон звонит, и вы говорите, что возьмёте трубку. Никакого плана заранее не было, поэтому going to здесь звучал бы странно.",
+   "formula": "The phone is ringing. I'll get it. · It's cold. I'll close the window."
+  },
+  {
+   "h": "Обещания, предложения, просьбы",
+   "p": "Три очень частых речевых действия строятся с will. Обещание: I'll pay you back. Предложение помощи: I'll carry that for you. Просьба: Will you wait a moment? Во всех случаях will работает как мягкий модальный глагол.",
+   "formula": "I'll call you tonight. · I'll help you with that. · Will you open the window?"
+  },
+  {
+   "h": "Что выражает will",
+   "p": "Соберите частые случаи в одну таблицу: от личного решения до отказа. Обратите внимание, что отрицание will not сокращается до won't, и это отдельное слово, а не willn't.",
+   "table": {
+    "head": ["Что делаем", "Фраза", "Пример"],
+    "rows": [
+     ["решение сейчас", "I'll + глагол", "I'll have the soup."],
+     ["предложение помощи", "I'll... / Shall I...?", "Shall I carry that?"],
+     ["обещание", "I'll...", "I'll call you tonight."],
+     ["просьба", "Will you...?", "Will you wait a moment?"],
+     ["отказ", "won't", "I won't do it."]
+    ]
+   }
+  },
+  {
+   "h": "shall в вопросах",
+   "p": "Shall почти вышел из обычной речи, но остался в двух вопросах: Shall I...? когда предлагают помощь, и Shall we...? когда предлагают совместное действие. В остальных случаях о будущем с I и we говорят will.",
+   "formula": "Shall I open the window? · Shall we go? · I'll see you tomorrow."
+  },
+  {
+   "h": "После will — чистый инфинитив",
+   "p": "Will и shall — модальные глаголы, поэтому после них не ставится to и не добавляется окончание. Ошибки вроде will to go или will goes встречаются часто, потому что русское «буду делать» тянет за собой лишнюю конструкцию.",
+   "formula": "I'll go. · She will come. · Will you help? · не I'll to go"
+  },
+  {
+   "h": "Сокращения",
+   "p": "В разговоре will почти всегда сжимается и приклеивается к подлежащему. На письме в официальном стиле лучше полная форма, в переписке и субтитрах — сокращённая. Отрицание will not всегда превращается в won't.",
+   "formula": "I will → I'll · you will → you'll · he will → he'll · will not → won't"
+  }
+ ],
+ "examples": [
+  {"en": "I'll answer the door.", "ru": "Я открою дверь."},
+  {"en": "Shall I help you with those bags?", "ru": "Помочь вам с этими сумками?"},
+  {"en": "I'll send you the file tonight, I promise.", "ru": "Я пришлю тебе файл вечером, обещаю."},
+  {"en": "Will you close the window, please?", "ru": "Закройте окно, пожалуйста."},
+  {"en": "Don't worry, I won't be late.", "ru": "Не волнуйся, я не опоздаю."},
+  {"en": "Shall we meet at seven?", "ru": "Встретимся в семь?"}
+ ],
+ "traps": [
+  {"bad": "I will to call you.", "good": "I'll call you.", "why": "После will не ставится to."},
+  {"bad": "Shall I helping you?", "good": "Shall I help you?", "why": "После shall нужен инфинитив без ing."},
+  {"bad": "I am will help you.", "good": "I'll help you.", "why": "Will сам заменяет глагол be, они не ставятся вместе."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The phone is ringing. I ___ it.", "options": ["am going to answer", "will answer", "answer"], "a": 1, "why": "Решение принято сейчас, в момент разговора."},
+  {"type": "choice", "q": "___ I carry your bag?", "options": ["Will", "Shall", "Do"], "a": 1, "why": "Предложение помощи: Shall I...?"},
+  {"type": "choice", "q": "I promise I ___ be late again.", "options": ["will", "won't", "don't"], "a": 1, "why": "Обещание не делать — won't."},
+  {"type": "choice", "q": "___ you close the window, please?", "options": ["Will", "Shall", "Do"], "a": 0, "why": "Просьба: Will you...?"},
+  {"type": "gap", "q": "Don't worry, I ___ (help) you.", "a": ["will help", "'ll help"], "why": "Решение и обещание помощи — will help."},
+  {"type": "gap", "q": "It's hot in here. ___ I open the window?", "a": ["shall"], "why": "Предложение действия — Shall I."},
+  {"type": "gap", "q": "She ___ (not / tell) anyone, I'm sure.", "a": ["won't tell", "will not tell"], "why": "Отрицание will — won't tell."},
+  {"type": "translate", "q": "Я открою окно.", "a": ["i'll open the window", "i will open the window"], "why": "Решение сейчас: I'll open."},
+  {"type": "translate", "q": "Ты поможешь мне?", "a": ["will you help me"], "why": "Просьба: Will you help me?"}
+ ]
+}

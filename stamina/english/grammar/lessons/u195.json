@@ -1,0 +1,70 @@
+{
+ "n": 195,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "Существительное + существительное",
+ "en": "noun + noun",
+ "summary": "Почему говорят shoe shop, а не shoes shop: как первое слово становится прилагательным и почему оно остаётся в единственном числе.",
+ "can_do": [
+  "Строить пары из двух существительных без лишних предлогов.",
+  "Держать первое слово в единственном числе.",
+  "Различать a coffee cup и a cup of coffee.",
+  "Образовывать счётные сочетания вроде a ten-minute break."
+ ],
+ "theory": [
+  {
+   "h": "Первое слово работает как прилагательное",
+   "p": "В паре существительных главное — второе, а первое отвечает на вопрос «какой, для чего». A bus stop — остановка для автобусов, a coffee cup — чашка для кофе. Ударение падает на первое слово, и это помогает на слух понять, где граница между словами.",
+   "formula": "a bus stop · a coffee cup · a shop window · a language school"
+  },
+  {
+   "h": "Первое слово в единственном числе",
+   "p": "Даже если предметов много, первое существительное остаётся в единственном числе: a shoe shop, a ticket office, a car park, an apple tree. Множественное в первом слове — самая заметная ошибка русскоязычных, потому что по-русски мы говорим «обувной магазин», не думая о числе.",
+   "formula": "a shoe shop · a ticket office · a car park · a book shop"
+  },
+  {
+   "h": "Связь по смыслу, а не по правилу",
+   "p": "Отношение между словами бывает разным: a water bottle — бутылка для воды, a glass bottle — стеклянная бутылка, a garden table — стол в саду. Понять его можно только по смыслу. Дословный перевод с русского часто подсказывает неверный порядок слов, поэтому сочетания лучше запоминать целиком.",
+   "formula": "a water bottle · a glass bottle · a garden table · a kitchen window"
+  },
+  {
+   "h": "Счётные сочетания: a ten-minute break",
+   "p": "Когда пара описывает длительность, длину, возраст или стоимость, первое слово стоит в единственном числе, а вся конструкция пишется через дефис: a ten-minute break, a two-hour flight, a five-mile walk, a three-year-old child. Сравните: the break lasted ten minutes — здесь множественное, потому что это обычное числительное.",
+   "formula": "a ten-minute break · a two-hour flight · a five-mile walk"
+  },
+  {
+   "h": "Устойчивые исключения",
+   "p": "Несколько сочетаний всё же держат множественное число в первом слове: a sports car, a sales manager, a customs officer, a goods train. Их немного, и они запоминаются как готовые слова. Всё остальное подчиняется правилу единственного числа, так что исключения не мешают общей логике.",
+   "formula": "a sports car · a sales manager · a customs officer"
+  },
+  {
+   "h": "Пара или оборот с of",
+   "p": "Пару «существительное плюс существительное» часто путают с оборотом с of. A coffee cup — вид чашки, a cup of coffee — количество кофе в ней. Первое называет тип предмета, второе — порцию или содержимое, и заменять одно другим нельзя.",
+   "formula": "a coffee cup · a cup of coffee · a teapot · a pot of tea"
+  }
+ ],
+ "examples": [
+  {"en": "We waited at the bus stop.", "ru": "Мы ждали на автобусной остановке."},
+  {"en": "She works in a shoe shop.", "ru": "Она работает в обувном магазине."},
+  {"en": "He bought a water bottle at the station.", "ru": "Он купил бутылку для воды на вокзале."},
+  {"en": "It was a two-hour flight.", "ru": "Это был двухчасовой полёт."},
+  {"en": "They live in a three-room flat.", "ru": "Они живут в трёхкомнатной квартире."},
+  {"en": "Pass me the coffee cup, please.", "ru": "Передай мне кофейную чашку, пожалуйста."}
+ ],
+ "traps": [
+  {"bad": "I work in a shoes shop.", "good": "I work in a shoe shop.", "why": "Первое существительное в паре остаётся в единственном числе."},
+  {"bad": "It was a two hours flight.", "good": "It was a two-hour flight.", "why": "В счётном сочетании единственное число и дефис."},
+  {"bad": "Give me a cup coffee.", "good": "Give me a cup of coffee.", "why": "Для порции и содержимого нужен оборот с of."},
+  {"bad": "We left the car in the cars park.", "good": "We left the car in the car park.", "why": "Множественное в первом слове не ставится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I need to go to the ___ office.", "options": ["tickets", "ticket", "ticket's"], "a": 1, "why": "Первое слово пары — в единственном числе."},
+  {"type": "choice", "q": "We stayed in a ___ hotel.", "options": ["five stars", "five-star", "five stars'"], "a": 1, "why": "Счётное сочетание: единственное число и дефис."},
+  {"type": "choice", "q": "She bought a ___.", "options": ["water bottle", "bottle water", "bottle of waters"], "a": 0, "why": "Сначала материал, потом предмет: water bottle."},
+  {"type": "choice", "q": "It was a ___ walk to the beach.", "options": ["ten minutes", "ten-minute", "ten minute"], "a": 1, "why": "Длительность описывается через дефис и единственное число."},
+  {"type": "gap", "q": "We had a ___ (two / hour) break before the next train.", "a": ["two-hour", "two hour"], "why": "A two-hour break: единственное число и дефис."},
+  {"type": "gap", "q": "The ___ (car) park is behind the hotel.", "a": ["car"], "why": "Первое слово остаётся в единственном числе."},
+  {"type": "translate", "q": "Он работает в обувном магазине.", "a": ["he works in a shoe shop"], "why": "Shoe shop, без -s в первом слове."},
+  {"type": "translate", "q": "Это был двухчасовой полёт.", "a": ["it was a two-hour flight", "it was a two hour flight"], "why": "A two-hour flight — счётное сочетание."}
+ ]
+}

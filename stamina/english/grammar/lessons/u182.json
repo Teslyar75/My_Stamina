@@ -1,0 +1,74 @@
+{
+ "n": 182,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "see somebody do и doing",
+ "en": "see somebody do / doing",
+ "summary": "Как различить «видел, как он сделал всё целиком» и «видел его в процессе»: see, hear и watch с инфинитивом или с -ing.",
+ "can_do": [
+  "Рассказать о законченном действии через see somebody do.",
+  "Описать действие, застигнутое в процессе, через see somebody doing.",
+  "Употреблять hear, watch, notice и feel по тому же образцу.",
+  "Помнить, что в пассиве после этих глаголов возвращается to."
+ ],
+ "theory": [
+  {
+   "h": "Глагол восприятия плюс объект плюс действие",
+   "p": "See, hear, watch, notice и feel работают по одной модели: сначала тот, кого воспринимают, потом глагол действия. Глагол этот стоит без to. От формы зависит, целиком мы застали действие или только его середину.",
+   "formula": "I saw her cross the street. · I heard him sing. · We watched them play."
+  },
+  {
+   "h": "Две формы и два взгляда",
+   "p": "Инфинитив без to показывает действие от начала до конца, как один закрытый эпизод. Форма на -ing показывает процесс: мы попали в середину и видим, что действие уже шло. В таблице это видно на парах.",
+   "table": {
+    "head": ["Конструкция", "Что видно или слышно", "Пример"],
+    "rows": [
+     ["see somebody do", "действие целиком, до конца", "I saw her cross the street."],
+     ["see somebody doing", "действие в процессе", "I saw her crossing the street."],
+     ["hear somebody do", "короткий звук, всё действие", "I heard him sing the whole song."],
+     ["hear somebody doing", "звук тянется, действие идёт", "I heard him singing in the shower."],
+     ["watch somebody do / doing", "наблюдать за действием", "We watched the kids play in the yard."]
+    ]
+   }
+  },
+  {
+   "h": "Без to — это важно",
+   "p": "После объекта инфинитив идёт без to. Фраза I saw her to cross — ошибка, хотя очень частая. To появляется только в пассиве, когда объект становится подлежащим.",
+   "formula": "I saw him leave. · We heard her sing. · She was seen to leave the building."
+  },
+  {
+   "h": "Когда разница почти стирается",
+   "p": "У коротких действий разница незаметна: I saw him fall и I saw him falling описывают почти одно и то же. А вот у длительных действий выбор жёсткий: если человек читал книгу, а вы застали его за этим, нужна форма reading, потому что прочитать всю книгу за один взгляд невозможно.",
+   "formula": "I saw him fall. · I saw him reading a book. · I heard her playing the violin."
+  },
+  {
+   "h": "Пассив возвращает to",
+   "p": "В пассивной конструкции инфинитив снова получает to. Это же правило работает с hear, watch, notice и make. Сравните активную и пассивную фразы: в активе to нет, в пассиве оно обязательно.",
+   "formula": "They saw him enter the room. → He was seen to enter the room. · They made her wait. → She was made to wait."
+  }
+ ],
+ "examples": [
+  {"en": "I saw her cross the road.", "ru": "Я видел, как она перешла дорогу."},
+  {"en": "I saw her crossing the road.", "ru": "Я видел, как она переходила дорогу."},
+  {"en": "We heard him playing the piano.", "ru": "Мы слышали, как он играл на пианино."},
+  {"en": "She watched the children play.", "ru": "Она смотрела, как играют дети."},
+  {"en": "I noticed him put the key in his pocket.", "ru": "Я заметил, как он положил ключ в карман."},
+  {"en": "He was seen to leave the office.", "ru": "Видели, как он вышел из офиса."}
+ ],
+ "traps": [
+  {"bad": "I saw her to cross the street.", "good": "I saw her cross the street.", "why": "После глаголов восприятия инфинитив идёт без to."},
+  {"bad": "I heard him to sing in the shower.", "good": "I heard him singing in the shower.", "why": "Действие в процессе — форма на -ing, а to здесь лишнее."},
+  {"bad": "She was seen leave the building.", "good": "She was seen to leave the building.", "why": "В пассиве после see появляется to."},
+  {"bad": "I saw him read a book when I came in.", "good": "I saw him reading a book when I came in.", "why": "Застал в процессе — нужна форма reading."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I saw her ___ the street and go into the shop.", "options": ["cross", "crossing", "to cross"], "a": 0, "why": "Действие целиком, до конца: cross."},
+  {"type": "choice", "q": "I heard him ___ in the shower.", "options": ["sing", "singing", "to sing"], "a": 1, "why": "Звук тянулся, действие в процессе: singing."},
+  {"type": "choice", "q": "We saw the accident ___ right in front of us.", "options": ["happen", "to happen", "happening"], "a": 0, "why": "Короткое действие целиком: saw it happen."},
+  {"type": "choice", "q": "When I came in, I ___ him writing a letter.", "options": ["saw", "see", "was seeing"], "a": 0, "why": "Глагол восприятия в past simple: I saw him writing."},
+  {"type": "gap", "q": "I watched him ___ (paint) the whole wall.", "a": ["paint"], "why": "Всё действие от начала до конца — инфинитив без to."},
+  {"type": "gap", "q": "When I looked out, I saw the children ___ (play) football.", "a": ["playing", "play"], "why": "Застал в процессе — обычно playing."},
+  {"type": "translate", "q": "Я видел, как она перешла улицу.", "a": ["i saw her cross the street", "i saw her cross the road", "i saw her crossing the street"], "why": "See somebody do: saw her cross, без to."},
+  {"type": "translate", "q": "Я слышал, как он играет на пианино.", "a": ["i heard him playing the piano", "i heard him play the piano"], "why": "Hear somebody doing: heard him playing."}
+ ]
+}

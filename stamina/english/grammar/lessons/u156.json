@@ -1,0 +1,72 @@
+{
+ "n": 156,
+ "level": "B2",
+ "module": "b-cond",
+ "title": "wish: пожелание и сожаление",
+ "en": "wish",
+ "summary": "Четыре конструкции с wish: о настоящем, о прошлом, с would и с could, плюс пожелание с существительным — и граница между wish и hope.",
+ "can_do": [
+  "Отличить сожаление wish от надежды hope.",
+  "Пожалеть о настоящем и о прошлом разными формами.",
+  "Выразить раздражение через wish + would.",
+  "Поздравить и пожелать удачи через wish + существительное."
+ ],
+ "theory": [
+  {
+   "h": "wish — это не «надеюсь»",
+   "p": "По-русски «желаю» и «надеюсь» близки, в английском это разные вещи. Hope — реальная надежда на будущее: I hope you pass. Wish — сожаление о том, чего нет: I wish I could help. Если ситуация возможна, берите hope; если нереальна, wish.",
+   "formula": "I hope you pass the exam. · I wish I could help you."
+  },
+  {
+   "h": "Четыре формы — четыре смысла",
+   "p": "Wish цепляется к разным временам и каждый раз означает своё. Прошлое простое — недовольство настоящим. Past perfect — сожаление о прошлом. Would — просьба изменить то, что раздражает. Could — нехватка умения или возможности.",
+   "table": {
+    "head": ["Форма после wish", "О чём", "Пример"],
+    "rows": [
+     ["past simple", "настоящее не такое, как хочется", "I wish I had more time."],
+     ["past perfect", "прошлое уже не изменить", "I wish I had called her."],
+     ["would + V1", "раздражение, просьба о перемене", "I wish it would stop raining."],
+     ["could + V1", "не хватает умения или шанса", "I wish I could swim."]
+    ]
+   }
+  },
+  {
+   "h": "wish + would: раздражение и надежда на перемену",
+   "p": "Wish с would говорят о чужих действиях или о вещах, которые происходят сами: I wish you would listen. I wish the bus would come. Про себя так не говорят — I wish I would... звучит странно, потому что себя мы контролируем.",
+   "formula": "I wish you would listen to me. · I wish it would stop raining. · I wish the bus would come."
+  },
+  {
+   "h": "wish + существительное: настоящее пожелание",
+   "p": "Отдельная модель: wish кому-то что-то. Здесь нет ни капли сожаления, это просто добрые слова. We wish you a merry Christmas. I wish you good luck. Обратите внимание: без предлога, существительное сразу после адресата.",
+   "formula": "I wish you good luck. · We wish you a happy birthday. · They wished us a safe journey."
+  },
+  {
+   "h": "If only — усиленный wish",
+   "p": "If only значит «если бы только» и работает по тем же правилам, что wish. Разница только в эмоции: if only звучит сильнее и чаще встречается в разговорной речи и литературе. Формы те же: past simple, past perfect, would, could.",
+   "formula": "If only I had more time! · If only you had told me! · If only it would stop raining!"
+  }
+ ],
+ "examples": [
+  {"en": "I wish I could play the piano.", "ru": "Жаль, что я не умею играть на пианино."},
+  {"en": "I wish it would stop raining.", "ru": "Скорей бы дождь кончился."},
+  {"en": "I wish I hadn't forgotten my passport.", "ru": "Жаль, что я забыл паспорт."},
+  {"en": "We wish you a happy birthday!", "ru": "Мы желаем тебе счастливого дня рождения!"},
+  {"en": "I hope you feel better soon.", "ru": "Надеюсь, ты скоро поправишься."}
+ ],
+ "traps": [
+  {"bad": "I wish I would have more time.", "good": "I wish I had more time.", "why": "О настоящем после wish — past simple, would тут лишний."},
+  {"bad": "I wish it will stop raining.", "good": "I wish it would stop raining.", "why": "Просьба о перемене идёт через would, а не will."},
+  {"bad": "I wish I can help you.", "good": "I wish I could help you.", "why": "После wish настоящее умение выражается через could."},
+  {"bad": "I hope I knew the answer.", "good": "I wish I knew the answer.", "why": "Hope — про реальное будущее, для сожаления нужно wish."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I wish I ___ play the piano.", "options": ["can", "could", "will"], "a": 1, "why": "Нехватка умения: wish + could."},
+  {"type": "choice", "q": "I wish it ___ raining.", "options": ["stops", "would stop", "will stop"], "a": 1, "why": "Просьба о перемене: wish + would + инфинитив."},
+  {"type": "choice", "q": "I wish I ___ so tired today.", "options": ["am not", "wasn't", "won't be"], "a": 1, "why": "Сожаление о настоящем: wish + past simple."},
+  {"type": "choice", "q": "We ___ you a happy birthday!", "options": ["wish", "hope", "want"], "a": 0, "why": "Пожелание с существительным: wish somebody something."},
+  {"type": "gap", "q": "I wish I ___ (know) what to do.", "a": ["knew"], "why": "После wish о настоящем — knew."},
+  {"type": "gap", "q": "I wish you ___ (not / make) so much noise.", "a": ["wouldn't make", "would not make"], "why": "Раздражение: wish + wouldn't + инфинитив."},
+  {"type": "translate", "q": "Жаль, что сейчас идёт дождь.", "a": ["i wish it wasn't raining", "i wish it weren't raining", "i wish it was not raining"], "why": "Сожаление о настоящем: I wish + past continuous."},
+  {"type": "translate", "q": "Надеюсь, ты хорошо проведёшь время.", "a": ["i hope you have a good time", "i hope you'll have a good time", "i hope you will have a good time"], "why": "Реальная надежда — hope, не wish."}
+ ]
+}

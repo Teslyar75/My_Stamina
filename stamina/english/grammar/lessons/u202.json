@@ -1,0 +1,80 @@
+{
+ "n": 202,
+ "level": "B2",
+ "module": "b-quant",
+ "title": "much, many, little, few",
+ "en": "much, many, little, few, a lot, plenty",
+ "summary": "Сколько именно: много, мало, немного и вполне достаточно. Учимся выбирать слово под тип существительного и под смысл фразы.",
+ "can_do": [
+  "Выбрать much или many по существительному.",
+  "Сказать «много» в утверждении через a lot of и plenty of.",
+  "Различить a little и little, a few и few по смыслу.",
+  "Согласовать глагол с количественным словом."
+ ],
+ "theory": [
+  {
+   "h": "Much и many: где их место",
+   "p": "Much идёт с неисчисляемым и требует единственного числа, many — с множественным. В утверждении оба звучат книжно, поэтому живые люди говорят a lot of. Зато в вопросах и в отрицаниях much и many совершенно нормальны.",
+   "table": {
+    "head": ["С чем", "Слово", "Глагол", "Пример"],
+    "rows": [
+     ["неисчисляемое", "much", "единственное", "How much water is there?"],
+     ["множественное", "many", "множественное", "How many people were there?"],
+     ["оба случая", "a lot of", "по числу", "A lot of people were there."]
+    ]
+   }
+  },
+  {
+   "h": "A lot of, lots of, plenty of",
+   "p": "A lot of и lots of — рабочая лошадка утвердительного предложения, они подходят и к неисчисляемому, и к множественному. Plenty of значит «более чем достаточно», с оттенком «хватит, не волнуйся»: there's plenty of time.",
+   "formula": "A lot of people came. · There's a lot of traffic today. · We have plenty of time."
+  },
+  {
+   "h": "Little и few без артикля — это «мало»",
+   "p": "Артикль a меняет не количество, а взгляд на него. A little time — немного, но хватает. Little time — мало, почти нет, и это плохо. Так же a few friends — несколько друзей, есть с кем поговорить, а few friends — друзей почти нет, и это грустно.",
+   "table": {
+    "head": ["С чем", "Немного, но хватает", "Мало, почти нет"],
+    "rows": [
+     ["неисчисляемое: time", "a little time", "little time"],
+     ["множественное: friends", "a few friends", "few friends"],
+     ["то же в разговоре", "a bit of time", "hardly any time"]
+    ]
+   }
+  },
+  {
+   "h": "Порядок слов и артикль",
+   "p": "Much и many без of идут прямо перед существительным, и артикль между ними не появляется: many people, much water. Если нужен определитель the, my или these, то появляется of: many of the people, much of the water. A lot of тоже стоит перед существительным, а сам much как наречие уезжает в конец: I don't like it much.",
+   "formula": "many people · many of the people · much of the water · I don't like it much."
+  },
+  {
+   "h": "Согласование с глаголом",
+   "p": "Глагол смотрит не на количественное слово, а на существительное после него. Much water is, many books are, a lot of money is, a lot of people are. Именно здесь чаще всего спотыкаются: a lot of people likes — неверно, потому что people множественное.",
+   "formula": "Much of the food was cold. · A lot of people were waiting. · Few of them know the truth."
+  }
+ ],
+ "examples": [
+  {"en": "How many students are in your group?", "ru": "Сколько студентов в вашей группе?"},
+  {"en": "We don't have much time left.", "ru": "У нас осталось немного времени."},
+  {"en": "A lot of people work from home now.", "ru": "Многие сейчас работают из дома."},
+  {"en": "There's plenty of food in the fridge.", "ru": "В холодильнике полно еды."},
+  {"en": "I have a few questions about the contract.", "ru": "У меня есть несколько вопросов по контракту."},
+  {"en": "Few people know this street.", "ru": "Мало кто знает эту улицу."}
+ ],
+ "traps": [
+  {"bad": "How much people came?", "good": "How many people came?", "why": "People множественное, поэтому many."},
+  {"bad": "I have a few time.", "good": "I have a little time.", "why": "Time неисчисляемое, с ним работает little, а не few."},
+  {"bad": "We have few money.", "good": "We have little money.", "why": "Money неисчисляемое: little money."},
+  {"bad": "A lot of people likes this song.", "good": "A lot of people like this song.", "why": "Глагол согласуется с people, а не с a lot."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "How ___ money do you need for the trip?", "options": ["many", "much", "few"], "a": 1, "why": "Money неисчисляемое, поэтому much."},
+  {"type": "choice", "q": "There are ___ cars in the city centre today.", "options": ["much", "a lot of", "a little"], "a": 1, "why": "Утверждение с множественным числом — a lot of."},
+  {"type": "choice", "q": "Hurry up, we have very ___ time.", "options": ["few", "little", "a few"], "a": 1, "why": "Time неисчисляемое, и времени почти нет — little."},
+  {"type": "choice", "q": "Only ___ people came to the lecture.", "options": ["a few", "a little", "much"], "a": 0, "why": "People множественное, и людей немного — a few."},
+  {"type": "gap", "q": "I have ___ (a few/a little) friends in this city, so I'm not lonely.", "a": ["a few"], "why": "Friends множественное, и друзей несколько — a few."},
+  {"type": "gap", "q": "There isn't ___ (much/many) sugar in the bowl.", "a": ["much"], "why": "Sugar неисчисляемое, в отрицании much."},
+  {"type": "gap", "q": "___ (many/much) of the students passed the exam.", "a": ["many"], "why": "Перед of с множественным числом — many."},
+  {"type": "translate", "q": "У нас мало времени.", "a": ["we have little time", "we have very little time", "we don't have much time"], "why": "Little time без артикля значит «почти нет»."},
+  {"type": "translate", "q": "В городе много туристов.", "a": ["there are a lot of tourists in the city", "there are lots of tourists in the city", "there are many tourists in the city"], "why": "Утверждение с множественным числом: a lot of tourists."}
+ ]
+}

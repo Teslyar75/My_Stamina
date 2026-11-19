@@ -1,0 +1,79 @@
+{
+ "n": 143,
+ "level": "B2",
+ "module": "b-modals",
+ "title": "must и can't: уверенность",
+ "en": "must and can't",
+ "summary": "Must be значит «иначе быть не может», can't be — «этого быть не может». Оба слова про логику, а не про приказ.",
+ "can_do": [
+  "Сделать уверенный вывод в настоящем через must be и can't be.",
+  "Сказать то же самое о прошлом через must have done и can't have done.",
+  "Отличить запрет mustn't от вывода can't.",
+  "Показать, насколько вы уверены, выбрав между must, may и can't."
+ ],
+ "theory": [
+  {
+   "h": "Логика вместо приказа",
+   "p": "В этом значении must не приказывает, а делает вывод. Вы видите факты и говорите, что из них следует. Can't в такой роли — зеркальное отражение: факты говорят, что это невозможно. Оба слова звучат уверенно, почти как «я готов поспорить».",
+   "formula": "The lights are on, so she must be at home. · He can't be serious."
+  },
+  {
+   "h": "Четыре формы вывода",
+   "p": "Настоящее и прошлое, «да» и «нет» дают четыре регулярные конструкции. В прошлом к модальному добавляется have и третья форма, и это единственное изменение.",
+   "table": {
+    "head": ["Ситуация", "Форма", "Пример"],
+    "rows": [
+     ["уверен, что да, сейчас", "must be / must do", "She must be at work."],
+     ["уверен, что нет, сейчас", "can't be / can't do", "She can't be at work today."],
+     ["уверен, что да, тогда", "must have done", "She must have left early."],
+     ["уверен, что нет, тогда", "can't have done", "She can't have left so early."]
+    ]
+   }
+  },
+  {
+   "h": "Почему can't, а не mustn't",
+   "p": "Mustn't — это запрет, а не отрицание вывода. Фраза с mustn't говорит «нельзя», фраза с can't говорит «не может быть». Русское «не должен» покрывает оба смысла, поэтому переводчику приходится выбирать по ситуации, а не по слову.",
+   "formula": "You mustn't park here. (запрет) · He can't be at home — the lights are off. (вывод)"
+  },
+  {
+   "h": "Уверенность бывает разной",
+   "p": "Шкала простая: must — почти уверен, may и might — половина на половину, can't — уверен, что нет. В разговоре эти слова часто работают как ставки: must be — девяносто процентов, might be — пятьдесят, can't be — ноль.",
+   "table": {
+    "head": ["Слово", "Насколько уверен", "Пример"],
+    "rows": [
+     ["must be", "почти наверняка да", "He must be tired."],
+     ["may be / might be", "возможно", "He might be tired."],
+     ["can't be", "уверен, что нет", "He can't be tired — he slept all day."]
+    ]
+   }
+  },
+  {
+   "h": "Вывод о прошлом",
+   "p": "Если факты относятся к прошлому, к модальному добавляется have и третья форма. Must have done — почти уверен, что так и было; can't have done — почти уверен, что этого не было. Ошибка новичков — оставить must be и подставить вчерашний день.",
+   "formula": "The ground is wet; it must have rained. · They can't have finished so quickly."
+  }
+ ],
+ "examples": [
+  {"en": "The lights are on, so she must be at home.", "ru": "Свет горит, значит, она дома."},
+  {"en": "He can't be serious — he's laughing.", "ru": "Не может быть, чтобы он говорил серьёзно, — он смеётся."},
+  {"en": "You must be exhausted after that flight.", "ru": "Должно быть, вы вымотаны после такого перелёта."},
+  {"en": "The ground is wet; it must have rained in the night.", "ru": "Земля мокрая — ночью, видимо, прошёл дождь."},
+  {"en": "They can't have finished so quickly.", "ru": "Не может быть, чтобы они так быстро закончили."}
+ ],
+ "traps": [
+  {"bad": "He mustn't be at home — the lights are off.", "good": "He can't be at home — the lights are off.", "why": "Mustn't — запрет; вывод «не может быть» передаётся через can't."},
+  {"bad": "She must be tired yesterday.", "good": "She must have been tired yesterday.", "why": "О прошлом нужно must have been, иначе фраза относится к сегодняшнему дню."},
+  {"bad": "It can be true — I'm absolutely sure.", "good": "It must be true — I'm absolutely sure.", "why": "Уверенное «да» — must; can об уверенности не говорит."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You've been driving all day — you ___ exhausted.", "options": ["can be", "must be", "mustn't be"], "a": 1, "why": "Уверенный вывод «да» — must be."},
+  {"type": "choice", "q": "She ___ be thirty — she looks much younger.", "options": ["mustn't", "can't", "shouldn't"], "a": 1, "why": "Уверенный вывод «нет» — can't."},
+  {"type": "choice", "q": "The window is broken. Someone ___ in during the night.", "options": ["must have got", "must get", "can't have got"], "a": 0, "why": "Вывод о прошлом — must have got."},
+  {"type": "choice", "q": "He ___ have said that — he wasn't even there.", "options": ["mustn't", "can't", "shouldn't"], "a": 1, "why": "Уверен, что этого не было, — can't have said."},
+  {"type": "gap", "q": "The phone is ringing at three in the morning. It ___ (must / be) a wrong number.", "a": ["must be"], "why": "Вывод в настоящем — must be."},
+  {"type": "gap", "q": "They ___ (can / not / finish) the work already — they started an hour ago.", "a": ["can't have finished", "cannot have finished"], "why": "Не верится, что закончили, — can't have finished."},
+  {"type": "gap", "q": "Her car isn't outside, so she ___ (must / go) out.", "a": ["must have gone"], "why": "Вывод о прошлом — must have gone."},
+  {"type": "translate", "q": "Должно быть, он забыл о встрече.", "a": ["he must have forgotten about the meeting", "he must have forgotten the meeting"], "why": "Уверенный вывод о прошлом — must have forgotten."},
+  {"type": "translate", "q": "Не может быть, чтобы она это сделала.", "a": ["she can't have done it", "she cannot have done it"], "why": "Уверенное «нет» о прошлом — can't have done."}
+ ]
+}

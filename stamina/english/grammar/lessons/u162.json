@@ -1,0 +1,74 @@
+{
+ "n": 162,
+ "level": "B2",
+ "module": "b-reported",
+ "title": "Косвенная речь (1)",
+ "en": "reported speech 1",
+ "summary": "Как пересказать чужие слова своими: сдвиг времён, разница say и tell, замена слов времени и места — и когда сдвиг можно не делать.",
+ "can_do": [
+  "Пересказать утверждение в косвенной речи.",
+  "Сдвинуть время на шаг назад, где это нужно.",
+  "Выбрать между say и tell по наличию адресата.",
+  "Заменить now, today, tomorrow и here при пересказе."
+ ],
+ "theory": [
+  {
+   "h": "Что происходит при пересказе",
+   "p": "Прямая речь звучит в кавычках и в том времени, в котором человек говорил. В косвенной речи кавычки исчезают, появляется связка said или told, а время обычно отступает на шаг назад, потому что момент говорения уже в прошлом.",
+   "formula": "\"I am tired,\" he said. → He said (that) he was tired."
+  },
+  {
+   "h": "Шаг назад по времени",
+   "p": "Сдвиг не выдуман, у него простая логика: мы смотрим на слова из прошлого. Поэтому настоящее становится прошедшим, прошедшее — перфектом, а будущее — would. Сокращения и модальные сдвигаются по этой же лестнице.",
+   "table": {
+    "head": ["Прямая речь", "Косвенная", "Пример"],
+    "rows": [
+     ["present simple", "past simple", "works → worked"],
+     ["present continuous", "past continuous", "is working → was working"],
+     ["past simple", "past perfect", "worked → had worked"],
+     ["present perfect", "past perfect", "has worked → had worked"],
+     ["will", "would", "will work → would work"],
+     ["can / may / must", "could / might / had to", "can → could"]
+    ]
+   }
+  },
+  {
+   "h": "say и tell",
+   "p": "Say не требует адресата: he said that... Tell требует, кому именно сказали: he told me that... Если адресата нет, tell звучит незаконченно. И ещё мелочь: tell не берёт предлог to — сразу местоимение.",
+   "formula": "He said (that) he was busy. · He told me (that) he was busy. · He told me the news."
+  },
+  {
+   "h": "Слова времени и места переезжают",
+   "p": "Вместе со временем меняются указатели на момент и место. Now становится then, today — that day, tomorrow — the next day, yesterday — the day before. Here превращается в there, this — в that. В пересказе на следующий день эти замены обязательны, иначе слушатель запутается.",
+   "formula": "now → then · today → that day · tomorrow → the next day · yesterday → the day before · here → there"
+  },
+  {
+   "h": "Когда сдвиг не нужен",
+   "p": "Если факт до сих пор верен или пересказ идёт сразу, время можно оставить. He said he lives in London — он и сейчас там живёт. Также не сдвигают past perfect и would: у них уже нет следующей ступени вниз.",
+   "formula": "He said he lives in London. (до сих пор так) · He said he had finished. (уже перфект, не двигаем)"
+  }
+ ],
+ "examples": [
+  {"en": "He said that he was tired.", "ru": "Он сказал, что устал."},
+  {"en": "She told me she would call me later.", "ru": "Она сказала мне, что позвонит позже."},
+  {"en": "They said they had seen the film before.", "ru": "Они сказали, что уже видели этот фильм."},
+  {"en": "He said he could not come that day.", "ru": "Он сказал, что не сможет прийти в тот день."},
+  {"en": "She said she lives in London.", "ru": "Она сказала, что живёт в Лондоне."}
+ ],
+ "traps": [
+  {"bad": "He said me that he was tired.", "good": "He told me that he was tired.", "why": "Say не берёт адресата; с адресатом нужен tell."},
+  {"bad": "She told that she would come.", "good": "She said that she would come.", "why": "Tell требует адресата: told me / told us."},
+  {"bad": "He said he will come tomorrow.", "good": "He said he would come the next day.", "why": "При пересказе will сдвигается в would, tomorrow — в the next day."},
+  {"bad": "He told to me the truth.", "good": "He told me the truth.", "why": "После tell предлог to не нужен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He ___ me he was busy.", "options": ["said", "told", "spoke"], "a": 1, "why": "Есть адресат me — нужен told."},
+  {"type": "choice", "q": "She said she ___ come later.", "options": ["will", "would", "wants"], "a": 1, "why": "Will сдвигается в would."},
+  {"type": "choice", "q": "They said they ___ the film before.", "options": ["saw", "had seen", "have seen"], "a": 1, "why": "Past simple при пересказе становится past perfect."},
+  {"type": "choice", "q": "He said he ___ finish the report that day.", "options": ["can", "could", "will"], "a": 1, "why": "Can сдвигается в could."},
+  {"type": "gap", "q": "He said (that) he ___ (be) tired.", "a": ["was"], "why": "Present simple becomes past simple: was."},
+  {"type": "gap", "q": "She said she ___ (call) me later.", "a": ["would call"], "why": "Will call → would call."},
+  {"type": "translate", "q": "Он сказал, что опоздает.", "a": ["he said he would be late", "he said that he would be late"], "why": "Will be → would be, say без адресата."},
+  {"type": "translate", "q": "Она сказала мне, что не любит кофе.", "a": ["she told me she didn't like coffee", "she told me that she didn't like coffee"], "why": "Tell + адресат, present simple сдвигается в past."}
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "n": 179,
+ "level": "B2",
+ "module": "b-ing",
+ "title": "to, for, so that: зачем",
+ "en": "to, for, so that",
+ "summary": "Три способа ответить на вопрос «зачем»: инфинитив с to, предлог for с существительным и союз so that с целым предложением.",
+ "can_do": [
+  "Объяснить цель действия через to + инфинитив.",
+  "Сказать, для чего нужен предмет, через for + -ing.",
+  "Связать две части фразы союзом so that, когда действуют разные люди.",
+  "Выбрать между to и for, не переводя русское «чтобы» наугад."
+ ],
+ "theory": [
+  {
+   "h": "Самое частое «зачем» — to + инфинитив",
+   "p": "Если цель и действующее лицо совпадают, английский обходится инфинитивом с to. Никакого «чтобы» переводить не нужно: русская конструкция целиком превращается в to + глагол.",
+   "formula": "I went out to buy bread. · She called to say sorry. · We stopped to rest."
+  },
+  {
+   "h": "for — только перед существительным",
+   "p": "После for ставят существительное или -ing, но не инфинитив. Фраза for to buy — типичная калька с русского. Если очень нужен глагол, выбирайте to либо перестраивайте предложение.",
+   "table": {
+    "head": ["Форма", "Пример", "Когда так говорят"],
+    "rows": [
+     ["to + инфинитив", "I came to see you.", "цель действия"],
+     ["for + существительное", "I came for the meeting.", "цель — предмет или событие"],
+     ["for + -ing", "This knife is for cutting bread.", "назначение предмета"],
+     ["for + -ing (не про человека)", "This room is for smoking.", "для чего место"]
+    ]
+   }
+  },
+  {
+   "h": "so that — когда действуют разные люди",
+   "p": "Если во второй части появляется своё подлежащее, инфинитив уже не подходит. Тогда ставят so that, а дальше обычное предложение. Часто рядом стоит can, could, will или would — они показывают, что цель ещё впереди.",
+   "formula": "I left early so that I could catch the train. · Speak louder so that everyone can hear. · She wrote it down so that she wouldn't forget."
+  },
+  {
+   "h": "in order to и so as to — то же, но аккуратнее",
+   "p": "Эти варианты звучат формальнее и удобны, когда нужно поставить отрицание. Минус ставится перед to: in order not to, so as not to. В разговорной речи чаще обходятся простым to.",
+   "formula": "He left early in order to catch the train. · She whispered so as not to wake the baby. · I checked twice in order not to make a mistake."
+  },
+  {
+   "h": "Вопрос «зачем» и короткий ответ",
+   "p": "Спросить о цели можно через What ... for? или What's this for? Ответ на первый вопрос начинается с to, на второй — с for. Путать их не страшно, но короткий ответ должен попадать в форму вопроса.",
+   "formula": "What did you do that for? — To help you. · What's this button for? — It's for saving the file."
+  }
+ ],
+ "examples": [
+  {"en": "I went out to buy some bread.", "ru": "Я вышел купить хлеба."},
+  {"en": "She came for the interview.", "ru": "Она пришла на собеседование."},
+  {"en": "This knife is for cutting bread.", "ru": "Этот нож — для хлеба."},
+  {"en": "I'll speak slowly so that you can understand.", "ru": "Я буду говорить медленно, чтобы вы поняли."},
+  {"en": "He left early in order not to be late.", "ru": "Он ушёл рано, чтобы не опоздать."},
+  {"en": "What's this key for?", "ru": "Для чего этот ключ?"}
+ ],
+ "traps": [
+  {"bad": "I came here for to see you.", "good": "I came here to see you.", "why": "For не соединяется с инфинитивом: нужен просто to."},
+  {"bad": "I went to the shop for buying milk.", "good": "I went to the shop to buy milk.", "why": "For + -ing — про назначение предмета, а не про цель похода."},
+  {"bad": "I spoke slowly so that everyone understands me.", "good": "I spoke slowly so that everyone could understand me.", "why": "В so that о прошлом обычно ставят could или would."},
+  {"bad": "She left early for not miss the train.", "good": "She left early so as not to miss the train.", "why": "Отрицательная цель строится через not to, а не через for not."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I went out ___ some bread.", "options": ["for buy", "to buy", "for buying"], "a": 1, "why": "Цель действия — to + инфинитив: to buy."},
+  {"type": "choice", "q": "This knife is for ___ bread.", "options": ["cut", "cutting", "to cut"], "a": 1, "why": "Назначение предмета — for + -ing: for cutting."},
+  {"type": "choice", "q": "Speak louder ___ everyone can hear you.", "options": ["for", "so that", "to"], "a": 1, "why": "Дальше идёт целое предложение с подлежащим, значит so that."},
+  {"type": "choice", "q": "She left early ___ miss the train.", "options": ["in order not to", "for not", "so as not"], "a": 0, "why": "Отрицательная цель: in order not to + глагол."},
+  {"type": "gap", "q": "I'm calling ___ (ask) about the flat.", "a": ["to ask"], "why": "Цель звонка — to + инфинитив: to ask."},
+  {"type": "gap", "q": "He saved money ___ (buy) a car.", "a": ["to buy"], "why": "Цель и действующее лицо совпадают, поэтому to buy."},
+  {"type": "gap", "q": "This machine is for ___ (wash) bottles.", "a": ["washing"], "why": "После for в значении назначения нужна форма washing."},
+  {"type": "translate", "q": "Я пришёл, чтобы поговорить с тобой.", "a": ["i came to talk to you", "i came to speak to you"], "why": "Цель — to + инфинитив: came to talk."},
+  {"type": "translate", "q": "Я говорю громко, чтобы все слышали.", "a": ["i speak loudly so that everyone can hear", "i speak loudly so that everyone can hear me", "i'm speaking loudly so that everyone can hear"], "why": "Разные подлежащие — союз so that плюс can."}
+ ]
+}

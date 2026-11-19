@@ -1,0 +1,74 @@
+{
+ "n": 186,
+ "level": "B2",
+ "module": "b-nouns",
+ "title": "a/an и some с исчисляемыми",
+ "en": "countable nouns with a/an and some",
+ "summary": "Когда перед существительным стоит a или an, когда some, а когда any: простая логика количества для начинающих фраз вроде «она врач» и «у меня есть вопросы».",
+ "can_do": [
+  "Поставить a или an перед исчисляемым существительным в единственном числе.",
+  "Выбрать some для множественного числа и неисчисляемых.",
+  "Различить some и any в утверждении, вопросе и отрицании.",
+  "Употреблять a в профессиях и в значении «за один раз»."
+ ],
+ "theory": [
+  {
+   "h": "a/an — один из многих",
+   "p": "Артикль a или an ставится перед исчисляемым существительным в единственном числе, когда речь об одном представителе группы, а не о конкретном предмете. Выбор между a и an зависит только от звука в начале следующего слова.",
+   "formula": "a book · an apple · a university · an hour"
+  },
+  {
+   "h": "some — несколько или немного",
+   "p": "Some заменяет артикль там, где штук несколько или вещество измеряется массой. Оно работает и с исчисляемыми во множественном числе, и с неисчисляемыми, и чаще всего встречается в утверждениях.",
+   "table": {
+    "head": ["Тип существительного", "Один / одна", "Несколько / немного"],
+    "rows": [
+     ["исчисляемое в единственном", "a book", "не говорят some book"],
+     ["исчисляемое во множественном", "не говорят a books", "some books"],
+     ["неисчисляемое", "не говорят a water", "some water"]
+    ]
+   }
+  },
+  {
+   "h": "any — там, где нет уверенности",
+   "p": "В вопросах и отрицаниях вместо some обычно стоит any. Но в утверждении any значит «любой», и это уже совсем другой смысл: take any seat — садись на любое место.",
+   "formula": "I don't have any money. · Do you have any questions? · Take any seat."
+  },
+  {
+   "h": "some в вопросах — это вежливость",
+   "p": "Если вы предлагаете или просите и ждёте ответа «да», в вопросе остаётся some. Would you like some tea и Can I have some water звучат как предложение и просьба, а не как экзаменационный вопрос.",
+   "formula": "Would you like some coffee? · Can I have some water? · Could you give me some advice?"
+  },
+  {
+   "h": "a в профессиях и в значении «за раз»",
+   "p": "Перед названием профессии или роли артикль обязателен: she is a doctor, he works as a driver. Ещё a появляется в выражениях частоты и скорости, где русское «в» переводится через a или an.",
+   "formula": "She's an engineer. · twice a week · 60 kilometres an hour · once a year"
+  }
+ ],
+ "examples": [
+  {"en": "She's an engineer at a small company.", "ru": "Она инженер в небольшой компании."},
+  {"en": "I need a new phone.", "ru": "Мне нужен новый телефон."},
+  {"en": "There are some apples in the fridge.", "ru": "В холодильнике есть несколько яблок."},
+  {"en": "We don't have any milk.", "ru": "У нас нет молока."},
+  {"en": "Would you like some tea?", "ru": "Хотите чаю?"},
+  {"en": "I go to the gym twice a week.", "ru": "Я хожу в зал два раза в неделю."}
+ ],
+ "traps": [
+  {"bad": "She is engineer.", "good": "She is an engineer.", "why": "Перед профессией в единственном числе нужен артикль a или an."},
+  {"bad": "I need some book about it.", "good": "I need a book about it.", "why": "Some не ставится с исчисляемым в единственном числе."},
+  {"bad": "I have a good news.", "good": "I have some good news.", "why": "News неисчисляемое: some, а не a."},
+  {"bad": "Do you have some questions?", "good": "Do you have any questions?", "why": "В обычном вопросе используется any, а не some."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She's ___ engineer.", "options": ["a", "an", "some"], "a": 1, "why": "Engineer начинается с гласного звука, поэтому an."},
+  {"type": "choice", "q": "I need ___ new phone.", "options": ["a", "an", "some"], "a": 0, "why": "Исчисляемое в единственном числе: a new phone."},
+  {"type": "choice", "q": "There are ___ apples on the table.", "options": ["a", "an", "some"], "a": 2, "why": "Множественное число в утверждении: some apples."},
+  {"type": "choice", "q": "Would you like ___ coffee?", "options": ["any", "some", "a"], "a": 1, "why": "Предложение с ожиданием «да»: some coffee."},
+  {"type": "choice", "q": "Do you have ___ questions?", "options": ["some", "any", "a"], "a": 1, "why": "Обычный вопрос — any questions."},
+  {"type": "gap", "q": "He is ___ honest man.", "a": ["an"], "why": "Слово honest начинается с гласного звука: an honest man."},
+  {"type": "gap", "q": "We bought ___ bread on the way home.", "a": ["some"], "why": "Bread неисчисляемое, в утверждении — some."},
+  {"type": "gap", "q": "I go to the gym twice ___ week.", "a": ["a"], "why": "Частота: twice a week."},
+  {"type": "translate", "q": "Она врач.", "a": ["she is a doctor", "she's a doctor"], "why": "Профессия с артиклем: she is a doctor."},
+  {"type": "translate", "q": "У меня есть несколько вопросов.", "a": ["i have some questions", "i've got some questions"], "why": "Множественное число в утверждении: some questions."}
+ ]
+}
