@@ -207,6 +207,10 @@ class GermanGrammarCatalog:
             self._open = OpenSourceBank()
         return self._open
 
+    def paint_title_flag(self, slot) -> None:
+        from stamina.grammar_ui.flags import paint_title_flag
+        paint_title_flag(slot, "de")
+
     def sources(self) -> list[SourceTab]:
         tabs = [COURSE_TAB]
         try:

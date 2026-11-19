@@ -20,6 +20,10 @@ class EnglishGrammarCatalog:
     def __init__(self, ctx) -> None:
         self.ctx = ctx
 
+    def paint_title_flag(self, slot) -> None:
+        from stamina.grammar_ui.flags import paint_title_flag
+        paint_title_flag(slot, "gb")
+
     def sources(self):
         return []
 
