@@ -598,10 +598,64 @@ class Cockpit(tk.Tk):
             except tk.TclError:
                 pass
 
+
+    def _exit_screen_focus(self, screen_name: str | None) -> None:
+        """Снять фокус-режим текущего отсека и восстановить шапку."""
+        if not screen_name:
+            return
+        scr = self.screens.get(screen_name)
+        if scr is None:
+            return
+        if getattr(scr, "focus_active", lambda: False)():
+            if hasattr(scr, "pages"):
+                page = scr.pages.get(getattr(scr, "current", None))
+                if page is not None and hasattr(page, "toggle_focus"):
+                    try:
+                        page.toggle_focus(False, remember=False)
+                    except TypeError:
+                        page.toggle_focus(False)
+                    return
+            if hasattr(scr, "toggle_focus"):
+                try:
+                    scr.toggle_focus(False, remember=False)
+                except TypeError:
+                    scr.toggle_focus(False)
+                return
+        if getattr(scr, "in_focus", lambda: False)():
+            try:
+                scr.toggle_focus(False, remember=False)
+            except TypeError:
+                scr.toggle_focus(False)
+
+    def _handle_focus_escape(self) -> bool:
+        """Esc в фокусе: грамматика — двойной Esc; сканер и документы — один Esc."""
+        scr = self.screens.get(self.current)
+        if scr is None:
+            return False
+        if self.current == english_hook.KEY and getattr(scr, "focus_active", lambda: False)():
+            page = scr.pages.get(scr.current) if hasattr(scr, "pages") else None
+            if page is not None and hasattr(page, "handle_focus_escape"):
+                return bool(page.handle_focus_escape())
+            if page is not None and hasattr(page, "toggle_focus"):
+                page.toggle_focus(False)
+                return True
+        if self.current == languages_hook.KEY and getattr(scr, "focus_active", lambda: False)():
+            if hasattr(scr, "handle_focus_escape"):
+                return bool(scr.handle_focus_escape())
+            if hasattr(scr, "toggle_focus"):
+                scr.toggle_focus(False)
+                return True
+        if self.current == docs_hook.KEY and getattr(scr, "in_focus", lambda: False)():
+            scr.toggle_focus(False)
+            return True
+        return False
+
     def show(self, name: str) -> None:
         if name == self.current:
             self._only_screen(name)      # экран уже открыт — просто убираем чужие
             return
+        # Смена отсека: выйти из фокуса/зенида, иначе шапка останется скрытой
+        self._exit_screen_focus(self.current)
         bridge: Bridge = self.screens["bridge"]
         if self.current == "bridge" and bridge.state in ("run", "ready") and name != "bridge":
             bridge.pause(tr_("Пауза — вы перешли в другой раздел"))
@@ -1367,16 +1421,8 @@ class Cockpit(tk.Tk):
         if e.keysym == "Escape" and vc is not None and vc.active():
             vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
             return "break"
-        if e.keysym == "Escape" and self.current == english_hook.KEY:
-            scr = self.screens.get(english_hook.KEY)
-            if scr is not None and getattr(scr, "focus_active", lambda: False)():
-                scr.pages[scr.current].toggle_focus(False)   # Esc в фокус-режиме — только выход из него
-                return "break"
-        if e.keysym == "Escape" and self.current == docs_hook.KEY:
-            scr = self.screens.get(docs_hook.KEY)
-            if scr is not None and getattr(scr, "in_focus", lambda: False)():
-                scr.toggle_focus(False)      # Документы: Esc — выход из фокус-режима
-                return "break"
+        if e.keysym == "Escape" and self._handle_focus_escape():
+            return "break"
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del

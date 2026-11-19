@@ -18,7 +18,10 @@ from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
 from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
 
-from stamina.english.ui import L, ScrollFrame, entry
+from stamina.english.ui import FocusMode, L, ScrollFrame, entry
+from stamina.grammar_ui.focus import (
+    EscDouble, is_grammar_focus_key, session_wanted, set_session_wanted,
+)
 
 LIST_CHUNK = 8
 LESSON_CHUNK = 2
@@ -47,6 +50,8 @@ class GrammarSpread(tk.Frame):
         self._pumping = False
         self._table_id: str | None = None
         self._source_buttons: dict[str, HudButton] = {}
+        self._focus = None          # zen/фокус: запись скрытого хрома (ui.FocusMode)
+        self._esc_double = EscDouble()
         self._build_skeleton()
 
     # -- оболочка --------------------------------------------------------------
@@ -56,11 +61,23 @@ class GrammarSpread(tk.Frame):
 
         head = tk.Frame(self, bg=BG)
         head.grid(row=0, column=0, sticky="ew", padx=px(14), pady=(px(8), 0))
-        L(head, self._title, fg=AMBER, size=14, bold=True).pack(side=tk.LEFT)
+        # Кластер заголовка: [флаг | ГРАММАТИКА | ⛶]. Флаг подставляет каталог/PR флагов.
+        cluster = tk.Frame(head, bg=BG)
+        cluster.pack(side=tk.LEFT)
+        self._title_cluster = cluster
+        self._flag_slot = tk.Frame(cluster, bg=BG)
+        self._flag_slot.pack(side=tk.LEFT)
+        self._title_lbl = L(cluster, self._title, fg=AMBER, size=14, bold=True)
+        self._title_lbl.pack(side=tk.LEFT, padx=(px(4), 0))
+        self.btn_focus = HudButton(
+            cluster, "⛶", self.toggle_focus,
+            height=22, font_size=11, color=AMBER, width=28)
+        self.btn_focus.pack(side=tk.LEFT, padx=(px(4), 0))
         self._book_lbl = L(head, "", fg=MUTED, size=9)
         self._book_lbl.pack(side=tk.LEFT, padx=(px(10), 0))
         self._done_lbl = L(head, "", fg=MUTED, size=9)
         self._done_lbl.pack(side=tk.RIGHT)
+        self._fill_flag_slot()
 
         self._tabs_host = tk.Frame(self, bg=BG)
         self._tabs_host.grid(row=1, column=0, sticky="ew", padx=px(14), pady=(px(2), 0))
@@ -195,11 +212,104 @@ class GrammarSpread(tk.Frame):
         self._rebuild_left_extra()
 
     def destroy(self) -> None:
+        self.toggle_focus(False, remember=False)
         self._cancel("list")
         self._cancel("lesson")
         self._cancel("pump")
         self._pumping = False
         super().destroy()
+
+    # -- зенид / фокус (Ctrl+O, O/Щ; выход — та же клавиша или двойной Esc) --------
+    def in_focus(self) -> bool:
+        return self._focus is not None
+
+    def toggle_focus(self, on: bool | None = None, *, remember: bool = True) -> None:
+        """Показать только панель грамматики на всё окно или вернуть хром как был."""
+        on = (self._focus is None) if on is None else on
+        if on and self._focus is None:
+            self._ensure_lesson_for_focus()
+            try:
+                self.update_idletasks()
+            except tk.TclError:
+                pass
+            self._focus = FocusMode(self)
+            self._esc_double.reset()
+        elif not on and self._focus is not None:
+            f, self._focus = self._focus, None
+            f.restore()
+            self._esc_double.reset()
+        if remember:
+            set_session_wanted(self._focus is not None)
+        self._sync_focus_button()
+
+    def _sync_focus_button(self) -> None:
+        """Иконка ⛶ сразу справа от «ГРАММАТИКА»; в зениде скрыта, выход — клавишами."""
+        btn = getattr(self, "btn_focus", None)
+        if btn is None:
+            return
+        try:
+            if self._focus is not None:
+                btn.pack_forget()
+            else:
+                btn.set_active(False)
+                if not btn.winfo_manager():
+                    kw = dict(side=tk.LEFT, padx=(px(4), 0))
+                    title = getattr(self, "_title_lbl", None)
+                    if title is not None and title.winfo_manager():
+                        kw["after"] = title
+                    btn.pack(**kw)
+        except tk.TclError:
+            pass
+
+    def _fill_flag_slot(self) -> None:
+        """Слот слева от названия: каталог может нарисовать флаг страны. По умолчанию пуст."""
+        slot = getattr(self, "_flag_slot", None)
+        if slot is None:
+            return
+        for w in slot.winfo_children():
+            w.destroy()
+        painter = getattr(self.catalog, "paint_title_flag", None)
+        if callable(painter):
+            painter(slot)
+
+    def apply_session_focus(self) -> None:
+        """Вернуть зенид, если в этой сессии он уже был включён."""
+        if session_wanted() and self._focus is None:
+            self.toggle_focus(True, remember=False)
+
+    def _ensure_lesson_for_focus(self) -> None:
+        """Вход без открытого урока — открыть выбранный или первый в уровне."""
+        if self._data is not None or self._table_id is not None:
+            return
+        uid = self._unit
+        if uid is None:
+            first = getattr(self.catalog, "first_unit", None)
+            if callable(first):
+                try:
+                    uid = first(self._level)
+                except Exception:  # noqa: BLE001
+                    uid = None
+        if uid is not None:
+            self._open_unit(uid)
+
+    def handle_focus_escape(self) -> bool:
+        """Двойной Esc выходит из зенида. Первый Esc только запоминается. Всегда перехватывается."""
+        if self._focus is None:
+            return False
+        if self._esc_double.tap():
+            self.toggle_focus(False)
+        return True
+
+    def on_key(self, e) -> str | None:
+        """Горячие клавиши зенида, только пока эта страница грамматики на экране."""
+        ks = getattr(e, "keysym", "") or ""
+        if ks == "Escape" and self._focus is not None:
+            self.handle_focus_escape()
+            return "break"
+        if is_grammar_focus_key(e):
+            self.toggle_focus()
+            return "break"
+        return None
 
     def _flush_pending(self) -> None:
         """Для тестов: выгрузить очередь потоков и все after-порции."""
