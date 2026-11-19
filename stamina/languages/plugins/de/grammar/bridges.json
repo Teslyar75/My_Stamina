@@ -1,0 +1,346 @@
+{
+ "version": 1,
+ "language": "de",
+ "bridges": {
+  "a1-01-alphabet-laute": {
+   "can_do": "Читаю вслух немецкие слова: умлауты, ß, ch, долгие и краткие гласные.",
+   "bridge": "В русском и украинском нет умлаутов ä, ö, ü и буквы ß — это новые знаки, а не «варианты» знакомых букв. Немецкое ch тоже двойное: твёрдое [x] после a/o/u и мягкое [ç] после i/e.",
+   "trap": "Не читать ei как «эй», а ie как «ей»: ei = [ai] (mein), ie = [i:] (Bier) — здесь привычка из русского мешает."
+  },
+  "a1-02-personalpronomen-sein": {
+   "can_do": "Представляюсь: кто я, откуда, как дела — Ich bin …, Ich komme aus …",
+   "bridge": "В русском и украинском глагол «быть» в настоящем опускается («я студент»), в немецком sein обязателен: Ich bin Student.",
+   "trap": "er/sie/es → ist, а не sind; du bist и ihr seid — не путать с вежливым Sie sind."
+  },
+  "a1-03-praesens-regelmaessig": {
+   "can_do": "Спрягаю правильные глаголы в Präsens: ich mache, du machst, er macht.",
+   "bridge": "Немецкое спряжение ровнее русского: одна основа плюс окончания. Но после d/t и n/m появляется -e-: du arbeitest, er arbeitet.",
+   "trap": "3-е лицо ед. ч. — только -t: er macht (не «machet»); не добавлять лишнюю -e в ich-форме."
+  },
+  "a1-04-praesens-starke": {
+   "can_do": "Узнаю сильные глаголы с чередованием: du fährst, er liest, du nimmst.",
+   "bridge": "В русском чередование гласной тоже есть (писать — пишешь), так что навык знакомый. Но немецкое чередование затрагивает только 2-е и 3-е лицо ед. числа.",
+   "trap": "ich fahre без умлаута, du fährst и er fährt с ним — не переносить умлаут на все формы."
+  },
+  "a1-05-haben-modalverben": {
+   "can_do": "Говорю о желании и обязанности: ich kann, ich muss, du darfst, ich möchte.",
+   "bridge": "Модальный глагол занимает 2-е место, смысловой уходит в конец: Ich muss heute arbeiten. В русском порядок свободнее, поэтому рамку надо специально тренировать.",
+   "trap": "Не «ich muss arbeiten heute»; после модального не ставится zu."
+  },
+  "a1-06-genus": {
+   "can_do": "Определяю род по окончаниям: -ung/-heit → die, -er/-ling → der, -chen/-lein → das.",
+   "bridge": "Три рода есть и в русском, и в украинском, но совпадают они не всегда: der Tisch (стол), die Tür (дверь), das Fenster (окно).",
+   "trap": "Не переводить род с русского: das Mädchen (девочка), das Buch (книга), der Löffel (ложка)."
+  },
+  "a1-07-plural": {
+   "can_do": "Образую множественное число по пяти моделям и проверяю слово по словарю.",
+   "bridge": "В русском мн. число почти всегда -ы/-и; в немецком пять моделей и умлаут: der Apfel → die Äpfel, das Auto → die Autos.",
+   "trap": "Не добавлять -s по привычке: der Mann → die Männer, die Frau → die Frauen."
+  },
+  "a1-08-artikel": {
+   "can_do": "Ставлю der/die/das и ein/eine в Nominativ и Akkusativ.",
+   "bridge": "Артикля нет ни в русском, ни в украинском — это главная новая привычка. Артикль несёт род, число и падеж, поэтому его нельзя «пропустить».",
+   "trap": "ein → einen в Akkusativ мужского рода: Ich sehe einen Mann, а не «ein Mann»."
+  },
+  "a1-09-nominativ-akkusativ": {
+   "can_do": "Различаю подлежащее и прямое дополнение по форме артикля и местоимения.",
+   "bridge": "В русском падеж виден по окончанию (стол — стол), в немецком — по артиклю: der Mann → den Mann, er → ihn.",
+   "trap": "После haben, sehen, brauchen, es gibt нужен Akkusativ: Ich habe den Schlüssel."
+  },
+  "a1-10-negation": {
+   "can_do": "Отрицаю через nicht или kein и ставлю nicht на правильное место.",
+   "bridge": "В русском одно «не»; в немецком два слова: kein перед существительным с ein или без артикля, nicht — для всего остального.",
+   "trap": "Не «Ich habe nicht ein Auto»: правильно Ich habe kein Auto. И nicht стоит перед прилагательным, а не в конце."
+  },
+  "a1-11-possessiv": {
+   "can_do": "Говорю «мой, твой, наш» и склоняю: mein Vater, meinen Vater.",
+   "bridge": "mein/dein/sein склоняются как ein, логика та же, что у артикля. В русском «мой» тоже меняется по падежам — навык переносится.",
+   "trap": "euer теряет -e-: eure Mutter, euren Vater; ihr — и «её», и «их», смотрите на глагол и контекст."
+  },
+  "a1-12-satzstellung-v2": {
+   "can_do": "Ставлю глагол на 2-е место, даже если предложение начинается с обстоятельства.",
+   "bridge": "Русский порядок слов свободный, немецкий — жёсткий: Morgen fahre ich nach Berlin. На 1-м месте может быть что угодно, глагол всё равно второй.",
+   "trap": "Если впереди не подлежащее, подлежащее уходит за глагол: Gestern habe ich gearbeitet."
+  },
+  "a1-13-fragen": {
+   "can_do": "Задаю общий и W-вопрос: Kommst du? Wann kommst du?",
+   "bridge": "В русском вопрос часто только интонация; в немецком обязательна перестановка: глагол на 1-м месте или W-слово плюс глагол.",
+   "trap": "Wo wohnst du? — не «Wo du wohnst?»: такой порядок уже придаточное предложение."
+  },
+  "a1-14-trennbare-verben": {
+   "can_do": "Разделяю приставки: ich stehe um 7 auf, ich rufe dich an.",
+   "bridge": "В русском приставка остаётся в слове; в немецком ударная приставка уходит в конец: aufstehen → ich stehe … auf.",
+   "trap": "В главном предложении приставка в конце, а в придаточном и с модальным глаголом — вместе: weil ich aufstehe, ich muss aufstehen."
+  },
+  "a1-15-praepositionen": {
+   "can_do": "Выбираю Akkusativ (durch, für, gegen, ohne, um) или Dativ (aus, bei, mit, nach, seit, von, zu).",
+   "bridge": "В русском падеж после предлога тоже надо запоминать. Здесь помогают два коротких списка: DOGFU и «aus-bei-mit-nach-seit-von-zu».",
+   "trap": "mit всегда с Dativ: mit dem Bus, не «mit den Bus» — русское «на автобусе» путает."
+  },
+  "a1-16-wechselpraepositionen": {
+   "can_do": "Выбираю падеж по вопросу: Wohin? → Akkusativ, Wo? → Dativ.",
+   "bridge": "Логика совпадает с русской: «куда?» → винительный (ins Kino), «где?» → предложный (im Kino).",
+   "trap": "in + das = ins, in + dem = im; an + das = ans, an + dem = am."
+  },
+  "a1-17-perfekt": {
+   "can_do": "Рассказываю о прошлом: Ich habe gemacht; Ich bin gefahren.",
+   "bridge": "В русском одно прошедшее время; в немецкой речи — Perfekt: haben или sein плюс Partizip II. Движение и смена состояния берут sein.",
+   "trap": "Partizip II стоит в конце: Ich habe das Buch gelesen, а не «Ich habe gelesen das Buch»."
+  },
+  "a1-18-zeitangaben": {
+   "can_do": "Говорю о времени: am Montag, um 8 Uhr, im Juli, seit einem Jahr.",
+   "bridge": "В русском «в понедельник» и «в июле» — один предлог; в немецком am (день), im (месяц), um (час).",
+   "trap": "seit + Dativ — длительность (seit einem Jahr), vor + Dativ — «тому назад» (vor einem Jahr)."
+  },
+  "a2-01-dativ": {
+   "can_do": "Даю, помогаю, благодарю: Ich helfe dem Mann, ich danke dir.",
+   "bridge": "Dativ — это русский дательный: логика совпадает, меняются только формы артикля (dem/der/dem/den + n).",
+   "trap": "Dativ Plural получает -n: mit den Kindern; helfen, danken, gehören требуют Dativ, а не Akkusativ."
+  },
+  "a2-02-genitiv": {
+   "can_do": "Выражаю принадлежность: das Auto meines Vaters.",
+   "bridge": "Genitiv — русский родительный, но в разговоре его часто заменяют на von + Dativ: das Auto von meinem Vater.",
+   "trap": "Мужской и средний род получают -s/-es (des Mannes, des Kindes), женский — без окончания (der Frau)."
+  },
+  "a2-03-praeteritum": {
+   "can_do": "Читаю и рассказываю в Präteritum: ich machte, ich fuhr.",
+   "bridge": "В русском прошедшее с суффиксом -л-; немецкое Präteritum — книжное время, в разговоре чаще Perfekt.",
+   "trap": "Смешанные глаголы: bringen → brachte, denken → dachte (не «bringte», не «denkte»)."
+  },
+  "a2-04-perfekt-vs-praeteritum": {
+   "can_do": "Выбираю время по ситуации: Perfekt в речи, Präteritum в тексте.",
+   "bridge": "В русском выбор один; в немецком зависит от жанра: «Ich habe gesagt» вслух, «Er sagte» в книге. Модальные и haben/sein любят Präteritum.",
+   "trap": "Не смешивать в одном предложении: «Ich habe gestern ging» — ошибка; либо bin gegangen, либо ging."
+  },
+  "a2-05-reflexive": {
+   "can_do": "Говорю о себе: ich wasche mich, ich freue mich, ich beeile mich.",
+   "bridge": "В русском «-ся» — часть глагола, в немецком это отдельное местоимение mich/dich/sich, которое меняется по лицу.",
+   "trap": "Akkusativ или Dativ: ich wasche mich, но ich wasche mir die Hände."
+  },
+  "a2-06-adjektiv-bestimmt": {
+   "can_do": "Склоняю прилагательное после der/die/das: der alte Mann, die alten Männer.",
+   "bridge": "В русском прилагательное тоже согласуется, но окончаний больше. Здесь простая схема: -e в пяти клетках, -en во всех остальных.",
+   "trap": "После der/die/das почти всегда -en; -e только в Nominativ всех родов и Akkusativ женского/среднего."
+  },
+  "a2-07-adjektiv-unbestimmt": {
+   "can_do": "Склоняю после ein/eine и без артикля: ein alter Mann, alte Männer.",
+   "bridge": "После ein артикль не показывает род в Nominativ мужского и среднего, поэтому род «дотягивает» прилагательное: ein alter Mann.",
+   "trap": "Без артикля прилагательное берёт окончание артикля: kalter Kaffee, а не «kalte Kaffee»."
+  },
+  "a2-08-komparativ": {
+   "can_do": "Сравниваю: schneller, am schnellsten; besser, am besten.",
+   "bridge": "В русском «быстрее — самый быстрый»; в немецком -er и am -sten, у коротких слов появляется умлаут: alt → älter.",
+   "trap": "gut → besser → am besten, viel → mehr → am meisten; формы надо запомнить, они не по правилу."
+  },
+  "a2-09-nebensaetze": {
+   "can_do": "Строю придаточные: Ich weiß, dass er kommt; Weil es regnet, bleibe ich.",
+   "bridge": "В русском придаточное не меняет порядок слов; в немецком глагол уходит в конец: …, weil er heute kommt.",
+   "trap": "После weil/dass/wenn/als глагол в конце. Если придаточное стоит первым, в главном сразу глагол: Weil es regnet, bleibe ich."
+  },
+  "a2-10-tekamolo": {
+   "can_do": "Ставлю обстоятельства в порядке TeKaMoLo: время, причина, образ, место.",
+   "bridge": "В русском порядок свободный, в немецком есть привычная середина предложения, и её лучше держать.",
+   "trap": "Не ставить место перед временем: Ich fahre morgen nach Berlin, а не «nach Berlin morgen»."
+  },
+  "a2-11-praepositionen-genitiv": {
+   "can_do": "Употребляю wegen, trotz, während, statt с Genitiv.",
+   "bridge": "Русские «из-за, несмотря на, во время» требуют родительного — логика та же, что у Genitiv.",
+   "trap": "В разговоре слышно wegen dem Wetter, но письменная норма — wegen des Wetters."
+  },
+  "a2-12-relativsaetze": {
+   "can_do": "Описываю человека или вещь: der Mann, der dort steht; das Buch, das ich lese.",
+   "bridge": "Русское «который» по роду не меняется; немецкое der/die/das согласуется с определяемым словом, а падеж зависит от роли в придаточном.",
+   "trap": "Падеж местоимения задаёт придаточное: Der Mann, den ich sehe (Akkusativ), Der Mann, dem ich helfe (Dativ)."
+  },
+  "a2-13-infinitiv-zu": {
+   "can_do": "Говорю о цели и условиях: um … zu, ohne … zu, statt … zu.",
+   "bridge": "Русское «чтобы» плюс инфинитив; в немецком um … zu при одном подлежащем, а при разных — damit.",
+   "trap": "Отделяемая приставка идёт внутрь zu: anzurufen, aufzustehen, а не «zu anrufen»."
+  },
+  "a2-14-passiv-praesens": {
+   "can_do": "Говорю, что действие выполняется: Das Haus wird gebaut.",
+   "bridge": "В русском пассив через «-ся» или краткое причастие; в немецком werden плюс Partizip II, исполнитель — von + Dativ.",
+   "trap": "wird gebaut — процесс, ist gebaut — результат; не путать эти два смысла."
+  },
+  "a2-15-n-deklination": {
+   "can_do": "Склоняю слабые мужские существительные: der Herr → den Herrn.",
+   "bridge": "В русском тоже есть нестандартные склонения; здесь группа слов на -e, -ent, -ant, -ist, -or: den Studenten.",
+   "trap": "Только мужской род: der Student → dem/den Studenten, но die Studentin склоняется обычно."
+  },
+  "a2-16-verben-praepositionen": {
+   "can_do": "Запоминаю глагол вместе с предлогом: warten auf, sich interessieren für.",
+   "bridge": "В русском свой предлог, в немецком другой: «думать о» = denken an. Учить тройками: глагол + предлог + падеж.",
+   "trap": "Предлог задаёт падеж: warten auf + Akkusativ, teilnehmen an + Dativ."
+  },
+  "a2-17-partizip-ii-adjektiv": {
+   "can_do": "Превращаю причастие в прилагательное: die geöffnete Tür, das gebrochene Bein.",
+   "bridge": "В русском «открытая дверь» устроена так же; в немецком причастие склоняется как обычное прилагательное.",
+   "trap": "Partizip II переходных глаголов имеет пассивный смысл: das gebrochene Bein — «сломанная нога»."
+  },
+  "a2-18-konjunktionen": {
+   "can_do": "Связываю предложения: und, aber, deshalb, trotzdem.",
+   "bridge": "В русском «и, но, поэтому» не меняют порядок слов; в немецком после deshalb и trotzdem — инверсия: Deshalb gehe ich.",
+   "trap": "und/aber/oder/denn/sondern стоят на нулевой позиции и порядок не меняют, а deshalb/trotzdem — наречия."
+  },
+  "b1-01-konjunktiv-ii": {
+   "can_do": "Вежливо прошу: Könnten Sie …? и говорю о желании: Ich hätte gern …",
+   "bridge": "В русском «бы» плюс частица; в немецком würde + Infinitiv или готовые формы wäre/hätte/könnte.",
+   "trap": "Не «ich würde sein» — только ich wäre; не «ich würde haben» — ich hätte."
+  },
+  "b1-02-konjunktiv-ii-vergangenheit": {
+   "can_do": "Говорю о несбывшемся: Ich hätte das gemacht; Ich wäre gekommen.",
+   "bridge": "Русское «я бы сделал» о прошлом; в немецком hätte/wäre плюс Partizip II.",
+   "trap": "Смысл «тогда, но не случилось»: hätte gemacht, wäre gegangen — это не презентный Konjunktiv."
+  },
+  "b1-03-passiv-zeiten": {
+   "can_do": "Строю пассив в Präteritum и Perfekt: wurde gebaut, ist gebaut worden.",
+   "bridge": "В русском пассив проще; здесь важно запомнить, что в Perfekt пассива используется ist … worden, без ge-.",
+   "trap": "worden, а не geworden: Das Haus ist gebaut worden."
+  },
+  "b1-04-passiv-ersatz": {
+   "can_do": "Заменяю пассив: man baut, das lässt sich machen, das ist machbar.",
+   "bridge": "В русском тоже есть безличное «делают»; в немецком man плюс 3-е лицо ед. числа — самый частый способ избежать пассива.",
+   "trap": "man всегда с глаголом в 3-м лице ед. числа: man sagt, а не «man sagen»."
+  },
+  "b1-05-partizip-adjektiv": {
+   "can_do": "Различаю активное и пассивное причастие: der schlafende Hund и das gebrochene Bein.",
+   "bridge": "В русском «спящий» и «сломанный» тоже различаются видом; Partizip I — активное и одновременное, Partizip II — результат.",
+   "trap": "Partizip I значит «делающий сейчас»: der schlafende Hund; Partizip II — «сделанный»."
+  },
+  "b1-06-partizipialattribute": {
+   "can_do": "Читаю длинные определения: der auf dem Boden liegende Ball.",
+   "bridge": "В русском тоже есть «лежащий на полу мяч», но там определение стоит после существительного, а в немецком — перед ним и склоняется.",
+   "trap": "Внутри определения порядок как в придаточном, а причастие стоит прямо перед существительным."
+  },
+  "b1-07-da-wo": {
+   "can_do": "Заменяю «предлог + это»: darauf, woran, damit, womit.",
+   "bridge": "В русском «на это», «о чём»; в немецком da(r)- и wo(r)- плюс предлог.",
+   "trap": "Перед гласной появляется r: darauf, woran; перед согласной — da-/wo-: damit, womit."
+  },
+  "b1-08-konditional": {
+   "can_do": "Строю условия: Wenn ich Zeit habe, komme ich; Wenn ich Zeit hätte, käme ich.",
+   "bridge": "В русском «если» и «если бы»; в немецком Typ 1 — реальное условие, Typ 2 — Konjunktiv II, Typ 3 — hätte/wäre плюс Partizip II.",
+   "trap": "В Typ 2 главное предложение тоже в Konjunktiv II: würde kommen; нельзя «wenn ich Zeit hätte, komme ich»."
+  },
+  "b1-09-indirekte-fragen": {
+   "can_do": "Передаю вопрос: Ich weiß nicht, ob er kommt; Frag ihn, wann er kommt.",
+   "bridge": "В русском порядок слов в косвенном вопросе не меняется; в немецком глагол уходит в конец, а для вопроса без W-слова нужно ob.",
+   "trap": "ob, а не wenn, в значении «ли»: Ich weiß nicht, ob er kommt."
+  },
+  "b1-10-modalpartikeln": {
+   "can_do": "Смягчаю и усиливаю: Komm doch mal her; Das ist ja schön.",
+   "bridge": "В русском «же, ведь, -ка» — тоже частицы; немецкие ja/doch/mal/schon/halt не переводятся дословно, они передают тон.",
+   "trap": "doch не всегда «но»: в утверждении он усиливает — Das ist doch klar."
+  },
+  "b1-11-verben-praepositionen-2": {
+   "can_do": "Беру глагол с предлогом и падежом: sich bewerben um + Akkusativ.",
+   "bridge": "Учить тройками: глагол + предлог + падеж. Русский предлог не подсказывает: sich interessieren für — «интересоваться чем».",
+   "trap": "sich freuen auf — о будущем, sich freuen über — о том, что уже случилось."
+  },
+  "b1-12-konnektoren": {
+   "can_do": "Связываю с уступкой и временем: obwohl, trotzdem, während.",
+   "bridge": "В русском «хотя» и «несмотря на» близки; в немецком obwohl вводит придаточное (глагол в конце), а trotzdem — наречие с инверсией.",
+   "trap": "Не путать роли: obwohl — союз, trotzdem — наречие; вместе в одном предложении они не нужны."
+  },
+  "b2-01-konjunktiv-i": {
+   "can_do": "Передаю чужие слова: Er sagt, er sei krank.",
+   "bridge": "В русской косвенной речи особая форма не нужна; в немецком Konjunktiv I показывает, что это не собственное утверждение.",
+   "trap": "Если Konjunktiv I совпадает с индикативом (sie kommen), берут Konjunktiv II: sie kämen."
+  },
+  "b2-02-passiv-vergangenheit": {
+   "can_do": "Рассказываю о прошлом в пассиве: wurde gebaut, ist gebaut worden.",
+   "bridge": "В русском «было построено»; в немецком Präteritum-Passiv — wurde плюс Partizip II, Perfekt-Passiv — ist … worden.",
+   "trap": "wurde, а не war; слово worden без ge-."
+  },
+  "b2-03-partizipialsaetze": {
+   "can_do": "Сжимаю придаточные в причастные обороты: Von der Polizei gesucht, floh er.",
+   "bridge": "В русском тоже есть причастные и деепричастные обороты; в немецком Partizipialkonstruktion — признак письменного стиля.",
+   "trap": "Подлежащее оборота должно совпадать с подлежащим главного предложения, иначе оборот «повисает»."
+  },
+  "b2-04-nominalisierung": {
+   "can_do": "Превращаю действие в существительное: das Lesen, der Verletzte.",
+   "bridge": "В русском «чтение» и «раненый» — тоже отглагольные существительные; в немецком они склоняются как существительные или как прилагательные.",
+   "trap": "das Lesen — процесс, das Gelesene — прочитанное; der Verletzte склоняется как прилагательное: den Verletzten."
+  },
+  "b2-05-praepositionaladverbien": {
+   "can_do": "Уточняю ссылку: hierbei, darin, dazu, darüber.",
+   "bridge": "Русские «при этом, в этом, к этому»; немецкие наречия заменяют «предлог + это» и держат текст связным.",
+   "trap": "Не «mit das», а damit; не «über das» в связке, а darüber."
+  },
+  "b2-06-konzessiv": {
+   "can_do": "Уступаю в разных регистрах: obwohl, selbst wenn, wenngleich, trotz + Genitiv.",
+   "bridge": "В русском «хотя, даже если, несмотря на»; в немецком выбор зависит от регистра и от того, придаточное это или предложная группа.",
+   "trap": "trotz + Genitiv (trotz des Regens), trotzdem — наречие, obwohl — союз."
+  },
+  "b2-07-final": {
+   "can_do": "Выражаю цель: damit, um … zu, zwecks.",
+   "bridge": "В русском одно «чтобы»; в немецком um … zu при одном подлежащем, damit — при разных.",
+   "trap": "Не «um ich komme», а um zu kommen; при разных подлежащих только damit."
+  },
+  "b2-08-funktionsverbgefuege": {
+   "can_do": "Говорю по-деловому: in Frage kommen, zur Verfügung stellen.",
+   "bridge": "Русские «приходить в голову», «предоставлять в распоряжение» устроены так же: существительное плюс глагол. Учить целыми блоками.",
+   "trap": "Не переводить дословно: eine Entscheidung treffen — «принять решение», а не «сделать решение»."
+  },
+  "b2-09-passiv-modal": {
+   "can_do": "Говорю о необходимости в пассиве: Das muss gemacht werden.",
+   "bridge": "В русском «это нужно сделать»; в немецком модальный глагол, Partizip II и werden в конце.",
+   "trap": "Порядок: muss gemacht werden, а не «muss werden gemacht»."
+  },
+  "b2-10-relativ-erweitert": {
+   "can_do": "Присоединяю wo, was и предлог: die Stadt, wo ich wohne; das, worüber wir sprechen.",
+   "bridge": "В русском «где, что»; в немецком wo для места, was после alles/nichts/etwas, wo(r)- с предлогами.",
+   "trap": "was, а не das, после alles/nichts/etwas; worüber, а не «über was» в придаточном."
+  },
+  "c1-01-nominalstil": {
+   "can_do": "Перевожу канцелярский Nominalstil в живой Verbalstil и обратно.",
+   "bridge": "Русский официальный стиль тоже любит отглагольные существительные; в немецком яснее глагол: nach der Prüfung → nachdem geprüft wurde.",
+   "trap": "Не наслаивать цепочки Genitive: die Durchführung der Prüfung der Kommission — лучше перестроить в глагол."
+  },
+  "c1-02-komplexe-syntax": {
+   "can_do": "Разбираю многоуровневые Satzgefüge и умею их упрощать.",
+   "bridge": "В русском длинные периоды тоже возможны; в немецком сложность создают рамка и порядок придаточных.",
+   "trap": "Держать глагол в конце каждого придаточного и не терять главный глагол в рамке."
+  },
+  "c1-03-akademisch": {
+   "can_do": "Пишу осторожно и научно: Passiv, Konjunktiv, Hedging.",
+   "bridge": "В русской науке тоже есть «представляется возможным»; в немецком — könnte, dürfte, es lässt sich sagen.",
+   "trap": "Не перегружать Passiv: два-три на абзац достаточно, иначе текст становится тяжёлым."
+  },
+  "c1-04-konnektoren-c1": {
+   "can_do": "Строю аргументацию: zwar … aber, je … desto, einerseits … andererseits.",
+   "bridge": "Русские «хотя… но», «чем… тем»; в немецком je … desto меняет порядок: Je mehr ich lerne, desto besser verstehe ich.",
+   "trap": "После je — придаточное (глагол в конце), после desto — инверсия (глагол сразу за desto)."
+  },
+  "c1-05-modalitaet": {
+   "can_do": "Различаю «должно быть» и «следует»: dürfte, müsste, sollte.",
+   "bridge": "В русском «наверное, должно быть»; в немецком эпистемические модальные с Konjunktiv II смягчают утверждение.",
+   "trap": "muss — уверенность, müsste — вероятность; не путать с deontischem muss («обязан»)."
+  },
+  "c1-06-wortbildung": {
+   "can_do": "Образую слова: un-, be-, ent-, -ung, -heit, -keit, -bar, -los, композиты.",
+   "bridge": "В русском приставки и суффиксы тоже продуктивны; в немецком важно знать род суффикса: -ung, -heit, -keit → die.",
+   "trap": "Род по суффиксу: die Möglichkeit, die Freiheit; композит берёт род последнего слова: der Haustürschlüssel."
+  },
+  "c2-01-nuancen": {
+   "can_do": "Выбираю точное слово и регистр: sprechen/reden/sagen, machen/tun.",
+   "bridge": "В русском тоже есть близкие синонимы; в немецком различие часто в регистре и сочетаемости, а не в переводе.",
+   "trap": "Не переводить один-в-один: «делать» — это machen, tun, treffen, erledigen в разных связках."
+  },
+  "c2-02-idiomatik": {
+   "can_do": "Понимаю и использую идиомы и устойчивые связки.",
+   "bridge": "Русские и немецкие идиомы редко совпадают дословно: «кот наплакал» не переводится образом кота.",
+   "trap": "Учить идиому целым блоком с глаголом и падежом: jemandem einen Bären aufbinden (Dativ)."
+  },
+  "c2-03-stilregister": {
+   "can_do": "Переключаю регистр: Hochsprache, Umgangssprache, Fachsprache.",
+   "bridge": "В русском тоже есть высокий, разговорный и профессиональный слой; в немецком регистр часто задают частицы и сокращения.",
+   "trap": "Разговорные формы (hab, ne, mal) не ставить в письменный текст, а научный стиль не украшать частицами."
+  },
+  "c2-04-fehleranalyse": {
+   "can_do": "Нахожу свои типичные ошибки: интерференция, гиперкоррекция, ложные друзья.",
+   "bridge": "Главные ловушки для русско- и украиноязычных: артикли, порядок слов, предлоги, вид глагола и «ложные друзья» (Gift — яд, а не подарок).",
+   "trap": "Гиперкоррекция: не вставлять «лишние» артикли и не усложнять Perfekt там, где нужен Präteritum."
+  }
+ }
+}

@@ -10,6 +10,10 @@ from typing import Any
 from .scheduler import SM2Scheduler, SM2Card
 
 
+#: Порог «урок грамматики пройден» — 80% верных ответов.
+GRAMMAR_PASS = 0.8
+
+
 DEFAULT_SETTINGS = {
     "rate": 0,
     "autoplay": True,
@@ -325,7 +329,7 @@ class LanguageProgress:
         """Записать результат урока грамматики."""
         score = correct / total if total > 0 else 0.0
         entry = self.data["grammar"].get(lesson_id, {})
-        entry["done"] = score >= 0.8
+        entry["done"] = score >= GRAMMAR_PASS
         entry["score"] = score
         entry["best"] = max(entry.get("best", 0.0), score)
         entry["ts"] = time.time()
@@ -339,11 +343,23 @@ class LanguageProgress:
         self.save()
 
     def grammar_done(self, lesson_id: str) -> bool:
-        """Проверить, пройден ли урок (score >= 0.8)."""
+        """Проверить, пройден ли урок (score >= GRAMMAR_PASS)."""
         entry = self.data["grammar"].get(lesson_id, {})
-        return entry.get("score", 0.0) >= 0.8
+        return entry.get("score", 0.0) >= GRAMMAR_PASS
 
     def grammar_summary(self, level: str, lesson_ids: list[str]) -> tuple[int, int]:
         """Сколько уроков пройдено из скольких для уровня."""
         done = sum(1 for lid in lesson_ids if self.grammar_done(lid))
         return done, len(lesson_ids)
+
+    def grammar_done_count(self, level: str) -> int:
+        """Пройдено уроков уровня — по записям прогресса, без чтения файлов уровня."""
+        prefix = f"{level.lower()}-"
+        return sum(1 for lid, entry in self.data["grammar"].items()
+                   if lid.startswith(prefix) and entry.get("score", 0.0) >= GRAMMAR_PASS)
+
+    def grammar_last_lesson(self) -> str | None:
+        """Последний урок, который открывали или проходили (для карточки «Продолжить»)."""
+        entries = [(entry.get("ts", 0.0), lid) for lid, entry in self.data["grammar"].items()
+                   if lid]
+        return max(entries)[1] if entries else None

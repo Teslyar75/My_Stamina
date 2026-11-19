@@ -290,113 +290,137 @@ class TestGrammarProgress:
 
 
 class TestGrammarUISmoke:
-    """Smoke tests for grammar page UI (require display)."""
+    """Дымовые проверки страницы грамматики (нужен дисплей)."""
 
     @pytest.fixture
-    def tk_root(self):
+    def board(self, tmp_path):
+        import tkinter as tk
+
+        from stamina import pilots
+        from stamina.languages.grammar_page import build_grammar_page
+        from stamina.languages.plugins.de import GermanPlugin
+
         try:
-            import tkinter as tk
             root = tk.Tk()
-            root.withdraw()
-            yield root
-            root.destroy()
         except tk.TclError:
             pytest.skip("нет дисплея")
+        root.geometry("900x360+0+0")
+        root.update_idletasks()
 
-    def test_page_builds_and_renders(self, tk_root):
-        """Страница строится, список уроков непуст, урок открывается."""
-        from stamina.languages.plugins.de import GermanPlugin
-        from stamina import pilots
-        import tempfile
-        from pathlib import Path
+        pilots.reset_root(tmp_path)
+        pilot = pilots.create("Smoke", accent="amber")
+        pilots.activate(pilot["id"])
+        progress = LanguageProgress(pilots.pilot_dir(pilot["id"]), "de")
+        page = build_grammar_page(root, GermanPlugin(), progress, None)
+        root.update()
 
-        with tempfile.TemporaryDirectory() as tmp:
-            pilots.reset_root(Path(tmp))
-            pilot = pilots.create("Test", accent="amber")
-            pilots.activate(pilot["id"])
+        def pump() -> None:
+            page._flush_pending()
+            root.update()
+            page._flush_pending()
+            root.update()
 
-            plugin = GermanPlugin()
-            pilot_dir = pilots.pilot_dir(pilot["id"])
-            progress = LanguageProgress(pilot_dir, "de")
+        try:
+            yield page, progress, pump
+        finally:
+            page.destroy()
+            root.destroy()
+            pilots.reset_root(None)
 
-            # Импорт внутри фикстуры, чтобы tk уже был инициализирован
-            from stamina.languages.grammar_page import build_grammar_page
+    def test_page_builds_with_six_levels(self, board):
+        page, progress, pump = board
+        assert page.frame.winfo_exists()
+        assert page.stage == "levels"
+        # Список уровней читает только манифест: тяжёлые файлы ещё не тронуты.
+        assert page.level_lessons == []
+        assert len(page.engine.lessons("A1")) == 18
 
-            page = build_grammar_page(tk_root, plugin, progress, None)
-            # Проверяем, что фрейм создан
-            assert page.frame.winfo_exists()
-            # Проверяем, что уровни загрузились
-            assert page.current_level == "A1"
-            # Проверяем, что уроки есть
-            lessons = page.engine.lessons("A1")
-            assert len(lessons) == 18
+    def test_lesson_list_opens_and_flushes_in_chunks(self, board):
+        page, progress, pump = board
+        page._show_lessons("A1")
+        assert page._pending, "список уроков рисуется порциями"
+        pump()
+        assert page._pending == []
+        assert page.stage == "lessons"
 
-    def test_exercise_validation_ui(self, tk_root):
-        """Верный ответ помечается верным, неверный — неверным."""
-        from stamina.languages.plugins.de import GermanPlugin
-        from stamina import pilots
-        import tempfile
-        from pathlib import Path
+    def test_lesson_intro_explains_goal_and_traps(self, board):
+        page, progress, pump = board
+        page._show_lessons("A1")
+        pump()
+        page._open_lesson(page.level_lessons[0])
+        pump()
+        assert page.stage == "intro"
+        from stamina.hud import HudPanel
 
-        with tempfile.TemporaryDirectory() as tmp:
-            pilots.reset_root(Path(tmp))
-            pilot = pilots.create("Test", accent="amber")
-            pilots.activate(pilot["id"])
+        titles = []
 
-            plugin = GermanPlugin()
-            pilot_dir = pilots.pilot_dir(pilot["id"])
-            progress = LanguageProgress(pilot_dir, "de")
+        def walk(widget):
+            for child in widget.winfo_children():
+                if isinstance(child, HudPanel):
+                    titles.append(child.title)
+                walk(child)
 
-            from stamina.languages.grammar_page import build_grammar_page
+        walk(page.content)
+        assert "ЧТО ВЫ ОСВОИТЕ" in titles
+        assert "МОСТИК RU/UA → DE" in titles
+        assert "ЛОВУШКА" in titles
 
-            page = build_grammar_page(tk_root, plugin, progress, None)
-            lessons = page.engine.lessons("A1")
-            lesson = lessons[0]  # первый урок
-            page._show_lesson(lesson)
+    def test_correct_answer_is_marked_correct(self, board):
+        page, progress, pump = board
+        page._show_lessons("A1")
+        pump()
+        page._open_lesson(page.level_lessons[0])
+        page._start_practice()
+        pump()
+        drill = page._current_drill()
+        expected = page._expected(drill)[0]
+        if drill["type"] in ("choice", "identify"):
+            page._choose(expected)
+        else:
+            page.drill_answer_var.set(expected)
+            page._check_answer()
+        pump()
+        assert page.checked and page.last_ok
+        assert page.answers[drill["id"]] is True
 
-            # Получаем первое упражнение
-            drill = page.drills[0]
-            ex = page.engine.generate_exercise(drill.get("topic_id", ""), "easy", 0)
-            correct_answer = ex.expected_answer[0]
+    def test_wrong_answer_is_marked_wrong(self, board):
+        page, progress, pump = board
+        page._show_lessons("A1")
+        pump()
+        page._open_lesson(page.level_lessons[0])
+        page._start_practice()
+        pump()
+        drill = page._current_drill()
+        expected = page._expected(drill)[0]
+        if drill["type"] in ("choice", "identify"):
+            options = drill.get("options") or [expected]
+            page._choose(next((o for o in options if o != expected), "—"))
+        else:
+            page.drill_answer_var.set("xxx")
+            page._check_answer()
+        pump()
+        assert page.checked and not page.last_ok
 
-            # Вводим правильный ответ
-            page.drill_answer_var.set(correct_answer)
-            page._check_drill(drill)
-            # Проверяем, что результат верный (зелёный)
-            # Упрощённо: просто не должно упасть исключение
+    def test_next_drill_moves_forward(self, board):
+        page, progress, pump = board
+        page._show_lessons("A1")
+        pump()
+        page._open_lesson(page.level_lessons[0])
+        page._start_practice()
+        pump()
+        first = page._current_drill()["id"]
+        page._next_drill()
+        pump()
+        assert page.drill_index == 1
+        assert page._current_drill()["id"] != first or page.stage == "summary"
 
-            # Сброс для следующего
-            page._next_drill()
-
-            # Вводим неправильный ответ
-            wrong = "xxx" if correct_answer != "xxx" else "yyy"
-            page.drill_answer_var.set(wrong)
-            page._check_drill(page.drills[1] if len(page.drills) > 1 else drill)
-            # Не должно упасть
-
-    def test_tables_mode_renders(self, tk_root):
-        """Режим ТАБЛИЦЫ рисует сетку."""
-        from stamina.languages.plugins.de import GermanPlugin
-        from stamina import pilots
-        import tempfile
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp:
-            pilots.reset_root(Path(tmp))
-            pilot = pilots.create("Test", accent="amber")
-            pilots.activate(pilot["id"])
-
-            plugin = GermanPlugin()
-            pilot_dir = pilots.pilot_dir(pilot["id"])
-            progress = LanguageProgress(pilot_dir, "de")
-
-            from stamina.languages.grammar_page import build_grammar_page
-
-            page = build_grammar_page(tk_root, plugin, progress, None)
-            page._set_mode("tables")
-            # Проверяем, что контейнер таблиц создан
-            assert page.tables_container.winfo_exists()
-
+    def test_tables_mode_renders_single_table(self, board):
+        page, progress, pump = board
+        page._set_mode("tables")
+        pump()
+        assert page.stage == "tables"
+        assert page.tables_container is not None
+        assert page.tables_container.winfo_exists()
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
