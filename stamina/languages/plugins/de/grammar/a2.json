@@ -19,22 +19,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Dativ (3. Fall) отвечает на вопрос Wem? Используется для косвенного дополнения и после определённых предлогов/глаголов."
+          "text": "Датив (3-й падеж) отвечает на вопрос Wem? Используется для косвенного дополнения и после определённых предлогов и глаголов."
         },
         {
           "kind": "rule",
-          "title": "Artikel im Dativ",
-          "text": "Mask: dem, Fem: der, Neut: dem, Pl: den + -n. Unbestimmt: einem, einer, einem, —. Negativ: keinem, keiner, keinem, keinen."
+          "title": "Артикли в дативе",
+          "text": "Мужской род: dem, женский: der, средний: dem, множественное число: den + -n. Неопределённый: einem, einer, одном, —. Отрицательный: keinem, keiner, keinем, keinen."
         },
         {
           "kind": "rule",
-          "title": "Pronomen im Dativ",
-          "text": "mir, dir, ihm, ihr, ihm, uns, euch, ihnen/Ihnen."
+          "title": "Местоимения в дативе",
+          "text": "Личные местоимения в дативе: mir, dir, ihm, ihr, ihm, uns, euch, ihnen/Ihnen."
         },
         {
           "kind": "rule",
-          "title": "Wichtige Verben mit Dativ",
-          "text": "helfen, danken, folgen, gefallen, gehören, glauben, gratulieren, passieren, schaden, vertrauen, verzeihen, begegnen, fehlen, passen, raten, antworten, zuhören, zusehen."
+          "title": "Важные глаголы с дативом",
+          "text": "Важные глаголы с дативом: helfen, danken, folgen, gefallen, gehören, glauben, gratulieren, passieren, schaden, vertrauen, verzeihen, begegnen, fehlen, passen, raten, antworten, zuhören, zusehen."
         },
         {
           "kind": "table",
@@ -48,7 +48,7 @@
           "kind": "example",
           "de": "Ich helfe dem Mann. Das gefällt mir. Wir danken dir. Er folgt dem Lehrer.",
           "ru": "Я помогаю мужчине. Это мне нравится. Мы благодарим тебя. Он следует за учителем.",
-          "note": "helfen + Dat, gefallen + Dat (Subjekt = Sache, Objekt = Person im Dat)."
+          "note": "helfen + дат., gefallen + дат. (подлежащее = вещь, объект = лицо в дат.)"
         }
       ],
       "drills": [
@@ -65,7 +65,7 @@
           "answer": [
             "dem"
           ],
-          "why": "Maskulin Dativ: der → dem."
+          "why": "Мужской род дативе: der → dem."
         },
         {
           "id": "a2-01-d02",
@@ -80,7 +80,7 @@
           "answer": [
             "mir"
           ],
-          "why": "gefallen + Dativ: mir (1. Pers. Sg. Dativ)."
+          "why": "gefallen + дательный: mir (1-е лицо ед. ч. дат.)."
         },
         {
           "id": "a2-01-d03",
@@ -95,7 +95,7 @@
           "answer": [
             "den"
           ],
-          "why": "Dativ Plural: die → den (+ -n an Nomen: den Eltern)."
+          "why": "Дательный множественного числа: die → den (+ -n к существительному: den Eltern)."
         },
         {
           "id": "a2-01-d04",
@@ -104,7 +104,7 @@
           "answer": [
             "einem"
           ],
-          "why": "Maskulin Dativ unbestimmt: ein → einem."
+          "why": "Мужской род дативе неопределённый: ein → einem."
         },
         {
           "id": "a2-01-d05",
@@ -119,7 +119,7 @@
           "answer": [
             "mir"
           ],
-          "why": "gehören + Dativ."
+          "why": "gehören + дательный."
         },
         {
           "id": "a2-01-d06",
@@ -128,7 +128,7 @@
           "answer": [
             "dir"
           ],
-          "why": "glauben + Dativ: dir."
+          "why": "glauben + дательный: dir."
         },
         {
           "id": "a2-01-d07",
@@ -143,7 +143,7 @@
           "answer": [
             "sehen"
           ],
-          "why": "sehen + Akk, die anderen + Dat."
+          "why": "sehen + винительный, остальные + дательный."
         },
         {
           "id": "a2-01-d08",
@@ -152,7 +152,7 @@
           "answer": [
             "Er gibt dem Kind den Ball."
           ],
-          "why": "geben: Dativobjekt (dem Kind) vor Akkusativobjekt (den Ball)."
+          "why": "geben: дательный объект (dem Kind) перед винительным объектом (den Ball)."
         },
         {
           "id": "a2-01-d09",
@@ -161,7 +161,7 @@
           "answer": [
             "ihm"
           ],
-          "why": "gratulieren + Dativ: ihm."
+          "why": "gratulieren + дательный: ihm."
         },
         {
           "id": "a2-01-d10",
@@ -176,7 +176,7 @@
           "answer": [
             "ihm"
           ],
-          "why": "fehlen + Dativ: ihm."
+          "why": "fehlen + дательный: ihm."
         },
         {
           "id": "a2-01-d11",
@@ -185,7 +185,7 @@
           "answer": [
             "dem Mann"
           ],
-          "why": "helfen + Dativ: dem Mann."
+          "why": "helfen + дательный: dem Mann."
         },
         {
           "id": "a2-01-d12",
@@ -194,7 +194,7 @@
           "answer": [
             "ihr"
           ],
-          "why": "antworten + Dativ: ihr."
+          "why": "antworten + дательный: ihr."
         }
       ]
     },
@@ -218,18 +218,18 @@
         },
         {
           "kind": "rule",
-          "title": "Artikel im Genitiv",
-          "text": "Mask/Neut: des + -s/-es (des Mannes, des Buches). Fem: der. Pl: der. Unbestimmt: eines, einer, eines. Negativ: keines, keiner, keines, keiner."
+          "title": "Артикли в родительном падеже",
+          "text": "Мужской/средний род: des + -s/-es (des Mannes, des Buches). Женский род: der. Множественное число: der. Неопределённый: eines, einer, eines. Отрицательный: keines, keiner, keines, keiner."
         },
         {
           "kind": "rule",
-          "title": "N-Deklination im Genitiv",
-          "text": "Schwache Maskulina: des Herrn, des Studenten (kein -s)."
+          "title": "N-деклинация в родительном падеже",
+          "text": "Слабые мужские существительные: des Herrn, des Studenten (без -s)."
         },
         {
           "kind": "rule",
-          "title": "Präpositionen mit Genitiv",
-          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund. Im gesprochenen oft mit Dativ."
+          "title": "Предлоги с родительным падежом",
+          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund. В разговорной речи часто с дативом."
         },
         {
           "kind": "table",
@@ -243,7 +243,7 @@
           "kind": "example",
           "de": "Wegen des Regens bleibe ich zu Hause. Das ist das Buch meines Vaters. Während der Woche arbeite ich.",
           "ru": "Из-за дождя я остаюсь дома. Это книга моего отца. В течение недели я работаю.",
-          "note": "wegen + Gen, während + Gen. Mask/Neut: des + -s."
+          "note": "wegen + родительный, während + родительный. Мужской/средний род: des + -s."
         }
       ],
       "drills": [
@@ -260,7 +260,7 @@
           "answer": [
             "des"
           ],
-          "why": "Maskulin Genitiv: der → des (+ -s: Vaters)."
+          "why": "Мужской род родительный: der → des (+ -s: Vaters)."
         },
         {
           "id": "a2-02-d02",
@@ -275,7 +275,7 @@
           "answer": [
             "des"
           ],
-          "why": "wegen + Genitiv, Maskulin: der → des."
+          "why": "wegen + родительный падеж, мужской род: der → des."
         },
         {
           "id": "a2-02-d03",
@@ -290,7 +290,7 @@
           "answer": [
             "des"
           ],
-          "why": "Neutrum Genitiv: das → des (+ -s/-es: Hauses)."
+          "why": "Средний род родительный: das → des (+ -s/-es: Hauses)."
         },
         {
           "id": "a2-02-d04",
@@ -299,7 +299,7 @@
           "answer": [
             "der"
           ],
-          "why": "Plural Genitiv: die → der."
+          "why": "Множественное число родительный: die → der."
         },
         {
           "id": "a2-02-d05",
@@ -314,7 +314,7 @@
           "answer": [
             "Wessen"
           ],
-          "why": "Wessen = Genitiv-Fragewort."
+          "why": "Wessen = вопросительное слово родительного падежа."
         },
         {
           "id": "a2-02-d06",
@@ -323,7 +323,7 @@
           "answer": [
             "der"
           ],
-          "why": "während + Genitiv, Feminin: die → der."
+          "why": "während + родительный падеж, женский род: die → der."
         },
         {
           "id": "a2-02-d07",
@@ -338,7 +338,7 @@
           "answer": [
             "des"
           ],
-          "why": "statt + Genitiv, Maskulin: der → des."
+          "why": "statt + родительный падеж, мужской род: der → des."
         },
         {
           "id": "a2-02-d08",
@@ -347,7 +347,7 @@
           "answer": [
             "Wegen des Wetters bleibe ich zu Hause."
           ],
-          "why": "wegen + Genitiv an Satzanfang, dann V2: bleibe ich."
+          "why": "wegen + родительный падеж в начале предложения, затем V2: bleibe ich."
         },
         {
           "id": "a2-02-d09",
@@ -356,7 +356,7 @@
           "answer": [
             "des"
           ],
-          "why": "Lehrer → des Lehrers (regelmässig + -s)."
+          "why": "Lehrer → des Lehrers (регулярно + -s)."
         },
         {
           "id": "a2-02-d10",
@@ -371,7 +371,7 @@
           "answer": [
             "des"
           ],
-          "why": "innerhalb + Genitiv, Neutrum: das → des."
+          "why": "innerhalb + родительный падеж, средний род: das → des."
         },
         {
           "id": "a2-02-d11",
@@ -380,7 +380,7 @@
           "answer": [
             "das Buch meines Vaters"
           ],
-          "why": "Genitivattribut: meines Vaters."
+          "why": "Родительный атрибут: meines Vaters."
         },
         {
           "id": "a2-02-d12",
@@ -389,7 +389,7 @@
           "answer": [
             "der"
           ],
-          "why": "außerhalb + Genitiv, Feminin: die → der."
+          "why": "außerhalb + родительный падеж, женский род: die → der."
         }
       ]
     },
@@ -410,22 +410,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Präteritum (1. Vergangenheit) — בעיקר в письменной речи. Slabe: Stamm + -te. Starke: Ablaut (Vokalwechsel). Gemischte: Ablaut + -te."
+          "text": "Präteritum (прошедшее время) — преимущественно в письменной речи. Слабые: основа + -te. Сильные: аблаут (перегласовка). Смешанные: аблаут + -te."
         },
         {
           "kind": "rule",
-          "title": "Schwache Verben",
-          "text": "ich machte, du machtest, er machte, wir machten, ihr machtet, sie machten. Bei -t/-d/-n/-m: -ete (arbeitete)."
+          "title": "Слабые глаголы",
+          "text": "ich machte, du machtest, er machte, wir machten, ihr machtet, sie machten. При основках на -t/-d/-n/-m добавляется -ete (arbeitete)."
         },
         {
           "kind": "rule",
-          "title": "Starke Verben (wichtige)",
-          "text": "fahren→fuhr, geben→gab, kommen→kam, laufen→lief, lesen→las, nehmen→nahm, sprechen→sprach, trinken→trank, finden→fand, gehen→ging, stehen→stand, liegen→lag, sitzen→saß."
+          "title": "Сильные глаголы (важные)",
+          "text": "fahren → fuhr (ехать → ехал), geben → gab (давать → дал), kommen → kam (приходить → пришёл), laufen → lief (бежать → бежал), lesen → las (читать → читал), nehmen → nahm (брать → взял), sprechen → sprach (говорить → сказал), trinken → trank (пить → выпил), finden → fand (находить → нашёл), gehen → ging (идти → пошёл), stehen → stand (стоять → стоял), liegen → lag (лежать → лежал), sitzen → saß (сидеть → сидел)."
         },
         {
           "kind": "rule",
-          "title": "Gemischte Verben",
-          "text": "bringen→brachte, denken→dachte, kennen→kannte, wissen→wusste, rennen→rannte, nennen→nannte. Ablaut + schwache Endung."
+          "title": "Смешанные глаголы",
+          "text": "bringen → brachte (приносить → принёс), denken → dachte (думать → думал), kennen → kannte (знать → знал), wissen → wusste (знать (факты) → знал), rennen → rannte (бежать → побежал), nennen → nannte (называть → назвал). Аблаут + слабое окончание."
         },
         {
           "kind": "table",
@@ -439,7 +439,7 @@
           "kind": "example",
           "de": "Ich machte die Tür auf. Er ging nach Hause. Wir dachten an dich. Sie kannte ihn nicht.",
           "ru": "Я открыл дверь. Он пошёл домой. Мы думали о тебе. Она его не знала.",
-          "note": "machte (schwach), ging (stark), dachten (gemischt), kannte (gemischt)."
+          "note": "machte (слабый), ging (сильный), dachten (смешанный), kannte (смешанный)."
         }
       ],
       "drills": [
@@ -456,7 +456,7 @@
           "answer": [
             "machte"
           ],
-          "why": "Schwaches Verb: ich machte."
+          "why": "Слабый глагол: ich machte."
         },
         {
           "id": "a2-03-d02",
@@ -471,7 +471,7 @@
           "answer": [
             "ging"
           ],
-          "why": "Stark: gehen → er ging."
+          "why": "Сильный глагол: gehen → er ging."
         },
         {
           "id": "a2-03-d03",
@@ -486,7 +486,7 @@
           "answer": [
             "arbeiteten"
           ],
-          "why": "Schwaches Verb auf -t: wir arbeiteten (Verbindungs-e)."
+          "why": "Слабый глагол на -t: wir arbeiteten (соединительная -e-)."
         },
         {
           "id": "a2-03-d04",
@@ -495,7 +495,7 @@
           "answer": [
             "brachtest"
           ],
-          "why": "Gemischt: bringen → du brachtest."
+          "why": "Смешанный: bringen → du brachtest."
         },
         {
           "id": "a2-03-d05",
@@ -510,7 +510,7 @@
           "answer": [
             "wusste"
           ],
-          "why": "Gemischt: wissen → er/sie/es wusste."
+          "why": "Смешанный: wissen → er/sie/es wusste."
         },
         {
           "id": "a2-03-d06",
@@ -519,7 +519,7 @@
           "answer": [
             "fanden"
           ],
-          "why": "Stark: finden → wir fanden (Ablaut i→a)."
+          "why": "Сильный: finden → wir fanden (аблаут i→a)."
         },
         {
           "id": "a2-03-d07",
@@ -534,7 +534,7 @@
           "answer": [
             "rannte"
           ],
-          "why": "Gemischt: rennen → er rannte."
+          "why": "Смешанный: rennen → er rannte."
         },
         {
           "id": "a2-03-d08",
@@ -543,7 +543,7 @@
           "answer": [
             "Gestern kam er spät an."
           ],
-          "why": "Präteritum: kam (V2) — an (Ende, trennbar)."
+          "why": "Präteritum: kam (V2) — an (в конце, разделимый)."
         },
         {
           "id": "a2-03-d09",
@@ -552,7 +552,7 @@
           "answer": [
             "dachte"
           ],
-          "why": "Gemischt: denken → ich dachte."
+          "why": "Смешанный: denken → ich dachte."
         },
         {
           "id": "a2-03-d10",
@@ -567,7 +567,7 @@
           "answer": [
             "kannten"
           ],
-          "why": "Gemischt: sie kannten (Plural)."
+          "why": "Смешанный: sie kannten (мн. ч.)."
         },
         {
           "id": "a2-03-d11",
@@ -576,7 +576,7 @@
           "answer": [
             "ich schlief"
           ],
-          "why": "Stark: schlafen → ich schlief (a→ie)."
+          "why": "Сильный: schlafen → ich schlief (a→ie)."
         },
         {
           "id": "a2-03-d12",
@@ -585,7 +585,7 @@
           "answer": [
             "nannte"
           ],
-          "why": "Gemischt: nennen → er nannte."
+          "why": "Смешанный: nennen → er nannte."
         }
       ]
     },
@@ -605,28 +605,28 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Perfekt = gesprochenes Präteritum (mündlich). Präteritum = schriftlich, erzählerisch. Ausnahmen: haben, sein, Modale → oft Präteritum auch im Gespräch."
+          "text": "Перфект — это прошедшее время в устной речи (мündlich). Прэтеритум — это письменное, повествовательное время. Исключения: haben, sein, модальные глаголы — часто используются в прэтеритуме и в разговорной речи."
         },
         {
           "kind": "rule",
-          "title": "haben/sein im Präteritum",
-          "text": "ich hatte/war, du hattest/warst, er hatte/war... — sehr häufig auch mündlich."
+          "title": "haben/sein в Прэтеритуме",
+          "text": "ich hatte/war, du hattest/warst, er hatte/war... — очень часто также в устной речи."
         },
         {
           "kind": "rule",
-          "title": "Modale im Präteritum",
-          "text": "ich konnte/musste/wollte/sollte/durfte/mochte — häufiger als Perfekt (habe gekonnt etc.)."
+          "title": "Модальные глаголы в Прэтеритуме",
+          "text": "ich konnte/musste/wollte/sollte/durfte/mochte — чаще, чем перфект (habe gekonnt и т.д.)."
         },
         {
           "kind": "rule",
-          "title": "Schriftlich",
-          "text": "In Texten, Nachrichten, Märchen: Präteritum. Im Gespräch: Perfekt (außer haben/sein/Modale)."
+          "title": "Письменно",
+          "text": "В текстах, новостях, сказках: Прэтеритум. В разговоре: Перфект (кроме haben/sein/модальных)."
         },
         {
           "kind": "example",
           "de": "Ich war gestern zu Hause. (Prät.) Ich habe gearbeitet. (Perf.) Er konnte nicht kommen. (Prät.) Wir haben gegessen. (Perf.)",
           "ru": "Я был вчера дома. Я работал. Он не мог прийти. Мы ели.",
-          "note": "war/hatte/könnte → Prät. auch mündlich. gearbeitet/gegessen → Perf. mündlich."
+          "note": "war/hatte/könnte → Прэтеритум также в устной речи. gearbeitet/gegessen → Перфект в устной речи."
         }
       ],
       "drills": [
@@ -643,7 +643,7 @@
           "answer": [
             "war"
           ],
-          "why": "sein → Präteritum auch mündlich: ich war."
+          "why": "sein → Прэтеритум также в устной речи: ich war."
         },
         {
           "id": "a2-04-d02",
@@ -658,7 +658,7 @@
           "answer": [
             "konnte"
           ],
-          "why": "Modale → Präteritum: konnte."
+          "why": "Модальные → Прэтеритум: konnte."
         },
         {
           "id": "a2-04-d03",
@@ -673,7 +673,7 @@
           "answer": [
             "fuhren"
           ],
-          "why": "Erzählung → Präteritum: fuhren."
+          "why": "Повествование → Прэтеритум: fuhren."
         },
         {
           "id": "a2-04-d04",
@@ -682,7 +682,7 @@
           "answer": [
             "haben"
           ],
-          "why": "essen → Perfekt mündlich: haben gegessen."
+          "why": "essen → Перфект в устной речи: haben gegessen."
         },
         {
           "id": "a2-04-d05",
@@ -697,7 +697,7 @@
           "answer": [
             "hatte"
           ],
-          "why": "haben → Präteritum auch mündlich: hatte."
+          "why": "haben → Прэтеритум также в устной речи: hatte."
         },
         {
           "id": "a2-04-d06",
@@ -706,7 +706,7 @@
           "answer": [
             "musstest"
           ],
-          "why": "Modale → Präteritum: musstest."
+          "why": "Модальные → Прэтеритум: musstest."
         },
         {
           "id": "a2-04-d07",
@@ -721,7 +721,7 @@
           "answer": [
             "habe"
           ],
-          "why": "Perfekt auch in informellem Schreiben (E-Mail/Chat)."
+          "why": "Перфект также в неформальном письме (E-Mail/чат)."
         },
         {
           "id": "a2-04-d08",
@@ -730,7 +730,7 @@
           "answer": [
             "Gestern war ich krank."
           ],
-          "why": "Präteritum: war (V2)."
+          "why": "Прэтеритум: war (V2)."
         },
         {
           "id": "a2-04-d09",
@@ -745,7 +745,7 @@
           "answer": [
             "wollte"
           ],
-          "why": "wollen → Präteritum: wollte."
+          "why": "wollen → Прэтеритум: wollte."
         },
         {
           "id": "a2-04-d10",
@@ -754,7 +754,7 @@
           "answer": [
             "Er hat das Buch gelesen."
           ],
-          "why": "lesen (transitiv) → Perfekt mündlich: hat gelesen."
+          "why": "lesen (переходный) → Перфект в устной речи: hat gelesen."
         },
         {
           "id": "a2-04-d11",
@@ -763,7 +763,7 @@
           "answer": [
             "kam"
           ],
-          "why": "Erzählung → Präteritum: kam."
+          "why": "Повествование → Прэтеритум: kam."
         },
         {
           "id": "a2-04-d12",
@@ -778,7 +778,7 @@
           "answer": [
             "Ich war da."
           ],
-          "why": "sein → Präteritum mündlich. Perfekt 'bin gewesen' möglich, aber 'war' häufiger."
+          "why": "sein → Прэтеритум в устной речи. Перфект 'bin gewesen' возможен, но 'war' чаще."
         }
       ]
     },
@@ -797,17 +797,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Reflexive Verben: Subjekt und Objekt sind identisch. Im Deutschen oft obligatorisch (sich beeilen), im Russischen nicht всегда."
+          "text": "Возвратные глаголы: подлежащее и дополнение обозначают одно и то же лицо. В немецком такие глаголы часто обязательны (например, sich beeilen — спешить), а в русском частица «-ся» может отсутствовать или не менять смысла."
         },
         {
           "kind": "rule",
-          "title": "Reflexivpronomen",
-          "text": "Akk: mich, dich, sich, uns, euch, sich. Dat: mir, dir, sich, uns, euch, sich. Dat nur bei Verben mit Dativobjekt (sich vorstellen, sich merken)."
+          "title": "Возвратные местоимения",
+          "text": "В винительном падеже (Akkusativ): mich, dich, sich, uns, euch, sich. В дательном падеже (Dativ): mir, dir, sich, uns, euch, sich. Дательный падеж нужен только у глаголов, которые требуют дательного дополнения (например, sich vorstellen — представлять себе, sich merken — запоминать)."
         },
         {
           "kind": "rule",
-          "title": "Wichtige reflexive Verben",
-          "text": "Akk: sich waschen, sich beeilen, sich freuen, sich erinnern, sich entscheiden, sich treffen, sich setzen, sich legen. Dat: sich vorstellen, sich merken, sich vornehmen, sich wünschen."
+          "title": "Важные возвратные глаголы",
+          "text": "С винительным падежом: sich waschen (мыться), sich beeilen (спешить), sich freuen (радоваться), sich erinnern (вспоминать), sich entscheiden (решать), sich treffen (встречаться), sich setzen (садиться), sich legen (ложиться). С дательным падежом: sich vorstellen (представлять себе), sich merken (запоминать), sich vornehmen (планировать), sich wünschen (желать себе)."
         },
         {
           "kind": "table",
@@ -817,7 +817,7 @@
           "kind": "example",
           "de": "Ich wasche mich. Er beeilt sich. Wir freuen uns. Ich stelle mir das vor.",
           "ru": "Я моюсь. Он спешит. Мы радуемся. Я это себе представляю.",
-          "note": "waschen/beeilen/freuen + Akk. vorstellen + Dat."
+          "note": "waschen, beeilen, freuen — с винительным падежом. vorstellen — с дательным."
         }
       ],
       "drills": [
@@ -834,7 +834,7 @@
           "answer": [
             "wasche mich"
           ],
-          "why": "sich waschen + Akk: ich wasche mich."
+          "why": "Глагол sich waschen требует винительного падежа: ich wasche mich."
         },
         {
           "id": "a2-05-d02",
@@ -849,7 +849,7 @@
           "answer": [
             "beeilt sich"
           ],
-          "why": "3. Pers. Sg. Reflexivpronomen: sich."
+          "why": "3-е лицо ед. ч.: возвратное местоимение sich."
         },
         {
           "id": "a2-05-d03",
@@ -864,7 +864,7 @@
           "answer": [
             "freuen uns"
           ],
-          "why": "1. Pers. Pl: uns. freuen + Akk."
+          "why": "1-е лицо мн. ч.: uns. Глагол freuen требует винительного падежа."
         },
         {
           "id": "a2-05-d04",
@@ -873,7 +873,7 @@
           "answer": [
             "stelle mir"
           ],
-          "why": "sich vorstellen + Dat: ich stelle mir vor."
+          "why": "Глагол sich vorstellen требует дательного падежа: ich stelle mir vor."
         },
         {
           "id": "a2-05-d05",
@@ -888,7 +888,7 @@
           "answer": [
             "erinnerst dich"
           ],
-          "why": "sich erinnern + Akk: du erinnerst dich."
+          "why": "Глагол sich erinnern требует винительного падежа: du erinnerst dich."
         },
         {
           "id": "a2-05-d06",
@@ -897,7 +897,7 @@
           "answer": [
             "trifft sich"
           ],
-          "why": "sich treffen + Akk: sie trifft sich."
+          "why": "Глагол sich treffen требует винительного падежа: sie trifft sich."
         },
         {
           "id": "a2-05-d07",
@@ -912,7 +912,7 @@
           "answer": [
             "merkt sich"
           ],
-          "why": "sich merken + Dat? NEIN! sich merken nimmt AKK: merkt sich. (nur sich vorstellen/vornehmen/wünschen = Dat)."
+          "why": "sich merken + Dat? НЕТ! sich merken требует винительного падежа: merkt sich. (Только sich vorstellen, sich vornehmen, sich wünschen — дательный)."
         },
         {
           "id": "a2-05-d08",
@@ -921,7 +921,7 @@
           "answer": [
             "Er setzt sich auf den Stuhl."
           ],
-          "why": "sich setzen + Akk: er setzt sich."
+          "why": "Глагол sich setzen требует винительного падежа: er setzt sich."
         },
         {
           "id": "a2-05-d09",
@@ -930,7 +930,7 @@
           "answer": [
             "nehmen uns vor"
           ],
-          "why": "sich vornehmen + Dat: wir nehmen uns vor."
+          "why": "Глагол sich vornehmen требует дательного падежа: wir nehmen uns vor."
         },
         {
           "id": "a2-05-d10",
@@ -945,7 +945,7 @@
           "answer": [
             "Wünsche mir"
           ],
-          "why": "sich wünschen + Dat: ich wünsche mir."
+          "why": "Глагол sich wünschen требует дательного падежа: ich wünsche mir."
         },
         {
           "id": "a2-05-d11",
@@ -954,7 +954,7 @@
           "answer": [
             "wasche mich"
           ],
-          "why": "sich waschen (Reflexiv) vs waschen (transitiv)."
+          "why": "sich waschen (возвратный) против waschen (переходный)."
         },
         {
           "id": "a2-05-d12",
@@ -963,7 +963,7 @@
           "answer": [
             "entscheidet sich"
           ],
-          "why": "sich entscheiden + Akk: er entscheidet sich."
+          "why": "Глагол sich entscheiden требует винительного падежа: er entscheidet sich."
         }
       ]
     },
@@ -982,17 +982,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Nach bestimmtem Artikel (der/die/das/den/dem/des) haben Adjektive nur ZWEI Formen: -e und -en."
+          "text": "После определённого артикля (der/die/das/den/dem/des) прилагательные имеют только ДВЕ формы: -e и -en."
         },
         {
           "kind": "rule",
-          "title": "-e nur in 5 Zellen",
-          "text": "Nominativ alle 3 Genera (der gute Wein, die gute Suppe, das gute Bier) + Akkusativ Feminin (die gute Suppe) + Akkusativ Neutrum (das gute Bier)."
+          "title": "-e только в 5 клетках",
+          "text": "Именительный падеж всех 3 родов (der gute Wein, die gute Suppe, das gute Bier) + винительный падеж женского рода (die gute Suppe) + винительный падеж среднего рода (das gute Bier)."
         },
         {
           "kind": "rule",
-          "title": "-en in den anderen 11 Zellen",
-          "text": "Akk Mask (den guten Wein), Dat alle (dem guten Wein, der guten Suppe, dem guten Bier, den guten Weinen), Gen alle (des guten Weines, der guten Suppe, des guten Bieres, der guten Weine)."
+          "title": "-en в остальных 11 клетках",
+          "text": "Винительный падеж мужского рода (den guten Wein), дательный все (dem guten Wein, der guten Suppe, dem guten Bier, den guten Weinen), родительный все (des guten Weines, der guten Suppe, des guten Bieres, der guten Weine)."
         },
         {
           "kind": "table",
@@ -1002,7 +1002,7 @@
           "kind": "example",
           "de": "Der gute Wein schmeckt. Ich trinke den guten Wein. Ich gebe dem guten Wein Zeit. Der Geschmack des guten Weines.",
           "ru": "Хорошее вино вкусно. Я пью хорошее вино. Я даю хорошему вину время. Вкус хорошего вина.",
-          "note": "Nom/Acc Neut/Fem: -e. Acc Mask/Dat/Gen: -en."
+          "note": "Им./вин. ср./жен.: -e. Вин. муж./дат./род.: -en."
         }
       ],
       "drills": [
@@ -1019,7 +1019,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Nom Mask nach bestimmtem Artikel: -e."
+          "why": "Именительный падеж мужского рода после определённого артикля: -e."
         },
         {
           "id": "a2-06-d02",
@@ -1034,7 +1034,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Nom Fem: -e."
+          "why": "Именительный падеж женского рода: -e."
         },
         {
           "id": "a2-06-d03",
@@ -1049,7 +1049,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Nom Neut: -e."
+          "why": "Именительный падеж среднего рода: -e."
         },
         {
           "id": "a2-06-d04",
@@ -1064,7 +1064,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Akk Mask: -en."
+          "why": "Винительный падеж мужского рода: -en."
         },
         {
           "id": "a2-06-d05",
@@ -1079,7 +1079,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Akk Fem = Nom: -e."
+          "why": "Винительный падеж женского рода = именительный: -e."
         },
         {
           "id": "a2-06-d06",
@@ -1094,7 +1094,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Akk Neut = Nom: -e."
+          "why": "Винительный падеж среднего рода = именительный: -e."
         },
         {
           "id": "a2-06-d07",
@@ -1109,7 +1109,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Dat: immer -en."
+          "why": "Дательный падеж: всегда -en."
         },
         {
           "id": "a2-06-d08",
@@ -1124,7 +1124,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Dat: immer -en."
+          "why": "Дательный падеж: всегда -en."
         },
         {
           "id": "a2-06-d09",
@@ -1139,7 +1139,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Gen: immer -en."
+          "why": "Родительный падеж: всегда -en."
         },
         {
           "id": "a2-06-d10",
@@ -1148,7 +1148,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Dat Plural: den guten Weinen (-en)."
+          "why": "Дательный падеж множественного числа: den guten Weinen (-en)."
         },
         {
           "id": "a2-06-d11",
@@ -1157,7 +1157,7 @@
           "answer": [
             "den guten Mann"
           ],
-          "why": "Mask Akk: der→den, Adj: gute→guten."
+          "why": "Мужской род винительный: der→den, прилагательное: gute→guten."
         },
         {
           "id": "a2-06-d12",
@@ -1166,7 +1166,7 @@
           "answer": [
             "schönen"
           ],
-          "why": "Plural nach bestimmtem Artikel: immer -en."
+          "why": "Множественное число после определённого артикля: всегда -en."
         }
       ]
     },
@@ -1186,17 +1186,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Nach unbestimmtem Artikel (ein/kein/mein...) und ohne Artikel andere Endungen."
+          "text": "После неопределённого артикля (ein/kein/mein...) и без артикля другие окончания."
         },
         {
           "kind": "rule",
-          "title": "Gemischt (nach ein/kein/mein...)",
-          "text": "Nom: -er/-e/-es (ein guter Wein, eine gute Suppe, ein gutes Bier). Akk: -en/-e/-es (einen guten Wein, eine gute Suppe, ein gutes Bier). Dat/Gen: immer -en (einem guten Wein, einer guten Suppe, eines guten Weines). Plural wie nach bestimmtem: -en."
+          "title": "Смешанное (после ein/kein/mein...)",
+          "text": "Им.: -er/-e/-es (ein guter Wein, eine gute Suppe, ein gutes Bier). Ви.: -en/-e/-es (einen guten Wein, eine gute Suppe, ein gutes Bier). Да./Род.: всегда -en (einem guten Wein, einer guten Suppe, eines guten Weines). Мн. ч. как после определённого: -en."
         },
         {
           "kind": "rule",
-          "title": "Stark (ohne Artikel)",
-          "text": "Adjektiv nimmt Endungen des bestimmten Artikels: Nom -er/-e/-es/-e, Akk -en/-e/-es/-e, Dat -em/-er/-em/-en, Gen -en/-er/-en/-er."
+          "title": "Сильное (без артикля)",
+          "text": "Прилагательное принимает окончания определённого артикля: им. -er/-e/-es/-e, ви. -en/-e/-es/-e, да. -em/-er/-em/-en, род. -en/-er/-en/-er."
         },
         {
           "kind": "table",
@@ -1210,7 +1210,7 @@
           "kind": "example",
           "de": "Ein guter Wein. Ich trinke einen guten Wein. Guter Wein ist teuer. Ich trinke guten Wein.",
           "ru": "Хорошее вино. Я пью хорошее вино. Хорошее вино дорогое. Я пью хорошее вино.",
-          "note": "Nach ein: Nom Mask -er. Ohne Artikel: Nom Mask -er (wie der)."
+          "note": "После ein: им. муж. -er. Без артикля: им. муж. -er (как der)."
         }
       ],
       "drills": [
@@ -1227,7 +1227,7 @@
           "answer": [
             "guter"
           ],
-          "why": "Nach ein, Nom Mask: -er (wie der)."
+          "why": "После ein, им. муж.: -er (как der)."
         },
         {
           "id": "a2-07-d02",
@@ -1242,7 +1242,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Nach ein, Nom Fem: -e (wie die)."
+          "why": "После ein, им. жен.: -e (как die)."
         },
         {
           "id": "a2-07-d03",
@@ -1257,7 +1257,7 @@
           "answer": [
             "gutes"
           ],
-          "why": "Nach ein, Nom Neut: -es (wie das)."
+          "why": "После ein, им. ср.: -es (как das)."
         },
         {
           "id": "a2-07-d04",
@@ -1272,7 +1272,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Akk Mask nach ein: -en."
+          "why": "Ви. муж. после ein: -en."
         },
         {
           "id": "a2-07-d05",
@@ -1287,7 +1287,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Dat nach ein: immer -en."
+          "why": "Да. после ein: всегда -en."
         },
         {
           "id": "a2-07-d06",
@@ -1302,7 +1302,7 @@
           "answer": [
             "guter"
           ],
-          "why": "Stark: Nom Mask -er (wie der)."
+          "why": "Сильное: им. муж. -er (как der)."
         },
         {
           "id": "a2-07-d07",
@@ -1317,7 +1317,7 @@
           "answer": [
             "gute"
           ],
-          "why": "Stark: Nom Fem -e (wie die)."
+          "why": "Сильное: им. жен. -e (как die)."
         },
         {
           "id": "a2-07-d08",
@@ -1332,7 +1332,7 @@
           "answer": [
             "gutes"
           ],
-          "why": "Stark: Nom Neut -es (wie das)."
+          "why": "Сильное: им. ср. -es (как das)."
         },
         {
           "id": "a2-07-d09",
@@ -1347,7 +1347,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Stark: Akk Mask -en (wie den)."
+          "why": "Сильное: ви. муж. -en (как den)."
         },
         {
           "id": "a2-07-d10",
@@ -1362,7 +1362,7 @@
           "answer": [
             "gutem"
           ],
-          "why": "Stark: Dat Mask -em (wie dem)."
+          "why": "Сильное: да. муж. -em (как dem)."
         },
         {
           "id": "a2-07-d11",
@@ -1371,7 +1371,7 @@
           "answer": [
             "guten"
           ],
-          "why": "Stark: Gen Mask/Neut -en (wie des)."
+          "why": "Сильное: род. муж./ср. -en (как des)."
         },
         {
           "id": "a2-07-d12",
@@ -1380,7 +1380,7 @@
           "answer": [
             "guter Wein"
           ],
-          "why": "Ohne Artikel: starkes Ende -er bei Nom Mask."
+          "why": "Без артикля: сильное окончание -er в им. муж."
         }
       ]
     },
@@ -1399,27 +1399,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Komparativ: Adjektiv + -er (größer, schneller). Superlativ: am + Adjektiv + -sten (am größten). Bei Monosyllaben oft Umlaut."
+          "text": "Компаратив (сравнительная степень) образуется прибавкой -er к прилагательному: größer, schneller. Суперлатив (превосходная степень) образуется конструкцией am + прилагательное + -sten: am größten. У односложных прилагательных в этих формах часто появляется умлаут (перегласовка корневой гласной a, o, u → ä, ö, ü)."
         },
         {
           "kind": "rule",
-          "title": "Regelmässig",
-          "text": "groß → größer → am größten. schnell → schneller → am schnellsten."
+          "title": "Регулярное образование",
+          "text": "Правило простое: к основе прилагательного добавляется суффикс -er для компаратива и -sten для суперлатива с частицей am. Примеры: groß → größer → am größten, schnell → schneller → am schnellsten. Обратите внимание: в суперлативе после am всегда стоит окончание -sten."
         },
         {
           "kind": "rule",
-          "title": "Umlaut bei Monosyllaben",
-          "text": "groß→größer, alt→älter, jung→jünger, lang→länger, kurz→kürzer, stark→stärker, warm→wärmer, kalt→kälter, hoch→höher, nah→näher."
+          "title": "Умлаут у односложных основ",
+          "text": "Если основа прилагательного состоит из одного слога и содержит гласные a, o, u, в компаративе и суперлативе они переходят в ä, ö, ü. Типичные примеры: groß → größer, alt → älter, jung → jünger, lang → länger, kurz → kürzer, stark → stärker, warm → wärmer, kalt → kälter, hoch → höher, nah → näher. Это явление обязательно для данных слов."
         },
         {
           "kind": "rule",
-          "title": "Unregelmässige",
-          "text": "gut → besser → am besten. viel → mehr → am meisten. gern → lieber → am liebsten. hoch → höher → am höchsten. nah → näher → am nächsten."
+          "title": "Неправильные формы",
+          "text": "Некоторые прилагательные имеют полностью иррегулярные формы степеней сравнения, их нужно запомнить наизусть. Основные: gut → besser → am besten (хорошо — лучше — лучше всего), viel → mehr → am meisten (много — больше — больше всего), gern → lieber → am liebsten (gern — lieber — am liebsten). Также hoch → höher → am höchsten и nah → näher → am nächsten относятся сюда из-за умлаута, но их формы совпадают с регулярным типом умлаута."
         },
         {
           "kind": "rule",
-          "title": "Endung -el/-er/-en",
-          "text": "teuer → teurer (e fällt weg). dunkel → dunkler (e fällt weg)."
+          "title": "Особенности основ на -el, -er, -en",
+          "text": "Если прилагательное заканчивается на -el, -er или -en, в компаративе выпадает безударное e перед окончанием -er. Примеры: teuer → teurer (не teuerer), dunkel → dunkler (не dunkeler). В суперлативе это e сохраняется: am teuersten, am dunkelsten."
         },
         {
           "kind": "table",
@@ -1429,7 +1429,7 @@
           "kind": "example",
           "de": "Das Auto ist schneller als das Fahrrad. Das ist das teuerste Auto. Ich mag ihn lieber.",
           "ru": "Машина быстрее велосипеда. Это самая дорогая машина. Я люблю его больше.",
-          "note": "schneller (Komparativ), teuerste (Superlativ attributiv), lieber (unregelmässig)."
+          "note": "schneller (компаратив), teuerste (суперлатив атрибутивный), lieber (неправильный)."
         }
       ],
       "drills": [
@@ -1446,7 +1446,7 @@
           "answer": [
             "größer"
           ],
-          "why": "Umlaut: groß → größer."
+          "why": "Умлаут: groß → größer."
         },
         {
           "id": "a2-08-d02",
@@ -1461,7 +1461,7 @@
           "answer": [
             "am schnellsten"
           ],
-          "why": "am + Adj + -sten."
+          "why": "am + прил. + -sten."
         },
         {
           "id": "a2-08-d03",
@@ -1476,7 +1476,7 @@
           "answer": [
             "besser"
           ],
-          "why": "Unregelmässig: gut → besser."
+          "why": "Неправильный: gut → besser."
         },
         {
           "id": "a2-08-d04",
@@ -1485,7 +1485,7 @@
           "answer": [
             "meisten"
           ],
-          "why": "viel → mehr → am meisten."
+          "why": "viel → mehr → am meisten (много — больше — больше всего)."
         },
         {
           "id": "a2-08-d05",
@@ -1500,7 +1500,7 @@
           "answer": [
             "teurer"
           ],
-          "why": "Auf -er: e fällt weg → teurer."
+          "why": "На -er: e выпадает → teurer."
         },
         {
           "id": "a2-08-d06",
@@ -1509,7 +1509,7 @@
           "answer": [
             "dunkelste"
           ],
-          "why": "dunkel → dunkler → dunkelst + Adjektivendung: dunkelste."
+          "why": "dunkel → dunkler → dunkelst + окончание прилагательного: dunkelste."
         },
         {
           "id": "a2-08-d07",
@@ -1524,7 +1524,7 @@
           "answer": [
             "näher"
           ],
-          "why": "Umlaut: nah → näher."
+          "why": "Умлаут: nah → näher."
         },
         {
           "id": "a2-08-d08",
@@ -1533,7 +1533,7 @@
           "answer": [
             "größer"
           ],
-          "why": "Komparativ + als: größer als."
+          "why": "Компаратив + als: größer als."
         },
         {
           "id": "a2-08-d09",
@@ -1548,7 +1548,7 @@
           "answer": [
             "lieber"
           ],
-          "why": "gern → lieber (unregelmässig)."
+          "why": "gern → lieber (неправильный)."
         },
         {
           "id": "a2-08-d10",
@@ -1557,7 +1557,7 @@
           "answer": [
             "kleiner, am kleinsten"
           ],
-          "why": "Regelmässig: klein → kleiner → am kleinsten."
+          "why": "Регулярный: klein → kleiner → am kleinsten."
         },
         {
           "id": "a2-08-d11",
@@ -1566,7 +1566,7 @@
           "answer": [
             "das beste"
           ],
-          "why": "gut → besser → beste + Adjektivendung (bestimmt): das beste."
+          "why": "gut → besser → beste + окончание прилагательного (определённый): das beste."
         },
         {
           "id": "a2-08-d12",
@@ -1581,7 +1581,7 @@
           "answer": [
             "höher"
           ],
-          "why": "Umlaut: hoch → höher."
+          "why": "Умлаут: hoch → höher."
         }
       ]
     },
@@ -1602,22 +1602,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Nebensätze (придаточные) beginnen mit Konjunktion (dass, weil, wenn, als, obwohl...). Alle konjugierten Verben stehen AM ENDE."
+          "text": "Придаточные предложения (Nebensätze) начинаются с союза (dass, weil, wenn, als, obwohl...). Все спряжённые глаголы стоят В КОНЦЕ."
         },
         {
           "kind": "rule",
-          "title": "Wortstellung",
-          "text": "Konjunktion — Subjekt — Objekt/Adverbiale — Verb (konjugiert). Bei mehreren Verben: letztes = konjugiert."
+          "title": "Порядок слов",
+          "text": "Союз — подлежащее — дополнение/обстоятельства — глагол (спряжённый). Если несколько глаголов: последний = спряжённый."
         },
         {
           "kind": "rule",
-          "title": "Wichtige Konjunktionen",
-          "text": "dass (Objektsatz), weil (Kausalsatz), wenn (Konditionalsatz/wiederholte Vergangenheit), als (einmalige Vergangenheit), obwohl (Konzessivsatz), ob (Indirekte Ja/Nein-Frage), damit (Finalsatz)."
+          "title": "Важные союзы",
+          "text": "dass (придаточное дополнение), weil (причиненное), wenn (условное/повторяющееся в прошлом), als (однократное в прошлом), хотя (уступительное), ob (косвенный общий вопрос), damit (целевое)."
         },
         {
           "kind": "rule",
-          "title": "Hauptsatz nach Nebensatz",
-          "text": "Wenn Nebensatz voransteht → ganzer Nebensatz = Position 1 → Verb an Position 2 im Hauptsatz: 'Weil es regnet, bleibe ich zu Hause.'"
+          "title": "Главное предложение после придаточного",
+          "text": "Если придаточное стоит впереди → всё придаточное = позиция 1 → глагол на позиции 2 в главном: 'Weil es regnet, bleibe ich zu Hause.'"
         },
         {
           "kind": "table",
@@ -1631,7 +1631,7 @@
           "kind": "example",
           "de": "Ich denke, dass er kommt. Weil es regnet, bleibe ich. Wenn ich Zeit habe, lese ich. Als er ankam, aßen wir.",
           "ru": "Я думаю, что он придёт. Поскольку идёт дождь, я остаюсь. Если у меня есть время, я читаю. Когда он пришёл, мы ели.",
-          "note": "Verb am Ende: kommt, bleibe, habe, kam."
+          "note": "Глагол в конце: kommt, bleibe, habe, kam."
         }
       ],
       "drills": [
@@ -1648,7 +1648,7 @@
           "answer": [
             "kommt"
           ],
-          "why": "Nebensatz: Verb am Ende (Präsens: kommt)."
+          "why": "Придаточное: глагол в конце (настоящее время: kommt)."
         },
         {
           "id": "a2-09-d02",
@@ -1663,7 +1663,7 @@
           "answer": [
             "regnet"
           ],
-          "why": "weil + Nebensatz: Verb am Ende (regnet)."
+          "why": "weil + придаточное: глагол в конце (regnet)."
         },
         {
           "id": "a2-09-d03",
@@ -1678,7 +1678,7 @@
           "answer": [
             "habe"
           ],
-          "why": "wenn + Nebensatz: Verb am Ende (habe)."
+          "why": "wenn + придаточное: глагол в конце (habe)."
         },
         {
           "id": "a2-09-d04",
@@ -1687,7 +1687,7 @@
           "answer": [
             "ankam"
           ],
-          "why": "als (einmalig Vergangenheit) + Präteritum am Ende: ankam."
+          "why": "als (однократное прошлое) + Präteritum в конце: ankam."
         },
         {
           "id": "a2-09-d05",
@@ -1702,7 +1702,7 @@
           "answer": [
             "ist"
           ],
-          "why": "obwohl + Nebensatz: Verb am Ende (ist)."
+          "why": "obwohl + придаточное: глагол в конце (ist)."
         },
         {
           "id": "a2-09-d06",
@@ -1711,7 +1711,7 @@
           "answer": [
             "kommt"
           ],
-          "why": "ob (indirekte Ja/Nein-Frage): Verb am Ende."
+          "why": "ob (косвенный общий вопрос): глагол в конце."
         },
         {
           "id": "a2-09-d07",
@@ -1720,7 +1720,7 @@
           "answer": [
             "Weil es regnet, bleibe ich zu Hause."
           ],
-          "why": "Nebensatz voran → Position 1 → Hauptsatz V2: bleibe ich."
+          "why": "Придаточное впереди → позиция 1 → главное предложение V2: bleibe ich."
         },
         {
           "id": "a2-09-d08",
@@ -1735,7 +1735,7 @@
           "answer": [
             "besteht"
           ],
-          "why": "damit + Nebensatz: Verb am Ende (besteht)."
+          "why": "damit + придаточное: глагол в конце (besteht)."
         },
         {
           "id": "a2-09-d09",
@@ -1744,7 +1744,7 @@
           "answer": [
             "kommen"
           ],
-          "why": "Modal + Infinitiv im Nebensatz: konjugiertes Modal (will) am Ende, Infinitiv davor."
+          "why": "Модальный + инфинитив в придаточном: спряжённый модальный (will) в конце, инфинитив перед ним."
         },
         {
           "id": "a2-09-d10",
@@ -1753,7 +1753,7 @@
           "answer": [
             "kommt"
           ],
-          "why": "dass + Nebensatz: Verb am Ende."
+          "why": "dass + придаточное: глагол в конце."
         },
         {
           "id": "a2-09-d11",
@@ -1768,7 +1768,7 @@
           "answer": [
             "Weil"
           ],
-          "why": "Kausaler Grund: weil."
+          "why": "Причинная связь: weil."
         },
         {
           "id": "a2-09-d12",
@@ -1777,7 +1777,7 @@
           "answer": [
             "Als"
           ],
-          "why": "als für einmalige Vergangenheit."
+          "why": "als для однократного прошедшего."
         }
       ]
     },
@@ -1797,17 +1797,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "TeKaMoLo = neutrale Reihenfolge der Adverbiale im Mittelfeld (nach Verb, vor Endklammern)."
+          "text": "TeKaMoLo = нейтральный порядок обстоятельств в середине предложения (после глагола, перед конечной частью)."
         },
         {
           "kind": "rule",
-          "title": "Reihenfolge",
-          "text": "1. Temporal (Wann? gestern, oft, um 10 Uhr). 2. Kausal (Warum? deshalb, wegen...). 3. Modal (Wie? gerne, schnell, zu Fuß). 4. Lokal (Wo/Wohin? in Berlin, nach Hause)."
+          "title": "Порядок",
+          "text": "1. Временные (Когда? вчесто, часто, в 10 часов). 2. Причинные (Почему? поэтому, из-за...). 3. Образ действия (Как? с удовольствием, быстро, пешком). 4. Местные (Где/Куда? в Берлине, домой)."
         },
         {
           "kind": "rule",
-          "title": "Ausnahmen",
-          "text": "Für Betonung kann Reihenfolge geändert werden. Ortsangabe VOR Richtungsangabe (Wo? vor Wohin?)."
+          "title": "Исключения",
+          "text": "Для акцента порядок можно менять. Указание места ставится перед указанием направления (Где? перед Куда?)."
         },
         {
           "kind": "table",
@@ -1817,7 +1817,7 @@
           "kind": "example",
           "de": "Ich fahre morgen (Te) mit dem Zug (Mo) nach Berlin (Lo). Er kommt nicht, weil er krank ist (Ka).",
           "ru": "Я еду завтра на поезде в Берлин. Он не придёт, потому что болен.",
-          "note": "Te (morgen) vor Mo (mit dem Zug) vor Lo (nach Berlin). Ka oft als Nebensatz."
+          "note": "Te (morgen) перед Mo (mit dem Zug) перед Lo (nach Berlin). Ka часто как придаточное предложение."
         }
       ],
       "drills": [
@@ -1834,7 +1834,7 @@
           "answer": [
             "morgen mit dem Zug"
           ],
-          "why": "Te (morgen) vor Mo (mit dem Zug)."
+          "why": "Te (morgen) перед Mo (mit dem Zug)."
         },
         {
           "id": "a2-10-d02",
@@ -1848,7 +1848,7 @@
           "answer": [
             "gerne schnell zu Hause"
           ],
-          "why": "Mo (gerne) vor Mo (schnell) vor Lo (zu Hause)."
+          "why": "Mo (gerne) перед Mo (schnell) перед Lo (zu Hause)."
         },
         {
           "id": "a2-10-d03",
@@ -1862,7 +1862,7 @@
           "answer": [
             "gestern lange im Café"
           ],
-          "why": "Te (gestern) vor Mo (lange) vor Lo (im Café)."
+          "why": "Te (gestern) перед Mo (lange) перед Lo (im Café)."
         },
         {
           "id": "a2-10-d04",
@@ -1871,7 +1871,7 @@
           "answer": [
             "heute nicht, weil er krank ist"
           ],
-          "why": "Te (heute) vor Negation (nicht) vor Ka (Nebensatz)."
+          "why": "Te (heute) перед отрицанием (nicht) перед Ka (придаточным предложением)."
         },
         {
           "id": "a2-10-d05",
@@ -1885,7 +1885,7 @@
           "answer": [
             "ganz am Ende"
           ],
-          "why": "Lokal (Lo) ganz am Ende nach Te (seit 2020)."
+          "why": "Локальное (Lo) в самом конце после Te (seit 2020)."
         },
         {
           "id": "a2-10-d06",
@@ -1894,7 +1894,7 @@
           "answer": [
             "Gestern habe ich schnell zu Hause gearbeitet."
           ],
-          "why": "Te (gestern) V2 (habe ich) Mo (schnell) Lo (zu Hause) Partizip (gearbeitet)."
+          "why": "Te (gestern) V2 (habe ich) Mo (schnell) Lo (zu Hause) причастие (gearbeitet)."
         },
         {
           "id": "a2-10-d07",
@@ -1903,7 +1903,7 @@
           "answer": [
             "morgen mit dem Auto nach München"
           ],
-          "why": "Te → Mo → Lo."
+          "why": "Te (morgen) перед Mo (mit dem Auto) перед Lo (nach München)."
         },
         {
           "id": "a2-10-d08",
@@ -1918,7 +1918,7 @@
           "answer": [
             "gerne"
           ],
-          "why": "Modal (gerne) vor Lokal (in der Küche)."
+          "why": "Модальное (gerne) перед локальным (in der Küche)."
         },
         {
           "id": "a2-10-d09",
@@ -1927,7 +1927,7 @@
           "answer": [
             "Heute gehe ich ins Kino."
           ],
-          "why": "Te voran → Inversion."
+          "why": "Te в начале → инверсия."
         },
         {
           "id": "a2-10-d10",
@@ -1936,7 +1936,7 @@
           "answer": [
             "oft zusammen zu Hause"
           ],
-          "why": "Te (oft) → Mo (zusammen) → Lo (zu Hause)."
+          "why": "Te (oft) перед Mo (zusammen) перед Lo (zu Hause)."
         }
       ]
     },
@@ -1955,17 +1955,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Präpositionen, die Genitiv verlangen. In der Umgangssprache oft mit Dativ, im Schriftlichen streng Genitiv."
+          "text": "Предлоги, требующие родительного падежа. В разговорной речи часто с дативом, в письменной строго родительный."
         },
         {
           "kind": "rule",
-          "title": "Liste",
-          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund, anlässlich, kraft, laut, vermittels, zufolge (nachgestellt)."
+          "title": "Список",
+          "text": "wegen, trotz, während, statt/anstatt, innerhalb, außerhalb, aufgrund, anlässlich, kraft, laut, vermittels, zufolge (после существительного)."
         },
         {
           "kind": "rule",
-          "title": "Kasus im Genitiv",
-          "text": "Mask/Neut: des + -s/-es. Fem: der. Pl: der."
+          "title": "Падеж в родительном",
+          "text": "Мужской/средний род: des + -s/-es. Женский род: der. Множественное число: der."
         },
         {
           "kind": "table",
@@ -1975,7 +1975,7 @@
           "kind": "example",
           "de": "Wegen des Regens bleibe ich drinnen. Trotz des Wetters fahren wir. Während der Woche arbeite ich.",
           "ru": "Из-за дождя я остаюсь внутри. Несмотря на погоду, мы едем. В течение недели я работаю.",
-          "note": "wegen/trotz/während + Genitiv. Mask: des Regens, des Wetters."
+          "note": "wegen/trotz/während + родительный падеж. Мужской род: des Regens, des Wetters."
         }
       ],
       "drills": [
@@ -1992,7 +1992,7 @@
           "answer": [
             "des"
           ],
-          "why": "wegen + Genitiv, Maskulin: der → des."
+          "why": "wegen + родительный падеж, мужской род: der → des."
         },
         {
           "id": "a2-11-d02",
@@ -2007,7 +2007,7 @@
           "answer": [
             "der"
           ],
-          "why": "Plural Genitiv: die → der."
+          "why": "Множественное число родительного: die → der."
         },
         {
           "id": "a2-11-d03",
@@ -2022,7 +2022,7 @@
           "answer": [
             "der"
           ],
-          "why": "während + Genitiv, Feminin: die → der."
+          "why": "während + родительный падеж, женский род: die → der."
         },
         {
           "id": "a2-11-d04",
@@ -2031,7 +2031,7 @@
           "answer": [
             "des"
           ],
-          "why": "statt + Genitiv, Maskulin: der → des."
+          "why": "statt + родительный падеж, мужской род: der → des."
         },
         {
           "id": "a2-11-d05",
@@ -2046,7 +2046,7 @@
           "answer": [
             "des"
           ],
-          "why": "innerhalb + Genitiv, Neutrum: das → des."
+          "why": "innerhalb + родительный падеж, средний род: das → des."
         },
         {
           "id": "a2-11-d06",
@@ -2055,7 +2055,7 @@
           "answer": [
             "der"
           ],
-          "why": "außerhalb + Genitiv, Feminin: die → der."
+          "why": "außerhalb + родительный падеж, женский род: die → der."
         },
         {
           "id": "a2-11-d07",
@@ -2070,7 +2070,7 @@
           "answer": [
             "des"
           ],
-          "why": "aufgrund + Genitiv, Neutrum: das → des."
+          "why": "aufgrund + родительный падеж, средний род: das → des."
         },
         {
           "id": "a2-11-d08",
@@ -2079,7 +2079,7 @@
           "answer": [
             "Wegen des Wetters bleibe ich zu Hause."
           ],
-          "why": "Präpositionalgruppe voran → V2 im Hauptsatz."
+          "why": "Предложная группа в начале → V2 в главном предложении."
         },
         {
           "id": "a2-11-d09",
@@ -2094,7 +2094,7 @@
           "answer": [
             "Dativ"
           ],
-          "why": "Umgangssprachlich: wegen dem Regen (Dativ), aber schriftlich Genitiv."
+          "why": "В разговорной речи: wegen dem Regen (дательный), но в письменной — родительный."
         },
         {
           "id": "a2-11-d10",
@@ -2103,7 +2103,7 @@
           "answer": [
             "wegen meines Vaters"
           ],
-          "why": "wegen + Genitiv: meines Vaters."
+          "why": "wegen + родительный падеж: meines Vaters."
         },
         {
           "id": "a2-11-d11",
@@ -2112,7 +2112,7 @@
           "answer": [
             "des"
           ],
-          "why": "anlässlich + Genitiv, Neutrum: das → des."
+          "why": "anlässlich + родительный падеж, средний род: das → des."
         },
         {
           "id": "a2-11-d12",
@@ -2127,7 +2127,7 @@
           "answer": [
             "der"
           ],
-          "why": "kraft + Genitiv, Feminin: die → der."
+          "why": "kraft + родительный падеж, женский род: die → der."
         }
       ]
     },
@@ -2148,22 +2148,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Relativsätze bestimmen ein Nomen näher. Relativpronomen = bestimmter Artikel, aber Genitiv: dessen/deren, Dativ Plural: denen."
+          "text": "Относительные придаточные уточняют существительное. Относительное местоимение = определённый артикль, только в родительном падеже: dessen/deren, во множественном числе дательном: denen."
         },
         {
           "kind": "rule",
-          "title": "Relativpronomen",
-          "text": "Nom: der/die/das/die. Akk: den/die/das/die. Dat: dem/der/dem/denen. Gen: dessen/deren/desen/deren."
+          "title": "Относительные местоимения",
+          "text": "Именительный: der/die/das/die. Винительный: den/die/das/die. Дательный: dem/der/dem/denen. Родительный: dessen/deren/desen/deren."
         },
         {
           "kind": "rule",
-          "title": "Präposition + Relativpronomen",
-          "text": "Die Präposition steht VOR dem Relativpronomen: 'der Mann, mit dem ich spreche' (mit wem?). Kasus durch Präposition bestimmt."
+          "title": "Предлог + относительное местоимение",
+          "text": "Предлог стоит ПЕРЕД относительным местоимением: 'der Mann, mit dem ich spreche' (с кем?). Падеж определяется предлогом."
         },
         {
           "kind": "rule",
-          "title": "Wortstellung",
-          "text": "Wie Nebensatz: Relativpronomen (Pos 1) — Rest — Verb am Ende."
+          "title": "Порядок слов",
+          "text": "Как в придаточном предложении: относительное местоимение (позиция 1) — остальное — глагол в конце."
         },
         {
           "kind": "table",
@@ -2173,7 +2173,7 @@
           "kind": "example",
           "de": "Der Mann, der da steht, ist mein Vater. Das Buch, das ich lese, ist spannend. Die Frau, mit der ich spreche.",
           "ru": "Мужчина, который там стоит — мой отец. Книга, которую я читаю, интересная. Женщина, с которой я говорю.",
-          "note": "der (Nom Mask), das (Akk Neut), mit der (Dat Fem + Präposition)."
+          "note": "der (им. падеж, муж. род), das (вин. падеж, ср. род), mit der (дат. падеж, жен. род + предлог)."
         }
       ],
       "drills": [
@@ -2190,7 +2190,7 @@
           "answer": [
             "der"
           ],
-          "why": "Relativpronomen Nom Mask: der."
+          "why": "Относительное местоимение в именительном падеже, мужской род: der."
         },
         {
           "id": "a2-12-d02",
@@ -2205,7 +2205,7 @@
           "answer": [
             "das"
           ],
-          "why": "Relativpronomen Akk Neut: das."
+          "why": "Относительное местоимение в винительном падеже, средний род: das."
         },
         {
           "id": "a2-12-d03",
@@ -2220,7 +2220,7 @@
           "answer": [
             "der"
           ],
-          "why": "helfen + Dat → Relativpronomen Dat Fem: der."
+          "why": "helfen требует дательного падежа → относительное местоимение в дательном падеже, женский род: der."
         },
         {
           "id": "a2-12-d04",
@@ -2229,7 +2229,7 @@
           "answer": [
             "dem"
           ],
-          "why": "mit + Dat → dem (Mask)."
+          "why": "mit + дательный падеж → dem (мужской род)."
         },
         {
           "id": "a2-12-d05",
@@ -2244,7 +2244,7 @@
           "answer": [
             "dessen"
           ],
-          "why": "Genitiv Mask/Neut: dessen."
+          "why": "Родительный падеж мужского/среднего рода: dessen."
         },
         {
           "id": "a2-12-d06",
@@ -2253,7 +2253,7 @@
           "answer": [
             "deren"
           ],
-          "why": "Genitiv Fem/Pl: deren."
+          "why": "Родительный падеж женского рода/множественного числа: deren."
         },
         {
           "id": "a2-12-d07",
@@ -2268,7 +2268,7 @@
           "answer": [
             "denen"
           ],
-          "why": "Dat Plural: denen."
+          "why": "Дательный падеж множественного числа: denen."
         },
         {
           "id": "a2-12-d08",
@@ -2277,7 +2277,7 @@
           "answer": [
             "Das ist das Buch, das ich lese."
           ],
-          "why": "Relativsatz: das (Relativpronomen) — ich — lese (Verb am Ende)."
+          "why": "Относительное придаточное: das (относительное местоимение) — ich — lese (глагол в конце)."
         },
         {
           "id": "a2-12-d09",
@@ -2286,7 +2286,7 @@
           "answer": [
             "dem"
           ],
-          "why": "auf + Dat → dem (Mask/Neut)."
+          "why": "auf + дательный падеж → dem (мужской/средний род)."
         },
         {
           "id": "a2-12-d10",
@@ -2301,7 +2301,7 @@
           "answer": [
             "in der"
           ],
-          "why": "in + Dat (Wo?) → in der (Fem)."
+          "why": "in + дательный падеж (Где?) → in der (женский род)."
         },
         {
           "id": "a2-12-d11",
@@ -2310,7 +2310,7 @@
           "answer": [
             "Der Mann, der da steht, ist mein Vater."
           ],
-          "why": "Relativsatz mit Nom Mask 'der'."
+          "why": "Относительное придаточное с именительным падежом мужского рода 'der'."
         },
         {
           "id": "a2-12-d12",
@@ -2319,7 +2319,7 @@
           "answer": [
             "dem"
           ],
-          "why": "vor + Dat → dem (Neut)."
+          "why": "vor + дательный падеж → dem (средний род)."
         }
       ]
     },
@@ -2339,38 +2339,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Infinitivkonstruktionen mit 'zu' ersetzen oft Nebensätze. 'zu' steht vor dem Infinitiv (bei trennbaren: zwischen Präfix und Stamm)."
+          "text": "Инфинитивные конструкции с «zu» часто заменяют придаточные предложения. «zu» стоит перед инфинитивом (при разделимых глаголах: между приставкой и основой)."
         },
         {
           "kind": "rule",
-          "title": "um ... zu (Zweck)",
-          "text": "Ich lerne, um die Prüfung zu bestehen. Subjekt = Hauptsatz-Subjekt."
+          "title": "um ... zu (цель)",
+          "text": "Ich lerne, um die Prüfung zu bestehen. Подлежащее совпадает с подлежащим главного предложения."
         },
         {
           "kind": "rule",
           "title": "ohne ... zu",
-          "text": "Er ging weg, ohne sich zu verabschieden."
+          "text": "Он ушёл, не попрощавшись."
         },
         {
           "kind": "rule",
           "title": "statt ... zu",
-          "text": "Er ruft an, statt zu schreiben."
+          "text": "Он звонит, вместо того чтобы писать."
         },
         {
           "kind": "rule",
-          "title": "Trennbare Verben",
-          "text": "zu steht zwischen Präfix und Stamm: aufstehen → aufzustehen, einkaufen → einzukaufen."
+          "title": "Разделимые глаголы",
+          "text": "zu ставится между приставкой и основой: aufstehen → aufzustehen, einkaufen → einzukaufen."
         },
         {
           "kind": "rule",
-          "title": "Ohne 'zu'",
-          "text": "Nach Modalverben, lassen, hören, sehen, helfen (optional), bleiben, gehen, kommen (Richtung)."
+          "title": "Без «zu»",
+          "text": "После модальных глаголов, lassen, hören, sehen, helfen (по желанию), bleiben, gehen, kommen (направление)."
         },
         {
           "kind": "example",
           "de": "Ich versuche, Deutsch zu lernen. Er hat vor, nach Berlin zu fahren. Wir essen, statt zu kochen.",
           "ru": "Я пытаюсь выучить немецкий. Он собирается поехать в Берлин. Мы едим, вместо того чтобы готовить.",
-          "note": "versuchen + zu, vorhaben + zu, essen statt zu kochen."
+          "note": "конструкции: versuchen + zu, vorhaben + zu, essen statt zu kochen."
         }
       ],
       "drills": [
@@ -2387,7 +2387,7 @@
           "answer": [
             "um"
           ],
-          "why": "Zweck: um ... zu."
+          "why": "Цель: um ... zu."
         },
         {
           "id": "a2-13-d02",
@@ -2402,7 +2402,7 @@
           "answer": [
             "ohne"
           ],
-          "why": "ohne ... zu."
+          "why": "Конструкция без ... zu: ohne ... zu."
         },
         {
           "id": "a2-13-d03",
@@ -2417,7 +2417,7 @@
           "answer": [
             "statt"
           ],
-          "why": "statt ... zu."
+          "why": "Конструкция вместо ... zu: statt ... zu."
         },
         {
           "id": "a2-13-d04",
@@ -2426,7 +2426,7 @@
           "answer": [
             "zu fahren"
           ],
-          "why": "vorhaben + zu + Infinitiv."
+          "why": "vorhaben + zu + инфинитив."
         },
         {
           "id": "a2-13-d05",
@@ -2441,7 +2441,7 @@
           "answer": [
             "aufzustehen"
           ],
-          "why": "zu zwischen Präfix und Stamm: aufzustehen."
+          "why": "zu между приставкой и основой: aufzustehen."
         },
         {
           "id": "a2-13-d06",
@@ -2450,7 +2450,7 @@
           "answer": [
             "zuzumachen"
           ],
-          "why": "zumachen → zuzumachen."
+          "why": "zumachen → zuzumachen (zu между приставкой и основой)."
         },
         {
           "id": "a2-13-d07",
@@ -2465,7 +2465,7 @@
           "answer": [
             "sehe"
           ],
-          "why": "sehen/hören/lassen + Infinitiv OHNE zu."
+          "why": "sehen/hören/lassen + инфинитив БЕЗ zu."
         },
         {
           "id": "a2-13-d08",
@@ -2474,7 +2474,7 @@
           "answer": [
             "Ich versuche, Deutsch zu lernen."
           ],
-          "why": "versuchen + zu + Infinitiv am Ende."
+          "why": "versuchen + zu + инфинитив в конце."
         },
         {
           "id": "a2-13-d09",
@@ -2483,7 +2483,7 @@
           "answer": [
             "zu arbeiten"
           ],
-          "why": "beginnen + zu + Infinitiv."
+          "why": "beginnen + zu + инфинитив."
         },
         {
           "id": "a2-13-d10",
@@ -2492,7 +2492,7 @@
           "answer": [
             "zu kommen"
           ],
-          "why": "Gleiches Subjekt → Infinitivkonstruktion."
+          "why": "Одинаковое подлежащее → инфинитивная конструкция."
         },
         {
           "id": "a2-13-d11",
@@ -2507,7 +2507,7 @@
           "answer": [
             "aufzustehen"
           ],
-          "why": "Lust haben + Infinitiv mit zu: aufzustehen."
+          "why": "Lust haben + инфинитив с zu: aufzustehen."
         },
         {
           "id": "a2-13-d12",
@@ -2516,7 +2516,7 @@
           "answer": [
             "zu essen"
           ],
-          "why": "ohne ... zu + Infinitiv."
+          "why": "ohne ... zu + инфинитив."
         }
       ]
     },
@@ -2536,22 +2536,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Passiv: Fokus auf Handlung, nicht auf Täter. Bildung: werden (konjugiert) + Partizip II. Akkusativobjekt wird Subjekt."
+          "text": "Пассив: фокус на действии, а не на исполнителе. Образование: werden (склоняемое) + Partizip II. Винительное дополнение становится подлежащим."
         },
         {
           "kind": "rule",
-          "title": "Präsens Passiv",
-          "text": "ich werde gemacht, du wirst gemacht, er wird gemacht, wir werden gemacht, ihr werdet gemacht, sie werden gemacht."
+          "title": "Пассив в Präsens",
+          "text": "Конъюгация: ich werde gemacht, du wirst gemacht, er wird gemacht, wir werden gemacht, ihr werdet gemacht, sie werden gemacht."
         },
         {
           "kind": "rule",
-          "title": "Umwandlung Aktiv → Passiv",
-          "text": "Aktiv: Jemand baut das Haus. Passiv: Das Haus wird gebaut. Täter (von wem?) optional: von + Dat."
+          "title": "Преобразование актив → пассив",
+          "text": "Актив: Jemand baut das Haus. Пассив: Das Haus wird gebaut. Исполнитель (от кого?) опционально: von + дательный."
         },
         {
           "kind": "rule",
-          "title": "Nur transitive Verben",
-          "text": "Nur Verben mit Akkusativobjekt können passiviert werden. Intransitive (gehen, schlafen) → kein Passiv (außer unpersönlich: wird getanzt)."
+          "title": "Только переходные глаголы",
+          "text": "Только глаголы с винительным дополнением могут быть пассивизированы. Непереходные (gehen, schlafen) → нет пассива (кроме безличного: wird getanzt)."
         },
         {
           "kind": "table",
@@ -2561,7 +2561,7 @@
           "kind": "example",
           "de": "Das Haus wird gebaut. Die Tür wird geöffnet. Viele Autos werden hier produziert.",
           "ru": "Дом строится. Дверь открывается. Здесь производят много машин.",
-          "note": "wird + Partizip II. Subjekt = ehemaliges Akkusativobjekt."
+          "note": "wird + Partizip II. Подлежащее = бывшее винительное дополнение."
         }
       ],
       "drills": [
@@ -2578,7 +2578,7 @@
           "answer": [
             "wird"
           ],
-          "why": "3. Pers. Sg: wird + Partizip II."
+          "why": "3-е лицо ед. ч.: wird + Partizip II."
         },
         {
           "id": "a2-14-d02",
@@ -2593,7 +2593,7 @@
           "answer": [
             "werden"
           ],
-          "why": "Plural: werden + Partizip II."
+          "why": "Мн. ч.: werden + Partizip II."
         },
         {
           "id": "a2-14-d03",
@@ -2608,7 +2608,7 @@
           "answer": [
             "Die Tür wird geöffnet."
           ],
-          "why": "Akkusativobjekt (die Tür) → Subjekt, werden + Partizip II."
+          "why": "Винительное дополнение (die Tür) становится подлежащим, werden + Partizip II."
         },
         {
           "id": "a2-14-d04",
@@ -2617,7 +2617,7 @@
           "answer": [
             "wird"
           ],
-          "why": "3. Pers. Sg Neutrum: wird."
+          "why": "3-е лицо ед. ч. среднего рода: wird."
         },
         {
           "id": "a2-14-d05",
@@ -2632,7 +2632,7 @@
           "answer": [
             "von"
           ],
-          "why": "Täter im Passiv: von + Dativ (von mir, von der Firma)."
+          "why": "Исполнитель в пассиве: von + дательный (von mir, von der Firma)."
         },
         {
           "id": "a2-14-d06",
@@ -2641,7 +2641,7 @@
           "answer": [
             "wird geschrieben"
           ],
-          "why": "wird + Partizip II."
+          "why": "Образуется через wird + Partizip II."
         },
         {
           "id": "a2-14-d07",
@@ -2656,7 +2656,7 @@
           "answer": [
             "schlafen"
           ],
-          "why": "Intransitiv (kein Akkusativobjekt) → kein persönliches Passiv."
+          "why": "Непереходный (нет винительного дополнения) → нет личного пассива."
         },
         {
           "id": "a2-14-d08",
@@ -2665,7 +2665,7 @@
           "answer": [
             "Das Buch wird gelesen."
           ],
-          "why": "Subjekt (Das Buch) — wird — Partizip II (gelesen)."
+          "why": "Подлежащее (Das Buch) — wird — Partizip II (gelesen)."
         },
         {
           "id": "a2-14-d09",
@@ -2674,7 +2674,7 @@
           "answer": [
             "wird gesprochen"
           ],
-          "why": "Unpersönliches Passiv: wird + Partizip II."
+          "why": "Безличный пассив: wird + Partizip II."
         },
         {
           "id": "a2-14-d10",
@@ -2683,7 +2683,7 @@
           "answer": [
             "Hier werden Autos produziert."
           ],
-          "why": "man → unpersönlich, Akk-Objekt (Autos) → Subjekt Plural: werden."
+          "why": "man → безлично, винительное дополнение (Autos) становится подлежащим во множественном числе: werden."
         },
         {
           "id": "a2-14-d11",
@@ -2698,7 +2698,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum: wurde + Partizip II."
+          "why": "Пратеритум: wurde + Partizip II."
         },
         {
           "id": "a2-14-d12",
@@ -2707,7 +2707,7 @@
           "answer": [
             "ist worden"
           ],
-          "why": "Perfekt Passiv: ist + Partizip II + worden (nicht geworden!)."
+          "why": "Перфект пассив: ist + Partizip II + worden (не geworden!)."
         }
       ]
     },
@@ -2727,17 +2727,17 @@
       "theory": [
         {
           "kind": "text",
-          "text": "N-Deklination (schwache Maskulina): im Singular alle Kasus außer Nominativ haben -n/-en. Plural immer auf -n."
+          "text": "N-деклинация (слабые мужские существительные): в единственном числе все падежи, кроме именительного, получают окончание -n или -en. Во множественном числе во всех падежах стоит -n."
         },
         {
           "kind": "rule",
-          "title": "Wörter",
-          "text": "der Herr, der Junge, der Mensch, der Student, der Polizist, der Nachbar, der Kunde, der Patient, der Assistent, der Astronom, der Bote, der Christ, der Demokrat, der Diplomat, der Elefant, der Experte, der Franzose, der Gedanke, der Geograf, der Graf, der Held, der Kollege, der Komet, der Löwe, der Name, der Narr, der Oberst, der Philosoph, der Prinz, der Riese, der Tourist, der Zeuge."
+          "title": "Группы слов",
+          "text": "Сюда входят существительные на -e (der Junge, der Kunde), на -ent/-ant (der Student, der Patient), на -ist (der Tourist), на -or (der Professor), а также слова: der Herr, der Mensch, der Name, der Nachbar, der Polizist, der Zeuge и другие."
         },
         {
           "kind": "rule",
-          "title": "Endungen",
-          "text": "Nom Sg: der Herr. Akk/Dat/Gen Sg: den/dem/des Herrn. Plural: die Herrn (alle Kasus -n)."
+          "title": "Окончания",
+          "text": "Именительный ед. ч.: der Herr. Винительный, дательный, родительный ед. ч.: den Herrn, dem Herrn, des Herrn. Множественное число (все падежи): die Herrn."
         },
         {
           "kind": "table",
@@ -2747,7 +2747,7 @@
           "kind": "example",
           "de": "Ich sehe den Herrn. Ich gebe dem Herrn das Buch. Das ist das Auto des Herrn. Die Herrn kommen.",
           "ru": "Я вижу господина. Я даю господину книгу. Это машина господина. Господа приходят.",
-          "why": "Akk/Dat/Gen Sg: -n. Plural: -n."
+          "why": "Винительный, дательный, родительный ед. ч.: -n. Множественное число: -n."
         }
       ],
       "drills": [
@@ -2764,7 +2764,7 @@
           "answer": [
             "den"
           ],
-          "why": "Akk Sg: den Herrn."
+          "why": "Винительный падеж ед. ч.: den Herrn."
         },
         {
           "id": "a2-15-d02",
@@ -2779,7 +2779,7 @@
           "answer": [
             "dem"
           ],
-          "why": "Dat Sg: dem Herrn."
+          "why": "Дательный падеж ед. ч.: dem Herrn."
         },
         {
           "id": "a2-15-d03",
@@ -2794,7 +2794,7 @@
           "answer": [
             "des"
           ],
-          "why": "Gen Sg: des Herrn (ohne -s am Nomen, da N-Deklination)."
+          "why": "Родительный падеж ед. ч.: des Herrn (без -s у существительного, так как N-деклинация)."
         },
         {
           "id": "a2-15-d04",
@@ -2803,7 +2803,7 @@
           "answer": [
             "Herrn"
           ],
-          "why": "Plural: die Herrn."
+          "why": "Множественное число: die Herrn."
         },
         {
           "id": "a2-15-d05",
@@ -2818,7 +2818,7 @@
           "answer": [
             "den"
           ],
-          "why": "Dat Pl: den Herrn (+ -n an Nomen)."
+          "why": "Дательный падеж мн. ч.: den Herrn (+ -n к существительному)."
         },
         {
           "id": "a2-15-d06",
@@ -2827,7 +2827,7 @@
           "answer": [
             "dem"
           ],
-          "why": "Student (N-Deklination) → dem Studenten."
+          "why": "Student (N-деклинация) → dem Studenten."
         },
         {
           "id": "a2-15-d07",
@@ -2842,7 +2842,7 @@
           "answer": [
             "der Lehrer"
           ],
-          "why": "Lehrer ist regulär (der Lehrer, des Lehrers). N-Deklination: Student, Name, Mensch."
+          "why": "Lehrer — регулярное (der Lehrer, des Lehrers). N-деклинация: Student, Name, Mensch."
         },
         {
           "id": "a2-15-d08",
@@ -2851,7 +2851,7 @@
           "answer": [
             "Ich gebe dem Jungen den Ball."
           ],
-          "why": "Junge (N-Deklination) → dem Jungen (Dat)."
+          "why": "Junge (N-деклинация) → dem Jungen (дательный)."
         },
         {
           "id": "a2-15-d09",
@@ -2860,7 +2860,7 @@
           "answer": [
             "Nachbarn"
           ],
-          "why": "Gen Sg N-Deklination: des Nachbarn."
+          "why": "Родительный падеж ед. ч. N-деклинация: des Nachbarn."
         },
         {
           "id": "a2-15-d10",
@@ -2875,7 +2875,7 @@
           "answer": [
             "Kunden"
           ],
-          "why": "Plural Akk: die Kunden."
+          "why": "Винительный падеж мн. ч.: die Kunden."
         },
         {
           "id": "a2-15-d11",
@@ -2884,7 +2884,7 @@
           "answer": [
             "des Menschen"
           ],
-          "why": "N-Deklination: des Menschen (kein -s, aber -n)."
+          "why": "N-деклинация: des Menschen (нет -s, но -n)."
         },
         {
           "id": "a2-15-d12",
@@ -2893,7 +2893,7 @@
           "answer": [
             "dem"
           ],
-          "why": "Polizist (N-Deklination) → dem Polizisten."
+          "why": "Polizist (N-деклинация) → dem Polizisten."
         }
       ]
     },
@@ -2913,27 +2913,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Viele Verben verlangen eine bestimmte Präposition + Kasus. Diese muss auswendig gelernt werden."
+          "text": "Многие глаголы в немецком языке требуют строго определённый предлог и падеж. Эти сочетания нельзя выводить по правилам — их нужно запоминать как единые единицы: глагол + предлог + падеж."
         },
         {
           "kind": "rule",
-          "title": "Akkusativ",
-          "text": "warten auf, denken an, glauben an, achten auf, hören auf, verzichten auf, sich freuen auf, sich vorbereiten auf, sich verlassen auf."
+          "title": "Винительный падеж (Akkusativ)",
+          "text": "Следующие глаголы управляют винительным падежом: warten auf (ждать), denken an (думать о), glauben an (верить в), achten auf (обращать внимание на), hören auf (перестать/слушаться), verzichten auf (отказываться от), sich freuen auf (радоваться в будущем), sich vorbereiten на (готовиться к), sich verlassen auf (полагаться на). В русском часто используется другой предлог: думать о → denken an."
         },
         {
           "kind": "rule",
-          "title": "Dativ",
-          "text": "helfen bei, teilnehmen an, arbeiten an, leiden an, sterben an, zweifeln an, sich erinnern an, sich gewöhnen an, sich kümmern um, sich bemühen um, sich sorgen um, sich freuen über, sich ärgern über, sich wundern über, Angst haben vor, warnen vor, fliehen vor."
+          "title": "Дательный падеж (Dativ)",
+          "text": "Эти глаголы требуют дательного падежа: helfen bei (помогать при), teilnehmen an (участвовать в), arbeiten an (работать над), leiden an (страдать от), sterben an (умереть от), zweifeln an (сомневаться в), sich erinnern an (вспоминать), sich gewöhnen an (привыкать к), sich kümmern um (заботиться о), sich bemühen um (стараться о), sich sorgen um (беспокоиться о), sich freuen über (радоваться о чём-то уже случившемся), sich ärgern über (раздражаться), sich wundern über (удивляться), Angst haben vor (бояться), warnen vor (предупреждать), fliehen vor (сбегать от)."
         },
         {
           "kind": "rule",
-          "title": "Genitiv",
-          "text": "gedenken, bedürfen (selten)."
+          "title": "Родительный падеж (Genitiv)",
+          "text": "Редко встречаются глаголы с родительным падежом: gedenken (вспоминать/чествовать), bedürfen (нуждаться). В современной речи их часто заменяют другими конструкциями."
         },
         {
           "kind": "rule",
-          "title": "Da-/Wo-Komposita",
-          "text": "Bei Sachen: darauf, daran, damit, davon, worauf, woran, wovon. Bei Personen: Präposition + Pronomen (auf ihn, an sie)."
+          "title": "Да-/Во-композита (Da-/Wo-Komposita)",
+          "text": "Когда речь идёт о неодушевлённых предметах, предлог соединяется с da- / wo-: darauf, daran, damit, davon, worauf, woran, wovon. Для людей используется предлог + личное местоимение: auf ihn, an sie, mit ihm."
         },
         {
           "kind": "table",
@@ -2943,7 +2943,7 @@
           "kind": "example",
           "de": "Ich warte auf den Bus. Er denkt an seine Mutter. Ich freue mich auf das Wochenende. Er hat Angst vor Spinnen.",
           "ru": "Я жду автобус. Он думает о маме. Я радуюсь выходным. Он боится пауков.",
-          "note": "warten auf + Akk, denken an + Akk, freuen auf + Akk, Angst haben vor + Dat."
+          "note": "warten auf + винительный, denken an + винительный, freuen auf + винительный, Angst haben vor + дательный."
         }
       ],
       "drills": [
@@ -2960,7 +2960,7 @@
           "answer": [
             "auf"
           ],
-          "why": "warten auf + Akkusativ."
+          "why": "warten auf + винительный падеж."
         },
         {
           "id": "a2-16-d02",
@@ -2975,7 +2975,7 @@
           "answer": [
             "an"
           ],
-          "why": "denken an + Akkusativ."
+          "why": "denken an + винительный падеж."
         },
         {
           "id": "a2-16-d03",
@@ -2990,7 +2990,7 @@
           "answer": [
             "auf"
           ],
-          "why": "sich freuen auf (Zukunft) + Akk."
+          "why": "sich freuen auf (будущее) + винительный падеж."
         },
         {
           "id": "a2-16-d04",
@@ -2999,7 +2999,7 @@
           "answer": [
             "vor"
           ],
-          "why": "Angst haben vor + Dativ."
+          "why": "Angst haben vor + дательный падеж."
         },
         {
           "id": "a2-16-d05",
@@ -3014,7 +3014,7 @@
           "answer": [
             "über"
           ],
-          "why": "sprechen über + Akkusativ."
+          "why": "sprechen über + винительный падеж."
         },
         {
           "id": "a2-16-d06",
@@ -3023,7 +3023,7 @@
           "answer": [
             "an"
           ],
-          "why": "denken an + Akk."
+          "why": "denken an + винительный падеж."
         },
         {
           "id": "a2-16-d07",
@@ -3038,7 +3038,7 @@
           "answer": [
             "um"
           ],
-          "why": "sich kümmern um + Akk."
+          "why": "sich kümmern um + винительный падеж."
         },
         {
           "id": "a2-16-d08",
@@ -3047,7 +3047,7 @@
           "answer": [
             "Er denkt an seine Mutter."
           ],
-          "why": "denken an + Akk: an seine Mutter."
+          "why": "denken an + винительный падеж: an seine Mutter."
         },
         {
           "id": "a2-16-d09",
@@ -3056,7 +3056,7 @@
           "answer": [
             "über"
           ],
-          "why": "sich freuen über (Vergangenheit/Gegenwart) + Akk."
+          "why": "sich freuen über (прошлое/настоящее) + винительный падеж."
         },
         {
           "id": "a2-16-d10",
@@ -3071,7 +3071,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "warten auf + es → darauf."
+          "why": "warten auf + es → darauf (да-композитум для неодушевлённого предмета)."
         },
         {
           "id": "a2-16-d11",
@@ -3080,7 +3080,7 @@
           "answer": [
             "auf ihn"
           ],
-          "why": "Bei Personen: Präposition + Personalpronomen (nicht da-/wo-)."
+          "why": "Для людей: предлог + личное местоимение (не da-/wo-)."
         },
         {
           "id": "a2-16-d12",
@@ -3089,7 +3089,7 @@
           "answer": [
             "vor"
           ],
-          "why": "warnen vor + Dativ."
+          "why": "warnen vor + дательный падеж."
         }
       ]
     },
@@ -3110,22 +3110,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Partizip II kann als Attribut vor dem Nomen stehen und dekliniert sich wie ein Adjektiv."
+          "text": "Причастие II может стоять как определение перед существительным и склоняется как прилагательное."
         },
         {
           "kind": "rule",
-          "title": "Bildung",
-          "text": "Partizip II + Adjektivendung: das gebrochene Bein, die geöffnete Tür, den geschriebenen Brief."
+          "title": "Образование",
+          "text": "Причастие II + окончание прилагательного: das gebrochene Bein, die geöffnete Tür, den geschriebenen Brief."
         },
         {
           "kind": "rule",
-          "title": "Bedeutung",
-          "text": "Passivisch/abgeschlossen: das gebrochene Bein (das Bein wurde gebrochen), die geöffnete Tür (die Tür wurde geöffnet)."
+          "title": "Значение",
+          "text": "Пассивное/завершённое действие: das gebrochene Bein (нога была сломана), die geöffnete Tür (дверь была открыта)."
         },
         {
           "kind": "rule",
-          "title": "Partizip I vs II",
-          "text": "Partizip I (lesend) = aktiv/gleichzeitig. Partizip II (gelesen) = passiv/abgeschlossen."
+          "title": "Причастие I и II",
+          "text": "Причастие I (lesend) = активное/одновременное. Причастие II (gelesen) = пассивное/завершённое."
         },
         {
           "kind": "table",
@@ -3135,7 +3135,7 @@
           "kind": "example",
           "de": "Das gekochte Ei ist fertig. Ich lese den geschriebenen Brief. Die verlorene Zeit kommt nicht zurück.",
           "ru": "Сваренное яйцо готово. Я читаю написанное письмо. Потерянное время не вернётся.",
-          "note": "gekocht (Partizip II) + Adjektivendung (-e/-en)."
+          "note": "gekocht (Причастие II) + прилагательное окончание (-e/-en)."
         }
       ],
       "drills": [
@@ -3152,7 +3152,7 @@
           "answer": [
             "gekochte"
           ],
-          "why": "Nom Neut nach bestimmtem Artikel: -e."
+          "why": "Именительный падеж среднего рода после определённого артикля: -e."
         },
         {
           "id": "a2-17-d02",
@@ -3167,7 +3167,7 @@
           "answer": [
             "gekochte"
           ],
-          "why": "Akk Neut = Nom: -e."
+          "why": "Винительный падеж среднего рода = именительный: -e."
         },
         {
           "id": "a2-17-d03",
@@ -3182,7 +3182,7 @@
           "answer": [
             "geschriebene"
           ],
-          "why": "Nom Mask: -e."
+          "why": "Именительный падеж мужского рода: -e."
         },
         {
           "id": "a2-17-d04",
@@ -3191,7 +3191,7 @@
           "answer": [
             "geschriebenen"
           ],
-          "why": "Akk Mask: -en."
+          "why": "Винительный падеж мужского рода: -en."
         },
         {
           "id": "a2-17-d05",
@@ -3206,7 +3206,7 @@
           "answer": [
             "geöffnete"
           ],
-          "why": "Nom Fem: -e."
+          "why": "Именительный падеж женского рода: -e."
         },
         {
           "id": "a2-17-d06",
@@ -3215,7 +3215,7 @@
           "answer": [
             "gekochtes"
           ],
-          "why": "Ohne Artikel, stark: Nom Neut -es."
+          "why": "Без артикля, сильное склонение: именительный среднего рода -es."
         },
         {
           "id": "a2-17-d07",
@@ -3230,7 +3230,7 @@
           "answer": [
             "schlafend"
           ],
-          "why": "Aktiv/gleichzeitig → Partizip I: schlafend."
+          "why": "Активное/одновременное → Причастие I: schlafend."
         },
         {
           "id": "a2-17-d08",
@@ -3239,7 +3239,7 @@
           "answer": [
             "zerbrochene"
           ],
-          "why": "brechen → zerbrochen (untrennbar: zer- + Partizip II). Nom Neut: -e."
+          "why": "brechen → zerbrochen (неразделимая приставка zer- + Причастие II). Именительный среднего рода: -e."
         },
         {
           "id": "a2-17-d09",
@@ -3248,7 +3248,7 @@
           "answer": [
             "Das ist das gekochte Ei."
           ],
-          "why": "Partizip II als Adjektiv: das gekochte Ei."
+          "why": "Причастие II как прилагательное: das gekochte Ei."
         },
         {
           "id": "a2-17-d10",
@@ -3263,7 +3263,7 @@
           "answer": [
             "verlorene"
           ],
-          "why": "verlieren → verloren. Nom Fem: -e."
+          "why": "verlieren → verloren. Именительный женского рода: -e."
         },
         {
           "id": "a2-17-d11",
@@ -3271,7 +3271,7 @@
           "answer": [
             "gekochte"
           ],
-          "why": "Passiv Partizip II → Adjektivattribut.",
+          "why": "Пассивное причастие II → атрибутивное прилагательное.",
           "prompt": "Passiv → Partizip II Adjektiv: 'Das Ei wird gekocht.' → 'Das ____ Ei'"
         },
         {
@@ -3281,7 +3281,7 @@
           "answer": [
             "gesuchte"
           ],
-          "why": "suchen → gesucht. Nom Mask: -e."
+          "why": "suchen → gesucht. Именительный мужского рода: -e."
         }
       ]
     },
@@ -3301,27 +3301,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Konnektoren verbinden Sätze oder Satzteile. Drei Gruppen: koordinierend (Pos 0), adverbiell (Pos 1 → V2), subordnierend (Nebensatz, Verb am Ende)."
+          "text": "Коннекторы соединяют предложения или части предложения. Три группы: координирующие (позиция 0), адвербиальные (позиция 1 → V2), подчиняющие (придаточное предложение, глагол в конце)."
         },
         {
           "kind": "rule",
-          "title": "Koordinierend (0)",
-          "text": "und, aber, oder, denn, sondern. Keine Änderung der Wortstellung: 'Ich lerne und er liest.'"
+          "title": "Координирующие (0)",
+          "text": "und, aber, oder, denn, sondern. Порядок слов не меняется: 'Ich lerne und er liest.'"
         },
         {
           "kind": "rule",
-          "title": "Adverbiell (1)",
-          "text": "deshalb, trotzdem, jedoch, dennoch, außerdem, dann, später. Stehen an Pos 1 → V2: 'Es regnet. Deshalb bleibe ich.'"
+          "title": "Адвербиальные (1)",
+          "text": "deshalb, trotzdem, jedoch, dennoch, außerdem, dann, später. Стоят на позиции 1 → V2: 'Es regnet. Deshalb bleibe ich.'"
         },
         {
           "kind": "rule",
-          "title": "Subordinierend",
-          "text": "dass, weil, wenn, als, obwohl, ob, damit. Nebensatz: Verb am Ende."
+          "title": "Подчиняющие",
+          "text": "dass, weil, wenn, als, obwohl, ob, damit. Придаточное предложение: глагол в конце."
         },
         {
           "kind": "rule",
           "title": "denn vs weil",
-          "text": "denn = koordinierend (Pos 0, Hauptsatz). weil = subordinierend (Nebensatz, Verb am Ende)."
+          "text": "denn = координирующий (позиция 0, главное предложение). weil = подчиняющий (придаточное предложение, глагол в конце)."
         },
         {
           "kind": "table",
@@ -3331,7 +3331,7 @@
           "kind": "example",
           "de": "Ich lerne und er liest. Es regnet, deshalb bleibe ich. Ich bleibe, weil es regnet. Er ist krank, aber er arbeitet.",
           "ru": "Я учусь, и он читает. Идёт дождь, поэтому я остаюсь. Я остаюсь, потому что идёт дождь. Он болен, но работает.",
-          "note": "und/aber/denn = 0-Position. deshalb/trotzdem = 1. Position (V2). weil/obwohl = Nebensatz."
+          "note": "und/aber/denn = позиция 0. deshalb/trotzdem = позиция 1 (V2). weil/obwohl = придаточное предложение."
         }
       ],
       "drills": [
@@ -3348,7 +3348,7 @@
           "answer": [
             "und"
           ],
-          "why": "Koordinierend, Pos 0: keine Wortstellungsänderung."
+          "why": "Координирующий, позиция 0: порядок слов не меняется."
         },
         {
           "id": "a2-18-d02",
@@ -3363,7 +3363,7 @@
           "answer": [
             "aber"
           ],
-          "why": "aber = Kontrast, koordinierend."
+          "why": "aber = контраст, координирующий."
         },
         {
           "id": "a2-18-d03",
@@ -3378,7 +3378,7 @@
           "answer": [
             "Deshalb"
           ],
-          "why": "Adverbiell, Pos 1 → V2: Deshalb bleibe ich."
+          "why": "Адвербиальный, позиция 1 → V2: Deshalb bleibe ich."
         },
         {
           "id": "a2-18-d04",
@@ -3387,7 +3387,7 @@
           "answer": [
             "denn"
           ],
-          "why": "denn = Kausal, aber koordinierend (Hauptsatz)."
+          "why": "denn = причинный, но координирующий (главное предложение)."
         },
         {
           "id": "a2-18-d05",
@@ -3402,7 +3402,7 @@
           "answer": [
             "weil"
           ],
-          "why": "weil = subordinierend, Nebensatz (Verb am Ende)."
+          "why": "weil = подчиняющий, придаточное предложение (глагол в конце)."
         },
         {
           "id": "a2-18-d06",
@@ -3417,7 +3417,7 @@
           "answer": [
             "trotzdem"
           ],
-          "why": "trotzdem = Konzessiv, adverbiell, Pos 1 → V2."
+          "why": "trotzdem = уступительный, адвербиальный, позиция 1 → V2."
         },
         {
           "id": "a2-18-d07",
@@ -3426,7 +3426,7 @@
           "answer": [
             "Es regnet, deshalb bleibe ich zu Hause."
           ],
-          "why": "Hauptsatz, dann adverbieller Konnektor voran → V2."
+          "why": "Главное предложение, затем адвербиальный коннектор в начале → V2."
         },
         {
           "id": "a2-18-d08",
@@ -3435,7 +3435,7 @@
           "answer": [
             "damit"
           ],
-          "why": "damit = Finalsatz, Nebensatz (Verb am Ende)."
+          "why": "damit = целевое предложение, придаточное (глагол в конце)."
         },
         {
           "id": "a2-18-d09",
@@ -3450,7 +3450,7 @@
           "answer": [
             "Obwohl"
           ],
-          "why": "obwohl = Konzessivsatz, Nebensatz."
+          "why": "obwohl = уступительное придаточное предложение."
         },
         {
           "id": "a2-18-d10",
@@ -3459,7 +3459,7 @@
           "answer": [
             "Es regnet, denn ich bleibe zu Hause."
           ],
-          "why": "denn koordiniert zwei Hauptsätze."
+          "why": "denn соединяет два главных предложения."
         },
         {
           "id": "a2-18-d11",
@@ -3468,7 +3468,7 @@
           "answer": [
             "weil"
           ],
-          "why": "Kausal, Nebensatz: weil."
+          "why": "Причинное, придаточное предложение: weil."
         },
         {
           "id": "a2-18-d12",
@@ -3483,7 +3483,7 @@
           "answer": [
             "und"
           ],
-          "why": "Koordinierende Konnektoren (und, aber, oder, denn, sondern) stehen an Pos 0."
+          "why": "Координирующие коннекторы (und, aber, oder, denn, sondern) стоят на позиции 0."
         }
       ]
     }
