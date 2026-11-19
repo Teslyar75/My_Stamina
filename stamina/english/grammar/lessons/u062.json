@@ -1,0 +1,81 @@
+{
+ "n": 62,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "Все местоимения в одной таблице",
+ "en": "таблица местоимений",
+ "summary": "Субъект, объект, притяжательное и возвратное — четыре роли одного лица в одной таблице, чтобы не переводить каждый раз с нуля.",
+ "can_do": [
+  "Найти нужную форму по таблице за пару секунд.",
+  "Выбрать форму по роли в предложении, а не по русскому переводу.",
+  "Проверить свою фразу: подлежащее, дополнение, чья вещь, «сам»."
+ ],
+ "theory": [
+  {
+   "h": "Четыре роли одного лица",
+   "p": "Одно и то же лицо в английском выглядит по-разному в четырёх случаях: кто действует, на кого действуют, чья вещь перед предметом, чья вещь без предмета. Плюс пятая форма — «сам себя». Держите их рядом, и выбор станет механическим.",
+   "formula": "I — me — my — mine — myself"
+  },
+  {
+   "h": "Полная таблица",
+   "p": "Строки — это лица, столбцы — роли. Выучите не столбцы по отдельности, а строки: тогда любая форма вспоминается вместе с остальными.",
+   "table": {
+    "head": ["Кто", "Кого", "Чей + предмет", "Чей без предмета", "Сам себя"],
+    "rows": [
+     ["I", "me", "my", "mine", "myself"],
+     ["you", "you", "your", "yours", "yourself"],
+     ["he", "him", "his", "his", "himself"],
+     ["she", "her", "her", "hers", "herself"],
+     ["it", "it", "its", "—", "itself"],
+     ["we", "us", "our", "ours", "ourselves"],
+     ["they", "them", "their", "theirs", "themselves"]
+    ]
+   }
+  },
+  {
+   "h": "Три шага выбора",
+   "p": "Сначала найдите место в предложении: перед глаголом, после глагола, перед существительным или в конце без существительного. Потом возьмите форму из нужного столбца. Привычка проверять место избавляет от большинства ошибок.",
+   "formula": "He gave me his pen. · The pen is mine. · I did it myself."
+  },
+  {
+   "h": "you — и «ты», и «вы»",
+   "p": "У слова you одна форма на всё: you are, I like you, your house, yours. Единственное и множественное число различаются только по ситуации. Поэтому англичане иногда уточняют: you two, you all, you guys.",
+   "formula": "You are late. · I'll wait for you. · Is this yours?"
+  },
+  {
+   "h": "it и they о предметах",
+   "p": "О вещах и животных говорят it или they, а не he и she. Если предмет один — it, если несколько — they. Притяжательное от it — its, формы без предмета почти нет.",
+   "formula": "Where is my phone? It's in my bag. · The keys are mine."
+  },
+  {
+   "h": "Вопрос про владельца: Whose",
+   "p": "Вопрос о владельце начинают словом whose — «чей». После него можно поставить предмет и спросить whose bag is this, а можно обойтись без предмета: whose is this. В ответе выбирайте форму по ситуации: с предметом my bag, без предмета mine.",
+   "formula": "Whose bag is this? — It's my bag. · Whose is this? — It's mine."
+  }
+ ],
+ "examples": [
+  {"en": "She told me about her plans.", "ru": "Она рассказала мне о своих планах."},
+  {"en": "They invited us to their house.", "ru": "Они пригласили нас к себе домой."},
+  {"en": "We painted the room ourselves.", "ru": "Мы сами покрасили комнату."},
+  {"en": "I have my ticket, but he lost his.", "ru": "У меня есть мой билет, а он потерял свой."},
+  {"en": "Is this seat yours?", "ru": "Это место ваше?"}
+ ],
+ "traps": [
+  {"bad": "He gave the book to I.", "good": "He gave the book to me.", "why": "После предлога — только me, us, him, her, them."},
+  {"bad": "My car is faster than her.", "good": "My car is faster than hers.", "why": "Сравниваем с «её машиной», а без предмета нужна форма hers."},
+  {"bad": "They like our.", "good": "They like us.", "why": "«Нас» после глагола — us; our стоит только перед предметом."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I gave ___ my phone number.", "options": ["she", "her", "hers"], "a": 1, "why": "После глагола gave — форма дополнения her."},
+  {"type": "choice", "q": "This is not my umbrella. It's ___.", "options": ["you", "your", "yours"], "a": 2, "why": "Без существительного — yours."},
+  {"type": "choice", "q": "___ are my best friends.", "options": ["They", "Them", "Their"], "a": 0, "why": "Перед глаголом are — форма подлежащего they."},
+  {"type": "choice", "q": "The children made the cake ___.", "options": ["them", "themselves", "their"], "a": 1, "why": "Дети сделали это сами — themselves."},
+  {"type": "choice", "q": "We often visit ___ grandparents.", "options": ["us", "our", "ours"], "a": 1, "why": "Перед существительным grandparents — our."},
+  {"type": "choice", "q": "He wrote the letter ___.", "options": ["him", "his", "himself"], "a": 2, "why": "«Сам» после глагола — himself."},
+  {"type": "gap", "q": "Mr and Mrs Brown sold ___ (they) house.", "a": ["their"], "why": "Перед существительным house — their."},
+  {"type": "gap", "q": "Look at this photo of ___ (we).", "a": ["us"], "why": "После предлога of — us."},
+  {"type": "gap", "q": "I can't find my keys. Have you seen ___?", "a": ["them"], "why": "Keys — they, после seen — them."},
+  {"type": "choice", "q": "___ car is parked outside?", "options": ["Who", "Whose", "Whom"], "a": 1, "why": "Вопрос о владельце — whose car."},
+  {"type": "translate", "q": "Она работает с нами.", "a": ["she works with us"], "why": "После предлога with — us."}
+ ]
+}

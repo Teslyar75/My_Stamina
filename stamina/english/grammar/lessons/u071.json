@@ -1,0 +1,75 @@
+{
+ "n": 71,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Артикль the: особые случаи",
+ "en": "the (2)",
+ "summary": "The там, где его не ждёшь: the police, the piano, the cinema, а ещё the same и the capital of.",
+ "can_do": [
+  "Говорить о службах и организациях: the police, the army.",
+  "Правильно сказать «играю на гитаре» и «хожу в кино».",
+  "Не путать go to school и go to the school."
+ ],
+ "theory": [
+  {
+   "h": "Службы и организации",
+   "p": "Названия служб и учреждений идут с the: the police, the army, the government, the fire brigade. По-русски мы говорим «полиция» без артикля, по-английски the обязателен.",
+   "formula": "The police are coming. · He works for the government."
+  },
+  {
+   "h": "Инструмент, спорт, место",
+   "p": "С музыкальными инструментами the нужен, со спортом — нет. С местами «по делу» the обычен, а bed, work, home обходятся без него.",
+   "table": {
+    "head": ["Случай", "the?", "Пример"],
+    "rows": [
+     ["музыкальный инструмент", "да", "She plays the piano."],
+     ["вид спорта", "нет", "I play tennis."],
+     ["служба", "да", "The army is big."],
+     ["bed, work, home", "нет", "I'm at work. I go to bed."],
+     ["cinema, theatre, doctor's", "да", "Let's go to the cinema."]
+    ]
+   }
+  },
+  {
+   "h": "Школа: учёба или здание",
+   "p": "Без артикля school значит «учёба», с the — конкретное здание. My son goes to school — учится. I went to the school to meet the teacher — пришёл в здание по делу.",
+   "formula": "go to school (учиться) · go to the school (в здание)"
+  },
+  {
+   "h": "The same, the only, the first",
+   "p": "Со словами same, only, first, last, next the ставится всегда, даже если предмет упомянут впервые: the same book, the only way, the first time. Эти слова сами делают предмет единственным.",
+   "formula": "the same book · the only way · the first time"
+  },
+  {
+   "h": "The плюс of",
+   "p": "Конструкция the + существительное + of + ... почти всегда с the, потому что of сразу уточняет предмет: the capital of France, the name of the street, the owner of the shop.",
+   "formula": "the capital of France · the name of the street"
+  }
+ ],
+ "examples": [
+  {"en": "The police stopped us on the bridge.", "ru": "Полиция остановила нас на мосту."},
+  {"en": "She plays the violin very well.", "ru": "Она очень хорошо играет на скрипке."},
+  {"en": "We went to the cinema last night.", "ru": "Вчера вечером мы ходили в кино."},
+  {"en": "My daughter goes to school by bus.", "ru": "Моя дочь ездит в школу на автобусе."},
+  {"en": "The capital of Italy is Rome.", "ru": "Столица Италии — Рим."},
+  {"en": "He is the only person who knows the answer.", "ru": "Он единственный, кто знает ответ."}
+ ],
+ "traps": [
+  {"bad": "She plays piano.", "good": "She plays the piano.", "why": "Музыкальные инструменты идут с the, в отличие от спорта: play tennis."},
+  {"bad": "Police are coming.", "good": "The police are coming.", "why": "Службы и организации всегда с the."},
+  {"bad": "I go to the school every day.", "good": "I go to school every day.", "why": "Если речь об учёбе, артикль не нужен; the значит «в здание»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She plays ___ guitar in a band.", "options": ["the", "a", "no article"], "a": 0, "why": "Музыкальный инструмент — с the."},
+  {"type": "choice", "q": "___ police are outside.", "options": ["A", "The", "no article"], "a": 1, "why": "Служба police всегда с the."},
+  {"type": "choice", "q": "I usually go to ___ bed at eleven.", "options": ["the", "a", "no article"], "a": 2, "why": "Go to bed — устойчивое выражение без артикля."},
+  {"type": "choice", "q": "We are going to ___ theatre tonight.", "options": ["the", "a", "no article"], "a": 0, "why": "Место «по делу» — the theatre."},
+  {"type": "choice", "q": "He is ___ only child in the family.", "options": ["an", "the", "a"], "a": 1, "why": "Со словом only — всегда the."},
+  {"type": "choice", "q": "What is ___ capital of Spain?", "options": ["a", "the", "no article"], "a": 1, "why": "Конструкция the capital of требует the."},
+  {"type": "gap", "q": "___ army needs more doctors.", "a": ["the"], "why": "Армия как служба — the army."},
+  {"type": "gap", "q": "I learned to play ___ piano when I was six.", "a": ["the"], "why": "Играть на инструменте — play the piano."},
+  {"type": "translate", "q": "Полиция уже здесь.", "a": ["the police are here", "the police are already here"], "why": "The police + are: служба во множественном числе."},
+  {"type": "translate", "q": "Он единственный ребёнок в семье.", "a": ["he is the only child in the family"], "why": "The only child — с the."
+  }
+ ]
+}

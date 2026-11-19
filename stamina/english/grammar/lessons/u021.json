@@ -1,0 +1,70 @@
+{
+ "n": 21,
+ "level": "A1",
+ "module": "passive",
+ "title": "Страдательный залог (1): is done, was done",
+ "en": "is done / was done (passive 1)",
+ "summary": "Как сказать «это сделано», когда важно не кто сделал, а что произошло с предметом.",
+ "can_do": [
+  "Сказать, что предмет сделан или продан, не называя того, кто это сделал.",
+  "Отличить активную фразу от страдательной по порядку слов.",
+  "Образовать пассив в настоящем и прошедшем времени."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужен пассив",
+   "p": "В активной фразе на первом месте стоит тот, кто действует: мастер починил машину. В пассиве в центр ставится сам предмет, а мастер уходит в тень или исчезает совсем. Так говорят, когда исполнитель неизвестен, неважен или и так понятен из ситуации.",
+   "formula": "The car was repaired. (машину починили) · The room is cleaned every day."
+  },
+  {
+   "h": "Схема: be плюс третья форма",
+   "p": "Пассив всегда состоит из двух частей. Первая — глагол be в нужном времени, вторая — смысловой глагол в третьей форме, той, что стоит после have. Время меняется у be, а смысловой глагол остаётся неизменным.",
+   "formula": "It is made in China. · These phones are made in China. · The window was broken."
+  },
+  {
+   "h": "Настоящее и прошедшее",
+   "p": "Если действие происходит вообще, регулярно или сейчас, be стоит в настоящем времени: am, is, are. Если же мы говорим о законченном прошлом, be переходит в was или were. Смысловой глагол в обоих случаях не меняется.",
+   "table": {
+    "head": ["Время", "Форма", "Пример"],
+    "rows": [
+     ["Present simple", "am / is / are + V3", "The shop is closed at eight."],
+     ["Past simple", "was / were + V3", "The shop was closed yesterday."],
+     ["Отрицание", "be + not + V3", "The letter was not sent."]
+    ]
+   }
+  },
+  {
+   "h": "Кто сделал: предлог by",
+   "p": "Исполнителя можно вернуть в предложение, но только если он действительно важен для смысла. Для этого в конце ставят by и того, кто действует. Если исполнитель не добавляет ничего нового, его просто не называют — так фраза звучит естественнее.",
+   "formula": "The book was written by a famous writer. · This cake is made by my mum."
+  },
+  {
+   "h": "Не все глаголы становятся пассивом",
+   "p": "Пассив возможен только там, где у действия есть объект, на который оно переходит: строить дом, мыть окно, писать письмо. У глаголов вроде come, sleep, arrive объекта нет, поэтому страдательную фразу с ними не построить."
+  }
+ ],
+ "examples": [
+  {"en": "This table is made of wood.", "ru": "Этот стол сделан из дерева."},
+  {"en": "The letters are delivered every morning.", "ru": "Письма доставляют каждое утро."},
+  {"en": "The window was broken last night.", "ru": "Окно разбили прошлой ночью."},
+  {"en": "Those houses were built in 1980.", "ru": "Те дома были построены в 1980 году."},
+  {"en": "The museum isn't opened on Mondays.", "ru": "Музей не открыт по понедельникам."},
+  {"en": "This song was written by my friend.", "ru": "Эту песню написал мой друг."}
+ ],
+ "traps": [
+  {"bad": "The window was broke.", "good": "The window was broken.", "why": "После be нужна третья форма, а broke — вторая, для обычного прошедшего."},
+  {"bad": "It is make in China.", "good": "It is made in China.", "why": "Смысловой глагол в пассиве всегда в третьей форме, а не в первой."},
+  {"bad": "The house built in 1990.", "good": "The house was built in 1990.", "why": "Без be страдательной фразы нет: нужен was плюс built."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This car ___ in Germany.", "options": ["makes", "is made", "made"], "a": 1, "why": "Предмет и действие без исполнителя — пассив: is made."},
+  {"type": "choice", "q": "The window ___ yesterday.", "options": ["was broken", "broke", "is broken"], "a": 0, "why": "Yesterday — прошлое, окно не само разбилось: was broken."},
+  {"type": "choice", "q": "These phones ___ in China.", "options": ["is made", "are made", "makes"], "a": 1, "why": "These phones — множественное число, поэтому are made."},
+  {"type": "choice", "q": "The room ___ every day.", "options": ["cleans", "is cleaned", "cleaned"], "a": 1, "why": "Комнату убирают, а не она сама убирает: is cleaned."},
+  {"type": "gap", "q": "Bread ___ (make) from flour.", "a": ["is made"], "why": "Общий факт в настоящем времени: is made."},
+  {"type": "gap", "q": "The bridge ___ (build) in 1900.", "a": ["was built"], "why": "Год в прошлом, мост построили: was built."},
+  {"type": "translate", "q": "Эта книга написана по-русски.", "a": ["this book is written in russian"], "why": "Пассив в настоящем: is written."},
+  {"type": "translate", "q": "Дом был построен в 1990 году.", "a": ["the house was built in 1990"], "why": "Прошлое и пассив: was built."},
+  {"type": "translate", "q": "Эти письма отправляют каждое утро.", "a": ["these letters are sent every morning"], "why": "Множественное число: are sent."}
+ ]
+}

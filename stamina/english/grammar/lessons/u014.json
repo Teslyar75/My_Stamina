@@ -1,0 +1,70 @@
+{
+ "n": 14,
+ "level": "A1",
+ "module": "past",
+ "title": "Past Continuous или Past Simple",
+ "en": "I was doing и I did",
+ "summary": "Как соединить фон и событие: одно действие шло, другое случилось на его фоне — и как это показать двумя временами.",
+ "can_do": [
+  "Соединить длинное и короткое действие: I was cooking when he called.",
+  "Пользоваться when и while.",
+  "Рассказать цепочку событий только в Past Simple."
+ ],
+ "theory": [
+  {
+   "h": "Фон и точка",
+   "p": "Past Continuous рисует фон, Past Simple ставит точку. Одно действие длится, другое происходит на его фоне и обрывает его. Именно сочетание двух времён и даёт живую картинку.",
+   "formula": "I was cooking when the phone rang."
+  },
+  {
+   "h": "Две роли в таблице",
+   "p": "Разница не в глаголе, а в том, какую роль он играет в рассказе: процесс или законченный факт.",
+   "table": {
+    "head": ["Past Continuous", "Past Simple"],
+    "rows": [
+     ["действие длилось", "действие случилось"],
+     ["was/were + -ing", "вторая форма глагола"],
+     ["фон, процесс", "законченный факт"]
+    ]
+   }
+  },
+  {
+   "h": "when и while",
+   "p": "While обычно вводит длинное действие, when — короткое. Но строгого запрета нет: важнее смысл, а не слово.",
+   "formula": "While I was cooking, the phone rang. · When the phone rang, I was cooking."
+  },
+  {
+   "h": "Два процесса рядом",
+   "p": "Если оба действия шли одновременно, оба стоят в Continuous. Такая фраза описывает обстановку, а не последовательность.",
+   "formula": "I was cooking while she was reading."
+  },
+  {
+   "h": "Последовательность без фона",
+   "p": "Если действия идут одно за другим, нужен только Past Simple. Continuous здесь был бы ошибкой, потому что фона нет, есть цепочка.",
+   "formula": "I came home, had dinner and went to bed."
+  }
+ ],
+ "examples": [
+  {"en": "I was walking home when I saw him.", "ru": "Я шёл домой, когда увидел его."},
+  {"en": "She was reading while he was cooking.", "ru": "Она читала, пока он готовил."},
+  {"en": "It was raining when we got up.", "ru": "Шёл дождь, когда мы встали."},
+  {"en": "He fell and hurt his leg.", "ru": "Он упал и повредил ногу."},
+  {"en": "While I was waiting, I called my mum.", "ru": "Пока я ждал, я позвонил маме."}
+ ],
+ "traps": [
+  {"bad": "When she called, I cooked.", "good": "When she called, I was cooking.", "why": "Нужен фон: готовка шла в момент звонка."},
+  {"bad": "I was coming home and went to bed.", "good": "I came home and went to bed.", "why": "Это цепочка событий, а не процесс."},
+  {"bad": "When I was a child, I was playing outside.", "good": "When I was a child, I played outside.", "why": "Привычка в прошлом передаётся Past Simple."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ when the accident happened.", "options": ["drove", "was driving", "were driving"], "a": 1, "why": "Езда была процессом в момент аварии."},
+  {"type": "choice", "q": "She called me while I ___ dinner.", "options": ["had", "was having", "were having"], "a": 1, "why": "I берёт was, ужин шёл в момент звонка."},
+  {"type": "choice", "q": "He ___ the window and ran away.", "options": ["was breaking", "broke", "breaks"], "a": 1, "why": "Два коротких события подряд — Past Simple."},
+  {"type": "choice", "q": "While they ___ , I cleaned the flat.", "options": ["slept", "were sleeping", "was sleeping"], "a": 1, "why": "they требует were, сон был фоном."},
+  {"type": "choice", "q": "We ___ home, had tea and went to bed.", "options": ["were coming", "came", "come"], "a": 1, "why": "Цепочка событий, значит came."},
+  {"type": "gap", "q": "It ___ (rain) when I left the house.", "a": ["was raining"], "why": "Дождь шёл в момент выхода: was raining."},
+  {"type": "gap", "q": "I saw her while I ___ (wait) for the bus.", "a": ["was waiting"], "why": "Ожидание — фон, I берёт was."},
+  {"type": "translate", "q": "Я читал, когда он позвонил.", "a": ["i was reading when he called"], "why": "Чтение — фон, звонок — событие."},
+  {"type": "translate", "q": "Она вошла и закрыла дверь.", "a": ["she came in and closed the door"], "why": "Последовательность действий, только Past Simple."}
+ ]
+}

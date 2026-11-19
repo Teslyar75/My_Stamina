@@ -1,0 +1,72 @@
+{
+ "n": 57,
+ "level": "A2",
+ "module": "verbs",
+ "title": "do и make: делать",
+ "en": "do and make",
+ "summary": "Оба глагола переводятся как «делать», но do — про работу и обязанности, а make — про создание и результат.",
+ "can_do": [
+  "Выбрать do или make в частых бытовых выражениях.",
+  "Объяснить разницу между do a job и make a decision.",
+  "Не путать вспомогательный do с обычным глаголом make."
+ ],
+ "theory": [
+  {
+   "h": "do — процесс и обязанность",
+   "p": "Do ставится там, где речь о работе, задаче или деле, результат которого не является предметом. Это про то, чем человек занят, а не про то, что он произвёл.",
+   "formula": "do homework · do the housework · do business · do your best · do a job"
+  },
+  {
+   "h": "make — создание и результат",
+   "p": "Make нужен, когда в итоге появляется что-то новое: предмет, решение, ошибка, деньги. Даже если это нечто нематериальное, оно всё равно считается созданным.",
+   "formula": "make a cake · make a plan · make a mistake · make money · make a decision"
+  },
+  {
+   "h": "Частые пары для запоминания",
+   "p": "Списки в учебниках выглядят длинными, но в быту хватает десятка выражений. Выучите их таблицей, а для новых случаев пользуйтесь правилом «работа или результат».",
+   "table": {
+    "head": ["do", "make"],
+    "rows": [
+     ["do the washing up", "make breakfast"],
+     ["do an exam", "make a phone call"],
+     ["do sport", "make friends"],
+     ["do nothing", "make a mess"]
+    ]
+   }
+  },
+  {
+   "h": "do как вспомогательный — это другое",
+   "p": "У do есть вторая работа: он строит вопросы и отрицания. В такой роли его нельзя заменить на make, даже если по смыслу хочется сказать «делать».",
+   "formula": "Do you work here? · I don't smoke. · Did she call?"
+  },
+  {
+   "h": "make somebody do и do somebody a favour",
+   "p": "У make есть конструкция с человеком и глаголом без to, а у do — устойчивые сочетания с существительным. Это ещё одна точка, где глаголы не взаимозаменяемы.",
+   "formula": "She made me laugh. · Could you do me a favour?"
+  }
+ ],
+ "examples": [
+  {"en": "I have to do my homework tonight.", "ru": "Мне нужно сегодня сделать домашнее задание."},
+  {"en": "She made a cake for my birthday.", "ru": "Она испекла торт на мой день рождения."},
+  {"en": "Don't worry, everyone makes mistakes.", "ru": "Не переживай, все ошибаются."},
+  {"en": "We did a lot of work yesterday.", "ru": "Вчера мы сделали много работы."},
+  {"en": "He made a phone call and left.", "ru": "Он позвонил и ушёл."}
+ ],
+ "traps": [
+  {"bad": "I need to make my homework.", "good": "I need to do my homework.", "why": "Домашняя работа — это do, а не make."},
+  {"bad": "She did a mistake in the test.", "good": "She made a mistake in the test.", "why": "Ошибку «создают»: make a mistake."},
+  {"bad": "He maked a good decision.", "good": "He made a good decision.", "why": "Make неправильный: make — made — made."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I always ___ the washing up after dinner.", "options": ["do", "make", "take"], "a": 0, "why": "Мытьё посуды — работа по дому, поэтому do."},
+  {"type": "choice", "q": "Could you ___ me a favour?", "options": ["do", "make", "give"], "a": 0, "why": "Do somebody a favour — устойчивое выражение."},
+  {"type": "choice", "q": "They ___ a lot of money last year.", "options": ["did", "made", "took"], "a": 1, "why": "Деньги «делают» через make: made money."},
+  {"type": "choice", "q": "We ___ the shopping yesterday afternoon.", "options": ["made", "did", "took"], "a": 1, "why": "Покупки — работа, поэтому do: did the shopping."},
+  {"type": "choice", "q": "Please don't ___ a noise — the baby is asleep.", "options": ["do", "make", "take"], "a": 1, "why": "Шум производят: make a noise."},
+  {"type": "gap", "q": "She ___ (do) her best, but the result was poor.", "a": ["did"], "why": "Do your best, Past Simple: did."},
+  {"type": "gap", "q": "Let's ___ (make) a plan for the weekend.", "a": ["make"], "why": "План создают: make a plan."},
+  {"type": "gap", "q": "___ you enjoy the concert yesterday? (auxiliary verb)", "a": ["did"], "why": "Вопрос о прошлом строится через did."},
+  {"type": "translate", "q": "Не делай ошибок.", "a": ["don't make mistakes", "do not make mistakes", "don't make any mistakes"], "why": "Make a mistake — ошибаться."},
+  {"type": "translate", "q": "Мне нужно сделать работу по дому.", "a": ["i need to do the housework", "i have to do the housework", "i need to do housework"], "why": "Работа по дому — do the housework."}
+ ]
+}

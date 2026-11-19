@@ -1,0 +1,72 @@
+{
+ "n": 50,
+ "level": "A2",
+ "module": "questions",
+ "title": "Косвенная речь: he said that ...",
+ "en": "reported speech",
+ "summary": "Как передать чужие слова, не цитируя: время сдвигается на шаг назад, а местоимения и указатели следуют за рассказчиком.",
+ "can_do": [
+  "Передать чужое высказывание через сказал, что.",
+  "Сдвинуть время на шаг назад: am → was, will → would.",
+  "Различить say и tell и передать чужой вопрос."
+ ],
+ "theory": [
+  {
+   "h": "Что значит «сдвиг на шаг назад»",
+   "p": "Когда передаём чужие слова, сейчас становится тогда, и время отодвигается. Настоящее превращается в прошедшее, простое прошедшее — в Perfect, будущее — в would. Правило работает, если слова вводятся глаголом в прошлом.",
+   "table": {
+    "head": ["Прямая речь", "Косвенная речь"],
+    "rows": [
+     ["I'm tired.", "He said he was tired."],
+     ["I work here.", "She said she worked there."],
+     ["I saw the film.", "He said he had seen the film."],
+     ["I will call you.", "She said she would call me."]
+    ]
+   }
+  },
+  {
+   "h": "do не нужен тому, кто пересказывает",
+   "p": "В пересказе нет вопроса и нет отрицания не как в прямой речи, поэтому do, does, did просто исчезают. Время переносится на смысловой глагол, а отрицание делают через not.",
+   "formula": "I don't like it. → He said he didn't like it. · Do you like tea? → She asked if I liked tea."
+  },
+  {
+   "h": "say и tell — разные",
+   "p": "Say живёт без адресата или с предлогом to, а tell требует, чтобы сразу после него стоял тот, кому говорят. По-русски оба слова — «сказать», поэтому ошибка появляется просто из привычки.",
+   "formula": "He said that he was busy. · He told me that he was busy. (не told to me)"
+  },
+  {
+   "h": "Местоимения и указатели едут вместе",
+   "p": "В пересказе меняются не только глаголы: I превращается в автора слов, а here, today, now, yesterday сдвигаются по смыслу. Это умеют делать все, кто говорит по-русски, но не всегда помнят про английские слова.",
+   "formula": "here → there · today → that day · tomorrow → the next day · yesterday → the day before · now → then"
+  },
+  {
+   "h": "Как передать вопрос",
+   "p": "Вопрос пересказывают через asked или через вежливую фразу, с if после общего вопроса и прямым порядком внутри. Вопросительный порядок слов не сохраняется, а в конце ставится точка.",
+   "formula": "She asked me where I lived. · He asked if I was ready."
+  }
+ ],
+ "examples": [
+  {"en": "He said that he was very busy.", "ru": "Он сказал, что очень занят."},
+  {"en": "She told me she had lost her keys.", "ru": "Она сказала мне, что потеряла ключи."},
+  {"en": "They said they would come later.", "ru": "Они сказали, что придут позже."},
+  {"en": "He asked if I could help him.", "ru": "Он спросил, не могу ли я ему помочь."},
+  {"en": "She asked where I lived.", "ru": "Она спросила, где я живу."}
+ ],
+ "traps": [
+  {"bad": "He told that he was tired.", "good": "He told me that he was tired.", "why": "После tell нужно указать, кому говорят."},
+  {"bad": "She said me she was late.", "good": "She told me she was late.", "why": "Say не берёт дополнение напрямую: said to me или told me."},
+  {"bad": "He asked where did I live.", "good": "He asked where I lived.", "why": "В пересказе вопроса порядок слов прямой."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He said he ___ busy yesterday.", "options": ["is", "was", "will be"], "a": 1, "why": "Сдвиг назад: is → was."},
+  {"type": "choice", "q": "She told me she ___ the film before.", "options": ["saw", "had seen", "sees"], "a": 1, "why": "Прошедшее пересказывают через Past Perfect."},
+  {"type": "choice", "q": "They said they ___ arrive on Friday.", "options": ["will", "would", "can"], "a": 1, "why": "Will в пересказе становится would."},
+  {"type": "choice", "q": "He ___ me that he needed help.", "options": ["said", "told", "asked"], "a": 1, "why": "После tell сразу идёт адресат: told me."},
+  {"type": "choice", "q": "She asked me where I ___.", "options": ["lived", "did live", "live"], "a": 0, "why": "Прямой порядок слов внутри пересказанного вопроса."},
+  {"type": "gap", "q": "He said he ___ (be) at home then.", "a": ["was"], "why": "Сдвиг назад: am → was."},
+  {"type": "gap", "q": "She told me she ___ (can) swim very well.", "a": ["could"], "why": "Can в пересказе становится could."},
+  {"type": "gap", "q": "He asked ___ I wanted tea or coffee.", "a": ["if", "whether"], "why": "Общий вопрос пересказывают через if."},
+  {"type": "translate", "q": "Он сказал, что работает в банке.", "a": ["he said he worked in a bank", "he said that he worked in a bank", "he said he works in a bank"], "why": "Сдвиг назад: works → worked."},
+  {"type": "translate", "q": "Она спросила, где я живу.", "a": ["she asked where i lived", "she asked me where i lived"], "why": "Прямой порядок слов: where I lived."}
+ ]
+}

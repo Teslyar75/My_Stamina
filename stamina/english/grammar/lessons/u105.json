@@ -1,0 +1,72 @@
+{
+ "n": 105,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "before, after, during, while",
+ "en": "before/after/during/while",
+ "summary": "Как поставить два события во времени: до, после, в течение и в то время как — и почему during не дружит с глаголом.",
+ "can_do": [
+  "Сказать, что было до и после события.",
+  "Употребить during с существительным и while с целой фразой.",
+  "Правильно ставить запятую, когда временная часть идёт первой."
+ ],
+ "theory": [
+  {
+   "h": "before и after",
+   "p": "before значит «до, перед», after — «после». Оба работают и с существительным, и с целым предложением: before dinner и before we eat, after work и after she called. Смысл один, меняется только длина второй части.",
+   "formula": "before lunch, after work, before I go, after she calls"
+  },
+  {
+   "h": "during требует существительного",
+   "p": "during значит «во время, в течение» и ставится перед существительным: during the film, during the war, during the lesson. После during не может стоять подлежащее с глаголом — это главное ограничение.",
+   "formula": "during the film (не during I watched the film)"
+  },
+  {
+   "h": "while требует предложения",
+   "p": "while — союз «в то время как»: после него идёт подлежащее и глагол. Второе действие обычно тоже длительное, поэтому оба глагола часто стоят в continuous.",
+   "formula": "while I was cooking · while she was talking"
+  },
+  {
+   "h": "Четыре слова в таблице",
+   "p": "Разница между during и while — только в том, что стоит после слова. Значение у них одинаковое, поэтому выбор механический: существительное или предложение.",
+   "table": {
+    "head": ["Слово", "Что после него", "Пример"],
+    "rows": [
+     ["before", "существительное или предложение", "before dinner / before we eat"],
+     ["after", "существительное или предложение", "after work / after he left"],
+     ["during", "только существительное", "during the meeting"],
+     ["while", "предложение", "while I was at work"]
+    ]
+   }
+  },
+  {
+   "h": "Запятая и порядок",
+   "p": "Временная часть может стоять в начале или в конце. Если она первая, после неё ставится запятая; если вторая — запятая не нужна.",
+   "formula": "After the film, we walked home. · We walked home after the film."
+  }
+ ],
+ "examples": [
+  {"en": "I always wash my hands before dinner.", "ru": "Я всегда мою руки перед ужином."},
+  {"en": "We had a long talk after the film.", "ru": "После фильма у нас был долгий разговор."},
+  {"en": "Someone called during the meeting.", "ru": "Кто-то позвонил во время встречи."},
+  {"en": "While I was cooking, the children were playing.", "ru": "Пока я готовил, дети играли."},
+  {"en": "Please call me before you leave.", "ru": "Пожалуйста, позвони мне перед уходом."}
+ ],
+ "traps": [
+  {"bad": "I fell asleep during I was watching the film.", "good": "I fell asleep while I was watching the film.", "why": "После during нужно существительное, для целой фразы есть while."},
+  {"bad": "He called me while the meeting.", "good": "He called me during the meeting.", "why": "Перед существительным the meeting ставят during, а не while."},
+  {"bad": "Before to go out, I checked the door.", "good": "Before going out, I checked the door.", "why": "После before в этом значении ставят -ing, а не to и глагол."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We talked ___ the whole journey.", "options": ["while", "during", "before"], "a": 1, "why": "После места пропуска — существительное the whole journey, значит during."},
+  {"type": "choice", "q": "___ I was leaving, the phone rang.", "options": ["During", "While", "Before"], "a": 1, "why": "Дальше идёт подлежащее с глаголом, поэтому while."},
+  {"type": "choice", "q": "Let's meet ___ work.", "options": ["after", "during", "while"], "a": 0, "why": "«После работы» — after work."},
+  {"type": "choice", "q": "I'll call you ___ I go to bed.", "options": ["during", "before", "while"], "a": 1, "why": "Звонок раньше сна — before."},
+  {"type": "choice", "q": "She read the papers ___ the flight.", "options": ["while", "during", "after"], "a": 1, "why": "the flight — существительное, значит during."},
+  {"type": "gap", "q": "He fell ill ___ the trip.", "a": ["during"], "why": "После пропуска — существительное the trip, поэтому during."},
+  {"type": "gap", "q": "Wash your hands ___ you eat.", "a": ["before"], "why": "Действие раньше еды — before."},
+  {"type": "gap", "q": "Somebody was eating ___ the film.", "a": ["during"], "why": "the film — существительное, значит during."},
+  {"type": "translate", "q": "Пока я готовил, она читала.", "a": ["while i was cooking she was reading", "while i was cooking, she was reading", "while i cooked she was reading"], "why": "while + подлежащее и глагол, оба действия длительные."},
+  {"type": "translate", "q": "Позвони мне перед тем, как уйдёшь.", "a": ["call me before you leave", "call me before you go"], "why": "before + предложение в настоящем времени."}
+ ]
+}

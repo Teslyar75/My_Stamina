@@ -1,0 +1,64 @@
+{
+ "n": 1,
+ "level": "A1",
+ "module": "present",
+ "title": "Глагол be: am, is, are",
+ "en": "am/is/are",
+ "summary": "Как сказать «я студент», «она врач», «мы дома» — и почему нельзя просто сказать «I student».",
+ "can_do": [
+  "Сказать, кто вы, откуда вы и сколько вам лет.",
+  "Описать человека или вещь одним предложением с am, is, are.",
+  "Сокращать: I'm, he's, they're — как в живой речи."
+ ],
+ "theory": [
+  {
+   "h": "Зачем вообще нужен be",
+   "p": "По-русски мы говорим «Я студент» — без глагола. В английском между тем, о ком речь, и тем, что о нём сказано, обязательно стоит be. Если его убрать, предложение разваливается: I student — это не фраза, а два слова рядом.",
+   "formula": "I am a student. · She is a doctor. · They are at home."
+  },
+  {
+   "h": "Три формы, и каждая — для своих",
+   "p": "У be в настоящем времени три формы. Выбор зависит только от того, кто действует, — не от смысла и не от времени.",
+   "table": {
+    "head": ["Кто", "be", "Пример"],
+    "rows": [
+     ["I", "am", "I am ready."],
+     ["he / she / it", "is", "She is ready."],
+     ["you / we / they", "are", "They are ready."]
+    ]
+   }
+  },
+  {
+   "h": "Сокращения — не для красоты",
+   "p": "В обычной речи и в переписке be почти всегда сливается с местоимением. Полная форма звучит официально, сокращённая — нейтрально. Отрицание тоже сжимается: is not → isn't, are not → aren't.",
+   "formula": "I am → I'm · he is → he's · they are → they're · is not → isn't · are not → aren't"
+  },
+  {
+   "h": "Когда be, а когда другой глагол",
+   "p": "Be ставится, когда мы называем кем/чем является человек, даём признак, место или возраст. Если же есть действие (работать, жить, говорить), то be уже не нужен — работает само действие.",
+   "formula": "He is a pilot. (кто он) · He works in Moscow. (что делает)"
+  }
+ ],
+ "examples": [
+  {"en": "I'm from Russia.", "ru": "Я из России."},
+  {"en": "My brother is a student.", "ru": "Мой брат — студент."},
+  {"en": "It's cold today.", "ru": "Сегодня холодно."},
+  {"en": "We're at work now.", "ru": "Мы сейчас на работе."},
+  {"en": "They aren't at home.", "ru": "Их нет дома."}
+ ],
+ "traps": [
+  {"bad": "I student.", "good": "I am a student.", "why": "В русском связка не нужна, в английском — нужна всегда."},
+  {"bad": "He are my friend.", "good": "He is my friend.", "why": "he — всегда is, даже если по-русски «они» звучит похоже."},
+  {"bad": "I have 25 years.", "good": "I am 25.", "why": "Возраст в английском — через be, без years и без have."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ a student.", "options": ["am", "is", "are"], "a": 0, "why": "I — всегда am."},
+  {"type": "choice", "q": "My sister ___ a doctor.", "options": ["am", "is", "are"], "a": 1, "why": "my sister = she, поэтому is."},
+  {"type": "choice", "q": "We ___ at home now.", "options": ["am", "is", "are"], "a": 2, "why": "we — всегда are."},
+  {"type": "choice", "q": "It ___ very cold today.", "options": ["am", "is", "are"], "a": 1, "why": "it — is."},
+  {"type": "gap", "q": "Tom and Anna ___ (be) from Canada.", "a": ["are"], "why": "два человека = they → are."},
+  {"type": "gap", "q": "I ___ (be) 30 years old.", "a": ["am"], "why": "возраст через be: I am 30."},
+  {"type": "translate", "q": "Моя мама — врач.", "a": ["my mother is a doctor", "my mum is a doctor", "my mom is a doctor"], "why": "be + профессия с артиклем a: My mother is a doctor."},
+  {"type": "translate", "q": "Мы не дома.", "a": ["we are not at home", "we aren't at home", "we're not at home"], "why": "Отрицание: we are not / we aren't at home."}
+ ]
+}

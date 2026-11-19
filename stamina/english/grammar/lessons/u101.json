@@ -1,0 +1,71 @@
+{
+ "n": 101,
+ "level": "B1",
+ "module": "clauses",
+ "title": "who, that, which: кто и что",
+ "en": "who/that/which (relative 1)",
+ "summary": "Как одной фразой сказать «человек, который ...» и «книга, которую ...», не разрывая мысль на два коротких предложения.",
+ "can_do": [
+  "Присоединить уточнение о человеке через who или that.",
+  "Присоединить уточнение о вещи через which или that.",
+  "Опустить who/which, когда оно является дополнением."
+ ],
+ "theory": [
+  {
+   "h": "Зачем нужны эти слова",
+   "p": "Без них пришлось бы говорить двумя предложениями: «Я знал мужчину. Он жил здесь». С who/which/that мы присоединяем второе предложение к существительному и получаем одну фразу.",
+   "formula": "I met a man. He lives here. → I met a man who lives here."
+  },
+  {
+   "h": "Кто и что: выбор слова",
+   "p": "who — для людей, which — для вещей и животных, that — универсальная замена для обоих в определительных придаточных. Между who и that разницы по смыслу нет, that звучит разговорнее.",
+   "table": {
+    "head": ["Про кого или что", "Слово", "Пример"],
+    "rows": [
+     ["человек", "who / that", "The man who lives next door is a doctor."],
+     ["вещь", "which / that", "The book which I bought is boring."],
+     ["и то и другое", "that", "The film that we saw was great."]
+    ]
+   }
+  },
+  {
+   "h": "what здесь не работает",
+   "p": "По-русски «книга, что я купил» звучит нормально, и рука тянется написать what. Но what не присоединяет придаточное к существительному: он сам заменяет целую вещь, а не уточняет её.",
+   "formula": "the book that I bought (не the book what I bought)"
+  },
+  {
+   "h": "Иногда слово можно выбросить",
+   "p": "Если who/which/that стоит в роли дополнения (сразу после него идёт подлежащее второго действия), в разговорной речи его опускают. Если же оно само подлежащее, оставлять обязательно.",
+   "formula": "The man who called you (подлежащее) · The man (who) you called (дополнение)"
+  },
+  {
+   "h": "Запятые меняют смысл",
+   "p": "Если уточнение только добавляет сведения об уже известном человеке или предмете, оно выделяется запятыми, а that в таком обороте не используется: My brother, who lives in Sochi, is a pilot.",
+   "formula": "My brother who lives in Sochi (их несколько) · My brother, who lives in Sochi, (он один)"
+  }
+ ],
+ "examples": [
+  {"en": "The woman who works here is my aunt.", "ru": "Женщина, которая здесь работает, — моя тётя."},
+  {"en": "I've lost the keys that were on the table.", "ru": "Я потерял ключи, которые лежали на столе."},
+  {"en": "This is the film which everyone is talking about.", "ru": "Это фильм, о котором все говорят."},
+  {"en": "The man we met yesterday was a writer.", "ru": "Мужчина, которого мы вчера встретили, был писателем."},
+  {"en": "I don't like people who are always late.", "ru": "Я не люблю людей, которые всегда опаздывают."}
+ ],
+ "traps": [
+  {"bad": "The book what I read was good.", "good": "The book that I read was good.", "why": "what не присоединяет придаточное к существительному, нужен that или which."},
+  {"bad": "The girl which lives upstairs is a student.", "good": "The girl who lives upstairs is a student.", "why": "О людях говорят who или that, но не which."},
+  {"bad": "The man who he called me is my boss.", "good": "The man who called me is my boss.", "why": "who уже заменяет подлежащее, местоимение he лишнее."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The man ___ lives next door is a doctor.", "options": ["which", "who", "what"], "a": 1, "why": "О человеке — who или that."},
+  {"type": "choice", "q": "This is the book ___ I told you about.", "options": ["what", "which", "who"], "a": 1, "why": "О вещи — which или that."},
+  {"type": "choice", "q": "I don't like films ___ are too long.", "options": ["who", "what", "that"], "a": 2, "why": "О вещах можно that, а who и what здесь не подходят."},
+  {"type": "choice", "q": "The people ___ we invited didn't come.", "options": ["which", "who", "what"], "a": 1, "why": "О людях — who; это дополнение, поэтому возможен и вариант без слова."},
+  {"type": "choice", "q": "This is the shop ___ sells the best bread.", "options": ["who", "that", "what"], "a": 1, "why": "О магазине — that или which."},
+  {"type": "gap", "q": "The girl ___ (who/which) won the prize is my sister.", "a": ["who", "that"], "why": "О человеке — who; that тоже допустимо."},
+  {"type": "gap", "q": "I found the letter ___ (who/which) you lost.", "a": ["which", "that"], "why": "О вещи — which или that."},
+  {"type": "gap", "q": "The man ___ (who/which) I spoke to was very helpful.", "a": ["who", "that", "whom"], "why": "О человеке в роли дополнения: who, that или формальное whom."},
+  {"type": "translate", "q": "Это книга, которую я купил вчера.", "a": ["this is the book that i bought yesterday", "this is the book which i bought yesterday", "this is the book i bought yesterday"], "why": "that/which можно и опустить: the book I bought."},
+  {"type": "translate", "q": "Я знаю человека, который живёт здесь.", "a": ["i know the man who lives here", "i know the man that lives here", "i know a man who lives here"], "why": "О человеке — who или that."}
+ ]
+}

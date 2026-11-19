@@ -1,0 +1,73 @@
+{
+ "n": 23,
+ "level": "A1",
+ "module": "core",
+ "title": "be, do, have: три главных глагола",
+ "en": "be / have / do (present and past)",
+ "summary": "Три глагола, на которых держится половина английских фраз: как быть, иметь и делать — сами и в роли помощников.",
+ "can_do": [
+  "Понять, когда be, do и have работают сами, а когда помогают другому глаголу.",
+  "Задать вопрос и построить отрицание с do и have.",
+  "Отличить I did it от I have done it."
+ ],
+ "theory": [
+  {
+   "h": "Двойная работа",
+   "p": "Be, do и have — самые занятые глаголы в языке. Каждый из них умеет два дела: выражать собственный смысл и служить помощником для другого глагола. Понимание того, какая из двух ролей перед вами, снимает половину ошибок на уровне A1.",
+   "formula": "He is tired. (быть) · He is working. (помощник) · I do my homework. (делать)"
+  },
+  {
+   "h": "Кто за что отвечает",
+   "p": "Посмотрите на таблицу: в левой колонке живой смысл глагола, в правой работа в качестве помощника. Один и тот же глагол из предыдущей фразы сразу видно по второй колонке — рядом появляется ещё один глагол.",
+   "table": {
+    "head": ["Глагол", "Своё значение", "Как помощник"],
+    "rows": [
+     ["be", "I am tired.", "He is working."],
+     ["do", "I do my homework.", "Do you like tea?"],
+     ["have", "I have a car.", "I have finished."]
+    ]
+   }
+  },
+  {
+   "h": "Have: у меня есть",
+   "p": "Когда have значит «иметь», в вопросе и отрицании ему нужен do. В британском варианте часто добавляют got: Have you got a pen? В американском и в нейтральном варианте просто Do you have a pen? Смысл одинаковый, выбирайте любой и держите его в одном тексте.",
+   "formula": "Do you have a pen? · I don't have a pen. · He doesn't have time. · Have you got a pen?"
+  },
+  {
+   "h": "Did и have done — большая разница",
+   "p": "Простое прошедшее называет момент: вчера, в понедельник, год назад. Перфект называет результат сейчас: сделал, и теперь это так. По-русски оба варианта часто переводятся одним словом, поэтому форму выбирают по смыслу, а не по переводу.",
+   "formula": "I did it yesterday. · I have done it. (теперь готово) · I didn't see him. · I haven't seen him."
+  },
+  {
+   "h": "Вопрос и отрицание: слово-помощник задачи",
+   "p": "В простом настоящем и прошедшем вопрос строит do, does или did, а отрицание — don't, doesn't, didn't. После этого слова смысловой глагол возвращается в первую форму. У be всё иначе: он сам переходит вперёд и сам берёт not.",
+   "formula": "Do you work here? · Did you work here? · She doesn't work here. · Are you a driver?"
+  }
+ ],
+ "examples": [
+  {"en": "Do you have a minute?", "ru": "У вас есть минутка?"},
+  {"en": "I don't have any money.", "ru": "У меня нет денег."},
+  {"en": "She has two brothers.", "ru": "У неё два брата."},
+  {"en": "Did you do your homework?", "ru": "Ты сделал домашнюю работу?"},
+  {"en": "I have done everything.", "ru": "Я всё сделал."},
+  {"en": "They were at home last night.", "ru": "Вчера вечером они были дома."},
+  {"en": "He doesn't like coffee.", "ru": "Он не любит кофе."}
+ ],
+ "traps": [
+  {"bad": "Did you went there?", "good": "Did you go there?", "why": "Did уже показывает прошлое, глагол после него — в первой форме."},
+  {"bad": "I have did it.", "good": "I have done it.", "why": "После have нужна третья форма, а did — вторая."},
+  {"bad": "I haven't a car.", "good": "I don't have a car.", "why": "В нейтральной речи have со значением «иметь» отрицается через don't."},
+  {"bad": "He don't work here.", "good": "He doesn't work here.", "why": "He, she, it требуют doesn't, а не don't."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you have a pen?", "options": ["Do", "Are", "Have"], "a": 0, "why": "Have в значении «иметь» строит вопрос через do."},
+  {"type": "choice", "q": "I ___ not have a car.", "options": ["do", "am", "have"], "a": 0, "why": "Отрицание have — через don't."},
+  {"type": "choice", "q": "She ___ a doctor.", "options": ["is", "does", "has"], "a": 0, "why": "Профессия — это be, а не do или have."},
+  {"type": "choice", "q": "___ you done your homework?", "options": ["Have", "Do", "Are"], "a": 0, "why": "Done — третья форма, рядом нужен have."},
+  {"type": "choice", "q": "They ___ at work yesterday.", "options": ["were", "did", "had"], "a": 0, "why": "Место и прошедшее время — форма be: were."},
+  {"type": "gap", "q": "He ___ (not/like) coffee.", "a": ["doesn't like", "does not like"], "why": "He — третье лицо: doesn't плюс первая форма."},
+  {"type": "gap", "q": "I ___ (see) him yesterday.", "a": ["saw"], "why": "Yesterday — простое прошедшее: saw."},
+  {"type": "translate", "q": "У меня есть собака.", "a": ["i have a dog", "i've got a dog"], "why": "Have со значением «иметь»: I have a dog."},
+  {"type": "translate", "q": "Ты сделал это вчера?", "a": ["did you do it yesterday"], "why": "Прошлое с did, глагол в первой форме."}
+ ]
+}

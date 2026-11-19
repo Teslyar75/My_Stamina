@@ -1,0 +1,72 @@
+{
+ "n": 52,
+ "level": "A2",
+ "module": "infinitive",
+ "title": "Инфинитив или -ing: глаголы",
+ "en": "verb + to / verb + -ing (2)",
+ "summary": "У нескольких частых глаголов форма после них меняет смысл: remember to do — одно, remember doing — совсем другое.",
+ "can_do": [
+  "Различить remember to do и remember doing.",
+  "Сказать stop to rest и stop talking без путаницы.",
+  "Употребить need washing в значении «нужно постирать»."
+ ],
+ "theory": [
+  {
+   "h": "remember и forget: вперёд или назад",
+   "p": "С инфинитивом глагол смотрит в будущее: нужно не забыть что-то сделать. С формой -ing он смотрит в прошлое: помнить, как что-то делал. Один и тот же глагол, два противоположных направления.",
+   "formula": "Remember to lock the door. (не забудь) · I remember locking the door. (помню, что запер)"
+  },
+  {
+   "h": "stop: цель или конец",
+   "p": "Stop + to do значит остановиться, чтобы заняться чем-то другим. Stop + doing значит прекратить само действие. Разница видна сразу, если перевести оба варианта одной ситуации.",
+   "table": {
+    "head": ["Фраза", "Смысл"],
+    "rows": [
+     ["We stopped to have lunch.", "Остановились, чтобы пообедать."],
+     ["We stopped having lunch.", "Перестали обедать."],
+     ["He stopped to smoke.", "Остановился, чтобы закурить."],
+     ["He stopped smoking.", "Бросил курить."]
+    ]
+   }
+  },
+  {
+   "h": "try: усилие или эксперимент",
+   "p": "Try + to do — пытаться сделать то, что может не получиться, прикладывать усилие. Try + doing — пробовать способ и смотреть, поможет ли. Первое про старание, второе про опыт.",
+   "formula": "I tried to open the window. (старался) · Try pressing this button. (попробуй нажать)"
+  },
+  {
+   "h": "need: вещь сама требует ухода",
+   "p": "Когда не человеку что-то нужно, а предмет требует действия, после need ставят форму -ing. Смысл при этом пассивный: машину надо помыть, а не она моет.",
+   "formula": "The car needs washing. = The car needs to be washed. · My hair needs cutting."
+  },
+  {
+   "h": "like и love: разница небольшая",
+   "p": "После like, love, hate возможны обе формы почти без потери смысла. Инфинитив чаще звучит как привычка или выбор, форма -ing — как удовольствие от процесса. Выбирайте ту, что приятнее на слух, ошибки не будет.",
+   "formula": "I like swimming. ≈ I like to swim. · I love cooking. ≈ I love to cook."
+  }
+ ],
+ "examples": [
+  {"en": "Remember to call your mother.", "ru": "Не забудь позвонить маме."},
+  {"en": "I remember meeting her at a conference.", "ru": "Я помню, как встретил её на конференции."},
+  {"en": "We stopped to buy some coffee.", "ru": "Мы остановились, чтобы купить кофе."},
+  {"en": "She stopped eating sugar last year.", "ru": "Она перестала есть сахар в прошлом году."},
+  {"en": "The windows need cleaning.", "ru": "Окна нужно помыть."}
+ ],
+ "traps": [
+  {"bad": "Remember calling me tonight.", "good": "Remember to call me tonight.", "why": "Речь о будущем действии — нужен инфинитив."},
+  {"bad": "He stopped to smoke two years ago.", "good": "He stopped smoking two years ago.", "why": "«Бросил курить» — это stop + -ing."},
+  {"bad": "The car needs to wash.", "good": "The car needs washing.", "why": "Вещь не моет сама себя: нужна форма -ing или to be washed."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Please remember ___ the light before you leave.", "options": ["to turn off", "turning off", "turn off"], "a": 0, "why": "Действие в будущем: remember to turn off."},
+  {"type": "choice", "q": "I remember ___ this film as a child.", "options": ["to watch", "watching", "watch"], "a": 1, "why": "Воспоминание о прошлом: remember watching."},
+  {"type": "choice", "q": "We stopped ___ because we were tired.", "options": ["to rest", "resting", "rest"], "a": 0, "why": "Остановились, чтобы отдохнуть: stop to rest."},
+  {"type": "choice", "q": "She stopped ___ meat five years ago.", "options": ["to eat", "eating", "eat"], "a": 1, "why": "Перестала есть: stop + -ing."},
+  {"type": "choice", "q": "My shoes need ___.", "options": ["to clean", "cleaning", "clean"], "a": 1, "why": "Предмет требует действия: need cleaning."},
+  {"type": "gap", "q": "Try ___ (restart) the computer — it often helps.", "a": ["restarting"], "why": "Пробуем способ: try + -ing."},
+  {"type": "gap", "q": "I tried ___ (lift) the box, but it was too heavy.", "a": ["to lift"], "why": "Прикладывал усилие: try + to."},
+  {"type": "gap", "q": "Don't forget ___ (buy) bread on your way home.", "a": ["to buy"], "why": "Не забыть сделать в будущем: forget + to."},
+  {"type": "translate", "q": "Не забудь закрыть окно.", "a": ["remember to close the window", "don't forget to close the window", "do not forget to close the window"], "why": "Будущее действие: remember to / don't forget to."},
+  {"type": "translate", "q": "Она перестала курить.", "a": ["she stopped smoking", "she gave up smoking"], "why": "Stop + -ing значит прекратить действие."}
+ ]
+}

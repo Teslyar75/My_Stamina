@@ -1,0 +1,67 @@
+{
+ "n": 30,
+ "level": "A1",
+ "module": "modals",
+ "title": "can и could: уметь и мочь",
+ "en": "can and could",
+ "summary": "Уметь, мочь и вежливо просить: can берёт настоящее, could — прошлое и мягкую просьбу.",
+ "can_do": [
+  "Сказать, что вы умеете и чего не умеете делать.",
+  "Вежливо о чём-то попросить через Could you ...?",
+  "Рассказать, что вы умели в детстве."
+ ],
+ "theory": [
+  {
+   "h": "can: умение и возможность",
+   "p": "Can покрывает сразу два смысла: «умею» и «получается». Форма одна на все лица, после неё глагол без to, поэтому спрягать тут нечего — только запомнить, что -s не появляется.",
+   "formula": "I can swim. · She can drive. · Can you help me?"
+  },
+  {
+   "h": "Отрицание и вопрос",
+   "p": "Отрицание — can't, полная форма cannot пишется слитно. Вопрос строится перестановкой can вперёд, и do при этом не нужен: can сам справляется с ролью помощника.",
+   "formula": "I can't come. · Can you swim? · cannot = can't"
+  },
+  {
+   "h": "could: прошлое и вежливость",
+   "p": "Could — прошедшее от can: «умел раньше» и «смог тогда». Но чаще он встречается в просьбах, где звучит мягче и осторожнее, чем can, и это его самая живая работа в разговоре.",
+   "table": {
+    "head": ["Смысл", "Фраза", "Оттенок"],
+    "rows": [
+     ["прошлое умение", "I could swim at five.", "умел в детстве"],
+     ["вежливая просьба", "Could you open the door?", "мягко"],
+     ["обычная просьба", "Can you open the door?", "нейтрально"]
+    ]
+   }
+  },
+  {
+   "h": "Чего can не умеет",
+   "p": "Can не ставится с to и не имеет будущего времени. Если речь о будущей возможности, нужна конструкция will be able to, а в перфекте — have been able to. Это единственный способ обойтись без can там, где его нет.",
+   "formula": "I will be able to come. · I haven't been able to sleep."
+  }
+ ],
+ "examples": [
+  {"en": "I can speak two languages.", "ru": "Я говорю на двух языках."},
+  {"en": "She can't come to the phone now.", "ru": "Она сейчас не может подойти к телефону."},
+  {"en": "Could you repeat that, please?", "ru": "Не могли бы вы повторить?"},
+  {"en": "When I was a child, I could swim well.", "ru": "В детстве я хорошо плавал."},
+  {"en": "Can I borrow your pen?", "ru": "Можно взять твою ручку?"},
+  {"en": "We couldn't find the keys.", "ru": "Мы не смогли найти ключи."}
+ ],
+ "traps": [
+  {"bad": "I can to swim.", "good": "I can swim.", "why": "После can инфинитив без to."},
+  {"bad": "He cans drive.", "good": "He can drive.", "why": "Модальные глаголы не берут -s."},
+  {"bad": "Do you can help me?", "good": "Can you help me?", "why": "Вопрос строится перестановкой can, do здесь лишний."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ play the piano very well.", "options": ["can", "cans", "is"], "a": 0, "why": "can не меняется по лицам."},
+  {"type": "choice", "q": "I ___ not come yesterday — I was ill.", "options": ["could", "can", "was"], "a": 0, "why": "Речь о прошлом: could not come."},
+  {"type": "choice", "q": "___ you help me with this box?", "options": ["Could", "Do", "Are"], "a": 0, "why": "Вежливая просьба: Could you help me?"},
+  {"type": "choice", "q": "He ___ swim when he was three.", "options": ["could", "can", "will can"], "a": 0, "why": "Прошлое умение: could swim."},
+  {"type": "choice", "q": "We ___ find the hotel, so we asked a policeman.", "options": ["couldn't", "can't", "don't can"], "a": 0, "why": "Прошлое: we couldn't find."},
+  {"type": "gap", "q": "I ___ (not / can) open the jar.", "a": ["can't", "cannot", "can not"], "why": "Отрицание: can't или cannot."},
+  {"type": "gap", "q": "___ (can) you speak French?", "a": ["can"], "why": "Вопрос начинается с can."},
+  {"type": "gap", "q": "At six I ___ (can) already read.", "a": ["could"], "why": "Умение в прошлом: I could already read."},
+  {"type": "translate", "q": "Я не умею плавать.", "a": ["i can't swim", "i cannot swim", "i can not swim"], "why": "Отрицание умения: I can't swim."},
+  {"type": "translate", "q": "Не могли бы вы помочь мне?", "a": ["could you help me", "could you help me please"], "why": "Вежливая просьба: Could you help me?"}
+ ]
+}

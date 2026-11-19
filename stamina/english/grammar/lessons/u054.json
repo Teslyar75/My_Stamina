@@ -1,0 +1,72 @@
+{
+ "n": 54,
+ "level": "A2",
+ "module": "infinitive",
+ "title": "Инфинитив цели: зачем",
+ "en": "to ... (purpose)",
+ "summary": "Один короткий to заменяет русское «чтобы» — а если после цели идёт существительное, на его место встаёт for.",
+ "can_do": [
+  "Объяснить цель через to: I went out to buy bread.",
+  "Ответить на вопрос What ... for? о назначении вещи.",
+  "Различить to do и for + существительное."
+ ],
+ "theory": [
+  {
+   "h": "to и есть «чтобы»",
+   "p": "Русское «чтобы» перед глаголом по-английски почти всегда превращается просто в to. Никаких дополнительных слов не нужно, и вся конструкция короче, чем кажется.",
+   "formula": "I came here to help you. · She went to the shop to buy milk."
+  },
+  {
+   "h": "После цели с существительным — for",
+   "p": "Если цель выражена предметом, а не действием, используется предлог for. Сравнение простое: действие — to, предмет — for. Это самая полезная пара правил во всём уроке.",
+   "table": {
+    "head": ["Цель", "Фраза"],
+    "rows": [
+     ["действие", "I went out to post a letter."],
+     ["предмет", "I went out for a walk."],
+     ["действие", "We need some money to pay the rent."],
+     ["предмет", "This knife is for cutting bread."]
+    ]
+   }
+  },
+  {
+   "h": "for to делать — так нельзя",
+   "p": "Русскоязычные часто соединяют оба предлога: for to buy. Такой формы в английском нет. Либо to с глаголом, либо for с существительным, третьего варианта не существует.",
+   "formula": "I came to talk. (не for to talk) · I came for a talk. (с существительным)"
+  },
+  {
+   "h": "Вопрос о цели: What ... for?",
+   "p": "Чтобы спросить «зачем», англичане говорят what ... for, а не why, когда интересуются назначением предмета. Ответ на такой вопрос обычно начинается с to.",
+   "formula": "What is this button for? — It's for starting the machine."
+  },
+  {
+   "h": "so that для длинной цели",
+   "p": "Когда цель выражена целым предложением со своим подлежащим, вместо to ставят so that. Это нужно, если действующее лицо в цели другое, чем в главной части.",
+   "formula": "I left the door open so that the cat could come in."
+  }
+ ],
+ "examples": [
+  {"en": "I'm saving money to buy a car.", "ru": "Я коплю деньги, чтобы купить машину."},
+  {"en": "She called to say thank you.", "ru": "Она позвонила, чтобы сказать спасибо."},
+  {"en": "We stopped at a cafe for lunch.", "ru": "Мы остановились в кафе, чтобы пообедать."},
+  {"en": "What is this key for?", "ru": "Для чего этот ключ?"},
+  {"en": "He spoke slowly so that everybody could understand.", "ru": "Он говорил медленно, чтобы все поняли."}
+ ],
+ "traps": [
+  {"bad": "I went to the shop for buy bread.", "good": "I went to the shop to buy bread.", "why": "Перед глаголом цели ставится to, а не for."},
+  {"bad": "I'm here for to see you.", "good": "I'm here to see you.", "why": "Сочетания for to в английском нет."},
+  {"bad": "I need a pen to writing.", "good": "I need a pen to write with.", "why": "После to — начальная форма, а предлог with нужен по смыслу."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I went to the kitchen ___ some water.", "options": ["to get", "for get", "for getting"], "a": 0, "why": "Цель-действие выражается через to + глагол."},
+  {"type": "choice", "q": "We came here ___ a good time.", "options": ["to have", "for having", "have"], "a": 0, "why": "A good time — существительное, но цель-действие: to have."},
+  {"type": "choice", "q": "This box is ___ old toys.", "options": ["to keep", "for keeping", "keep"], "a": 1, "why": "Назначение предмета: for + -ing или for + существительное."},
+  {"type": "choice", "q": "She's learning English ___ a better job.", "options": ["for get", "to get", "getting"], "a": 1, "why": "Цель-действие: to get."},
+  {"type": "choice", "q": "___ did you do that for? — To help my brother.", "options": ["What", "How", "Which"], "a": 0, "why": "Вопрос о цели строится как What ... for?"},
+  {"type": "gap", "q": "I called you ___ (ask) about the meeting.", "a": ["to ask"], "why": "Цель-действие: to ask."},
+  {"type": "gap", "q": "We went out ___ a walk.", "a": ["for"], "why": "Перед существительным цель выражается через for."},
+  {"type": "gap", "q": "He saved money ___ (buy) a new laptop.", "a": ["to buy"], "why": "to + глагол передаёт «чтобы»."},
+  {"type": "translate", "q": "Я пришёл, чтобы поговорить с тобой.", "a": ["i came to talk to you", "i came to speak to you", "i've come to talk to you"], "why": "Цель — to talk, без for."},
+  {"type": "translate", "q": "Давай встретимся, чтобы обсудить это.", "a": ["let's meet to discuss it", "let's meet to talk about it", "let us meet to discuss it"], "why": "to discuss передаёт «чтобы обсудить»."}
+ ]
+}

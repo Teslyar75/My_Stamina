@@ -1,0 +1,72 @@
+{
+ "n": 43,
+ "level": "A2",
+ "module": "questions",
+ "title": "Отрицание not",
+ "en": "not",
+ "summary": "Где именно встаёт not в английской фразе, какие у него сокращения и почему одного отрицания в предложении достаточно.",
+ "can_do": [
+  "Построить отрицание с be, с Present и Past Simple, с модальными глаголами.",
+  "Правильно поставить not перед инфинитивом и прилагательным.",
+  "Избегать двойного отрицания, привычного по русскому."
+ ],
+ "theory": [
+  {
+   "h": "not идёт сразу после вспомогательного",
+   "p": "Английское отрицание не любит одиночества: not цепляется к первому вспомогательному глаголу. Если вспомогательного в предложении нет, он появляется специально для not — do, does или did.",
+   "formula": "She is not here. · They do not work. · He did not call."
+  },
+  {
+   "h": "Куда встаёт do",
+   "p": "В Present и Past Simple смысловой глагол уходит в начальную форму, а всё время и лицо берёт на себя do. Поэтому после doesn't и didn't никогда не бывает -s и второй формы.",
+   "table": {
+    "head": ["Неверно", "Верно"],
+    "rows": [
+     ["She doesn't works.", "She doesn't work."],
+     ["He didn't went.", "He didn't go."],
+     ["I not know.", "I don't know."],
+     ["We aren't have time.", "We don't have time."]
+    ]
+   }
+  },
+  {
+   "h": "Сокращения — норма, а не небрежность",
+   "p": "В речи и обычном письме not сливается с глаголом. Полную форму оставляют для официальных текстов и для подчёркнутого отрицания. Запомните пары, где меняется даже написание.",
+   "formula": "do not → don't · does not → doesn't · did not → didn't · is not → isn't · cannot → can't · will not → won't"
+  },
+  {
+   "h": "not перед инфинитивом и прилагательным",
+   "p": "Если отрицаем не действие, а отдельное слово, not встаёт прямо перед ним. Особенно часто это нужно с инфинитивом после просьбы или совета: в русском «не делай» перестраивает всю фразу, в английском достаточно not.",
+   "formula": "I asked him not to smoke. · Try not to be late. · It's not very cold."
+  },
+  {
+   "h": "Одно отрицание на предложение",
+   "p": "В русском «я ничего не знаю» содержит два отрицания, и это норма. В английском так нельзя: отрицание должно быть одно. Либо not с положительным словом, либо отрицательное слово без not.",
+   "formula": "I don't know anything. = I know nothing. · We didn't see anybody. = We saw nobody."
+  }
+ ],
+ "examples": [
+  {"en": "I don't have a car.", "ru": "У меня нет машины."},
+  {"en": "She isn't at work today.", "ru": "Её сегодня нет на работе."},
+  {"en": "He didn't tell me the truth.", "ru": "Он не сказал мне правду."},
+  {"en": "You mustn't park here.", "ru": "Здесь нельзя парковаться."},
+  {"en": "I asked her not to worry.", "ru": "Я попросил её не волноваться."}
+ ],
+ "traps": [
+  {"bad": "She doesn't likes coffee.", "good": "She doesn't like coffee.", "why": "После doesn't глагол стоит в начальной форме, без -s."},
+  {"bad": "I didn't saw him.", "good": "I didn't see him.", "why": "didn't уже забрал прошедшее время, see остаётся в первой форме."},
+  {"bad": "I don't know nothing.", "good": "I don't know anything.", "why": "Двойное отрицание в английском недопустимо."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My brother ___ like fish.", "options": ["don't", "doesn't", "isn't"], "a": 1, "why": "He-подлежащее в Present Simple: doesn't."},
+  {"type": "choice", "q": "We ___ at home last night.", "options": ["didn't", "weren't", "don't"], "a": 1, "why": "Be в прошлом: we weren't."},
+  {"type": "choice", "q": "She asked me ___ late.", "options": ["don't be", "not to be", "to not"], "a": 1, "why": "Отрицательный инфинитив: not to be."},
+  {"type": "choice", "q": "I ___ understand this word.", "options": ["not", "don't", "no"], "a": 1, "why": "Перед смысловым глаголом нужен don't."},
+  {"type": "choice", "q": "It's ___ very warm outside.", "options": ["not", "no", "don't"], "a": 0, "why": "Отрицание прилагательного — через not."},
+  {"type": "gap", "q": "He ___ (not / go) to work yesterday.", "a": ["didn't go", "did not go"], "why": "Past Simple: didn't go."},
+  {"type": "gap", "q": "We ___ (not / have) any milk in the fridge.", "a": ["don't have", "do not have", "haven't got", "have not got"], "why": "Present Simple: don't have."},
+  {"type": "gap", "q": "They ___ (not / be) ready yet.", "a": ["aren't", "are not"], "why": "Be с they: aren't."},
+  {"type": "translate", "q": "Я ничего не видел.", "a": ["i didn't see anything", "i did not see anything", "i saw nothing"], "why": "Одно отрицание: didn't see anything или saw nothing."},
+  {"type": "translate", "q": "Она не работает по субботам.", "a": ["she doesn't work on saturdays", "she does not work on saturdays", "she doesn't work on saturday"], "why": "Present Simple, he/she: doesn't work."}
+ ]
+}

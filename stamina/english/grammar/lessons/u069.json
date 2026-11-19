@@ -1,0 +1,73 @@
+{
+ "n": 69,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Артикли a/an и the",
+ "en": "a/an and the",
+ "summary": "Первое упоминание — a, второе — the: артикль показывает, знает ли слушатель, о каком предмете идёт речь.",
+ "can_do": [
+  "Выбрать a или the по ситуации разговора.",
+  "Понять разницу между «какая-то книга» и «та самая книга».",
+  "Держать артикль при повторном упоминании предмета."
+ ],
+ "theory": [
+  {
+   "h": "Сигнал для слушателя",
+   "p": "Артикль — это подсказка. A значит «один из многих, ты ещё не знаешь какой». The значит «тот самый, ты понимаешь, о чём я». Поэтому при первом упоминании почти всегда a, при повторном — the.",
+   "formula": "I saw a dog. The dog was black."
+  },
+  {
+   "h": "Четыре частые ситуации",
+   "p": "Сравните строки таблицы: одно и то же слово берёт разный артикль в зависимости от того, что известно собеседнику.",
+   "table": {
+    "head": ["Ситуация", "Артикль", "Пример"],
+    "rows": [
+     ["впервые, любой", "a / an", "She bought a car."],
+     ["второй раз", "the", "The car is fast."],
+     ["единственный в мире", "the", "the sun, the moon"],
+     ["много предметов вообще", "без артикля", "I like books."]
+    ]
+   }
+  },
+  {
+   "h": "The не зависит от числа",
+   "p": "The одинаково работает с единственным и множественным: the book, the books. Артикль a есть только в единственном, поэтому для множества «какие-то» говорят просто books или some books.",
+   "formula": "a book → the book · books → the books"
+  },
+  {
+   "h": "Артикль двигается вместе с рассказом",
+   "p": "В короткой истории артикль меняется по ходу: сначала a, потом the. I bought a hat. The hat was too big. Так слушатель понимает, что речь о том же самом предмете.",
+   "formula": "a → the → the"
+  },
+  {
+   "h": "The при первом упоминании",
+   "p": "Иногда the появляется сразу, если предмет единственный в своём роде или уточнён словами same, only, first, best: the first day, the same question, the only way, the best film.",
+   "formula": "the first day · the same question · the only way"
+  }
+ ],
+ "examples": [
+  {"en": "She works in a hospital. The hospital is near my house.", "ru": "Она работает в больнице. Эта больница рядом с моим домом."},
+  {"en": "There is a cat in the garden. The cat is sleeping.", "ru": "В саду кошка. Кошка спит."},
+  {"en": "The sun is very bright today.", "ru": "Солнце сегодня очень яркое."},
+  {"en": "He asked me the same question twice.", "ru": "Он дважды задал мне один и тот же вопрос."},
+  {"en": "I'd like a coffee, please.", "ru": "Я бы хотел кофе, пожалуйста."},
+  {"en": "We stayed in an old hotel near the station.", "ru": "Мы остановились в старом отеле у вокзала."}
+ ],
+ "traps": [
+  {"bad": "I bought a car. A car is very old.", "good": "I bought a car. The car is very old.", "why": "Второй раз предмет уже известен — нужен the."},
+  {"bad": "She is the teacher.", "good": "She is a teacher.", "why": "Профессия без уточнения идёт с a, а не с the."},
+  {"bad": "The books are useful.", "good": "Books are useful.", "why": "Обобщение о книгах вообще — без артикля."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I saw ___ good film yesterday.", "options": ["a", "the", "an"], "a": 0, "why": "Первое упоминание, film с согласным звуком — a."},
+  {"type": "choice", "q": "There is a shop near here. ___ shop sells fresh bread.", "options": ["A", "The", "An"], "a": 1, "why": "Магазин уже упомянут — the shop."},
+  {"type": "choice", "q": "She is ___ nurse at a small clinic.", "options": ["the", "a", "an"], "a": 1, "why": "Профессия без уточнения — a nurse."},
+  {"type": "choice", "q": "___ moon looks huge tonight.", "options": ["A", "An", "The"], "a": 2, "why": "Луна одна на свете — всегда the."},
+  {"type": "choice", "q": "He asked ___ same question again.", "options": ["a", "the", "an"], "a": 1, "why": "Со словом same всегда the."},
+  {"type": "choice", "q": "We stayed in ___ old hotel near the station.", "options": ["a", "the", "an"], "a": 2, "why": "old начинается с гласного — an old hotel."},
+  {"type": "gap", "q": "He bought a bike. ___ bike is red.", "a": ["the"], "why": "Повторное упоминание: the bike."},
+  {"type": "gap", "q": "This is ___ easy exercise.", "a": ["an"], "why": "easy начинается с гласного — an easy exercise."},
+  {"type": "translate", "q": "Вчера я видел собаку. Собака была очень большой.", "a": ["yesterday i saw a dog. the dog was very big", "yesterday i saw a dog the dog was very big"], "why": "Сначала a dog, потом the dog."},
+  {"type": "translate", "q": "Она работает в банке.", "a": ["she works in a bank"], "why": "Любой банк, первое упоминание — a bank."}
+ ]
+}

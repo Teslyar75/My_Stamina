@@ -1,0 +1,64 @@
+{
+ "n": 89,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "not as ... as",
+ "en": "not as ... as",
+ "summary": "Равенство и его отсутствие: как сказать «такой же, как» и «не такой, как» без сравнительной степени вообще.",
+ "can_do": [
+  "Сказать, что два предмета одинаковые: as big as.",
+  "Сказать, что они разные: not as big as.",
+  "Сравнить количество через as much as и as many as."
+ ],
+ "theory": [
+  {
+   "h": "As ... as — одинаково",
+   "p": "Чтобы сказать, что признак у двух предметов на одном уровне, прилагательное ставится между двумя as: as tall as. Никакого -er здесь не нужно, форма остаётся основной.",
+   "formula": "She is as tall as her mother."
+  },
+  {
+   "h": "Not as ... as — не одинаково",
+   "p": "Отрицание перед первым as даёт смысл «не такой ... как»: isn't as big as. Это самый естественный способ сказать «меньше» про признак, без слова less.",
+   "formula": "This flat isn't as big as the old one."
+  },
+  {
+   "h": "Внутри — только основная форма",
+   "p": "В конструкции as ... as прилагательное не получает -er и не берёт more. Ошибка as bigger as звучит грубо, потому что здесь уже есть своя система сравнения — двойные as.",
+   "formula": "as easy as (не as easier as)"
+  },
+  {
+   "h": "Количество: as much as, as many as",
+   "p": "С неисчисляемым равенство количества выражается через as much as, с исчисляемым — через as many as. Отрицание ставится так же перед первым as.",
+   "formula": "I don't earn as much money as my brother."
+  },
+  {
+   "h": "Во сколько раз",
+   "p": "Перед первым as можно поставить множитель: twice as fast as, three times as big as, half as expensive as. Это очень удобная конструкция, которой нет прямого аналога в русском.",
+   "formula": "It is twice as fast as the old one."
+  }
+ ],
+ "examples": [
+  {"en": "She is as tall as her mother.", "ru": "Она такая же высокая, как её мать."},
+  {"en": "This flat isn't as big as the old one.", "ru": "Эта квартира не такая большая, как старая."},
+  {"en": "He doesn't work as hard as he did last year.", "ru": "Он работает не так усердно, как в прошлом году."},
+  {"en": "I don't earn as much money as my brother.", "ru": "Я зарабатываю не столько денег, сколько мой брат."},
+  {"en": "Our new car is twice as fast as the old one.", "ru": "Наша новая машина вдвое быстрее старой."}
+ ],
+ "traps": [
+  {"bad": "She is as tall than her mother.", "good": "She is as tall as her mother.", "why": "В паре с первым as идёт второй as, а не than."},
+  {"bad": "This test isn't as easier as the last one.", "good": "This test isn't as easy as the last one.", "why": "Внутри as ... as прилагательное стоит в основной форме."},
+  {"bad": "I don't have as many books than you.", "good": "I don't have as many books as you.", "why": "than здесь неуместен: работает пара as ... as."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This room is as ___ as that one.", "options": ["larger", "large", "much large"], "a": 1, "why": "Внутри as ... as — основная форма: large."},
+  {"type": "choice", "q": "He isn't as ___ as his brother.", "options": ["stronger", "strong", "strongest"], "a": 1, "why": "Конструкция as ... as требует basic формы: strong."},
+  {"type": "choice", "q": "I don't get up as early ___ my father.", "options": ["that", "than", "as"], "a": 2, "why": "Второй элемент пары — as."},
+  {"type": "choice", "q": "She speaks French as ___ as her sister.", "options": ["good", "better", "well"], "a": 2, "why": "Говорить хорошо — speak well, наречие."},
+  {"type": "choice", "q": "I'm not as ___ as I was last year.", "options": ["fitter", "fit", "fittest"], "a": 1, "why": "После первого as — основная форма fit."},
+  {"type": "gap", "q": "This bag isn't as ___ (heavy) as the suitcase.", "a": ["heavy"], "why": "Внутри as ... as прилагательное не меняется."},
+  {"type": "gap", "q": "My new phone is as ___ (fast) as my laptop.", "a": ["fast"], "why": "Равенство признака: as fast as."},
+  {"type": "gap", "q": "He doesn't earn as ___ money as his wife.", "a": ["much"], "why": "money неисчисляемое — as much as."},
+  {"type": "translate", "q": "Мой дом не такой большой, как твой.", "a": ["my house is not as big as yours", "my house isn't as big as yours"], "why": "not as big as — «не такой большой, как»."},
+  {"type": "translate", "q": "Она говорит по-английски так же хорошо, как я.", "a": ["she speaks english as well as i do", "she speaks english as well as me", "she speaks english as well as i"], "why": "as well as: хорошо — наречие well."}
+ ]
+}

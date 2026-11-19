@@ -1,0 +1,72 @@
+{
+ "n": 86,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "Наречия",
+ "en": "adverbs",
+ "summary": "Прилагательное говорит, какой предмет, а наречие — как происходит действие; чаще всего наречие делается из прилагательного при помощи -ly.",
+ "can_do": [
+  "Образовать наречие от прилагательного: quick — quickly.",
+  "Правильно сказать «хорошо», «быстро», «усердно» и «поздно».",
+  "Поставить наречие в нужное место, не разрывая глагол и дополнение."
+ ],
+ "theory": [
+  {
+   "h": "Какой или как",
+   "p": "Прилагательное описывает предмет через be или глагол чувства: she is quiet. Наречие описывает само действие: she speaks quietly. Если слово отвечает на вопрос «как?», это наречие, и оно почти всегда стоит при глаголе.",
+   "formula": "She is quiet. · She speaks quietly."
+  },
+  {
+   "h": "Обычный способ — добавить -ly",
+   "p": "Большинство наречий образуется прибавлением -ly к прилагательному. Если прилагательное кончается на -y, то y переходит в i: easy — easily, happy — happily. Если на -le, то -le меняется на -ly: simple — simply.",
+   "table": {
+    "head": ["Прилагательное", "Наречие", "Что происходит"],
+    "rows": [
+     ["quick", "quickly", "просто + ly"],
+     ["careful", "carefully", "просто + ly"],
+     ["easy", "easily", "y переходит в i"],
+     ["simple", "simply", "le переходит в ly"]
+    ]
+   }
+  },
+  {
+   "h": "Четыре особых случая",
+   "p": "Good даёт well, а не goodly. Fast и hard остаются такими же, как прилагательные. Late тоже не меняется. Запомнить проще через примеры, чем через правило.",
+   "formula": "good — well · fast — fast · hard — hard · late — late"
+  },
+  {
+   "h": "Hardly — это не «усердно»",
+   "p": "Слово hardly значит «едва, почти не»: I hardly know him. А «работать усердно» — work hard, без -ly. Это одна из самых заметных ошибок в письменной речи.",
+   "formula": "He works hard. · He hardly works."
+  },
+  {
+   "h": "Место наречия",
+   "p": "Наречие образа действия ставится после глагола или после дополнения, но не между глаголом и дополнением. Правильно: He speaks English well. Неправильно: He speaks well English.",
+   "formula": "He speaks English well."
+  }
+ ],
+ "examples": [
+  {"en": "She speaks English very well.", "ru": "Она очень хорошо говорит по-английски."},
+  {"en": "He drives carefully.", "ru": "Он водит машину осторожно."},
+  {"en": "Please write your name clearly.", "ru": "Пожалуйста, напишите своё имя разборчиво."},
+  {"en": "They worked hard all day.", "ru": "Они усердно работали весь день."},
+  {"en": "The train arrived late.", "ru": "Поезд прибыл поздно."}
+ ],
+ "traps": [
+  {"bad": "She sings very good.", "good": "She sings very well.", "why": "Наречие от good — well, формы goodly нет."},
+  {"bad": "He speaks English fluent.", "good": "He speaks English fluently.", "why": "Нужно наречие, потому что речь о том, как он говорит."},
+  {"bad": "I worked hardly yesterday.", "good": "I worked hard yesterday.", "why": "hardly значит «едва», а не «усердно»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She plays the piano very ___.", "options": ["good", "well", "goodly"], "a": 1, "why": "Как играет — well."},
+  {"type": "choice", "q": "He drives ___ in the rain.", "options": ["careful", "carefully", "carefuly"], "a": 1, "why": "Наречие от careful — carefully."},
+  {"type": "choice", "q": "They worked ___ and finished the job.", "options": ["hard", "hardly", "hardly ever"], "a": 0, "why": "«усердно» — hard, без -ly."},
+  {"type": "choice", "q": "The bus came ___ and we missed the film.", "options": ["late", "lately", "latey"], "a": 0, "why": "«поздно» — late; lately значит «в последнее время»."},
+  {"type": "choice", "q": "She looked at me ___.", "options": ["angry", "angrily", "angryly"], "a": 1, "why": "y переходит в i: angrily."},
+  {"type": "gap", "q": "He answered all the questions ___ (correct).", "a": ["correctly"], "why": "Как ответил — correctly."},
+  {"type": "gap", "q": "My sister sings ___ (beautiful).", "a": ["beautifully"], "why": "Наречие от beautiful — beautifully."},
+  {"type": "gap", "q": "We got up ___ (early) and went for a run.", "a": ["early"], "why": "early — и прилагательное, и наречие, без -ly."},
+  {"type": "translate", "q": "Она очень хорошо готовит.", "a": ["she cooks very well", "she cooks really well"], "why": "«хорошо» при глаголе — well."},
+  {"type": "translate", "q": "Он медленно читает по-английски.", "a": ["he reads english slowly", "he reads slowly in english"], "why": "Наречие slowly после глагола или после дополнения."}
+ ]
+}

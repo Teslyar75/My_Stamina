@@ -1,0 +1,927 @@
+{
+ "title": "Грамматика английского языка: 115 уроков",
+ "source": "Состав курса повторяет порядок тем Essential Grammar in Use (R. Murphy, красный Мёрфи, 115 юнитов). Объяснения, примеры и упражнения написаны заново по-русски — это учебный конспект, а не текст книги.",
+ "modules": [
+  {
+   "id": "present",
+   "title": "Настоящее время",
+   "en": "Present simple and continuous",
+   "about": "От be до I do: как сказать, что происходит сейчас и обычно."
+  },
+  {
+   "id": "past",
+   "title": "Прошедшее время",
+   "en": "Past simple and continuous",
+   "about": "Рассказ о том, что уже было: was/were, did, was doing."
+  },
+  {
+   "id": "perfect",
+   "title": "Present Perfect",
+   "en": "Present perfect",
+   "about": "Мост между прошлым и настоящим: I have done, for/since, ever."
+  },
+  {
+   "id": "passive",
+   "title": "Страдательный залог",
+   "en": "Passive",
+   "about": "Когда важно действие, а не тот, кто его сделал: it is done."
+  },
+  {
+   "id": "core",
+   "title": "Каркас глагола",
+   "en": "Be, do, have, irregular verbs",
+   "about": "Три глагола, на которых держится вся грамматика, и таблица неправильных глаголов."
+  },
+  {
+   "id": "future",
+   "title": "Будущее время",
+   "en": "Future",
+   "about": "Планы, решения, обещания: I'm doing, going to, will."
+  },
+  {
+   "id": "modals",
+   "title": "Модальные глаголы",
+   "en": "Modal verbs",
+   "about": "can, must, should, have to, would: уметь, быть должным, стоит ли."
+  },
+  {
+   "id": "there",
+   "title": "There, it и короткие ответы",
+   "en": "There is, it, short answers",
+   "about": "Сказать «там есть», «это» и ответить одним словом."
+  },
+  {
+   "id": "questions",
+   "title": "Вопросы",
+   "en": "Questions",
+   "about": "Порядок слов в вопросе, who/what, предлоги, косвенная речь."
+  },
+  {
+   "id": "infinitive",
+   "title": "Инфинитив и -ing",
+   "en": "Verb + to / -ing",
+   "about": "Когда to do, когда doing и почему это нельзя угадать."
+  },
+  {
+   "id": "verbs",
+   "title": "Важные глаголы",
+   "en": "go, get, do/make, have",
+   "about": "Четыре глагола, которые встречаются чаще всего — и чаще всего путаются."
+  },
+  {
+   "id": "pronouns",
+   "title": "Местоимения",
+   "en": "Pronouns",
+   "about": "I или me, my или mine, себя, Симонова книга."
+  },
+  {
+   "id": "nouns",
+   "title": "Существительные и артикли",
+   "en": "Nouns and articles",
+   "about": "a/an, the, множественное, неисчисляемое, some."
+  },
+  {
+   "id": "quantity",
+   "title": "Количество и указатели",
+   "en": "Determiners and quantity",
+   "about": "this/that, some/any, much/many, few/little, both/either."
+  },
+  {
+   "id": "adjectives",
+   "title": "Прилагательные и наречия",
+   "en": "Adjectives and adverbs",
+   "about": "Степени сравнения, than, as ... as, too, enough."
+  },
+  {
+   "id": "order",
+   "title": "Порядок слов",
+   "en": "Word order",
+   "about": "Почему английское предложение лучше не переставлять."
+  },
+  {
+   "id": "clauses",
+   "title": "Сложное предложение",
+   "en": "Conjunctions and clauses",
+   "about": "and/but/because, when, if, who/which — соединяем части."
+  },
+  {
+   "id": "prepositions",
+   "title": "Предлоги",
+   "en": "Prepositions",
+   "about": "at/on/in, for/since, under/behind, verb + preposition."
+  },
+  {
+   "id": "phrasal",
+   "title": "Фразовые глаголы",
+   "en": "Phrasal verbs",
+   "about": "Глагол + частица = новый смысл: get up, turn on, look after."
+  }
+ ],
+ "units": [
+  {
+   "n": 1,
+   "level": "A1",
+   "module": "present",
+   "title": "Глагол be: am, is, are",
+   "en": "am/is/are"
+  },
+  {
+   "n": 2,
+   "level": "A1",
+   "module": "present",
+   "title": "Вопросы с be: Am I? Is she?",
+   "en": "am/is/are (questions)"
+  },
+  {
+   "n": 3,
+   "level": "A1",
+   "module": "present",
+   "title": "Present Continuous: I am doing",
+   "en": "I am doing (present continuous)"
+  },
+  {
+   "n": 4,
+   "level": "A1",
+   "module": "present",
+   "title": "Вопросы в Present Continuous",
+   "en": "are you doing? (present continuous questions)"
+  },
+  {
+   "n": 5,
+   "level": "A1",
+   "module": "present",
+   "title": "Present Simple: I do, I work, I like",
+   "en": "I do / work / like (present simple)"
+  },
+  {
+   "n": 6,
+   "level": "A1",
+   "module": "present",
+   "title": "Отрицания в Present Simple: I don't",
+   "en": "I don't ... (present simple negative)"
+  },
+  {
+   "n": 7,
+   "level": "A1",
+   "module": "present",
+   "title": "Вопросы в Present Simple: Do you ...?",
+   "en": "Do you ...? (present simple questions)"
+  },
+  {
+   "n": 8,
+   "level": "A1",
+   "module": "present",
+   "title": "Present Continuous или Present Simple",
+   "en": "I am doing и I do (сравнение)"
+  },
+  {
+   "n": 9,
+   "level": "A1",
+   "module": "present",
+   "title": "I have и I have got",
+   "en": "I have / I've got"
+  },
+  {
+   "n": 10,
+   "level": "A1",
+   "module": "past",
+   "title": "Past Simple с be: was и were",
+   "en": "was/were"
+  },
+  {
+   "n": 11,
+   "level": "A1",
+   "module": "past",
+   "title": "Past Simple: правильные и неправильные глаголы",
+   "en": "worked/got/went (past simple)"
+  },
+  {
+   "n": 12,
+   "level": "A1",
+   "module": "past",
+   "title": "Отрицания и вопросы в Past Simple",
+   "en": "I didn't / Did you ...? (past simple)"
+  },
+  {
+   "n": 13,
+   "level": "A1",
+   "module": "past",
+   "title": "Past Continuous: I was doing",
+   "en": "I was doing (past continuous)"
+  },
+  {
+   "n": 14,
+   "level": "A1",
+   "module": "past",
+   "title": "Past Continuous или Past Simple",
+   "en": "I was doing и I did"
+  },
+  {
+   "n": 15,
+   "level": "A1",
+   "module": "perfect",
+   "title": "Present Perfect: I have done",
+   "en": "I have done (present perfect 1)"
+  },
+  {
+   "n": 16,
+   "level": "A1",
+   "module": "perfect",
+   "title": "Present Perfect: just, already, yet",
+   "en": "I've just / already / yet"
+  },
+  {
+   "n": 17,
+   "level": "A1",
+   "module": "perfect",
+   "title": "Have you ever ...?",
+   "en": "Have you ever ...?"
+  },
+  {
+   "n": 18,
+   "level": "A1",
+   "module": "perfect",
+   "title": "Present Perfect Continuous: I have been doing",
+   "en": "I have been doing (present perfect continuous)"
+  },
+  {
+   "n": 19,
+   "level": "A1",
+   "module": "perfect",
+   "title": "for, since, ago: сколько времени",
+   "en": "for / since / ago"
+  },
+  {
+   "n": 20,
+   "level": "A1",
+   "module": "perfect",
+   "title": "Present Perfect или Past Simple",
+   "en": "I have done и I did"
+  },
+  {
+   "n": 21,
+   "level": "A1",
+   "module": "passive",
+   "title": "Страдательный залог (1): is done, was done",
+   "en": "is done / was done (passive 1)"
+  },
+  {
+   "n": 22,
+   "level": "A1",
+   "module": "passive",
+   "title": "Страдательный залог (2): все времена",
+   "en": "be done / been done (passive 2)"
+  },
+  {
+   "n": 23,
+   "level": "A1",
+   "module": "core",
+   "title": "be, do, have: три главных глагола",
+   "en": "be / have / do (present and past)"
+  },
+  {
+   "n": 24,
+   "level": "A1",
+   "module": "core",
+   "title": "Неправильные глаголы: как их учить",
+   "en": "regular and irregular verbs"
+  },
+  {
+   "n": 25,
+   "level": "A1",
+   "module": "future",
+   "title": "Present Continuous о будущем",
+   "en": "I'm doing something tomorrow (future)"
+  },
+  {
+   "n": 26,
+   "level": "A1",
+   "module": "future",
+   "title": "I am going to: планы и намерения",
+   "en": "I'm going to do"
+  },
+  {
+   "n": 27,
+   "level": "A1",
+   "module": "future",
+   "title": "will и shall: будущее простое",
+   "en": "will/shall (1)"
+  },
+  {
+   "n": 28,
+   "level": "A1",
+   "module": "future",
+   "title": "will (2): предложения, обещания, решения",
+   "en": "will/shall (2)"
+  },
+  {
+   "n": 29,
+   "level": "A1",
+   "module": "modals",
+   "title": "may и might: может быть",
+   "en": "may and might"
+  },
+  {
+   "n": 30,
+   "level": "A1",
+   "module": "modals",
+   "title": "can и could: уметь и мочь",
+   "en": "can and could"
+  },
+  {
+   "n": 31,
+   "level": "A2",
+   "module": "modals",
+   "title": "must, mustn't, needn't",
+   "en": "must / mustn't / needn't"
+  },
+  {
+   "n": 32,
+   "level": "A2",
+   "module": "modals",
+   "title": "should: стоит ли",
+   "en": "should"
+  },
+  {
+   "n": 33,
+   "level": "A2",
+   "module": "modals",
+   "title": "have to: приходится",
+   "en": "I have to ..."
+  },
+  {
+   "n": 34,
+   "level": "A2",
+   "module": "modals",
+   "title": "would и would like",
+   "en": "would / would like"
+  },
+  {
+   "n": 35,
+   "level": "A2",
+   "module": "modals",
+   "title": "Повелительное наклонение",
+   "en": "imperative (do it, don't do it)"
+  },
+  {
+   "n": 36,
+   "level": "A2",
+   "module": "modals",
+   "title": "used to: раньше бывало",
+   "en": "I used to ..."
+  },
+  {
+   "n": 37,
+   "level": "A2",
+   "module": "there",
+   "title": "There is и There are",
+   "en": "there is / there are"
+  },
+  {
+   "n": 38,
+   "level": "A2",
+   "module": "there",
+   "title": "there в разных временах",
+   "en": "there was/were, there has/have been"
+  },
+  {
+   "n": 39,
+   "level": "A2",
+   "module": "there",
+   "title": "It: формальное подлежащее",
+   "en": "it (formal subject)"
+  },
+  {
+   "n": 40,
+   "level": "A2",
+   "module": "there",
+   "title": "Короткие ответы: Yes, I do",
+   "en": "short answers"
+  },
+  {
+   "n": 41,
+   "level": "A2",
+   "module": "there",
+   "title": "Разделительные вопросы: isn't it?",
+   "en": "question tags"
+  },
+  {
+   "n": 42,
+   "level": "A2",
+   "module": "there",
+   "title": "too, either, so am I, neither do I",
+   "en": "too / either / so am I / neither do I"
+  },
+  {
+   "n": 43,
+   "level": "A2",
+   "module": "questions",
+   "title": "Отрицание not",
+   "en": "not"
+  },
+  {
+   "n": 44,
+   "level": "A2",
+   "module": "questions",
+   "title": "Как строится вопрос: общие правила",
+   "en": "questions (1): общие правила"
+  },
+  {
+   "n": 45,
+   "level": "A2",
+   "module": "questions",
+   "title": "Вопрос к подлежащему: who и what",
+   "en": "questions (2): who / what"
+  },
+  {
+   "n": 46,
+   "level": "A2",
+   "module": "questions",
+   "title": "Вопросы с предлогом: Who ... to?",
+   "en": "questions with prepositions"
+  },
+  {
+   "n": 47,
+   "level": "A2",
+   "module": "questions",
+   "title": "what, which, how",
+   "en": "what / which / how"
+  },
+  {
+   "n": 48,
+   "level": "A2",
+   "module": "questions",
+   "title": "How long does it take?",
+   "en": "how long does it take?"
+  },
+  {
+   "n": 49,
+   "level": "A2",
+   "module": "questions",
+   "title": "Вопросы в сложных предложениях",
+   "en": "questions (3): сложные предложения"
+  },
+  {
+   "n": 50,
+   "level": "A2",
+   "module": "questions",
+   "title": "Косвенная речь: he said that ...",
+   "en": "reported speech"
+  },
+  {
+   "n": 51,
+   "level": "A2",
+   "module": "infinitive",
+   "title": "Инфинитив и -ing: основы",
+   "en": "to + infinitive и -ing (1)"
+  },
+  {
+   "n": 52,
+   "level": "A2",
+   "module": "infinitive",
+   "title": "Инфинитив или -ing: глаголы",
+   "en": "verb + to / verb + -ing (2)"
+  },
+  {
+   "n": 53,
+   "level": "A2",
+   "module": "infinitive",
+   "title": "want и let: кого-то сделать что-то",
+   "en": "want somebody to / let somebody do"
+  },
+  {
+   "n": 54,
+   "level": "A2",
+   "module": "infinitive",
+   "title": "Инфинитив цели: зачем",
+   "en": "to ... (purpose)"
+  },
+  {
+   "n": 55,
+   "level": "A2",
+   "module": "verbs",
+   "title": "Глагол go",
+   "en": "go"
+  },
+  {
+   "n": 56,
+   "level": "A2",
+   "module": "verbs",
+   "title": "Глагол get",
+   "en": "get"
+  },
+  {
+   "n": 57,
+   "level": "A2",
+   "module": "verbs",
+   "title": "do и make: делать",
+   "en": "do and make"
+  },
+  {
+   "n": 58,
+   "level": "A2",
+   "module": "verbs",
+   "title": "have: have breakfast, have a good time",
+   "en": "have (2): устойчивые сочетания"
+  },
+  {
+   "n": 59,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "Личные местоимения: I и me",
+   "en": "I/me, he/him, they/them"
+  },
+  {
+   "n": 60,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "Притяжательные: my, his, their",
+   "en": "my/his/their (possessive adjectives)"
+  },
+  {
+   "n": 61,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "my или mine: два вида притяжательных",
+   "en": "mine/yours/hers (possessive pronouns)"
+  },
+  {
+   "n": 62,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "Все местоимения в одной таблице",
+   "en": "таблица местоимений"
+  },
+  {
+   "n": 63,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "Возвратные местоимения: myself",
+   "en": "myself/yourself/themselves"
+  },
+  {
+   "n": 64,
+   "level": "A2",
+   "module": "pronouns",
+   "title": "Притяжательный падеж: Simon's",
+   "en": "'s (possessive)"
+  },
+  {
+   "n": 65,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Артикль a / an",
+   "en": "a/an"
+  },
+  {
+   "n": 66,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Множественное число: cats, boxes, mice",
+   "en": "plural (множественное число)"
+  },
+  {
+   "n": 67,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Неисчисляемые существительные",
+   "en": "uncountable nouns"
+  },
+  {
+   "n": 68,
+   "level": "A2",
+   "module": "nouns",
+   "title": "some: немного, несколько",
+   "en": "some"
+  },
+  {
+   "n": 69,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Артикли a/an и the",
+   "en": "a/an and the"
+  },
+  {
+   "n": 70,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Артикль the: основное правило",
+   "en": "the (1)"
+  },
+  {
+   "n": 71,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Артикль the: особые случаи",
+   "en": "the (2)"
+  },
+  {
+   "n": 72,
+   "level": "A2",
+   "module": "nouns",
+   "title": "Артикль the: когда не нужен",
+   "en": "the (3)"
+  },
+  {
+   "n": 73,
+   "level": "A2",
+   "module": "nouns",
+   "title": "the с географическими названиями",
+   "en": "the (4): география"
+  },
+  {
+   "n": 74,
+   "level": "A2",
+   "module": "quantity",
+   "title": "this, that, these, those",
+   "en": "this/that/these/those"
+  },
+  {
+   "n": 75,
+   "level": "A2",
+   "module": "quantity",
+   "title": "one и ones: чтобы не повторять",
+   "en": "one/ones"
+  },
+  {
+   "n": 76,
+   "level": "A2",
+   "module": "quantity",
+   "title": "some и any",
+   "en": "some and any"
+  },
+  {
+   "n": 77,
+   "level": "A2",
+   "module": "quantity",
+   "title": "no, none, not any",
+   "en": "no / none / not any"
+  },
+  {
+   "n": 78,
+   "level": "A2",
+   "module": "quantity",
+   "title": "nobody и not anybody",
+   "en": "not anybody / nobody"
+  },
+  {
+   "n": 79,
+   "level": "A2",
+   "module": "quantity",
+   "title": "somebody, anybody, nobody",
+   "en": "somebody/anybody/nobody"
+  },
+  {
+   "n": 80,
+   "level": "A2",
+   "module": "quantity",
+   "title": "all и every",
+   "en": "all and every"
+  },
+  {
+   "n": 81,
+   "level": "A2",
+   "module": "quantity",
+   "title": "all, most, some, any, no",
+   "en": "all/most/some/any/no"
+  },
+  {
+   "n": 82,
+   "level": "A2",
+   "module": "quantity",
+   "title": "both, either, neither",
+   "en": "both/either/neither"
+  },
+  {
+   "n": 83,
+   "level": "A2",
+   "module": "quantity",
+   "title": "much, many, a lot of",
+   "en": "much/many/a lot of"
+  },
+  {
+   "n": 84,
+   "level": "A2",
+   "module": "quantity",
+   "title": "few и little: мало",
+   "en": "few and little"
+  },
+  {
+   "n": 85,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "Прилагательные",
+   "en": "adjectives"
+  },
+  {
+   "n": 86,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "Наречия",
+   "en": "adverbs"
+  },
+  {
+   "n": 87,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "Степени сравнения",
+   "en": "comparative (older, more expensive)"
+  },
+  {
+   "n": 88,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "Сравнение с than",
+   "en": "than"
+  },
+  {
+   "n": 89,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "not as ... as",
+   "en": "not as ... as"
+  },
+  {
+   "n": 90,
+   "level": "A2",
+   "module": "adjectives",
+   "title": "Превосходная степень",
+   "en": "superlative (the oldest)"
+  },
+  {
+   "n": 91,
+   "level": "B1",
+   "module": "adjectives",
+   "title": "enough: достаточно",
+   "en": "enough"
+  },
+  {
+   "n": 92,
+   "level": "B1",
+   "module": "adjectives",
+   "title": "too: слишком",
+   "en": "too"
+  },
+  {
+   "n": 93,
+   "level": "B1",
+   "module": "order",
+   "title": "Порядок слов в предложении",
+   "en": "word order (1)"
+  },
+  {
+   "n": 94,
+   "level": "B1",
+   "module": "order",
+   "title": "Куда ставить always, usually, often",
+   "en": "always/usually/often (позиция)"
+  },
+  {
+   "n": 95,
+   "level": "B1",
+   "module": "order",
+   "title": "still, yet, already",
+   "en": "still / yet / already"
+  },
+  {
+   "n": 96,
+   "level": "B1",
+   "module": "order",
+   "title": "give, lend, pass, send, show",
+   "en": "give/lend/pass/send/show"
+  },
+  {
+   "n": 97,
+   "level": "B1",
+   "module": "clauses",
+   "title": "and, but, or, so, because",
+   "en": "and/but/or/so/because"
+  },
+  {
+   "n": 98,
+   "level": "B1",
+   "module": "clauses",
+   "title": "when: когда",
+   "en": "when ..."
+  },
+  {
+   "n": 99,
+   "level": "B1",
+   "module": "clauses",
+   "title": "if: условные предложения 1 типа",
+   "en": "if (1)"
+  },
+  {
+   "n": 100,
+   "level": "B1",
+   "module": "clauses",
+   "title": "if: условные предложения 2 типа",
+   "en": "if (2)"
+  },
+  {
+   "n": 101,
+   "level": "B1",
+   "module": "clauses",
+   "title": "who, that, which: кто и что",
+   "en": "who/that/which (relative 1)"
+  },
+  {
+   "n": 102,
+   "level": "B1",
+   "module": "clauses",
+   "title": "where, when, whose",
+   "en": "where/when/whose (relative 2)"
+  },
+  {
+   "n": 103,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "Предлоги времени: at, on, in",
+   "en": "at/on/in (time)"
+  },
+  {
+   "n": 104,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "from ... to, until, since, for",
+   "en": "for/since/until"
+  },
+  {
+   "n": 105,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "before, after, during, while",
+   "en": "before/after/during/while"
+  },
+  {
+   "n": 106,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "Предлоги места: in, at, on",
+   "en": "in/at/on (place) 1"
+  },
+  {
+   "n": 107,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "Предлоги места: in, at, on (продолжение)",
+   "en": "in/at/on (place) 2"
+  },
+  {
+   "n": 108,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "to, in, at: куда и где",
+   "en": "to/in/at"
+  },
+  {
+   "n": 109,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "under, behind, opposite",
+   "en": "under/behind/opposite"
+  },
+  {
+   "n": 110,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "up, over, through: движение",
+   "en": "up/over/through"
+  },
+  {
+   "n": 111,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "on, at, by, with, about",
+   "en": "on/at/by/with/about"
+  },
+  {
+   "n": 112,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "Прилагательное + предлог",
+   "en": "adjective + preposition"
+  },
+  {
+   "n": 113,
+   "level": "B1",
+   "module": "prepositions",
+   "title": "Глагол + предлог",
+   "en": "verb + preposition"
+  },
+  {
+   "n": 114,
+   "level": "B1",
+   "module": "phrasal",
+   "title": "Фразовые глаголы (1)",
+   "en": "phrasal verbs (1)"
+  },
+  {
+   "n": 115,
+   "level": "B1",
+   "module": "phrasal",
+   "title": "Фразовые глаголы (2)",
+   "en": "phrasal verbs (2)"
+  }
+ ]
+}

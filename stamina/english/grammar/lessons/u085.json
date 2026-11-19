@@ -1,0 +1,72 @@
+{
+ "n": 85,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "Прилагательные",
+ "en": "adjectives",
+ "summary": "Прилагательное в английском не меняется вообще: ни по роду, ни по числу, ни по падежу — зато у него строгое место в предложении.",
+ "can_do": [
+  "Поставить прилагательное перед существительным и после be.",
+  "Сказать «две маленькие собаки», не добавляя окончаний.",
+  "Различить boring и bored, интересный и заинтересованный."
+ ],
+ "theory": [
+  {
+   "h": "Прилагательное не меняется",
+   "p": "Русское прилагательное согласуется с существительным: красивый дом, красивая машина, красивые дома. Английское — нет. Одна форма на все случаи: a beautiful house, a beautiful car, beautiful houses.",
+   "formula": "a big dog · two big dogs (не bigs)"
+  },
+  {
+   "h": "Место — перед существительным или после be",
+   "p": "Внутри фразы прилагательное стоит перед существительным: a red car. Если оно является частью сказуемого, то идёт после be, look, feel, seem, smell, taste: the car is red, it looks new.",
+   "formula": "a red car · the car is red · it looks new"
+  },
+  {
+   "h": "Порядок нескольких прилагательных",
+   "p": "Когда прилагательных два-три, они выстраиваются по смыслу: сначала размер и возраст, потом цвет и происхождение. Англичанин скажет a big old brown house, а не brown old big.",
+   "table": {
+    "head": ["Место", "Что описывает", "Пример"],
+    "rows": [
+     ["1", "размер", "big"],
+     ["2", "возраст", "old"],
+     ["3", "цвет", "brown"],
+     ["4", "материал", "wooden"]
+    ]
+   }
+  },
+  {
+   "h": "Boring или bored",
+   "p": "Прилагательные на -ing описывают того, кто вызывает чувство: the film is boring. Прилагательные на -ed описывают того, кто его испытывает: I am bored. Одна буква, а виноватый меняется.",
+   "formula": "The film is boring. · I am bored."
+  },
+  {
+   "h": "После существительного — только в особых случаях",
+   "p": "По-русски можно сказать «машина красная» в конце фразы, но в английском a car red не существует. После существительного прилагательное появляется только в устойчивых выражениях вроде something nice или the people involved.",
+   "formula": "a red car (не a car red)"
+  }
+ ],
+ "examples": [
+  {"en": "She bought a new red car.", "ru": "Она купила новую красную машину."},
+  {"en": "The film was boring, so we left early.", "ru": "Фильм был скучным, поэтому мы ушли рано."},
+  {"en": "I feel tired after work.", "ru": "Я чувствую себя уставшим после работы."},
+  {"en": "They live in a big old house.", "ru": "Они живут в большом старом доме."},
+  {"en": "The soup smells good.", "ru": "Суп хорошо пахнет."}
+ ],
+ "traps": [
+  {"bad": "I have a car red.", "good": "I have a red car.", "why": "Прилагательное стоит перед существительным, а не после."},
+  {"bad": "I am boring at this lesson.", "good": "I am bored at this lesson.", "why": "-ed — про моё чувство, -ing — про то, что его вызывает."},
+  {"bad": "She has hairs long.", "good": "She has long hair.", "why": "hair в значении «волосы» неисчисляемое и не получает -s."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "They live in a ___ house.", "options": ["big old", "old big", "very old big"], "a": 0, "why": "Сначала размер, потом возраст: big old."},
+  {"type": "choice", "q": "The lesson was ___ and I almost fell asleep.", "options": ["boring", "bored", "bore"], "a": 0, "why": "Урок сам вызывает скуку — boring."},
+  {"type": "choice", "q": "I'm ___ because I worked all day.", "options": ["tiring", "tired", "tire"], "a": 1, "why": "Я испытываю усталость — tired."},
+  {"type": "choice", "q": "She has ___ hair.", "options": ["long black", "black long", "longs black"], "a": 0, "why": "Порядок: размер, потом цвет; hair без -s."},
+  {"type": "choice", "q": "The soup ___ delicious.", "options": ["tastes", "taste", "is tasting"], "a": 0, "why": "soup — единственное число, глагол с -s."},
+  {"type": "gap", "q": "It was a ___ (beauty) day.", "a": ["beautiful"], "why": "От существительного beauty образуется прилагательное beautiful."},
+  {"type": "gap", "q": "These shoes are very ___ (comfort).", "a": ["comfortable"], "why": "comfort + able = comfortable."},
+  {"type": "gap", "q": "I was ___ (surprise) to see him at the party.", "a": ["surprised"], "why": "Чувство у меня — форма на -ed."},
+  {"type": "translate", "q": "Это очень интересная книга.", "a": ["this is a very interesting book", "it is a very interesting book", "it's a very interesting book"], "why": "Прилагательное перед существительным: an interesting book."},
+  {"type": "translate", "q": "Я устал и хочу спать.", "a": ["i am tired and i want to sleep", "i'm tired and i want to sleep"], "why": "Состояние через be + tired."}
+ ]
+}

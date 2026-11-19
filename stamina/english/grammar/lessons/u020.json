@@ -1,0 +1,70 @@
+{
+ "n": 20,
+ "level": "A1",
+ "module": "perfect",
+ "title": "Present Perfect или Past Simple",
+ "en": "I have done и I did",
+ "summary": "Один вопрос решает всё: названо ли точное время. Названо — Past Simple, не названо — Present Perfect.",
+ "can_do": [
+  "Выбрать время по словам yesterday, ago, ever, just.",
+  "Сказать о результате сейчас и о факте в прошлом.",
+  "Рассказать про опыт без даты и про конкретный случай с датой."
+ ],
+ "theory": [
+  {
+   "h": "Главный вопрос: когда",
+   "p": "Если названо точное время в прошлом, нужен Past Simple: yesterday, last week, in 2019, two hours ago. Если время не названо и важен результат сейчас, нужен Present Perfect.",
+   "formula": "I saw him yesterday. · I have seen him."
+  },
+  {
+   "h": "Две колонки",
+   "p": "Различие не в переводе на русский, а в том, закрыто время или открыто. Русский глагол в прошедшем выглядит одинаково, поэтому ориентироваться надо на слова и на смысл.",
+   "table": {
+    "head": ["Past Simple", "Present Perfect"],
+    "rows": [
+     ["время названо", "время не названо"],
+     ["период закончен", "есть связь с сейчас"],
+     ["yesterday, in 2020, ago", "ever, never, just, already, yet"]
+    ]
+   }
+  },
+  {
+   "h": "Опыт и конкретный случай",
+   "p": "Про опыт без даты говорят в Perfect, про конкретный случай с датой — в Past Simple. Одно и то же событие может попасть в оба времени.",
+   "formula": "I've been to Kyiv twice. · I was in Kyiv in June."
+  },
+  {
+   "h": "Как меняется смысл",
+   "p": "I've lost my keys значит «и сейчас не могу войти». I lost my keys yesterday — просто факт, ключи, может, уже нашлись. Время выбирает не правило, а то, что вы хотите сказать.",
+   "formula": "I've broken my phone. · I broke my phone last week."
+  },
+  {
+   "h": "Американский вариант",
+   "p": "В американском английском Past Simple часто вытесняет Perfect: Did you eat yet? I just saw him. В британском норме эти фразы звучат с have.",
+   "formula": "BrE: I've just seen him. · AmE: I just saw him."
+  }
+ ],
+ "examples": [
+  {"en": "I've just finished the report.", "ru": "Я только что закончил отчёт."},
+  {"en": "I finished it at six.", "ru": "Я закончил его в шесть."},
+  {"en": "She has never been to Italy.", "ru": "Она никогда не была в Италии."},
+  {"en": "She went to Italy in May.", "ru": "В мае она ездила в Италию."},
+  {"en": "We've known each other for years.", "ru": "Мы знакомы много лет."}
+ ],
+ "traps": [
+  {"bad": "I have met him yesterday.", "good": "I met him yesterday.", "why": "Yesterday закрывает время, Perfect невозможен."},
+  {"bad": "She has went to Italy.", "good": "She has gone to Italy.", "why": "После has нужна третья форма gone, а не went."},
+  {"bad": "I have finished school in 2015.", "good": "I finished school in 2015.", "why": "Год в прошлом требует Past Simple."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ him yesterday.", "options": ["have seen", "saw", "have been seeing"], "a": 1, "why": "Yesterday — точное время, нужен Past Simple."},
+  {"type": "choice", "q": "She ___ to Paris three times.", "options": ["was", "has been", "went"], "a": 1, "why": "Опыт без даты: has been to."},
+  {"type": "choice", "q": "We ___ this film last night.", "options": ["have watched", "watched", "have been watching"], "a": 1, "why": "Last night закрывает время."},
+  {"type": "choice", "q": "He ___ his leg, so he can't walk.", "options": ["broke", "has broken", "breaks"], "a": 1, "why": "Результат важен сейчас, значит Perfect."},
+  {"type": "choice", "q": "___ you ever eaten Thai food?", "options": ["Did", "Have", "Were"], "a": 1, "why": "Ever с опытом требует Present Perfect."},
+  {"type": "gap", "q": "I ___ (see) that film in 2019.", "a": ["saw"], "why": "Год в прошлом: saw."},
+  {"type": "gap", "q": "They ___ (not / finish) the work yet.", "a": ["haven't finished", "have not finished"], "why": "Yet с отрицанием требует Perfect."},
+  {"type": "translate", "q": "Я был в Лондоне в прошлом году.", "a": ["i was in london last year"], "why": "Last year — точное время, Past Simple."},
+  {"type": "translate", "q": "Я никогда не был в Лондоне.", "a": ["i have never been to london", "i've never been to london"], "why": "Опыт без даты: have never been to."}
+ ]
+}

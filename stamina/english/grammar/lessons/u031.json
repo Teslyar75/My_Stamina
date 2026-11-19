@@ -1,0 +1,66 @@
+{
+ "n": 31,
+ "level": "A2",
+ "module": "modals",
+ "title": "must, mustn't, needn't",
+ "en": "must / mustn't / needn't",
+ "summary": "Три коротких слова, которые решают, что обязательно, что запрещено и что можно спокойно не делать.",
+ "can_do": [
+  "Сказать, что что-то обязательно или строго запрещено.",
+  "Отличить запрет mustn't от «можно не делать» needn't.",
+  "Сказать, что что-то не обязательно, через needn't и don't need to."
+ ],
+ "theory": [
+  {
+   "h": "must: обязательно",
+   "p": "Must ставят, когда обязанность идёт от самого говорящего или от правил, которые он считает важными. Форма одна на все лица, после неё глагол без to и без -s.",
+   "formula": "You must wear a helmet. · I must call my mother."
+  },
+  {
+   "h": "mustn't: запрещено",
+   "p": "Отрицание mustn't значит не «не обязательно», а «нельзя». Это различие — главная ловушка темы: одна буква меняет разрешение на запрет, и смысл фразы переворачивается целиком.",
+   "table": {
+    "head": ["Фраза", "Смысл"],
+    "rows": [
+     ["You mustn't park here.", "Стоять здесь запрещено."],
+     ["You don't have to park here.", "Ставить машину здесь не обязательно."]
+    ]
+   }
+  },
+  {
+   "h": "needn't: можно не делать",
+   "p": "Needn't снимает обязанность: действие разрешено, но не требуется. По смыслу это противоположность must, а не mustn't, поэтому и перевод другой — «не нужно», «можешь не».",
+   "formula": "You needn't come tomorrow. · She needn't pay — it's free."
+  },
+  {
+   "h": "must и have to",
+   "p": "Обязанность бывает своя и чужая. Must звучит как личное решение или как правило, которое вы считаете важным, а have to — как то, что навязано снаружи: законом, начальником, расписанием. В живой речи граница размывается, но в заданиях её держат.",
+   "formula": "I must study tonight. (сам решил) · I have to wear a uniform. (правило)"
+  }
+ ],
+ "examples": [
+  {"en": "You must be at the airport two hours early.", "ru": "Нужно быть в аэропорту за два часа."},
+  {"en": "Passengers mustn't smoke on board.", "ru": "Пассажирам запрещено курить на борту."},
+  {"en": "You needn't bring anything.", "ru": "Можешь ничего не приносить."},
+  {"en": "I must finish this report today.", "ru": "Я должен закончить отчёт сегодня."},
+  {"en": "Must I pay in advance?", "ru": "Мне нужно платить заранее?"},
+  {"en": "She needn't worry about the tickets.", "ru": "Ей не нужно беспокоиться о билетах."}
+ ],
+ "traps": [
+  {"bad": "You mustn't come if you're busy.", "good": "You needn't come if you're busy.", "why": "mustn't — запрет, а здесь смысл «можно не приходить»."},
+  {"bad": "I must to go now.", "good": "I must go now.", "why": "После must глагол без to."},
+  {"bad": "He musts work on Saturday.", "good": "He must work on Saturday.", "why": "must — модальный глагол, он не берёт -s."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "You ___ smoke here — it's a hospital.", "options": ["mustn't", "needn't", "don't have to"], "a": 0, "why": "Запрет: mustn't smoke."},
+  {"type": "choice", "q": "You ___ pay — the entrance is free.", "options": ["mustn't", "needn't", "must"], "a": 1, "why": "Платить не обязательно: needn't pay."},
+  {"type": "choice", "q": "I ___ finish the report by Friday.", "options": ["must", "must to", "am must"], "a": 0, "why": "После must нет ни to, ни be."},
+  {"type": "choice", "q": "You ___ take a towel — the hotel has plenty.", "options": ["needn't", "mustn't", "can't"], "a": 0, "why": "Полотенца есть, значит брать не обязательно: needn't take."},
+  {"type": "choice", "q": "All visitors ___ sign in at reception.", "options": ["must", "needn't", "mustn't"], "a": 0, "why": "Правило требует действия: must sign in."},
+  {"type": "gap", "q": "You ___ (not / must) touch the paintings.", "a": ["mustn't", "must not"], "why": "Запрет: mustn't touch."},
+  {"type": "gap", "q": "We ___ (not / need) to book a table — the place is empty.", "a": ["don't need", "do not need"], "why": "Обязанности нет: we don't need to book."},
+  {"type": "gap", "q": "___ (must) I sign this form too?", "a": ["must"], "why": "Вопрос об обязанности: Must I sign this form?"},
+  {"type": "translate", "q": "Тебе нельзя здесь парковаться.", "a": ["you mustn't park here", "you must not park here"], "why": "Запрет: You mustn't park here."},
+  {"type": "translate", "q": "Мне не нужно вставать рано.", "a": ["i needn't get up early", "i don't need to get up early", "i don't have to get up early"], "why": "Нет обязанности: I needn't get up early."}
+ ]
+}

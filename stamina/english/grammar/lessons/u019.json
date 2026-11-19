@@ -1,0 +1,70 @@
+{
+ "n": 19,
+ "level": "A1",
+ "module": "perfect",
+ "title": "for, since, ago: сколько времени",
+ "en": "for / since / ago",
+ "summary": "Три способа измерить время: как долго, с какого момента и сколько назад — и с каким временем каждый дружит.",
+ "can_do": [
+  "Сказать, как долго длится действие: for two hours.",
+  "Указать точку старта: since 2020.",
+  "Сказать, когда что-то случилось: two days ago."
+ ],
+ "theory": [
+  {
+   "h": "for отвечает на как долго",
+   "p": "For ставится перед отрезком времени: for two hours, for a week, for ten years. Он измеряет длительность и не важно, закрыта она или продолжается.",
+   "formula": "I have lived here for ten years. · I waited for an hour."
+  },
+  {
+   "h": "since называет начало",
+   "p": "Since указывает точку старта: since Monday, since 2010, since I was a child. Действие началось в этой точке и, как правило, тянется до сейчас.",
+   "formula": "I have known him since 2015. · She has been ill since Friday."
+  },
+  {
+   "h": "ago смотрит назад",
+   "p": "Ago говорит, сколько времени прошло с события, и ставится после отрезка. С Present Perfect он не сочетается, потому что время уже закрыто.",
+   "formula": "We met two years ago. · She left ten minutes ago."
+  },
+  {
+   "h": "Три слова в одной таблице",
+   "p": "Различие держится на одном вопросе: длительность, начало или точка в прошлом. Ответ на него сразу подсказывает слово.",
+   "table": {
+    "head": ["Слово", "Смысл", "Пример"],
+    "rows": [
+     ["for", "длительность", "for three days"],
+     ["since", "начало отрезка", "since Monday"],
+     ["ago", "точка назад", "three days ago"]
+    ]
+   }
+  },
+  {
+   "h": "Как спросить",
+   "p": "С Perfect спрашивают how long: сколько это уже длится. С ago вопрос строится через Past Simple: how long ago, то есть когда именно это было.",
+   "formula": "How long have you worked here? · How long ago did she leave?"
+  }
+ ],
+ "examples": [
+  {"en": "I've been waiting for twenty minutes.", "ru": "Я жду двадцать минут."},
+  {"en": "We've known each other since school.", "ru": "Мы знакомы со школы."},
+  {"en": "He moved here three years ago.", "ru": "Он переехал сюда три года назад."},
+  {"en": "She hasn't called for two days.", "ru": "Она не звонила два дня."},
+  {"en": "How long have you had this car?", "ru": "Как долго у тебя эта машина?"}
+ ],
+ "traps": [
+  {"bad": "I have seen him two days ago.", "good": "I saw him two days ago.", "why": "Ago требует Past Simple, а не Perfect."},
+  {"bad": "I live here since 2019.", "good": "I've lived here since 2019.", "why": "Since тянет действие до сейчас, значит Perfect."},
+  {"bad": "I've known her for three years ago.", "good": "I've known her for three years.", "why": "For и ago в одной фразе не встречаются."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I've been here ___ two hours.", "options": ["since", "for", "ago"], "a": 1, "why": "Two hours — длительность, значит for."},
+  {"type": "choice", "q": "She has lived in Rome ___ 2018.", "options": ["for", "since", "ago"], "a": 1, "why": "2018 — точка старта, поэтому since."},
+  {"type": "choice", "q": "They got married two years ___.", "options": ["since", "for", "ago"], "a": 2, "why": "Ago ставится после отрезка и смотрит назад."},
+  {"type": "choice", "q": "He has worked here ___ five years.", "options": ["since", "for", "ago"], "a": 1, "why": "Five years — длительность, нужен for."},
+  {"type": "choice", "q": "How long ___ you known him?", "options": ["do", "have", "are"], "a": 1, "why": "Вопрос о длительности строится с have."},
+  {"type": "gap", "q": "I ___ (not / see) her for a week.", "a": ["haven't seen", "have not seen"], "why": "for a week с Perfect: haven't seen."},
+  {"type": "gap", "q": "They moved to Berlin three years ___.", "a": ["ago"], "why": "Точка в прошлом требует ago."},
+  {"type": "translate", "q": "Я живу здесь с 2020 года.", "a": ["i have lived here since 2020", "i've lived here since 2020", "i have been living here since 2020"], "why": "Since 2020 с Perfect."},
+  {"type": "translate", "q": "Он позвонил час назад.", "a": ["he called an hour ago"], "why": "Ago с Past Simple: he called an hour ago."}
+ ]
+}

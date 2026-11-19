@@ -1,0 +1,72 @@
+{
+ "n": 115,
+ "level": "B1",
+ "module": "phrasal",
+ "title": "Фразовые глаголы (2)",
+ "en": "phrasal verbs (2)",
+ "summary": "Вторая порция фразовых глаголов: те, что не разрываются, — look after, get on with, run out of — и трёхчастные связки вроде put up with.",
+ "can_do": [
+  "Узнавать неразрывные фразовые глаголы и не ставить дополнение в середину.",
+  "Пользоваться связками с двумя частицами: run out of, put up with.",
+  "Заменить книжное слово разговорным: postpone → put off, tolerate → put up with."
+ ],
+ "theory": [
+  {
+   "h": "Неразрывные: дополнение только после",
+   "p": "У части фразовых глаголов дополнение всегда стоит после всей связки целиком. Разорвать её нельзя даже существительным, а местоимение ставится в самый конец. Look after the children — верно, look the children after — нет. Такие глаголы надо запоминать сразу вместе с предлогом.",
+   "table": {
+    "head": ["Глагол", "Значение", "Пример"],
+    "rows": [
+     ["look after", "присматривать за", "She looks after her sister."],
+     ["look for", "искать", "I'm looking for my glasses."],
+     ["get on with", "ладить с", "He gets on with his neighbours."],
+     ["run out of", "закончиться", "We've run out of milk."],
+     ["belong to", "принадлежать", "It belongs to my brother."]
+    ]
+   }
+  },
+  {
+   "h": "Две частицы — уже не разорвать",
+   "p": "Есть связки из глагола и сразу двух маленьких слов: run out of, put up with, get on with, look forward to, come up with. Они ведут себя как один длинный глагол, и дополнение идёт строго после предлога. Именно поэтому в них так легко ошибиться: нужно помнить всю цепочку, а не два слова из трёх.",
+   "formula": "run out of time · put up with the noise · look forward to the weekend · come up with an idea"
+  },
+  {
+   "h": "Смысл не складывается из частей",
+   "p": "Переводить фразовый глагол по частям бесполезно: give up — не «дать вверх», а «сдаться, бросить»; turn up — не «повернуть вверх», а «появиться». Поэтому в словаре смотрите значение всей связки и запоминайте её как одно слово, а рядом — короткий пример, чтобы был образ.",
+   "formula": "give up smoking = бросить курить · turn up late = появиться поздно · break down = сломаться"
+  },
+  {
+   "h": "Разговорный регистр",
+   "p": "Фразовые глаголы почти всегда звучат живее и проще своих латинских синонимов. В письме и в разговоре с начальником можно сказать postpone, но в обычной беседе скажут put off. Понимать надо оба слоя: книжный — чтобы читать, разговорный — чтобы говорить.",
+   "formula": "postpone → put off · tolerate → put up with · discover → find out · continue → carry on"
+  }
+ ],
+ "examples": [
+  {"en": "She looks after her little brother.", "ru": "Она присматривает за младшим братом."},
+  {"en": "I'm looking for my glasses.", "ru": "Я ищу свои очки."},
+  {"en": "He doesn't get on with his boss.", "ru": "Он не ладит с начальником."},
+  {"en": "We've run out of milk.", "ru": "У нас закончилось молоко."},
+  {"en": "I can't put up with this noise any more.", "ru": "Я больше не могу терпеть этот шум."},
+  {"en": "She gave up smoking last year.", "ru": "Она бросила курить в прошлом году."},
+  {"en": "The car broke down on the motorway.", "ru": "Машина сломалась на трассе."}
+ ],
+ "traps": [
+  {"bad": "She looks the children after.", "good": "She looks after the children.", "why": "look after не разрывается: дополнение только после связки."},
+  {"bad": "We have run out milk.", "good": "We have run out of milk.", "why": "В связке три слова: run out of, без of она не работает."},
+  {"bad": "I can't put up this noise.", "good": "I can't put up with this noise.", "why": "Терпеть — put up with, предлог with обязателен."},
+  {"bad": "He gave up to smoke.", "good": "He gave up smoking.", "why": "После give up — -ing, а не инфинитив."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Can you ___ my dog while I'm away?", "options": ["look after", "look for", "look at"], "a": 0, "why": "Присматривать — look after."},
+  {"type": "choice", "q": "We've ___ petrol, we need a petrol station.", "options": ["run out", "run out of", "run of"], "a": 1, "why": "run out of — закончиться; of обязателен."},
+  {"type": "choice", "q": "She doesn't ___ her new colleagues.", "options": ["get on with", "get up with", "get on"], "a": 0, "why": "Ладить с кем-то — get on with."},
+  {"type": "choice", "q": "I can't ___ the noise from the street.", "options": ["put up with", "put with", "put up"], "a": 0, "why": "Терпеть — put up with, две частицы."},
+  {"type": "choice", "q": "He ___ smoking two years ago.", "options": ["gave up", "gave out", "gave in"], "a": 0, "why": "Бросить привычку — give up."},
+  {"type": "gap", "q": "Our car ___ (break) down twice last month.", "a": ["broke"], "why": "В прошлом месяце — прошедшее время: broke down."},
+  {"type": "gap", "q": "I ___ (look) for my keys at the moment.", "a": ["am looking", "'m looking"], "why": "Прямо сейчас — длительное время: am looking for."},
+  {"type": "gap", "q": "They ___ (run) out of time, so they stopped.", "a": ["ran", "had run"], "why": "Закончилось время в прошлом: ran out of."},
+  {"type": "translate", "q": "Я не лажу со своим братом.", "a": ["i don't get on with my brother", "i do not get on with my brother"], "why": "get on with somebody — ладить с кем-то."},
+  {"type": "translate", "q": "Мы закончили работу в шесть.", "a": ["we finished work at six"], "why": "Здесь хватает обычного finish: фразовый глагол не обязателен."},
+  {"type": "translate", "q": "Она присматривает за бабушкой.", "a": ["she looks after her grandmother"], "why": "look after + дополнение после всей связки."}
+ ]
+}

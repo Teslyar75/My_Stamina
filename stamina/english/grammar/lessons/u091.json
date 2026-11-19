@@ -1,0 +1,71 @@
+{
+ "n": 91,
+ "level": "B1",
+ "module": "adjectives",
+ "title": "enough: достаточно",
+ "en": "enough",
+ "summary": "Слово enough меняет место в зависимости от того, к чему относится, — и от этого зависит, поймут вас или нет.",
+ "can_do": [
+  "Сказать «достаточно большой» и «достаточно денег» без перестановок.",
+  "Использовать оборот enough + to do.",
+  "Отличить «достаточно» от «слишком»."
+ ],
+ "theory": [
+  {
+   "h": "После прилагательного и наречия",
+   "p": "Когда enough относится к признаку, оно идёт после него: big enough, fast enough, old enough. По-русски мысль «достаточно взрослый» тянет поставить enough вперёд, но в английском так нельзя.",
+   "formula": "big enough · fast enough · old enough"
+  },
+  {
+   "h": "Перед существительным",
+   "p": "Когда enough относится к количеству вещей или вещества, оно встаёт перед существительным: enough money, enough chairs, enough time. Одно слово — два разных места, и выбор определяется тем, что за ним стоит.",
+   "formula": "enough money · enough chairs"
+  },
+  {
+   "h": "С of — только при определителе",
+   "p": "Перед the, my, these или местоимением появляется of: enough of the cake, enough of them. Просто enough of money сказать нельзя — так же, как нельзя most of money.",
+   "formula": "enough of the cake · enough of them"
+  },
+  {
+   "h": "Enough + to do",
+   "p": "Оборот с инфинитивом объясняет, для чего хватает: old enough to drive, strong enough to lift it. Отрицание ставится перед enough: not old enough to drive.",
+   "formula": "He isn't old enough to drive."
+  },
+  {
+   "h": "Too и enough — противоположности",
+   "p": "Too значит «слишком, больше чем нужно», enough — «достаточно, ровно столько, сколько нужно». Not enough — «не хватает». Три состояния одного признака, и путать их нельзя.",
+   "table": {
+    "head": ["Слово", "Смысл", "Пример"],
+    "rows": [
+     ["too hot", "слишком горячо", "The tea is too hot."],
+     ["hot enough", "достаточно горячо", "The tea is hot enough."],
+     ["not hot enough", "недостаточно горячо", "The tea isn't hot enough."]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "The room is big enough for four people.", "ru": "Комната достаточно большая для четверых."},
+  {"en": "We don't have enough chairs.", "ru": "У нас недостаточно стульев."},
+  {"en": "He isn't old enough to drive.", "ru": "Он недостаточно взрослый, чтобы водить."},
+  {"en": "There is enough time to finish the test.", "ru": "Времени достаточно, чтобы закончить тест."},
+  {"en": "She spoke loudly enough for everyone to hear.", "ru": "Она говорила достаточно громко, чтобы все услышали."}
+ ],
+ "traps": [
+  {"bad": "The room is enough big.", "good": "The room is big enough.", "why": "После прилагательного enough всегда идёт следом."},
+  {"bad": "We have enough of time.", "good": "We have enough time.", "why": "of нужен только перед the, my или them."},
+  {"bad": "I'm not enough tall to reach the shelf.", "good": "I'm not tall enough to reach the shelf.", "why": "enough ставится после прилагательного, not — перед всей группой."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The water is warm ___ for a swim.", "options": ["enough", "too", "much"], "a": 0, "why": "После прилагательного warm — enough."},
+  {"type": "choice", "q": "We don't have ___ chairs for all the guests.", "options": ["too", "much", "enough"], "a": 2, "why": "Перед существительным enough стоит впереди."},
+  {"type": "choice", "q": "He isn't ___ to see that film.", "options": ["old enough", "enough old", "too old"], "a": 0, "why": "Прилагательное + enough: old enough."},
+  {"type": "choice", "q": "She didn't run fast ___ to win the race.", "options": ["too", "much", "enough"], "a": 2, "why": "Наречие fast + enough."},
+  {"type": "choice", "q": "I don't have ___ money for the ticket.", "options": ["enough", "enough of", "too"], "a": 0, "why": "Перед существительным money — enough."},
+  {"type": "gap", "q": "The room isn't big ___ for two beds.", "a": ["enough"], "why": "После прилагательного big — enough."},
+  {"type": "gap", "q": "We have ___ time to catch the train.", "a": ["enough"], "why": "Перед существительным time — enough time."},
+  {"type": "gap", "q": "There aren't ___ chairs for everyone.", "a": ["enough"], "why": "enough идёт перед существительным chairs."},
+  {"type": "translate", "q": "У нас достаточно времени.", "a": ["we have enough time", "we've got enough time"], "why": "enough перед неисчисляемым time."},
+  {"type": "translate", "q": "Он недостаточно взрослый, чтобы водить машину.", "a": ["he isn't old enough to drive", "he is not old enough to drive", "he isn't old enough to drive a car"], "why": "not old enough + to drive."}
+ ]
+}

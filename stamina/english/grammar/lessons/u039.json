@@ -1,0 +1,67 @@
+{
+ "n": 39,
+ "level": "A2",
+ "module": "there",
+ "title": "It: формальное подлежащее",
+ "en": "it (formal subject)",
+ "summary": "Английское предложение не может стоять без подлежащего — на пустое место встаёт it.",
+ "can_do": [
+  "Сказать о погоде, времени и расстоянии.",
+  "Построить фразу вроде It's difficult to ...",
+  "Отличить it от there и не путать их."
+ ],
+ "theory": [
+  {
+   "h": "It вместо пустоты",
+   "p": "Русские фразы «холодно», «темнеет», «далеко» в английском требуют подлежащего, хотя действующего лица нет. На его место встаёт it, которое ничего не значит и на русский не переводится.",
+   "formula": "It is cold. · It is getting dark. · It is far from here."
+  },
+  {
+   "h": "Время, погода, расстояние",
+   "p": "Это три самых частых случая формального it. Здесь его нельзя заменить на this или that: смысл сразу съедет, и фраза станет странной для носителя.",
+   "table": {
+    "head": ["О чём", "Пример", "Перевод"],
+    "rows": [
+     ["время", "It's half past six.", "Сейчас половина седьмого."],
+     ["погода", "It's raining.", "Идёт дождь."],
+     ["расстояние", "It's ten kilometres to the city.", "До города десять километров."]
+    ]
+   }
+  },
+  {
+   "h": "It плюс длинный оборот",
+   "p": "Когда подлежащее выражено целым оборотом с to или that, его выносят в конец, а на первое место ставят it. Русская фраза при этом начинается с «трудно», «важно», «странно».",
+   "formula": "It's nice to see you. · It's strange that she didn't call."
+  },
+  {
+   "h": "It и there",
+   "p": "There говорит о наличии: где-то что-то есть. It говорит о состоянии, времени или уже известном предмете. Фраза There is cold today — самая заметная ошибка в этой теме.",
+   "formula": "There is a lot of snow. · It is cold today."
+  }
+ ],
+ "examples": [
+  {"en": "It's very cold outside.", "ru": "На улице очень холодно."},
+  {"en": "It's Monday today.", "ru": "Сегодня понедельник."},
+  {"en": "It's raining again.", "ru": "Опять идёт дождь."},
+  {"en": "It's five kilometres to the beach.", "ru": "До пляжа пять километров."},
+  {"en": "It's difficult to learn Chinese.", "ru": "Китайский трудно выучить."},
+  {"en": "It was nice to meet you.", "ru": "Было приятно познакомиться."}
+ ],
+ "traps": [
+  {"bad": "Is cold today.", "good": "It is cold today.", "why": "Английское предложение не начинается с глагола, нужно подлежащее it."},
+  {"bad": "There is cold today.", "good": "It is cold today.", "why": "Погода — это it; there говорит о наличии предметов."},
+  {"bad": "It has a lot of people in the park.", "good": "There are a lot of people in the park.", "why": "Люди «есть» в парке — это наличие, значит there are."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ is very hot in summer here.", "options": ["It", "There", "This"], "a": 0, "why": "О погоде говорят через формальное it."},
+  {"type": "choice", "q": "___ is snowing outside.", "options": ["It", "There", "He"], "a": 0, "why": "Погода: It is snowing."},
+  {"type": "choice", "q": "___ is a bank on the corner.", "options": ["There", "It", "That"], "a": 0, "why": "Наличие здания передаёт there is."},
+  {"type": "choice", "q": "___ is difficult to find a taxi at night.", "options": ["It", "There", "This"], "a": 0, "why": "Длинное подлежащее уходит в конец, впереди it."},
+  {"type": "choice", "q": "What time is ___?", "options": ["it", "there", "this"], "a": 0, "why": "Вопрос о времени: What time is it?"},
+  {"type": "gap", "q": "___ is raining, so take an umbrella.", "a": ["it"], "why": "Погода требует формального it."},
+  {"type": "gap", "q": "___ is a long way from here to the station.", "a": ["it"], "why": "Расстояние передаёт формальное it: It is a long way from here."},
+  {"type": "gap", "q": "It ___ (be) very cold yesterday.", "a": ["was"], "why": "yesterday — прошедшее время: It was very cold."},
+  {"type": "translate", "q": "Сегодня ветрено.", "a": ["it is windy today", "it's windy today"], "why": "Погода через it: It is windy today."},
+  {"type": "translate", "q": "До станции десять минут пешком.", "a": ["it is ten minutes on foot to the station", "it's ten minutes on foot to the station", "it is a ten-minute walk to the station"], "why": "Расстояние: It is ten minutes on foot to the station."}
+ ]
+}

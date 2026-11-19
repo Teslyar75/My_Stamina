@@ -1,0 +1,76 @@
+{
+ "n": 10,
+ "level": "A1",
+ "module": "past",
+ "title": "Past Simple с be: was и were",
+ "en": "was/were",
+ "summary": "Как сказать «я был», «они были» — и почему у be в прошлом всего две формы вместо трёх.",
+ "can_do": [
+  "Сказать, где вы были и как себя чувствовали: I was at work.",
+  "Выбрать was или were по тому, о ком речь.",
+  "Задать вопрос и ответить коротко: Were you tired? No, I wasn't."
+ ],
+ "theory": [
+  {
+   "h": "be в прошлом",
+   "p": "У be в прошедшем времени две формы: was для I, he, she, it и were для you, we, they. Это тот же be, только про вчера, позавчера или прошлый год.",
+   "formula": "I was at home. · They were at school."
+  },
+  {
+   "h": "Кто с какой формой",
+   "p": "Запомнить легко: was — единственное число от первого и третьего лица, were — всё остальное. Ошибки здесь слышны сразу.",
+   "table": {
+    "head": ["Кто", "be в прошлом", "Пример"],
+    "rows": [
+     ["I", "was", "I was tired."],
+     ["he / she / it", "was", "She was tired."],
+     ["you / we / they", "were", "They were tired."]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание",
+   "p": "Частица not ставится прямо после was или were и обычно сливается с ними. Никакого did в отрицании не появляется.",
+   "formula": "He wasn't ready. · We weren't late. · It wasn't easy."
+  },
+  {
+   "h": "Вопрос и короткий ответ",
+   "p": "В вопросе was или were выходит на первое место. Короткий ответ повторяет ту же форму, что была в вопросе.",
+   "table": {
+    "head": ["Вопрос", "Да", "Нет"],
+    "rows": [
+     ["Was he tired?", "Yes, he was.", "No, he wasn't."],
+     ["Were they at home?", "Yes, they were.", "No, they weren't."]
+    ]
+   }
+  },
+  {
+   "h": "Где нужен be, там и was",
+   "p": "Was и were встают на место am, is, are: место, состояние, профессия, возраст, погода. Если в настоящем была бы связка, в прошлом будет was или were.",
+   "formula": "I was 10 in 2005. · It was cold yesterday."
+  }
+ ],
+ "examples": [
+  {"en": "I was at the cinema last night.", "ru": "Вчера вечером я был в кино."},
+  {"en": "She was very tired after work.", "ru": "Она очень устала после работы."},
+  {"en": "We were at home all day.", "ru": "Мы были дома весь день."},
+  {"en": "It wasn't my fault.", "ru": "Это была не моя вина."},
+  {"en": "Were you at school yesterday?", "ru": "Ты был вчера в школе?"}
+ ],
+ "traps": [
+  {"bad": "I were at home.", "good": "I was at home.", "why": "С I всегда была форма was."},
+  {"bad": "They was happy.", "good": "They were happy.", "why": "they требует were."},
+  {"bad": "You was right.", "good": "You were right.", "why": "you всегда идёт с were, даже в единственном числе."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ at work yesterday.", "options": ["were", "was", "am"], "a": 1, "why": "I в прошлом берёт was."},
+  {"type": "choice", "q": "They ___ very happy.", "options": ["was", "were", "are"], "a": 1, "why": "they требует were."},
+  {"type": "choice", "q": "It ___ cold last night.", "options": ["was", "were", "is"], "a": 0, "why": "it в прошлом — was."},
+  {"type": "choice", "q": "We ___ not at home.", "options": ["was", "were", "did"], "a": 1, "why": "we требует were, отрицание ставится на be."},
+  {"type": "choice", "q": "___ she at the party?", "options": ["Were", "Did", "Was"], "a": 2, "why": "she = was, и в вопросе was идёт первым."},
+  {"type": "gap", "q": "My parents ___ (be) at the theatre last week.", "a": ["were"], "why": "my parents = they, поэтому were."},
+  {"type": "gap", "q": "You ___ (be) right.", "a": ["were"], "why": "you всегда were."},
+  {"type": "translate", "q": "Вчера я был дома.", "a": ["i was at home yesterday", "yesterday i was at home"], "why": "I was at home yesterday."},
+  {"type": "translate", "q": "Они не были голодны.", "a": ["they were not hungry", "they weren't hungry"], "why": "were not или weren't плюс hungry."}
+ ]
+}

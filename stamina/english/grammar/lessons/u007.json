@@ -1,0 +1,75 @@
+{
+ "n": 7,
+ "level": "A1",
+ "module": "present",
+ "title": "Вопросы в Present Simple: Do you ...?",
+ "en": "Do you ...? (present simple questions)",
+ "summary": "Как спросить «Ты говоришь по-английски?» и «Где ты живёшь?» — через do и does, без перестановки смыслового глагола.",
+ "can_do": [
+  "Задать общий вопрос: Do you like tea?",
+  "Спросить где, когда, как часто: Where do you live?",
+  "Ответить коротко: Yes, I do. No, she doesn't."
+ ],
+ "theory": [
+  {
+   "h": "Вопрос строит do",
+   "p": "В Present Simple вопрос начинается с do или does. Дальше идёт тот, о ком речь, потом смысловой глагол в начальной форме. Сам глагол с места не двигается.",
+   "formula": "Do you work here? · Does she live in Kyiv?"
+  },
+  {
+   "h": "-s уходит к does",
+   "p": "В вопросе окончание -s переезжает на помощника, а смысловой глагол остаётся чистым. Поэтому does she live, а не does she lives.",
+   "table": {
+    "head": ["Кто", "Вопрос"],
+    "rows": [
+     ["I / you / we / they", "Do you live here?"],
+     ["he / she / it", "Does he live here?"]
+    ]
+   }
+  },
+  {
+   "h": "Короткий ответ",
+   "p": "Короткий ответ повторяет do или does и никогда не добавляет смысловой глагол. Именно этот помощник отвечает за «да» и «нет».",
+   "table": {
+    "head": ["Вопрос", "Да", "Нет"],
+    "rows": [
+     ["Do you like tea?", "Yes, I do.", "No, I don't."],
+     ["Does he play tennis?", "Yes, he does.", "No, he doesn't."]
+    ]
+   }
+  },
+  {
+   "h": "Вопросительное слово впереди",
+   "p": "What, where, when, why, how often встают перед do или does. Порядок остаётся тем же, просто спереди появляется слово.",
+   "formula": "Where do you live? · When does the shop open? · How often does she call?"
+  },
+  {
+   "h": "do в двух ролях",
+   "p": "Do бывает помощником, а бывает обычным глаголом со значением «делать». Во втором случае в вопросе оказываются две формы сразу, и это нормально.",
+   "formula": "What do you do? (кем работаешь) · Do you do yoga?"
+  }
+ ],
+ "examples": [
+  {"en": "Do you speak English?", "ru": "Ты говоришь по-английски?"},
+  {"en": "Does your brother play chess?", "ru": "Твой брат играет в шахматы?"},
+  {"en": "Where do they live?", "ru": "Где они живут?"},
+  {"en": "How often does she call you?", "ru": "Как часто она тебе звонит?"},
+  {"en": "Do you want some water?", "ru": "Хочешь воды?"}
+ ],
+ "traps": [
+  {"bad": "Do you are a student?", "good": "Are you a student?", "why": "С be вопрос строится без do."},
+  {"bad": "Does he plays tennis?", "good": "Does he play tennis?", "why": "-s уже есть в does, глагол остаётся чистым."},
+  {"bad": "Where you live?", "good": "Where do you live?", "why": "Без do английский вопрос не собирается."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ you like coffee?", "options": ["Do", "Are", "Does"], "a": 0, "why": "you берёт do."},
+  {"type": "choice", "q": "___ she work here?", "options": ["Do", "Does", "Is"], "a": 1, "why": "she требует does."},
+  {"type": "choice", "q": "Where ___ they live?", "options": ["does", "do", "are"], "a": 1, "why": "they — do, и помощник идёт перед подлежащим."},
+  {"type": "choice", "q": "___ he have a car?", "options": ["Do", "Does", "Has"], "a": 1, "why": "В вопросе have работает как обычный глагол: Does he have...?"},
+  {"type": "choice", "q": "What time ___ you get up?", "options": ["do", "does", "are"], "a": 0, "why": "you берёт do."},
+  {"type": "gap", "q": "___ your parents speak English?", "a": ["do"], "why": "your parents = they, поэтому do."},
+  {"type": "gap", "q": "How often ___ he go to the gym?", "a": ["does"], "why": "he требует does, а go остаётся без -s."},
+  {"type": "translate", "q": "Ты живёшь здесь?", "a": ["do you live here"], "why": "Общий вопрос: Do you live here?"},
+  {"type": "translate", "q": "Как часто ты читаешь?", "a": ["how often do you read"], "why": "How often + do + you + read."}
+ ]
+}

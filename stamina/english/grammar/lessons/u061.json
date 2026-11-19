@@ -1,0 +1,75 @@
+{
+ "n": 61,
+ "level": "A2",
+ "module": "pronouns",
+ "title": "my или mine: два вида притяжательных",
+ "en": "mine/yours/hers (possessive pronouns)",
+ "summary": "Как сказать «это мой» и не повторять слово: my book превращается в mine, your bag — в yours.",
+ "can_do": [
+  "Ответить одной формой без существительного: It's mine.",
+  "Различать my и mine в одном предложении.",
+  "Сказать «один из моих друзей» через a friend of mine."
+ ],
+ "theory": [
+  {
+   "h": "Вторая форма — вместо предмета",
+   "p": "My всегда требует существительного: my book. Если предмет уже назван, его можно не повторять и заменить словом mine. После mine существительное не ставится никогда.",
+   "formula": "This is my book. → This book is mine."
+  },
+  {
+   "h": "Пары форм",
+   "p": "У каждой формы «перед предметом» есть пара «без предмета». Заметьте: his не меняется, а her, our, their получают s.",
+   "table": {
+    "head": ["Перед предметом", "Без предмета"],
+    "rows": [
+     ["my", "mine"],
+     ["your", "yours"],
+     ["his", "his"],
+     ["her", "hers"],
+     ["our", "ours"],
+     ["their", "theirs"]
+    ]
+   }
+  },
+  {
+   "h": "Где появляется s",
+   "p": "Формы hers, ours, theirs, yours оканчиваются на s, а mine — нет. У his s уже есть в самой форме, поэтому он выглядит одинаково в обеих ролях. Апостроф не нужен ни в одной из них.",
+   "formula": "It's her bag. → It's hers. · It's our house. → It's ours."
+  },
+  {
+   "h": "a friend of mine",
+   "p": "Русское «мой друг» в смысле «один из моих друзей» англичане говорят a friend of mine. Так же: a colleague of ours, a cousin of hers. Заменить mine на my в этой конструкции нельзя.",
+   "formula": "a friend of mine · a colleague of ours"
+  },
+  {
+   "h": "Ошибка mine book",
+   "p": "Форму без предмета выбирают только тогда, когда предмет не назван. Если существительное стоит рядом, нужна первая форма: my book. Сочетание mine book — самая частая ошибка в этой теме.",
+   "formula": "my book (не mine book) · the book is mine"
+  }
+ ],
+ "examples": [
+  {"en": "This umbrella is mine.", "ru": "Этот зонт — мой."},
+  {"en": "Is this pen yours?", "ru": "Эта ручка ваша?"},
+  {"en": "The red car is hers.", "ru": "Красная машина — её."},
+  {"en": "Our flat is smaller than theirs.", "ru": "Наша квартира меньше их."},
+  {"en": "She is a friend of mine.", "ru": "Она моя подруга."},
+  {"en": "Those seats are ours.", "ru": "Те места — наши."}
+ ],
+ "traps": [
+  {"bad": "Mine book is on the table.", "good": "My book is on the table.", "why": "Перед существительным — my; mine работает без него."},
+  {"bad": "This bag is her.", "good": "This bag is hers.", "why": "«Её» без предмета — hers, с s на конце."},
+  {"bad": "It's your's.", "good": "It's yours.", "why": "В yours апостроф не нужен: это одно слово, а не сокращение."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is ___ coat, not mine.", "options": ["your", "yours", "you"], "a": 0, "why": "Перед существительным coat — your."},
+  {"type": "choice", "q": "The house on the corner is ___.", "options": ["our", "ours", "us"], "a": 1, "why": "Предмет не назван, значит ours."},
+  {"type": "choice", "q": "I took my keys and she took ___.", "options": ["her", "hers", "she"], "a": 1, "why": "«Её ключи» без повторения слова — hers."},
+  {"type": "choice", "q": "Is that car ___?", "options": ["your", "yours", "you"], "a": 1, "why": "После be и без существительного — yours."},
+  {"type": "choice", "q": "Their garden is bigger than ___.", "options": ["our", "ours", "we"], "a": 1, "why": "Сравниваем с «нашим» без предмета — ours."},
+  {"type": "gap", "q": "This book is ___ (I), and that one is yours.", "a": ["mine"], "why": "Без существительного от I образуется mine."},
+  {"type": "gap", "q": "The blue jacket is ___ (she).", "a": ["hers"], "why": "Притяжательное без предмета от she — hers."},
+  {"type": "gap", "q": "He is a colleague of ___ (we).", "a": ["ours"], "why": "Конструкция of + притяжательное: of ours."},
+  {"type": "translate", "q": "Этот зонт — мой.", "a": ["this umbrella is mine", "this umbrella's mine"], "why": "Без повторения слова: this umbrella is mine."},
+  {"type": "translate", "q": "Те места — наши.", "a": ["those seats are ours"], "why": "Those seats are ours — форма без предмета."}
+ ]
+}

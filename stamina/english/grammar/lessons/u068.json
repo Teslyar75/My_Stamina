@@ -1,0 +1,72 @@
+{
+ "n": 68,
+ "level": "A2",
+ "module": "nouns",
+ "title": "some: немного, несколько",
+ "en": "some",
+ "summary": "«Немного» и «несколько» без точного числа: some перед неисчисляемым и перед множественным.",
+ "can_do": [
+  "Сказать «немного воды» и «несколько друзей».",
+  "Использовать some в просьбах и предложениях.",
+  "Не ставить some перед одним предметом."
+ ],
+ "theory": [
+  {
+   "h": "Что делает some",
+   "p": "Some показывает неточное количество: «немного» или «несколько». Оно работает с неисчисляемыми (some water) и с множественным числом (some books), но не с единственным: some book — ошибка.",
+   "formula": "some water · some apples"
+  },
+  {
+   "h": "С чем сочетается",
+   "p": "Форма глагола зависит от существительного, а не от some. С неисчисляемым глагол в единственном числе, с множественным — во множественном.",
+   "table": {
+    "head": ["Существительное", "Пример с some", "Глагол"],
+    "rows": [
+     ["неисчисляемое", "There is some milk.", "is"],
+     ["множественное", "Some books are old.", "are"],
+     ["единственное", "some book — нельзя", "—"]
+    ]
+   }
+  },
+  {
+   "h": "Some в просьбе и предложении",
+   "p": "В вопросах, где мы предлагаем или просим, some звучит естественно и вежливо: Would you like some tea? Can I have some water? Здесь нет сомнения, есть угощение или просьба.",
+   "formula": "Would you like some tea? · Can I borrow some money?"
+  },
+  {
+   "h": "Some of = некоторые из",
+   "p": "С предлогом of some значит «некоторые из». После some of обязательно ставится определитель: the, my, these, them. Some of my friends, some of them, some of the students.",
+   "formula": "Some of my friends are teachers. · Some of them are late."
+  },
+  {
+   "h": "Some или any",
+   "p": "Главное распределение такое: some — для утвердительных фраз, any — для отрицаний и обычных вопросов. В просьбах some остаётся. Подробное сравнение — в отдельном уроке про some и any.",
+   "formula": "I have some money. · I don't have any money."
+  }
+ ],
+ "examples": [
+  {"en": "There is some milk in the fridge.", "ru": "В холодильнике есть немного молока."},
+  {"en": "I bought some apples and some cheese.", "ru": "Я купил немного яблок и сыра."},
+  {"en": "Would you like some coffee?", "ru": "Хотите немного кофе?"},
+  {"en": "Some people don't eat meat.", "ru": "Некоторые люди не едят мясо."},
+  {"en": "Some of my friends live abroad.", "ru": "Некоторые из моих друзей живут за границей."},
+  {"en": "We need some help with this box.", "ru": "Нам нужна помощь с этой коробкой."}
+ ],
+ "traps": [
+  {"bad": "I have some book about it.", "good": "I have a book about it.", "why": "some не ставится с исчисляемым в единственном числе."},
+  {"bad": "I need some informations.", "good": "I need some information.", "why": "После some неисчисляемое остаётся без s."},
+  {"bad": "Some of friends came late.", "good": "Some of my friends came late.", "why": "После some of нужен определитель: the, my, them."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "There are ___ eggs in the fridge.", "options": ["a", "some", "any"], "a": 1, "why": "Утвердительная фраза с множественным — some."},
+  {"type": "choice", "q": "Would you like ___ tea?", "options": ["some", "any", "a"], "a": 0, "why": "Предложение угощения — some tea."},
+  {"type": "choice", "q": "I have ___ question for you.", "options": ["some", "a", "any"], "a": 1, "why": "Один предмет — a question, some здесь нельзя."},
+  {"type": "choice", "q": "___ of the students were late.", "options": ["Any", "Some", "A"], "a": 1, "why": "Утверждение о части группы — Some of the students."},
+  {"type": "choice", "q": "We need ___ bread for breakfast.", "options": ["a", "some", "many"], "a": 1, "why": "bread неисчисляемое — some bread."},
+  {"type": "gap", "q": "Can I have ___ water, please?", "a": ["some"], "why": "Вежливая просьба — some water."},
+  {"type": "gap", "q": "___ people like cold weather.", "a": ["some"], "why": "«Некоторые люди» — some people."},
+  {"type": "gap", "q": "He gave me ___ good advice.", "a": ["some"], "why": "advice неисчисляемое, в утверждении — some."},
+  {"type": "translate", "q": "В сумке есть немного денег.", "a": ["there is some money in the bag", "there's some money in the bag"], "why": "money неисчисляемое: there is some money."},
+  {"type": "translate", "q": "Некоторые из моих друзей — врачи.", "a": ["some of my friends are doctors"], "why": "Some of my friends + are."}
+ ]
+}

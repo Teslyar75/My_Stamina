@@ -1,0 +1,73 @@
+{
+ "n": 65,
+ "level": "A2",
+ "module": "nouns",
+ "title": "Артикль a / an",
+ "en": "a/an",
+ "summary": "Один предмет из многих: когда нужен a, когда an и почему русскому уху это слово кажется лишним.",
+ "can_do": [
+  "Выбирать a или an по первому звуку слова.",
+  "Говорить о профессии: she is a doctor.",
+  "Не ставить артикль с множественным числом и с неисчисляемыми."
+ ],
+ "theory": [
+  {
+   "h": "«Один, какой-нибудь»",
+   "p": "Артикль a/an значит «один любой, какой-нибудь» и ставится только с исчисляемым в единственном числе, когда предмет упомянут впервые. По-русски мы это слово не переводим: «Я купил машину» — I bought a car.",
+   "formula": "a car · a question · an apple"
+  },
+  {
+   "h": "Звук решает, буква нет",
+   "p": "Выбор зависит от первого звука следующего слова. Смотрите не на букву, а на то, что слышно: hour начинается с гласного звука, university — со звука «й».",
+   "table": {
+    "head": ["Первый звук", "Артикль", "Пример"],
+    "rows": [
+     ["согласный", "a", "a book, a car"],
+     ["гласный", "an", "an apple, an hour"],
+     ["«й» в начале", "a", "a university, a European"],
+     ["немая h", "an", "an hour, an honest man"]
+    ]
+   }
+  },
+  {
+   "h": "Сокращения и цифры",
+   "p": "Сокращения и числа читаются как слова, и артикль подстраивается под чтение: an MP («эм-пи»), an FBI agent, a UFO («ю-эф-о»), an 8-year-old boy («эйт»).",
+   "formula": "an MP · a UFO · an 8-year-old boy"
+  },
+  {
+   "h": "Где a невозможен",
+   "p": "Артикль a/an не ставится с множественным числом и с неисчисляемыми. Нельзя a books, a water, a money. Для неисчисляемых есть some, a piece of, a glass of.",
+   "formula": "a book → books · some water · a glass of water"
+  },
+  {
+   "h": "Профессия всегда с артиклем",
+   "p": "Название профессии, религии или национальности в единственном числе требует артикля. Русское «она врач» без артикля ломает английскую фразу: нужно She is a doctor.",
+   "formula": "She is a doctor. · He is an engineer."
+  }
+ ],
+ "examples": [
+  {"en": "I need a new phone.", "ru": "Мне нужен новый телефон."},
+  {"en": "She is an architect.", "ru": "Она архитектор."},
+  {"en": "We waited for an hour.", "ru": "Мы ждали час."},
+  {"en": "He is a university student.", "ru": "Он студент университета."},
+  {"en": "Would you like a cup of tea?", "ru": "Хотите чашку чая?"},
+  {"en": "There is an old church in the village.", "ru": "В деревне есть старая церковь."}
+ ],
+ "traps": [
+  {"bad": "He is engineer.", "good": "He is an engineer.", "why": "Перед профессией в единственном числе артикль обязателен."},
+  {"bad": "I need a water.", "good": "I need some water.", "why": "water неисчисляемое, a с ним не ставится."},
+  {"bad": "an university", "good": "a university", "why": "Слово начинается со звука «й», а не с гласного."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She is ___ engineer.", "options": ["a", "an", "the"], "a": 1, "why": "engineer начинается с гласного звука — an."},
+  {"type": "choice", "q": "I bought ___ umbrella yesterday.", "options": ["a", "an", "the"], "a": 1, "why": "umbrella начинается с гласного звука — an."},
+  {"type": "choice", "q": "He is ___ university student.", "options": ["a", "an", "the"], "a": 0, "why": "university начинается со звука «й» — a."},
+  {"type": "choice", "q": "We waited for ___ hour.", "options": ["a", "an", "the"], "a": 1, "why": "h в hour не читается, первый звук гласный — an."},
+  {"type": "choice", "q": "My father is ___ pilot.", "options": ["a", "an", "the"], "a": 0, "why": "Профессия с согласным звуком — a pilot."},
+  {"type": "choice", "q": "There is ___ old map on the wall.", "options": ["a", "an", "the"], "a": 1, "why": "old начинается с гласного — an old map."},
+  {"type": "gap", "q": "I'd like ___ glass of water.", "a": ["a"], "why": "glass начинается с согласного — a."},
+  {"type": "gap", "q": "She is ___ honest person.", "a": ["an"], "why": "h в honest не читается — an honest person."},
+  {"type": "gap", "q": "He works as ___ taxi driver.", "a": ["a"], "why": "Профессия в единственном числе — a taxi driver."},
+  {"type": "translate", "q": "Моя сестра — медсестра.", "a": ["my sister is a nurse"], "why": "Профессия с артиклем: my sister is a nurse."}
+ ]
+}

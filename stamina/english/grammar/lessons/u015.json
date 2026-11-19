@@ -1,0 +1,69 @@
+{
+ "n": 15,
+ "level": "A1",
+ "module": "perfect",
+ "title": "Present Perfect: I have done",
+ "en": "I have done (present perfect 1)",
+ "summary": "Как связать прошлое с настоящим: действие было раньше, а результат важен сейчас — без указания точного времени.",
+ "can_do": [
+  "Сказать, что результат виден сейчас: I've lost my keys.",
+  "Образовать третью форму: done, gone, seen, written.",
+  "Отличить Perfect от Past Simple, когда названо время."
+ ],
+ "theory": [
+  {
+   "h": "Мост между прошлым и настоящим",
+   "p": "Present Perfect говорит: действие было раньше, но результат важен сейчас. Точное время при этом не называется, потому что важен не момент, а то, что мы имеем в итоге.",
+   "formula": "I have lost my keys. · She has gone home."
+  },
+  {
+   "h": "Как строится форма",
+   "p": "Нужны две части: have или has по действующему лицу и третья форма смыслового глагола. Для правильных глаголов она совпадает с -ed, для неправильных её надо помнить.",
+   "table": {
+    "head": ["Кто", "have / has", "Пример"],
+    "rows": [
+     ["I / you / we / they", "have", "They have finished."],
+     ["he / she / it", "has", "He has finished."]
+    ]
+   }
+  },
+  {
+   "h": "Результат, а не дата",
+   "p": "Если названо точное время в прошлом, Perfect уступает место Past Simple. Yesterday, last week, in 2019 с Present Perfect не сочетаются.",
+   "formula": "I have seen this film. · I saw it last week."
+  },
+  {
+   "h": "Сокращения",
+   "p": "В живой речи have и has почти всегда сливаются с местоимением, а not приклеивается к ним же. Полные формы звучат официально.",
+   "formula": "I have → I've · she has → she's · have not → haven't · has not → hasn't"
+  },
+  {
+   "h": "Вопрос и отрицание",
+   "p": "В вопросе have или has выходит вперёд. В отрицании not ставится после них, а третья форма глагола остаётся неизменной.",
+   "formula": "Have you finished? · No, I haven't. · She hasn't called."
+  }
+ ],
+ "examples": [
+  {"en": "I've lost my phone.", "ru": "Я потерял телефон."},
+  {"en": "She has broken her glass.", "ru": "Она разбила свой стакан."},
+  {"en": "We've finished the work.", "ru": "Мы закончили работу."},
+  {"en": "He hasn't eaten anything today.", "ru": "Он сегодня ничего не ел."},
+  {"en": "Have you done your homework?", "ru": "Ты сделал домашнюю работу?"}
+ ],
+ "traps": [
+  {"bad": "I have seen him yesterday.", "good": "I saw him yesterday.", "why": "Слово yesterday требует Past Simple."},
+  {"bad": "She have finished.", "good": "She has finished.", "why": "she берёт has."},
+  {"bad": "I am finished the report.", "good": "I have finished the report.", "why": "Perfect строится на have, а не на be."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I ___ lost my keys.", "options": ["have", "has", "am"], "a": 0, "why": "I берёт have и третью форму lost."},
+  {"type": "choice", "q": "She ___ written a letter.", "options": ["have", "has", "is"], "a": 1, "why": "she требует has."},
+  {"type": "choice", "q": "They ___ arrived.", "options": ["has", "have", "are"], "a": 1, "why": "they берёт have."},
+  {"type": "choice", "q": "He ___ finished his lunch.", "options": ["haven't", "hasn't", "isn't"], "a": 1, "why": "he + has, отрицание hasn't."},
+  {"type": "choice", "q": "___ you done the shopping?", "options": ["Have", "Has", "Are"], "a": 0, "why": "you берёт have."},
+  {"type": "gap", "q": "We ___ (finish) the project.", "a": ["have finished", "'ve finished"], "why": "have + третья форма finished."},
+  {"type": "gap", "q": "She ___ (not / call) me yet.", "a": ["hasn't called", "has not called"], "why": "she + hasn't + called."},
+  {"type": "translate", "q": "Я потерял свой билет.", "a": ["i have lost my ticket", "i've lost my ticket"], "why": "Результат сейчас: I've lost my ticket."},
+  {"type": "translate", "q": "Он ушёл домой.", "a": ["he has gone home", "he's gone home"], "why": "have + третья форма gone, home без предлога."}
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "n": 114,
+ "level": "B1",
+ "module": "phrasal",
+ "title": "Фразовые глаголы (1)",
+ "en": "phrasal verbs (1)",
+ "summary": "turn on, put off, pick up — глагол плюс маленькое слово, а смысл новый. Здесь те случаи, где дополнение можно поставить в серединку: turn the TV on.",
+ "can_do": [
+  "Понимать фразовые глаголы с off, on, up, down в живой речи.",
+  "Правильно ставить дополнение: turn off the light или turn the light off.",
+  "Не разрывать связку, когда дополнение — местоимение: turn it off."
+ ],
+ "theory": [
+  {
+   "h": "Что это вообще такое",
+   "p": "Фразовый глагол — это обычный глагол плюс маленькое слово (off, on, up, down, out). Вместе они значат совсем не то, что глагол сам по себе: pick — «подобрать», а pick up — «забрать, подвезти». Такие связки в английском повсюду, и в разговоре они звучат естественнее «книжных» синонимов: turn off вместо switch off, put off вместо postpone.",
+   "formula": "turn on = включить · turn off = выключить · pick up = забрать · put off = отложить"
+  },
+  {
+   "h": "Переходные: дополнение ходит по середине",
+   "p": "Многие фразовые глаголы требуют дополнения — то, на что направлено действие. Это дополнение можно поставить после связки целиком или вклинить между глаголом и частицей. Смысл один и тот же, но вклинить можно только существительное, а не длинную фразу.",
+   "table": {
+    "head": ["Фразовый глагол", "Дополнение после", "Дополнение в середине"],
+    "rows": [
+     ["turn off", "Turn off the light.", "Turn the light off."],
+     ["put on", "Put on your coat.", "Put your coat on."],
+     ["take off", "Take off your shoes.", "Take your shoes off."],
+     ["throw away", "Throw away this box.", "Throw this box away."]
+    ]
+   }
+  },
+  {
+   "h": "Местоимение — только в середину",
+   "p": "Если вместо существительного стоит it или them, оно обязано встать между глаголом и частицей. Turn it off — верно, turn off it — ошибка, которую слышно сразу. Это железное правило: короткое местоимение не терпит места после частицы.",
+   "formula": "Turn it off. · Put them on. · Take it off. · Throw them away."
+  },
+  {
+   "h": "Непереходные: дополнения нет вовсе",
+   "p": "Часть фразовых глаголов работает без дополнения — действие просто происходит с подлежащим. Wake up, get up, come back, go out, sit down, stand up. Спрашивать «что?» тут нечего, поэтому и вклинивать нечего: I woke up at seven.",
+   "formula": "I woke up late. · She sat down. · We came back at ten. · He went out."
+  }
+ ],
+ "examples": [
+  {"en": "Please turn off the light.", "ru": "Пожалуйста, выключи свет."},
+  {"en": "Turn your phone off, please.", "ru": "Выключи телефон, пожалуйста."},
+  {"en": "I can't turn it on.", "ru": "Я не могу его включить."},
+  {"en": "We put off the meeting until Friday.", "ru": "Мы отложили встречу до пятницы."},
+  {"en": "Can you pick me up at the airport?", "ru": "Можешь забрать меня в аэропорту?"},
+  {"en": "Throw away these old newspapers.", "ru": "Выброси эти старые газеты."},
+  {"en": "She woke up at six and got up at once.", "ru": "Она проснулась в шесть и сразу встала."}
+ ],
+ "traps": [
+  {"bad": "Turn off it, please.", "good": "Turn it off, please.", "why": "Местоимение всегда идёт в середину, между глаголом и частицей."},
+  {"bad": "I woke up me at seven.", "good": "I woke up at seven.", "why": "wake up без дополнения: подлежащее и так понятно."},
+  {"bad": "Put on it.", "good": "Put it on.", "why": "То же правило: it не стоит после on."},
+  {"bad": "I pick up you at eight.", "good": "I'll pick you up at eight.", "why": "pick somebody up — местоимение в середине, будущее через will."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Please turn ___ the music, it's too loud.", "options": ["off", "up", "on"], "a": 0, "why": "Слишком громко — значит выключить: turn off."},
+  {"type": "choice", "q": "Your coat is on the chair. Put ___ on.", "options": ["on it", "it", "it on"], "a": 1, "why": "Правильно put it on: местоимение в середине, частица в конце."},
+  {"type": "choice", "q": "They ___ the wedding until next month.", "options": ["put off", "put on", "put up"], "a": 0, "why": "put off = отложить на потом."},
+  {"type": "choice", "q": "I usually ___ at seven in the morning.", "options": ["wake up", "wake", "get"], "a": 0, "why": "Просыпаться — wake up, самостоятельный фразовый глагол."},
+  {"type": "choice", "q": "These shoes are dirty. Take ___ before you come in.", "options": ["them off", "off them", "off"], "a": 0, "why": "take them off: местоимение в середине."},
+  {"type": "gap", "q": "Can you ___ (turn) the TV off? I'm reading.", "a": ["turn"], "why": "После can — первая форма: can you turn the TV off."},
+  {"type": "gap", "q": "I ___ (throw) away all the old boxes yesterday.", "a": ["threw"], "why": "Вчера — прошедшее время: threw away."},
+  {"type": "gap", "q": "She ___ (pick) the children up from school at four.", "a": ["picks"], "why": "she + -s: picks the children up."},
+  {"type": "translate", "q": "Выключи его, пожалуйста.", "a": ["turn it off please", "turn it off, please", "please turn it off"], "why": "turn it off — местоимение в середине связки."},
+  {"type": "translate", "q": "Мы отложили поездку до субботы.", "a": ["we put off the trip until saturday", "we put the trip off until saturday"], "why": "put off = отложить, дополнение может стоять с двух сторон."}
+ ]
+}

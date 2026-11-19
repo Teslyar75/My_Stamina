@@ -1,0 +1,64 @@
+{
+ "n": 93,
+ "level": "B1",
+ "module": "order",
+ "title": "Порядок слов в предложении",
+ "en": "word order (1)",
+ "summary": "Английское предложение держится за порядок: переставили слова — изменился смысл или получилась ошибка.",
+ "can_do": [
+  "Собрать предложение по схеме подлежащее — глагол — дополнение — место — время.",
+  "Поставить отрицание и вопрос на свои места.",
+  "Заметить и исправить перевёрнутую фразу."
+ ],
+ "theory": [
+  {
+   "h": "Скелет предложения",
+   "p": "Порядок в английском почти всегда один: кто — что делает — что — где — когда. Русский позволяет двигать слова свободно, английский такого не прощает: смысл держится именно на позициях.",
+   "formula": "She reads books at home in the evening."
+  },
+  {
+   "h": "Место и время — в конце",
+   "p": "Обстоятельства места и времени стоят после дополнения, и место обычно идёт раньше времени. Точное время можно вынести в начало для акцента, но не в середину между глаголом и дополнением.",
+   "formula": "We watch films at home on Sundays."
+  },
+  {
+   "h": "Наречие не разрывает глагол и дополнение",
+   "p": "Фразы вроде like very much this book построены по русской привычке и в английском не работают. Наречие степени ставится после дополнения: I like this book very much.",
+   "formula": "I like this book very much."
+  },
+  {
+   "h": "Отрицание после вспомогательного",
+   "p": "Not присоединяется к первому вспомогательному глаголу или к do: he doesn't like, he hasn't finished. Ставить not в конец или перед подлежащим нельзя.",
+   "formula": "He doesn't like coffee. · He hasn't finished."
+  },
+  {
+   "h": "Вопрос: вспомогательный вперёд",
+   "p": "В вопросе вспомогательный глагол выходит перед подлежащим: Do you ...? Have you ...? Did you ...? После did глагол стоит в основной форме, а не в прошедшей.",
+   "formula": "Did you finish your homework?"
+  }
+ ],
+ "examples": [
+  {"en": "We watch films at home on Sundays.", "ru": "Мы смотрим фильмы дома по воскресеньям."},
+  {"en": "She plays tennis every Friday.", "ru": "Она играет в теннис каждую пятницу."},
+  {"en": "Did you finish your homework?", "ru": "Ты доделал домашнюю работу?"},
+  {"en": "He doesn't like coffee.", "ru": "Он не любит кофе."},
+  {"en": "I like this film very much.", "ru": "Мне очень нравится этот фильм."}
+ ],
+ "traps": [
+  {"bad": "I like very much this book.", "good": "I like this book very much.", "why": "Наречие степени идёт после дополнения."},
+  {"bad": "He speaks very well English.", "good": "He speaks English very well.", "why": "Дополнение не отрывается от глагола наречием."},
+  {"bad": "Do you have finished?", "good": "Have you finished?", "why": "В вопросе вспомогательный have выходит вперёд, do не нужен."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She ___ before breakfast.", "options": ["in the park runs", "runs in the park", "runs in park"], "a": 1, "why": "Глагол, потом место: runs in the park."},
+  {"type": "choice", "q": "___ to the cinema last night?", "options": ["You did go", "Did you went", "Did you go"], "a": 2, "why": "did + основная форма go."},
+  {"type": "choice", "q": "They ___ at six o'clock.", "options": ["arrived the station", "at the station arrived", "arrived at the station"], "a": 2, "why": "Глагол, потом место с предлогом."},
+  {"type": "choice", "q": "Yesterday she ___ a new dress.", "options": ["buyed", "bought", "was buy"], "a": 1, "why": "Past simple от buy — bought, и время уже в начале."},
+  {"type": "choice", "q": "He ___ his homework.", "options": ["hasn't finished", "hasn't finish", "not has finished"], "a": 0, "why": "not идёт после вспомогательного has."},
+  {"type": "gap", "q": "Where ___ you go last weekend?", "a": ["did"], "why": "Вопрос в past simple строится через did."},
+  {"type": "gap", "q": "She doesn't ___ meat.", "a": ["eat"], "why": "После doesn't глагол в основной форме."},
+  {"type": "gap", "q": "___ you finish the report yesterday?", "a": ["did"], "why": "Вопрос о прошлом: did + основная форма."},
+  {"type": "translate", "q": "Я очень люблю этот фильм.", "a": ["i like this film very much", "i really like this film", "i love this film very much"], "why": "very much после дополнения this film."},
+  {"type": "translate", "q": "Вчера она купила новое платье.", "a": ["she bought a new dress yesterday", "yesterday she bought a new dress"], "why": "Время в конце или начале, но не в середине."}
+ ]
+}

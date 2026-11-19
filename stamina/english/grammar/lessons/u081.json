@@ -1,0 +1,72 @@
+{
+ "n": 81,
+ "level": "A2",
+ "module": "quantity",
+ "title": "all, most, some, any, no",
+ "en": "all/most/some/any/no",
+ "summary": "Одна шкала от «всего» до «ничего» и одно правило про of, которое решает почти все ошибки в этой теме.",
+ "can_do": [
+  "Оценить количество по шкале: all, most, some, none.",
+  "Правильно выбрать между most people и most of the people.",
+  "Сказать «нет молока» через no и «нет ни одного» через none of."
+ ],
+ "theory": [
+  {
+   "h": "Шкала количества",
+   "p": "Пять слов выстраиваются в понятную шкалу: all — всё, most — большая часть, some — немного, any — сколько-нибудь в вопросе, no — ничего. Выбор зависит не от грамматики, а от того, сколько именно вы имеете в виду.",
+   "table": {
+    "head": ["Слово", "Сколько", "Пример"],
+    "rows": [
+     ["all", "100 процентов", "All the seats were taken."],
+     ["most", "больше половины", "Most people agree."],
+     ["some", "немного, часть", "Some of the milk is left."],
+     ["no / none", "ноль", "No tickets left."]
+    ]
+   }
+  },
+  {
+   "h": "Перед существительным — без of",
+   "p": "Если сразу после слова идёт существительное без the, my, these, то of не нужен: most people, some books, all children, no money. Это самая частая точка ошибки, потому что по-русски «большинство людей» ничем не подсказывает запрет.",
+   "formula": "Most people like music. · Some books are boring."
+  },
+  {
+   "h": "С of нужен определитель",
+   "p": "Конструкция с of работает только тогда, когда дальше стоит определитель — the, my, these — или местоимение us, them, it. Просто most of people сказать нельзя, нужно most of the people или most people.",
+   "formula": "Most of the students. · Some of them. · None of my friends."
+  },
+  {
+   "h": "any в вопросе, no в утверждении",
+   "p": "Вопрос и отрицание с not берут any: Is there any bread? В утвердительном предложении со значением «нет» удобнее no: There is no milk. Смысл один, а конструкция разная, и смешивать их нельзя.",
+   "formula": "Is there any milk? — No, there is no milk."
+  },
+  {
+   "h": "None of и глагол",
+   "p": "None of значит «ни один из». В строгой письменной речи после него глагол стоит в единственном числе, в разговорной допустимо множественное: None of the shops was open / were open. Оба варианта встречаются, первый считается аккуратнее.",
+   "formula": "None of the shops was open."
+  }
+ ],
+ "examples": [
+  {"en": "Most people like music.", "ru": "Большинству людей нравится музыка."},
+  {"en": "Most of the students live near the school.", "ru": "Большинство студентов живут рядом со школой."},
+  {"en": "Some of my friends are teachers.", "ru": "Некоторые из моих друзей — учителя."},
+  {"en": "None of the shops was open.", "ru": "Ни один из магазинов не был открыт."},
+  {"en": "There is no milk left.", "ru": "Молока не осталось."}
+ ],
+ "traps": [
+  {"bad": "Most of people like music.", "good": "Most people like music.", "why": "Без the, my или them никакого of не нужно."},
+  {"bad": "Some of students are late.", "good": "Some of the students are late.", "why": "После of обязателен определитель: the students."},
+  {"bad": "No of my friends smoke.", "good": "None of my friends smoke.", "why": "Перед of стоит none, а не no."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ people in this city ride bikes to work.", "options": ["Most", "Most of", "The most"], "a": 0, "why": "Дальше существительное без определителя — просто most."},
+  {"type": "choice", "q": "___ of the milk was sour, so we threw it away.", "options": ["Some", "Many", "Few"], "a": 0, "why": "milk неисчисляемое: some of the milk."},
+  {"type": "choice", "q": "Is there ___ bread left?", "options": ["some", "any", "no"], "a": 1, "why": "Вопрос требует any."},
+  {"type": "choice", "q": "There are ___ tickets left for tonight.", "options": ["no", "none", "not"], "a": 0, "why": "Перед существительным ставим no: no tickets."},
+  {"type": "choice", "q": "___ of the rooms has a balcony.", "options": ["All", "None", "Some"], "a": 1, "why": "has в единственном числе и смысл «ни одна» — none of."},
+  {"type": "gap", "q": "___ of my friends speak Spanish, but most speak English.", "a": ["some"], "why": "«некоторые из» — some of my friends."},
+  {"type": "gap", "q": "___ of the shops were open on Sunday, so we went home.", "a": ["none"], "why": "«ни один из» — none of the shops."},
+  {"type": "gap", "q": "___ children need love and attention.", "a": ["all"], "why": "all + существительное во множественном числе, без of."},
+  {"type": "translate", "q": "Большинство моих друзей работают в офисе.", "a": ["most of my friends work in an office", "most of my friends work in offices"], "why": "most of + my friends."},
+  {"type": "translate", "q": "В холодильнике нет молока.", "a": ["there is no milk in the fridge", "there isn't any milk in the fridge", "there is not any milk in the fridge"], "why": "Либо no milk, либо not any milk."}
+ ]
+}

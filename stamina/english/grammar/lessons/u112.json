@@ -1,0 +1,77 @@
+{
+ "n": 112,
+ "level": "B1",
+ "module": "prepositions",
+ "title": "Прилагательное + предлог",
+ "en": "adjective + preposition",
+ "summary": "good at, afraid of, interested in: в английском предлог приклеен к прилагательному, и его нужно запоминать вместе со словом.",
+ "can_do": [
+  "Сказать, в чём человек хорош и чем интересуется.",
+  "Сказать, чего боятся и о чём волнуются.",
+  "Правильно построить married to, different from, famous for."
+ ],
+ "theory": [
+  {
+   "h": "Предлог — часть прилагательного",
+   "p": "По-русски мы говорим «хорош в математике» и «боится собак» — без предлога или с другим. В английском у каждого прилагательного свой предлог, и он не переводится логически, а запоминается.",
+   "formula": "good at · afraid of · interested in · proud of"
+  },
+  {
+   "h": "Основные пары",
+   "p": "Этот список закрывает большинство бытовых ситуаций. Учите его тройками: прилагательное, предлог, короткий пример.",
+   "table": {
+    "head": ["Прилагательное + предлог", "Значение", "Пример"],
+    "rows": [
+     ["afraid of", "бояться", "My son is afraid of dogs."],
+     ["good at", "хорошо что-то делать", "She's very good at maths."],
+     ["interested in", "интересоваться", "I'm interested in history."],
+     ["proud of", "гордиться", "We're proud of our team."],
+     ["worried about", "беспокоиться о", "He's worried about the exam."],
+     ["married to", "женат на, замужем за", "She's married to a doctor."],
+     ["famous for", "известный чем-то", "The city is famous for its bridges."]
+    ]
+   }
+  },
+  {
+   "h": "at для навыка, in для темы",
+   "p": "good at относится к умению что-то делать: good at swimming, good at languages. interested in — к теме, которая вас занимает. Русское «хорошо в математике» подталкивает к in, но there работает at.",
+   "formula": "good at swimming · interested in swimming"
+  },
+  {
+   "h": "of и about",
+   "p": "Страх и усталость идут с of: afraid of, scared of, tired of. Беспокойство и волнение — с about: worried about, nervous about, excited about. Перепутать их — типичная ошибка.",
+   "formula": "tired of waiting · worried about the result"
+  },
+  {
+   "h": "different from и the same as",
+   "p": "После different в британской норме ставят from (в разговорной речи встречается to), после the same — as. Это устойчивые пары, менять предлог нельзя.",
+   "formula": "different from mine · the same as mine"
+  }
+ ],
+ "examples": [
+  {"en": "She's very good at solving problems.", "ru": "Она очень хорошо решает задачи."},
+  {"en": "I'm not afraid of flying.", "ru": "Я не боюсь летать."},
+  {"en": "He's interested in old maps.", "ru": "Он интересуется старыми картами."},
+  {"en": "We're proud of our students.", "ru": "Мы гордимся нашими студентами."},
+  {"en": "She's married to a pilot.", "ru": "Она замужем за лётчиком."},
+  {"en": "This building is famous for its clock.", "ru": "Это здание известно своими часами."}
+ ],
+ "traps": [
+  {"bad": "I'm good in English.", "good": "I'm good at English.", "why": "Навык и умение требуют at, а не in."},
+  {"bad": "She's afraid from dogs.", "good": "She's afraid of dogs.", "why": "Страх — afraid of."},
+  {"bad": "He's married with a teacher.", "good": "He's married to a teacher.", "why": "married to, предлог with здесь не используется."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "My brother is very good ___ drawing.", "options": ["in", "at", "on"], "a": 1, "why": "Умение — good at."},
+  {"type": "choice", "q": "She's interested ___ photography.", "options": ["on", "at", "in"], "a": 2, "why": "Тема интереса — interested in."},
+  {"type": "choice", "q": "I'm afraid ___ heights.", "options": ["from", "of", "to"], "a": 1, "why": "Страх — afraid of."},
+  {"type": "choice", "q": "They are proud ___ their son.", "options": ["of", "for", "with"], "a": 0, "why": "Гордость — proud of."},
+  {"type": "choice", "q": "He's married ___ my sister.", "options": ["with", "to", "on"], "a": 1, "why": "married to."},
+  {"type": "choice", "q": "Don't be worried ___ the test.", "options": ["of", "about", "on"], "a": 1, "why": "Волнение — worried about."},
+  {"type": "gap", "q": "This city is famous ___ its old churches.", "a": ["for"], "why": "famous for — известный чем-то."},
+  {"type": "gap", "q": "My answer is different ___ yours.", "a": ["from", "to"], "why": "different from — норма; different to встречается в разговорной речи."},
+  {"type": "gap", "q": "Are you ready ___ the exam?", "a": ["for"], "why": "ready for — готов к чему-то."},
+  {"type": "translate", "q": "Она хорошо играет в теннис.", "a": ["she is good at tennis", "she's good at tennis", "she is very good at tennis"], "why": "Умение — good at tennis."},
+  {"type": "translate", "q": "Я боюсь высоты.", "a": ["i am afraid of heights", "i'm afraid of heights", "i am scared of heights"], "why": "Страх — afraid of heights."}
+ ]
+}

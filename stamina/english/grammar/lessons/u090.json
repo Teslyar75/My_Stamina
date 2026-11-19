@@ -1,0 +1,72 @@
+{
+ "n": 90,
+ "level": "A2",
+ "module": "adjectives",
+ "title": "Превосходная степень",
+ "en": "superlative (the oldest)",
+ "summary": "«Самый старый», «самый дорогой»: как построить превосходную степень и почему артикль the здесь обязателен.",
+ "can_do": [
+  "Сказать «самый ...» от короткого и длинного прилагательного.",
+  "Выбрать между in и of после превосходной степени.",
+  "Правильно писать the biggest, the easiest, the hottest."
+ ],
+ "theory": [
+  {
+   "h": "The плюс -est или the most",
+   "p": "Превосходная степень всегда идёт с артиклем the: the oldest, the most expensive. Артикль здесь не украшение, а часть конструкции — без него фраза становится неполной.",
+   "formula": "the oldest · the most expensive"
+  },
+  {
+   "h": "Орфография как у сравнительной",
+   "p": "Правила те же, что при -er: немая -e уходит, -y переходит в i, короткая согласная удваивается. Поэтому the biggest, the easiest, the hottest, the nicest.",
+   "table": {
+    "head": ["Прилагательное", "Превосходная", "Правило"],
+    "rows": [
+     ["big", "the biggest", "удваиваем согласную"],
+     ["easy", "the easiest", "y переходит в i"],
+     ["hot", "the hottest", "удваиваем согласную"],
+     ["expensive", "the most expensive", "длинное слово — the most"]
+    ]
+   }
+  },
+  {
+   "h": "Исключения те же",
+   "p": "Good даёт the best, bad — the worst, far — the furthest. Эти формы стоит держать наготове, потому что в них ошибаются чаще всего и на письме, и в речи.",
+   "formula": "the best · the worst · the furthest"
+  },
+  {
+   "h": "In или of",
+   "p": "In ставится, когда речь о месте или группе, внутри которой сравнивают: the biggest city in the world. Of — когда выбирают из конкретного набора: the best of the three, the tallest of them.",
+   "formula": "the oldest building in the city · the best of all"
+  },
+  {
+   "h": "Самый ... который я когда-либо",
+   "p": "После превосходной степени часто идёт present perfect: the best film I have ever seen. Это устойчивый оборот, и он почти всегда подсказывает, что нужен именно перфект, а не past simple.",
+   "formula": "the funniest film I've ever seen"
+  }
+ ],
+ "examples": [
+  {"en": "This is the oldest building in the city.", "ru": "Это самое старое здание в городе."},
+  {"en": "She is the most talented singer of our group.", "ru": "Она самая талантливая певица в нашей группе."},
+  {"en": "It was the best day of my life.", "ru": "Это был лучший день в моей жизни."},
+  {"en": "February is the shortest month.", "ru": "Февраль — самый короткий месяц."},
+  {"en": "That's the funniest film I've ever seen.", "ru": "Это самый смешной фильм, который я когда-либо видел."}
+ ],
+ "traps": [
+  {"bad": "He is the most tall student in the class.", "good": "He is the tallest student in the class.", "why": "tall — короткое слово, поэтому the tallest."},
+  {"bad": "She is best dancer here.", "good": "She is the best dancer here.", "why": "Превосходная степень требует артикля the."},
+  {"bad": "It's the most easy exercise in the book.", "good": "It's the easiest exercise in the book.", "why": "easy — короткое слово: the easiest."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is the ___ book I have ever read.", "options": ["interesting", "most interesting", "more interesting"], "a": 1, "why": "Длинное слово: the most interesting."},
+  {"type": "choice", "q": "It was the ___ day of my life.", "options": ["worse", "worst", "most bad"], "a": 1, "why": "bad — the worst."},
+  {"type": "choice", "q": "The Nile is the ___ river in the world.", "options": ["longer", "longest", "most long"], "a": 1, "why": "long — the longest."},
+  {"type": "choice", "q": "That was the ___ film of the year.", "options": ["bad", "worse", "worst"], "a": 2, "why": "Речь о самом плохом: the worst."},
+  {"type": "choice", "q": "Which is the ___ city in Europe?", "options": ["biggest", "bigger", "big"], "a": 0, "why": "big удваивает согласную: the biggest."},
+  {"type": "gap", "q": "He is the ___ (young) doctor in our hospital.", "a": ["youngest"], "why": "young — короткое слово: the youngest."},
+  {"type": "gap", "q": "It's the ___ (expensive) restaurant in town.", "a": ["most expensive"], "why": "Длинное слово требует the most."},
+  {"type": "gap", "q": "Summer is the ___ (hot) season here.", "a": ["hottest"], "why": "hot удваивает согласную: the hottest."},
+  {"type": "translate", "q": "Это самое высокое здание в городе.", "a": ["this is the tallest building in the city", "this is the highest building in the city"], "why": "the tallest + in the city."},
+  {"type": "translate", "q": "Она самая красивая девушка в классе.", "a": ["she is the most beautiful girl in the class", "she's the most beautiful girl in the class"], "why": "beautiful — длинное слово: the most beautiful."}
+ ]
+}

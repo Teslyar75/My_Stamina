@@ -1,0 +1,71 @@
+{
+ "n": 78,
+ "level": "A2",
+ "module": "quantity",
+ "title": "nobody и not anybody",
+ "en": "not anybody / nobody",
+ "summary": "Как по-английски сказать «никто», «ничего», «никуда» — и почему два отрицания в одном предложении не уживаются.",
+ "can_do": [
+  "Сказать «никто», «ничего», «никуда» одним словом: nobody, nothing, nowhere.",
+  "Выбрать между nobody и not anybody в зависимости от того, есть ли в предложении not.",
+  "Убрать лишнее отрицание, которое так и просится из русского."
+ ],
+ "theory": [
+  {
+   "h": "Одно отрицание на предложение",
+   "p": "По-русски «никто» обычно стоит рядом с ещё одним отрицанием: «Никто не пришёл». В английском так нельзя — отрицание в предложении должно быть одно. Поэтому либо nobody без not, либо not anybody с not. Третьего варианта нет.",
+   "formula": "Nobody came. = There wasn't anybody who came."
+  },
+  {
+   "h": "Семейство слов на no-",
+   "p": "Отрицательные слова строятся по одной модели: no плюс слово. Nobody и no one — о людях, nothing — о вещах, nowhere — о месте. Каждое из них уже содержит отрицание, поэтому not рядом с ними не нужен.",
+   "table": {
+    "head": ["Слово", "О чём", "Пример"],
+    "rows": [
+     ["nobody / no one", "о человеке", "Nobody phoned."],
+     ["nothing", "о вещи", "Nothing happened."],
+     ["nowhere", "о месте", "We went nowhere."]
+    ]
+   }
+  },
+  {
+   "h": "Глагол после nobody — в единственном числе",
+   "p": "Nobody значит «ни один человек», то есть по смыслу это он или она. Поэтому в настоящем времени глагол получает -s, как после he или she. Сравните: Nobody knows — но They know, потому что там людей много.",
+   "formula": "Nobody knows. · Nothing works. · No one cares."
+  },
+  {
+   "h": "После not — anybody",
+   "p": "Если в предложении уже есть not (в том числе в слитных формах didn't, isn't, can't), то второе отрицательное слово не ставится. Вместо него работают anybody, anything, anywhere. Смысл остаётся отрицательным, а форма — нет.",
+   "formula": "I didn't see anybody. · She isn't going anywhere."
+  },
+  {
+   "h": "Короткий ответ одним словом",
+   "p": "В разговоре на вопрос можно ответить просто Nobody. или Nothing. — это звучит естественно и не требует полного предложения. В самом вопросе при этом стоит anybody: Did anybody call?",
+   "formula": "Did anybody call? — Nobody."
+  }
+ ],
+ "examples": [
+  {"en": "Nobody knows the answer.", "ru": "Никто не знает ответа."},
+  {"en": "I didn't see anybody at the door.", "ru": "Я никого не увидел у двери."},
+  {"en": "There is nothing in the fridge.", "ru": "В холодильнике ничего нет."},
+  {"en": "We went nowhere last weekend.", "ru": "В прошлые выходные мы никуда не ходили."},
+  {"en": "Nobody called me yesterday.", "ru": "Вчера мне никто не звонил."}
+ ],
+ "traps": [
+  {"bad": "I didn't see nobody.", "good": "I didn't see anybody.", "why": "В английском только одно отрицание на предложение."},
+  {"bad": "Nobody know the answer.", "good": "Nobody knows the answer.", "why": "nobody — это он или она, глагол в единственном числе."},
+  {"bad": "Anybody doesn't work here.", "good": "Nobody works here.", "why": "Либо nobody без not, либо not anybody — но не оба сразу."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I opened the door, but there was ___ in the room.", "options": ["nobody", "anybody", "somebody"], "a": 0, "why": "Отрицательный смысл без not: there was nobody."},
+  {"type": "choice", "q": "She didn't say ___ about the trip.", "options": ["nothing", "anything", "something"], "a": 1, "why": "После didn't отрицательное слово не ставим — только anything."},
+  {"type": "choice", "q": "Nobody ___ where he lives now.", "options": ["know", "knows", "knowing"], "a": 1, "why": "nobody = he/she, поэтому knows."},
+  {"type": "choice", "q": "We had ___ to eat, so we ordered a pizza.", "options": ["nothing", "anything", "nobody"], "a": 0, "why": "О вещах говорят nothing, отрицание уже внутри слова."},
+  {"type": "choice", "q": "Did ___ call while I was out?", "options": ["nobody", "anybody", "somebody"], "a": 1, "why": "В вопросе вместо nobody — anybody."},
+  {"type": "gap", "q": "Nobody ___ (know) his new phone number.", "a": ["knows"], "why": "nobody требует глагола в единственном числе."},
+  {"type": "gap", "q": "She didn't tell ___ about the letter.", "a": ["anybody", "anyone"], "why": "После didn't ставим anybody или anyone."},
+  {"type": "gap", "q": "There was ___ in the fridge, so we went shopping.", "a": ["nothing"], "why": "«Ничего» о вещах — nothing."},
+  {"type": "translate", "q": "Никто не знает, где он живёт.", "a": ["nobody knows where he lives", "no one knows where he lives"], "why": "Одно отрицание: nobody knows."},
+  {"type": "translate", "q": "Я ничего не сказал.", "a": ["i said nothing", "i didn't say anything", "i did not say anything"], "why": "Либо said nothing, либо didn't say anything."}
+ ]
+}

@@ -1,0 +1,64 @@
+{
+ "n": 82,
+ "level": "A2",
+ "module": "quantity",
+ "title": "both, either, neither",
+ "en": "both/either/neither",
+ "summary": "Три слова строго для двух предметов или людей: оба, любой из двух и ни один из двух.",
+ "can_do": [
+  "Сказать «оба», «любой из двух» и «ни один из двух» без лишних слов.",
+  "Использовать пары both ... and, either ... or, neither ... nor.",
+  "Правильно согласовать глагол после neither of."
+ ],
+ "theory": [
+  {
+   "h": "Только про два",
+   "p": "Both, either и neither работают, когда предметов ровно два. Для трёх и больше нужны all, any, none. Если вы говорите о двух билетах — either, если о пяти — any.",
+   "formula": "Both films were good. · You can take either film."
+  },
+  {
+   "h": "Both — и тот и другой",
+   "p": "Both значит «оба», и после него всегда множественное число: both of my sisters are. Форма both of нужна перед the, my, these и перед us, them.",
+   "formula": "Both of my sisters are doctors. · Both my sisters are doctors."
+  },
+  {
+   "h": "Either — любой из двух",
+   "p": "Either значит «один из двух, без разницы какой». После either of глагол в единственном числе, потому что в итоге выберет один.",
+   "formula": "Either of the roads leads to the lake."
+  },
+  {
+   "h": "Neither — ни один из двух",
+   "p": "Neither — отрицательное слово, оно уже содержит «не». Поэтому not рядом не нужен: либо neither, либо not either. В строгой речи после neither of глагол в единственном числе.",
+   "formula": "Neither answer is correct. · I don't like either answer."
+  },
+  {
+   "h": "Пары для соединения слов",
+   "p": "Три слова образуют три пары: both ... and, either ... or, neither ... nor. Вторая часть пары обязательна, иначе предложение выглядит недоделанным.",
+   "formula": "Both Tom and Anna came. · Either tea or coffee. · Neither tea nor coffee."
+  }
+ ],
+ "examples": [
+  {"en": "Both of my sisters are doctors.", "ru": "Обе мои сестры — врачи."},
+  {"en": "You can take either book; they are the same.", "ru": "Можешь взять любую из двух книг, они одинаковые."},
+  {"en": "Neither of the answers is correct.", "ru": "Ни один из двух ответов не верен."},
+  {"en": "Both Tom and Anna were late.", "ru": "И Том, и Анна опоздали."},
+  {"en": "Either you call her or I do.", "ru": "Или ты ей позвонишь, или я."}
+ ],
+ "traps": [
+  {"bad": "Both of my sister are doctors.", "good": "Both of my sisters are doctors.", "why": "both — это два, значит sisters и are."},
+  {"bad": "I don't like neither of them.", "good": "I don't like either of them.", "why": "neither уже отрицательное, с not оно не сочетается."},
+  {"bad": "Both of books are new.", "good": "Both of the books are new.", "why": "После both of нужен определитель: the books."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I have two brothers. ___ of them are engineers.", "options": ["Both", "Either", "Neither"], "a": 0, "why": "are engineers и «два брата» — both."},
+  {"type": "choice", "q": "There are two keys here. You can take ___ of them.", "options": ["both", "either", "neither"], "a": 1, "why": "«любой из двух» — either."},
+  {"type": "choice", "q": "___ of the two answers is right, so try again.", "options": ["Both", "Either", "Neither"], "a": 2, "why": "«ни один» и is — neither of."},
+  {"type": "choice", "q": "___ Anna and Tom play the guitar.", "options": ["Both", "Either", "Neither"], "a": 0, "why": "Пара both ... and соединяет два имени."},
+  {"type": "choice", "q": "I don't like ___ of these films.", "options": ["both", "either", "neither"], "a": 1, "why": "После don't отрицательное слово не нужно: either."},
+  {"type": "gap", "q": "___ of my hands are cold.", "a": ["both"], "why": "Руки — две, и речь об обеих: both."},
+  {"type": "gap", "q": "___ of the two boys can swim, so they stayed on the beach.", "a": ["neither"], "why": "«ни один из двух» — neither of."},
+  {"type": "gap", "q": "You can come on Monday or Tuesday: ___ day is fine.", "a": ["either"], "why": "«любой из двух дней» — either day."},
+  {"type": "translate", "q": "Обе мои сестры живут в Москве.", "a": ["both of my sisters live in moscow", "both my sisters live in moscow"], "why": "both of my sisters или both my sisters."},
+  {"type": "translate", "q": "Ни один из этих двух вариантов не работает.", "a": ["neither of these two options works", "neither of these two options work"], "why": "neither of + глагол без not."}
+ ]
+}

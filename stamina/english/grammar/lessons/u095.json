@@ -1,0 +1,71 @@
+{
+ "n": 95,
+ "level": "B1",
+ "module": "order",
+ "title": "still, yet, already",
+ "en": "still / yet / already",
+ "summary": "Три слова про время, которые по-русски все звучат как «ещё» или «уже», но стоят в разных местах и в разных типах предложений.",
+ "can_do": [
+  "Сказать «всё ещё», «уже» и «ещё не» без путаницы.",
+  "Поставить still, yet, already в правильное место.",
+  "Отличить «ещё одну чашку» от «ещё не»."
+ ],
+ "theory": [
+  {
+   "h": "Still — всё ещё",
+   "p": "Still значит «продолжается, хотя прошло время». Оно стоит перед смысловым глаголом или после be: he still works here, he is still asleep. В отрицании still показывает нетерпение: he still hasn't called.",
+   "formula": "He is still asleep. · She still works there."
+  },
+  {
+   "h": "Yet — ещё, в конце",
+   "p": "Yet работает в вопросах и в отрицаниях и почти всегда стоит в самом конце: Have you finished yet? I haven't finished yet. В утверждении это слово в таком смысле не употребляется.",
+   "formula": "Have you finished yet? · I haven't finished yet."
+  },
+  {
+   "h": "Already — уже",
+   "p": "Already значит «раньше, чем ожидали», и это чаще утверждение: I've already eaten. Место — между вспомогательным и глаголом или в конце. В вопросе already выражает удивление: Have you finished already?",
+   "formula": "I've already eaten. · She has already left."
+  },
+  {
+   "h": "Три слова в одной таблице",
+   "p": "Различать их проще по типу предложения и по месту. Still — про продолжение, yet — про конец вопроса или отрицания, already — про неожиданно раннее завершение.",
+   "table": {
+    "head": ["Слово", "Тип предложения", "Место", "Пример"],
+    "rows": [
+     ["still", "любой", "перед глаголом, после be", "He is still here."],
+     ["yet", "вопрос, отрицание", "в конце", "Not yet."],
+     ["already", "утверждение", "после вспомогательного", "I've already paid."]
+    ]
+   }
+  },
+  {
+   "h": "«Ещё чашку» — это не yet",
+   "p": "Русское «ещё» в значении «добавь» переводится словом another: another cup, another five minutes. Yet и still про время, а не про добавку. Это разные «ещё», и путать их нельзя.",
+   "formula": "Another cup of tea, please."
+  }
+ ],
+ "examples": [
+  {"en": "He is still asleep.", "ru": "Он ещё спит."},
+  {"en": "Have you finished the report yet?", "ru": "Ты уже закончил отчёт?"},
+  {"en": "I've already eaten, thanks.", "ru": "Я уже поел, спасибо."},
+  {"en": "She hasn't called me yet.", "ru": "Она мне ещё не позвонила."},
+  {"en": "We're still waiting for the bus.", "ru": "Мы всё ещё ждём автобус."}
+ ],
+ "traps": [
+  {"bad": "She is yet working.", "good": "She is still working.", "why": "«всё ещё» — still, а yet стоит в конце и в отрицании."},
+  {"bad": "I have finished the book yet.", "good": "I have already finished the book.", "why": "В утверждении об уже сделанном — already."},
+  {"bad": "I'd like yet one cup of tea.", "good": "I'd like another cup of tea.", "why": "«ещё одну» в смысле добавки — another."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Is your brother ___ at school?", "options": ["still", "yet", "already"], "a": 0, "why": "«всё ещё» — still."},
+  {"type": "choice", "q": "I've ___ seen that film, so let's watch something else.", "options": ["still", "yet", "already"], "a": 2, "why": "Утверждение об уже случившемся — already."},
+  {"type": "choice", "q": "Have you booked the tickets ___?", "options": ["still", "yet", "already"], "a": 1, "why": "В конце вопроса — yet."},
+  {"type": "choice", "q": "She ___ hasn't answered my email.", "options": ["still", "yet", "already"], "a": 0, "why": "«до сих пор не» — still перед отрицанием."},
+  {"type": "choice", "q": "We've ___ had lunch, thank you.", "options": ["yet", "already", "still"], "a": 1, "why": "Уже поели — already."},
+  {"type": "gap", "q": "He hasn't arrived ___.", "a": ["yet"], "why": "«ещё не» в отрицании — yet в конце."},
+  {"type": "gap", "q": "They are ___ living in the same flat.", "a": ["still"], "why": "Продолжается до сих пор — still."},
+  {"type": "gap", "q": "I've ___ finished the book and it was great.", "a": ["already"], "why": "Уже закончил — already."},
+  {"type": "translate", "q": "Она всё ещё работает.", "a": ["she is still working", "she's still working"], "why": "still после be."},
+  {"type": "translate", "q": "Я ещё не завтракал.", "a": ["i haven't had breakfast yet", "i have not had breakfast yet"], "why": "Отрицание в present perfect + yet в конце."}
+ ]
+}

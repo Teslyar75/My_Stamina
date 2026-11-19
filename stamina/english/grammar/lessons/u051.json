@@ -1,0 +1,72 @@
+{
+ "n": 51,
+ "level": "A2",
+ "module": "infinitive",
+ "title": "Инфинитив и -ing: основы",
+ "en": "to + infinitive и -ing (1)",
+ "summary": "После глаголов одного типа ставят to, после других — -ing, и выбор здесь не логика, а привычка: его учат парами.",
+ "can_do": [
+  "Сказать, что хочется или нужно сделать что-то: I want to go.",
+  "Сказать, что нравится или доставляет удовольствие: I enjoy reading.",
+  "Поставить -ing после предлога: interested in reading."
+ ],
+ "theory": [
+  {
+   "h": "Две формы вместо русского «что-то делать»",
+   "p": "В русском после «люблю», «хочу», «решил» идёт одна и та же начальная форма. В английском есть две: to + глагол и глагол + ing. Что именно выбрать, диктует первый глагол, а не смысл.",
+   "formula": "I want to go. · I enjoy going."
+  },
+  {
+   "h": "Глаголы, которые берут to",
+   "p": "Это самая длинная группа, и она связана с намерением, планом и решением. Здесь важно запомнить сам список, потому что по смыслу он не предсказуется.",
+   "formula": "want, need, decide, hope, plan, try, promise, learn, forget, offer, agree, would like + to do"
+  },
+  {
+   "h": "Глаголы, которые берут -ing",
+   "p": "Вторая группа описывает отношение и процесс: то, что человек любит, чем наслаждается, что доводит до конца. После них инфинитив звучит для англичанина неправильно.",
+   "formula": "enjoy, mind, finish, stop, avoid, practise, suggest, keep, give up + doing"
+  },
+  {
+   "h": "После предлога — всегда -ing",
+   "p": "Это правило без исключений и оно спасает в сотнях фраз: interested in, good at, tired of, before, after, without — после любого предлога глагол получает форму -ing. Русское «до» или «без» здесь ничем не помогает, а мешает.",
+   "table": {
+    "head": ["Фраза", "Пример", "Перевод"],
+    "rows": [
+     ["interested in", "I'm interested in learning Japanese.", "Мне интересно учить японский."],
+     ["good at", "She is good at drawing.", "Она хорошо рисует."],
+     ["tired of", "I'm tired of waiting.", "Мне надоело ждать."],
+     ["after", "After finishing work, I went home.", "Закончив работу, я пошёл домой."]
+    ]
+   }
+  },
+  {
+   "h": "to может быть и предлогом",
+   "p": "Обычно to — частица перед глаголом, но в некоторых фразах это предлог, и тогда после него нужен -ing. Самый частый случай — look forward to и in addition to, а также конструкция с предлогом перед герундием.",
+   "formula": "I'm looking forward to seeing you. · He's used to getting up early."
+  }
+ ],
+ "examples": [
+  {"en": "I want to learn Spanish.", "ru": "Я хочу выучить испанский."},
+  {"en": "She enjoys cooking for friends.", "ru": "Ей нравится готовить для друзей."},
+  {"en": "Do you mind opening the window?", "ru": "Ты не против открыть окно?"},
+  {"en": "He is interested in studying medicine.", "ru": "Ему интересно изучать медицину."},
+  {"en": "We decided to stay at home.", "ru": "Мы решили остаться дома."}
+ ],
+ "traps": [
+  {"bad": "I enjoy to read books.", "good": "I enjoy reading books.", "why": "Enjoy требует формы -ing, а не инфинитива."},
+  {"bad": "I want go home.", "good": "I want to go home.", "why": "После want нужна частица to перед глаголом."},
+  {"bad": "She is good at sing.", "good": "She is good at singing.", "why": "После предлога at ставим форму -ing."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I enjoy ___ new places.", "options": ["to visit", "visiting", "visit"], "a": 1, "why": "Enjoy требует формы -ing: I enjoy visiting."},
+  {"type": "choice", "q": "We decided ___ later.", "options": ["meeting", "to meet", "meet"], "a": 1, "why": "Decide + to + глагол."},
+  {"type": "choice", "q": "Do you mind ___ the door?", "options": ["closing", "to close", "close"], "a": 0, "why": "Mind всегда с -ing."},
+  {"type": "choice", "q": "She is very good at ___ languages.", "options": ["learn", "to learn", "learning"], "a": 2, "why": "После предлога at — форма -ing."},
+  {"type": "choice", "q": "He promised ___ me tomorrow.", "options": ["calling", "call", "to call"], "a": 2, "why": "Promise + to + глагол."},
+  {"type": "gap", "q": "I hope ___ (see) you soon.", "a": ["to see"], "why": "Hope требует инфинитива с to."},
+  {"type": "gap", "q": "They finished ___ (paint) the kitchen.", "a": ["painting"], "why": "После finish — форма -ing."},
+  {"type": "gap", "q": "I'm tired of ___ (wait) for the bus.", "a": ["waiting"], "why": "После предлога of — форма -ing."},
+  {"type": "translate", "q": "Я не хочу идти домой.", "a": ["i don't want to go home", "i do not want to go home", "i don't want to go back home"], "why": "Want + to + go, отрицание через don't."},
+  {"type": "translate", "q": "Ей нравится плавать по утрам.", "a": ["she enjoys swimming in the morning", "she likes swimming in the morning"], "why": "Enjoy или like + форма -ing."}
+ ]
+}
