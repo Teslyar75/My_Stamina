@@ -50,6 +50,13 @@ def main(argv: list[str] | None = None) -> int:
     if not launch_check.preflight():
         return 2
 
+    # Применить застадированное автообновление до запуска UI (ошибка не блокирует старт).
+    try:
+        from stamina.updater import apply_pending_update
+        apply_pending_update()
+    except Exception:  # noqa: BLE001
+        pass
+
     from stamina.app import run_app
 
     run_app(args)

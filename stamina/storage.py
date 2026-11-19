@@ -90,6 +90,7 @@ DEFAULT_SETTINGS = {
     "zen_caret": "underline",  # каретка портала: underline / line / block  # дзен: skin — цвета скина, serika — как Monkeytype «serika dark»
     "mt_username": "",  # Monkeytype: имя для публичного профиля (импорт, только чтение)
     "mt_apekey": "",    # Monkeytype ApeKey (необязательно) — только локально, в settings.json  # скин UI: stamina/themes/<id>.json
+    "auto_update": True,  # автообновление: проверка при старте и каждые 6 часов, установка без подтверждения
 }
 
 MAX_RUNS = 500
