@@ -42,6 +42,9 @@ class Cockpit(tk.Tk):
         self.translator = None
         self.current: str | None = None
         self._prev_screen: str | None = None
+        from stamina.nav_back import BackStack
+        self.back_stack = BackStack()
+        self._back_restoring = False
         self._last_action = None      # для F5: функция перезапуска
         self.pilot = pilots.active()  # None — режим без экипажа (миграция не удалась)
         self._update_title()
@@ -727,6 +730,74 @@ class Cockpit(tk.Tk):
                     sub = titles.get(scr_obj.current_tab, "")
                 orion_scr.on_zone_enter(zone or name, sub)
             self.focus_set()
+        self.record_place()
+
+    def record_place(self) -> None:
+        """Запомнить текущий отсек в истории Backspace (не во время go_back)."""
+        if getattr(self, "_back_restoring", False):
+            return
+        stack = getattr(self, "back_stack", None)
+        if stack is None:
+            return
+        place = self.snapshot_place()
+        if place is not None:
+            stack.arrive(place)
+
+    def snapshot_place(self):
+        from stamina.nav_back import snapshot_screen
+
+        name = self.current
+        if not name:
+            return None
+        screens = getattr(self, "screens", None) or {}
+        return snapshot_screen(name, screens.get(name))
+
+    def restore_place(self, place) -> None:
+        self._back_restoring = True
+        try:
+            if self.current != place.screen:
+                self.show(place.screen)
+            if self.current != place.screen:
+                return
+            scr = self.screens.get(place.screen)
+            rest = getattr(scr, "restore_place", None)
+            if callable(rest):
+                rest(place)
+            else:
+                show_tab = getattr(scr, "show_tab", None)
+                if callable(show_tab) and place.sub:
+                    show_tab(place.sub)
+            if getattr(self, "back_stack", None) is not None:
+                self.back_stack.here = place
+        finally:
+            self._back_restoring = False
+
+    def go_back(self, event=None) -> bool:
+        """Backspace: сначала закрыть подпанель, иначе предыдущий экран. На корне — ничего."""
+        from stamina.nav_back import backspace_edits_text
+
+        if event is not None and backspace_edits_text(self, event):
+            return False
+        scr = self.screens.get(self.current) if hasattr(self, "screens") else None
+        handle = getattr(scr, "handle_back", None)
+        if callable(handle) and handle():
+            return True
+        if event is not None:
+            widget = getattr(event, "widget", None)
+            try:
+                top = widget.winfo_toplevel() if widget is not None else None
+                if top is not None and top is not self:
+                    return False
+            except tk.TclError:
+                pass
+        stack = getattr(self, "back_stack", None)
+        if stack is None:
+            return False
+        place = stack.back()
+        if place is None:
+            return False
+        self.restore_place(place)
+        return True
 
     def update_comm_badge(self) -> None:
         """Эфир: если есть непрочитанные сообщения, кнопка раздела подсвечена янтарным."""
@@ -1459,6 +1530,10 @@ class Cockpit(tk.Tk):
             return
         if self._chrome_hotkey(e):
             return "break"      # не даём тому же хоткею сработать ещё раз через bind_all
+        from stamina.nav_back import backspace_edits_text, is_back_key
+        if is_back_key(e) and not backspace_edits_text(self, e):
+            self.go_back(e)
+            return "break"
         if self.current == "bridge":
             from stamina.hud import HudButton
             if isinstance(self.focus_get(), HudButton):

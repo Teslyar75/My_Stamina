@@ -185,6 +185,31 @@ class SpeedReadScreen(tk.Frame):
         hook = getattr(self.app, "_alt_page_hook", None)   # только в alt-оболочке
         if hook is not None:
             hook()
+        from stamina.nav_back import notify
+        notify(self.app)
+
+    def snapshot_place(self):
+        from stamina import speedread_hook
+        from stamina.nav_back import Place
+
+        return Place(screen=speedread_hook.KEY, sub=self.current or "overview")
+
+    def restore_place(self, place) -> None:
+        if place.sub:
+            self.show(place.sub)
+
+    def handle_back(self) -> bool:
+        page = self.pages.get(self.current)
+        if getattr(page, "_fullscreen", False) and hasattr(page, "exit_fullscreen"):
+            page.exit_fullscreen()
+            return True
+        if page is not None and getattr(page, "active", None) is not None and hasattr(page, "show_catalog"):
+            page.show_catalog()
+            return True
+        if self.current in ("reader", "book"):
+            self.show("library")
+            return True
+        return False
 
     def read(self, tid: str, word: int | None = None) -> None:
         """Открыть в гипердрайве (RSVP)."""
