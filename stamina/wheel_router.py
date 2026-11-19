@@ -17,23 +17,35 @@ SELF_SCROLL = ("Text", "Listbox", "Treeview")
 WHEEL = ("<MouseWheel>", "<Button-4>", "<Button-5>")
 
 
+def _top(widget: tk.Misc) -> tk.Misc:
+    return widget.winfo_toplevel()
+
+
 def installed(widget=None) -> bool:
     """Включён ли роутер (для этого окна — если передан виджет)."""
     if widget is None:
         return bool(_INSTALLED)
     try:
-        return str(widget.winfo_toplevel().winfo_toplevel()) in _INSTALLED or "." in _INSTALLED
+        # Маркер на самом toplevel: путь "." повторяется у нового Tk() после
+        # destroy(), а модульный _INSTALLED от этого не очищается.
+        return bool(getattr(_top(widget), "_wheel_router_bound", False))
     except tk.TclError:
         return False
 
 
 def install(root: tk.Misc) -> None:
-    key = str(root.winfo_toplevel())
-    if key in _INSTALLED:
+    """Поставить глобальный обработчик колеса. Повторно на том же окне — нет-оп.
+
+    После destroy() + нового ``tk.Tk()`` путь окна снова ".", поэтому
+    смотрим маркер на виджете, а не только множество путей.
+    """
+    top = _top(root)
+    if getattr(top, "_wheel_router_bound", False):
         return
     for seq in WHEEL:
-        root.bind_all(seq, route, add="+")
-    _INSTALLED.add(key)
+        top.bind_all(seq, route, add="+")
+    top._wheel_router_bound = True
+    _INSTALLED.add(str(top))
 
 
 def direction(e) -> int:
