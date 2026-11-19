@@ -47,6 +47,8 @@ class Cockpit(tk.Tk):
         self._update_title()
         self._set_icon()
         self.configure(bg=BG)
+        from stamina import wheel_router
+        wheel_router.install(self)  # колесо под курсором и в classic (Linux: Button-4/5)
         self._apply_geometry()
         from stamina import monitors as _mon
         _mon.follow_toplevels(self)   # диалоги едут за окном на другой монитор
