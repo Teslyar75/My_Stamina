@@ -1706,6 +1706,12 @@ class OrionScreen(tk.Frame):
     def page_help_key(self) -> str:
         return "orion." + getattr(self, "current_tab", "chat")
 
+    def handle_back(self) -> bool:
+        if getattr(self, "_archive_detail_idx", -1) >= 0:
+            self._archive_back()
+            return True
+        return False
+
     def on_key(self, _e) -> None:
         """Клавиши раздела: поле ввода само принимает набор и Enter."""
 

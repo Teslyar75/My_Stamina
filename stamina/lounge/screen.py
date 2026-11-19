@@ -242,6 +242,12 @@ class LoungeScreen(tk.Frame):
         for w in self.game_host.winfo_children():
             w.destroy()
 
+    def handle_back(self) -> bool:
+        if self.game is not None:
+            self.show_lobby()
+            return True
+        return False
+
     def on_key(self, e: tk.Event) -> None:
         if self.game is not None:
             self.game.on_key(e)

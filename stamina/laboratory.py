@@ -429,6 +429,12 @@ class LabScreen(tk.Frame):
         self.clear_selection()
         self.reload()
 
+    def handle_back(self) -> bool:
+        if self.mode != MODE_VISUAL:
+            self.back_to_visual()
+            return True
+        return False
+
     def clear_selection(self) -> None:
         self._selection_token += 1
         self.selected_id = None
