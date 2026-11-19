@@ -18,22 +18,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Konjunktiv I wird hauptsächlich in der indirekten Rede verwendet. Formen: ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien. Nur 3. Pers. Sg. unterscheidet sich vom Indikativ (er sei vs er ist)."
+          "text": "Конъюнктив I используется преимущественно в косвенной речи. Формы: ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien. Только 3-е лицо единственного числа отличается от индикатива (er sei vs er ist)."
         },
         {
           "kind": "rule",
-          "title": "Bildung",
-          "text": "Stamm + -e/-est/-e/-en/-et/-en. sein: sei/seiest/sei/seien/seiet/seien. haben: habe/habest/habe/haben/habet/haben. Modale: könnte/könntest/könnte..."
+          "title": "Образование",
+          "text": "Основа + -e/-est/-e/-en/-et/-en. sein: sei/seiest/sei/seien/seiet/seien. haben: habe/habest/habe/haben/habet/haben. Модальные: könnte/könntest/könnte..."
         },
         {
           "kind": "rule",
-          "title": "Indirekte Rede",
-          "text": "Direkt: 'Er sagt: \"Ich bin müde.\"' Indirekt: 'Er sagt, er sei müde.' (Konj. I). Wenn Konj. I = Indikativ → Konj. II: 'Er sagt, er habe Zeit' (habe = Indikativ) → 'Er sagt, er hätte Zeit'."
+          "title": "Косвенная речь",
+          "text": "Прямая речь: 'Er sagt: \"Ich bin müde.\"' Косвенная речь: 'Er sagt, er sei müde.' (Конъюнктив I). Если конъюнктив I совпадает с индикативом → конъюнктив II: 'Er sagt, er habe Zeit' (habe = индикатив) → 'Er sagt, er hätte Zeit'."
         },
         {
           "kind": "rule",
-          "title": "Zeitformen",
-          "text": "Gegenwart: Konj. I Präsens. Vergangenheit: Konj. I Perfekt (habe gemacht → habe gemacht - gleich! → hätte gemacht). Zukunft: Konj. I Futur (werde machen → werde machen - gleich! → würde machen)."
+          "title": "Времена",
+          "text": "Настоящее: конъюнктив I настоящего. Прошедшее: конъюнктив I перфекта (habe gemacht → habe gemacht — то же самое! → hätte gemacht). Будущее: конъюнктив I футура (werde machen → werde machen — то же самое! → würde machen)."
         },
         {
           "kind": "table",
@@ -43,7 +43,7 @@
           "kind": "example",
           "de": "Er sagt: \"Ich bin müde.\" → Er sagt, er sei müde. Sie sagt: \"Ich habe gearbeitet.\" → Sie sagt, sie habe gearbeitet. (habe = Indikativ) → Sie sagt, sie hätte gearbeitet.",
           "ru": "Он говорит: \"Я устал.\" → Он говорит, что он устал. Она говорит: \"Я работала.\" → Она говорит, что она работала. (habe = Indikativ) → Она говорит, что она бы поработала.",
-          "note": "Konj. I für indirekte Rede. Bei Gleichheit mit Indikativ → Konj. II."
+          "note": "Конъюнктив I для косвенной речи. При совпадении с индикативом → конъюнктив II."
         }
       ],
       "drills": [
@@ -60,7 +60,7 @@
           "answer": [
             "sei"
           ],
-          "why": "Konj. I: er sei (vs Indikativ: er ist)."
+          "why": "Конъюнктив I: er sei (в отличие от индикатива: er ist)."
         },
         {
           "id": "b2-01-d02",
@@ -75,7 +75,7 @@
           "answer": [
             "habe"
           ],
-          "why": "Konj. I: ich habe (GLEICH Indikativ!)."
+          "why": "Конъюнктив I: ich habe (ТОЖЕ, что индикатив!)."
         },
         {
           "id": "b2-01-d03",
@@ -90,7 +90,7 @@
           "answer": [
             "Er sagt, er sei müde."
           ],
-          "why": "Konj. I in indirekter Rede: sei (unterscheidet sich von ist)."
+          "why": "Конъюнктив I в косвенной речи: sei (отличается от ist)."
         },
         {
           "id": "b2-01-d04",
@@ -99,7 +99,7 @@
           "answer": [
             "hätte"
           ],
-          "why": "habe = Indikativ → Konj. II: hätte."
+          "why": "habe = индикатив → конъюнктив II: hätte."
         },
         {
           "id": "b2-01-d05",
@@ -114,7 +114,7 @@
           "answer": [
             "gleich Indikativ"
           ],
-          "why": "Konj. I Perfekt = Indikativ Perfekt → Ersatz durch Konj. II: hätte gemacht."
+          "why": "Конъюнктив I перфекта = индикатив перфекта → замена конъюнктивом II: hätte gemacht."
         },
         {
           "id": "b2-01-d06",
@@ -123,7 +123,7 @@
           "answer": [
             "würde"
           ],
-          "why": "werde = Indikativ → Konj. II: würde."
+          "why": "werde = индикатив → конъюнктив II: würde."
         },
         {
           "id": "b2-01-d07",
@@ -132,7 +132,7 @@
           "answer": [
             "Er sagt, er sei müde."
           ],
-          "why": "Hauptsatz V2, Nebensatz Verb am Ende."
+          "why": "Главное предложение V2, в придаточном глагол в конце."
         },
         {
           "id": "b2-01-d08",
@@ -147,7 +147,7 @@
           "answer": [
             "wenn Konj. I = Indikativ"
           ],
-          "why": "Verwechslungsvermeidung: habe/hätte, werde/würde."
+          "why": "Избегание путаницы: habe/hätte, werde/würde."
         },
         {
           "id": "b2-01-d09",
@@ -156,7 +156,7 @@
           "answer": [
             "sei"
           ],
-          "why": "sein → Konj. I: sei."
+          "why": "sein → конъюнктив I: sei."
         },
         {
           "id": "b2-01-d10",
@@ -165,7 +165,7 @@
           "answer": [
             "Er fragt, ob ich Zeit habe."
           ],
-          "why": "ob + Nebensatz, Konj. I (habe = Indikativ, aber bei Fragen oft Indikativ belassen oder Konj. II: hätte)."
+          "why": "ob + придаточное, конъюнктив I (habe = индикатив, но в вопросах часто оставляют индикатив или конъюнктив II: hätte)."
         },
         {
           "id": "b2-01-d11",
@@ -180,7 +180,7 @@
           "answer": [
             "könne"
           ],
-          "why": "Konj. I: er könne (vs Indikativ: er kann)."
+          "why": "Конъюнктив I: er könne (в отличие от индикатива: er kann)."
         },
         {
           "id": "b2-01-d12",
@@ -189,7 +189,7 @@
           "answer": [
             "wisse"
           ],
-          "why": "wissen → Konj. I: wisse (vs Indikativ: weiß)."
+          "why": "wissen → конъюнктив I: wisse (в отличие от индикатива: weiß)."
         }
       ]
     },
@@ -209,22 +209,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Passiv Präteritum (schriftlich) und Perfekt (mündlich/schriftlich). Präteritum: wurde gemacht. Perfekt: ist gemacht worden (NICHT geworden!)."
+          "text": "Пассив в Präteritum (письменная речь) и Perfekt (устная и письменная). В Präteritum используется форма wurde + Partizip II, например: wurde gemacht. В Perfekt — ist + Partizip II + worden, например: ist gemacht worden. Обратите внимание: не ist … geworden! В русском языке это соответствует конструкциям «было построено», «был написан» — прошедшее время пассива."
         },
         {
           "kind": "rule",
-          "title": "Präteritum Passiv",
-          "text": "ich wurde gemacht, du wurdest gemacht, er wurde gemacht... Entspricht Aktiv Präteritum: man machte / er machte."
+          "title": "Пассив в Präteritum",
+          "text": "Конъюгация: ich wurde gemacht, du wurdest gemacht, er wurde gemacht… Это соответствует активу Präteritum: man machte / er machte. В русском: «меня сделали», «тебя сделали», «его сделали» — форма прошедшего времени с глаголом «быть» + причастие."
         },
         {
           "kind": "rule",
-          "title": "Perfekt Passiv",
-          "text": "ist + Partizip II + worden. NICHT 'ist ... geworden'! Beispiel: Das Haus ist gebaut worden."
+          "title": "Пассив в Perfekt",
+          "text": "Формируется как ist + Partizip II + worden. Нельзя говорить ist … geworden! Пример: Das Haus ist gebaut worden. В русском: «Дом построен» (результат действия в настоящем). В украинській: «Будинок збудований»."
         },
         {
           "kind": "rule",
-          "title": "Unterschied Aktiv/Passiv Perfekt",
-          "text": "Aktiv: hat gemacht. Passiv: ist gemacht worden. Auxiliär: Aktiv haben, Passiv sein."
+          "title": "Разница между активом и пассивом в Perfekt",
+          "text": "В активе Perfekt используется вспомогательный глагол haben (hat gemacht), в пассиве — sein (ist gemacht worden). Актив: «Кто-то построил дом» (Man hat das Haus gebaut). Пассив: «Дом построен» (Das Haus ist gebaut worden). Вспомогательный глагол меняется с haben на sein."
         },
         {
           "kind": "table",
@@ -234,7 +234,7 @@
           "kind": "example",
           "de": "Das Haus wurde 1990 gebaut. Das Haus ist gerade gebaut worden. Der Brief wurde geschrieben. Die E-Mail ist gesendet worden.",
           "ru": "Дом был построен в 1990. Дом только что построен. Письмо было написано. Email была отправлена.",
-          "note": "wurde (Prät), ist ... worden (Perfekt)."
+          "note": "wurde — это Präteritum; ist … worden — это Perfekt."
         }
       ],
       "drills": [
@@ -251,7 +251,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum Passiv: wurde + Partizip II."
+          "why": "Пассив в Präteritum: wurde + Partizip II."
         },
         {
           "id": "b2-02-d02",
@@ -266,7 +266,7 @@
           "answer": [
             "ist worden"
           ],
-          "why": "Perfekt Passiv: ist + Partizip II + worden."
+          "why": "Пассив в Perfekt: ist + Partizip II + worden."
         },
         {
           "id": "b2-02-d03",
@@ -281,7 +281,7 @@
           "answer": [
             "Das Haus wurde gebaut."
           ],
-          "why": "Aktiv Prät → Passiv Prät: wurde."
+          "why": "Актив Präteritum → Пассив Präteritum: wurde."
         },
         {
           "id": "b2-02-d04",
@@ -290,7 +290,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum Passiv: wurde."
+          "why": "Пассив в Präteritum: wurde."
         },
         {
           "id": "b2-02-d05",
@@ -305,7 +305,7 @@
           "answer": [
             "Das Haus ist gebaut worden."
           ],
-          "why": "Aktiv Perfekt (hat) → Passiv Perfekt (ist ... worden)."
+          "why": "Актив Perfekt (hat) → Пассив Perfekt (ist ... worden)."
         },
         {
           "id": "b2-02-d06",
@@ -314,7 +314,7 @@
           "answer": [
             "ist gesendet worden"
           ],
-          "why": "ist + Partizip II + worden."
+          "why": "ist + Partizip II + worden (пассив Perfekt)."
         },
         {
           "id": "b2-02-d07",
@@ -323,7 +323,7 @@
           "answer": [
             "Das Buch ist gelesen worden."
           ],
-          "why": "Perfekt Passiv Wortstellung."
+          "why": "Порядок слов в пассиве Perfekt."
         },
         {
           "id": "b2-02-d08",
@@ -338,7 +338,7 @@
           "answer": [
             "weil Perfekt Passiv 'ist ... worden' heißt"
           ],
-          "why": "Feste Form: ist + Partizip II + worden."
+          "why": "Зафиксированная форма: ist + Partizip II + worden."
         },
         {
           "id": "b2-02-d09",
@@ -347,7 +347,7 @@
           "answer": [
             "wurde"
           ],
-          "why": "Präteritum Passiv."
+          "why": "Пассив в Präteritum."
         },
         {
           "id": "b2-02-d10",
@@ -356,7 +356,7 @@
           "answer": [
             "Die Tür wurde geöffnet."
           ],
-          "why": "Aktiv Prät → Passiv Prät."
+          "why": "Актив Präteritum → Пассив Präteritum."
         },
         {
           "id": "b2-02-d11",
@@ -371,7 +371,7 @@
           "answer": [
             "war gebaut worden"
           ],
-          "why": "war + Partizip II + worden."
+          "why": "war + Partizip II + worden (плюсквамперфект пассив)."
         },
         {
           "id": "b2-02-d12",
@@ -380,7 +380,7 @@
           "answer": [
             "ist geöffnet worden"
           ],
-          "why": "ist + Partizip II + worden."
+          "why": "ist + Partizip II + worden (пассив Perfekt)."
         }
       ]
     },
@@ -401,27 +401,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Partizipialsätze ersetzen Nebensätze (Kürzung). Partizip I = aktiv (Subjekt = Subjekt des Hauptsatzes). Partizip II = passiv (Subjekt = Objekt des Hauptsatzes)."
+          "text": "Причастные конструкции заменяют придаточные предложения (сокращение). Partizip I = активный (подлежащее = подлежащее главного предложения). Partizip II = пассивный (подлежащее = объект главного предложения)."
         },
         {
           "kind": "rule",
-          "title": "Partizip I (aktiv)",
-          "text": "Nebensatz: 'Während er las, schlief sie.' → Partizipialsatz: 'Lesend schlief sie.' / 'Beim Lesen schlief sie.' Subjekt identisch!"
+          "title": "Причастие I (активный)",
+          "text": "Придаточное: 'Während er las, schlief sie.' → Причастный оборот: 'Lesend schlief sie.' / 'Beim Lesen schlief sie.' Подлежащее совпадает!"
         },
         {
           "kind": "rule",
-          "title": "Partizip II (passiv)",
-          "text": "Nebensatz: 'Als er gefragt wurde, antwortete er.' → Partizipialsatz: 'Gefragt, antwortete er.' / 'Auf die Frage hin antwortete er.' Subjekt = Objekt! (Passiv)."
+          "title": "Причастие II (пассивный)",
+          "text": "Придаточное: 'Als er gefragt wurde, antwortete er.' → Причастный оборот: 'Gefragt, antwortete er.' / 'Auf die Frage hin antwortete er.' Подлежащее = объект! (Пассив)."
         },
         {
           "kind": "rule",
-          "title": "Einleitung",
-          "text": "Oft mit Präpositionen: beim/beim + Partizip I, nach + Partizip II, ohne + Partizip, statt + Partizip. Oder direkt am Satzanfang."
+          "title": "Вводные предлоги",
+          "text": "Часто с предлогами: beim/beim + Partizip I, nach + Partizip II, ohne + Partizip, statt + Partizip. Или прямо в начале предложения."
         },
         {
           "kind": "rule",
-          "title": "Vorderes / hinteres Mittelfeld",
-          "text": "Am Satzanfang (Vorfeld): 'Lesend schlief sie.' Im Mittelfeld: 'Sie schlief, das Buch lesend.'"
+          "title": "Позиция в предложении: переднее / заднее поле",
+          "text": "В начале предложения (переднее поле): 'Lesend schlief sie.' В середине предложения: 'Sie schlief, das Buch lesend.'"
         },
         {
           "kind": "table",
@@ -431,7 +431,7 @@
           "kind": "example",
           "de": "Lesend vergaß er die Zeit. (aktiv) Gefragt, wusste er keine Antwort. (passiv) Ohne zu zögern, sprang er. (Infinitivgruppe)",
           "ru": "Чтая, он забыл о времени. Спрошенный, он не знал ответа. Не раздумывая, он прыгнул.",
-          "note": "Partizip I: Subjekt handelt. Partizip II: Subjekt leidet."
+          "note": "Причастие I: подлежащее действует. Причастие II: подлежащее страдает."
         }
       ],
       "drills": [
@@ -448,7 +448,7 @@
           "answer": [
             "Arbeitend hörte er Musik."
           ],
-          "why": "Partizip I (aktiv): arbeitend. Subjekt identisch."
+          "why": "Причастие I (активный): arbeitend. Подлежащее совпадает."
         },
         {
           "id": "b2-03-d02",
@@ -463,7 +463,7 @@
           "answer": [
             "Gefragt antwortete er."
           ],
-          "why": "Partizip II (passiv): gefragt. Subjekt = Objekt."
+          "why": "Причастие II (пассивный): gefragt. Подлежащее = объект."
         },
         {
           "id": "b2-03-d03",
@@ -478,7 +478,7 @@
           "answer": [
             "Lesend las er das Buch."
           ],
-          "why": "Subjekt (er) = Handelnder (lesend)."
+          "why": "Подлежащее (er) = действующее лицо (lesend)."
         },
         {
           "id": "b2-03-d04",
@@ -487,7 +487,7 @@
           "answer": [
             "Müde"
           ],
-          "why": "Adjektiv/Partizip II als Ursache: Müde ging er schlafen."
+          "why": "Прилагательное/Причастие II как причина: Müde ging er schlafen."
         },
         {
           "id": "b2-03-d05",
@@ -502,7 +502,7 @@
           "answer": [
             "ohne zu"
           ],
-          "why": "ohne + Infinitiv (nicht Partizip!)."
+          "why": "ohne + инфинитив (не причастие!)."
         },
         {
           "id": "b2-03-d06",
@@ -511,7 +511,7 @@
           "answer": [
             "Gegessen, ging er."
           ],
-          "why": "Partizip II Perfekt: gegessen (Vorzeitigkeit)."
+          "why": "Причастие II перфекта: gegessen (предшествование)."
         },
         {
           "id": "b2-03-d07",
@@ -520,7 +520,7 @@
           "answer": [
             "Lesend vergaß er die Zeit."
           ],
-          "why": "Partizip I im Vorfeld, Hauptsatz V2."
+          "why": "Причастие I в переднем поле, главное предложение V2."
         },
         {
           "id": "b2-03-d08",
@@ -535,7 +535,7 @@
           "answer": [
             "Partizip I (aktiv)"
           ],
-          "why": "Identisches Subjekt → Partizip I."
+          "why": "Идентичное подлежащее → Причастие I."
         },
         {
           "id": "b2-03-d09",
@@ -544,7 +544,7 @@
           "answer": [
             "[Das Buch] geschrieben, war er froh."
           ],
-          "why": "Partizip II passiv: das Buch wurde geschrieben → geschrieben."
+          "why": "Причастие II пассива: das Buch wurde geschrieben → geschrieben."
         },
         {
           "id": "b2-03-d10",
@@ -553,7 +553,7 @@
           "answer": [
             "Krank blieb er zu Hause."
           ],
-          "why": "Adjektiv/Partizip II als Ursache im Vorfeld."
+          "why": "Прилагательное/Причастие II как причина в переднем поле."
         },
         {
           "id": "b2-03-d11",
@@ -568,7 +568,7 @@
           "answer": [
             "statt zu"
           ],
-          "why": "statt + Infinitiv."
+          "why": "statt + инфинитив."
         },
         {
           "id": "b2-03-d12",
@@ -577,7 +577,7 @@
           "answer": [
             "Gegessen, ging er."
           ],
-          "why": "Vorzeitigkeit: Partizip II Perfekt."
+          "why": "Предшествование: Причастие II перфекта."
         }
       ]
     },
@@ -597,27 +597,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Nomialisierung = Verben/Adjektive zu Substantiven machen. Drei Haupttypen: Infinitiv als Nomen, Partizip I/II als Nomen, Ableitung mit Suffixen."
+          "text": "Номинализация = превращение глаголов/прилагательных в существительные. Три основных типа: инфинитив как существительное, причастие I/II как существительное, образование суффиксами."
         },
         {
           "kind": "rule",
-          "title": "Infinitiv als Nomen",
-          "text": "Großschreibung + Artikel: das Lesen, das Schreiben, das Essen. Immer Neutrum (das). Deklination: des Lesens, dem Lesen, das Lesen. Plural selten."
+          "title": "Инфинитив как существительное",
+          "text": "Заглавная буква + артикль: das Lesen, das Schreiben, das Essen. Всегда средний род (das). Склонение: des Lesens, dem Lesen, das Lesen. Множественное число редко."
         },
         {
           "kind": "rule",
-          "title": "Partizip I als Nomen",
-          "text": "der Lesende, die Lesende, das Lesende. Bedeutung: 'der, der liest'. Deklination wie Adjektiv (stark/gemischt/schwach). Plural: die Lesenden."
+          "title": "Причастие I как существительное",
+          "text": "der Lesende, die Lesende, das Lesende. Значение: «тот, кто читает». Склонение как прилагательное (сильное/смешанное/слабое). Множественное число: die Lesenden."
         },
         {
           "kind": "rule",
-          "title": "Partizip II als Nomen",
-          "text": "der Verletzte, die Verletzte, das Verletzte. Bedeutung: 'der, der verletzt wurde'. Deklination wie Adjektiv. Plural: die Verletzten."
+          "title": "Причастие II как существительное",
+          "text": "der Verletzte, die Verletzte, das Verletzte. Значение: «тот, когоранили» (или «пострадавший»). Склонение как прилагательное. Множественное число: die Verletzten."
         },
         {
           "kind": "rule",
-          "title": "Suffixe",
-          "text": "-ung (die Entscheidung), -heit (die Gesundheit), -keit (die Freundlichkeit), -nis (das Ereignis), -tum (das Eigentum), -schaft (die Freundschaft)."
+          "title": "Суффиксы",
+          "text": "Суффиксы для образования существительных: -ung (die Entscheidung), -heit (die Gesundheit), -keit (die Freundlichkeit), -nis (das Ereignis), -tum (das Eigentum), -schaft (die Freundschaft)."
         },
         {
           "kind": "table",
@@ -627,7 +627,7 @@
           "kind": "example",
           "de": "Das Lesen macht Spaß. Der Verletzte wird ins Krankenhaus gebracht. Die Entscheidung fiel schwer. Das Gelesene habe ich verstanden.",
           "ru": "Чтение приносит удовольствие. Пострадавший доставлен в больницу. Решение было трудным. Прочитанное я понял.",
-          "note": "das Lesen (Neutrum), der Verletzte (maskulin, wie Adjektiv dekliniert)."
+          "note": "das Lesen (средний род), der Verletzte (мужской род, склоняется как прилагательное)."
         }
       ],
       "drills": [
@@ -644,7 +644,7 @@
           "answer": [
             "das Lesen"
           ],
-          "why": "Infinitiv als Nomen → Neutrum (das)."
+          "why": "Инфинитив как существительное → средний род (das)."
         },
         {
           "id": "b2-04-d02",
@@ -659,7 +659,7 @@
           "answer": [
             "Lesende"
           ],
-          "why": "Partizip I + -e + Deklination: der Lesende."
+          "why": "Причастие I + -e + склонение: der Lesende."
         },
         {
           "id": "b2-04-d03",
@@ -674,7 +674,7 @@
           "answer": [
             "Verletzte"
           ],
-          "why": "Partizip II + -e + Deklination: der Verletzte."
+          "why": "Причастие II + -e + склонение: der Verletzte."
         },
         {
           "id": "b2-04-d04",
@@ -683,7 +683,7 @@
           "answer": [
             "Entscheidung"
           ],
-          "why": "-ung Suffix, Feminin."
+          "why": "Суффикс -ung, женский род."
         },
         {
           "id": "b2-04-d05",
@@ -698,7 +698,7 @@
           "answer": [
             "des Lesens"
           ],
-          "why": "Genitiv Neutrum: des + -s."
+          "why": "Родительный падеж среднего рода: des + -s."
         },
         {
           "id": "b2-04-d06",
@@ -707,7 +707,7 @@
           "answer": [
             "Verletzten"
           ],
-          "why": "N-Deklination: Plural auf -en."
+          "why": "N-деклинация: множественное число на -en."
         },
         {
           "id": "b2-04-d07",
@@ -716,7 +716,7 @@
           "answer": [
             "Das Lesen macht Spaß."
           ],
-          "why": "Subjekt: das Lesen (Neutrum)."
+          "why": "Подлежащее: das Lesen (средний род)."
         },
         {
           "id": "b2-04-d08",
@@ -731,7 +731,7 @@
           "answer": [
             "der, der studiert (gerade)"
           ],
-          "why": "Partizip I = aktiv, gleichzeitig."
+          "why": "Причастие I = активное, одновременное."
         },
         {
           "id": "b2-04-d09",
@@ -740,7 +740,7 @@
           "answer": [
             "Krankheit"
           ],
-          "why": "-heit Suffix."
+          "why": "Суффикс -heit."
         },
         {
           "id": "b2-04-d10",
@@ -749,7 +749,7 @@
           "answer": [
             "Das Lesen macht ihm Spaß."
           ],
-          "why": "Infinitiv als Nomen: das Lesen."
+          "why": "Инфинитив как существительное: das Lesen."
         },
         {
           "id": "b2-04-d11",
@@ -764,7 +764,7 @@
           "answer": [
             "dem Lesenden"
           ],
-          "why": "Wie Adjektiv schwach: dem Lesenden."
+          "why": "Как слабое прилагательное: dem Lesenden."
         },
         {
           "id": "b2-04-d12",
@@ -773,7 +773,7 @@
           "answer": [
             "Freiheit"
           ],
-          "why": "-heit Suffix."
+          "why": "Суффикс -heit."
         }
       ]
     },
@@ -793,27 +793,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Präpositionaladverbien = da/wo/hier + Präposition. Ersetzen Präposition + Pronomen (es, das, dies)."
+          "text": "Предложные наречия (Präpositionaladverbien) состоят из частиц da-, wo-, hier- и предлога. Они заменяют сочетание «предлог + местоимение» (es, das, dies) и делают речь более связной. В русском это соответствует конструкциям вроде «на этом», «о том», «к этому»."
         },
         {
           "kind": "rule",
-          "title": "da- + Präposition",
-          "text": "Bezug auf bekanntes Sachverhalt: darauf, daran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. Nur bei Sachen!"
+          "title": "da- + предлог",
+          "text": "Указывает на уже известный предмет или факт: darauf, daran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. Используется ТОЛЬКО для неодушевлённых предметов (вещи, идеи, ситуации). В русском: «на том», «об этом», «для того», «с тем» и т.д."
         },
         {
           "kind": "rule",
-          "title": "wo- + Präposition",
-          "text": "Frage: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter."
+          "title": "wo- + предлог",
+          "text": "Образовывает вопросы к неодушевлённым предметам: woran, worauf, wofür, wovon, wozu, wogegen, worin, worüber, worunter. Аналог русских «на чём?», «о чём?», «для чего?», «с чем?»."
         },
         {
           "kind": "rule",
-          "title": "hier- + Präposition",
-          "text": "Ortsnah: hierauf, hieran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter."
+          "title": "hier- + предлог",
+          "text": "Выражает пространственную близость к говорящему: hierauf, hieran, dafür, damit, davon, dazu, dabei, davor, dagegen, darin, darüber, darunter. Соответствует русским «на этом», «в этом», «под этим» (здесь, рядом)."
         },
         {
           "kind": "rule",
-          "title": "Bei Personen",
-          "text": "KEIN da/wo/hier-Kompositum! → Präposition + Personalpronomen: auf ihn, mit ihr, für uns."
+          "title": "Для лиц",
+          "text": "С одушевлёнными (люди, животные) da-/wo-/hier-композиты НЕ используются! Нужно ставить предлог + личное местоимение: auf ihn, mit ihr, für uns, über sie. Это как в русском: «ждать его» (не «ждать того»), «думать о ней»."
         },
         {
           "kind": "table",
@@ -823,7 +823,7 @@
           "kind": "example",
           "de": "Ich warte auf den Bus → Ich warte darauf. Worauf wartest du? Ich denke an dich → Ich denke an dich (Person!). Hierauf kann man sich verlassen.",
           "ru": "Я жду автобус → Я жду его. На что ждешь? Я думаю о тебе → Я думаю о тебе (персона!). На это можно положиться.",
-          "note": "da(r) = auf es. Bei Personen: Präposition + Personalpronomen."
+          "note": "da(r) = auf es. Для лиц: предлог + личное местоимение."
         }
       ],
       "drills": [
@@ -840,7 +840,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "warten auf + es = darauf."
+          "why": "Глагол warten требует предлога auf, поэтому с безличным местоимением es получается darauf."
         },
         {
           "id": "b2-05-d02",
@@ -855,7 +855,7 @@
           "answer": [
             "daran"
           ],
-          "why": "denken an + es = daran."
+          "why": "Глагол denken требует предлога an, поэтому с es получается daran."
         },
         {
           "id": "b2-05-d03",
@@ -870,7 +870,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "Antwort auf wo-Frage mit da-Kompositum."
+          "why": "Ответ на вопрос с wo- с помощью da-композита."
         },
         {
           "id": "b2-05-d04",
@@ -879,7 +879,7 @@
           "answer": [
             "darauf"
           ],
-          "why": "sich freuen auf + es = darauf."
+          "why": "Глагол sich freuen требует предлога auf, поэтому с es получается darauf."
         },
         {
           "id": "b2-05-d05",
@@ -894,7 +894,7 @@
           "answer": [
             "ihn"
           ],
-          "why": "Bei Personen KEIN da-Kompositum! → Präposition + Personalpronomen."
+          "why": "Для лиц не используется da-композит! → Предлог + личное местоимение."
         },
         {
           "id": "b2-05-d06",
@@ -903,7 +903,7 @@
           "answer": [
             "darüber"
           ],
-          "why": "sprechen über + es = darüber."
+          "why": "Глагол sprechen требует предлога über, поэтому с es получается darüber."
         },
         {
           "id": "b2-05-d07",
@@ -912,7 +912,7 @@
           "answer": [
             "Ich warte darauf, weil er kommt."
           ],
-          "why": "da-Kompositum im Hauptsatz."
+          "why": "da-композит в главном предложении."
         },
         {
           "id": "b2-05-d08",
@@ -927,7 +927,7 @@
           "answer": [
             "worüber"
           ],
-          "why": "sprechen über + was → worüber."
+          "why": "Глагол sprechen с предлогом über в вопросе даёт worüber."
         },
         {
           "id": "b2-05-d09",
@@ -936,7 +936,7 @@
           "answer": [
             "hierauf"
           ],
-          "why": "hier + Präposition = Ortsnähe."
+          "why": "hier + предлог = выражение близости к месту."
         },
         {
           "id": "b2-05-d10",
@@ -945,7 +945,7 @@
           "answer": [
             "Woran denkt er?"
           ],
-          "why": "denken an + was → woran."
+          "why": "Глагол denken с предлогом an в вопросе даёт woran."
         },
         {
           "id": "b2-05-d11",
@@ -960,7 +960,7 @@
           "answer": [
             "davor"
           ],
-          "why": "Angst haben vor + es = davor."
+          "why": "Выражение Angst haben требует предлога vor, поэтому с es получается davor."
         },
         {
           "id": "b2-05-d12",
@@ -969,7 +969,7 @@
           "answer": [
             "daran"
           ],
-          "why": "sich gewöhnen an + es = daran."
+          "why": "Глагол sich gewöhnen требует предлога an, поэтому с es получается daran."
         }
       ]
     },
@@ -989,38 +989,38 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Konzessivsätze drücken eine Erwartung aus, die nicht erfüllt wird. Trotz gegenteiliger Umstände passiert etwas."
+          "text": "Уступительные предложения выражают ожидание, которое не сбывается. Несмотря на противоположные обстоятельства, происходит действие."
         },
         {
           "kind": "rule",
-          "title": "obwohl (Konjunktion)",
-          "text": "Nebensatz, Verb am Ende: 'Obwohl es regnet, gehe ich spazieren.' Standard."
+          "title": "obwohl (союз)",
+          "text": "Придаточное предложение, глагол в конце: 'Obwohl es regnet, gehe ich spazieren.' Стандартный вариант."
         },
         {
           "kind": "rule",
-          "title": "selbst wenn (Konjunktion)",
-          "text": "Betonung: 'Selbst wenn es regnet, gehe ich spazieren.' = auch im Extremfall."
+          "title": "selbst wenn (союз)",
+          "text": "Акцент: 'Selbst wenn es regnet, gehe ich spazieren.' = даже в крайнем случае."
         },
         {
           "kind": "rule",
-          "title": "wenngleich (Konjunktion)",
-          "text": "Gehoben, schriftlich: 'Wenngleich es regnet, gehe ich spazieren.' = obwohl."
+          "title": "wenngleich (союз)",
+          "text": "Высокий стиль, письменная речь: 'Wenngleich es regnet, gehe ich spazieren.' = хотя."
         },
         {
           "kind": "rule",
-          "title": "trotz + Genitiv (Präposition)",
-          "text": "Hauptsatz: 'Trotz des Regens gehe ich spazieren.' Umstellung: Trotz + Genitiv → obwohl + Nebensatz."
+          "title": "trotz + Генитив (предлог)",
+          "text": "Главное предложение: 'Trotz des Regens gehe ich spazieren.' Перефразирование: Trotz + Генитив → obwohl + придаточное."
         },
         {
           "kind": "rule",
-          "title": "trotzdem / dennoch (Adverb)",
-          "text": "Hauptsatz, Pos 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.'"
+          "title": "trotzdem / dennoch (наречие)",
+          "text": "Главное предложение, позиция 1 → V2: 'Es regnet. Trotzdem gehe ich spazieren.'"
         },
         {
           "kind": "example",
           "de": "Obwohl er krank ist, arbeitet er. Selbst wenn es regnet, komme ich. Trotz des Wetters fahren wir. Er ist krank, trotzdem arbeitet er.",
           "ru": "Хотя он болен, он работает. Даже если дождь, я приду. Несмотря на погоду, мы едем. Он болен, тем не менее работает.",
-          "note": "obwohl/selbst wenn/wenngleich = Nebensatz. trotz + Gen = Präposition. trotzdem = Adverb."
+          "note": "obwohl/selbst wenn/wenngleich = придаточное предложение. trotz + Генитив = предлог. trotzdem = наречие."
         }
       ],
       "drills": [
@@ -1037,7 +1037,7 @@
           "answer": [
             "Obwohl"
           ],
-          "why": "obwohl = Konjunktion, Nebensatz."
+          "why": "obwohl = союз, придаточное предложение."
         },
         {
           "id": "b2-06-d02",
@@ -1052,7 +1052,7 @@
           "answer": [
             "Selbst wenn"
           ],
-          "why": "selbst wenn = Betonung, auch im Extremfall."
+          "why": "selbst wenn = акцент, даже в крайнем случае."
         },
         {
           "id": "b2-06-d03",
@@ -1067,7 +1067,7 @@
           "answer": [
             "Wenngleich"
           ],
-          "why": "wenngleich = gehoben, schriftlich."
+          "why": "wenngleich = высокий стиль, письменная речь."
         },
         {
           "id": "b2-06-d04",
@@ -1076,7 +1076,7 @@
           "answer": [
             "Trotz"
           ],
-          "why": "trotz + Genitiv."
+          "why": "trotz + Генитив."
         },
         {
           "id": "b2-06-d05",
@@ -1085,7 +1085,7 @@
           "answer": [
             "Es regnet, trotzdem gehe ich spazieren."
           ],
-          "why": "Adverb trotzdem, Pos 1 → V2."
+          "why": "Наречие trotzdem, позиция 1 → V2."
         },
         {
           "id": "b2-06-d06",
@@ -1100,7 +1100,7 @@
           "answer": [
             "Obwohl es regnet..."
           ],
-          "why": "trotz + Gen → obwohl + Nebensatz."
+          "why": "trotz + Генитив → obwohl + придаточное."
         },
         {
           "id": "b2-06-d07",
@@ -1109,7 +1109,7 @@
           "answer": [
             "Obwohl"
           ],
-          "why": "obwohl = Konzessivsatz."
+          "why": "obwohl = уступительное предложение."
         },
         {
           "id": "b2-06-d08",
@@ -1124,7 +1124,7 @@
           "answer": [
             "dennoch formeller"
           ],
-          "why": "dennoch = gehobener Stil."
+          "why": "dennoch = более высокий стиль."
         },
         {
           "id": "b2-06-d09",
@@ -1133,7 +1133,7 @@
           "answer": [
             "Trotz des Regens gehe ich."
           ],
-          "why": "obwohl + Nebensatz → trotz + Genitiv."
+          "why": "obwohl + придаточное → trotz + Генитив."
         },
         {
           "id": "b2-06-d10",
@@ -1142,7 +1142,7 @@
           "answer": [
             "Selbst wenn"
           ],
-          "why": "selbst wenn = auch im Fall dass."
+          "why": "selbst wenn = даже в том случае, если."
         },
         {
           "id": "b2-06-d11",
@@ -1157,7 +1157,7 @@
           "answer": [
             "trotz"
           ],
-          "why": "trotz ist Präposition mit Genitiv."
+          "why": "trotz — предлог с Генитивом."
         },
         {
           "id": "b2-06-d12",
@@ -1166,7 +1166,7 @@
           "answer": [
             "Obwohl es regnet, gehe ich."
           ],
-          "why": "trotz + Gen → obwohl + Nebensatz."
+          "why": "trotz + Генитив → obwohl + придаточное."
         }
       ]
     },
@@ -1186,33 +1186,33 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Finalsätze drücken einen Zweck/Ziel aus. Drei Hauptkonstruktionen."
+          "text": "Целевые предложения выражают цель/задачу. Три основные конструкции."
         },
         {
           "kind": "rule",
-          "title": "damit (Konjunktion)",
-          "text": "Nebensatz, Verb am Ende. Subjekt kann verschieden sein: 'Ich lerne, damit ich bestehe.' / 'Ich erkläre es, damit du es verstehst.'"
+          "title": "damit (союз)",
+          "text": "Придаточное предложение, глагол в конце. Подлежащее может быть разным: 'Ich lerne, damit ich bestehe.' / 'Ich erkläre es, damit du es verstehst.'"
         },
         {
           "kind": "rule",
-          "title": "um ... zu (Infinitivgruppe)",
-          "text": "Nur wenn Subjekt identisch! 'Ich lerne, um zu bestehen.' 'Ich rufe an, um zu fragen.'"
+          "title": "um ... zu (инфинитивная группа)",
+          "text": "Только если подлежащее совпадает! 'Ich lerne, um zu bestehen.' 'Ich rufe an, um zu fragen.'"
         },
         {
           "kind": "rule",
-          "title": "zwecks + Genitiv (Präposition)",
-          "text": "Gehoben, schriftlich: 'Zwecks Klärung rufe ich an.' 'Er kommt zwecks Besprechung.'"
+          "title": "zwecks + родительный падеж (предлог)",
+          "text": "Книжный, письменный стиль: 'Zwecks Klärung rufe ich an.' 'Er kommt zwecks Besprechung.'"
         },
         {
           "kind": "rule",
-          "title": "zum + Infinitiv (Substantiviert)",
-          "text": "Zum Lesen braucht man Zeit. Zum Abschluss: ..."
+          "title": "zum + инфинитив (субстантивированный)",
+          "text": "Конструкция zum + инфинитив (субстантивированный) выражает цель или назначение: Zum Lesen braucht man Zeit. Zum Abschluss: ..."
         },
         {
           "kind": "example",
           "de": "Ich lerne, damit ich die Prüfung bestehe. Ich lerne, um die Prüfung zu bestehen. Zwecks Information rufe ich an. Zum Essen gehen wir ins Restaurant.",
           "ru": "Я учусь, чтобы сдать экзамен. Я учусь, чтобы сдать экзамен. В целях информации звоню. На обед идём в ресторан.",
-          "note": "damit = Subjekt verschieden möglich. um...zu = Subjekt identisch. zwecks + Gen."
+          "note": "damit = подлежащее может быть разным. um...zu = подлежащее совпадает. zwechs + родительный падеж."
         }
       ],
       "drills": [
@@ -1229,7 +1229,7 @@
           "answer": [
             "damit"
           ],
-          "why": "damit = Nebensatz, Subjekt kann verschieden sein."
+          "why": "damit = придаточное предложение, подлежащее может быть разным."
         },
         {
           "id": "b2-07-d02",
@@ -1244,7 +1244,7 @@
           "answer": [
             "um"
           ],
-          "why": "um ... zu = Infinitivgruppe, Subjekt identisch."
+          "why": "um ... zu = инфинитивная группа, подлежащее совпадает."
         },
         {
           "id": "b2-07-d03",
@@ -1259,7 +1259,7 @@
           "answer": [
             "Zwecks"
           ],
-          "why": "zwecks + Genitiv."
+          "why": "zwechs + родительный падеж."
         },
         {
           "id": "b2-07-d04",
@@ -1268,7 +1268,7 @@
           "answer": [
             "um"
           ],
-          "why": "Subjekt identisch (ich rufe an, ich frage) → um ... zu."
+          "why": "Подлежащее совпадает (ich rufe an, ich frage) → um ... zu."
         },
         {
           "id": "b2-07-d05",
@@ -1277,7 +1277,7 @@
           "answer": [
             "Ich lerne, damit ich die Prüfung bestehe."
           ],
-          "why": "Hauptsatz V2, damit-Nebensatz Verb am Ende."
+          "why": "Главное предложение V2, придаточное с damit — глагол в конце."
         },
         {
           "id": "b2-07-d06",
@@ -1292,7 +1292,7 @@
           "answer": [
             "Subjekt verschieden"
           ],
-          "why": "um ... zu nur bei identischem Subjekt."
+          "why": "um ... zu только при совпадающем подлежащем."
         },
         {
           "id": "b2-07-d07",
@@ -1301,7 +1301,7 @@
           "answer": [
             "Zwecks"
           ],
-          "why": "zwecks + Genitiv."
+          "why": "zwechs + родительный падеж."
         },
         {
           "id": "b2-07-d08",
@@ -1310,7 +1310,7 @@
           "answer": [
             "Ich lerne, um zu bestehen."
           ],
-          "why": "Subjekt identisch → Infinitivgruppe."
+          "why": "Подлежащее совпадает → инфинитивная группа."
         },
         {
           "id": "b2-07-d09",
@@ -1325,7 +1325,7 @@
           "answer": [
             "zwecks der Klärung"
           ],
-          "why": "zwechs + Genitiv (Feminin: der)."
+          "why": "zwechs + родительный падеж (женский род: der)."
         },
         {
           "id": "b2-07-d10",
@@ -1334,7 +1334,7 @@
           "answer": [
             "um"
           ],
-          "why": "Subjekt identisch (er kommt, er hilft) → um ... zu."
+          "why": "Подлежащее совпадает (er kommt, er hilft) → um ... zu."
         },
         {
           "id": "b2-07-d11",
@@ -1349,7 +1349,7 @@
           "answer": [
             "Zum Lesen braucht man Zeit."
           ],
-          "why": "zum + Infinitiv (substantiviert) = zum Lesen."
+          "why": "zum + инфинитив (субстантивированный) = zum Lesen."
         },
         {
           "id": "b2-07-d12",
@@ -1358,7 +1358,7 @@
           "answer": [
             "Ich rufe an, damit ich informiere."
           ],
-          "why": "zwecks + Gen → damit + Nebensatz."
+          "why": "zwechs + родительный падеж → damit + придаточное предложение."
         }
       ]
     },
@@ -1378,22 +1378,22 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Funktionsverbgefüge = Lichtverb (machen, geben, stellen, kommen, leisten, treffen, schaffen, nehmen, finden) + Nomen. Das Lichtverb hat wenig eigene Bedeutung, die Bedeutung trägt das Nomen."
+          "text": "Функциональные глагольные сочетания (FVG) состоят из вспомогательного глагола (machen, geben, stellen, kommen, leisten, treffen, schaffen, nehmen, finden) и существительного. Вспомогательный глагол теряет своё лексическое значение, основной смысл выражает существительное."
         },
         {
           "kind": "rule",
-          "title": "Häufige FVG",
-          "text": "in Frage kommen (geeignet sein), zur Verfügung stellen (geben/bereitstellen), in Betracht ziehen (erwägen), Unterschrift leisten (unterschreiben), Abhilfe schaffen (helfen/beheben), Entscheidung treffen (entscheiden), Kenntnis nehmen (erfahren), Anwendung finden (angewendet werden), Wirkung zeigen (wirken), Rechnung tragen (berücksichtigen)."
+          "title": "Частые FVG",
+          "text": "in Frage kommen (подходить), zur Verfügung stellen (предоставлять), in Betracht ziehen (рассматривать), Unterschrift leisten (подписывать), Abhilfe schaffen (устранять/помогать), Entscheidung treffen (принимать решение), Kenntnis nehmen (принимать к сведению), Anwendung finden (применяться), Wirkung zeigen (действовать), Rechnung tragen (учитывать)."
         },
         {
           "kind": "rule",
-          "title": "Ersetzung durch einfaches Verb",
-          "text": "FVG → einfaches Verb: eine Entscheidung treffen → entscheiden. Anwendung finden → angewendet werden. In Frage kommen → geeignet sein."
+          "title": "Замена простым глаголом",
+          "text": "FVG можно заменить одним глаголом: eine Entscheidung treffen → entscheiden. Anwendung finden → angewendet werden. In Frage kommen → geeignet sein."
         },
         {
           "kind": "rule",
-          "title": "Grammatik",
-          "text": "Lichtverb wird konjugiert. Nomen behält Kasus (meist Akkusativ). Präpositionen festgelegt: in Frage kommen, zur Verfügung stellen, in Betracht ziehen."
+          "title": "Грамматика",
+          "text": "Вспомогательный глагол изменяется по лицам и числам. Существительное сохраняет свой падеж (чаще всего винительный). Предлоги закреплены за каждым сочетанием: in Frage kommen, zur Verfügung stellen, in Betracht ziehen."
         },
         {
           "kind": "table",
@@ -1403,7 +1403,7 @@
           "kind": "example",
           "de": "Das kommt in Frage. Wir stellen das zur Verfügung. Wir ziehen das in Betracht. Er leistet Unterschrift. Das schafft Abhilfe. Wir treffen die Entscheidung.",
           "ru": "Это подходит. Мы предоставляем это. Мы рассматриваем это. Он подписывает. Это решает проблему. Мы принимаем решение.",
-          "note": "Lichtverb (kommen, stellen, ziehen, leisten, schaffen, treffen) + Nomen mit festen Präpositionen."
+          "note": "Вспомогательный глагол (kommen, stellen, ziehen, leisten, schaffen, treffen) + существительное с фиксированными предлогами."
         }
       ],
       "drills": [
@@ -1420,7 +1420,7 @@
           "answer": [
             "geeignet sein"
           ],
-          "why": "in Frage kommen = geeignet sein / in Betracht kommen."
+          "why": "in Frage kommen означает «подходить» или «быть подходящим вариантом»."
         },
         {
           "id": "b2-08-d02",
@@ -1435,7 +1435,7 @@
           "answer": [
             "geben / bereitstellen"
           ],
-          "why": "zur Verfügung stellen = geben, bereitstellen."
+          "why": "zur Verfügung stellen означает «предоставлять» или «давать в распоряжение»."
         },
         {
           "id": "b2-08-d03",
@@ -1450,7 +1450,7 @@
           "answer": [
             "erwägen"
           ],
-          "why": "in Betracht ziehen = erwägen."
+          "why": "in Betracht ziehen означает «рассматривать» или «обдумывать»."
         },
         {
           "id": "b2-08-d04",
@@ -1459,7 +1459,7 @@
           "answer": [
             "leistet"
           ],
-          "why": "Unterschrift leisten = unterschreiben."
+          "why": "Unterschrift leisten — это функциональное сочетание, означающее «подписывать»."
         },
         {
           "id": "b2-08-d05",
@@ -1474,7 +1474,7 @@
           "answer": [
             "helfen / beheben"
           ],
-          "why": "Abhilfe schaffen = helfen, beheben."
+          "why": "Abhilfe schaffen заменяется глаголами helfen (помогать) или beheben (устранять)."
         },
         {
           "id": "b2-08-d06",
@@ -1483,7 +1483,7 @@
           "answer": [
             "treffen"
           ],
-          "why": "Entscheidung treffen = entscheiden."
+          "why": "Entscheidung treffen — устойчивое выражение для «принимать решение»."
         },
         {
           "id": "b2-08-d07",
@@ -1492,7 +1492,7 @@
           "answer": [
             "Das kommt in Frage."
           ],
-          "why": "FVG: in Frage kommen."
+          "why": "Порядок слов в FVG: подлежащее + спряжённый глагол + предлог + существительное (in Frage kommen)."
         },
         {
           "id": "b2-08-d08",
@@ -1507,7 +1507,7 @@
           "answer": [
             "erfahren / zur Kenntnis nehmen"
           ],
-          "why": "Kenntnis nehmen = erfahren, zur Kenntnis nehmen."
+          "why": "Kenntnis nehmen означает «узнавать» или «принимать к сведению»."
         },
         {
           "id": "b2-08-d09",
@@ -1516,7 +1516,7 @@
           "answer": [
             "findet"
           ],
-          "why": "Anwendung finden = angewendet werden."
+          "why": "Anwendung найти — пассивная конструкция «применяться»."
         },
         {
           "id": "b2-08-d10",
@@ -1525,7 +1525,7 @@
           "answer": [
             "Er entscheidet."
           ],
-          "why": "Entscheidung treffen → entscheiden."
+          "why": "Entscheidung treffen заменяется одним глаголом entscheiden."
         },
         {
           "id": "b2-08-d11",
@@ -1540,7 +1540,7 @@
           "answer": [
             "in"
           ],
-          "why": "Feste Präposition: in Frage kommen."
+          "why": "В сочетании in Frage kommen предлог in зафиксирован и не меняется."
         },
         {
           "id": "b2-08-d12",
@@ -1549,7 +1549,7 @@
           "answer": [
             "ziehen"
           ],
-          "why": "in Betracht ziehen = erwägen."
+          "why": "in Betracht ziehen — устойчивое выражение со значением «рассматривать»."
         }
       ]
     },
@@ -1569,27 +1569,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Passiv mit Modalverben: Modal (konjugiert) + Partizip II + werden (Infinitiv). Struktur: Subjekt + Modal + Partizip II + werden."
+          "text": "Пассив с модальными глаголами: модальный глагол (спряжённый) + Partizip II + werden (инфинитив). Структура: Подлежащее + модальный глагол + Partizip II + werden."
         },
         {
           "kind": "rule",
-          "title": "Bildung",
-          "text": "muss gemacht werden, kann gemacht werden, soll gemacht werden, will gemacht werden, darf gemacht werden, mag gemacht werden (selten)."
+          "title": "Образование",
+          "text": "Формы: muss gemacht werden, kann gemacht werden, soll gemacht werden, will gemacht werden, darf gemacht werden, mag gemacht werden (редко)."
         },
         {
           "kind": "rule",
-          "title": "Zeitformen",
-          "text": "Präsens: muss gemacht werden. Präteritum: musste gemacht werden. Perfekt: hat gemacht werden müssen (Doppelinfinitiv!). Futur: wird gemacht werden müssen."
+          "title": "Времена",
+          "text": "Настоящее: muss gemacht werden. Прошедшее (Präteritum): musste gemacht werden. Перфект: hat gemacht werden müssen (двойной инфинитив!). Будущее: wird gemacht werden müssen."
         },
         {
           "kind": "rule",
-          "title": "Perfekt: Doppelinfinitiv",
-          "text": "hat gemacht werden müssen (NICHT 'ist gemacht worden müssen'!). Modal + Passiv-Infinitiv → Doppelinfinitiv mit haben."
+          "title": "Перфект: двойной инфинитив",
+          "text": "hat gemacht werden müssen (НЕ 'ist gemacht worden müssen'!). Модальный глагол + пассивный инфинитив → двойной инфинитив с haben."
         },
         {
           "kind": "rule",
-          "title": "Bedeutung",
-          "text": "Notwendigkeit (muss), Möglichkeit (kann), Sollenswert (soll), Erlaubnis (darf), Wunsch (will)."
+          "title": "Значение",
+          "text": "Необходимость (muss), возможность (kann), следует/должно (soll), разрешение (darf), желание (will)."
         },
         {
           "kind": "table",
@@ -1599,7 +1599,7 @@
           "kind": "example",
           "de": "Das muss gemacht werden. Das kann gemacht werden. Das sollte gemacht werden. Das hat gemacht werden müssen.",
           "ru": "Это должно быть сделано. Это можно сделать. Это следовало бы сделать. Это должно было быть сделано.",
-          "note": "Modal + Partizip II + werden. Perfekt: Doppelinfinitiv (hat ... müssen)."
+          "note": "Модальный глагол + Partizip II + werden. Перфект: двойной инфинитив (hat ... müssen)."
         }
       ],
       "drills": [
@@ -1616,7 +1616,7 @@
           "answer": [
             "muss"
           ],
-          "why": "Präsens: Modal (muss) + Partizip II + werden."
+          "why": "Настоящее время: модальный глагол (muss) + Partizip II + werden."
         },
         {
           "id": "b2-09-d02",
@@ -1631,7 +1631,7 @@
           "answer": [
             "musste"
           ],
-          "why": "Präteritum: Modal (musste) + Partizip II + werden."
+          "why": "Прошедшее время (Präteritum): модальный глагол (musste) + Partizip II + werden."
         },
         {
           "id": "b2-09-d03",
@@ -1646,7 +1646,7 @@
           "answer": [
             "hat müssen"
           ],
-          "why": "Perfekt: Doppelinfinitiv mit haben (hat gemacht werden müssen)."
+          "why": "Перфект: двойной инфинитив с haben (hat gemacht werden müssen)."
         },
         {
           "id": "b2-09-d04",
@@ -1655,7 +1655,7 @@
           "answer": [
             "kann"
           ],
-          "why": "können → kann (Präsens)."
+          "why": "können → kann (настоящее время)."
         },
         {
           "id": "b2-09-d05",
@@ -1664,7 +1664,7 @@
           "answer": [
             "Das muss gemacht werden."
           ],
-          "why": "Subjekt + Modal + Partizip II + werden."
+          "why": "Подлежащее + модальный глагол + Partizip II + werden."
         },
         {
           "id": "b2-09-d06",
@@ -1679,7 +1679,7 @@
           "answer": [
             "Empfehlung/Sollenswert"
           ],
-          "why": "soll = Empfehlung, Sollenswert."
+          "why": "soll = рекомендация, следует."
         },
         {
           "id": "b2-09-d07",
@@ -1688,7 +1688,7 @@
           "answer": [
             "darf"
           ],
-          "why": "dürfen → darf (Erlaubnis)."
+          "why": "dürfen → darf (разрешение)."
         },
         {
           "id": "b2-09-d08",
@@ -1703,7 +1703,7 @@
           "answer": [
             "wird müssen"
           ],
-          "why": "wird + Partizip II + werden + Modal (Infinitiv)."
+          "why": "wird + Partizip II + werden + модальный глагол (инфинитив)."
         },
         {
           "id": "b2-09-d09",
@@ -1712,7 +1712,7 @@
           "answer": [
             "Das muss gemacht werden."
           ],
-          "why": "man + Modal + Infinitiv → Passiv: Modal + Partizip II + werden."
+          "why": "man + модальный глагол + инфинитив → пассив: модальный глагол + Partizip II + werden."
         },
         {
           "id": "b2-09-d10",
@@ -1721,7 +1721,7 @@
           "answer": [
             "soll"
           ],
-          "why": "sollen → soll."
+          "why": "sollen → soll (настоящее время)."
         },
         {
           "id": "b2-09-d11",
@@ -1736,7 +1736,7 @@
           "answer": [
             "weil Modal + Passiv = Doppelinfinitiv mit haben"
           ],
-          "why": "Doppelinfinitiv-Regel: hat + Partizip II + Modal (Infinitiv)."
+          "why": "Правило двойного инфинитива: hat + Partizip II + модальный глагол (инфинитив)."
         },
         {
           "id": "b2-09-d12",
@@ -1745,7 +1745,7 @@
           "answer": [
             "will"
           ],
-          "why": "wollen → will (selten, aber möglich)."
+          "why": "wollen → will (редко, но возможно)."
         }
       ]
     },
@@ -1767,27 +1767,27 @@
       "theory": [
         {
           "kind": "text",
-          "text": "Erweiterte Relativsätze: Relativpronomen 'was' (bei unbestimmten Pronomina), 'wo' (Ortsangaben), Präposition + Relativpronomen."
+          "text": "Расширенные относительные придаточные: относительное местоимение «was» (при неопределённых местоимениях), «wo» (место), предлог + относительное местоимение."
         },
         {
           "kind": "rule",
-          "title": "was (Relativpronomen)",
-          "text": "Nach unbestimmten Pronomina: alles, das, nichts, etwas, vieles, weniges. 'Alles, was er sagt, stimmt.' 'Das, was ich meine, ist...'"
+          "title": "was (относительное местоимение)",
+          "text": "После неопределённых местоимений: alles, das, nichts, etwas, vieles, weniges. «Alles, was er sagt, stimmt.» «Das, was ich meine, ist...»"
         },
         {
           "kind": "rule",
-          "title": "wo (Relativadverb)",
-          "text": "Bei Ortsangaben statt Präposition + Relativpronomen: 'Die Stadt, wo ich wohne' (statt: in der ich wohne). Auch bei zeitlichen: 'Der Tag, wo er kam.'"
+          "title": "wo (относительное наречие)",
+          "text": "При указании места вместо предлога + относительного местоимения: «Die Stadt, wo ich wohne» (вместо: in der ich wohne). Также для временных: «Der Tag, wo er kam»."
         },
         {
           "kind": "rule",
-          "title": "Präposition + Relativpronomen",
-          "text": "Die Präposition steht VOR dem Relativpronomen: 'Der Mann, mit dem ich spreche.' 'Das Haus, in dem ich wohne.' Kasus durch Präposition."
+          "title": "Предлог + относительное местоимение",
+          "text": "Предлог стоит ПЕРЕД относительным местоимением: «Der Mann, mit dem ich spreche.» «Das Haus, in dem ich wohne.» Падеж определяется предлогом."
         },
         {
           "kind": "rule",
-          "title": "Präposition + was/wo",
-          "text": "Bei unbestimmten: 'Worauf wartest du?' → 'Das, worauf ich warte...' Bei Ortsangaben: 'Wo er wohnt, ist schön.'"
+          "title": "Предлог + was/wo",
+          "text": "При неопределённых: «Worauf wartest du?» → «Das, worauf ich warte...» При указании места: «Wo er wohnt, ist schön»."
         },
         {
           "kind": "table",
@@ -1801,7 +1801,7 @@
           "kind": "example",
           "de": "Alles, was er sagt, ist wahr. Die Stadt, wo ich wohne, ist groß. Der Mann, mit dem ich spreche, ist nett. Das, woran ich denke, ist wichtig.",
           "ru": "Всё, что он говорит, правда. Город, где я живу, большой. Мужчина, с которым я говорю, милый. То, о чём я думаю, важно.",
-          "note": "was = nach alles/nichts/etwas. wo = Ortsangabe. Präposition + Relativpronomen."
+          "note": "was = после alles/nichts/etwas. wo = указание места. Предлог + относительное местоимение."
         }
       ],
       "drills": [
@@ -1818,7 +1818,7 @@
           "answer": [
             "was"
           ],
-          "why": "Nach unbestimmten Pronomina (alles, nichts, etwas) → was."
+          "why": "После неопределённых местоимений (alles, nichts, etwas) используется was."
         },
         {
           "id": "b2-10-d02",
@@ -1833,7 +1833,7 @@
           "answer": [
             "wo"
           ],
-          "why": "wo = Relativadverb für Ortsangaben (statt in der)."
+          "why": "wo = относительное наречие для указания места (вместо in der)."
         },
         {
           "id": "b2-10-d03",
@@ -1848,7 +1848,7 @@
           "answer": [
             "mit dem"
           ],
-          "why": "mit + Dativ → mit dem (Maskulin)."
+          "why": "mit + дательный → mit dem (мужской род)."
         },
         {
           "id": "b2-10-d04",
@@ -1857,7 +1857,7 @@
           "answer": [
             "in dem"
           ],
-          "why": "in + Dativ (Wo?) → in dem."
+          "why": "in + дательный (Где?) → in dem."
         },
         {
           "id": "b2-10-d05",
@@ -1866,7 +1866,7 @@
           "answer": [
             "Alles, was er sagt, ist wahr."
           ],
-          "why": "Relativsatz mit 'was'."
+          "why": "Относительное придаточное с 'was'."
         },
         {
           "id": "b2-10-d06",
@@ -1881,7 +1881,7 @@
           "answer": [
             "wo"
           ],
-          "why": "wo auch für zeitliche Relativsätze (umgangssprachlich)."
+          "why": "wo также для временных относительных придаточных (разговорно)."
         },
         {
           "id": "b2-10-d07",
@@ -1890,7 +1890,7 @@
           "answer": [
             "was"
           ],
-          "why": "Nach 'das' (Demonstrativpronomen) → was."
+          "why": "После 'das' (указательное местоимение) → was."
         },
         {
           "id": "b2-10-d08",
@@ -1905,7 +1905,7 @@
           "answer": [
             "worauf"
           ],
-          "why": "warten auf → worauf."
+          "why": "Глагол warten требует предлога auf, поэтому образуется worauf."
         },
         {
           "id": "b2-10-d09",
@@ -1914,7 +1914,7 @@
           "answer": [
             "Die Stadt, wo ich wohne"
           ],
-          "why": "Präposition + Relativpronomen → wo (Ortsangabe)."
+          "why": "Предлог + относительное местоимение → wo (указание места)."
         },
         {
           "id": "b2-10-d10",
@@ -1923,7 +1923,7 @@
           "answer": [
             "was"
           ],
-          "why": "Nach 'nichts' → was."
+          "why": "После 'nichts' → was."
         },
         {
           "id": "b2-10-d11",
@@ -1938,7 +1938,7 @@
           "answer": [
             "die"
           ],
-          "why": "Feminin Akkusativ: die (ohne Präposition) / mit Präposition: Kasus durch Präposition."
+          "why": "Женский род, винительный: die (без предлога) / с предлогом: падеж определяется предлогом."
         },
         {
           "id": "b2-10-d12",
@@ -1947,7 +1947,7 @@
           "answer": [
             "Der Stuhl, wo ich sitze"
           ],
-          "why": "Ortsangabe → wo."
+          "why": "Указание места → wo."
         }
       ]
     }
