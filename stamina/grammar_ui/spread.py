@@ -19,6 +19,7 @@ from stamina.i18n import t as _t
 from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
 
 from stamina.english.ui import FocusMode, L, ScrollFrame, entry
+from stamina.hotkeys import typing_in
 from stamina.grammar_ui.focus import (
     EscDouble, is_grammar_focus_key, session_wanted, set_session_wanted,
 )
@@ -301,15 +302,44 @@ class GrammarSpread(tk.Frame):
         return True
 
     def on_key(self, e) -> str | None:
-        """Горячие клавиши зенида, только пока эта страница грамматики на экране."""
+        """Клавиши зенида и возврата по меню, только пока страница грамматики на экране."""
         ks = getattr(e, "keysym", "") or ""
         if ks == "Escape" and self._focus is not None:
             self.handle_focus_escape()
             return "break"
+        if ks in ("BackSpace", "Backspace"):
+            if typing_in(getattr(e, "widget", None)):
+                return None
+            if self._back_in_grammar():
+                return "break"
+            return None
         if is_grammar_focus_key(e):
             self.toggle_focus()
             return "break"
         return None
+
+    def _back_in_grammar(self) -> bool:
+        """Шаг назад по меню: таблица → урок → список уроков/уровней. Зенид не сбрасывается."""
+        if self._table_id is not None:
+            self._back_from_table()
+            return True
+        if self._unit is not None or self._data is not None:
+            self._token += 1
+            self._cancel("lesson")
+            self._unit = None
+            self._data = None
+            self._answers = {}
+            self._exercises = []
+            self._clear_lesson()
+            self._highlight_unit()
+            hint = getattr(self, "_hint", None)
+            if hint is not None:
+                try:
+                    hint.configure(text=_t("Выберите урок слева"))
+                except tk.TclError:
+                    pass
+            return True
+        return False
 
     def _flush_pending(self) -> None:
         """Для тестов: выгрузить очередь потоков и все after-порции."""
