@@ -17,10 +17,9 @@ class LessonsIndexTest(unittest.TestCase):
         self.assertEqual([int(u["n"]) for u in units], list(range(1, gl.TOTAL_UNITS + 1)))
 
     def test_levels_split(self) -> None:
-        for lv in gl.LEVELS:
-            self.assertGreater(len(gl.by_level(lv)), 0, lv)
-        self.assertEqual(len(gl.by_level("a1")) + len(gl.by_level("a2")) + len(gl.by_level("b1")),
-                         gl.TOTAL_UNITS)
+        counts = {lv: len(gl.by_level(lv)) for lv in gl.LEVELS}
+        self.assertEqual(counts, {"a1": 30, "a2": 60, "b1": 25, "b2": 136})
+        self.assertEqual(sum(counts.values()), gl.TOTAL_UNITS)
 
     def test_modules_cover_units(self) -> None:
         ids = {m["id"] for m in gl.modules()}
