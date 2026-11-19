@@ -1,0 +1,418 @@
+{
+  "id": "adj_02",
+  "title": "Adjectives: Adjektive nach Ein-Wörtern",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_02.html",
+  "explanation_lang": "en",
+  "section": "Adjectives",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Predicate adjectives",
+      "text": "While predicate adjectives are not part of the ein-word adjectives, it is important to discuss briefly their position and use. Predicate adjectives take the most basic, unaltered form of the adjective, and don't take any endings unless they are in the comparative or superlative forms [link to comparative and superlative]. These adjectives are linked to the nouns they describe with a verb such as sein, werden, or heißen.\n\nDer Esel war schon alt. | The donkey was already old.\n\nDas alte Tier wurde schwach. | The old animal got weak.\n\nDer Meinung seines Herren nach wurde er einfach untauglich für die Arbeit. | According to his owner, he simply became unsuitable for work."
+    },
+    {
+      "heading": "Attributive adjectives after ein-words",
+      "text": "Adjectives that follow indefinite articles (ein, eine, keine, keinen, etc.) or the other ein-words: mein, dein, sein, ihr, unser, euer (in any case), and precede the nouns they describe, take so-called strong endings. These endings apply whether the adjective is in the basic form or in the comparative or superlative forms. Remember that there is no plural form for the indefinite article ein.\n\nDer Esel wusste, dass kein guter Wind wehte, und lief weg. | The donkey knew that an ill wind [lit: no good wind] was blowing and ran away.\n\nAls er ein kurzes Weilchen gelaufen war, sah er einen alten Jagdhund auf dem Weg liegen. | When he had gone a short distance, he saw an old hunting dog lying on the road.\n\nDer Hund war sehr traurig, denn er hatte seinen ehemaligen Herrn enttäuscht. | The dog was very sad, because he had disappointed his former owner.\n\nTo determine the correct adjective ending, determine the gender of the noun the adjective describes (masculine, feminine, neuter or plural), then determine what case the noun is in the sentence or phrase (nominative, accusative, dative, or genitive).\n\nNominativ | Akkusativ | Dativ | Genitiv\n\nMaskulin | ein alter Esel | einen alten Esel | einem alten Esel | eines alten Esels\n\nFeminin | eine alte Katze | eine alte Katze | einer alten Katze | einer alten Katze\n\nNeutral | ein altes Räuberhaus | ein altes Räuberhaus | einem alten Räuberhaus | eines alten Räuberhauses\n\nPlural | keine alten Tiere | keine alten Tiere | keinen alten Tieren | keiner alten Tiere"
+    },
+    {
+      "heading": "Exceptions",
+      "text": "Exceptions"
+    },
+    {
+      "heading": "Changes in the basic form",
+      "text": "When adjectives that end in -el, -en, or -er in the basic form get an adjective ending, they drop the -e- before the final consonant and add the endings to this new form (see the example with dunkel).\n\nDer Esel | Vergiss deine dunklen Gedanken und komm mit mir nach Bremen! | Forget your dark thoughts and come with me to Bremen!"
+    },
+    {
+      "heading": "Colors",
+      "text": "Der Esel | Ein paar Minuten später sahen wir ein rosa Funkeln - es waren die Augen einer lila Katze ... ne, ne, ne ... falsch! Es war eigentlich eine beige Katze und ein oranges Funkeln. | A few minutes later we saw a pink spark - it was the eyes of a purple cat ... no, no, no ... my mistake! It was actually a beige cat and an orange light."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Der Esel war schon alt.",
+      "en": "The donkey was already old."
+    },
+    {
+      "de": "Das alte Tier wurde schwach.",
+      "en": "The old animal got weak."
+    },
+    {
+      "de": "Der Meinung seines Herren nach wurde er einfach untauglich für die Arbeit.",
+      "en": "According to his owner, he simply became unsuitable for work."
+    },
+    {
+      "de": "Der Esel wusste, dass kein guter Wind wehte, und lief weg.",
+      "en": "The donkey knew that an ill wind [lit: no good wind] was blowing and ran away."
+    },
+    {
+      "de": "Als er ein kurzes Weilchen gelaufen war, sah er einen alten Jagdhund auf dem Weg liegen.",
+      "en": "When he had gone a short distance, he saw an old hunting dog lying on the road."
+    },
+    {
+      "de": "Der Hund war sehr traurig, denn er hatte seinen ehemaligen Herrn enttäuscht.",
+      "en": "The dog was very sad, because he had disappointed his former owner."
+    },
+    {
+      "de": "Maskulin",
+      "en": "ein alter Esel"
+    },
+    {
+      "de": "Feminin",
+      "en": "eine alte Katze"
+    },
+    {
+      "de": "Neutral",
+      "en": "ein altes Räuberhaus"
+    },
+    {
+      "de": "Plural",
+      "en": "keine alten Tiere"
+    },
+    {
+      "de": "Der Esel",
+      "en": "Vergiss deine dunklen Gedanken und komm mit mir nach Bremen!"
+    },
+    {
+      "de": "Der Esel",
+      "en": "Ein paar Minuten später sahen wir ein rosa Funkeln - es waren die Augen einer lila Katze ... ne, ne, ne ... falsch! Es war eigentlich eine beige Katze und ein oranges Funkeln."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Hund und der Esel gingen weiter und sahen eine Katze, die ein sehr ___ Gesicht hatte - sie war fast am Weinen!",
+      "a": "trauriges",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Mit ihren ___ Augen konnte sie keine Mäuse fangen.",
+      "a": "kurzsichtigen",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Die Katze: Meine ___ Herrin wollte mich ertränken (drown)!",
+      "a": "ehemalige",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Nun, gingen alle drei weiter, und sie gingen an einem ___ Hof vorbei (er musste einem sehr reichen Mann gehören!), da saß auf dem Tor ein Haushahn.",
+      "a": "prächtigen",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Haushahn schrie aus Leibeskräften (here: full force), weil es ein ___ Feiertag war, und seine Herrin ihn am nächsten Tag in der Suppe essen wollte.",
+      "a": "religiöser",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel: Ach, weine nicht! Wir bieten dir ein viel ___ Schicksal (fate) als den Tod an. Komm doch mit uns nach Bremen!",
+      "a": "besseres",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Sie konnten die Stadt Bremen nicht in einem Tag erreichen und kamen abends in einen ___ Wald, wo sie übernachten wollten.",
+      "a": "dunklen",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel und der Hund legten sich unter einen ___ Baum, die Katze und der Hahn machten sich auf in die Äste, wo sie sich am sichersten fühlten.",
+      "a": "riesengroßen",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Der Hahn sah später in der Ferne ein ___ Fünkchen (little sparkle) brennen, und die vier Tiere wollten herausfinden was es war.",
+      "a": "gelbes",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Aber das Haus war überhaupt nicht ___; es war gruselig und gehörte einigen Räubern!",
+      "a": "gemütlich",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "In dem Haus sahen die Tiere einen ___ Tisch, mit schönem Essen und Trinken, und die Räuber saßen am Tisch.",
+      "a": "gedeckten",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Die vier Tiere dachten nach, und hatten eine ___ Idee! Sie wollten die vier Räuber erschrecken, damit sie ihr Haus übernehmen (take over) konnten.",
+      "a": "fantastische",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Sie fingen an, ihre ___ 'Musik' zu machen: der Esel schrie, der Hund bellte, die Katze miaute und der Hahn krähte.",
+      "a": "merkwürdige",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    },
+    {
+      "type": "gap",
+      "q": "Jeder Räuber hatte fast einen ___ Herzinfarkt, und sie liefen alle schnell weg; die vier Tiere konnten dann das Haus übernehmen.",
+      "a": "fatalen",
+      "options": [
+        "fatal",
+        "dunkel",
+        "gut",
+        "kurzsichtig",
+        "gelb",
+        "riesengroß",
+        "ehemalig",
+        "merkwürdig",
+        "prächtig",
+        "traurig",
+        "gemütlich",
+        "fantastisch",
+        "gedeckt",
+        "religiös"
+      ],
+      "set_id": "adj_02_01_fib",
+      "set_title": "Übung",
+      "prompt": "The Bremer Stadtmusikanten are very proud of their adventures – and retell it at every opportunity, this time trying to make it very colorful and impressive. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful. Naturally, the attributive adjectives require endings and the predicate ones don't (watch out for #6, it's kind of tricky!)."
+    }
+  ]
+}

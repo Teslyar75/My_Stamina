@@ -1,0 +1,214 @@
+{
+  "id": "vi_05",
+  "title": "Verbs: Haben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_05.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Haben can be used either as the main verb of a sentence or as helping verbs. In this section, we will discuss haben as the main verb. Haben appears frequently in German, and just as frequently used verbs in English, it is quite irregular. The only thing to do is to memorize these forms.\n\nhaben • to have\n\nich habe | wir haben\n\ndu hast | ihr habt\n\ner/sie/es hat | sie haben\n\nRotkäppchens Mutter | Liebling, was hast du im Korb? | Darling, what do you have in the basket?\n\nRotkäppchen | Ich habe eine Flasche Wein und Brot und Kekse. | I have a bottle of wine, and bread and cookies.\n\nRotkäppchens Mutter | Ach, keine Kekse! Omi hat zu viel Karies! | Oh, no cookies! Granny has too many cavities!\n\nRotkäppchen | Mutter! Ihr habt so viele dumme Regeln! | Mothers! You guys have so many silly rules!\n\nrelated words\n\nHab und Gut | possessions\n\ndie Habe | possessions/belongings\n\nhabeas corpus | literally: you shall have the body\n\nder Habenichts | the pauper\n\ndie Habgier | greed\n\nfun phrases\n\nWas hast du gegen mich? | What do you have against me?\n\nPech haben | to have bad luck\n\nSchwein gehabt! | lucky, lucky!\n\nDa hast du es! | There you have it! Didn't I tell you?\n\nNaja, wer hat, der hat! | Well, those who have it, have it!\n\nEr hat keine Auge im Kopf! | He can't see/get it!\n\nSie hat klebrige Finger! | She steals (lit: sticky fingers)\n\nDu hast Recht | You're right!\n\nMensch, habe ich einen Kater! | Man, I am so hung over!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich habe",
+      "en": "wir haben"
+    },
+    {
+      "de": "du hast",
+      "en": "ihr habt"
+    },
+    {
+      "de": "er/sie/es hat",
+      "en": "sie haben"
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Liebling, was hast du im Korb?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Ich habe eine Flasche Wein und Brot und Kekse."
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Ach, keine Kekse! Omi hat zu viel Karies!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Mutter! Ihr habt so viele dumme Regeln!"
+    },
+    {
+      "de": "Hab und Gut",
+      "en": "possessions"
+    },
+    {
+      "de": "die Habe",
+      "en": "possessions/belongings"
+    },
+    {
+      "de": "habeas corpus",
+      "en": "literally: you shall have the body"
+    },
+    {
+      "de": "der Habenichts",
+      "en": "the pauper"
+    },
+    {
+      "de": "die Habgier",
+      "en": "greed"
+    },
+    {
+      "de": "Was hast du gegen mich?",
+      "en": "What do you have against me?"
+    },
+    {
+      "de": "Pech haben",
+      "en": "to have bad luck"
+    },
+    {
+      "de": "Schwein gehabt!",
+      "en": "lucky, lucky!"
+    },
+    {
+      "de": "Da hast du es!",
+      "en": "There you have it! Didn't I tell you?"
+    },
+    {
+      "de": "Naja, wer hat, der hat!",
+      "en": "Well, those who have it, have it!"
+    },
+    {
+      "de": "Er hat keine Auge im Kopf!",
+      "en": "He can't see/get it!"
+    },
+    {
+      "de": "Sie hat klebrige Finger!",
+      "en": "She steals (lit: sticky fingers)"
+    },
+    {
+      "de": "Du hast Recht",
+      "en": "You're right!"
+    },
+    {
+      "de": "Mensch, habe ich einen Kater!",
+      "en": "Man, I am so hung over!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen ___ eine neue Karriere. Sie ist Rechtsanwältin für Menschenrechte.",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Alle Schlosseinwohner ___ eine große, helle Wohnung.",
+      "a": "haben",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Die sieben Zwerge ___ eine 8-Zimmer Wohnung!",
+      "a": "haben",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Jeder (each) Zwerg ___ sein eigenes Schlafzimmer.",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzel ist etwas eingebildet (conceited): \"Ich ___ wunderschöne Haare!\"",
+      "a": "habe",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Dornröschen ist manchmal ungeduldig (impatient): \"Ja, aber du ___ nicht so viel im Kopf!\"",
+      "a": "hast",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "\"Du ___ Recht!\" sagt Rapunzel. \"Aber ich bin lieber (I'd rather be) schön als intelligent.\"",
+      "a": "hast",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig ___ einen Traum: Er möchte wieder Prinz werden!",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Er sagt der Prinzessin: \"Ich ___ deinen Ball. Ich geb ihn dir aber nur zurück für einen Kuss!\"",
+      "a": "habe",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Die Prinzessin ___ aber viele andere Bälle.",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel und Gretel ___ einen Spielofen (toy oven) in ihrem Spielzimmer.",
+      "a": "haben",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Hexe ___ keine Nachbarn.",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Die Schlosseinwohner ___ Angst vor der Hexe.",
+      "a": "haben",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Das stört die alte Hexe gar nicht; sie ___ keine Interesse daran, mit den anderen Schlosseinwohnern herumzuplaudern (to chat)!",
+      "a": "hat",
+      "set_id": "vi_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The haves and have-nots in the castle ... fill in the blanks with the missing forms of haben to complete the sentences and learn more about the castle's residents."
+    }
+  ]
+}

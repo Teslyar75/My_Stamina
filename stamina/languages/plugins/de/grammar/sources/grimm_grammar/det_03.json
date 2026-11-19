@@ -1,0 +1,198 @@
+{
+  "id": "det_03",
+  "title": "Determiners: Ein-Wörter",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/det_03.html",
+  "explanation_lang": "en",
+  "section": "Determiners",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Recall that determiners are words which precede nouns in order to give more precise information about them. Ein-words are determiners that behave, grammatically speaking, like indefinite articles (i.e., ein, eine).\n\nDie Königin sitzt an einem Fenster aus schwarzem Ebenholz und näht. | The queen sits at a window made of black ebony and sews.\n\nAls sie den Schnee betrachtet, sticht sie sich mit der Nadel in ihren Finger; drei Tropfen Blut fallen in den Schnee. | As she watches the snow, she pricks her finger with the needle; three drops of blood fall into the snow.\n\nDas Kind, das die Königin zur Welt bringt, ist wunderschön. Seine Haut ist so weiß wie Schnee, seine Lippen sind so rot wie Blut, und seine Haare sind so schwarz wie Ebenholz. Das Kind heißt Schneewittchen. | The child that the queen gives birth to is very beautiful. Its skin is as white as snow, its lips are as red as blood, and its hair is as black as ebony. The child is called Snow White.\n\nThe ein-words include\n\nein (a, an) | kein (no, none)\n\nAs well as the possessive pronouns ...\n\nmein (my) | unser (our)\n\ndein (your, informal) | euer (your, plural)\n\nsein (his)\nihr (her)\nsein (its) | ihr (their)\nIhr (your, formal)\n\nLike indefinite articles, ein-words agree with the nouns they introduce in terms of gender, number and case.\n\nNominative | Accusative | Dative | Genitive\n\nMasculine | dein Apfel | deinen Apfel | deinem Apfel | deines Apfels | (apple)\n\nFeminine | deine Schneeflocke | deine Schneeflocke | deiner Schneeflocke | deiner Schneeflocke | (snowflake)\n\nNeuter | dein Spieglein | dein Spieglein | deinem Spieglein | deines Spiegleins | (mirror)\n\nPlural | deine Zwerge | deine Zwerge | deinen Zwergen | deiner Zwerge | (dwarves)\n\ndie böse Königin | Schatz, kuck mal, deine Tochter ist eine wahre Schönheit! Das könnte mein Leben sehr schwierig machen! | Darling, look, your daughter is a real beauty! That can make my life really difficult!\n\nder König | Keine Sorge, Liebling, vielleicht kannst du deinen Spiegel bestechen, damit er dir immer nur die Antwort gibt, die du hören willst! | No worries, honey, perhaps you can bribe your mirror so that it always only tells you the answer you want to hear!\n\nAdjectives that follow ein-words also take the same weak endings as the ones that follow indefinite articles. Because the grammatical information is already marked on the determiner, the information does not need to be marked on the adjective.\n\nNominative | Accusative | Dative | Genitive\n\nMasculine | dein giftiger Apfel | deinen giftigen Apfel | deinem giftigen Apfel | deines giftigen Apfels | (poisonous)\n\nFeminine | deine weiße Schneeflocke | deine weiße Schneeflocke | deiner weißen Schneeflocke | deiner weißen Schneeflocke | (white)\n\nNeuter | dein sprechendes Spieglein | dein sprechendes Spieglein | deinem sprechenden Spieglein | deines sprechenden Spieglein | (talking)\n\nPlural | deine fleißigen Zwerge | deine fleißigen Zwerge | deinen fleißigen Zwergen | deiner fleißigen Zwerge | (hard-working)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Die Königin sitzt an einem Fenster aus schwarzem Ebenholz und näht.",
+      "en": "The queen sits at a window made of black ebony and sews."
+    },
+    {
+      "de": "Als sie den Schnee betrachtet, sticht sie sich mit der Nadel in ihren Finger; drei Tropfen Blut fallen in den Schnee.",
+      "en": "As she watches the snow, she pricks her finger with the needle; three drops of blood fall into the snow."
+    },
+    {
+      "de": "Das Kind, das die Königin zur Welt bringt, ist wunderschön. Seine Haut ist so weiß wie Schnee, seine Lippen sind so rot wie Blut, und seine Haare sind so schwarz wie Ebenholz. Das Kind heißt Schneewittchen.",
+      "en": "The child that the queen gives birth to is very beautiful. Its skin is as white as snow, its lips are as red as blood, and its hair is as black as ebony. The child is called Snow White."
+    },
+    {
+      "de": "ein (a, an)",
+      "en": "kein (no, none)"
+    },
+    {
+      "de": "mein (my)",
+      "en": "unser (our)"
+    },
+    {
+      "de": "dein (your, informal)",
+      "en": "euer (your, plural)"
+    },
+    {
+      "de": "sein (his)\nihr (her)\nsein (its)",
+      "en": "ihr (their)\nIhr (your, formal)"
+    },
+    {
+      "de": "Masculine",
+      "en": "dein Apfel"
+    },
+    {
+      "de": "Feminine",
+      "en": "deine Schneeflocke"
+    },
+    {
+      "de": "Neuter",
+      "en": "dein Spieglein"
+    },
+    {
+      "de": "Plural",
+      "en": "deine Zwerge"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Schatz, kuck mal, deine Tochter ist eine wahre Schönheit! Das könnte mein Leben sehr schwierig machen!"
+    },
+    {
+      "de": "der König",
+      "en": "Keine Sorge, Liebling, vielleicht kannst du deinen Spiegel bestechen, damit er dir immer nur die Antwort gibt, die du hören willst!"
+    },
+    {
+      "de": "Masculine",
+      "en": "dein giftiger Apfel"
+    },
+    {
+      "de": "Feminine",
+      "en": "deine weiße Schneeflocke"
+    },
+    {
+      "de": "Neuter",
+      "en": "dein sprechendes Spieglein"
+    },
+    {
+      "de": "Plural",
+      "en": "deine fleißigen Zwerge"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Als die Königin das Kind zur Welt bringt, stirbt sie, und der König muss sich ___ andere Frau nehmen.",
+      "a": "eine",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Die zweite Königin ist sehr eifersüchtig auf die Schönheit ___ Stieftochter, denn sie will die Schönste im ganzen Land sein.",
+      "a": "ihrer",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Sie wird so eifersüchtig, dass sie Tag und Nacht ___ Ruhe mehr hat. Deshalb befiehlt sie dem Jäger, das Mädchen hinaus in den Wald zu bringen.",
+      "a": "keine",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "\"Ich will es nicht mehr vor ___ Augen sehen!\" sagt ihm die Königin. \"Du sollst sie töten und mir Lunge und Leber als Beweis (as proof) mitbringen.\"",
+      "a": "meinen",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger bringt Schneewittchen hinaus in den Wald, aber das Mädchen fängt an zu weinen, als er ___ Hirschfänger (hunting knife, m.) herauszieht.",
+      "a": "seinen",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "\"Ach, lieber Jäger!\" bittet Schneewittchen. \"Lass mir ___ Leben. Ich laufe in den wilden Wald und komme nie wieder zurück.\"",
+      "a": "mein",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Er lässt das Mädchen los, weil er Mitleid hat. Dann bringt er der Königin die Lunge und Leber ___ jungen Hirsches (deer, m.).",
+      "a": "eines",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen läuft und läuft, bis sie ___ kleines Häuschen findet und hinein geht.",
+      "a": "ein",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Nachdem Schneewittchen etwas ißt und trinkt will sie ins Bett gehen, aber es passt in ___ Bett!",
+      "a": "kein",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Als die sieben Zwerge nach Hause kommen, bemerken sie sofort, dass jemand in ___ Häuschen gegangen ist.",
+      "a": "ihr",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Der siebte Zwerg geht in ___ Schlafzimmer und entdeckt Schneewittchen. Das war das einzige Bett, das dem Mädchen gepasst hat.",
+      "a": "seinem",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen wacht den nächsten Tag auf und erzählt den Zwergen ___ schreckliche Geschichte.",
+      "a": "ihre",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "\"Wenn du ___ Haus putzt und für uns kochst, kannst du bei uns bleiben,\" sagen die sieben Zwerge, und das Mädchen nimmt das Angebot an.",
+      "a": "unser",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen ist den ganzen Tag alleine. Sie kann kaum (hardly) warten, bis ___ Freunde, die Zwerge, nach Hause kommen!",
+      "a": "ihre",
+      "set_id": "det_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Snow White's saga begins the day she is born! Fill in the blanks below with the ein-words that most meaningfully complete the sentences – to learn about the obstacles she encountered in her earliest years."
+    }
+  ]
+}

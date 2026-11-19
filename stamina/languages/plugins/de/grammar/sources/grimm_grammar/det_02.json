@@ -1,0 +1,444 @@
+{
+  "id": "det_02",
+  "title": "Determiners: Der-Wörter",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/det_02.html",
+  "explanation_lang": "en",
+  "section": "Determiners",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Recall that determiners are words, which precede nouns in order to give more precise information about them. Der-words are determiners that behave, grammatically speaking, like definite articles (i.e., der, die, das). They include:\n\ndieser | this\n\njeder | each, every (singular only)\n\njener | that\n\nmancher | many (a)\n\nsolcher | such (a)\n\nwelcher | which\n\nalle | all (plural of jeder)\n\n\"Dieses unerträgliche Weinen! Was ist denn los?!\" fragt sich der Froschkönig, als er sich im kühlen Wasser des Brunnens ausruht. | 'This unendurable crying! What on earth is the matter?!' the frog king asks himself as he rests in the cool water of the fountain.\n\nDer Froschkönig verbringt jeden Tag im alten Brunnen. | The frog king spends every day in the old fountain.\n\nSeit jener furchtbaren Verwandlung muss er immer in der Nähe vom Wasser bleiben. | Ever since that dreadful metamorphosis, he must always stay close to water.\n\nAn manchen Nachmittagen geht die schöne Prinzessin in den Wald, um am Rand des Brunnens zu sitzen. | Some afternoons the beautiful princess goes into the forest to sit at the fountain.\n\nAber solch einen Lärm hat sie noch niemals gemacht. | But she had never before made such a racket.\n\n\"Sag mir, welchen Dienst ich dir erweisen kann, liebe Prinzessin,\" sagt der Froschkönig. | 'Tell me which service I can render you, dear princess,' the frog king says.\n\nDie Prinzessin hat ihre goldene Kugel im Wasser verloren. Also verspricht sie dem Froschkönig alle ihrer Besitztümer, wenn er die Kugel zurückbringt. | The princess lost her golden ball in the water. Thus she promises the frog king all of her possessions if he brings the ball back.\n\nLike definite articles, der-words agree with the nouns they introduce in terms of gender, number and case.\n\nNominative | Accusative | Dative | Genitive\n\nMasculine | dieser Frosch | diesen Frosch | diesem Frosch | dieses Frosches | (frog)\n\nFeminine | diese Prinzessin | diese Prinzessin | dieser Prinzessin | dieser Prinzessin | (princess)\n\nNeuter | dieses Wasser | dieses Wasser | diesem Wasser | dieses Wassers | (water)\n\nPlural | diese Perlen | diese Perlen | diesen Perlen | dieser Perlen | (pearls)\n\nAdjectives that follow der-words also take the same weak endings as the ones that follow definite articles. Because the grammatical information is already marked on the determiner, the information does not need to be marked on the adjective.\n\nNominative | Accusative | Dative | Genitive\n\nMasculine | dieser hässliche Frosch | diesen hässlichen Frosch | diesem hässlichen Frosch | dieses hässlichen Frosches | (ugly)\n\nFeminine | diese schöne Prinzessin | diese schöne Prinzessin | dieser schönen Prinzessin | dieser schönen Prinzessin | (beautiful)\n\nNeuter | dieses kühle Wasser | dieses kühle Wasser | diesem kühlen Wasser | dieses kühlen Wassers | (cool)\n\nPlural | diese wertvollen Perlen | diese wertvollen Perlen | diesen wertvollen Perlen | dieser wertvollen Perlen | (valuable)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "dieser",
+      "en": "this"
+    },
+    {
+      "de": "jeder",
+      "en": "each, every (singular only)"
+    },
+    {
+      "de": "jener",
+      "en": "that"
+    },
+    {
+      "de": "mancher",
+      "en": "many (a)"
+    },
+    {
+      "de": "solcher",
+      "en": "such (a)"
+    },
+    {
+      "de": "welcher",
+      "en": "which"
+    },
+    {
+      "de": "alle",
+      "en": "all (plural of jeder)"
+    },
+    {
+      "de": "\"Dieses unerträgliche Weinen! Was ist denn los?!\" fragt sich der Froschkönig, als er sich im kühlen Wasser des Brunnens ausruht.",
+      "en": "'This unendurable crying! What on earth is the matter?!' the frog king asks himself as he rests in the cool water of the fountain."
+    },
+    {
+      "de": "Der Froschkönig verbringt jeden Tag im alten Brunnen.",
+      "en": "The frog king spends every day in the old fountain."
+    },
+    {
+      "de": "Seit jener furchtbaren Verwandlung muss er immer in der Nähe vom Wasser bleiben.",
+      "en": "Ever since that dreadful metamorphosis, he must always stay close to water."
+    },
+    {
+      "de": "An manchen Nachmittagen geht die schöne Prinzessin in den Wald, um am Rand des Brunnens zu sitzen.",
+      "en": "Some afternoons the beautiful princess goes into the forest to sit at the fountain."
+    },
+    {
+      "de": "Aber solch einen Lärm hat sie noch niemals gemacht.",
+      "en": "But she had never before made such a racket."
+    },
+    {
+      "de": "\"Sag mir, welchen Dienst ich dir erweisen kann, liebe Prinzessin,\" sagt der Froschkönig.",
+      "en": "'Tell me which service I can render you, dear princess,' the frog king says."
+    },
+    {
+      "de": "Die Prinzessin hat ihre goldene Kugel im Wasser verloren. Also verspricht sie dem Froschkönig alle ihrer Besitztümer, wenn er die Kugel zurückbringt.",
+      "en": "The princess lost her golden ball in the water. Thus she promises the frog king all of her possessions if he brings the ball back."
+    },
+    {
+      "de": "Masculine",
+      "en": "dieser Frosch"
+    },
+    {
+      "de": "Feminine",
+      "en": "diese Prinzessin"
+    },
+    {
+      "de": "Neuter",
+      "en": "dieses Wasser"
+    },
+    {
+      "de": "Plural",
+      "en": "diese Perlen"
+    },
+    {
+      "de": "Masculine",
+      "en": "dieser hässliche Frosch"
+    },
+    {
+      "de": "Feminine",
+      "en": "diese schöne Prinzessin"
+    },
+    {
+      "de": "Neuter",
+      "en": "dieses kühle Wasser"
+    },
+    {
+      "de": "Plural",
+      "en": "diese wertvollen Perlen"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "__________ Mal, wenn die Königstochter ihre goldene Kugel in die Höhe wirft, fällt die Kugel wieder in ihre Hand.",
+      "options": [
+        "a. Jenes",
+        "b. Jedes"
+      ],
+      "a": "b. Jedes",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Aber eines Tages fällt __________ Kugel auf die Erde und rollt in den Brunnen hinein.",
+      "options": [
+        "a. diese",
+        "b. solche"
+      ],
+      "a": "a. diese",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Die Königstochter fängt an zu weinen, denn __________ Kugeln sind sehr teuer!",
+      "options": [
+        "a. solche",
+        "b. welche"
+      ],
+      "a": "a. solche",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Plötzlich erscheint ein Frosch am Rande des Brunnens. Die Königstochter bietet ihm __________ Arten von Reichtümern (sorts of riches) an, wenn er die Kugel wieder heraufholt.",
+      "options": [
+        "a. jede",
+        "b. alle"
+      ],
+      "a": "b. alle",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Der Frosch will aber keine Reichtümer, und er erzählt ihr __________ Belohnung (reward) er lieber mag: die Gesellschaft der Königstochter (the company of the king's daughter)!",
+      "options": [
+        "a. welche",
+        "b. manche"
+      ],
+      "a": "a. welche",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Nachdem die Königstochter ihm ihre Gesellschaft verspricht, bekommt sie __________ kostbare Spielzeug zurück.",
+      "options": [
+        "a. welches",
+        "b. jenes"
+      ],
+      "a": "b. jenes",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Sobald sie die Kugel aufhebt, läuft die Königstochter nach Hause, ohne den Frosch mitzunehmen. \"__________ ein Verrat!\" denkt sich der Frosch, und er beginnt, ihr nachzulaufen.",
+      "options": [
+        "a. Manch",
+        "b. Solch"
+      ],
+      "a": "b. Solch",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "__________ ein Frosch hätte aufgegeben (would have given up) auf dem langen Weg zum Schloß.",
+      "options": [
+        "a. Manch",
+        "b. Welch"
+      ],
+      "a": "a. Manch",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Aber __________ Frosch ist viel stärker und mutiger als die normalen Frösche, und er kommt am nächsten Tag endlich an.",
+      "options": [
+        "a. jeder",
+        "b. dieser"
+      ],
+      "a": "b. dieser",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Der Frosch klopft an die Tür, und die Königstochter muss ihrem Vater vom vorherigen Nachmittag erzählen. Der König sagt, dass sie __________ Versprechen halten muss.",
+      "options": [
+        "a. jedes",
+        "b. solches"
+      ],
+      "a": "a. jedes",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Die Königstochter öffnet die Tür und __________ Hofleute sind erstaunt, als der Frosch in den Speisesaal hüpft.",
+      "options": [
+        "a. alle",
+        "b. welche"
+      ],
+      "a": "a. alle",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "\"Heb mich hinauf zu dir!\" sagt der Frosch zu ihr; er will auf dem Tisch sitzen, um von ihrem Teller __________ wohlschmeckenden Bissen (tasty morsels) zu kosten.",
+      "options": [
+        "a. manche",
+        "b. jede"
+      ],
+      "a": "a. manche",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Zunächst will der Frosch in dem Bett der Königstochter schlafen - __________ sie ihm schon versprochen hatte - aber sie wird zornig und wirft ihn gegen die Wand des Schlafzimmers.",
+      "options": [
+        "a. solches",
+        "b. welches"
+      ],
+      "a": "b. welches",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "choice",
+      "q": "Als der Frosch von der Wand auf den Boden fällt ist er kein Frosch mehr, sondern __________ hübsche Königssohn, der von einer bösen Hexe verwünscht wurde!",
+      "options": [
+        "a. jener",
+        "b. jeder"
+      ],
+      "a": "a. jener",
+      "set_id": "det_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Choose the der-word that most meaningfully completes each of the sentences below – to discover what took place at the fountain that fateful day."
+    },
+    {
+      "type": "gap",
+      "q": "Ich muss mich entscheiden, ___ Leben mir besser gefällt: das Leben als Frosch oder das Leben als König.",
+      "a": "welches",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Als Frosch konnte ich ___ Tag schwimmen und faulenzen, aber jetzt als König muss ich immer arbeiten.",
+      "a": "jeden",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Außerdem darf ich jetzt nur ___ eine Prinzessin küssen!",
+      "a": "diese",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Für ___ Frauenjäger (womanizers) wie ich ist das fast unerträglich!",
+      "a": "solche",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Wenn ich wieder Frosch wäre (if I were a frog again) könnte ich ___ andere Prinzessinnen küssen. Niemand würde mich erkennen! (No one would recognize me!)",
+      "a": "manche",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Ich muss versuchen, wieder Kontakt mit ___ Hexe aufzunehmen, die mich ursprünglich verzaubert hat.",
+      "a": "jener",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Ich bin sicher verrückt! Haben ___ Könige dumme Wünsche wie ich?",
+      "a": "alle",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Ja, ___ Idee, wieder Frosch zu werden, ist lächerlich. Habe ich die schmerzhafte Verwandlung schon vergessen?",
+      "a": "diese",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Vielleicht soll ich ___ Kafka-Novelle (f.) noch einmal lesen, um mich an das furchtbare Erlebnis zu erinnern!",
+      "a": "jene",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    },
+    {
+      "type": "gap",
+      "q": "Ich lasse mich lieber von der Prinzessin scheiden; heutzutage lassen sich ___ Leute scheiden!",
+      "a": "manche",
+      "options": [
+        "dies-",
+        "jed-",
+        "solch-",
+        "all-",
+        "jen-",
+        "manch-",
+        "welch-"
+      ],
+      "set_id": "det_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Der Froschkönig denkt über sein Leben nach. Was soll er tun? Fill in the blanks below with the correct forms of the der-words in the word bank to learn why the frog king wants to get out of his marriage to the princess."
+    }
+  ]
+}

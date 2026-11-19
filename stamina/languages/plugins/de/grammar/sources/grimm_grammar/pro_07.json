@@ -1,0 +1,318 @@
+{
+  "id": "pro_07",
+  "title": "Pronouns: Demonstrativpronomen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_07.html",
+  "explanation_lang": "en",
+  "section": "Pronouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Demonstrative pronouns are used to demonstrate (i.e., make explicit) who or what is being referred to in an utterance. Similar to personal pronouns, they can replace a previously mentioned noun (or noun phrase). Unlike personal pronouns, however, demonstrative pronouns place additional emphasis on the person or thing being referred to.\n\nChef | Wer hat in meinem Bettchen geschlafen? | Who slept in my bed?\n\nBrummbär | Wahrscheinlich dieselbe Person, die in meinem Bettchen geschlafen hat! | Probably the same person who slept in my bed!\n\nChef | Aber wo steckt diese Person jetzt? | But where is this person now?\n\nHappy | Die ist in meinem Bettchen! | She's in my bed!\n\nThe demonstrative pronouns include the definite articles der, die and das, as well as:\n\ndieser | this (the former)\n\njener | that (the latter)\n\nselber/selbst | -self\n\nderjenige | the one\n\nderselbe | the same\n\nDemonstrative pronouns may refer to a person or thing, idea or place that has already been discussed, as in the following example:\n\nChef | Kennst du das Mädchen? | Do you know the girl?\n\nHappy | Nein, das habe ich noch nie gesehen! | No, I've never seen her! *\n\n* Nota bene: remember that das Mädchen in German - as unfair Snow White finds this - is still grammatically neuter!"
+    },
+    {
+      "heading": "Der, die and das",
+      "text": "In spoken German, the definite articles der, die and das are often used as demonstrative pronouns because they lend more emphasis to the referent than the personal pronouns er, sie and es.\n\nThese demonstrative pronouns agree in terms of gender, number and case.\n\nnominative | accusative | dative | genitive\n\nmasculine | der | den | dem | dessen\n\nfeminine | die | die | der | deren\n\nneuter | das | das | dem | dessen\n\nplural | die | die | denen | deren\n\nHappy | Wie findest du den Namen des Mädchens, Brummi? | What do you think of the girl's name, Grumpy?\n\nBrummbär | Den Namen 'Schneewittchen'? Den finde ich doof. | The name 'Snow White'? I think it's silly."
+    },
+    {
+      "heading": "Other demonstrative pronouns",
+      "text": "Dieser and jener are declined like the definite articles above.\n\nnominative | accusative | dative | genitive\n\nmasculine | dieser | diesen | diesem | dieses\n\nfeminine | diese | diese | dieser | dieser\n\nneuter | dieses | dieses | diesem | dieses\n\nplural | diese | diese | diesen | dieser\n\nBrummbär | Wo soll das Mädchen schlafen? In diesem Bett? | Where should the girl sleep? In this bed?\n\nChef | Nein, Brummi, in jenem Bett. | No, Grumpy, in that bed.\n\nSelber and selbst are invariable, meaning they are not declined.\n\nHatschi | Darf ich das Bett machen? Hatschi! | Could I make the bed? Achoo!\n\nBrummbär | Überhaupt nicht - du niest zu viel. Ich mache das Bett selber. | Absolutely not - you sneeze too much. I'll make the bed myself.\n\nDerjenige and derselbe are declined in a two-part fashion. The first part (i.e., der) is declined like the definite articles above, while the second part (i.e., jenige) is declined like the weak adjective endings.\n\nnominative | accusative | dative | genitive\n\nmasculine | derjenige | denjenigen | demjenigen | desjenigen\n\nfeminine | diejenige | diejenige | derjenigen | derjenigen\n\nneuter | dasjenige | dasjenige | demjenigen | desjenigen\n\nplural | diejenigen | diejenigen | denjenigen | derjenigen\n\nBrummbär | Gern gäbe ich demjenigen, der das Mädchen verlassen hat, eine zünftige Tracht Prügel! | I would gladly give the ones who left the girl a beating!\n\nChef | Brummi! Beruhig dich doch! | Brummi! Calm down!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Chef",
+      "en": "Wer hat in meinem Bettchen geschlafen?"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Wahrscheinlich dieselbe Person, die in meinem Bettchen geschlafen hat!"
+    },
+    {
+      "de": "Chef",
+      "en": "Aber wo steckt diese Person jetzt?"
+    },
+    {
+      "de": "Happy",
+      "en": "Die ist in meinem Bettchen!"
+    },
+    {
+      "de": "dieser",
+      "en": "this (the former)"
+    },
+    {
+      "de": "jener",
+      "en": "that (the latter)"
+    },
+    {
+      "de": "selber/selbst",
+      "en": "-self"
+    },
+    {
+      "de": "derjenige",
+      "en": "the one"
+    },
+    {
+      "de": "derselbe",
+      "en": "the same"
+    },
+    {
+      "de": "Chef",
+      "en": "Kennst du das Mädchen?"
+    },
+    {
+      "de": "Happy",
+      "en": "Nein, das habe ich noch nie gesehen!"
+    },
+    {
+      "de": "masculine",
+      "en": "der"
+    },
+    {
+      "de": "feminine",
+      "en": "die"
+    },
+    {
+      "de": "neuter",
+      "en": "das"
+    },
+    {
+      "de": "plural",
+      "en": "die"
+    },
+    {
+      "de": "Happy",
+      "en": "Wie findest du den Namen des Mädchens, Brummi?"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Den Namen 'Schneewittchen'? Den finde ich doof."
+    },
+    {
+      "de": "masculine",
+      "en": "dieser"
+    },
+    {
+      "de": "feminine",
+      "en": "diese"
+    },
+    {
+      "de": "neuter",
+      "en": "dieses"
+    },
+    {
+      "de": "plural",
+      "en": "diese"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Wo soll das Mädchen schlafen? In diesem Bett?"
+    },
+    {
+      "de": "Chef",
+      "en": "Nein, Brummi, in jenem Bett."
+    },
+    {
+      "de": "Hatschi",
+      "en": "Darf ich das Bett machen? Hatschi!"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Überhaupt nicht - du niest zu viel. Ich mache das Bett selber."
+    },
+    {
+      "de": "masculine",
+      "en": "derjenige"
+    },
+    {
+      "de": "feminine",
+      "en": "diejenige"
+    },
+    {
+      "de": "neuter",
+      "en": "dasjenige"
+    },
+    {
+      "de": "plural",
+      "en": "diejenigen"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Gern gäbe ich demjenigen, der das Mädchen verlassen hat, eine zünftige Tracht Prügel!"
+    },
+    {
+      "de": "Chef",
+      "en": "Brummi! Beruhig dich doch!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Schneewittchen: Ich bin gerade einkaufen gegangen, denn ihr könnt nicht immer _______________ Kleidung tragen! Was meint ihr dazu?",
+      "options": [
+        "a. diejenige",
+        "b. dieselbe"
+      ],
+      "a": "b. dieselbe",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Brummbär: Wir sind bloß Bergleute, Schneewittchen. _____________ Kleidung ist viel zu schön für uns.",
+      "options": [
+        "a. diese",
+        "b. diegleiche"
+      ],
+      "a": "a. diese",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Happy: Sei nett, Brummbär. _____________ finde ich, em ..., interessant, Schneewittchen.",
+      "options": [
+        "a. die",
+        "b. diese"
+      ],
+      "a": "a. die",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schlafmütz: Hast du ______________ Schlafanzug gefunden, den ich das letzte Mal hatte?",
+      "options": [
+        "a. diesen",
+        "b. denselben"
+      ],
+      "a": "b. denselben",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schneewittchen: Leider nicht. Aber _____________ schicke Schlafanzug hat nur 20 Euro gekostet. Magst du ihn?",
+      "options": [
+        "a. dieser",
+        "b. derjenige"
+      ],
+      "a": "a. dieser",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Brummbär: Humpf! Ich habe ______________ Schlafanzug bei Wal-Mart gesehen - 5 Euro billiger!",
+      "options": [
+        "a. denjenigen",
+        "b. jenen"
+      ],
+      "a": "b. jenen",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Happy: Brummbär! ______________ Negativität! Hör bitte auf damit!",
+      "options": [
+        "a. dieselbe",
+        "b. diese"
+      ],
+      "a": "b. diese",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schlafmütz: Hmm, dieser Schlafanzug! _____________ sieht etwas komisch aus.",
+      "options": [
+        "a. der",
+        "b. dieser"
+      ],
+      "a": "a. der",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schneewittchen: Wieso komisch? Weil er aus dem 21. Jahrhundert ist? Seppl, wie findest du dieses Hemd? _____________ wird dir gut stehen, oder?",
+      "options": [
+        "a. das",
+        "b. dasselbe"
+      ],
+      "a": "a. das",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Seppl: Lieber mag ich _____________ , die rote Streifen darauf haben.",
+      "options": [
+        "a. diegleichen",
+        "b. diejenigen"
+      ],
+      "a": "b. diejenigen",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schneewittchen: Aber Seppl, rot steht dir nicht gut. Wenn du dieses nicht magst, wie wär's mit _____________ da? Dem blauen?",
+      "options": [
+        "a. diesem",
+        "b. jenem"
+      ],
+      "a": "b. jenem",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Seppl: Nein, ____________ finde ich total hässlich. (das, dieses)",
+      "options": [
+        "a. das",
+        "b. dieses"
+      ],
+      "a": "a. das",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Schneewittchen: Argh! Du bist immer _____________ Meinung!",
+      "options": [
+        "a. derjenigen",
+        "b. derselben"
+      ],
+      "a": "b. derselben",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    },
+    {
+      "type": "choice",
+      "q": "Brummbär: Schneewittchen, das nächste Mal gehen wir ____________ einkaufen! Unser Geschmack ist altmodisch und deiner ist zu modern.",
+      "options": [
+        "a. selber",
+        "b. diese"
+      ],
+      "a": "a. selber",
+      "set_id": "pro_07_01_mcr",
+      "set_title": "Übung - Die Modeschau",
+      "prompt": "Snow White may not live with the seven dwarves anymore, but she still feels the need to be their personal shopper. Select the appropriate demonstrative pronoun for each sentence below to find out about the hip new clothes Snow White bought for them at H & M."
+    }
+  ]
+}

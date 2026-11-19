@@ -1,0 +1,306 @@
+{
+  "id": "vsub_03",
+  "title": "Verbs: Konjunktiv II in der Vergangenheit",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_03.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The subjunctive mood in the past tense is used for hypothetical statements and conditionals (if, what if...)."
+    },
+    {
+      "heading": "hypothetical statements and conditionals (if, what if...)",
+      "text": "die böse Königin | Ach Mensch! Wenn der blöde Prinz Schneewittchen nicht geküsst hätte, wäre sie nie wieder erwacht! Ich hätte die Schönste im Lande sein können! So ein Mist! | Oh man! If that stupid prince hadn't kissed Snow White, she would never have woken up again! I could have been the prettiest in the whole world! Crap!"
+    },
+    {
+      "heading": "Forming the past subjunctive: Konjunktiv II",
+      "text": "Konjunktiv II in the past tense can be formulated in three ways:\n\nwith hätte + participle\n\nwith hätte + modal verb infinitive + verb infinitive\n\nwith wäre + participle"
+    },
+    {
+      "heading": "1. Past subjunctive with hätte",
+      "text": "The past tense subjunctive is formed with the subjunctive form of hätte (conjugated according to the subject) plus a participle if the original verb (now in the participle form) is transitive (i.e., can take a direct object. It is also used with all modal verbs in the past subjunctive.\n\ndie böse Königin | Wenn ich den Apfel nur in Iocane-Pulver gekocht hätte! Oh, warte mal, das war ja eine andere Geschichte! | If I had only cooked the apple in iocaine powder! Oh, wait a minute, that was a different story!\n\nChef | Wenn wir nicht gearbeitet hätten, hätte die böse Königin Schneewittchen nicht alleine gefunden! | If we hadn't worked, the evil queen would not have found Snow White alone!\n\nBrummbär | Ja, aber dann hätte unsere Geschichte keinen Sinn ergeben! | Yes, but then our story would not have made any sense!\n\npast subjunctive | english\n\nich hätte gefunden | I | would have found\n\ndu hättest gefunden | you\n\ner/sie/es hätte gefunden | he/she/it\n\nwir hätten gefunden | we\n\nihr hättet gefunden | you\n\nsie hätten gefunden | they"
+    },
+    {
+      "heading": "2. Past subjunctive with modal verbs",
+      "text": "hätte is also the auxiliary verb in combination with the modal verbs: dürfen, können, mögen, müssen, sollen, wollen, and to express politeness or describe hypothetical situations.\n\nIn general declarative sentences, the conjugated form of hätte comes in the second position, and the two verbs (the infinitive of the original verb + the infinitive of the modal verb) come at the end of the sentence. However, in subordinate clauses, the two infinitives still come at the end of the clause, preceded immediately by the conjugated form of hätte.\n\nWolfdietrich | Ich hätte nicht einschlafen sollen! Ich hätte auch den Jäger fressen können! | I should not have fallen asleep! I could have eaten the hunter too!\n\nWolfgang | Sei nicht so gefräßig! Du hättest diesmal nicht zurückkommen können, wenn du ihn gefressen hättest. | Don't be so greedy! You would not have been able to come back this time if you had eaten him.\n\nWolfdietrich | Ja, aber wenn ich ihn damals hätte fressen können, hätte ich nicht die Hexe um Hilfe bitten müssen! Und das hätte mir viel besser gefallen. Jetzt stehe ich ewig in ihrer Schuld! | Yeah, but if I had been able to eat her then, I would not have had to ask the witch for help! And I would have liked that much better. Now I am forever indebted to her!"
+    },
+    {
+      "heading": "3. Past subjunctive with wäre",
+      "text": "The past tense subjunctive is formed with a conjugated form of wäre plus a participle if the original verb (now in the participle form) is intransitive (i.e., cannot take a direct object).\n\nder Esel | Ich bin froh, dass ich von zu Hause weg musste! Wenn ich nicht weggelaufen wäre, hätte ich euch nicht getroffen! | I'm glad I had to leave home! If I hadn't run away, I would not have met you guys!\n\nder Haushahn | Ja, aber wenn wir nicht so steinalt gewesen wären, hätten wir zusammen wirklich was machen können! | Yes, but if we hadn't been so ancient, we could have really done something together!\n\ndie Katze | Ja, wir wären Bremer Stadtmusikanten geworden! Übrigens, wisst ihr, warum die Geschichte eigentlich 'Die Bremer Stadtmusikanten' heißt? | Yes, we would have become the Bremer City Musicians! By the way, do you guys know why the story is called 'The Bremen City Musicians'?\n\npast subjunctive | english\n\nich wäre gewesen | I | would have been\n\ndu wärest gewesen | you\n\ner/sie/es wäre gewesen | he/she/it\n\nwir wären gewesen | we\n\nihr wäret gewesen | you\n\nsie wären gewesen | they"
+    }
+  ],
+  "examples": [
+    {
+      "de": "die böse Königin",
+      "en": "Ach Mensch! Wenn der blöde Prinz Schneewittchen nicht geküsst hätte, wäre sie nie wieder erwacht! Ich hätte die Schönste im Lande sein können! So ein Mist!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Wenn ich den Apfel nur in Iocane-Pulver gekocht hätte! Oh, warte mal, das war ja eine andere Geschichte!"
+    },
+    {
+      "de": "Chef",
+      "en": "Wenn wir nicht gearbeitet hätten, hätte die böse Königin Schneewittchen nicht alleine gefunden!"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Ja, aber dann hätte unsere Geschichte keinen Sinn ergeben!"
+    },
+    {
+      "de": "past subjunctive",
+      "en": "english"
+    },
+    {
+      "de": "I",
+      "en": "ich hätte gefunden"
+    },
+    {
+      "de": "du hättest gefunden",
+      "en": "you"
+    },
+    {
+      "de": "er/sie/es hätte gefunden",
+      "en": "he/she/it"
+    },
+    {
+      "de": "we",
+      "en": "wir hätten gefunden"
+    },
+    {
+      "de": "ihr hättet gefunden",
+      "en": "you"
+    },
+    {
+      "de": "sie hätten gefunden",
+      "en": "they"
+    },
+    {
+      "de": "Wolfdietrich",
+      "en": "Ich hätte nicht einschlafen sollen! Ich hätte auch den Jäger fressen können!"
+    },
+    {
+      "de": "Wolfgang",
+      "en": "Sei nicht so gefräßig! Du hättest diesmal nicht zurückkommen können, wenn du ihn gefressen hättest."
+    },
+    {
+      "de": "Wolfdietrich",
+      "en": "Ja, aber wenn ich ihn damals hätte fressen können, hätte ich nicht die Hexe um Hilfe bitten müssen! Und das hätte mir viel besser gefallen. Jetzt stehe ich ewig in ihrer Schuld!"
+    },
+    {
+      "de": "der Esel",
+      "en": "Ich bin froh, dass ich von zu Hause weg musste! Wenn ich nicht weggelaufen wäre, hätte ich euch nicht getroffen!"
+    },
+    {
+      "de": "der Haushahn",
+      "en": "Ja, aber wenn wir nicht so steinalt gewesen wären, hätten wir zusammen wirklich was machen können!"
+    },
+    {
+      "de": "die Katze",
+      "en": "Ja, wir wären Bremer Stadtmusikanten geworden! Übrigens, wisst ihr, warum die Geschichte eigentlich 'Die Bremer Stadtmusikanten' heißt?"
+    },
+    {
+      "de": "I",
+      "en": "ich wäre gewesen"
+    },
+    {
+      "de": "du wärest gewesen",
+      "en": "you"
+    },
+    {
+      "de": "er/sie/es wäre gewesen",
+      "en": "he/she/it"
+    },
+    {
+      "de": "we",
+      "en": "wir wären gewesen"
+    },
+    {
+      "de": "ihr wäret gewesen",
+      "en": "you"
+    },
+    {
+      "de": "sie wären gewesen",
+      "en": "they"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "die alte Hexe: Wenn Hänsel und Gretel mich nicht ___ töten wollen, könnten wir heute wahrscheinlich gute Freunde sein!",
+      "a": "hätten",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel und Gretel: Ja, nicht im Traum! Sie ___ uns ohne Weiteres gebacken und zu Mittag gegessen!",
+      "a": "hätten",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe: Ach, mann-o-mann, ich ___ so viele andere Kinder zu mir holen können!",
+      "a": "hätte",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: Ich ___ ohne die Sterntaler wahrscheinlich viel braver (virtuous) geblieben!",
+      "a": "wäre",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzel: Aber du ___ nicht reich geworden! Du hättest auch jetzt nichts!",
+      "a": "wärest",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel: Ja, Gerdi ___ sicher wegen der Kälte gestorben, und damals durfte so was in einem Märchen nicht geschehen. Das Gute musste gewinnen!",
+      "a": "wäre",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Thilo: Ich wünschte oft, dass Schneewittchen in dieser Fassung genauso ___ erscheinen können wie vorher! Mich lieben, das Haus putzen ... Aua! Mausi! Schlag mich nicht!",
+      "a": "hätte",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Chef: Ich frage mich, wie es gewesen wäre, wenn du, Seppl, ___ sprechen können ...",
+      "a": "hättest",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Brummbär: Keine Sorge, man ___ ihn im Disneyfilm genauso fanatisch geliebt wie sonst!",
+      "a": "hätte",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Wenn du meine Schlafdecke nicht ausgeschüttelt ___, könntest du heute nicht bei mir leben. Ich bin dankbar, dass du so brav warst!",
+      "a": "hättest",
+      "set_id": "vsub_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The castle residents are in their weekly therapy session again. Fill in the blanks with the correct forms of haben or sein in the Konjunktiv II form in order to learn how the lives of some castle residents could have gone differently had fate intervened on their behalf ..."
+    },
+    {
+      "type": "gap",
+      "q": "Was / passieren / wenn / ich / vorbeikommen / an jenem schicksalsschweren Tag / nicht?\n\n___",
+      "a": "Was wäre passiert, wenn ich an jenem schicksalsschweren Tag nicht vorbeigekommen wäre?",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Der Wolf / auffressen / Rotkäppchen und seine Großmutter / ohne Zweifel\n\n___",
+      "a": "Der Wolf hätte Rotkäppchen und seine Großmutter ohne Zweifel aufgefressen.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Ich / können / sagen / der Großmuter / wie sehr / ich / lieben / sie\n\n___",
+      "a": "Ich hätte der Großmutter nie sagen können, wie sehr ich sie liebte!",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Mein Leben / sein / viel einsamer / wenn / ihr / kommen / zu meinem Haus / nicht\n\n___",
+      "a": "Mein Leben wäre viel einsamer gewesen, wenn ihr nicht zu meinem Haus gekommen wäret.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Wenn / deine Spule / hineinfallen / in den Brunnen / nicht, ich / treffen / können / dich / nie\n\n___",
+      "a": "Wenn deine Spule nicht in den Brunnen hineingefallen wäre, hätte ich dich nie treffen können.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Wenn / deine Stiefschwester / sein / nicht so faul / es / geben / keinen Konflikt / in unserem Märchen\n\n___",
+      "a": "Wenn deine Stiefschwester nicht so faul gewesen wäre, hätte es in unserem Märchen keinen Konflikt gegeben.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Wenn / das Gute / gewinnen / können / über / das Böse / nicht, / die Leute / interessieren sich / im 19. Jahrhundert / für unsere Geschichte / nicht\n\n___",
+      "a": "Wenn das Gute nicht über das Böse hätte gewinnen können, hätten sich die Leute im 19. Jahrhundert nicht für unsere Geschichte interessiert.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Wenn / meine Mutter / essen / wollen / nur / keine Rapunzeln!\n\n___",
+      "a": "Wenn meine Mutter nur keine Rapunzeln hätte essen wollen!",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe / einsperren / mich / in den Turm / nicht\n\n___",
+      "a": "Die alte Hexe hätte mich nicht in den Turm eingesperrt!",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Ich / singen / können / sowieso?\n\n___",
+      "a": "Hätte ich sowieso singen können?",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Wie / sein / es / wenn / mein Mann / mich / finden / nicht?\n\n___",
+      "a": "Wie wäre es gewesen, wenn mein Mann mich nicht gefunden hätte?",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    },
+    {
+      "type": "gap",
+      "q": "Meine Kinder und ich / fliehen / in die Wüste / nicht\n\n___",
+      "a": "Meine Kinder und ich wären nicht in die Wüste geflohen.",
+      "set_id": "vsub_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "And the therapy session has to be continued later because everyone had too much to say. Here are some blogs the castle residents wrote about their own and others' lives. Please re-write these notes for Aschenputtel's records, using the past subjunctive. Beware that not all verbs need to be in the subjunctive, and watch out for word order!"
+    }
+  ]
+}

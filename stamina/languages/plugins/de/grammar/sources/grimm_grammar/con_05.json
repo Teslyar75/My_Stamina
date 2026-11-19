@@ -1,0 +1,470 @@
+{
+  "id": "con_05",
+  "title": "Conjunctions: Fragen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/con_05.html",
+  "explanation_lang": "en",
+  "section": "Conjunctions",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "There are two ways to ask a question, depending on the type of information you need. Whereas a yes/no question is only interested in an either-or answer, the so-called w-questions require a more comprehensive answer (unless they are rhetorical questions, of course ...) as the following top-ten list of stupidest ... ahem ... most fateful fairy tale questions ever asked illustrate!\n\n10. | der Vater von Hänsel und Gretel | Was soll aus uns werden? | What should become of us?\n\n9. | die Grossmutter | Wer ist das vor der Tür? | Who is that at the door?\n\n8. | Esel | Woher kann das Licht kommen? | Where could that light be coming from?\n\n7. | die Stiefschwester | Wieso bist du mit Gold bedeckt? | Why are you covered in gold?\n\n6. | der Prinz | Wessen Schuh ist das? | Whose shoe is that?\n\n5. | Rotkäppchen | Großmutter, warum hast du so große Augen? | Why are your eyes so big, Grandmother?\n\n4. | der Wolf | Wohin, wohin kleines Mädchen? | Where to, where to little girl?\n\n3. | die böse Königin | Wer ist die Schönste im ganzen Land? | Who is the prettiest of all?\n\n2. | Dornröschens Vater | Wieviele Teller haben wir nochmal? Nur 12? | How many plates do we have? Only 12?\n\n1. | Rapunzel | Wie kommt das, Frau Grotel, dass der Königssohn so viel leichter ist als Sie? | How come, Frau Grotel, that the prince is so much lighter than you?"
+    },
+    {
+      "heading": "W-question words",
+      "text": "The question word in German is at the beginning (they are called W-words because they all start with the letter w], followed by the conjugated verb in second position whether that conjugated verb is a modal verb (e.g., können, sollen) or an auxiliary verb (e.g., hätte, ist, werde).\n\nWann? | When? | Wie lange? | How long?\n\nWarum? | Why? | Wie viele? | How many? (count nouns)\n\nWas? | What? | Wieso? | Why?\n\nWer? | Who? | Wieviel? | How much? (mass nouns)\n\nWeshalb? | Why? | Wo? | Where?\n\nWessen? | Whose? | Woher? | Where from?\n\nWeswegen? | Why? | Wohin? | Where to?\n\nNota Bene: WER and WO are false cognates with the English \"who\" and \"where.\"\n\nWER | = | WHO\n\nWO | = | WHERE\n\nWer rettet Dornröschen am Ende? | Who saves Sleeping Beauty in the end?\n\nWo findet er die wunderschöne Prinzessin? | Where does he find the wondrously beautiful princess?"
+    },
+    {
+      "heading": "Cases",
+      "text": "Welcher and wer have to be declined if they are in the accusative or dative case.\n\nWELCH- | nominativ | akkusativ | dativ\n\nMaskulin | welcher | welchen | (von) welchem\n\nFeminin | welche | welche | (von) welcher\n\nNeutral | welches | welches | (von) welchem\n\nPlural | welche | welche | (von) welchen\n\nWelches Märchen hast du am liebsten? | Which fairy tale do you like the best?\n\nMit welchem vergifteten Geschenk tötet die Königin Schneewittchen? | Which poisoned gift does the queen kill Snow White with? (or With which ...)\n\nWER | nominativ | akkusativ | dativ\n\nAlle Geschlechter | wer | wen | (von) wem\n\nDornröschen | Wer reitet so spät durch Nacht und Wind? | Who is riding so late through night and wind?\n\nder Froschkönig | Warte mal, das ist doch gar kein Grimm-Märchen! | Wait a sec, that's not a Grimm Fairy Tale!\n\nDornröschen | Sehr gut. Wen zitiere ich? | Very good. Who am I quoting?\n\nder Froschkönig | Ach ... Wer war das nochmal?!? Warte mal, ich weiß es ... Heidrun! Von wem wurde \"Der Erlkönig\" geschrieben? | Ah ... who was that again?!? Wait a sec, I know this ... Heidrun! Who wrote the poem \"The Elf King\"? [lit: by whom]"
+    },
+    {
+      "heading": "Indirect questions",
+      "text": "You can use all the W-question words in indirect questions as well, most often introduced by the following phrases:\n\nIch weiß/Ich weiß nicht ... | I know/I don't know ...\n\nIch habe keine Ahnung ... | I have no clue ...\n\nWer weiß ... | Who knows ...\n\nWeißt du ... | Do you know ...\n\nIch kann micht nicht erinnern ... | I can't remember ...\n\nIch habe vergessen ... | I forgot ...\n\nSie haben mich gefragt ... | They asked me ...\n\nIch möchte wissen ... | I would like to know ...\n\nDornröschen | Ich möchte wissen, warum an meinem 15. Geburtstag niemand zu Hause war! | I'd like to know why nobody was at home on my 15th birthday!\n\n(Frage: Warum war an meinem 15. Geburtstag niemand zu Hause)\n\nAschenputtel | Du weißt nicht, wo sie alle waren? | You don't know where they all were?\n\n(Frage: Wo waren sie alle?)\n\nDornröschen | Ich frage mich, wieso sie nicht wussten, dass ich an diesem Tag verletzt wurde! | I wonder how come they didn't know that I would be hurt that day!\n\n(Frage: Wieso wussten sie nicht, dass ich an diesem Tag verletzt wurde?)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "10.",
+      "en": "der Vater von Hänsel und Gretel"
+    },
+    {
+      "de": "9.",
+      "en": "die Grossmutter"
+    },
+    {
+      "de": "8.",
+      "en": "Esel"
+    },
+    {
+      "de": "7.",
+      "en": "die Stiefschwester"
+    },
+    {
+      "de": "6.",
+      "en": "der Prinz"
+    },
+    {
+      "de": "5.",
+      "en": "Rotkäppchen"
+    },
+    {
+      "de": "4.",
+      "en": "der Wolf"
+    },
+    {
+      "de": "3.",
+      "en": "die böse Königin"
+    },
+    {
+      "de": "2.",
+      "en": "Dornröschens Vater"
+    },
+    {
+      "de": "1.",
+      "en": "Rapunzel"
+    },
+    {
+      "de": "Wann?",
+      "en": "When?"
+    },
+    {
+      "de": "Warum?",
+      "en": "Why?"
+    },
+    {
+      "de": "Was?",
+      "en": "What?"
+    },
+    {
+      "de": "Wer?",
+      "en": "Who?"
+    },
+    {
+      "de": "Weshalb?",
+      "en": "Why?"
+    },
+    {
+      "de": "Wessen?",
+      "en": "Whose?"
+    },
+    {
+      "de": "Weswegen?",
+      "en": "Why?"
+    },
+    {
+      "de": "Welches Märchen hast du am liebsten?",
+      "en": "Which fairy tale do you like the best?"
+    },
+    {
+      "de": "Mit welchem vergifteten Geschenk tötet die Königin Schneewittchen?",
+      "en": "Which poisoned gift does the queen kill Snow White with? (or With which ...)"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Wer reitet so spät durch Nacht und Wind?"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Warte mal, das ist doch gar kein Grimm-Märchen!"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Sehr gut. Wen zitiere ich?"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Ach ... Wer war das nochmal?!? Warte mal, ich weiß es ... Heidrun! Von wem wurde \"Der Erlkönig\" geschrieben?"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Ich möchte wissen, warum an meinem 15. Geburtstag niemand zu Hause war!"
+    },
+    {
+      "de": "Aschenputtel",
+      "en": "Du weißt nicht, wo sie alle waren?"
+    },
+    {
+      "de": "Dornröschen",
+      "en": "Ich frage mich, wieso sie nicht wussten, dass ich an diesem Tag verletzt wurde!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "der Jäger: ___ fahren wir ab? - Morgen um 8 Uhr.",
+      "a": "Wann",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: ___ dauert die Reise? - Ungefähr 3 Stunden mit dem Bus.",
+      "a": "Wie lange",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: ___ kommt mit? - Alle Schlossbewohner! Niemand bleibt zu Hause.",
+      "a": "Wer",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Theo: ___ fahren wir zuerst: zum Reichstag oder zum Fernsehturm?",
+      "a": "Wohin",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Ich weiß nicht, ___ Gebäude wir zuerst besuchen.",
+      "a": "welches",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "die alte Hexe: ___ besuchen wir Berlin? Weil Berlin die Hauptstadt ist!",
+      "a": "Warum",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: ___ kostet die Reise? Nichts - es ist eine Bonus für Märchenfiguren!",
+      "a": "Wieviel",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Dornröschen: Und ___ übernachten wir? - In einem Hotel im Zentrum.",
+      "a": "Wo",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "der Froschkönig: ___ weiß, wie spät wir morgen ankommen?",
+      "a": "Wer",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "der König: Ich habe keine Ahnung, ___ wir ankommen. Vielleicht um 10 Uhr?",
+      "a": "wann",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel: ___ wissen Sie es nicht? Wir fahren um 8 ab, die Reise dauert 3 Stunden, also kommen wir ungefähr um 11 Uhr an. Wie doof!",
+      "a": "Wieso",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "die böse Königin: ___ Koffer können wir mitnehmen? - Nur einen.",
+      "a": "Wie viele",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "der Touristenführer: ___ brauchen Sie überhaupt einen Koffer? Wir verbringen (spend) nur das Wochenende in Berlin!",
+      "a": "Warum",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    },
+    {
+      "type": "gap",
+      "q": "Wolfdietrich: ___ essen wir in Berlin? Was du willst - ach, alles außer Menschen!",
+      "a": "Was",
+      "options": [
+        "Wann",
+        "Woher",
+        "Was",
+        "Wie lange",
+        "Welches",
+        "Wer",
+        "Wer",
+        "Wie viele",
+        "Wieso",
+        "Wieviel",
+        "Warum",
+        "Warum",
+        "Wessen",
+        "Wo"
+      ],
+      "set_id": "con_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The castle residents are planning an outing to Berlin. Since this is their first organized tour, they have many questions. Find out what they ask the tour guide, who tries to answer all questions patiently ... Select the correct question word from the word bank to complete each sentence meaningfully."
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "id": "adj_04",
+  "title": "Adjectives: Adjektive ohne Artikel",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_04.html",
+  "explanation_lang": "en",
+  "section": "Adjectives",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Unpreceded attributive adjectives",
+      "text": "Attributive adjectives (in contrast with predicate adjectives) are placed before the noun and take endings in both the basic and comparative/superlative forms depending on the gender, number and case of the noun they describe.\n\nMost often unpreceded adjectives, like the name suggests, have no article (or determiner) before them. The term 'unpreceded' may be a misnomer, however, since adjectives can be preceded by such determiners as einige, ein wenig, ein bisschen, ein paar, einige, etwas, viele, wenige or numbers (e.g., 20, 100) and still take the so-called strong endings. These endings apply whether the adjective is in the basic form or in the comparative or superlative forms.\n\nAls Schneewittchens Mutter am Fenster saß, fielen weiße Schneeflocken vom Himmel. Deswegen wurde das kleine Mädchen, das sie gebar, Schneewittchen genannt: weiß, wie der Schnee ... | When Snow White's mother sat at the window, white snow flakes were falling from the sky. That's why the little girl was called Snow White: white as the snow ...\n\nDrei rote Bluttropfen fielen in den Schnee, als die Königin sich mit einer Nadel in den Finger stach. | Three red drops of blood fell on the snow when the queen pierced her finger with a needle.\n\nTo determine the correct adjective ending, determine the gender of the noun the adjective describes (masculine, feminine, neuter, or plural), then determine what case the noun is in the sentence or phrase (nominative, accusative, dative, or genitive).\n\nNominativ | Akkusativ | Dativ | Genitiv\n\nMaskulin | barmherziger Jäger | barmherzigen Jäger | barmherzigem Jäger | barmherzigen Jägers\n\nFeminin | unbarmherzige Königin | unbarmherzige Königin | unbarmherziger Königin | unbarmherziger Königin\n\nNeutral | barmherziges Mädchen | barmherziges Mädchen | barmherzigem Mädchen | barmherzigen Mädchens\n\nPlural | barmherzige Zwerge | barmherzige Zwerge | barmherzigen Zwergen | barmherziger Zwerge"
+    },
+    {
+      "heading": "Exceptions",
+      "text": "Exceptions"
+    },
+    {
+      "heading": "Changes in the basic form",
+      "text": "When adjectives that end in -el, -en or -er in the basic form get an adjective ending, they drop the -e- before the final consonant and add the endings to this new form (see the example with dunkel).\n\nDie Königin hofft, dass ihre Tochter dunkle Haare hat wie Ebenholz. | The queen hopes that her daughter has dark hair like ebony."
+    },
+    {
+      "heading": "Colors",
+      "text": "Some adjectives with foreign origins (many of these words end in a vowel) do not take adjective endings: lila, pink, rosa, beige, prima, super, etc.\n\nTja, mit einem Mädchen mit pink oder lila Haaren wäre die Geschichte gar nicht so beeindruckend gewesen! | Yeah, with a little girl with pink or purple hair, the story would not have been made quite an impression!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Als Schneewittchens Mutter am Fenster saß, fielen weiße Schneeflocken vom Himmel. Deswegen wurde das kleine Mädchen, das sie gebar, Schneewittchen genannt: weiß, wie der Schnee ...",
+      "en": "When Snow White's mother sat at the window, white snow flakes were falling from the sky. That's why the little girl was called Snow White: white as the snow ..."
+    },
+    {
+      "de": "Drei rote Bluttropfen fielen in den Schnee, als die Königin sich mit einer Nadel in den Finger stach.",
+      "en": "Three red drops of blood fell on the snow when the queen pierced her finger with a needle."
+    },
+    {
+      "de": "Maskulin",
+      "en": "barmherziger Jäger"
+    },
+    {
+      "de": "Feminin",
+      "en": "unbarmherzige Königin"
+    },
+    {
+      "de": "Neutral",
+      "en": "barmherziges Mädchen"
+    },
+    {
+      "de": "Plural",
+      "en": "barmherzige Zwerge"
+    },
+    {
+      "de": "Die Königin hofft, dass ihre Tochter dunkle Haare hat wie Ebenholz.",
+      "en": "The queen hopes that her daughter has dark hair like ebony."
+    },
+    {
+      "de": "Tja, mit einem Mädchen mit pink oder lila Haaren wäre die Geschichte gar nicht so beeindruckend gewesen!",
+      "en": "Yeah, with a little girl with pink or purple hair, the story would not have been made quite an impression!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchens Stiefmutter schaut jeden Tag in ihren magischen Spiegel und fragt ihn: \"___ Spieglein an der Wand, wer ist die Schönste im ganzen Land?\"",
+      "a": "Liebes",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Der Spiegel gibt ihr immer einige ___ Antworten, nämlich, dass sie immer die Schönste sei.",
+      "a": "beruhigende",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Als Schneewittchen 7 Jahre alt wird, sagt der Spiegel aber, dass es viel schöner sei als die Königin. Die Königin platzt fast vor ___ Neid (practically died of envy, slang)!",
+      "a": "grünem",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Die Königin bittet den Jäger zu sich und befiehlt ihm, ihr ein paar ___ Beweise (proofs) zu bringen, dass Schneewittchen tot ist (seine Lunge und Leber)!",
+      "a": "unbestreitbare",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Gott sei Dank gibt es im Wald viele ___ Tiere, und der Jäger tötet einen Frischling (young boar) statt Schneewittchen.",
+      "a": "wilde",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger denkt: \"Du ___ Kind, lauf hin. Die wilden Tiere werden dich bald fressen ...\"",
+      "a": "armes",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen ist glücklich (fortunate) ... ___ Jäger (pl.) gibt es in vielen Märchen, und der Jäger in ihrer Geschichte ist auch menschlich und hat Mitleid.",
+      "a": "barmherzige",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Als Schneewittchen wegläuft, findet es ein kleines Haus mit 7 ___ Tellern, Löffeln, Bechern und Betten.",
+      "a": "kleinen",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Das Haus gehört natürlich den 7 Zwergen, bei denen sie einige ___ Jahre verbringt.",
+      "a": "glückliche",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Der dumme Spiegel verrät Schneewittchen und erzählt der Königin, wo Schneewittchen lebt. Die Königin kommt als ___ Krämerin verkleidet (disguised as a sales woman) vorbei.",
+      "a": "alte",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Sie ruft: \"___ Ware, Äpfel und neue Schnürriemen (laces for her dress)!\"",
+      "a": "gute",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen überlebt zwei ___ Mordversuche, aber stirbt bei dem dritten: sie isst einen vergifteten Apfel.",
+      "a": "brutale",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Das Mädchen liegt in einem goldenen Sarg, als ein Prinz vorbeireitet und liest, was mit ___ Buchstaben auf dem Sarg geschrieben ist: Schneewittchen.",
+      "a": "goldenen",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    },
+    {
+      "type": "gap",
+      "q": "Wie es in Märchen öfters passiert, wird ihre Hochzeit mit ___ Pracht (pomp, splendor, f.) gefeiert.",
+      "a": "großer",
+      "options": [
+        "alt",
+        "grün",
+        "glücklich",
+        "lieb",
+        "groß",
+        "gut",
+        "barmherzig",
+        "arm",
+        "golden",
+        "unbestreitbar",
+        "klein",
+        "brutal",
+        "wild",
+        "beruhigend"
+      ],
+      "set_id": "adj_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Here is a rich description of Snow White's life and story. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – add, of course, the correct attributive adjectives endings!"
+    }
+  ]
+}

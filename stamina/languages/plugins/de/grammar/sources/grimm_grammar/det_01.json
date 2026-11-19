@@ -1,0 +1,205 @@
+{
+  "id": "det_01",
+  "title": "Determiners: Bestimmte und Unbestimmte Artikel",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/det_01.html",
+  "explanation_lang": "en",
+  "section": "Determiners",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Usage",
+      "text": "Nouns are most often preceded by either a definite article (der, die, das: the) or an indefinite article (ein, eine: a/an). Whether to use a definite or an indefinite article in German is very similar to how you would use them in English:\n\nEin Frosch ist ein Tier. | A frog is an animal.\n\nDer Froschkönig will eine Prinzessin küssen - irgendeine Prinzessin!!! | The frog king wants to kiss a princess - any princess!!!\n\nAs in English, there is no indefinite article in German in front of plural nouns because there is no plural form of the indefinite article (i.e., just like in English you couldn't say \"a kings\" or \"a dwarves,\" you can't say \"ein Könige\" or \"ein Zwerge\" in German). Thus, you just let the noun stand on its own:\n\nKönige haben Königreiche. | Kings have kingdoms.\n\nZwerge gibt es oft in Märchen. | There are often dwarves in fairy tales.\n\ndefinite articles | indefinite articles\n\nmasculine | der Prinz (the prince) | ein Prinz (a prince)\n\nfeminine | die Prinzessin (the princess) | eine Prinzessin (a princess)\n\nneutral | das Märchen (the fairy tale) | ein Märchen (a fairy tale)\n\nplural | die Zwerge (the dwarves) | --- Zwerge (dwarves)"
+    },
+    {
+      "heading": "No articles",
+      "text": "German typically does not use an article with predicate nouns (e.g., he is a prince, his name is Egon, etc.)\n\n1. | a personal name | Der Froschkönig heißt Egon. | The frog king is called Egon.\n\n2. | a major holiday | Ostern feiert der Froschkönig nicht; er mag keine Schokolade. | The frog king doesn't celebrate Easter; he doesn't like chocolate.\n\n3. | the name of a country | Die Märchenfiguren leben in Deutschland. | The fairy tale characters live in Germany.\n\n4. | a profession | Schneewittchen ist Studentin; sie studiert Jura. | Snow White is a student; she is studying law.\n\n5. | a nationality | Der alte König ist Deutscher. | The old king is a German (man).\n\n6. | \"some\" or \"any\" | Die böse Königin kauft Äpfel. | The evil queen buys (some) apples."
+    },
+    {
+      "heading": "Exceptions of country names",
+      "text": "While most countries are used without definite or indefinite articles, there are a handful of countries and regions, which use an article (this is not an exclusive list):\n\ndie Schweiz (feminine) | die Türkei (feminine) | die Ukraine (feminine)\n\ndie Lausitz (feminine) | die USA (plural) | die Niederlande (plural)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Ein Frosch ist ein Tier.",
+      "en": "A frog is an animal."
+    },
+    {
+      "de": "Der Froschkönig will eine Prinzessin küssen - irgendeine Prinzessin!!!",
+      "en": "The frog king wants to kiss a princess - any princess!!!"
+    },
+    {
+      "de": "Könige haben Königreiche.",
+      "en": "Kings have kingdoms."
+    },
+    {
+      "de": "Zwerge gibt es oft in Märchen.",
+      "en": "There are often dwarves in fairy tales."
+    },
+    {
+      "de": "masculine",
+      "en": "der Prinz (the prince)"
+    },
+    {
+      "de": "feminine",
+      "en": "die Prinzessin (the princess)"
+    },
+    {
+      "de": "neutral",
+      "en": "das Märchen (the fairy tale)"
+    },
+    {
+      "de": "plural",
+      "en": "die Zwerge (the dwarves)"
+    },
+    {
+      "de": "1.",
+      "en": "a personal name"
+    },
+    {
+      "de": "2.",
+      "en": "a major holiday"
+    },
+    {
+      "de": "3.",
+      "en": "the name of a country"
+    },
+    {
+      "de": "4.",
+      "en": "a profession"
+    },
+    {
+      "de": "5.",
+      "en": "a nationality"
+    },
+    {
+      "de": "6.",
+      "en": "\"some\" or \"any\""
+    },
+    {
+      "de": "die Schweiz (feminine)",
+      "en": "die Türkei (feminine)"
+    },
+    {
+      "de": "die Lausitz (feminine)",
+      "en": "die USA (plural)"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Froschkönig möchte immer noch ___ Prinz werden.",
+      "a": "X",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ Prinzessin spielte mit dem Ball, aber ihr Ball ist in den Brunnen (well) gefallen.",
+      "a": "Die",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "Die Bremer Stadtmusikanten sind ___ Esel (donkey), ___ Hund (dog), ___ Katze (cat), und ___ Haushahn (rooster).",
+      "a": [
+        "ein",
+        "ein",
+        "eine",
+        "ein"
+      ],
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "Diese Tiere (animals) lebten in einem Räuberhaus (house of robbers); ___ Räuber hatten Angst vor den Tieren (were scared of the animals) und liefen weg (ran away).",
+      "a": "die",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ Wolf hat Rotkäppchen und ihre Großmutter gegessen (ate).",
+      "a": "Der",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ Jäger (hunter) hat aber ___ beiden (both) Frauen gerettet (saved).",
+      "a": [
+        "Ein",
+        "die"
+      ],
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "Jetzt ist ___ Jäger in Großmutti verliebt (in love with).",
+      "a": "der",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle ist ___ alte Frau.",
+      "a": "eine",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "Zwei ___ Mädchen (girls) kommen zu ihr: eines ist brav (nice, good), das andere ist faul (lazy).",
+      "a": "X",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ brave Mädchen kriegt am Ende der Geschichte eine Menge (a lot of) Gold.",
+      "a": "Das",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ Stiefschwestern (stepsisters) von Aschenputtel sind sehr gemein zu ihr (mean to her).",
+      "a": "Die",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "___ Aschenputtel trifft den Prinzen und heiratet ihn am Ende der Geschichte; er war für Aschenputtel aber ___ Enttäuschung (disappointment, fem).",
+      "a": [
+        "X",
+        "eine"
+      ],
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    },
+    {
+      "type": "gap",
+      "q": "13. Bald nach der Hochzeit (shortly after the wedding) haben sich Aschenputtel und ___ Prinz scheiden lassen (got divorced).",
+      "a": "der",
+      "set_id": "det_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Get to know some of the fairy tale characters who populate Schlossallee 18 (and our Grimm Grammar). Decide what articles (if any) are missing in the following blanks. Put an X in the blank if there is no article needed."
+    }
+  ]
+}

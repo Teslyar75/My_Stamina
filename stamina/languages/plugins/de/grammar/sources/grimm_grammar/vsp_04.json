@@ -1,0 +1,118 @@
+{
+  "id": "vsp_04",
+  "title": "Verbs: Das Imperfekt - Haben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_04.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The simple past of haben is used in both written and spoken language in the past tense. While ich habe gehabt is gaining some traction, at this point it is still more common to hear ich hatte to say \"I had ...\"\n\nhaben • have\n\nich hatte | wir hatten\n\ndu hattest | ihr hattet\n\ner/sie/es hatte | sie hatten\n\nGerdi hatte ein Stück Brot und einige alte Kleidungsstücke. | Gerdi had a piece of bread and a few pieces of old clothing.\n\nDer alte Mann und die kleinen Kinder hatten aber noch weniger. | But the old man and the little children had even less."
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich hatte",
+      "en": "wir hatten"
+    },
+    {
+      "de": "du hattest",
+      "en": "ihr hattet"
+    },
+    {
+      "de": "er/sie/es hatte",
+      "en": "sie hatten"
+    },
+    {
+      "de": "Gerdi hatte ein Stück Brot und einige alte Kleidungsstücke.",
+      "en": "Gerdi had a piece of bread and a few pieces of old clothing."
+    },
+    {
+      "de": "Der alte Mann und die kleinen Kinder hatten aber noch weniger.",
+      "en": "But the old man and the little children had even less."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Damals ___ ich fast nichts: nur ein Stück trockenes Brot und ein dünnes Kleid.",
+      "a": "hatte",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Ich war so verlassen (abandoned) und ___ keine Hoffnung mehr!",
+      "a": "hatte",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Als ich in die Welt hinausging, traf ich aber einen alten Mann, der noch weniger ___ als ich.",
+      "a": "hatte",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Ihm gab ich mein Brot, und den drei Kindern meine Kleider - denn sie ___ nichts: kein Hemd, kein Kleid, keine Schuhe.",
+      "a": "hatten",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel: Aber warum ___ du nichts? Wo waren deine Eltern?",
+      "a": "hattest",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: Also, dies war ein Märchen, und die Gebrüder Grimm brauchten ein Waisenkind. Deshalb ___ sie eines Tages eine Idee, und dann wurde ich, die Heldin (heroine) einer trauriger Geschichte!",
+      "a": "hatten",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzel: Wir ___ ähnliche Geschichten; wir waren alle brav und fromm (good and virtuous), und Gott hat uns auf die Probe gestellt.",
+      "a": "hatten",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: ___ ihr auch nichts zu essen und keine Kleider um euch warm zu halten (to keep you warm)?",
+      "a": "hattet",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Dornröschen: Nein, wir ___ stattdessen (instead) böse Feinde (enemies), Feen, Hexen, eifersüchtige (jealous) Stiefmütter ...",
+      "a": "hatten",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: Ja, das passiert noch heute! Ich habe gerade gelesen ... Ein Junge mit magischen Kräften ___ eine schreckliche Erfahrung (experience) mit einem bösen Magier ... wie heißt er nochmal? Ach, ja, Harry Potter!",
+      "a": "hatte",
+      "set_id": "vsp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Dornröschen, Aschenputtel, and Rapunzel are trying to get to know Gerdi. Fill in the blanks in the following dialog with the correct simple past forms of haben to find out what these young women are talking about."
+    }
+  ]
+}

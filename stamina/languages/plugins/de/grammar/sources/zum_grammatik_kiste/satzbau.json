@@ -1,0 +1,57 @@
+{
+  "id": "satzbau",
+  "title": "Satzbau",
+  "original_url": "https://deutsch-lernen.zum.de/wiki/Satzbau",
+  "explanation_lang": "de",
+  "section": "Sätze",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Das Verb im Aussagesatz (Hauptsatz)",
+      "text": "Das Verb in der Personalform hat im Aussagesatz eine feste Position. Es steht immer an zweiter Stelle. Die Personalform bildet zusammen mit einem Infinitiv oder einem Partizip II am Satzende eine Satzklammer.\n\nDie Stellung des Verbs im Aussagesatz\n\nPosition 0 | Position 1 | Position 2 | Position 3 | ... | Endstellung\n(letzte Position) | Satzzeichen\n\nIch | lese | .\n\nIch | lese | ein Buch | .\n\nIch | lese | heute | ein Buch | .\n\nHeute | lese | ich | ein Buch | .\n\nIch | habe | heute | ein Buch | gelesen | .\n\nHeute | habe | ich | ein Buch | gelesen | .\n\nDenn | ich | lese | .\n\nDenn | ich | lese | heute | .\n\nDenn | ich | lese | heute | ein Buch | .\n\nDenn | heute | lese | ich | ein Buch | .\n\nDenn | ich | lese | heute | ein Buch | .\n\nDenn | ich | habe | heute | ein Buch | gelesen | .\n\nDas Verb spielt eine zentrale Rolle für die Bedeutung des Satzes. Deshalb bezeichnen wir die verbalen Teile eines Satzes auch als Prädikat bzw. Satzaussage.\n\nDas Prädikat ist die Satzaussage. - Ich frage: Was geschieht?"
+    },
+    {
+      "heading": "Interaktive Übungen",
+      "text": "Interaktive Übungen - Satzbau\n\nDas oder dass - 1 (Interaktive Übungen)\nDas oder dass - 2 (Interaktive Übungen)\nDas oder dass - 3 - Artikel - Konjunktion - Pronomen\nSatzZauber-App (Interaktive Übungen)\nSatzbau - A1 (Interaktive Übungen)\nSatzbau - A2 (Interaktive Übungen)\nSatzbau-App (Interaktive Übungen)\nZweiteilige Konnektoren - B1 (Interaktive Übungen)"
+    },
+    {
+      "heading": "Sprachlern-Apps",
+      "text": "Interaktive Übungen - Satzbau / Sprachlern-Apps\n\nSatzZauber-App (Interaktive Übungen)\nSatzbau-App (Interaktive Übungen)"
+    },
+    {
+      "heading": "(Weitere) Satzglieder",
+      "text": "→ Satzglieder"
+    },
+    {
+      "heading": "Aussagesätze / Hauptsätze",
+      "text": "→ Hauptsätze"
+    },
+    {
+      "heading": "Fragesätze / Fragen",
+      "text": "→ Fragen"
+    },
+    {
+      "heading": "Nebensätze",
+      "text": "→ Nebensätze"
+    },
+    {
+      "heading": "Siehe auch",
+      "text": "Satzklammer\n\nPersonalformen"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Position 0",
+      "en": "Position 1"
+    },
+    {
+      "de": "Denn",
+      "en": "ich"
+    },
+    {
+      "de": "Denn",
+      "en": "heute"
+    }
+  ],
+  "exercises": []
+}

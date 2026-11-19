@@ -1,0 +1,305 @@
+{
+  "source_id": "zum_grammatik_kiste",
+  "retrieved": "2026-11-19",
+  "topic_count": 37,
+  "exercise_count": 0,
+  "skipped_count": 18,
+  "topics": [
+    {
+      "id": "adjektive",
+      "title": "Adjektive",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Adjektive",
+      "cefr": null,
+      "section": "Adjektive",
+      "exercise_count": 0
+    },
+    {
+      "id": "adjektive_wortbildung",
+      "title": "Adjektive - Wortbildung",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Adjektive_-_Wortbildung",
+      "cefr": null,
+      "section": "Adjektive",
+      "exercise_count": 0
+    },
+    {
+      "id": "nomen_und_artikel",
+      "title": "Nomen und Artikel",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Nomen_und_Artikel",
+      "cefr": "A1",
+      "section": "Nomen und Artikel",
+      "exercise_count": 0
+    },
+    {
+      "id": "artikel",
+      "title": "Artikel",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Artikel",
+      "cefr": null,
+      "section": "Nomen und Artikel",
+      "exercise_count": 0
+    },
+    {
+      "id": "nomen_und_artikel_uebungen_1_videos",
+      "title": "Nomen und Artikel - Übungen 1 (Videos)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Nomen_und_Artikel_-_%C3%9Cbungen_1_%28Videos%29",
+      "cefr": null,
+      "section": "Nomen und Artikel",
+      "exercise_count": 0
+    },
+    {
+      "id": "nomen_und_artikel_uebungen_2_videos",
+      "title": "Nomen und Artikel - Übungen 2 (Videos)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Nomen_und_Artikel_-_%C3%9Cbungen_2_%28Videos%29",
+      "cefr": null,
+      "section": "Nomen und Artikel",
+      "exercise_count": 0
+    },
+    {
+      "id": "lokale_praepositionen",
+      "title": "Lokale Präpositionen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Lokale_Pr%C3%A4positionen",
+      "cefr": "A2",
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "modale_praepositionen",
+      "title": "Modale Präpositionen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Modale_Pr%C3%A4positionen",
+      "cefr": null,
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "praepositionen",
+      "title": "Präpositionen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Pr%C3%A4positionen",
+      "cefr": null,
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "temporale_praepositionen",
+      "title": "Temporale Präpositionen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Temporale_Pr%C3%A4positionen",
+      "cefr": "A2",
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "verben_mit_praepositionen",
+      "title": "Verben mit Präpositionen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Verben_mit_Pr%C3%A4positionen",
+      "cefr": "A2",
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "wechselpraepositionen_lokale_praepositionen_mit_akkusativ_und_dativ",
+      "title": "Wechselpräpositionen - Lokale Präpositionen mit Akkusativ und Dativ",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Wechselpr%C3%A4positionen_-_Lokale_Pr%C3%A4positionen_mit_Akkusativ_und_Dativ",
+      "cefr": "A2",
+      "section": "Präpositionen",
+      "exercise_count": 0
+    },
+    {
+      "id": "pronomen",
+      "title": "Pronomen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Pronomen",
+      "cefr": null,
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "indefinitpronomen",
+      "title": "Indefinitpronomen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Indefinitpronomen",
+      "cefr": null,
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "personalpronomen",
+      "title": "Personalpronomen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Personalpronomen",
+      "cefr": null,
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "possessivpronomen",
+      "title": "Possessivpronomen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Possessivpronomen",
+      "cefr": null,
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "pronomen_es",
+      "title": "Pronomen es",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Pronomen_es",
+      "cefr": "B1",
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "pronomen_es_videos",
+      "title": "Pronomen es (Videos)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Pronomen_es_%28Videos%29",
+      "cefr": "B1",
+      "section": "Pronomen",
+      "exercise_count": 0
+    },
+    {
+      "id": "verben",
+      "title": "Verben",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Verben",
+      "cefr": null,
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "imperativ",
+      "title": "Imperativ",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Imperativ",
+      "cefr": null,
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "konjugation",
+      "title": "Konjugation",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Konjugation",
+      "cefr": null,
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "passiv",
+      "title": "Passiv",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Passiv",
+      "cefr": "A2, B1",
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "passiv_videos",
+      "title": "Passiv (Videos)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Passiv_%28Videos%29",
+      "cefr": "A2, B1",
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "praesens",
+      "title": "Präsens",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Pr%C3%A4sens",
+      "cefr": null,
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "reflexive_verben",
+      "title": "Reflexive Verben",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Reflexive_Verben",
+      "cefr": "A2",
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "sein_und_haben",
+      "title": "Sein und haben",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Sein_und_haben",
+      "cefr": null,
+      "section": "Verben",
+      "exercise_count": 0
+    },
+    {
+      "id": "konjunktiv",
+      "title": "Konjunktiv",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Konjunktiv",
+      "cefr": null,
+      "section": "Konjunktiv",
+      "exercise_count": 0
+    },
+    {
+      "id": "indirekte_rede",
+      "title": "Indirekte Rede",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Indirekte_Rede",
+      "cefr": null,
+      "section": "Konjunktiv",
+      "exercise_count": 0
+    },
+    {
+      "id": "konjunktiv_ii",
+      "title": "Konjunktiv II",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Konjunktiv_II",
+      "cefr": null,
+      "section": "Konjunktiv",
+      "exercise_count": 0
+    },
+    {
+      "id": "konjunktiv_ii_videos",
+      "title": "Konjunktiv II (Videos)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Konjunktiv_II_%28Videos%29",
+      "cefr": null,
+      "section": "Konjunktiv",
+      "exercise_count": 0
+    },
+    {
+      "id": "saetze",
+      "title": "Sätze",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/S%C3%A4tze",
+      "cefr": null,
+      "section": "Sätze",
+      "exercise_count": 0
+    },
+    {
+      "id": "adverbialsaetze_interaktive_uebungen",
+      "title": "Adverbialsätze (Interaktive Übungen)",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Adverbials%C3%A4tze_%28Interaktive_%C3%9Cbungen%29",
+      "cefr": null,
+      "section": "Sätze",
+      "exercise_count": 0
+    },
+    {
+      "id": "fragen",
+      "title": "Fragen",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Fragen",
+      "cefr": null,
+      "section": "Sätze",
+      "exercise_count": 0
+    },
+    {
+      "id": "satzbau",
+      "title": "Satzbau",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Satzbau",
+      "cefr": null,
+      "section": "Sätze",
+      "exercise_count": 0
+    },
+    {
+      "id": "satzglieder",
+      "title": "Satzglieder",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Satzglieder",
+      "cefr": null,
+      "section": "Sätze",
+      "exercise_count": 0
+    },
+    {
+      "id": "das_oder_dass",
+      "title": "Das oder dass",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Das_oder_dass",
+      "cefr": null,
+      "section": "Rechtschreibung",
+      "exercise_count": 0
+    },
+    {
+      "id": "dass",
+      "title": "Dass",
+      "original_url": "https://deutsch-lernen.zum.de/wiki/Dass",
+      "cefr": null,
+      "section": "Rechtschreibung",
+      "exercise_count": 0
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "id": "vf_01",
+  "title": "Verbs: Das Futur",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vf_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Verbs are used to describe actions. The future tense is used to describe actions that are going to happen sometime in the future, although modern German (especially spoken German) tends to use the present tense to express future actions (sometimes adding a future adverb of time, such as next week, next year, in two years, etc.).\n\nFutur | Präsens\n\nSchneewittchen wird in 2 Jahren promovieren. | = | Schneewittchen promoviert in 2 Jahren.\n\nSnow White will graduate in 2 years."
+    },
+    {
+      "heading": "Future forms",
+      "text": "The future tense is formed by a conjugated form of werden and an infinitive verb.\n\nAschenputtel | Ich werde meine eigene Praxis haben. | I will have my own practice.\n\ndie Hexe | Du wirst im Schloss keine weitere Therapie anbieten? | You won't be offering any more therapy sessions in the castle?\n\nwerden • english: will (future auxiliary verb)\n\nich werde | wir werden\n\ndu wirst | ihr werdet\n\ner/sie/es wird | sie werden"
+    },
+    {
+      "heading": "Future with modal verbs",
+      "text": "With modal verbs, you still use the form of werden, and then add two infinitives: the original primary verb and the modal verb, as the following longing revelation from the evil queen illustrates:\n\noriginal sentence | Ich frage meinen Spiegel jeden Tag: Wer ist die Schönste im Land? | I ask my mirror every day: Who is the most beautiful of all [in the country]?\n\nsentence with modal verb | Ich muss meinen Spiegel jeden Tag fragen! Ich kann einfach nicht anders! | I have to ask my mirror every day! I can't stand it!\n\nsentence in the future with modal verb | Nach der Therapie aber werde ich meinen Spiegel nicht mehr fragen müssen! | After the therapy, however, I won't have to ask my mirror everyday!\n\nIn a subordinate clause, the auxiliary verb werden precedes both the original verb and the modal verb at the end:\n\nWenn ich meinen Spiegel nicht mehr werde fragen müssen, wird man mich endlich in Ruhe lassen - ich habe die Nase voll von diesem schlechten Ruf! | If I no longer have to ask my mirror, people will finally leave me in peace - I am sick and tired of this bad reputation!"
+    },
+    {
+      "heading": "Warning: spoiler alert!",
+      "text": "One of the main pitfalls for American learners of German is the difference between the English will/want to and the German wird/will.\n\ndie alte Hexe | Ich will wieder Kinder backen und essen! Aber nach diesen dummen Therapiestunden werde ich das nicht tun können! | I want to bake and eat children again! But after these stupid therapy sessions I will not be able to do that!\n\ndie böse Königin | Du sollst das sowieso nicht tun, Heidrun! | You're not supposed to do that anyway, Heidrun!\n\ndie alte Hexe | Aber ich will, ich will, ich will!!! Verdammt nochmal! | But I want to, I want to, I want to!!! Damn it!\n\nAschenputtel | Tja, aber Sie werden das nicht tun! Sie werden in Zukunft keine Kinder essen! | Well, but you will not do that! You will not eat any children in the future!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "=",
+      "en": "Schneewittchen wird in 2 Jahren promovieren."
+    },
+    {
+      "de": "Aschenputtel",
+      "en": "Ich werde meine eigene Praxis haben."
+    },
+    {
+      "de": "die Hexe",
+      "en": "Du wirst im Schloss keine weitere Therapie anbieten?"
+    },
+    {
+      "de": "ich werde",
+      "en": "wir werden"
+    },
+    {
+      "de": "du wirst",
+      "en": "ihr werdet"
+    },
+    {
+      "de": "er/sie/es wird",
+      "en": "sie werden"
+    },
+    {
+      "de": "original sentence",
+      "en": "Ich frage meinen Spiegel jeden Tag: Wer ist die Schönste im Land?"
+    },
+    {
+      "de": "sentence with modal verb",
+      "en": "Ich muss meinen Spiegel jeden Tag fragen! Ich kann einfach nicht anders!"
+    },
+    {
+      "de": "sentence in the future with modal verb",
+      "en": "Nach der Therapie aber werde ich meinen Spiegel nicht mehr fragen müssen!"
+    },
+    {
+      "de": "Wenn ich meinen Spiegel nicht mehr werde fragen müssen, wird man mich endlich in Ruhe lassen - ich habe die Nase voll von diesem schlechten Ruf!",
+      "en": "If I no longer have to ask my mirror, people will finally leave me in peace - I am sick and tired of this bad reputation!"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Ich will wieder Kinder backen und essen! Aber nach diesen dummen Therapiestunden werde ich das nicht tun können!"
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Du sollst das sowieso nicht tun, Heidrun!"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Aber ich will, ich will, ich will!!! Verdammt nochmal!"
+    },
+    {
+      "de": "Aschenputtel",
+      "en": "Tja, aber Sie werden das nicht tun! Sie werden in Zukunft keine Kinder essen!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Dornröschen: ich / schlafen / nicht mehr\n\n___",
+      "a": "Ich werde nicht mehr schlafen.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Die sieben Zwerge: wir / finden / als Umweltschützer / neue Arbeitsstellen\n\n___",
+      "a": "Wir werden als Umweltschützer neue Arbeitsstellen finden.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtels Vater: wo / du / aufbauen / deine Praxis?\n\n___",
+      "a": "Wo wirst du deine Praxis aufbauen?",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Theo: ich / folgen / Aschenputtels Prinzen / nach Monaco, weil / Schneewittchen / brauchen / mich / nicht mehr\n\n___",
+      "a": "Ich werde Aschenputtels Prinzen nach Monaco folgen, weil Schneewittchen mich nicht mehr brauchen wird.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: ich / vermissen / dich / aber / ich / hoffen (keep in present tense) / dass / du / haben / ein schönes Leben\n\n___",
+      "a": "Ich werde dich vermissen, aber ich hoffe, dass du ein schönes Leben haben wirst.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: ich / studieren / an der FU in Berlin / und / werden / Meteorologin\n\n___",
+      "a": "Ich werde an der FU in Berlin studieren und werde Meteorologin werden!",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen an Gerdi: du / müssen / verklagen / die Regierung / um / zurückbekommen / dein Geld\n\n___",
+      "a": "Du wirst die Regierung verklagen müssen, um dein Geld zurückzubekommen.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Gerdi: wenn / ich / nächsten Monat / können / beweisen / meine deutsche Staatsangehörigkeit / die Regierung / freigeben / mein Konto\n\n___",
+      "a": "Wenn ich nächsten Monat meine deutsche Staatsangehörigkeit werde beweisen können, wird die Regierung mein Konto freigeben.",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: möglichst bald / ich / einziehen / bei Rotkäppchens Großmutter\n\n___",
+      "a": "Möglichst bald werde ich bei Rotkäppchens Großmutter einziehen!",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "die Großmutter: da / der Schnabel / sauber bleiben / dir (That will never happen! lit: your beak will stay clean!)\n\n___",
+      "a": "Da wird dir der Schnabel sauber bleiben!",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "Seppl (zu sich selbst): alle / platzen / vor Neugierde / wenn / ich / veröffentlichen / meine erste TopHits CD\n\n___",
+      "a": "Alle werden vor Neugierde platzen, wenn ich meine erste TopHits CD veröffentlichen werde!",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    },
+    {
+      "type": "gap",
+      "q": "die böse Königin: wenn / ich / müssen / fragen / meinen miesen Spiegel / nicht mehr ständig / ich / können / stillen / meine neue Sucht (Reality TV)!\n\n___",
+      "a": "Wenn ich meinen miesen Spiegel nicht mehr ständig werde fragen müssen, werde ich meine neue Sucht (Reality TV) stillen können!",
+      "set_id": "vf_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Find out what kinds of plans the castle residents have for the future, whether they like it or not ... Put Aschenputtel's notes in order by writing out these sentences in the future tense. Note that many of these sentences sound overly formal since, in many cases, these would be expressed with the present tense instead."
+    }
+  ]
+}

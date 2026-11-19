@@ -1,0 +1,189 @@
+{
+  "id": "vi_02",
+  "title": "Verbs: Fahren",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_02.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb fahren is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es). It can be used for the English words to go (by car or bus, train), to drive, to ride a bicycle (Rad fahren) or to travel.\n\nfahren • to drive\n\nich fahre | wir fahren\n\ndu fährst | ihr fahrt\n\ner/sie/es fährt | sie fahren\n\nder Jäger | Wann fahren wir nach Berlin? | When are we going to Berlin?\n\nRotkäppchens Oma | Um 3. Das Theaterstück fängt um 7 Uhr an. | At 3. The theater play begins at 7 pm.\n\nder Jäger | Das ist nicht genug Zeit! Wie schnell fährst du? | That's not enough time! How fast do you drive?\n\nOma | Auf der Autobahn? Ich fahre 220 km pro Stunde! | On the Autobahn? I usually drive 220 kmH.\n\nder Jäger | Du bist verrückt! Das kannst du sowieso nicht machen. Der alte König fährt diesmal mit uns. | You're nuts! You can't do that anyway. The old king is driving with us this time.\n\nOma | Ja, er und der Froschkönig fahren beide mit uns. Du hast Recht, der Froschkönig ist mit den Nerven schon völlig am Ende! | Yes, he and the frog king are both coming with us. You're right, the frog king is already a nervous wreck!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\ndie Fahrt | the trip/ride\n\ndas Fahrvergnügen | the joy of driving\n\ndas Fahrrad | the bicycle\n\nfun phrases\n\nsie fährt bestimmt mit Bleifuß | she's definitely a speeder\n\nsie fährt einen heißen Reifen | she is driving a cool car.\n\ner wird doch aus der Haut fahren, wenn er das sieht! | he will get really mad when he sees that!\n\ner fährt mir immer über den Mund!!!! | he is always interrupting me!!!!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich fahre",
+      "en": "wir fahren"
+    },
+    {
+      "de": "du fährst",
+      "en": "ihr fahrt"
+    },
+    {
+      "de": "er/sie/es fährt",
+      "en": "sie fahren"
+    },
+    {
+      "de": "der Jäger",
+      "en": "Wann fahren wir nach Berlin?"
+    },
+    {
+      "de": "Rotkäppchens Oma",
+      "en": "Um 3. Das Theaterstück fängt um 7 Uhr an."
+    },
+    {
+      "de": "der Jäger",
+      "en": "Das ist nicht genug Zeit! Wie schnell fährst du?"
+    },
+    {
+      "de": "Oma",
+      "en": "Auf der Autobahn? Ich fahre 220 km pro Stunde!"
+    },
+    {
+      "de": "der Jäger",
+      "en": "Du bist verrückt! Das kannst du sowieso nicht machen. Der alte König fährt diesmal mit uns."
+    },
+    {
+      "de": "Oma",
+      "en": "Ja, er und der Froschkönig fahren beide mit uns. Du hast Recht, der Froschkönig ist mit den Nerven schon völlig am Ende!"
+    },
+    {
+      "de": "die Fahrt",
+      "en": "the trip/ride"
+    },
+    {
+      "de": "das Fahrvergnügen",
+      "en": "the joy of driving"
+    },
+    {
+      "de": "das Fahrrad",
+      "en": "the bicycle"
+    },
+    {
+      "de": "sie fährt bestimmt mit Bleifuß",
+      "en": "she's definitely a speeder"
+    },
+    {
+      "de": "sie fährt einen heißen Reifen",
+      "en": "she is driving a cool car."
+    },
+    {
+      "de": "er wird doch aus der Haut fahren, wenn er das sieht!",
+      "en": "he will get really mad when he sees that!"
+    },
+    {
+      "de": "er fährt mir immer über den Mund!!!!",
+      "en": "he is always interrupting me!!!!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Wie schnell ___ Sie, Frau Rot?",
+      "a": "fahren",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "Oma: Ich ___ , wie immer, unter dem Tempolimit!",
+      "a": "fahre",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger: Mausi, der Froschkönig hat Recht, du ___ ein bisschen zu schnell!",
+      "a": "fährst",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "Oma: Herr König, finden Sie auch, dass ich zu schnell ___?",
+      "a": "fahre",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der pensionierte König: Nein, gar nicht, Sie ___ sehr gut, Frau Rot!",
+      "a": "fahren",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der König: Froschkönig, warum ___ Sie nicht mit dem Zug nach Berlin?",
+      "a": "fahren",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der Froschkönig: Er ___ leider nicht von unserem Schloss ab, und ich kann den Schalter nicht erreichen (reach the counter) und kann keinen Fahrschein (ticket) kaufen!",
+      "a": "fährt",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der König: Aha, das stimmt ... Aber, Frau Rot, ich glaube wir ___ vielleicht wirklich zu schnell. Ist das nicht die Polizei?",
+      "a": "fahren",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "die Oma: Mist! Ich habe meinen Führerschein schon das letzte Mal verloren. Liebling, ___ du bitte weiter?",
+      "a": "fährst",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "Der Polizist: Guten Tag! Ach, das sind Sie wieder. Der Herr Jäger ___ jetzt den Porsche, und Sie kommen mit mir zur Polizeiwache.",
+      "a": "fährt",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Leider kann ich nicht. Ich ___ nicht gern auf der Autobahn, so viele Leute ___ dort ganz rücksichtslos und schnell (recklessly and fast). Und, ehrlich gesagt (to tell the truth), ich habe ein bisschen zu viel Jägermeister getrunken!",
+      "a": [
+        "fahre",
+        "fahren"
+      ],
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "der alte König: Dann ___ ich! Ich habe letzte Woche endlich meinen Führerschein bekommen!",
+      "a": "fahre",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Mensch, das nächste Mal (next time) ___ ich mit dem Zug!",
+      "a": "fahre",
+      "set_id": "vi_02_01_fib",
+      "set_title": "Übung: Rotkäppchens Oma fährt zu schnell",
+      "prompt": "Scenario: Rotkäppchen's grandmother, the hunter, the retired king, and the frog king are planning to drive to Berlin with Granny's red sports car. Fill in the blanks with the missing words to find out whether they made it or not."
+    }
+  ]
+}

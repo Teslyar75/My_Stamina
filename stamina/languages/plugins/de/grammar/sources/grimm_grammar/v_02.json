@@ -1,0 +1,315 @@
+{
+  "id": "v_02",
+  "title": "Verbs: Das Präsens - Regelmäßige Verben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/v_02.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Verbs are used to describe actions. The present tense is used to describe actions that are going on right now or events that regularly happen.\n\nDer Esel macht Kaffee für seine Mitbewohner. | The donkey makes coffee for his room mates.\n\nSie trinken jeden Tag fast zwei Liter. | They drink almost two liters every day.\n\nUnlike English, German does not use a different form of the verb to describe events that are in progress right now (present progressive in English: The donkey is sitting at the table) and events that happen regularly (present tense in English: He sits at the table every morning.).\n\nDer Esel singt. | The donkey is singing.\n\nEr repariert die Wände im Bad. | He is repairing the walls in the bathroom.\n\nDer Hund kommt nach Hause. | The dog comes home.\n\nEr geht in die Küche; er sucht die Katze. | He goes into the kitchen; he is looking for the cat.\n\nYou can say that something is happening right now by adding some expressions to your sentence:\n\ngerade | right now\n\nim Moment | at the moment\n\nzur Zeit | at this time\n\nDie Katze ist zur Zeit nicht zu Hause. Sie jagt im Moment zwei Mäuse. | The cat is not at home at this time. She is chasing two mice at the moment.\n\nDie Katze ist alt, und die Mäuse laufen gerade weg und lachen sie aus. Arme Katze! | The cat is old, and the mice are running away from her and are laughing at her. Poor cat!"
+    },
+    {
+      "heading": "Verb conjugations – regular verbs",
+      "text": "In the present tense, verbs can be either regular or irregular (just to keep you on your toes, some verbs may be irregular in the present tense but not in the past, others may be irregular in the past tense but not in the present). Regular verbs add endings to the stem of the verb, irregular verbs add endings and change the vowel of the stem.\n\nRegular verbs\n\nThe verb stem of regular verbs stays intact, and you add the personal endings to this stem:\n\nspielen • play\n\nich spiele | wir spielen\n\ndu spielst | ihr spielt\n\ner/sie/es spielt | sie spielen\n\nIf the stem ends in d or t, you add an extra -e before some endings:\n\narbeiten • work\n\nich arbeite | wir arbeiten\n\ndu arbeitest | ihr arbeitet\n\ner/sie/es arbeitet | sie arbeiten\n\nfinden • find\n\nich finde | wir finden\n\ndu findest | ihr findet\n\ner/sie/es findet | sie finden\n\nder Hahn | Warum spielst du mit diesen Mäusen? | Why are you playing with these mice?\n\ndie Katze | Ich spiele nicht. Ich arbeite. | I am not playing. I am working.\n\nder Hahn | Warum kaufst du keine Mausefallen? | Why don't you buy mousetraps?\n\ndie Katze | He, ich finde Mausefallen unmenschlich! | Hey, I find mousetraps inhumane!\n\nder Hahn | Ich nicht! | Well, I don't!\n\ndie Katze | Gut für dich! | Good for you!\n\nWhen you are talking formally, with adults you don't know, you need to use Sie. With Sie you need to use verbs in the same form as the third person plural:\n\nEs klopft an der Tür. | There is a knock on the door.\n\nDie alte Hexe\nist verärgert | Frau Katze, Sie arbeiten nicht genug. Ich finde jeden Tag immer mehr Mäuse in meiner Speisekammer. | Ms. Cat, you don't work enough. I find more and more mice in my pantry every day.\n\nder Hahn | Sie finden so viele Mäuse, weil Sie Ihre Speisekammer nie putzen. Sie Dreckspatz! | You find so many mice because you never clean your pantry.\n\ndie alte Hexe | Naja, mein Zauberbesen ist im Moment kaputt, aber trotzdem ... | Well, my magic broom is broken at the moment, but still ...\n\nder Hahn | Hmmm ... ich hau ab. | I'm outta here.\n\ndie Katze | Hexen ... sie arbeiten nicht mehr. Sie schlafen den ganzen Tag! und beschweren sich dann über uns arme Katzen! | Witches ... they don't work anymore. They sleep the whole day away! Then they complain about us, poor cats!\n\nUnd die Tiere machen die Tür zu, bevor die alte Hexe noch etwas sagt ... | And the animals close the door before the old witch says anything else ..."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Der Esel macht Kaffee für seine Mitbewohner.",
+      "en": "The donkey makes coffee for his room mates."
+    },
+    {
+      "de": "Sie trinken jeden Tag fast zwei Liter.",
+      "en": "They drink almost two liters every day."
+    },
+    {
+      "de": "Der Esel singt.",
+      "en": "The donkey is singing."
+    },
+    {
+      "de": "Er repariert die Wände im Bad.",
+      "en": "He is repairing the walls in the bathroom."
+    },
+    {
+      "de": "Der Hund kommt nach Hause.",
+      "en": "The dog comes home."
+    },
+    {
+      "de": "Er geht in die Küche; er sucht die Katze.",
+      "en": "He goes into the kitchen; he is looking for the cat."
+    },
+    {
+      "de": "gerade",
+      "en": "right now"
+    },
+    {
+      "de": "im Moment",
+      "en": "at the moment"
+    },
+    {
+      "de": "zur Zeit",
+      "en": "at this time"
+    },
+    {
+      "de": "Die Katze ist zur Zeit nicht zu Hause. Sie jagt im Moment zwei Mäuse.",
+      "en": "The cat is not at home at this time. She is chasing two mice at the moment."
+    },
+    {
+      "de": "Die Katze ist alt, und die Mäuse laufen gerade weg und lachen sie aus. Arme Katze!",
+      "en": "The cat is old, and the mice are running away from her and are laughing at her. Poor cat!"
+    },
+    {
+      "de": "ich spiele",
+      "en": "wir spielen"
+    },
+    {
+      "de": "du spielst",
+      "en": "ihr spielt"
+    },
+    {
+      "de": "er/sie/es spielt",
+      "en": "sie spielen"
+    },
+    {
+      "de": "ich arbeite",
+      "en": "wir arbeiten"
+    },
+    {
+      "de": "du arbeitest",
+      "en": "ihr arbeitet"
+    },
+    {
+      "de": "er/sie/es arbeitet",
+      "en": "sie arbeiten"
+    },
+    {
+      "de": "ich finde",
+      "en": "wir finden"
+    },
+    {
+      "de": "du findest",
+      "en": "ihr findet"
+    },
+    {
+      "de": "er/sie/es findet",
+      "en": "sie finden"
+    },
+    {
+      "de": "der Hahn",
+      "en": "Warum spielst du mit diesen Mäusen?"
+    },
+    {
+      "de": "die Katze",
+      "en": "Ich spiele nicht. Ich arbeite."
+    },
+    {
+      "de": "der Hahn",
+      "en": "Warum kaufst du keine Mausefallen?"
+    },
+    {
+      "de": "die Katze",
+      "en": "He, ich finde Mausefallen unmenschlich!"
+    },
+    {
+      "de": "der Hahn",
+      "en": "Ich nicht!"
+    },
+    {
+      "de": "die Katze",
+      "en": "Gut für dich!"
+    },
+    {
+      "de": "Die alte Hexe\nist verärgert",
+      "en": "Frau Katze, Sie arbeiten nicht genug. Ich finde jeden Tag immer mehr Mäuse in meiner Speisekammer."
+    },
+    {
+      "de": "der Hahn",
+      "en": "Sie finden so viele Mäuse, weil Sie Ihre Speisekammer nie putzen. Sie Dreckspatz!"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Naja, mein Zauberbesen ist im Moment kaputt, aber trotzdem ..."
+    },
+    {
+      "de": "der Hahn",
+      "en": "Hmmm ... ich hau ab."
+    },
+    {
+      "de": "die Katze",
+      "en": "Hexen ... sie arbeiten nicht mehr. Sie schlafen den ganzen Tag! und beschweren sich dann über uns arme Katzen!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Hund und der Esel ___ (kaufen/finden) eine Katze im Wald.",
+      "a": "finden",
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Die Katze ___ (liegen/arbeiten) unter einem Baum und ___ (weinen/sagen).",
+      "a": [
+        "liegt",
+        "weint"
+      ],
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel ___ (singen/fragen): \"Warum ___ (kommen/machen) du nicht mit uns nach Bremen?\"",
+      "a": [
+        "fragt",
+        "kommst"
+      ],
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Diese Idee ___ (finden/spielen) ich toll. Ich ___ (kaufen/kommen) auch mit nach Bremen.",
+      "a": [
+        "finde",
+        "komme"
+      ],
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Nach einer Weile (after a while) ___ (finden/machen) die vier Tiere ein kleines Haus im Wald.",
+      "a": "finden",
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Die Tiere ___ (gehen/machen) an das Fenster und schauen hinein.",
+      "a": "gehen",
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "In dem Haus sind 4 Räuber. Sie ___ (trinken/putzen) Wein.",
+      "a": "trinken",
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Und sie ___ (kaufen/spielen) Karten (cards).",
+      "a": "spielen",
+      "set_id": "v_02_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "The witch brings back some unpleasant memories – the cat had a nightmare of the time her owner wanted to drown her because she was so old. Select the correct regular verb from the parentheses, conjugate it according to the subject of the sentence, and fill in the blank with the result. You know these verbs from the descriptions above."
+    },
+    {
+      "type": "gap",
+      "q": "Die Tiere ___ (machen) viel Lärm: der Esel ___ (schreien), der Hund ___ (bellen), die Katze ___ (miauen) und der Hahn ___ (krähen).",
+      "a": [
+        "machen",
+        "schreit",
+        "bellt",
+        "miaut",
+        "kräht"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Die Räuber ___ (glauben), dass die Tiere Gespenster (ghosts) sind und laufen weg.",
+      "a": "glauben",
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Die Tiere essen und ___ (trinken) und später ___ (gehen) sie schlafen.",
+      "a": [
+        "trinken",
+        "gehen"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel ___ (stehen) im Stall, der Hund ___ (liegen) hinter der Tür, die Katze auf dem Herd (hearth) und der Hahn ___ (sitzen) auf der Fensterbank (window sill).",
+      "a": [
+        "steht",
+        "liegt",
+        "sitzt"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Ein kleines Licht (light) ___ (brennen) auf dem Tisch.",
+      "a": "brennt",
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Ein Räuber ___ (kommen) zurück (back).",
+      "a": "kommt",
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Er ___ (wecken) die Tiere als er ins Haus ___ (gehen).",
+      "a": [
+        "weckt",
+        "geht"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Die Tiere ___ (erschrecken) ihn. Die Katze ___ (kratzen) den Räuber, der Hund ___ (beißen) in sein Bein (leg), der Hahn ___ (rufen) 'kikeriki' von der Fensterbank und der Esel tritt ihn mit dem Hinterfuss (kicks him with a hind leg).",
+      "a": [
+        "erschrecken",
+        "kratzt",
+        "beißt",
+        "ruft"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    },
+    {
+      "type": "gap",
+      "q": "Der Räuber ___ (fliehen) und weder er noch (neither ... nor ...) die anderen Räuber ___ (kommen) zurück.",
+      "a": [
+        "flieht",
+        "kommen"
+      ],
+      "set_id": "v_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "A noise wakes the cat up, but she falls asleep again quickly. Fill in the blanks with the conjugated form of the supplied verb in parentheses, and find out how her story ends. Some of these verbs will be familiar, some new, but they are all regular in their conjugation."
+    }
+  ]
+}

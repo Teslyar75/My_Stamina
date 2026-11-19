@@ -1,0 +1,398 @@
+{
+  "id": "vsp_03",
+  "title": "Verbs: Das Imperfekt - Gemischte Verben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_03.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Forming the simple past of irregular verbs",
+      "text": "As you remember, regular verbs leave off the -en suffix and add personal past-tense suffixes to form the simple past (e.g., ich machte, du machtest, er/sie/es machte, wir machten, ihr machtet, sie/Sie machten). Irregular verbs, on the other hand, go through a stem-vowel change and have different endings.\n\nThe third group of verbs is conflicted: they go through a stem-vowel change (aka irregular verbs) but keep the regular verb endings\n\nDer Esel wurde sehr alt, und sein Herr dachte:\" Ich muss ihn wegschicken!\" | The donkey was getting very old, and his owner thought: I have to send him away!\n\nEr wollte nach Bremen, um Stadtmusikant zu werden. Er traf auf dem Weg einen Hund, eine Katze und einen Haushahn und er brachte sie zu einem Wald, wo sie die Nacht verbringen wollten. | He wanted to go to Bremen to become a musician. On the way he met a dog, a cat and a rooster, and led them all to a forest, where they wanted to spend the night.\n\nbrennen • burn (burnt)\n\nich brannte | wir brannten\n\ndu branntest | ihr branntet\n\ner/sie/es brannte | sie brannten\n\nbringen • bring (brought)\n\nich brachte | wir brachten\n\ndu brachtest | ihr brachtet\n\ner/sie/es brachte | sie brachten\n\ndenken • think (thought)\n\nich dachte | wir dachten\n\ndu dachtest | ihr dachtet\n\ner/sie/es dachte | sie dachten\n\nkennen • know a person, place (knew)\n\nich kannte | wir kannten\n\ndu kanntest | ihr kanntet\n\ner/sie/es kannte | sie kannten\n\nnennen • name (knew)\n\nich nannte | wir nannten\n\ndu nanntest | ihr nanntet\n\ner/sie/es nannte | sie nannten\n\nrennen • run (ran)\n\nich rannte | wir rannten\n\ndu ranntest | ihr ranntet\n\ner/sie/es rannte | sie rannten\n\nsenden* • send (sent)\n\nich sandte | wir sandten\n\ndu sandtest | ihr sandtet\n\ner/sie/es sandte | sie sandten\n\nwenden* • turn (turned)\n\nich wandte | wir wandten\n\ndu wandtest | ihr wandtet\n\ner/sie/es wandte | sie wandten\n\n* Nota bene: the verbs senden und wenden are slowly becoming regular verbs, so you are experiencing linguistic history!"
+    },
+    {
+      "heading": "Separable and inseparable prefix verbs in the simple past",
+      "text": "Remember that in the present tense, separable prefix verbs (with prefixes such as an-, auf-, aus-, mit-) are separated in typical main clauses and questions. Separable prefix verbs in the simple past behave the same way. They are separated in typical main clauses, and stay with their prefixes in subordinate clauses (e.g., dass, obwohl, weil).\n\nIn contrast, inseparable prefix verbs (with prefixes such as be-, ent-, ver-) stay with their prefixes come rain or shine. Try to figure out which verbs here are separable and which are inseparable ...\n\nDie vier neuen Freunde dachten sich in allen Einzelheiten aus, was sie zunächst machen wollten. | The four new friends thought thoroughly about all the details of what they wanted to do next.\n\nAm Abend wurde es dunkel, und die Tiere rannten schnell in einen Wald hinein, damit sie während der Nacht sicher sein würden. | In the evening it got dark, and the animals ran quickly into a forest, so that they would be safe during the night.\n\nDer Haushahn wollte auf der Spitze eines großen Baumes schlafen, aber bevor er einschlief, bemerkte er etwas. Er erkannte es nicht. \"Ist das vielleicht ein Licht in einem kleinen Haus?\" | The rooster wanted to sleep on the tip of a big tree, but before he fell asleep he noticed something. He did not recognize it. Could it be a light from a small house?\n\nwissen • know a thing, fact (knew)\n\nich wusste | wir wussten\n\ndu wusstest | ihr wusstet\n\ner/sie/es wusste | sie wussten\n\nNote also that wissen is often used as an introductory clause:\n\nWusstest du, | dass | die Tiere\nweggelaufen sind? | Did you know | that | the animals\nran away?\n\nob | whether\n\nwann | when\n\nwarum | why\n\nwie | how"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Der Esel wurde sehr alt, und sein Herr dachte:\" Ich muss ihn wegschicken!\"",
+      "en": "The donkey was getting very old, and his owner thought: I have to send him away!"
+    },
+    {
+      "de": "Er wollte nach Bremen, um Stadtmusikant zu werden. Er traf auf dem Weg einen Hund, eine Katze und einen Haushahn und er brachte sie zu einem Wald, wo sie die Nacht verbringen wollten.",
+      "en": "He wanted to go to Bremen to become a musician. On the way he met a dog, a cat and a rooster, and led them all to a forest, where they wanted to spend the night."
+    },
+    {
+      "de": "ich brannte",
+      "en": "wir brannten"
+    },
+    {
+      "de": "du branntest",
+      "en": "ihr branntet"
+    },
+    {
+      "de": "er/sie/es brannte",
+      "en": "sie brannten"
+    },
+    {
+      "de": "ich brachte",
+      "en": "wir brachten"
+    },
+    {
+      "de": "du brachtest",
+      "en": "ihr brachtet"
+    },
+    {
+      "de": "er/sie/es brachte",
+      "en": "sie brachten"
+    },
+    {
+      "de": "ich dachte",
+      "en": "wir dachten"
+    },
+    {
+      "de": "du dachtest",
+      "en": "ihr dachtet"
+    },
+    {
+      "de": "er/sie/es dachte",
+      "en": "sie dachten"
+    },
+    {
+      "de": "ich kannte",
+      "en": "wir kannten"
+    },
+    {
+      "de": "du kanntest",
+      "en": "ihr kanntet"
+    },
+    {
+      "de": "er/sie/es kannte",
+      "en": "sie kannten"
+    },
+    {
+      "de": "ich nannte",
+      "en": "wir nannten"
+    },
+    {
+      "de": "du nanntest",
+      "en": "ihr nanntet"
+    },
+    {
+      "de": "er/sie/es nannte",
+      "en": "sie nannten"
+    },
+    {
+      "de": "ich rannte",
+      "en": "wir rannten"
+    },
+    {
+      "de": "du ranntest",
+      "en": "ihr ranntet"
+    },
+    {
+      "de": "er/sie/es rannte",
+      "en": "sie rannten"
+    },
+    {
+      "de": "ich sandte",
+      "en": "wir sandten"
+    },
+    {
+      "de": "du sandtest",
+      "en": "ihr sandtet"
+    },
+    {
+      "de": "er/sie/es sandte",
+      "en": "sie sandten"
+    },
+    {
+      "de": "ich wandte",
+      "en": "wir wandten"
+    },
+    {
+      "de": "du wandtest",
+      "en": "ihr wandtet"
+    },
+    {
+      "de": "er/sie/es wandte",
+      "en": "sie wandten"
+    },
+    {
+      "de": "Die vier neuen Freunde dachten sich in allen Einzelheiten aus, was sie zunächst machen wollten.",
+      "en": "The four new friends thought thoroughly about all the details of what they wanted to do next."
+    },
+    {
+      "de": "Am Abend wurde es dunkel, und die Tiere rannten schnell in einen Wald hinein, damit sie während der Nacht sicher sein würden.",
+      "en": "In the evening it got dark, and the animals ran quickly into a forest, so that they would be safe during the night."
+    },
+    {
+      "de": "Der Haushahn wollte auf der Spitze eines großen Baumes schlafen, aber bevor er einschlief, bemerkte er etwas. Er erkannte es nicht. \"Ist das vielleicht ein Licht in einem kleinen Haus?\"",
+      "en": "The rooster wanted to sleep on the tip of a big tree, but before he fell asleep he noticed something. He did not recognize it. Could it be a light from a small house?"
+    },
+    {
+      "de": "ich wusste",
+      "en": "wir wussten"
+    },
+    {
+      "de": "du wusstest",
+      "en": "ihr wusstet"
+    },
+    {
+      "de": "er/sie/es wusste",
+      "en": "sie wussten"
+    },
+    {
+      "de": "Wusstest du,",
+      "en": "dass"
+    },
+    {
+      "de": "ob",
+      "en": "whether"
+    },
+    {
+      "de": "wann",
+      "en": "when"
+    },
+    {
+      "de": "warum",
+      "en": "why"
+    },
+    {
+      "de": "wie",
+      "en": "how"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Haushahn hatte richtig gesehen.. Da, im kleinen Haus ___ tatsächlich ein Licht.",
+      "a": "brannte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel: ___ ihr, dass das Haus hier war?",
+      "a": "wusstet",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Haushahn: Nein, aber ich ___, dass das Licht bedeutete, dass es hier ein Haus gibt.",
+      "a": "dachte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel: Ich ging näher zu dem Haus und schaute durch das Fenster, und ich ___ die Männer, die drinnen um einen Tisch herum sassen: Sie waren Räuber! Ich habe sie schon in meinem Dorf gesehen.",
+      "a": "kannte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Hund: Und danach ___ wir uns aus, wie wir die Räuber hinausjagen könnten.",
+      "a": "dachten",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Die Tiere machten ihre Musik, aber die Räuber ___ nicht, dass das nur die vier Tiere waren!",
+      "a": "wussten",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Diese Männer ___ aus dem Haus tief in den Wald hinaus.",
+      "a": "rannten",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Haus: Lieber Esel, du ___ die Nacht im Stall, und ich schlief hinter der Tür, wenn ich mich nicht irre (if I'm not mistaken).",
+      "a": "verbrachtest",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Um Mitternacht merkten die Räuber, dass das Haus dunkel war. Sie ___ einen Räuber zum Haus, um zu sehen, was da los war (what was going on).",
+      "a": "sandten",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Als der Räuber ins Hause kam, ___ er seinen Kopf nach links uns sah die Augen der Katze!",
+      "a": "wandte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Der Hund biss ihm ins Bein, der Esel schlug ihn mit dem Hinterfuss, und der Räuber ___ so schnell wie nie zuvor aus dem Haus.",
+      "a": "rannte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Die Räuber kamen nie zurück, die vier Tiere reisten im Land herum und sangen, und man ___ sie die Bremer Stadtmusikanten.",
+      "a": "nannte",
+      "options": [
+        "brennen",
+        "kennen",
+        "senden",
+        "verbringen (spend)",
+        "nennen",
+        "wenden",
+        "denken",
+        "rennen",
+        "wissen"
+      ],
+      "set_id": "vsp_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Continue reading about the how the four friends found their way to the robbers' house and how they ended up taking over that house! Fill in the blanks with the correct simple past forms of the mixed verbs in the word bank."
+    }
+  ]
+}

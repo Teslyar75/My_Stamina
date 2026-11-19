@@ -1,0 +1,258 @@
+{
+  "id": "vinf_01",
+  "title": "Verbs: Der Infinitivsatz",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vinf_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Infinitive constructions, most typically, provide (or expand) explanations. They can be short - one or two words - or sentence-length, can be introduced by zu, um ... zu ... or by ohne ... zu ... With each of these phrases, the zu comes before the infinitive, except with separable prefix verbs, in which case it goes between the separable prefix and the stem of the verb.\n\nIn English, these constructions often carry the meaning represented by a gerund (-ing), and very closely relate to the 'to + infinitive' or 'in order to + infinitive' constructions.\n\nIf the zu, um ... zu ... or by ohne ... zu ... construction consists of more than one or two words, it is separated from the rest of the sentence by a comma.\n\nDer Herr des Esels dachte daran, das alte Tier hinauszuschmeißen. | The donkey's owner considered kicking him out.\n\nDer Esel entschied sich, sein Glück in Bremen zu versuchen. | The donkey decided to try his luck in Bremen.\n\nEr wollte nach Bremen gehen, um dort Stadtmusikant zu werden. | He wanted to go to Bremen, in order to become a musician.\n\nOhne seinem Herrn etwas zu sagen, ging er sofort weg. | Without saying anything to his owner, he took off immediately."
+    },
+    {
+      "heading": "Typical phrases that take zu constructions",
+      "text": "anfangen | Als der Esel vorbeigeht, fängt der Hund an zu weinen. | When the donkey walks by, the dog begins to cry.\n\nbeginnen | Der Esel beginnt, ihn zu trösten. | The donkey begins to console him.\n\nbitten | Er bittet den Hund, mit ihm nach Bremen zu kommen. | He asks the dog to come with him to Bremen.\n\nbrauchen | Der Esel sagt ihm, dass er nicht allein zu bleiben braucht. | The donkey tells him that he does not need to stay alone.\n\ndrohen | Da kann sein Herr ihm nicht damit drohen, ihm das Leben zu nehmen. | There his owner can't threaten him with taking his life.\n\nsich entscheiden | Die beiden entscheiden sich, dem anderen zu trauen. | They both decide to trust each other.\n\n(gut/schlecht/etc) finden | Danach kommen die Katze und ein Haushahn, die es auch unmöglich finden weiter zu Hause zu bleiben. | Next come the cat and a rooster, who also find it impossible to stay at home any longer.\n\nkein Geld/keine Zeit haben | Es wird bald dunkel, und die Tiere haben keine Zeit, länger unterwegs zu sein. | It is getting dark, and the four animals do not have time to continue travelling.\n\n(einfach/schwer) sein | Es ist gar nicht einfach für sie, eine bequeme und sichere Unterkunft zu finden. | It is not at all easy for them to find comfortable and safe accommodations.\n\nSpaß machen | Der Haushahn ist sehr alt; es macht ihm keinen Spaß, hoch in einem Baum übernachten zu müssen! | The rooster is very old; it is not fun for him to have to spend the night high up in a tree!\n\nversuchen | Er versucht, sich in den Ästen hinzulegen. | He tries to lie down among the branches.\n\nversprechen | Er verspricht sich selbst, nie wieder unter den Sternen zu übernachten! | He promises himself never again to spend the night under the stars!\n\nvorhaben | Er hat vor, irgendwo eine kleine, gemütliche Pension zu finden. | He is planning to find himself a small, cozy guest-house somewhere."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Der Herr des Esels dachte daran, das alte Tier hinauszuschmeißen.",
+      "en": "The donkey's owner considered kicking him out."
+    },
+    {
+      "de": "Der Esel entschied sich, sein Glück in Bremen zu versuchen.",
+      "en": "The donkey decided to try his luck in Bremen."
+    },
+    {
+      "de": "Er wollte nach Bremen gehen, um dort Stadtmusikant zu werden.",
+      "en": "He wanted to go to Bremen, in order to become a musician."
+    },
+    {
+      "de": "Ohne seinem Herrn etwas zu sagen, ging er sofort weg.",
+      "en": "Without saying anything to his owner, he took off immediately."
+    },
+    {
+      "de": "anfangen",
+      "en": "Als der Esel vorbeigeht, fängt der Hund an zu weinen."
+    },
+    {
+      "de": "beginnen",
+      "en": "Der Esel beginnt, ihn zu trösten."
+    },
+    {
+      "de": "bitten",
+      "en": "Er bittet den Hund, mit ihm nach Bremen zu kommen."
+    },
+    {
+      "de": "brauchen",
+      "en": "Der Esel sagt ihm, dass er nicht allein zu bleiben braucht."
+    },
+    {
+      "de": "drohen",
+      "en": "Da kann sein Herr ihm nicht damit drohen, ihm das Leben zu nehmen."
+    },
+    {
+      "de": "sich entscheiden",
+      "en": "Die beiden entscheiden sich, dem anderen zu trauen."
+    },
+    {
+      "de": "(gut/schlecht/etc) finden",
+      "en": "Danach kommen die Katze und ein Haushahn, die es auch unmöglich finden weiter zu Hause zu bleiben."
+    },
+    {
+      "de": "kein Geld/keine Zeit haben",
+      "en": "Es wird bald dunkel, und die Tiere haben keine Zeit, länger unterwegs zu sein."
+    },
+    {
+      "de": "(einfach/schwer) sein",
+      "en": "Es ist gar nicht einfach für sie, eine bequeme und sichere Unterkunft zu finden."
+    },
+    {
+      "de": "Spaß machen",
+      "en": "Der Haushahn ist sehr alt; es macht ihm keinen Spaß, hoch in einem Baum übernachten zu müssen!"
+    },
+    {
+      "de": "versuchen",
+      "en": "Er versucht, sich in den Ästen hinzulegen."
+    },
+    {
+      "de": "versprechen",
+      "en": "Er verspricht sich selbst, nie wieder unter den Sternen zu übernachten!"
+    },
+    {
+      "de": "vorhaben",
+      "en": "Er hat vor, irgendwo eine kleine, gemütliche Pension zu finden."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Kurz nach Sonnenuntergang sah der Haushahn ein gelbes Fünkchen; es schien",
+      "options": [
+        "a. ein kleines Licht zu sein.",
+        "b. ohne ein kleines Licht zu sein."
+      ],
+      "a": "a. ein kleines Licht zu sein.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Die vier Freunde entschieden sich,",
+      "options": [
+        "a. um herauszufinden, woher das Licht kommt.",
+        "b. herauszufinden, woher das Licht kommt."
+      ],
+      "a": "b. herauszufinden, woher das Licht kommt.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Zuerst hatten sie vor,",
+      "options": [
+        "a. an die Tür zu klopfen.",
+        "b. ohne an die Tür zu klopfen."
+      ],
+      "a": "a. an die Tür zu klopfen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Aber weil sie nicht wussten, wer im Hause war, entschieden sie sich,",
+      "options": [
+        "a. sehr vorsichtig zu sein.",
+        "b. um vorsichtig zu sein."
+      ],
+      "a": "a. sehr vorsichtig zu sein.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Weil der Esel der größte war, ging er ans Fenster,",
+      "options": [
+        "a. herauszufinden, wer drinnen war.",
+        "b. um herauszufinden, wer drinnen war."
+      ],
+      "a": "b. um herauszufinden, wer drinnen war.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Es waren Räuber! Die Tiere wussten nicht ganz genau, was sie machen konnten,",
+      "options": [
+        "a. um die Räuber hinausjagen zu können.",
+        "b. um die Räuber hinauszujagen können."
+      ],
+      "a": "a. um die Räuber hinausjagen zu können.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Sie fingen aber sofort an,",
+      "options": [
+        "a. einen Plan zu entwerfen.",
+        "b. ohne einen Plan zu entwerfen."
+      ],
+      "a": "a. einen Plan zu entwerfen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Und der Plan war folgendes: Sie standen aufeinander,",
+      "options": [
+        "a. um zu größer scheinen.",
+        "b. um größer zu scheinen."
+      ],
+      "a": "b. um größer zu scheinen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Als sie da so standen, begannen sie,",
+      "options": [
+        "a. um ihre Musik zu machen.",
+        "b. ihre Musik zu machen."
+      ],
+      "a": "b. ihre Musik zu machen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Der Esel schrie, der Hund bellte, die Katze miaute und der Hahn krähte, und sie stürzten durch das Fenster,",
+      "options": [
+        "a. um den Räubern eine wahnsinnige Angst einzujagen.",
+        "b. ohne den Räubern einen wahnsinnigen Angst einzujagen."
+      ],
+      "a": "a. um den Räubern eine wahnsinnige Angst einzujagen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Die Räuber liefen weg, und die vier Tiere setzten sich an den Tisch und fingen an,",
+      "options": [
+        "a. zu essen.",
+        "b. um zu essen."
+      ],
+      "a": "a. zu essen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Nach dem Essen versuchten die Tiere, es sich im und um das Haus",
+      "options": [
+        "a. um bequem zu machen.",
+        "b. bequem zu machen."
+      ],
+      "a": "b. bequem zu machen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Die Räuber wollten aber nicht so einfach aufgeben, und sie hatten vor,",
+      "options": [
+        "a. um ins Haus zurückzukommen.",
+        "b. ins Haus zurückzukommen."
+      ],
+      "a": "b. ins Haus zurückzukommen.",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    },
+    {
+      "type": "choice",
+      "q": "Die Tiere erschreckten die Räuber noch einmal, die schnell wegliefen,",
+      "options": [
+        "a. ohne einmal zurückzuschauen!",
+        "b. um einmal zurückzuschauen!"
+      ],
+      "a": "a. ohne einmal zurückzuschauen!",
+      "set_id": "vinf_01_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Do you know how the Bremer Stadtmusikanten fare next? Find out by selecting the correct ending of each sentence fragment below."
+    }
+  ]
+}

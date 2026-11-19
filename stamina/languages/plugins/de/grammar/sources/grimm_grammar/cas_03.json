@@ -1,0 +1,554 @@
+{
+  "id": "cas_03",
+  "title": "Cases: Der Akkusativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_03.html",
+  "explanation_lang": "en",
+  "section": "Cases",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Das direkte Objekt (the direct object)",
+      "text": "The accusative case is used to describe the direct object of a sentence. The direct object is the immediate recipient of an action or event:\n\nAschenputtel verliert ihre Mutter. | Cinderella loses her mother.\n\nIhr Vater bringt Aschenputtel ein Reis von einem Haselbusch. | Her father brings Cinderella a branch from a hazelnut bush.\n\nSie pflanzt den Busch auf das Grab ihrer Mutter, die auf dem Busch immer als ein weißes Vöglein erschien. | She plants the bush on the tomb of her mother, who always appears as a little white bird on the hazelnut bush.\n\nNatürlich hasst die gemeine, böse Stiefmutter das junge Mädchen, wie das in Märchen notwendig ist. | Of course, the mean, evil stepmother hates the young girl, as it is required in fairy tales.\n\nDas junge Mädchen muss die Linsen aus der Asche auslesen, und darf keine schönen Kleider tragen. | The young girl has to sort the lentils from the ashes, and is not allowed to wear any nice clothes.\n\nAm Ende heiratet sie aber einen gutaussehenden jungen Königssohn, und wenn sie nicht gestorben sind, so leben sie noch heute ... | At the end, however, she marries a handsome young prince and they lived happily ever after ..."
+    },
+    {
+      "heading": "Definite and indefinite articles in the accusative case",
+      "text": "Articles in the accusative case (there is no equivalent of the indefinite article in the plural, since, just like in English, you can't say \"a lentils\"):\n\nthe | a/an | none | english\n\nmasculine | den Königssohn | einen Königssohn | keinen Königssohn | (prince)\n\nfeminine | die Mutter | eine Mutter | keine Mutter | (mother)\n\nneuter | das Mädchen | ein Mädchen | kein Mädchen | (girl)\n\nplural | die Kleider | Kleider | keine Kleider | (clothes)"
+    },
+    {
+      "heading": "'Es gibt' and the accusative",
+      "text": "Remember that the German phrase for \"there is/there are\" takes the accusative case:\n\nIn diesem Märchen gibt es ein weißes Vöglein. | In this fairy tale there is a little white bird.\n\nEs gibt auch zwei garstige Stiefschwestern. | There are also two beastly stepsisters.\n\nUnd natürlich gibt es auch einen süßen Königssohn! | And of course there is also a cute prince!"
+    },
+    {
+      "heading": "Accusative prepositions",
+      "text": "In addition to indicating the direct object of some sentences, the accusative case is also used with a few prepositions:\n\ndurch, für, gegen, ohne, and um\n\nAschenputtel geht oft durch die Hintertür in den Garten, um das Grab ihrer Mutter zu besuchen. | Cinderella often goes through the back door to visit her mother's grave.\n\nSie muss alles für ihre Stiefschwestern tun; das ist eine schlimme Zeit für das arme Mädchen! | She has to do everything for her stepsisters; it's a bad time for the poor girl!\n\nIhr fragt, warum sie gegen ihre Unterdrücker nicht rebelliert? Tja, Aschenputtel musste damals als Vorbild moralischer, gottesfürchtiger Güte erscheinen. Sie durfte nichts anderes tun! Sehr verklemmt! | You ask why she didn't rebel against her oppressors? Well, at that time Cinderella had to appear as the model of moral, god-fearing Goodness. She wasn't allowed to do anything else! How repressed (the society, that is)!\n\nOhne den Schuh konnte der Prinz Aschenputtel nicht finden! | Without the shoe the prince couldn't find Cinderella!\n\nAls Aschenputtel und der Prinz heiraten, stehen alle um den Altar. Selbst ihre Stiefschwestern sind da. | When Cinderella and the prince marry, they all stand around the altar. Even her stepsisters are there."
+    },
+    {
+      "heading": "Accusative for telling time",
+      "text": "Finally, the accusative case is used to describe specific times:\n\nAschenputtel und der Prinz haben die ganze Nacht getanzt. | Cinderella and the prince danced all night.\n\nDanach hat der Prinz den ganzen Tag die wunderschöne junge Frau gesucht! | Afterwards, the prince looked for the amazingly beautiful young woman the entire day!\n\nDen nächsten Nachmittag hat er sie endlich gefunden und natürlich sofort geheiratet ... | The next afternoon he finally found her and of course married her immediately ..."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Aschenputtel verliert ihre Mutter.",
+      "en": "Cinderella loses her mother."
+    },
+    {
+      "de": "Ihr Vater bringt Aschenputtel ein Reis von einem Haselbusch.",
+      "en": "Her father brings Cinderella a branch from a hazelnut bush."
+    },
+    {
+      "de": "Sie pflanzt den Busch auf das Grab ihrer Mutter, die auf dem Busch immer als ein weißes Vöglein erschien.",
+      "en": "She plants the bush on the tomb of her mother, who always appears as a little white bird on the hazelnut bush."
+    },
+    {
+      "de": "Natürlich hasst die gemeine, böse Stiefmutter das junge Mädchen, wie das in Märchen notwendig ist.",
+      "en": "Of course, the mean, evil stepmother hates the young girl, as it is required in fairy tales."
+    },
+    {
+      "de": "Das junge Mädchen muss die Linsen aus der Asche auslesen, und darf keine schönen Kleider tragen.",
+      "en": "The young girl has to sort the lentils from the ashes, and is not allowed to wear any nice clothes."
+    },
+    {
+      "de": "Am Ende heiratet sie aber einen gutaussehenden jungen Königssohn, und wenn sie nicht gestorben sind, so leben sie noch heute ...",
+      "en": "At the end, however, she marries a handsome young prince and they lived happily ever after ..."
+    },
+    {
+      "de": "masculine",
+      "en": "den Königssohn"
+    },
+    {
+      "de": "feminine",
+      "en": "die Mutter"
+    },
+    {
+      "de": "neuter",
+      "en": "das Mädchen"
+    },
+    {
+      "de": "plural",
+      "en": "die Kleider"
+    },
+    {
+      "de": "In diesem Märchen gibt es ein weißes Vöglein.",
+      "en": "In this fairy tale there is a little white bird."
+    },
+    {
+      "de": "Es gibt auch zwei garstige Stiefschwestern.",
+      "en": "There are also two beastly stepsisters."
+    },
+    {
+      "de": "Und natürlich gibt es auch einen süßen Königssohn!",
+      "en": "And of course there is also a cute prince!"
+    },
+    {
+      "de": "Aschenputtel geht oft durch die Hintertür in den Garten, um das Grab ihrer Mutter zu besuchen.",
+      "en": "Cinderella often goes through the back door to visit her mother's grave."
+    },
+    {
+      "de": "Sie muss alles für ihre Stiefschwestern tun; das ist eine schlimme Zeit für das arme Mädchen!",
+      "en": "She has to do everything for her stepsisters; it's a bad time for the poor girl!"
+    },
+    {
+      "de": "Ihr fragt, warum sie gegen ihre Unterdrücker nicht rebelliert? Tja, Aschenputtel musste damals als Vorbild moralischer, gottesfürchtiger Güte erscheinen. Sie durfte nichts anderes tun! Sehr verklemmt!",
+      "en": "You ask why she didn't rebel against her oppressors? Well, at that time Cinderella had to appear as the model of moral, god-fearing Goodness. She wasn't allowed to do anything else! How repressed (the society, that is)!"
+    },
+    {
+      "de": "Ohne den Schuh konnte der Prinz Aschenputtel nicht finden!",
+      "en": "Without the shoe the prince couldn't find Cinderella!"
+    },
+    {
+      "de": "Als Aschenputtel und der Prinz heiraten, stehen alle um den Altar. Selbst ihre Stiefschwestern sind da.",
+      "en": "When Cinderella and the prince marry, they all stand around the altar. Even her stepsisters are there."
+    },
+    {
+      "de": "Aschenputtel und der Prinz haben die ganze Nacht getanzt.",
+      "en": "Cinderella and the prince danced all night."
+    },
+    {
+      "de": "Danach hat der Prinz den ganzen Tag die wunderschöne junge Frau gesucht!",
+      "en": "Afterwards, the prince looked for the amazingly beautiful young woman the entire day!"
+    },
+    {
+      "de": "Den nächsten Nachmittag hat er sie endlich gefunden und natürlich sofort geheiratet ...",
+      "en": "The next afternoon he finally found her and of course married her immediately ..."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "In beiden Versionen verliert das arme Aschenputtel ___; sie ist sehr traurig.",
+      "a": "ihre Mutter",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In beiden Versionen heiratet ihr Vater ___.",
+      "a": "eine böse Stiefmutter",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Diese Frau bringt ___ in die Ehe mit; sie sind äußerst (extremely) hässlich und gemein!",
+      "a": "ihre zwei Töchter",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In der Grimm-Version geht der Vater auf den Markt (market) und bringt Aschenputtel ___; das Mädchen pflanzt ihn auf das Grab ihrer Mutter.",
+      "a": "einen Haselbusch",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In beiden Versionen gibt es ___ im Schloss, und Aschenputtel möchte gerne hingehen.",
+      "a": "einen Ball",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Die Stiefmutter sagt aber: \"Du darfst nicht gehen, du hast ___! Wie willst du tanzen, Aschenputtel!\"",
+      "a": "keine schönen Kleider und Schuhe",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel muss stattdessen (instead) ___ aus der Asche sortieren.",
+      "a": "Linsen",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In dem Grimm Märchen ruft Aschenputtel ___ aus dem Himmel (in the sky) in ihr Zimmer, und sie helfen ihr dabei (here: with sorting).",
+      "a": "Vöglein und Turteltäubchen",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In der Disney Version putzt Aschenputtel ___.",
+      "a": "das Haus",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In der Disney Version hat sie auch viele ___ als Freunde; zwei heißen Gus und Jaq.",
+      "a": "Mäuse",
+      "options": [
+        "ihre zwei Töchter",
+        "Mäuse",
+        "einen Ball",
+        "eine böse Stiefmutter",
+        "Linsen",
+        "Vöglein und Turteltäubchen",
+        "ihre Mutter",
+        "das Haus",
+        "keine schönen Kleider und Schuhe",
+        "einen Haselbusch"
+      ],
+      "set_id": "cas_03_01_fib",
+      "set_title": "Übung 1",
+      "prompt": "Aschenputtel is watching the Disney version of her life story, and she is amazed! Find out what the similarities and differences are between how she recalls her story and how the American movie depicts it. Fill in the blanks with the correct words from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtels Mutter stirbt ganz am Anfang der Geschichte, aber ihr Geist (in spirit) ist immer ___ ihre Tochter herum.",
+      "a": "um",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Nach einem Jahr heiratet der Vater eine neue Frau. Das ist nicht sehr gut ___ das arme Aschenputtel. Ihre Stiefmutter ist gemein!!!",
+      "a": "für",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages geht der Vater in die Messe und bringt einen Haselnussbusch ___ seine kleine Tochter mit.",
+      "a": "für",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Immer wenn Aschenputtel sehr traurig ist, geht sie ___ die Hintertür und ruft ihre Freunde: die Vöglein und Turteltäubchen helfen dem armen Mädchen.",
+      "a": "durch",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Einmal gibt es einen Ball im Schloss, aber Aschenputtel darf nicht mitgehen. Sie hat nur schmutzige Kleider und hölzerne Schuhe, also geht ihre Familie ___ sie auf den Ball.",
+      "a": "ohne",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Der Ball dauert drei Tage, und jede Nacht verschwindet Aschenputtel ___ ein Taubenhaus (bird house for doves), damit der Prinz sie nicht findet.",
+      "a": "durch",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz kann aber ___ seine Traumfrau nicht leben! Er hat ihren Schuh, und sucht sie.",
+      "a": "ohne",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Die ältere Stiefschwester findet, dass der Schuh zu klein ___ ihren Fuss ist, und schneidet ihre Zehen ab (cuts off her toes).",
+      "a": "für",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz setzt sie auf sein Pferd (horse), aber als sie am Friedhof vorbeireiten, singen und protestieren die Vöglein ___ die falsche Braut (bride).",
+      "a": "gegen",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Der jüngeren Stiefschwester geht es nicht besser (she doesn't fare any better), und sie läuft umsonst (flutter in vain) ___ den Prinzen herum!",
+      "a": "um",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Dem kleinen Aschenputtel passt der Schuh aber ___ Problem!",
+      "a": "ohne",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "gap",
+      "q": "Das Ende des Märchens ist aber grausam: Tauben und Vögel machen die beiden Stiefschwestern blind! Ich bin prinzipiell ___ solche harten, unmenschlichen Strafen (punishments)!",
+      "a": "gegen",
+      "set_id": "cas_03_03_fib",
+      "set_title": "Übung 3",
+      "prompt": "Fill in the blanks with the correct accusative prepositions: durch, für, gegen, ohne, um. Each preposition will be used more than once."
+    },
+    {
+      "type": "choice",
+      "q": "____________ stirbt Aschenputtels Mutter, und das kleine Mädchen geht jeden Tag zum Grab.",
+      "options": [
+        "a. Schon am Anfang",
+        "b. Schon vor Anfang",
+        "c. Anfangs",
+        "d. Am Anfangs"
+      ],
+      "a": "a. Schon am Anfang",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Sie sitzt ____________ in der Asche und sortiert Linsen!",
+      "options": [
+        "a. all Tag",
+        "b. den ganzen Tag",
+        "c. all den Tag",
+        "d. ganzer Tag"
+      ],
+      "a": "b. den ganzen Tag",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Der Vater geht auf den Markt; er ist ____________ unterwegs (on the road).",
+      "options": [
+        "a. all Tag",
+        "b. das Ende der Woche",
+        "c. dem Wochenende",
+        "d. das ganze Wochenende"
+      ],
+      "a": "d. das ganze Wochenende",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Der Ball dauert ____________.",
+      "options": [
+        "a. drei Tag",
+        "b. drei Tage",
+        "c. drei Tagen",
+        "d. nach drei Tage"
+      ],
+      "a": "b. drei Tage",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Aschenputtel sieht ____________ schöner aus.",
+      "options": [
+        "a. den Abends",
+        "b. jeder Abend",
+        "c. jeden Abend",
+        "d. am abends"
+      ],
+      "a": "c. jeden Abend",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Der Prinz tanzt ____________ nur mit Aschenputtel. Sie läuft aber immer weg, ohne dem Prinzen ihren Namen zu sagen.",
+      "options": [
+        "a. die ganze Zeit",
+        "b. das ganzen Zeit",
+        "c. die Zeit",
+        "d. alle die Zeit"
+      ],
+      "a": "a. die ganze Zeit",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Nach dem dritten Abend verliert Aschenputtel ihren Schuh und der Prinz verbringt ____________ damit, seine Traumfrau zu finden.",
+      "options": [
+        "a. einen ganzen Nachmittag",
+        "b. ein Nachmittag",
+        "c. der Nachmittag",
+        "d. am letzten Nachmittag"
+      ],
+      "a": "a. einen ganzen Nachmittag",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "Zuerst reitet er mit den Stiefschwestern fort, aber ____________ kehrt er zurück. Keine von beiden ist die richtige Braut!",
+      "options": [
+        "a. später ein paar Minuten",
+        "b. Minute später",
+        "c. später einige Minute",
+        "d. ein paar Minuten später"
+      ],
+      "a": "d. ein paar Minuten später",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "____________ bringt der Vater Aschenputtel zum Prinzen, und natürlich passt ihr der Schuh wie angegossen (as if they poured it on her foot).",
+      "options": [
+        "a. Später in einen Stunde",
+        "b. Stunden",
+        "c. später eine Stunde",
+        "d. eine Stunde später"
+      ],
+      "a": "d. eine Stunde später",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    },
+    {
+      "type": "choice",
+      "q": "____________ feiern sie schon Hochzeit, und wenn sie nicht gestorben sind so leben sie noch heute ...",
+      "options": [
+        "a. Nächster Tag",
+        "b. Den nächsten Tag",
+        "c. Nach dem Tag",
+        "d. Dem Tag nach"
+      ],
+      "a": "b. Den nächsten Tag",
+      "set_id": "cas_03_04_mcr",
+      "set_title": "Übung 4",
+      "prompt": "Select the correct time expressions (paying attention to the case and sequencing between sentences) from each set of choices below."
+    }
+  ]
+}

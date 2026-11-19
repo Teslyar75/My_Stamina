@@ -1,0 +1,154 @@
+{
+  "id": "vpp_01",
+  "title": "Verbs: Das Plusquamperfekt",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vpp_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The past perfect tense serves the same general purpose in German as it does in English: to link two events that happened in the past. The event that happened first is described using the past perfect, whereas the later event is described using either the simple past or the present perfect.\n\nNachdem eine große Teuerung ins Land gekommen war, hatte die Familie des armen Holzhackers nicht mehr genug zu essen. | After a great inflation had come into the land, the poor woodcutter's family did not have enough to eat.\n\nNachdem eine große Teuerung ins Land gekommen waren,\n\n<------------------ earliest event ------------------>\n\n(past perfect tense)\n\nhatte die Familie des armen Holzhackers nicht mehr genug zu essen.\n\n<---------------------- latest event ---------------------->\n\n(simple past or present perfect tense)\n\nThis sentence could easily be written in the reverse order (i.e., the latest event first, followed by the earlier event) as long as the earlier event is described using the past perfect tense. It is up to you to decide which event you want to emphasize.\n\nDie Familie des armen Holzhackers hatte nicht mehr genug zu essen, nachdem eine große Teuerung ins Land gekommen war. | The poor woodcutter's family did not have enough to eat after a great inflation had come into the land."
+    },
+    {
+      "heading": "Forming the Plusquamperfekt",
+      "text": "Not surprisingly, the past perfect is formed like the present perfect, with the appropriate auxiliary verb (sein for verbs of motion or physical change in person or haben with verbs that can take a direct object) and the past participle of the main verb.\n\nThe only difference lies in the conjugation of the auxiliary verb. In the past perfect, the auxiliary is conjugated in the simple past (i.e., war or hatte) rather than the present tense.\n\nDer Holzhacker hatte sich nichts ausgedacht, bis seine Frau ihm etwas Grausames vorschlug: die Kinder im Wald zu lassen! | The woodcutter had thought of no ideas until his wife gave him a terrible suggestion: abandon the children in the woods!\n\nAber Hänsel und Gretel waren noch nicht eingeschlafen, als ihre Stiefmutter den Vorschlag machte. Sie hörten alles! | But Hänsel and Gretel had not yet fallen asleep when their stepmother made the suggestion. They heard everything!\n\nsein | haben\n\nich war | + participle | ich hatte | + participle\n\ndu warst | du hattest\n\ner/sie/es war | er/sie/es hatte\n\nwir waren | wir hatten\n\nihr wart | ihr hattet\n\nsie/Sie waren | sie/Sie hatten"
+    },
+    {
+      "heading": "Narrative adverbs",
+      "text": "Narratives commonly make use of the past perfect tense to relate a series of past events. Narrative adverbs connect these past events together, creating a logical, cohesive narrative.\n\nSome narrative adverbs that may be used in conjunction with the past perfect tense include zuerst (first, first of all), dann (then), danach (thereafter), and zuletzt (lastly).\n\nZuerst hatte Hänsel einige weiße Kieselsteine auf den Weg geworfen, damit er und Gretel mit ihrer Hilfe nach Hause zurückkehren konnten. | At first Hänsel had thrown some white pebbles on the path so that he and Gretel could return to their house.\n\nAber dann schloss die Stiefmutter die Haustür zu, und Hänsel konnte keine Kieselsteine mehr holen! Anstatt Kieselsteine musste er Brotkrümel benutzen. | But then the stepmother locked the front door of the house, and Hänsel could fetch no more pebbles! Instead of pebbles he had to use bread crumbs."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Nachdem eine große Teuerung ins Land gekommen war, hatte die Familie des armen Holzhackers nicht mehr genug zu essen.",
+      "en": "After a great inflation had come into the land, the poor woodcutter's family did not have enough to eat."
+    },
+    {
+      "de": "Die Familie des armen Holzhackers hatte nicht mehr genug zu essen, nachdem eine große Teuerung ins Land gekommen war.",
+      "en": "The poor woodcutter's family did not have enough to eat after a great inflation had come into the land."
+    },
+    {
+      "de": "Der Holzhacker hatte sich nichts ausgedacht, bis seine Frau ihm etwas Grausames vorschlug: die Kinder im Wald zu lassen!",
+      "en": "The woodcutter had thought of no ideas until his wife gave him a terrible suggestion: abandon the children in the woods!"
+    },
+    {
+      "de": "Aber Hänsel und Gretel waren noch nicht eingeschlafen, als ihre Stiefmutter den Vorschlag machte. Sie hörten alles!",
+      "en": "But Hänsel and Gretel had not yet fallen asleep when their stepmother made the suggestion. They heard everything!"
+    },
+    {
+      "de": "ich war",
+      "en": "+ participle"
+    },
+    {
+      "de": "du warst",
+      "en": "du hattest"
+    },
+    {
+      "de": "er/sie/es war",
+      "en": "er/sie/es hatte"
+    },
+    {
+      "de": "wir waren",
+      "en": "wir hatten"
+    },
+    {
+      "de": "ihr wart",
+      "en": "ihr hattet"
+    },
+    {
+      "de": "sie/Sie waren",
+      "en": "sie/Sie hatten"
+    },
+    {
+      "de": "Zuerst hatte Hänsel einige weiße Kieselsteine auf den Weg geworfen, damit er und Gretel mit ihrer Hilfe nach Hause zurückkehren konnten.",
+      "en": "At first Hänsel had thrown some white pebbles on the path so that he and Gretel could return to their house."
+    },
+    {
+      "de": "Aber dann schloss die Stiefmutter die Haustür zu, und Hänsel konnte keine Kieselsteine mehr holen! Anstatt Kieselsteine musste er Brotkrümel benutzen.",
+      "en": "But then the stepmother locked the front door of the house, and Hänsel could fetch no more pebbles! Instead of pebbles he had to use bread crumbs."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Am Abend haben die Kinder Hunger. Die Kinder essen schon den Rest des Brotes.\n\n___",
+      "a": "Am Abend hatten die Kinder Hunger, denn sie hatten schon den Rest des Brotes gegessen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Die Kinder können den Weg nicht finden. Die Vögel fressen die Brotkrümel.\n\n___",
+      "a": "Die Kinder konnten den Weg nicht finden, da die Vögel hatten die Brotkrümel gefressen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Am dritten Morgen erreichen sie ein kleines Häuslein. Ein schönes, weißes Vöglein zeigt ihnen den Weg.\n\n___",
+      "a": "Am dritten Morgen erreichten sie ein kleines Häuslein, denn ein schönes, weißes Vöglein hatte ihnen den Weg gezeigt.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Das Häuslein besteht aus Brot, Kuchen und Zucker. Eine böse Hexe baut das Häuslein, um Kinder herbeizulocken (to lure).\n\n___",
+      "a": "Das Häuslein bestand aus Brot, Kuchen und Zucker, denn eine böse Hexe hatte es gebaut, um Kinder herbeizulocken.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Im Wald finden Hänsel und Gretel nichts außer ein paar Beeren. Die Kinder beginnen vom Häuslein zu essen.\n\n___",
+      "a": "Da Hänsel und Gretel im Wald nichts außer ein paar Beeren gefunden hatten, begannen die Kinder vom Häuslein zu essen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Hexe hört die Kinder und geht hinaus. Die Kinder brechen Stücke von den Zuckerfenstern und vom Brotdach ab.\n\n___",
+      "a": "Die böse Hexe hörte die Kinder und ging hinaus, denn sie hatten die Zuckerfenster und das Brotdach gebrochen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Die Kinder erschrecken. Die Kinder sehen eine steinalte und ziemlich häßliche Frau.\n\n___",
+      "a": "Die Kinder erschraken, denn sie hatten eine steinalte und ziemlich häßliche Frau gesehen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel und Gretel müssen gehorchen (to obey). Die böse Hexe fasst (to grip) Hänsel und Gretel an den Händen und geht mit ihnen ins Haus.\n\n___",
+      "a": "Hänsel und Gretel mussten gehorchen, denn die böse Hexe hatte sie an den Händen gefasst und war mit ihnen ins Haus gegangen.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Hexe bereitet schon vorher Pfannkuchen vor. Im Häuslein essen die Kinder weiter.\n\n___",
+      "a": "Denn die böse Hexe hatte schon vorher Pfannkuchen vorbereitet, aßen die Kinder im Häuslein weiter.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    },
+    {
+      "type": "gap",
+      "q": "Aber die böse Hexe weiß schon, was sie tun will (die Kinder kochen und essen!!). Die böse Hexe plant alles im Voraus (in advance).\n\n___",
+      "a": "Aber die böse Hexe wusste schon, was sie tun wollte (die Kinder kochen und essen!!), denn sie hatte alles im Voraus geplant.",
+      "set_id": "vpp_01_01_fib",
+      "set_title": "Übung - Das Haus essen",
+      "prompt": "Having gone without food for days, Hänsel and Gretel are stoked when they come upon the old witch's house – it is made out of dozens of tasty treats! For each question below, connect the two sentences using the conjunction denn or da to form a logical new sentence. Remember to use the correct tense in each half of the new sentence. Hint: watch out for the event that must have happened first!"
+    }
+  ]
+}
