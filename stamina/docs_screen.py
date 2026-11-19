@@ -1115,6 +1115,12 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
             self.toggle_focus(True)     # справка открыта/закрыта — фокус пересобираем
         self.text.focus_set()
 
+    def handle_back(self) -> bool:
+        if getattr(self, "_help_on", False):
+            self.toggle_help(False)
+            return True
+        return False
+
     def update_empty_hint(self) -> None:
         if self.text.get("1.0", "end-1c").strip() or self.text.dump("1.0", "end", image=True):
             self.text_hint.place_forget()

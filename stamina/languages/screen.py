@@ -44,6 +44,7 @@ class LanguagesScreen(tk.Frame):
         self._practice_src = "set"
         self._practice_len: int | None = None
         self._scanner = None
+        self._inner = ""
         self._grammar_page = None
         self.pages: dict[str, tk.Frame] = {}
         self.lang_cards: list[dict] = []
@@ -74,6 +75,8 @@ class LanguagesScreen(tk.Frame):
     def _show_language_grid(self) -> None:
         self._exit_grammar_focus(remember=False)
         self._grammar_page = None
+        self.current_page = "grid"
+        self._inner = ""
         for w in self.content.winfo_children():
             w.destroy()
 
@@ -115,6 +118,8 @@ class LanguagesScreen(tk.Frame):
             card.grid(row=0, column=i, sticky="ew", padx=px(3))
             row.grid_columnconfigure(i, weight=1, uniform="lang")
             self.lang_cards.append({"plugin": plugin, "locked": locked})
+        from stamina.nav_back import notify
+        notify(self.app)
 
     def _get_current_level(self, lang: str, pilot_dir: Path | None) -> str | None:
         if not pilot_dir:
@@ -194,6 +199,7 @@ class LanguagesScreen(tk.Frame):
         self._exit_grammar_focus(remember=False)
         self._grammar_page = None
         self.current_page = page_name
+        self._inner = ""
         self._scanner = None
         if page_name == "practice" and not keep_pool:
             self._pool_slugs = None
@@ -236,6 +242,8 @@ class LanguagesScreen(tk.Frame):
                     self.after_idle(page.apply_session_focus)
                 except tk.TclError:
                     page.apply_session_focus()
+        from stamina.nav_back import notify
+        notify(self.app)
 
     def _open_sets(self, level: str) -> None:
         self._sets_level = level
@@ -541,6 +549,45 @@ class LanguagesScreen(tk.Frame):
             return page.handle_focus_escape()
         return False
 
+    def snapshot_place(self):
+        from stamina import languages_hook
+        from stamina.nav_back import Place
+
+        if not self.current_lang or self.current_page == "grid":
+            return Place(screen=languages_hook.KEY, sub="grid")
+        return Place(
+            screen=languages_hook.KEY,
+            lang=self.current_lang,
+            sub=self.current_page or "",
+            extra=getattr(self, "_inner", "") or "",
+        )
+
+    def restore_place(self, place) -> None:
+        if place.sub == "grid" or not place.lang:
+            self._show_language_grid()
+            return
+        if self.current_lang != place.lang:
+            self._select_language(place.lang)
+        if place.lang == "en":
+            return
+        if place.sub and place.sub != "grid" and (
+            self.current_page != place.sub or getattr(self, "_inner", "")
+        ):
+            self._show_page(place.sub)
+
+    def handle_back(self) -> bool:
+        page = getattr(self, "_grammar_page", None)
+        hb = getattr(page, "handle_back", None) if page is not None else None
+        if callable(hb) and hb():
+            return True
+        if self._scanner is not None:
+            self._show_page(self.current_page or "overview")
+            return True
+        if getattr(self, "_inner", "") == "set":
+            self._show_page("sets")
+            return True
+        return False
+
     def on_leave(self) -> None:
         self._exit_grammar_focus(remember=False)
 
@@ -553,6 +600,7 @@ class LanguagesScreen(tk.Frame):
             return
         slugs = vocab.get_slugs_by_freq_band(set_id)[:chosen.size]
         self._pool_slugs = slugs
+        self._inner = "set"
         for child in self.page_container.winfo_children():
             child.destroy()
         frame = tk.Frame(self.page_container, bg=BG)

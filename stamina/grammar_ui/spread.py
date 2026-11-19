@@ -318,6 +318,10 @@ class GrammarSpread(tk.Frame):
             return "break"
         return None
 
+    def handle_back(self) -> bool:
+        """Шаг назад по меню грамматики. Зенид сохраняется."""
+        return self._back_in_grammar()
+
     def _back_in_grammar(self) -> bool:
         """Шаг назад по меню: таблица → урок → список уроков/уровней. Зенид не сбрасывается."""
         if self._table_id is not None:
