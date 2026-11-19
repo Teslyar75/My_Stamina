@@ -1174,45 +1174,64 @@ class Cockpit(tk.Tk):
             self.show("settings")
             self.after(200, lambda: self.goto_subtab(1))  # ЕЩЁ
         if not safe_mode.enabled():
+            self.after(400, self._show_update_notice)
             self.after(2500, self._check_updates_bg)
         else:
             self.set_status(tr_("Безопасный режим: без звука, сети и живого космоса"), AMBER)
 
-    def _check_updates_bg(self) -> None:
-        """Фоновая проверка GitHub Releases — ненавязчивый диалог при новой версии."""
-        import threading
-        from stamina import __version__
+    def _show_update_notice(self) -> None:
+        """Ненавязчиво показать итог автообновления в строке статуса (без диалога)."""
         from stamina.i18n import t as _t
-        from stamina.updater import check_error_message, dev_checkout_error, fetch_latest
+        from stamina.updater import consume_update_notice
+        notice = consume_update_notice()
+        if not notice:
+            return
+        ver = str(notice.get("version") or "")
+        kind = str(notice.get("kind") or "")
+        if not ver:
+            return
+        if kind == "applied":
+            self.set_status(_t("Программа обновлена до версии {0}.").format(ver), GREEN)
+        else:
+            self.set_status(
+                _t("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.").format(ver),
+                AMBER,
+            )
 
-        if dev_checkout_error():
-            return          # рабочая копия: обновляемся через git, пилота не дёргаем
+    def _check_updates_bg(self) -> None:
+        """Фоновая проверка GitHub Releases: автоустановка или только лог."""
+        import threading
+        from stamina.i18n import t as _t
+        from stamina.updater import is_auto_update_enabled, run_auto_update
+
+        # Повтор каждые 6 часов, пока окно живо.
+        try:
+            self.after(6 * 60 * 60 * 1000, self._check_updates_bg)
+        except tk.TclError:
+            return
+
+        if not is_auto_update_enabled(self.store.settings):
+            return
 
         def work() -> None:
             try:
-                info = fetch_latest()
-            except Exception as exc:  # noqa: BLE001
-                check_error_message(exc)
+                result = run_auto_update(settings=self.store.settings)
+            except Exception:  # noqa: BLE001
                 return
-            if not info.is_newer:
-                return
-
-            def ask() -> None:
-                from tkinter import messagebox
-                if messagebox.askyesno(
-                    _t("Обновления"),
-                    _t("Доступна версия {0} (сейчас {1}).\nОткрыть НАСТРОЙКИ → ЕЩЁ?").format(
-                        info.version, __version__
-                    ),
-                    parent=self,
-                ):
-                    self.show("settings")
-                    self.after(150, lambda: self.goto_subtab(1))
-                    scr = self.screens.get("settings")
-                    if scr is not None and hasattr(scr, "_apply_upd_info"):
-                        scr._apply_upd_info(info)
-
-            self.after(0, ask)
+            if result.notice_kind:
+                def show() -> None:
+                    ver = result.version
+                    if result.notice_kind == "applied":
+                        self.set_status(_t("Программа обновлена до версии {0}.").format(ver), GREEN)
+                    else:
+                        self.set_status(
+                            _t("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.").format(ver),
+                            AMBER,
+                        )
+                try:
+                    self.after(0, show)
+                except tk.TclError:
+                    pass
 
         threading.Thread(target=work, daemon=True).start()
 

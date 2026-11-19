@@ -1052,6 +1052,10 @@ class SettingsScreen(tk.Frame):
             _t("Текущая версия {0}. Проверка GitHub Releases; «Обновить сейчас» скачает ZIP, "
                "сохранит пилотов / .venv / models и перезапустит программу.").format(_app_ver),
         )
+        self._toggle_row("auto_update", _t("Автообновление"),
+                         _t("Сама проверяет GitHub Releases при старте и каждые 6 часов и ставит новую версию без скачивания вручную. "
+                            "Для обычной установки — при ближайшем перезапуске; для чистой копии master — через git. "
+                            "Грязную или расходящуюся копию не трогает."))
         self.upd_status = tk.Label(upd, text=_t("не проверено"), bg=PANEL, fg=MUTED, font=theme.font(8),
                                    wraplength=px(280), justify="left")
         self.upd_status.pack(side=tk.LEFT, padx=(0, px(6)))
