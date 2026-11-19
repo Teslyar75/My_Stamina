@@ -452,7 +452,8 @@ class GrammarPage(tk.Frame):
             speaker = getattr(self.ctx, "audio_button", None)
             if callable(speaker):
                 try:
-                    speaker(row, "🔊", lambda s=ex.get("en", ""): s, height=22, font_size=8,
+                    en_text = ex.get("en", "")
+                    speaker(row, "🔊", lambda s=en_text: s, height=22, font_size=8,
                             width=30).pack(side=tk.RIGHT, padx=(px(4), 0))
                 except tk.TclError:
                     pass
