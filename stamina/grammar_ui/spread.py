@@ -291,7 +291,7 @@ class GrammarSpread(tk.Frame):
         self._update_book_label()
         self._update_counter()
         self._render_unit_list()
-        if self._unit is None:
+        if self._unit is None and self._table_id is None:
             first = self.catalog.first_unit(self._level)
             if first is not None:
                 self._open_unit(first)
