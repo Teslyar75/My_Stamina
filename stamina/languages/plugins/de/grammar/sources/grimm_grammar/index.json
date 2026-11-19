@@ -1,0 +1,745 @@
+{
+  "source_id": "grimm_grammar",
+  "retrieved": "2026-11-19",
+  "topic_count": 92,
+  "exercise_count": 1181,
+  "skipped_count": 0,
+  "topics": [
+    {
+      "id": "no_01",
+      "title": "Nouns: Substantive",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/no_01.html",
+      "cefr": null,
+      "section": "Nouns",
+      "exercise_count": 0
+    },
+    {
+      "id": "no_02",
+      "title": "Nouns: Genus der Substantive",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/no_02.html",
+      "cefr": null,
+      "section": "Nouns",
+      "exercise_count": 17
+    },
+    {
+      "id": "no_03",
+      "title": "Nouns: Der Plural",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/no_03.html",
+      "cefr": null,
+      "section": "Nouns",
+      "exercise_count": 0
+    },
+    {
+      "id": "no_04",
+      "title": "Nouns: Schwache Substantive",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/no_04.html",
+      "cefr": null,
+      "section": "Nouns",
+      "exercise_count": 10
+    },
+    {
+      "id": "cas_01",
+      "title": "Cases: Fälle",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_01.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 0
+    },
+    {
+      "id": "cas_02",
+      "title": "Cases: Der Nominativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_02.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 20
+    },
+    {
+      "id": "cas_03",
+      "title": "Cases: Der Akkusativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_03.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 32
+    },
+    {
+      "id": "cas_04",
+      "title": "Cases: Die Uhrzeiten",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_04.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 0
+    },
+    {
+      "id": "cas_05",
+      "title": "Cases: Die Tage der Woche",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_05.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 10
+    },
+    {
+      "id": "cas_06",
+      "title": "Cases: Monate und die Jahreszeiten",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_06.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 11
+    },
+    {
+      "id": "cas_07",
+      "title": "Cases: Der Dativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_07.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 32
+    },
+    {
+      "id": "cas_08",
+      "title": "Cases: Der Genitiv",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_08.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 10
+    },
+    {
+      "id": "cas_09",
+      "title": "Cases: Wechselpräpositionen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_09.html",
+      "cefr": null,
+      "section": "Cases",
+      "exercise_count": 24
+    },
+    {
+      "id": "con_01",
+      "title": "Conjunctions: Konjunktionen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_01.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 0
+    },
+    {
+      "id": "con_02",
+      "title": "Conjunctions: Negation",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_02.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 24
+    },
+    {
+      "id": "con_03",
+      "title": "Conjunctions: Koordinierende Konjunktionen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_03.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 20
+    },
+    {
+      "id": "con_04",
+      "title": "Conjunctions: Subordinierende Konjunktionen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_04.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 22
+    },
+    {
+      "id": "con_05",
+      "title": "Conjunctions: Fragen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_05.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 14
+    },
+    {
+      "id": "con_06",
+      "title": "Conjunctions: Wortstellung",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/con_06.html",
+      "cefr": null,
+      "section": "Conjunctions",
+      "exercise_count": 12
+    },
+    {
+      "id": "det_01",
+      "title": "Determiners: Bestimmte und Unbestimmte Artikel",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_01.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 13
+    },
+    {
+      "id": "det_02",
+      "title": "Determiners: Der-Wörter",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_02.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 24
+    },
+    {
+      "id": "det_03",
+      "title": "Determiners: Ein-Wörter",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_03.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 14
+    },
+    {
+      "id": "det_04",
+      "title": "Determiners: Possessivpronomen Als Artikel - Nominativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_04.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 12
+    },
+    {
+      "id": "det_05",
+      "title": "Determiners: Possessivpronomen Als Artikel - Akkusativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_05.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 12
+    },
+    {
+      "id": "det_06",
+      "title": "Determiners: Possessivpronomen Als Artikel - Dativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_06.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 14
+    },
+    {
+      "id": "det_07",
+      "title": "Determiners: Possessivpronomen Als Artikel - Genitiv",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/det_07.html",
+      "cefr": null,
+      "section": "Determiners",
+      "exercise_count": 12
+    },
+    {
+      "id": "v_01",
+      "title": "Verbs: Verben - Überblick",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/v_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 0
+    },
+    {
+      "id": "v_02",
+      "title": "Verbs: Das Präsens - Regelmäßige Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/v_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 17
+    },
+    {
+      "id": "vi_01",
+      "title": "Verbs: Essen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vi_02",
+      "title": "Verbs: Fahren",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 13
+    },
+    {
+      "id": "vi_04",
+      "title": "Verbs: Gefallen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 20
+    },
+    {
+      "id": "vi_03",
+      "title": "Verbs: Geben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_03.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vi_05",
+      "title": "Verbs: Haben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_05.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vi_06",
+      "title": "Verbs: Laufen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_06.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vi_07",
+      "title": "Verbs: Lesen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_07.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vi_08",
+      "title": "Verbs: Nehmen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_08.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 11
+    },
+    {
+      "id": "vi_09",
+      "title": "Verbs: Schlafen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_09.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 20
+    },
+    {
+      "id": "vi_10",
+      "title": "Verbs: Sehen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_10.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vi_11",
+      "title": "Verbs: Sein",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_11.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 0
+    },
+    {
+      "id": "vi_12",
+      "title": "Verbs: Sprechen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_12.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vi_13",
+      "title": "Verbs: Tragen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_13.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vi_14",
+      "title": "Verbs: Werden",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_14.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vi_15",
+      "title": "Verbs: Wissen und Kennen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_15.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 13
+    },
+    {
+      "id": "v_04",
+      "title": "Verbs: Präsens - Trennbare Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/v_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "v_05",
+      "title": "Verbs: Präsens - Untrennbare Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/v_05.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 11
+    },
+    {
+      "id": "vm_01",
+      "title": "Verbs: Modalverben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vm_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vm_02",
+      "title": "Verbs: Modalverben im Imperfekt",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vm_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vcp_01",
+      "title": "Verbs: Das Perfekt - Einführung",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 38
+    },
+    {
+      "id": "vcp_02",
+      "title": "Verbs: Das Perfekt - Regelmäßige Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 17
+    },
+    {
+      "id": "vcp_03",
+      "title": "Verbs: Das Perfekt - Unregelmäßige Verben mit Haben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_03.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vcp_04",
+      "title": "Verbs: Das Perfekt - Unregelmäßige Verben mit Sein",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vcp_05",
+      "title": "Verbs: Das Perfekt - Gemischte Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_05.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vcp_06",
+      "title": "Verbs: Das Perfekt - -ieren Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_06.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vcp_07",
+      "title": "Verbs: Das Perfekt - Trennbare Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_07.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vcp_08",
+      "title": "Verbs: Das Perfekt - Untrennbare Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_08.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vsp_01",
+      "title": "Verbs: Das Imperfekt - Regelmäßige Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vsp_02",
+      "title": "Verbs: Das Imperfekt - Unregelmäßige Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 22
+    },
+    {
+      "id": "vsp_03",
+      "title": "Verbs: Das Imperfekt - Gemischte Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_03.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vsp_04",
+      "title": "Verbs: Das Imperfekt - Haben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vsp_05",
+      "title": "Verbs: Das Imperfekt - Sein",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_05.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vpp_01",
+      "title": "Verbs: Das Plusquamperfekt",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vpp_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vf_01",
+      "title": "Verbs: Das Futur",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vf_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "vsub_01",
+      "title": "Verbs: Der Konjunktiv - Übersicht",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 0
+    },
+    {
+      "id": "vsub_02",
+      "title": "Verbs: Konjunktiv II im Präsens",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_02.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 22
+    },
+    {
+      "id": "vsub_03",
+      "title": "Verbs: Konjunktiv II in der Vergangenheit",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_03.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 22
+    },
+    {
+      "id": "vsub_04",
+      "title": "Verbs: Konjunktiv I",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vsub_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vimp_01",
+      "title": "Verbs: Der Imperativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vimp_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vpass_01",
+      "title": "Verbs: Das Passiv im Präsens",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vpass_03",
+      "title": "Verbs: Das Passiv in der Vergangenheit",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_03.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vpass_04",
+      "title": "Verbs: Das Passiv: Alternative zum Passiv",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vpass_04.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 10
+    },
+    {
+      "id": "vinf_01",
+      "title": "Verbs: Der Infinitivsatz",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vinf_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 14
+    },
+    {
+      "id": "vrf_01",
+      "title": "Verbs: Die Reflexiven Verben",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vrf_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 22
+    },
+    {
+      "id": "vphr_01",
+      "title": "Verbs: Verben mit Präpositionen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/vphr_01.html",
+      "cefr": null,
+      "section": "Verbs",
+      "exercise_count": 20
+    },
+    {
+      "id": "pro_01",
+      "title": "Pronouns: Personalpronomen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_01.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 0
+    },
+    {
+      "id": "pro_02",
+      "title": "Pronouns: Personalpronomen im Nominativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_02.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 12
+    },
+    {
+      "id": "pro_03",
+      "title": "Pronouns: Personalpronomen im Akkusativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_03.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 24
+    },
+    {
+      "id": "pro_04",
+      "title": "Pronouns: Personalpronomen im Dativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_04.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 26
+    },
+    {
+      "id": "pro_05",
+      "title": "Pronouns: Relativpronomen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_05.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 24
+    },
+    {
+      "id": "pro_07",
+      "title": "Pronouns: Demonstrativpronomen",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_07.html",
+      "cefr": null,
+      "section": "Pronouns",
+      "exercise_count": 14
+    },
+    {
+      "id": "adj_01",
+      "title": "Adjectives: Adjektive",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_01.html",
+      "cefr": null,
+      "section": "Adjectives",
+      "exercise_count": 0
+    },
+    {
+      "id": "adj_02",
+      "title": "Adjectives: Adjektive nach Ein-Wörtern",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_02.html",
+      "cefr": null,
+      "section": "Adjectives",
+      "exercise_count": 14
+    },
+    {
+      "id": "adj_03",
+      "title": "Adjectives: Adjektive nach Der-Wörtern",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_03.html",
+      "cefr": null,
+      "section": "Adjectives",
+      "exercise_count": 14
+    },
+    {
+      "id": "adj_04",
+      "title": "Adjectives: Adjektive ohne Artikel",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_04.html",
+      "cefr": null,
+      "section": "Adjectives",
+      "exercise_count": 14
+    },
+    {
+      "id": "adj_05",
+      "title": "Adjectives: Komparativ und Superlativ",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_05.html",
+      "cefr": null,
+      "section": "Adjectives",
+      "exercise_count": 22
+    },
+    {
+      "id": "adv_01",
+      "title": "Adverbs: Das Adverb: Wann? Wie oft? Wie viel? Wie sehr?",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adv_01.html",
+      "cefr": null,
+      "section": "Adverbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "adv_02",
+      "title": "Adverbs: Das Adverb - Wie? Wo? Wohin? Woher?",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adv_02.html",
+      "cefr": null,
+      "section": "Adverbs",
+      "exercise_count": 12
+    },
+    {
+      "id": "adv_03",
+      "title": "Adverbs: Das Adverb - Narration",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/adv_03.html",
+      "cefr": null,
+      "section": "Adverbs",
+      "exercise_count": 0
+    },
+    {
+      "id": "mis_01",
+      "title": "Miscellaneous: Die Zeichensetzung",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/mis_01.html",
+      "cefr": null,
+      "section": "Miscellaneous",
+      "exercise_count": 0
+    },
+    {
+      "id": "mis_02",
+      "title": "Miscellaneous: Wortbildung",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/mis_02.html",
+      "cefr": null,
+      "section": "Miscellaneous",
+      "exercise_count": 0
+    },
+    {
+      "id": "mis_03",
+      "title": "Miscellaneous: Falsche Freunde",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/mis_03.html",
+      "cefr": null,
+      "section": "Miscellaneous",
+      "exercise_count": 10
+    },
+    {
+      "id": "mis_04",
+      "title": "Miscellaneous: Modalpartikeln",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/mis_04.html",
+      "cefr": null,
+      "section": "Miscellaneous",
+      "exercise_count": 0
+    },
+    {
+      "id": "mis_05",
+      "title": "Miscellaneous: Rechtschreibreform",
+      "original_url": "https://www.coerll.utexas.edu/gg/gr/mis_05.html",
+      "cefr": null,
+      "section": "Miscellaneous",
+      "exercise_count": 0
+    }
+  ]
+}

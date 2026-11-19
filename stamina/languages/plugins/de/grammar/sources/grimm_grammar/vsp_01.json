@@ -1,0 +1,366 @@
+{
+  "id": "vsp_01",
+  "title": "Verbs: Das Imperfekt - Regelmäßige Verben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vsp_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The Präteritum (aka simple past, Imperfekt, narrative past) is the more formal of the two German past tenses: simple past and conversational past (aka present perfect). For the most part, it is used in formal and literary written texts (e.g., a novel, a police report, newspaper articles).\n\nNorth Germans often use the Präteritum for certain verbs even when they speak (e.g., modal verbs, sein, haben, wissen). Southern Germans would most likely use the Perfekt.\n\nDie Märchenfiguren erinnern sich an die guten alten Zeiten (the fairy tale characters are remembering the good old times).\n\nAls sie noch Märchenfigur war, spielte Dornröschen mit alten Spindeln. | When she was still a fairy tale character, Sleeping Beauty played with old spindles.\n\nAschenputtel tanzte jeden Tag auf dem Ball. | Cinderella danced every day at the ball.\n\nDie Hexe kochte und backte ... vor allem kleine ahnungslose Kinder! | The witch cooked and baked ... mostly little unsuspecting children!\n\nUnd der Prinz? Er küsste jede Menge Prinzessinnen! | And the prince kissed loads of princesses!"
+    },
+    {
+      "heading": "Forming the simple past of regular verbs",
+      "text": "kochen • cook\n\nich kochte | wir kochten\n\ndu kochtest | ihr kochtet\n\ner/sie/es kochte | sie kochten\n\nspielen • play\n\nich spielte | wir spielten\n\ndu spieltest | ihr spieltet\n\ner/sie/es spielte | sie spielten"
+    },
+    {
+      "heading": "Other regular verbs",
+      "text": "arbeiten (work) | erzählen (tell story) | lachen (laugh) | suchen (search for)\n\nbauen (build) | feiern (celebrate) | leben (live) | tanzen (dance)\n\nbesuchen (visit) | fragen (ask question) | lernen (learn) | telefonieren (call)\n\nbewegen (move) | heiraten (marry) | lieben (love) | träumen (dream)\n\nblicken (look) | hoffen (hope) | machen (do) | wandern (hike, roam)\n\nbrauchen (need) | hören (hear) | planen (plan) | weinen (cry)\n\ndanken (thank) | kaufen (buy) | reisen (travel) | wohnen (live)\n\ndienen (serve) | kosten (cost) | sagen (say) | wünschen (wish)\n\ndiskutieren (discuss) | küssen (kiss)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Als sie noch Märchenfigur war, spielte Dornröschen mit alten Spindeln.",
+      "en": "When she was still a fairy tale character, Sleeping Beauty played with old spindles."
+    },
+    {
+      "de": "Aschenputtel tanzte jeden Tag auf dem Ball.",
+      "en": "Cinderella danced every day at the ball."
+    },
+    {
+      "de": "Die Hexe kochte und backte ... vor allem kleine ahnungslose Kinder!",
+      "en": "The witch cooked and baked ... mostly little unsuspecting children!"
+    },
+    {
+      "de": "Und der Prinz? Er küsste jede Menge Prinzessinnen!",
+      "en": "And the prince kissed loads of princesses!"
+    },
+    {
+      "de": "ich kochte",
+      "en": "wir kochten"
+    },
+    {
+      "de": "du kochtest",
+      "en": "ihr kochtet"
+    },
+    {
+      "de": "er/sie/es kochte",
+      "en": "sie kochten"
+    },
+    {
+      "de": "ich spielte",
+      "en": "wir spielten"
+    },
+    {
+      "de": "du spieltest",
+      "en": "ihr spieltet"
+    },
+    {
+      "de": "er/sie/es spielte",
+      "en": "sie spielten"
+    },
+    {
+      "de": "arbeiten (work)",
+      "en": "erzählen (tell story)"
+    },
+    {
+      "de": "bauen (build)",
+      "en": "feiern (celebrate)"
+    },
+    {
+      "de": "besuchen (visit)",
+      "en": "fragen (ask question)"
+    },
+    {
+      "de": "bewegen (move)",
+      "en": "heiraten (marry)"
+    },
+    {
+      "de": "blicken (look)",
+      "en": "hoffen (hope)"
+    },
+    {
+      "de": "brauchen (need)",
+      "en": "hören (hear)"
+    },
+    {
+      "de": "danken (thank)",
+      "en": "kaufen (buy)"
+    },
+    {
+      "de": "dienen (serve)",
+      "en": "kosten (cost)"
+    },
+    {
+      "de": "diskutieren (discuss)",
+      "en": "küssen (kiss)"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Damals ___ ich von einem gutaussehenden Prinzen auf einem weißen Pferd!",
+      "a": "träumte",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz: Damals ___ ich in jedem Märchen ein anderes junges Mädchen (jetzt bin ich verheiratet, und darf niemanden küssen außer Schneewittchen)!",
+      "a": "küsste",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Damals ___ ich, dass ich wieder Prinz sein könnte!",
+      "a": "hoffte",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe: Damals ___ ich meine, ehm... Lebensmittel (groceries), niemals im Laden ein!",
+      "a": "kaufte",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die sieben Zwergen: Damals ___ wir im Bergwerk (mine) aber jetzt arbeiten wir nicht!",
+      "a": "arbeiteten",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Hänsel und Gretel: Unsere Familie ___ im Wald; aber jetzt haben wir eine schöne, helle, gemütliche und moderne Wohnung im Schloss!",
+      "a": "lebte",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Großmutter (zu Rotkäppchen): Damals ___ du mich jede Woche! Jetzt als Teenager willst du mich nicht mehr besuchen!",
+      "a": "besuchtest",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtels Stiefschwestern (an Aschenputtel): Damals ___ du uns, und wir mussten nichts selbst machen!!!!",
+      "a": "dientest",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Damals ___ ich jeden Tag meinen Spiegel 'Wer ist die Schönste im ganzen Land?' und er hat mir immer geantwortet, dass ich die Schönste war ...",
+      "a": "fragte",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Gebrüder Wolf: Damals ___ wir nicht als Vegetarier leben!!!",
+      "a": "brauchten",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle (zum braven Mädchen): Damals ___ du, als die Äpfel und die Brötchen dich um Hilfe gebeten haben!",
+      "a": "hörtest",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Brüder Grimm: Damals ___ wir viele, viele grausame Märchen! Das waren die guten alten Zeiten!!!",
+      "a": "erzählten",
+      "options": [
+        "erzählen",
+        "besuchen",
+        "hören",
+        "fragen",
+        "küssen",
+        "arbeiten",
+        "hoffen",
+        "leben",
+        "träumen",
+        "dienen",
+        "brauchen",
+        "kaufen"
+      ],
+      "set_id": "vsp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "During a therapy session, nostalgia comes over the fairy tale characters. Check out what they miss most about their past lives ... Fill in the blanks with the correct form of the verbs in the word-bank to create meaningful sentences."
+    }
+  ]
+}

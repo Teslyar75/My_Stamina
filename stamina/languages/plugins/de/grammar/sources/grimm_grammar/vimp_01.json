@@ -1,0 +1,598 @@
+{
+  "id": "vimp_01",
+  "title": "Verbs: Der Imperativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vimp_01.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Usage",
+      "text": "The imperative mood (in contrast to the indicative mood - such as statements) is used to give commands and directions. There are four possible recipient 'groups' for commands in German."
+    },
+    {
+      "heading": "Die Stiefschwester in der Welt von Frau Holle",
+      "text": "du (2nd person singular) | Geh zum Brunnen zurück und hol deine Spule herauf! | Go to the well and bring back your spool of thread!\n\nwir (1st person plural) | Frau Holle, lassen Sie uns sofort zurück zum Tor gehen; ich will mein Gold! | Mrs. Holle, let's go back to the gate right away; I want my gold!\n\nihr (2nd person plural) | Bleibt auf dem Baum, sonst könnte mir einer von euch auf den Kopf fallen! | Stay in the tree, otherwise one of you could fall on my head!\n\nSie (2nd person\nsingular - formal) | Schütteln Sie Ihr eigenes Bett auf! | Shake up your own bed!\n\nYou use the personal pronoun wir and Sie when giving commands, but not du or ihr unless you really want to emphasize that you had better do this, instead of somebody else (have you ever heard an exasperated parent tell you what to do?!?)"
+    },
+    {
+      "heading": "Forming the imperative",
+      "text": "Since, of the imperative forms, only the du imperative requires deep thought, let's get the other three forms out of the way first."
+    },
+    {
+      "heading": "wir, ihr, Sie",
+      "text": "The wir, ihr and Sie imperatives take the same verb-forms as the present tense conjugated verbs (both regular and irregular verbs) with a new word order and the loss of ihr:\n\ndeclarative form | imperative form\n\nwir | Wir bringen die Äpfel zu meinem Haus. | Bringen wir die Äpfel zu meinem Haus! | Let's bring the apples to my house!\n\nihr | Ihr bringt auch die Brötchen. | Bringt auch die Brötchen! | Bring the rolls too (y'all)!\n\nSie | Sie bringen einen leeren Korb, Frau Holle. | Sag mir bitte: Bringen Sie bitte einen leeren Korb, Frau Holle! | Please say to me: Bring an empty basket, please, Frau Holle!"
+    },
+    {
+      "heading": "du",
+      "text": "The du-imperative is formed by\n\ntaking the 2nd person singular conjugated form of a verb,\n\nremoving the -st ending, and\n\ndropping the pronoun du (unless you really want to emphasize that you should do the job):\n\nregular verbs\n\ndeclarative form | imperative form\n\nDu bringst die Äpfel. | Bring die Äpfel! | Bring the apples!\n\nDu kommst in mein Haus. | Komm in mein Haus! | Come into my house!\n\nDu machst mein Bett. | Mach mein Bett! | Make my bed!\n\nThis pattern holds true for both irregular verbs – so, you will have to review your basic verb conjugations too! – with one additional requirement: verbs that have an Umlaut on the 2nd person singular form in the regular conjugation (e.g., fahren => fährst or laufen => läufst) lose that Umlaut in the imperative.\n\nirregular verbs\n\ndeclarative form | imperative form\n\nDu nimmst das Brot aus dem Ofen. | Nimm das Brot aus dem Ofen! | Take the bread out of the oven!\n\nDu läufst durch das Tor. | Lauf durch das Tor! | Run through the gate!\n\nDu schläfst nicht den ganzen Tag. | Schlaf nicht den ganzen Tag! | Do not sleep the entire day!\n\nVerbs whose stem ends in a -d, -t, -ig, -m or -n (after another consonant), get an -e suffix for the du-imperative (there is also some regional variation, for example lad mich ein is also possible):\n\nantworten | => | antworte mir! | answer me!\n\nentschuldigen | => | entschuldige! | excuse me!\n\neinladen | => | lade mich ein! | invite me!\n\nfinden | => | finde ihn! | find him!\n\nraten | => | rate mal! | guess!\n\nreden | => | rede nicht so laut! | don't talk so loudly!\n\nretten | => | rette uns! | save us!\n\nschütteln | => | schüttle den Baum! | shake the tree!\n\nwarten | => | warte mal! | wait a minute!"
+    },
+    {
+      "heading": "Separable prefix verbs",
+      "text": "Separable prefixes separate from the verb when forming the imperative.\n\nZieh das Brot aus dem Ofen heraus! | Take the bread out of the oven!\n\nSteh früh auf! | Get up early!\n\nKomm mit mir zum Tor mit! | Come along to the gate with me!"
+    },
+    {
+      "heading": "Exceptions: some really irregular verbs",
+      "text": "Not surprisingly, haben and sein, werden and wissen - some of the most commonly used verbs - are exceptions, and they don't follow any of the above patterns:\n\nsein | haben | werden | wissen\n\ndu | sei mutig! | hab einen Apfel! | werde fleißiger! | wisse das Kennwort!\n\nwir | seien wir mutig! | haben wir einen Apfel! | werden wir fleißiger! | wissen wir das Kennwort!\n\nihr | seid mutig! | habt einen Apfel! | werdet fleißiger! | wisst das Kennwort!\n\nSie | seien Sie mutig! | haben Sie einen Apfel!! | werden Sie fleißiger! | wissen Sie das Kennwort!\n\n(let's) be brave! | (let's) have an apple! | (let's) become more hard-working! | (let's) know the code word!"
+    },
+    {
+      "heading": "Infinitives as commands",
+      "text": "Infinitives can be used as commands, especially in official situations, where the command is not directed at any one particular person:\n\nBitte an die Tür klopfen! | Please knock on the door!\n\nBitte vorsichtig eintreten! | Please enter with caution!"
+    },
+    {
+      "heading": "Sollen for commands",
+      "text": "Infinitives with sollen can also express commands, and expresses an obligation established by someone other than the person at whom the 'sollen + infinitive' command is directed:\n\ndas brave Mädchen | Du sollst Frau Holle bei der Hausarbeit helfen! | You are supposed to help Frau Holle with the chores!\n\ndas brave Mädchen | Wir sollen brav und hilfsbereit sein! | We should be virtuous and helpful!\n\ndie Stiefschwester | Du sollst brav und hilfsbereit sein! Ich gehe schlafen! | You should be virtuous and helpful! I am going to sleep!"
+    },
+    {
+      "heading": "Lass uns ...",
+      "text": "The last imperative construction we'll discuss here is the 'lass uns + infinitive' construction. This is used for first person plural suggestions/commands. It has the same meaning as the regular 1st person plural verb form, for example:\n\nSeien wir froh und munter! | = | Lass uns froh und munter sein! | Let's be merry and cheerful!\n\nGehen wir durch das Tor! | = | Lass uns durch das Tor gehen! | Let's go through the gate!"
+    },
+    {
+      "heading": "Common irregular du-imperative forms",
+      "text": "empfehlen (recommend) | empfiehl | schlagen (hit) | schlag(e)\n\nessen (eat) | iss | schmelzen (melt) | schmilz\n\nfahren (drive, travel) | fahr | sehen (see) | sieh(e)\n\nfallen (fall) | fall | sein (be) | sei\n\n(an)fangen (begin/catch) | fang (an) | sprechen (speak) | sprich\n\nfressen (eat [animal]) | friss | sterben (die) | stirb\n\ngeben (give) | gib | tragen (carry, wear) | trag(e)\n\n(an)halten (hold, stop) | halt (an) | treffen (meet) | triff\n\nhelfen (help) | hilf | treten (step, kick) | tritt\n\nlassen (let, allow) | lass | vergessen (forget) | vergiss\n\nlaufen (run) | lauf(e) | werden (become) | werde\n\nnehmen (take) | nimm | werfen (throw) | wirf\n\nraten (guess, advise) | rat(e) | wissen (know) | wisse\n\nschlafen (sleep) | schlaf"
+    }
+  ],
+  "examples": [
+    {
+      "de": "du (2nd person singular)",
+      "en": "Geh zum Brunnen zurück und hol deine Spule herauf!"
+    },
+    {
+      "de": "wir (1st person plural)",
+      "en": "Frau Holle, lassen Sie uns sofort zurück zum Tor gehen; ich will mein Gold!"
+    },
+    {
+      "de": "ihr (2nd person plural)",
+      "en": "Bleibt auf dem Baum, sonst könnte mir einer von euch auf den Kopf fallen!"
+    },
+    {
+      "de": "Sie (2nd person\nsingular - formal)",
+      "en": "Schütteln Sie Ihr eigenes Bett auf!"
+    },
+    {
+      "de": "wir",
+      "en": "Wir bringen die Äpfel zu meinem Haus."
+    },
+    {
+      "de": "ihr",
+      "en": "Ihr bringt auch die Brötchen."
+    },
+    {
+      "de": "Sie",
+      "en": "Sie bringen einen leeren Korb, Frau Holle."
+    },
+    {
+      "de": "declarative form",
+      "en": "imperative form"
+    },
+    {
+      "de": "Du bringst die Äpfel.",
+      "en": "Bring die Äpfel!"
+    },
+    {
+      "de": "Du kommst in mein Haus.",
+      "en": "Komm in mein Haus!"
+    },
+    {
+      "de": "Du machst mein Bett.",
+      "en": "Mach mein Bett!"
+    },
+    {
+      "de": "Du nimmst das Brot aus dem Ofen.",
+      "en": "Nimm das Brot aus dem Ofen!"
+    },
+    {
+      "de": "Du läufst durch das Tor.",
+      "en": "Lauf durch das Tor!"
+    },
+    {
+      "de": "Du schläfst nicht den ganzen Tag.",
+      "en": "Schlaf nicht den ganzen Tag!"
+    },
+    {
+      "de": "=>",
+      "en": "antworten"
+    },
+    {
+      "de": "=>",
+      "en": "entschuldigen"
+    },
+    {
+      "de": "=>",
+      "en": "einladen"
+    },
+    {
+      "de": "=>",
+      "en": "finden"
+    },
+    {
+      "de": "=>",
+      "en": "raten"
+    },
+    {
+      "de": "=>",
+      "en": "reden"
+    },
+    {
+      "de": "=>",
+      "en": "retten"
+    },
+    {
+      "de": "=>",
+      "en": "schütteln"
+    },
+    {
+      "de": "=>",
+      "en": "warten"
+    },
+    {
+      "de": "Zieh das Brot aus dem Ofen heraus!",
+      "en": "Take the bread out of the oven!"
+    },
+    {
+      "de": "Steh früh auf!",
+      "en": "Get up early!"
+    },
+    {
+      "de": "Komm mit mir zum Tor mit!",
+      "en": "Come along to the gate with me!"
+    },
+    {
+      "de": "du",
+      "en": "sei mutig!"
+    },
+    {
+      "de": "wir",
+      "en": "seien wir mutig!"
+    },
+    {
+      "de": "ihr",
+      "en": "seid mutig!"
+    },
+    {
+      "de": "Sie",
+      "en": "seien Sie mutig!"
+    },
+    {
+      "de": "Bitte an die Tür klopfen!",
+      "en": "Please knock on the door!"
+    },
+    {
+      "de": "Bitte vorsichtig eintreten!",
+      "en": "Please enter with caution!"
+    },
+    {
+      "de": "das brave Mädchen",
+      "en": "Du sollst Frau Holle bei der Hausarbeit helfen!"
+    },
+    {
+      "de": "das brave Mädchen",
+      "en": "Wir sollen brav und hilfsbereit sein!"
+    },
+    {
+      "de": "die Stiefschwester",
+      "en": "Du sollst brav und hilfsbereit sein! Ich gehe schlafen!"
+    },
+    {
+      "de": "=",
+      "en": "Seien wir froh und munter!"
+    },
+    {
+      "de": "=",
+      "en": "Gehen wir durch das Tor!"
+    },
+    {
+      "de": "empfehlen (recommend)",
+      "en": "empfiehl"
+    },
+    {
+      "de": "essen (eat)",
+      "en": "iss"
+    },
+    {
+      "de": "fahren (drive, travel)",
+      "en": "fahr"
+    },
+    {
+      "de": "fallen (fall)",
+      "en": "fall"
+    },
+    {
+      "de": "(an)fangen (begin/catch)",
+      "en": "fang (an)"
+    },
+    {
+      "de": "fressen (eat [animal])",
+      "en": "friss"
+    },
+    {
+      "de": "geben (give)",
+      "en": "gib"
+    },
+    {
+      "de": "(an)halten (hold, stop)",
+      "en": "halt (an)"
+    },
+    {
+      "de": "helfen (help)",
+      "en": "hilf"
+    },
+    {
+      "de": "lassen (let, allow)",
+      "en": "lass"
+    },
+    {
+      "de": "laufen (run)",
+      "en": "lauf(e)"
+    },
+    {
+      "de": "nehmen (take)",
+      "en": "nimm"
+    },
+    {
+      "de": "raten (guess, advise)",
+      "en": "rat(e)"
+    },
+    {
+      "de": "schlafen (sleep)",
+      "en": "schlaf"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Das brave Mädchen: Bitte, ___ mich nicht in meinen Tode!",
+      "a": "schick",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Die Stiefmutter: Mir ist es Wurst, wenn du stirbst! ___ mir deine Spule zurück!",
+      "a": "bring",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Das brave Mädchen: Oh, Gott, bitte ___ mir, ich kann das allein nicht machen!",
+      "a": "hilf",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Das Brot im Ofen: Hallo!!! ___ mich bitte heraus, sonst verbrenne ich!",
+      "a": "zieh",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Die Äpfel: ___ uns! Wir Äpfel sind alle reif (we are all ripe)!",
+      "a": "schüttel",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Eine alte Frau: Liebes Kind, ___ keine Angst, ich bin Frau Holle.",
+      "a": "hab",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: ___ bei mir, und wenn du mein Bett gut machst, so soll dirs gut gehn!",
+      "a": "bleib",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Das brave Mädchen (ein paar Monate später): Liebe Frau Holle, bei Ihnen ist mein Leben wunderbar, aber ich möchte trotzdem zurück zu den meinen. ___ Sie mich bitte nach Hause!",
+      "a": "lassen",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: OK, ich verstehe nicht, warum du zurück willst, aber schon gut. ___ immer so brav, liebes Mädchen, wie du hier warst!",
+      "a": "Sei",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "die Stiefmutter: Warum bist du mit Gold bedeckt? ___ uns doch, was dir passiert ist!",
+      "a": "erzähl",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "die Stiefschwester: Das will ich auch tun! ___ mir Tipps, wie auch ich reich werden kann!",
+      "a": "Gib",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "das brave Mädchen: ___ in den Brunnen, und auf der anderen Seite siehst du einen Ofen.",
+      "a": "spring",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "das brave Mädchen: ___ das Brot und die Äpfel, und dann kommst du bei Frau Holle an. Da musst du fleißig arbeiten!",
+      "a": "Rette",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    },
+    {
+      "type": "gap",
+      "q": "die Stiefschwester: ___ es! Ich tue so etwas nicht, Wahnsinn! Ich bleibe lieber zu Hause!",
+      "a": "Vergiss",
+      "options": [
+        "sein",
+        "vergessen",
+        "schicken",
+        "bringen",
+        "hab",
+        "retten",
+        "springen",
+        "ziehen",
+        "geben",
+        "lassen",
+        "schütteln",
+        "helfen",
+        "erzählen",
+        "bleiben"
+      ],
+      "set_id": "vimp_01_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the correct imperative forms of the verbs in the word-bank. Watch out for the pronouns (and the meaning of the sentences) to figure out whether it's a du or Sie imperative; these are the forms of the imperative you are most likely to encounter, so that is where we place the emphasis for your practice."
+    }
+  ]
+}

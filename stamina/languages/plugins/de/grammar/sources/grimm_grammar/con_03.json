@@ -1,0 +1,442 @@
+{
+  "id": "con_03",
+  "title": "Conjunctions: Koordinierende Konjunktionen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/con_03.html",
+  "explanation_lang": "en",
+  "section": "Conjunctions",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Coordinating conjunctions join equal clauses: either two independent clauses or two dependent clauses. The word order stays the same in each clause, with the verb in second position.\n\nAlthough there are several more coordinating conjunctions, these eight are the most commonly used ones:\n\naber | but | oder | or\n\nbeziehungsweise | or | sondern | but rather (after a negative)\n\ndenn | because, as, for | und | and\n\nentweder... oder... | either ... or ... | weder... noch... | neither ... nor ...\n\nThese conjunctions often connect entire clauses, but sometimes only a word or a short phrase.\n\nHänsel und Gretel müssen wieder in den Wald, aber diesmal wirft Hänsel kleine Stückchen Brot auf den Weg, und am Abend können die Kinder sie nicht mehr sehen. | Hansel and Gretel have to go back to the words, but this time Hänsel throws little pieces of bread on the road, and in the evening the children can't see them anymore.\n\nHänsel tröstet seine Schwester: \"Warte nur, Gretel, wir können bei Sonnenlicht die Brotkrümel sehen, beziehungsweise wir warten, bis der Mond aufgeht.\" | Hänsel consoles his sister: Just wait, Gretel, we can see the breadcrumbs in the sunlight, or we wait until the moon comes up.\n\nDer Mond geht auf, aber die Kinder finden keine Krümel, denn die vielen Vögel haben sie gegessen. | The moon comes up, but the children don't find any crumbs, because the birds ate them all.\n\nDie Kinder haben Angst; entweder sie finden bald einen Erwachsenen oder sie erfrieren und verhungern. | The children are afraid: They either find a grown-up real soon or they freeze and starve to death.\n\nAm dritten Tag (natürlich) sehen sie einen weißen Vogel auf einem Ast: Sie können ihm folgen oder sie können im dunklen Wald stehen bleiben ... Wer kann der Vogel sein??? | On the third day (of course), they see a white bird on a branch: They can either follow it or they can stay in the dark forest ... Who could the bird be???\n\nDer Vogel führt sie zu einem kleinen Haus. Es ist nicht aus Holz oder Stein, sondern aus Brot und Kuchen!! | The bird leads them to a small house. It is not made of wood or stone, but rather out of bread and cake!!\n\nDas Haus gehört weder einem Menschen noch ist es unbewohnt. Eine alte Hexe wohnt im Häuschen! | The house belongs neither to a human nor is it uninhabited. An old witch lives in the little house!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "aber",
+      "en": "but"
+    },
+    {
+      "de": "or",
+      "en": "beziehungsweise"
+    },
+    {
+      "de": "denn",
+      "en": "because, as, for"
+    },
+    {
+      "de": "entweder... oder...",
+      "en": "either ... or ..."
+    },
+    {
+      "de": "Hänsel und Gretel müssen wieder in den Wald, aber diesmal wirft Hänsel kleine Stückchen Brot auf den Weg, und am Abend können die Kinder sie nicht mehr sehen.",
+      "en": "Hansel and Gretel have to go back to the words, but this time Hänsel throws little pieces of bread on the road, and in the evening the children can't see them anymore."
+    },
+    {
+      "de": "Hänsel tröstet seine Schwester: \"Warte nur, Gretel, wir können bei Sonnenlicht die Brotkrümel sehen, beziehungsweise wir warten, bis der Mond aufgeht.\"",
+      "en": "Hänsel consoles his sister: Just wait, Gretel, we can see the breadcrumbs in the sunlight, or we wait until the moon comes up."
+    },
+    {
+      "de": "Der Mond geht auf, aber die Kinder finden keine Krümel, denn die vielen Vögel haben sie gegessen.",
+      "en": "The moon comes up, but the children don't find any crumbs, because the birds ate them all."
+    },
+    {
+      "de": "Die Kinder haben Angst; entweder sie finden bald einen Erwachsenen oder sie erfrieren und verhungern.",
+      "en": "The children are afraid: They either find a grown-up real soon or they freeze and starve to death."
+    },
+    {
+      "de": "Am dritten Tag (natürlich) sehen sie einen weißen Vogel auf einem Ast: Sie können ihm folgen oder sie können im dunklen Wald stehen bleiben ... Wer kann der Vogel sein???",
+      "en": "On the third day (of course), they see a white bird on a branch: They can either follow it or they can stay in the dark forest ... Who could the bird be???"
+    },
+    {
+      "de": "Der Vogel führt sie zu einem kleinen Haus. Es ist nicht aus Holz oder Stein, sondern aus Brot und Kuchen!!",
+      "en": "The bird leads them to a small house. It is not made of wood or stone, but rather out of bread and cake!!"
+    },
+    {
+      "de": "Das Haus gehört weder einem Menschen noch ist es unbewohnt. Eine alte Hexe wohnt im Häuschen!",
+      "en": "The house belongs neither to a human nor is it uninhabited. An old witch lives in the little house!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Zuerst können die Kinder das Haus nicht sehen, ___________ sie merken (notice) bald, dass es aus Brot und Kuchen ist!",
+      "options": [
+        "a. aber",
+        "b. oder"
+      ],
+      "a": "a. aber",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Die Fenster sind aus Zucker, ___________ das Dach ist mit Kuchen bedeckt (covered).",
+      "options": [
+        "a. und",
+        "b. denn"
+      ],
+      "a": "a. und",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Die Kinder hören mit dem Essen nicht auf, ___________ sie haben grossen Hunger.",
+      "options": [
+        "a. sondern",
+        "b. denn"
+      ],
+      "a": "b. denn",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Plötzlich kommt eine alte Frau aus dem Haus. Ist sie eine Mutterfigur, ___________ eine böse Hexe?",
+      "options": [
+        "a. oder",
+        "b. aber"
+      ],
+      "a": "a. oder",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Die alte Frau lädt die Kinder ins Haus ein ___________ bringt ihnen Milch und Pfannkuchen!",
+      "options": [
+        "a. aber",
+        "b. und"
+      ],
+      "a": "b. und",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Aber natürlich ist sie keine mitfühlende (compassionate) Person, ___________ eine böse Hexe!",
+      "options": [
+        "a. aber",
+        "b. sondern"
+      ],
+      "a": "b. sondern",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Sie ist keine warmherzige Mutterfigur, ___________ sie will die Kinder essen!",
+      "options": [
+        "a. denn",
+        "b. oder"
+      ],
+      "a": "a. denn",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Gretel muss etwas Gutes kochen ___________ ihr Bruder soll fett werden.",
+      "options": [
+        "a. aber",
+        "b. und"
+      ],
+      "a": "b. und",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Die Alte fragt immer, ob (whether) Hänsel schon fett genug ist, ___________ Hänsel reicht ihr (gives her) immer ein Knöchlein (little bone) damit (so that) sie ihn nicht isst.",
+      "options": [
+        "a. und",
+        "b. aber"
+      ],
+      "a": "b. aber",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "choice",
+      "q": "Es hilft aber ___________ Weinen noch Trick, die Hexe will Hänsel essen.",
+      "options": [
+        "a. weder",
+        "b. entweder"
+      ],
+      "a": "a. weder",
+      "set_id": "con_03_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Select the meaningful coordinating conjunction for each complex sentence and read on about Hänsel and Gretel's adventures at the witch's little house in the forest ..."
+    },
+    {
+      "type": "gap",
+      "q": "Vier Wochen später will die Hexe nicht mehr warten. Sie ruft Gretel zu ihr.\n\n___",
+      "a": "Vier Wochen später will die Hexe nicht mehr warten, und sie ruft Gretel zu ihr.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel muss Wasser holen. Die Hexe will Hänsel kochen.\n\n___",
+      "a": "Gretel muss Wasser holen, denn die Hexe will Hänsel kochen.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe ist echt gemein. Gretel ist glücklicherweise sehr schlau (clever).\n\n___",
+      "a": "Die Hexe ist echt gemein, aber Gretel ist glücklicherweise sehr schlau.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe will Gretel in den Backofen stecken. Gretel weiß nicht, wie man das so macht.\n\n___",
+      "a": "Die Hexe will Gretel in den Backofen stecken, aber Gretel weiß nicht, wie man das so macht.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Bäckt die Hexe das kleine Mädchen? Fällt sie vielleicht selbst in den Ofen?\n\n___",
+      "a": "Bäckt die Hexe das kleine Mädchen, oder fällt sie vielleicht selbst in den Ofen?",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe muss Gretel zeigen, wie man in den Ofen kriecht. Das Mädchen spielt den Dummen (she plays dumb).\n\n___",
+      "a": "Die Hexe muss Gretel zeigen, wie man in den Ofen kriecht, denn das Mädchen spielt den Dummen.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Gretel wartet nicht. Sie gibt der Hexe einen Stoß (gave her a shove).\n\n___",
+      "a": "Gretel wartet nicht, sondern sie gibt der Hexe einen Stoß.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe fällt in den Backofen hinein. Gretel macht die eiserne (iron) Tür zu.\n\n___",
+      "a": "Die Hexe fällt in den Backofen hinein, und Gretel macht die eiserne Tür zu.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Im Häuschen finden sie Kasten mit Perlen und Edelsteinen. Sie wollen nicht im Hexenwald bleiben.\n\n___",
+      "a": "Im Häuschen finden sie Kasten mit Perlen und Edelsteinen, aber sie wollen nicht im Hexenwald bleiben.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    },
+    {
+      "type": "gap",
+      "q": "Die Kinder gehen nach Hause, wo sie bleiben dürfen (are allowed to stay). Die Stiefmutter ist tot.\n\n___",
+      "a": "Die Kinder gehen nach Hause, wo sie bleiben dürfen, denn die Stiefmutter ist tot.",
+      "options": [
+        "aber",
+        "but",
+        "oder",
+        "or",
+        "beziehungsweise",
+        "or",
+        "sondern",
+        "but, but rather",
+        "denn",
+        "because, as, for",
+        "und",
+        "and",
+        "entweder ... oder ...",
+        "either ... or ...",
+        "weder ... noch ...",
+        "neither ... nor ..."
+      ],
+      "set_id": "con_03_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Connect the sentences with the appropriate coordinating conjunctions to make new, meaningful and complex (ergo, stylistically much more sophisticated) sentences and find out how Hansel and Gretel's story ends."
+    }
+  ]
+}

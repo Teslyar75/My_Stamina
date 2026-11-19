@@ -1,0 +1,245 @@
+{
+  "id": "vcp_05",
+  "title": "Verbs: Das Perfekt - Gemischte Verben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_05.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The participle forms of verbs can be used to build the conversational past, the past perfect and the subjunctive mood. They can also be used as adjectives. The conversational past is used just like the English simple past.\n\ndie böse Königin | Was ist los? | What's wrong?\n\ndie Hexe | Ich habe nicht gedacht, dass meine Katze in der Küche war ... | I thought my cat was not in the kitchen ...\n\ndie böse Königin | Hmmm ... Wieso hast du das nicht gewusst? Du bist doch eine Hexe! | How come you didn't know that? You are a witch, after all!\n\ndie Hexe | Eben! Ich habe mich nur eine Sekunde vom Kessel gewandt ... Die Küche hat so schnell gebrannt!!! Ich habe gar nicht gewusst, dass unsere Küche so feuergefährlich war ... | Exactly! I only turned away from the cauldron for a second ... The kitchen burned so fast!!! I didn't know that our kitchen was so inflammable ...\n\ndie böse Königin | Um Gottes Willen! Das war doch die fünfte Katze dieses Jahr!!! | For Pete's sake! That was the fifth cat this year!!!\n\nA handful of German verbs are mixed because they show similarities with both regular verbs and irregular verbs when forming the participle. They take the ge- prefix and the -t suffix (like regular verbs) but go through a stem-vowel – and possibly a consonant – change (like irregular verbs):\n\n1) take the infinitive | bringen (bring)\n\n2) remove the | -en | suffix | bring\n\n3) change the stem vowel (and/or consonant) | brach\n\n3) add | -t | suffix | bracht\n\n4) add | ge- | prefix | gebracht\n\nbrennen (burn) | => | hat gebrannt\n\nbringen (bring) | => | hat gebracht\n\ndenken (think) | => | hat gedacht\n\nkennen (know) | => | hat gekannt\n\nnennen (name, call) | => | hat genannt\n\nrennen (run) | => | ist gerannt\n\nsenden (send, air – e.g. TV) | => | hat gesandt (this can also be regular: hat gesendet)\n\nwenden (turn) | => | hat gewandt (this can also be regular: hat gewendet)\n\nwissen (know) | => | hat gewusst"
+    },
+    {
+      "heading": "Mixed verbs with separable/inseparable prefixes",
+      "text": "In the presence of separable prefixes, these mixed verbs keep the exact same participle forms:\n\nabbrennen (burn down) | ist abgebrannt\n\nmitbringen (bring along) | hat mitgebracht\n\nnachdenken (think about) | hat nachgedacht\n\nwegrennen (run away) | ist weggerannt\n\nIf the prefix is inseparable, the participle of the mixed verbs drops the ge- prefix:\n\nbekennen (confess, admit mistake) | hat bekannt\n\nentsenden (dispatch, send out) | hat entsandt\n\nerdenken (make up a story, imagine) | hat erdacht\n\nverwenden (use up time, use) | hat verwandt (verwendet)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "die böse Königin",
+      "en": "Was ist los?"
+    },
+    {
+      "de": "die Hexe",
+      "en": "Ich habe nicht gedacht, dass meine Katze in der Küche war ..."
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Hmmm ... Wieso hast du das nicht gewusst? Du bist doch eine Hexe!"
+    },
+    {
+      "de": "die Hexe",
+      "en": "Eben! Ich habe mich nur eine Sekunde vom Kessel gewandt ... Die Küche hat so schnell gebrannt!!! Ich habe gar nicht gewusst, dass unsere Küche so feuergefährlich war ..."
+    },
+    {
+      "de": "die böse Königin",
+      "en": "Um Gottes Willen! Das war doch die fünfte Katze dieses Jahr!!!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Die alte Hexe: Es tut mir leid, Babsi, dass die Küche ___ ist.",
+      "a": "abgebrannt",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Hmmm... mindestens (at least) hast du deinen Fehler (mistake) ___.",
+      "a": "bekannt",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe: Ich habe gar nicht ___, dass dieses neue Kochrezept (recipe) nicht explodieren kann!",
+      "a": "gewusst",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Deine arme Katze! Wann hast du sie nach Hause ___?",
+      "a": "gebracht",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe (weinend, crying): Erst vor einem Monat! Ich habe meinen Besen (broom) nach ihr ___. Ich habe sie bei einem Spezialladen (specialty store) in Berlin bestellt!",
+      "a": "entsandt",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Hmmm, ich habe ___, dass du sie im Wald gefunden hast!",
+      "a": "gedacht",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe: Nein, nein, die Geschichte (story) habe ich nur für dich ___! Ich wollte nicht, dass du herausfindest (find out), wie viel Geld ich für sie bezahlen musste!",
+      "a": "erdacht",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin: Was ist mit dir los? Ich glaube, dass ich dich bis jetzt gar nicht ___ habe!",
+      "a": "gekannt",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die alte Hexe: Naja, das ist eben so. In der Grundschule haben sie mich nicht zufällig (not in vain) die Überhexe ___!",
+      "a": "genannt",
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Katze (vom Fenstersims, window sill): Haha! Ich habe alles ___! Deswegen habe ich das Feuer ausgenutzt (took advantage of) und bin eben ___!",
+      "a": [
+        "gewusst",
+        "weggerannt"
+      ],
+      "options": [
+        "entsenden",
+        "wegrennen",
+        "nennen",
+        "denken",
+        "bekennen",
+        "erdenken",
+        "abbrennen",
+        "wissen (2X)",
+        "kennen",
+        "bringen"
+      ],
+      "set_id": "vcp_05_01_fib",
+      "set_title": "Übung",
+      "prompt": "The witch and the queen have to share a tower, so they really need to work out their problems. Find out if they can ... Fill in the blanks with the correct forms of the verbs from the word bank to form meaningful sentences."
+    }
+  ]
+}

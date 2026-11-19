@@ -1,0 +1,348 @@
+{
+  "id": "adv_02",
+  "title": "Adverbs: Das Adverb - Wie? Wo? Wohin? Woher?",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/adv_02.html",
+  "explanation_lang": "en",
+  "section": "Adverbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Adverbs provide information about how, where, when, to what degree, or how often an action takes place. They modify verbs or adjectives or other adverbs. An adverb expresses things like time, frequency, manner, place, quantity, or intensity. Adverbs are placed close to the word they modify (the verb, the adjective or the other adverb). Many adjectives can also function as adverbs in German.\n\nWith few exceptions, adverbs don't change their appearance. The form you see in the list below is the form you use in a sentence. Most of them look like adjectives without the endings:\n\nTief im Wald: Hänsel und Gretel haben sich gerade verlaufen ...\n\nHänsel | Gretel, ich würde sehr gerne wieder zurück nach Hause gehen! | Gretel, I'd really like to go home again!\n\nGretel | Ja, ich auch. Weißt du zufällig wie wir das schaffen können? | Yes, me too. Do you know by chance how we can manage that?\n\nHänsel | Keine Ahnung! Es ist überall viel zu dunkel und ich sehe noch nicht mal den kleinsten Funken! | No clue! It's too dark everywhere, and I can't see even the tiniest sparkle anywhere!\n\n* Although 'gern' is translated into English with a verbal phrase, in German it is an adverb, describing a verb (here: gehen). It is one of the most common adverbs used in German."
+    },
+    {
+      "heading": "Adverbs of manner (descriptive adverbs): Wie?",
+      "text": "gern(e) | => | gladly | eventuell | => | possibly\n\nlieber | => | rather | hoffentlich | => | hopefully\n\nfleißig | => | diligently | leider | => | unfortunately\n\nlangsam | => | slowly | glücklicherweise | => | luckily\n\nvielleicht | => | maybe | zufällig | => | per chance\n\nallein(e) | => | alone | auswendig | => | by heart\n\nsicherlich | => | certainly | natürlich | => | naturally\n\nzögerlich | => | relunctantly | freiwillig | => | voluntarily\n\nzusammen | => | together | gemeinsam | => | together\n\nwütend | => | angrily | leichtsinnig | => | recklessly\n\nbereitwillig | => | readily | widerwillig | => | stubbornly\n\nHänsel | Ok, wir müssen zusammen bleiben, und hoffentlich finden wir etwas, wenn wir immer geradeaus gehen. | OK, we have to stay together and hopefully we'll find something when we keep going straight.\n\nGretel | Wie doof. Wir hätten den Weg auswendig lernen sollen! | So stupid. We should've learned the road home by heart!\n\nHänsel | Wer zum Teufel hätte denken können, dass unser Vater uns so bereitwillig für diese neue Frau austauscht?!? Diese ... diese ... | Who would have thought that our father would trade us so readily for this new woman?!? This ... this ..."
+    },
+    {
+      "heading": "Adverbs of place: Wo?",
+      "text": "hier | => | here | anderswo | => | elsewhere\n\nda | => | there | nirgendwo | => | nowhere\n\ndort | => | over there | irgendwo | => | somewhere\n\nda drüben | => | over there | überall | => | everywhere\n\nvorne/hinten | => | in front/behind | innen/außen | => | inside/outside\n\ndraußen | => | outdoors | drinnen | => | indoors\n\noben/unten | => | above/below | links/rechts | => | left/right\n\nGretel | Hey, Brüderchen, guck mal da hin! Da drüben! Siehst du das kleine Licht? | Hey, Brother dearest, look! Over there! Do you see the little light?\n\nHänsel | Da links? Tja, mit unserem Glück ist das ein Zug. | Over there on the left? Yeah, with our luck that's a train.\n\nGretel | Nein, rechts, sei doch nicht so pessimistisch! Und sowieso kann es kein Zug sein - sie wurden immer noch nicht erfunden! | No, on the right, don't be so pessimistic! And anyway, it can't be a train - they hadn't been invented yet!"
+    },
+    {
+      "heading": "Adverbs of direction: Wohin? (where to?) Woher? (where from?)",
+      "text": "The difference between wohin and woher is the relative direction of movement from the standpoint of the speaker. Wohin suggests movement by the speaker in a direction away from himself/herself; woher, in contrast, suggests movement by somebody else towards / in the direction of the speaker.\n\ndahin | => | (going) there | daher | => | (coming from) there\n\ndorthin | => | (going) there | von oben | => | from above\n\nnach oben | => | (going) up | von vorne | => | from the front/beginning\n\nnach unten | => | (going) down | von hinten | => | from behind\n\nnach links | => | (going) left | von links | => | from the left\n\nnach rechts | => | (going) right | von rechts | => | from the right\n\nHänsel | Also, gehen wir dorthin, und schauen uns genauer an, was da los ist. | So, let's go over there, and let's take a closer look what's going on.\n\nGretel | Wow, ein Häuschen! Aus Lebkuchen! Mensch, habe ich Hunger! Ich klettere sofort nach oben aufs Dach und esse alles auf! | Wow, a little house! From gingerbread! Man, am I ever hungry! I'm going to climb up onto the roof right away and will eat the whole thing!\n\ndie alte Hexe | Jawohl! Jetzt höre ich schon das Kauen von oben. Jetzt habe ich die zwei kleinen Lümmel! | Yessss! I can already hear the munching from above. Now I have the two little twerps!"
+    },
+    {
+      "heading": "Word order with adverbs",
+      "text": "As a general rule, German adverbs appear in this sequence: time-manner-place, although there are some infrequent exceptions to this rule (especially in colloquial speech).\n\ndie alte Hexe | Ich werde sofort höchst freundlich nach draußen gehen und werde die Kinder herzlichst zu mir einladen. Hah! | I will go outside right away as friendly as possible, and I will most cordially invite the children to me. Heh!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Hänsel",
+      "en": "Gretel, ich würde sehr gerne wieder zurück nach Hause gehen!"
+    },
+    {
+      "de": "Gretel",
+      "en": "Ja, ich auch. Weißt du zufällig wie wir das schaffen können?"
+    },
+    {
+      "de": "Hänsel",
+      "en": "Keine Ahnung! Es ist überall viel zu dunkel und ich sehe noch nicht mal den kleinsten Funken!"
+    },
+    {
+      "de": "=>",
+      "en": "gern(e)"
+    },
+    {
+      "de": "=>",
+      "en": "lieber"
+    },
+    {
+      "de": "=>",
+      "en": "fleißig"
+    },
+    {
+      "de": "=>",
+      "en": "langsam"
+    },
+    {
+      "de": "=>",
+      "en": "vielleicht"
+    },
+    {
+      "de": "=>",
+      "en": "allein(e)"
+    },
+    {
+      "de": "=>",
+      "en": "sicherlich"
+    },
+    {
+      "de": "=>",
+      "en": "zögerlich"
+    },
+    {
+      "de": "=>",
+      "en": "zusammen"
+    },
+    {
+      "de": "wütend"
+    },
+    {
+      "de": "=>",
+      "en": "bereitwillig"
+    },
+    {
+      "de": "Hänsel",
+      "en": "Ok, wir müssen zusammen bleiben, und hoffentlich finden wir etwas, wenn wir immer geradeaus gehen."
+    },
+    {
+      "de": "Gretel",
+      "en": "Wie doof. Wir hätten den Weg auswendig lernen sollen!"
+    },
+    {
+      "de": "Hänsel",
+      "en": "Wer zum Teufel hätte denken können, dass unser Vater uns so bereitwillig für diese neue Frau austauscht?!? Diese ... diese ..."
+    },
+    {
+      "de": "=>",
+      "en": "hier"
+    },
+    {
+      "de": "da"
+    },
+    {
+      "de": "=>",
+      "en": "dort"
+    },
+    {
+      "de": "=>",
+      "en": "da drüben"
+    },
+    {
+      "de": "=>",
+      "en": "vorne/hinten"
+    },
+    {
+      "de": "=>",
+      "en": "draußen"
+    },
+    {
+      "de": "=>",
+      "en": "oben/unten"
+    },
+    {
+      "de": "Gretel",
+      "en": "Hey, Brüderchen, guck mal da hin! Da drüben! Siehst du das kleine Licht?"
+    },
+    {
+      "de": "Hänsel",
+      "en": "Da links? Tja, mit unserem Glück ist das ein Zug."
+    },
+    {
+      "de": "Gretel",
+      "en": "Nein, rechts, sei doch nicht so pessimistisch! Und sowieso kann es kein Zug sein - sie wurden immer noch nicht erfunden!"
+    },
+    {
+      "de": "=>",
+      "en": "dahin"
+    },
+    {
+      "de": "=>",
+      "en": "dorthin"
+    },
+    {
+      "de": "=>",
+      "en": "nach oben"
+    },
+    {
+      "de": "=>",
+      "en": "nach unten"
+    },
+    {
+      "de": "=>",
+      "en": "nach links"
+    },
+    {
+      "de": "=>",
+      "en": "nach rechts"
+    },
+    {
+      "de": "Hänsel",
+      "en": "Also, gehen wir dorthin, und schauen uns genauer an, was da los ist."
+    },
+    {
+      "de": "Gretel",
+      "en": "Wow, ein Häuschen! Aus Lebkuchen! Mensch, habe ich Hunger! Ich klettere sofort nach oben aufs Dach und esse alles auf!"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Jawohl! Jetzt höre ich schon das Kauen von oben. Jetzt habe ich die zwei kleinen Lümmel!"
+    },
+    {
+      "de": "die alte Hexe",
+      "en": "Ich werde sofort höchst freundlich nach draußen gehen und werde die Kinder herzlichst zu mir einladen. Hah!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Am Anfang steht Gretel morgens sehr __________ auf; Hänsel und sie haben genug zu essen, und die böse Stiefmutter ist nicht da.",
+      "options": [
+        "a. hoffentlich",
+        "b. gerne",
+        "c. eventuell",
+        "d. langsam"
+      ],
+      "a": "b. gerne",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Sie putzt und kocht und holt ganz __________ Wasser; sie ist wirklich froh.",
+      "options": [
+        "a. zufällig",
+        "b. zögerlich",
+        "c. wütend",
+        "d. fleißig"
+      ],
+      "a": "d. fleißig",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Nach den ersten paar Tagen aber bemerken sie _________, dass nicht alles so super ist, wie sie das gedacht haben.",
+      "options": [
+        "a. traurig",
+        "b. leichtsinnig",
+        "c. gern",
+        "d. draußen"
+      ],
+      "a": "a. traurig",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Sie verstehen __________, dass die Hexe nichts Gutes im Schilde führt (is up to no good).",
+      "options": [
+        "a. gemeinsam",
+        "b. alleine",
+        "c. langsam",
+        "d. gern"
+      ],
+      "a": "c. langsam",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Ab dem dritten Tag arbeitet Gretel nur noch __________ und Hänsel hört mit dem Essen auf.",
+      "options": [
+        "a. glücklicherweise",
+        "b. zögerlich",
+        "c. hoffentlich",
+        "d. freiwillig"
+      ],
+      "a": "b. zögerlich",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Die Hexe merkt es und fängt an, die Kinder immer öfter __________ anzuschreien: Komm doch schnell! Iss das! Bring mehr Wasser!",
+      "options": [
+        "a. sicherlich",
+        "b. gemeinsam",
+        "c. wütend",
+        "d. alleine"
+      ],
+      "a": "c. wütend",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Schließlich sperrt sie Hänsel in einen Käfig und dann sitzt er da __________, traurig und hoffnungslos.",
+      "options": [
+        "a. draußen",
+        "b. drinnen",
+        "c. irgendwo",
+        "d. hier"
+      ],
+      "a": "b. drinnen",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Sie überprüft jeden Tag, ob Hänsel schon dick genug ist, und der reicht ihr jeden Tag seinen kleinen Finger __________.",
+      "options": [
+        "a. innen",
+        "b. links",
+        "c. hinaus",
+        "d. vorne"
+      ],
+      "a": "c. hinaus",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Nach ein paar Wochen hat die Hexe die Nase voll (she's fed up) und entschließt sich __________, dazu Hänsel zu Kochen.",
+      "options": [
+        "a. plötzlich",
+        "b. überall",
+        "c. eventuell",
+        "d. zögerlich"
+      ],
+      "a": "a. plötzlich",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Gretel soll __________ im Garten Holz sammeln und ein gutes Feuer machen.",
+      "options": [
+        "a. von oben",
+        "b. dorthin",
+        "c. draußen",
+        "d. daher"
+      ],
+      "a": "c. draußen",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Gretel tut so als ob sie nicht wüsste, wie man Feuer macht und fragt die Hexe, ob sie das vielleicht __________ machen könnten, sie und die Hexe.",
+      "options": [
+        "a. allein",
+        "b. auswendig",
+        "c. gern",
+        "d. zusammen"
+      ],
+      "a": "d. zusammen",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    },
+    {
+      "type": "choice",
+      "q": "Als die Hexe sich __________ beugt, stößt sie Gretel __________ und die Hexe fällt ins Feuer und stirbt sofort .... Oder __________ auch nicht?!?",
+      "options": [
+        "a. nach vorne/von hinten/vielleicht",
+        "b. nach oben/von hinten/lieber",
+        "c. dorthin/von vorne/vielleicht",
+        "d. nach unten/von recths/natürlich"
+      ],
+      "a": "a. nach vorne/von hinten/vielleicht",
+      "set_id": "adv_02_01_mcr",
+      "set_title": "Übung",
+      "prompt": "Hänsel und Gretel sind – ehm ... Gäste bei der alten Hexe. Select the correct adverb of how and where (and where from, where to) to complete each sentence meaningfully, and find out what Hansel and Gretel's daily routine is at the witch's house. Please keep in mind that adverbs also help link sentences to each other, so while grammatically many answers could fit, logically only one adverb fits each sentence!"
+    }
+  ]
+}

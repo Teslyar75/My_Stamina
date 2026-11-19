@@ -1,0 +1,162 @@
+{
+  "id": "vi_07",
+  "title": "Verbs: Lesen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_07.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb lesen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nlesen • to read\n\nich lese | wir lesen\n\ndu liest | ihr lest\n\ner/sie/es liest | sie lesen\n\nder alte König | Was liest du, Froschkönig? | What are you reading, Frog King?\n\nder Froschkönig | Ich lese einen Roman. Er geht um einen verzauberten Prinzen ... | I am reading a novel. It's about a prince under a spell ...\n\nder alte König\n(murmelt vor sich) | Ach, er liest wieder die Geschichte! (laut:) Mannomann, gehen wir lieber einkaufen! | Aha, he's reading that story again! (out loud:) Man, let's go shopping instead!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\naus der Hand lesen | tell a fortune\n\nlesenswert | worth reading\n\ndie Leseratte | bookworm\n\ndie Leserzahl | circulation\n\nfun phrases\n\nWenn ich nur deine Gedanken lesen könnte! | If only I could read your mind!\n\nIch musste zwischen den Zeilen lesen. | I had to read between the lines."
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich lese",
+      "en": "wir lesen"
+    },
+    {
+      "de": "du liest",
+      "en": "ihr lest"
+    },
+    {
+      "de": "er/sie/es liest",
+      "en": "sie lesen"
+    },
+    {
+      "de": "der alte König",
+      "en": "Was liest du, Froschkönig?"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Ich lese einen Roman. Er geht um einen verzauberten Prinzen ..."
+    },
+    {
+      "de": "der alte König\n(murmelt vor sich)",
+      "en": "Ach, er liest wieder die Geschichte! (laut:) Mannomann, gehen wir lieber einkaufen!"
+    },
+    {
+      "de": "aus der Hand lesen",
+      "en": "tell a fortune"
+    },
+    {
+      "de": "lesenswert",
+      "en": "worth reading"
+    },
+    {
+      "de": "die Leseratte",
+      "en": "bookworm"
+    },
+    {
+      "de": "die Leserzahl",
+      "en": "circulation"
+    },
+    {
+      "de": "Wenn ich nur deine Gedanken lesen könnte!",
+      "en": "If only I could read your mind!"
+    },
+    {
+      "de": "Ich musste zwischen den Zeilen lesen.",
+      "en": "I had to read between the lines."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Was ___ ihr alle?",
+      "a": "lest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Ein Zwerg: Wir ___ eine interessante Kritik über unser Leben. Ich soll gegen Frauen sein! Und in einem Disney Film über uns habe wir alle sogar Namen! Ich heiße im Film \"Brummbär.\" So ein Quatsch!",
+      "a": "lesen",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Ein Zwerg: Und was ___ du, Schneewittchen?",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Ich ___ ein Buch von Hera Lindt! Eine sehr lustige Geschichte über eine Feministin.",
+      "a": "lese",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "der alte König: Guten Tag, Schneewittchen! Ich brauche Ihre Hilfe. Der arme Froschkönig ___ wieder die alte Geschichte über den verzauberten Prinzen!",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Warum ___ er nur diese einzige Geschichte?",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "der Froschkönig: Ich finde sie kathartisch... aber ich ___ auch andere Geschichten! Und Sie sollten über mich nicht so gemein sprechen!",
+      "a": "lese",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Es tut mir Leid, Herr Froschkönig. Was ___ Sie sonst (in addition)?",
+      "a": "lesen",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "der alte König: Tja, er ___ ab und zu die Bunte und ein Hobbyblatt: Alles über Bälle!",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Schon gut, die Bunte ___ fast 750,000 Abonnenten und Abonnentinnen jede Woche!",
+      "a": "lesen",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "der alte König: Und was ___ die böse Hexe?",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    },
+    {
+      "type": "gap",
+      "q": "Schneewittchen: Das ist ganz lustig... Sie ___ ein neues, vegetarisches Kochbuch!",
+      "a": "liest",
+      "set_id": "vi_07_01_fib",
+      "set_title": "Übung: Das ganze Schloss liest",
+      "prompt": "Scenario: there was a book vender at the castle this morning. Proceeds went to the Orphan Fairy Tale Characters Society (OFTACS), so everyone bought something. Fill in the blanks with the correct forms of lesen."
+    }
+  ]
+}

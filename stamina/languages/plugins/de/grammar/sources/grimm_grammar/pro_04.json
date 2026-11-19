@@ -1,0 +1,394 @@
+{
+  "id": "pro_04",
+  "title": "Pronouns: Personalpronomen im Dativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/pro_04.html",
+  "explanation_lang": "en",
+  "section": "Pronouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Just like in English, personal pronouns in German are used to replace nouns once they have already been mentioned, including people, animals, objects, or abstract ideas. You have already learned about these pronouns in the nominative case (subject of a sentence) and the accusative case (direct object of a sentence). Now you can learn about them when they are the indirect object of a sentence, the object of the prepositions aus, außer, bei, mit, nach, seit, von and zu or the object of a dative verb."
+    },
+    {
+      "heading": "Indirect Objects",
+      "text": "Just like nouns that are the indirect objects of a sentence or a phrase, pronouns also change from the nominative to the dative case.\n\nRotkäppchens Mutter | Rotkäppchen, deine Großmutter ist sehr krank. Kannst du ihr eine Flasche Wein und ein bisschen Brot bringen? | Little Red Riding Hood, your grandmother is very sick. Can you bring her a bottle of wine and a little bread?\n\nRotkäppchen | Ja, gerne. Kannst du mir bitte den kleinen Korb herüberreichen? Dann kann ich auch einige Blumen pflücken. | Yes, with pleasure. Can you please hand me the small basket? Then I can also pick some flowers.\n\nRotkäppchens Mutter | Rotkäppchen, was habe ich dir schon tausendmal gesagt? Erstens ist die Großmutter allergisch gegen Blumen, und zweitens ist das sehr schädlich für die Umwelt! | Little Red Riding Hood, what have I told you a thousand times already? First of all, grandmother is allergic to flowers, and second, this is very harmful for the environment!\n\nPronouns in the dative case | Singular | Plural\n\n1st person | mir (me) | uns (us)\n\n2nd person | dir (you) | euch (y'all)\n\n3rd person masculine | ihm (him)\n\n3rd person feminine | ihr (her) | ihnen (them)\n\n3rd person neuter | ihm (it)\n\nformal | Ihnen (you)"
+    },
+    {
+      "heading": "Objects of dative prepositions",
+      "text": "The dative case is used not only when the noun or pronoun is the indirect object of a sentence or a clause, but also when it follows certain prepositions: aus, außer, bei, mit, nach, seit, von and zu. There are also a handful of prepositions - called two-way prepositions or Wechselpräpositionen - that sometimes take the dative case; these are dealt with in a separate section.\n\nder Wolf | Guten Tag, Rotkäppchen! Wie geht's? Kann ich mit dir kurz sprechen? Außer uns gibt es sonst niemanden im Wald und ich langweile mich! | Hi, Little Red Riding Hood! How's it going? Can I talk to you real quick? There is nobody else in the forest except for us and I am bored!\n\nRotkäppchen | Leider kann ich nicht! Meine Großmutter ist sehr krank, jetzt muss ich schnell zu ihr gehen. | Unfortunately, I can't. My grandmother is very sick, and now I have to get to her real quick.\n\nder Wolf | Mensch, wieder Pech gehabt! Aber der Jäger soll dieses Wochenende eine Waldparty haben, vielleicht sehen wir uns am Freitag bei ihm, ok? | Man, what a bummer! But the hunter is supposed to have a Forest Party this weekend, perhaps we'll see each other at his place on Friday, OK?"
+    },
+    {
+      "heading": "Objects of dative verbs",
+      "text": "Dative pronouns, just like nouns in the dative case, are also used when they are in combination with dative verbs and verb phrases[link to dative verbs], such as helfen, glauben, folgen, weh tun, leid tun, for example.\n\ndie Großmutter | Mein liebes Kind, ich danke dir, dass du zu Besuch kommst! | My dear child, thank you for coming to visit me!\n\nRotkäppchen | Nichts zu danken, Großmutter, gern geschehen. Aber ich glaube, dass der Wolf mir gefolgt ist. Was ist mit ihm los? | No problem, Grandmother, happy to do it. But I think that the wolf followed me. What is wrong with him?\n\ndie Großmutter | Wir sollten ihm helfen! Er darf keine Kinder auffressen, niemanden erschrecken, was kann ein armer Wolf sonst tun? | We should help him! He is not allowed to devour any children, not allowed to scare anybody, what can a poor wolf do otherwise?\n\nRotkäppchen | Vielleicht gibt es ein Computerspiel, das eine Jagd simuliert? Wir könnten ihm das Spiel zu Weihnachten schenken, oder? | Maybe there is a computer game that simulates a hunt? We could give it to him for Christmas?"
+    },
+    {
+      "heading": "Word order",
+      "text": "When there is more than one object in a sentence, here are some rules for word order:\n\nIf there are two nouns, | dative noun comes before | accusative noun.\n\nDie Mutter gibt | dem Mädchen | einen Korb.\n\nIf there is one pronoun and one noun, | pronoun comes before | noun.\n\nDie Mutter gibt | ihn | dem Mädchen.\n\nDie Mutter gibt | ihm | den Korb.\n\nIf there are two pronouns, | accusative pronoun comes before | dative pronoun.\n\nDie Mutter gibt | ihn | ihm."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Rotkäppchen, deine Großmutter ist sehr krank. Kannst du ihr eine Flasche Wein und ein bisschen Brot bringen?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Ja, gerne. Kannst du mir bitte den kleinen Korb herüberreichen? Dann kann ich auch einige Blumen pflücken."
+    },
+    {
+      "de": "Rotkäppchens Mutter",
+      "en": "Rotkäppchen, was habe ich dir schon tausendmal gesagt? Erstens ist die Großmutter allergisch gegen Blumen, und zweitens ist das sehr schädlich für die Umwelt!"
+    },
+    {
+      "de": "Pronouns in the dative case",
+      "en": "Singular"
+    },
+    {
+      "de": "1st person",
+      "en": "mir (me)"
+    },
+    {
+      "de": "2nd person",
+      "en": "dir (you)"
+    },
+    {
+      "de": "3rd person masculine",
+      "en": "ihm (him)"
+    },
+    {
+      "de": "3rd person feminine",
+      "en": "ihr (her)"
+    },
+    {
+      "de": "3rd person neuter",
+      "en": "ihm (it)"
+    },
+    {
+      "de": "formal",
+      "en": "Ihnen (you)"
+    },
+    {
+      "de": "der Wolf",
+      "en": "Guten Tag, Rotkäppchen! Wie geht's? Kann ich mit dir kurz sprechen? Außer uns gibt es sonst niemanden im Wald und ich langweile mich!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Leider kann ich nicht! Meine Großmutter ist sehr krank, jetzt muss ich schnell zu ihr gehen."
+    },
+    {
+      "de": "der Wolf",
+      "en": "Mensch, wieder Pech gehabt! Aber der Jäger soll dieses Wochenende eine Waldparty haben, vielleicht sehen wir uns am Freitag bei ihm, ok?"
+    },
+    {
+      "de": "die Großmutter",
+      "en": "Mein liebes Kind, ich danke dir, dass du zu Besuch kommst!"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Nichts zu danken, Großmutter, gern geschehen. Aber ich glaube, dass der Wolf mir gefolgt ist. Was ist mit ihm los?"
+    },
+    {
+      "de": "die Großmutter",
+      "en": "Wir sollten ihm helfen! Er darf keine Kinder auffressen, niemanden erschrecken, was kann ein armer Wolf sonst tun?"
+    },
+    {
+      "de": "Rotkäppchen",
+      "en": "Vielleicht gibt es ein Computerspiel, das eine Jagd simuliert? Wir könnten ihm das Spiel zu Weihnachten schenken, oder?"
+    },
+    {
+      "de": "If there are two nouns,",
+      "en": "dative noun comes before"
+    },
+    {
+      "de": "Die Mutter gibt",
+      "en": "dem Mädchen"
+    },
+    {
+      "de": "If there is one pronoun and one noun,",
+      "en": "pronoun comes before"
+    },
+    {
+      "de": "Die Mutter gibt",
+      "en": "ihn"
+    },
+    {
+      "de": "Die Mutter gibt",
+      "en": "ihm"
+    },
+    {
+      "de": "If there are two pronouns,",
+      "en": "accusative pronoun comes before"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Rotkäppchens Mutter gibt ihm einen Korb für die Großmutter.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Die Großmutter ist krank, aber warum braucht sie Wein und Brot? Wein ist nicht besonders gesund!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Das kleine Mädchen geht spazieren, und der Wolf sieht es auf dem Pfad.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Rotkäppchen sollte mit ihm nicht plaudern (chat), aber der Wolf ist sehr charmant.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Außer ihnen gibt es keinen Menschen im Wald. Warum hat der Wolf das Mädchen nicht sofort aufgefressen?",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Natürlich, weil ein Märchen mehr dramatische Spannung (tension) braucht. Der Wolf muss deshalb (because of this) warten, obwohl das für ihn sehr schwierig ist!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Er läuft schnell zum Haus der alten Grossmutter und frisst sie!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Er hat keine Moral; naja, er ist doch ein Wolf!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "a. Nominativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Als Rotkäppchen ankommt, erkennt es den Wolf nicht, und traut ihm ohne Zweifel (without hesitation).",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Das Mädchen ist völlig überrascht, als der Wolf es auffrisst. Jetzt ist Rotkäppchen, wie die Großmutter, im Bauch des bösen Tieres!",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "b. Akkusativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Gott sei Dank, kommt der Jäger und hilft ihnen; er schneidet sie aus dem Bauch des Wolfs.",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "choice",
+      "q": "Sie füllten den Magen (stomach) des Wolfes mit Steinen, und der Magen tat ihm weh! Als er Wasser trinken wollte, fiel er in den Bach hinein und versank ...",
+      "options": [
+        "a. Nominativ",
+        "b. Akkusativ",
+        "c. Dativ"
+      ],
+      "a": "c. Dativ",
+      "set_id": "pro_04_01_mcr",
+      "set_title": "Übung 1 - Rotkäppchen besucht Grossmutter",
+      "prompt": "Decide whether the underlined pronouns are in the nominative, the accusative or the dative case. Make a note of why you decided on this answer. Choose correct case from options following each sentence."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Großmutter, kannst du ___ deine Augen und Ohren zeigen? Sie sind sehr groß!",
+      "a": "mir",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Wolf: Ja, ich zeige sie ___ gerne, komm ein bisschen näher!",
+      "a": "dir",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen: Du bist nicht meine Großmutter! Wo ist meine Großmutter? Was ist ___ passiert?",
+      "a": "ihr",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Wolf: Ich habe sie aufgefressen! Und jetzt bist du dran (it's your turn)! Und schreie nicht, außer ___ gibt es niemanden im Wald. Niemand kann dich hören!",
+      "a": "uns",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Was ist dieser schreckliche Lärm? Großmutter schnarcht nicht so laut, oder? Ich möchte mit ___ sprechen: ist alles in Ordnung?",
+      "a": "ihr",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Hoppla! Das ist der Wolf! Wo ist die Großmutter? Wo ist Rotkäppchen? Ich muss ___ sofort (immediately) helfen!",
+      "a": "ihnen",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Hallo! Wo sind Sie? Können Sie mich hören? Bitte antworten Sie ___, wenn Sie mich hören können!",
+      "a": "mir",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: OK! Der Wolf schläft ganz tief. Ich werde ihm den Bauch aufschneiden, dann können Sie aus ___ herauskommen!",
+      "a": "ihm",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "die Großmutter: Wir danken ___! Sie haben uns das Leben gerettet!",
+      "a": "Ihnen",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Und jetzt der Wolf ... Wir sollten ___ den Bauch mit Steinen füllen, dann merkt er nicht, dass Sie nicht mehr darin (in there) sind!",
+      "a": "ihm",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Wolf: Aua, mein Magen tut ___ echt weh! Ich muss sofort etwas Wasser trinken! HILFE!!!",
+      "a": "mir",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "der Jäger: Endlich! Jetzt ist er ins Wasser gefallen! Er kann uns nicht mehr auffressen; er kann ___ nicht mehr schaden (harm).",
+      "a": "uns",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "eine Hexe: Was ist denn das? Was schwimmt im Wasser? Oho, der Wolf! Wenn ich ___ helfe, muss er alles tun, was ich ihm befehle (order)!",
+      "a": "ihm",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    },
+    {
+      "type": "gap",
+      "q": "die Hexe: Herr Jäger, Großmutter und Rotkäppchen, jetzt mach' ich ___ das Leben recht schwer!",
+      "a": "Ihnen",
+      "set_id": "pro_04_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "Please fill in the blanks with the correct dative pronouns to find out how the wolf actually survived his final ordeal. Pay attention to the nouns the pronouns replace because these can help you identify the correct gender."
+    }
+  ]
+}

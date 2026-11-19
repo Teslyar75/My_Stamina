@@ -1,0 +1,189 @@
+{
+  "id": "vi_13",
+  "title": "Verbs: Tragen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_13.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb tragen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\ntragen • to carry, to wear\n\nich trage | wir tragen\n\ndu trägst | ihr tragt\n\ner/sie/es trägt | sie tragen\n\nDie Stiefmutter | Aschenputtel, was trägst du heute Abend zum Fest? | Cinderella, what are you wearing for the ball tonight?\n\neine Stiefschwester | Haha, sie trägt wieder ihr schmutziges Kleid und Holzschuhe! | Haha, she will wear her dirty dress and wooden shoes again!\n\nAschenputtel | Und ich trage sie gern! Leute bezahlen sogar 200 Euro für solche 'abgetragenen' Kleider! | And I really like to wear them too! People pay as much as 200 Euros for 'worn' clothes!\n\nDie Stiefmutter | Ich bin gar nicht überrascht. Junge Leute tragen heutzutage alles Mögliche! Aber seht mal, was trägt euer Vater? | I am not at all surprised. Young people wear just about anything today! But look, what is your father carrying?\n\ndie zwei Stiefschwerstern | Endlich! Er trägt unsere Kleider zu der Reinigung. Wir müssen noch alle Kleider für das Fest heute Abend anprobieren! | Finally! He is carrying our dresses to the dry cleaners. We have to try all of them all still for the party tonight!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\ndie Trage | stretcher\n\ntragbar | portable\n\nder Hosenträger | suspenders\n\nträge | sluggish, lethargic\n\n(un)erträglich | (un)bearable, (in)tolerable\n\nfun phrases\n\nzu zweit trägt sich der Korb besser | it's easier to do something\nwith another person's help\n\nseine ganze Arbeit hat endlich Früchte getragen | all his work finally paid off\n\ner trägt sie auf Händen | he really dotes on her\n\nsie trägt ihr Herz auf der Zunge | she speaks her heart\n\ner trägt seinen Kopf hoch! | he is really conceited"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich trage",
+      "en": "wir tragen"
+    },
+    {
+      "de": "du trägst",
+      "en": "ihr tragt"
+    },
+    {
+      "de": "er/sie/es trägt",
+      "en": "sie tragen"
+    },
+    {
+      "de": "Die Stiefmutter",
+      "en": "Aschenputtel, was trägst du heute Abend zum Fest?"
+    },
+    {
+      "de": "eine Stiefschwester",
+      "en": "Haha, sie trägt wieder ihr schmutziges Kleid und Holzschuhe!"
+    },
+    {
+      "de": "Aschenputtel",
+      "en": "Und ich trage sie gern! Leute bezahlen sogar 200 Euro für solche 'abgetragenen' Kleider!"
+    },
+    {
+      "de": "Die Stiefmutter",
+      "en": "Ich bin gar nicht überrascht. Junge Leute tragen heutzutage alles Mögliche! Aber seht mal, was trägt euer Vater?"
+    },
+    {
+      "de": "die zwei Stiefschwerstern",
+      "en": "Endlich! Er trägt unsere Kleider zu der Reinigung. Wir müssen noch alle Kleider für das Fest heute Abend anprobieren!"
+    },
+    {
+      "de": "die Trage",
+      "en": "stretcher"
+    },
+    {
+      "de": "tragbar",
+      "en": "portable"
+    },
+    {
+      "de": "der Hosenträger",
+      "en": "suspenders"
+    },
+    {
+      "de": "träge",
+      "en": "sluggish, lethargic"
+    },
+    {
+      "de": "(un)erträglich",
+      "en": "(un)bearable, (in)tolerable"
+    },
+    {
+      "de": "zu zweit trägt sich der Korb besser",
+      "en": "it's easier to do something\nwith another person's help"
+    },
+    {
+      "de": "seine ganze Arbeit hat endlich Früchte getragen",
+      "en": "all his work finally paid off"
+    },
+    {
+      "de": "er trägt sie auf Händen",
+      "en": "he really dotes on her"
+    },
+    {
+      "de": "sie trägt ihr Herz auf der Zunge",
+      "en": "she speaks her heart"
+    },
+    {
+      "de": "er trägt seinen Kopf hoch!",
+      "en": "he is really conceited"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Nachdem Aschenputtels Mutter stirbt (dies), ___ Aschenputtel keine schönen Kleider mehr.",
+      "a": "trägt",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Ihre neue Stiefschwerstern aber ___ Kleider aus Seide, Perlen und Edelsteine.",
+      "a": "tragen",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Sie verspotten (mock) Aschenputtel: \"Du ___ nur Wasser, machst das Feuer und liest Erbsen und Linsen aus der Asche.\"",
+      "a": "trägst",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Der Vater kommt von einer Reise nach Hause und ___ schöne Kleider für die Stiefschwestern und einen grünen Strauch für Aschenputtel nach drinnen.",
+      "a": "trägt",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel ___ den Strauch zum Grab seiner Mutter.",
+      "a": "trägt",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages (one day) gibt es ein großes Fest im Schloss. Alle Leute ___ schöne Kleider und Schuhe.",
+      "a": "tragen",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel darf mitgehen, wenn sie die Linsen in einer Stunde aus der Asche lesen kann. Ihre Stiefschwerstern lachen sie aber aus: \"Du ___ Lumpen (old rags) und kannst nicht tanzen!\"",
+      "a": "trägst",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Aschenputtel geht zum Grab von ihrer Mutter und bittet sie um Hilfe. Bald darauf bekommt sie ein Kleid und geht zurück zum Grab: \"Danke, Mama, jetzt ___ ich ein goldenes und silbernes Kleid aus Seide und goldene Schuhe!\"",
+      "a": "trage",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Das Fest dauert drei Tage und jede Nacht ___ Aschenputtel immer schönere Kleider und immer schönere Schuhe.",
+      "a": "trägt",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Nach dem Fest läuft Aschenputtel immer weg. Am letzten Tag verliert sie einen goldenen Schuh, und der Prinz fragt viele junge Frauen im Dorf: \"___ du diese Art von Schuh?\" Aber alle anderen ___ größere Schuhe.",
+      "a": [
+        "trägst",
+        "tragen"
+      ],
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Eine Stiefschwester schneidet ihre Zehe ab, die andere ein Stück von ihrer Ferse (heel). Die beiden ___ den goldenen Schuh, aber beim Grab von Aschenputtels Mutter singen die Tauben (doves), dass sie nicht die richtigen Bräute sind.",
+      "a": "tragen",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz ___ den Schuh zurück zu ihrem Haus, und findet Aschenputtel. Weil das ein Märchen ist, heiraten sie natürlich und wenn sie nicht gestorben sind leben sie noch heute glücklich und zufrieden.",
+      "a": "trägt",
+      "set_id": "vi_13_01_fib",
+      "set_title": "Übung: Aschenputtel",
+      "prompt": "Do you know what Cinderella's life was really like in the Grimm Brothers' version? Fill in the blanks with the correct forms of the verb tragen, and find out."
+    }
+  ]
+}

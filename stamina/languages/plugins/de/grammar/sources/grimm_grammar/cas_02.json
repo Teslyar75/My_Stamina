@@ -1,0 +1,389 @@
+{
+  "id": "cas_02",
+  "title": "Cases: Der Nominativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/cas_02.html",
+  "explanation_lang": "en",
+  "section": "Cases",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The nominative case is used to describe the subject of a sentence. The subject is the main actor in the sentence, the person who carries out an action:\n\nDie sieben Zwerge wohnen in der Dachetage. | The seven dwarves live in the loft apartment.\n\nIhre Wohung ist hell und groß. Aber manchmal vermissen die Zwerge ihr altes, romantisches Haus aus dem 19. Jahrhundert. | Their apartment is bright and big. But the dwarves sometimes miss their old, romantic house from the 19th century.\n\nDort haben die Zwerge ihre geliebte Prinzessin, Schneewittchen, kennen gelernt. | It was there that the dwarves met their beloved princess, Snow White.\n\nThe nominative case is also used to describe predicate nouns (i.e., nouns that are on the other side of verbs such as sein, bleiben, heißen, werden, scheinen from the main subject):\n\nDie Prinzessin ist und bleibt die schönste Frau, die die Zwerge sich vorstellen können. | The princess is and remains the most beautiful woman that the dwarves can imagine.\n\nSie ist auch sehr intelligent; Schneewittchen wird Rechtsanwältin. | She is also very intelligent; Snow White is is going to be (i.e., training to be) a lawyer.\n\nIn the first example, die Prinzessin is the main subject and die schönste Frau is the predicate noun. In the second example, Schneewittchen is the main subject and Rechtsanwältin is the predicate noun.\n\nThe biggest trick to being able to use the nominative case (and all four cases, really) is to know the gender of nouns. If you don't know whether Zwerg is masculine, feminine, neuter or plural, the cases can't really fall into place."
+    },
+    {
+      "heading": "Definite and indefinite articles in the nominative case",
+      "text": "Articles in the nominative case (there is no equivalent of the indefinite article in the plural, since, just like in English, you can't say \"a dwarves\"):\n\nthe | a/an | english\n\nmasculine | der Prinz | ein Prinz | (prince)\n\nfeminine | die Prinzessin | eine Prinzessin | (princess)\n\nneuter | das junge Paar | ein junges Paar | (young couple)\n\nplural | die Zwerge | Zwerge | (dwarves)\n\nFollowing are the personal pronouns, which can replace nouns (and only exist in pronoun form for the referents: I and you), in the nominative case:\n\nich | I | sie | she | ihr | you\n\ndu | you | es | it | sie | they\n\ner | he | wir | we | Sie | you (formal)"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Die sieben Zwerge wohnen in der Dachetage.",
+      "en": "The seven dwarves live in the loft apartment."
+    },
+    {
+      "de": "Ihre Wohung ist hell und groß. Aber manchmal vermissen die Zwerge ihr altes, romantisches Haus aus dem 19. Jahrhundert.",
+      "en": "Their apartment is bright and big. But the dwarves sometimes miss their old, romantic house from the 19th century."
+    },
+    {
+      "de": "Dort haben die Zwerge ihre geliebte Prinzessin, Schneewittchen, kennen gelernt.",
+      "en": "It was there that the dwarves met their beloved princess, Snow White."
+    },
+    {
+      "de": "Die Prinzessin ist und bleibt die schönste Frau, die die Zwerge sich vorstellen können.",
+      "en": "The princess is and remains the most beautiful woman that the dwarves can imagine."
+    },
+    {
+      "de": "Sie ist auch sehr intelligent; Schneewittchen wird Rechtsanwältin.",
+      "en": "She is also very intelligent; Snow White is is going to be (i.e., training to be) a lawyer."
+    },
+    {
+      "de": "masculine",
+      "en": "der Prinz"
+    },
+    {
+      "de": "feminine",
+      "en": "die Prinzessin"
+    },
+    {
+      "de": "neuter",
+      "en": "das junge Paar"
+    },
+    {
+      "de": "plural",
+      "en": "die Zwerge"
+    },
+    {
+      "de": "I",
+      "en": "ich"
+    },
+    {
+      "de": "du",
+      "en": "you"
+    },
+    {
+      "de": "er"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "choice",
+      "q": "Die schöne Königin lebte in einem Schloss und nähte (sewed).",
+      "options": [
+        "a. Die schöne Königin",
+        "b. einem Schloss"
+      ],
+      "a": "a. Die schöne Königin",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Ihr ganzes Leben wollte die Königin ein Kind.",
+      "options": [
+        "a. Ihr ganzes Leben",
+        "b. die Königin"
+      ],
+      "a": "b. die Königin",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Ihre kleine Tochter ist wunderschön.",
+      "options": [
+        "a. Ihre kleine Tochter",
+        "b. wunderschön"
+      ],
+      "a": "a. Ihre kleine Tochter",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Leider stirbt die Königin sobald (as soon as) ihre Tochter geboren ist.",
+      "options": [
+        "a. Leider",
+        "b. die Königin"
+      ],
+      "a": "b. die Königin",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Schneewittchens Vater heiratete ein Jahr später eine neue Königin.",
+      "options": [
+        "a. Schneewittchens Vater",
+        "b. eine neue Königin"
+      ],
+      "a": "a. Schneewittchens Vater",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "An der Wand der neuen Königin hängt ein Spiegel (mirror).",
+      "options": [
+        "a. der Wand",
+        "b. ein Spiegel"
+      ],
+      "a": "b. ein Spiegel",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Die Königin fragt den Spiegel fast jeden Tag: Wer ist die Schönste im ganzen Land?",
+      "options": [
+        "a. Die Königin",
+        "b. jeden Tag"
+      ],
+      "a": "a. Die Königin",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Als Schneewittchen 7 Jahre alt wird, ist sie schön wie der klare Tag und schöner als die Königin.",
+      "options": [
+        "a. Schneewittchen",
+        "b. 7 Jahre"
+      ],
+      "a": "a. Schneewittchen",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Die Königin hasst das Mädchen und sagt dem Jäger, dass er Schneewittchen umbringen (kill) soll.",
+      "options": [
+        "a. Die Königin",
+        "b. das Mädchen"
+      ],
+      "a": "a. Die Königin",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "choice",
+      "q": "Bald gehen Schneewittchen und der Jäger in den Wald, aber der Jäger kann Schneewittchen nicht töten.",
+      "options": [
+        "a. Bald",
+        "b. Schneewittchen und der Jäger"
+      ],
+      "a": "b. Schneewittchen und der Jäger",
+      "set_id": "cas_02_01_mcr",
+      "set_title": "Übung 1",
+      "prompt": "Who is doing what in the castle? Select the subject of each sentence from multiple choice options."
+    },
+    {
+      "type": "gap",
+      "q": "___ läuft weg in den großen, dunklen Wald.",
+      "a": "Das kleine Mädchen",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Einige Stunden später findet ___ ein kleines Haus in der Mitte des Waldes.",
+      "a": "es",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In dem Häuschen steht ___ mit sieben Tellerchen (plates), mit sieben Löffelchen (little spoons) und sieben Messerchen (little knives).",
+      "a": "ein kleiner Tisch",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Als es ganz dunkel wird, kommen ___ von der Arbeit (from work) nach Hause.",
+      "a": "die sieben Zwerge",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "___ sagt: Wer hat auf meinem Stühlchen gesessen? (who sat on my chair?)",
+      "a": "Der erste Zwerg",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "In ihrem Schlafzimmer findet ___ das kleine, wunderschöne Kind, das nachher (afterwards) bei den Zwergen lebt (who lives with the dwarves).",
+      "a": "der siebte Zwerg",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages fragt ___ ihren Spiegel; Wer ist die Schönste im ganzen Land?",
+      "a": "die böse Königin",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "___ versucht, Schneewittchen zu töten: zuerst mit einem Schnürriemen (lace for her dress), mit einem giftigen Kamm (poisoned comb) und mit einem giftigem Apfel (poisoned apple).",
+      "a": "Sie",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "Die Zwerge sind traurig als Schneewittchen stirbt, aber Gott sei Dank kommt ___ und rettet Schneewittchen.",
+      "a": "ein junger Prinz",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    },
+    {
+      "type": "gap",
+      "q": "___ heiratet (marries) und lädt auch die Stiefmutter zur Hochzeit ein (invites the stepmother to the wedding too).",
+      "a": "Das junge Paar",
+      "options": [
+        "die böse Königin",
+        "es",
+        "das junge Paar",
+        "die sieben Zwerge",
+        "ein junger Prinz",
+        "Der erste Zwerg",
+        "der siebte Zwerg",
+        "Sie",
+        "Das kleine Mädchen",
+        "ein kleiner Tisch"
+      ],
+      "set_id": "cas_02_02_fib",
+      "set_title": "Übung 2",
+      "prompt": "As you know, the story didn't end here. Find out what happened in the Grimm Brothers' version by filling in the following sentences with correct subjects from the word bank."
+    }
+  ]
+}

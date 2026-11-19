@@ -1,0 +1,89 @@
+{
+  "id": "no_03",
+  "title": "Nouns: Der Plural",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/no_03.html",
+  "explanation_lang": "en",
+  "section": "Nouns",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "In German, a noun is either singular or plural. It is usually introduced by a determiner that helps identify whether the noun is singular or plural. Singular nouns [when they are the subjects of a sentence] are preceded by der (masc), die (fem) or das (neuter). Plural nouns are preceded by die:\n\nDie Bäume geben dem Wolf gute Deckung. | The trees give the wolf good cover.\n\nThere are many ways that German can form plurals, and there is no really easy way to guess which noun has which plural ending, so it's best just to memorize the plural forms along with the gender of each noun.\n\nThe two key things that happen to nouns when they are made into plurals is that they may receive an ending (e, n, en, er, s) and they may receive an Umlaut on their stem vowel (main vowel of the noun).\n\nSince there is little pattern to the distribution of endings (although there are some), it is best to work backwards and group nouns according to the changes they go through in the plural. Don't worry, though, you do this automatically in English as well, although there are many different ways to form English plurals too!\n\nHere are some of the exciting combinations that you will encounter in German:\n\n1. No ending, plural noun looks the same as the singular noun\n\na) most masculine and neuter nouns that end in -el, -en, -er\n\nb) all the neuter nouns that end in diminutives (-chen and -lein)\n\nc) all neuter words that begin with Ge- (e.g., Gebäude: building)\n\nDer Jäger ist pensioniert. Jäger töten keine Wölfe mehr; sie sind gefährdete Tiere! | The hunter is retired. Hunters don't kill wolves anymore; they are endangered animals!\n\nEr hat alle seine Messer verschenkt. Er hat selbst sein berühmtes Messer nicht mehr! | He gave away all his knives. He doesn't even have his famous knife anymore!\n\n2. No ending but Umlaut on stressed vowel\n\na) a handful of masculine nouns that end in -el, -en\n\nb) Mutter and Tochter (feminine nouns), Kloster and Wasser (neuter nouns)\n\nRotkäppchens Großmutter ist sehr mutig. Großmütter heutzutage haben keine Angst vor dem Wolf! | Little Red Riding Hood's grandmother is very brave. Grandmothers nowadays are not afraid of wolves at all!\n\n3. ER/Umlaut + ER ending\n\na handful of masculine and neuter nouns\n\nDer Wolf ist sehr traurig. Er wird immer als Bösewicht dargestellt. Wölfe sind doch nicht unbedingt Bösewichter! | The wolf is very sad. He is always portrayed as a villain. Wolves are not necessarily villains!\n\nWenn er sich wirklich schlimm fühlt, geht er in den Wald. Wälder findet er sehr beruhigend! | When he feels really bad, he goes into the forest. He finds forests very calming!\n\n4. -E ending\n\na) quite a few masculine and neuter nouns\n\nb) feminine nouns that end in -nis, -sal\n\nEin Tag im Leben von einem Wolf... Die Memoiren beschreiben die alten Tage im Leben des Wolfs. | A day in the life of a wolf ... The memoir describes the olden days in the wolf's life.\n\nEs gab viele Probleme in seinem Leben. Ehrlich gesagt, das Schreiben ist auch ein Problem! | There were a lot of problems in his life. Honestly, writing is now a problem!\n\n5. Umlaut + -E ending\n\na) many masculine nouns and the neuter Floß (raft) get an Umlaut on the stem vowel (a, o, u only)\n\nb) a handful of feminine mono-syllabic nouns (consisting of one syllable only)\n\nDer Wolf kann nicht mehr arbeiten. Kinder finden Wölfe nicht mehr erschreckend! | The wolf cannot work anymore. Children don't find wolves scary anymore!\n\nEr isst jetzt Nüsse! Vorher hätte er keine einzige Nuss gegessen! | He now eats nuts! Before, he would not have eaten a single nut!\n\n6. -EN/N ending\n\na) all masculine nouns that end in -e, masculine nouns that describe male persons\n\nb) most feminine nouns\n\nc) a small group of neuter nouns\n\nDer Wolf pflückt eine Blume. Er hat veilchenblaue Blumen am liebsten. | The wolf is picking a flower. He likes periwinkle colored flowers the best.\n\nSelbst sein Bett, so wie die Betten seiner Mitbewohner, sind veilchenblau dekoriert. | Even his bed, just like the beds of his roommates, is decorated in periwinkle.\n\nDie Wohnung von Rotkäppchen ist im ersten Stock. | Little Red Riding Hood's apartment is on the first floor.\n\nEs gibt jetzt viele andere Wohnungen im Schloss. | There are many other apartments in the castle now.\n\nSogar der Wolf hat da einen Freund, den Froschkönig. | Even the wolf has a friend there, the Frog King.\n\nAber die Bremer Musikanten sind keine Freunde! | But the Bremer musicians are not his friends!\n\n7. -S ending\n\nMany foreign words get an -s ending in German to form the plural.\n\nRotkäppchens Mutter hat kein Auto. Die drei Autos vor dem Schloss gehören Schneewittchen, den Zwergen und dem pensionierten König. | Little Red Riding Hood's mother doesn't have a car. The three cars in front of the castle belong to Snow White, the dwarves and the retired king.\n\nRotkäppchen mag Mopeds! Sie möchte ein Moped sogar zum Geburtstag! | Little Red Riding Hood loves mopeds! She even wants a moped for her birthday!\n\nFalse friends with English\n\nSome nouns are plural in English, but singular in German:"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Die Bäume geben dem Wolf gute Deckung.",
+      "en": "The trees give the wolf good cover."
+    },
+    {
+      "de": "Der Jäger ist pensioniert. Jäger töten keine Wölfe mehr; sie sind gefährdete Tiere!",
+      "en": "The hunter is retired. Hunters don't kill wolves anymore; they are endangered animals!"
+    },
+    {
+      "de": "Er hat alle seine Messer verschenkt. Er hat selbst sein berühmtes Messer nicht mehr!",
+      "en": "He gave away all his knives. He doesn't even have his famous knife anymore!"
+    },
+    {
+      "de": "Rotkäppchens Großmutter ist sehr mutig. Großmütter heutzutage haben keine Angst vor dem Wolf!",
+      "en": "Little Red Riding Hood's grandmother is very brave. Grandmothers nowadays are not afraid of wolves at all!"
+    },
+    {
+      "de": "Der Wolf ist sehr traurig. Er wird immer als Bösewicht dargestellt. Wölfe sind doch nicht unbedingt Bösewichter!",
+      "en": "The wolf is very sad. He is always portrayed as a villain. Wolves are not necessarily villains!"
+    },
+    {
+      "de": "Wenn er sich wirklich schlimm fühlt, geht er in den Wald. Wälder findet er sehr beruhigend!",
+      "en": "When he feels really bad, he goes into the forest. He finds forests very calming!"
+    },
+    {
+      "de": "Ein Tag im Leben von einem Wolf... Die Memoiren beschreiben die alten Tage im Leben des Wolfs.",
+      "en": "A day in the life of a wolf ... The memoir describes the olden days in the wolf's life."
+    },
+    {
+      "de": "Es gab viele Probleme in seinem Leben. Ehrlich gesagt, das Schreiben ist auch ein Problem!",
+      "en": "There were a lot of problems in his life. Honestly, writing is now a problem!"
+    },
+    {
+      "de": "Der Wolf kann nicht mehr arbeiten. Kinder finden Wölfe nicht mehr erschreckend!",
+      "en": "The wolf cannot work anymore. Children don't find wolves scary anymore!"
+    },
+    {
+      "de": "Er isst jetzt Nüsse! Vorher hätte er keine einzige Nuss gegessen!",
+      "en": "He now eats nuts! Before, he would not have eaten a single nut!"
+    },
+    {
+      "de": "Der Wolf pflückt eine Blume. Er hat veilchenblaue Blumen am liebsten.",
+      "en": "The wolf is picking a flower. He likes periwinkle colored flowers the best."
+    },
+    {
+      "de": "Selbst sein Bett, so wie die Betten seiner Mitbewohner, sind veilchenblau dekoriert.",
+      "en": "Even his bed, just like the beds of his roommates, is decorated in periwinkle."
+    },
+    {
+      "de": "Die Wohnung von Rotkäppchen ist im ersten Stock.",
+      "en": "Little Red Riding Hood's apartment is on the first floor."
+    },
+    {
+      "de": "Es gibt jetzt viele andere Wohnungen im Schloss.",
+      "en": "There are many other apartments in the castle now."
+    },
+    {
+      "de": "Sogar der Wolf hat da einen Freund, den Froschkönig.",
+      "en": "Even the wolf has a friend there, the Frog King."
+    },
+    {
+      "de": "Aber die Bremer Musikanten sind keine Freunde!",
+      "en": "But the Bremer musicians are not his friends!"
+    },
+    {
+      "de": "Rotkäppchens Mutter hat kein Auto. Die drei Autos vor dem Schloss gehören Schneewittchen, den Zwergen und dem pensionierten König.",
+      "en": "Little Red Riding Hood's mother doesn't have a car. The three cars in front of the castle belong to Snow White, the dwarves and the retired king."
+    },
+    {
+      "de": "Rotkäppchen mag Mopeds! Sie möchte ein Moped sogar zum Geburtstag!",
+      "en": "Little Red Riding Hood loves mopeds! She even wants a moped for her birthday!"
+    }
+  ],
+  "exercises": []
+}

@@ -1,0 +1,237 @@
+{
+  "id": "vi_03",
+  "title": "Verbs: Geben",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_03.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb geben has two frequently used meanings. In the most general terms, it means 'to give' but it also is used for the equivalent of the English term: 'there is/there are.'"
+    },
+    {
+      "heading": "1. geben",
+      "text": "geben • to give\n\nich gebe | wir geben\n\ndu gibst | ihr gebt\n\ner/sie/es gibt | sie geben\n\nDer Prinz | Schneewittchen, ich gebe dir meine ganze Liebe, mein ganzes Leben! | Snow White, I give you all my love, my entire life!\n\nSchneewittchen | Sei nicht so melodramatisch, Thilo, du gibst jungen Männern schlechte Ideen! | Don't be so melodramatic, Thilo. You give young men bad ideas!\n\nDer Prinz | Okay, okay, aber wir geben zumindest ein Fest zu unserer Hochzeit, oder? | Okay, okay, but at least we'll give a dinner party for our wedding, right?\n\nSchneewittchen | Nein, Liebling, dein Papa gibt ein Fest für uns und für alle Bewohner des Schlosses. | No, darling, your dad is giving us a party and for all the residents of the castle."
+    },
+    {
+      "heading": "Related words",
+      "text": "die Gabe | the talent, gift\n\ndie Aufgabe | task, assignment\n\nweggeben | give away (present)\n\nausgeben | spend (money)\n\nabgeben | hand in (e.g., homework), emit (e.g., radio)"
+    },
+    {
+      "heading": "Fun phrases",
+      "text": "Gib darauf nichts! | Don't mind that!\n\nIch gebe dir ein Beispiel | I'll give you an example\n\nWas gibt's Neues? | What' s up? what's new?\n\nEr gibt uns bestimmt grünes Licht! | He'll definitely give us the go-ahead\n\nDu hast immer das letzte Wort! | You always have to have the last word!\n\n... Ein Wort gab das andere | One word led to another [and soon they were fighting]"
+    },
+    {
+      "heading": "2. geben",
+      "text": "Although in English the expression 'there is/there are' matches the number of subjects (e.g., There are seven dwarves but There is only one Snow White), in German only the phrase es gibt is used, whether we are talking about only one or many people or things. Whatever follows es gibt is in the accusative case in German.\n\nIm Haus gibt es 7 Schlafzimmer. | There are 7 bedrooms in the house.\n\nIn jedem Zimmer gibt es ein Bettchen. | In each room there is a small bed.\n\nIm Wohnzimmer gibt es Sessel, Teller und auch einen riesengroßen Fernseher. | In the living room there are arm chairs, plates and also a giant TV.\n\nEs gibt keine größeren Schalke 04 Fanatiker als die 7 Zwerge! | There aren't any greater Schalke 04 fans than the 7 dwarves!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich gebe",
+      "en": "wir geben"
+    },
+    {
+      "de": "du gibst",
+      "en": "ihr gebt"
+    },
+    {
+      "de": "er/sie/es gibt",
+      "en": "sie geben"
+    },
+    {
+      "de": "Der Prinz",
+      "en": "Schneewittchen, ich gebe dir meine ganze Liebe, mein ganzes Leben!"
+    },
+    {
+      "de": "Schneewittchen",
+      "en": "Sei nicht so melodramatisch, Thilo, du gibst jungen Männern schlechte Ideen!"
+    },
+    {
+      "de": "Der Prinz",
+      "en": "Okay, okay, aber wir geben zumindest ein Fest zu unserer Hochzeit, oder?"
+    },
+    {
+      "de": "Schneewittchen",
+      "en": "Nein, Liebling, dein Papa gibt ein Fest für uns und für alle Bewohner des Schlosses."
+    },
+    {
+      "de": "die Gabe",
+      "en": "the talent, gift"
+    },
+    {
+      "de": "die Aufgabe",
+      "en": "task, assignment"
+    },
+    {
+      "de": "weggeben",
+      "en": "give away (present)"
+    },
+    {
+      "de": "ausgeben",
+      "en": "spend (money)"
+    },
+    {
+      "de": "abgeben",
+      "en": "hand in (e.g., homework), emit (e.g., radio)"
+    },
+    {
+      "de": "Gib darauf nichts!",
+      "en": "Don't mind that!"
+    },
+    {
+      "de": "Ich gebe dir ein Beispiel",
+      "en": "I'll give you an example"
+    },
+    {
+      "de": "Was gibt's Neues?",
+      "en": "What' s up? what's new?"
+    },
+    {
+      "de": "Er gibt uns bestimmt grünes Licht!",
+      "en": "He'll definitely give us the go-ahead"
+    },
+    {
+      "de": "Du hast immer das letzte Wort!",
+      "en": "You always have to have the last word!"
+    },
+    {
+      "de": "... Ein Wort gab das andere",
+      "en": "One word led to another [and soon they were fighting]"
+    },
+    {
+      "de": "Im Haus gibt es 7 Schlafzimmer.",
+      "en": "There are 7 bedrooms in the house."
+    },
+    {
+      "de": "In jedem Zimmer gibt es ein Bettchen.",
+      "en": "In each room there is a small bed."
+    },
+    {
+      "de": "Im Wohnzimmer gibt es Sessel, Teller und auch einen riesengroßen Fernseher.",
+      "en": "In the living room there are arm chairs, plates and also a giant TV."
+    },
+    {
+      "de": "Es gibt keine größeren Schalke 04 Fanatiker als die 7 Zwerge!",
+      "en": "There aren't any greater Schalke 04 fans than the 7 dwarves!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "In diesem Märchen ___ es einen alten König. Er hat eine schöne Tochter namens Schneewittchen.",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Seine Frau ist sehr eingebildet. In ihrem Zimmer ___ es einen wunderbaren Spiegel.",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Spiegel ___ der Königin eine Antwort: \"Schneewittchen ist tausendmal schöner als Sie!\"",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die Königin ___ dem Jäger einen Befehl (order): \"Du sollst Schneewittchen töten!\"",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Jäger aber hat Mitleid (takes pity): \"Ich ___ dir eine zweite Chance, Schneewittchen. Lauf weg, du armes Kind!\"",
+      "a": "gebe",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die Zwerge ___ Schneewittchen ein Heim.",
+      "a": "geben",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "\"Wunderbar! Ihr ___ mir ein Heim, und ich mache euren Haushalt (take care of the household).\"",
+      "a": "gebt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Die Königin findet Schneewittchen. Sie meint (thinks): \"Ich ___ Schneewittchen einen giftigen Kamm.\"",
+      "a": "gebe",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Später ___ sie Schneewittchen einen giftigen Apfel und Schneewittchen stirbt. Fast.",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "In diesem Märchen ___ es natürlich auch einen jungen Königssohn. Er sieht wie Schneewittchen in einem Sarg aus Glas liegt.",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Er verliebt sich in (falls in love with) Schneewittchen und die Zwerge ___ ihm den Sarg.",
+      "a": "geben",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Auf dem Weg zum Schloss ___ es einen Strauch und die Diener (servants) stolpern darüber. Der giftige Apfel fliegt Schneewittchen aus dem Hals.",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Es ist nur in der Disney-Version, dass der Prinz Schneewittchen einen Kuss ___, um ihr Leben zu retten. Sonst wäre die Geschichte nicht romantisch genug gewesen!",
+      "a": "gibt",
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    },
+    {
+      "type": "gap",
+      "q": "Der Prinz sagt Schneewittchen: \"Wenn du mir deine Hand ___, ___ ich dir meinen ganzen Reichtum (all my riches).\"",
+      "a": [
+        "gibst",
+        "gebe"
+      ],
+      "set_id": "vi_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks with the missing forms of geben or the expression 'es gibt' to read about Snow White's life before Schlossallee ..."
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "id": "vi_06",
+  "title": "Verbs: Laufen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_06.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb laufen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nlaufen • to walk/run\n\nich laufe | wir laufen\n\ndu läufst | ihr lauft\n\ner/sie/es läuft | sie laufen\n\nWolfdietrich | Ich habe zugenommen. Ich laufe nur halb so viel wie früher! | I gained weight. I run only half as much as I used to.\n\nWolfgang | Ich sage dir, du isst vegetarisch und läufst zwei Kilometer pro Tag im Garten, und alles ist wieder in Ordnung. | I'm telling you: you eat vegetarian, run two kilometers a day in our fitness center, and everything will be all right again.\n\nWolfdietrich | Du verstehst doch gar nicht, was für eine Folter es ist, wenn alle diese kleinen Kinder hier im Garten hin und her laufen. | You don't understand what torture it is for me when all these little kids run around in the garden.\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\nder Lebenslauf | curriculum vitae, résumé\n\nder Langlauf | cross-country skiing\n\nfun phrases\n\nEr hält seine Freundin auf dem laufenden. | He keeps her up-to-date.\n\nAha! Ich sehe, wie der Hase läuft! | Aha, I see where the wind blows from!\n\nMensch, er lässt immer wieder die alte Platte laufen! | Man, he sounds like a broken record!"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich laufe",
+      "en": "wir laufen"
+    },
+    {
+      "de": "du läufst",
+      "en": "ihr lauft"
+    },
+    {
+      "de": "er/sie/es läuft",
+      "en": "sie laufen"
+    },
+    {
+      "de": "Wolfdietrich",
+      "en": "Ich habe zugenommen. Ich laufe nur halb so viel wie früher!"
+    },
+    {
+      "de": "Wolfgang",
+      "en": "Ich sage dir, du isst vegetarisch und läufst zwei Kilometer pro Tag im Garten, und alles ist wieder in Ordnung."
+    },
+    {
+      "de": "Wolfdietrich",
+      "en": "Du verstehst doch gar nicht, was für eine Folter es ist, wenn alle diese kleinen Kinder hier im Garten hin und her laufen."
+    },
+    {
+      "de": "der Lebenslauf",
+      "en": "curriculum vitae, résumé"
+    },
+    {
+      "de": "der Langlauf",
+      "en": "cross-country skiing"
+    },
+    {
+      "de": "Er hält seine Freundin auf dem laufenden.",
+      "en": "He keeps her up-to-date."
+    },
+    {
+      "de": "Aha! Ich sehe, wie der Hase läuft!",
+      "en": "Aha, I see where the wind blows from!"
+    },
+    {
+      "de": "Mensch, er lässt immer wieder die alte Platte laufen!",
+      "en": "Man, he sounds like a broken record!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Der Fuchs wohnt bei dem Wolf, weil der Wolf stärker ist. Eines Tages ___ sie durch den Wald, und der Wolf hat Hunger.",
+      "a": "laufen",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Fuchs sagt: \"Ich kenne einen Bauernhof, wo ein paar junge Lämmlein sind. Wir ___ zuerst zum Bauernhof, dann essen wir die Lämmlein!\"",
+      "a": "laufen",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Wenn der Wolf ___, macht er aber so viel Lärm, dass alle Bauer aufwachen.",
+      "a": "läuft",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Die Bauern ___ nach dem Wolf und schlagen ihn so erbärmlich, dass er hinkend und heulend bei dem Fuchs ankommt.",
+      "a": "laufen",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Am nächsten Abend ___ die beiden Tiere zu einem anderen Bauernhof und wollen Pfannkuchen stehlen.",
+      "a": "laufen",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Fuchs holt sechs Pfannkuchen, aber der Wolf will mehr essen. Die Frau kommt heraus und der Wolf ___ mit zwei lahmen Beinen laut heulend zum Fuchs in den Wald.",
+      "a": "läuft",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Fuchs sagt: \"Wolf, du bist ein Nimmersatt! Du ___ nicht weg, sondern willst immer mehr essen. Das ist eine schlechte Idee!\"",
+      "a": "läufst",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Am dritten Tag ___ sie zu einem dritten Haus; im Keller liegen gesalzenes Fleisch und ein Fass Wein.",
+      "a": "laufen",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Fuchs ___ oft zum Loch (hole), wo sie durchkamen, und sieht ob er noch durchpasst.",
+      "a": "läuft",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Bauer hört die beiden Tiere und ___ in den Keller: \"Ihr ___ vor mir nicht weg, ihr bösen Tiere!\"",
+      "a": [
+        "läuft",
+        "lauft"
+      ],
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Der Fuchs lacht amusiert: \"Haha, wie Sie sehen, ___ ich vor Ihnen ganz einfach weg. Aber du, mein Freund Wolf, du ___ nie wieder, nicht vor dem Bauer weg und nicht mir nach!\"",
+      "a": [
+        "laufe",
+        "läufst"
+      ],
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Als der Fuchs in den Wald ___, sieht er, dass der Bauer den Wolf tot schlägt. Er ist schadenfroh.",
+      "a": "läuft",
+      "set_id": "vi_06_01_fib",
+      "set_title": "Übung: Der Wolf und der Fuchs",
+      "prompt": "Power struggles are not new in the 21st century. Find out how the fox solves his problems vis-a-vis the wolf. Select the correct form of laufen to complete the sentences."
+    }
+  ]
+}

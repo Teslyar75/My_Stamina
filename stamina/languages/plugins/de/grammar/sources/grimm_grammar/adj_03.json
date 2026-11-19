@@ -1,0 +1,418 @@
+{
+  "id": "adj_03",
+  "title": "Adjectives: Adjektive nach Der-Wörtern",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/adj_03.html",
+  "explanation_lang": "en",
+  "section": "Adjectives",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "Predicate adjectives",
+      "text": "While predicate adjectives are not part of the der-word adjectives, it is important to discuss briefly their position and use. Predicate adjectives take the most basic, unaltered form of the adjective, and don't take any endings unless they are in the comparative or superlative forms. These adjectives are linked to the nouns they describe with a verb such as sein, werden, heißen.\n\nRapunzels Eltern waren sehr arm. | Rapunzel's parents were very poor.\n\nNeben ihnen lebte eine Hexe. Ihr Garten war prächtig. | Next to them lived a witch. Her garden was magnificent.\n\nDie Mauer um den Garten war sehr hoch. | The wall around the garden was very tall."
+    },
+    {
+      "heading": "Attributive adjectives after der-words",
+      "text": "Adjectives that follow definite articles (der, die, das, den, dem, etc.) or the other der-words – dieser, jeder, jener, mancher, solcher, welcher, alle – and precede the nouns they describe, take so-called weak endings. These endings apply whether the adjective is in the basic form or in the comparative or superlative forms.\n\nDer Garten war mit den schönsten Rapunzeln bepflanzt. | The garden was planted by the most beautiful rapunzels (lamb's lettuce).\n\nDie Frau wollte vom frischen Gemüse essen. | The wife wanted to eat from the fresh vegetable.\n\nDer Mann kletterte auf die hohe Mauer und holte seiner Frau die frischesten, grünesten Rapunzeln. | The man climbed on the tall wall and brought the freshest, greenest rapunzels for his wife.\n\nTo determine the correct adjective ending, determine the gender of the noun the adjective describes (masculine, feminine, neuter or plural) or number (in the case of plural nouns), then determine what case the noun is in the sentence or phrase (nominative, accusative, dative, or genitive).\n\nNominativ | Akkusativ | Dativ | Genitiv\n\nMaskulin | der arme Mann | den armen Mann | dem armen Mann | des armen Mannes\n\nFeminin | die alte Hexe | die alte Hexe | der alten Hexe | der alten Hexe\n\nNeutral | das frische Gemüse | das frische Gemüse | dem frischen Gemüse | des frischen Gemüses\n\nPlural | die frischen Rapunzeln | die frischen Rapunzeln | den frischen Rapunzeln | der frischen Rapunzeln"
+    },
+    {
+      "heading": "Exceptions",
+      "text": "Exceptions"
+    },
+    {
+      "heading": "Changes in the basic form",
+      "text": "When adjectives that end in -el, -en or -er in the basic form get an adjective ending, they drop the -e- before the final consonant and add the endings to this new form (see the example with dunkel).\n\nEr lief in die dunkle Nacht hinaus und holte die Rapunzeln. | He ran into the dark night and brought the rapunzels."
+    },
+    {
+      "heading": "Colors",
+      "text": "Some adjectives with foreign origins (many of these words end in a vowel) do not take adjective endings: lila, pink, rosa, beige, prima, super, etc\n\nSeine Frau aß die prima Rapunzeln in Rekordzeit, und die beiden bezahlten dafür einen schrecklichen Preis. | The wife ate the excellent rapunzels in record time, and the two of them paid a terrible price for it."
+    }
+  ],
+  "examples": [
+    {
+      "de": "Rapunzels Eltern waren sehr arm.",
+      "en": "Rapunzel's parents were very poor."
+    },
+    {
+      "de": "Neben ihnen lebte eine Hexe. Ihr Garten war prächtig.",
+      "en": "Next to them lived a witch. Her garden was magnificent."
+    },
+    {
+      "de": "Die Mauer um den Garten war sehr hoch.",
+      "en": "The wall around the garden was very tall."
+    },
+    {
+      "de": "Der Garten war mit den schönsten Rapunzeln bepflanzt.",
+      "en": "The garden was planted by the most beautiful rapunzels (lamb's lettuce)."
+    },
+    {
+      "de": "Die Frau wollte vom frischen Gemüse essen.",
+      "en": "The wife wanted to eat from the fresh vegetable."
+    },
+    {
+      "de": "Der Mann kletterte auf die hohe Mauer und holte seiner Frau die frischesten, grünesten Rapunzeln.",
+      "en": "The man climbed on the tall wall and brought the freshest, greenest rapunzels for his wife."
+    },
+    {
+      "de": "Maskulin",
+      "en": "der arme Mann"
+    },
+    {
+      "de": "Feminin",
+      "en": "die alte Hexe"
+    },
+    {
+      "de": "Neutral",
+      "en": "das frische Gemüse"
+    },
+    {
+      "de": "Plural",
+      "en": "die frischen Rapunzeln"
+    },
+    {
+      "de": "Er lief in die dunkle Nacht hinaus und holte die Rapunzeln.",
+      "en": "He ran into the dark night and brought the rapunzels."
+    },
+    {
+      "de": "Seine Frau aß die prima Rapunzeln in Rekordzeit, und die beiden bezahlten dafür einen schrecklichen Preis.",
+      "en": "The wife ate the excellent rapunzels in record time, and the two of them paid a terrible price for it."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Neben dem ___ Haus (nur so groß wie ein Fingerhut [thimble]), in dem Rapunzels Eltern wohnten, lebte eine Hexe.",
+      "a": "kleinen",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Ihr Garten war ___, also recht wunderschön! Er war voller frischer, grüner Rapunzeln.",
+      "a": "prächtig",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzels Mutter wurde schwanger (pregnant) und wollte von dem ___ Gemüse essen.",
+      "a": "frischen",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Um den Garten gab es eine Mauer, und der Vater musste über diese ___ Mauer in den Garten klettern.",
+      "a": "hohe",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Der Mann brachte der ___ Mutter eine handvoll Rapunzeln, die die Mutter sofort gegessen hat.",
+      "a": "hungrigen",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Die Hexe wurde ___, und sagte dem Vater, dass er der Hexe sein Kind geben sollte.",
+      "a": "zornig",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Sie verspricht, dass sie für das ___ Baby wie eine Mutter sorgen würde.",
+      "a": "neugeborene",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Sie gab dem Kind den ___ Namen Rapunzel, und nahm es mit sich.",
+      "a": "merkwürdigen",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Rapunzel wurde das ___ Kind unter der Sonne.",
+      "a": "schönste",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Als Rapunzel 12 Jahre alt war, schloss es die Hexe in einen Turm; in diesem ___ Turm, der in einem dunklen Wald lag, musste Rapunzel ganz alleine leben.",
+      "a": "isolierten",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages kommt natürlich der ___ Prinz vorbei, der in jedem Märchen pflichtbewusst (dutifully) erscheint, und verliebt sich in Rapunzel.",
+      "a": "junge",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Dem Prinzen gefällt besonders die ___ Stimme der jungen Frau, und er versucht zu Rapunzel in den Turm hinaufzuklettern.",
+      "a": "wunderbare",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Das gefällt der ___ Hexe gar nicht, und sie macht den Prinzen blind!",
+      "a": "alten",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    },
+    {
+      "type": "gap",
+      "q": "Aber die ___ Liebhaber (lovers) sind einander treu (are true to each other), und am Ende der Geschichte leben sie noch lange glücklich und vergnügt.",
+      "a": "alten",
+      "options": [
+        "merkwürdig",
+        "prächtig",
+        "beide",
+        "frisch",
+        "schön",
+        "hoch",
+        "klein",
+        "wunderbar",
+        "hungrig",
+        "isoliert",
+        "jung",
+        "alt",
+        "zornig",
+        "neugeboren"
+      ],
+      "set_id": "adj_03_01_fib",
+      "set_title": "Übung",
+      "prompt": "Rapunzel is recalling her life story, but is trying to make it a bit more interesting with adjectives. Fill in the blanks with the adjectives from the word bank that make each sentence meaningful – naturally, the attributive adjectives require endings and the predicate ones don't!"
+    }
+  ]
+}

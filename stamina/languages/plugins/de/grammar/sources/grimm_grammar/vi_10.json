@@ -1,0 +1,214 @@
+{
+  "id": "vi_10",
+  "title": "Verbs: Sehen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_10.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb sehen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nsehen • to see, watch\n\nich sehe | wir sehen\n\ndu siehst | ihr seht\n\ner/sie/es sieht | sie sehen\n\nder Froschkönig | Sehen Sie das kleine Mädchen? | Do you see the little girl?\n\nder alte König | Ja, die kleine Gretel. Ich sehe sie jeden Tag, wenn sie von der Schule nach Hause kommt. | Yes, the little Gretel. I see her every day when she comes home from school.\n\nder Froschkönig | Sie sieht gern Filme; sie will Schauspielerin werden. | She likes to watch movies; she wants to become an actress.\n\nder alte König | Sehen wir dieses Wochenende einen Film im Kino? Sie wissen doch, wie gern ich Liebesgeschichten sehe! | Are we going to watch a movie this weekend at the cinema? You know, after all, how much I love to watch love stories!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\nAuf Wiedersehen! | see you later!\n\ngutaussehend | good looking\n\neinsehen | realize, see, understand\n\nEinsehen haben | have insight into\n\nfun phrases\n\nDas möchte ich gerne sehen. | I'd really like to see that!\n\nSiehst du? | See, what did I tell you?\n\nVier Augen sehen mehr als zwei. | If we work together, we'll get more accomplished.\n\nEr kann mir nicht in die Augen sehen! | He can't even look me in the eye!\n\nDas sieht doch ein Blinder! | Even the blind can see that!\n\nSiehst du endlich das Licht am Ende des Tunnels? | Can you see the light at the end of the tunnel finally?\n\nEr sieht alles durch eine rosarote Brille. | He sees everything through rose-colored glasses.\n\nJa, natürlich siehst du den Splitter im fremden Auge, aber nicht den Balken im eigenen! | Of course you can see the most minute fault in other people but not even the most obvious one in yourself [literally: you can see the splinter in other people's eyes, but you can't even see the log in your own!\n\nDas hab' ich gar nicht kommen sehen. | I did not see that coming!\n\nJa, wir haben bestimmt bessere Zeiten gesehen! | Yeah, we've seen better times."
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich sehe",
+      "en": "wir sehen"
+    },
+    {
+      "de": "du siehst",
+      "en": "ihr seht"
+    },
+    {
+      "de": "er/sie/es sieht",
+      "en": "sie sehen"
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Sehen Sie das kleine Mädchen?"
+    },
+    {
+      "de": "der alte König",
+      "en": "Ja, die kleine Gretel. Ich sehe sie jeden Tag, wenn sie von der Schule nach Hause kommt."
+    },
+    {
+      "de": "der Froschkönig",
+      "en": "Sie sieht gern Filme; sie will Schauspielerin werden."
+    },
+    {
+      "de": "der alte König",
+      "en": "Sehen wir dieses Wochenende einen Film im Kino? Sie wissen doch, wie gern ich Liebesgeschichten sehe!"
+    },
+    {
+      "de": "Auf Wiedersehen!",
+      "en": "see you later!"
+    },
+    {
+      "de": "gutaussehend",
+      "en": "good looking"
+    },
+    {
+      "de": "einsehen",
+      "en": "realize, see, understand"
+    },
+    {
+      "de": "Einsehen haben",
+      "en": "have insight into"
+    },
+    {
+      "de": "Das möchte ich gerne sehen.",
+      "en": "I'd really like to see that!"
+    },
+    {
+      "de": "Siehst du?",
+      "en": "See, what did I tell you?"
+    },
+    {
+      "de": "Vier Augen sehen mehr als zwei.",
+      "en": "If we work together, we'll get more accomplished."
+    },
+    {
+      "de": "Er kann mir nicht in die Augen sehen!",
+      "en": "He can't even look me in the eye!"
+    },
+    {
+      "de": "Das sieht doch ein Blinder!",
+      "en": "Even the blind can see that!"
+    },
+    {
+      "de": "Siehst du endlich das Licht am Ende des Tunnels?",
+      "en": "Can you see the light at the end of the tunnel finally?"
+    },
+    {
+      "de": "Er sieht alles durch eine rosarote Brille.",
+      "en": "He sees everything through rose-colored glasses."
+    },
+    {
+      "de": "Ja, natürlich siehst du den Splitter im fremden Auge, aber nicht den Balken im eigenen!",
+      "en": "Of course you can see the most minute fault in other people but not even the most obvious one in yourself [literally: you can see the splinter in other people's eyes, but you can't even see the log in your own!"
+    },
+    {
+      "de": "Das hab' ich gar nicht kommen sehen.",
+      "en": "I did not see that coming!"
+    },
+    {
+      "de": "Ja, wir haben bestimmt bessere Zeiten gesehen!",
+      "en": "Yeah, we've seen better times."
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Eines Tages (one day) ___ der Froschkönig einen Ball in seinem Brunnen.",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Er holt den Ball und kommt aus dem Wasser: Was für ein schönes Mädchen ___ ich!",
+      "a": "sehe",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Hallo! Guten Tag! Junge Prinzessin, ___ du mich?",
+      "a": "siehst",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Aber die Prinzessin ___ den Frosch zuerst nicht!",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Warum weinst du? ___ du nicht, dass ich deinen Ball habe?",
+      "a": "siehst",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Letztendlich (finally) ___ die Prinzessin das hässliche Tier und ihren schönen Ball!",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig: Ich will dein Freund sein! Ich ___ schon, dass du deinen Ball zurückhaben willst!",
+      "a": "sehe",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Die Prinzessin: Ja, ich verspreche (I promise): Wenn du mir meinen Ball zurückgibst, ___ wir uns jeden Tag!",
+      "a": "sehen",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig gibt der Prinzessin den Ball zurück, und ___ schockiert, dass die Prinzessin wie der Wind wegrennt.",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Der alte König: Aber meine Tochter, was ___ ich? Was du versprichst, musst du auch halten!",
+      "a": "sehe",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Jetzt ___ die Prinzessin den Frosch den ganzen Tag: sie spielen und essen zusammen.",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Am Abend ___ sie aber keinen Frosch mehr, sondern einen gutaussehenden Prinzen!",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Und am nächsten Morgen ___ die beiden einen Wagen mit acht weißen Pferden: Heinrich, der treue Diener (servant) vom jungen Prinzen kommt zu ihm zurück.",
+      "a": "sehen",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    },
+    {
+      "type": "gap",
+      "q": "Und Heinrich ist froh, weil er ___, wie glücklich sein Herr ist.",
+      "a": "sieht",
+      "set_id": "vi_10_01_fib",
+      "set_title": "Übung: Der Froschkönig",
+      "prompt": "Learn all about the frog king's tragic past by filling in the blanks with the correct forms of the verb sehen."
+    }
+  ]
+}

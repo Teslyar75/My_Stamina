@@ -1,0 +1,313 @@
+{
+  "id": "vi_09",
+  "title": "Verbs: Schlafen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_09.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb schlafen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nschlafen • to sleep\n\nich schlafe | wir schlafen\n\ndu schläfst | ihr schlaft\n\ner/sie/es schläft | sie schlafen\n\nBrummbär | He, Chef, warum ist Schlafmütz nicht bereit? Schläft er immer noch? | Doc, why is Sleepy not ready yet? Is he still sleeping?\n\nChef | Ja, alle die anderen Zwerge schlafen immer noch. Wozu sollten sie bereit sein? | Yes, all the other dwarves are still sleeping. What should they be ready for?\n\nBrummbär | Wozu??? Wir müssen in 15 Minuten doch zur Arbeit gehen! Und sie schlafen den ganzenTag! | For what??? We have to go to work in 15 minutes after all! And they sleep away the day!\n\nChef | Sei Ruhig, Brummi, es ist doch das 21. Jahrhundert, und wir arbeiten nur 35 Stunden in der Woche. Heute ist Sonntag. Warum schläfst du nicht ein bisschen weiter? Du könntest dich endlich mal auschlafen! | Relax, Grumps, it's the 21st century, after all, and we only work 35 hours a week. Today is Sunday. Why don't you sleep a bit longer? Perhaps you could have a proper sleep finally!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\nder Schlaf | sleep\n\nder Schlafanzug | pajamas\n\ndie Schlafgewohnheiten | sleep habits, plural\n\ndie Schlafmütze | sleepy-head, night cap/hat\n\ndie Schlafstörungen | sleeping problems (e.g., insomnia)\n\ndas Schlafzimmer | bedroom\n\nschläfrig | sleepy\n\nfun phrases\n\nden Schlaf der Gerechten schlafen | to sleep the sleep of the just\n(sleep really well, soundly)\n\ner schläft wie ein Murmeltier/ein Bär | he is sleeping like a log (like a marmot/like a bear)\n\nmit jemandem schlafen | to sleep with somebody\n\nman soll schlafende Hunde nicht wecken | let sleeping dogs lie"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich schlafe",
+      "en": "wir schlafen"
+    },
+    {
+      "de": "du schläfst",
+      "en": "ihr schlaft"
+    },
+    {
+      "de": "er/sie/es schläft",
+      "en": "sie schlafen"
+    },
+    {
+      "de": "Brummbär",
+      "en": "He, Chef, warum ist Schlafmütz nicht bereit? Schläft er immer noch?"
+    },
+    {
+      "de": "Chef",
+      "en": "Ja, alle die anderen Zwerge schlafen immer noch. Wozu sollten sie bereit sein?"
+    },
+    {
+      "de": "Brummbär",
+      "en": "Wozu??? Wir müssen in 15 Minuten doch zur Arbeit gehen! Und sie schlafen den ganzenTag!"
+    },
+    {
+      "de": "Chef",
+      "en": "Sei Ruhig, Brummi, es ist doch das 21. Jahrhundert, und wir arbeiten nur 35 Stunden in der Woche. Heute ist Sonntag. Warum schläfst du nicht ein bisschen weiter? Du könntest dich endlich mal auschlafen!"
+    },
+    {
+      "de": "der Schlaf",
+      "en": "sleep"
+    },
+    {
+      "de": "der Schlafanzug",
+      "en": "pajamas"
+    },
+    {
+      "de": "die Schlafgewohnheiten",
+      "en": "sleep habits, plural"
+    },
+    {
+      "de": "die Schlafmütze",
+      "en": "sleepy-head, night cap/hat"
+    },
+    {
+      "de": "die Schlafstörungen",
+      "en": "sleeping problems (e.g., insomnia)"
+    },
+    {
+      "de": "das Schlafzimmer",
+      "en": "bedroom"
+    },
+    {
+      "de": "schläfrig",
+      "en": "sleepy"
+    },
+    {
+      "de": "den Schlaf der Gerechten schlafen",
+      "en": "to sleep the sleep of the just\n(sleep really well, soundly)"
+    },
+    {
+      "de": "er schläft wie ein Murmeltier/ein Bär",
+      "en": "he is sleeping like a log (like a marmot/like a bear)"
+    },
+    {
+      "de": "mit jemandem schlafen",
+      "en": "to sleep with somebody"
+    },
+    {
+      "de": "man soll schlafende Hunde nicht wecken",
+      "en": "let sleeping dogs lie"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Er schläft nicht. Er hat einen Alptraum (nightmares), in dem er in einem Ofen sitzt: ___",
+      "a": "Hänsel",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Er schläft nur 10-Minuten lang, weil er keine junge Frau verpassen will. Er will wieder ein Prinz werden: ___",
+      "a": "Der Froschkönig",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Sie schläft wie ein Bär und träumt von einem Wald ohne schreckliche Wölfe: ___",
+      "a": "Rotkäppchen",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Er schläft so viel wie möglich; er ist immer schläfrig!: ___",
+      "a": "Schlafmütz",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Nachdem sie schläft, schüttelt sie ihre Bettdecke (blanket) und es schneit auf der Erde (it snows on Earth): ___",
+      "a": "Frau Holle",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Er schläft nicht sehr gut; er hat Angst, dass man ihm beim Schlafen den Bauch aufschneidet: ___",
+      "a": "Der Wolf",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Sie schläft nicht mehr; sie hat 100 Jahre lang geschlafen, und das ist genug!: ___",
+      "a": "Dornröschen",
+      "options": [
+        "Schlafmütz",
+        "Rotkäppchen",
+        "Hänsel",
+        "Dornröschen",
+        "Der Froschkönig",
+        "Frau Holle",
+        "Der Wolf"
+      ],
+      "set_id": "vi_09_01_fib",
+      "set_title": "Übung 1: Schlafgewohnheiten",
+      "prompt": "Fill in the blanks with character names from the word bank ... to figure out the sleeping habits of some of the castle's residents."
+    },
+    {
+      "type": "gap",
+      "q": "Happy: Chef und Brummbär, warum ___ ihr nicht? Es ist erst 7 Uhr an einem Sonntag Morgen!",
+      "a": "schlaft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Chef: Ich ___ nur bis 5 Uhr, egal ob es Mittwoch oder Sonntag ist! Ich bin alt und kann meine Gewohnheiten nicht leicht ändern.",
+      "a": "schlafe",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Happy: Und warum ___ Brummbär nicht? Und warum antwortet er mir nicht?",
+      "a": "schläft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Chef: Du kennst ihn doch, Happy, er ___ nicht, weil er sich gut auschlafen könnte, und dann könnte er nicht mehr so brummig sein.",
+      "a": "schläft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Brummbär: Hört doch auf! Ich ___, wann ich will!",
+      "a": "schlafe",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Gudrun, die böse Königin: Der dumme Spiegel ___ wieder! Ich will wissen, ob ich die Schönste im Land bin!",
+      "a": "schläft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Heidrun: Und warum ___ du nicht?",
+      "a": "schläfst",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Gudrun: Du fragst, warum ich nicht ___? Ich muss wissen, ob ich wieder einkaufen gehen muss, um weitere Schminke (make-up) zu kaufen!",
+      "a": "schlafe",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Heidrun (zu sich selbst): Ich mache ihr ein starkes, magisches Schlafmittel, dann ___ sie letztendlich und lässt mich in Ruhe (leaves me alone)!",
+      "a": "schläft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Hahn: Warum ___ ihr noch? Ich habe schon um 5:47 gekräht!",
+      "a": "schlaft",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel: Und warum, wenn ich fragen darf? Warum ___ auch du nicht weiter?",
+      "a": "schläfst",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Hahn: Das ist einfach was wir Hähne so tun wir ___ nur bis die Sonne aufgeht.",
+      "a": "schlafen",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Esel: Du musst mit diesem dummen Krähen wirklich aufhören. Ich stehe gern früh auf, aber die anderen ___ lieber bis zu Mittag! Wir sind alle alt; du bist selbst älter als 200 Jahre!",
+      "a": "schlafen",
+      "set_id": "vi_09_02_fib",
+      "set_title": "Übung 2: Sonntag Morgen",
+      "prompt": "It's Sunday morning, and most of the castle residents are still sleeping, but some are up to nefarious activities ... Find out what's going on in the following three situations by filling in the blanks with the correct form of schlafen."
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+{
+  "id": "vcp_04",
+  "title": "Verbs: Das Perfekt - Unregelmäßige Verben mit Sein",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vcp_04.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The participle forms of verbs can be used to build the conversational past, the past perfect and the subjunctive mood. They can also be used as adjectives. The conversational past is used just like the English simple past.\n\nRapunzel | Wo bist du gewesen, Gerdi? | Where were you, Gerdi?\n\nGerdi | Ich bin zu Frau Holle zu Besuch gegangen. Wir sind auch mit meinem Privatflugzeug nach München geflogen. | I went to visit Frau Holle. We also went to Munich with my private airplane.\n\nRapunzel | Wieder nach München? Warum? | To Munich, again? Why?\n\nGerdi | Wir sind von da zu einem Kurort in den Voralpen gefahren und sind in dem Kurbad geschwommen. Das ist mein Weihnachtsgeschenk für Frau Holle gewesen! Ich bin sehr großzügig! | We went from there to a health spa in the Alpine foothills, and swam in the health bath there. That was my present for Frau Holle. I am very generous!\n\nRapunzel | Ja, und dazu noch ganz bescheiden! Woher hast du denn das Geld? | Yes, and very modest on top of that! And where do you have money from?\n\nGerdi | Wenn die Regierung es nur wüsste! Bevor sie mir mein Geld gesperrt haben, bin ich kurz in die Schweiz verschwunden! | If only the government knew! Before they locked away my money, I disappeared for a short time to Switzerland!\n\nIrregular verbs form the participle by completely remodeling the infinitive form of the verb, and sadly – unlike regular verbs – there is no rule or guide as to how to form the irregular participles (hence the name \"irregular\"). You simply need to memorize irregular verbs; the only similarity is the ge- prefix and the -en suffix:\n\n1) take the infinitive | gehen (go)\n\n2) remove the -en suffix | geh\n\n3) change stem vowel (as necessary) | gang\n\n4) add ge- prefix | gegang\n\n5) replace -en suffix | gegangen\n\nIrregular verbs that indicate\n\na) a movement (e.g., gehen, fahren, fliegen, kommen)\n\nb) a change in state or feeling (e.g., sterben, werden) OR\n\nc) indicate a state of being (e.g., bleiben, sein)\n\nuse sein as the auxiliary verb to form the conversational past.\n\nHere are the participle forms you will need to memorize:\n\nbleiben (stay) | => | ist geblieben\n\nfahren (drive, go) | => | ist gefahren (this verb can be used with haben too)\n\nfallen (fall) | => | ist gefallen\n\nfliegen (fly) | => | ist geflogen (this verb can be used with haben too)\n\nfliehen (flee) | => | ist geflohen\n\nfrieren (freeze) | => | ist gefroren (this verb can be used with haben too)\n\ngehen (go) | => | ist gegangen\n\nkommen (come) | => | ist gekommen\n\nkriechen (crawl) | => | ist gekrochen\n\nlaufen (run, walk, go) | => | ist gelaufen\n\nreiten (ride) | => | ist geritten (this verb can be used with haben too)\n\nschwimmen (swim) | => | ist geschwommen (this verb can be used with haben too)\n\nsein (be) | => | ist gewesen\n\nsinken (sink) | => | ist gesunken\n\nspringen (jump) | => | ist gesprungen\n\nsteigen (climb, rise) | => | ist gestiegen\n\nsterben (die) | => | ist gestorben\n\nwachsen (grow up) | => | ist gewachsen\n\nwerden (become) | => | ist geworden"
+    }
+  ],
+  "examples": [
+    {
+      "de": "Rapunzel",
+      "en": "Wo bist du gewesen, Gerdi?"
+    },
+    {
+      "de": "Gerdi",
+      "en": "Ich bin zu Frau Holle zu Besuch gegangen. Wir sind auch mit meinem Privatflugzeug nach München geflogen."
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Wieder nach München? Warum?"
+    },
+    {
+      "de": "Gerdi",
+      "en": "Wir sind von da zu einem Kurort in den Voralpen gefahren und sind in dem Kurbad geschwommen. Das ist mein Weihnachtsgeschenk für Frau Holle gewesen! Ich bin sehr großzügig!"
+    },
+    {
+      "de": "Rapunzel",
+      "en": "Ja, und dazu noch ganz bescheiden! Woher hast du denn das Geld?"
+    },
+    {
+      "de": "Gerdi",
+      "en": "Wenn die Regierung es nur wüsste! Bevor sie mir mein Geld gesperrt haben, bin ich kurz in die Schweiz verschwunden!"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Meine Eltern sind vor langem schon ___.",
+      "a": "gestorben",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Eines Tages hatte ich nichts mehr auf der Welt, und bin ins Feld hinaus ___.",
+      "a": "gegangen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Mir ist ein alter Mann entgegen (towards) ___.",
+      "a": "gekommen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Er ist sehr hungrig ___.",
+      "a": "gewesen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Ich gab ihm mein Stück Brot, und er ist danach weiter ___.",
+      "a": "gelaufen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Als ich ein bisschen weiter ___ bin, sah ich ein kleines Kind.",
+      "a": "gegangen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Das Kind ist sehr arm und traurig ___ ; es hatte kein Zuhause und nichts zu essen.",
+      "a": "gewesen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Natürlich habe ich ihm meine Mütze (hat) gegeben. Es sind noch zwei weitere Kinder ___.",
+      "a": "gekommen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Es ist inzwischen sehr kalt und sehr dunkel ___.",
+      "a": "geworden",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Dann plötzlich sind große Sterne vom Himmel ___ : Sie waren in Wirklichkeit harte blanke Taler (gold coins)!",
+      "a": "gefallen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Ein Wunder ist ___: Ich hatte auch neue, warme Kleider aus allerfeinstem Leinen an.",
+      "a": "geschehen",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    },
+    {
+      "type": "gap",
+      "q": "Ich habe die Taler gesammelt (collected), und bin plötzlich sehr reich ___.",
+      "a": "geworden",
+      "options": [
+        "gehen",
+        "laufen",
+        "sein",
+        "kommen",
+        "gehen",
+        "werden",
+        "sterben",
+        "kommen",
+        "geschehen",
+        "werden",
+        "sein",
+        "fallen"
+      ],
+      "set_id": "vcp_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Gerdi is a teenager. She writes blogs for her friends all over the world. Here is her original story, how she became wealthy enough to be an Alpine jetsetter... Fill in the blanks with the participle form of the verbs from the word bank to form meaningful sentences."
+    }
+  ]
+}

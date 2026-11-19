@@ -1,0 +1,226 @@
+{
+  "id": "det_04",
+  "title": "Determiners: Possessivpronomen Als Artikel - Nominativ",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/det_04.html",
+  "explanation_lang": "en",
+  "section": "Determiners",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "Possessive determiners (they are actually not pronouns unless they replace a noun!) are similar in function to definite and indefinite articles. They precede nouns and provide additional information about that noun, specifically, who owns them ...\n\ndie Katze | Meine Besitzerin hat mich hinausgeworfen. Ich bin leider zu alt! | My owner threw me out. I am unfortunately too old!\n\nder Hund | Was ist ihr Problem? | What is her problem?\n\nThese are the basic forms of the possessive determiners:\n\nich | mein | my\n\ndu | dein | your\n\ner | sein | his\n\nsie | ihr | her\n\nes | sein | its\n\nwir | unser | our\n\nihr | euer | your (think 'you guys')\n\nsie | ihr | their\n\nSie | Ihr | your (formal)"
+    },
+    {
+      "heading": "Gender and the Possessive Determiners",
+      "text": "Once you have identified who owns what or whom you are talking about, you need to add the appropriate endings to the possessive determiners, based on the gender of the noun being owned... In English, there are no different endings, of course. But in German, here is what happens to mein (my), for example, when it encounters nouns of different genders/numbers (remember, these are grammatical genders, not biological ones!):\n\nMit der Katze ist viel los ... (the cat has lots of problems)\n\nmasculine | Mein Kopf tut mir weh. | My head hurts.\n\nfeminine | Meine Zunge ist immer trocken. | My tongue is always dry.\n\nneuter | Mein Haar wird immer verfilzter. | My hair is getting more and more matted.\n\nplural | Meine Augen sind nicht mehr sehr gut. | My eyes aren't very good any more.\n\nSo ...\n\nStep 1: Choose the correct possessive determiner based on who owns X (mein, dein, sein, etc.).\n\nStep 2: Choose the correct ending, based on the gender and number of the noun that is being owned.\n\nHere are the endings for the possessive determiners:\n\nmasculine\nnoun follows\n(no visible suffix) | feminine\nnoun follows\n(-e suffix) | neuter\nnoun follows\n(no visible suffix) | plural\nnoun follows\n(-e suffix)\n\nmein Kopf | meine Zunge | mein Haar | meine Augen\n\ndein Kopf | deine Zunge | dein Haar | deine Augen\n\nsein Kopf | seine Zunge | sein Haar | seine Augen\n\nihr Kopf | ihre Zunge | ihr Haar | ihre Augen\n\nsein Kopf | seine Zunge | sein Haar | seine Augen\n\nunser Kopf | uns(e)re Zunge | unser Haar | uns(e)re Augen\n\neuer Kopf | eu(e)re Zunge | euer Haar | eu(e)re Augen\n\nihr Kopf | ihre Zunge | ihr Haar | ihre Augen\n\nIhr Kopf | Ihre Zunge | Ihr Haar | Ihre Augen\n\nIf unser or euer precedes feminine or plural nouns, the original -e- may be left out."
+    },
+    {
+      "heading": "Possessive Pronouns",
+      "text": "Possessive determiners can replace an entire noun phrase; in this case, they become possessive pronouns (such as the English examples: Where are my glasses? On your nose, and where are mine?). Here is an example set with mein/meiner:\n\nDer Hund hat Mitleid! (the dog can sympathize)\n\nmasculine | Mein Kopf tut mir weh. | Meiner tut mir auch weh! | Mine hurts too!\n\nfeminine | Meine Zunge ist immer trocken. | Meine auch! | Mine is too!\n\nneuter | Mein Haar wird immer verfilzter. | Meines auch! | Mine too!\n\nplural | Meine Augen sind nicht mehr sehr gut. | Meine sind auch nicht sehr gut! | Mine are also not very good!\n\nThe endings on the possessive pronouns are the same as der-words."
+    },
+    {
+      "heading": "Gehören + dative as an alternative to possessive determiners",
+      "text": "You can also express possession with the verb gehören. For details, see gehören under dative verbs, but here are two quick examples:\n\ngehören + dative = possessive determiner\n\ndie Katze | Wem gehört dieser Wecker? | Who does this alarm clock belong to?\n\nder Esel | Wem, wem ... er gehört natürlich dem Haushahn! | Who, who ... naturally it belongs to the rooster!\n\ndie Katze | Das ist sein Wecker? Warum braucht ein Haushahn einen Wecker? | It's his alarm clock? Why does a rooster need an alarm clock?"
+    }
+  ],
+  "examples": [
+    {
+      "de": "die Katze",
+      "en": "Meine Besitzerin hat mich hinausgeworfen. Ich bin leider zu alt!"
+    },
+    {
+      "de": "der Hund",
+      "en": "Was ist ihr Problem?"
+    },
+    {
+      "de": "ich",
+      "en": "mein"
+    },
+    {
+      "de": "du",
+      "en": "dein"
+    },
+    {
+      "de": "er",
+      "en": "sein"
+    },
+    {
+      "de": "sie",
+      "en": "ihr"
+    },
+    {
+      "de": "es",
+      "en": "sein"
+    },
+    {
+      "de": "wir",
+      "en": "unser"
+    },
+    {
+      "de": "ihr",
+      "en": "euer"
+    },
+    {
+      "de": "Sie",
+      "en": "Ihr"
+    },
+    {
+      "de": "masculine",
+      "en": "Mein Kopf tut mir weh."
+    },
+    {
+      "de": "feminine",
+      "en": "Meine Zunge ist immer trocken."
+    },
+    {
+      "de": "neuter",
+      "en": "Mein Haar wird immer verfilzter."
+    },
+    {
+      "de": "plural",
+      "en": "Meine Augen sind nicht mehr sehr gut."
+    },
+    {
+      "de": "masculine\nnoun follows\n(no visible suffix)",
+      "en": "feminine\nnoun follows\n(-e suffix)"
+    },
+    {
+      "de": "mein Kopf",
+      "en": "meine Zunge"
+    },
+    {
+      "de": "dein Kopf",
+      "en": "deine Zunge"
+    },
+    {
+      "de": "sein Kopf",
+      "en": "seine Zunge"
+    },
+    {
+      "de": "ihr Kopf",
+      "en": "ihre Zunge"
+    },
+    {
+      "de": "unser Kopf",
+      "en": "uns(e)re Zunge"
+    },
+    {
+      "de": "euer Kopf",
+      "en": "eu(e)re Zunge"
+    },
+    {
+      "de": "Ihr Kopf",
+      "en": "Ihre Zunge"
+    },
+    {
+      "de": "die Katze",
+      "en": "Wem gehört dieser Wecker?"
+    },
+    {
+      "de": "der Esel",
+      "en": "Wem, wem ... er gehört natürlich dem Haushahn!"
+    },
+    {
+      "de": "die Katze",
+      "en": "Das ist sein Wecker? Warum braucht ein Haushahn einen Wecker?"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "die Katze: Wo ist ___ Brille?",
+      "a": "meine",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Hund: Sie liegt auf dem Tisch. Weißt du, wo ___Freund, der Haushahn, ist?",
+      "a": "unser",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "die Katze: Nein, ich habe ihn den ganzen Tag nicht gesehen. Ist ___ Zimmertür zu (closed)?",
+      "a": "seine",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Hund: Ja, vielleicht schläft er? ___ Gesundheit ist leider nicht immer gut!",
+      "a": "seine",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Esel: Ach, ___ Kaffee ist endlich fertig (done)!",
+      "a": "mein",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Hund: Ist ___ Herz stark genug, kann es so viel Kaffee aushalten?",
+      "a": "dein",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Esel: Lass mich und den armen Haushahn in Ruhe! ___ Gesundheit geht dich nichts an (none of your business)!",
+      "a": "unsre",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Hund: Ihr seid doch ___ Freunde und ich möchte, dass ihr gesund bleibt!",
+      "a": "meine",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Esel: Ach, kommt doch, Hund und Katze, wo sind ___ Kaffeetassen? Lass uns Kaffee trinken und das moderne Leben genießen (enjoy)!",
+      "a": "eure",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "die Katze: Und der Kuchen ist auch fertig! Hund, wo ist ___ Teller?",
+      "a": "dein",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Hund: Pass auf, Esel, der Kuchen ist Katzes Geheimrezept (secret recipe)! Und du weißt doch, was ___ Manie ist: Mäuse, Mäuse, Mäuse!",
+      "a": "ihre",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    },
+    {
+      "type": "gap",
+      "q": "der Esel (zum Hund): Nein, ich habe sie beaufsichtigt (supervised). ___ Kuchen ist ungefährlich!",
+      "a": "Ihr",
+      "set_id": "det_04_01_fib",
+      "set_title": "Übung",
+      "prompt": "Fill in the blanks in the following dialogs with the correct forms of the possessive pronouns. Watch out for the gender of the nouns following these pronouns, so you also get the correct endings. In this activity, you can get to know the Bremer City Musicians just a little bit better!"
+    }
+  ]
+}

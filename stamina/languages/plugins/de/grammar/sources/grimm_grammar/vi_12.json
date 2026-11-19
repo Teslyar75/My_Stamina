@@ -1,0 +1,189 @@
+{
+  "id": "vi_12",
+  "title": "Verbs: Sprechen",
+  "original_url": "https://www.coerll.utexas.edu/gg/gr/vi_12.html",
+  "explanation_lang": "en",
+  "section": "Verbs",
+  "cefr": null,
+  "sections": [
+    {
+      "heading": "",
+      "text": "The verb sprechen is irregular in the present tense. Like many other irregular verbs, it changes the stem vowel in the second and third person singular forms (du and er/sie/es).\n\nsprechen • to speak/talk\n\nich spreche | wir sprechen\n\ndu sprichst | ihr sprecht\n\ner/sie/es spricht | sie sprechen\n\nauf einer Cocktailparty\n\nDer alte König | Und Wolfdietrich, sprechen Sie irgendwelche Fremdsprachen? | And Wolfdietrich, do you speak any foreign languages?\n\nWolfgang | Er?!? Er spricht keine Fremdsprachen; er ist selbst in Schaf durchgefallen. Ich spreche aber zwei: Schaf, tja das war eine Tauglichkeitsvoraussetzung für meine vorige Stelle – und Englisch. Das ist mein Lieblingshobby! | He?!? He doesn't speak any foreign languages; he even failed Sheep. I, on the other hand, speak two: Sheep, well, that was a qualification requirement for my previous job – and English. That's my favorite hobby!\n\nWolfdietrich | Aber Wolfgang! Du bist so gemein! Du sprichst immer so unfreundlich über mich! | But Wolfgang! You are so mean. You always speak so unkindly about me!\n\nHelpful hint: in a dictionary, irregular verbs are marked as irreg. They are usually listed in the back of the dictionary, with their irregular forms (some verbs are irregular in the past tense, but not in the present tense, etc.).\n\nrelated words\n\ndie Sprache | the language\n\ndie Sprachkenntnisse | knowledge of a language, plural only\n\nsprachlos | speechless\n\ndas Sprachspiel | word play\n\nder Sprachunterricht | language course\n\ndie Sprachwissenschaft | linguistics\n\nder Spruch | the adage, saying\n\nversprechen | to promise\n\nfun phrases\n\nihr bleibt die Sprache weg | she is speechless\n\nhast du die Sprache verloren? | cat got your tongue?\n\ndie gleiche Sprache sprechen | to speak the same language (understand each other well)\n\naus dem Herz(en) sprechen | to speak from the heart"
+    }
+  ],
+  "examples": [
+    {
+      "de": "ich spreche",
+      "en": "wir sprechen"
+    },
+    {
+      "de": "du sprichst",
+      "en": "ihr sprecht"
+    },
+    {
+      "de": "er/sie/es spricht",
+      "en": "sie sprechen"
+    },
+    {
+      "de": "Der alte König",
+      "en": "Und Wolfdietrich, sprechen Sie irgendwelche Fremdsprachen?"
+    },
+    {
+      "de": "Wolfgang",
+      "en": "Er?!? Er spricht keine Fremdsprachen; er ist selbst in Schaf durchgefallen. Ich spreche aber zwei: Schaf, tja das war eine Tauglichkeitsvoraussetzung für meine vorige Stelle – und Englisch. Das ist mein Lieblingshobby!"
+    },
+    {
+      "de": "Wolfdietrich",
+      "en": "Aber Wolfgang! Du bist so gemein! Du sprichst immer so unfreundlich über mich!"
+    },
+    {
+      "de": "die Sprache",
+      "en": "the language"
+    },
+    {
+      "de": "die Sprachkenntnisse",
+      "en": "knowledge of a language, plural only"
+    },
+    {
+      "de": "sprachlos",
+      "en": "speechless"
+    },
+    {
+      "de": "das Sprachspiel",
+      "en": "word play"
+    },
+    {
+      "de": "der Sprachunterricht",
+      "en": "language course"
+    },
+    {
+      "de": "die Sprachwissenschaft",
+      "en": "linguistics"
+    },
+    {
+      "de": "der Spruch",
+      "en": "the adage, saying"
+    },
+    {
+      "de": "versprechen",
+      "en": "to promise"
+    },
+    {
+      "de": "ihr bleibt die Sprache weg",
+      "en": "she is speechless"
+    },
+    {
+      "de": "hast du die Sprache verloren?",
+      "en": "cat got your tongue?"
+    },
+    {
+      "de": "die gleiche Sprache sprechen",
+      "en": "to speak the same language (understand each other well)"
+    },
+    {
+      "de": "aus dem Herz(en) sprechen",
+      "en": "to speak from the heart"
+    }
+  ],
+  "exercises": [
+    {
+      "type": "gap",
+      "q": "Schneewittchen ___ mit den anderen Frauen über Feminismus.",
+      "a": "spricht",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Froschkönig und der alte König ___ über das Wetter und die Gesundheit des alten Königs.",
+      "a": "sprechen",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchen fragt die Zwerge: Worüber ___ ihr so begeistert?",
+      "a": "sprecht",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Die Zwerge: Wir ___ über unsere neuen Möbel. Wir haben unsere Wohnung gemütlich eingerichtet (furnished); wir haben alles bei IKEA gekauft.",
+      "a": "sprechen",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Nur Seppl ___ nicht. Er ___ einfach nie!",
+      "a": [
+        "spricht",
+        "spricht"
+      ],
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Rotkäppchens Mutti: Rotkäppchen, ich ___ mit dir, bitte schalt deinen iPod aus!",
+      "a": "spreche",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Die böse Königin ___ in den Spiegel: Spieglein, Spieglein an der Wand, wer ist die Schönste im ganzen Land?",
+      "a": "spricht",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Der Spiegel antwortet: Königin, du ___ zu leise! Ich bin inzwischen alt geworden und höre jetzt nicht mehr so gut.",
+      "a": "sprichst",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Frau Holle: Mein Kind, wenn du zu den Äpfeln und den Brötchen freundlich bist und mit ihnen nett ___, gebe ich dir viel Geld und Gold!",
+      "a": "sprichst",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Wolfang: Wer ___ heute Abend in unserem Forum?",
+      "a": "spricht",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Wolfdietrich: Dornröschen ___ über unseren ersten 5-Jahresplan.",
+      "a": "spricht",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    },
+    {
+      "type": "gap",
+      "q": "Wolfgang: Das ist schrecklich. Es gibt die DDR doch nicht mehr! Dann ___ ich lieber über Post-modernismus und Chaostheorie: die sind unsere Leitsterne (our guiding lights).",
+      "a": "spreche",
+      "set_id": "vi_12_01_fib",
+      "set_title": "Übung: Babel im Schloss",
+      "prompt": "Wolfgang's boast about his language abilities triggered a whole slew of show-off commentary from various residents: some well-founded, some not so much. Find out who can speak what, and who talks about whom in this community by filling in the blanks with the correct forms of the verb sprechen."
+    }
+  ]
+}
