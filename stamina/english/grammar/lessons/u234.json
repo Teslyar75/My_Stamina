@@ -1,0 +1,80 @@
+{
+ "n": 234,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "by и until",
+ "en": "by and until, by the time",
+ "summary": "By указывает дедлайн — не позже этого момента, а until показывает продолжительность действия до момента. By the time связывает два события: к моменту второго первое уже завершится.",
+ "can_do": [
+  "Использовать by для дедлайнов: be back by 6, by next Friday.",
+  "Использовать until/till для длительных действий: wait until 6.",
+  "Строить предложения с by the time + предложение.",
+  "Не путать until с точечным завершением без длительности."
+ ],
+ "theory": [
+  {
+   "h": "By — дедлайн, не позже",
+   "p": "By + момент времени означает «не позже этого момента». Действие может произойти раньше, но не позже: I'll be back by six — я вернусь не позже шести. В русском это часто «к шести», но с оттенком предельного срока.",
+   "formula": "be back by 6 · finish by Friday · arrive by noon"
+  },
+  {
+   "h": "Until / till — длительность до момента",
+   "p": "Until (или till) показывает, что действие или состояние продолжается вплоть до указанного момента: wait until six — ждать до шести. В русском «до» работает и для дедлайна, и для длительности, в английском выбор зависит от глагола.",
+   "formula": "wait until 6 · stay until Monday · work till evening"
+  },
+  {
+   "h": "Глаголы-маркеры: завершённые vs длительные",
+   "p": "Глаголы завершённого действия (finish, arrive, complete, submit) тянут by: finish by Friday. Глаголы длительного процесса (wait, stay, work, sleep, live) тянут until: stay until Friday. Не скажите *finish until Friday — это звучит как «заканчивать до пятницы» в процессе.",
+   "table": {
+    "head": ["Главол", "Предлог", "Пример"],
+    "rows": [
+     ["finish", "by", "finish by Friday"],
+     ["arrive", "by", "arrive by noon"],
+     ["wait", "until", "wait until 6"],
+     ["stay", "until", "stay until Monday"]
+    ]
+   }
+  },
+  {
+   "h": "By the time + предложение",
+   "p": "Конструкция by the time + придаточное предложение связывает два события: к моменту второго первое уже завершится. В придаточном обычно настоящее время, в главном — будущее совершенное: By the time you arrive, I will have finished.",
+   "formula": "By the time you arrive, I will have finished. · By the time we get there, the film will have started."
+  },
+  {
+   "h": "Until с отрицанием = by",
+   "p": "В отрицательных предложениях until может означать «не раньше», то есть работает как by: I won't finish until Friday = I'll finish by Friday (не раньше пятницы). Но в утверждении until всегда про длительность, а by — про дедлайн.",
+   "formula": "I won't leave until 6. · She didn't call until Monday."
+  },
+  {
+   "h": "Tip: not ... until vs by",
+   "p": "Не переводите not ... until как «не до». I didn't wake up until 8 — я проснусь не раньше восьми (в 8 или позже). By eight означает «не позже восьми». Разница в направлении: until отталкивается от начала, by — от конца.",
+   "formula": "not ... until = not before · by = not later than"
+  }
+ ],
+ "examples": [
+  {"en": "I'll be back by six.", "ru": "Я вернусь не позже шести."},
+  {"en": "We waited until midnight.", "ru": "Мы ждали до полуночи."},
+  {"en": "Finish the report by Friday.", "ru": "Закончи отчёт к пятнице."},
+  {"en": "By the time you read this, I'll be gone.", "ru": "К тому моменту, когда ты это прочтёшь, меня уже не будет."},
+  {"en": "I won't start until Monday.", "ru": "Я не начну раньше понедельника."},
+  {"en": "She stayed until the end.", "ru": "Она осталась до конца."},
+  {"en": "Submit the form by 5 p.m.", "ru": "Отправь форму не позже 17:00."}
+ ],
+ "traps": [
+  {"bad": "I will finish until Friday.", "good": "I will finish by Friday.", "why": "Finish — завершённое действие, требует by. Until здесь означало бы процесс завершения в течение времени."},
+  {"bad": "Wait by six.", "good": "Wait until six.", "why": "Wait — длительный процесс, требует until. By с wait звучит как «дождись к шести», но не «ждать до шести»."},
+  {"bad": "By the time he will come, I will finish.", "good": "By the time he comes, I will have finished.", "why": "В придаточном с by the time настоящее время, в главном — будущее совершенное."},
+  {"bad": "I didn't leave by 6.", "good": "I didn't leave until 6.", "why": "В отрицании until = не раньше. By в отрицании меняет смысл на «не ушёл к 6» (уже ушёл раньше)."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I'll send the email ___ Friday.", "options": ["by", "until", "till"], "a": 0, "why": "Send — завершённое действие, дедлайн: by Friday."},
+  {"type": "choice", "q": "We stayed at the party ___ midnight.", "options": ["by", "until", "before"], "a": 1, "why": "Stay — длительное действие, продолжается до момента: until midnight."},
+  {"type": "choice", "q": "___ the time you arrive, the meeting ___.", "options": ["By / will have started", "Until / will start", "By / starts"], "a": 0, "why": "By the time + настоящее, главное — будущее совершенное."},
+  {"type": "choice", "q": "She won't finish the book ___ Sunday.", "options": ["by", "until", "at"], "a": 1, "why": "В отрицании finish until = не раньше воскресенья (закончит в воскресенье или позже)."},
+  {"type": "gap", "q": "Please return the book ___ (by / until) Monday.", "a": ["by"], "why": "Return — завершённое действие, дедлайн: by Monday."},
+  {"type": "gap", "q": "I'll wait ___ (by / until) you come back.", "a": ["until"], "why": "Wait — длительный процесс до события: until you come back."},
+  {"type": "gap", "q": "By the time we ___ (get) there, the shop ___ (close).", "a": ["get / will have closed"], "why": "By the time + настоящее, главное — будущее совершенное (will have closed). Will be closed — простое будущее пассивное, не подходит."},
+  {"type": "translate", "q": "Я закончу работу к семи вечера.", "a": ["I'll finish work by 7 p.m.", "I will finish work by 7 pm"], "why": "Дедлайн для завершённого действия: by 7 p.m."},
+  {"type": "translate", "q": "Мы ждали автобус до дождя.", "a": ["We waited for the bus until the rain", "We waited for the bus till the rain started"], "why": "Длительное ожидание до момента: waited until."}
+ ]
+}

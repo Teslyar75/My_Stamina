@@ -1,0 +1,79 @@
+{
+ "n": 233,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "for, during, while",
+ "en": "for, during and while",
+ "summary": "Три слова выражают время, но по-разному: for — длительность, during — событие как фон, while — одновременное действие с подлежащим и глаголом.",
+ "can_do": [
+  "Использовать for с периодами: for two hours, for a long time.",
+  "Ставить during перед существительными-событиями: during the meeting, during the 1990s.",
+  "Строить предложения с while + подлежащее + глагол: while I was working.",
+  "Не путать during и while, а также не говорить for the lesson в значении «во время урока»."
+ ],
+ "theory": [
+  {
+   "h": "for — сколько времени длится действие",
+   "p": "For ставится перед длительностью: for five minutes, for a week, for ages. Отвечает на вопрос «как долго?» и соответствует русскому винительному падежу (ждал час) или «в течение». Работает со всеми временами.",
+   "formula": "I waited for an hour. · She has lived here for ten years. · We will stay for a week."
+  },
+  {
+   "h": "during — когда происходит событие",
+   "p": "During требует существительного-события или периода как фона: during the film, during the night, during the 1990s. В русском — «во время + род. падеж». После during никогда нет подлежащего с глаголом — для этого нужен while.",
+   "formula": "during the lesson · during the meeting · during the war · during my stay"
+  },
+  {
+   "h": "while — пока, в то время как (с глаголом)",
+   "p": "While вводит придаточное со своим подлежащим и глаголом: while I was reading, while she cooked. Подчёркивает одновременность процессов. Может стоять в начале или середине; запятая перед while в середине обычно не нужна.",
+   "formula": "While I was waiting, it started to rain. · He fell asleep while he was driving."
+  },
+  {
+   "h": "for vs during: длительность против фона",
+   "p": "For отвечает на «как долго?», during — на «во время чего?». Сравните: I slept for eight hours (длительность) и I slept during the lecture (фон — лекция). Нельзя сказать during eight hours или for the lecture в значении «во время».",
+   "table": {
+    "head": ["Вопрос", "Слово", "Пример"],
+    "rows": [
+     ["Как долго?", "for", "for two hours"],
+     ["Во время чего?", "during", "during the film"],
+     ["Пока что происходит?", "while", "while I watched"]
+    ]
+   }
+  },
+  {
+   "h": "while vs during: глагол против существительного",
+   "p": "После while — подлежащее + глагол (while I worked), после during — только существительное (during my work). Чтобы использовать during с действием, превратите глагол в существительное: during my working hours. While также может означать «хотя», но это другая тема.",
+   "formula": "while I worked · during my work · while she slept · during her sleep"
+  },
+  {
+   "h": "Типичные ловушки",
+   "p": "Не говорите during I was waiting — только while I was waiting. Не говорите for the lesson в значении «во время» — только during the lesson. В отрицаниях for часто заменяется на in: I haven't seen him in years. While в начале предложения требует запятой после придаточного.",
+   "formula": "while I was waiting (не during) · during the lesson (не for) · I haven't seen him in years"
+  }
+ ],
+ "examples": [
+  {"en": "We talked for hours.", "ru": "Мы разговаривали часами."},
+  {"en": "I met her during the conference.", "ru": "Я встретил её во время конференции."},
+  {"en": "While you were sleeping, I finished the report.", "ru": "Пока ты спал, я закончил отчёт."},
+  {"en": "It rained during the night.", "ru": "Дождь шёл ночью."},
+  {"en": "She has been waiting for twenty minutes.", "ru": "Она ждёт уже двадцать минут."},
+  {"en": "Don't talk while the teacher is speaking.", "ru": "Не разговаривай, пока учитель говорит."},
+  {"en": "We stayed in that hotel for a week during the festival.", "ru": "Мы пробыли в том отеле неделю во время фестиваля."}
+ ],
+ "traps": [
+  {"bad": "during I was waiting", "good": "while I was waiting", "why": "После during нельзя ставить подлежащее с глаголом — только существительное."},
+  {"bad": "for the lesson (в значении «во время урока»)", "good": "during the lesson", "why": "For выражает длительность, а не фон события. «Во время урока» — during the lesson."},
+  {"bad": "I waited during two hours", "good": "I waited for two hours", "why": "Длительность требует for, during используется с существительными-событиями."},
+  {"bad": "While the meeting, I took notes", "good": "During the meeting, I took notes", "why": "While вводит придаточное с глаголом; перед существительным meeting нужен during."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I haven't seen him ___ years.", "options": ["for", "during", "while"], "a": 0, "why": "Длительность с перфектом — for (или in в отрицании)."},
+  {"type": "choice", "q": "___ the film, my phone rang.", "options": ["During", "For", "While"], "a": 0, "why": "Перед существительным-событием ставится during."},
+  {"type": "choice", "q": "___ I was cooking, the power went out.", "options": ["While", "During", "For"], "a": 0, "why": "Нужен союз с подлежащим и глаголом — while."},
+  {"type": "choice", "q": "We stayed there ___ a week.", "options": ["for", "during", "while"], "a": 0, "why": "Указание длительности — for a week."},
+  {"type": "gap", "q": "She fell asleep ___ (hint: во время лекции).", "a": ["during the lecture"], "why": "Фон события — существительное lecture, поэтому during."},
+  {"type": "gap", "q": "I've been learning English ___ (hint: уже пять лет).", "a": ["for five years"], "why": "Длительность с перфектом — for five years."},
+  {"type": "gap", "q": "___ (hint: пока я шёл домой) it started to snow.", "a": ["While I was walking home", "While I walked home"], "why": "Придаточное с подлежащим и глаголом — while."},
+  {"type": "translate", "q": "Мы ждали автобус двадцать минут.", "a": ["we waited for the bus for twenty minutes", "we waited for the bus for 20 minutes"], "why": "Длительность ожидания — for twenty minutes."},
+  {"type": "translate", "q": "Во время урока нельзя пользоваться телефоном.", "a": ["during the lesson you must not use your phone", "you must not use your phone during the lesson"], "why": "Фон события — during the lesson."}
+ ]
+}

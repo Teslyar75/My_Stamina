@@ -1,0 +1,79 @@
+{
+ "n": 228,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "in case: на всякий случай",
+ "en": "in case",
+ "summary": "Конструкция in case выражает предосторожность: делаем что-то заранее, чтобы быть готовым, если случится что-то нежелательное. После in case стоит настоящее время, даже если речь о будущем, а will не используется.",
+ "can_do": [
+  "Использовать in case + present для действий предосторожности в будущем.",
+  "Различать in case (предосторожность) и if (условие).",
+  "Строить формальные фразы с in case of + существительное.",
+  "Говорить just in case и in case I forget без лишних слов."
+ ],
+ "theory": [
+  {
+   "h": "Суть in case — заранее, на всякий случай",
+   "p": "In case означает «на случай, если» и показывает, что мы действуем сейчас, чтобы избежать проблемы позже. В русском — «на всякий случай», «если вдруг». Главное правило: после in case глагол в настоящем времени, даже если смысл будущий. Will не ставим.",
+   "formula": "Take an umbrella in case it rains. · I'll leave the key in case you arrive early."
+  },
+  {
+   "h": "In case vs if: предосторожность или условие",
+   "p": "In case — действуем заранее, независимо от исхода. If — действие только при условии. Сравните: I'll buy wine in case they come (куплю заранее) и I'll buy wine if they come (куплю, только если придут). В русском разница часто теряется, в английской — критична.",
+   "formula": "in case it rains = на случай дождя · if it rains = если пойдёт дождь"
+  },
+  {
+   "h": "In case of + существительное — официальный стиль",
+   "p": "В инструкциях и табличках используют in case of + существительное: In case of fire, break the glass. В обычной речи лучше полный придаточный: in case there is a fire. После of — только существительное или герундий.",
+   "table": {
+    "head": ["Форма", "Стиль", "Пример"],
+    "rows": [
+     ["in case + придаточное", "нейтральный", "in case it rains"],
+     ["in case of + существительное", "официальный", "in case of rain"],
+     ["in case of + герундий", "официальный", "in case of fire"]
+    ]
+   }
+  },
+  {
+   "h": "Just in case и in case I forget — устойчивые фразы",
+   "p": "Just in case — самостоятельная фраза: I'll take a sandwich, just in case. In case I forget / in case you didn't know — вводные конструкции для вежливости. После них настоящее время, will не ставится.",
+   "formula": "I'll call him now, in case I forget later. · Just in case, here's my number."
+  },
+  {
+   "h": "In case с прошедшим — логика та же",
+   "p": "Когда главное предложение в прошедшем, в придаточном past simple или past perfect: He took a torch in case it got dark. После in case не ставим would — типичная ошибка по аналогии с условными.",
+   "formula": "She wrote it down in case she forgot. · We left early in case there was traffic."
+  },
+  {
+   "h": "Порядок слов и запятые",
+   "p": "Придаточное с in case может быть в начале или в конце. Запятая нужна, если in case начинает предложение: In case it rains, take a coat. В конце запятая обычно не нужна: Take a coat in case it rains. Смысл не меняется.",
+   "formula": "In case you need help, call me. · Call me in case you need help."
+  }
+ ],
+ "examples": [
+  {"en": "Take a coat in case it gets cold.", "ru": "Возьми пальто на случай, если станет холодно."},
+  {"en": "I'll charge my phone in case the battery dies.", "ru": "Заряжу телефон, чтобы не садилась батарея."},
+  {"en": "In case of emergency, press the red button.", "ru": "В случае чрезвычайной ситуации нажмите красную кнопку."},
+  {"en": "I'll write the address down, just in case.", "ru": "Запишу адрес, просто на всякий случай."},
+  {"en": "She left the key under the mat in case I arrived early.", "ru": "Она оставила ключ под ковриком на случай, если я приеду рано."},
+  {"en": "In case you didn't know, the shop closes at 8.", "ru": "На случай, если вы не знали, магазин закрывается в 8."},
+  {"en": "We bought extra food in case guests stayed for dinner.", "ru": "Купили еды запасом на случай, если гости останутся на ужин."}
+ ],
+ "traps": [
+  {"bad": "I'll take an umbrella in case it will rain.", "good": "I'll take an umbrella in case it rains.", "why": "После in case не ставим will — только настоящее время."},
+  {"bad": "I'll buy wine if they come.", "good": "I'll buy wine in case they come.", "why": "If — условие (куплю только если придут), in case — предосторожность (куплю заранее)."},
+  {"bad": "In case of raining, take a coat.", "good": "In case it rains, take a coat.", "why": "In case of + существительное (rain), но не герундий без необходимости; лучше полный придаточный."},
+  {"bad": "He took a map in case he would get lost.", "good": "He took a map in case he got lost.", "why": "В прошедшем после in case — past simple, не would."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Take your passport ___ you need to show ID.", "options": ["in case", "if", "when"], "a": 0, "why": "Предосторожность — возьми заранее, на случай необходимости."},
+  {"type": "choice", "q": "I'll cook extra pasta ___ my brother brings friends.", "options": ["in case", "if", "unless"], "a": 0, "why": "Готовлю заранее, не зная, приведёт ли он друзей — in case."},
+  {"type": "choice", "q": "___ fire, use the emergency exit.", "options": ["In case of", "In case", "If"], "a": 0, "why": "Официальная инструкция: in case of + существительное."},
+  {"type": "choice", "q": "She wrote a note ___ she forgot the details.", "options": ["in case", "if", "because"], "a": 0, "why": "Написала заранее, чтобы не забыть — предосторожность."},
+  {"type": "gap", "q": "I'll leave the door unlocked ___ (case / you / come) home late.", "a": ["in case you come", "in case you come home late"], "why": "In case + настоящее время для будущего действия."},
+  {"type": "gap", "q": "___ (In case of / emergency), call 999.", "a": ["In case of emergency"], "why": "Официальная форма: in case of + существительное."},
+  {"type": "gap", "q": "He took a torch ___ (in case / it / get) dark.", "a": ["in case it got", "in case it got dark"], "why": "Главное предложение в прошедшем, поэтому в придаточном past simple."},
+  {"type": "translate", "q": "Возьми зонт на случай дождя.", "a": ["take an umbrella in case it rains", "take an umbrella in case of rain"], "why": "Две возможности: придаточное или официальная форма с of."},
+  {"type": "translate", "q": "Я позвоню ему сейчас, чтобы не забыть позже.", "a": ["I'll call him now in case I forget later", "I'll call him now, just in case"], "why": "In case I forget later — стандартная фраза предосторожности."}
+ ]
+}

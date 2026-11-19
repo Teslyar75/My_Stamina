@@ -1,0 +1,79 @@
+{
+ "n": 232,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "as if и as though",
+ "en": "as if / as though",
+ "summary": "Конструкции as if и as though выражают сравнение «как будто»: после них ставят прошедшее время для нереального настоящего и прошедшее совершенное для нереального прошлого.",
+ "can_do": [
+  "Использовать as if / as though для нереального сравнения в настоящем и прошлом.",
+  "Правильно выбирать время: Past Simple для настоящего, Past Perfect для прошлого.",
+  "Строить фразы с глаголами восприятия: look, feel, sound, seem as if.",
+  "Избегать ошибки с was/were: в формальном стиле лучше were."
+ ],
+ "theory": [
+  {
+   "h": "Что означают as if и as though",
+   "p": "Оба союза переводятся как «как будто» и вводят сравнение, не соответствующее действительности. После них время сдвигается назад: настоящее становится прошедшим, прошедшее — прошедшим совершенным. В русском то же: «Он говорит, будто знает всё».",
+   "formula": "He talks as if he knew everything. · She acts as though she were rich."
+  },
+  {
+   "h": "Нереальное настоящее: Past Simple",
+   "p": "Для сравнения с настоящим или будущим ставится Past Simple. Это не прошлое действие, а маркер нереальности: He behaves as if he owned the place (ведёт себя так, будто ему принадлежит место — но не принадлежит). В русском тоже прошедшее.",
+   "formula": "He behaves as if he owned the place. · She looks as if she knew the answer."
+  },
+  {
+   "h": "Нереальное прошлое: Past Perfect",
+   "p": "Если сравнение касается прошедшей ситуации, используется Past Perfect: He talked as if he had known the secret (говорил так, будто знал секрет — но не знал). Время сдвигается ещё дальше назад. Ошибка — оставить Past Simple вместо had known.",
+   "formula": "He talked as if he had known. · She cried as though she had lost everything."
+  },
+  {
+   "h": "Глаголы восприятия: look, feel, sound, seem",
+   "p": "Часто as if / as though идут после look, feel, sound, seem, taste, smell. Тогда конструкция описывает впечатление: You look as if you’ve seen a ghost. После look as if можно поставить Present Perfect для результата сейчас, но чаще Past Simple для нереального.",
+   "formula": "You look as if you’ve seen a ghost. · It sounds as though it’s raining. · I feel as if I were flying."
+  },
+  {
+   "h": "Was или were: формальное и разговорное",
+   "p": "В формальном английском для всех лиц используют were: I feel as if I were dreaming. В разговорной допускается was для I/he/she/it: He acts as if he was the boss. Оба варианта возможны, но were правильнее в письменной речи и экзаменах.",
+   "table": {
+    "head": ["Стиль", "Пример", "Перевод"],
+    "rows": [
+     ["Формальный", "I feel as if I were flying.", "Мне кажется, будто я лечу."],
+     ["Разговорный", "He acts as if he was the boss.", "Он ведёт себя так, будто он босс."],
+     ["Формальный", "She talks as though she were queen.", "Она говорит, будто она королева."]
+    ]
+   }
+  },
+  {
+   "h": "As if / as though vs like",
+   "p": "Like тоже значит «как», но требует существительное: He runs like a cheetah. As if / as though вводят полное предложение с подлежащим и глаголом: He runs as if he were a cheetah. Не смешивайте: *like he was tired — неправильно, нужно as if he was tired.",
+   "formula": "He runs like a cheetah. · He runs as if he were a cheetah. · She looks like a model. · She looks as if she is a model."
+  }
+ ],
+ "examples": [
+  {"en": "He talks as if he knew everything.", "ru": "Он говорит так, будто знает всё."},
+  {"en": "She looked as though she had seen a ghost.", "ru": "Она выглядела так, будто увидела привидение."},
+  {"en": "It sounds as if it's raining.", "ru": "Звучит так, будто идёт дождь."},
+  {"en": "I feel as if I were flying.", "ru": "Мне кажется, будто я лечу."},
+  {"en": "He acts as if he was the boss.", "ru": "Он ведёт себя так, будто он босс."},
+  {"en": "You look as if you haven't slept.", "ru": "Ты выглядишь так, будто не спал."},
+  {"en": "They talked as though they had known each other for years.", "ru": "Они говорили так, будто знали друг друга годами."}
+ ],
+ "traps": [
+  {"bad": "He acts as if he is the boss.", "good": "He acts as if he were the boss.", "why": "После as if для нереального настоящего нужно Past Simple (were), а не Present Simple."},
+  {"bad": "She talked as if she knew the truth.", "good": "She talked as if she had known the truth.", "why": "Для нереального прошлого требуется Past Perfect (had known), а не Past Simple."},
+  {"bad": "It looks like it will rain.", "good": "It looks as if it will rain.", "why": "Like не вводит придаточное с глаголом; перед предложением нужен as if / as though."},
+  {"bad": "I feel as if I was flying.", "good": "I feel as if I were flying.", "why": "В формальном стиле для всех лиц используется were; was допустим только в разговорной речи."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "He talks ___ he knew everything.", "options": ["as if", "like", "as"], "a": 0, "why": "После as if следует придаточное с Past Simple для нереального настоящего."},
+  {"type": "choice", "q": "She looked ___ she had seen a ghost.", "options": ["as though", "like", "as"], "a": 0, "why": "Для нереального прошлого нужен as if / as though + Past Perfect; like не вводит придаточное."},
+  {"type": "choice", "q": "It sounds ___ it's raining.", "options": ["as if", "like", "as"], "a": 0, "why": "Глагол звучания sound требует as if / as though перед предложением."},
+  {"type": "choice", "q": "He behaves ___ a child.", "options": ["like", "as if", "as though"], "a": 0, "why": "Перед существительной фразой используется like, а не as if / as though."},
+  {"type": "gap", "q": "He behaves as if he ___ (know) everything. (unreal present)", "a": ["knew"], "why": "Нереальное настоящее: Past Simple knew."},
+  {"type": "gap", "q": "She cried as though she ___ (lose) everything. (unreal past)", "a": ["had lost"], "why": "Нереальное прошлое: Past Perfect had lost."},
+  {"type": "gap", "q": "They talked as if they ___ (be) friends for years. (unreal past)", "a": ["had been"], "why": "Нереальное прошлое: Past Perfect had been."},
+  {"type": "translate", "q": "Он говорит так, будто знает всё.", "a": ["he talks as if he knew everything"], "why": "Нереальное настоящее требует Past Simple: knew."},
+  {"type": "translate", "q": "Она выглядела так, будто увидела привидение.", "a": ["she looked as if she had seen a ghost", "she looked as though she had seen a ghost"], "why": "Нереальное прошлое: Past Perfect had seen."}
+ ]
+}

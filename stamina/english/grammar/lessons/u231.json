@@ -1,0 +1,81 @@
+{
+ "n": 231,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "like и as",
+ "en": "like and as",
+ "summary": "Like — предлог «как/похоже на» (like me), as — союз «как» (as I do) или предлог роли «в качестве» (as a teacher). Глаголы восприятия требуют like, устойчивые фразы — as.",
+ "can_do": [
+  "Различать like (предлог сравнения) и as (союз или предлог роли).",
+  "Использовать look like, sound like, feel like для описания ощущений.",
+  "Правильно строить фразы the same as, such as, as usual.",
+  "Не путать as me и like me — в значении «похоже на меня» только like me."
+ ],
+ "theory": [
+  {
+   "h": "Like — предлог, as — союз или предлог роли",
+   "p": "Like перед существительным — «похоже на»: runs like a cheetah. As перед существительным — роль: works as a chef. As также вводит придаточное с глаголом: do as I say. В русском оба «как», но грамматика разная.",
+   "formula": "like a bird · like me · as a teacher · as I do"
+  },
+  {
+   "h": "Глаголы восприятия: look like, sound like...",
+   "p": "После look, sound, feel, smell, taste ставится like + существительное: you look like your father, it sounds like rain. Нельзя ставить as здесь. В разговорной речи like часто заменяет as if: it looks like it will rain (формально — as if).",
+   "formula": "look like a model · sound like a plan · feel like silk · smell like smoke"
+  },
+  {
+   "h": "As в значении роли и функции",
+   "p": "As + существительное = «в качестве»: I used a book as a pillow. После as можно ставить -ing: known as being strict. Like здесь невозможен — like a pillow означало бы «похоже на подушку», а не «использовал как подушку».",
+   "formula": "work as a guide · use as a weapon · known as being honest"
+  },
+  {
+   "h": "Фиксированные фразы: the same as, such as, as usual",
+   "p": "The same as — «то же, что»: your phone is the same as mine. Such as — «такие как» для примеров: fruits such as apples. As usual / as always / as expected — в начале или конце: as usual, he was late. Запятая после as usual не обязательна.",
+   "formula": "the same as mine · such as apples · as usual · as expected"
+  },
+  {
+   "h": "As if / as though — только союз",
+   "p": "As if и as though вводят полное придаточное: he talks as if he knows everything. После них часто стоит прошедшее для нереальности: she acts as if she were the boss. Like в таком контексте — разговорный вариант, в формальном пишем as if.",
+   "formula": "as if he knew · as though it were · like he knows (разг.)"
+  },
+  {
+   "h": "Таблица: выбор между like и as",
+   "p": "Краткая шпаргалка: like для сравнения, as для роли и придаточных, such as для примеров, the same as для тождества.",
+   "table": {
+    "head": ["Контекст", "Выбор", "Пример"],
+    "rows": [
+     ["Сравнение (похоже на)", "like", "runs like the wind"],
+     ["Роль / функция", "as", "works as a nurse"],
+     ["Полное придаточное", "as / as if", "do as I do"],
+     ["Примеры (такие как)", "such as", "cities such as Paris"],
+     ["То же самое", "the same as", "the same as yesterday"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "He swims like a fish.", "ru": "Он плавает как рыба."},
+  {"en": "She works as a doctor.", "ru": "Она работает врачом."},
+  {"en": "You look like your mother.", "ru": "Ты выглядишь как твоя мать."},
+  {"en": "Do as I say, not as I do.", "ru": "Делай как я говорю, а не как я делаю."},
+  {"en": "Fruits such as oranges are healthy.", "ru": "Фрукты, такие как апельсины, полезны."},
+  {"en": "It sounds like a good idea.", "ru": "Это звучит как хорошая идея."},
+  {"en": "As usual, the train was late.", "ru": "Как обычно, поезд опоздал."}
+ ],
+ "traps": [
+  {"bad": "He works like a doctor.", "good": "He works as a doctor.", "why": "Like означает «похоже на», а роль выражается через as."},
+  {"bad": "As me, he likes jazz.", "good": "Like me, he likes jazz.", "why": "В значении «как я / похоже на меня» перед местоимением только like."},
+  {"bad": "It looks as a nice day.", "good": "It looks like a nice day.", "why": "После глаголов восприятия (look, sound, feel) всегда like + существительное."},
+  {"bad": "He acts like he is the boss.", "good": "He acts as if he is the boss.", "why": "Перед полным придаточным (с подлежащим и глаголом) формально нужен as if / as though."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She sings ___ an angel.", "options": ["like", "as", "as if"], "a": 0, "why": "Сравнение «похоже на» — like + существительное."},
+  {"type": "choice", "q": "He worked ___ a waiter last summer.", "options": ["like", "as", "as if"], "a": 1, "why": "Роль/профессия — as + существительное."},
+  {"type": "choice", "q": "It smells ___ smoke in here.", "options": ["like", "as", "as if"], "a": 0, "why": "После smell (глагол восприятия) ставится like."},
+  {"type": "choice", "q": "___ usual, he forgot his keys.", "options": ["Like", "As", "Same"], "a": 1, "why": "Устойчивое выражение as usual / as always."},
+  {"type": "gap", "q": "Your car is the same ___ mine. (hint: preposition)", "a": ["as"], "why": "The same as — фиксированная фраза «то же, что»."},
+  {"type": "gap", "q": "He talks ___ he knew everything. (hint: conjunction)", "a": ["as if", "as though"], "why": "Перед придаточным с подлежащим и глаголом — as if / as though."},
+  {"type": "gap", "q": "We need someone ___ you. (hint: preposition meaning similar to)", "a": ["like"], "why": "Like = похоже на / такой как. As you означало бы «в твоей роли»."},
+  {"type": "translate", "q": "Он ведёт себя так, будто он начальник.", "a": ["he behaves as if he is the boss", "he behaves as though he is the boss", "he acts as if he is the boss"], "why": "As if / as though + придаточное. Like в формальном стиле нежелателен."},
+  {"type": "translate", "q": "Она выглядит как актриса.", "a": ["she looks like an actress"], "why": "Look like + существительное. As an actress — «в роли актрисы»."}
+ ]
+}

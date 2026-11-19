@@ -1,0 +1,71 @@
+{
+ "n": 227,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "although и despite",
+ "en": "although / though / even though, in spite of / despite",
+ "summary": "Although и despite выражают уступку, но требуют разной грамматики: although + подлежащее и глагол, despite + существительное, -ing или the fact that.",
+ "can_do": [
+  "Использовать although / though / even though с полным предложением.",
+  "Строить фразы с in spite of / despite + существительное или герундием.",
+  "Добавлять the fact that после despite / in spite of, чтобы присоединить придаточное.",
+  "Избегать ошибки despite of и путать порядок слов с though в конце."
+ ],
+ "theory": [
+  {
+   "h": "Although, though, even though + предложение",
+   "p": "Эти союзы вводят придаточное уступки с собственным подлежащим и глаголом: Although it rained, we went out. Though более разговорный, even though усиливает противопоставление. Though может стоять в конце предложения как наречие: We went out, though.",
+   "formula": "Although it rained, we went out. · Though he was tired, he finished. · We went out, though."
+  },
+  {
+   "h": "In spite of / despite + существительное или -ing",
+   "p": "Это предлоги, после которых стоит существительное, местоимение или герундий, но не полное предложение. Despite никогда не используется с of: despite the rain, а не despite of the rain. In spite of чуть менее формален.",
+   "formula": "In spite of the rain, we went out. · Despite being tired, he finished. · Despite his age, he runs fast."
+  },
+  {
+   "h": "Despite / in spite of + the fact that + предложение",
+   "p": "Чтобы присоединить придаточное с глаголом после этих предлогов, добавляют the fact that: Despite the fact that it rained, we went out. Конструкция тяжелее, но иногда неизбежна, когда нужно сохранить предлог.",
+   "formula": "Despite the fact that it rained, we went out. · In spite of the fact that he was tired, he finished."
+  },
+  {
+   "h": "Порядок слов и запятые",
+   "p": "Придаточное с although может стоять перед главным предложением (тогда нужна запятая) или после него (запятая не обязательна). Though в конце всегда отделяется запятой: It was late. We continued, though.",
+   "formula": "Although it was late, we continued. · We continued, although it was late. · It was late. We continued, though."
+  },
+  {
+   "h": "Разница в стиле и акценте",
+   "p": "Although нейтрален, though — разговорнее, even though — подчёркивает неожиданность результата. Despite / in spite of звучат формальнее и часто предпочтительнее в письменной речи. Выбор зависит от регистра и того, хотите ли вы акцентировать противопоставление.",
+   "formula": "Even though she apologised, he left. · Despite her apology, he left. · In spite of the delay, we arrived on time."
+  },
+  {
+   "h": "Типичные ошибки: despite of, although + -ing",
+   "p": "Главные ловушки: despite of (неправильно), although + герундий без подлежащего (неправильно: Although raining → Although it was raining). Также нельзя смешивать структуры: Despite he was tired (нужно Despite the fact that he was tired или Although he was tired).",
+   "formula": "Despite the rain (not despite of). · Although it was raining (not Although raining). · Despite the fact that he was tired (not Despite he was tired)."
+  }
+ ],
+ "examples": [
+  {"en": "Although it was raining, we played football.", "ru": "Хотя шёл дождь, мы играли в футбол."},
+  {"en": "We played football, though.", "ru": "Мы играли в футбол, тем не менее."},
+  {"en": "Even though she was ill, she came to the meeting.", "ru": "Даже несмотря на то, что она была больна, она пришла на собрание."},
+  {"en": "Despite the rain, we played football.", "ru": "Несмотря на дождь, мы играли в футбол."},
+  {"en": "In spite of feeling tired, he finished the marathon.", "ru": "Вопреки усталости, он финишировал на марафоне."},
+  {"en": "Despite the fact that he had no experience, he got the job.", "ru": "Несмотря на то, что у него не было опыта, он получил работу."}
+ ],
+ "traps": [
+  {"bad": "Despite of the rain, we went out.", "good": "Despite the rain, we went out.", "why": "Despite — предлог, of после него не ставится."},
+  {"bad": "Although being tired, he continued.", "good": "Although he was tired, he continued.", "why": "After although нужно полное предложение с подлежащим и глаголом, а не герундий."},
+  {"bad": "Despite he was tired, he continued.", "good": "Despite the fact that he was tired, he continued.", "why": "После despite нельзя ставить придаточное напрямую — нужен the fact that."},
+  {"bad": "We didn't win, although of our effort.", "good": "We didn't win, despite our effort.", "why": "Although не работает с существительным; для существительного используйте despite / in spite of."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ it was cold, we went swimming.", "options": ["Although", "Despite", "In spite of"], "a": 0, "why": "Although вводит придаточное с подлежащим и глаголом."},
+  {"type": "choice", "q": "We went swimming ___ the cold weather.", "options": ["although", "despite", "though"], "a": 1, "why": "После despite / in spite of стоит существительное (the cold weather)."},
+  {"type": "choice", "q": "___ being tired, she finished the race.", "options": ["Although", "Despite", "Though"], "a": 1, "why": "Despite + герундий (being tired) — правильная конструкция."},
+  {"type": "choice", "q": "He didn't get the job ___ he had all the qualifications.", "options": ["although", "despite", "in spite of"], "a": 0, "why": "Although вводит придаточное (he had all the qualifications)."},
+  {"type": "gap", "q": "___ (хотя) it rained heavily, we enjoyed the walk.", "a": ["Although", "Though", "Even though"], "why": "Нужен союз, вводящий придаточное уступки."},
+  {"type": "gap", "q": "We enjoyed the walk ___ (вопреки) the heavy rain.", "a": ["despite", "in spite of"], "why": "Предлог с существительным: despite / in spite of the heavy rain."},
+  {"type": "gap", "q": "She passed the exam ___ (несмотря на то, что) she didn't study much.", "a": ["despite the fact that", "in spite of the fact that", "although"], "why": "После despite / in spite of перед придаточным нужен the fact that; although тоже возможен, но меняет структуру."},
+  {"type": "translate", "q": "Хотя было поздно, мы продолжили работать.", "a": ["Although it was late, we continued working", "Though it was late, we continued working", "Even though it was late, we continued working"], "why": "Although / though / even though + придаточное с подлежащим и глаголом."},
+  {"type": "translate", "q": "Несмотря на дождь, мы пошли гулять.", "a": ["Despite the rain, we went for a walk", "In spite of the rain, we went for a walk"], "why": "Despite / in spite of + существительное (the rain)."}
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "n": 230,
+ "level": "B2",
+ "module": "b-conj",
+ "title": "as: когда, потому что, по мере того как",
+ "en": "as",
+ "summary": "Союз as связывает части предложения и может означать «когда», «потому что» или «по мере того как». Выбор смысла зависит от контекста и порядка слов.",
+ "can_do": [
+  "Использовать as вместо when для одновременных действий.",
+  "Выражать причину через as, когда она очевидна из контекста.",
+  "Строить фразы вида «по мере того как» с as + глагол.",
+  "Различать as и because, а также as и like."
+ ],
+ "theory": [
+  {
+   "h": "As в значении «когда»",
+   "p": "Когда as означает «когда», оно объединяет два действия, происходящие одновременно. Часто вторая часть стоит в Past Continuous: As I was leaving, the phone rang. В русском это соответствует «в тот момент, как» или просто «когда». As подчёркивает параллельность процессов.",
+   "formula": "As I was walking, it started to rain. · The phone rang as I was leaving."
+  },
+  {
+   "h": "As в значении «потому что»",
+   "p": "В значении «потому что» as вводит причину, которая уже известна слушателю или очевидна из ситуации. Предложение с as часто стоит в начале: As it was raining, we stayed at home. Это менее категорично, чем because, и звучит более естественно в живой речи.",
+   "formula": "As you're here, you can help. · As it was late, we decided to stop."
+  },
+  {
+   "h": "As в значении «по мере того как»",
+   "p": "Смысл «по мере того как» выражает постепенное изменение: одно действие или состояние развивается параллельно с другим. Глагол после as обычно в Present или Past Simple: As you get older, you learn more. As the night fell, it got colder. Русский аналог — «чем больше..., тем больше...».",
+   "formula": "As you practise more, you improve. · As the days passed, the situation improved."
+  },
+  {
+   "h": "As vs because",
+   "p": "Because ставит акцент на причине и отвечает на вопрос «почему?». As используется, когда причина известна или не является главной новостью. Because чаще в конце предложения, as — в начале. Нельзя сказать: I'm tired as I worked hard (новая информация) — нужно because.",
+   "table": {
+    "head": ["Союз", "Фокус", "Позиция", "Пример"],
+    "rows": [
+     ["because", "новая причина", "обычно в конце", "I stayed home because it rained."],
+     ["as", "известная причина", "часто в начале", "As it was raining, I stayed home."]
+    ]
+   }
+  },
+  {
+   "h": "As vs like",
+   "p": "Like — предлог, после него только существительное/местоимение: He works like a dog. As — союз (перед глаголом) или предлог роли: He works as a teacher. Ошибка: *He works like a teacher (он работает похоже на учителя). В значении «как будто» используется as if / as though.",
+   "table": {
+    "head": ["Слово", "Что после", "Смысл", "Пример"],
+    "rows": [
+     ["like", "сущ./местоим.", "похоже на", "She sings like a bird."],
+     ["as", "глагол (союз)", "так как", "Do as I say."],
+     ["as", "сущ. (предлог)", "в роли", "He works as a driver."]
+    ]
+   }
+  },
+  {
+   "h": "Порядок слов и запятые",
+   "p": "Если предложение с as стоит в начале, после него ставится запятая: As I arrived, the meeting started. Если as в середине или в конце, запятая обычно не нужна: The meeting started as I arrived. При значении «по мере того как» запятая также ставится перед as, если оно начинает вторую часть.",
+   "formula": "As it was late, we left. · We left as it was late. · As you grow older, you understand more."
+  }
+ ],
+ "examples": [
+  {"en": "As I was walking down the street, I saw an old friend.", "ru": "Когда я шёл по улице, я встретил старого друга."},
+  {"en": "As it was getting late, we decided to go home.", "ru": "Поскольку становилось поздно, мы решили пойти домой."},
+  {"en": "As you practise more, your English improves.", "ru": "По мере того как вы практикуетесь больше, ваш английский улучшается."},
+  {"en": "As we didn't know the way, we asked a policeman.", "ru": "Так как мы не знали дорогу, мы спросили полицейского."},
+  {"en": "The phone rang as I was leaving the house.", "ru": "Телефон зазвонил, когда я уходил из дома."},
+  {"en": "As the days passed, the situation improved.", "ru": "По мере прохождения дней ситуация улучшалась."},
+  {"en": "He works as a teacher, not like a teacher.", "ru": "Он работает учителем, а не похоже на учителя."}
+ ],
+ "traps": [
+  {"bad": "As I arrived, he left.", "good": "When I arrived, he left.", "why": "As для одновременных длительных действий, when — для моментов и последовательности."},
+  {"bad": "I'm tired as I worked hard.", "good": "I'm tired because I worked hard.", "why": "Because для новой информации, as — для известной или очевидной причины."},
+  {"bad": "He works like a teacher.", "good": "He works as a teacher.", "why": "Роль (кем работает) — as, like означает «похоже на»."},
+  {"bad": "As it was raining so we stayed home.", "good": "As it was raining, we stayed home.", "why": "В английском не сочетают as (причина) и so (следствие) в одном предложении."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "___ I was walking home, it started to rain.", "options": ["As", "Because", "Like"], "a": 0, "why": "As для одновременных действий: «когда/в тот момент как»."},
+  {"type": "choice", "q": "___ you are here, you can help me.", "options": ["As", "When", "Like"], "a": 0, "why": "As в значении «поскольку» в начале предложения."},
+  {"type": "choice", "q": "Your English improves ___ you practise more.", "options": ["as", "because", "like"], "a": 0, "why": "По мере того как — as."},
+  {"type": "choice", "q": "He works ___ a doctor.", "options": ["as", "like", "as if"], "a": 0, "why": "Роль (кем работает) — as."},
+  {"type": "gap", "q": "___ (as) it was late, the shop was closed.", "a": ["As"], "why": "Причина в начале предложения: As it was late..."},
+  {"type": "gap", "q": "The noise grew louder ___ (as) we approached.", "a": ["as"], "why": "По мере приближения — as."},
+  {"type": "gap", "q": "___ (As) you know, I'm leaving tomorrow.", "a": ["As"], "why": "Известный факт: As you know..."},
+  {"type": "translate", "q": "Когда я вошёл, телефон зазвонил.", "a": ["As I entered, the phone rang", "The phone rang as I entered"], "why": "As для одновременных действий."},
+  {"type": "translate", "q": "Поскольку дождь шёл, мы остались дома.", "a": ["As it was raining, we stayed at home", "We stayed at home as it was raining"], "why": "Причина, известная слушателю: As it was raining..."}
+ ]
+}
