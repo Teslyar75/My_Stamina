@@ -1,0 +1,82 @@
+{
+ "n": 236,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "on time и in time",
+ "en": "on time / in time, at the end / in the end",
+ "summary": "Разбор пар on time — in time и at the end — in the end: как сказать «по расписанию», «успеть к моменту», «в конце чего-то» и «в итоге».",
+ "can_do": [
+  "Различать on time (по плану) и in time (успеть перед дедлайном).",
+  "Правильно использовать in time for / to do something.",
+  "Выбирать между at the end of + существительное и in the end (наконец).",
+  "Не путать at the beginning of и in the beginning."
+ ],
+ "theory": [
+  {
+   "h": "on time — точно по расписанию",
+   "p": "Предлог on time означает «вовремя», «согласно плану». Если поезд уходит в 10:00 и вы садитесь на него в 10:00 — вы on time. В русском это часто «вовремя» или «своевременно», но английский подчёркивает точное совпадение с установленным временем.",
+   "formula": "The train arrived on time. · The meeting started on time. · Be on time for the interview."
+  },
+  {
+   "h": "in time — успеть к нужному моменту",
+   "p": "In time — это «успеть к моменту», часто с подтекстом «перед дедлайном» или «не опоздав». Конструкции: in time for something (успеть на что-то) и in time to do something (успеть сделать). Пример: We arrived in time for the start — мы пришли к началу.",
+   "formula": "in time for the film · in time to catch the bus · just in time · in good time"
+  },
+  {
+   "h": "at the end of — в конце чего-то (с существительным)",
+   "p": "At the end of требует существительного: at the end of the film, at the end of the street. Это конкретная точка в пространстве или времени. В русском «в конце фильма», «в конце улицы». Не путать с in the end, где of нет.",
+   "formula": "at the end of the week · at the end of the road · at the end of the concert"
+  },
+  {
+   "h": "in the end — в итоге, наконец",
+   "p": "In the end = «в итоге», «наконец», «по итогам». Никакого существительного после не ставится. Отвечает на вопрос «как всё закончилось?». Пример: In the end we decided to stay — в итоге мы решили остаться. Часто противопоставляется началу: at first … in the end.",
+   "formula": "In the end he agreed. · It all worked out in the end. · In the end, it doesn't matter."
+  },
+  {
+   "h": "at the beginning of / in the beginning",
+   "p": "At the beginning of + существительное: at the beginning of the lesson, at the beginning of the year. In the beginning — «сначала», «первоначально», часто противопоставляется позже: In the beginning I didn't like it, but later… Реже используется, чем at the beginning of.",
+   "formula": "at the beginning of the course · in the beginning · at first … in the end"
+  },
+  {
+   "h": "Сравнительная таблица пар",
+   "p": "Краткая шпаргалка для быстрого выбора: on time — по часам, in time — к событию; at the end of — точка с of, in the end — итог без of.",
+   "table": {
+    "head": ["Выражение", "Смысл", "После чего стоит"],
+    "rows": [
+     ["on time", "по расписанию", "—"],
+     ["in time", "успеть к моменту", "for noun / to verb"],
+     ["at the end of", "в конце чего-то", "существительное"],
+     ["in the end", "в итоге, наконец", "—"],
+     ["at the beginning of", "в начале чего-то", "существительное"],
+     ["in the beginning", "сначала, первоначально", "—"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "The train arrived on time.", "ru": "Поезд прибыл вовремя."},
+  {"en": "We got to the station in time for the departure.", "ru": "Мы добрались до станции к отбытию поезда."},
+  {"en": "At the end of the movie everyone clapped.", "ru": "В конце фильма все аплодировали."},
+  {"en": "In the end we found the keys.", "ru": "В итоге мы нашли ключи."},
+  {"en": "At the beginning of the course it was hard.", "ru": "В начале курса было трудно."},
+  {"en": "I woke up just in time to catch the bus.", "ru": "Я проснулся как раз вовремя, чтобы поймать автобус."},
+  {"en": "She submitted the report in time.", "ru": "Она сдала отчёт вовремя (успела к дедлайну)."}
+ ],
+ "traps": [
+  {"bad": "The meeting started in time.", "good": "The meeting started on time.", "why": "in time — успеть к моменту, on time — по расписанию. Собрание началось по плану."},
+  {"bad": "At the end we went home.", "good": "In the end we went home.", "why": "at the end требует of + существительное; «в итоге» — только in the end."},
+  {"bad": "In the beginning of the film.", "good": "At the beginning of the film.", "why": "С существительным после только at the beginning of."},
+  {"bad": "We arrived on time for the party.", "good": "We arrived in time for the party.", "why": "Для события с for используется in time (успеть на мероприятие)."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The bus leaves at 8:00. It left ___ .", "options": ["on time", "in time", "at time"], "a": 0, "why": "По расписанию — on time."},
+  {"type": "choice", "q": "We hurried and reached the airport ___ for check-in.", "options": ["on time", "in time", "at the end"], "a": 1, "why": "Успеть на регистрацию — in time for."},
+  {"type": "choice", "q": "___ the concert the singer thanked the audience.", "options": ["At the end of", "In the end of", "In end"], "a": 0, "why": "at the end of + существительное."},
+  {"type": "choice", "q": "It was difficult at first, but ___ everything worked out.", "options": ["in the end", "at the end", "on the end"], "a": 0, "why": "В итоге — in the end."},
+  {"type": "gap", "q": "The film starts at 7 pm. Please be ___ . (hint: punctual)", "a": ["on time"], "why": "По расписанию — on time."},
+  {"type": "gap", "q": "We left early to arrive ___ for the meeting. (hint: not late)", "a": ["in time"], "why": "Успеть к встрече — in time for."},
+  {"type": "gap", "q": "___ the book the hero returns home. (hint: final pages)", "a": ["At the end of"], "why": "Конструкция at the end of требует существительное после себя."},
+  {"type": "translate", "q": "Мы пришли вовремя на урок.", "a": ["we arrived on time for the lesson", "we came on time for the lesson"], "why": "on time для расписания."},
+  {"type": "translate", "q": "В итоге он согласился.", "a": ["in the end he agreed", "he agreed in the end"], "why": "in the end = в итоге."}
+ ]
+}

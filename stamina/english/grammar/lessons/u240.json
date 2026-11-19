@@ -1,0 +1,90 @@
+{
+ "n": 240,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "to, at, in, into: движение",
+ "en": "to/at/in/into",
+ "summary": "Предлоги to, at, in, into делят пространство на вектор движения и точку нахождения. Глаголы прибытия и слово home имеют свои правила, а been to и gone to меняют смысл фразы.",
+ "can_do": [
+  "Выбирать to для направления и at/in для статичного места.",
+  "Использовать into, когда действие проходит сквозь границу внутрь.",
+  "Правильно сочетать arrive in/at и get to, избегая arrive to.",
+  "Говорить go home без предлога и отличать been to от gone to."
+ ],
+ "theory": [
+  {
+   "h": "Куда идем — to, где находимся — at/in",
+   "p": "Предлог to показывает направление движения: go to work, fly to London. Предлоги at и in фиксируют точку, где вы уже находитесь: at the station, in the room. В русском оба случая часто передаются одним «в/на», поэтому важно отличать вектор от статики.",
+   "formula": "go to school · fly to Rome · at the door · in the box"
+  },
+  {
+   "h": "Into — когда проникаем внутрь",
+   "p": "Into подчёркивает проникновение внутрь объёмного пространства: walk into the kitchen, drive into the garage. Просто in после глаголов движения тоже возможно, но into делает акцент на переход границы. С глаголами состояния (be, stay) into не употребляется.",
+   "formula": "walk into the room · run into the house · get into the car"
+  },
+  {
+   "h": "Прибытие: arrive in/at, get to",
+   "p": "Глагол arrive требует in для крупных точек (arrive in Moscow) и at для точечных (arrive at the airport). Get to универсален: get to work, get to the centre. Ошибка arrive to — типичная, её нет в стандарте.",
+   "table": {
+    "head": ["Глагол", "Предлог", "Пример"],
+    "rows": [
+     ["arrive", "in", "arrive in Paris"],
+     ["arrive", "at", "arrive at the station"],
+     ["get", "to", "get to the office"]
+    ]
+   }
+  },
+  {
+   "h": "Домашний путь: home без to",
+   "p": "С словом home предлог to не нужен: go home, come home, get home, arrive home. Home здесь работает как наречие направления. Если добавить притяжательное (my home, her home), to возвращается: go to my home.",
+   "formula": "go home · come home · get home · arrive home · go to my home"
+  },
+  {
+   "h": "Been to или gone to",
+   "p": "Been to означает «бывал и вернулся»: I've been to Paris. Gone to — «уехал и там сейчас»: He's gone to Paris. В русском оба часто «был в», но разница в результате: been — опыт, gone — текущее отсутствие.",
+   "formula": "I've been to Spain · She's gone to the shop"
+  },
+  {
+   "h": "Шпаргалка по предлогам движения",
+   "p": "Краткая таблица для быстрой проверки: куда — to, где (точка) — at, где (внутри) — in, сквозь границу — into. Для arrive: город/страна — in, здание/станция — at. Home всегда без предлога.",
+   "table": {
+    "head": ["Ситуация", "Предлог", "Пример"],
+    "rows": [
+     ["Направление", "to", "go to school"],
+     ["Нахождение (точка)", "at", "at the door"],
+     ["Нахождение (внутри)", "in", "in the box"],
+     ["Движение внутрь", "into", "run into the house"],
+     ["Прибытие в город/страну", "arrive in", "arrive in Rome"],
+     ["Прибытие в точку", "arrive at", "arrive at the station"],
+     ["Домой", "—", "go home"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "We are flying to Madrid tomorrow.", "ru": "Мы летим в Мадрид завтра."},
+  {"en": "She is waiting at the bus stop.", "ru": "Она ждёт на автобусной остановке."},
+  {"en": "The keys are in the drawer.", "ru": "Ключи в ящике."},
+  {"en": "He walked into the room without knocking.", "ru": "Он вошёл в комнату, не постучав."},
+  {"en": "The train arrived at the station on time.", "ru": "Поезд прибыл на станцию вовремя."},
+  {"en": "I have been to New York twice.", "ru": "Я бывал в Нью-Йорке дважды."},
+  {"en": "Where is Tom? He has gone to the gym.", "ru": "Где Том? Он ушёл в спортзал."}
+ ],
+ "traps": [
+  {"bad": "We arrived to London late.", "good": "We arrived in London late.", "why": "Arrive не сочетается с to; для городов и стран нужен in."},
+  {"bad": "I want to go to home now.", "good": "I want to go home now.", "why": "Home как наречие направления не требует предлога to."},
+  {"bad": "She has been to the supermarket (meaning she is there now).", "good": "She has gone to the supermarket.", "why": "Been to — опыт с возвращением, gone to — человек там сейчас."},
+  {"bad": "The bird flew in the cage.", "good": "The bird flew into the cage.", "why": "При движении внутрь объёмного предмета нужен into, а не in."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "We decided to fly ___ Rome for the weekend.", "options": ["to", "in", "at"], "a": 0, "why": "Направление движения требует to."},
+  {"type": "choice", "q": "The cat jumped ___ the box.", "options": ["into", "in", "at"], "a": 0, "why": "Движение сквозь границу внутрь — into."},
+  {"type": "choice", "q": "The train arrives ___ the station at 6.", "options": ["in", "at", "to"], "a": 1, "why": "Точечное место прибытия — arrive at."},
+  {"type": "choice", "q": "Where is Anna? She's ___ to the shop.", "options": ["been", "gone", "go"], "a": 1, "why": "Она ушла и там сейчас — gone to."},
+  {"type": "gap", "q": "We need to get ___ the city centre before dark. (направление)", "a": ["to"], "why": "Get to — универсальная конструкция для достижения цели."},
+  {"type": "gap", "q": "I've never ___ to Japan. (опыт посещения)", "a": ["been"], "why": "Been to — бывал и вернулся."},
+  {"type": "gap", "q": "After the meeting we went straight ___ . (домой без предлога)", "a": ["home"], "why": "Home как наречие не требует to."},
+  {"type": "translate", "q": "Мы прилетели в Москву вчера.", "a": ["we arrived in moscow yesterday", "we arrived in moscow yesterday."], "why": "Город — arrive in."},
+  {"type": "translate", "q": "Он ушёл в магазин и пока не вернулся.", "a": ["he has gone to the shop", "he's gone to the shop"], "why": "Человек уехал и там сейчас — gone to."}
+ ]
+}

@@ -1,0 +1,80 @@
+{
+ "n": 242,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "by и with",
+ "en": "by and with",
+ "summary": "Предлоги by и with обозначают способ, инструмент или автора: by car — на машине, with a knife — ножом, written by — написано кем-то.",
+ "can_do": [
+  "Использовать by для транспорта и связи без артикля (by bus, by email).",
+  "Выбирать with для инструментов и признаков (cut with a knife, a girl with blue eyes).",
+  "Понимать разницу: by chance — случайно, with chance — не используется.",
+  "Правильно строить пассив с by (done by me) и указывать способ через by + -ing."
+ ],
+ "theory": [
+  {
+   "h": "Транспорт и связь — by без артикля",
+   "p": "Когда говорим о виде транспорта или способе связи, ставим by + существительное без артикля: by car, by bus, by train, by plane, by email, by phone. Сказать by a car или by the bus нельзя — это грубая ошибка. Если нужен конкретный автомобиль, используем in the car / on the bus.",
+   "formula": "by car · by bus · by train · by plane · by email · by phone"
+  },
+  {
+   "h": "Способ действия — by + -ing",
+   "p": "Чтобы сказать, каким образом что-то сделано, используем by + герундий: by pressing this button, by doing it yourself. В русском это часто соответствует причастным оборотам или наречиям. Предлог by здесь отвечает на вопрос «как?».",
+   "formula": "by pressing the button · by doing it yourself · by working hard"
+  },
+  {
+   "h": "Инструмент и признак — with",
+   "p": "With указывает на инструмент, которым выполняется действие, или на постоянный признак предмета/человека: cut with a knife, write with a pen, a man with a beard, soup with mushrooms. В отличие от by, после with обычно стоит артикль или притяжательное местоимение.",
+   "table": {
+    "head": ["Ситуация", "Пример", "Перевод"],
+    "rows": [
+     ["инструмент", "cut with a knife", "резать ножом"],
+     ["принадлежность", "a girl with blue eyes", "девочка с голубыми глазами"],
+     ["состав", "coffee with milk", "кофе с молоком"],
+     ["совместное действие", "go with me", "пойти со мной"]
+    ]
+   }
+  },
+  {
+   "h": "Пассивный залог — by + действующее лицо",
+   "p": "В пассиве автор действия вводится предлогом by: written by Shakespeare, built by Romans. Если автор неважен или неизвестен, by-фразу опускают. В русском это соответствует творительному падежу без предлога.",
+   "formula": "written by Shakespeare · built by Romans · painted by Picasso"
+  },
+  {
+   "h": "Устойчивые выражения с by",
+   "p": "Есть зафиксированные фразы, где by означает случайность, способ или ручной труд: by chance (случайно), by mistake (по ошибке), by accident (случайно), by hand (вручную). Артикль здесь никогда не ставится, даже если в русском есть «рука» или «случай».",
+   "formula": "by chance · by mistake · by accident · by hand · by heart"
+  },
+  {
+   "h": "Разница: by car vs in the car, by myself vs with me",
+   "p": "By car — общий способ передвижения (на машине), in the car — внутри конкретной машины. By myself — один/самостоятельно, with me — вместе со мной. Сравните: I went by car (я поехал на машине) vs I left my bag in the car (сумка осталась в машине).",
+   "formula": "by car · in the car · by myself · with me"
+  }
+ ],
+ "examples": [
+  {"en": "I usually go to work by bus.", "ru": "Я обычно еду на работу на автобусе."},
+  {"en": "She opened the door by pushing it hard.", "ru": "Она открыла дверь, сильно толкнув её."},
+  {"en": "Cut the bread with a sharp knife.", "ru": "Нарежьте хлеб острым ножом."},
+  {"en": "This book was written by George Orwell.", "ru": "Эта книга написана Джорджем Оруэллом."},
+  {"en": "We met by chance at the airport.", "ru": "Мы встретились случайно в аэропорту."},
+  {"en": "I prefer to travel by train, not by plane.", "ru": "Я предпочитаю путешествовать поездом, а не самолётом."},
+  {"en": "The man with the red hat is my uncle.", "ru": "Мужчина в красной шапке — мой дядя."}
+ ],
+ "traps": [
+  {"bad": "I came here by a car.", "good": "I came here by car.", "why": "После by с транспортом артикль не ставится: by car, by bus, by train."},
+  {"bad": "He wrote the letter with a pen by him.", "good": "He wrote the letter with a pen. / The letter was written by him.", "why": "With — инструмент (ручкой), by — автор в пассиве. Не смешивайте в одной конструкции."},
+  {"bad": "We met with chance.", "good": "We met by chance.", "why": "Устойчивое выражение только by chance; with chance не существует."},
+  {"bad": "She made this cake by her hands.", "good": "She made this cake by hand.", "why": "By hand — устойчивое выражение «вручную», без притяжательного и артикля."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "I usually send documents ___ email.", "options": ["by", "with", "via"], "a": 0, "why": "Способ связи — by email без артикля."},
+  {"type": "choice", "q": "Cut the rope ___ a knife.", "options": ["by", "with", "using"], "a": 1, "why": "Инструмент действия — with a knife."},
+  {"type": "choice", "q": "The painting was created ___ Picasso.", "options": ["by", "with", "from"], "a": 0, "why": "Автор в пассиве — by Picasso."},
+  {"type": "choice", "q": "We found the keys ___ chance.", "options": ["by", "with", "on"], "a": 0, "why": "Устойчивое выражение: by chance — случайно."},
+  {"type": "gap", "q": "She prefers to travel ___ (train) rather than fly.", "a": ["by train"], "why": "Вид транспорта — by train без артикля."},
+  {"type": "gap", "q": "You can open the file ___ (double-click) the icon.", "a": ["by double-clicking", "by double clicking"], "why": "Способ действия — by + герундий: by double-clicking."},
+  {"type": "gap", "q": "The soup is made ___ (fresh tomatoes).", "a": ["with fresh tomatoes"], "why": "Ингредиент/состав — with fresh tomatoes."},
+  {"type": "translate", "q": "Я приехал сюда на машине.", "a": ["I came here by car", "I arrived here by car"], "why": "Способ передвижения — by car без артикля."},
+  {"type": "translate", "q": "Этот дом построен моим дедушкой.", "a": ["This house was built by my grandfather", "The house was built by my grandfather"], "why": "Пассивный залог, автор действия — by my grandfather."}
+ ]
+}

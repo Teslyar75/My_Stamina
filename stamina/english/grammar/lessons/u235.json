@@ -1,0 +1,81 @@
+{
+ "n": 235,
+ "level": "B2",
+ "module": "b-prep",
+ "title": "Время: at, on, in",
+ "en": "at/on/in (time)",
+ "summary": "Предлоги at, on, in делят время на точки, линии и контейнеры: at — для точных моментов, on — для дней и дат, in — для периодов и частей дня.",
+ "can_do": [
+  "Выбирать at для часов, праздников и устойчивых выражений вроде at night.",
+  "Ставить on перед днями недели, датами и составными указаниями вроде on Friday morning.",
+  "Использовать in для месяцев, лет, сезонов и длинных интервалов вроде in two weeks.",
+  "Пропускать предлог перед last, next, this, every."
+ ],
+ "theory": [
+  {
+   "h": "At — точки во времени",
+   "p": "At работает как координата: мы попадаем в точку, а не в промежуток. Поэтому at five o'clock, at noon, at midnight, at the moment, at Christmas, at the weekend (BrE). В русском здесь часто стоит «в» или «к», но английский требует at для любой отметки на циферблате или календаре.",
+   "formula": "at 7.30 · at noon · at midnight · at the moment · at Christmas · at the weekend"
+  },
+  {
+   "h": "On — дни и даты",
+   "p": "On покрывает плоскость одного дня: on Monday, on 5 May, on my birthday. Если добавляется часть дня, предлог не меняется: on Friday morning, on Sunday evening. В русском мы говорим «в понедельник», «в пятницу утром» — предлог «в» совпадает, но английский жестко фиксирует on для любой календарной единицы суток.",
+   "formula": "on Monday · on 5 May · on my birthday · on Friday morning · on Sunday evening"
+  },
+  {
+   "h": "In — контейнеры времени",
+   "p": "In оборачивает периоды: месяцы (in May), годы (in 2020), времена года (in winter), части дня (in the morning, in the afternoon, in the evening) и интервалы (in two weeks, in an hour). Русский «в» работает так же, но английский не допускает in перед днями недели — только on.",
+   "formula": "in May · in 2020 · in winter · in the morning · in two weeks · in an hour"
+  },
+  {
+   "h": "Last, next, this, every — без предлога",
+   "p": "Слова last, next, this, every уже несут временную привязку, поэтому предлог лишний: last Monday, next week, this morning, every year. Ошибка in last year или on next Friday звучит как двойное указание времени. В русском мы тоже не говорим «в прошлый год» с предлогом «в» — просто «прошлый год».",
+   "formula": "last Monday · next week · this morning · every year · last summer"
+  },
+  {
+   "h": "Night, weekend, moment — устойчивые пары",
+   "p": "Некоторые слова закрепились за конкретным предлогом вопреки общей логике: at night (но in the night — в конкретную ночь), at the weekend (BrE), on the weekend (AmE), at the moment, at present. Заучивать их как готовые блоки быстрее, чем выводить из правил.",
+   "formula": "at night · in the night · at the weekend · on the weekend · at the moment · at present"
+  },
+  {
+   "h": "Таблица: выбор предлога",
+   "table": {
+    "head": ["Тип времени", "Предлог", "Примеры"],
+    "rows": [
+     ["Часы, точки", "at", "at 6.00, at midnight"],
+     ["Дни, даты", "on", "on Monday, on 1 June"],
+     ["Месяцы, годы, сезоны", "in", "in June, in 2024, in summer"],
+     ["Части дня", "in", "in the morning, in the evening"],
+     ["Интервалы", "in", "in a week, in ten minutes"],
+     ["last/next/this/every", "—", "last week, next Friday"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "The train leaves at 6.30.", "ru": "Поезд уходит в 6.30."},
+  {"en": "We met on Tuesday.", "ru": "Мы встретились во вторник."},
+  {"en": "I'll see you in July.", "ru": "Увидимся в июле."},
+  {"en": "She works in the morning.", "ru": "Она работает по утрам."},
+  {"en": "See you next week.", "ru": "Увидимся на следующей неделе."},
+  {"en": "At the moment I'm busy.", "ru": "В данный момент я занят."},
+  {"en": "We usually go away at the weekend.", "ru": "Обычно мы уезжаем на выходных."}
+ ],
+ "traps": [
+  {"bad": "in Monday", "good": "on Monday", "why": "Дни недели всегда требуют on, in используется только для месяцев и лет."},
+  {"bad": "at 2020", "good": "in 2020", "why": "Годы — это периоды, контейнеры времени, поэтому только in."},
+  {"bad": "on night", "good": "at night", "why": "Устойчивое выражение at night; on night не существует."},
+  {"bad": "in last year", "good": "last year", "why": "После last, next, this, every предлог не ставится."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The meeting starts ___ 9.00.", "options": ["at", "on", "in"], "a": 0, "why": "Точное время — предлог at."},
+  {"type": "choice", "q": "I'll call you ___ Friday.", "options": ["at", "on", "in"], "a": 1, "why": "Дни недели берут on."},
+  {"type": "choice", "q": "We usually travel ___ August.", "options": ["at", "on", "in"], "a": 2, "why": "Месяцы — контейнеры времени, нужен in."},
+  {"type": "choice", "q": "See you ___ next Monday.", "options": ["at", "on", "in", "—"], "a": 3, "why": "После next предлог опускается."},
+  {"type": "gap", "q": "The concert is ___ 15 June. (date)", "a": ["on"], "why": "Даты требуют on: on 15 June."},
+  {"type": "gap", "q": "I'll be ready ___ ten minutes. (interval)", "a": ["in"], "why": "Интервал будущего времени — in ten minutes."},
+  {"type": "gap", "q": "She called ___ the weekend. (BrE)", "a": ["at"], "why": "В британском варианте at the weekend."},
+  {"type": "translate", "q": "Встреча начнётся в полночь.", "a": ["the meeting starts at midnight"], "why": "Midnight — точка времени, предлог at."},
+  {"type": "translate", "q": "Мы поедем в следующем году.", "a": ["we will go next year", "we'll go next year"], "why": "После next предлог не нужен: next year."}
+ ]
+}
