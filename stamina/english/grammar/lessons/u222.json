@@ -1,0 +1,81 @@
+{
+ "n": 222,
+ "level": "B2",
+ "module": "b-comp",
+ "title": "Превосходная степень",
+ "en": "superlatives",
+ "summary": "Превосходная степень образуется через the + -est (короткие) или the most (длинные). Важно правильно выбирать предлог in или of, использовать one of the + превосходная + множественное число и отличать the most (превосходная) от most (очень).",
+ "can_do": [
+  "Образовать превосходную степень для коротких и длинных прилагательных, включая исключения.",
+  "Выбирать предлог in (место, группа) или of (набор, период) после превосходной степени.",
+  "Строить фразы с one of the + превосходная + существительное во множественном числе.",
+  "Не путать the most (превосходная степень) с most = very (усиление)."
+ ],
+ "theory": [
+  {
+   "h": "Базовая формула: the + -est / the most",
+   "p": "Короткие прилагательные (1 слог, некоторые 2 слога на -y, -er, -ow) добавляют -est: fast → the fastest, happy → the happiest. Длинные берут the most: the most interesting. Исключения: good → the best, bad → the worst, far → the farthest / the furthest. Артикль the обязателен.",
+   "formula": "fast → the fastest · happy → the happiest · interesting → the most interesting · good → the best · bad → the worst"
+  },
+  {
+   "h": "Предлоги in и of после превосходной",
+   "p": "Внутри группы или места — in: the tallest boy in the class. Из набора объектов или за период — of: the most expensive of the three, the happiest day of my life. In подразумевает принадлежность к группе, of — выбор из перечисленного.",
+   "formula": "the tallest in the class · the best in the world · the most expensive of the three · the worst of all"
+  },
+  {
+   "h": "Конструкция one of the + превосходная + plural",
+   "p": "Говоря о представителе группы лучших/худших, используем one of the + превосходная + существительное во множественном числе: one of the best students. Глагол обычно в единственном числе (is), так как речь об одном лице.",
+   "formula": "one of the best students · one of the most beautiful cities · one of the worst mistakes"
+  },
+  {
+   "h": "The least — обратная превосходная степень",
+   "p": "Для выражения «наименее» ставим the least перед прилагательной любой длины: the least interesting, the least expensive. Это работает и для коротких прилагательных, если нужен негативный акцент. Артикль the остаётся.",
+   "formula": "the least interesting · the least expensive · the least crowded · the least known"
+  },
+  {
+   "h": "Most без the — это «очень», а не превосходная",
+   "p": "Most без the — усилитель «очень»: a most interesting book = a very interesting book. Превосходная всегда требует the: the most interesting book. Ошибка — опускать the, когда имеется в виду «самый».",
+   "formula": "the most difficult (превосходная) · most difficult = very difficult (усиление) · a most kind person = a very kind person"
+  },
+  {
+   "h": "Неправильные формы и особенности",
+   "p": "Far: farthest (расстояние), furthest (степень). Old: oldest (возраст), eldest (старший в семье). Прилагательные на -ed/-ing только через most: the most bored. Сравнительная и превосходная не смешиваются: more better — ошибка.",
+   "table": {
+    "head": ["Прилагательное", "Превосходная", "Примечание"],
+    "rows": [
+     ["far", "the farthest / the furthest", "farthest — расстояние, furthest — степень"],
+     ["old", "the oldest / the eldest", "eldest — только для людей в семье"],
+     ["good", "the best", "исключение"],
+     ["bad", "the worst", "исключение"],
+     ["bored / boring", "the most bored / the most boring", "только через most"]
+    ]
+   }
+  }
+ ],
+ "examples": [
+  {"en": "This is the fastest car in the race.", "ru": "Это самая быстрая машина в гонке."},
+  {"en": "She is the most talented musician of the three.", "ru": "Она самая талантливая музыкант из трёх."},
+  {"en": "It was the worst day of my life.", "ru": "Это был худший день в моей жизни."},
+  {"en": "He is one of the best players in the team.", "ru": "Он один из лучших игроков в команде."},
+  {"en": "This is the least expensive option.", "ru": "Это наименее дорогой вариант."},
+  {"en": "That was a most interesting lecture.", "ru": "Это была очень интересная лекция."},
+  {"en": "My eldest brother lives in London.", "ru": "Мой старший брат живёт в Лондоне."}
+ ],
+ "traps": [
+  {"bad": "He is the most tall in the class.", "good": "He is the tallest in the class.", "why": "Короткие прилагательные берут -est, не the most."},
+  {"bad": "It was the best of the two.", "good": "It was the better of the two.", "why": "При сравнении двух объектов используется сравнительная степень, а не превосходная."},
+  {"bad": "She is one of the best student.", "good": "She is one of the best students.", "why": "После one of the + превосходная существительное всегда во множественном числе."},
+  {"bad": "This is most difficult task.", "good": "This is the most difficult task.", "why": "Превосходная степень требует артикль the; без the most означает «очень»."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "This is ___ book I've ever read.", "options": ["the most interesting", "most interesting", "the interestingest"], "a": 0, "why": "Длинное прилагательное требует the most interesting."},
+  {"type": "choice", "q": "He is ___ player in the team.", "options": ["the best", "the better", "best"], "a": 0, "why": "Превосходная от good — the best, артикль обязателен."},
+  {"type": "choice", "q": "It was ___ day of the year.", "options": ["the hottest", "the most hot", "hottest"], "a": 0, "why": "Hot — короткое, превосходная the hottest."},
+  {"type": "choice", "q": "She is one of ___ students.", "options": ["the most intelligent", "most intelligent", "the intelligentest"], "a": 0, "why": "Конструкция one of the + превосходная + plural."},
+  {"type": "gap", "q": "This is ___ (bad) mistake I've made.", "a": ["the worst"], "why": "Bad — исключение, превосходная the worst."},
+  {"type": "gap", "q": "It was ___ (happy) moment of my life.", "a": ["the happiest"], "why": "Happy меняет y на i и добавляет -est: the happiest."},
+  {"type": "gap", "q": "This is ___ (little) known fact.", "a": ["the least known"], "why": "Little в превосходной степени даёт the least."},
+  {"type": "translate", "q": "Это самый красивый город в мире.", "a": ["this is the most beautiful city in the world"], "why": "Beautiful — длинное, превосходная the most beautiful, место — in the world."},
+  {"type": "translate", "q": "Он один из самых старых учителей в школе.", "a": ["he is one of the oldest teachers in the school"], "why": "One of the + превосходная + plural, old → oldest."}
+ ]
+}

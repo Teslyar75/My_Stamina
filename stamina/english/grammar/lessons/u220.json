@@ -1,0 +1,78 @@
+{
+ "n": 220,
+ "level": "B2",
+ "module": "b-comp",
+ "title": "Сравнительная степень (2)",
+ "en": "comparative 2",
+ "summary": "Продвинутые способы сравнения: any/no + сравнительная, the... the..., нарастание через and, same as / different from, а также различие older и elder.",
+ "can_do": [
+  "Усиливать сравнение с any и no в вопросах и отрицаниях.",
+  "Строить конструкцию the ... the ... для выражения взаимной зависимости.",
+  "Выражать нарастающую степень качества через and (better and better).",
+  "Правильно использовать the same as, different from и выбирать между older и elder."
+ ],
+ "theory": [
+  {
+   "h": "any / no + сравнительная степень",
+   "p": "В вопросах и отрицаниях перед сравнительной степенью ставят any: Is it any better? В утверждениях с негативным смыслом — no: It's no worse than before. Русский «ничуть не лучше» передаёт no better.",
+   "formula": "Is it any cheaper? · It's no more expensive. · She feels no better today."
+  },
+  {
+   "h": "the ... the ... — чем больше, тем лучше",
+   "p": "Конструкция the + сравнительная, the + сравнительная показывает параллельное изменение: The earlier you start, the sooner you finish. Глаголы часто сокращаются: The sooner, the better.",
+   "formula": "The more you read, the more you know. · The longer we wait, the worse it gets."
+  },
+  {
+   "h": "Сравнительная + and + сравнительная — нарастание",
+   "p": "Для выражения усиления качества со временем повторяют сравнительную через and: better and better, more and more difficult. Переводится «всё лучше и лучше». У коротких прилагательных -er, у длинных — more.",
+   "formula": "It's getting harder and harder. · The situation becomes more and more complicated."
+  },
+  {
+   "h": "the same as / different from",
+   "p": "Тождество — the same as, отличие — different from. Предлог after same — as, после different — from. Different than возможен в разговорном американском, но стандарт требует from.",
+   "formula": "My phone is the same as yours. · This result is different from the previous one."
+  },
+  {
+   "h": "older vs elder — старше по возрасту",
+   "p": "Elder используется почти только для родственников перед существительным: my elder sister. Older — универсально, работает и после глагола: He is older than me. Elder нельзя ставить после глагола.",
+   "table": {
+    "head": ["Слово", "Позиция", "Пример"],
+    "rows": [
+     ["older", "после глагола / перед сущ.", "He is older. · My older car."],
+     ["elder", "только перед сущ. (семья)", "My elder sister. · The elder son."]
+    ]
+   }
+  },
+  {
+   "h": "Краткий чек-лист выбора формы",
+   "p": "Вопрос «хоть лучше?» — any better. «Ничуть не хуже» — no worse. Зависимость — the more, the better. Нарастание — harder and harder. Тождество — the same as, отличие — different from. Семья — elder, остальное — older.",
+   "formula": "any better · no worse · the more, the better · harder and harder · the same as · different from · elder brother · older than me"
+  }
+ ],
+ "examples": [
+  {"en": "Is the new version any better?", "ru": "Новая версия хоть немного лучше?"},
+  {"en": "It's no more expensive than the old one.", "ru": "Это не дороже старого (то есть такое же или дешевле)."},
+  {"en": "The earlier we leave, the less traffic we'll hit.", "ru": "Чем раньше уедем, тем меньше пробук словим."},
+  {"en": "The problem is getting more and more complicated.", "ru": "Проблема становится всё более запутанной."},
+  {"en": "Your answer is the same as mine.", "ru": "Твой ответ такой же, как мой."},
+  {"en": "This coffee tastes different from what I usually drink.", "ru": "Этот кофе на вкус отличается от того, что я обычно пью."},
+  {"en": "My elder sister lives in Paris.", "ru": "Моя старшая сестра живёт в Париже."}
+ ],
+ "traps": [
+  {"bad": "Is it more better now?", "good": "Is it any better now?", "why": "Двойная сравнительная степень (more better) невозможна; для усиления в вопросе используют any."},
+  {"bad": "The more early, the more good.", "good": "The earlier, the better.", "why": "В конструкции the... the... сравнительная степень образуется по правилам: earlier, better, а не more early/good."},
+  {"bad": "This result is different than that one.", "good": "This result is different from that one.", "why": "Стандартный предлог после different — from; than используется только в неформальном американском варианте."},
+  {"bad": "My elder car broke down.", "good": "My older car broke down.", "why": "Elder применяется только к людям (в основном родственники); для предметов и в остальных случаях — older."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Is the new manager any ___ than the previous one?", "options": ["better", "more better", "good"], "a": 0, "why": "В вопросе с any используется простая сравнительная степень better."},
+  {"type": "choice", "q": "___ you practise, ___ you become.", "options": ["The more / the more confident", "More / more confident", "The most / the most confident"], "a": 0, "why": "Конструкция the + сравнительная, the + сравнительная: The more you practise, the more confident you become."},
+  {"type": "choice", "q": "The weather is getting ___.", "options": ["colder and colder", "more cold and more cold", "cold and cold"], "a": 0, "why": "Нарастающая степень для короткого прилагательного: colder and colder."},
+  {"type": "choice", "q": "His opinion is the same ___ mine.", "options": ["as", "like", "from"], "a": 0, "why": "После same всегда предлог as: the same as."},
+  {"type": "gap", "q": "This laptop is no ___ (light) than the other model.", "a": ["lighter"], "why": "No + сравнительная степень: no lighter."},
+  {"type": "gap", "q": "___ (soon) we finish, ___ (early) we can go home.", "a": ["The sooner, the earlier", "The sooner the earlier"], "why": "Конструкция the... the... с неправильными сравнительными формами: sooner, earlier."},
+  {"type": "gap", "q": "The queue was moving ___ (slow) and ___ (slow).", "a": ["slower and slower", "more slowly and more slowly"], "why": "Нарастание: slower and slower (или more slowly and more slowly для наречия)."},
+  {"type": "translate", "q": "Этот цвет отличается от того, что я выбрал.", "a": ["this colour is different from the one i chose", "this color is different from the one i chose"], "why": "Different from — стандартный предлог для различия."},
+  {"type": "translate", "q": "Мой старший брат уехал за границу.", "a": ["my elder brother went abroad", "my older brother went abroad"], "why": "Для родственников допускаются оба варианта, но elder характерен именно для семьи."}
+ ]
+}
