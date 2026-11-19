@@ -1,0 +1,78 @@
+{
+ "n": 217,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "enough и too",
+ "en": "enough and too",
+ "summary": "Урок разбирает порядок слов с enough (после прилагательного или перед существительным) и конструкции с too (too + прилагательное, too much/many). Показано, как выражать недостаточность через not ... enough и как соотносить too heavy с not light enough.",
+ "can_do": [
+  "Ставить enough после прилагательного/наречия и перед существительным.",
+  "Образовывать фразы too + adjective/adverb и too much/many + noun.",
+  "Заменять too heavy на not light enough и наоборот.",
+  "Использовать enough/to с инфинитивом: strong enough to lift, too tired to sleep."
+ ],
+ "theory": [
+  {
+   "h": "Порядок слов с enough",
+   "p": "Enough ведёт себя по-разному: после прилагательного или наречия (old enough, quickly enough) и перед существительным (enough money, enough time). В русском «достаточно» всегда стоит перед словом, в английском положение меняется в зависимости от части речи.",
+   "formula": "old enough · quickly enough · enough money · enough time"
+  },
+  {
+   "h": "Too перед прилагательным и наречием",
+   "p": "Too всегда стоит перед прилагательным или наречием и означает «слишком»: too heavy, too slowly. После too + adjective часто идёт инфинитив с to: too tired to sleep. Отрицание не используется — too уже выражает избыточность.",
+   "formula": "too heavy · too slowly · too tired to sleep · too hot to drink"
+  },
+  {
+   "h": "Too much / too many с существительными",
+   "p": "С неисчисляемыми существительными ставим too much (too much sugar), с исчисляемыми во множественном числе — too many (too many people). Enough здесь работает как определитель перед существительным: enough sugar, enough people. Сравните: too much noise — enough noise.",
+   "table": {
+    "head": ["Тип существительного", "too", "enough"],
+    "rows": [
+     ["неисчисляемое", "too much water", "enough water"],
+     ["исчисляемое во мн. ч.", "too many books", "enough books"]
+    ]
+   }
+  },
+  {
+   "h": "Отрицание: not ... enough",
+   "p": "Чтобы сказать «недостаточно», ставим not перед прилагательным и enough после: not big enough, not fast enough. Это эквивалент too small / too slow, но с обратной стороны. В русском часто говорят «слишком маленький», а по-английски можно not big enough.",
+   "formula": "not big enough · not fast enough · not warm enough · not carefully enough"
+  },
+  {
+   "h": "Сравнение too и enough в контексте",
+   "p": "Одна и та же ситуация описывается двумя способами: The box is too heavy to lift = The box is not light enough to lift. Too указывает на избыток качества, not enough — на недостаток противоположного. Выбор зависит от того, какое прилагательное удобнее использовать.",
+   "formula": "too heavy to lift · not light enough to lift · too old to drive · not young enough to drive"
+  },
+  {
+   "h": "Enough и too с инфинитивом",
+   "p": "И enough, и too могут связываться с инфинитивом: enough to do (достаточно, чтобы сделать) и too ... to do (слишком ..., чтобы сделать). Обратите внимание: после enough инфинитив с to, после too — тоже с to, но смысл противоположный. Ошибка: писать enough for to do.",
+   "formula": "strong enough to lift · too weak to lift · old enough to vote · too young to vote"
+  }
+ ],
+ "examples": [
+  {"en": "He is old enough to drive.", "ru": "Он достаточно взрослый, чтобы водить машину."},
+  {"en": "We didn't have enough time to finish.", "ru": "У нас не было достаточно времени, чтобы закончить."},
+  {"en": "The coffee is too hot to drink.", "ru": "Кофе слишком горячий, чтобы пить."},
+  {"en": "There are too many people in the room.", "ru": "В комнате слишком много людей."},
+  {"en": "She isn't tall enough to reach the shelf.", "ru": "Она недостаточно высокая, чтобы достать полку."},
+  {"en": "You work too slowly.", "ru": "Ты работаешь слишком медленно."},
+  {"en": "We have enough money for the tickets.", "ru": "У нас достаточно денег на билеты."}
+ ],
+ "traps": [
+  {"bad": "He is enough old to drive.", "good": "He is old enough to drive.", "why": "Enough после прилагательного, а не перед ним."},
+  {"bad": "We have too much books.", "good": "We have too many books.", "why": "Books — исчисляемое во множественном числе, нужно too many."},
+  {"bad": "The box is not enough light.", "good": "The box is not light enough.", "why": "Отрицание с enough: not + adjective + enough."},
+  {"bad": "She is too tired for sleeping.", "good": "She is too tired to sleep.", "why": "После too + adjective инфинитив с to, а не герундий."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "Is the water warm ___ to swim?", "options": ["enough", "too", "very"], "a": 0, "why": "Нужно enough после прилагательного: warm enough."},
+  {"type": "choice", "q": "There were ___ people at the party.", "options": ["too much", "too many", "enough many"], "a": 1, "why": "People — исчисляемое во множественном числе, поэтому too many."},
+  {"type": "choice", "q": "This bag is ___ heavy for me.", "options": ["enough", "too", "very"], "a": 1, "why": "Too перед прилагательным выражает избыточность: too heavy."},
+  {"type": "choice", "q": "He isn't ___ to reach the top shelf.", "options": ["tall enough", "enough tall", "too tall"], "a": 0, "why": "Порядок: adjective + enough — tall enough."},
+  {"type": "gap", "q": "We didn't buy the car because it was ___ expensive. (too)", "a": ["too"], "why": "Too перед прилагательным: too expensive."},
+  {"type": "gap", "q": "Have you got ___ money for the tickets? (enough)", "a": ["enough"], "why": "Enough перед существительным: enough money."},
+  {"type": "gap", "q": "She spoke ___ quickly for me to understand. (too)", "a": ["too"], "why": "Too перед наречием: too quickly."},
+  {"type": "translate", "q": "Эта коробка слишком тяжелая, чтобы поднять её.", "a": ["this box is too heavy to lift", "the box is too heavy to lift"], "why": "Конструкция too + прилагательное + инфинитив: too heavy to lift."},
+  {"type": "translate", "q": "У нас недостаточно времени, чтобы сделать это.", "a": ["we don't have enough time to do this", "we haven't got enough time to do this"], "why": "Enough перед существительным + to-infinitive: enough time to do."}
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "n": 212,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "boring и bored",
+ "en": "adjectives ending in -ing and -ed",
+ "summary": "Прилагательные на -ing описывают причину эмоции (интересная книга), а на -ed — само чувство человека (заинтересованный читатель). Путаница между парами boring/bored, interesting/interested и др. — частая ошибка на B2.",
+ "can_do": [
+  "Различать, кто испытывает эмоцию, и что её вызывает.",
+  "Правильно выбирать между -ing и -ed формами (interesting / interested).",
+  "Использовать стандартные предлоги: interested in, bored with, excited about.",
+  "Не путать embarrassing (неловкий) и embarrassed (смущённый)."
+ ],
+ "theory": [
+  {
+   "h": "Источник или переживание",
+   "p": "В русском часто одно слово: «скучный фильм» и «скучающий студент». В английском разные суффиксы: -ing у источника (boring film), -ed у того, кто чувствует (bored student). Правило работает для всех пар: tiring/tired, annoying/annoyed.",
+   "formula": "boring film · bored students · tiring journey · tired driver"
+  },
+  {
+   "h": "Основные пары и предлоги",
+   "p": "Каждая пара имеет свои устойчивые предлоги. Interested in (интересуюсь), bored with/bored by (надоело), excited about (восторгаюсь), surprised at/by (удивлён), frightened of (боюсь). Предлог не меняет суффикс прилагательного.",
+   "table": {
+    "head": ["Пара", "Предлог", "Пример"],
+    "rows": [
+     ["interested / interesting", "in", "interested in music"],
+     ["bored / boring", "with / by", "bored with the film"],
+     ["excited / exciting", "about", "excited about the trip"],
+     ["surprised / surprising", "at / by", "surprised at the news"],
+     ["frightened / frightening", "of", "frightened of spiders"]
+    ]
+   }
+  },
+  {
+   "h": "Ловушка: embarrassing vs embarrassed",
+   "p": "Embarrassing — ситуация, вызывающая неловкость (embarrassing mistake). Embarrassed — моё состояние (I felt embarrassed). По-русски оба могут переводиться «неловкий», но субъект разный. То же: shocking/shocked, disgusting/disgusted.",
+   "formula": "an embarrassing situation · I was embarrassed · a shocking news · we were shocked"
+  },
+  {
+   "h": "Глаголы чувств: feel, look, seem, get",
+   "p": "После feel, look, seem, get, become, find ставится форма -ed, так как речь о внутреннем состоянии: I feel tired, She looks bored, He got annoyed. Форма -ing здесь означала бы, что я вызываю это чувство у других (I am boring = я скучный человек).",
+   "formula": "I feel tired · She looks bored · He got annoyed · It seems interesting"
+  },
+  {
+   "h": "Причастия как прилагательные: процесс или результат",
+   "p": "Не все -ing/-ed слова — эмоции. Некоторые обозначают процесс (boiling water — кипящая вода) или результат (boiled water — вскипяченная вода). Контекст решает: a sleeping child (спящий) vs a sleeping bag (спальный мешок — для сна).",
+   "formula": "boiling water · boiled water · sleeping child · sleeping bag · broken window · breaking news"
+  },
+  {
+   "h": "Типичные ошибки выбора суффикса",
+   "p": "Ошибка «I am boring» вместо «I am bored» меняет смысл: вы называете себя скучным человеком. Правило: если субъект — человек и он переживает эмоцию, всегда -ed. Если предмет/ситуация вызывает эмоцию — -ing.",
+   "formula": "The lecture was boring → I was bored · The game is exciting → We are excited"
+  }
+ ],
+ "examples": [
+  {"en": "The film was boring, so I fell asleep.", "ru": "Фильм был скучным, поэтому я уснул."},
+  {"en": "I was bored during the lecture.", "ru": "Мне было скучно на лекции."},
+  {"en": "She is interested in modern art.", "ru": "Она интересуется современным искусством."},
+  {"en": "The news was surprising.", "ru": "Новости были неожиданными."},
+  {"en": "We were surprised at the result.", "ru": "Мы удивились результату."},
+  {"en": "It was an embarrassing moment for him.", "ru": "Это был неловкий момент для него."},
+  {"en": "He felt embarrassed by the question.", "ru": "Он почувствовал неловкость из-за вопроса."}
+ ],
+ "traps": [
+  {"bad": "I am boring.", "good": "I am bored.", "why": "Boring — это про вас как источник скуки, bored — про ваше чувство."},
+  {"bad": "The book is interested.", "good": "The book is interesting.", "why": "Книга не может испытывать интерес, она его вызывает — interesting."},
+  {"bad": "I am exciting about the party.", "good": "I am excited about the party.", "why": "Вы переживаете восторг — excited. Exciting — это про вечеринку."},
+  {"bad": "The child is frightening.", "good": "The child is frightened.", "why": "Ребёнок испытывает страх — frightened. Frightening — это про того, кто пугает."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The lecture was so ___ that half the audience fell asleep.", "options": ["boring", "bored", "bore"], "a": 0, "why": "Лекция — источник скуки, поэтому -ing."},
+  {"type": "choice", "q": "I'm not ___ in politics.", "options": ["interesting", "interested", "interest"], "a": 1, "why": "Человек испытывает интерес — interested in."},
+  {"type": "choice", "q": "The children were ___ by the loud noise.", "options": ["frightening", "frightened", "frighten"], "a": 1, "why": "Дети испугались — пассивное переживание, frightened."},
+  {"type": "choice", "q": "It was a really ___ situation when I forgot her name.", "options": ["embarrassed", "embarrassing", "embarrass"], "a": 1, "why": "Ситуация вызывает неловкость — embarrassing."},
+  {"type": "gap", "q": "We were ___ (excite) about the upcoming trip.", "a": ["excited"], "why": "Мы переживаем восторг — форма -ed."},
+  {"type": "gap", "q": "The movie has a very ___ (surprise) ending.", "a": ["surprising"], "why": "Финал вызывает удивление — активный смысл, -ing."},
+  {"type": "gap", "q": "He looks really ___ (tire) after the marathon.", "a": ["tired"], "why": "После feel/look/seem для состояния — -ed."},
+  {"type": "translate", "q": "Мне скучно на этом уроке.", "a": ["I am bored at this lesson", "I'm bored in this lesson"], "why": "Чувство скуки — bored. Предлог at/in."},
+  {"type": "translate", "q": "Эта книга очень увлекательная.", "a": ["This book is very interesting", "This book is really interesting"], "why": "Книга вызывает интерес — interesting."}
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "n": 216,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "so и such",
+ "en": "so and such",
+ "summary": "Усилители so и such работают по-разному: so стоит перед прилагательным или наречием, а such — перед целой существительной группой с артиклем. Обе конструкции могут вводить предложения результата с that.",
+ "can_do": [
+  "Различать so cold и such a cold day по структуре.",
+  "Ставить артикль a/an после such перед исчисляемыми существительными в единственном числе.",
+  "Использовать so much/many/little/few и such a lot of с количественными словами.",
+  "Строить предложения результата: so … that и such … that."
+ ],
+ "theory": [
+  {
+   "h": "so перед прилагательным и наречием",
+   "p": "Слово so усиливает качество или способ действия и ставится сразу перед прилагательным или наречием без артикля. В русском это соответствует «такой» или «так» перед прилагательным: so cold — такой холодный / так холодно, so quickly — так быстро.",
+   "formula": "so cold · so quickly · so expensive · so well"
+  },
+  {
+   "h": "such перед существительной группой",
+   "p": "Such относится к целой фразе «прилагательное + существительное» или просто к существительному. Артикль a/an всегда ставится после such, а не перед ним: such a nice day, such nice weather, such nice people. В русском порядок слов совпадает: «такой хороший день».",
+   "formula": "such a cold day · such cold weather · such nice people · such a mess"
+  },
+  {
+   "h": "Артикль и число после such",
+   "p": "Форма such не меняется, но артикль и число существительного определяют, как выглядит фраза. С исчисляемыми в единственном числе нужен a/an, с неисчисляемыми и во множественном — артикля нет.",
+   "table": {
+    "head": ["Тип существительного", "Конструкция", "Пример"],
+    "rows": [
+     ["исчисляемое в ед. ч.", "such a + adj + noun", "such a nice day"],
+     ["неисчисляемое", "such + adj + noun", "such cold weather"],
+     ["множественное", "such + adj + noun", "such nice people"]
+    ]
+   }
+  },
+  {
+   "h": "so much/many/little/few и such a lot of",
+   "p": "С количественными местоимениями so стоит прямо перед much, many, little, few. Конструкция such a lot of возможна и с исчисляемыми, и с неисчисляемыми, но в разговорной речи чаще говорят so much/many.",
+   "formula": "so much money · so many people · so little time · such a lot of work"
+  },
+  {
+   "h": "Порядок слов в конструкциях результата",
+   "p": "Чтобы выразить следствие, используют so + прилагательное/наречие + that или such + (a/an) + прилагательное + существительное + that. Союз that в разговорном английском часто опускают.",
+   "formula": "so tired that I fell asleep · such a loud noise that we woke up"
+  },
+  {
+   "h": "Типичные ошибки: so a / such без существительного",
+   "p": "Нельзя сказать so a nice day — перед артиклем всегда such. Также нельзя оставить such без существительного, когда нужен so: such cold (неправильно), нужно so cold. Ошибки возникают из-за прямого перевода русского «такой».",
+   "formula": "✗ so a nice day → ✓ such a nice day · ✗ such cold → ✓ so cold"
+  }
+ ],
+ "examples": [
+  {"en": "It was so cold that we stayed inside.", "ru": "Было так холодно, что мы остались дома."},
+  {"en": "She runs so quickly that nobody can catch her.", "ru": "Она бежит так быстро, что никто не может её догнать."},
+  {"en": "It was such a beautiful day that we went to the park.", "ru": "Был такой прекрасный день, что мы пошли в парк."},
+  {"en": "They have such nice friends.", "ru": "У них такие хорошие друзья."},
+  {"en": "There was so much noise that I couldn't sleep.", "ru": "Было так много шума, что я не мог спать."},
+  {"en": "He has such a lot of books.", "ru": "У него так много книг."},
+  {"en": "The movie was so boring that I fell asleep.", "ru": "Фильм был таким скучным, что я уснул."}
+ ],
+ "traps": [
+  {"bad": "It was so a nice day.", "good": "It was such a nice day.", "why": "Перед артиклем a/an всегда ставится such, а не so."},
+  {"bad": "The coffee was such hot.", "good": "The coffee was so hot.", "why": "Если после усилителя нет существительного, нужен so."},
+  {"bad": "She has so many money.", "good": "She has so much money.", "why": "Money — неисчисляемое, поэтому much, а не many."},
+  {"bad": "It was such a lot of people.", "good": "There were so many people.", "why": "С исчисляемыми во множественном числе естественнее so many."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "The weather was ___ cold that we stayed home.", "options": ["so", "such", "such a"], "a": 0, "why": "so + прилагательное + that."},
+  {"type": "choice", "q": "It was ___ beautiful day that we went for a walk.", "options": ["so", "such a", "such"], "a": 1, "why": "such a + прилагательное + исчисляемое существительное в ед. ч."},
+  {"type": "choice", "q": "They have ___ nice friends.", "options": ["so", "such", "such a"], "a": 1, "why": "such + прилагательное + существительное во множественном числе."},
+  {"type": "choice", "q": "There was ___ noise that I couldn't concentrate.", "options": ["so much", "such much", "so many"], "a": 0, "why": "so much + неисчисляемое существительное."},
+  {"type": "gap", "q": "The film was ___ (so/such) boring that I fell asleep.", "a": ["so"], "why": "so + прилагательное."},
+  {"type": "gap", "q": "She is ___ (so/such) a talented musician.", "a": ["such"], "why": "such a + существительная группа."},
+  {"type": "gap", "q": "We had ___ (so/such) a lot of fun at the party.", "a": ["such"], "why": "устойчивая фраза such a lot of."},
+  {"type": "translate", "q": "Это был такой холодный день, что мы остались дома.", "a": ["it was such a cold day that we stayed home", "it was such a cold day we stayed home"], "why": "such a + прилагательное + существительное + that."},
+  {"type": "translate", "q": "Она говорит так быстро, что я не понимаю.", "a": ["she speaks so quickly that i don't understand", "she speaks so fast that i don't understand"], "why": "so + наречие + that."}
+ ]
+}

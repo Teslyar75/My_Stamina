@@ -1,0 +1,72 @@
+{
+ "n": 214,
+ "level": "B2",
+ "module": "b-adj",
+ "title": "Прилагательное и наречие (1)",
+ "en": "adjectives and adverbs 1",
+ "summary": "Прилагательное описывает существительное, наречие — глагол, прилагательное или другое наречие. После глаголов чувств ставится прилагательное, а good/well имеют особое распределение.",
+ "can_do": [
+  "Различать прилагательное и наречие по роли в предложении.",
+  "Правильно выбирать между good и well.",
+  "Ставить прилагательное после look, feel, smell, sound, taste.",
+  "Образувать наречия на -ly и знать исключения вроде friendly."
+ ],
+ "theory": [
+  {
+   "h": "Прилагательное и наречие: разные задачи",
+   "p": "Прилагательное всегда описывает существительное: a fast car, she is tired. Наречие модифицирует глагол, прилагательное или другое наречие: he drives fast, very tired, quite slowly. В русском часто одно слово служит и тем, и другим, в английском формы почти всегда разнятся.",
+   "formula": "a fast car · he drives fast · very tired · quite slowly"
+  },
+  {
+   "h": "Good и well: ловушка частотности",
+   "p": "Good — только прилагательное (good idea), well — обычно наречие (she sings well). Но well бывает прилагательным в значении «здоровый»: I'm not well today. Путаница возникает, потому что в русском «хорошо» работает везде, а в английском нужно выбирать форму по роли в предложении.",
+   "formula": "good idea · she sings well · I'm not well"
+  },
+  {
+   "h": "Глаголы чувств требуют прилагательное",
+   "p": "После look, feel, smell, sound, taste ставится прилагательное, а не наречие: you look tired (не tiredly), it smells good (не well). Эти глаголы связывают подлежащее с его состоянием, поэтому работают как be. Сравните: he looked angry (он выглядел злым) и he looked angrily at me (он злобно посмотрел на меня).",
+   "formula": "you look tired · it smells good · he looked angry · he looked angrily"
+  },
+  {
+   "h": "Образование наречий на -ly",
+   "p": "Большинство наречий образуется добавлением -ly к прилагательному: quick → quickly, careful → carefully. Если прилагательное заканчивается на -y с согласным перед ней, y меняется на i: easy → easily, happy → happily. Исключения и сложные случаи — в следующем юните.",
+   "formula": "quick → quickly · careful → carefully · easy → easily · happy → happily"
+  },
+  {
+   "h": "Прилагательные на -ly не являются наречиями",
+   "p": "Слова friendly, likely, lonely, silly, ugly, lovely оканчиваются на -ly, но это прилагательные. Наречий от них нет: нельзя сказать he smiled friendly, нужно перефразировать — he smiled in a friendly way. Также daily, weekly, yearly могут быть и прилагательными, и наречиями.",
+   "formula": "friendly · likely · lonely · silly · ugly · lovely · daily · weekly"
+  },
+  {
+   "h": "Порядок слов: прилагательное перед существительным, наречие после глагола",
+   "p": "Прилагательное ставится перед существительным или после связочного глагола: a beautiful day, the day is beautiful. Наречие стоит после глагола или в конце предложения: she sings beautifully. Если глагол имеет объект, наречие встаёт после объекта: he read the book quickly.",
+   "formula": "a beautiful day · the day is beautiful · she sings beautifully · he read the book quickly"
+  }
+ ],
+ "examples": [
+  {"en": "She is a good dancer.", "ru": "Она хорошая танцовщица."},
+  {"en": "She dances well.", "ru": "Она хорошо танцует."},
+  {"en": "You look tired today.", "ru": "Ты сегодня выглядишь уставшим."},
+  {"en": "The soup smells delicious.", "ru": "Суп пахнет вкусно."},
+  {"en": "He drove the car carefully.", "ru": "Он вёл машину осторожно."},
+  {"en": "It was a friendly atmosphere.", "ru": "Это была дружеская атмосфера."},
+  {"en": "We meet weekly.", "ru": "Мы встречаемся еженедельно."}
+ ],
+ "traps": [
+  {"bad": "He drives careful.", "good": "He drives carefully.", "why": "Наречие образа действия нужно -ly."},
+  {"bad": "She sings good.", "good": "She sings well.", "why": "Good — прилагательное, well — наречие."},
+  {"bad": "The flower smells beautifully.", "good": "The flower smells beautiful.", "why": "После smell прилагательное, описывающее предмет."},
+  {"bad": "He looked at me angry.", "good": "He looked at me angrily.", "why": "Look at — действие, требует наречие; look без предлога — состояние, требует прилагательное."}
+ ],
+ "exercises": [
+  {"type": "choice", "q": "She speaks English very ___.", "options": ["good", "well", "goodly"], "a": 1, "why": "Speaks — глагол, нужно наречие well."},
+  {"type": "choice", "q": "The cake tastes ___.", "options": ["delicious", "deliciously", "deliciousness"], "a": 0, "why": "После tastes прилагательное, описывающее торт."},
+  {"type": "choice", "q": "He looked at the painting ___.", "options": ["careful", "carefully", "care"], "a": 1, "why": "Looked at — действие, требует наречие carefully."},
+  {"type": "choice", "q": "It was a ___ mistake.", "options": ["silly", "silily", "sillily"], "a": 0, "why": "Silly — прилагательное на -ly, наречия нет."},
+  {"type": "gap", "q": "She played the piano ___ (beautiful).", "a": ["beautifully"], "why": "Прилагательное beautiful + -ly = beautifully."},
+  {"type": "gap", "q": "I'm not feeling ___ (well/good) today.", "a": ["well"], "why": "Здоровье — well как прилагательное."},
+  {"type": "gap", "q": "The team worked ___ (hard) to win.", "a": ["hard"], "why": "Hard — и прилагательное, и наречие без изменений."},
+  {"type": "translate", "q": "Она выглядит счастливой.", "a": ["she looks happy"], "why": "Looks + прилагательное."},
+  {"type": "translate", "q": "Он быстро решил задачу.", "a": ["he solved the problem quickly", "he quickly solved the problem"], "why": "Наречие образа действия quickly после глагола или перед ним."}
+ ]
+}
