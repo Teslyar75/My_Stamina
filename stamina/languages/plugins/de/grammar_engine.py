@@ -17,6 +17,7 @@ class GermanGrammarEngine(GrammarEngine):
         self.folder = folder or Path(__file__).parent / "grammar"
         self._courses: dict | None = None
         self._tables: dict | None = None
+        self._bridges: dict[str, dict] | None = None
         self._lessons_cache: dict[str, dict] = {}
         self._levels_cache: list[dict] | None = None
 
@@ -41,6 +42,18 @@ class GermanGrammarEngine(GrammarEngine):
             except (OSError, json.JSONDecodeError):
                 self._tables = {"version": 1, "tables": []}
         return self._tables
+
+    def _load_bridges(self) -> dict[str, dict]:
+        """Load bridges.json once: мостик RU/UA → DE для каждого урока."""
+        if self._bridges is None:
+            path = self.folder / "bridges.json"
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                data = {}
+            bridges = data.get("bridges", {}) if isinstance(data, dict) else {}
+            self._bridges = bridges if isinstance(bridges, dict) else {}
+        return self._bridges
 
     def _load_level(self, cefr: str) -> dict | None:
         """Load a single level file (a1.json, b2.json, etc.)."""
@@ -202,6 +215,10 @@ class GermanGrammarEngine(GrammarEngine):
                         lesson_copy["level"] = lvl["code"]
                         return lesson_copy
         return None
+
+    def bridge(self, lesson_id: str) -> dict:
+        """Мостик RU/UA → DE для урока: can_do / bridge / trap (пусто, если нет данных)."""
+        return self._load_bridges().get(lesson_id, {})
 
     def table(self, table_id: str) -> dict | None:
         """Return a single table by its id."""
