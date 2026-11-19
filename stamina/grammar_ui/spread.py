@@ -23,6 +23,23 @@ from stamina.english.ui import L, ScrollFrame, entry
 LIST_CHUNK = 8
 LESSON_CHUNK = 2
 
+# Живые развороты и один bind_all на окно (маркер на toplevel).
+# needcleanup=0: команда не удаляется вместе с виджетом, пока жив интерпретатор.
+_PAGE_KEY_LIVE: list = []
+
+
+def _dispatch_page_key(event):
+    for spread in tuple(_PAGE_KEY_LIVE):
+        if not getattr(spread, "_page_keys_live", False):
+            continue
+        try:
+            result = spread._on_page_key(event)
+        except tk.TclError:
+            continue
+        if result == "break":
+            return "break"
+    return None
+
 
 class GrammarSpread(tk.Frame):
     """Двухпанельный разворот грамматики. Данные — только через catalog."""
@@ -111,8 +128,26 @@ class GrammarSpread(tk.Frame):
 
     def _bind_page_keys(self) -> None:
         """PgUp/PgDn/Home/End крутят панель под курсором, если фокус не в поле ввода."""
+        self._page_keys_live = True
+        if self not in _PAGE_KEY_LIVE:
+            _PAGE_KEY_LIVE.append(self)
+        self.bind("<Destroy>", self._release_page_keys, add="+")
+        top = self.winfo_toplevel()
+        if getattr(top, "_grammar_page_keys_bound", False):
+            return
+        # needcleanup=0: команда живёт с интерпретатором, а не с виджетом
         for seq in self._PAGE_KEYS:
-            self.bind_all(seq, self._on_page_key, add="+")
+            self._bind(("bind", "all"), seq, _dispatch_page_key, add="+", needcleanup=0)
+        top._grammar_page_keys_bound = True
+
+    def _release_page_keys(self, event=None) -> None:
+        if event is not None and getattr(event, "widget", None) is not self:
+            return
+        self._page_keys_live = False
+        try:
+            _PAGE_KEY_LIVE.remove(self)
+        except ValueError:
+            pass
 
     def _sf_of(self, widget):
         x = widget

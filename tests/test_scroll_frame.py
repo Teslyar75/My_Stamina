@@ -51,6 +51,26 @@ def _warp(widget, x: int = 20, y: int = 30) -> None:
     widget.update()
 
 
+
+def _send_page_key(spread, widget, keysym: str) -> None:
+    """Вызвать обработчик клавиши напрямую.
+
+    На Windows event_generate клавиш срабатывает только у первого tk.Tk()
+    в процессе; в одном окне приложения настоящая клавиатура работает.
+    """
+    ev = type("Event", (), {})()
+    ev.widget = widget
+    ev.keysym = keysym
+    ev.x_root = 0
+    ev.y_root = 0
+    ev.keycode = 0
+    spread._on_page_key(ev)
+    try:
+        widget.winfo_toplevel().update()
+    except tk.TclError:
+        pass
+
+
 def test_linux_button5_scrolls_without_router(root):
     """Classic без роутера: реальное Linux-колесо — Button-4/5."""
     assert not wheel_router.installed(root)
@@ -204,18 +224,16 @@ def test_grammar_left_bar_and_page_keys(root, tmp_path):
         right.top()
         root.update()
         assert _frac(right) == 0
-        right.canvas.event_generate("<Next>")
-        root.update()
+        for seq in ("<Prior>", "<Next>", "<Home>", "<End>"):
+            assert root.bind_all(seq)
+        _send_page_key(spread, right.canvas, "Next")
         assert _frac(right) > 0
         after_next = _frac(right)
-        right.canvas.event_generate("<Prior>")
-        root.update()
+        _send_page_key(spread, right.canvas, "Prior")
         assert _frac(right) < after_next
-        right.canvas.event_generate("<End>")
-        root.update()
+        _send_page_key(spread, right.canvas, "End")
         assert _frac(right) > 0.5
-        right.canvas.event_generate("<Home>")
-        root.update()
+        _send_page_key(spread, right.canvas, "Home")
         assert _frac(right) == 0
 
         # фокус в Entry — Home/End не двигают урок
@@ -236,10 +254,15 @@ def test_grammar_left_bar_and_page_keys(root, tmp_path):
         field = entries[0]
         # прокрутить, чтобы поле точно можно было сфокусировать
         field.focus_set()
+        try:
+            root.tk.call("focus", "-force", str(field))
+        except tk.TclError:
+            pass
         root.update()
-        _warp(right.canvas, 40, 80)
-        field.event_generate("<End>")
-        root.update()
+        focus = root.focus_get()
+        if focus is None or str(focus.winfo_class()) not in ("Entry", "TEntry"):
+            pytest.skip("не удалось сфокусировать Entry")
+        _send_page_key(spread, field, "End")
         assert _frac(right) == 0
         page.destroy()
     finally:
@@ -268,10 +291,68 @@ def test_english_lesson_page_keys_and_bar(root, tmp_path):
     right.canvas.focus_set()
     right.top()
     root.update()
-    right.canvas.event_generate("<End>")
-    root.update()
+    assert page.bind_all("<End>") and page.bind_all("<Home>")
+    _send_page_key(page, right.canvas, "End")
     assert _frac(right) > 0.5
-    right.canvas.event_generate("<Home>")
-    root.update()
+    _send_page_key(page, right.canvas, "Home")
     assert _frac(right) == 0
     page.destroy()
+
+def test_page_keys_survive_new_tk_after_destroy(tmp_path):
+    """После destroy() + нового Tk() обработчик Home/End крутит новый разворот."""
+    from stamina.english.pages_grammar import GrammarPage
+    from stamina.english.progress import Progress
+
+    def open_lesson(r, path):
+        ctx = SimpleNamespace(progress=Progress(path=path / "english.json"),
+                              status=lambda *a, **k: None, audio_button=None)
+        page = GrammarPage(r, ctx)
+        page.pack(fill=tk.BOTH, expand=True)
+        page.refresh()
+        _pump(page, r, 5.0)
+        first = page.catalog.first_unit(page._level)
+        assert first is not None
+        page._open_unit(first)
+        _pump(page, r, 5.0)
+        return page
+
+    def press_end(page, r):
+        right = page._lesson_sf
+        r.update()
+        assert right.inner.winfo_height() > right.canvas.winfo_height()
+        _warp(right.canvas, 40, 80)
+        right.canvas.focus_set()
+        right.top()
+        r.update()
+        assert page.bind_all("<End>")
+        _send_page_key(page, right.canvas, "End")
+        return _frac(right)
+
+    try:
+        r1 = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    r1.geometry("900x500+0+0")
+    r1.update()
+    try:
+        p1 = open_lesson(r1, tmp_path / "a")
+        assert press_end(p1, r1) > 0.5
+        p1.destroy()
+    finally:
+        try:
+            r1.destroy()
+        except tk.TclError:
+            pass
+
+    r2 = tk.Tk()
+    r2.geometry("900x500+0+0")
+    r2.update()
+    try:
+        p2 = open_lesson(r2, tmp_path / "b")
+        assert press_end(p2, r2) > 0.5
+        p2.destroy()
+    finally:
+        try:
+            r2.destroy()
+        except tk.TclError:
+            pass
