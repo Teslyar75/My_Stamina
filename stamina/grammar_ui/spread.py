@@ -806,6 +806,24 @@ class GrammarSpread(tk.Frame):
         field.pack(side=tk.LEFT, ipady=px(4))
         btn = HudButton(row, _t("ПРОВЕРИТЬ"), None, height=26, font_size=8)
         btn.pack(side=tk.LEFT, padx=(px(6), 0))
+        if ex.get("hint_enabled"):
+            hint_btn = HudButton(row, _t("ПОДСКАЗКА"), None, height=26, font_size=8, color=MUTED)
+            hint_btn.pack(side=tk.LEFT, padx=(px(6), 0))
+
+            def show_hint(_e=None, i=idx, n=note, item=ex) -> None:
+                if i in self._answers:
+                    return
+                hint = item.get("hint") or ""
+                maker = getattr(self.catalog, "hint_text", None)
+                if callable(maker):
+                    hint = maker(item)
+                if hint:
+                    try:
+                        n.configure(text=hint, fg=MUTED)
+                    except tk.TclError:
+                        pass
+
+            hint_btn.command = show_hint
         note.pack(fill=tk.X, padx=px(14), pady=(px(2), px(6)))
         card._gap_var = var  # noqa: SLF001
         card._gap_field = field  # noqa: SLF001
