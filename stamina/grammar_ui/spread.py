@@ -473,7 +473,7 @@ class GrammarSpread(tk.Frame):
         threading.Thread(target=worker, daemon=True).start()
 
     def _on_lesson(self, token: int, n, data, err) -> None:
-        if token != self._token or not self.winfo_exists():
+        if token != self._token or not self.winfo_exists() or self._table_id is not None:
             return
         self._clear_lesson()
         if err is not None:
@@ -662,6 +662,7 @@ class GrammarSpread(tk.Frame):
         loader = getattr(self.catalog, "load_table", None)
         if not callable(loader):
             return
+        self._token += 1
         self._table_id = table_id
         self._cancel("lesson")
         for w in self._lesson_sf.inner.winfo_children():
