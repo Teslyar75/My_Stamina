@@ -217,8 +217,8 @@ class LoungeScreen(tk.Frame):
                     "[radio] Module ready ✓",
                 ]
                 for i, line in enumerate(lines):
-                    color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=color, anchor="nw", font=theme.font(7, mono=True))
+                    line_color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
+                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
             else:
                 for r in range(3):
                     for col in range(8):

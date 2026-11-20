@@ -7,14 +7,13 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import tkinter as tk
-from collections import deque
 
 from stamina import theme
-from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, TEXT, px
 
 from .base import GameShell
 from . import store
-from .docker_sim import DockerSimulator, DockerError
+from .docker_sim import DockerSimulator
 
 
 # ─── Mission Data ──────────────────────────────────────────────────────────────

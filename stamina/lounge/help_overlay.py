@@ -7,7 +7,7 @@ import tkinter as tk
 from typing import TYPE_CHECKING
 
 from stamina import theme
-from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, TEXT, px
+from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, TEXT, px
 
 from stamina.lounge.help_texts import load_help, load_overview
 

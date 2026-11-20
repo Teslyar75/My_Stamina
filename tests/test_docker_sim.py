@@ -5,12 +5,6 @@ import pytest
 
 from stamina.lounge.docker_sim import (
     DockerSimulator,
-    ImageNotFound,
-    ContainerNameInUse,
-    PortAlreadyAllocated,
-    NoSuchContainer,
-    BuildError,
-    ComposeError,
 )
 
 
