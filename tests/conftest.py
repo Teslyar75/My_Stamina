@@ -16,6 +16,8 @@ import pytest
 os.environ.setdefault("STAR_TYPING_NO_STALL_WATCH", "1")
 # Тесты не должны говорить вслух через espeak-ng / spd-say на Linux.
 os.environ.setdefault("STAR_TYPING_NO_LINUX_TTS", "1")
+# Тесты не должны включать звуки пульта и голос Ориона (обычный запуск приложения не затрагивается).
+os.environ.setdefault("STAR_TYPING_SILENT", "1")
 
 # DPI awareness must be set before the first Tk window of the process, exactly like
 # stamina/app.py does. Set later (inside one test) Windows ignores it once another

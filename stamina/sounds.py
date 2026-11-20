@@ -11,6 +11,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import math
+import os
 import random
 import struct
 import wave
@@ -120,6 +121,13 @@ def generate_all(folder: Path = SOUND_DIR) -> None:
             _write(folder / f"{name}_v{level}.wav", samples, vol)
 
 
+
+def _test_silent() -> bool:
+    """Тесты могут выставить STAR_TYPING_SILENT=1, чтобы не играть звуки. На обычный запуск не влияет."""
+    v = (os.environ.get("STAR_TYPING_SILENT") or os.environ.get("STAMINA_SILENT") or "").strip().lower()
+    return v in {"1", "true", "yes", "on"}
+
+
 # --- Проигрывание ------------------------------------------------------------
 
 class SoundBoard:
@@ -167,7 +175,7 @@ class SoundBoard:
         return alt if alt.is_file() else None
 
     def _play(self, name: str) -> None:
-        if not (self.enabled and self.available):
+        if _test_silent() or not (self.enabled and self.available):
             return
         path = self._skin_path(name)
         if path is None:
