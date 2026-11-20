@@ -386,7 +386,7 @@ class DockerTrainerGame(GameShell):
         c.create_rectangle(0, 0, w, h, fill=BG, outline="")
 
         # Terminal area (most of screen)
-        term_h = h - px(60)
+        term_h = h - px(92)
         c.create_rectangle(px(8), px(8), w - px(8), term_h, fill="#0D1117", outline=MUTED, width=1)
 
         # Output lines
@@ -398,7 +398,7 @@ class DockerTrainerGame(GameShell):
         # Show last N lines
         visible = self.output_lines[-max_lines:] if len(self.output_lines) > max_lines else self.output_lines
         y = start_y
-        for text, color in visible:
+        for text, color in reversed(visible):
             if y < px(16):
                 break
             if text:
@@ -409,9 +409,11 @@ class DockerTrainerGame(GameShell):
                 y -= line_h
 
         # Input line
-        input_y = term_h + px(4)
-        c.create_text(px(16), input_y, text="$", fill=AMBER, anchor="nw", font=font)
-        c.create_text(px(30), input_y, text=self.command_buffer + "█", fill=TEXT, anchor="nw", font=font, width=w - px(40))
+        in_top, in_bot = term_h + px(6), h - px(46)
+        c.create_rectangle(px(8), in_top, w - px(8), in_bot, fill="#0D1117", outline=AMBER, width=1)
+        input_y = (in_top + in_bot) // 2
+        c.create_text(px(16), input_y, text="$", fill=AMBER, anchor="w", font=theme.font(13, mono=True))
+        c.create_text(px(34), input_y, text=self.command_buffer + "█", fill=TEXT, anchor="w", font=theme.font(13, mono=True), width=w - px(48))
 
         # Status bar
         status_y = h - px(40)
