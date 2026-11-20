@@ -48,7 +48,7 @@ KEYSYM_ACTIONS = {
     "down": ("move", 0, 1), "s": ("move", 0, 1),
     "space": ("dig",), "e": ("place_block",), "q": ("finds",),
     "b": ("build_plan",), "tab": ("cycle_priority",), "g": ("gallery",),
-    "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
+    "m": ("mixed_mode",), "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
     "escape": ("esc",), "p": ("pause",), "f1": ("help",),
@@ -280,8 +280,16 @@ class TrainerGame(GameShell):
         elif name == "home":
             self.camera.reset(*self.model.robot)
             self.redraw()
+        elif name == "mixed_mode":
+            self._toggle_mixed_mode()
+            self.redraw()
 
-    # -- действия ------------------------------------------------------------
+    def _toggle_mixed_mode(self) -> None:
+        """Переключает смешанный режим: Orion-foreman копает и достраивает приоритетную платформу/базу."""
+        self.model._mixed_mode = not getattr(self.model, "_mixed_mode", False)
+        status = _t("ВКЛ") if self.model._mixed_mode else _t("ВЫКЛ")
+        self.show_toast(_t("Смешанный режим {0}").format(status))
+
     def do_move(self, dx: int, dy: int) -> bool:
         moved = self.model.move(dx, dy)
         self.camera.track(*self.model.robot)

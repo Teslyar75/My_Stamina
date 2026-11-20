@@ -192,9 +192,16 @@ VARIANT_DESC: dict[str, tuple[str, ...]] = {
 # Ресурсы, требующие A2 (глина/металл) для доступа к центру
 DEEP_RESOURCES = {"iron", "quartz"}
 
+HOLD_CAP_WITH_UPGRADES = {
+    "soil_compactor": 5,
+    "default": 10,
+}
+
+
 # ─── система прогрессии: разблокировка вариантов и роботов через язык ─────────
 # Уровни владения языком (0-5): 0=новичок, 1=базовый, 2=средний, 3=продвинутый, 4=эксперт, 5=мастер
-# Пилот видит все варианты в галерее, но может строить только разблокированные.
+# Уровень вычисляется как максимум из английского и немецкого прогресса.
+# Пилот видит все варианты в galerie, но может строить только разблокированные.
 # Это создаёт желание учить язык, чтобы получить доступ к лучшим постройкам.
 
 PROGRESSION_TIERS = {
@@ -236,41 +243,70 @@ PROGRESSION_TIERS = {
     },
 }
 
+
+def get_language_level_from_tiers(language_level: int) -> int:
+    """Возвращает уровень для использования в PROGRESSION_TIERS на основе объединенного языка.
+    Уровень 0-5 от английского + немецкого."""
+    return min(language_level, 5)
+
+def _language_xp(path: Path) -> int:
+    """Читает XP из файла прогресса языка."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data.get("xp", {}).get("total", 0)
+    except Exception:
+        return 0
+
+
 def get_language_level() -> int:
     """Возвращает текущий уровень языка пилота (0-5).
-    Основан на XP модуля «Английский»: уровень = floor(sqrt(XP/50)) + 1.
-    Ограничен диапазоном 0-5 для прогрессии терраформера."""
+    Объединяет прогресс английского и немецкого языков."""
     try:
         from stamina.english.progress import Progress
         from stamina import pilots
         pilot_dir = pilots.active_dir()
-        prog = Progress(pilot_dir / "english.json")
-        lvl, _, _ = prog.level()
-        return max(0, min(5, lvl - 1))  # уровень 1 = 0, уровень 6 = 5
+        eng_prog = Progress(pilot_dir / "english.json")
+        eng_lvl, _, _ = eng_prog.level()
+        eng_level = max(0, min(5, eng_lvl - 1))
     except Exception:
-        pass
-    return 0
+        eng_level = 0
+
+    try:
+        germ_path = pilot_dir / "german.json"
+        germ_xp = _language_xp(germ_path)
+        germ_level = int(germ_xp ** 0.5 / 50 ** 0.5) if germ_xp > 0 else 0
+        germ_level = max(0, min(5, germ_level))
+    except Exception:
+        germ_level = 0
+
+    # Уровень — максимум из английского и немецкого
+    level = max(eng_level, germ_level)
+    return level
+
+
+def _tier_index(language_level: int | None = None) -> int:
+    """Возвращает индекс тира на основе объединенного языка."""
+    if language_level is None:
+        language_level = get_language_level()
+    return min(language_level, 5)
 
 
 def get_unlocked_variants(resource: str, language_level: int | None = None) -> tuple[int, ...]:
     """Возвращает индексы разблокированных вариантов для ресурса."""
-    if language_level is None:
-        language_level = get_language_level()
-    tier = PROGRESSION_TIERS.get(min(language_level, 5), PROGRESSION_TIERS[0])
+    tier_idx = _tier_index(language_level)
+    tier = PROGRESSION_TIERS[tier_idx]
     return tier["platform_variants"].get(resource, (0,))
 
 
 def get_unlocked_robots(language_level: int | None = None) -> tuple[str, ...]:
-    if language_level is None:
-        language_level = get_language_level()
-    tier = PROGRESSION_TIERS.get(min(language_level, 5), PROGRESSION_TIERS[0])
+    tier_idx = _tier_index(language_level)
+    tier = PROGRESSION_TIERS[tier_idx]
     return tier["robots"]
 
 
 def get_unlocked_upgrades(language_level: int | None = None) -> tuple[str, ...]:
-    if language_level is None:
-        language_level = get_language_level()
-    tier = PROGRESSION_TIERS.get(min(language_level, 5), PROGRESSION_TIERS[0])
+    tier_idx = _tier_index(language_level)
+    tier = PROGRESSION_TIERS[tier_idx]
     return tier["upgrades"]
 
 
@@ -381,11 +417,20 @@ def generate_finds(seed: int, w: int, h: int, exclude=()) -> dict:
 class TrainerModel:
     """Поле, робот, отсеки и фундамент учебной смены."""
 
-    def __init__(self, w: int = GRID_W, h: int = GRID_H, depth: int = 1,
+    def __init__(self, w: int = GRID_W, h: int = GRID_H, depth: int | None = None,
                  seed: int | None = None) -> None:
         self.w = max(1, int(w))
         self.h = max(1, int(h))
-        self.depth = max(1, min(int(depth), len(LAYERS)))
+        lang_level = get_language_level()
+        if depth is None:
+            if lang_level >= 3:
+                self.depth = 3
+            elif lang_level >= 2:
+                self.depth = 2
+            else:
+                self.depth = 1
+        else:
+            self.depth = max(1, min(int(depth), len(LAYERS) + 2))
         self.dug = [[0] * self.w for _ in range(self.h)]
         self.robot = [self.w // 2, self.h // 2]
         self.facing = (1, 0)
@@ -394,9 +439,11 @@ class TrainerModel:
         for r in RESOURCES:
             self.holds.setdefault(r, 0)
         self.active_hold = "soil"
+        self.upgrades: tuple[str, ...] = get_unlocked_upgrades()
         self.blocks: list[tuple[int, int]] = []          # блоки на фундаменте (старая система)
         self.platform_blocks: set[tuple[int, int]] = set()  # все блоки платформ (для отрисовки)
         self.walls_open = False
+        self.buildings: list[BuildingBlueprint] = []
         self.seed = int(seed) if seed is not None else new_seed()
         exclude = set(self.site_cells()) | {tuple(self.robot)}
         self.finds = generate_finds(self.seed, self.w, self.h, exclude)
@@ -487,15 +534,22 @@ class TrainerModel:
         return best
 
     # -- размещение блоков ------------------------------------------------------
+    def _hold_cap(self) -> int:
+        """Возвращает текущую вместимость отсека с учетом апгрейдов."""
+        if "soil_compactor" in self.upgrades:
+            return HOLD_CAP_WITH_UPGRADES["soil_compactor"]
+        return HOLD_CAP_WITH_UPGRADES["default"]
+
     def try_place_block(self, x: int, y: int) -> tuple[bool, str]:
         """
         Пытается поставить блок в клетку (x, y).
         Возвращает (success, message).
-        Блок тратится из отсека грунта (нужно 10).
+        Блок тратится из отсека грунта (по умолчанию 10, или 5 с прессом).
         """
         if not (0 <= x < self.w and 0 <= y < self.h):
             return False, "за пределами поля"
-        if self.holds.get("soil", 0) < HOLD_CAP:
+        cap = self._hold_cap()
+        if self.holds.get("soil", 0) < cap:
             return False, "отсек грунта не полон"
         # проверяем, принадлежит ли клетка какой-то платформе
         target_platform = None
@@ -528,6 +582,7 @@ class TrainerModel:
     def tick_extraction(self) -> dict[str, int]:
         """Вызывается каждый тик для завершённых платформ. Возвращает словарь наград."""
         gained: dict[str, int] = {}
+        yield_mult = 1.5 if "yield_booster" in self.upgrades else 1.0
         for p in self.platforms:
             if p.complete:
                 res, base_amount = PLATFORM_YIELD.get(p.resource, (p.resource, 0))
@@ -535,7 +590,7 @@ class TrainerModel:
                     mult = 1.0
                     if p.variant_index < len(VARIANT_YIELD_MULT.get(p.resource, (1.0,))):
                         mult = VARIANT_YIELD_MULT[p.resource][p.variant_index]
-                    amount = int(base_amount * mult)
+                    amount = int(base_amount * mult * yield_mult)
                     self.holds[res] = self.holds.get(res, 0) + amount
                     gained[res] = gained.get(res, 0) + amount
         return gained
@@ -556,6 +611,16 @@ class TrainerModel:
         y = max(0, min(self.h - 1, self.robot[1] + dy))
         moved = (x, y) != (self.robot[0], self.robot[1])
         self.robot = [x, y]
+        # auto_unloader: авто-укладка блока при заезде на клетку схемы
+        if "auto_unloader" in self.upgrades and moved:
+            for p in self.platforms:
+                if not p.complete and p.is_cell_part(x, y):
+                    success = p.try_add_block(x, y)
+                    if success:
+                        self.platform_blocks.add((x, y))
+                        if p.built_count() >= p.total_cells():
+                            p.complete = True
+                            self._assign_next_priority()
         return moved
 
     def dig(self) -> str:
@@ -605,6 +670,71 @@ class TrainerModel:
             return "complete"
         return "ok"
 
+    def _check_resources(self, resource: str, amount: int) -> bool:
+        """Проверяет, достаточно ли ресурса."""
+        return self.holds.get(resource, 0) >= amount
+
+    def build_shelter(self) -> str | None:
+        """Строит укрытие (стена) из kamienia + воды. Возвращает сообщение или None."""
+        if not self.walls_open:
+            return None
+        if not self._check_resources("stone", 1):
+            return _t("Не хватает камня")
+        if not self._check_resources("water", 1):
+            return _t("Не хватает воды")
+        self.holds["stone"] = 0
+        self.holds["water"] = 0
+        center = None
+        for p in self.platforms:
+            if not p.complete:
+                center = p.center
+                break
+        if center is None:
+            # если платформ нет, используем текущую позицию робота
+            center = tuple(self.robot)
+        self.buildings.append(BuildingBlueprint(_BUILDING_SHELTER, center))
+        return _t("Укрытие построено! +10 очков")
+
+    def build_greenhouse(self) -> str | None:
+        """Строит теплицу из органики + воды. Возвращает сообщение или None."""
+        if not self.walls_open:
+            return None
+        if not self._check_resources("organic", 1):
+            return _t("Не хватает органики")
+        if not self._check_resources("water", 1):
+            return _t("Не хватает воды")
+        self.holds["organic"] = 0
+        self.holds["water"] = 0
+        center = None
+        for p in self.platforms:
+            if not p.complete:
+                center = p.center
+                break
+        if center is None:
+            center = tuple(self.robot)
+        self.buildings.append(BuildingBlueprint(_BUILDING_GREENHOUSE, center))
+        return _t("Теплица построена! +15 очков")
+
+    def build_energy_panel(self) -> str | None:
+        """Строит энергопанель из кварца + железа. Возвращает сообщение или None."""
+        if not self.walls_open:
+            return None
+        if not self._check_resources("quartz", 1):
+            return _t("Не хватает кварца")
+        if not self._check_resources("iron", 1):
+            return _t("Не хватает железа")
+        self.holds["quartz"] = 0
+        self.holds["iron"] = 0
+        center = None
+        for p in self.platforms:
+            if not p.complete:
+                center = p.center
+                break
+        if center is None:
+            center = tuple(self.robot)
+        self.buildings.append(BuildingBlueprint(_BUILDING_ENERGY_PANEL, center))
+        return _t("Энергопанель построена! +20 очков")
+
     def progress(self) -> tuple[int, int]:
         return len(self.blocks), len(self.site_cells())
 
@@ -626,6 +756,14 @@ class TrainerModel:
                 "priority": p.priority,
                 "variant_index": p.variant_index,
             })
+        buildings_data = []
+        for b in self.buildings:
+            buildings_data.append({
+                "type": b.type,
+                "center": list(b.center),
+                "built": b.built,
+                "score": b.score,
+            })
         return {
             "kind": "terraformer_trainer",
             "version": 3,
@@ -642,6 +780,7 @@ class TrainerModel:
             "revealed": [[x, y] for x, y in sorted(self.revealed)],
             "finds_count": dict(self.finds_count),
             "platforms": platforms_data,
+            "buildings": buildings_data,
         }
 
     @classmethod
@@ -706,12 +845,9 @@ class TrainerModel:
                     bx, by = int(item[0]), int(item[1])
                 except (TypeError, ValueError):
                     continue
-                cell = (bx, by)
-                if model.on_site(bx, by) and cell not in seen:
-                    seen.add(cell)
-                    model.blocks.append(cell)
-
-        model.walls_open = bool(d.get("walls_open")) or len(model.blocks) >= len(model.site_cells())
+                if 0 <= bx < model.w and 0 <= by < model.h:
+                    seen.add((bx, by))
+            model.blocks = list(seen)
 
         revealed = d.get("revealed")
         if isinstance(revealed, list):
@@ -775,10 +911,51 @@ class TrainerModel:
                     model.platform_blocks.add((int(item[0]), int(item[1])))
                 except Exception:  # noqa: BLE001
                     pass
+        # восстанавливаем объекты базы
+        buildings_data = d.get("buildings")
+        if isinstance(buildings_data, list):
+            for bd in buildings_data:
+                try:
+                    btype = str(bd.get("type", ""))
+                    center = tuple(bd.get("center", (0, 0)))
+                    built = bool(bd.get("built", False))
+                    score = int(bd.get("score", 0))
+                    b = BuildingBlueprint(btype, center)
+                    b.built = built
+                    b.score = score
+                    model.buildings.append(b)
+                except Exception:  # noqa: BLE001
+                    pass
         # также восстанавливаем holds для ресурсов платформ
         for r in RESOURCES:
             model.holds.setdefault(r, 0)
         return model
+
+
+# объекты базы (построенные сооружения)
+_BUILDING_SHELTER = "shelter"
+_BUILDING_GREENHOUSE = "greenhouse"
+_BUILDING_ENERGY_PANEL = "energy_panel"
+
+
+class BuildingBlueprint:
+    """Чертеж объекта базы."""
+    type: str
+    center: tuple[int, int]
+    built: bool = False
+    score: int = 0
+
+    def __init__(self, btype: str, center: tuple[int, int]) -> None:
+        self.type = btype
+        self.center = center
+        if btype == _BUILDING_SHELTER:
+            self.score = 10
+        elif btype == _BUILDING_GREENHOUSE:
+            self.score = 15
+        elif btype == _BUILDING_ENERGY_PANEL:
+            self.score = 20
+        else:
+            self.score = 0
 
 
 class Camera:
