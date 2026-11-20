@@ -515,9 +515,9 @@ class TrainerHelpTkTest(unittest.TestCase):
     def test_f1_opens_and_closes_and_blocks_keys(self) -> None:
         g = self.game
         self.assertTrue(g.on_help())
-        self.assertEqual(g.overlay, "help")
+        self.assertTrue(g.help_overlay.is_visible())
         self.root.update()
-        self.assertIn("Ресурсы и находки", self._texts("help"))
+        self.assertIn("Что нужно сделать", self._texts("help_overlay"))
         self.assertTrue(g.help_fits)                   # без прокрутки на 1280×720
         before = list(g.model.robot)
         g.on_key(self._Event("d", 68))
@@ -527,12 +527,12 @@ class TrainerHelpTkTest(unittest.TestCase):
         self.assertEqual(g.model.holds["soil"], 0)
         self.assertEqual(g.camera.zoom, 1.0)
         g.on_key(self._Event("Escape", 27))
-        self.assertIsNone(g.overlay)
+        self.assertFalse(g.help_overlay.is_visible())
         self.assertFalse(g.paused)                     # Esc закрыл инструкцию, а не поставил паузу
         g.on_key(self._Event("F1", 112))
-        self.assertEqual(g.overlay, "help")
+        self.assertTrue(g.help_overlay.is_visible())
         g.on_key(self._Event("F1", 112))
-        self.assertIsNone(g.overlay)
+        self.assertFalse(g.help_overlay.is_visible())
 
     def test_lounge_delegates_f1_only_in_trainer(self) -> None:
         from stamina.lounge.screen import LoungeScreen
@@ -550,10 +550,10 @@ class TrainerHelpTkTest(unittest.TestCase):
             self.assertFalse(scr.on_help())            # лобби — обычная справка страницы
             scr.launch("trainer")
             self.assertTrue(scr.on_help())
-            self.assertEqual(scr.game.overlay, "help")
+            self.assertTrue(scr.game.help_overlay.is_visible())
             scr.show_lobby()
             scr.launch("snake")
-            self.assertFalse(scr.on_help())
+            self.assertTrue(scr.on_help())  # у всех игр Lounge теперь есть F1/«?»
         finally:
             scr.close()
             scr.destroy()

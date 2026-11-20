@@ -282,6 +282,9 @@ class LoungeScreen(tk.Frame):
         return False
 
     def on_key(self, e: tk.Event) -> None:
+        # F1 уже обрабатывает cockpit.open_help → game.on_help; не слать второй раз.
+        if getattr(e, "keysym", "") == "F1":
+            return
         if self.game is not None:
             self.game.on_key(e)
 

@@ -205,7 +205,17 @@ class DockerTrainerGame(GameShell):
         super().stop()
         self.save_progress()
 
+    def help_level_id(self) -> str | None:
+        if getattr(self, "sandbox_mode", False):
+            return "sandbox"
+        try:
+            return MISSIONS[self.mission_idx]["id"]
+        except (IndexError, KeyError, TypeError):
+            return "mission_1"
+
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         k = e.keysym
         state = getattr(e, "state", 0) or 0
         ctrl = bool(state & 0x4)
@@ -354,36 +364,10 @@ class DockerTrainerGame(GameShell):
         pass  # Handled in redraw
 
     def on_help(self) -> bool:
-        """F1: показать справку по текущей миссии и командам."""
-        mission = MISSIONS[self.mission_idx]
-        help_text = [
-            _t("=== СПРАВКА ==="),
-            "",
-            mission["desc"],
-            "",
-            _t("Текущая задача: {0}").format(mission["hint"]),
-            "",
-            _t("Основные команды:"),
-            _t("  docker run -d IMAGE           — запуск в фоне"),
-            _t("  docker run -d -p H:C --name N IMAGE  — с портом и именем"),
-            _t("  docker ps [-a]                — список контейнеров"),
-            _t("  docker logs NAME              — логи контейнера"),
-            _t("  docker stop NAME              — остановить"),
-            _t("  docker rm [-f] NAME           — удалить"),
-            _t("  docker images                 — список образов"),
-            _t("  docker volume create NAME     — создать том"),
-            _t("  docker network create NAME    — создать сеть"),
-            _t("  docker compose up -d SVC...   — запуск стека"),
-            _t("  docker system prune           — очистка"),
-            "",
-            _t("Доступные образы: ship/radio, ship/orion, ship/lab, ship/scanner, ship/base"),
-            _t("Порты по умолчанию: radio=8080, orion=9000, lab=8888, scanner=7777, base=5432"),
-            "",
-            _t("Управление: ↑/↓ — история, Tab — автодополнение, Ctrl+L — очистить экран"),
-            _t("F1 — эта справка, Esc — пауза/меню"),
-        ]
-        self._show_overlay(help_text)
-        return True
+        """F1 / «?»: общий оверлей справки по текущей миссии."""
+        if getattr(self, "overlay", None):
+            self.overlay = None
+        return super().on_help()
 
     def _show_overlay(self, lines: list[str]) -> None:
         self.overlay = lines

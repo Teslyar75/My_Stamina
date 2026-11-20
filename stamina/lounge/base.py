@@ -11,6 +11,7 @@ from stamina.hud import HudButton, HudPanel
 from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, px
 
 from . import store
+from .help_overlay import HelpOverlay
 
 
 class GameShell(tk.Frame):
@@ -48,6 +49,8 @@ class GameShell(tk.Frame):
         HudButton(bar, _t("ЗАНОВО"), self.restart, height=34, font_size=10, width=100, color=AMBER).pack(
             side=tk.LEFT, padx=(0, px(4)))
         HudButton(bar, _t("← В ЛОББИ"), self._back, height=34, font_size=10, width=120).pack(side=tk.LEFT)
+        self.btn_help = HudButton(bar, "?", self.on_help, height=34, font_size=12, width=40, color=AMBER)
+        self.btn_help.pack(side=tk.LEFT, padx=(px(8), 0))
         self.lbl_hint = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(10))
         self.lbl_hint.pack(side=tk.RIGHT)
 
@@ -60,7 +63,20 @@ class GameShell(tk.Frame):
         self.canvas.pack(fill=tk.BOTH, expand=True)
         self._canvas_size = (0, 0)
         self.canvas.bind("<Configure>", self._on_canvas_configure)
+        self.help_overlay = HelpOverlay(self)
+        self._wrap_redraw_for_help()
         self._update_labels()
+
+    def _wrap_redraw_for_help(self) -> None:
+        orig = self.redraw
+
+        def _redraw_with_help(*a, **k):
+            orig(*a, **k)
+            ov = getattr(self, "help_overlay", None)
+            if ov is not None and ov.is_visible():
+                ov.draw()
+
+        self.redraw = _redraw_with_help
 
     def _on_canvas_configure(self, e: tk.Event) -> None:
         size = (int(e.width), int(e.height))
@@ -168,7 +184,39 @@ class GameShell(tk.Frame):
     def redraw(self) -> None:
         pass
 
+    def help_game_id(self) -> str:
+        return self.game_id
+
+    def help_level_id(self) -> str | None:
+        """id уровня из help_texts/<game>.json; None — только обзор."""
+        return None
+
+    def on_help(self) -> bool:
+        """F1 / «?»: открыть или закрыть оверлей справки. True — событие обработано."""
+        ov = getattr(self, "help_overlay", None)
+        if ov is None:
+            return False
+        ov.toggle()
+        return True
+
+    def handle_help_keys(self, e: tk.Event) -> bool:
+        """True, если клавиша съедена справкой (F1 или Esc при открытом оверлее)."""
+        ov = getattr(self, "help_overlay", None)
+        if ov is None:
+            return False
+        k = e.keysym
+        if k == "F1":
+            self.on_help()
+            return True
+        if ov.is_visible():
+            if k == "Escape":
+                ov.hide()
+            return True
+        return False
+
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         k = e.keysym
         if k in ("Escape", "p", "P"):
             # после поражения Esc должен перезапускать (оверлей «Esc / ЗАНОВО»),

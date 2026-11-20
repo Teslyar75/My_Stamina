@@ -210,11 +210,23 @@ class TrainerGame(GameShell):
             pass
 
     # -- оверлеи ---------------------------------------------------------------
+    def help_game_id(self) -> str:
+        return "terraformer"
+
+    def help_level_id(self) -> str | None:
+        try:
+            from stamina.terraformer_trainer import get_language_level
+            lvl = int(get_language_level())
+        except Exception:
+            lvl = 0
+        return f"stage_{max(0, min(5, lvl))}"
+
     def on_help(self) -> bool:
-        """F1: открыть/закрыть инструкцию. True — F1 обработан тренажёром."""
-        self.overlay = None if self.overlay == "help" else "help"
-        self.redraw()
-        return True
+        """F1 / «?»: общий оверлей справки текущего этапа языка."""
+        if self.overlay == "help":
+            self.overlay = None
+        return super().on_help()
+
 
     def toggle_finds(self) -> str | None:
         self.overlay = None if self.overlay == "finds" else "finds"
@@ -235,6 +247,8 @@ class TrainerGame(GameShell):
         return act
 
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         act = self._action(e)
         name = act[0] if act else None
         # открыт оверлей — работают только его клавиши закрытия
@@ -501,6 +515,9 @@ class TrainerGame(GameShell):
 
     # -- колесо --------------------------------------------------------------
     def on_wheel(self, direction: int, ctrl: bool, shift: bool) -> None:
+        ov = getattr(self, "help_overlay", None)
+        if ov is not None and ov.is_visible():
+            return
         if self.overlay is not None:
             return                       # инструкция/находки не прокручиваются
         if ctrl:

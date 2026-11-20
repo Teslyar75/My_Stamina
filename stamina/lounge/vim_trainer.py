@@ -350,7 +350,15 @@ class VimTrainerGame(GameShell):
         self._load_lesson(0)
         self.set_score(0)
 
+    def help_level_id(self) -> str | None:
+        try:
+            return LESSONS[self.lesson_idx]["id"]
+        except (IndexError, KeyError, TypeError):
+            return "motion_basic"
+
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         if self.state is None:
             return
         k = e.keysym.lower()
