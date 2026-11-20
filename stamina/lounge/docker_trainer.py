@@ -402,8 +402,11 @@ class DockerTrainerGame(GameShell):
             if y < px(16):
                 break
             if text:
-                c.create_text(px(16), y, text=text, fill=color, anchor="nw", font=font, width=w - px(32))
-            y -= line_h
+                tid = c.create_text(px(16), y + line_h, text=text, fill=color, anchor="sw", font=font, width=w - px(32))
+                bb = c.bbox(tid)
+                y = (bb[1] if bb else y) - px(2) - line_h
+            else:
+                y -= line_h
 
         # Input line
         input_y = term_h + px(4)
