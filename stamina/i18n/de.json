@@ -3301,5 +3301,12 @@
  "Дистанционное управление": "Fernsteuerung",
  "Логистическая сеть": "Logistiknetzwerk",
  "Автостроитель": "Auto-Bauer",
- "Ядро терраформирования": "Terraform-Kern"
+ "Ядро терраформирования": "Terraform-Kern",
+ "Что нужно сделать": "Was zu tun ist",
+ "Зачем эта игра": "Wozu dieses Spiel",
+ "Интерфейс": "Oberfläche",
+ "Справка для этого уровня пока не заполнена.": "Die Hilfe für dieses Level fehlt noch.",
+ "К уровню": "Zum Level",
+ "Обзор": "Überblick",
+ "Текущая миссия": "Aktuelle Mission"
 }

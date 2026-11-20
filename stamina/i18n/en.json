@@ -3301,5 +3301,12 @@
  "Дистанционное управление": "Remote Control",
  "Логистическая сеть": "Logistics Network",
  "Автостроитель": "Auto Builder",
- "Ядро терраформирования": "Terraform Core"
+ "Ядро терраформирования": "Terraform Core",
+ "Что нужно сделать": "What to do",
+ "Зачем эта игра": "Why this game",
+ "Интерфейс": "Interface",
+ "Справка для этого уровня пока не заполнена.": "Help for this level is not written yet.",
+ "К уровню": "To level",
+ "Обзор": "Overview",
+ "Текущая миссия": "Current mission"
 }

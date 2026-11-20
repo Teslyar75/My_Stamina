@@ -3301,5 +3301,12 @@
  "Дистанционное управление": "Controllo remoto",
  "Логистическая сеть": "Rete logistica",
  "Автостроитель": "Costruttore automatico",
- "Ядро терраформирования": "Nucleo di terraformazione"
+ "Ядро терраформирования": "Nucleo di terraformazione",
+ "Что нужно сделать": "Cosa fare",
+ "Зачем эта игра": "A cosa serve questo gioco",
+ "Интерфейс": "Interfaccia",
+ "Справка для этого уровня пока не заполнена.": "L'aiuto per questo livello non è ancora pronto.",
+ "К уровню": "Al livello",
+ "Обзор": "Panoramica",
+ "Текущая миссия": "Missione attuale"
 }
