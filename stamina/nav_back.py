@@ -68,10 +68,35 @@ def is_back_key(event) -> bool:
     return True
 
 
+def screen_edits_text(app) -> bool:
+    """Экран сам просит Backspace для правки текста.
+
+    Нужно играм с вводом на холсте (Docker-тренажёр): там нет Entry, поэтому
+    ``typing_in`` его не видит, а Backspace уводил бы из игры в лобби.
+    Экран отвечает методом/флагом ``backspace_edits``; нет ответа — навигация
+    работает как раньше, во всех прочих отсеках ничего не меняется.
+    """
+    screens = getattr(app, "screens", None)
+    if not isinstance(screens, dict):
+        return False
+    scr = screens.get(getattr(app, "current", None))
+    if scr is None:
+        return False
+    hook = getattr(scr, "backspace_edits", None)
+    if hook is None:
+        return False
+    try:
+        return bool(hook() if callable(hook) else hook)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def backspace_edits_text(app, event) -> bool:
     """True, если Backspace должен править текст, а не менять экран."""
     widget = getattr(event, "widget", None)
     if typing_in(widget):
+        return True
+    if screen_edits_text(app):
         return True
     zen = getattr(app, "zen", None)
     if zen is not None and getattr(zen, "on", False):

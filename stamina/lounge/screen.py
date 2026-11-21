@@ -281,6 +281,10 @@ class LoungeScreen(tk.Frame):
             return True
         return False
 
+    def backspace_edits(self) -> bool:
+        """Backspace правит текст в игре (Docker-тренажёр), а не выходит в лобби."""
+        return bool(self.game is not None and getattr(self.game, "backspace_edits", False))
+
     def on_key(self, e: tk.Event) -> None:
         # F1 уже обрабатывает cockpit.open_help → game.on_help; не слать второй раз.
         if getattr(e, "keysym", "") == "F1":
