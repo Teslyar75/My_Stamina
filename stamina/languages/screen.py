@@ -1001,6 +1001,8 @@ class LanguagesScreen(tk.Frame):
                  font=theme.font(8)).pack(anchor="w", pady=(0, px(4)))
         inner = self._scroller(frame)
 
+        from stamina.languages.core.progress import DEFAULT_SETTINGS
+
         for key, title in (
             ("autoplay", _t("Автовоспроизведение слова")),
             ("asr", _t("Микрофон и распознавание")),
@@ -1012,7 +1014,9 @@ class LanguagesScreen(tk.Frame):
             row = tk.Frame(inner, bg=BG)
             row.pack(fill=tk.X, pady=px(2))
             tk.Label(row, text=title, bg=BG, fg=TEXT, font=theme.font(10)).pack(side=tk.LEFT)
-            on = bool(progress.settings.get(key, False))
+            # Значение по умолчанию берём из DEFAULT_SETTINGS, иначе настройка показывала
+            # «ВЫКЛ», хотя микрофон и распознавание на самом деле работали.
+            on = bool(progress.settings.get(key, DEFAULT_SETTINGS.get(key, False)))
             HudButton(row, _t("ВКЛ") if on else _t("ВЫКЛ"),
                       lambda k=key: self._toggle_setting(k), height=26, font_size=8,
                       active=on, color=GREEN if on else MUTED).pack(side=tk.RIGHT)

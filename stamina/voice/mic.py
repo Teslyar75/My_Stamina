@@ -119,7 +119,10 @@ class MicControl:
         self._pause = 0.0
         self._reason = ""
         if not listener.start():
-            self._say(_t("Микрофон недоступен: нужны библиотеки vosk и sounddevice"), RED)
+            # Причина у Listener своя: нет модели, нет библиотеки, битый архив. Раньше
+            # здесь всегда печаталось «нужны библиотеки» — и пилот искал не то.
+            self._say(_t("Микрофон недоступен: {0}").format(
+                listener.fail_reason or _t("запись не началась")), RED)
             return False
         self._listener = listener
         self.button.set_text(_t(STOP))

@@ -65,6 +65,16 @@ class ASR:
             return _t("нет модели Vosk в {0}").format(self._model_dir or paths.MODELS_DIR)
         return self.status
 
+    def refresh_libs(self) -> bool:
+        """Перепроверить библиотеки: их могли поставить уже после запуска корабля.
+
+        Кеш `_LIBS_OK` живёт всё время работы программы, поэтому без сброса
+        установка vosk «на ходу» не замечалась до перезапуска.
+        """
+        global _LIBS_OK
+        _LIBS_OK = None
+        return self.libs_ok()
+
     def load_async(self) -> None:
         folder = self._dir()
         if self.model is not None or self._loading or folder is None:

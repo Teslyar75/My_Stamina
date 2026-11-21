@@ -85,17 +85,28 @@ class MicPanel(tk.Frame):
     def speech_on(self) -> bool:
         return bool(self.ctx.progress.settings.get("asr", True)) and self.ctx.asr.available()
 
+    def _why(self) -> str:
+        """Почему распознавание молчит — словами, а не «что-то пошло не так»."""
+        if not self.ctx.progress.settings.get("asr", True):
+            return _t("выключено в настройках")
+        return self.ctx.asr.why_unavailable()
+
     def refresh_mode(self) -> None:
+        # Кнопка микрофона остаётся на месте всегда: исчезнувшая кнопка выглядит как
+        # поломка интерфейса, а пилоту важно видеть, что она есть и почему молчит.
+        self.btn.pack(pady=(0, self._gap))
+        self.btn.set_active(False)
         if self.speech_on():
-            self.btn.pack(pady=(0, self._gap))
+            self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M"))
+            self.btn.set_color(RED)
             self.selfbox.pack_forget()
-            self.live.configure(text=_t("Нажми и прочитай вслух. Запись остановится сама после паузы."))
+            self.live.configure(text=_t("Нажми и прочитай вслух. Запись остановится сама после паузы."),
+                                fg=MUTED)
         else:
-            self.btn.pack_forget()
+            self.btn.set_color(MUTED)
             if self.ctx.progress.settings.get("self_assess", True):
                 self.selfbox.pack(fill=tk.X)
-            why = self.ctx.asr.why_unavailable() if self.ctx.progress.settings.get("asr", True) else _t("выключено в настройках")
-            self.live.configure(text=_t("Распознавание недоступно: {0}").format(why))
+            self.live.configure(text=_t("Распознавание недоступно: {0}").format(self._why()), fg=AMBER)
 
     def _btn_idle(self) -> None:
         self.btn.set_text(_t("🎤 ПЕРЕДАЧА  M"))
@@ -114,8 +125,14 @@ class MicPanel(tk.Frame):
             asr.stop()
             return
         if not self.speech_on():
+            # Библиотеки или модель могли появиться уже после запуска корабля —
+            # перепроверяем перед тем, как сказать «недоступно».
+            asr.refresh_libs()
+            if not self.speech_on():
+                self.refresh_mode()
+                self.ctx.status(_t("Распознавание недоступно: {0}").format(self._why()), AMBER)
+                return
             self.refresh_mode()
-            return
         self.ctx.tts.stop()
         asr.poll()  # очистить старые события
         self._silent = ""

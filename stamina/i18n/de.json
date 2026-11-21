@@ -1080,6 +1080,8 @@
  "Микрофон не слышит звук — проверьте устройство ввода в Windows (Параметры → Звук → Ввод) и доступ к микрофону": "Mikrofon kann den Ton nicht hören -- überprüfen Sie das Windows-Eingangsgerät und Zugriff auf das Mikrofon",
  "Микрофон недоступен: нет модели распознавания речи": "Mikrofon nicht verfügbar: kein Spracherkennungsmodell",
  "Микрофон недоступен: нужны библиотеки vosk и sounddevice": "Mikrofon nicht verfügbar: die Bibliotheken vosk und sounddevice fehlen",
+ "Микрофон недоступен: {0}": "Mikrofon nicht verfügbar: {0}",
+ "запись не началась": "Aufnahme wurde nicht gestartet",
  "Мимо": "DANEBEN",
  "Миссия пройдена": "Mission geschafft",
  "Мичман": "Fähnrich",
