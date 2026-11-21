@@ -1,0 +1,238 @@
+{
+  "game": "orion",
+  "overview": {
+    "id": "overview",
+    "title": "ТРЕНАЖЁР НАБОРА · ОРИОН",
+    "goal": "Выполни учебные миссии набора на мостике Ориона: от двух домашних клавиш до полного ряда букв и цифр. Справка F1/«?» открывает обзор и текущую миссию в том же окне.",
+    "purpose": "Поставить пальцы на домашние ряды русской и английской раскладки и наращивать скорость без лишних ошибок.",
+    "interface": "Полоса миссии: название и подзаголовок.\nПоле набора и «тепло» клавиатуры — какие клавиши сейчас в работе.\nИндикаторы: скорость, точность, время; кнопки старта, паузы и разбор полёта.\nСписок миссий ru-01…ru-10 и en-01…en-10.\nF1 или «?» в шапке кабинеты открывает эту справку; Esc/F1 закрывает. Shift+F1 — голос гида, не закрытие окна. Alt+1–5 переключают отсеки.",
+    "steps": [
+      "Выбери миссию на мостике и нажми старт.",
+      "Печатай только указанными клавишами, следя за точностью.",
+      "Открой F1, если забыл цель или клавиши.",
+      "После финиша посмотри разбор полёта и бери следующую миссию."
+    ]
+  },
+  "levels": [
+    {
+      "id": "ru-01",
+      "title": "Стыковка",
+      "goal": "Русская стыковка: набери учебный текст на клавишах а и о. Цель — 50 знаков.",
+      "purpose": "Поставить пальцы на домашний ряд русской раскладки.",
+      "interface": "На мостике полоса миссии «Стыковка», поле набора и клавиши а о. F1/«?» — справка этой миссии.",
+      "steps": [
+        "Поставь пальцы на а и о.",
+        "Набери текст до 50 знаков с высокой точностью."
+      ]
+    },
+    {
+      "id": "ru-02",
+      "title": "Орбита",
+      "goal": "Орбита (рус.): добавь в и л к паре а о. Цель — 60 знаков.",
+      "purpose": "Расширить домашний ряд двумя соседними клавишами.",
+      "interface": "В миссии активны а о в л. Следи за теплом клавиатуры и точностью.",
+      "steps": [
+        "Добавь в и л к уже знакомым а о.",
+        "Дойди до 60 знаков."
+      ]
+    },
+    {
+      "id": "ru-03",
+      "title": "Притяжение",
+      "goal": "Притяжение (рус.): ряд а о в л ы д. Цель — 70 знаков.",
+      "purpose": "Закрепить шесть центральных клавиш русского домашнего ряда.",
+      "interface": "Полоса миссии, цель 70. Клавиши аовлыд.",
+      "steps": [
+        "Печатай только указанными буквами.",
+        "Набери 70 знаков."
+      ]
+    },
+    {
+      "id": "ru-04",
+      "title": "Домашний ряд",
+      "goal": "Домашний ряд (рус.): весь ряд фывапролджэ. Цель — 80 знаков.",
+      "purpose": "Собрать полный домашний ряд русской клавиатуры.",
+      "interface": "Подсветка домашнего ряда, цель 80 знаков.",
+      "steps": [
+        "Держи пальцы на фывапролджэ.",
+        "Набери 80 знаков без лишних клавиш."
+      ]
+    },
+    {
+      "id": "ru-05",
+      "title": "Верхняя палуба I",
+      "goal": "Верхняя палуба I (рус.): домашний ряд плюс кенг. Цель — 90 знаков.",
+      "purpose": "Вывести указательные и средние пальцы на верхний ряд.",
+      "interface": "К домашнему ряду добавлены к е н г. Цель 90.",
+      "steps": [
+        "Освой кенг, не теряя домашний ряд.",
+        "Набери 90 знаков."
+      ]
+    },
+    {
+      "id": "ru-06",
+      "title": "Верхняя палуба II",
+      "goal": "Верхняя палуба II (рус.): добавь уцшщйзхъ. Цель — 100 знаков.",
+      "purpose": "Закрыть почти весь верхний ряд русской раскладки.",
+      "interface": "Расширенный верх: у ц ш щ й з х ъ плюс прежние буквы. Цель 100.",
+      "steps": [
+        "Добавь дальние верхние клавиши.",
+        "Набери 100 знаков."
+      ]
+    },
+    {
+      "id": "ru-07",
+      "title": "Нижний отсек I",
+      "goal": "Нижний отсек I (рус.): добавь митьсб. Цель — 110 знаков.",
+      "purpose": "Подключить нижний ряд, не бросая уже выученные клавиши.",
+      "interface": "Новые клавиши м и т ь с б. Цель 110.",
+      "steps": [
+        "Освой нижний ряд митьсб.",
+        "Набери 110 знаков."
+      ]
+    },
+    {
+      "id": "ru-08",
+      "title": "Нижний отсек II",
+      "goal": "Нижний отсек II (рус.): вся буквенная раскладка, включая ё, ж, ю, я. Цель — 120 знаков.",
+      "purpose": "Собрать полный русский алфавит в одном полёте.",
+      "interface": "Все буквы абв…я. Цель 120. Следи за точностью на редких клавишах.",
+      "steps": [
+        "Печатай любыми буквами русской раскладки.",
+        "Набери 120 знаков."
+      ]
+    },
+    {
+      "id": "ru-09",
+      "title": "Гиперпрыжок",
+      "goal": "Гиперпрыжок (рус.): тот же полный алфавит, но цель уже 140 знаков — дольше держать ритм.",
+      "purpose": "Выдержать полный русский набор на большей дистанции.",
+      "interface": "Клавиши те же, что в «Нижнем отсеке II», цель 140. Смотри скорость и точность.",
+      "steps": [
+        "Не сбавляй темп на длинном тексте.",
+        "Дойди до 140 знаков."
+      ]
+    },
+    {
+      "id": "ru-10",
+      "title": "Коды доступа",
+      "goal": "Коды доступа (рус.): буквы русской раскладки плюс цифры 0–9. Цель — 110 знаков.",
+      "purpose": "Научить пальцы чередовать буквы и цифры, как в паролях и кодах.",
+      "interface": "В наборе появляются верхние цифровые клавиши. Цель 110.",
+      "steps": [
+        "Печатай буквы и цифры без взгляда на ряд 0–9.",
+        "Набери 110 знаков."
+      ]
+    },
+    {
+      "id": "en-01",
+      "title": "Стыковка",
+      "goal": "English docking: type the drill on f and j only. Goal — 50 characters.",
+      "purpose": "Park the index fingers on the English home-row anchors.",
+      "interface": "Mission strip «Стыковка», input field, keys f j. F1/? opens this mission help.",
+      "steps": [
+        "Place fingers on f and j.",
+        "Type until 50 characters with high accuracy."
+      ]
+    },
+    {
+      "id": "en-02",
+      "title": "Орбита",
+      "goal": "Orbit (EN): add d and k to f j. Goal — 60 characters.",
+      "purpose": "Widen the English home row by one key on each side.",
+      "interface": "Active keys: f j d k. Watch keyboard heat and accuracy.",
+      "steps": [
+        "Add d and k to f and j.",
+        "Reach 60 characters."
+      ]
+    },
+    {
+      "id": "en-03",
+      "title": "Притяжение",
+      "goal": "Gravity (EN): home keys f j d k s l. Goal — 70 characters.",
+      "purpose": "Lock in the six core English home-row keys.",
+      "interface": "Mission goal 70. Keys fjdksl.",
+      "steps": [
+        "Type only the listed keys.",
+        "Reach 70 characters."
+      ]
+    },
+    {
+      "id": "en-04",
+      "title": "Домашний ряд",
+      "goal": "Home row (EN): the full asdfghjkl row. Goal — 80 characters.",
+      "purpose": "Assemble the complete English home row.",
+      "interface": "Home-row highlight, goal 80 characters.",
+      "steps": [
+        "Keep fingers on asdfghjkl.",
+        "Type 80 characters without stray keys."
+      ]
+    },
+    {
+      "id": "en-05",
+      "title": "Верхняя палуба I",
+      "goal": "Upper deck I (EN): home row plus e i r u. Goal — 90 characters.",
+      "purpose": "Reach the first English upper-row keys.",
+      "interface": "Added keys e i r u. Goal 90.",
+      "steps": [
+        "Add eiru without leaving the home row.",
+        "Reach 90 characters."
+      ]
+    },
+    {
+      "id": "en-06",
+      "title": "Верхняя палуба II",
+      "goal": "Upper deck II (EN): add t y w o q p. Goal — 100 characters.",
+      "purpose": "Cover the rest of the English upper row.",
+      "interface": "Extended upper keys tywoqp plus earlier letters. Goal 100.",
+      "steps": [
+        "Add the far upper-row keys.",
+        "Reach 100 characters."
+      ]
+    },
+    {
+      "id": "en-07",
+      "title": "Нижний отсек I",
+      "goal": "Lower bay I (EN): add v m c n b. Goal — 110 characters.",
+      "purpose": "Bring in the English bottom row.",
+      "interface": "New keys v m c n b. Goal 110.",
+      "steps": [
+        "Learn the bottom-row keys vmcnb.",
+        "Reach 110 characters."
+      ]
+    },
+    {
+      "id": "en-08",
+      "title": "Нижний отсек II",
+      "goal": "Lower bay II (EN): the full English alphabet a–z. Goal — 120 characters.",
+      "purpose": "Use every English letter in one flight.",
+      "interface": "All letters a–z. Goal 120. Watch accuracy on rare keys.",
+      "steps": [
+        "Type with the full English letter set.",
+        "Reach 120 characters."
+      ]
+    },
+    {
+      "id": "en-09",
+      "title": "Гиперпрыжок",
+      "goal": "Hyperjump (EN): full alphabet again, but the goal is 140 characters — hold the rhythm longer.",
+      "purpose": "Sustain a full English flight over a longer distance.",
+      "interface": "Same keys as Lower bay II, goal 140. Watch speed and accuracy.",
+      "steps": [
+        "Keep pace on the longer text.",
+        "Reach 140 characters."
+      ]
+    },
+    {
+      "id": "en-10",
+      "title": "Коды доступа",
+      "goal": "Access codes (EN): English letters plus digits 0–9. Goal — 110 characters.",
+      "purpose": "Alternate letters and digits as in passwords and codes.",
+      "interface": "Number-row keys join the drill. Goal 110.",
+      "steps": [
+        "Type letters and digits without looking at 0–9.",
+        "Reach 110 characters."
+      ]
+    }
+  ]
+}

@@ -48,7 +48,7 @@ KEYSYM_ACTIONS = {
     "down": ("move", 0, 1), "s": ("move", 0, 1),
     "space": ("dig",), "e": ("place_block",), "q": ("finds",),
     "b": ("build_plan",), "tab": ("cycle_priority",), "g": ("gallery",),
-    "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
+    "m": ("mixed_mode",), "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
     "escape": ("esc",), "p": ("pause",), "f1": ("help",),
@@ -135,6 +135,21 @@ class TrainerGame(GameShell):
     game_id = "trainer"
     title = _t("ТРЕНАЖЁР ТЕРРАФОРМЕРА · УЧЕБНАЯ СМЕНА")
 
+    @staticmethod
+    def _draw_text_stacked(c: tk.Canvas, x: int, ty: int, text: str, fill: str, anchor: str, font, width: int | None = None, pad: int = 4) -> int:
+        """Рисует текст с anchor='nw' в (x, ty), возвращает новый ty после текста + pad.
+        Если bbox недоступен — падает назад на фиксированный шаг.
+        """
+        kw = {"anchor": "nw", "fill": fill, "font": font}
+        if width is not None:
+            kw["width"] = width
+        tid = c.create_text(x, ty, text=text, **kw)
+        bb = c.bbox(tid)
+        if bb is not None:
+            return bb[3] + pad
+        # фолбэк: приблизительная высота строки
+        return ty + px(14) + pad
+
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
         self.model = load_blueprint() or TrainerModel()
@@ -195,11 +210,23 @@ class TrainerGame(GameShell):
             pass
 
     # -- оверлеи ---------------------------------------------------------------
+    def help_game_id(self) -> str:
+        return "terraformer"
+
+    def help_level_id(self) -> str | None:
+        try:
+            from stamina.terraformer_trainer import get_language_level
+            lvl = int(get_language_level())
+        except Exception:
+            lvl = 0
+        return f"stage_{max(0, min(5, lvl))}"
+
     def on_help(self) -> bool:
-        """F1: открыть/закрыть инструкцию. True — F1 обработан тренажёром."""
-        self.overlay = None if self.overlay == "help" else "help"
-        self.redraw()
-        return True
+        """F1 / «?»: общий оверлей справки текущего этапа языка."""
+        if self.overlay == "help":
+            self.overlay = None
+        return super().on_help()
+
 
     def toggle_finds(self) -> str | None:
         self.overlay = None if self.overlay == "finds" else "finds"
@@ -220,6 +247,8 @@ class TrainerGame(GameShell):
         return act
 
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         act = self._action(e)
         name = act[0] if act else None
         # открыт оверлей — работают только его клавиши закрытия
@@ -280,8 +309,16 @@ class TrainerGame(GameShell):
         elif name == "home":
             self.camera.reset(*self.model.robot)
             self.redraw()
+        elif name == "mixed_mode":
+            self._toggle_mixed_mode()
+            self.redraw()
 
-    # -- действия ------------------------------------------------------------
+    def _toggle_mixed_mode(self) -> None:
+        """Переключает смешанный режим: Orion-foreman копает и достраивает приоритетную платформу/базу."""
+        self.model._mixed_mode = not getattr(self.model, "_mixed_mode", False)
+        status = _t("ВКЛ") if self.model._mixed_mode else _t("ВЫКЛ")
+        self.show_toast(_t("Смешанный режим {0}").format(status))
+
     def do_move(self, dx: int, dy: int) -> bool:
         moved = self.model.move(dx, dy)
         self.camera.track(*self.model.robot)
@@ -478,6 +515,9 @@ class TrainerGame(GameShell):
 
     # -- колесо --------------------------------------------------------------
     def on_wheel(self, direction: int, ctrl: bool, shift: bool) -> None:
+        ov = getattr(self, "help_overlay", None)
+        if ov is not None and ov.is_visible():
+            return
         if self.overlay is not None:
             return                       # инструкция/находки не прокручиваются
         if ctrl:
@@ -577,10 +617,9 @@ class TrainerGame(GameShell):
         self._draw_platform_hint(w, h, cell)
 
         # верхняя панель — всегда в экранных координатах, на тёмной подложке
+        # Рисуем фон ПЕРВЫМ, сохраняем id, и перерисуем coords в конце по реальному ty
         found = sum(model.finds_count.values())
-        rows = 5 + (1 if model.walls_open else 0)
-        hud_h = px(8) + px(16) * rows + px(4)
-        c.create_rectangle(0, 0, px(230), hud_h, fill=BG, outline=LINE)
+        bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
@@ -613,9 +652,13 @@ class TrainerGame(GameShell):
         if model.walls_open:
             c.create_text(px(10), ty, text=_t("СТЕНЫ ОТКРЫТЫ"), fill=GREEN, anchor="nw",
                           font=theme.font(11, True))
+            ty += px(16)
 
-        # визуальная шкала прогресса языка
-        self._draw_language_progress_bar(w, h, ty + px(10))
+        # визуальная шкала прогресса языка — возвращает нижнюю Y
+        ty = self._draw_language_progress_bar(w, h, ty + px(10))
+
+        # расширяем фон панели под реальный контент
+        c.coords(bg_id, 0, 0, px(230), ty)
 
         bar_top = self._draw_key_hint(w, h)
         if self.msg:
@@ -651,8 +694,24 @@ class TrainerGame(GameShell):
         c.tag_lower(back, tid)
         return top
 
-    def _draw_language_progress_bar(self, w: int, h: int, y: int) -> None:
-        """Рисует визуальную шкалу прогресса языка: текущий уровень, что открыто, что дальше."""
+    @staticmethod
+    def _upgrade_display_names() -> dict[str, str]:
+        """Возвращает локализованные имена апгрейдов по их id."""
+        return {
+            "soil_compactor": _t("Пресс для грунта"),
+            "auto_unloader": _t("Автовыгрузка"),
+            "water_purifier": _t("Очистка воды"),
+            "yield_booster": _t("Усилитель добычи"),
+            "remote_control": _t("Дистанционное управление"),
+            "logistics_network": _t("Логистическая сеть"),
+            "auto_builder": _t("Автостроитель"),
+            "terraform_core": _t("Ядро терраформирования"),
+        }
+
+    def _draw_language_progress_bar(self, w: int, h: int, y: int) -> int:
+        """Рисует визуальную шкалу прогресса языка: текущий уровень, что открыто, что дальше.
+        Возвращает нижнюю Y после всего содержимого.
+        """
         c = self.canvas
         lang_level = get_language_level()
         prog = None
@@ -673,14 +732,15 @@ class TrainerGame(GameShell):
         bar_y = y
         bar_w = px(210)
         bar_h = px(14)
-        seg_w = bar_w // 5  # 6 уровней (0-5), 5 сегментов между ними
+        seg_w = bar_w // 6  # 6 уровней (0-5) → 6 сегментов
 
-        # заголовок
-        c.create_text(bar_x, bar_y - px(14), text=_t("ПРОГРЕСС ЯЗЫКА →"), fill=CYAN, anchor="sw",
-                      font=theme.font(9, True), tags="langbar")
+        # заголовок — через хелпер, идёт вниз
+        ty = self._draw_text_stacked(c, bar_x, bar_y, _t("ПРОГРЕСС ЯЗЫКА →"), CYAN, "nw", theme.font(9, True))
 
         # фон шкалы
-        c.create_rectangle(bar_x, bar_y, bar_x + bar_w, bar_y + bar_h, fill=BG2, outline=LINE, tags="langbar")
+        c.create_rectangle(bar_x, ty, bar_x + bar_w, ty + bar_h, fill=BG2, outline=LINE, tags="langbar")
+        bar_y = ty
+        ty += bar_h + px(4)
 
         # сегменты уровней
         for lvl in range(6):
@@ -706,35 +766,35 @@ class TrainerGame(GameShell):
                                    fill=GREEN, outline="", tags="langbar")
 
         # что открыто сейчас
-        ty = bar_y + bar_h + px(4)
         tier = PROGRESSION_TIERS[lang_level]
         unlocked_variants = []
         for res in RESOURCES:
             unlocked_variants.extend(tier["platform_variants"].get(res, []))
         max_var = max(unlocked_variants) if unlocked_variants else 0
         robots = ", ".join(tier["robots"])
-        upgrades = ", ".join(tier["upgrades"]) if tier["upgrades"] else _t("—")
-        c.create_text(bar_x, ty, text=_t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
-            max_var, robots, upgrades), fill=TEXT, anchor="nw", font=theme.font(8), width=bar_w, tags="langbar")
+        upgrade_names = self._upgrade_display_names()
+        upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in tier["upgrades"]) if tier["upgrades"] else _t("—")
+        ty = self._draw_text_stacked(c, bar_x, ty, _t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
+            max_var, robots, upgrades_localized), TEXT, "nw", theme.font(8), width=bar_w)
 
         # что откроется на следующем уровне
         if next_tier and lang_level < 5:
-            ty += px(14)
             next_unlocked = []
             for res in RESOURCES:
                 next_unlocked.extend(next_tier["platform_variants"].get(res, []))
             next_max_var = max(next_unlocked) if next_unlocked else max_var
             next_robots = ", ".join(next_tier["robots"])
-            next_upgrades = ", ".join(next_tier["upgrades"]) if next_tier["upgrades"] else _t("—")
-            c.create_text(bar_x, ty, text=_t("След. уровень: варианты до {0} · {1} · {2}").format(
-                next_max_var, next_robots, next_upgrades), fill=AMBER, anchor="nw", font=theme.font(8, True), width=bar_w, tags="langbar")
-            ty += px(14)
+            next_upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in next_tier["upgrades"]) if next_tier["upgrades"] else _t("—")
+            ty = self._draw_text_stacked(c, bar_x, ty, _t("След. уровень: варианты до {0} · {1} · {2}").format(
+                next_max_var, next_robots, next_upgrades_localized), AMBER, "nw", theme.font(8, True), width=bar_w)
             # XP до следующего
             if prog:
                 lvl, start_xp, next_xp = prog.level()
                 need = next_xp - xp_total
-                c.create_text(bar_x, ty, text=_t("Нужно XP: {0} (учить слова — G в галерее покажет детали)").format(need),
-                              fill=MUTED, anchor="nw", font=theme.font(7), width=bar_w, tags="langbar")
+                ty = self._draw_text_stacked(c, bar_x, ty, _t("Нужно XP: {0} (учить слова — G в галерее покажет детали)").format(need),
+                              MUTED, "nw", theme.font(7), width=bar_w)
+
+        return ty
 
     def _draw_toast(self, w: int) -> None:
         c = self.canvas

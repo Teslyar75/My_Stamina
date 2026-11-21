@@ -32,6 +32,13 @@ _lock = threading.Lock()
 #: вслух утомляет, поэтому длинный текст режется по границе предложения.
 SPEECH_LIMIT = 1200
 
+def _test_silent() -> bool:
+    """Тесты могут выставить STAR_TYPING_SILENT=1, чтобы Орион и гид не говорили вслух."""
+    v = (os.environ.get("STAR_TYPING_SILENT") or os.environ.get("STAMINA_SILENT") or "").strip().lower()
+    return v in {"1", "true", "yes", "on"}
+
+
+
 
 def say_script() -> Path:
     """Скрипт озвучки: свой или заданный в `STAR_TYPING_SAY_PS1`."""
@@ -124,6 +131,8 @@ def speak(text: str, *, voice: str = "", rate: int = 0, volume: int = 100,
     `lang` — язык текста (`ru`, `en`): по нему выбирается голос, иначе определяется сам.
     """
     global _proc
+    if _test_silent():
+        return False
     phrase = speech_text(text)
     if not phrase or not available():
         return False
@@ -224,6 +233,8 @@ def render(text: str, *, voice: str = "", lang: str = "", role: str = "", timeou
 
 def play_cached(text: str, *, voice: str = "", lang: str = "", role: str = "") -> bool:
     """Мгновенно проиграть готовый WAV (если он уже в кэше). False — кэша нет."""
+    if _test_silent():
+        return False
     global _proc
     out = cache_path(text, voice=voice, lang=lang, role=role)
     if not out.is_file():

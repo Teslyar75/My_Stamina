@@ -577,14 +577,50 @@ def resolve_key(app) -> str:
     return cur if cur in PAGES else "bridge"
 
 
-def content_for(key: str) -> tuple[str, str]:
+def content_for(key: str, app=None) -> tuple[str, str]:
     if key in PAGES:
-        return PAGES[key]
-    if "." in key:
+        title, body = PAGES[key]
+    elif "." in key:
         base = key.split(".", 1)[0]
-        if base in PAGES:
-            return PAGES[base]
-    return PAGES["bridge"]
+        title, body = PAGES[base] if base in PAGES else PAGES["bridge"]
+    else:
+        title, body = PAGES["bridge"]
+    extra = _orion_structured_help(app, key)
+    if extra:
+        body = extra + "\n\n" + body
+    return title, body
+
+
+def _orion_structured_help(app, key: str) -> str:
+    """Обзор и текущая миссия из orion.json — в ту же модалку, без второго окна."""
+    if app is None:
+        return ""
+    base = (key or "").split(".", 1)[0]
+    if base != "bridge":
+        return ""
+    try:
+        from stamina.lounge.help_overlay import format_help_block
+        from stamina.lounge.help_texts import load_help, load_overview
+    except Exception:
+        return ""
+    chunks: list[str] = []
+    overview = load_overview("orion")
+    if overview:
+        chunks.append(format_help_block(overview, heading=_t("Обзор")))
+    mid = None
+    scr = (getattr(app, "screens", None) or {}).get("bridge")
+    meta = getattr(scr, "meta", None) or {}
+    if meta.get("mode") == "mission":
+        mission = meta.get("mission")
+        if isinstance(mission, dict):
+            mid = mission.get("id")
+        elif isinstance(mission, str):
+            mid = mission
+    if mid:
+        level = load_help("orion", mid)
+        if level:
+            chunks.append(format_help_block(level, heading=_t("Текущая миссия")))
+    return "\n\n".join(c for c in chunks if c)
 
 
 class PageHelpDialog(tk.Toplevel):
@@ -594,7 +630,7 @@ class PageHelpDialog(tk.Toplevel):
         super().__init__(app)
         self.app = app
         self.key = key or resolve_key(app)
-        title, body = content_for(self.key)
+        title, body = content_for(self.key, app=self.app)
         self.title(_t("Справка · {0}").format(title))
         self.configure(bg=BG)
         self.transient(app)
@@ -659,7 +695,7 @@ class PageHelpDialog(tk.Toplevel):
 
     def _fill(self, key: str) -> None:
         self.key = key
-        title, body = content_for(key)
+        title, body = content_for(key, app=self.app)
         self.title(_t("Справка · {0}").format(title))
         self.head_title.configure(text=title)
         topics = siblings(key)

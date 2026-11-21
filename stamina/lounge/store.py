@@ -61,6 +61,24 @@ def save(data: dict) -> None:
         pass
 
 
+def setting(name: str, default=None):
+    """Настройка комнаты отдыха (галки игр) — рядом с рекордами, в том же lounge.json."""
+    data = load().get("settings")
+    if not isinstance(data, dict):
+        return default
+    return data.get(name, default)
+
+
+def set_setting(name: str, value) -> None:
+    data = load()
+    settings = data.get("settings")
+    if not isinstance(settings, dict):
+        settings = {}
+        data["settings"] = settings
+    settings[name] = value
+    save(data)
+
+
 def best(game: str) -> int:
     return int(load().get("best", {}).get(game, 0) or 0)
 

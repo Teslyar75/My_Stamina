@@ -8,9 +8,10 @@ from typing import Callable
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
-from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, px
+from stamina.theme import AMBER, BG, CYAN, MUTED, PANEL, TEXT, px
 
 from . import store
+from .help_overlay import HelpOverlay
 
 
 class GameShell(tk.Frame):
@@ -18,6 +19,12 @@ class GameShell(tk.Frame):
 
     game_id = ""
     title = ""
+    # Игра читает набранные команды с холста (Docker-тренажёр): тогда в панели
+    # появляется галка «⌫ Backspace — стирать» и Backspace достаётся игре.
+    text_input = False
+    # Игра хочет вторую строку кнопок (учебник, песочница): тогда панель
+    # создаёт self.tools и зовёт build_tools().
+    tools_row = False
 
     def __init__(self, master, *, on_back: Callable[[], None], app=None) -> None:
         super().__init__(master, bg=BG)
@@ -48,7 +55,29 @@ class GameShell(tk.Frame):
         HudButton(bar, _t("ЗАНОВО"), self.restart, height=34, font_size=10, width=100, color=AMBER).pack(
             side=tk.LEFT, padx=(0, px(4)))
         HudButton(bar, _t("← В ЛОББИ"), self._back, height=34, font_size=10, width=120).pack(side=tk.LEFT)
-        self.lbl_hint = tk.Label(bar, text="", bg=BG, fg=MUTED, font=theme.font(10))
+        self.btn_help = HudButton(bar, "?", self.on_help, height=34, font_size=12, width=40, color=AMBER)
+        self.btn_help.pack(side=tk.LEFT, padx=(px(8), 0))
+        # Галка для игр с вводом: Backspace стирает символ, а не уводит в лобби.
+        # Вне игры глобальный Backspace не меняется — настройка живёт в lounge.json.
+        self.backspace_edits = bool(store.setting("backspace_edits", True))
+        self.var_backspace = None
+        if self.text_input:
+            self.var_backspace = tk.BooleanVar(value=self.backspace_edits)
+            tk.Checkbutton(
+                bar, text=_t("⌫ Backspace — стирать"),
+                variable=self.var_backspace, command=self._on_backspace_toggle,
+                bg=BG, fg=MUTED, activebackground=BG, activeforeground=TEXT,
+                selectcolor=PANEL, highlightthickness=0, bd=0, takefocus=0,
+                font=theme.font(10),
+            ).pack(side=tk.LEFT, padx=(px(10), 0))
+        # Вторая строка: своя у игр, которым мало одной (Docker: учебник, песочница)
+        self.tools = None
+        if self.tools_row:
+            self.tools = tk.Frame(self, bg=BG)
+            self.tools.pack(fill=tk.X, padx=px(12), pady=(0, px(4)))
+            self.build_tools()
+        self.lbl_hint = tk.Label(self.tools if self.tools is not None else bar,
+                                 text="", bg=BG, fg=MUTED, font=theme.font(10))
         self.lbl_hint.pack(side=tk.RIGHT)
 
         panel = HudPanel(self, _t("ИГРОВОЕ ПОЛЕ"), accent=CYAN)
@@ -60,7 +89,20 @@ class GameShell(tk.Frame):
         self.canvas.pack(fill=tk.BOTH, expand=True)
         self._canvas_size = (0, 0)
         self.canvas.bind("<Configure>", self._on_canvas_configure)
+        self.help_overlay = HelpOverlay(self)
+        self._wrap_redraw_for_help()
         self._update_labels()
+
+    def _wrap_redraw_for_help(self) -> None:
+        orig = self.redraw
+
+        def _redraw_with_help(*a, **k):
+            orig(*a, **k)
+            ov = getattr(self, "help_overlay", None)
+            if ov is not None and ov.is_visible():
+                ov.draw()
+
+        self.redraw = _redraw_with_help
 
     def _on_canvas_configure(self, e: tk.Event) -> None:
         size = (int(e.width), int(e.height))
@@ -71,6 +113,16 @@ class GameShell(tk.Frame):
 
     def set_hint(self, text: str) -> None:
         self.lbl_hint.configure(text=text)
+
+    def build_tools(self) -> None:
+        """Свои кнопки во второй строке панели (переопределяют игры с tools_row)."""
+
+    def _on_backspace_toggle(self) -> None:
+        """Галка «Backspace — стирать»: запомнить выбор и вернуть фокус игре."""
+        self.backspace_edits = bool(self.var_backspace.get())
+        store.set_setting("backspace_edits", self.backspace_edits)
+        self.focus_set()          # иначе пробел будет нажимать сам чек-бокс
+        self.redraw()
 
     def _update_labels(self) -> None:
         self.lbl_score.configure(text=_t("СЧЁТ  {0}").format(self.score))
@@ -168,7 +220,39 @@ class GameShell(tk.Frame):
     def redraw(self) -> None:
         pass
 
+    def help_game_id(self) -> str:
+        return self.game_id
+
+    def help_level_id(self) -> str | None:
+        """id уровня из help_texts/<game>.json; None — только обзор."""
+        return None
+
+    def on_help(self) -> bool:
+        """F1 / «?»: открыть или закрыть оверлей справки. True — событие обработано."""
+        ov = getattr(self, "help_overlay", None)
+        if ov is None:
+            return False
+        ov.toggle()
+        return True
+
+    def handle_help_keys(self, e: tk.Event) -> bool:
+        """True, если клавиша съедена справкой (F1 или Esc при открытом оверлее)."""
+        ov = getattr(self, "help_overlay", None)
+        if ov is None:
+            return False
+        k = e.keysym
+        if k == "F1":
+            self.on_help()
+            return True
+        if ov.is_visible():
+            if k == "Escape":
+                ov.hide()
+            return True
+        return False
+
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
         k = e.keysym
         if k in ("Escape", "p", "P"):
             # после поражения Esc должен перезапускать (оверлей «Esc / ЗАНОВО»),

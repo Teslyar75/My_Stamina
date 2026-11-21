@@ -15,6 +15,7 @@ from .snake import SnakeGame
 from .tetris import TetrisGame
 from .trainer import TrainerGame
 from .vim_trainer import VimTrainerGame
+from .docker_trainer import DockerTrainerGame
 
 GAMES = [
     {
@@ -59,6 +60,15 @@ GAMES = [
         "color": PURPLE,
         "cls": VimTrainerGame,
     },
+    {
+        "id": "docker_trainer",
+        "title": _t("DOCKER ТРЕНАЖЁР"),
+        "subtitle": _t("ДОК-СТАНЦИЯ · 8 МИССИЙ"),
+        "blurb": _t("Освой Docker: run, ps, logs, stop, rm, volumes, networks, compose. "
+                    "Интерактивный терминал с подсказками."),
+        "color": CYAN,
+        "cls": DockerTrainerGame,
+    },
 ]
 
 
@@ -86,14 +96,18 @@ class LoungeScreen(tk.Frame):
 
         grid = tk.Frame(self.lobby, bg=BG)
         grid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
-        for i in range(len(GAMES)):
+        # 3 columns x 2 rows
+        for i in range(3):
             grid.grid_columnconfigure(i, weight=1, uniform="g")
-        grid.grid_rowconfigure(0, weight=1)
+        for r in range(2):
+            grid.grid_rowconfigure(r, weight=1)
 
         self.cards = []
         for i, g in enumerate(GAMES):
             card = HudPanel(grid, g["subtitle"], accent=g["color"])
-            card.grid(row=0, column=i, sticky="nsew", padx=px(6), pady=px(4))
+            row = i // 3
+            col = i % 3
+            card.grid(row=row, column=col, sticky="nsew", padx=px(6), pady=px(4))
             body = card.body
             tk.Label(body, text=g["title"], bg=PANEL, fg=g["color"],
                      font=theme.font(20, True)).pack(anchor="w", pady=(px(4), px(2)))
@@ -186,6 +200,25 @@ class LoungeScreen(tk.Frame):
                 # Key hints
                 c.create_text(ox + 4 * cell, oy + 4 * cell + 5, text="h j k l  w b e  x dw dd  i a o  v / u",
                               fill=AMBER, font=theme.font(7), anchor="center")
+            elif gid == "docker_trainer":
+                cell = max(6, min(ww, hh) // 12)
+                ox = ww // 2 - 5 * cell
+                oy = hh // 2 - 3 * cell
+                # Terminal-style preview
+                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#0D1117", outline=AMBER, width=1)
+                # Prompt lines
+                lines = [
+                    "$ docker run -d ship/radio",
+                    "abc123def456",
+                    "$ docker ps",
+                    "CONTAINER ID   IMAGE          STATUS    PORTS     NAMES",
+                    "abc123def456   ship/radio     Up 5s     8080/tcp  ship_abc",
+                    "$ docker logs abc123",
+                    "[radio] Module ready ✓",
+                ]
+                for i, line in enumerate(lines):
+                    line_color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
+                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
             else:
                 for r in range(3):
                     for col in range(8):
@@ -248,7 +281,14 @@ class LoungeScreen(tk.Frame):
             return True
         return False
 
+    def backspace_edits(self) -> bool:
+        """Backspace правит текст в игре (Docker-тренажёр), а не выходит в лобби."""
+        return bool(self.game is not None and getattr(self.game, "backspace_edits", False))
+
     def on_key(self, e: tk.Event) -> None:
+        # F1 уже обрабатывает cockpit.open_help → game.on_help; не слать второй раз.
+        if getattr(e, "keysym", "") == "F1":
+            return
         if self.game is not None:
             self.game.on_key(e)
 

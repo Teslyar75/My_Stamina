@@ -10,10 +10,20 @@ from stamina.i18n import t as _t
 import tkinter as tk
 
 from stamina import theme
-from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, PANEL, PURPLE, RED, TEXT, blend, px
+from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, PANEL, PURPLE, TEXT, blend, px
 
 from .base import GameShell
 from . import store
+from .vim_engine import (
+    VimState,
+    init_from_grid,
+    process_key,
+    process_special_key,
+    get_cursor_pos,
+    get_grid_text,
+    get_mode,
+    get_visual_start,
+)
 
 
 # ─── Lesson Data ──────────────────────────────────────────────────────────────
@@ -284,20 +294,15 @@ class VimTrainerGame(GameShell):
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
         self.lesson_idx = 0
-        self.cursor = [1, 1]  # x, y в сетке уроков
-        self.grid_data: list[str] = []
         self.cell_w = 18
         self.cell_h = 22
-        self.mode = "NORMAL"  # NORMAL, INSERT, VISUAL, COMMAND
-        self.visual_start: tuple[int, int] | None = None
-        self.command_buffer = ""
-        self.message = ""
-        self.message_color = AMBER
+        self.state: VimState | None = None
         self.completed_lessons: set[int] = set()
         # Tracking for special lessons
         self._vim_found_count = 0
         self._did_undo_redo = False
         self._used_count = False
+        self._pending_count = ""
         self.load_progress()
         self._load_lesson(0)
         self.set_hint(lesson_key())
@@ -317,11 +322,16 @@ class VimTrainerGame(GameShell):
             return
         self.lesson_idx = idx
         lesson = LESSONS[idx]
-        self.grid_data = [list(row) for row in lesson["grid"]]
-        self.cursor = [1, 1]
-        self.mode = "NORMAL"
-        self.visual_start = None
-        self.command_buffer = ""
+        grid = [list(row) for row in lesson["grid"]]
+        self.state = init_from_grid(grid)
+        # Find @ position and set cursor there
+        for y, row in enumerate(grid):
+            for x, ch in enumerate(row):
+                if ch == "@":
+                    self.state.cursor_x = x
+                    self.state.cursor_y = y
+                    break
+        self.state.mode = "NORMAL"
         self.message = lesson.get("hint", "")
         self.message_color = AMBER
         self.title = lesson["title"]
@@ -340,447 +350,175 @@ class VimTrainerGame(GameShell):
         self._load_lesson(0)
         self.set_score(0)
 
+    def help_level_id(self) -> str | None:
+        try:
+            return LESSONS[self.lesson_idx]["id"]
+        except (IndexError, KeyError, TypeError):
+            return "motion_basic"
+
     def on_key(self, e: tk.Event) -> None:
+        if self.handle_help_keys(e):
+            return
+        if self.state is None:
+            return
         k = e.keysym.lower()
         state = getattr(e, "state", 0) or 0
         ctrl = bool(state & 0x4)
         shift = bool(state & 0x1)
 
-        if self.mode == "INSERT":
-            self._handle_insert(k, e)
-            return
-        if self.mode == "VISUAL":
-            self._handle_visual(k)
-            return
-        if self.mode == "COMMAND":
-            self._handle_command(k, e)
-            return
-
-        # NORMAL mode
-        self._handle_normal(k, ctrl, shift)
-
-    def _handle_normal(self, k: str, ctrl: bool, shift: bool) -> None:
-        lesson = LESSONS[self.lesson_idx]
-        target = lesson["target"]
-        moved = False
-
-        # Movement
-        if k in ("h", "left"):
-            self.cursor[0] = max(0, self.cursor[0] - 1)
-            moved = True
-        elif k in ("j", "down"):
-            self.cursor[1] = min(len(self.grid_data) - 1, self.cursor[1] + 1)
-            moved = True
-        elif k in ("k", "up"):
-            self.cursor[1] = max(0, self.cursor[1] - 1)
-            moved = True
-        elif k in ("l", "right"):
-            row_len = len(self.grid_data[self.cursor[1]])
-            self.cursor[0] = min(row_len - 1, self.cursor[0] + 1)
-            moved = True
-
-        # Word motions
-        elif k == "w":
-            self._move_word_forward()
-            moved = True
-        elif k == "b":
-            self._move_word_backward()
-            moved = True
-        elif k == "e":
-            self._move_word_end()
-            moved = True
-
-        # Line motions
-        elif k == "0":
-            self.cursor[0] = 0
-            moved = True
-        elif k == "^":
-            row = self.grid_data[self.cursor[1]]
-            for i, ch in enumerate(row):
-                if ch != " " and ch != ".":
-                    self.cursor[0] = i
-                    break
-            moved = True
-        elif k == "$":
-            row = self.grid_data[self.cursor[1]]
-            self.cursor[0] = len(row) - 1
-            moved = True
-
-        # Deletions
-        elif k == "x":
-            self._delete_char()
-        elif k == "X" or (shift and k == "x"):
-            if self.cursor[0] > 0:
-                self.cursor[0] -= 1
-                self._delete_char()
-
-        # Operators (simplified - immediate action)
-        elif k == "d":
-            self._start_operator("d")
-        elif k == "c":
-            self._start_operator("c")
-        elif k == "y":
-            self._start_operator("y")
-
-        # Insert mode entry
-        elif k == "i":
-            self.mode = "INSERT"
-            self.message = _t("РЕЖИМ ВСТАВКИ — пиши текст, Esc для выхода")
-            self.message_color = GREEN
-        elif k == "a":
-            self.cursor[0] = min(len(self.grid_data[self.cursor[1]]) - 1, self.cursor[0] + 1)
-            self.mode = "INSERT"
-            self.message = _t("РЕЖИМ ВСТАВКИ (после курсора) — Esc для выхода")
-            self.message_color = GREEN
-        elif k == "o":
-            self._open_line_below()
-        elif k == "O":
-            self._open_line_above()
-
-        # Visual mode
-        elif k == "v":
-            self.mode = "VISUAL"
-            self.visual_start = tuple(self.cursor)
-            self.message = _t("ВИЗУАЛЬНЫЙ РЕЖИМ — выдели, потом d/y/c")
-            self.message_color = PURPLE
-        elif k == "V":
-            self.mode = "VISUAL_LINE"
-            self.visual_start = tuple(self.cursor)
-            self.message = _t("ВИЗУАЛЬНЫЙ РЕЖИМ (СТРОКИ) — выдели, потом d/y/c")
-            self.message_color = PURPLE
-
-        # Search
-        elif k == "/":
-            self.mode = "COMMAND"
-            self.command_buffer = "/"
-            self.message = _t("ПОИСК: введи паттерн, Enter")
-            self.message_color = CYAN
-        elif k == "?":
-            self.mode = "COMMAND"
-            self.command_buffer = "?"
-            self.message = _t("ПОИСК НАЗАД: введи паттерн, Enter")
-            self.message_color = CYAN
-        elif k == "n":
-            # Next search result
-            if hasattr(self, "_last_search") and self._last_search:
-                self._search(self._last_search)
-        elif k == "N":
-            # Previous search result - simplified
-            if hasattr(self, "_last_search") and self._last_search:
-                self.message = _t("N — поиск назад (упрощено)")
-                self.message_color = MUTED
-
-        # Undo/Redo
-        elif k == "u":
-            self._did_undo_redo = True
-            self.message = _t("Отмена (u) — сделано! Попробуй Ctrl+r для возврата")
-            self.message_color = GREEN
-        elif ctrl and k == "r":
+        # Handle special keys (Ctrl, etc.) via engine
+        if ctrl and k == "r":
+            process_special_key(self.state, "ctrl_r")
             self._did_undo_redo = True
             self.message = _t("Возврат (Ctrl+r) — сделано! u / Ctrl+r работают парой")
             self.message_color = GREEN
+            self._check_lesson_complete()
+            self.redraw()
+            return
+        elif k == "escape":
+            process_special_key(self.state, "escape")
+            self.redraw()
+            return
+        elif k == "return":
+            process_special_key(self.state, "enter")
+            self.redraw()
+            return
+        elif k == "backspace":
+            process_special_key(self.state, "backspace")
+            self.redraw()
+            return
+        elif k == "space":
+            process_special_key(self.state, "space")
+            self._check_lesson_complete()
+            self.redraw()
+            return
+        elif k == "tab":
+            process_special_key(self.state, "tab")
+            self.redraw()
+            return
+        elif k in ("left", "right", "up", "down"):
+            process_special_key(self.state, k)
+            self._check_lesson_complete()
+            self.redraw()
+            return
 
-        # Repeat counts
-        elif k.isdigit() and k != "0":
-            self._used_count = True
-            self.message = _t("Счетчик {0}... нажми команду (j/k/l/h/dw/dd)").format(k)
-            self.message_color = AMBER
+        # Handle printable characters and other keys via engine
+        if len(k) == 1 and k.isprintable():
+            # Handle digits for counts
+            if k.isdigit():
+                self._pending_count += k
+                self.message = _t("Счетчик {0}... нажми команду (j/k/l/h/dw/dd)").format(self._pending_count)
+                self.message_color = AMBER
+                self.redraw()
+                return
+            
+            # Process the key with any pending count
+            count = int(self._pending_count) if self._pending_count else 1
+            self._pending_count = ""
+            
+            # Check for shift + key combinations
+            if shift and k in ("x", "d", "c", "y"):
+                # These are handled by engine with shift
+                pass
+            
+            # For simplicity, let the engine handle it
+            # But we need to handle operators specially
+            if k in ("d", "c", "y") and self.state.pending_operator:
+                # This is a second key of an operator (dd, cc, yy, dw, etc.)
+                pass
+            
+            process_key(self.state, k, count, shift=shift)
+            self._check_lesson_complete()
+            self.redraw()
+            return
 
-        # Next/prev lesson
-        elif k == "n" and ctrl:
+        # Check for lesson navigation
+        if k == "n" and ctrl:
             self._next_lesson()
+            return
         elif k == "p" and ctrl:
             self._prev_lesson()
-
-        # Check lesson completion
-        if moved:
-            self._check_lesson_complete()
-
-        self.redraw()
-
-    def _handle_insert(self, k: str, e: tk.Event) -> None:
-        if k == "escape":
-            self.mode = "NORMAL"
-            self.message = _t("Выйшли в NORMAL режим")
-            self.message_color = AMBER
-        elif k == "backspace":
-            if self.cursor[0] > 0:
-                row = self.grid_data[self.cursor[1]]
-                if self.cursor[0] <= len(row):
-                    del row[self.cursor[0] - 1]
-                    self.cursor[0] -= 1
-        elif k == "return":
-            self._open_line_below()
-        elif k == "space":
-            row = self.grid_data[self.cursor[1]]
-            row.insert(self.cursor[0], " ")
-            self.cursor[0] += 1
-        elif len(k) == 1 and k.isprintable():
-            row = self.grid_data[self.cursor[1]]
-            row.insert(self.cursor[0], k)
-            self.cursor[0] += 1
-        self.redraw()
-
-    def _handle_visual(self, k: str) -> None:
-        if k == "escape":
-            self.mode = "NORMAL"
-            self.visual_start = None
-            self.message = _t("Выйшли из визуального режима")
-            self.message_color = AMBER
-        elif k in ("h", "left"):
-            self.cursor[0] = max(0, self.cursor[0] - 1)
-        elif k in ("j", "down"):
-            self.cursor[1] = min(len(self.grid_data) - 1, self.cursor[1] + 1)
-        elif k in ("k", "up"):
-            self.cursor[1] = max(0, self.cursor[1] - 1)
-        elif k in ("l", "right"):
-            row_len = len(self.grid_data[self.cursor[1]])
-            self.cursor[0] = min(row_len - 1, self.cursor[0] + 1)
-        elif k in ("d", "x"):
-            self._delete_visual_selection()
-        elif k == "y":
-            self.message = _t("Скопировано (y) — в тренажере упрощено")
-            self.mode = "NORMAL"
-            self.visual_start = None
-        elif k == "c":
-            self._delete_visual_selection()
-            self.mode = "INSERT"
-            self.message = _t("РЕЖИМ ВСТАВКИ — пиши текст")
-            self.message_color = GREEN
-        self.redraw()
-
-    def _handle_command(self, k: str, e: tk.Event) -> None:
-        if k == "escape":
-            self.mode = "NORMAL"
-            self.command_buffer = ""
-            self.message = _t("Отмена поиска")
-            self.message_color = MUTED
-        elif k == "return":
-            if self.command_buffer.startswith("/"):
-                pattern = self.command_buffer[1:]
-                self._last_search = pattern
-                self._search(pattern)
-            elif self.command_buffer.startswith("?"):
-                pattern = self.command_buffer[1:]
-                self._last_search = pattern
-                # Backward search - simplified
-                self._search(pattern)
-            self.mode = "NORMAL"
-            self.command_buffer = ""
-        elif k == "backspace":
-            self.command_buffer = self.command_buffer[:-1]
-        elif len(k) == 1 and k.isprintable():
-            self.command_buffer += k
-        self.message = f":{self.command_buffer}"
-        self.message_color = CYAN
-        self.redraw()
-
-    # ─── Movement helpers ──────────────────────────────────────────────────
-
-    def _move_word_forward(self) -> None:
-        row = self.grid_data[self.cursor[1]]
-        pos = self.cursor[0]
-        # skip current word
-        while pos < len(row) and row[pos].isalnum():
-            pos += 1
-        # skip spaces
-        while pos < len(row) and not row[pos].isalnum():
-            pos += 1
-        # find next word start
-        while pos < len(row) and not row[pos].isalnum():
-            pos += 1
-        self.cursor[0] = min(pos, len(row) - 1)
-
-    def _move_word_backward(self) -> None:
-        row = self.grid_data[self.cursor[1]]
-        pos = self.cursor[0]
-        # skip spaces
-        while pos > 0 and not row[pos - 1].isalnum():
-            pos -= 1
-        # find word start
-        while pos > 0 and row[pos - 1].isalnum():
-            pos -= 1
-        self.cursor[0] = pos
-
-    def _move_word_end(self) -> None:
-        row = self.grid_data[self.cursor[1]]
-        pos = self.cursor[0]
-        # if on word, go to end
-        while pos < len(row) - 1 and row[pos + 1].isalnum():
-            pos += 1
-        self.cursor[0] = pos
-
-    # ─── Edit operations ───────────────────────────────────────────────────
-
-    def _delete_char(self) -> None:
-        row = self.grid_data[self.cursor[1]]
-        if self.cursor[0] < len(row):
-            del row[self.cursor[0]]
-
-    def _delete_word(self) -> None:
-        row = self.grid_data[self.cursor[1]]
-        start = self.cursor[0]
-        end = start
-        while end < len(row) and row[end].isalnum():
-            end += 1
-        while end < len(row) and not row[end].isalnum():
-            end += 1
-        del row[start:end]
-
-    def _delete_line(self) -> None:
-        if len(self.grid_data) > 1:
-            del self.grid_data[self.cursor[1]]
-            if self.cursor[1] >= len(self.grid_data):
-                self.cursor[1] = len(self.grid_data) - 1
-            self.cursor[0] = 0
-
-    def _start_operator(self, op: str) -> None:
-        self.message = _t("Оператор {0} — в тренажере сразу: dw/db/de/dd").format(op)
-        self.message_color = AMBER
-
-    def _open_line_below(self) -> None:
-        self.grid_data.insert(self.cursor[1] + 1, [])
-        self.cursor[1] += 1
-        self.cursor[0] = 0
-
-    def _open_line_above(self) -> None:
-        self.grid_data.insert(self.cursor[1], [])
-        self.cursor[0] = 0
-
-    def _delete_visual_selection(self) -> None:
-        if not self.visual_start:
             return
-        y1, x1 = self.visual_start
-        y2, x2 = self.cursor[1], self.cursor[0]
-        if y1 > y2 or (y1 == y2 and x1 > x2):
-            y1, y2 = y2, y1
-            x1, x2 = x2, x1
-        if y1 == y2:
-            row = self.grid_data[y1]
-            del row[x1:x2 + 1]
-        else:
-            # multi-line: simplify
-            for y in range(y1, y2 + 1):
-                if y < len(self.grid_data):
-                    self.grid_data[y] = []
-        self.mode = "NORMAL"
-        self.visual_start = None
 
-    def _search(self, pattern: str) -> None:
-        if not pattern:
-            return
-        found = False
-        count = 0
-        for y in range(self.cursor[1], len(self.grid_data)):
-            row = "".join(self.grid_data[y])
-            start = self.cursor[0] if y == self.cursor[1] else 0
-            idx = row.find(pattern, start)
-            if idx >= 0:
-                count += 1
-                if not found:
-                    self.cursor[1] = y
-                    self.cursor[0] = idx
-                    found = True
-        if not found:
-            for y in range(0, self.cursor[1]):
-                row = "".join(self.grid_data[y])
-                idx = row.find(pattern)
-                if idx >= 0:
-                    count += 1
-                    if not found:
-                        self.cursor[1] = y
-                        self.cursor[0] = idx
-                        found = True
-        if found:
-            self._vim_found_count += count
-            self.message = _t("Найдено: {0} (всего найдено: {1})").format(pattern, self._vim_found_count)
-            self.message_color = GREEN
-        else:
-            self.message = _t("Не найдено: {0}").format(pattern)
-            self.message_color = RED
+        self.redraw()
 
     def _check_lesson_complete(self) -> None:
+        if self.state is None:
+            return
         lesson = LESSONS[self.lesson_idx]
         target = lesson["target"]
+        cursor_x, cursor_y = get_cursor_pos(self.state)
+        grid_text = get_grid_text(self.state)
+        mode = get_mode(self.state)
 
         if target == "MOVE_CURSOR" and "goal_pos" in lesson:
             gx, gy = lesson["goal_pos"]
-            if self.cursor[0] >= gx and self.cursor[1] == gy:
+            if cursor_x >= gx and cursor_y == gy:
                 self._complete_lesson()
 
         elif target == "WORD_MOTION" and "word_targets" in lesson:
             targets = set(lesson["word_targets"])
-            if tuple(self.cursor) in targets:
-                targets.discard(tuple(self.cursor))
+            if (cursor_x, cursor_y) in targets:
+                targets.discard((cursor_x, cursor_y))
                 lesson["word_targets"] = list(targets)
                 if not targets:
                     self._complete_lesson()
 
         elif target == "LINE_MOTION" and "line_targets" in lesson:
             targets = set(lesson["line_targets"])
-            if tuple(self.cursor) in targets:
-                targets.discard(tuple(self.cursor))
+            if (cursor_x, cursor_y) in targets:
+                targets.discard((cursor_x, cursor_y))
                 lesson["line_targets"] = list(targets)
                 if not targets:
                     self._complete_lesson()
 
         elif target == "DELETE_CHAR" and "delete_targets" in lesson:
             targets = set(lesson["delete_targets"])
-            row = self.grid_data[0]
-            # Check if all target positions are now empty (deleted)
             all_deleted = True
             for tx, ty in targets:
-                if ty < len(self.grid_data) and tx < len(self.grid_data[ty]):
-                    if self.grid_data[ty][tx] != " " and self.grid_data[ty][tx] != ".":
+                if ty < len(grid_text) and tx < len(grid_text[ty]):
+                    if grid_text[ty][tx] != " " and grid_text[ty][tx] != ".":
                         all_deleted = False
                         break
             if all_deleted:
                 self._complete_lesson()
 
         elif target == "DELETE_WORD":
-            # Check if first line is empty (only dots/spaces)
-            row0 = "".join(self.grid_data[0]) if self.grid_data else ""
+            row0 = grid_text[0] if grid_text else ""
             if not any(c.isalnum() for c in row0):
                 self._complete_lesson()
 
         elif target == "DELETE_LINE":
-            # Check if lines 1 and 2 (original) are gone - now only 2 lines remain
-            if len(self.grid_data) <= 2:
+            if len(grid_text) <= 2:
                 self._complete_lesson()
 
         elif target == "INSERT_MODE" and "insert_tasks" in lesson:
-            # Check if all insert tasks are done - simplified: check grid has expected content
-            row0 = "".join(self.grid_data[0]) if len(self.grid_data) > 0 else ""
-            row1 = "".join(self.grid_data[1]) if len(self.grid_data) > 1 else ""
+            row0 = grid_text[0] if len(grid_text) > 0 else ""
+            row1 = grid_text[1] if len(grid_text) > 1 else ""
             if "beautiful" in row0 and "!" in row0 and "new line below" in row1:
                 self._complete_lesson()
 
         elif target == "CHANGE_OPERATOR":
-            row0 = "".join(self.grid_data[0]) if len(self.grid_data) > 0 else ""
-            row1 = "".join(self.grid_data[1]) if len(self.grid_data) > 1 else ""
+            row0 = grid_text[0] if len(grid_text) > 0 else ""
+            row1 = grid_text[1] if len(grid_text) > 1 else ""
             if "it" in row0 and "new line" in row1:
                 self._complete_lesson()
 
         elif target == "VISUAL_MODE":
-            # Check if first line has "select " removed and second line gone
-            row0 = "".join(self.grid_data[0]) if len(self.grid_data) > 0 else ""
-            if "select" not in row0 and len(self.grid_data) <= 2:
+            row0 = grid_text[0] if len(grid_text) > 0 else ""
+            if "select" not in row0 and len(grid_text) <= 2:
                 self._complete_lesson()
 
         elif target == "SEARCH_REPLACE":
-            # Check if all 3 'vim' occurrences were found (tracked via searches)
-            # Simplified: if user searched for vim at least once
-            if hasattr(self, "_vim_found_count") and self._vim_found_count >= 3:
+            if self._vim_found_count >= 3:
                 self._complete_lesson()
 
         elif target == "UNDO_REDO":
-            # Check if user did undo/redo - track via attribute
-            if hasattr(self, "_did_undo_redo") and self._did_undo_redo:
+            if self._did_undo_redo:
                 self._complete_lesson()
 
         elif target == "REPEAT_COUNT":
-            # Check if user used count (5k from bottom row or similar)
-            if hasattr(self, "_used_count") and self._used_count:
+            if self._used_count:
                 self._complete_lesson()
 
     def _complete_lesson(self) -> None:
@@ -805,6 +543,8 @@ class VimTrainerGame(GameShell):
     # ─── Rendering ──────────────────────────────────────────────────────────
 
     def redraw(self) -> None:
+        if self.state is None:
+            return
         c = self.canvas
         c.delete("all")
         w = max(c.winfo_width(), 10)
@@ -812,13 +552,17 @@ class VimTrainerGame(GameShell):
         c.create_rectangle(0, 0, w, h, fill=BG2, outline="")
 
         lesson = LESSONS[self.lesson_idx]
+        grid_text = get_grid_text(self.state)
+        cursor_x, cursor_y = get_cursor_pos(self.state)
+        mode = get_mode(self.state)
+        visual_start = get_visual_start(self.state)
 
         # Left panel: grid
         grid_w = min(px(520), w - px(320))
         start_x = px(20)
         start_y = px(20)
 
-        for y, row in enumerate(self.grid_data):
+        for y, row in enumerate(grid_text):
             for x, ch in enumerate(row):
                 cx = start_x + x * self.cell_w
                 cy = start_y + y * self.cell_h
@@ -827,10 +571,10 @@ class VimTrainerGame(GameShell):
                     continue
 
                 # Cell background
-                is_cursor = (x == self.cursor[0] and y == self.cursor[1])
+                is_cursor = (x == cursor_x and y == cursor_y)
                 is_visual = False
-                if self.visual_start:
-                    vy, vx = self.visual_start
+                if visual_start:
+                    vy, vx = visual_start
                     y1, x1 = min(vy, y), min(vx, x)
                     y2, x2 = max(vy, y), max(vx, x)
                     if y1 <= y <= y2:
@@ -907,8 +651,8 @@ class VimTrainerGame(GameShell):
         # Status bar
         status_y = h - px(50)
         c.create_rectangle(0, status_y, w, h, fill=BG, outline=blend(BG, TEXT, 0.2))
-        c.create_text(px(10), status_y + px(10), text=_t("Режим: {0}").format(self.mode),
-                      fill=AMBER if self.mode == "NORMAL" else (GREEN if self.mode == "INSERT" else PURPLE),
+        c.create_text(px(10), status_y + px(10), text=_t("Режим: {0}").format(mode),
+                      fill=AMBER if mode == "NORMAL" else (GREEN if mode == "INSERT" else PURPLE),
                       anchor="w", font=theme.font(10, True))
         c.create_text(px(150), status_y + px(10), text=_t("Урок {0}/{1}").format(self.lesson_idx + 1, len(LESSONS)),
                       fill=CYAN, anchor="w", font=theme.font(10, True))
