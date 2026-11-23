@@ -10,10 +10,12 @@ from stamina.i18n import t as _t
 import tkinter as tk
 
 from stamina import theme
+from stamina.hud import HudButton
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, MUTED, PANEL, PURPLE, TEXT, blend, px
 
 from .base import GameShell
 from . import store
+from .vim_ref_panel import VimReferencePanel
 from .vim_engine import (
     VimState,
     init_from_grid,
@@ -290,6 +292,8 @@ def lesson_key() -> str:
 class VimTrainerGame(GameShell):
     game_id = "vim_trainer"
     title = _t("VIM ТРЕНАЖЁР · УЧИ КОМАНДЫ")
+    tools_row = True            # вторая строка: кнопка «УЧЕБНИК  F2»
+    ref_panel = None            # панель-учебник создаётся по F2
 
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
@@ -306,6 +310,49 @@ class VimTrainerGame(GameShell):
         self.load_progress()
         self._load_lesson(0)
         self.set_hint(lesson_key())
+
+    def build_tools(self) -> None:
+        """Вторая строка панели: учебник клавиш."""
+        HudButton(self.tools, _t("УЧЕБНИК  F2"), self.toggle_reference, height=30,
+                  font_size=9, width=140, color=AMBER).pack(side=tk.LEFT, padx=(0, px(8)))
+        tk.Label(self.tools, text=_t("клавиши, примеры и теория по темам · F2 в игре"),
+                 bg=BG, fg=MUTED, font=theme.font(9)).pack(side=tk.LEFT)
+
+    # -- учебник клавиш ------------------------------------------------------
+    def reference_open(self) -> bool:
+        return self.ref_panel is not None and self.ref_panel.winfo_ismapped()
+
+    def toggle_reference(self) -> None:
+        if self.reference_open():
+            self.close_reference()
+            return
+        if self.ref_panel is None:
+            self.ref_panel = VimReferencePanel(
+                self.canvas.master, on_lesson=self.open_lesson,
+                on_close=self.close_reference,
+            )
+        self.ref_panel.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.ref_panel.lift()
+        self.set_hint(_t("Учебник открыт: тема → клавиши → «К УРОКУ» · F2 — закрыть"))
+
+    def close_reference(self) -> None:
+        if self.ref_panel is not None:
+            self.ref_panel.place_forget()
+        self.set_hint(lesson_key())
+        self.focus_set()
+        self.redraw()
+
+    def open_lesson(self, lesson_id: str) -> None:
+        """Кнопка «К УРОКУ»: открыть урок, где эта клавиша отрабатывается."""
+        for idx, lesson in enumerate(LESSONS):
+            if lesson["id"] == lesson_id:
+                self.close_reference()
+                self._load_lesson(idx)
+                self.message = _t("Из учебника: урок {0} — пройдите его руками").format(idx + 1)
+                self.message_color = CYAN
+                self.redraw()
+                return
+        self.close_reference()
 
     def load_progress(self) -> None:
         data = store.load()
@@ -358,6 +405,14 @@ class VimTrainerGame(GameShell):
 
     def on_key(self, e: tk.Event) -> None:
         if self.handle_help_keys(e):
+            return
+        # Учебник перекрывает поле: пока он открыт, клавиши ему не мешают.
+        if e.keysym == "F2":
+            self.toggle_reference()
+            return
+        if self.reference_open():
+            if e.keysym == "Escape":
+                self.close_reference()
             return
         if self.state is None:
             return
