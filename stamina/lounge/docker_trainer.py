@@ -117,13 +117,91 @@ MISSIONS = [
         "check": lambda sim, out: "Deleted" in out or "reclaimed" in out,
         "xp": 50,
     },
+    {
+        "id": "mission_9",
+        "title": "Миссия 9: Данные в томе",
+        "subtitle": "Том переживает контейнер",
+        "desc": "`docker volume create <name>` создаёт том, `-v имя:/путь` монтирует его внутрь.\n"
+                "Данные в томе останутся, даже если контейнер удалить.",
+        "hint": "Задание: создай том `docker volume create radio_data`, затем запусти "
+                "`docker run -d -v radio_data:/data --name radio_store ship/radio`",
+        "expected": ["docker volume create radio_data",
+                     "docker run -d -v radio_data:/data --name radio_store ship/radio"],
+        "check": lambda sim, out: any(
+            c.name == "radio_store"
+            and any(vm.source == "radio_data" and vm.target == "/data" for vm in c.volumes)
+            for c in sim.containers.values()
+        ),
+        "xp": 50,
+    },
+    {
+        "id": "mission_10",
+        "title": "Миссия 10: Переменные окружения",
+        "subtitle": "-e передаёт настройку внутрь контейнера",
+        "desc": "Флаг `-e KEY=VALUE` задаёт переменную окружения контейнера.\n"
+                "Так приложение узнаёт режим работы, уровень логов и адреса баз.",
+        "hint": "Задание: запусти `docker run -d -e LOG_LEVEL=debug --name radio_fm ship/radio`",
+        "expected": ["docker run -d -e LOG_LEVEL=debug --name radio_fm ship/radio"],
+        "check": lambda sim, out: any(
+            c.name == "radio_fm" and c.env.get("LOG_LEVEL") == "debug"
+            for c in sim.containers.values()
+        ),
+        "xp": 40,
+    },
+    {
+        "id": "mission_11",
+        "title": "Миссия 11: Порт и диагностика",
+        "subtitle": "docker port — куда ведёт проброс",
+        "desc": "`docker port <container>` показывает, какой порт хоста смотрит внутрь.\n"
+                "Если снаружи «не открывается», сначала проверяют именно это.",
+        "hint": "Задание: запусти `docker run -d -p 8090:8080 --name radio_web ship/radio`, "
+                "затем `docker port radio_web`",
+        "expected": ["docker run -d -p 8090:8080 --name radio_web ship/radio",
+                     "docker port radio_web"],
+        "check": lambda sim, out: "8090" in out,
+        "xp": 40,
+    },
+    {
+        "id": "mission_12",
+        "title": "Миссия 12: Сборка образа",
+        "subtitle": "docker build -t имя:тег .",
+        "desc": "`docker build -t ship/app:1.0 .` собирает образ из Dockerfile в текущем каталоге.\n"
+                "Тег — это версия: без него образ получит latest.",
+        "hint": "Задание: собери образ `docker build -t ship/app:1.0 .`",
+        "expected": ["docker build -t ship/app:1.0 ."],
+        "check": lambda sim, out: "Successfully tagged" in out,
+        "xp": 50,
+    },
+    {
+        "id": "mission_13",
+        "title": "Миссия 13: Свернуть проект",
+        "subtitle": "docker compose ps и down",
+        "desc": "`docker compose ps` показывает состояние сервисов проекта.\n"
+                "`docker compose down` останавливает и удаляет их — стенд остаётся чистым.",
+        "hint": "Задание: посмотри `docker compose ps`, затем сверни проект: `docker compose down`",
+        "expected": ["docker compose ps", "docker compose down"],
+        "check": lambda sim, out: not any(c.name.startswith("compose_") for c in sim.containers.values()),
+        "xp": 50,
+    },
+    {
+        "id": "sandbox",
+        "title": "Свободный полёт",
+        "subtitle": "Попробуй любые команды из учебника",
+        "desc": "Все миссии освоены. Включи режим песочницы (галочка ниже) "
+                "и экспериментируй свободно — миссии не проверяются.",
+        "hint": "Задание: включи галочку «Песочница · без миссий» "
+                "и попробуй `docker run -d ship/lab`, затем `docker ps`",
+        "expected": [],
+        "check": lambda sim, out: True,
+        "xp": 30,
+    },
 ]
 
 
 # ─── Helper Functions ──────────────────────────────────────────────────────────
 
 def mission_key() -> str:
-    return _t("↑/↓ — история · Tab — дописать · F1 — помощь · F2 — учебник · Esc — пауза")
+    return "↑/↓ — история · Tab — дописать · F1 — помощь · F2 — учебник · Esc — пауза"
 
 
 def typed_char(event) -> str:
@@ -145,9 +223,14 @@ def typed_char(event) -> str:
 
 class DockerTrainerGame(GameShell):
     game_id = "docker_trainer"
-    title = _t("DOCKER ТРЕНАЖЁР · ДОК-СТАНЦИЯ")
+    title = "DOCKER ТРЕНАЖЁР · ДОК-СТАНЦИЯ"
     text_input = True      # в панели появляется галка «⌫ Backspace — стирать»
     tools_row = True       # вторая строка: учебник и песочница
+    # Миссии и источник команд учебника — атрибуты экземпляра (класса): новые
+    # терминальные тренажёры (PowerShell, Linux) наследуют это поведение и
+    # подменяют под свои данные через классовые атрибуты.
+    missions = MISSIONS
+    reference = ref
 
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
@@ -158,24 +241,29 @@ class DockerTrainerGame(GameShell):
         self.history_pos = -1
         self.command_buffer = ""
         self.output_lines: list[tuple[str, str]] = []  # (text, color)
+        self.output_scroll = 0        # 0 = bottom, >0 = lines scrolled up
         self.pending_mission_check = False
         self.sandbox_mode = False
         self.ref_panel = None          # панель-учебник создаётся по F2
         self.load_progress()
         self._load_mission(0)
         self.set_hint(mission_key())
-        self._add_output(_t("Добро пожаловать на Док-станцию!"), CYAN)
+        self._add_output("Добро пожаловать на Док-станцию!", CYAN)
         self._add_output(_t("Введи команды docker. F1 — помощь, F2 — учебник команд, "
                             "Tab — автодополнение."), MUTED)
         self._add_output("", TEXT)
+        # Mouse wheel scrolling for terminal output
+        self.canvas.bind("<MouseWheel>", self._on_mousewheel)
+        self.canvas.bind("<Button-4>", lambda e: self._on_mousewheel_up())
+        self.canvas.bind("<Button-5>", lambda e: self._on_mousewheel_down())
 
     def build_tools(self) -> None:
         """Вторая строка панели: учебник команд и свободный режим."""
-        HudButton(self.tools, _t("УЧЕБНИК  F2"), self.toggle_reference, height=30,
+        HudButton(self.tools, "УЧЕБНИК  F2", self.toggle_reference, height=30,
                   font_size=9, width=140, color=AMBER).pack(side=tk.LEFT, padx=(0, px(8)))
         self.var_sandbox = tk.BooleanVar(value=False)
         tk.Checkbutton(
-            self.tools, text=_t("Песочница · без миссий"),
+            self.tools, text="Песочница · без миссий",
             variable=self.var_sandbox, command=self._on_sandbox_toggle,
             bg=BG, fg=MUTED, activebackground=BG, activeforeground=TEXT,
             selectcolor=PANEL, highlightthickness=0, bd=0, takefocus=0,
@@ -189,7 +277,7 @@ class DockerTrainerGame(GameShell):
             self._add_output(_t("Свободный режим: миссии не проверяются, "
                                 "пробуй любые команды из учебника (F2)."), CYAN)
         else:
-            self._add_output(_t("Снова по миссиям: смотри задание в подсказке внизу."), MUTED)
+            self._add_output("Снова по миссиям: смотри задание в подсказке внизу.", MUTED)
         self.save_progress()
         self.redraw()
         self.focus_set()
@@ -214,7 +302,7 @@ class DockerTrainerGame(GameShell):
             )
         self.ref_panel.place(relx=0, rely=0, relwidth=1, relheight=1)
         self.ref_panel.lift()
-        self.set_hint(_t("Учебник открыт: тема → команда → «в строку» или «выполнить» · F2 — закрыть"))
+        self.set_hint("Учебник открыт: тема → команда → «в строку» или «выполнить» · F2 — закрыть")
 
     def close_reference(self) -> None:
         if self.ref_panel is not None:
@@ -228,7 +316,7 @@ class DockerTrainerGame(GameShell):
         self.close_reference()
         self.command_buffer = cmd
         self.history_pos = len(self.history)
-        self._add_output(_t("Из учебника в строку: {0}").format(cmd), MUTED)
+        self._add_output("Из учебника в строку: {0}".format(cmd), MUTED)
         self.redraw()
 
     def run_from_reference(self, cmd: str) -> None:
@@ -249,8 +337,8 @@ class DockerTrainerGame(GameShell):
             except Exception:
                 self.sim = DockerSimulator()
             self.sandbox_mode = True
-        if self.mission_idx >= len(MISSIONS):
-            self.mission_idx = len(MISSIONS) - 1
+        if self.mission_idx >= len(self.missions):
+            self.mission_idx = len(self.missions) - 1
         self._sync_sandbox_var()
 
     def save_progress(self) -> None:
@@ -263,10 +351,10 @@ class DockerTrainerGame(GameShell):
         store.save(data)
 
     def _load_mission(self, idx: int) -> None:
-        if idx < 0 or idx >= len(MISSIONS):
+        if idx < 0 or idx >= len(self.missions):
             return
         self.mission_idx = idx
-        mission = MISSIONS[idx]
+        mission = self.missions[idx]
         self.title = mission["title"]
         self.lbl_title.configure(text=self.title)
         self._add_output("", TEXT)
@@ -305,7 +393,7 @@ class DockerTrainerGame(GameShell):
         if getattr(self, "sandbox_mode", False):
             return "sandbox"
         try:
-            return MISSIONS[self.mission_idx]["id"]
+            return self.missions[self.mission_idx]["id"]
         except (IndexError, KeyError, TypeError):
             return "mission_1"
 
@@ -387,7 +475,7 @@ class DockerTrainerGame(GameShell):
 
         # Check mission completion — только когда идём по миссиям
         if not self.sandbox_mode:
-            mission = MISSIONS[self.mission_idx]
+            mission = self.missions[self.mission_idx]
             if mission["check"](self.sim, out):
                 self._complete_mission()
 
@@ -397,19 +485,19 @@ class DockerTrainerGame(GameShell):
     def _complete_mission(self) -> None:
         if self.mission_idx not in self.completed_missions:
             self.completed_missions.add(self.mission_idx)
-            xp = MISSIONS[self.mission_idx].get("xp", 50)
+            xp = self.missions[self.mission_idx].get("xp", 50)
             self.add_score(xp)
             self._add_output("", TEXT)
-            self._add_output(_t("✓ Миссия выполнена! +{0} XP").format(xp), GREEN)
+            self._add_output("✓ Миссия выполнена! +{0} XP".format(xp), GREEN)
             self.save_progress()
 
-        if self.mission_idx + 1 < len(MISSIONS):
+        if self.mission_idx + 1 < len(self.missions):
             self.mission_idx += 1
             self._load_mission(self.mission_idx)
         else:
             self._add_output("", TEXT)
-            self._add_output(_t("🎉 Все миссии пройдены! Режим песочницы разблокирован."), GREEN)
-            self._add_output(_t("Теперь ты можешь свободно экспериментировать с Docker командами."), CYAN)
+            self._add_output("🎉 Все миссии пройдены! Режим песочницы разблокирован.", GREEN)
+            self._add_output("Теперь ты можешь свободно экспериментировать с Docker командами.", CYAN)
             self.sandbox_mode = True
             self._sync_sandbox_var()
             self.save_progress()
@@ -432,7 +520,7 @@ class DockerTrainerGame(GameShell):
 
     def _autocomplete(self) -> None:
         """Tab: дописать команду. Список — из учебника, чтобы не расходился с ним."""
-        completions = list(ref.completions()) + [
+        completions = list(self.reference.completions()) + [
             "ship/radio", "ship/orion", "ship/lab", "ship/scanner", "ship/base",
             "-d", "-p", "--name", "-v", "-e", "--label", "-t", "--detach",
             "create", "ls", "rm", "prune", "up", "down", "port", "volume", "network",
@@ -456,14 +544,42 @@ class DockerTrainerGame(GameShell):
 
     def _clear_screen(self) -> None:
         self.output_lines.clear()
+        self.output_scroll = 0
         self._redraw_input_line()
         self.redraw()
 
+    def _on_mousewheel(self, e: tk.Event) -> None:
+        # Scroll up/down in terminal output
+        if e.delta > 0:
+            self._on_mousewheel_up()
+        else:
+            self._on_mousewheel_down()
+
+    def _on_mousewheel_up(self) -> None:
+        max_scroll = max(0, len(self.output_lines) - 1)
+        if self.output_scroll < max_scroll:
+            self.output_scroll += 1
+            self.redraw()
+
+    def _on_mousewheel_down(self) -> None:
+        if self.output_scroll > 0:
+            self.output_scroll -= 1
+            self.redraw()
+        # If we scroll to bottom, auto-follow new output
+        elif self.output_scroll == 0:
+            self.redraw()
+
     def _add_output(self, text: str, color: str) -> None:
         self.output_lines.append((text, color))
+        # Auto-scroll to bottom if user was at bottom
+        if self.output_scroll == 0:
+            self.output_scroll = 0
         # Limit history
         if len(self.output_lines) > 500:
             self.output_lines = self.output_lines[-400:]
+            # Adjust scroll if we trimmed lines before the viewport
+            if self.output_scroll > len(self.output_lines):
+                self.output_scroll = len(self.output_lines)
 
     def _redraw_input_line(self) -> None:
         # Терминал рисуется на холсте: без перерисовки набранное видно только
@@ -514,8 +630,12 @@ class DockerTrainerGame(GameShell):
         max_lines = max(1, (term_h - px(16)) // line_h)
         start_y = term_h - px(8) - line_h
 
-        # Show last N lines
-        visible = self.output_lines[-max_lines:] if len(self.output_lines) > max_lines else self.output_lines
+        # Show lines with scroll offset
+        # output_scroll = 0 means show last max_lines (bottom)
+        # output_scroll > 0 means show earlier lines
+        end_idx = len(self.output_lines) - self.output_scroll
+        start_idx = max(0, end_idx - max_lines)
+        visible = self.output_lines[start_idx:end_idx]
         y = start_y
         for text, color in reversed(visible):
             if y < px(16):
@@ -527,6 +647,12 @@ class DockerTrainerGame(GameShell):
             else:
                 y -= line_h
 
+        # Scroll indicator
+        if self.output_scroll > 0:
+            c.create_text(w - px(16), px(16), text=f"▲ {self.output_scroll}", fill=MUTED, anchor="ne", font=theme.font(9, mono=True))
+        elif end_idx < len(self.output_lines):
+            c.create_text(w - px(16), px(16), text="▼ new", fill=MUTED, anchor="ne", font=theme.font(9, mono=True))
+
         # Input box: слева приглашение, дальше набранное с курсором
         c.create_rectangle(px(8), in_top, w - px(8), in_bot, fill="#0D1117", outline=AMBER, width=1)
         in_font = theme.font(14, mono=True)
@@ -537,14 +663,14 @@ class DockerTrainerGame(GameShell):
         # Status bar
         status_y = h - px(30)
         c.create_rectangle(0, status_y, w, h, fill=BG2, outline=MUTED)
-        c.create_text(px(10), status_y + px(8), text=_t("Миссия {0}/{1}").format(self.mission_idx + 1, len(MISSIONS)), fill=CYAN, anchor="w", font=theme.font(10, True))
-        c.create_text(px(200), status_y + px(8), text=_t("XP: {0}").format(self.score), fill=AMBER, anchor="w", font=theme.font(10, True))
+        c.create_text(px(10), status_y + px(8), text="Миссия {0}/{1}".format(self.mission_idx + 1, len(self.missions)), fill=CYAN, anchor="w", font=theme.font(10, True))
+        c.create_text(px(200), status_y + px(8), text="XP: {0}".format(self.score), fill=AMBER, anchor="w", font=theme.font(10, True))
         if self.sandbox_mode:
-            c.create_text(px(300), status_y + px(8), text=_t("ПЕСОЧНИЦА"), fill=GREEN, anchor="w", font=theme.font(10, True))
+            c.create_text(px(300), status_y + px(8), text="ПЕСОЧНИЦА", fill=GREEN, anchor="w", font=theme.font(10, True))
 
         # Mission progress dots
-        dot_x = w // 2 - len(MISSIONS) * px(10)
-        for i in range(len(MISSIONS)):
+        dot_x = w // 2 - len(self.missions) * px(10)
+        for i in range(len(self.missions)):
             color = GREEN if i in self.completed_missions else (AMBER if i == self.mission_idx else MUTED)
             c.create_oval(dot_x + i * px(20), status_y + px(6), dot_x + i * px(20) + px(10), status_y + px(16), fill=color, outline="")
 
@@ -553,7 +679,7 @@ class DockerTrainerGame(GameShell):
             self._draw_overlay(c, w, h)
 
         if self.paused:
-            self.draw_overlay(_t("ПАУЗА"))
+            self.draw_overlay("ПАУЗА")
 
     def _draw_overlay(self, c: tk.Canvas, w: int, h: int) -> None:
         overlay_w = min(w - px(40), px(800))
@@ -562,7 +688,7 @@ class DockerTrainerGame(GameShell):
         y0 = (h - overlay_h) // 2
 
         c.create_rectangle(x0, y0, x0 + overlay_w, y0 + overlay_h, fill=BG, outline=AMBER, width=2)
-        c.create_text(w // 2, y0 + px(12), text=_t("ПОМОЩЬ"), fill=AMBER, anchor="n", font=theme.font(14, True))
+        c.create_text(w // 2, y0 + px(12), text="ПОМОЩЬ", fill=AMBER, anchor="n", font=theme.font(14, True))
 
         y = y0 + px(40)
         for line in self.overlay:
@@ -572,7 +698,7 @@ class DockerTrainerGame(GameShell):
             c.create_text(x0 + px(20), y, text=line, fill=color, anchor="nw", font=theme.font(10, mono=True), width=overlay_w - px(40))
             y += px(18)
 
-        c.create_text(w // 2, y0 + overlay_h - px(12), text=_t("F1 или Esc — закрыть"), fill=MUTED, anchor="s", font=theme.font(10, True))
+        c.create_text(w // 2, y0 + overlay_h - px(12), text="F1 или Esc — закрыть", fill=MUTED, anchor="s", font=theme.font(10, True))
 
 
 if __name__ == "__main__":

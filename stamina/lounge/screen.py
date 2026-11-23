@@ -16,6 +16,14 @@ from .tetris import TetrisGame
 from .trainer import TrainerGame
 from .vim_trainer import VimTrainerGame
 from .docker_trainer import DockerTrainerGame
+from .linux_trainer import LinuxTrainerGame
+from .powershell_trainer import PowerShellTrainerGame
+
+
+def _mission_count(cls) -> int:
+    """Сколько настоящих миссий в игре: песочница — режим, а не задание."""
+    return len([m for m in cls.missions if m.get("id") != "sandbox"])
+
 
 GAMES = [
     {
@@ -63,11 +71,30 @@ GAMES = [
     {
         "id": "docker_trainer",
         "title": _t("DOCKER ТРЕНАЖЁР"),
-        "subtitle": _t("ДОК-СТАНЦИЯ · 8 МИССИЙ"),
+        "subtitle": _t("{0} · миссий: {1}").format(_t("ДОК-СТАНЦИЯ"), _mission_count(DockerTrainerGame)),
         "blurb": _t("Освой Docker: run, ps, logs, stop, rm, volumes, networks, compose. "
                     "Интерактивный терминал с подсказками."),
         "color": CYAN,
         "cls": DockerTrainerGame,
+    },
+    {
+        "id": "linux_trainer",
+        "title": _t("LINUX ТРЕНАЖЁР"),
+        "subtitle": _t("{0} · миссий: {1}").format(_t("BASH ТЕРМИНАЛ"), _mission_count(LinuxTrainerGame)),
+        "blurb": _t("Освой Linux: ls, cd, grep, find, ps, systemctl, сеть, архивы. "
+                    "Интерактивный терминал с подсказками."),
+        "color": GREEN,
+        "cls": LinuxTrainerGame,
+    },
+    {
+        "id": "powershell_trainer",
+        "title": _t("POWERSHELL ТРЕНАЖЁР"),
+        "subtitle": _t("{0} · миссий: {1}").format(
+            _t("СИСТЕМНЫЙ ИНТЕРФЕЙС"), _mission_count(PowerShellTrainerGame)),
+        "blurb": _t("Освой PowerShell: Get-Process, Get-Service, файлы, сеть, службы. "
+                    "Интерактивный терминал с подсказками."),
+        "color": AMBER,
+        "cls": PowerShellTrainerGame,
     },
 ]
 
@@ -85,6 +112,7 @@ class LoungeScreen(tk.Frame):
         self.lobby.pack(fill=tk.BOTH, expand=True)
         self.game_host = tk.Frame(self, bg=BG)
 
+        # Header (fixed at top)
         head = tk.Frame(self.lobby, bg=BG)
         head.pack(fill=tk.X, padx=px(16), pady=(px(10), px(4)))
         tk.Label(head, text=_t("КОМНАТА ОТДЫХА ЭКИПАЖА"), bg=BG, fg=AMBER,
@@ -94,42 +122,76 @@ class LoungeScreen(tk.Frame):
         tk.Label(head, text=_t("короткий перерыв между полётами · рекорды сохраняются на борту"),
                  bg=BG, fg=MUTED, font=theme.font(11)).pack(side=tk.LEFT, padx=px(14))
 
-        grid = tk.Frame(self.lobby, bg=BG)
-        grid.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
-        # 3 columns x 2 rows
+        # Scrollable grid area
+        scroll_frame = tk.Frame(self.lobby, bg=BG)
+        scroll_frame.pack(fill=tk.BOTH, expand=True, padx=px(14), pady=px(8))
+
+        canvas = tk.Canvas(scroll_frame, bg=BG, highlightthickness=0, bd=0)
+        vbar = tk.Scrollbar(scroll_frame, orient=tk.VERTICAL, command=canvas.yview)
+        canvas.configure(yscrollcommand=vbar.set)
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        vbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        grid = tk.Frame(canvas, bg=BG)
+        grid_id = canvas.create_window((0, 0), window=grid, anchor="nw")
+
+        def _on_grid_configure(_e):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            canvas.itemconfigure(grid_id, width=canvas.winfo_width())
+        grid.bind("<Configure>", _on_grid_configure)
+
+        def _on_canvas_configure(_e):
+            canvas.itemconfigure(grid_id, width=_e.width)
+        canvas.bind("<Configure>", _on_canvas_configure)
+
+        def _scroll(step: int) -> None:
+            # Колесо привязано глобально: после выхода из лобби холст уже мёртв.
+            try:
+                if canvas.winfo_exists():
+                    canvas.yview_scroll(step, "units")
+            except tk.TclError:
+                pass
+
+        def _on_mousewheel(e):
+            _scroll(int(-1 * (e.delta / 120)))
+
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        canvas.bind_all("<Button-4>", lambda e: _scroll(-1))
+        canvas.bind_all("<Button-5>", lambda e: _scroll(1))
+
+        # 3 columns
         for i in range(3):
             grid.grid_columnconfigure(i, weight=1, uniform="g")
-        for r in range(2):
-            grid.grid_rowconfigure(r, weight=1)
 
         self.cards = []
         for i, g in enumerate(GAMES):
             card = HudPanel(grid, g["subtitle"], accent=g["color"])
             row = i // 3
             col = i % 3
-            card.grid(row=row, column=col, sticky="nsew", padx=px(6), pady=px(4))
+            card.grid(row=row, column=col, sticky="nsew", padx=px(6), pady=px(6))
             body = card.body
             tk.Label(body, text=g["title"], bg=PANEL, fg=g["color"],
-                     font=theme.font(20, True)).pack(anchor="w", pady=(px(4), px(2)))
-            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(240),
-                     justify="left", font=theme.font(12)).pack(anchor="w", pady=(0, px(10)))
+                     font=theme.font(20, True)).pack(anchor="w", pady=(px(8), px(4)))
+            tk.Label(body, text=g["blurb"], bg=PANEL, fg=TEXT, wraplength=px(260),
+                     justify="left", font=theme.font(13)).pack(anchor="w", pady=(0, px(12)))
             rec = tk.Label(body, text="", bg=PANEL, fg=MUTED, font=theme.font(12, True, mono=True))
             rec.pack(anchor="w")
             HudButton(body, _t("▶ ИГРАТЬ"), lambda gid=g["id"]: self.launch(gid),
-                      color=g["color"], height=44, font_size=13).pack(
-                side=tk.BOTTOM, fill=tk.X, pady=(px(12), px(4)))
+                      color=g["color"], height=48, font_size=14).pack(
+                side=tk.BOTTOM, fill=tk.X, pady=(px(12), px(8)))
             # мини-превью на canvas (без Living Space — иначе превью тоже «дрожит»)
             prev = tk.Canvas(body, bg=blend(PANEL, g["color"], 0.12), highlightthickness=0,
-                             height=px(90))
+                             height=px(80))
             prev.living_skip = True
-            prev.pack(fill=tk.X, pady=px(8))
+            prev.pack(fill=tk.X, pady=(px(8), px(10)))
             self.cards.append({"id": g["id"], "rec": rec, "prev": prev, "color": g["color"]})
             self._draw_preview(prev, g["id"], g["color"])
 
-        foot = tk.Frame(self.lobby, bg=BG)
-        foot.pack(fill=tk.X, padx=px(16), pady=(0, px(10)))
+        # Footer (fixed at bottom of scroll area)
+        foot = tk.Frame(grid, bg=BG)
+        foot.grid(row=99, column=0, columnspan=3, sticky="ew", pady=(px(12), 0))
         tk.Label(foot, text=_t("Esc — пауза в игре · R — заново · выход в лобби — кнопка «← В ЛОББИ»"),
-                 bg=BG, fg=MUTED, font=theme.font(10)).pack(side=tk.LEFT)
+                 bg=BG, fg=MUTED, font=theme.font(10)).pack()
 
     def _draw_preview(self, c: tk.Canvas, gid: str, color: str) -> None:
         c.delete("all")
@@ -218,6 +280,44 @@ class LoungeScreen(tk.Frame):
                 ]
                 for i, line in enumerate(lines):
                     line_color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
+                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+            elif gid == "linux_trainer":
+                cell = max(6, min(ww, hh) // 12)
+                ox = ww // 2 - 5 * cell
+                oy = hh // 2 - 3 * cell
+                # Linux terminal preview
+                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#1a1a2e", outline=CYAN, width=1)
+                lines = [
+                    "$ pwd",
+                    "/home/cosmonaut",
+                    "$ whoami",
+                    "cosmonaut",
+                    "$ ls -la /var/log",
+                    "syslog  auth.log  kern.log",
+                    "$ grep -i error syslog",
+                    "[error] module radio timeout",
+                ]
+                for i, line in enumerate(lines):
+                    line_color = AMBER if line.startswith("$") else (CYAN if "error" in line else TEXT)
+                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+            elif gid == "powershell_trainer":
+                cell = max(6, min(ww, hh) // 12)
+                ox = ww // 2 - 5 * cell
+                oy = hh // 2 - 3 * cell
+                # PowerShell terminal preview
+                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#012456", outline=AMBER, width=1)
+                lines = [
+                    "PS C:\\ship> Get-Process",
+                    "  123  pwsh    12.4  45MB",
+                    "  456  orion   8.1   128MB",
+                    "PS C:\\ship> Get-Service",
+                    "Running  ship-radio   Radio Module",
+                    "Stopped  ship-scanner Offline",
+                    "PS C:\\ship> Test-NetConnection localhost -Port 8080",
+                    "TcpTestSucceeded : True",
+                ]
+                for i, line in enumerate(lines):
+                    line_color = AMBER if line.startswith("PS") else (CYAN if "True" in line else TEXT)
                     c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
             else:
                 for r in range(3):

@@ -11,13 +11,17 @@
 
 from __future__ import annotations
 
+#: Заголовок панели учебника и подписи карточки — одинаковые для всех тренажёров.
+PANEL_TITLE = "УЧЕБНИК DOCKER · КОМАНДЫ"
+SIM_HINT = "✓ выполняется в тренажёре"
+REAL_HINT = "· только в настоящем Docker"
+
 # fmt: off
 TOPICS = [
     {
         "id": "basics",
         "title": "Основы",
-        "blurb": "Образ — это шаблон, контейнер — его запущенный экземпляр. "
-                 "Реестр (Docker Hub) хранит образы, локальный диск — тоже.",
+        "blurb": "Образ — это шаблон, контейнер — его запущенный экземпляр. Реестр (Docker Hub) хранит образы, локальный диск — тоже.",
         "commands": [
             {
                 "cmd": "docker version",
@@ -27,8 +31,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker info",
-                "desc": "Всё о среде: сколько контейнеров и образов, драйвер хранилища, "
-                        "ядер, памяти, корневой каталог.",
+                "desc": "Всё о среде: сколько контейнеров и образов, драйвер хранилища, ядер, памяти, корневой каталог.",
                 "example": "docker info",
                 "sim": False,
             },
@@ -67,41 +70,35 @@ TOPICS = [
     {
         "id": "containers",
         "title": "Контейнеры",
-        "blurb": "Жизненный цикл: создать → запустить → посмотреть → остановить → удалить. "
-                 "Имя контейнера задаётся флагом --name, иначе Docker придумает своё.",
+        "blurb": "Жизненный цикл: создать → запустить → посмотреть → остановить → удалить. Имя контейнера задаётся флагом --name, иначе Docker придумает своё.",
         "commands": [
             {
                 "cmd": "docker run ship/radio",
-                "desc": "Создать контейнер из образа и запустить на переднем плане. "
-                        "Вывод идёт в терминал, Ctrl+C его останавливает.",
+                "desc": "Создать контейнер из образа и запустить на переднем плане. Вывод идёт в терминал, Ctrl+C его останавливает.",
                 "example": "docker run ship/radio",
                 "sim": True,
             },
             {
                 "cmd": "docker run -d ship/radio",
-                "desc": "Запуск в фоне (detached). Вернёт ID и отдаст терминал. "
-                        "Так запускают сервисы.",
+                "desc": "Запуск в фоне (detached). Вернёт ID и отдаст терминал. Так запускают сервисы.",
                 "example": "docker run -d ship/radio",
                 "sim": True,
             },
             {
                 "cmd": "docker run -it ship/base sh",
-                "desc": "Интерактивно, с терминалом: -i держит ввод, -t даёт псевдотерминал. "
-                        "Так заходят внутрь и смотрят, что там.",
+                "desc": "Интерактивно, с терминалом: -i держит ввод, -t даёт псевдотерминал. Так заходят внутрь и смотрят, что там.",
                 "example": "docker run -it ship/base sh",
                 "sim": False,
             },
             {
                 "cmd": "docker run --rm ship/scanner",
-                "desc": "--rm удаляет контейнер сразу после остановки: одноразовый запуск "
-                        "без мусора.",
+                "desc": "--rm удаляет контейнер сразу после остановки: одноразовый запуск без мусора.",
                 "example": "docker run --rm ship/scanner",
                 "sim": False,
             },
             {
                 "cmd": "docker run -p 9000:9000 ship/orion",
-                "desc": "Проброс порта: слева порт хоста, справа порт внутри контейнера. "
-                        "Без -p контейнер снаружи не виден.",
+                "desc": "Проброс порта: слева порт хоста, справа порт внутри контейнера. Без -p контейнер снаружи не виден.",
                 "example": "docker run -d -p 9000:9000 ship/orion",
                 "sim": True,
             },
@@ -137,8 +134,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker stop my_orion",
-                "desc": "Мягкая остановка: SIGTERM, через 10 секунд SIGKILL. "
-                        "Флаг -t 30 даёт больше времени.",
+                "desc": "Мягкая остановка: SIGTERM, через 10 секунд SIGKILL. Флаг -t 30 даёт больше времени.",
                 "example": "docker stop my_orion",
                 "sim": True,
             },
@@ -156,8 +152,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker rm my_orion",
-                "desc": "Удалить остановленный контейнер. Запущенный не удалится — "
-                        "сначала stop или rm -f.",
+                "desc": "Удалить остановленный контейнер. Запущенный не удалится — сначала stop или rm -f.",
                 "example": "docker rm my_orion",
                 "sim": True,
             },
@@ -181,8 +176,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker exec -it my_orion sh",
-                "desc": "Зайти в работающий контейнер отдельным процессом. "
-                        "Классика: exec -it <имя> bash.",
+                "desc": "Зайти в работающий контейнер отдельным процессом. Классика: exec -it <имя> bash.",
                 "example": "docker exec -it my_orion sh",
                 "sim": False,
             },
@@ -239,8 +233,7 @@ TOPICS = [
     {
         "id": "images",
         "title": "Образы",
-        "blurb": "Образ собирается из Dockerfile или скачивается из реестра. "
-                 "Тег — это версия: ship/radio:1.2. Без тега берётся latest.",
+        "blurb": "Образ собирается из Dockerfile или скачивается из реестра. Тег — это версия: ship/radio:1.2. Без тега берётся latest.",
         "commands": [
             {
                 "cmd": "docker images",
@@ -256,8 +249,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker build -t ship/radio:1.0 .",
-                "desc": "Собрать образ из Dockerfile в текущем каталоге. "
-                        "-t задаёт имя и тег, точка — контекст сборки.",
+                "desc": "Собрать образ из Dockerfile в текущем каталоге. -t задаёт имя и тег, точка — контекст сборки.",
                 "example": "docker build -t ship/radio:1.0 .",
                 "sim": True,
             },
@@ -305,8 +297,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker commit my_orion ship/radio:snapshot",
-                "desc": "Зафиксировать изменения контейнера в новый образ. "
-                        "Для опытов годится, для сборки — Dockerfile.",
+                "desc": "Зафиксировать изменения контейнера в новый образ. Для опытов годится, для сборки — Dockerfile.",
                 "example": "docker commit my_orion ship/radio:snapshot",
                 "sim": False,
             },
@@ -327,8 +318,7 @@ TOPICS = [
     {
         "id": "volumes",
         "title": "Тома и данные",
-        "blurb": "Контейнер эфемерен: удалили — данные внутри пропали. Тома живут "
-                 "отдельно и переживают контейнеры.",
+        "blurb": "Контейнер эфемерен: удалили — данные внутри пропали. Тома живут отдельно и переживают контейнеры.",
         "commands": [
             {
                 "cmd": "docker volume create ship_data",
@@ -356,8 +346,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker run -v ship_data:/data ship/lab",
-                "desc": "Подключить том к каталогу контейнера. Всё, что записано в /data, "
-                        "останется после удаления контейнера.",
+                "desc": "Подключить том к каталогу контейнера. Всё, что записано в /data, останется после удаления контейнера.",
                 "example": "docker run -d -v ship_data:/data ship/lab",
                 "sim": False,
             },
@@ -384,8 +373,7 @@ TOPICS = [
     {
         "id": "networks",
         "title": "Сети",
-        "blurb": "В пользовательской сети контейнеры видны друг другу по имени — "
-                 "это и есть сервис-дискавери Docker.",
+        "blurb": "В пользовательской сети контейнеры видны друг другу по имени — это и есть сервис-дискавери Docker.",
         "commands": [
             {
                 "cmd": "docker network create shipnet",
@@ -446,8 +434,7 @@ TOPICS = [
     {
         "id": "compose",
         "title": "Docker Compose",
-        "blurb": "compose.yml описывает несколько сервисов сразу: один файл — весь "
-                 "корабельный стенд. Запускается одной командой.",
+        "blurb": "compose.yml описывает несколько сервисов сразу: один файл — весь корабельный стенд. Запускается одной командой.",
         "commands": [
             {
                 "cmd": "docker compose up -d",
@@ -475,8 +462,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker compose down",
-                "desc": "Остановить и удалить контейнеры и сети проекта. Тома остаются "
-                        "без флага -v.",
+                "desc": "Остановить и удалить контейнеры и сети проекта. Тома остаются без флага -v.",
                 "example": "docker compose down",
                 "sim": True,
             },
@@ -512,8 +498,7 @@ TOPICS = [
             },
             {
                 "cmd": "docker compose config",
-                "desc": "Показать итоговый конфиг после подстановки переменных — "
-                        "удобно ловить опечатки.",
+                "desc": "Показать итоговый конфиг после подстановки переменных — удобно ловить опечатки.",
                 "example": "docker compose config",
                 "sim": False,
             },
@@ -522,8 +507,7 @@ TOPICS = [
     {
         "id": "dockerfile",
         "title": "Dockerfile",
-        "blurb": "Рецепт образа: каждая инструкция — слой. Меньше слоёв и раньше "
-                 "неизменяемое — быстрее сборка.",
+        "blurb": "Рецепт образа: каждая инструкция — слой. Меньше слоёв и раньше неизменяемое — быстрее сборка.",
         "commands": [
             {
                 "cmd": "FROM python:3.12-slim",
@@ -539,15 +523,13 @@ TOPICS = [
             },
             {
                 "cmd": "COPY . .",
-                "desc": "Копировать файлы из контекста сборки в образ. "
-                        "COPY requirements.txt . — сначала зависимости, потом код.",
+                "desc": "Копировать файлы из контекста сборки в образ. COPY requirements.txt . — сначала зависимости, потом код.",
                 "example": "COPY requirements.txt .",
                 "sim": False,
             },
             {
                 "cmd": "ADD archive.tar.gz /app",
-                "desc": "Как COPY, но умеет распаковывать архивы и ходить по URL. "
-                        "Без нужды лучше COPY.",
+                "desc": "Как COPY, но умеет распаковывать архивы и ходить по URL. Без нужды лучше COPY.",
                 "example": "ADD archive.tar.gz /app",
                 "sim": False,
             },
@@ -565,8 +547,7 @@ TOPICS = [
             },
             {
                 "cmd": "ENTRYPOINT [\"python\"]",
-                "desc": "Незыблемая точка входа: docker run образ main.py добавит аргумент "
-                        "к ней.",
+                "desc": "Незыблемая точка входа: docker run образ main.py добавит аргумент к ней.",
                 "example": "ENTRYPOINT [\"python\"]",
                 "sim": False,
             },
@@ -623,8 +604,7 @@ TOPICS = [
     {
         "id": "cleanup",
         "title": "Очистка",
-        "blurb": "Docker копит остановленные контейнеры, висячие образы и тома. "
-                 "Сначала посмотрите, что занимает место, потом удаляйте.",
+        "blurb": "Docker копит остановленные контейнеры, висячие образы и тома. Сначала посмотрите, что занимает место, потом удаляйте.",
         "commands": [
             {
                 "cmd": "docker system df",
@@ -671,8 +651,7 @@ TOPICS = [
         "commands": [
             {
                 "cmd": "docker run --restart unless-stopped -d ship/radio",
-                "desc": "Политика перезапуска: контейнер поднимется сам после падения "
-                        "или перезагрузки хоста.",
+                "desc": "Политика перезапуска: контейнер поднимется сам после падения или перезагрузки хоста.",
                 "example": "docker run --restart unless-stopped -d ship/radio",
                 "sim": False,
             },
@@ -721,16 +700,157 @@ TOPICS = [
         ],
     },
 ]
+
+#: Две темы, которых не хватало в первом наборе: диагностика и данные.
+EXTRA_TOPICS = [
+    {
+        "id": "debug",
+        "title": "Отладка",
+        "blurb": "«Не работает» — это всегда три вопроса: жив ли контейнер, что в логах, кто занял порт.",
+        "commands": [
+            {
+                "cmd": "docker logs --tail 50 my_orion",
+                "desc": "Последние 50 строк журнала: там причина падения, а не только приветствие.",
+                "example": "docker logs --tail 50 my_orion",
+                "sim": True,
+            },
+            {
+                "cmd": "docker port radio_web 8080",
+                "desc": "Проверить один порт: какой порт хоста смотрит внутрь контейнера.",
+                "example": "docker port radio_web 8080",
+                "sim": True,
+            },
+            {
+                "cmd": "docker inspect --format '{{.State.Status}}' my_orion",
+                "desc": "Полный JSON контейнера, но здесь — только статус: сеть, тома и лимиты смотрят без --format.",
+                "example": "docker inspect --format '{{.State.Status}}' my_orion",
+                "sim": False,
+            },
+            {
+                "cmd": "docker stats --no-stream",
+                "desc": "Снимок нагрузки: CPU, память, сеть, диск по каждому контейнеру.",
+                "example": "docker stats --no-stream",
+                "sim": False,
+            },
+            {
+                "cmd": "docker system df -v",
+                "desc": "Где кончилось место: подробно по образам, контейнерам и томам.",
+                "example": "docker system df -v",
+                "sim": False,
+            },
+        ],
+    },
+    {
+        "id": "data",
+        "title": "Данные и переменные",
+        "blurb": "Контейнер можно пересоздать — данные должны остаться. Тома и переменные окружения задаются при запуске.",
+        "commands": [
+            {
+                "cmd": "docker run -d -v ship_data:/data --name lab_data ship/lab",
+                "desc": "Именованный том внутрь контейнера. Данные переживут docker rm.",
+                "example": "docker run -d -v ship_data:/data --name lab_data ship/lab",
+                "sim": True,
+            },
+            {
+                "cmd": "docker run -d -v /var/lib/ship:/data --name lab_bind ship/lab",
+                "desc": "Привязка к каталогу хоста: правки на хосте сразу видны контейнеру.",
+                "example": "docker run -d -v /var/lib/ship:/data --name lab_bind ship/lab",
+                "sim": True,
+            },
+            {
+                "cmd": "docker run -d -e LOG_LEVEL=debug --name radio_fm ship/radio",
+                "desc": "Переменная окружения контейнера — то, что читает приложение при старте.",
+                "example": "docker run -d -e LOG_LEVEL=debug --name radio_fm ship/radio",
+                "sim": True,
+            },
+            {
+                "cmd": "docker run --env-file .env -d ship/lab",
+                "desc": "Файл с переменными вместо десятка -e: удобно для стендов.",
+                "example": "docker run --env-file .env -d ship/lab",
+                "sim": False,
+            },
+        ],
+    },
+]
+
+#: Теория по темам: короткие тезисы, которые панель показывает над командами.
+THEORY = {
+    "basics": [
+        "Образ — шаблон, контейнер — его запущенный экземпляр; удалили контейнер — образ остался.",
+        "Имя образа: репозиторий/имя:тег. Без тега подставляется latest.",
+        "docker --help — список команд, docker run --help — флаги конкретной.",
+    ],
+    "containers": [
+        "Жизненный цикл: create → start → running → stop → exited → rm.",
+        "-d отпускает терминал: контейнер живёт в фоне, -it даёт оболочку.",
+        "--name задаёт имя, иначе Docker выдаёт случайное вида ship_1a2b3c4d.",
+    ],
+    "images": [
+        "Образ собирается слоями из Dockerfile; каждый слой кешируется.",
+        "Правка раннего слоя сбрасывает кеш всех последующих — слои идут по порядку.",
+        "Тег latest — не «самый свежий», а просто имя по умолчанию: лучше ставить версию.",
+    ],
+    "volumes": [
+        "Том живёт на хосте и переживает контейнер; данные внутри слоя — нет.",
+        "-v имя:/путь — именованный том, -v /хост:/путь — привязка к каталогу хоста.",
+        "Тома нельзя удалить, пока их держит хотя бы один контейнер.",
+    ],
+    "networks": [
+        "Своя сеть даёт DNS по имени контейнера: base доступен как base, а не по IP.",
+        "Сеть по умолчанию bridge — без такого DNS: только IP, и тот меняется.",
+        "Порт нужен снаружи только для входа с хоста; внутри сети хватает имени и порта.",
+    ],
+    "compose": [
+        "compose.yml — описание сервисов, сетей и томов одного проекта.",
+        "up -d поднимает всё, down останавливает и убирает; ps показывает состояние.",
+        "Один файл — один проект: имя проекта задаёт префикс имён контейнеров.",
+    ],
+    "dockerfile": [
+        "Dockerfile читается сверху вниз; каждая инструкция — новый слой.",
+        "FROM — база, COPY — файлы, RUN — сборка, CMD — что запускать.",
+        "Меньше слоёв и меньше лишнего в COPY — быстрее сборка и меньше образ.",
+    ],
+    "cleanup": [
+        "prune удаляет неиспользуемое; без флагов — только остановленные контейнеры и висячие образы.",
+        "-a расширяет уборку на все образы без контейнеров, --volumes — на тома.",
+        "Перед уборкой полезно посмотреть docker system df: что именно занимает место.",
+    ],
+    "useful": [
+        "--restart unless-stopped поднимает контейнер после падения и перезагрузки.",
+        "--filter в ps заменяет ручной перебор: по статусу, имени, метке.",
+        "--label помечает контейнер: потом их удаляют пачкой по метке.",
+    ],
+    "debug": [
+        "Exited (0) — сам завершился; Exited (137) — убит, часто из-за памяти.",
+        "Порт уже занят — ищите владельца: docker ps и ss -tulpn на хосте.",
+        "Логи без --tail могут быть огромными: сначала хвост, потом всё остальное.",
+    ],
+    "data": [
+        "Данные внутри контейнера живут до docker rm — это ловушка новичка.",
+        "Именованный том удобнее привязки к каталогу: путь не зависит от машины.",
+        "Секреты не кладут в -e на виду: для стенда сойдёт, для боя нужен secret.",
+    ],
+}
 # fmt: on
+
+
+def _all_topics() -> list[dict]:
+    """Темы основного набора плюс добавленные, с подмешанной теорией."""
+    out: list[dict] = []
+    for topic_item in TOPICS + EXTRA_TOPICS:
+        merged = dict(topic_item)
+        merged["theory"] = list(THEORY.get(topic_item["id"], []))
+        out.append(merged)
+    return out
 
 
 def topics() -> list[dict]:
     """Все темы учебника (для панели и тестов)."""
-    return TOPICS
+    return _all_topics()
 
 
 def topic(topic_id: str) -> dict | None:
-    for t in TOPICS:
+    for t in topics():
         if t["id"] == topic_id:
             return t
     return None
@@ -739,13 +859,13 @@ def topic(topic_id: str) -> dict | None:
 def commands(topic_id: str | None = None) -> list[dict]:
     """Команды одной темы или все подряд."""
     if topic_id is None:
-        return [c for t in TOPICS for c in t["commands"]]
+        return [c for t in topics() for c in t["commands"]]
     t = topic(topic_id)
     return list(t["commands"]) if t else []
 
 
 def total() -> int:
-    return sum(len(t["commands"]) for t in TOPICS)
+    return sum(len(t["commands"]) for t in topics())
 
 
 def supported() -> list[dict]:

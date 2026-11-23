@@ -17,7 +17,20 @@ from stamina.lounge.help_overlay import format_help_block, format_help_body
 REQUIRED_LEVELS = {
     "docker_trainer": [
         "mission_1", "mission_2", "mission_3", "mission_4",
-        "mission_5", "mission_6", "mission_7", "mission_8", "sandbox",
+        "mission_5", "mission_6", "mission_7", "mission_8",
+        "mission_9", "mission_10", "mission_11", "mission_12",
+        "mission_13", "sandbox",
+    ],
+    "linux_trainer": [
+        "mission_1", "mission_2", "mission_3", "mission_4",
+        "mission_5", "mission_6", "mission_7", "mission_8",
+        "mission_9", "mission_10", "mission_11", "mission_12", "sandbox",
+    ],
+    "powershell_trainer": [
+        "mission_1", "mission_2", "mission_3", "mission_4",
+        "mission_5", "mission_6", "mission_7", "mission_8",
+        "mission_9", "mission_10", "mission_11", "mission_12",
+        "mission_13", "sandbox",
     ],
     "vim_trainer": [
         "motion_basic", "motion_word", "motion_line",
@@ -188,6 +201,7 @@ def test_page_help_reuses_dialog_and_injects_orion():
 
 
 def test_file_map_covers_shell_ids():
-    for gid in ("docker_trainer", "vim_trainer", "trainer", "terraformer",
+    for gid in ("docker_trainer", "linux_trainer", "powershell_trainer",
+                "vim_trainer", "trainer", "terraformer",
                 "orion", "bridge", "snake", "tetris", "breakout"):
         assert gid in FILE_BY_GAME, gid

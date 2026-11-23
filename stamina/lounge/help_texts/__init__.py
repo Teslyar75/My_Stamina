@@ -9,6 +9,8 @@ DIR = Path(__file__).resolve().parent
 # game_id в GameShell → имя файла без .json
 FILE_BY_GAME = {
     "docker_trainer": "docker_trainer",
+    "linux_trainer": "linux_trainer",
+    "powershell_trainer": "powershell_trainer",
     "vim_trainer": "vim_trainer",
     "trainer": "terraformer",
     "terraformer": "terraformer",
