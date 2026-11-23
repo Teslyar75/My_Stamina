@@ -124,13 +124,14 @@ class _ScrollList(tk.Frame):
 class DockerReferencePanel(tk.Frame):
     """Три колонки: темы, команды, карточка выбранной команды."""
 
-    def __init__(self, master, *, on_insert: Callable[[str], None],
+    def __init__(self, master, *, ref_source=None, on_insert: Callable[[str], None],
                  on_run: Callable[[str], None], on_close: Callable[[], None]) -> None:
         super().__init__(master, bg=BG, highlightthickness=1, highlightbackground=AMBER, bd=0)
         self.on_insert = on_insert
         self.on_run = on_run
         self.on_close = on_close
-        self._topic = ref.topics()[0]["id"]
+        self.ref = ref_source if ref_source is not None else ref
+        self._topic = self.ref.topics()[0]["id"]
         self._item: dict | None = None
         self._build()
         self._fill_topics()
@@ -140,8 +141,8 @@ class DockerReferencePanel(tk.Frame):
     def _build(self) -> None:
         head = tk.Frame(self, bg=BG)
         head.pack(fill=tk.X, padx=px(8), pady=(px(6), px(4)))
-        tk.Label(head, text=_t("УЧЕБНИК DOCKER · КОМАНДЫ"), bg=BG, fg=AMBER,
-                 font=theme.font(13, True)).pack(side=tk.LEFT)
+        tk.Label(head, text=getattr(self.ref, "PANEL_TITLE", _t("УЧЕБНИК DOCKER · КОМАНДЫ")),
+                 bg=BG, fg=AMBER, font=theme.font(13, True)).pack(side=tk.LEFT)
         tk.Label(head, text=_t("темы и команды прокручиваются колесом"), bg=BG, fg=MUTED,
                  font=theme.font(9)).pack(side=tk.LEFT, padx=px(10))
         HudButton(head, _t("✕ ЗАКРЫТЬ  F2"), self.on_close, height=28, font_size=9,
@@ -178,6 +179,13 @@ class DockerReferencePanel(tk.Frame):
                  font=theme.font(9)).pack(side=tk.RIGHT, padx=px(4))
         self.var_query.trace_add("write", lambda *_a: self._fill_commands())
         self.entry.bind("<Escape>", self._clear_query)
+
+        # Теория темы: короткие тезисы над списком команд.
+        self.lbl_theory = tk.Label(mid, text="", bg=BG, fg=TEXT, font=theme.font(9),
+                                   anchor="w", justify="left", wraplength=px(360))
+        self.lbl_theory.pack(fill=tk.X, pady=(0, px(6)))
+        mid.bind("<Configure>", self._on_mid_configure)
+
         self.commands = _ScrollList(mid)
         self.commands.pack(fill=tk.BOTH, expand=True)
 
@@ -210,9 +218,29 @@ class DockerReferencePanel(tk.Frame):
         self.var_query.set("")
         return "break"
 
+    def _on_mid_configure(self, event) -> None:
+        """Тезисы теории переносить по фактической ширине средней колонки."""
+        width = max(px(180), int(getattr(event, "width", 0)) - px(8))
+        if getattr(self, "_theory_wrap", 0) != width:
+            self._theory_wrap = width
+            self.lbl_theory.configure(wraplength=width)
+
+    def _fill_theory(self) -> None:
+        """Тема → её блиц-теория: что важно понять до команд."""
+        item = self.ref.topic(self._topic) or {}
+        blurb = str(item.get("blurb") or "").strip()
+        bullets = [str(x).strip() for x in (item.get("theory") or []) if str(x).strip()]
+        parts = [blurb] if blurb else []
+        parts.extend(f"• {line}" for line in bullets)
+        self.lbl_theory.configure(text="\n".join(parts))
+
+    def visible_theory(self) -> str:
+        """Для тестов: текст теории текущей темы."""
+        return self.lbl_theory.cget("text")
+
     def _fill_topics(self) -> None:
         self.topics.clear()
-        for topic in ref.topics():
+        for topic in self.ref.topics():
             count = len(topic["commands"])
             self.topics.add(topic["id"], topic["title"],
                             _t("{0} команд").format(count), self.select_topic)
@@ -220,7 +248,8 @@ class DockerReferencePanel(tk.Frame):
 
     def _fill_commands(self) -> None:
         query = self.var_query.get().strip()
-        items = ref.search(query, topic_id=None) if query else ref.commands(self._topic)
+        items = self.ref.search(query, topic_id=None) if query else self.ref.commands(self._topic)
+        self._fill_theory()
         self.commands.clear()
         for item in items:
             self.commands.add(item["cmd"], item["cmd"], item["desc"], self.select_command,
@@ -243,7 +272,7 @@ class DockerReferencePanel(tk.Frame):
         self._fill_commands()
 
     def select_command(self, cmd: str) -> None:
-        item = next((c for c in ref.commands() if c["cmd"] == cmd), None)
+        item = next((c for c in self.ref.commands() if c["cmd"] == cmd), None)
         if item is None:
             return
         self._item = item
@@ -252,9 +281,11 @@ class DockerReferencePanel(tk.Frame):
         self.lbl_desc.configure(text=item["desc"])
         self.lbl_ex.configure(text=f"$ {item['example']}")
         if item["sim"]:
-            self.lbl_sim.configure(text=_t("✓ выполняется в тренажёре"), fg=GREEN)
+            self.lbl_sim.configure(text=getattr(self.ref, "SIM_HINT", _t("✓ выполняется в тренажёре")),
+                                   fg=GREEN)
         else:
-            self.lbl_sim.configure(text=_t("· только в настоящем Docker"), fg=MUTED)
+            self.lbl_sim.configure(
+                text=getattr(self.ref, "REAL_HINT", _t("· только в настоящем Docker")), fg=MUTED)
 
     # -- кнопки -------------------------------------------------------------
     def selected_command(self) -> str:
