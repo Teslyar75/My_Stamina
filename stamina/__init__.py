@@ -1,4 +1,4 @@
 """Star Typing (бывший Stamina) — тренажёр слепой печати в стиле пульта космического корабля."""
 
-__version__ = "3.9.9"
+__version__ = "3.9.10"
 APP_NAME = "Star Typing"
