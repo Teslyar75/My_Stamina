@@ -5,20 +5,22 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import copy
 import json
 
 from . import paths
 
 LEVELS = [
-    ("A1", "A1 · ВЫЖИВАНИЕ", "easy"),
-    ("A2", "A2 · БЫТ", "easy"),
-    ("B1.1", "B1.1 · ПОРОГ", "medium"),
-    ("B1.2", "B1.2 · ПОРОГ+", "medium"),
-    ("B2.1", "B2.1 · СВОБОДНО", "medium"),
-    ("B2.2", "B2.2 · СВОБОДНО+", "tricky"),
-    ("C1", "C1 · ПРОДВИНУТЫЙ", "tricky"),
-    ("C2", "C2 · МАСТЕРСТВО", "tricky"),
+    ("A1", t("A1 · ВЫЖИВАНИЕ"), "easy"),
+    ("A2", t("A2 · БЫТ"), "easy"),
+    ("B1.1", t("B1.1 · ПОРОГ"), "medium"),
+    ("B1.2", t("B1.2 · ПОРОГ+"), "medium"),
+    ("B2.1", t("B2.1 · СВОБОДНО"), "medium"),
+    ("B2.2", t("B2.2 · СВОБОДНО+"), "tricky"),
+    ("C1", t("C1 · ПРОДВИНУТЫЙ"), "tricky"),
+    ("C2", t("C2 · МАСТЕРСТВО"), "tricky"),
 ]
 LEVEL_TITLE = {lv: title for lv, title, _d in LEVELS}
 LEVEL_DIFF = {lv: diff for lv, _t, diff in LEVELS}

@@ -7,6 +7,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import re
 import statistics
 from collections import Counter
@@ -64,7 +66,7 @@ def extract_pages(path: str | Path, first: int = 1, last: int | None = None) -> 
             try:
                 reader.decrypt("")
             except Exception as exc:
-                raise PdfError("PDF защищён паролем") from exc
+                raise PdfError(t("PDF защищён паролем")) from exc
         total = len(reader.pages)
         last = total if not last else min(last, total)
         first = max(1, min(first, last or 1))

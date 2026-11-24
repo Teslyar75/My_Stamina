@@ -1,6 +1,8 @@
 """German Grammar Engine: loads JSON data, generates exercises, validates answers."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import json
 import random
 from collections import OrderedDict
@@ -153,7 +155,7 @@ class GermanGrammarEngine(GrammarEngine):
                 id=f"{topic_id}_{seed}",
                 topic_id=topic_id,
                 type="choice",
-                prompt=f"Упражнение для {topic_id} не найдено",
+                prompt=_t("Упражнение для {0} не найдено").format(topic_id),
                 expected_answer=[""],
                 options=[""]
             )
@@ -164,7 +166,7 @@ class GermanGrammarEngine(GrammarEngine):
                 id=f"{topic_id}_{seed}",
                 topic_id=topic_id,
                 type="choice",
-                prompt="Нет упражнений для этой темы",
+                prompt=_t("Нет упражнений для этой темы"),
                 expected_answer=[""],
                 options=[""]
             )
@@ -214,7 +216,7 @@ class GermanGrammarEngine(GrammarEngine):
         """Return theory text for a topic (in Russian)."""
         lesson = self._find_lesson_by_topic(topic_id)
         if not lesson:
-            return f"Пояснение для {topic_id} не найдено."
+            return _t("Пояснение для {0} не найдено.").format(topic_id)
 
         parts = []
         for block in lesson.get("theory", []):
@@ -226,10 +228,10 @@ class GermanGrammarEngine(GrammarEngine):
             elif kind == "table":
                 table = self.table(block.get("ref", ""))
                 if table:
-                    parts.append(f"Таблица: {table.get('title', '')}")
+                    parts.append(_t("Таблица: {0}").format(table.get('title', '')))
             elif kind == "example":
-                parts.append(f"Пример: {block.get('de', '')} — {block.get('ru', '')}")
-        return "\n\n".join(parts) if parts else "Пояснение отсутствует."
+                parts.append(_t("Пример: {0} — {1}").format(block.get('de', ''), block.get('ru', '')))
+        return "\n\n".join(parts) if parts else _t("Пояснение отсутствует.")
 
     # ---------- New methods for the page ----------
 

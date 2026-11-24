@@ -150,7 +150,7 @@ def need_hint(progress, robot_id: str) -> str:
                 for p in model.platforms:
                     if p.resource in ("iron", "quartz") and not p.complete:
                         return t("🔒 Откроется после завершения платформы {0} ({1}%)").format(
-                            t("Железная руда" if p.resource == "iron" else "Кварцевый песок"),
+                            t(t("Железная руда") if p.resource == "iron" else t("Кварцевый песок")),
                             p.progress_pct()
                         )
         except Exception:

@@ -15,6 +15,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 import os
 import sys
@@ -315,7 +317,7 @@ def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
         return ok, exe or "no_cli"
     if kind == "openai_compat":
         rec = dict(record)
-        res = _run_with_key(rec, key) if key else run_openai_compat(rec, "ping: ответь одним словом OK", timeout=30)
+        res = _run_with_key(rec, key) if key else run_openai_compat(rec, t("ping: ответь одним словом OK"), timeout=30)
         return (not res.error), (res.reply[:80] if not res.error else f"{res.error} {res.detail}".strip())
     if kind == "github_bridge":
         from stamina import ship_chat
@@ -325,7 +327,7 @@ def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
 
 def _run_with_key(rec: dict, key: str):
     from stamina.orion import Result
-    req = build_chat_request(rec, "ping: ответь одним словом OK", key=key)
+    req = build_chat_request(rec, t("ping: ответь одним словом OK"), key=key)
     try:
         with _opener()(req, timeout=30) as resp:
             return Result(reply=parse_chat_response(resp.read()))

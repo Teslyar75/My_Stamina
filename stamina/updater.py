@@ -1,6 +1,8 @@
 """Проверка и установка обновлений с GitHub Releases (десктоп)."""
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import json
 import re
 import shutil
@@ -188,18 +190,18 @@ def safe_extract(zf: zipfile.ZipFile, target: Path) -> None:
         zf.extract(member, target)
     if dangerous:
         shown = ", ".join(dangerous[:3])
-        raise RuntimeError(f"архив содержит пути вне папки обновления: {shown}")
+        raise RuntimeError(_t("архив содержит пути вне папки обновления: {0}").format(shown))
 
 
 def tree_version(src: Path) -> str:
     """Версия, объявленная внутри скачанного дерева (stamina/__init__.py)."""
     init = src / "stamina" / "__init__.py"
     if not init.is_file():
-        raise RuntimeError("в архиве нет stamina/__init__.py — это не дерево программы")
+        raise RuntimeError(_t("в архиве нет stamina/__init__.py — это не дерево программы"))
     text = init.read_text(encoding="utf-8", errors="replace")
     m = re.search(r"""__version__\s*=\s*['"]([^'"]+)['"]""", text)
     if not m:
-        raise RuntimeError("в скачанном stamina/__init__.py нет __version__")
+        raise RuntimeError(_t("в скачанном stamina/__init__.py нет __version__"))
     return normalize_version(m.group(1))
 
 
@@ -212,10 +214,10 @@ def assert_release_matches(src: Path, expected: str) -> str:
     """
     want = normalize_version(expected)
     if not want:
-        raise RuntimeError("у релиза пустой тег — непонятно, какую версию ждать")
+        raise RuntimeError(_t("у релиза пустой тег — непонятно, какую версию ждать"))
     got = tree_version(src)
     if got != want:
-        raise RuntimeError(f"архив не соответствует релизу: тег обещает {want}, внутри {got}")
+        raise RuntimeError(_t("архив не соответствует релизу: тег обещает {0}, внутри {1}").format(want, got))
     return got
 
 
@@ -230,7 +232,7 @@ def download_and_apply(
     if not url.startswith("https://"):
         # Обновление перезаписывает код программы: канал обязан быть шифрованным,
         # иначе подмену содержимого в сети нельзя отличить от нормального релиза.
-        raise RuntimeError(f"ссылка релиза не по HTTPS: {url[:60]}")
+        raise RuntimeError(_t("ссылка релиза не по HTTPS: {0}").format(url[:60]))
     log = progress or (lambda _m: None)
     log("downloading…")
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
@@ -246,7 +248,7 @@ def download_and_apply(
         if not roots:
             raise RuntimeError("empty archive")
         src = roots[0]
-        log("проверка релиза…")
+        log(_t("проверка релиза…"))
         assert_release_matches(src, info.version)
         log("applying…")
         apply_tree(src, dest, progress=log)
@@ -293,21 +295,17 @@ def dev_checkout_error(root: Path | None = None) -> str | None:
     if not inside:
         return None
     return (
-        "Эта копия программы — рабочая: рядом лежит папка .git.\n\n"
-        "Кнопка обновления затирает файлы поверх и потеряет незакоммиченные правки,\n"
-        "поэтому здесь она не работает. Обновитесь через git (слияние с master),\n"
-        "затем запустите программу заново.\n\n"
-        "Кнопка нужна для обычной установки без git — как у пилота."
+        _t("Эта копия программы — рабочая: рядом лежит папка .git.\n\nКнопка обновления затирает файлы поверх и потеряет незакоммиченные правки,\nпоэтому здесь она не работает. Обновитесь через git (слияние с master),\nзатем запустите программу заново.\n\nКнопка нужна для обычной установки без git — как у пилота.")
     )
 
 
 def check_error_message(exc: BaseException) -> str:
     if isinstance(exc, urllib.error.HTTPError):
         if exc.code == 404:
-            return "Релизов ещё нет на GitHub."
+            return _t("Релизов ещё нет на GitHub.")
         return f"GitHub HTTP {exc.code}"
     if isinstance(exc, urllib.error.URLError):
-        return "Нет сети или GitHub недоступен."
+        return _t("Нет сети или GitHub недоступен.")
     return str(exc) or exc.__class__.__name__
 
 
@@ -413,7 +411,7 @@ def git_args_allowed(args: list[str]) -> bool:
 def _git(root: Path, args: list[str], timeout: int = 30) -> tuple[int, str, str]:
     """Запустить git списком аргументов. Запрещённые команды не вызываются."""
     if not git_args_allowed(args):
-        raise RuntimeError(f"запрещённая git-команда: {' '.join(args)[:80]}")
+        raise RuntimeError(_t("запрещённая git-команда: {0}").format(' '.join(args)[:80]))
     res = subprocess.run(
         ["git", *args],
         cwd=str(root),
@@ -433,13 +431,13 @@ def inspect_git(root: Path | None = None) -> GitState:
     try:
         code, head, err = _git(base, ["rev-parse", "HEAD"], timeout=8)
         if code != 0:
-            return GitState(is_repo=True, reason=err or "не удалось прочитать HEAD")
+            return GitState(is_repo=True, reason=err or _t("не удалось прочитать HEAD"))
         code, branch, err = _git(base, ["rev-parse", "--abbrev-ref", "HEAD"], timeout=8)
         branch = branch if code == 0 else ""
         code, porcelain, err = _git(base, ["status", "--porcelain"], timeout=8)
         if code != 0:
             return GitState(is_repo=True, branch=branch, head=head, dirty=True,
-                            reason=err or "не удалось прочитать git status")
+                            reason=err or _t("не удалось прочитать git status"))
         dirty = bool(porcelain)
         return GitState(is_repo=True, branch=branch, dirty=dirty, head=head)
     except Exception as exc:  # noqa: BLE001
@@ -463,21 +461,21 @@ def can_fast_forward(root: Path, target: str) -> tuple[bool, str]:
     """Можно ли сделать merge --ff-only на target (чистый master, HEAD — предок)."""
     state = inspect_git(root)
     if not state.is_repo:
-        return False, "не git-копия"
+        return False, _t("не git-копия")
     if state.reason:
         return False, state.reason
     if state.dirty:
-        return False, "рабочая копия грязная или есть неотслеживаемые файлы"
+        return False, _t("рабочая копия грязная или есть неотслеживаемые файлы")
     if state.branch not in FF_BRANCHES:
-        return False, f"ветка {state.branch or 'DETACHED'}, нужен master"
+        return False, _t("ветка {0}, нужен master").format(state.branch or 'DETACHED')
     if not target:
-        return False, "нет цели для fast-forward"
+        return False, _t("нет цели для fast-forward")
     try:
         if state.head and _git(root, ["rev-parse", "--verify", target], timeout=8)[1] == state.head:
-            return False, "уже на цели"
+            return False, _t("уже на цели")
         code, _out, err = _git(root, ["merge-base", "--is-ancestor", "HEAD", target], timeout=15)
         if code != 0:
-            return False, err or "история разошлась или локально впереди"
+            return False, err or _t("история разошлась или локально впереди")
         return True, "ok"
     except Exception as exc:  # noqa: BLE001
         return False, str(exc) or exc.__class__.__name__
@@ -516,11 +514,11 @@ def try_git_fast_forward(
                 target = candidate
                 break
     if not target:
-        _log(f"skip git: не найден тег {tag_ref} и origin/master версии {ver}")
-        return AutoUpdateResult("skipped", ver, f"нет тега {tag_ref}")
+        _log(_t("skip git: не найден тег {0} и origin/master версии {1}").format(tag_ref, ver))
+        return AutoUpdateResult("skipped", ver, _t("нет тега {0}").format(tag_ref))
 
     ok, reason = can_fast_forward(root, target)
-    if reason == "уже на цели":
+    if reason == _t("уже на цели"):
         return AutoUpdateResult("current", ver, reason)
     if not ok:
         _log(f"skip git ff: {reason}")
@@ -534,7 +532,7 @@ def try_git_fast_forward(
         return AutoUpdateResult("error", ver, str(exc))
     if code != 0:
         _log(f"git merge --ff-only failed: {err or out}")
-        return AutoUpdateResult("error", ver, err or out or "merge --ff-only не удался")
+        return AutoUpdateResult("error", ver, err or out or _t("merge --ff-only не удался"))
     try:
         maybe_pip_install(root, progress=log)
     except Exception as exc:  # noqa: BLE001
@@ -582,7 +580,7 @@ def stage_release(
     dest = Path(staging_dir or pending_dir())
     url = info.zipball_url
     if not url.startswith("https://"):
-        raise RuntimeError(f"ссылка релиза не по HTTPS: {url[:60]}")
+        raise RuntimeError(_t("ссылка релиза не по HTTPS: {0}").format(url[:60]))
     log = progress or (lambda _m: None)
     log("downloading…")
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
@@ -598,7 +596,7 @@ def stage_release(
         if not roots:
             raise RuntimeError("empty archive")
         src = roots[0]
-        log("проверка релиза…")
+        log(_t("проверка релиза…"))
         assert_release_matches(src, info.version)
         if dest.exists():
             shutil.rmtree(dest)
@@ -621,7 +619,7 @@ def apply_pending_update(
     marker = pending / PENDING_MARKER
     tree = pending / PENDING_TREE
     if not marker.is_file() or not tree.is_dir():
-        return AutoUpdateResult("current", reason="нет застадированного обновления")
+        return AutoUpdateResult("current", reason=_t("нет застадированного обновления"))
     version = marker.read_text(encoding="utf-8").strip()
     log = progress or (lambda _m: None)
     log("applying staged update…")
@@ -649,7 +647,7 @@ def run_auto_update(
     base = Path(dest_root or PROJECT_DIR)
     try:
         if not is_auto_update_enabled(settings):
-            return AutoUpdateResult("disabled", reason="автообновление выключено")
+            return AutoUpdateResult("disabled", reason=_t("автообновление выключено"))
         try:
             info = fetch_latest()
         except Exception as exc:  # noqa: BLE001
@@ -658,7 +656,7 @@ def run_auto_update(
             return AutoUpdateResult("error", reason=msg)
         if not info.is_newer:
             _log(f"current {info.version}")
-            return AutoUpdateResult("current", info.version, "уже актуальная версия")
+            return AutoUpdateResult("current", info.version, _t("уже актуальная версия"))
 
         if is_git_checkout(base):
             result = try_git_fast_forward(base, info.tag or info.version, progress=progress)

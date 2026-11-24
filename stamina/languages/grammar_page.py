@@ -31,19 +31,19 @@ CHOICE_TYPES = {"choice", "match", "identify"}
 FILL_TYPES = {"fill", "declension", "conjugation", "gap"}
 REORDER_TYPES = {"reorder"}
 
-INSTRUCTION_CHOICE = "Выберите один правильный вариант."
-INSTRUCTION_FILL = "Впишите пропущенное слово в нужной форме."
-INSTRUCTION_TRANSFORM = "Перепишите предложение по заданию."
-INSTRUCTION_REORDER = "Составьте предложение: нажимайте на слова по порядку."
-INSTRUCTION_TRANSLATE = "Переведите на немецкий."
-INSTRUCTION_TRANSLATE_WRITE = "Переведите на немецкий и впишите ответ."
+INSTRUCTION_CHOICE = _t("Выберите один правильный вариант.")
+INSTRUCTION_FILL = _t("Впишите пропущенное слово в нужной форме.")
+INSTRUCTION_TRANSFORM = _t("Перепишите предложение по заданию.")
+INSTRUCTION_REORDER = _t("Составьте предложение: нажимайте на слова по порядку.")
+INSTRUCTION_TRANSLATE = _t("Переведите на немецкий.")
+INSTRUCTION_TRANSLATE_WRITE = _t("Переведите на немецкий и впишите ответ.")
 
 SELF_CHECK_SIZE = 12
 SELF_CHECK_ID = "__self_check__"
 COURSE_SOURCE = "course"
-COURSE_TAB = SourceTab(id=COURSE_SOURCE, title="Курс Star Typing")
+COURSE_TAB = SourceTab(id=COURSE_SOURCE, title=_t("Курс Star Typing"))
 
-_CYRILLIC = re.compile(r"[а-яА-ЯёЁіІїЇєЄґҐ]")
+_CYRILLIC = re.compile(_t("[а-яА-ЯёЁіІїЇєЄґҐ]"))
 
 
 def _normalize_sentence(text: str) -> str:

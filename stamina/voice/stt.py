@@ -18,6 +18,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import array
 import json
 import math
@@ -106,10 +108,10 @@ def ready(model_path: Path | None = None) -> tuple[bool, str]:
     """Готов ли голосовой ввод целиком: (готово, причина отказа)."""
     ok, missing = deps_ok()
     if not ok:
-        return False, f"нет библиотеки {missing}"
+        return False, t("нет библиотеки {0}").format(missing)
     path = Path(model_path) if model_path and Path(model_path).is_dir() else find_model()
     if path is None:
-        return False, f"нет модели Vosk в {models_dir()}"
+        return False, t("нет модели Vosk в {0}").format(models_dir())
     return True, ""
 
 
@@ -300,7 +302,7 @@ class Listener:
             self._push(("status", "loading"))
             model = load_model(self.model_path)
             if model is None:
-                raise RuntimeError(f"нет модели Vosk в {models_dir()}")
+                raise RuntimeError(t("нет модели Vosk в {0}").format(models_dir()))
             import sounddevice as sd
             import vosk
 

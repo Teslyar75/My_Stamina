@@ -31,7 +31,7 @@ from .speech_std import is_hint_key, is_mic_key, passed
 from .ui import L, ScrollFrame
 
 #: Колонки таблицы — как в бумажном справочнике: вопрос, утверждение, отрицание.
-MODES = (("question", "ВОПРОС"), ("affirmative", "УТВЕРЖДЕНИЕ"), ("negative", "ОТРИЦАНИЕ"))
+MODES = (("question", _t("ВОПРОС")), ("affirmative", _t("УТВЕРЖДЕНИЕ")), ("negative", _t("ОТРИЦАНИЕ")))
 MODE_KEYS = [m[0] for m in MODES]
 MODE_LABEL = dict(MODES)
 
@@ -62,7 +62,7 @@ def is_portal_key(e) -> bool:
         return True
     ks = str(getattr(e, "keysym", "") or "").lower()
     ch = str(getattr(e, "char", "") or "").lower()
-    return ks in ("o", "щ", "cyrillic_shcha") or ch in ("o", "щ")
+    return ks in ("o", _t("щ"), "cyrillic_shcha") or ch in ("o", _t("щ"))
 
 
 def _cap(text: str) -> str:

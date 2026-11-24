@@ -7,6 +7,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import html
 import io
 import json
@@ -291,7 +293,7 @@ def purge(path: Path) -> None:
     """Удалить из корзины насовсем (только файлы внутри .trash)."""
     path = Path(path)
     if path.parent.name != TRASH_DIR:
-        raise ValueError("purge: только из корзины")
+        raise ValueError(_t("purge: только из корзины"))
     path.unlink(missing_ok=True)
 
 
@@ -597,7 +599,7 @@ def export_pdf(doc: Document, path: Path, font: Path | None = None) -> Path:
     from stamina import mdlite
     font = font or find_font()
     if font is None:
-        raise RuntimeError("нет TTF-шрифта с кириллицей")
+        raise RuntimeError(_t("нет TTF-шрифта с кириллицей"))
     pdf = FPDF(format="A4")
     pdf.set_auto_page_break(True, margin=15)
     pdf.set_margins(18, 18, 18)

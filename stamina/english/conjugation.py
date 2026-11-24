@@ -6,21 +6,23 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import re
 
 TENSES = [
-    ("present_simple", "Present Simple", "Настоящее простое"),
-    ("present_continuous", "Present Continuous", "Настоящее длительное"),
-    ("present_perfect", "Present Perfect", "Настоящее совершенное"),
-    ("present_perfect_continuous", "Present Perfect Continuous", "Настоящее совершенное длительное"),
-    ("past_simple", "Past Simple", "Прошедшее простое"),
-    ("past_continuous", "Past Continuous", "Прошедшее длительное"),
-    ("past_perfect", "Past Perfect", "Прошедшее совершенное"),
-    ("past_perfect_continuous", "Past Perfect Continuous", "Прошедшее совершенное длительное"),
-    ("future_simple", "Future Simple", "Будущее простое"),
-    ("future_continuous", "Future Continuous", "Будущее длительное"),
-    ("future_perfect", "Future Perfect", "Будущее совершенное"),
-    ("future_perfect_continuous", "Future Perfect Continuous", "Будущее совершенное длительное"),
+    ("present_simple", "Present Simple", _t("Настоящее простое")),
+    ("present_continuous", "Present Continuous", _t("Настоящее длительное")),
+    ("present_perfect", "Present Perfect", _t("Настоящее совершенное")),
+    ("present_perfect_continuous", "Present Perfect Continuous", _t("Настоящее совершенное длительное")),
+    ("past_simple", "Past Simple", _t("Прошедшее простое")),
+    ("past_continuous", "Past Continuous", _t("Прошедшее длительное")),
+    ("past_perfect", "Past Perfect", _t("Прошедшее совершенное")),
+    ("past_perfect_continuous", "Past Perfect Continuous", _t("Прошедшее совершенное длительное")),
+    ("future_simple", "Future Simple", _t("Будущее простое")),
+    ("future_continuous", "Future Continuous", _t("Будущее длительное")),
+    ("future_perfect", "Future Perfect", _t("Будущее совершенное")),
+    ("future_perfect_continuous", "Future Perfect Continuous", _t("Будущее совершенное длительное")),
 ]
 TENSE_KEYS = [t[0] for t in TENSES]
 

@@ -105,7 +105,51 @@ Done:
   у каждой темы есть теория, панель показывает теорию выбранной темы, лобби считает
   миссии сам; `tests/test_lounge_help.py` обновлён под новые миссии и две игры.
 
-Next: слияние `agent/orion/term-games` в `master`, тесты, push, PR.
+Next: выпуск (следующий `tools/auto_release.py --push` в CI) — программа
+увидит обновление по кнопке «Обновить сейчас».
+Влито в `master`: PR #59, merge-коммит `eac3410`; на коммите слияния зелёные
+`tests/test_terminal_trainers.py`, `test_lounge_help`, `test_docker_trainer_input`,
+`test_i18n`, `tools/i18n_check.py` (3015/3015) и `ci_gate --only contrast --only dep`.
 
-Problems: `tools/i18n_check.py` остаётся красным из-за чужого WIP (3071/3787 переводов),
-ключей lounge в нём больше нет; `stamina/lounge/help_texts/*` — тексты по-русски намеренно.
+Problems: в рабочем дереве `D:\Star_Typing_games` остаётся чужой WIP (~900 ключей
+в `stamina/i18n/*.json` и `_t()`-обёртки), поэтому `i18n_check` красный именно там;
+в коммите и на `master` гейт зелёный. `stamina/lounge/help_texts/*` — тексты по-русски намеренно.
+
+## Учебник VIM (23.11, ветка `agent/orion/vim-textbook`)
+
+Goal: в тренажёре VIM не хватало материалов — только 12 уроков и справка F1.
+Нужен учебник по образцу Док-станции (панель F2): темы, теория, примеры.
+
+Done:
+- `vim_reference.py` — 14 тем, 95 клавиш; у темы `blurb` и `theory` (3 тезиса),
+  у клавиши `cmd/desc/example/sim/seq/needs/probe/lesson`.
+- Честность пометок: `sim=True` (38 клавиш) проверяется тестом через настоящий
+  `vim_engine` (`seq` + `needs` + `probe`); `"partial"` (4) — движок знает, но
+  упрощено (`p/P`, `yy` — регистров нет); `False` (53) — только в настоящем VIM.
+  Обратный тест: `gg`, `ciw`, `:%s/…`, `:w`, `ma` не могут быть помечены «работает».
+- `vim_ref_panel.py` — три колонки: темы / клавиши с поиском и теорией / карточка
+  с примером, статусом и кнопкой «▶ К УРОКУ» (ведёт в урок тренажёра, где эта
+  клавиша отрабатывается). Вторая кнопка — «✕ ЗАКРЫТЬ  F2».
+- `vim_trainer.py` — `tools_row=True`, `build_tools()`, `reference_open/toggle/
+  close_reference/open_lesson`; F2 в `on_key` переключает панель, Esc закрывает,
+  остальные клавиши при открытой панели в поле не доходят.
+- `ref_list.py` — прокручиваемый список вынесен из `docker_ref_panel` и общий
+  для Docker/Linux/PowerShell и VIM (`_ScrollList` оставлен алиасом).
+- 13 ключей интерфейса в 7 языках; `help_texts/vim_trainer.json` упоминает F2.
+  Учебный текст — по-русски, без `_t()`: i18n-долг не растёт.
+- Тесты: `tests/test_vim_reference.py` (24 проверки: структура, честность `sim`
+  движком, панель, интеграция с игрой). Зелёные `test_vim_trainer`,
+  `test_lounge_help`, `test_i18n`, `test_terminal_trainers`; `tools/i18n_check.py`
+  код 0 (3028/3028); `ci_gate --only contrast --only dep` зелёный; ruff чисто.
+- Влито в `master`: PR #60, merge-коммит `2ceb015`.
+
+Next: `D:\Star_Typing` подтянут до 3.9.10 (`git merge --ff-only`), учебник на месте.
+Пилоту в `D:\Star_Typing_games`: `git merge origin/master`, чтобы учебник появился
+в рабочей копии игр.
+
+Локальная правка пилота (галка Backspace в `TrainerGame`) снята в `stash@{0}` и
+сохранена патчем; на master Backspace в тренажёре набора уже не уводит в лобби
+(`GameShell.backspace_edits`), видимой галки у этого тренажёра нет.
+
+Problems: в `D:\Star_Typing_games` остаётся чужой WIP (i18n-ключи и `_t()`),
+поэтому `i18n_check` красный именно там; в коммите и на `master` гейт зелёный.

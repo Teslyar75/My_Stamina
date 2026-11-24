@@ -27,16 +27,14 @@ CATALOG = [
     ("E-PCR", _t("Указка"), _t("Ведущая строка без возвратов"), True),
 ]
 
-RU_ABC = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ"
+RU_ABC = _t("АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ")
 EN_ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-UK_ABC = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯ"
+UK_ABC = _t("АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯ")
 DE_ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
 ALPHABETS = {"ru": RU_ABC, "uk": UK_ABC, "en": EN_ABC, "de": DE_ABC}
 FLASH_WORDS = {   # тахистоскоп без книги: короткие слова на языке чтения
-    "ru": "дом лес мир свет поле река небо окно море город книга время слово ветер звезда планета "
-          "корабль пилот ракета космос орбита сигнал радар",
-    "uk": "дім ліс світ поле річка небо вікно море місто книга час слово вітер зірка планета "
-          "корабель пілот ракета космос орбіта сигнал радар",
+    "ru": _t("дом лес мир свет поле река небо окно море город книга время слово ветер звезда планета корабль пилот ракета космос орбита сигнал радар"),
+    "uk": _t("дім ліс світ поле річка небо вікно море місто книга час слово вітер зірка планета корабель пілот ракета космос орбіта сигнал радар"),
     "en": "home tree world light field river sky window sea city book time word wind star planet "
           "ship pilot rocket space orbit signal radar",
     "de": "haus wald welt licht feld fluss himmel fenster meer stadt buch zeit wort wind stern "
@@ -173,7 +171,7 @@ class SchulteEx(ExerciseBase):
             r = tk.Frame(mp.body, bg=PANEL)
             r.pack(anchor="w", pady=px(3))
             self.sym_btns = {}
-            for key, t in (("num", "1–N"), ("ru", "А–Я"), ("uk", "А–Ї"), ("en", "A–Z"), ("de", "A–Ü")):
+            for key, t in (("num", "1–N"), ("ru", _t("А–Я")), ("uk", _t("А–Ї")), ("en", "A–Z"), ("de", "A–Ü")):
                 b = HudButton(r, t, lambda k=key: self.set_symbols(k), height=26, font_size=8, width=46)
                 b.pack(side=tk.LEFT, padx=1)
                 self.sym_btns[key] = b
@@ -242,7 +240,7 @@ class SchulteEx(ExerciseBase):
         self.variant = variant
         best = (self.ctx.sstore.data["exercises"].get(self.code, {}).get(variant) or {}).get("best")
         self.lbl_rec.configure(text=_t("РЕКОРД {0}×{1}: {2}").format(self.n, self.n, fmt_s(best)) if best else _t("РЕКОРДА ЕЩЁ НЕТ"))
-        self.h1.configure(text=_t("ТРЕНАЖЁР {0} · {1} {2}×{3}").format(self.code, 'ТАБЛИЦА ГОРБОВА' if self.gorbov else 'ТАБЛИЦА ШУЛЬТЕ', self.n, self.n))
+        self.h1.configure(text=_t("ТРЕНАЖЁР {0} · {1} {2}×{3}").format(self.code, _t("ТАБЛИЦА ГОРБОВА") if self.gorbov else _t("ТАБЛИЦА ШУЛЬТЕ"), self.n, self.n))
         self.h2.configure(text=_t("← тренажёры обзора · таймер стартует с первого щелчка · взгляд — в центр"))
         for n, b in self.size_btns.items():
             b.set_active(n == self.n)

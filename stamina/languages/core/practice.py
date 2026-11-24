@@ -1,6 +1,8 @@
 """Mission generation for language practice."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import random
 from dataclasses import dataclass
 from typing import Any
@@ -85,7 +87,7 @@ class MissionGenerator:
                 if w and w.translations.get("ru", [""])[0] != expected:
                     options.append(w.translations.get("ru", [""])[0])
             random.shuffle(options)
-            prompt = f"Переведите: {word.lemma}"
+            prompt = t("Переведите: {0}").format(word.lemma)
             return Mission(
                 slug=word.slug,
                 mode=mode,
@@ -96,7 +98,7 @@ class MissionGenerator:
                 metadata={"review": review},
             )
         elif mode == "type":
-            prompt = f"Напишите перевод: {word.lemma}"
+            prompt = t("Напишите перевод: {0}").format(word.lemma)
             return Mission(
                 slug=word.slug,
                 mode=mode,
@@ -106,7 +108,7 @@ class MissionGenerator:
                 metadata={"review": review},
             )
         elif mode == "speak":
-            prompt = f"Произнесите: {word.lemma}"
+            prompt = t("Произнесите: {0}").format(word.lemma)
             return Mission(
                 slug=word.slug,
                 mode=mode,
@@ -116,7 +118,7 @@ class MissionGenerator:
                 metadata={"review": review},
             )
         elif mode == "listen":
-            prompt = "Прослушайте и напишите"
+            prompt = t("Прослушайте и напишите")
             return Mission(
                 slug=word.slug,
                 mode=mode,

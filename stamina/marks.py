@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 import time
 from pathlib import Path
@@ -109,8 +111,8 @@ def place_line(mark: dict) -> str:
         parts.append(mark["widget"])
     return (
         " / ".join(parts)
-        + f" — окно {w}x{h}, точка {mark.get('x')},{mark.get('y')}"
-        + f" (доля {mark.get('nx')}, {mark.get('ny')}), {when}"
+        + t(" — окно {0}x{1}, точка {2},{3}").format(w, h, mark.get('x'), mark.get('y'))
+        + t(" (доля {0}, {1}), {2}").format(mark.get('nx'), mark.get('ny'), when)
     )
 
 
@@ -119,11 +121,11 @@ def context_block(mark_id: int = 0, n: int = KEEP_FOR_TASK) -> str:
     items = since(mark_id, n) if mark_id else recent(n)
     if not items:
         return ""
-    lines = ["МЕСТА, КОТОРЫЕ ПОКАЗАЛ ПИЛОТ (правая кнопка мыши):"]
+    lines = [t("МЕСТА, КОТОРЫЕ ПОКАЗАЛ ПИЛОТ (правая кнопка мыши):")]
     for i, m in enumerate(items, 1):
         lines.append(f"{i}. {place_line(m)}")
         if m.get("note"):
-            lines.append(f"   слова пилота: {m['note']}")
+            lines.append(t("   слова пилота: {0}").format(m['note']))
     return "\n".join(lines)
 
 

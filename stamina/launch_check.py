@@ -11,6 +11,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import os
 import shutil
 import subprocess
@@ -131,27 +133,17 @@ def tk_problem(platform: str) -> Problem:
     """Объяснение, что делать без tkinter — своё для каждой системы."""
     if platform.startswith("win"):
         detail = (
-            "В этом Python нет библиотеки окон tkinter.\n\n"
-            "Переустановите Python с сайта python.org и при установке включите\n"
-            "пункт «tcl/tk and IDLE». Затем запустите install.bat."
+            t("В этом Python нет библиотеки окон tkinter.\n\nПереустановите Python с сайта python.org и при установке включите\nпункт «tcl/tk and IDLE». Затем запустите install.bat.")
         )
     elif platform == "darwin":
         detail = (
-            "В этом Python нет библиотеки окон tkinter.\n\n"
-            "Поставьте Python с python.org (в нём tkinter есть) или выполните:\n"
-            "  brew install python-tk"
+            t("В этом Python нет библиотеки окон tkinter.\n\nПоставьте Python с python.org (в нём tkinter есть) или выполните:\n  brew install python-tk")
         )
     else:
         detail = (
-            "В этом Python нет библиотеки окон tkinter.\n\n"
-            "Ubuntu / Debian / Mint:   sudo apt install python3-tk\n"
-            "Fedora:                   sudo dnf install python3-tkinter\n"
-            "Arch / Manjaro:           sudo pacman -S tk\n"
-            "openSUSE:                 sudo zypper install python3-tk\n\n"
-            "После установки запустите снова:\n"
-            "  bash install.sh        (или ./run.sh)"
+            t("В этом Python нет библиотеки окон tkinter.\n\nUbuntu / Debian / Mint:   sudo apt install python3-tk\nFedora:                   sudo dnf install python3-tkinter\nArch / Manjaro:           sudo pacman -S tk\nopenSUSE:                 sudo zypper install python3-tk\n\nПосле установки запустите снова:\n  bash install.sh        (или ./run.sh)")
         )
-    return Problem("Star Typing: не открывается окно", detail)
+    return Problem(t("Star Typing: не открывается окно"), detail)
 
 
 def tcl_problem(platform: str) -> Problem:
@@ -172,19 +164,13 @@ def tcl_problem(platform: str) -> Problem:
         )
     elif platform == "darwin":
         detail = (
-            "Python нашёл tkinter, но окно не создаётся: библиотека Tk не загружается.\n\n"
-            "Поставьте Tk от python.org или выполните:\n"
-            "  brew install python-tk"
+            t("Python нашёл tkinter, но окно не создаётся: библиотека Tk не загружается.\n\nПоставьте Tk от python.org или выполните:\n  brew install python-tk")
         )
     else:
         detail = (
-            "Python нашёл tkinter, но окно не создаётся: библиотека Tk не загружается.\n\n"
-            "Ubuntu / Debian / Mint:   sudo apt install python3-tk\n"
-            "Fedora:                   sudo dnf install python3-tkinter\n"
-            "Arch / Manjaro:           sudo pacman -S tk\n"
-            "openSUSE:                 sudo zypper install python3-tk"
+            t("Python нашёл tkinter, но окно не создаётся: библиотека Tk не загружается.\n\nUbuntu / Debian / Mint:   sudo apt install python3-tk\nFedora:                   sudo dnf install python3-tkinter\nArch / Manjaro:           sudo pacman -S tk\nopenSUSE:                 sudo zypper install python3-tk")
         )
-    return Problem("Star Typing: не открывается окно", detail)
+    return Problem(t("Star Typing: не открывается окно"), detail)
 
 
 def display_problem(platform: str, env) -> Problem | None:
@@ -195,16 +181,12 @@ def display_problem(platform: str, env) -> Problem | None:
         return None
     if env.get("WAYLAND_DISPLAY"):
         return Problem(
-            "Star Typing: нет X11 (XWayland)",
-            "Сессия работает на Wayland без XWayland, а окна Tk рисуются через X11.\n\n"
-            "Поставьте пакет xwayland и войдите в систему заново —\n"
-            "или запустите программу в сессии с X11.",
+            t("Star Typing: нет X11 (XWayland)"),
+            t("Сессия работает на Wayland без XWayland, а окна Tk рисуются через X11.\n\nПоставьте пакет xwayland и войдите в систему заново —\nили запустите программу в сессии с X11."),
         )
     return Problem(
-        "Star Typing: нет графического экрана",
-        "Программа запущена без рабочего стола: так бывает по SSH, из службы\n"
-        "или через sudo без доступа к экрану.\n\n"
-        "Открывайте её из меню приложений или ярлыком на рабочем столе.",
+        t("Star Typing: нет графического экрана"),
+        t("Программа запущена без рабочего стола: так бывает по SSH, из службы\nили через sudo без доступа к экрану.\n\nОткрывайте её из меню приложений или ярлыком на рабочем столе."),
     )
 
 
@@ -239,7 +221,7 @@ def preflight() -> bool:
         return True
     if problem is None:
         return True
-    text = f"{problem.title}\n\n{problem.detail}\n\nЖурнал: {log_path()}"
+    text = t("{0}\n\n{1}\n\nЖурнал: {2}").format(problem.title, problem.detail, log_path())
     write_log(text)
     _print(text)
     show_dialog(problem.title, text)
@@ -313,36 +295,36 @@ def report() -> list[str]:
     import platform as _platform
 
     lines = [
-        f"Star Typing: проверка среды",
+        t("Star Typing: проверка среды").format(),
         f"Python: {sys.version.split()[0]} ({sys.executable})",
-        f"Система: {_platform.platform()}",
+        t("Система: {0}").format(_platform.platform()),
     ]
     tk_import = has_tkinter()
     window = has_tk_window() if tk_import else False
     if tk_import:
         import tkinter
 
-        lines.append(f"tkinter: есть, Tk {tkinter.TkVersion}")
-        lines.append("окно: создаётся" if window else "окно: НЕ создаётся — см. подсказку ниже")
+        lines.append(t("tkinter: есть, Tk {0}").format(tkinter.TkVersion))
+        lines.append(t("окно: создаётся") if window else t("окно: НЕ создаётся — см. подсказку ниже"))
     else:
-        lines.append("tkinter: НЕТ — окно не откроется, см. подсказку ниже")
+        lines.append(t("tkinter: НЕТ — окно не откроется, см. подсказку ниже"))
     if sys.platform.startswith("linux"):
         lines.append(f"DISPLAY: {os.environ.get('DISPLAY') or 'нет'}")
         lines.append(f"WAYLAND_DISPLAY: {os.environ.get('WAYLAND_DISPLAY') or 'нет'}")
         for name in ("zenity", "kdialog", "xmessage"):
             if shutil.which(name):
-                lines.append(f"окно сообщений: {name}")
+                lines.append(t("окно сообщений: {0}").format(name))
                 break
         else:
-            lines.append("окно сообщений: нет (zenity/kdialog/xmessage)")
+            lines.append(t("окно сообщений: нет (zenity/kdialog/xmessage)"))
     for module, label in (("PIL", "Pillow"), ("pypdf", "pypdf")):
         try:
             __import__(module)
         except Exception:  # noqa: BLE001
-            lines.append(f"{label}: нет (необязательно)")
+            lines.append(t("{0}: нет (необязательно)").format(label))
         else:
-            lines.append(f"{label}: есть")
-    lines.append(f"данные: {log_path().parent}")
+            lines.append(t("{0}: есть").format(label))
+    lines.append(t("данные: {0}").format(log_path().parent))
     problem = check(tk_ok=tk_import, window_ok=window)
     if problem is not None:
         lines.append("")

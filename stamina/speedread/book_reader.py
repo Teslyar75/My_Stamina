@@ -59,9 +59,7 @@ def _split_words(text: str) -> list[tuple[int, int]]:
 
 def _detect_chapters(text: str) -> list[tuple[int, str]]:
     pat = re.compile(
-        r"(?m)^(chapter\s+\d+|part\s+\d+|book\s+\d+|глава\s+\d+|часть\s+\d+|"
-        r"prologue|epilogue|пролог|эпилог|"
-        r"CHAPTER\s+[IVXLC]+|[IVXLC]+\.\s+\w.{0,40})$",
+        _t("(?m)^(chapter\\s+\\d+|part\\s+\\d+|book\\s+\\d+|глава\\s+\\d+|часть\\s+\\d+|prologue|epilogue|пролог|эпилог|CHAPTER\\s+[IVXLC]+|[IVXLC]+\\.\\s+\\w.{0,40})$"),
         re.I,
     )
     out = []

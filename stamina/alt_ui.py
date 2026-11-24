@@ -49,65 +49,65 @@ PROFILES: dict[str, dict] = {
     "starship": {
         "glyphs": {"bridge": "◈", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
-        "gauge": "РАДАР",
+        "subtitle": tr_("БОРТОВОЙ КОМПЬЮТЕР · ОТСЕКИ КОРАБЛЯ"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
+        "gauge": tr_("РАДАР"),
     },
     "steampunk": {
         "glyphs": {"bridge": "⚙", "english": "Æ", "languages": "🌐", "speedread": "§", "lounge": "☕",
                    "radio": "☊", "comm": "✉", "docs": "✒", "orion": "☉", "lab": "✧", "terraformer": "⌬", "settings": "⚒"},
-        "subtitle": "МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА",
-        "rail": "РЫЧАГИ",
-        "drawer": "МАНОМЕТРЫ",
-        "gauge": "ДАВЛЕНИЕ",
+        "subtitle": tr_("МАСТЕРСКАЯ ИЗОБРЕТАТЕЛЯ · СМОТРОВЫЕ СТЁКЛА"),
+        "rail": tr_("РЫЧАГИ"),
+        "drawer": tr_("МАНОМЕТРЫ"),
+        "gauge": tr_("ДАВЛЕНИЕ"),
     },
     "bathyscaphe": {
         "glyphs": {"bridge": "⚓", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "◉", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
     "neon_city": {
         "glyphs": {"bridge": "◢", "english": "Ⓐ", "languages": "🌐", "speedread": "⚡", "lounge": "☾",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
     "old_england": {
         "glyphs": {"bridge": "♔", "english": "Æ", "languages": "🌐", "speedread": "§", "lounge": "☕",
                    "radio": "☎", "comm": "✉", "docs": "✒", "orion": "✠", "lab": "✧", "terraformer": "⌬", "settings": "⚒"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
     "scriptorium": {
         "glyphs": {"bridge": "✠", "english": "Ⓐ", "languages": "🌐", "speedread": "¶", "lounge": "❦",
                    "radio": "♪", "comm": "✒", "docs": "✍", "orion": "☩", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
     "zen_garden": {
         "glyphs": {"bridge": "◯", "english": "Ⓐ", "languages": "🌐", "speedread": "»", "lounge": "☯",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✿", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
     "generic": {
         "glyphs": {"bridge": "▣", "english": "A", "languages": "🌐", "speedread": "»", "lounge": "◐",
                    "radio": "≋", "comm": "✉", "docs": "✎", "orion": "✦", "lab": "✧", "terraformer": "⌬", "settings": "⚙"},
-        "subtitle": "ПУЛЬТ ПИЛОТА",
-        "rail": "ОТСЕКИ",
-        "drawer": "ПРИБОРЫ",
+        "subtitle": tr_("ПУЛЬТ ПИЛОТА"),
+        "rail": tr_("ОТСЕКИ"),
+        "drawer": tr_("ПРИБОРЫ"),
         "gauge": "",
     },
 }
@@ -886,32 +886,32 @@ def wrap(master, profile: str, *, bg: str | None = None, title: str = "", edge: 
 # Концепции отсеков: (заголовок-подпись сцены, акцентный токен). Рисунок — в _scene_*.
 COMPARTMENTS: dict[str, dict[str, tuple[str, str]]] = {
     "starship": {
-        "bridge": ("ХОДОВАЯ РУБКА · ОБЗОРНЫЙ ИЛЛЮМИНАТОР", "CYAN"),
-        "languages": ("ЛИНГВОМОДУЛЬ · ПАНЕЛЬ ЯЗЫКОВ", "GREEN"),
-        "english": ("ОТСЕК СВЯЗИ С ЗЕМЛЁЙ · ЛИНГВОМОДУЛЬ", "GREEN"),
-        "speedread": ("ГИПЕРДВИГАТЕЛЬНЫЙ ОТСЕК", "PURPLE"),
-        "lounge": ("ОРАНЖЕРЕЯ · КАЮТ-КОМПАНИЯ", "GREEN"),
-        "radio": ("АНТЕННЫЙ ОТСЕК · ДАЛЬНЯЯ СВЯЗЬ", "AMBER"),
-        "comm": ("ПОСТ СВЯЗИ ЭКИПАЖА", "CYAN"),
-        "docs": ("ШТУРМАНСКАЯ · БОРТОВОЙ АРХИВ", "GREEN"),
-        "orion": ("ЯДРО БОРТОВОГО РАЗУМА", "PURPLE"),
-        "lab": ("ЛАБОРАТОРИЯ · ЗВЁЗДНАЯ КАРТА ЗНАНИЙ", "CYAN"),
-        "terraformer": ("АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА", "CYAN"),
-        "settings": ("ИНЖЕНЕРНЫЙ ОТСЕК", "AMBER"),
+        "bridge": (tr_("ХОДОВАЯ РУБКА · ОБЗОРНЫЙ ИЛЛЮМИНАТОР"), "CYAN"),
+        "languages": (tr_("ЛИНГВОМОДУЛЬ · ПАНЕЛЬ ЯЗЫКОВ"), "GREEN"),
+        "english": (tr_("ОТСЕК СВЯЗИ С ЗЕМЛЁЙ · ЛИНГВОМОДУЛЬ"), "GREEN"),
+        "speedread": (tr_("ГИПЕРДВИГАТЕЛЬНЫЙ ОТСЕК"), "PURPLE"),
+        "lounge": (tr_("ОРАНЖЕРЕЯ · КАЮТ-КОМПАНИЯ"), "GREEN"),
+        "radio": (tr_("АНТЕННЫЙ ОТСЕК · ДАЛЬНЯЯ СВЯЗЬ"), "AMBER"),
+        "comm": (tr_("ПОСТ СВЯЗИ ЭКИПАЖА"), "CYAN"),
+        "docs": (tr_("ШТУРМАНСКАЯ · БОРТОВОЙ АРХИВ"), "GREEN"),
+        "orion": (tr_("ЯДРО БОРТОВОГО РАЗУМА"), "PURPLE"),
+        "lab": (tr_("ЛАБОРАТОРИЯ · ЗВЁЗДНАЯ КАРТА ЗНАНИЙ"), "CYAN"),
+        "terraformer": (tr_("АНГАР ТЕРРАФОРМЕРОВ · ЗАГРУЗКА"), "CYAN"),
+        "settings": (tr_("ИНЖЕНЕРНЫЙ ОТСЕК"), "AMBER"),
     },
     "steampunk": {
-        "bridge": ("КОТЕЛЬНАЯ · ГЛАВНЫЙ ПАРОВОЙ ПУЛЬТ", "AMBER"),
-        "languages": ("ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ", "GREEN"),
-        "english": ("БИБЛИОТЕКА ПУТЕШЕСТВЕННИКА", "TEXT"),
-        "speedread": ("ЧАСОВАЯ МАСТЕРСКАЯ", "AMBER"),
-        "lounge": ("ЧАЙНЫЙ САЛОН", "GREEN"),
-        "radio": ("ГРАММОФОННАЯ", "AMBER"),
-        "comm": ("ТЕЛЕГРАФНАЯ · ПНЕВМОПОЧТА", "CYAN"),
-        "docs": ("КОНТОРА ПИСАРЯ · ПИШУЩАЯ МАШИНКА", "AMBER"),
-        "orion": ("КАБИНЕТ АВТОМАТОНА · ПЛАНЕТАРИЙ", "PURPLE"),
-        "lab": ("ЛАБОРАТОРИЯ АЛХИМИКА · АСТРОЛЯБИЯ", "AMBER"),
-        "terraformer": ("СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА", "AMBER"),
-        "settings": ("ВЕРСТАК МЕХАНИКА", "AMBER"),
+        "bridge": (tr_("КОТЕЛЬНАЯ · ГЛАВНЫЙ ПАРОВОЙ ПУЛЬТ"), "AMBER"),
+        "languages": (tr_("ЗАЛ ПОЛИГЛОТОВ · АТЛАС РЕЧЕЙ"), "GREEN"),
+        "english": (tr_("БИБЛИОТЕКА ПУТЕШЕСТВЕННИКА"), "TEXT"),
+        "speedread": (tr_("ЧАСОВАЯ МАСТЕРСКАЯ"), "AMBER"),
+        "lounge": (tr_("ЧАЙНЫЙ САЛОН"), "GREEN"),
+        "radio": (tr_("ГРАММОФОННАЯ"), "AMBER"),
+        "comm": (tr_("ТЕЛЕГРАФНАЯ · ПНЕВМОПОЧТА"), "CYAN"),
+        "docs": (tr_("КОНТОРА ПИСАРЯ · ПИШУЩАЯ МАШИНКА"), "AMBER"),
+        "orion": (tr_("КАБИНЕТ АВТОМАТОНА · ПЛАНЕТАРИЙ"), "PURPLE"),
+        "lab": (tr_("ЛАБОРАТОРИЯ АЛХИМИКА · АСТРОЛЯБИЯ"), "AMBER"),
+        "terraformer": (tr_("СБОРОЧНЫЙ ЦЕХ ПАРОВЫХ МАШИН · ЗАГРУЗКА"), "AMBER"),
+        "settings": (tr_("ВЕРСТАК МЕХАНИКА"), "AMBER"),
     },
 }
 
@@ -1683,8 +1683,8 @@ class ScrollViewport(tk.Frame):
 # Живой предпросмотр: сцена перестраивается при каждом выборе скина или варианта.
 # ---------------------------------------------------------------------------
 LOGIN_STAGE = {
-    "starship": ("ШЛЮЗ · ТЕРМИНАЛ ПОСАДКИ", "Выберите пилота — створки шлюза откроются", "CYAN"),
-    "steampunk": ("МАСТЕРСКАЯ · РЕЕСТР ИЗОБРЕТАТЕЛЯ", "Распишитесь в реестре — мастерская ждёт", "AMBER"),
+    "starship": (tr_("ШЛЮЗ · ТЕРМИНАЛ ПОСАДКИ"), tr_("Выберите пилота — створки шлюза откроются"), "CYAN"),
+    "steampunk": (tr_("МАСТЕРСКАЯ · РЕЕСТР ИЗОБРЕТАТЕЛЯ"), tr_("Распишитесь в реестре — мастерская ждёт"), "AMBER"),
 }
 LOGIN_SLIDE_MS = 7000
 
@@ -1900,7 +1900,7 @@ def settings_sections(scr) -> None:
 # их invoke(), поэтому функции и состояния те же, что в классическом виде.
 # ---------------------------------------------------------------------------
 ROW_MAX = 4
-MORE_LABEL = {"starship": "⋯ КОНСОЛЬ", "steampunk": "⚙ ЯЩИК", "generic": "⋯ ЕЩЁ"}
+MORE_LABEL = {"starship": tr_("⋯ КОНСОЛЬ"), "steampunk": tr_("⚙ ЯЩИК"), "generic": tr_("⋯ ЕЩЁ")}
 
 
 def _is_cmd(w) -> bool:

@@ -11,6 +11,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 from typing import Callable, Iterable
 
 UNLOCK_PCT = 80          # % пройденных слов предыдущего уровня
@@ -134,8 +136,7 @@ def book_access(progress, app=None) -> tuple[bool, str]:
     lv_ok = level_reached(progress, need_lv)
     if wpm >= need_wpm and lv_ok:
         return True, ""
-    return False, t("🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) "
-                    "и открытый уровень {2}{3}").format(
+    return False, t(_t("🔒 «Из книги» — для продвинутых: скорость печати от {0} сл/мин (сейчас {1}) и открытый уровень {2}{3}")).format(
         need_wpm, wpm, need_lv, "" if not lv_ok else t(" ✓"))
 
 

@@ -483,7 +483,7 @@ class BookCatalogPanel(tk.Frame):
             if b.get("cefr"):
                 title_bits = f"[{b['cefr']}] {title_bits}"
             if self.bilingual or b.get("bilingual"):
-                title_bits = "2ЯЗ · " + title_bits
+                title_bits = _t("2ЯЗ · ") + title_bits
             L(mid, title_bits, fg=TEXT, size=12, bold=True, bg=mid["bg"],
               wraplength=px(720)).pack(anchor="w")
             L(mid, b.get("author") or _t("автор не указан"), fg=MUTED, size=9, bg=mid["bg"]).pack(

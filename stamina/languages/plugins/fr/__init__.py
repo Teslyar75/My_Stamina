@@ -1,6 +1,8 @@
 """French language plugin."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from pathlib import Path
 
 from stamina.languages.core.base import (
@@ -37,34 +39,34 @@ class FrenchVocabSource(VocabSource):
 class FrenchGrammarEngine(GrammarEngine):
     TOPICS = {
         "A1": [
-            ("gender_number", "Род и число существительных", ["choice", "transform"]),
-            ("articles", "Артикли (le/la/les, un/une/des)", ["choice", "fill"]),
-            ("adjectives", "Согласование прилагательных", ["transform", "choice"]),
-            ("present_regular", "Présent de l'indicatif: регулярные глаголы (-er, -ir, -re)", ["conjugation"]),
-            ("present_irregular", "Présent: неправильные (être, avoir, aller, faire, venir)", ["conjugation"]),
-            ("present_irregular_2", "Présent: неправильные (pouvoir, vouloir, savoir, devoir, falloir)", ["conjugation"]),
-            ("negation", "Отрицание (ne...pas, ne...jamais, ne...rien)", ["choice", "transform"]),
-            ("questions", "Вопросы (est-ce que, inversion, intonation)", ["reorder", "choice"]),
+            ("gender_number", t("Род и число существительных"), ["choice", "transform"]),
+            ("articles", t("Артикли (le/la/les, un/une/des)"), ["choice", "fill"]),
+            ("adjectives", t("Согласование прилагательных"), ["transform", "choice"]),
+            ("present_regular", t("Présent de l'indicatif: регулярные глаголы (-er, -ir, -re)"), ["conjugation"]),
+            ("present_irregular", t("Présent: неправильные (être, avoir, aller, faire, venir)"), ["conjugation"]),
+            ("present_irregular_2", t("Présent: неправильные (pouvoir, vouloir, savoir, devoir, falloir)"), ["conjugation"]),
+            ("negation", t("Отрицание (ne...pas, ne...jamais, ne...rien)"), ["choice", "transform"]),
+            ("questions", t("Вопросы (est-ce que, inversion, intonation)"), ["reorder", "choice"]),
             ("prepositions_basic", "Prepositions à, de, en, dans, sur, sous, avec, sans", ["choice", "fill"]),
-            ("partitive", "Частичный артикль (du, de la, des)", ["choice", "fill"]),
-            ("possessives", "Притяжательные (mon/ton/son/notre/votre/leur)", ["choice", "transform"]),
-            ("demonstratives", "Указательные (ce/cet/cette/ces)", ["choice", "transform"]),
-            ("numbers_time", "Числа, время, даты", ["choice", "fill"]),
+            ("partitive", t("Частичный артикль (du, de la, des)"), ["choice", "fill"]),
+            ("possessives", t("Притяжательные (mon/ton/son/notre/votre/leur)"), ["choice", "transform"]),
+            ("demonstratives", t("Указательные (ce/cet/cette/ces)"), ["choice", "transform"]),
+            ("numbers_time", t("Числа, время, даты"), ["choice", "fill"]),
             ("near_future", "Futur proche (aller + infinitif)", ["conjugation", "transform"]),
             ("imperative", "Impératif (tu/nous/vous)", ["conjugation", "transform"]),
         ],
         "A2": [
             ("passe_compose", "Passé composé (avoir/être + participe passé)", ["conjugation", "choice"]),
-            ("imparfait", "Imparfait: формы и употребление", ["conjugation", "choice"]),
+            ("imparfait", t("Imparfait: формы и употребление"), ["conjugation", "choice"]),
             ("passe_compose_vs_imparfait", "Passé composé vs Imparfait", ["choice", "explain", "transform"]),
             ("futur_simple", "Futur simple (chanterai)", ["conjugation", "choice"]),
             ("conditionnel", "Conditionnel présent (chanterais)", ["conjugation", "choice"]),
-            ("subjunctive_present", "Subjonctif présent: регулярные и основные неправильные", ["conjugation"]),
-            ("subjunctive_triggers", "Триггеры субъюнктива (il faut que, je veux que, bien que)", ["choice", "explain", "transform"]),
-            ("relative_pronouns", "Относительные местоимения (qui, que, où, dont)", ["choice", "transform"]),
-            ("object_pronouns", "Местоимения-дополнения (le/la/les, lui/leur, y, en)", ["choice", "transform", "reorder"]),
-            ("comparatives", "Сравнительная конструкция (plus/moins/aussi...que)", ["choice", "transform"]),
-            ("superlatives", "Превосходная степень (le plus/le moins... de)", ["choice", "transform"]),
+            ("subjunctive_present", t("Subjonctif présent: регулярные и основные неправильные"), ["conjugation"]),
+            ("subjunctive_triggers", t("Триггеры субъюнктива (il faut que, je veux que, bien que)"), ["choice", "explain", "transform"]),
+            ("relative_pronouns", t("Относительные местоимения (qui, que, où, dont)"), ["choice", "transform"]),
+            ("object_pronouns", t("Местоимения-дополнения (le/la/les, lui/leur, y, en)"), ["choice", "transform", "reorder"]),
+            ("comparatives", t("Сравнительная конструкция (plus/moins/aussi...que)"), ["choice", "transform"]),
+            ("superlatives", t("Превосходная степень (le plus/le moins... de)"), ["choice", "transform"]),
             ("si_clauses_present", "Si + présent → futur/présent (real conditions)", ["choice", "transform"]),
             ("recent_past", "Passé récent (venir de + infinitif)", ["transform"]),
             ("depuis_pendant", "Depuis vs pendant vs il y a", ["choice", "explain"]),
@@ -74,33 +76,33 @@ class FrenchGrammarEngine(GrammarEngine):
             ("si_clauses_past", "Si + imparfait → conditionnel (unreal)", ["choice", "transform", "explain"]),
             ("plus_que_parfait", "Plus-que-parfait (j'avais fait)", ["conjugation", "choice"]),
             ("conditionnel_past", "Conditionnel passé (j'aurais fait)", ["conjugation", "choice"]),
-            ("passive_voice", "Пассив (être + participe, on + verbe)", ["transform", "choice"]),
-            ("indirect_speech", "Косвенная речь (il dit que / il a dit que)", ["transform"]),
-            ("gerund", "Герундий (en faisant)", ["transform", "choice"]),
-            ("past_infinitive", "Инфинитив прошедшего (avoir fait / être parti)", ["transform"]),
-            ("cause_consequence", "Причина и следствие (parce que, comme, puisque, donc, par conséquent)", ["choice", "transform"]),
-            ("concession", "Уступка (bien que, quoique, même si + subjonctif)", ["choice", "transform"]),
-            ("purpose", "Цель (pour que, afin que + subjonctif)", ["choice", "transform"]),
-            ("hypothesis", "Гипотезы (si clauses всех типов)", ["choice", "transform"]),
+            ("passive_voice", t("Пассив (être + participe, on + verbe)"), ["transform", "choice"]),
+            ("indirect_speech", t("Косвенная речь (il dit que / il a dit que)"), ["transform"]),
+            ("gerund", t("Герундий (en faisant)"), ["transform", "choice"]),
+            ("past_infinitive", t("Инфинитив прошедшего (avoir fait / être parti)"), ["transform"]),
+            ("cause_consequence", t("Причина и следствие (parce que, comme, puisque, donc, par conséquent)"), ["choice", "transform"]),
+            ("concession", t("Уступка (bien que, quoique, même si + subjonctif)"), ["choice", "transform"]),
+            ("purpose", t("Цель (pour que, afin que + subjonctif)"), ["choice", "transform"]),
+            ("hypothesis", t("Гипотезы (si clauses всех типов)"), ["choice", "transform"]),
         ],
         "B2": [
             ("subjunctive_imperfect", "Subjonctif imparfait (que je fisse)", ["conjugation", "choice"]),
             ("subjunctive_plus_que_parfait", "Subjonctif plus-que-parfait (que j'eusse fait)", ["conjugation", "choice"]),
-            ("passive_advanced", "Пассив: сложные конструкции", ["transform"]),
-            ("subjunctive_sequence", "Последовательность времен в subjonctif", ["choice", "transform"]),
-            ("subjunctive_vs_indicative", "Subjonctif vs Indicatif после выражений сомнения/эмоций", ["choice", "explain", "transform"]),
-            ("nominalization", "Номинализация (le fait de + subjonctif, l'idée que...)", ["transform", "choice"]),
-            ("cleft_sentences", "Раздельные предложения (c'est... qui/que)", ["transform"]),
-            ("discourse_markers", "Маркеры дискурса (du coup, en fait, bref, enfin)", ["choice", "explain"]),
+            ("passive_advanced", t("Пассив: сложные конструкции"), ["transform"]),
+            ("subjunctive_sequence", t("Последовательность времен в subjonctif"), ["choice", "transform"]),
+            ("subjunctive_vs_indicative", t("Subjonctif vs Indicatif после выражений сомнения/эмоций"), ["choice", "explain", "transform"]),
+            ("nominalization", t("Номинализация (le fait de + subjonctif, l'idée que...)"), ["transform", "choice"]),
+            ("cleft_sentences", t("Раздельные предложения (c'est... qui/que)"), ["transform"]),
+            ("discourse_markers", t("Маркеры дискурса (du coup, en fait, bref, enfin)"), ["choice", "explain"]),
         ],
         "C1": [
-            ("subjunctive_nuances", "Нюансы subjonctif (douter que vs ne pas douter que)", ["choice", "explain"]),
-            ("literary_tenses", "Литературные времена (passé simple, passé antérieur)", ["choice", "explain"]),
-            ("register_style", "Регистры и стиль (soutenu/familier, québécois/французский)", ["choice", "explain"]),
+            ("subjunctive_nuances", t("Нюансы subjonctif (douter que vs ne pas douter que)"), ["choice", "explain"]),
+            ("literary_tenses", t("Литературные времена (passé simple, passé antérieur)"), ["choice", "explain"]),
+            ("register_style", t("Регистры и стиль (soutenu/familier, québécois/французский)"), ["choice", "explain"]),
         ],
         "C2": [
-            ("native_idioms", "Идиоматичность и коллокации", ["choice", "match"]),
-            ("regional_variants", "Региональные варианты (Квебек, Бельгия, Швейцария, Африка)", ["choice", "explain"]),
+            ("native_idioms", t("Идиоматичность и коллокации"), ["choice", "match"]),
+            ("regional_variants", t("Региональные варианты (Квебек, Бельгия, Швейцария, Африка)"), ["choice", "explain"]),
         ],
     }
 
@@ -145,7 +147,7 @@ class FrenchGrammarEngine(GrammarEngine):
 class FrenchPlugin(LanguagePlugin):
     code = "fr"
     name_native = "Français"
-    name_target = "Французский"
+    name_target = t("Французский")
     flag_emoji = "🇫🇷"
     cefr_levels = ["A1", "A2", "B1", "B2", "C1", "C2"]
     freq_sets = [
@@ -155,7 +157,7 @@ class FrenchPlugin(LanguagePlugin):
         FreqSet("delf-b2", 5000, "DELF B2", "DELF B2", "D-B2"),
         FreqSet("delf-c1", 10000, "DELF C1", "DELF C1", "D-C1"),
         FreqSet("delf-c2", 20000, "DELF C2", "DELF C2", "D-C2"),
-        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
+        FreqSet("rest", 50000, "Beyond 20K", t("СВЕРХ 20К"), "20K+"),
     ]
     thematic_sets = {
         "delf": ThematicSet("delf", "DELF/DALF Exams", "Vocab for DELF/DALF certification"),

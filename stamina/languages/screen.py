@@ -885,7 +885,7 @@ class LanguagesScreen(tk.Frame):
                  bg=PANEL, fg=MUTED, font=theme.font(10)).pack(anchor="w", pady=px(4))
         row = tk.Frame(card.body, bg=PANEL)
         row.pack(fill=tk.X, pady=px(4))
-        for label, quality in (("СНОВА", 0), ("ТРУДНО", 3), ("ХОРОШО", 4), ("ЛЕГКО", 5)):
+        for label, quality in ((_t("СНОВА"), 0), (_t("ТРУДНО"), 3), (_t("ХОРОШО"), 4), (_t("ЛЕГКО"), 5)):
             HudButton(
                 row, _t(label), lambda q=quality, s=slug: self._grade_review(s, q),
                 height=30, font_size=10,
@@ -1032,7 +1032,7 @@ class LanguagesScreen(tk.Frame):
                          labels={"soft": _t("мягко"), "normal": _t("обычно"), "strict": _t("строго")})
         self._choice_row(inner, "gloss_lang", _t("ЯЗЫК ПЕРЕВОДА"),
                          ["ui", "ru", "en", "uk", "de"],
-                         labels={"ui": _t("как интерфейс"), "ru": "Русский", "en": "English",
+                         labels={"ui": _t("как интерфейс"), "ru": _t("Русский"), "en": "English",
                                  "uk": "Українська", "de": "Deutsch"})
         tk.Label(inner,
                  text=_t("Учите испанский по-английски? Поставьте интерфейс и перевод "

@@ -20,6 +20,8 @@ Ctrl+колёсико — зум к курсору, ЛКМ-перетаскив�
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import math
 import time
 from dataclasses import dataclass, field
@@ -79,18 +81,18 @@ class Robot:
 
 
 ROBOTS: tuple[Robot, ...] = (
-    Robot("a1", "cefr", 1, "A1", "Колёсный разведчик · почвенный зонд и лопата", CEFR_PALETTE),
-    Robot("a2", "cefr", 2, "A2", "Гусеничный модуль · буровая рука", CEFR_PALETTE),
-    Robot("b1_1", "cefr", 3, "B1.1", "Шагоход · сканер почвы", CEFR_PALETTE),
-    Robot("b1_2", "cefr", 4, "B1.2", "Шагоход · водомёт и семенные капсулы", CEFR_PALETTE),
-    Robot("b2_1", "cefr", 5, "B2.1", "Четвероног · плуг и солнечные крылья", CEFR_PALETTE),
-    Robot("b2_2", "cefr", 6, "B2.2", "Четвероног · атмосферные вентили и рабочие руки", CEFR_PALETTE),
-    Robot("c1", "cefr", 7, "C1", "Тяжёлая платформа · мульти-манипулятор и дрон-отсек", CEFR_PALETTE),
-    Robot("c2", "cefr", 8, "C2", "Мега-терраформер · генератор атмосферы и рой дронов", CEFR_PALETTE),
-    Robot("s1000", "freq", 1, "S-1000", "ФУНДАМЕНТ · парящий дрон-сеятель", FREQ_PALETTE),
-    Robot("s3000", "freq", 2, "S-3000", "РАЗГОВОРНЫЙ · паук с поливочными шлангами", FREQ_PALETTE),
-    Robot("s10k", "freq", 3, "S-10K", "СВОБОДНЫЙ · кран, сборщик минералов, засев облаков", FREQ_PALETTE),
-    Robot("s20k", "freq", 4, "S-20K", "КАК НОСИТЕЛЬ · станция с лесом и метеобашнями", FREQ_PALETTE),
+    Robot("a1", "cefr", 1, "A1", _t("Колёсный разведчик · почвенный зонд и лопата"), CEFR_PALETTE),
+    Robot("a2", "cefr", 2, "A2", _t("Гусеничный модуль · буровая рука"), CEFR_PALETTE),
+    Robot("b1_1", "cefr", 3, "B1.1", _t("Шагоход · сканер почвы"), CEFR_PALETTE),
+    Robot("b1_2", "cefr", 4, "B1.2", _t("Шагоход · водомёт и семенные капсулы"), CEFR_PALETTE),
+    Robot("b2_1", "cefr", 5, "B2.1", _t("Четвероног · плуг и солнечные крылья"), CEFR_PALETTE),
+    Robot("b2_2", "cefr", 6, "B2.2", _t("Четвероног · атмосферные вентили и рабочие руки"), CEFR_PALETTE),
+    Robot("c1", "cefr", 7, "C1", _t("Тяжёлая платформа · мульти-манипулятор и дрон-отсек"), CEFR_PALETTE),
+    Robot("c2", "cefr", 8, "C2", _t("Мега-терраформер · генератор атмосферы и рой дронов"), CEFR_PALETTE),
+    Robot("s1000", "freq", 1, "S-1000", _t("ФУНДАМЕНТ · парящий дрон-сеятель"), FREQ_PALETTE),
+    Robot("s3000", "freq", 2, "S-3000", _t("РАЗГОВОРНЫЙ · паук с поливочными шлангами"), FREQ_PALETTE),
+    Robot("s10k", "freq", 3, "S-10K", _t("СВОБОДНЫЙ · кран, сборщик минералов, засев облаков"), FREQ_PALETTE),
+    Robot("s20k", "freq", 4, "S-20K", _t("КАК НОСИТЕЛЬ · станция с лесом и метеобашнями"), FREQ_PALETTE),
 )
 ROBOT_IDS: tuple[str, ...] = tuple(r.id for r in ROBOTS)
 _BY_ID = {r.id: r for r in ROBOTS}

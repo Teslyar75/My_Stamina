@@ -25,6 +25,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import re
 from typing import NamedTuple
 
@@ -285,7 +287,7 @@ class ReaderQueue:
         sid = self.engine.speak(text, rate=self.rate, lang=self.lang,
                                 voice=self.voice)
         if not sid:
-            self.last_error = getattr(self.engine, "last_error", "") or "движок озвучки не ответил"
+            self.last_error = getattr(self.engine, "last_error", "") or _t("движок озвучки не ответил")
             self.state = "idle"
             self._events.append(("error", self.last_error))
             self._unduck()

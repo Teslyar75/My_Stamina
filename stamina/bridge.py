@@ -305,7 +305,7 @@ class Bridge(tk.Frame):
             lang = "de"                                  # подсказка по раскладке QWERTZ
             self.meta["lang"] = "de"
             self.keyboard.set_lang("de")
-        if lang == "ru" and text_lang == "uk" and any(ch in text.lower() for ch in "іїєґ"):
+        if lang == "ru" and text_lang == "uk" and any(ch in text.lower() for ch in t("іїєґ")):
             lang = "uk"                                  # подсказка по украинской раскладке
             self.meta["lang"] = "uk"
             self.keyboard.set_lang("uk")

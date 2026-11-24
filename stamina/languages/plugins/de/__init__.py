@@ -1,6 +1,8 @@
 """German language plugin."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from pathlib import Path
 
 from stamina.languages.core.base import (
@@ -13,7 +15,7 @@ PFLEGE_TOPICS = {
         "source": "https://pflege.jaeckels.net/partizipialattribute",
         "exercises": ["choose_partizip", "identify_partizip", "transform_pflegebericht"],
         "vocab": ["der Bewohner", "die Pflegekraft", "stürzen", "versorgen", "mobilisieren",
-                  "die Vitalzeichen", "der Sturzsensor", "neurologische наблюдение"],
+                  "die Vitalzeichen", "der Sturzsensor", t("neurologische наблюдение")],
     },
     "pflegebericht_schreiben": {
         "template": "Sturzbericht, Wundversorgung, Übergabe",
@@ -50,17 +52,17 @@ class GermanVocabSource(VocabSource):
 class GermanPlugin(LanguagePlugin):
     code = "de"
     name_native = "Deutsch"
-    name_target = "Немецкий"
+    name_target = t("Немецкий")
     flag_emoji = "🇩🇪"
     cefr_levels = ["A1", "A2", "B1", "B2", "C1", "C2"]
     freq_sets = [
-        FreqSet("goethe-a1", 600, "Goethe A1", "ГЕТЕ A1", "G-A1"),
-        FreqSet("goethe-a2", 1200, "Goethe A2", "ГЕТЕ A2", "G-A2"),
-        FreqSet("goethe-b1", 2500, "Goethe B1", "ГЕТЕ B1", "G-B1"),
-        FreqSet("goethe-b2", 5000, "Goethe B2", "ГЕТЕ B2", "G-B2"),
-        FreqSet("goethe-c1", 10000, "Goethe C1", "ГЕТЕ C1", "G-C1"),
-        FreqSet("goethe-c2", 20000, "Goethe C2", "ГЕТЕ C2", "G-C2"),
-        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
+        FreqSet("goethe-a1", 600, "Goethe A1", t("ГЕТЕ A1"), "G-A1"),
+        FreqSet("goethe-a2", 1200, "Goethe A2", t("ГЕТЕ A2"), "G-A2"),
+        FreqSet("goethe-b1", 2500, "Goethe B1", t("ГЕТЕ B1"), "G-B1"),
+        FreqSet("goethe-b2", 5000, "Goethe B2", t("ГЕТЕ B2"), "G-B2"),
+        FreqSet("goethe-c1", 10000, "Goethe C1", t("ГЕТЕ C1"), "G-C1"),
+        FreqSet("goethe-c2", 20000, "Goethe C2", t("ГЕТЕ C2"), "G-C2"),
+        FreqSet("rest", 50000, "Beyond 20K", t("СВЕРХ 20К"), "20K+"),
     ]
     thematic_sets = {
         "dtz": ThematicSet("dtz", "DTZ (Deutsch-Test für Zuwanderer)", "Vocab for DTZ exam"),

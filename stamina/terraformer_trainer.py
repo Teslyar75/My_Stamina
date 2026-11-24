@@ -547,10 +547,10 @@ class TrainerModel:
         Блок тратится из отсека грунта (по умолчанию 10, или 5 с прессом).
         """
         if not (0 <= x < self.w and 0 <= y < self.h):
-            return False, "за пределами поля"
+            return False, _t("за пределами поля")
         cap = self._hold_cap()
         if self.holds.get("soil", 0) < cap:
-            return False, "отсек грунта не полон"
+            return False, _t("отсек грунта не полон")
         # проверяем, принадлежит ли клетка какой-то платформе
         target_platform = None
         for p in self.platforms:
@@ -560,7 +560,7 @@ class TrainerModel:
         # также разрешаем ставить на старую стройплощадку, если стены ещё не открыты
         on_foundation = self.on_site(x, y) and not self.walls_open
         if not target_platform and not on_foundation:
-            return False, "здесь нет чертежа платформы"
+            return False, _t("здесь нет чертежа платформы")
         # тратим грунт
         self.holds["soil"] = 0
         self.platform_blocks.add((x, y))
@@ -568,15 +568,15 @@ class TrainerModel:
             target_platform.try_add_block(x, y)
             if target_platform.complete:
                 self._assign_next_priority()
-                return True, f"платформа {target_platform.resource} готова!"
-            return True, f"блок уложен на платформу {target_platform.resource} ({target_platform.progress_pct()}%)"
+                return True, _t("платформа {0} готова!").format(target_platform.resource)
+            return True, _t("блок уложен на платформу {0} ({1}%)").format(target_platform.resource, target_platform.progress_pct())
         else:
             # старая система фундамента
             self.blocks.append((x, y))
             if len(self.blocks) >= len(self.site_cells()):
                 self.walls_open = True
-                return True, "фундамент готов — стены открыты!"
-            return True, f"блок уложен на фундамент ({len(self.blocks)}/{len(self.site_cells())})"
+                return True, _t("фундамент готов — стены открыты!")
+            return True, _t("блок уложен на фундамент ({0}/{1})").format(len(self.blocks), len(self.site_cells()))
 
     # -- автодобыча за тик ------------------------------------------------------
     def tick_extraction(self) -> dict[str, int]:

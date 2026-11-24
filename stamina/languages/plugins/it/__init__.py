@@ -1,6 +1,8 @@
 """Italian language plugin."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from pathlib import Path
 
 from stamina.languages.core.base import (
@@ -147,7 +149,7 @@ class ItalianGrammarEngine(GrammarEngine):
 class ItalianPlugin(LanguagePlugin):
     code = "it"
     name_native = "Italiano"
-    name_target = "Итальянский"
+    name_target = t("Итальянский")
     flag_emoji = "🇮🇹"
     cefr_levels = ["A1", "A2", "B1", "B2", "C1", "C2"]
     freq_sets = [
@@ -157,7 +159,7 @@ class ItalianPlugin(LanguagePlugin):
         FreqSet("celi-b2", 5000, "CELI B2", "CELI B2", "C-B2"),
         FreqSet("celi-c1", 10000, "CELI C1", "CELI C1", "C-C1"),
         FreqSet("celi-c2", 20000, "CELI C2", "CELI C2", "C-C2"),
-        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
+        FreqSet("rest", 50000, "Beyond 20K", t("СВЕРХ 20К"), "20K+"),
     ]
     thematic_sets = {
         "celi": ThematicSet("celi", "CELI/CILS Exams", "Vocab for CELI/CILS certification"),

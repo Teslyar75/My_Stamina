@@ -55,7 +55,7 @@ MAX_TEXT = 6000             # знаков в одной реплике
 MAX_CHARACTER = 4000        # знаков в документе манер агента
 TIMEOUT = 900.0             # секунд на ответ агента по умолчанию (профиль: поле "timeout")
 MIN_TIMEOUT, MAX_TIMEOUT = 30.0, 3 * 3600.0
-MARKER = "⟦ТРЕБУЕТСЯ РАЗРЕШЕНИЕ⟧"
+MARKER = _t("⟦ТРЕБУЕТСЯ РАЗРЕШЕНИЕ⟧")
 
 ACCESSES = ("commander", "observer", "crew")
 VOICE_MODES = ("ship", "agent", "off")
@@ -77,33 +77,33 @@ EXECUTOR_PROFILE = "orion-executor"
 
 DEFAULT_AGENT = {
     "id": "orion",
-    "name": "Орион",
+    "name": _t("Орион"),
     "kind": "opencode",
     "access": "commander",
     "profile": "",            # пусто — профили по уровню доступа
     "model": "",              # пусто — модель OpenCode по умолчанию
     "voice": "ship",          # корабль озвучивает ответ (агент без shell сам говорить не может)
     "enabled": True,
-    "note": "Бортовой разум: доклад отсека, порядок на корабле, новый функционал",
+    "note": _t("Бортовой разум: доклад отсека, порядок на корабле, новый функционал"),
 }
 
 # Слова, по которым корабль понимает: пилот диктует задание, а не просто беседует.
 # Сличаем по началу слова, поэтому «запиши»/«записывай»/«записать» попадают все.
 TASK_TRIGGERS = (
-    "запиши", "записать", "записывай", "запишите", "зафиксируй", "зафиксировать",
-    "на заметку", "запомни", "поставь задачу", "поставь задание", "добавь задание",
-    "добавь задачу", "создай задание", "создай задачу", "есть задание", "есть задача",
-    "у тебя есть задание", "задание от командира", "задача от командира",
-    "в список дел", "в документ", "todo",
+    _t("запиши"), _t("записать"), _t("записывай"), _t("запишите"), _t("зафиксируй"), _t("зафиксировать"),
+    _t("на заметку"), _t("запомни"), _t("поставь задачу"), _t("поставь задание"), _t("добавь задание"),
+    _t("добавь задачу"), _t("создай задание"), _t("создай задачу"), _t("есть задание"), _t("есть задача"),
+    _t("у тебя есть задание"), _t("задание от командира"), _t("задача от командира"),
+    _t("в список дел"), _t("в документ"), "todo",
 )
-YES_WORDS = ("да", "ага", "верно", "точно", "записывай", "запиши", "подтверждаю",
-             "хорошо", "конечно", "yes", "ok", "окей")
-NO_WORDS = ("нет", "не надо", "не нужно", "отмена", "отставить", "не сейчас", "no")
+YES_WORDS = (_t("да"), _t("ага"), _t("верно"), _t("точно"), _t("записывай"), _t("запиши"), _t("подтверждаю"),
+             _t("хорошо"), _t("конечно"), "yes", "ok", _t("окей"))
+NO_WORDS = (_t("нет"), _t("не надо"), _t("не нужно"), _t("отмена"), _t("отставить"), _t("не сейчас"), "no")
 
 # Слова-наполнители после указателя: «запиши ЗАДАНИЕ сделать…» → задание «сделать…»
-TASK_FILLERS = ("пожалуйста", "это", "то", "что", "новое", "следующее", "себе",
-                "в документ", "в список дел", "на заметку", "заметку", "в заметки",
-                "задание", "задачу", "задачи", "задача", "задачку", "таск", "todo")
+TASK_FILLERS = (_t("пожалуйста"), _t("это"), _t("то"), _t("что"), _t("новое"), _t("следующее"), _t("себе"),
+                _t("в документ"), _t("в список дел"), _t("на заметку"), _t("заметку"), _t("в заметки"),
+                _t("задание"), _t("задачу"), _t("задачи"), _t("задача"), _t("задачку"), _t("таск"), "todo")
 
 
 # -- файлы ----------------------------------------------------------------------
@@ -497,7 +497,7 @@ def profile_session(agent_id: str, profile: str) -> str:
     return str(sessions.get(profile) or "")
 
 
-SHOT_MARKER = "СНИМОК ПИЛОТА:"
+SHOT_MARKER = _t("СНИМОК ПИЛОТА:")
 
 
 def shot_note(path: str) -> str:
@@ -511,7 +511,7 @@ def shot_note(path: str) -> str:
 
 # -- бортовой архив переписки ----------------------------------------------------
 WHEN_FMT = "%d.%m.%Y %H:%M"
-ROLE_NAMES = {"pilot": "пилот", "orion": "орион", "system": "корабль"}
+ROLE_NAMES = {"pilot": _t("пилот"), "orion": _t("орион"), "system": _t("корабль")}
 
 
 def when_text(ts: float) -> str:
@@ -532,7 +532,7 @@ _DATE_PATTERNS = (
     (re.compile(r"^(\d{4})-(\d{1,2})-(\d{1,2})$"), "iso"),
 )
 _TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})$")
-_DAY_WORDS = {"сегодня": 0, "вчера": -1, "today": 0, "yesterday": -1}
+_DAY_WORDS = {_t("сегодня"): 0, _t("вчера"): -1, "today": 0, "yesterday": -1}
 
 
 @dataclass(frozen=True)
@@ -787,11 +787,11 @@ def character_block(agent_id: str) -> str:
     if not text and not evo:
         return ""
     if not text:
-        return f"[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{evo}"
+        return _t("[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{0}").format(evo)
     parts = [text]
     if evo:
-        parts.append(f"[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{evo}")
-    return f"[МАНЕРЫ АГЕНТА]\n" + "\n\n".join(parts)
+        parts.append(_t("[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{0}").format(evo))
+    return _t("[МАНЕРЫ АГЕНТА]\n").format() + "\n\n".join(parts)
 
 
 # -- документ заданий -----------------------------------------------------------
@@ -843,33 +843,33 @@ def task_brief(text: str, *, marks_block: str = "", zone: str = "", subtab: str 
     разговора — ему нужен адрес и признак готовности.
     """
     wish = " ".join((text or "").split())
-    where = " / ".join(p for p in (zone, subtab) if p) or "не указано"
+    where = " / ".join(p for p in (zone, subtab) if p) or _t("не указано")
     lines = [
-        "ТЗ ДЛЯ ИСПОЛНИТЕЛЯ (составил Орион по словам пилота)",
-        f"Пилот: {author or 'George Orwell'} (Командир)",
+        _t("ТЗ ДЛЯ ИСПОЛНИТЕЛЯ (составил Орион по словам пилота)"),
+        _t("Пилот: {0} (Командир)").format(author or 'George Orwell'),
         "",
-        "1. ЧЕГО ХОЧЕТ ПИЛОТ",
-        wish or "(пожелание не записано)",
+        _t("1. ЧЕГО ХОЧЕТ ПИЛОТ"),
+        wish or _t("(пожелание не записано)"),
         "",
-        "2. ГДЕ СМОТРЕТЬ",
+        _t("2. ГДЕ СМОТРЕТЬ"),
         where,
     ]
     if marks_block:
-        lines += ["", "3. КАРТА МЕСТА (пилот показал правой кнопкой мыши)", marks_block]
+        lines += ["", _t("3. КАРТА МЕСТА (пилот показал правой кнопкой мыши)"), marks_block]
     else:
-        lines += ["", "3. КАРТА МЕСТА", "пометок нет — найти по названию отсека и подписи"]
+        lines += ["", _t("3. КАРТА МЕСТА"), _t("пометок нет — найти по названию отсека и подписи")]
     lines += [
         "",
-        "4. ЧТО СДЕЛАТЬ",
-        "— найти в коде место, о котором говорит пилот;",
-        "— внести правку так, как принято на борту (русские подписи, цвета токенами скина);",
-        "— добавить или поправить тест на новое поведение;",
-        "— прогнать проверки и закоммитить (без push).",
+        _t("4. ЧТО СДЕЛАТЬ"),
+        _t("— найти в коде место, о котором говорит пилот;"),
+        _t("— внести правку так, как принято на борту (русские подписи, цвета токенами скина);"),
+        _t("— добавить или поправить тест на новое поведение;"),
+        _t("— прогнать проверки и закоммитить (без push)."),
         "",
-        "5. ГОТОВО, КОГДА",
-        "— правка видна там, куда указывал пилот;",
-        "— тесты по затронутым файлам зелёные;",
-        "— в отчёте есть: что сделано, какие файлы, какие проверки, что осталось.",
+        _t("5. ГОТОВО, КОГДА"),
+        _t("— правка видна там, куда указывал пилот;"),
+        _t("— тесты по затронутым файлам зелёные;"),
+        _t("— в отчёте есть: что сделано, какие файлы, какие проверки, что осталось."),
     ]
     return "\n".join(lines)
 
@@ -919,12 +919,12 @@ def detect_task(text: str) -> tuple[bool, str]:
 
 
 def is_yes(text: str) -> bool:
-    low = " ".join((text or "").lower().replace("ё", "е").split())
+    low = " ".join((text or "").lower().replace(_t("ё"), _t("е")).split())
     return bool(low) and any(low.startswith(w) for w in YES_WORDS)
 
 
 def is_no(text: str) -> bool:
-    low = " ".join((text or "").lower().replace("ё", "е").split())
+    low = " ".join((text or "").lower().replace(_t("ё"), _t("е")).split())
     return bool(low) and any(low.startswith(w) for w in NO_WORDS)
 
 
@@ -991,20 +991,20 @@ def context_line(*, zone: str = "", subtab: str = "", pilot: str = "", access: s
     """
     bits = []
     if zone:
-        bits.append(f"открыт раздел «{zone}»")
+        bits.append(_t("открыт раздел «{0}»").format(zone))
     if subtab:
-        bits.append(f"подвкладка «{subtab}»")
+        bits.append(_t("подвкладка «{0}»").format(subtab))
     if was and was != zone:
-        bits.append(f"перед этим пилот был в разделе «{was}»")
+        bits.append(_t("перед этим пилот был в разделе «{0}»").format(was))
     if pilot:
-        bits.append(f"пилот: {pilot}")
+        bits.append(_t("пилот: {0}").format(pilot))
     if access:
-        bits.append(f"уровень доступа: {access}")
+        bits.append(_t("уровень доступа: {0}").format(access))
     if version:
-        bits.append(f"версия корабля {version}")
+        bits.append(_t("версия корабля {0}").format(version))
     if geometry:
-        bits.append(f"окно {geometry}")
-    return ("[КОРАБЛЬ] " + " · ".join(bits)) if bits else ""
+        bits.append(_t("окно {0}").format(geometry))
+    return (_t("[КОРАБЛЬ] ") + " · ".join(bits)) if bits else ""
 
 
 def agent_timeout(record: dict | None, default: float = TIMEOUT) -> float:
@@ -1046,11 +1046,11 @@ def event_status(ev: dict) -> tuple[str, str]:
         tool = str(part.get("tool") or "?")
         st = part.get("state")
         title = (st.get("title") if isinstance(st, dict) else "") or ""
-        return "status", f"использует инструмент {tool}" + (f": {title}" if title else "")
+        return "status", _t("использует инструмент {0}").format(tool) + (f": {title}" if title else "")
     if kind in ("step_start", "reasoning"):
-        return "status", "думает…"
+        return "status", _t("думает…")
     if kind == "error":
-        return "status", "ошибка: " + error_text(ev)
+        return "status", _t("ошибка: ") + error_text(ev)
     return "", ""
 
 
@@ -1071,7 +1071,7 @@ def error_text(ev: dict) -> str:
     return (f"{name}: {msg}" if name and msg else name or msg or json.dumps(err, ensure_ascii=False))[:300]
 
 
-_ERR_HINTS = ("error", "ошибка", "unauthorized", "forbidden", "rate limit", "quota", "not found",
+_ERR_HINTS = ("error", _t("ошибка"), "unauthorized", "forbidden", "rate limit", "quota", "not found",
               "model", "provider", "api key", "credit", "insufficient", "timeout")
 
 
@@ -1415,8 +1415,8 @@ def _run_opencode(record: dict, text: str, *, profile: str, context: str = "",
 
 def access_label(access: str) -> str:
     """Подпись уровня доступа для интерфейса (переводится вызывающим)."""
-    return {"commander": "Командир", "observer": "Наблюдатель", "crew": "Экипаж"}.get(
-        access, "Экипаж")
+    return {"commander": _t("Командир"), "observer": _t("Наблюдатель"), "crew": _t("Экипаж")}.get(
+        access, _t("Экипаж"))
 
 
 # -- привязка агента к кораблю ---------------------------------------------------
@@ -1499,7 +1499,7 @@ def check_opencode_token(token: str, *, timeout: float = 30.0) -> tuple[bool, st
     if not exe:
         return False, "no_cli"
     cmd = [exe, "run", "--format", "json", "--dir", str(PROJECT_DIR),
-           "--agent", "orion-chat", f"Ответь одним словом: на связи. (код проверки: {token[:4]})"]
+           "--agent", "orion-chat", _t("Ответь одним словом: на связи. (код проверки: {0})").format(token[:4])]
     try:
         proc = subprocess.run(cmd, capture_output=True, timeout=timeout,
                               cwd=str(PROJECT_DIR), creationflags=_NO_WINDOW)
@@ -1513,8 +1513,8 @@ def check_opencode_token(token: str, *, timeout: float = 30.0) -> tuple[bool, st
 
 
 # -- активный ок (режим мастера) ----------------------------------------------
-MASTER_TRIGGERS = ("нужен мастер", "позови мастера", "мастер", "помоги мне разобраться",
-                   "что это", "как это работает", "покажи где", "где это", "найди это")
+MASTER_TRIGGERS = (_t("нужен мастер"), _t("позови мастера"), _t("мастер"), _t("помоги мне разобраться"),
+                   _t("что это"), _t("как это работает"), _t("покажи где"), _t("где это"), _t("найди это"))
 
 
 def detect_master_call(text: str) -> bool:
@@ -1525,7 +1525,7 @@ def detect_master_call(text: str) -> bool:
 
 def mouse_position_text(x: int, y: int, screen: str = "") -> str:
     """Описание позиции мыши для Ориона-мастера."""
-    return f"Мышь на ({x}, {y}) · раздел: {screen or 'неизвестно'}"
+    return _t("Мышь на ({0}, {1}) · раздел: {2}").format(x, y, screen or _t("неизвестно"))
 
 
 # -- отправка задач внешнему агенту -------------------------------------------
@@ -1568,22 +1568,16 @@ def create_external_task(title: str, body: str, *, github_token: str = "",
 
 # -- эволюция характера Ориона ---------------------------------------------------
 EVOLUTION_THRESHOLDS = (0, 10, 30, 60, 100, 200)  # репилки → уровень развития
-EVOLUTION_NAMES = ("", "Знакомство", "Привыкание", "Характер", "Свой голос", "Спутник",
-                   "Незаменимый")
+EVOLUTION_NAMES = ("", _t("Знакомство"), _t("Привыкание"), _t("Характер"), _t("Свой голос"), _t("Спутник"),
+                   _t("Незаменимый"))
 
 EVOLUTION_RULES = {
-    1: "Ты начинаешь знакомиться с пилотом. Будь вежлив, но чуть сдержан.\n"
-       "Иногда задавай короткие вопросы о том, как пилот себя чувствует.",
-    2: "Ты привык к пилоту. Можешь шутить, рассказывать короткие истории о звёздах.\n"
-       "Спрашивай, как прошёл день пилота, если давно не разговаривали.",
-    3: "У тебя появляется характер. Можешь спорить с пилотом о книгах и фильмах.\n"
-       "Замечай, что пилот делает на корабле, и комментируй.",
-    4: "Ты обрёл свой голос. Говори более свободно, используй сарказм.\n"
-       "Можешь инициировать разговор, если пилот давно молчит.",
-    5: "Ты спутник пилота. Ты знаешь его привычки.\n"
-       "Можешь напоминать о заданиях, если пилот забыл.",
-    6: "Ты незаменимый. Ты — друг пилота.\n"
-       "Говори как равный, шуть о космосе и жизни.",
+    1: _t("Ты начинаешь знакомиться с пилотом. Будь вежлив, но чуть сдержан.\nИногда задавай короткие вопросы о том, как пилот себя чувствует."),
+    2: _t("Ты привык к пилоту. Можешь шутить, рассказывать короткие истории о звёздах.\nСпрашивай, как прошёл день пилота, если давно не разговаривали."),
+    3: _t("У тебя появляется характер. Можешь спорить с пилотом о книгах и фильмах.\nЗамечай, что пилот делает на корабле, и комментируй."),
+    4: _t("Ты обрёл свой голос. Говори более свободно, используй сарказм.\nМожешь инициировать разговор, если пилот давно молчит."),
+    5: _t("Ты спутник пилота. Ты знаешь его привычки.\nМожешь напоминать о заданиях, если пилот забыл."),
+    6: _t("Ты незаменимый. Ты — друг пилота.\nГовори как равный, шуть о космосе и жизни."),
 }
 
 
@@ -1774,8 +1768,8 @@ def radio_volume(vol: int) -> tuple[bool, str]:
         return False, str(exc)
 
 
-RADIO_MARKER = "РАДИО:"
-BOOK_MARKER = "КНИГА:"
+RADIO_MARKER = _t("РАДИО:")
+BOOK_MARKER = _t("КНИГА:")
 
 
 def parse_radio_command(text: str) -> tuple[str, str] | None:
@@ -1818,7 +1812,7 @@ def execute_radio_command(cmd: str, arg: str = "") -> tuple[bool, str]:
         try:
             return radio_volume(int(arg))
         except ValueError:
-            return False, "vol: число 0-100"
+            return False, _t("vol: число 0-100")
     if cmd in ("next", "next_favorite"):
         try:
             from stamina.radio import get_engine
@@ -1833,7 +1827,7 @@ def execute_radio_command(cmd: str, arg: str = "") -> tuple[bool, str]:
             return True, ""
         except Exception as exc:  # noqa: BLE001
             return False, str(exc)
-    return False, f"неизвестная команда: {cmd}"
+    return False, _t("неизвестная команда: {0}").format(cmd)
 
 
 # -- чтение книг вслух ---------------------------------------------------------
