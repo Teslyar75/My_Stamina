@@ -1163,6 +1163,8 @@
  "Микрофон не слышит звук — проверьте устройство ввода в Windows (Параметры → Звук → Ввод) и доступ к микрофону": "Le microphone n'entend pas le son - vérifiez votre périphérique d'entrée dans Windows (Options → Son → Entrée) et l'accès au microphone",
  "Микрофон недоступен: нет модели распознавания речи": "Microphone indisponible : pas de modèle de reconnaissance vocale",
  "Микрофон недоступен: нужны библиотеки vosk и sounddevice": "Microphone indisponible : bibliothèques vosk et sounddevice nécessaires",
+ "Микрофон недоступен: {0}": "Microphone indisponible : {0}",
+ "запись не началась": "l'enregistrement n'a pas démarré",
  "Мимо": "Passé",
  "Миссия 1: Первые шаги": "Mission 1 : Premiers pas",
  "Миссия 2: Порты и имена": "Mission 2 : Ports et noms",
