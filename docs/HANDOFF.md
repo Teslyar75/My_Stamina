@@ -153,3 +153,37 @@ Next: `D:\Star_Typing` подтянут до 3.9.10 (`git merge --ff-only`), у�
 
 Problems: в `D:\Star_Typing_games` остаётся чужой WIP (i18n-ключи и `_t()`),
 поэтому `i18n_check` красный именно там; в коммите и на `master` гейт зелёный.
+
+## Одна папка: всё сведено в D:\Star_Typing (24.11, ветка `local/all-work`)
+
+Goal: пилот просил держать все изменения локально в одном месте, а не в нескольких
+папках с фрагментами — и один ярлык на рабочем столе для десктопной версии.
+
+Done:
+- `D:\Star_Typing` — единственная рабочая копия, ветка `local/all-work`:
+  - `8a1dd79` — master 3.9.10 (учебник VIM, терминальные тренажёры);
+  - `0666033` — правка микрофона и `alt2_ui.py` из `D:\My_New_Stamina`
+    (коммиты `4ba9526` + `0af4e8c`);
+  - `df3fc46` — 68 файлов работы по английскому, языкам, голосу и прочему из
+    `D:\Star_Typing_games` + 7 файлов переводов (в них добито 111 ключей из
+    master, в том числе ключи учебника VIM). Мусор из wip-коммита (log.txt,
+    pr_body.md, два скрипта в корне) убран.
+- Восстановлена правка микрофона, которую WIP затёр: `voice/stt.py`, `voice/mic.py`,
+  `languages/screen.py` взяты из `0666033`, сверху возвращены i18n-обёртки;
+  `tests/test_mic_availability.py` — 7/7.
+- Микрофон в Сканере на месте: `pages_main.ScannerPage` создаёт `MicPanel`
+  (кнопка «🎤 ГОВОРИТЕ  M»), в `refresh_mode()` она больше не прячется; в `.venv`
+  `stt.ready() → True`, модели в `D:\Star_Typing\models`.
+- Веб-версия перенесена в `D:\Star_Typing\web_star_typing`, ярлык «Star Typing Web»
+  перецелен туда.
+- На рабочем столе один ярлык десктопной версии: «Star Typing» →
+  `.venv\Scripts\pythonw.exe main.py`, иконка `stamina/assets/star_typing.ico`.
+- Удалены: `D:\Star_Typing_games`, `D:\Star_Typing_games_docker`,
+  `D:\My_New_Stamina`, временный worktree `vim-work`. Архивы в `D:\_archive`:
+  `Star_Typing_games_20261124.zip` (821 МБ), `Star_Typing_games_docker_20261124.zip`
+  (314 МБ), `My_New_Stamina_20261124.zip` (747 МБ). Снимки до уборки — теги
+  `snap-20261124-0245` и `snap-20261124-0247`.
+
+Problems: i18n-долг из WIP остался (870 русских ключей без переводов), поэтому
+`tools/i18n_check.py` и `tests/test_i18n.py` красные на этой ветке — унаследовано,
+не поломка. `master` чистый.
