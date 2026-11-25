@@ -385,7 +385,7 @@ class TestGrammarUISmoke:
         walk(page.content, labels)
         texts = " ".join(labels)
         assert "ЧТО ВЫ ОСВОИТЕ" in texts
-        assert "МОСТИК RU/UA → DE" in texts
+        assert "МОСТИК RU/UA → НЕМЕЦКИЙ" in texts
         assert "ЛОВУШКА" in texts
 
     def test_correct_answer_is_marked_correct(self, board):
