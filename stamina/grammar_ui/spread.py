@@ -748,6 +748,8 @@ class GrammarSpread(tk.Frame):
         if data.get("attribution") or data.get("original_url"):
             pieces.append(lambda: self._piece_attribution(host, data))
         pieces.append(lambda: self._piece_head(host, data))
+        if data.get("vocabulary"):
+            pieces.append(lambda: self._piece_vocabulary(host, data))
         if data.get("prereq_warning"):
             pieces.append(lambda: self._piece_prereq(host, data))
         pieces.append(lambda: self._piece_goal(host, data))
@@ -842,6 +844,50 @@ class GrammarSpread(tk.Frame):
                 fill=tk.X, padx=px(12), pady=(px(6), px(10)))
         else:
             tk.Frame(box, bg=PANEL, height=px(10)).pack()
+
+    def _piece_vocabulary(self, host, data: dict) -> None:
+        vocab = data.get("vocabulary") or []
+        if not vocab:
+            return
+        box = tk.Frame(host, bg=PANEL, highlightthickness=1, highlightbackground=LINE)
+        box.pack(fill=tk.X, padx=px(10), pady=(0, px(8)))
+        head = L(box, _t("СЛОВАРЬ УРОКА"), fg=CYAN, size=8, bold=True, bg=PANEL)
+        head.pack(anchor="w", padx=px(12), pady=(px(8), px(2)))
+
+        grid = tk.Frame(box, bg=PANEL)
+        grid.pack(fill=tk.X, padx=px(12), pady=(0, px(4)))
+        grid.columnconfigure(0, weight=0)  # speaker icon
+        grid.columnconfigure(1, weight=1)  # lemma
+        grid.columnconfigure(2, weight=0)  # pronunciation
+        grid.columnconfigure(3, weight=2)  # translation
+
+        # Column headers
+        L(grid, "", fg=MUTED, size=7, bg=PANEL).grid(row=0, column=0, padx=(0, px(4)), sticky="w")
+        L(grid, _t("СЛОВО"), fg=MUTED, size=7, bold=True, bg=PANEL).grid(row=0, column=1, padx=(0, px(8)), sticky="w")
+        L(grid, _t("ПРОИЗНОШЕНИЕ"), fg=MUTED, size=7, bold=True, bg=PANEL).grid(row=0, column=2, padx=(0, px(8)), sticky="w")
+        L(grid, _t("ПЕРЕВОД"), fg=MUTED, size=7, bold=True, bg=PANEL).grid(row=0, column=3, sticky="w")
+
+        for row_idx, item in enumerate(vocab, start=1):
+            lemma = item.get("lemma", "")
+            translation = item.get("translation", "")
+            pronunciation = item.get("pronunciation", "—")
+            if not lemma or not translation:
+                continue
+
+            # Speaker button (🔊)
+            speaker_lbl = tk.Label(grid, text="🔊", fg=CYAN, bg=PANEL, font=theme.font(10), cursor="hand2")
+            speaker_lbl.grid(row=row_idx, column=0, padx=(0, px(4)), pady=(0, px(2)), sticky="w")
+            if self.ctx and hasattr(self.ctx, "say"):
+                speaker_lbl.bind("<Button-1>", lambda e, w=lemma: self.ctx.say(w))
+
+            # Lemma
+            L(grid, lemma, fg=TEXT, size=10, bg=PANEL).grid(row=row_idx, column=1, padx=(0, px(8)), pady=(0, px(2)), sticky="w")
+            # Pronunciation
+            L(grid, pronunciation, fg=MUTED, size=10, bg=PANEL).grid(row=row_idx, column=2, padx=(0, px(8)), pady=(0, px(2)), sticky="w")
+            # Translation
+            L(grid, translation, fg=TEXT, size=10, bg=PANEL, wraplength=px(400), justify="left").grid(row=row_idx, column=3, pady=(0, px(2)), sticky="w")
+
+        tk.Frame(box, bg=PANEL, height=px(6)).pack()
 
     def _piece_goal(self, host, data: dict) -> None:
         goals = [g for g in (data.get("can_do") or []) if g]

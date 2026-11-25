@@ -6,6 +6,8 @@
 """
 from __future__ import annotations
 
+import re
+
 from stamina.english.grammar import lessons as gl
 from stamina.grammar_ui.spread import GrammarSpread
 from stamina.i18n import t as _t
@@ -80,7 +82,65 @@ class EnglishGrammarCatalog:
         return str(info.get("level") or "").lower()
 
     def load_lesson(self, unit_id) -> dict:
-        return gl.load_lesson(int(unit_id))
+        lesson = gl.load_lesson(int(unit_id))
+        vocabulary = self._extract_vocabulary(lesson)
+        lesson["vocabulary"] = vocabulary
+        return lesson
+
+    def _extract_vocabulary(self, lesson: dict) -> list[dict]:
+        """Extract vocabulary from lesson: words from examples and exercises that exist in vocab."""
+        vocab = getattr(self.ctx, "vocab", None)
+        if not vocab or not getattr(vocab, "ready", False):
+            return []
+
+        seen = set()
+        vocab_items = []
+
+        def add_word(form: str):
+            form = (form or "").strip().lower()
+            if not form or form in seen:
+                return
+            seen.add(form)
+            word = vocab.get(form)
+            if word:
+                translation = word.get("ru", "")
+                ipa = word.get("ipa", "")
+                respelling = word.get("respelling", "")
+                if translation:
+                    pronunciation = ipa if ipa else (respelling if respelling else "—")
+                    vocab_items.append({
+                        "lemma": word.get("word", form),
+                        "translation": translation,
+                        "pronunciation": pronunciation,
+                    })
+
+        for ex in lesson.get("examples") or []:
+            en_text = ex.get("en", "")
+            for token in re.findall(r"[a-zA-Z']+", en_text):
+                add_word(token)
+
+        for ex in lesson.get("exercises") or []:
+            q = ex.get("q", "")
+            for token in re.findall(r"[a-zA-Z']+", q):
+                add_word(token)
+            for opt in ex.get("options") or []:
+                for token in re.findall(r"[a-zA-Z']+", opt):
+                    add_word(token)
+            a = ex.get("a", [])
+            if isinstance(a, list):
+                for ans in a:
+                    for token in re.findall(r"[a-zA-Z']+", str(ans)):
+                        add_word(token)
+            elif a:
+                for token in re.findall(r"[a-zA-Z']+", str(a)):
+                    add_word(token)
+
+        for trap in lesson.get("traps") or []:
+            good = trap.get("good", "")
+            for token in re.findall(r"[a-zA-Z']+", good):
+                add_word(token)
+
+        return vocab_items
 
     def neighbours(self, unit_id):
         return gl.neighbours(int(unit_id))
