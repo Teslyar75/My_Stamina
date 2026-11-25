@@ -48,6 +48,7 @@ IMPORT_TO_DIST = {
     "fpdf": "fpdf2",
     "bs4": "beautifulsoup4",
     "sklearn": "scikit-learn",
+    "edge_tts": "edge-tts",
 }
 
 FIRST_PARTY = {"stamina", "main", "tools", "scripts", "tests", "conftest"}
