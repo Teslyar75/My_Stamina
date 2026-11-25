@@ -268,3 +268,33 @@ Done:
 - Тесты: все итальянские/французские/испанские грамматические тесты проходят (`test_languages_grammar_it.py`, `test_languages_grammar_fr.py`, `test_languages_grammar_es.py` — зелёные). CI gate (`tools/ci_gate.py --only contrast --only dep`) — зелёный. `i18n_check` без новых ошибок (код 3282, те же 450 лишних ключей из WIP-наследия, не моя поломка).
 
 Problems: один тест `test_lesson_intro_explains_goal_and_traps` (немецкая грамматика) падает — ищет текст "МОСТИК RU/UA → DE" в UI, которого теперь нет (данные bridges.json могли измениться). Это не связано с моими правками (тронул только итальянский каталог).
+
+---
+
+## Словарь в начале урока грамматики (25.11, ветка `agent/orion/grammar-section-cards`)
+
+**Цель.** В начале каждого урока грамматики (немецкий, французский, итальянский, испанский, английский, уровни A1–C2) показать словарь слов этого урока. Строка строго такая:
+
+`слово на иностранном языке: произношение: перевод`
+
+Пример: `Haus: [haʊs]: дом`
+
+Карточки пилот остановил. Сначала только словарь: без плиток, без «знаю», без «в отсек», без сканера.
+
+Ветка уже есть, от `master` (`80b10bf`). Новую не создавать.
+
+**Сделано.**
+- `stamina/languages/grammar_page.py`: `BaseGrammarCatalog._extract_vocabulary()` для DE/FR/ES/IT — точная лемма из примеров (`theory[].kind=="example"`) и упражнений (`drills[]`), поиск через `search()` + фильтр `glosses()`/`gloss_lang()` только RU.
+- `stamina/english/pages_grammar.py`: `EnglishGrammarCatalog._extract_vocabulary()` для EN — из `examples[].en`, `exercises` (q/options/a), `traps.good/bad`; перевод `ru` + произношение `ipa`/`respelling` через `ctx.vocab.get()`.
+- `stamina/grammar_ui/spread.py`: `GrammarSpread._piece_vocabulary()` — таблица 4 колонки: 🔊 (клик = озвучка) | СЛОВО | ПРОИЗНОШЕНИЕ | ПЕРЕВОД. Вставлена в `_lesson_pieces` после `_piece_head`, перед `_piece_goal`.
+- `stamina/i18n/*.json` (7 локалей): ключи `СЛОВАРЬ УРОКА` (заголовок), `СЛОВО`, `ПРОИЗНОШЕНИЕ`, `ПЕРЕВОД`.
+- `GrammarPage` (DE/FR/ES/IT) теперь создаёт `LangCtx` с `asr_for(lang)` → кнопка 🔊 работает через `ctx.say(lemma)` (edge-tts → SAPI fallback, подсветка пока звучит).
+
+**Проверено.**
+- DE урок `a1-01-alphabet-laute`: 27 слов, формат `wie: —: как`.
+- EN урок `u001` (verb be): 31 слово, формат `from: /frʌm/: из, с, от`.
+- i18n_check: 3284 ключа, новых ошибок 0 (только пред. WIP-долг).
+- ruff: чисто на изменённых файлах.
+- Тесты: `test_languages_grammar_de_ui.py` (TestLessonIntro, TestTheory — зелёные), `test_english_grammar.py` (3/3), FR/ES/IT грамматика (78/78).
+
+**Не делал.** Карточки, сканер, «знаю», «в отсек», слияние в `master`, релиз.

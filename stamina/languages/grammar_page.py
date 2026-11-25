@@ -14,11 +14,13 @@ from __future__ import annotations
 import random
 import re
 import tkinter as tk
-from types import SimpleNamespace
 
 from stamina.hud import HudButton
 from stamina.i18n import t as _t
 from stamina.languages.core.progress import GRAMMAR_PASS, LanguageProgress
+from stamina.languages.core.sqlite_vocab import gloss_lang
+from stamina.languages.ctx import LangCtx
+from stamina.languages.speech import asr_for
 from stamina.theme import GREEN, MUTED, PANEL, TEXT, px
 from stamina import theme
 from stamina.grammar_ui.model import SourceTab
@@ -322,6 +324,7 @@ class BaseGrammarCatalog:
         bridge = self.engine.bridge(lesson_id) or {}
         theory, examples = _adapt_theory_and_examples(lesson, self.engine)
         drills = [_adapt_drill(drill, self.lang_code) for drill in (lesson.get("drills") or [])]
+        vocabulary = self._extract_vocabulary(lesson)
         missing = []
         if self.progress:
             titles = []
@@ -354,6 +357,7 @@ class BaseGrammarCatalog:
             "examples": examples,
             "traps": [],
             "exercises": drills,
+            "vocabulary": vocabulary,
             "prereq_warning": warning,
             "raw": lesson,
         }
@@ -373,6 +377,69 @@ class BaseGrammarCatalog:
             "exercises": [],
             "raw": {},
         }
+
+    def _get_vocab_source(self):
+        """Lazily load vocabulary source from plugin."""
+        if not hasattr(self, "_vocab_source"):
+            self._vocab_source = None
+            try:
+                self._vocab_source = self.page.plugin.load_vocab()
+            except Exception:
+                self._vocab_source = None
+        return self._vocab_source
+
+    def _extract_vocabulary(self, lesson: dict) -> list[dict]:
+        """Extract vocabulary from lesson: lemmas from examples and drills that exist in vocab."""
+        vocab_source = self._get_vocab_source()
+        if not vocab_source:
+            return []
+
+        seen = set()
+        vocab_items = []
+
+        def add_word(form: str):
+            form = (form or "").strip().lower()
+            if not form or form in seen:
+                return
+            seen.add(form)
+            results = vocab_source.search(form)
+            for word in results:
+                if word.lemma.lower() == form and word.translations:
+                    target_lang = gloss_lang()
+                    # Only use target language translation, don't fall back to en
+                    tr = getattr(word, "translations", None) or {}
+                    values = [v for v in (tr.get(target_lang) or []) if v]
+                    if values:
+                        vocab_items.append({
+                            "lemma": word.lemma,
+                            "translation": ", ".join(values[:3]),
+                            "pronunciation": "—",
+                        })
+                        return
+
+        for block in lesson.get("theory") or []:
+            if block.get("kind") == "example":
+                lang_field = self.lang_code
+                if lang_field in block:
+                    add_word(block[lang_field])
+
+        for drill in lesson.get("drills") or []:
+            prompt = drill.get("prompt", "")
+            for token in re.findall(r"[^\W_]+", prompt, re.UNICODE):
+                add_word(token)
+            for opt in drill.get("options") or []:
+                for token in re.findall(r"[^\W_]+", opt, re.UNICODE):
+                    add_word(token)
+            answer = drill.get("answer", drill.get("a", []))
+            if isinstance(answer, list):
+                for ans in answer:
+                    for token in re.findall(r"[^\W_]+", str(ans), re.UNICODE):
+                        add_word(token)
+            elif answer:
+                for token in re.findall(r"[^\W_]+", str(answer), re.UNICODE):
+                    add_word(token)
+
+        return vocab_items
 
     def neighbours(self, unit_id):
         if unit_id == SELF_CHECK_ID:
@@ -780,12 +847,10 @@ class GrammarPage:
         self.engine = plugin.get_grammar_engine()
         catalog_cls = _catalog_for_plugin(plugin)
         self.catalog = catalog_cls(self.engine, progress, self)
-        ctx = SimpleNamespace(
-            progress=progress,
-            audio_button=getattr(app, "audio_button", None) if app is not None else None,
-            status=getattr(app, "status", lambda *_a, **_k: None) if app is not None else lambda *_a, **_k: None,
-        )
-        self.spread = GrammarSpread(parent, self.catalog, ctx)
+        lang = getattr(plugin, "code", "de")
+        asr = asr_for(lang)
+        self.ctx = LangCtx(progress, asr, app, lang=lang)
+        self.spread = GrammarSpread(parent, self.catalog, self.ctx)
         self.spread.pack(fill=tk.BOTH, expand=True)
         self.frame = self.spread
         self.content = self.spread

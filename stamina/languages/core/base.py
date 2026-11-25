@@ -262,6 +262,8 @@ class WordEntry:
     tags: set[str] = field(default_factory=set)
     source: str = ""
     verified: bool = False
+    ipa: str = ""
+    respelling: str = ""
 
 
 @dataclass

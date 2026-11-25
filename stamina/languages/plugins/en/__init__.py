@@ -20,6 +20,7 @@ class EnglishVocabSource(VocabSource):
         try:
             from stamina.english.vocab import Vocab as OldVocab
             old_vocab = OldVocab()
+            old_vocab.load()
             if old_vocab.ready and old_vocab.words:
                 for w in old_vocab.words:
                     entry = self._convert_word(w)
@@ -75,10 +76,28 @@ class EnglishVocabSource(VocabSource):
             tags=set(w.get("tags", [])),
             source="legacy",
             verified=True,
+            ipa=w.get("ipa", ""),
+            respelling=w.get("respelling", ""),
         )
+
+    @property
+    def ready(self) -> bool:
+        return self._loaded
 
     def get_word(self, slug: str) -> WordEntry | None:
         return self._words.get(slug)
+
+    def get(self, slug: str) -> dict | None:
+        """Compatibility method for old Vocab interface."""
+        word = self._words.get(slug)
+        if word:
+            return {
+                "word": word.lemma,
+                "ru": word.translations.get("ru", [""])[0] if word.translations.get("ru") else "",
+                "ipa": word.ipa,
+                "respelling": word.respelling,
+            }
+        return None
 
     def search(self, query: str, filters: dict | None = None) -> list[WordEntry]:
         query = query.lower()
