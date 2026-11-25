@@ -1,0 +1,670 @@
+{
+  "version": 1,
+  "level": "A2",
+  "lessons": [
+    {
+      "id": "a2-01-indefinido-irregular",
+      "order": 1,
+      "title": "Pretérito indefinido irregular",
+      "subtitle": "tuve, estuve, hice, fui, pude, puse, supe, quise",
+      "topics": [
+        "indefinido_irregular"
+      ],
+      "prereq": [
+        "a1-14-indefinido-regular"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Mismos verbos irregulares que presente pero raíces distintas. Ser/ir = fui/fuiste/fue... (idénticos)."
+        },
+        {
+          "kind": "rule",
+          "title": "Principales",
+          "text": "Tener→tuve, Estar→estuve, Hacer→hice/hiciste/hizo, Ir/Ser→fui, Poder→pude, Poner→puse, Saber→supe, Querer→quise."
+        },
+        {
+          "kind": "rule",
+          "title": "Hacer",
+          "text": "Hice, hiciste, hizo (c→z), hicimos, hicisteis, hicieron (c→z)."
+        },
+        {
+          "kind": "table",
+          "ref": "pret_indef_irregular"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-01-d01",
+          "type": "choice",
+          "prompt": "Yo ____ (tener) un accidente.",
+          "options": [
+            "tuve",
+            "tuviste",
+            "tuvo",
+            "tuvimos"
+          ],
+          "answer": [
+            "tuve"
+          ],
+          "why": "Yo tuve."
+        },
+        {
+          "id": "a2-01-d02",
+          "type": "choice",
+          "prompt": "Él ____ (hacer) la cena.",
+          "options": [
+            "hizo",
+            "hice",
+            "hiciste",
+            "hicieron"
+          ],
+          "answer": [
+            "hizo"
+          ],
+          "why": "Él hizo (c→z)."
+        },
+        {
+          "id": "a2-01-d03",
+          "type": "fill",
+          "prompt": "Nosotros ____ (ir) al cine.",
+          "answer": [
+            "fuimos"
+          ],
+          "why": "Nosotros fuimos (ir/ser)."
+        },
+        {
+          "id": "a2-01-d04",
+          "type": "choice",
+          "prompt": "Tú ____ (poder) venir.",
+          "options": [
+            "pudiste",
+            "pudistes",
+            "pudisten",
+            "pudistemos"
+          ],
+          "answer": [
+            "pudiste"
+          ],
+          "why": "Tú pudiste."
+        }
+      ]
+    },
+    {
+      "id": "a2-02-imperfecto",
+      "order": 2,
+      "title": "Pretérito imperfecto",
+      "subtitle": "Descripción, hábito, fondo en pasado: -aba / -ía",
+      "topics": [
+        "imperfecto"
+      ],
+      "prereq": [
+        "a2-01-indefinido-irregular"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Imperfecto = descripción, hábito, acción en progreso en pasado. -ar: -aba/-abas/-aba/-ábamos/-abais/-aban. -er/-ir: -ía/-ías/-ía/-íamos/-íais/-ían."
+        },
+        {
+          "kind": "rule",
+          "title": "Solo 3 irregulares",
+          "text": "Ser → era/eras/era/éramos/erais/eran. Ir → iba/ibas/iba/íbamos/ibais/iban. Ver → veía/veías/veía/veíamos/veíais/veían."
+        },
+        {
+          "kind": "table",
+          "ref": "imperfecto"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-02-d01",
+          "type": "choice",
+          "prompt": "Cuando niño, yo ____ (jugar) mucho.",
+          "options": [
+            "jugaba",
+            "jugabas",
+            "jugaban",
+            "jugabamos"
+          ],
+          "answer": [
+            "jugaba"
+          ],
+          "why": "Hábito en pasado → imperfecto. Yo -ar → -aba."
+        },
+        {
+          "id": "a2-02-d02",
+          "type": "choice",
+          "prompt": "Era de noche y ____ (llover).",
+          "options": [
+            "llovía",
+            "llovió",
+            "llueve",
+            "lloverá"
+          ],
+          "answer": [
+            "llovía"
+          ],
+          "why": "Descripción/fondo → imperfecto."
+        },
+        {
+          "id": "a2-02-d03",
+          "type": "fill",
+          "prompt": "Nosotros ____ (ir) a la playa cada verano.",
+          "answer": [
+            "íbamos"
+          ],
+          "why": "Nosotros íbamos (ir irregular)."
+        },
+        {
+          "id": "a2-02-d04",
+          "type": "choice",
+          "prompt": "Tú ____ (ser) muy alto.",
+          "options": [
+            "eras",
+            "fuiste",
+            "eres",
+            "serás"
+          ],
+          "answer": [
+            "eras"
+          ],
+          "why": "Descripción física en pasado → imperfecto de ser."
+        }
+      ]
+    },
+    {
+      "id": "a2-03-indefinido-vs-imperfecto",
+      "order": 3,
+      "title": "Indefinido vs Imperfecto",
+      "subtitle": "Evento completado vs Descripción/Hábito/Fondo",
+      "topics": [
+        "indefinido_vs_imperfecto"
+      ],
+      "prereq": [
+        "a2-02-imperfecto"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Indefinido = punto en timeline (evento). Imperfecto = segmento (descripción/hábito/fondo). Leía (imperf) cuando llamó (indef)."
+        },
+        {
+          "kind": "rule",
+          "title": "Marcadores",
+          "text": "Indefinido: ayer, anoche, el lunes pasado, de repente, de pronto, entonces. Imperfecto: siempre, a menudo, mientras, en aquel tiempo, generalmente."
+        },
+        {
+          "kind": "rule",
+          "title": "Mientras + imperfecto",
+          "text": "Mientras leía, ella cocinaba. Cuando + indefinido (evento): Cuando llegué, comimos."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-03-d01",
+          "type": "choice",
+          "prompt": "____ (leer) cuando ____ (llamar) mi madre.",
+          "options": [
+            "Leía / llamó",
+            "Leí / llamaba",
+            "Leía / llamaba",
+            "Leí / llamó"
+          ],
+          "answer": [
+            "Leía / llamó"
+          ],
+          "why": "Fondo (imperfecto) + evento (indefinido)."
+        },
+        {
+          "id": "a2-03-indefinido-vs-imperfecto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Indefinido vs Imperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Indefinido vs Imperfecto."
+        },
+        {
+          "id": "a2-03-indefinido-vs-imperfecto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Indefinido vs Imperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Indefinido vs Imperfecto."
+        }
+      ]
+    },
+    {
+      "id": "a2-04-futuro",
+      "order": 4,
+      "title": "Futuro simple",
+      "subtitle": "hablaré, comeré, viviré. Mismas terminaciones para todos.",
+      "topics": [
+        "futuro_simple"
+      ],
+      "prereq": [
+        "a1-04-present-ar"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Infinitivo + -é, -ás, -á, -emos, -éis, -án. Mismas terminaciones para -ar/-er/-ir."
+        },
+        {
+          "kind": "rule",
+          "title": "Irregulares (raíces)",
+          "text": "Tener→tendr-, Poder→podr-, Querer→querr-, Saber→sabr-, Poner→pondr-, Salir→saldr-, Venir→vendr-, Hacer→har-, Haber→habr-, Decir→dir-, Caber→cabr-."
+        },
+        {
+          "kind": "table",
+          "ref": "future_simple"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-04-d01",
+          "type": "choice",
+          "prompt": "Mañana yo ____ (hablar) con él.",
+          "options": [
+            "hablaré",
+            "hablarás",
+            "hablará",
+            "hablaremos"
+          ],
+          "answer": [
+            "hablaré"
+          ],
+          "why": "Yo → -é."
+        },
+        {
+          "id": "a2-04-d02",
+          "type": "fill",
+          "prompt": "Ellos ____ (tener) tiempo.",
+          "answer": [
+            "tendrán"
+          ],
+          "why": "Tener→tendr- + -án = tendrán."
+        },
+        {
+          "id": "a2-04-futuro-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Futuro simple.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Futuro simple."
+        }
+      ]
+    },
+    {
+      "id": "a2-05-condicional",
+      "order": 5,
+      "title": "Condicional simple",
+      "subtitle": "hablaría, comería, viviría. Mismas raíces que futuro + -ía.",
+      "topics": [
+        "condicional"
+      ],
+      "prereq": [
+        "a2-04-futuro"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Mismas raíces irregulares que futuro + terminaciones de imperfecto (-ía, -ías, -ía, -íamos, -íais, -ían)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ejemplos",
+          "text": "Hablaría, comería, viviría. Tendría, pondría, saldría, vendría, haría, sabría, querría, podría, cabría, habría, diría."
+        },
+        {
+          "kind": "table",
+          "ref": "conditional"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-05-d01",
+          "type": "choice",
+          "prompt": "Yo ____ (comer) eso si tuviera hambre.",
+          "options": [
+            "comería",
+            "comerías",
+            "comerían",
+            "comeríamos"
+          ],
+          "answer": [
+            "comería"
+          ],
+          "why": "Yo → -ía."
+        },
+        {
+          "id": "a2-05-d02",
+          "type": "fill",
+          "prompt": "Nosotros ____ (poder) hacerlo.",
+          "answer": [
+            "podríamos"
+          ],
+          "why": "Poder→podr- + -íamos = podríamos."
+        },
+        {
+          "id": "a2-05-condicional-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Condicional simple.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Condicional simple."
+        }
+      ]
+    },
+    {
+      "id": "a2-06-perfecto",
+      "order": 6,
+      "title": "Pretérito perfecto compuesto",
+      "subtitle": "he hablado, has comido — acción pasada con relevancia actual",
+      "topics": [
+        "perfecto"
+      ],
+      "prereq": [
+        "a1-14-indefinido-regular"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Haber (presente) + participio. He comido = acabo de comer / hoy he comido. En España uso frecuente. En Latam a menudo se usa indefinido."
+        },
+        {
+          "kind": "rule",
+          "title": "Participios irregulares",
+          "text": "Hecho, dicho, visto, puesto, escrito, abierto, roto, muerto, vuelto, cubierto, descubierto, frito, impreso, provisto."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-06-d01",
+          "type": "choice",
+          "prompt": "Hoy ____ (comer) paella.",
+          "options": [
+            "he comido",
+            "ha comido",
+            "hemos comido",
+            "han comido"
+          ],
+          "answer": [
+            "he comido"
+          ],
+          "why": "Yo he + participio."
+        },
+        {
+          "id": "a2-06-perfecto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Pretérito perfecto compuesto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pretérito perfecto compuesto."
+        },
+        {
+          "id": "a2-06-perfecto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Pretérito perfecto compuesto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pretérito perfecto compuesto."
+        }
+      ]
+    },
+    {
+      "id": "a2-07-objeto-pronombres",
+      "order": 7,
+      "title": "Pronombres de objeto: lo/la/los/las, le/les, se",
+      "subtitle": "Orden: me/te/nos/os → le/les → lo/la/los/las → se",
+      "topics": [
+        "objeto_pronombres"
+      ],
+      "prereq": [
+        "a1-08-posesivos"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "CD (lo/la/los/las) y CI (le/les). Le/les + lo/la/los/las → se lo/la/los/las. Orden estricto."
+        },
+        {
+          "kind": "rule",
+          "title": "Afirmativo (imperativo)",
+          "text": "Dámelo. Dáselo. (Pronombre DESPUÉS con guion)."
+        },
+        {
+          "kind": "rule",
+          "title": "Negativo",
+          "text": "No me lo des. No se lo des. (Pronombre ANTES)."
+        },
+        {
+          "kind": "table",
+          "ref": "object_pronouns"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-07-d01",
+          "type": "choice",
+          "prompt": "El libro? Juan ____ (dar) a María.",
+          "options": [
+            "se lo da",
+            "le lo da",
+            "lo le da",
+            "se la da"
+          ],
+          "answer": [
+            "se lo da"
+          ],
+          "why": "Le (CI) + lo (CD) → se lo."
+        },
+        {
+          "id": "a2-07-d02",
+          "type": "fill",
+          "prompt": "¡____ (dar + me + lo)!",
+          "answer": [
+            "Dámelo"
+          ],
+          "why": "Imperativo afirmativo: verbo + pronombres con guion."
+        },
+        {
+          "id": "a2-07-objeto-pronombres-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Pronombres de objeto: lo/la/los/las, le/les, se.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pronombres de objeto: lo/la/los/las, le/les, se."
+        }
+      ]
+    },
+    {
+      "id": "a2-08-gustar-avanzado",
+      "order": 8,
+      "title": "Gustar/encantar/interesar con infinitivo/cláusula",
+      "subtitle": "Me gusta nadar. Me importa que vengas (subjuntivo).",
+      "topics": [
+        "gustar_avanzado"
+      ],
+      "prereq": [
+        "a1-10-gustar"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Verbo SIEMPRE concuerda con el sujeto (lo que gusta). Me gusta nadar (infinitivo = sg). Me gustan los libros (pl). Me importa que vengas (que + subjuntivo = sg)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-08-d01",
+          "type": "choice",
+          "prompt": "A mí ____ (gustar) leer.",
+          "options": [
+            "me gusta",
+            "me gustan",
+            "gusto",
+            "gustas"
+          ],
+          "answer": [
+            "me gusta"
+          ],
+          "why": "Infinitivo = sujeto singular."
+        },
+        {
+          "id": "a2-08-gustar-avanzado-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Gustar/encantar/interesar con infinitivo/cláusula.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Gustar/encantar/interesar con infinitivo/cláusula."
+        },
+        {
+          "id": "a2-08-gustar-avanzado-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Gustar/encantar/interesar con infinitivo/cláusula.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Gustar/encantar/interesar con infinitivo/cláusula."
+        }
+      ]
+    },
+    {
+      "id": "a2-09-por-para",
+      "order": 9,
+      "title": "Por vs Para",
+      "subtitle": "Causa/Medio/Duración vs Finalidad/Destino/Destinatario",
+      "topics": [
+        "por_para"
+      ],
+      "prereq": [
+        "a1-11-preposiciones"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Por = causa, medio, duración, sustitución, distribución. Para = finalidad, destinatario, plazo, destino, opinión."
+        },
+        {
+          "kind": "rule",
+          "title": "Ejemplos",
+          "text": "Gracias por ayudar. Voy por tren. Estudié por dos horas. Lo hice por él. Uno por uno. // Este regalo es para ti. Estudio para aprender. Para el lunes. Salgo para Madrid. Para mí, es fácil."
+        },
+        {
+          "kind": "table",
+          "ref": "por_para"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-09-d01",
+          "type": "choice",
+          "prompt": "Lo hice ____ ti.",
+          "options": [
+            "por",
+            "para",
+            "con",
+            "sin"
+          ],
+          "answer": [
+            "por"
+          ],
+          "why": "Por = causa/motivo (por ti = por tu causa)."
+        },
+        {
+          "id": "a2-09-por-para-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Por vs Para.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Por vs Para."
+        },
+        {
+          "id": "a2-09-por-para-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Por vs Para.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Por vs Para."
+        }
+      ]
+    },
+    {
+      "id": "a2-10-comparativos",
+      "order": 10,
+      "title": "Comparativos: más/menos/tan... que. Irregulares: mejor/peor/mayor/menor.",
+      "topics": [
+        "comparativos"
+      ],
+      "prereq": [
+        "a1-07-adjetivos"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Más... que, menos... que, tan... como. Irregulares: bueno→mejor, malo→peor, grande→mayor, pequeño→menor."
+        },
+        {
+          "kind": "table",
+          "ref": "comparatives_superlatives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-10-d01",
+          "type": "choice",
+          "prompt": "Este libro es ____ (bueno) que ese.",
+          "options": [
+            "más bueno",
+            "mejor",
+            "mejor que",
+            "más mejor"
+          ],
+          "answer": [
+            "mejor"
+          ],
+          "why": "Bueno → mejor (irregular)."
+        },
+        {
+          "id": "a2-10-comparativos-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Comparativos: más/menos/tan... que. Irregulares: mejor/peor/mayor/menor..",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Comparativos: más/menos/tan... que. Irregulares: mejor/peor/mayor/menor.."
+        },
+        {
+          "id": "a2-10-comparativos-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Comparativos: más/menos/tan... que. Irregulares: mejor/peor/mayor/menor..",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Comparativos: más/menos/tan... que. Irregulares: mejor/peor/mayor/menor.."
+        }
+      ]
+    }
+  ]
+}

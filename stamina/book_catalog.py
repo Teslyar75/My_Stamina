@@ -222,7 +222,7 @@ BILINGUAL_SEED: list[dict[str, Any]] = [
 _TITLE_STOP = {
     "the", "a", "an", "of", "and", "in", "to", "for", "on", "by", "or", "with",
     "der", "die", "das", "und", "ein", "eine", "le", "la", "les", "des", "du",
-    "el", "los", "las", _t("и"), _t("в"), _t("на"), _t("к"), _t("по"), _t("из"), _t("о"),
+    "el", "los", "las", "и", "в", "на", "к", "по", "из", "о",
 }
 
 

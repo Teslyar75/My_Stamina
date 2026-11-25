@@ -1,0 +1,635 @@
+{
+  "version": 1,
+  "level": "A1",
+  "lessons": [
+    {
+      "id": "a1-01-articoli",
+      "order": 1,
+      "title": "Articoli determinativi e indeterminativi",
+      "subtitle": "il, lo, la, l', i, gli, le / un, uno, una, un'",
+      "topics": [
+        "articoli"
+      ],
+      "prereq": [],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Determinativo: il (m.sg. cons.), lo (m.sg. s+cons/z/gn/ps/pn/x/y), la (f.sg. cons.), l' (vocale). Plurale: i, gli, le."
+        },
+        {
+          "kind": "rule",
+          "title": "Indeterminativo",
+          "text": "un (m.sg. cons.), uno (m.sg. s+cons/z/gn/ps/pn/x/y), una (f.sg. cons.), un' (f.sg. vocale)."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_definite"
+        },
+        {
+          "kind": "table",
+          "ref": "articles_indefinite"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-01-d01",
+          "type": "choice",
+          "prompt": "____ zaino è rosso.",
+          "options": [
+            "Lo",
+            "Il",
+            "La",
+            "L'"
+          ],
+          "answer": [
+            "Lo"
+          ],
+          "why": "zaino = m.sg. con s+cons → lo."
+        },
+        {
+          "id": "a1-01-d02",
+          "type": "choice",
+          "prompt": "Ho comprato ____ libro.",
+          "options": [
+            "un",
+            "uno",
+            "una",
+            "un'"
+          ],
+          "answer": [
+            "un"
+          ],
+          "why": "libro = m.sg. cons. → un."
+        },
+        {
+          "id": "a1-01-d03",
+          "type": "fill",
+          "prompt": "____ amica è simpatica.",
+          "answer": [
+            "L'"
+          ],
+          "why": "amica = f.sg. vocale → l'."
+        }
+      ]
+    },
+    {
+      "id": "a1-02-essere-avere",
+      "order": 2,
+      "title": "Essere e Avere",
+      "subtitle": "Due verbi fondamentali",
+      "topics": [
+        "essere_avere"
+      ],
+      "prereq": [
+        "a1-01-articoli"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Essere = identità, stato, descrizione. Avere = possesso, età, sensazioni fisiche (ho fame, ho sonno)."
+        },
+        {
+          "kind": "table",
+          "ref": "essere_avere_present"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-02-d01",
+          "type": "choice",
+          "prompt": "Io ____ 25 anni.",
+          "options": [
+            "ho",
+            "sono",
+            "hai",
+            "sei"
+          ],
+          "answer": [
+            "ho"
+          ],
+          "why": "Età → avere (ho 25 anni)."
+        },
+        {
+          "id": "a1-02-d02",
+          "type": "choice",
+          "prompt": "Maria ____ italiana.",
+          "options": [
+            "è",
+            "ha",
+            "siamo",
+            "siete"
+          ],
+          "answer": [
+            "è"
+          ],
+          "why": "Nazionalità → essere."
+        },
+        {
+          "id": "a1-02-d03",
+          "type": "fill",
+          "prompt": "Noi ____ studenti. (essere)",
+          "answer": [
+            "siamo"
+          ],
+          "why": "Noi siamo = мы есть/являемся. Глагол essere для идентификации."
+        }
+      ]
+    },
+    {
+      "id": "a1-03-presente-are",
+      "order": 3,
+      "title": "Presente: verbi in -are (parlare)",
+      "subtitle": "parlo, parli, parla, parliamo, parlate, parlano",
+      "topics": [
+        "presente_are"
+      ],
+      "prereq": [
+        "a1-02-essere-avere"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Radice parl- + desinenze: -o, -i, -a, -iamo, -ate, -ano. Nessuna irregolarità."
+        },
+        {
+          "kind": "table",
+          "ref": "present_are"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-03-d01",
+          "type": "choice",
+          "prompt": "Noi ____ (parlare) italiano.",
+          "options": [
+            "parliamo",
+            "parlate",
+            "parlano",
+            "parlo"
+          ],
+          "answer": [
+            "parliamo"
+          ],
+          "why": "Noi → -iamo."
+        },
+        {
+          "id": "a1-03-d02",
+          "type": "fill",
+          "prompt": "Loro ____ (studiare) molto.",
+          "answer": [
+            "studiano"
+          ],
+          "why": "Loro studiano - 3-е лицо множественное число -are."
+        },
+        {
+          "id": "a1-03-d03",
+          "type": "choice",
+          "prompt": "Io ____ (lavorare) qui.",
+          "options": [
+            "lavoro",
+            "lavori",
+            "lavora",
+            "lavorano"
+          ],
+          "answer": [
+            "lavoro"
+          ],
+          "why": "Io lavoro - 1-е лицо единственного числа -are."
+        }
+      ]
+    },
+    {
+      "id": "a1-04-presente-ere",
+      "order": 4,
+      "title": "Presente: verbi in -ere (credere, temere)",
+      "subtitle": "credo, credi, crede, crediamo, credete, credono",
+      "topics": [
+        "presente_ere"
+      ],
+      "prereq": [
+        "a1-03-presente-are"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Radice cred- + desinenze: -o, -i, -e, -iamo, -ete, -ono. Attenzione: 1ª sg. credo (non *creddo*)."
+        },
+        {
+          "kind": "table",
+          "ref": "present_ere"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-04-d01",
+          "type": "choice",
+          "prompt": "Loro ____ (credere) in te.",
+          "options": [
+            "credono",
+            "credete",
+            "credi",
+            "credo"
+          ],
+          "answer": [
+            "credono"
+          ],
+          "why": "Loro → -ono."
+        },
+        {
+          "id": "a1-04-d02",
+          "type": "fill",
+          "prompt": "Io ____ (leggere) un libro.",
+          "answer": [
+            "leggo"
+          ],
+          "why": "Io leggo - 1-е лицо единственного числа -ere (исключение: leggere -> leggo)."
+        },
+        {
+          "id": "a1-04-d03",
+          "type": "choice",
+          "prompt": "Voi ____ (scrivere) una lettera.",
+          "options": [
+            "scrivete",
+            "scrivono",
+            "scrive",
+            "scrivo"
+          ],
+          "answer": [
+            "scrivete"
+          ],
+          "why": "Voi scrivete - 2-е лицо множественного числа -ere."
+        }
+      ]
+    },
+    {
+      "id": "a1-05-presente-ire",
+      "order": 5,
+      "title": "Presente: verbi in -ire (dormire vs capire)",
+      "subtitle": "dormo/dormi/dorme vs capisco/capisci/capisce",
+      "topics": [
+        "presente_ire"
+      ],
+      "prereq": [
+        "a1-04-presente-ere"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Due gruppi: 1) dormire → dormo, dormi, dorme, dormiamo, dormite, dormono. 2) capire (e finire, preferire, pulire...) → capisco, capisci, capisce, capiamo, capite, capiscono (-isc- in 1/2/3 sg e 3 pl)."
+        },
+        {
+          "kind": "table",
+          "ref": "present_ire"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-05-d01",
+          "type": "choice",
+          "prompt": "Tu ____ (capire) l'italiano.",
+          "options": [
+            "capisci",
+            "capisco",
+            "capisce",
+            "capite"
+          ],
+          "answer": [
+            "capisci"
+          ],
+          "why": "Tu → -isci (gruppo -isc-)."
+        },
+        {
+          "id": "a1-05-d02",
+          "type": "choice",
+          "prompt": "Noi ____ (dormire) bene.",
+          "options": [
+            "dormiamo",
+            "dormite",
+            "dormono",
+            "dormisco"
+          ],
+          "answer": [
+            "dormiamo"
+          ],
+          "why": "Noi → -iamo (gruppo senza -isc-)."
+        },
+        {
+          "id": "a1-05-d3",
+          "type": "choice",
+          "prompt": "Noi ____ (dormire) bene.",
+          "options": [
+            "dormiamo",
+            "dormite",
+            "dormono",
+            "dormi"
+          ],
+          "answer": [
+            "dormiamo"
+          ],
+          "why": "Noi dormiamo - 1-е лицо множественного числа -ire."
+        }
+      ]
+    },
+    {
+      "id": "a1-06-presente-irregulari",
+      "order": 6,
+      "title": "Presente: 9 verbi irregolari chiave",
+      "subtitle": "andare, fare, venire, stare, dare, sapere, potere, volere, dovere",
+      "topics": [
+        "presente_irregulari"
+      ],
+      "prereq": [
+        "a1-05-presente-ire"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Imparare a memoria le 9 forme. Andare: vado/vai/va/andiamo/andate/vanno. Fare: faccio/fai/fa/facciamo/fate/fanno. Venire: vengo/vieni/viene/veniamo/venite/vengono."
+        },
+        {
+          "kind": "table",
+          "ref": "present_irregulari"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-06-d01",
+          "type": "choice",
+          "prompt": "Io ____ (andare) a Roma.",
+          "options": [
+            "vado",
+            "vengo",
+            "faccio",
+            "sto"
+          ],
+          "answer": [
+            "vado"
+          ],
+          "why": "Andare → io vado."
+        },
+        {
+          "id": "a1-06-d02",
+          "type": "fill",
+          "prompt": "Loro ____ (dovere) studiare.",
+          "answer": [
+            "devono"
+          ],
+          "why": "Dovere → loro devono."
+        },
+        {
+          "id": "a1-06-presente-irregulari-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Presente: 9 verbi irregolari chiave.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Presente: 9 verbi irregolari chiave."
+        }
+      ]
+    },
+    {
+      "id": "a1-07-aggettivi",
+      "order": 7,
+      "title": "Aggettivi: concordanza",
+      "subtitle": "alto/alta/alti/alte — grande/grande/grandi/grandi",
+      "topics": [
+        "aggettivi"
+      ],
+      "prereq": [
+        "a1-01-articoli"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Classe -o/-a: alto → alta / alti / alte. Classe -e (invariabile al sg.): grande → grande / grandi / grandi. Classe -ore: lavoratore → lavoratrice / lavoratori / lavoratrici."
+        },
+        {
+          "kind": "table",
+          "ref": "adjectives_agreement"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-07-d01",
+          "type": "choice",
+          "prompt": "Una casa ____ (grande).",
+          "options": [
+            "grande",
+            "grandei",
+            "grandea",
+            "grandeiamo"
+          ],
+          "answer": [
+            "grande"
+          ],
+          "why": "Grande = classe -e, invariabile al singolare."
+        },
+        {
+          "id": "a1-07-aggettivi-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Aggettivi: concordanza.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Aggettivi: concordanza."
+        },
+        {
+          "id": "a1-07-aggettivi-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Aggettivi: concordanza.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Aggettivi: concordanza."
+        }
+      ]
+    },
+    {
+      "id": "a1-08-possessivi",
+      "order": 8,
+      "title": "Aggettivi possessivi",
+      "subtitle": "mio, tuo, suo, nostro, vostro, loro — concordano con l'oggetto",
+      "topics": [
+        "possessivi"
+      ],
+      "prereq": [
+        "a1-07-aggettivi"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Il MIO libro / la MIA casa / i MIEI libri / le MIE case. Suo/sua/suoi/sue = suo/sua (di lui/lei). Loro = invariabile."
+        },
+        {
+          "kind": "table",
+          "ref": "possessives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-08-d01",
+          "type": "choice",
+          "prompt": "____ macchina è rossa. (di Marco)",
+          "options": [
+            "La sua",
+            "Il suo",
+            "Le sue",
+            "I suoi"
+          ],
+          "answer": [
+            "La sua"
+          ],
+          "why": "Macchina = f.sg. → la sua."
+        },
+        {
+          "id": "a1-08-possessivi-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Aggettivi possessivi.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Aggettivi possessivi."
+        },
+        {
+          "id": "a1-08-possessivi-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Aggettivi possessivi.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Aggettivi possessivi."
+        }
+      ]
+    },
+    {
+      "id": "a1-09-dimostrativi",
+      "order": 9,
+      "title": "Dimostrativi: questo, quello, codesto",
+      "subtitle": "Vicino / Lontano / Medio",
+      "topics": [
+        "dimostrativi"
+      ],
+      "prereq": [
+        "a1-07-aggettivi"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Questo (qui): questo/questa/questi/queste. Quello (là): quello/quello/quelli/quelle → quel/quei/quella/quell' prima di sost. Codesto (medio, raro): codesto/codesta/codesti/codeste."
+        },
+        {
+          "kind": "table",
+          "ref": "demonstratives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-09-d01",
+          "type": "choice",
+          "prompt": "____ libro qui è mio.",
+          "options": [
+            "Questo",
+            "Quello",
+            "Codesto",
+            "Quel"
+          ],
+          "answer": [
+            "Questo"
+          ],
+          "why": "Qui → questo."
+        },
+        {
+          "id": "a1-09-dimostrativi-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Dimostrativi: questo, quello, codesto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Dimostrativi: questo, quello, codesto."
+        },
+        {
+          "id": "a1-09-dimostrativi-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Dimostrativi: questo, quello, codesto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Dimostrativi: questo, quello, codesto."
+        }
+      ]
+    },
+    {
+      "id": "a1-10-piacere",
+      "order": 10,
+      "title": "Piacere, mancare, servire, bastare, interessare",
+      "subtitle": "Mi piace / Mi piacciono — soggetto = cosa piace",
+      "topics": [
+        "piacere"
+      ],
+      "prereq": [
+        "a1-02-essere-avere"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Verbo concorda con COSA piace (soggetto), non con chi piace. Mi piace il gelato (sg). Mi piacciono i gelati (pl). A Marco piace... / A noi piace..."
+        },
+        {
+          "kind": "table",
+          "ref": "piacere_type"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-10-d01",
+          "type": "choice",
+          "prompt": "A noi ____ (piacere) la pizza.",
+          "options": [
+            "piace",
+            "piacei",
+            "piacea",
+            "piaceiamo"
+          ],
+          "answer": [
+            "piace"
+          ],
+          "why": "La pizza = sg → piace."
+        },
+        {
+          "id": "a1-10-d02",
+          "type": "choice",
+          "prompt": "A loro ____ (mancare) i soldi.",
+          "options": [
+            "mancano",
+            "mancanoi",
+            "mancanoa",
+            "mancanoiamo"
+          ],
+          "answer": [
+            "mancano"
+          ],
+          "why": "I soldi = pl → mancano."
+        },
+        {
+          "id": "a1-10-piacere-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Piacere, mancare, servire, bastare, interessare.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Piacere, mancare, servire, bastare, interessare."
+        }
+      ]
+    }
+  ]
+}

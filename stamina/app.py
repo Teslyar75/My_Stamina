@@ -170,14 +170,14 @@ def run_app(argv: list[str] | None = None) -> None:
     if safe_mode.flag_in(argv):
         safe_mode.set_enabled(True)
     _safe_streams()
-    _journal(t("=== ЗАПУСК argv={0} exe={1} cwd={2}").format(argv, sys.executable, os.getcwd()))
+    _journal("=== ЗАПУСК argv={0} exe={1} cwd={2}".format(argv, sys.executable, os.getcwd()))
     # Ошибку в обратном вызове Tk пишем в журнал: под pythonw её больше некуда девать
     try:
         import tkinter as _tk
 
         def _cb_exc(_self, exc, val, tb):
             import traceback
-            _journal(t("Ошибка в обратном вызове Tk:\n") + "".join(traceback.format_exception(exc, val, tb)))
+            _journal("Ошибка в обратном вызове Tk:\n" + "".join(traceback.format_exception(exc, val, tb)))
 
         _tk.Tk.report_callback_exception = _cb_exc
     except Exception:  # noqa: BLE001
@@ -203,7 +203,7 @@ def run_app(argv: list[str] | None = None) -> None:
     try:
         from stamina.cockpit import Cockpit
         cockpit = Cockpit()
-        _journal(t("Cockpit создан"))
+        _journal("Cockpit создан")
 
         # Снимки состояния окна первые 12 секунд: видно, если окно «живое», но не отвечает
         def _snap(tag: str) -> None:
@@ -321,7 +321,7 @@ def run_app(argv: list[str] | None = None) -> None:
 
         try:
             _install_slow_log()
-            _journal(t("журнал долгих вызовов включён"))
+            _journal("журнал долгих вызовов включён")
         except Exception:  # noqa: BLE001
             pass
 
@@ -336,7 +336,7 @@ def run_app(argv: list[str] | None = None) -> None:
                 n = per_widget.get(key, 0) + 1
                 per_widget[key] = n
                 if n == 300:
-                    _journal(t("ПЕТЛЯ РАСКЛАДКИ: {0} {1} — {2} событий, снимаю обработчик").format(widget.winfo_class(), key, n))
+                    _journal("ПЕТЛЯ РАСКЛАДКИ: {0} {1} — {2} событий, снимаю обработчик".format(widget.winfo_class(), key, n))
                     try:
                         widget.unbind("<Configure>")
                     except Exception:  # noqa: BLE001
@@ -373,7 +373,7 @@ def run_app(argv: list[str] | None = None) -> None:
 
         try:
             _install_layout_guard(cockpit)
-            _journal(t("сторож петель раскладки включён"))
+            _journal("сторож петель раскладки включён")
         except Exception:  # noqa: BLE001
             pass
         # Автоматическая проверка и восстановление связи с OpenCode
@@ -412,7 +412,7 @@ def run_app(argv: list[str] | None = None) -> None:
                 cp.set_status(t("Нет связи с OpenCode — войди в opencode auth login"), "red")
         if not safe_mode.enabled():
             cockpit.after(100, lambda: _ensure_connection(cockpit))
-        _journal(t("mainloop старт"))
+        _journal("mainloop старт")
         # Суточная резервная копия данных пилота — в фоне: git вернёт код,
         # а прогресс, книги и переписку вернуть неоткуда.
         def _backup_bg() -> None:
@@ -435,11 +435,11 @@ def run_app(argv: list[str] | None = None) -> None:
             pass
 
         cockpit.mainloop()
-        _journal(t("mainloop завершён"))
+        _journal("mainloop завершён")
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback
         from stamina import pilots
-        text = t("Ошибка пульта:\n") + traceback.format_exc()
+        text = "Ошибка пульта:\n" + traceback.format_exc()
         pilots.log_error(text, "cockpit_error.log")
         _journal(text)
         # Под pythonw консоли нет: без окна пилот видит только «ничего не произошло»

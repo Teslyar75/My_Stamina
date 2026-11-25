@@ -5,14 +5,13 @@
 """
 from __future__ import annotations
 
-from stamina.i18n import t as _t
 
 import re
 from collections import Counter
 
-NAMES = {"ru": _t("русский"), "uk": _t("украинский"), "be": _t("белорусский"), "en": _t("английский"), "de": _t("немецкий"),
-         "fr": _t("французский"), "es": _t("испанский"), "it": _t("итальянский"), "pt": _t("португальский"),
-         "pl": _t("польский"), "cs": _t("чешский"), "nl": _t("нидерландский"), "sv": _t("шведский"), "und": "?"}
+NAMES = {"ru": "русский", "uk": "украинский", "be": "белорусский", "en": "английский", "de": "немецкий",
+         "fr": "французский", "es": "испанский", "it": "итальянский", "pt": "португальский",
+         "pl": "польский", "cs": "чешский", "nl": "нидерландский", "sv": "шведский", "und": "?"}
 
 STOP = {
     "en": "the and of to in is that it was for on with as he his be at by i you not this had are but from or have",
@@ -26,15 +25,15 @@ STOP = {
     "cs": "a v se na je že s to z do o jak ale by jsem pro jako",
     "nl": "de het een en van is dat in op te zijn niet met voor die er aan",
     "sv": "och i att det som en på är av för med till den har inte om ett",
-    "ru": _t("и в не на что я с он как это по но к из у же так за от"),
-    "uk": _t("і в не на що я з він як це по але до та й від за у так"),
-    "be": _t("і ў не на што я з ён як гэта па але да ад за"),
+    "ru": "и в не на что я с он как это по но к из у же так за от",
+    "uk": "і в не на що я з він як це по але до та й від за у так",
+    "be": "і ў не на што я з ён як гэта па але да ад за",
 }
 _STOP = {k: set(v.split()) for k, v in STOP.items()}
 _WORD = re.compile(r"[^\W\d_]+", re.U)
 CYR = re.compile("[\u0400-\u04FF]")
-UK_LETTERS = set(_t("іїєґ"))
-BE_LETTERS = set(_t("ўі"))
+UK_LETTERS = set("іїєґ")
+BE_LETTERS = set("ўі")
 
 
 def detect(text: str, sample: int = 6000) -> str:
@@ -45,10 +44,10 @@ def detect(text: str, sample: int = 6000) -> str:
     cyr = sum(1 for w in words if CYR.search(w))
     if cyr > len(words) / 2:
         letters = Counter(ch for w in words for ch in w)
-        if letters["ў"] > 0 and letters["ў"] >= letters[_t("ї")]:
+        if letters["ў"] > 0 and letters["ў"] >= letters["ї"]:
             return "be"
         uk = sum(letters[c] for c in UK_LETTERS)
-        rus = letters[_t("ы")] + letters[_t("э")] + letters[_t("ъ")] + letters[_t("ё")]
+        rus = letters["ы"] + letters["э"] + letters["ъ"] + letters["ё"]
         if uk > rus:
             return "uk"
         if rus or not uk:

@@ -7,7 +7,6 @@
 """
 from __future__ import annotations
 
-from stamina.i18n import t as _t
 
 import re
 import zipfile
@@ -101,15 +100,15 @@ def import_docx(path: Path) -> docs.Document:
             if ppr is not None and ppr.find(W + "pStyle") is not None:
                 sid = ppr.find(W + "pStyle").get(W + "val", "")
             name = (styles.get(sid) or sid).lower()
-            m = re.search(_t("(?:heading|заголовок)\\s*(\\d)"), name)
+            m = re.search("(?:heading|заголовок)\\s*(\\d)", name)
             prefix = ""
             if m:
                 prefix = "#" * max(1, min(6, int(m.group(1)))) + " "
-            elif name in ("title", _t("название")):
+            elif name in ("title", "название"):
                 prefix = "# "
             elif ppr is not None and ppr.find(W + "numPr") is not None or "list" in name:
                 prefix = "- "
-            elif "quote" in name or _t("цитата") in name:
+            elif "quote" in name or "цитата" in name:
                 prefix = "> "
             line = []
             for r in p.iter(W + "r"):

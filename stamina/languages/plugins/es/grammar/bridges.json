@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "bridges": {
+    "a1-01-genero-numero": {
+      "can_do": "Entender que los sustantivos tienen género (m/f) y número, y afectan a artículos/adjetivos.",
+      "bridge": "En ruso/ucraniano hay 3 géneros (m/f/n). En español SOLO m/f. El número funciona igual (sg/pl).",
+      "trap": "No se puede adivinar el género por el sentido (la mesa - femenino, el libro - masculino). ¡Aprender con artículo!"
+    },
+    "a1-02-articulos": {
+      "can_do": "Usar artículos definidos (el/la/los/las) e indefinidos (un/una/unos/unas).",
+      "bridge": "En ruso/ucraniano NO hay artículos. El/la ≈ 'este', un/una ≈ 'uno/alguno'.",
+      "trap": "El agua (femenino pero 'el' por eufonía). Unos/unas = plural indefinido."
+    },
+    "a1-03-ser-estar": {
+      "can_do": "Diferenciar ser (esencia) vs estar (estado/ubicación).",
+      "bridge": "En ruso/ucraniano un solo verbo 'быть/бути'. Ser = identidad permanente. Estar = temporal/ubicación.",
+      "trap": "Soy aburrido (soy una persona aburrida) vs Estoy aburrido (tengo aburrimiento ahora)."
+    },
+    "a1-04-present-ar": {
+      "can_do": "Conjugar verbos regulares en -ar (hablar, estudiar, trabajar).",
+      "bridge": "En ruso conjugación más compleja. -ar = grupo más predecible.",
+      "trap": "Hablo/hablas/habla - tres formas suenan parecido."
+    },
+    "a1-05-present-er-ir": {
+      "can_do": "Conjugar verbos regulares en -er (comer) e -ir (vivir).",
+      "bridge": "-er e -ir comparten terminaciones en nos/vosotros (-emos/-imos, -éis/-ís).",
+      "trap": "Vosotros coméis (acento) vs coméis (presente indicativo)."
+    },
+    "a1-06-irregulares": {
+      "can_do": "Conjugar tener, venir, ir, hacer, poder, querer, saber.",
+      "bridge": "Tener/venir = tener/venir. Ir = voy (muy irregular). Hacer = hago. Poder/querer/saber = cambio de raíz.",
+      "trap": "Yo voy (no *vo*), nosotros vamos. Yo hago (no *haco*). Sé (saber) vs se (pronombre)."
+    },
+    "a1-07-adjetivos": {
+      "can_do": "Concordar adjetivos en género y número (alto/alta/altos/altas).",
+      "bridge": "En ruso/ucraniano adjetivos también concuerdan, pero terminaciones distintas.",
+      "trap": "Adjetivos en -or → -ora (trabajador/trabajadora). Nacionalidades: español/española."
+    },
+    "a1-08-posesivos": {
+      "can_do": "Usar mi/tu/su/nuestro/vuestro + sustantivo.",
+      "bridge": "En ruso: мой/твой/свой... En español concuerdan con el OBJETO, no con el poseedor.",
+      "trap": "Su libro (su = de él/ella/usted/ellos). Nuestro/nuestra/nueestros/nuestras - 4 formas."
+    },
+    "a1-09-demostrativos": {
+      "can_do": "Diferenciar este/ese/aquel + concordancia.",
+      "bridge": "Ruso: этот/тот/аquel. Este = cerca, ese = media distancia, aquel = lejos.",
+      "trap": "Neutros (esto/eso/aquello) solo para ideas/objetos no identificados."
+    },
+    "a1-10-gustar": {
+      "can_do": "Construir frases con gustar/encantar/interesar (me gusta, te gustan).",
+      "bridge": "Ruso: 'мне нравится'. Español: el sujeto es LO QUE GUSTA → verbo concuerda con ello. Me gusta el libro / Me gustan los libros.",
+      "trap": "NO 'yo gusto el libro'. Pronombres: me/te/le/nos/os/les + gusta(n)."
+    },
+    "a1-11-preposiciones": {
+      "can_do": "Usar a, de, en, con, sin, por, para, sobre, bajo, entre, hacia, desde, hasta.",
+      "bridge": "A + el = al. De + el = del. Por/para = ambos 'por/para' en ruso pero usos distintos.",
+      "trap": "A María (a personal). Por vs para: causa vs finalidad."
+    },
+    "a1-12-numeros-tiempo": {
+      "can_do": "Números, hora, fechas.",
+      "bridge": "Números 16-19: dieciséis... 21-29: veintiuno... Hora: Son las tres. Fecha: Hoy es lunes 15 de mayo.",
+      "trap": "100 = cien, 101 = ciento uno. 1/2 = una/una (femenino antes de sustantivo f)."
+    },
+    "a1-13-reflexivos": {
+      "can_do": "Verbos reflexivos: me lavo, te levantas, se acuesta.",
+      "bridge": "Ruso: рефлексивные с -ся/-сь. Español: pronombre separado antes del verbo.",
+      "trap": "Pronombre va ANTES del verbo conjugado. Me lavo (no *lavo me*)."
+    },
+    "a1-14-indefinido-regular": {
+      "can_do": "Formar pretérito indefinido regular (-é, -aste, -ó... / -í, -iste, -ió...).",
+      "bridge": "Equivalente a pasado perfecto: 'hice/comí/viví'. Acción completada en pasado.",
+      "trap": "Acentos en yo/él: hablé, comió. Nosotros: -amos/-imos (igual que presente -ar/-ir)."
+    },
+    "a2-01-indefinido-irregular": {
+      "can_do": "Conjugar irregulares clave en indefinido: tuve, estuve, hice, fui, pude, puse, supe, quise.",
+      "bridge": "Mismos verbos irregulares que presente pero raíces distintas. Ser/ir = fui/fuiste/fue... (idénticos).",
+      "trap": "Hacer → hice/hiciste/hizo (cambio c→z en él). No *hició*."
+    },
+    "a2-02-imperfecto": {
+      "can_do": "Formar y usar imperfecto (-aba/-ía): descripción, hábito, fondo en pasado.",
+      "bridge": "Ruso: несовершенный вид ('делал'). Imperfecto = 'solía hacer / estaba haciendo / era'.",
+      "trap": "Solo 3 irregulares: ser (era), ir (iba), ver (veía). Nosotros: acento en ábamos/íamos."
+    },
+    "a2-03-indefinido-vs-imperfecto": {
+      "can_do": "Elegir entre indefinido (evento) e imperfecto (fondo/hábito).",
+      "bridge": "Indefinido = punto en timeline. Imperfecto = segmento. Leía (imperf) cuando llamó (indef).",
+      "trap": "Mientras + imperfecto, cuando + indefinido (evento). 'Era de noche' (descripción) vs 'Llegó a las 8' (evento)."
+    },
+    "a2-04-futuro": {
+      "can_do": "Formar futuro simple: hablaré, comeré, viviré. Mismas terminaciones para todos.",
+      "bridge": "Ruso: 'буду делать'. Español: infinitivo + terminaciones (-é, -ás, -á, -emos, -éis, -án).",
+      "trap": "Irregulares: tendré, pondré, saldré, vendré, haré, sabré, querrré, podré, cabré, habrá, diré."
+    },
+    "a2-05-condicional": {
+      "can_do": "Formar condicional: hablaría, comería, viviría. Mismas raíces que futuro + -ía.",
+      "bridge": "Ruso: 'бы сделал'. Español: mismas raíces irregulares que futuro + terminaciones imperfecto.",
+      "trap": "Mismos irregulares que futuro: tendría, pondría, saldría... No *hablaría* (regular)."
+    },
+    "a2-06-presente-perfecto": {
+      "can_do": "Pretérito perfecto compuesto: he hablado, has comido. Acción pasada con relevancia actual.",
+      "bridge": "Ruso: 'я сделал (уже)'. Español: haber (presente) + participio. 'He comido' = acabo de comer / hoy he comido.",
+      "trap": "En España se usa mucho. En Latinoamérica a menudo se usa indefinido. Participios irregulares: hecho, dicho, visto, puesto, escrito, abierto, roto, muerto, vuelto."
+    },
+    "a2-07-objeto-pronombres": {
+      "can_do": "Colocar lo/la/los/las, le/les, me/te/nos/os, se (le+lo→se).",
+      "bridge": "Orden: me/te/nos/os → le/les → lo/la/los/las → se. 'Se lo doy' (no *le lo doy*).",
+      "trap": "Imperativo afirmativo: pronombre DESPUÉS con guion: dámelo. Negativo: no me lo des."
+    },
+    "a2-08-gustar-avanzado": {
+      "can_do": "Gustar/encantar/interesar/molestar/importar con infinitivo/sustantivo/cláusula.",
+      "bridge": "Me gusta nadar. Me gustan los libros. Me importa que vengas (subjuntivo).",
+      "trap": "Verbo SIEMPRE concuerda con el sujeto (lo que gusta). No con la persona."
+    },
+    "a2-09-por-para": {
+      "can_do": "Diferenciar por (causa, medio, duración) vs para (destino, finalidad, destinatario).",
+      "bridge": "Ruso: оба 'по/для/за'. Por = causa/medio. Para = finalidad/destino.",
+      "trap": "Gracias por ayudar. Este regalo es para ti. Voy por tren. Estudio para aprender."
+    },
+    "a2-10-comparativos": {
+      "can_do": "Más/menos/tan... que. Mayor/menor/mejor/peor.",
+      "bridge": "Ruso: больше/меньше/так же... как. Español: más... que, menos... que, tan... como.",
+      "trap": "Irregulares: bueno → mejor, malo → peor, grande → mayor, pequeño → menor."
+    },
+    "b1-01-subjuntivo-presente": {
+      "can_do": "Formar subjuntivo presente: hable, coma, viva. Raíz = 1ª pers. sg. presente (hablo→habl-) + vocales opuestas.",
+      "bridge": "No hay equivalente directo en ruso. Expresa deseo/duda/emoción/necesidad DESPUÉS DE QUE.",
+      "trap": "Raíz = yo form presente sin -o: tengo→teng-, vengo→veng-, pongo→pong-. Irregulares: sea, esté, vaya, haya, sepa, pueda, tenga, haga, diga, venga."
+    },
+    "b1-02-subjuntivo-triggers": {
+      "can_do": "Reconocer triggers: quiero que, necesito que, es importante que, dudo que, cuando (futuro), para que.",
+      "bridge": "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Order. Tras 'que' → subjuntivo.",
+      "trap": "Creo que / pienso que / es cierto que → INDICATIVO. No creo que / dudo que → SUBJUNTIVO."
+    },
+    "b1-03-subjuntivo-usos": {
+      "can_do": "Usar subjuntivo en cláusulas de relativo (busco un libro que SEA interesante), temporal (cuando VAYA), finalidad (para que PUEDA).",
+      "bridge": "Indefinido/negativo en antecedente → subjuntivo en relativo. Tiempo futuro → subjuntivo.",
+      "trap": "Busco un libro que TIENE muchas páginas (existe, indicativo). Busco un libro que TENGA muchas páginas (no sé si existe, subjuntivo)."
+    },
+    "b1-04-imperfecto-subjuntivo": {
+      "can_do": "Formar imperfecto subjuntivo (-ra / -se): hablara/hablase, comiera/comiese.",
+      "bridge": "Para pasado + trigger subjuntivo. Quería que viniera. Si tuviera dinero, compraría.",
+      "trap": "Dos formas (-ra y -se) = mismo significado. -ra más común. Raíz = 3ª pl. indefinido (tuvieron→tuvier-)."
+    },
+    "b1-05-si-clauses": {
+      "can_do": "Tres tipos: si presente→futuro (real), si imperf.subj→condicional (hipotético), si plusc.subj→cond.comp (irreal pasado).",
+      "bridge": "Tipo 1: Si tengo tiempo, voy. Tipo 2: Si tuviera tiempo, iría. Tipo 3: Si hubiera tenido tiempo, habría ido.",
+      "trap": "NUNCA 'si tendría' → 'si tuviera'. NUNCA 'si habría tenido' → 'si hubiera tenido'."
+    },
+    "b1-06-pluscuamperfecto": {
+      "can_do": "Pluscuamperfecto de indicativo: había hablado. Subjuntivo: hubiera/hubiese hablado.",
+      "bridge": "Acción ANTES de otra pasada. Había salido cuando llegué. Ojalá hubiera venido (subjuntivo).",
+      "trap": "Participios irregulares mismos que perfecto. Subjuntivo: TWO formas (hubiera/hubiese)."
+    },
+    "b1-07-voz-pasiva": {
+      "can_do": "Pasiva refleja (se vende) y pasiva perifrástica (fue vendido).",
+      "bridge": "Ruso: пассив или безличные. Español: Se vende casa (pasiva refleja). La casa fue vendida por Juan (perifrástica).",
+      "trap": "Pasiva refleja: verbo en 3ª persona + se. Se hablan español (no *se habla español* - singular si sujeto singular)."
+    },
+    "b1-08-estilo-indirecto": {
+      "can_do": "Discurso indirecto: dice que viene / dijo que venía / dijo que vendría.",
+      "bridge": "Cambios: yo→él, aquí→allí, ahora→entonces, presente→imperfecto, futuro→condicional, indefinido→pluscuamperfecto.",
+      "trap": "Preguntas indirectas: me preguntó si VENÍA (no *viene*)."
+    },
+    "b2-01-subjuntivo-pluscuamperfecto": {
+      "can_do": "Subjuntivo pluscuamperfecto: hubiera/hubiese + participio. Dudo que hubiera venido.",
+      "bridge": "Acción anterior a principal en pasado con trigger subjuntivo. Ojalá lo hubiera hecho.",
+      "trap": "Dos formas intercambiables: hubiera / hubiese."
+    },
+    "b2-02-si-clauses-avanzado": {
+      "can_do": "Si clauses mixtos, si + indicativo (hecho real), si + subjuntivo (hipotético).",
+      "bridge": "Si llueve, no voy (real). Si lloviera, no iría (hipotético). Si hubiera llovido, no habría ido (irreal).",
+      "trap": "Si + presente indicativo = real. Si + imperfecto subjuntivo = hipotético."
+    },
+    "b2-03-ser-vs-estar-avanzado": {
+      "can_do": "Cambios de significado: ser aburrido (personalidad) vs estar aburrido (estado). Ser listo (inteligente) vs estar listo (preparado).",
+      "bridge": "Ser = cualidad intrínseca. Estar = estado resultado o temporal.",
+      "trap": "La manzana es verde (variedad) vs La manzana está verde (no madura)."
+    },
+    "b2-04-lexico-avanzado": {
+      "can_do": "Colocaciones, verbos con preposición (soñar con, consistir en, acordarse de), falsos amigos.",
+      "bridge": "Preposiciones fijas: insistir en, olvidarse de, enterarse de. Falsos amigos: actual=actual (no actual), realizar=hacer (no realizar).",
+      "trap": "Preposición cambia significado: pensar EN (opinión) vs pensar DE (opinión sobre alguien)."
+    },
+    "c1-01-matices-subjuntivo": {
+      "can_do": "Nuevos matices: no es que no quiera, sino que no pueda. A menos que, con tal de que, en caso de que + subjuntivo.",
+      "bridge": "Conectores que exigen subjuntivo. A menos que = salvo que. Con tal de que = siempre que.",
+      "trap": "A menos que + subjuntivo. No *a menos que indica*."
+    },
+    "c1-02-estilo-registro": {
+      "can_do": "Registros: culto (hubiere), coloquial (haiga), latino (voseo, ustedes), diferencias léxicas.",
+      "bridge": "Voseo (Argentina/Uruguay): vos sos, vos tenés. Ustedes = vosotros (Latam). Hubiere = subjuntivo futuro (legal/literario).",
+      "trap": "No mezclar registros. En España: vosotros. En Latam: ustedes."
+    },
+    "c2-01-idiomas-coloquiales": {
+      "can_do": "Idiomas, modismos, expresiones fijas de hablantes nativos.",
+      "bridge": "Costar un ojo de la cara, ser pan comido, estar en las nubes, tirar la casa por la ventana.",
+      "trap": "Traducción literal no funciona. Aprender como bloques (chunks)."
+    }
+  }
+}

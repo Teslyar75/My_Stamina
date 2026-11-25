@@ -1,0 +1,1250 @@
+{
+  "version": 1,
+  "level": "A1",
+  "lessons": [
+    {
+      "id": "a1-01-genre-nombre",
+      "order": 1,
+      "title": "Род и число существительных",
+      "subtitle": "Masculin / Féminin, singulier / pluriel",
+      "topics": [
+        "genre",
+        "nombre"
+      ],
+      "prereq": [],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "В французском два рода: masculin (мужской) и féminin (женский). Нет среднего рода. Число: singulier (ед. ч.) и pluriel (мн. ч.)."
+        },
+        {
+          "kind": "rule",
+          "title": "Признаки женского рода",
+          "text": "Суффиксы: -tion, -sion, -té, -ence, -ance, -ie, -ure, -ade, -ee, -ette. Окончание -e во многих случаях."
+        },
+        {
+          "kind": "rule",
+          "title": "Множественное число",
+          "text": "Обычно +s: un livre → des livres. Исключения: -au/-eau → -aux, -al → -aux, -eu → -eux, -ou → -ous."
+        },
+        {
+          "kind": "table",
+          "ref": "plural_patterns_fr"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-01-d01",
+          "type": "choice",
+          "prompt": "Le ____ (table) est grand.",
+          "options": [
+            "table",
+            "tables"
+          ],
+          "answer": [
+            "table"
+          ],
+          "why": "Singulier après le."
+        },
+        {
+          "id": "a1-01-d02",
+          "type": "choice",
+          "prompt": "Les ____ (livre) sont sur la table.",
+          "options": [
+            "livre",
+            "livres"
+          ],
+          "answer": [
+            "livres"
+          ],
+          "why": "Pluriel: livre → livres (+s)."
+        },
+        {
+          "id": "a1-01-d03",
+          "type": "choice",
+          "prompt": "Un ____ (château) magnifique.",
+          "options": [
+            "château",
+            "châteaux"
+          ],
+          "answer": [
+            "château"
+          ],
+          "why": "Singulier. Pluriel: châteaux."
+        },
+        {
+          "id": "a1-01-d04",
+          "type": "fill",
+          "prompt": "Des ____ (cheval) noirs.",
+          "answer": [
+            "chevaux"
+          ],
+          "why": "-al → -aux au pluriel."
+        }
+      ]
+    },
+    {
+      "id": "a1-02-articles",
+      "order": 2,
+      "title": "Артикли: défini, indéfini",
+      "subtitle": "le/la/l'/les — un/une/des",
+      "topics": [
+        "articles_definis",
+        "articles_indefinis"
+      ],
+      "prereq": [
+        "a1-01-genre-nombre"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Определённый артикль (le, la, l', les) = конкретный предмет. Неопределённый (un, une, des) = неконкретный, один из многих."
+        },
+        {
+          "kind": "rule",
+          "title": "Определённый",
+          "text": "le (m sg), la (f sg), l' (devant voyelle/h muet), les (pl)."
+        },
+        {
+          "kind": "rule",
+          "title": "Неопределённый",
+          "text": "un (m sg), une (f sg), des (pl)."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_definite"
+        },
+        {
+          "kind": "table",
+          "ref": "articles_indefinite"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-02-d01",
+          "type": "choice",
+          "prompt": "____ ami vient nous voir.",
+          "options": [
+            "Un",
+            "Une",
+            "Le",
+            "La"
+          ],
+          "answer": [
+            "Un"
+          ],
+          "why": "Ami = masculin, singulier, indéfini."
+        },
+        {
+          "id": "a1-02-d02",
+          "type": "choice",
+          "prompt": "J'aime ____ musique.",
+          "options": [
+            "la",
+            "le",
+            "l'",
+            "une"
+          ],
+          "answer": [
+            "la"
+          ],
+          "why": "Musique = féminin, défini."
+        },
+        {
+          "id": "a1-02-d03",
+          "type": "fill",
+          "prompt": "____ eau est froide. (défini)",
+          "answer": [
+            "L'"
+          ],
+          "why": "Eau commence par voyelle → l'."
+        },
+        {
+          "id": "a1-02-d04",
+          "type": "choice",
+          "prompt": "Des ____ (fille) jouent.",
+          "options": [
+            "fille",
+            "filles"
+          ],
+          "answer": [
+            "filles"
+          ],
+          "why": "Des = pluriel indéfini → filles."
+        }
+      ]
+    },
+    {
+      "id": "a1-03-adjectives",
+      "order": 3,
+      "title": "Согласование прилагательных",
+      "subtitle": "Accord: genre et nombre",
+      "topics": [
+        "adjectifs_qualificatifs",
+        "accord"
+      ],
+      "prereq": [
+        "a1-01-genre-nombre"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Прилагательное согласуется с существительным по роду и числу. Базовая форма = masculin singulier."
+        },
+        {
+          "kind": "rule",
+          "title": "Общие правила",
+          "text": "Féminin: +e (grand → grande). Pluriel: +s (grand → grands). Féminin pluriel: +es (grandes)."
+        },
+        {
+          "kind": "rule",
+          "title": "Особые случаи",
+          "text": "-x → -se (heureux/heureuse), -f → -ve (neuf/neuve), -er → -ère (premier/première), doubles consonnes + e (gentil/gentille)."
+        },
+        {
+          "kind": "table",
+          "ref": "adjectives_agreement"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-03-d01",
+          "type": "choice",
+          "prompt": "Une ____ (grand) maison.",
+          "options": [
+            "grand",
+            "grande",
+            "grands",
+            "grandes"
+          ],
+          "answer": [
+            "grande"
+          ],
+          "why": "Maison = féminin singulier → +e."
+        },
+        {
+          "id": "a1-03-d02",
+          "type": "choice",
+          "prompt": "Des ____ (petit) enfants.",
+          "options": [
+            "petit",
+            "petite",
+            "petits",
+            "petites"
+          ],
+          "answer": [
+            "petits"
+          ],
+          "why": "Enfants = masculin pluriel → +s."
+        },
+        {
+          "id": "a1-03-d03",
+          "type": "fill",
+          "prompt": "Une ____ (heureux) fille.",
+          "answer": [
+            "heureuse"
+          ],
+          "why": "-x → -se au féminin."
+        },
+        {
+          "id": "a1-03-d04",
+          "type": "choice",
+          "prompt": "Des ____ (neuf) voitures.",
+          "options": [
+            "neuf",
+            "neuve",
+            "neufs",
+            "neuves"
+          ],
+          "answer": [
+            "neuves"
+          ],
+          "why": "-f → -ve + s au féminin pluriel."
+        }
+      ]
+    },
+    {
+      "id": "a1-04-present-er",
+      "order": 4,
+      "title": "Présent: глаголы на -er (parler, aimer, manger)",
+      "subtitle": "Регулярное спряжение 1-й группы",
+      "topics": [
+        "present_er"
+      ],
+      "prereq": [
+        "a1-02-articles"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Глаголы на -er (1-я группа) — самые регулярные. Основа = инфинитив без -er. Окончания: -e, -es, -e, -ons, -ez, -ent."
+        },
+        {
+          "kind": "rule",
+          "title": "Спряжение parler",
+          "text": "je parle, tu parles, il/elle/on parle, nous parlons, vous parlez, ils/elles parlent. 3 формы звучат одинаково: parle/parles/parle."
+        },
+        {
+          "kind": "rule",
+          "title": "Орфографические особенности",
+          "text": "manger → nous mangeons (сохраняем e). commencer → je commence (ç перед o/a/u). acheter → j'achète (accent grave)."
+        },
+        {
+          "kind": "table",
+          "ref": "present_er"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-04-d01",
+          "type": "choice",
+          "prompt": "Nous ____ (parler) français.",
+          "options": [
+            "parle",
+            "parles",
+            "parlons",
+            "parlez"
+          ],
+          "answer": [
+            "parlons"
+          ],
+          "why": "Nous → -ons."
+        },
+        {
+          "id": "a1-04-d02",
+          "type": "choice",
+          "prompt": "Ils ____ (aimer) le chocolat.",
+          "options": [
+            "aime",
+            "aimes",
+            "aimons",
+            "aiment"
+          ],
+          "answer": [
+            "aiment"
+          ],
+          "why": "Ils → -ent."
+        },
+        {
+          "id": "a1-04-d03",
+          "type": "fill",
+          "prompt": "Je ____ (manger) une pomme.",
+          "answer": [
+            "mange"
+          ],
+          "why": "Je → -e."
+        },
+        {
+          "id": "a1-04-d04",
+          "type": "choice",
+          "prompt": "Tu ____ (commencer) à comprendre.",
+          "options": [
+            "commence",
+            "commences",
+            "commençons",
+            "commencez"
+          ],
+          "answer": [
+            "commences"
+          ],
+          "why": "Tu → -es. ç сохраняется."
+        }
+      ]
+    },
+    {
+      "id": "a1-05-present-irregular",
+      "order": 5,
+      "title": "Présent: être, avoir, aller, faire, venir",
+      "subtitle": "Основные неправильные глаголы",
+      "topics": [
+        "etre_avoir",
+        "aller_faire_venir"
+      ],
+      "prereq": [
+        "a1-04-present-er"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Être (быть) и avoir (иметь) — вспомогательные для составных времен. Aller (идти), faire (делать), venir (приходить) — высокочастотные неправильные."
+        },
+        {
+          "kind": "rule",
+          "title": "Être / Avoir",
+          "text": "Être: suis, es, est, sommes, êtes, sont. Avoir: ai, as, a, avons, avez, ont."
+        },
+        {
+          "kind": "rule",
+          "title": "Aller / Faire / Venir",
+          "text": "Aller: vais, vas, va, allons, allez, vont. Faire: fais, fais, fait, faisons, faites, font. Venir: viens, viens, vient, venons, venez, viennent."
+        },
+        {
+          "kind": "table",
+          "ref": "etre_avoir_present"
+        },
+        {
+          "kind": "table",
+          "ref": "aller_faire_venir_present"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-05-d01",
+          "type": "choice",
+          "prompt": "Je ____ (être) content.",
+          "options": [
+            "suis",
+            "es",
+            "est",
+            "ai"
+          ],
+          "answer": [
+            "suis"
+          ],
+          "why": "Je suis (être)."
+        },
+        {
+          "id": "a1-05-d02",
+          "type": "choice",
+          "prompt": "Ils ____ (avoir) une voiture.",
+          "options": [
+            "ont",
+            "sont",
+            "avez",
+            "êtes"
+          ],
+          "answer": [
+            "ont"
+          ],
+          "why": "Ils ont (avoir)."
+        },
+        {
+          "id": "a1-05-d03",
+          "type": "fill",
+          "prompt": "Nous ____ (aller) à Paris.",
+          "answer": [
+            "allons"
+          ],
+          "why": "Nous allons (aller)."
+        },
+        {
+          "id": "a1-05-d04",
+          "type": "choice",
+          "prompt": "Tu ____ (faire) du sport.",
+          "options": [
+            "fais",
+            "fait",
+            "font",
+            "faisons"
+          ],
+          "answer": [
+            "fais"
+          ],
+          "why": "Tu fais (faire)."
+        }
+      ]
+    },
+    {
+      "id": "a1-06-negation",
+      "order": 6,
+      "title": "Отрицание: ne...pas, ne...jamais, ne...rien",
+      "subtitle": "Позиция частиц, сокращение ne → n'",
+      "topics": [
+        "negation"
+      ],
+      "prereq": [
+        "a1-05-present-irregular"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Французское отрицание — две части: ne перед глаголом, вторая часть после. ne → n' перед гласной/молчащим h."
+        },
+        {
+          "kind": "rule",
+          "title": "Основные пары",
+          "text": "ne...pas (не), ne...jamais (никогда), ne...rien (ничего), ne...personne (никто), ne...plus (больше не), ne...ni...ni (ни...ни)."
+        },
+        {
+          "kind": "rule",
+          "title": "Порядок со местоимениями",
+          "text": "ne + me/te/le/la/les/lui/leur/y/en + verbe + pas/jamais/rien..."
+        },
+        {
+          "kind": "table",
+          "ref": "negation_basic"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-06-d01",
+          "type": "choice",
+          "prompt": "Je ____ sais pas.",
+          "options": [
+            "ne",
+            "n'",
+            "pas",
+            "ne pas"
+          ],
+          "answer": [
+            "n'"
+          ],
+          "why": "Ne → n' перед гласной (sais)."
+        },
+        {
+          "id": "a1-06-d02",
+          "type": "choice",
+          "prompt": "Il ne vient ____ .",
+          "options": [
+            "pas",
+            "jamais",
+            "rien",
+            "personne"
+          ],
+          "answer": [
+            "jamais"
+          ],
+          "why": "Jamais = никогда."
+        },
+        {
+          "id": "a1-06-d03",
+          "type": "fill",
+          "prompt": "Nous ne voyons ____ .",
+          "answer": [
+            "rien"
+          ],
+          "why": "Rien = ничего."
+        },
+        {
+          "id": "a1-06-d04",
+          "type": "choice",
+          "prompt": "Elle ne connaît ____ .",
+          "options": [
+            "pas",
+            "plus",
+            "personne",
+            "rien"
+          ],
+          "answer": [
+            "personne"
+          ],
+          "why": "Personne = никто (только для людей)."
+        }
+      ]
+    },
+    {
+      "id": "a1-07-questions",
+      "order": 7,
+      "title": "Вопросы: интонация, est-ce que, инверсия",
+      "subtitle": "Три способа задать вопрос",
+      "topics": [
+        "questions"
+      ],
+      "prereq": [
+        "a1-06-negation"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Три способа: 1) Интонация (Tu viens? — только устно). 2) Est-ce que (Est-ce que tu viens?). 3) Инверсия (Viens-tu? — формально/письменно)."
+        },
+        {
+          "kind": "rule",
+          "title": "Est-ce que",
+          "text": "Универсальный способ. Est-ce que + утвердительное предложение. Est-ce qu'il vient? (elision)."
+        },
+        {
+          "kind": "rule",
+          "title": "Инверсия",
+          "text": "Глагол + дефис + подлежащее (приonominal). Parles-tu français? Avec voyelle: -t- (Parle-t-il?)."
+        },
+        {
+          "kind": "table",
+          "ref": "question_formation"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-07-d01",
+          "type": "choice",
+          "prompt": "____ tu viens demain?",
+          "options": [
+            "Est-ce que",
+            "Viens",
+            "Tu viens",
+            "Que"
+          ],
+          "answer": [
+            "Est-ce que"
+          ],
+          "why": "Est-ce que + подлежащее + глагол."
+        },
+        {
+          "id": "a1-07-d02",
+          "type": "choice",
+          "prompt": "Parles-tu anglais? — Это ____ .",
+          "options": [
+            "интонация",
+            "est-ce que",
+            "инверсия",
+            "не вопрос"
+          ],
+          "answer": [
+            "инверсия"
+          ],
+          "why": "Глагол + дефис + подлежащее."
+        },
+        {
+          "id": "a1-07-d03",
+          "type": "fill",
+          "prompt": "____ -il français? (Parler)",
+          "answer": [
+            "Parle-t-il"
+          ],
+          "why": "Инверсия с -t- для еуфонии."
+        },
+        {
+          "id": "a1-07-d04",
+          "type": "choice",
+          "prompt": "Tu parles français? (интонация) — это ____ .",
+          "options": [
+            "формально",
+            "только устно",
+            "письменно",
+            "ошибка"
+          ],
+          "answer": [
+            "только устно"
+          ],
+          "why": "Интонационный вопрос — только в разговорной речи."
+        }
+      ]
+    },
+    {
+      "id": "a1-08-prepositions",
+      "order": 8,
+      "title": "Базовые предлоги: à, de, en, dans, sur, sous, avec, sans",
+      "subtitle": "Место, направление, способ, сопровождение",
+      "topics": [
+        "prepositions_basic"
+      ],
+      "prereq": [
+        "a1-07-questions"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Предлоги не склоняются, но сокращаются с артиклями. à + le = au, à + les = aux. de + le = du, de + les = des."
+        },
+        {
+          "kind": "rule",
+          "title": "География",
+          "text": "Города: à Paris, de Paris. Страны (f): en France, de France. Страны (m, на согласную): au Japon, du Japon. Страны (m, на гласную): en Iran, d'Iran."
+        },
+        {
+          "kind": "rule",
+          "title": "Место/Направление",
+          "text": "dans (внутри), sur (на), sous (под), avec (с), sans (без)."
+        },
+        {
+          "kind": "table",
+          "ref": "prepositions_geo"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-08-d01",
+          "type": "choice",
+          "prompt": "Je vais ____ Paris.",
+          "options": [
+            "à",
+            "au",
+            "en",
+            "dans"
+          ],
+          "answer": [
+            "à"
+          ],
+          "why": "Город → à."
+        },
+        {
+          "id": "a1-08-d02",
+          "type": "choice",
+          "prompt": "Il revient ____ France.",
+          "options": [
+            "de",
+            "du",
+            "de la",
+            "d'"
+          ],
+          "answer": [
+            "de"
+          ],
+          "why": "Страна женского рода → de."
+        },
+        {
+          "id": "a1-08-d03",
+          "type": "fill",
+          "prompt": "Nous habitons ____ Japon.",
+          "answer": [
+            "au"
+          ],
+          "why": "Страна м.р. на согласную → au (à + le)."
+        },
+        {
+          "id": "a1-08-d04",
+          "type": "choice",
+          "prompt": "Le chat est ____ la table.",
+          "options": [
+            "dans",
+            "sur",
+            "sous",
+            "avec"
+          ],
+          "answer": [
+            "sur"
+          ],
+          "why": "На столе → sur."
+        }
+      ]
+    },
+    {
+      "id": "a1-09-partitive",
+      "order": 9,
+      "title": "Частичный артикль: du, de la, de l', des",
+      "subtitle": "Некоторое количество неисчисляемых существительных",
+      "topics": [
+        "partitive"
+      ],
+      "prereq": [
+        "a1-08-prepositions"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Частичный артикль выражает неопределённое количество: du pain, de l'eau, des pommes. ОБЯЗАТЕЛЕН во французском (в русском родительный падеж: хлеба, воды)."
+        },
+        {
+          "kind": "rule",
+          "title": "Формы",
+          "text": "du (m sg), de la (f sg), de l' (devant voyelle/h muet), des (pl)."
+        },
+        {
+          "kind": "rule",
+          "title": "После отрицания",
+          "text": "Je ne mange pas **de** pain (не du!). Частичный исчезает → de/d'."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_partitive"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-09-d01",
+          "type": "choice",
+          "prompt": "Je veux ____ pain.",
+          "options": [
+            "du",
+            "de la",
+            "de l'",
+            "un"
+          ],
+          "answer": [
+            "du"
+          ],
+          "why": "Pain = m sg → du."
+        },
+        {
+          "id": "a1-09-d02",
+          "type": "choice",
+          "prompt": "Elle boit ____ eau.",
+          "options": [
+            "du",
+            "de la",
+            "de l'",
+            "des"
+          ],
+          "answer": [
+            "de l'"
+          ],
+          "why": "Eau = f sg, voyelle → de l'."
+        },
+        {
+          "id": "a1-09-d03",
+          "type": "fill",
+          "prompt": "Nous achetons ____ pommes.",
+          "answer": [
+            "des"
+          ],
+          "why": "Pommes = pl → des."
+        },
+        {
+          "id": "a1-09-d04",
+          "type": "choice",
+          "prompt": "Je ne mange ____ pain.",
+          "options": [
+            "du",
+            "de",
+            "de la",
+            "des"
+          ],
+          "answer": [
+            "de"
+          ],
+          "why": "После отрицания частичный → de."
+        }
+      ]
+    },
+    {
+      "id": "a1-10-possessives",
+      "order": 10,
+      "title": "Притяжательные: mon/ma/mes, ton/ta/tes...",
+      "subtitle": "Согласование с ПРИНАДЛЕЖНОСТЮ (не с владельцем!)",
+      "topics": [
+        "possessives"
+      ],
+      "prereq": [
+        "a1-03-adjectives"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Притяжательные согласуются с ОБЪЕКТОМ владения (как прилагательные), а выбор базовой формы зависит от ВЛАДЕЛЬЦА."
+        },
+        {
+          "kind": "rule",
+          "title": "Таблица",
+          "text": "mon/ma/mes (je), ton/ta/tes (tu), son/sa/ses (il/elle), notre/notre/nos (nous), votre/votre/vos (vous), leur/leur/leurs (ils/elles)."
+        },
+        {
+          "kind": "rule",
+          "title": "Mon/ton/son перед женским на гласную",
+          "text": "mon amie (не *ma amie*), ton école, son histoire — для еуфонии."
+        },
+        {
+          "kind": "table",
+          "ref": "possessives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-10-d01",
+          "type": "choice",
+          "prompt": "____ (mon) ami est ici.",
+          "options": [
+            "Mon",
+            "Ma",
+            "Mes"
+          ],
+          "answer": [
+            "Mon"
+          ],
+          "why": "Ami = m sg → mon."
+        },
+        {
+          "id": "a1-10-d02",
+          "type": "choice",
+          "prompt": "____ (ma) amie est gentille.",
+          "options": [
+            "Mon",
+            "Ma",
+            "Mes"
+          ],
+          "answer": [
+            "Mon"
+          ],
+          "why": "Amie = f sg, voyelle → mon (euphonie)."
+        },
+        {
+          "id": "a1-10-d03",
+          "type": "fill",
+          "prompt": "____ (notre) voiture est rouge.",
+          "answer": [
+            "Notre"
+          ],
+          "why": "Voiture = f sg → notre (инвариант)."
+        },
+        {
+          "id": "a1-10-d04",
+          "type": "choice",
+          "prompt": "____ (leur) enfants dorment.",
+          "options": [
+            "Leur",
+            "Leurs"
+          ],
+          "answer": [
+            "Leurs"
+          ],
+          "why": "Enfants = pl → leurs."
+        }
+      ]
+    },
+    {
+      "id": "a1-11-demonstratives",
+      "order": 11,
+      "title": "Указательные: ce/cet/cette/ces",
+      "subtitle": "Ce livre, cet ami, cette table, ces livres",
+      "topics": [
+        "demonstratives"
+      ],
+      "prereq": [
+        "a1-10-possessives"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Указательные согласуются с существительным. Cet перед гласной/молчащим h = ce + t (euphonie)."
+        },
+        {
+          "kind": "rule",
+          "title": "Формы",
+          "text": "ce (m sg), cet (m sg + voyelle/h), cette (f sg), ces (pl)."
+        },
+        {
+          "kind": "rule",
+          "title": "Усиление: -ci / -là",
+          "text": "ce livre-ci (здесь), ce livre-là (там)."
+        },
+        {
+          "kind": "table",
+          "ref": "demonstratives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-11-d01",
+          "type": "choice",
+          "prompt": "____ (ce) ami est sympa.",
+          "options": [
+            "Ce",
+            "Cet",
+            "Cette",
+            "Ces"
+          ],
+          "answer": [
+            "Cet"
+          ],
+          "why": "Ami = m sg, voyelle → cet."
+        },
+        {
+          "id": "a1-11-d02",
+          "type": "choice",
+          "prompt": "____ (cette) maison est grande.",
+          "options": [
+            "Ce",
+            "Cet",
+            "Cette",
+            "Ces"
+          ],
+          "answer": [
+            "Cette"
+          ],
+          "why": "Maison = f sg → cette."
+        },
+        {
+          "id": "a1-11-d03",
+          "type": "fill",
+          "prompt": "____ (ces) livres sont à moi.",
+          "answer": [
+            "Ces"
+          ],
+          "why": "Livres = pl → ces."
+        },
+        {
+          "id": "a1-11-d04",
+          "type": "choice",
+          "prompt": "____ (ce) homme dort.",
+          "options": [
+            "Ce",
+            "Cet",
+            "Cette",
+            "Ces"
+          ],
+          "answer": [
+            "Cet"
+          ],
+          "why": "Homme = m sg, h muet → cet."
+        }
+      ]
+    },
+    {
+      "id": "a1-12-numbers-time",
+      "order": 12,
+      "title": "Числа, время, даты",
+      "subtitle": "0-100, l'heure, la date",
+      "topics": [
+        "numbers",
+        "time",
+        "dates"
+      ],
+      "prereq": [
+        "a1-11-demonstratives"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Числа 70=soixante-dix, 80=quatre-vingts, 90=quatre-vingt-dix (вигезаримальная система). В Бельгии/Швейцарии: septante, huitante/octante, nonante."
+        },
+        {
+          "kind": "rule",
+          "title": "Время",
+          "text": "Il est trois heures. Il est trois heures et demie (3:30). Il est quatre heures moins le quart (3:45). Midi = 12h, minuit = 0h."
+        },
+        {
+          "kind": "rule",
+          "title": "Даты",
+          "text": "C'est le 14 juillet. Premier = 1er (premier). Mois: janvier, février, mars..."
+        },
+        {
+          "kind": "table",
+          "ref": "numbers_time"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-12-d01",
+          "type": "choice",
+          "prompt": "70 по-французски:",
+          "options": [
+            "soixante-dix",
+            "septante",
+            "soixante-vingt",
+            "sept-vingt"
+          ],
+          "answer": [
+            "soixante-dix"
+          ],
+          "why": "Стандартный французский: 60+10."
+        },
+        {
+          "id": "a1-12-d02",
+          "type": "choice",
+          "prompt": "Il est ____ heures et demie. (3:30)",
+          "options": [
+            "trois",
+            "quatre",
+            "cinq",
+            "six"
+          ],
+          "answer": [
+            "trois"
+          ],
+          "why": "3:30 = trois heures et demie."
+        },
+        {
+          "id": "a1-12-d03",
+          "type": "fill",
+          "prompt": "C'est le 1er ____ . (janvier)",
+          "answer": [
+            "janvier"
+          ],
+          "why": "1er = premier. Январь = janvier."
+        },
+        {
+          "id": "a1-12-d04",
+          "type": "choice",
+          "prompt": "80 в Бельгии:",
+          "options": [
+            "quatre-vingts",
+            "huitante",
+            "octante",
+            "huitante/octante"
+          ],
+          "answer": [
+            "huitante/octante"
+          ],
+          "why": "Бельгия/Швейцария: huitante или octante."
+        }
+      ]
+    },
+    {
+      "id": "a1-13-near-future",
+      "order": 13,
+      "title": "Futur proche: aller + infinitif",
+      "subtitle": "Ближайшее будущее: 'собираюсь/поеду делать'",
+      "topics": [
+        "futur_proche"
+      ],
+      "prereq": [
+        "a1-05-present-irregular"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Futur proche = aller (présent) + infinitif. Аналог русского 'собираюсь/поеду делать'. Je vais manger = Я собираюсь есть / Я поем."
+        },
+        {
+          "kind": "rule",
+          "title": "Структура",
+          "text": "Sujet + aller (présent) + infinitif. Je vais partir. Nous allons manger. Ils vont arriver."
+        },
+        {
+          "kind": "rule",
+          "title": "Не путать с futur simple",
+          "text": "Futur simple = одна форма (je parlerai). Futur proche = две части (je vais parler)."
+        },
+        {
+          "kind": "example",
+          "fr": "Je vais manger. Nous allons partir. Ils vont arriver.",
+          "ru": "Я собираюсь есть. Мы уходим. Они приедут.",
+          "note": "Aller спрягается, второй глагол — инфинитив."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-13-d01",
+          "type": "choice",
+          "prompt": "Je ____ (aller) manger.",
+          "options": [
+            "vais",
+            "vas",
+            "va",
+            "allons"
+          ],
+          "answer": [
+            "vais"
+          ],
+          "why": "Je vais + infinitif."
+        },
+        {
+          "id": "a1-13-d02",
+          "type": "choice",
+          "prompt": "Nous ____ (aller) partir demain.",
+          "options": [
+            "allons",
+            "allez",
+            "vont",
+            "vais"
+          ],
+          "answer": [
+            "allons"
+          ],
+          "why": "Nous allons + infinitif."
+        },
+        {
+          "id": "a1-13-d03",
+          "type": "fill",
+          "prompt": "Ils ____ (aller) arriver bientôt.",
+          "answer": [
+            "vont"
+          ],
+          "why": "Ils vont + infinitif."
+        },
+        {
+          "id": "a1-13-d04",
+          "type": "transform",
+          "prompt": "Présent → Futur proche: 'Je mange.' → ____",
+          "answer": [
+            "Je vais manger."
+          ],
+          "why": "Aller (présent) + infinitif."
+        }
+      ]
+    },
+    {
+      "id": "a1-14-imperative",
+      "order": 14,
+      "title": "Impératif: tu / nous / vous",
+      "subtitle": "Повелительное наклонение",
+      "topics": [
+        "imperative"
+      ],
+      "prereq": [
+        "a1-04-present-er"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Impératif существует только для tu, nous, vous. Формы = présent БЕЗ подлежащего. Глаголы на -er: tu forme БЕЗ -s."
+        },
+        {
+          "kind": "rule",
+          "title": "Формы",
+          "text": "Parler: Parle! (tu), Parlons! (nous), Parlez! (vous). Finir: Finis! Finissons! Finissez! Être: Sois! Soyons! Soyez! Avoir: Aie! Ayons! Ayez!"
+        },
+        {
+          "kind": "rule",
+          "title": "Отрицание",
+          "text": "Ne + verbe + pas! Ne parle pas! Ne finissons pas! Réflexif: Lève-toi! Ne te lève pas!"
+        },
+        {
+          "kind": "example",
+          "fr": "Parle français! Mangeons! Ne parlez pas!",
+          "ru": "Говори по-французски! Поедим! Не говорите!",
+          "note": "Tu parle (не *parles*). Réflexif: pronouns после глагола с дефисом."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-14-d01",
+          "type": "choice",
+          "prompt": "____ (parler) français!",
+          "options": [
+            "Parle",
+            "Parles",
+            "Parlons",
+            "Parlez"
+          ],
+          "answer": [
+            "Parle"
+          ],
+          "why": "Tu forme без -s для -er глаголов."
+        },
+        {
+          "id": "a1-14-d02",
+          "type": "choice",
+          "prompt": "____ (finir) le travail!",
+          "options": [
+            "Finis",
+            "Finit",
+            "Finissons",
+            "Finissez"
+          ],
+          "answer": [
+            "Finis"
+          ],
+          "why": "Tu finis (как présent)."
+        },
+        {
+          "id": "a1-14-d03",
+          "type": "fill",
+          "prompt": "____ (manger) ensemble!",
+          "answer": [
+            "Mangeons"
+          ],
+          "why": "Nous mangeons → Mangeons!"
+        },
+        {
+          "id": "a1-14-d04",
+          "type": "choice",
+          "prompt": "Ne ____ (parler) pas!",
+          "options": [
+            "parle",
+            "parles",
+            "parlez",
+            "parlons"
+          ],
+          "answer": [
+            "parle"
+          ],
+          "why": "Отрицательный императив: ne + forme impérative + pas."
+        }
+      ]
+    }
+  ]
+}

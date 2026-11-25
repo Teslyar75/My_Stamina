@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "tables": [
+    {
+      "id": "articles_definite",
+      "level": "A1",
+      "title": "Articolo determinativo (il, lo, la, l', i, gli, le)",
+      "headers": ["Genere/Numero", "Forma", "Esempio"],
+      "rows": [
+        ["Maschile singolare (cons.)", "il", "il libro"],
+        ["Maschile singolare (s+cons., z, gn, ps, pn, x, y)", "lo", "lo zaino, lo gnomo"],
+        ["Femminile singolare (cons.)", "la", "la casa"],
+        ["Singolare (vocale)", "l'", "l'amico, l'acqua"],
+        ["Maschile plurale (cons.)", "i", "i libri"],
+        ["Maschile plurale (s+cons., z, gn, ps, pn, x, y)", "gli", "gli zaini, gli gnomi"],
+        ["Femminile plurale", "le", "le case"]
+      ]
+    },
+    {
+      "id": "articles_indefinite",
+      "level": "A1",
+      "title": "Articolo indeterminativo (un, uno, una, un')",
+      "headers": ["Genere/Numero", "Forma", "Esempio"],
+      "rows": [
+        ["Maschile singolare (cons.)", "un", "un libro"],
+        ["Maschile singolare (s+cons., z, gn, ps, pn, x, y)", "uno", "uno zaino"],
+        ["Femminile singolare (cons.)", "una", "una casa"],
+        ["Femminile singolare (vocale)", "un'", "un'amica"]
+      ]
+    },
+    {
+      "id": "essere_avere_present",
+      "level": "A1",
+      "title": "Essere e Avere al presente",
+      "headers": ["Persona", "Essere", "Avere"],
+      "rows": [
+        ["io", "sono", "ho"],
+        ["tu", "sei", "hai"],
+        ["lui/lei/Lei", "è", "ha"],
+        ["noi", "siamo", "abbiamo"],
+        ["voi", "siete", "avete"],
+        ["loro", "sono", "hanno"]
+      ]
+    },
+    {
+      "id": "present_are",
+      "level": "A1",
+      "title": "Presente: verbi in -are (parlare)",
+      "headers": ["Persona", "Terminazione", "Forma"],
+      "rows": [
+        ["io", "-o", "parlo"],
+        ["tu", "-i", "parli"],
+        ["lui/lei", "-a", "parla"],
+        ["noi", "-iamo", "parliamo"],
+        ["voi", "-ate", "parlate"],
+        ["loro", "-ano", "parlano"]
+      ]
+    },
+    {
+      "id": "present_ere",
+      "level": "A1",
+      "title": "Presente: verbi in -ere (credere, temere)",
+      "headers": ["Persona", "Terminazione", "Forma (credere)"],
+      "rows": [
+        ["io", "-o", "credo"],
+        ["tu", "-i", "credi"],
+        ["lui/lei", "-e", "crede"],
+        ["noi", "-iamo", "crediamo"],
+        ["voi", "-ete", "credete"],
+        ["loro", "-ono", "credono"]
+      ]
+    },
+    {
+      "id": "present_ire",
+      "level": "A1",
+      "title": "Presente: verbi in -ire (dormire, capire)",
+      "headers": ["Persona", "Terminazione (dormire)", "Terminazione (capire -isc)"],
+      "rows": [
+        ["io", "-o", "-isco"],
+        ["tu", "-i", "-isci"],
+        ["lui/lei", "-e", "-isce"],
+        ["noi", "-iamo", "-iamo"],
+        ["voi", "-ite", "-ite"],
+        ["loro", "-ono", "-iscono"]
+      ]
+    },
+    {
+      "id": "present_irregulari",
+      "level": "A1",
+      "title": "Presente: irregolari chiave (andare, fare, venire, stare, dare, sapere, potere, volere, dovere)",
+      "headers": ["Persona", "andare", "fare", "venire", "stare", "dare", "sapere", "potere", "volere", "dovere"],
+      "rows": [
+        ["io", "vado", "faccio", "vengo", "sto", "do", "so", "posso", "voglio", "devo"],
+        ["tu", "vai", "fai", "vieni", "stai", "dai", "sai", "puoi", "vuoi", "devi"],
+        ["lui/lei", "va", "fa", "viene", "sta", "dà", "sa", "può", "vuole", "deve"],
+        ["noi", "andiamo", "facciamo", "veniamo", "stiamo", "diamo", "sappiamo", "possiamo", "vogliamo", "dobbiamo"],
+        ["voi", "andate", "fate", "venite", "state", "date", "sapete", "potete", "volere", "dovete"],
+        ["loro", "vanno", "fanno", "vengono", "stanno", "danno", "sanno", "possono", "vogliono", "devono"]
+      ]
+    },
+    {
+      "id": "adjectives_agreement",
+      "level": "A1",
+      "title": "Concordanza aggettivi",
+      "headers": ["Base (M. sg.)", "Femminile sg.", "Maschile pl.", "Femminile pl.", "Esempio"],
+      "rows": [
+        ["-o", "-a", "-i", "-e", "alto → alta / alti / alte"],
+        ["-e", "= (invariabile)", "-i", "-i", "grande → grande / grandi / grandi"],
+        ["-ore", "-ora", "-ori", "-ore", "lavoratore → lavoratrice / lavoratori / lavoratrici"],
+        ["-ale/-ile/-ere", "= (invariabile)", "-i", "-i", "sociale → sociale / sociali / sociali"]
+      ]
+    },
+    {
+      "id": "possessives",
+      "level": "A1",
+      "title": "Aggettivi possessivi (mio, tuo, suo, nostro, vostro, loro)",
+      "headers": ["Persona", "Maschile sg.", "Femminile sg.", "Maschile pl.", "Femminile pl."],
+      "rows": [
+        ["io (mio)", "mio", "mia", "miei", "mie"],
+        ["tu (tuo)", "tuo", "tua", "tuoi", "tue"],
+        ["lui/lei (suo)", "suo", "sua", "suoi", "sue"],
+        ["noi (nostro)", "nostro", "nostra", "nostri", "nostre"],
+        ["voi (vostro)", "vostro", "vostra", "vostri", "vostre"],
+        ["loro (loro)", "loro", "loro", "loro", "loro"]
+      ]
+    },
+    {
+      "id": "demonstratives",
+      "level": "A1",
+      "title": "Dimostrativi (questo, quello, codesto)",
+      "headers": ["Distanza", "Maschile sg.", "Femminile sg.", "Maschile pl.", "Femminile pl."],
+      "rows": [
+        ["Vicino (questo)", "questo", "questa", "questi", "queste"],
+        ["Medio (codesto)", "codesto", "codesta", "codesti", "codeste"],
+        ["Lontano (quello)", "quello/quel", "quella/quell'", "quelli/quei", "quelle"]
+      ]
+    },
+    {
+      "id": "piacere_type",
+      "level": "A1",
+      "title": "Piacere e verbi affini (piacere, piacere, mancare, servire, bastare, interessare)",
+      "headers": ["Persona", "Singolare (piace)", "Plurale (piacciono)"],
+      "rows": [
+        ["a me", "mi piace", "mi piacciono"],
+        ["a te", "ti piace", "ti piacciono"],
+        ["a lui/lei", "gli/le piace", "gli/le piacciono"],
+        ["a noi", "ci piace", "ci piacciono"],
+        ["a voi", "vi piace", "vi piacciono"],
+        ["a loro", "gli piace", "gli piacciono"]
+      ]
+    },
+    {
+      "id": "passato_prossimo",
+      "level": "A2",
+      "title": "Passato prossimo (avere/essere + participio)",
+      "headers": ["Ausiliare", "Participio (-are)", "Participio (-ere)", "Participio (-ire)"],
+      "rows": [
+        ["avere", "-ato (parlato)", "-uto (creduto)", "-ito (dormito)"],
+        ["essere", "andato/a/i/e", "venuto/a/i/e", "partito/a/i/e"]
+      ]
+    },
+    {
+      "id": "passato_prossimo_irreg",
+      "level": "A2",
+      "title": "Participi passati irregolari",
+      "headers": ["Infinito", "Participio", "Ausiliare"],
+      "rows": [
+        ["aprire", "aperto", "avere"],
+        ["bere", "bevuto", "avere"],
+        ["chiudere", "chiuso", "avere"],
+        ["dire", "detto", "avere"],
+        ["fare", "fatto", "avere"],
+        ["leggere", "letto", "avere"],
+        ["mettere", "messo", "avere"],
+        ["porre", "posto", "avere"],
+        ["prendere", "preso", "avere"],
+        ["rispondere", "risposto", "avere"],
+        ["scrivere", "scritto", "avere"],
+        ["vedere", "visto", "avere"],
+        ["morire", "morto", "essere"],
+        ["nascere", "nato", "essere"]
+      ]
+    },
+    {
+      "id": "imperfetto",
+      "level": "A2",
+      "title": "Imperfetto (-avo, -evo, -ivo)",
+      "headers": ["Persona", "-are (parlavo)", "-ere (credevo)", "-ire (dormivo/capivo)"],
+      "rows": [
+        ["io", "-avo", "-evo", "-ivo"],
+        ["tu", "-avi", "-evi", "-ivi"],
+        ["lui/lei", "-ava", "-eva", "-iva"],
+        ["noi", "-avamo", "-evamo", "-ivamo"],
+        ["voi", "-avate", "-evate", "-ivate"],
+        ["loro", "-avano", "-evano", "-ivano"]
+      ]
+    },
+    {
+      "id": "passato_prossimo_vs_imperfetto",
+      "level": "A2",
+      "title": "Passato prossimo vs Imperfetto",
+      "headers": ["Uso", "Passato prossimo", "Imperfetto"],
+      "rows": [
+        ["Azione completata", "Ho mangiato (ho finito)", "—"],
+        ["Descrizione/abitudine", "—", "Mangiavo (mangiavo sempre)"],
+        ["Sequenza azioni", "Sono arrivato, ho visto, sono partito", "—"],
+        ["Fondo/contesto", "—", "Era notte, pioveva"],
+        ["Interruzione", "Leggevo quando ha telefonato", "Leggevo (fondo) / ha telefonato (evento)"]
+      ]
+    },
+    {
+      "id": "futuro_semplice",
+      "level": "B1",
+      "title": "Futuro semplice (parlerò, crederò, dormirò)",
+      "headers": ["Persona", "Terminazione", "Esempio (parlare)"],
+      "rows": [
+        ["io", "-ò", "parlerò"],
+        ["tu", "-ai", "parlerai"],
+        ["lui/lei", "-à", "parlerà"],
+        ["noi", "-emo", "parleremo"],
+        ["voi", "-ete", "parlerete"],
+        ["loro", "-anno", "parleranno"]
+      ]
+    },
+    {
+      "id": "condizionale_presente",
+      "level": "B1",
+      "title": "Condizionale presente (parlerei, crederei, dormirei)",
+      "headers": ["Persona", "Terminazione", "Esempio (parlare)"],
+      "rows": [
+        ["io", "-ei", "parlerei"],
+        ["tu", "-esti", "parleresti"],
+        ["lui/lei", "-ebbe", "parlerebbe"],
+        ["noi", "-emmo", "parleremmo"],
+        ["voi", "-este", "parlereste"],
+        ["loro", "-ebbero", "parlerebbero"]
+      ]
+    },
+    {
+      "id": "congiuntivo_presente_reg",
+      "level": "B1",
+      "title": "Congiuntivo presente regolare",
+      "headers": ["Persona", "-are (parli)", "-ere (credano)", "-ire (dorma)"],
+      "rows": [
+        ["che io", "-i", "-a", "-a"],
+        ["che tu", "-i", "-a", "-a"],
+        ["che lui/lei", "-i", "-a", "-a"],
+        ["che noi", "-iamo", "-iamo", "-iamo"],
+        ["che voi", "-iate", "-iate", "-iate"],
+        ["che loro", "-ino", "-ano", "-ano"]
+      ]
+    },
+    {
+      "id": "congiuntivo_presente_irreg",
+      "level": "B1",
+      "title": "Congiuntivo presente irregolare",
+      "headers": ["Persona", "essere", "avere", "andare", "fare", "stare", "dare", "sapere", "potere", "volere", "dovere", "venire"],
+      "rows": [
+        ["che io", "sia", "abbia", "vada", "faccia", "stia", "dia", "sappia", "possa", "voglia", "debba", "venga"],
+        ["che tu", "sia", "abbia", "vada", "faccia", "stia", "dia", "sappia", "possa", "voglia", "debba", "venga"],
+        ["che lui", "sia", "abbia", "vada", "faccia", "stia", "dia", "sappia", "possa", "voglia", "debba", "venga"],
+        ["che noi", "siamo", "abbiamo", "andiamo", "facciamo", "stiamo", "diamo", "sappiamo", "possiamo", "vogliamo", "dobbiamo", "veniamo"],
+        ["che voi", "siate", "abbiate", "andiate", "facciate", "stiate", "diate", "sappiate", "possiate", "vogliate", "dobbiate", "veniate"],
+        ["che loro", "siano", "abbiano", "vadano", "facciano", "stiano", "diano", "sappiano", "possano", "vogliano", "debbano", "vengano"]
+      ]
+    },
+    {
+      "id": "pronomi_oggetto",
+      "level": "B1",
+      "title": "Pronomi oggetto (lo/la/li/le, mi/ti/ci/vi, gli/le, ne, ci)",
+      "headers": ["Tipo", "Forme", "Esempio"],
+      "rows": [
+        ["COD (lo/la/li/le)", "lo/la/li/le", "Lo vedo. La vedo. Li vedo. Le vedo."],
+        ["CI (mi/ti/ci/vi)", "mi/ti/ci/vi", "Mi dai il libro. Vi do il libro."],
+        ["CIO (gli/le)", "gli (m/f sg), le (f sg formale)", "Gli do il libro. Le do il libro."],
+        ["Gli/le + lo/la/li/le → glielo/gliela/glieli/gliele", "glielo/gliela/glieli/gliele", "Glielo do (non *gli lo do*)."],
+        ["Partitivo (ne)", "ne", "Ne ho due. Ne voglio."],
+        ["Locativo (ci)", "ci", "Ci vado. Ci sono."],
+        ["Ordine (affermativo)", "verbo + pronome(i)", "Dammi! Daglielo!"],
+        ["Ordine (negativo)", "non + pronome(i) + verbo", "Non darmelo! Non glielo dare!"]
+      ]
+    },
+    {
+      "id": "trappassato_prossimo",
+      "level": "B2",
+      "title": "Trapassato prossimo (avevo parlato / ero andato)",
+      "headers": ["Ausiliare", "Forma", "Esempio"],
+      "rows": [
+        ["avere (imperfetto)", "avevo/avevi/aveva/avevamo/avevate/avevano + participio", "Avevo mangiato"],
+        ["essere (imperfetto)", "ero/eri/era/eravamo/eravate/erano + participio (accordo)", "Ero andato/a/i/e"]
+      ]
+    },
+    {
+      "id": "congiuntivo_imperfetto",
+      "level": "B2",
+      "title": "Congiuntivo imperfetto (-assi, -essi, -issi)",
+      "headers": ["Persona", "-are (parlassi)", "-ere (credessi)", "-ire (dormissi)"],
+      "rows": [
+        ["che io", "-assi", "-essi", "-issi"],
+        ["che tu", "-assi", "-essi", "-issi"],
+        ["che lui", "-asse", "-esse", "-isse"],
+        ["che noi", "-assimo", "-essimo", "-issimo"],
+        ["che voi", "-aste", "-este", "-iste"],
+        ["che loro", "-assero", "-essero", "-issero"]
+      ]
+    },
+    {
+      "id": "se_clauses",
+      "level": "B2",
+      "title": "Periodo ipotetico (tre tipi)",
+      "headers": ["Tipo", "Se + ...", "Principale", "Esempio"],
+      "rows": [
+        ["Realtà (1°)", "indicativo presente", "presente/futuro/imperativo", "Se ho tempo, vengo."],
+        ["Possibilità (2°)", "congiuntivo imperfetto", "condizionale presente", "Se avessi tempo, verrei."],
+        ["Irrealtà (3°)", "congiuntivo trapassato", "condizionale passato", "Se avessi avuto tempo, sarei venuto."]
+      ]
+    }
+  ]
+}

@@ -6,9 +6,10 @@ from stamina.i18n import t
 from pathlib import Path
 
 from stamina.languages.core.base import (
-    LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
+    LanguagePlugin, VocabSource, FreqSet, ThematicSet,
     VoicesConfig, BestPractices, WordEntry,
 )
+from stamina.languages.plugins.es.grammar_engine import SpanishGrammarEngine
 
 
 class SpanishVocabSource(VocabSource):
@@ -34,125 +35,6 @@ class SpanishVocabSource(VocabSource):
 
     def get_slugs_by_freq_band(self, band: str) -> list[str]:
         return [w.slug for w in self._words.values() if w.frequency_band == band]
-
-
-class SpanishGrammarEngine(GrammarEngine):
-    TOPICS = {
-        "A1": [
-            ("ser_estar", "Ser vs Estar", ["choice", "transform", "explain"]),
-            ("gender_number", t("Род и число существительных"), ["choice", "transform"]),
-            ("articles", t("Артикли (el/la/los/las, un/una)"), ["choice", "fill"]),
-            ("adjectives", t("Согласование прилагательных"), ["transform", "choice"]),
-            ("present_regular", t("Presente de indicativo: регулярные"), ["conjugation"]),
-            ("present_irregular", t("Presente: неправильные (ser, estar, tener, ir, hacer)"), ["conjugation"]),
-            ("present_stem_changing", "Stem-changing verbs (e→ie, o→ue, e→i)", ["conjugation", "choice"]),
-            ("gustar", t("Gustar и подобные (me/te/le/nos/os/les gusta)"), ["choice", "reorder", "transform"]),
-            ("present_progressive", "Estar + gerundio (continuo)", ["conjugation", "transform"]),
-            ("reflexive", "Reflexive verbs (llamarse, lavarse)", ["conjugation", "choice"]),
-            ("prepositions_basic", "Preposiciones básicas (a, de, en, con, por, para)", ["choice", "fill"]),
-            ("por_para", t("Por vs Para (базовые случаи)"), ["choice", "explain"]),
-            ("question_formation", t("Вопросы (инверсия, ¿qué? ¿quién?)"), ["reorder", "choice"]),
-            ("negation", t("Отрицание (no, nunca, nada, nadie)"), ["choice", "transform"]),
-            ("demonstratives", t("Указательные (este/ese/aquel)"), ["choice", "transform"]),
-            ("possessives", t("Притяжательные (mi/tu/su/nuestro)"), ["choice", "transform"]),
-            ("numbers_time", t("Числа, время, даты"), ["choice", "fill"]),
-        ],
-        "A2": [
-            ("preterito_indefinido", t("Pretérito indefinido: регулярные"), ["conjugation"]),
-            ("preterito_irregular", t("Pretérito indefinido: неправильные (ir/ser, tener, hacer, estar, poder, poner, saber, venir, decir, traer, ver, dar)"), ["conjugation", "choice"]),
-            ("imperfecto", t("Pretérito imperfecto: формы и употребление"), ["conjugation", "choice"]),
-            ("preterito_vs_imperfecto", "Indefinido vs Imperfecto (aspect)", ["choice", "explain", "transform"]),
-            ("future_simple", "Futuro simple (cantaré)", ["conjugation", "choice"]),
-            ("conditional", "Condicional simple (cantaría)", ["conjugation", "choice"]),
-            ("present_perfect", "Pretérito perfecto compuesto (he cantado)", ["conjugation", "choice"]),
-            ("subjunctive_present_regular", t("Presente de subjuntivo: регулярные"), ["conjugation"]),
-            ("subjunctive_present_irregular", t("Presente de subjuntivo: неправильные"), ["conjugation"]),
-            ("weirdo_triggers", t("WEIRDO триггеры (Wishes, Emotions, Impersonal, Recommendations, Doubt, Ojalá)"), ["choice", "explain", "transform"]),
-            ("si_clauses_present", "Si + presente → presente/futuro (real conditions)", ["choice", "transform"]),
-            ("commands_affirmative", "Imperativo afirmativo (tú/usted/nosotros/vosotros)", ["conjugation", "transform"]),
-            ("commands_negative", "Imperativo negativo (no cantes)", ["conjugation", "transform"]),
-            ("direct_object", t("Прямое дополнение (lo/la/los/las)"), ["choice", "transform"]),
-            ("indirect_object", t("Косвенное дополнение (le/les)"), ["choice", "transform"]),
-            ("double_object", t("Два дополнения (se lo doy)"), ["choice", "transform"]),
-            ("comparatives", t("Сравнительная конструкция (más/menos/tan...como)"), ["choice", "transform"]),
-            ("superlatives", t("Превосходная степень (el más... de)"), ["choice", "transform"]),
-        ],
-        "B1": [
-            ("subjunctive_noun_clauses", t("Subjuntivo в существительных придаточных (que)"), ["choice", "transform"]),
-            ("subjunctive_adj_clauses", t("Subjuntivo в определительных придаточных (antecedente indefinido)"), ["choice", "transform"]),
-            ("subjunctive_adv_clauses", t("Subjuntivo в обстоятельственных (para que, sin que, antes de que, hasta que)"), ["choice", "transform"]),
-            ("si_clauses_past", "Si + imperfecto de subjuntivo → condicional (unreal)", ["choice", "transform", "explain"]),
-            ("pluperfect_subjunctive", "Pluscuamperfecto de subjuntivo (hubiera cantado)", ["conjugation", "choice"]),
-            ("si_clauses_pluperfect", "Si + pluscuamperfecto de subjuntivo → condicional perfecto", ["choice", "transform"]),
-            ("passive_voice", t("Пассив (ser + participio, se pasiva)"), ["transform", "choice"]),
-            ("passive_reflexive", t("Рефлексивный пассив (se vende, se habla)"), ["choice", "transform"]),
-            ("reported_speech", t("Косвенная речь (dice que... / dijo que...)"), ["transform"]),
-            ("relative_clauses", t("Определительные придаточные (que, quien, cuyo, donde)"), ["choice", "transform"]),
-            ("por_para_advanced", t("Por vs Para (продвинутые случаи: причина/цель, движение/направление)"), ["choice", "explain", "transform"]),
-            ("ser_estar_advanced", t("Ser vs Estar (смысловые нюансы: ser aburrido vs estar aburrido)"), ["choice", "explain"]),
-            ("se_aspectual", t("Аспекуальное se (se comió, se bebió)"), ["choice", "explain"]),
-            ("se_impersonal", t("Безличное se (se vive bien aquí)"), ["choice", "explain"]),
-            ("future_perfect", "Futuro perfecto (habré cantado)", ["conjugation", "choice"]),
-            ("conditional_perfect", "Condicional perfecto (habría cantado)", ["conjugation", "choice"]),
-            ("subjunctive_imperfect", "Imperfecto de subjuntivo (cantara/cantase)", ["conjugation", "choice"]),
-        ],
-        "B2": [
-            ("subjunctive_sequence", t("Последовательность времен в subjuntivo (tense concordance)"), ["choice", "transform"]),
-            ("subjunctive_vs_indicative", t("Subjuntivo vs Indicativo в придаточных (creo que / no creo que)"), ["choice", "explain", "transform"]),
-            ("subjunctive_adverbial", t("Обстоятельственные с subjuntivo (aunque, cuando, donde, como)"), ["choice", "transform"]),
-            ("passive_alternatives", t("Альтернативы пассиву (se + verbo, ellos + verbo)"), ["transform"]),
-            ("nominalization", t("Номинализация (el hecho de que + subjuntivo)"), ["transform", "choice"]),
-            ("cleft_sentences", t("Раздельные предложения (fue Juan quien...)"), ["transform"]),
-            ("discourse_markers", t("Маркеры дискурса (pues, entonces, en fin, o sea)"), ["choice", "explain"]),
-        ],
-        "C1": [
-            ("subjunctive_nuances", t("Нюансы subjuntivo (dudo que vs no dudo que)"), ["choice", "explain"]),
-            ("literary_tenses", t("Литературные времена (pretérito anterior, futuro de subjuntivo)"), ["choice", "explain"]),
-            ("register_style", t("Регистры и стиль (formal/informal, latino/peninsular)"), ["choice", "explain"]),
-        ],
-        "C2": [
-            ("native_idioms", t("Идиоматичность и коллокации"), ["choice", "match"]),
-            ("regional_variants", t("Региональные варианты (Rioplatense, Caribe, Norte)"), ["choice", "explain"]),
-        ],
-    }
-
-    REGIONAL_VARIANTS = {
-        "peninsular": "Peninsular Spanish (Spain)",
-        "mexican": "Mexican Spanish",
-        "rioplatense": "Rioplatense (Argentina/Uruguay)",
-        "caribbean": "Caribbean",
-        "andean": "Andean",
-        "central_american": "Central American",
-    }
-
-    def get_topics(self, cefr: str) -> list:
-        topics = []
-        for level, items in self.TOPICS.items():
-            if self._cefr_order(level) <= self._cefr_order(cefr):
-                for tid, name, types in items:
-                    topics.append({"id": tid, "name": name, "cefr": level, "types": types})
-        return topics
-
-    def _cefr_order(self, level: str) -> int:
-        return {"A1": 0, "A2": 1, "B1": 2, "B2": 3, "C1": 4, "C2": 5}.get(level, 0)
-
-    def generate_exercise(self, topic_id: str, difficulty: str, seed: int):
-        import random
-        random.seed(seed)
-        return {
-            "id": f"{topic_id}_{seed}",
-            "topic_id": topic_id,
-            "type": "choice",
-            "prompt": f"Ejercicio: {topic_id}",
-            "expected_answer": "answer",
-            "options": ["opt1", "opt2", "opt3", "opt4"],
-        }
-
-    def validate_answer(self, exercise: dict, answer: str):
-        return {"correct": answer == exercise["expected_answer"], "score": 1.0 if answer == exercise["expected_answer"] else 0.0}
-
-    def get_explanation(self, topic_id: str, learner_lang: str) -> str:
-        return f"Explicación para {topic_id} en {learner_lang}"
 
 
 class SpanishPlugin(LanguagePlugin):
@@ -190,7 +72,7 @@ class SpanishPlugin(LanguagePlugin):
         src._loaded = True
         return src
 
-    def get_grammar_engine(self) -> GrammarEngine:
+    def get_grammar_engine(self):
         return SpanishGrammarEngine()
 
     def get_best_practices(self) -> BestPractices:

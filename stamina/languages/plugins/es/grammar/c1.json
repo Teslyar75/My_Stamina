@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "level": "C1",
+  "lessons": [
+    {
+      "id": "c1-01-matices-subjuntivo",
+      "order": 1,
+      "title": "Matices del subjuntivo",
+      "subtitle": "No es que no quiera, sino que no pueda. A menos que, con tal de que, en caso de que.",
+      "topics": [
+        "matices_subjuntivo"
+      ],
+      "prereq": [
+        "b2-02-si-clauses-avanzado"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Conectores que exigen subjuntivo: a menos que (=salvo que), con tal de que (=siempre que), en caso de que, para que, sin que."
+        },
+        {
+          "kind": "rule",
+          "title": "Estructuras",
+          "text": "No es que no quiera, sino que no pueda. Lo hago a menos que me prohíban. Vengo con tal de que me escuches."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-01-d01",
+          "type": "choice",
+          "prompt": "No vendré ____ (a menos que) me inviten.",
+          "options": [
+            "a menos que",
+            "con tal de que",
+            "en caso de que",
+            "para que"
+          ],
+          "answer": [
+            "a menos que"
+          ],
+          "why": "A menos que + subjuntivo (inviten)."
+        },
+        {
+          "id": "c1-01-matices-subjuntivo-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Matices del subjuntivo.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Matices del subjuntivo."
+        },
+        {
+          "id": "c1-01-matices-subjuntivo-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Matices del subjuntivo.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Matices del subjuntivo."
+        }
+      ]
+    },
+    {
+      "id": "c1-02-estilo-registro",
+      "order": 2,
+      "title": "Registros: culto, coloquial, voseo, ustedes",
+      "subtitle": "Diferencias España / Latinoamérica",
+      "topics": [
+        "estilo_registro"
+      ],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Culto: hubiere (subjuntivo futuro, legal/literario). Coloquial: haiga (por haya), dijistes (por dijiste). Voseo (Arg/Uru): vos sos, vos tenés, vos venís. Ustedes = vosotros (Latam)."
+        },
+        {
+          "kind": "rule",
+          "title": "Diferencias léxicas",
+          "text": "Coche/carro/auto. Ordenador/computadora. Móvil/celular. Conducir/manejar. Piso/apartamento/departamento."
+        },
+        {
+          "kind": "rule",
+          "title": "No mezclar",
+          "text": "En España: vosotros. En Latam: ustedes."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-02-d01",
+          "type": "choice",
+          "prompt": "En Argentina: \"Tú tienes\" = ____",
+          "options": [
+            "vos tenés",
+            "vos tienes",
+            "tú tenés",
+            "ustedes tienen"
+          ],
+          "answer": [
+            "vos tenés"
+          ],
+          "why": "Voseo: vos + forma de 2ª pers. sg. con acento en última sílaba."
+        },
+        {
+          "id": "c1-02-estilo-registro-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Registros: culto, coloquial, voseo, ustedes.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Registros: culto, coloquial, voseo, ustedes."
+        },
+        {
+          "id": "c1-02-estilo-registro-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Registros: culto, coloquial, voseo, ustedes.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Registros: culto, coloquial, voseo, ustedes."
+        }
+      ]
+    }
+  ]
+}

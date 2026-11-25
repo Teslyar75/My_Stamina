@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "level": "C2",
+  "lessons": [
+    {
+      "id": "c2-01-native-idioms",
+      "order": 1,
+      "title": "Идиоматичность и коллокации носителей",
+      "subtitle": "Готовые блоки, не переводимые дословно",
+      "topics": [
+        "native_idioms"
+      ],
+      "prereq": [
+        "c1-03-register-style"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Avoir le cafard (депрессия), coûter les yeux de la tête (очень дорого), donner sa langue au chat (сдаться). Коллокации: prendre une décision (не *faire*), faire attention (не *donner*), prendre un risque."
+        },
+        {
+          "kind": "rule",
+          "title": "Прямой перевод не работает",
+          "text": "Учить как готовые блоки (chunks)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-01-d01",
+          "type": "choice",
+          "prompt": "«Очень дорого» = coûter les ____ de la tête.",
+          "options": [
+            "yeux",
+            "bras",
+            "jambes",
+            "oreilles"
+          ],
+          "answer": [
+            "yeux"
+          ],
+          "why": "Coûter les yeux de la tête."
+        },
+        {
+          "id": "c2-01-native-idioms-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Идиоматичность и коллокации носителей.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Идиоматичность и коллокации носителей."
+        },
+        {
+          "id": "c2-01-native-idioms-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Идиоматичность и коллокации носителей.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Идиоматичность и коллокации носителей."
+        }
+      ]
+    },
+    {
+      "id": "c2-02-regional-variants",
+      "order": 2,
+      "title": "Региональные варианты: Квебек, Бельгия, Швейцария, Африка",
+      "subtitle": "Нормативные варианты стандарта, не ошибки",
+      "topics": [
+        "regional_variants"
+      ],
+      "prereq": [
+        "c1-03-register-style"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Квебек: vocab (char, magasiner), prononciation (moé/toé), grammaire (sur/in). Бельгия: septante/nonante, savoir/pouvoir. Африка: le/la simplification, emprunts locaux."
+        },
+        {
+          "kind": "rule",
+          "title": "Не считать ошибками",
+          "text": "Это нормативные варианты стандарта."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-02-d01",
+          "type": "choice",
+          "prompt": "В Бельгии 90 = ____",
+          "options": [
+            "quatre-vingt-dix",
+            "nonante",
+            "huitante",
+            "septante"
+          ],
+          "answer": [
+            "nonante"
+          ],
+          "why": "Бельгия/Швейцария: nonante."
+        },
+        {
+          "id": "c2-02-regional-variants-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Региональные варианты: Квебек, Бельгия, Швейцария, Африка.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Региональные варианты: Квебек, Бельгия, Швейцария, Африка."
+        },
+        {
+          "id": "c2-02-regional-variants-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Региональные варианты: Квебек, Бельгия, Швейцария, Африка.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Региональные варианты: Квебек, Бельгия, Швейцария, Африка."
+        }
+      ]
+    }
+  ]
+}

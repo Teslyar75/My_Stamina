@@ -1,0 +1,285 @@
+{
+  "version": 1,
+  "level": "B2",
+  "lessons": [
+    {
+      "id": "b2-01-congiuntivo-triggers-avanzati",
+      "order": 1,
+      "title": "Connettori che richiedono il congiuntivo",
+      "subtitle": "a meno che, con tal che, benché, affinché, prima che, senza che...",
+      "topics": [
+        "congiuntivo_connettori"
+      ],
+      "prereq": [
+        "b1-03-congiuntivo-triggers"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "SEMPRE congiuntivo dopo: a meno che (=se non), con tal che (=a patto che), benché/sebbene (=anche se), affinché/perché (=perché), prima che, senza che, nel caso che, purché."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-01-d01",
+          "type": "choice",
+          "prompt": "Non verrò ____ (a meno che) tu mi inviti.",
+          "options": [
+            "a meno che",
+            "con tal che",
+            "benché",
+            "affinché"
+          ],
+          "answer": [
+            "a meno che"
+          ],
+          "why": "A meno che + congiuntivo (inviti)."
+        },
+        {
+          "id": "b2-01-congiuntivo-triggers-avanzati-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Connettori che richiedono il congiuntivo.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Connettori che richiedono il congiuntivo."
+        },
+        {
+          "id": "b2-01-congiuntivo-triggers-avanzati-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Connettori che richiedono il congiuntivo.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Connettori che richiedono il congiuntivo."
+        }
+      ]
+    },
+    {
+      "id": "b2-02-stare-gerundio",
+      "order": 2,
+      "title": "Stare + gerundio (azione in corso)",
+      "subtitle": "Sto leggendo / Stavo leggendo — gerundio: -ando / -endo",
+      "topics": [
+        "stare_gerundio"
+      ],
+      "prereq": [
+        "a1-03-presente-are"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Presente: sto + gerundio = azione ORA. Imperfetto: stavo + gerundio = azione IN CORSO nel passato. Gerundio: -are→-ando, -ere/-ire→-endo. Irregolari: facendo, dicendo, bevendo."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-02-d01",
+          "type": "choice",
+          "prompt": "Che fai? ____ (leggere) un libro.",
+          "options": [
+            "Sto leggendo",
+            "Leggo",
+            "Ho letto",
+            "Leggevo"
+          ],
+          "answer": [
+            "Sto leggendo"
+          ],
+          "why": "Azione in corso ora → stare + gerundio."
+        },
+        {
+          "id": "b2-02-stare-gerundio-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Stare + gerundio (azione in corso).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Stare + gerundio (azione in corso)."
+        },
+        {
+          "id": "b2-02-stare-gerundio-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Stare + gerundio (azione in corso).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Stare + gerundio (azione in corso)."
+        }
+      ]
+    },
+    {
+      "id": "b2-03-voce-passiva",
+      "order": 3,
+      "title": "Voce passiva: si passivante / essere + participio",
+      "subtitle": "Si vende casa / La casa è stata venduta",
+      "topics": [
+        "voce_passiva"
+      ],
+      "prereq": [
+        "a2-01-passato-prossimo"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Si passivante: si + verbo 3ª persona (si vende / si vendono). Passiva perifrastica: essere + participio (accordo). La casa è stata venduta. Le case sono state vendute."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-03-d01",
+          "type": "choice",
+          "prompt": "Qui ____ (parlare) italiano.",
+          "options": [
+            "si parla",
+            "si parlano",
+            "è parlato",
+            "sono parlati"
+          ],
+          "answer": [
+            "si parla"
+          ],
+          "why": "Italiano = sg → si parla."
+        },
+        {
+          "id": "b2-03-voce-passiva-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Voce passiva: si passivante / essere + participio.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voce passiva: si passivante / essere + participio."
+        },
+        {
+          "id": "b2-03-voce-passiva-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Voce passiva: si passivante / essere + participio.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voce passiva: si passivante / essere + participio."
+        }
+      ]
+    },
+    {
+      "id": "b2-04-discorso-indiretto",
+      "order": 4,
+      "title": "Discorso indiretto",
+      "subtitle": "Dice che viene / Disse che veniva / Disse che sarebbe venuto",
+      "topics": [
+        "discorso_indiretto"
+      ],
+      "prereq": [
+        "a2-05-futuro",
+        "a2-06-condizionale",
+        "b1-07-trappassato"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Cambio tempi: presente→imperfetto, futuro→condizionale, passato prossimo/imperfetto→trapassato. Domande indirette: mi ha chiesto SE VENISSE (congiuntivo!)."
+        },
+        {
+          "kind": "rule",
+          "title": "Esempi",
+          "text": "\"Verrò domani\" → Ha detto che sarebbe venuto il giorno dopo. \"Vengo\" → Ha detto che veniva."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-04-d01",
+          "type": "choice",
+          "prompt": "Ha detto: \"Verrò domani.\" → Ha detto che ____ il giorno dopo.",
+          "options": [
+            "sarebbe venuto",
+            "verrà",
+            "viene",
+            "venisse"
+          ],
+          "answer": [
+            "sarebbe venuto"
+          ],
+          "why": "Futuro → condizionale."
+        },
+        {
+          "id": "b2-04-discorso-indiretto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Discorso indiretto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Discorso indiretto."
+        },
+        {
+          "id": "b2-04-discorso-indiretto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Discorso indiretto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Discorso indiretto."
+        }
+      ]
+    },
+    {
+      "id": "b2-05-lexico-registro",
+      "order": 5,
+      "title": "Lessico: registri, falsi amici, collocazioni",
+      "topics": [
+        "lessico_registro"
+      ],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Falsi amici: attuale=attuale (non 'attuale'), pretendere=pretendere/richiedere (non 'fingere'), libreria=libreria (non 'biblioteca'), fattoria=fattoria (non 'fabbrica'), argento=argento (non 'argomento')."
+        },
+        {
+          "kind": "rule",
+          "title": "Preposizioni fisse",
+          "text": "Pensare A (opinione) / DI (ricordo). Parlare DI (argomento) / CON (persona). Insistere SU. Decidere DI."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-05-d01",
+          "type": "choice",
+          "prompt": "Penso ____ (a) te spesso.",
+          "options": [
+            "a",
+            "di",
+            "su",
+            "per"
+          ],
+          "answer": [
+            "a"
+          ],
+          "why": "Pensare A qualcuno = avere in mente."
+        },
+        {
+          "id": "b2-05-lexico-registro-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Lessico: registri, falsi amici, collocazioni.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Lessico: registri, falsi amici, collocazioni."
+        },
+        {
+          "id": "b2-05-lexico-registro-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Lessico: registri, falsi amici, collocazioni.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Lessico: registri, falsi amici, collocazioni."
+        }
+      ]
+    }
+  ]
+}

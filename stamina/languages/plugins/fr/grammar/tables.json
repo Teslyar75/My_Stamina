@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "tables": [
+    {
+      "id": "articles_definite",
+      "level": "A1",
+      "title": "Article défini (le, la, l', les)",
+      "headers": ["Genre/Nombre", "Forme", "Exemple"],
+      "rows": [
+        ["Masculin singulier", "le", "le livre"],
+        ["Féminin singulier", "la", "la table"],
+        ["Voyelle/muet h", "l'", "l'ami, l'homme"],
+        ["Pluriel (tous genres)", "les", "les livres, les tables"]
+      ]
+    },
+    {
+      "id": "articles_indefinite",
+      "level": "A1",
+      "title": "Article indéfini (un, une, des)",
+      "headers": ["Genre/Nombre", "Forme", "Exemple"],
+      "rows": [
+        ["Masculin singulier", "un", "un livre"],
+        ["Féminin singulier", "une", "une table"],
+        ["Pluriel (tous genres)", "des", "des livres, des tables"]
+      ]
+    },
+    {
+      "id": "articles_partitive",
+      "level": "A1",
+      "title": "Article partitif (du, de la, de l', des)",
+      "headers": ["Genre/Nombre", "Forme", "Exemple"],
+      "rows": [
+        ["Masculin singulier", "du", "du pain"],
+        ["Féminin singulier", "de la", "de la soupe"],
+        ["Voyelle/muet h", "de l'", "de l'eau, de l'huile"],
+        ["Pluriel (tous genres)", "des", "des légumes"]
+      ]
+    },
+    {
+      "id": "adjectives_agreement",
+      "level": "A1",
+      "title": "Accord des adjectifs (règles générales)",
+      "headers": ["Base (M. sg.)", "Féminin sg.", "Masculin pl.", "Féminin pl.", "Exemple"],
+      "rows": [
+        ["-e muet", "= (identique)", "+ s", "+ s", "grand → grande / grands / grandes"],
+        ["consonne", "+ e", "+ s", "+ es", "petit → petite / petits / petites"],
+        ["-x", "→ -se", "= (identique)", "+ s", "heureux → heureuse / heureux / heureuses"],
+        ["-f", "→ -ve", "+ s", "+ ves", "neuf → neuve / neufs / neuves"],
+        ["-er", "→ -ère", "+ s", "+ res", "premier → première / premiers / premières"],
+        ["-el/-eil/-ien/-on/-os/-en", "double cons. + e", "+ s", "+ s", "gentil → gentille / gentils / gentilles"]
+      ]
+    },
+    {
+      "id": "present_er",
+      "level": "A1",
+      "title": "Présent: verbes en -er (parler)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-e", "parle"],
+        ["tu", "-es", "parles"],
+        ["il/elle/on", "-e", "parle"],
+        ["nous", "-ons", "parlons"],
+        ["vous", "-ez", "parlez"],
+        ["ils/elles", "-ent", "parlent"]
+      ]
+    },
+    {
+      "id": "present_ir",
+      "level": "A1",
+      "title": "Présent: verbes en -ir (finir)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-is", "finis"],
+        ["tu", "-is", "finis"],
+        ["il/elle/on", "-it", "finit"],
+        ["nous", "-issons", "finissons"],
+        ["vous", "-issez", "finissez"],
+        ["ils/elles", "-issent", "finissent"]
+      ]
+    },
+    {
+      "id": "present_re",
+      "level": "A1",
+      "title": "Présent: verbes en -re (vendre)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-s", "vends"],
+        ["tu", "-s", "vends"],
+        ["il/elle/on", "−", "vend"],
+        ["nous", "-ons", "vendons"],
+        ["vous", "-ez", "vendez"],
+        ["ils/elles", "-ent", "vendent"]
+      ]
+    },
+    {
+      "id": "etre_avoir_present",
+      "level": "A1",
+      "title": "Être et Avoir au présent",
+      "headers": ["Personne", "être", "avoir"],
+      "rows": [
+        ["je", "suis", "ai"],
+        ["tu", "es", "as"],
+        ["il/elle/on", "est", "a"],
+        ["nous", "sommes", "avons"],
+        ["vous", "êtes", "avez"],
+        ["ils/elles", "sont", "ont"]
+      ]
+    },
+    {
+      "id": "aller_faire_venir_present",
+      "level": "A1",
+      "title": "Aller, Faire, Venir au présent",
+      "headers": ["Personne", "aller", "faire", "venir"],
+      "rows": [
+        ["je", "vais", "fais", "viens"],
+        ["tu", "vas", "fais", "viens"],
+        ["il/elle/on", "va", "fait", "vient"],
+        ["nous", "allons", "faisons", "venons"],
+        ["vous", "allez", "faites", "venez"],
+        ["ils/elles", "vont", "font", "viennent"]
+      ]
+    },
+    {
+      "id": "negation_basic",
+      "level": "A1",
+      "title": "Négation: ne...pas / ne...jamais / ne...rien",
+      "headers": ["Structure", "Exemple", "Traduction"],
+      "rows": [
+        ["ne + verbe + pas", "Je ne sais pas.", "Je ne sais pas."],
+        ["ne + verbe + jamais", "Il ne vient jamais.", "Il ne vient jamais."],
+        ["ne + verbe + rien", "Nous ne voyons rien.", "Nous ne voyons rien."],
+        ["ne + verbe + personne", "Elle ne connaît personne.", "Elle ne connaît personne."],
+        ["ne + verbe + plus", "Tu ne fumes plus.", "Tu ne fumes plus."],
+        ["ne + verbe + ni...ni", "Il ne mange ni viande ni poisson.", "Il ne mange ni viande ni poisson."]
+      ]
+    },
+    {
+      "id": "possessives",
+      "level": "A1",
+      "title": "Adjectifs possessifs (mon, ton, son...)",
+      "headers": ["Possesseur", "Masculin sg.", "Féminin sg.", "Pluriel"],
+      "rows": [
+        ["je (mon)", "mon", "ma", "mes"],
+        ["tu (ton)", "ton", "ta", "tes"],
+        ["il/elle (son)", "son", "sa", "ses"],
+        ["nous (notre)", "notre", "notre", "nos"],
+        ["vous (votre)", "votre", "votre", "vos"],
+        ["ils/elles (leur)", "leur", "leur", "leurs"]
+      ]
+    },
+    {
+      "id": "demonstratives",
+      "level": "A1",
+      "title": "Adjectifs démonstratifs (ce, cet, cette, ces)",
+      "headers": ["Genre/Nombre", "Forme", "Devant voyelle", "Exemple"],
+      "rows": [
+        ["Masculin sg.", "ce", "cet", "ce livre, cet ami"],
+        ["Féminin sg.", "cette", "cette", "cette table, cette amie"],
+        ["Pluriel", "ces", "ces", "ces livres, ces amis"]
+      ]
+    },
+    {
+      "id": "passe_compose_avoir",
+      "level": "A2",
+      "title": "Passé composé avec AVOIR (parler → parlé)",
+      "headers": ["Personne", "Avoir + Participe", "Forme"],
+      "rows": [
+        ["j'", "ai parlé", "j'ai parlé"],
+        ["tu", "as parlé", "tu as parlé"],
+        ["il/elle/on", "a parlé", "il a parlé"],
+        ["nous", "avons parlé", "nous avons parlé"],
+        ["vous", "avez parlé", "vous avez parlé"],
+        ["ils/elles", "ont parlé", "ils ont parlé"]
+      ]
+    },
+    {
+      "id": "passe_compose_etre",
+      "level": "A2",
+      "title": "Passé composé avec ÊTRE (aller → allé)",
+      "headers": ["Personne", "Être + Participe (accord)", "Forme"],
+      "rows": [
+        ["je", "suis allé(e)", "je suis allé / allée"],
+        ["tu", "es allé(e)", "tu es allé / allée"],
+        ["il", "est allé", "il est allé"],
+        ["elle", "est allée", "elle est allée"],
+        ["nous", "sommes allé(e)s", "nous sommes allés / allées"],
+        ["vous", "êtes allé(e)(s)", "vous êtes allé / allée / allés / allées"],
+        ["ils", "sont allés", "ils sont allés"],
+        ["elles", "sont allées", "elles sont allées"]
+      ]
+    },
+    {
+      "id": "imparfait",
+      "level": "A2",
+      "title": "Imparfait: terminaisons (parler → parlais)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-ais", "parlais"],
+        ["tu", "-ais", "parlais"],
+        ["il/elle/on", "-ait", "parlait"],
+        ["nous", "-ions", "parlions"],
+        ["vous", "-iez", "parliez"],
+        ["ils/elles", "-aient", "parlaient"]
+      ]
+    },
+    {
+      "id": "futur_simple",
+      "level": "A2",
+      "title": "Futur simple: terminaisons (parler → parlerai)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-ai", "parlerai"],
+        ["tu", "-as", "parleras"],
+        ["il/elle/on", "-a", "parlera"],
+        ["nous", "-ons", "parlerons"],
+        ["vous", "-ez", "parlerez"],
+        ["ils/elles", "-ont", "parleront"]
+      ]
+    },
+    {
+      "id": "conditionnel_present",
+      "level": "A2",
+      "title": "Conditionnel présent: terminaisons (parler → parlerais)",
+      "headers": ["Personne", "Terminaison", "Forme"],
+      "rows": [
+        ["je", "-ais", "parlerais"],
+        ["tu", "-ais", "parlerais"],
+        ["il/elle/on", "-ait", "parlerait"],
+        ["nous", "-ions", "parlerions"],
+        ["vous", "-iez", "parleriez"],
+        ["ils/elles", "-aient", "parleraient"]
+      ]
+    },
+    {
+      "id": "subjunctive_present_regular",
+      "level": "B1",
+      "title": "Subjonctif présent: réguliers (parler → parle)",
+      "headers": ["Personne", "Terminaison -er", "Terminaison -ir", "Terminaison -re"],
+      "rows": [
+        ["que je", "-e", "-isse", "-e"],
+        ["que tu", "-es", "-isses", "-es"],
+        ["qu'il/elle/on", "-e", "-isse", "-e"],
+        ["que nous", "-ions", "-issions", "-ions"],
+        ["que vous", "-iez", "-issiez", "-iez"],
+        ["qu'ils/elles", "-ent", "-issent", "-ent"]
+      ]
+    },
+    {
+      "id": "object_pronouns",
+      "level": "A2",
+      "title": "Pronoms objets (le, la, les, lui, leur, y, en)",
+      "headers": ["Fonction", "Singulier", "Pluriel", "Exemple"],
+      "rows": [
+        ["COD (le/la/les)", "le / la / l'", "les", "Je le vois. Je la vois. Je les vois."],
+        ["COI (lui/leur)", "lui", "leur", "Je lui parle. Je leur parle."],
+        ["Lieu (y)", "y", "—", "J'y vais."],
+        ["Origine/Quantité (en)", "en", "—", "J'en veux."],
+        ["Ordre (affirmatif)", "le/la/les → moi/toi/lui/leur → y → en", "—", "Donne-le-moi !"],
+        ["Ordre (négatif)", "ne → me/te/le/la/les → lui/leur → y → en → verbe → pas", "—", "Ne me le donne pas !"]
+      ]
+    },
+    {
+      "id": "relative_pronouns",
+      "level": "B1",
+      "title": "Pronoms relatifs (qui, que, où, dont)",
+      "headers": ["Pronom", "Fonction", "Antécédent", "Exemple"],
+      "rows": [
+        ["qui", "Sujet", "Personne/Chose", "L'homme qui parle."],
+        ["que", "COD", "Personne/Chose", "Le livre que je lis."],
+        ["où", "Lieu/Temps", "Lieu/Moment", "La ville où j'habite."],
+        ["dont", "COI de / Objet de prép.", "Personne/Chose", "L'ami dont je parle."],
+        ["lequel/laquelle/lesquels/lesquelles", "Après préposition", "Personne/Chose", "La table sur laquelle j'écris."]
+      ]
+    },
+    {
+      "id": "comparatives_superlatives",
+      "level": "A2",
+      "title": "Comparatif et Superlatif",
+      "headers": ["Type", "Structure", "Exemple"],
+      "rows": [
+        ["Supériorité", "plus ... que", "plus grand que"],
+        ["Infériorité", "moins ... que", "moins grand que"],
+        ["Égalité", "aussi ... que", "aussi grand que"],
+        ["Superlatif sup.", "le/la/les plus ...", "le plus grand"],
+        ["Superlatif inf.", "le/la/les moins ...", "le moins grand"],
+        ["Irréguliers", "bon → meilleur / le meilleur", "mauvais → pire / le pire"],
+        ["Irréguliers", "petit → moindre / le moindre", "peu → moins / le moins"]
+      ]
+    },
+    {
+      "id": "si_clauses",
+      "level": "B1",
+      "title": "Phrases avec SI (trois types)",
+      "headers": ["Type", "Si + ...", "Proposition principale", "Exemple"],
+      "rows": [
+        ["Réalité (présent)", "présent", "présent / futur / impératif", "Si j'ai le temps, je viendrai."],
+        ["Possibilité (imparfait)", "imparfait", "conditionnel présent", "Si j'avais le temps, je viendrais."],
+        ["Irréel (plus-que-parfait)", "plus-que-parfait", "conditionnel passé", "Si j'avais eu le temps, je serais venu."]
+      ]
+    },
+    {
+      "id": "passive_voice",
+      "level": "B1",
+      "title": "Voix passive (être + participe passé)",
+      "headers": ["Temps", "Actif", "Passif"],
+      "rows": [
+        ["Présent", "On nettoie la rue.", "La rue est nettoyée."],
+        ["Passé composé", "On a nettoyé la rue.", "La rue a été nettoyée."],
+        ["Imparfait", "On nettoyait la rue.", "La rue était nettoyée."],
+        ["Futur", "On nettoiera la rue.", "La rue sera nettoyée."],
+        ["Conditionnel", "On nettoierait la rue.", "La rue serait nettoyée."],
+        ["Subjonctif", "Il faut qu'on nettoie.", "Il faut que la rue soit nettoyée."]
+      ]
+    }
+  ]
+}

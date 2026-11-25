@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "bridges": {
+    "a1-01-articoli": {
+      "can_do": "Артикль (определённый/неопределённый)",
+      "bridge": "Артикль (означений/неозначений)",
+      "trap": "il/lo/la/l' — выбор по полу и начальной букве; uno/un'/un — то же правило."
+    },
+    "a1-02-essere-avere": {
+      "can_do": "Глаголы essere / avere",
+      "bridge": "Дієслова essere / avere",
+      "trap": "essere = состояния/идентификация; avere = владение/возраст (ho 20 anni)."
+    },
+    "a1-03-presente-are": {
+      "can_do": "Presente: -are (parlare)",
+      "bridge": "Presente: -are (parlare)",
+      "trap": "Только -are: -o, -i, -a, -iamo, -ate, -ano. Без исключений."
+    },
+    "a1-04-presente-ere": {
+      "can_do": "Presente: -ere (credere, temere)",
+      "bridge": "Presente: -ere (credere, temere)",
+      "trap": "-ere: -o, -i, -e, -iamo, -ete, -ono. credere → credo (не creddo)."
+    },
+    "a1-05-presente-ire": {
+      "can_do": "Presente: -ire (dormire vs capire)",
+      "bridge": "Presente: -ire (dormire vs capire)",
+      "trap": "Два типа: dormire (нет -isc-) и capire (+ -isc- в 1/2/3 л. ед.ч. и 3 л. мн.ч.)."
+    },
+    "a1-06-presente-irregulari": {
+      "can_do": "Presente: ключевые неправильные",
+      "bridge": "Presente: ключові неправильні",
+      "trap": "andare (vado), fare (faccio), venire (vengo), stare (sto), dare (do/dà), sapere (so), potere (posso), volere (voglio), dovere (devo)."
+    },
+    "a1-07-aggettivi": {
+      "can_do": "Согласование прилагательных",
+      "bridge": "Відмінювання прикметників",
+      "trap": "-o/-a/-i/-e (alto/alta/alti/alte); -e/-i (grande/grandi); -ore/-ora (lavoratore/lavoratrice)."
+    },
+    "a1-08-possessivi": {
+      "can_do": "Притяжательные местоимения",
+      "bridge": "Присвійні займенники",
+      "trap": "mio/tuo/suo/nostro/vostro/loro — согласуются с ПРЕДМЕТОМ, а не с владельцем. il MIO libro / la MIA casa."
+    },
+    "a1-09-dimostrativi": {
+      "can_do": "Указательные местоимения (questo/quello)",
+      "bridge": "Вказівні займенники (questo/quello)",
+      "trap": "questo (близко), quello (далеко), codesto (редко, среднее). quello → quel/quei перед согласной."
+    },
+    "a1-10-piacere": {
+      "can_do": "Piacere / mancare / servire / bastare",
+      "bridge": "Piacere / mancare / servire / bastare",
+      "trap": "Подлежащее = то, что нравится (piacciono libri). Мне нравится = mi piace (не *io piaccio*)."
+    },
+    "a2-01-passato-prossimo": {
+      "can_do": "Passato prossimo (avere/essere + participio)",
+      "bridge": "Passato prossimo (avere/essere + participio)",
+      "trap": "Глаголы движения/состояния/рефлексивные → essere (accordo!). Остальные → avere. partecipio: -ato/-uto/-ito."
+    },
+    "a2-02-participi-irregolari": {
+      "can_do": "Неправильные participio passato",
+      "bridge": "Неправильні participio passato",
+      "trap": "fatto, detto, visto, scritto, letto, messo, preso, aperto, chiuso, bevuto, nato, morto, risposto, posto."
+    },
+    "a2-03-imperfetto": {
+      "can_do": "Imperfetto (описание/привычка в прошлом)",
+      "bridge": "Imperfetto (опис/звичка в минулому)",
+      "trap": "-avo/-evo/-ivo. Нет неправильных (кроме essere → ero/eri/era...)."
+    },
+    "a2-04-passato-vs-imperfetto": {
+      "can_do": "Passato prossimo vs Imperfetto",
+      "bridge": "Passato prossimo vs Imperfetto",
+      "trap": "Evento завершённый → passato. Фон/описание/привычка → imperfetto. Leggevo quando ha telefonato."
+    },
+    "a2-05-futuro": {
+      "can_do": "Futuro semplice",
+      "bridge": "Futuro semplice",
+      "trap": "Те же окончания для всех конъюгаций: -ò, -ai, -à, -emo, -ete, -anno. Неправильные корни: andr-, far-, verr-, star-, dar-, sapr-, potr-, vorr-, dovr-."
+    },
+    "a2-06-condizionale": {
+      "can_do": "Condizionale presente",
+      "bridge": "Condizionale presente",
+      "trap": "Те же корни, что в будущем + -ei/-esti/-ebbe/-emmo/-este/-ebbero. vorrei (не *volerei*)."
+    },
+    "a2-07-pronomi-oggetto": {
+      "can_do": "Прямые/косвенные дополнения (lo/la/li/le, mi/ti/ci/vi, gli/le)",
+      "bridge": "Прямі/непрямі додатки (lo/la/li/le, mi/ti/ci/vi, gli/le)",
+      "trap": "gli + lo → glielo (НЕ *gli lo*). Порядок: mi/ti/ci/vi → gli/le → lo/la/li/le → ne/ci. Утвердительный имп.: verb+pron (dammi!). Отриц.: non+pron+verb (non darmelo)."
+    },
+    "a2-08-ne-ci": {
+      "can_do": "Не / Ci (партитивное/местное)",
+      "bridge": "Ne / Ci (партитивне/місцеве)",
+      "trap": "ne = о нём/из них (ne ho due). ci = туда/там (ci vado, ci sono)."
+    },
+    "b1-01-congiuntivo-presente": {
+      "can_do": "Congiuntivo presente (регулярные)",
+      "bridge": "Congiuntivo presente (регулярні)",
+      "trap": "-are → -i/-i/-i/-iamo/-iate/-ino. -ere/-ire → -a/-a/-a/-iamo/-iate/-ano. che io parli, che tu parli, che lui parli..."
+    },
+    "b1-02-congiuntivo-irregolare": {
+      "can_do": "Congiuntivo presente (неправильные)",
+      "bridge": "Congiuntivo presente (неправильні)",
+      "trap": "sia, abbia, vada, faccia, stia, dia, sappia, possa, voglia, debba, venga. 1/2/3 л. ед.ч. = идентичны!"
+    },
+    "b1-03-congiuntivo-triggers": {
+      "can_do": "Триггеры конъюнктива (WEIRDO)",
+      "bridge": "Тригери кон'юнктиву (WEIRDO)",
+      "trap": "Volere, Emozione, Impersonale, Richiesta, Dubbio, Ordine → che + congiuntivo. Penso che / Credo che / È certo che → INDICATIVO."
+    },
+    "b1-04-congiuntivo-usi": {
+      "can_do": "Congiuntivo в придаточных (relative, temporali, finali)",
+      "bridge": "Congiuntivo в придаточних (relative, temporali, finali)",
+      "trap": "Antecedente indefinito/negativo → congiuntivo (cerco un libro che SIA interessante). Quando + futuro → congiuntivo (quando VADRA). Per che + congiuntivo."
+    },
+    "b1-05-congiuntivo-imperfetto": {
+      "can_do": "Congiuntivo imperfetto (-assi/-essi/-issi)",
+      "bridge": "Congiuntivo imperfetto (-assi/-essi/-issi)",
+      "trap": "Корень = 3 л. мн. ч. passato prossimo (parlarono → parlass-). Nessuna irregolarità!"
+    },
+    "b1-06-se-clauses": {
+      "can_do": "Период ипотетико (три типа si-clauses)",
+      "bridge": "Період іпотетико (три типи si-clauses)",
+      "trap": "1: Se + indicativo presente → futuro/presente. 2: Se + congiuntivo imperfetto → condizionale. 3: Se + congiuntivo trapassato → condizionale passato. НИКОГДА *se avrei*!"
+    },
+    "b1-07-trappassato": {
+      "can_do": "Trapassato prossimo (azione anteriore)",
+      "bridge": "Trapassato prossimo (дія попередня)",
+      "trap": "avevo/eri + participio. Accordo с essere: ero andato/a/i/e."
+    },
+    "b2-01-congiuntivo-trapassato": {
+      "can_do": "Congiuntivo trapassato (avessi parlato / fossi andato)",
+      "bridge": "Congiuntivo trapassato (avessi parlato / fossi andato)",
+      "trap": "avessi/avesse/avessimo/aveste/avessero + participio. fossi/fosse/fossimo/foste/fossero + participio (accordo)."
+    },
+    "b2-02-congiuntivo-triggers-avanzati": {
+      "can_do": "Коннекторы + congiuntivo (a meno che, con tal che, benché, affinché...)",
+      "bridge": "Конектори + congiuntivo (a meno che, con tal che, benché, affinché...)",
+      "trap": "a meno che / con tal che / benché / sebbene / affinché / perché (в знач. 'чтобы') / prima che / senza che → SEMPRE congiuntivo."
+    },
+    "b2-03-stare-gerundio": {
+      "can_do": "Stare + gerundio (процесс прямо сейчас / продолжался)",
+      "bridge": "Stare + gerundio (процес прямо зараз / тривав)",
+      "trap": "Sto leggendo (прямо сейчас). Stavo leggendo (процесс в прошлом). Gerundio: -ando / -endo. Irregolari: facendo, dicendo, bevendo."
+    },
+    "b2-04-voce-passiva": {
+      "can_do": "Пассивный залог (si passivante / essere + participio)",
+      "bridge": "Пасивний заклад (si passivante / essere + participio)",
+      "trap": "Si vende casa (si + 3 л.). La casa è stata venduta (essere + participio + accordo)."
+    },
+    "b2-05-discorso-indiretto": {
+      "can_do": "Discorso indiretto (пересказ речи)",
+      "bridge": "Discorso indiretto (переказ мови)",
+      "trap": "Tempi: presente → imperfetto, futuro → condizionale, passato prossimo/imperfetto → trapassato. Domande indirette: mi ha chiesto SE VENISSI (congiuntivo!)."
+    },
+    "b2-06-lexico-registro": {
+      "can_do": "Лексика: регистры, фальшивые друзья, коллокации",
+      "bridge": "Лексика: регістри, фальшиві друзі, колокації",
+      "trap": "Falsi amici: attuale=актуальный (не актуальный), pretendere=требовать (не притворяться), libreria=книжный магазин (не библиотека). Preposizioni fisse: pensare A / DI, parlare DI / CON."
+    },
+    "c1-01-congiuntivo-avanzato": {
+      "can_do": "Congiuntivo: нюансы, connectors, mixed conditions",
+      "bridge": "Congiuntivo: нюанси, конектори, змішані умовні",
+      "trap": "Come se + imperfetto/trapassato (come se FOSSE re). Magari + imperfetto/trapassato (magari VENISSE!). Non è che... sia..."
+    },
+    "c1-02-gerundio-composto": {
+      "can_do": "Gerundio composto (avendo parlato, essendo andato)",
+      "bridge": "Gerundio composto (avendo parlato, essendo andato)",
+      "trap": "Действие ПРЕДШЕСТВУЮЩЕЕ главному. Avendo finito, sono uscito. Essendo arrivato tardi, ho perso il treno."
+    },
+    "c1-03-periodo-ipotetico-misto": {
+      "can_do": "Смешанные si-clauses",
+      "bridge": "Змішані si-clauses",
+      "trap": "Se avessi studiato (passato), ORA sarei medico (presente). Se fossi ricco (presente), avrei comprato la casa (passato)."
+    },
+    "c1-04-registro-stile": {
+      "can_do": "Регистры: формальный / неформальный, региональные варианты",
+      "bridge": "Регістри: формальний / неформальний, регіональні варіанти",
+      "trap": "Lei (формальный «Вы») vs tu. Voi (южная Италия) vs Lei. Passato remoto (юг/литература) vs passato prossimo (север/устная речь)."
+    },
+    "c2-01-idiomi": {
+      "can_do": "Идиомы и устойчивые выражения",
+      "bridge": "Ідіоми та стійкі вирази",
+      "trap": "Costare un occhio della testa. Avere le mani in pasta. Non avere peli sulla lingua. Prendere due piccioni con una fava. In bocca al lupo → Crepi!"
+    }
+  }
+}

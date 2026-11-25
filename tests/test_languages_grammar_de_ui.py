@@ -241,7 +241,7 @@ class TestLessonIntro:
         bridge = board.engine.bridge(lesson["id"])
         texts = _label_texts(page)
         assert "ЧТО ВЫ ОСВОИТЕ" in texts
-        assert "МОСТИК RU/UA → DE" in texts
+        assert "МОСТИК RU/UA → НЕМЕЦКИЙ" in texts
         assert "ЛОВУШКА" in texts
         assert bridge["can_do"] in texts
         assert bridge["bridge"] in texts

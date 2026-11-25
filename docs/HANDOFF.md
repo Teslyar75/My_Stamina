@@ -254,3 +254,17 @@ Done:
 английская фраза через edge-tts (`start`→`done`) и немецкая через `speech.py`
 после рефакторинга; `tests/test_languages_speech.py`, `test_languages_tile.py`
 (12 passed); `ruff` по изменённым файлам; `dep_audit` код 0.
+
+---
+
+## Исправление микрофона английского сканера + итальянская грамматика (25.11, `local/all-work`)
+
+Goal: два независимых бага — микрофон в английском сканере не работал (Vosk-модель отсутствовала), и итальянская грамматика показывала немецкий флаг + лишние вкладки немецких курсов.
+
+Done:
+- **Английский сканер — микрофон**: нехватающая Vosk-модель `vosk-model-small-en-us-0.15` скачана через `scripts/download_vosk_model.py` в `models/` (корень). `ASR().available()` → `True`, `vosk_model_dir()` находит модель. `tests/test_mic_availability.py` — 7/7 зелёных.
+- **Итальянская грамматика — флаг**: в `ItalianGrammarCatalog.paint_title_flag` (stamina/languages/grammar_page.py:755) заменено `"de"` на `"it"` — теперь отображается итальянский флаг.
+- **Итальянская грамматика — лишние вкладки**: `ItalianGrammarCatalog` была полной копией `GermanGrammarCatalog` с `OpenSourceBank` и `source_tabs()`. Убраны все методы/атрибуты, связанные с открытыми источниками (`show_source_tabs`, `_ensure_open`, `sources`, `select_source`, `_load_open_topic`, `header_subtitle` для open, `progress_text` для open, `_topic_summaries`, `neighbours`, `hint_for_unit`, `unit_number`, `is_done`, `mark_complete` для open, `load_table` делегировал к engine). Класс теперь минимален — только `paint_title_flag("it")`. Французский/испанский каталоги работают так же (только базовый курс).
+- Тесты: все итальянские/французские/испанские грамматические тесты проходят (`test_languages_grammar_it.py`, `test_languages_grammar_fr.py`, `test_languages_grammar_es.py` — зелёные). CI gate (`tools/ci_gate.py --only contrast --only dep`) — зелёный. `i18n_check` без новых ошибок (код 3282, те же 450 лишних ключей из WIP-наследия, не моя поломка).
+
+Problems: один тест `test_lesson_intro_explains_goal_and_traps` (немецкая грамматика) падает — ищет текст "МОСТИК RU/UA → DE" в UI, которого теперь нет (данные bridges.json могли измениться). Это не связано с моими правками (тронул только итальянский каталог).

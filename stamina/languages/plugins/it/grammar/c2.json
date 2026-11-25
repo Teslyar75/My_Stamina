@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "level": "C2",
+  "lessons": [
+    {
+      "id": "c2-01-idiomi",
+      "order": 1,
+      "title": "Idiomi e locuzioni fisse",
+      "subtitle": "Blocchi lessicali non traducibili letteralmente",
+      "topics": [
+        "idiomi"
+      ],
+      "prereq": [
+        "c1-04-registro-stile"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Costare un occhio della testa (costare molto). Avere le mani in pasta (ficcarsi nei fatti altrui / essere coinvolto). Non avere peli sulla lingua (essere franco/sincero). Prendere due piccioni con una fava (fare due cose con un'azione). In bocca al lupo! → Crepi! (in bocca al lupo = buona fortuna; risposta: crepi il lupo)."
+        },
+        {
+          "kind": "rule",
+          "title": "Imparare come chunks",
+          "text": "Traduzione letterale non funziona. Memorizzare come unità fisse."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-01-d01",
+          "type": "choice",
+          "prompt": "\"Costa molto\" = costare un ____ della testa.",
+          "options": [
+            "occhio",
+            "braccio",
+            "dente",
+            "capello"
+          ],
+          "answer": [
+            "occhio"
+          ],
+          "why": "Costare un occhio della testa."
+        },
+        {
+          "id": "c2-01-idiomi-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Idiomi e locuzioni fisse.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Idiomi e locuzioni fisse."
+        },
+        {
+          "id": "c2-01-idiomi-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Idiomi e locuzioni fisse.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Idiomi e locuzioni fisse."
+        }
+      ]
+    }
+  ]
+}

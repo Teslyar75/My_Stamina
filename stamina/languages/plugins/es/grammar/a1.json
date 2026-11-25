@@ -1,0 +1,1245 @@
+{
+  "version": 1,
+  "level": "A1",
+  "lessons": [
+    {
+      "id": "a1-01-genero-numero",
+      "order": 1,
+      "title": "Género y número de sustantivos",
+      "subtitle": "Masculino/Femenino, Singular/Plural",
+      "topics": [
+        "genero",
+        "numero"
+      ],
+      "prereq": [],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "En español dos géneros: masculino y femenino. No hay neutro. Número: singular y plural."
+        },
+        {
+          "kind": "rule",
+          "title": "Pistas de femenino",
+          "text": "Terminaciones: -a, -ción/-sión, -dad/-tad, -ez, -ie. Masculino: -o, -ma (griego), -or, -án."
+        },
+        {
+          "kind": "rule",
+          "title": "Plural",
+          "text": "Vocal → +s (libro→libros). Consonante → +es (profesor→profesores). -z → -ces (lápiz→lápices)."
+        },
+        {
+          "kind": "table",
+          "ref": "plural_patterns_es"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-01-d01",
+          "type": "choice",
+          "prompt": "El ____ (libro) es rojo.",
+          "options": [
+            "libro",
+            "libros"
+          ],
+          "answer": [
+            "libro"
+          ],
+          "why": "Singular tras el."
+        },
+        {
+          "id": "a1-01-d02",
+          "type": "choice",
+          "prompt": "Los ____ (profesor) son buenos.",
+          "options": [
+            "profesor",
+            "profesores"
+          ],
+          "answer": [
+            "profesores"
+          ],
+          "why": "Plural: profesor → profesores (+es)."
+        },
+        {
+          "id": "a1-01-d03",
+          "type": "fill",
+          "prompt": "Un ____ (lápiz) azul.",
+          "answer": [
+            "lápiz"
+          ],
+          "why": "Singular. Plural: lápices (-z→-ces)."
+        },
+        {
+          "id": "a1-01-d04",
+          "type": "choice",
+          "prompt": "Las ____ (ciudad) grandes.",
+          "options": [
+            "ciudad",
+            "ciudades"
+          ],
+          "answer": [
+            "ciudades"
+          ],
+          "why": "-dad → -des en plural."
+        }
+      ]
+    },
+    {
+      "id": "a1-02-articulos",
+      "order": 2,
+      "title": "Artículos: definido e indefinido",
+      "subtitle": "el/la/los/las — un/una/unos/unas",
+      "topics": [
+        "articulos_definidos",
+        "articulos_indefinidos"
+      ],
+      "prereq": [
+        "a1-01-genero-numero"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Definido = específico. Indefinido = no específico, uno de muchos."
+        },
+        {
+          "kind": "rule",
+          "title": "Definido",
+          "text": "el (m sg), la (f sg), los (m pl), las (f pl)."
+        },
+        {
+          "kind": "rule",
+          "title": "Indefinido",
+          "text": "un (m sg), una (f sg), unos (m pl), unas (f pl)."
+        },
+        {
+          "kind": "rule",
+          "title": "Excepciones",
+          "text": "El agua (femenino con 'el' por eufonía). El águila. Un agua / una agua (ambos posibles)."
+        },
+        {
+          "kind": "table",
+          "ref": "articles_definite"
+        },
+        {
+          "kind": "table",
+          "ref": "articles_indefinite"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-02-d01",
+          "type": "choice",
+          "prompt": "____ amigo viene mañana.",
+          "options": [
+            "Un",
+            "Una",
+            "El",
+            "La"
+          ],
+          "answer": [
+            "Un"
+          ],
+          "why": "Amigo = masculino, singular, indefinido."
+        },
+        {
+          "id": "a1-02-d02",
+          "type": "choice",
+          "prompt": "Me gusta ____ música.",
+          "options": [
+            "la",
+            "el",
+            "un",
+            "una"
+          ],
+          "answer": [
+            "la"
+          ],
+          "why": "Música = femenino, definido."
+        },
+        {
+          "id": "a1-02-d03",
+          "type": "fill",
+          "prompt": "____ agua está fría. (definido)",
+          "answer": [
+            "El"
+          ],
+          "why": "Agua = femenino pero 'el' por eufonía."
+        },
+        {
+          "id": "a1-02-d04",
+          "type": "choice",
+          "prompt": "Unos ____ (niño) juegan.",
+          "options": [
+            "niño",
+            "niños"
+          ],
+          "answer": [
+            "niños"
+          ],
+          "why": "Unos = plural indefinido → niños."
+        }
+      ]
+    },
+    {
+      "id": "a1-03-ser-estar",
+      "order": 3,
+      "title": "Ser vs Estar",
+      "subtitle": "Identidad/Origen vs Estado/Ubiicación",
+      "topics": [
+        "ser",
+        "estar"
+      ],
+      "prereq": [
+        "a1-02-articulos"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Ser = esencia, identidad, origen, profesión, características permanentes. Estar = estado temporal, ubicación, resultado de acción."
+        },
+        {
+          "kind": "rule",
+          "title": "Ser",
+          "text": "Soy estudiante. Es de Madrid. Son las tres. La fiesta es en mi casa."
+        },
+        {
+          "kind": "rule",
+          "title": "Estar",
+          "text": "Estoy cansado. Está en Madrid. La puerta está abierta. Estamos bien."
+        },
+        {
+          "kind": "table",
+          "ref": "ser_estar_present"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-03-d01",
+          "type": "choice",
+          "prompt": "Yo ____ (ser) médico.",
+          "options": [
+            "soy",
+            "estoy",
+            "eres",
+            "estás"
+          ],
+          "answer": [
+            "soy"
+          ],
+          "why": "Profesión = ser."
+        },
+        {
+          "id": "a1-03-d02",
+          "type": "choice",
+          "prompt": "El libro ____ (estar) en la mesa.",
+          "options": [
+            "está",
+            "es",
+            "están",
+            "son"
+          ],
+          "answer": [
+            "está"
+          ],
+          "why": "Ubicación = estar."
+        },
+        {
+          "id": "a1-03-d03",
+          "type": "fill",
+          "prompt": "Nosotros ____ (ser) de España.",
+          "answer": [
+            "somos"
+          ],
+          "why": "Origen = ser."
+        },
+        {
+          "id": "a1-03-d04",
+          "type": "choice",
+          "prompt": "¿Cómo ____ (estar) tú?",
+          "options": [
+            "estás",
+            "eres",
+            "está",
+            "es"
+          ],
+          "answer": [
+            "estás"
+          ],
+          "why": "Estado/saludo = estar."
+        }
+      ]
+    },
+    {
+      "id": "a1-04-present-ar",
+      "order": 4,
+      "title": "Presente: verbos en -ar (hablar, estudiar, trabajar)",
+      "subtitle": "Primera conjugación regular",
+      "topics": [
+        "presente_ar"
+      ],
+      "prereq": [
+        "a1-03-ser-estar"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Verbos -ar: raíz + -o, -as, -a, -amos, -áis, -an. Grupo más grande y regular."
+        },
+        {
+          "kind": "rule",
+          "title": "Hablar",
+          "text": "Hablo, hablas, habla, hablamos, habláis, hablan."
+        },
+        {
+          "kind": "rule",
+          "title": "Cambios ortográficos",
+          "text": "Sacar → saqué (c→qu). Empezar → empiezo (e→ie). Jugar → juego (u→ue)."
+        },
+        {
+          "kind": "table",
+          "ref": "present_ar"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-04-d01",
+          "type": "choice",
+          "prompt": "Nosotros ____ (hablar) español.",
+          "options": [
+            "hablamos",
+            "habláis",
+            "hablan",
+            "hablo"
+          ],
+          "answer": [
+            "hablamos"
+          ],
+          "why": "Nosotros → -amos."
+        },
+        {
+          "id": "a1-04-d02",
+          "type": "choice",
+          "prompt": "Ellos ____ (estudiar) mucho.",
+          "options": [
+            "estudian",
+            "estudiáis",
+            "estudias",
+            "estudio"
+          ],
+          "answer": [
+            "estudian"
+          ],
+          "why": "Ellos → -an."
+        },
+        {
+          "id": "a1-04-d03",
+          "type": "fill",
+          "prompt": "Yo ____ (trabajar) aquí.",
+          "answer": [
+            "trabajo"
+          ],
+          "why": "Yo → -o."
+        },
+        {
+          "id": "a1-04-d04",
+          "type": "choice",
+          "prompt": "Tú ____ (empezar) a las 8.",
+          "options": [
+            "empiezas",
+            "empiezo",
+            "empezamos",
+            "empiezan"
+          ],
+          "answer": [
+            "empiezas"
+          ],
+          "why": "Cambio e→ie en raíz. Tú → -as."
+        }
+      ]
+    },
+    {
+      "id": "a1-05-present-er-ir",
+      "order": 5,
+      "title": "Presente: verbos en -er (comer) e -ir (vivir)",
+      "subtitle": "Segunda y tercera conjugación",
+      "topics": [
+        "presente_er",
+        "presente_ir"
+      ],
+      "prereq": [
+        "a1-04-present-ar"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "-er: -o, -es, -e, -emos, -éis, -en. -ir: -o, -es, -e, -imos, -ís, -en. Difieren en nosotros/vosotros."
+        },
+        {
+          "kind": "rule",
+          "title": "Comer",
+          "text": "Como, comes, come, comemos, coméis, comen."
+        },
+        {
+          "kind": "rule",
+          "title": "Vivir",
+          "text": "Vivo, vives, vive, vivimos, vivís, viven."
+        },
+        {
+          "kind": "table",
+          "ref": "present_er"
+        },
+        {
+          "kind": "table",
+          "ref": "present_ir"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-05-d01",
+          "type": "choice",
+          "prompt": "Nosotros ____ (comer) pan.",
+          "options": [
+            "comemos",
+            "coméis",
+            "comen",
+            "como"
+          ],
+          "answer": [
+            "comemos"
+          ],
+          "why": "Nosotros -er → -emos."
+        },
+        {
+          "id": "a1-05-d02",
+          "type": "choice",
+          "prompt": "Vosotros ____ (vivir) en Madrid.",
+          "options": [
+            "vivís",
+            "viven",
+            "vivo",
+            "vives"
+          ],
+          "answer": [
+            "vivís"
+          ],
+          "why": "Vosotros -ir → -ís."
+        },
+        {
+          "id": "a1-05-d03",
+          "type": "fill",
+          "prompt": "Ellos ____ (beber) agua.",
+          "answer": [
+            "beben"
+          ],
+          "why": "Ellos -er → -en."
+        },
+        {
+          "id": "a1-05-d04",
+          "type": "choice",
+          "prompt": "Yo ____ (escribir) cartas.",
+          "options": [
+            "escribo",
+            "escribes",
+            "escribe",
+            "escribimos"
+          ],
+          "answer": [
+            "escribo"
+          ],
+          "why": "Yo -ir → -o."
+        }
+      ]
+    },
+    {
+      "id": "a1-06-irregulares",
+      "order": 6,
+      "title": "Presente: irregulares clave (tener, venir, ir, hacer, poder, querer, saber)",
+      "subtitle": "Los verbos más frecuentes",
+      "topics": [
+        "presente_irregulares"
+      ],
+      "prereq": [
+        "a1-05-present-er-ir"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Tener/venir: cambio e→ie + -go en yo. Ir: voy, vas, va, vamos, vais, van. Hacer: hago (g). Poder/querer: o→ue. Saber: sé, sabes, sabe..."
+        },
+        {
+          "kind": "rule",
+          "title": "Tener / Venir",
+          "text": "Tengo, tienes, tiene, tenemos, tenéis, tienen. Vengo, vienes, viene, venimos, venís, vienen."
+        },
+        {
+          "kind": "rule",
+          "title": "Ir / Hacer",
+          "text": "Voy, vas, va, vamos, vais, van. Hago, haces, hace, hacemos, hacéis, hacen."
+        },
+        {
+          "kind": "rule",
+          "title": "Poder / Querer / Saber",
+          "text": "Puedo, puedes, puede, podemos, podéis, pueden. Quiero, quieres, quiere, queremos, queréis, quieren. Sé, sabes, sabe, sabemos, sabéis, saben."
+        },
+        {
+          "kind": "table",
+          "ref": "present_irregulares"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-06-d01",
+          "type": "choice",
+          "prompt": "Yo ____ (tener) un coche.",
+          "options": [
+            "tengo",
+            "tienes",
+            "tiene",
+            "tenemos"
+          ],
+          "answer": [
+            "tengo"
+          ],
+          "why": "Yo tengo (e→ie + -go)."
+        },
+        {
+          "id": "a1-06-d02",
+          "type": "choice",
+          "prompt": "Nosotros ____ (ir) al cine.",
+          "options": [
+            "vamos",
+            "vais",
+            "van",
+            "voy"
+          ],
+          "answer": [
+            "vamos"
+          ],
+          "why": "Nosotros vamos."
+        },
+        {
+          "id": "a1-06-d03",
+          "type": "fill",
+          "prompt": "Él ____ (hacer) la tarea.",
+          "answer": [
+            "hace"
+          ],
+          "why": "Él hace."
+        },
+        {
+          "id": "a1-06-d04",
+          "type": "choice",
+          "prompt": "Tú ____ (poder) hacerlo.",
+          "options": [
+            "puedes",
+            "puedo",
+            "puede",
+            "podemos"
+          ],
+          "answer": [
+            "puedes"
+          ],
+          "why": "Cambio o→ue. Tú → -es."
+        }
+      ]
+    },
+    {
+      "id": "a1-07-adjetivos",
+      "order": 7,
+      "title": "Concordancia de adjetivos",
+      "subtitle": "alto/alta/altos/altas, grande/grande/grandes/grandes",
+      "topics": [
+        "adjetivos"
+      ],
+      "prereq": [
+        "a1-01-genero-numero"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Adjetivos concuerdan con el sustantivo en género y número. Base = masculino singular."
+        },
+        {
+          "kind": "rule",
+          "title": "Terminación -o",
+          "text": "Alto → alta / altos / altas."
+        },
+        {
+          "kind": "rule",
+          "title": "Terminación -e / consonante",
+          "text": "Grande → grande / grandes / grandes. Azul → azul / azules / azules."
+        },
+        {
+          "kind": "rule",
+          "title": "Terminación -or",
+          "text": "Trabajador → trabajadora / trabajadores / trabajadoras."
+        },
+        {
+          "kind": "table",
+          "ref": "adjectives_agreement"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-07-d01",
+          "type": "choice",
+          "prompt": "Una casa ____ (grande).",
+          "options": [
+            "grande",
+            "granda",
+            "grandes",
+            "grandas"
+          ],
+          "answer": [
+            "grande"
+          ],
+          "why": "Grande = invariable en género (termina en -e). Singular."
+        },
+        {
+          "id": "a1-07-d02",
+          "type": "choice",
+          "prompt": "Unos chicos ____ (alto).",
+          "options": [
+            "alto",
+            "alta",
+            "altos",
+            "altas"
+          ],
+          "answer": [
+            "altos"
+          ],
+          "why": "Chicos = m pl → altos."
+        },
+        {
+          "id": "a1-07-d03",
+          "type": "fill",
+          "prompt": "Una chica ____ (trabajador).",
+          "answer": [
+            "trabajadora"
+          ],
+          "why": "-or → -ora en femenino."
+        },
+        {
+          "id": "a1-07-d04",
+          "type": "choice",
+          "prompt": "Unos libros ____ (azul).",
+          "options": [
+            "azul",
+            "azules",
+            "azula",
+            "azulos"
+          ],
+          "answer": [
+            "azules"
+          ],
+          "why": "Azul = consonante → plural +s."
+        }
+      ]
+    },
+    {
+      "id": "a1-08-posesivos",
+      "order": 8,
+      "title": "Posesivos: mi, tu, su, nuestro, vuestro",
+      "subtitle": "Concuerdan con el OBJETO, no con el poseedor",
+      "topics": [
+        "posesivos"
+      ],
+      "prereq": [
+        "a1-07-adjetivos"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Mi/tu/su = una forma para ambos géneros. Nuestro/vuestro = 4 formas (nuestro/nuestra/nuestros/nuestras)."
+        },
+        {
+          "kind": "rule",
+          "title": "Formas",
+          "text": "Mi libro / mi casa / mis libros / mis casas. Nuestro coche / nuestra casa / nuestros coches / nuestras casas."
+        },
+        {
+          "kind": "table",
+          "ref": "possessives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-08-d01",
+          "type": "choice",
+          "prompt": "____ (mi) coche es rojo.",
+          "options": [
+            "Mi",
+            "Mis",
+            "Mía",
+            "Mías"
+          ],
+          "answer": [
+            "Mi"
+          ],
+          "why": "Coche = m sg → mi."
+        },
+        {
+          "id": "a1-08-d02",
+          "type": "choice",
+          "prompt": "____ (nuestra) casa es grande.",
+          "options": [
+            "Nuestro",
+            "Nuestra",
+            "Nuestros",
+            "Nuestras"
+          ],
+          "answer": [
+            "Nuestra"
+          ],
+          "why": "Casa = f sg → nuestra."
+        },
+        {
+          "id": "a1-08-d03",
+          "type": "fill",
+          "prompt": "____ (sus) hijos estudian.",
+          "answer": [
+            "Sus"
+          ],
+          "why": "Hijos = pl → sus (invariable)."
+        },
+        {
+          "id": "a1-08-d04",
+          "type": "choice",
+          "prompt": "____ (vuestro) perro duerme.",
+          "options": [
+            "Vuestro",
+            "Vestra",
+            "Vuestros",
+            "Vuestras"
+          ],
+          "answer": [
+            "Vuestro"
+          ],
+          "why": "Perro = m sg → vuestro."
+        }
+      ]
+    },
+    {
+      "id": "a1-09-demostrativos",
+      "order": 9,
+      "title": "Demostrativos: este, ese, aquel",
+      "subtitle": "Distancia: cerca / media / lejos",
+      "topics": [
+        "demostrativos"
+      ],
+      "prereq": [
+        "a1-08-posesivos"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Este = cerca del hablante. Ese = media distancia. Aquel = lejos. Concordancia obligatoria."
+        },
+        {
+          "kind": "rule",
+          "title": "Formas",
+          "text": "Este/esta/estos/estas. Ese/esa/esos/esas. Aquel/aquella/aquellos/aquellas. Neutros: esto/eso/aquello."
+        },
+        {
+          "kind": "table",
+          "ref": "demonstratives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-09-d01",
+          "type": "choice",
+          "prompt": "____ (este) libro es mío.",
+          "options": [
+            "Este",
+            "Esta",
+            "Estos",
+            "Estas"
+          ],
+          "answer": [
+            "Este"
+          ],
+          "why": "Libro = m sg → este."
+        },
+        {
+          "id": "a1-09-d02",
+          "type": "choice",
+          "prompt": "____ (aquella) montaña es alta.",
+          "options": [
+            "Aquel",
+            "Aquella",
+            "Aquellos",
+            "Aquellas"
+          ],
+          "answer": [
+            "Aquella"
+          ],
+          "why": "Montaña = f sg → aquella."
+        },
+        {
+          "id": "a1-09-d03",
+          "type": "fill",
+          "prompt": "____ (esos) zapatos son tuyos.",
+          "answer": [
+            "Esos"
+          ],
+          "why": "Zapatos = m pl → esos."
+        },
+        {
+          "id": "a1-09-d04",
+          "type": "choice",
+          "prompt": "____ (esto) no entiendo.",
+          "options": [
+            "Este",
+            "Esta",
+            "Esto",
+            "Estos"
+          ],
+          "answer": [
+            "Esto"
+          ],
+          "why": "Neutro = idea/algo no identificado."
+        }
+      ]
+    },
+    {
+      "id": "a1-10-gustar",
+      "order": 10,
+      "title": "Gustar y verbos afines",
+      "subtitle": "Me gusta / Me gustan — el sujeto es LO QUE GUSTA",
+      "topics": [
+        "gustar"
+      ],
+      "prereq": [
+        "a1-06-irregulares"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Gustar = 'agradar'. Sujeto = lo que gusta → verbo concuerda con ello. Me gusta el café. Me gustan los cafés."
+        },
+        {
+          "kind": "rule",
+          "title": "Estructura",
+          "text": "A mí me gusta(n) / A ti te gusta(n) / A él le gusta(n) / A nosotros nos gusta(n) / A vosotros os gusta(n) / A ellos les gusta(n)."
+        },
+        {
+          "kind": "rule",
+          "title": "Otros verbos",
+          "text": "Encantar, interesar, importar, molestar, doler, faltar, quedar, parecer."
+        },
+        {
+          "kind": "table",
+          "ref": "gustar_type"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-10-d01",
+          "type": "choice",
+          "prompt": "A mí ____ (gustar) el chocolate.",
+          "options": [
+            "me gusta",
+            "me gustan",
+            "gusto",
+            "gustas"
+          ],
+          "answer": [
+            "me gusta"
+          ],
+          "why": "Chocolate = sg → gusta."
+        },
+        {
+          "id": "a1-10-d02",
+          "type": "choice",
+          "prompt": "A nosotros ____ (gustar) las manzanas.",
+          "options": [
+            "nos gusta",
+            "nos gustan",
+            "gustamos",
+            "gustáis"
+          ],
+          "answer": [
+            "nos gustan"
+          ],
+          "why": "Manzanas = pl → gustan."
+        },
+        {
+          "id": "a1-10-d03",
+          "type": "fill",
+          "prompt": "A María ____ (encantar) bailar.",
+          "answer": [
+            "le encanta"
+          ],
+          "why": "Infinitivo = singular → encanta."
+        },
+        {
+          "id": "a1-10-d04",
+          "type": "choice",
+          "prompt": "No ____ (importar) el dinero.",
+          "options": [
+            "me importa",
+            "me importan",
+            "importo",
+            "importas"
+          ],
+          "answer": [
+            "me importa"
+          ],
+          "why": "Dinero = sg → importa."
+        }
+      ]
+    },
+    {
+      "id": "a1-11-preposiciones",
+      "order": 11,
+      "title": "Preposiciones básicas: a, de, en, con, sin, por, para",
+      "subtitle": "Contracciones: al, del",
+      "topics": [
+        "preposiciones"
+      ],
+      "prereq": [
+        "a1-09-demostrativos"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "A + el = al. De + el = del. A = dirección. De = origen/posesión. En = lugar/tiempo. Con = compañía. Sin = falta."
+        },
+        {
+          "kind": "rule",
+          "title": "A personal",
+          "text": "Veo a María (persona/animado). No *veo María*."
+        },
+        {
+          "kind": "rule",
+          "title": "Por vs Para (intro)",
+          "text": "Por = causa/medio. Para = finalidad/destino."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-11-d01",
+          "type": "choice",
+          "prompt": "Voy ____ (a + el) parque.",
+          "options": [
+            "a el",
+            "al",
+            "del",
+            "a"
+          ],
+          "answer": [
+            "al"
+          ],
+          "why": "A + el = al."
+        },
+        {
+          "id": "a1-11-d02",
+          "type": "choice",
+          "prompt": "Vengo ____ (de + el) cine.",
+          "options": [
+            "de el",
+            "del",
+            "al",
+            "de"
+          ],
+          "answer": [
+            "del"
+          ],
+          "why": "De + el = del."
+        },
+        {
+          "id": "a1-11-d03",
+          "type": "fill",
+          "prompt": "Estoy ____ casa.",
+          "answer": [
+            "en"
+          ],
+          "why": "En = lugar."
+        },
+        {
+          "id": "a1-11-d04",
+          "type": "choice",
+          "prompt": "Lo hago ____ ti.",
+          "options": [
+            "por",
+            "para",
+            "con",
+            "sin"
+          ],
+          "answer": [
+            "por"
+          ],
+          "why": "Por = causa/motivo (por ti = por tu causa)."
+        }
+      ]
+    },
+    {
+      "id": "a1-12-numeros-tiempo",
+      "order": 12,
+      "title": "Números, hora, fechas",
+      "subtitle": "0-100, la hora, la fecha",
+      "topics": [
+        "numeros",
+        "hora",
+        "fecha"
+      ],
+      "prereq": [
+        "a1-11-preposiciones"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "16-19: dieciséis, diecisiete... 21-29: veintiuno, veintidós... 31-99: treinta y uno... Hora: Son las tres. Es la una. Fecha: Hoy es lunes 15 de mayo."
+        },
+        {
+          "kind": "rule",
+          "title": "Hora",
+          "text": "Son las [hora] y [minutos]. Son las tres y cuarto (3:15). Son las tres y media (3:30). Son las cuatro menos cuarto (3:45)."
+        },
+        {
+          "kind": "rule",
+          "title": "Fecha",
+          "text": "Hoy es [día] [fecha] de [mes] de [año]. Primero = 1º (primero)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-12-d01",
+          "type": "choice",
+          "prompt": "21 = ____",
+          "options": [
+            "veintiuno",
+            "veinte y uno",
+            "veintiún",
+            "veintiuna"
+          ],
+          "answer": [
+            "veintiuno"
+          ],
+          "why": "21-29 se escriben juntos."
+        },
+        {
+          "id": "a1-12-d02",
+          "type": "choice",
+          "prompt": "Son las ____ y media. (3:30)",
+          "options": [
+            "tres",
+            "tress",
+            "tresn",
+            "tresmos"
+          ],
+          "answer": [
+            "tres"
+          ],
+          "why": "3:30 = Son las tres y media."
+        },
+        {
+          "id": "a1-12-d03",
+          "type": "fill",
+          "prompt": "Hoy es lunes 1 de ____ . (enero)",
+          "answer": [
+            "enero"
+          ],
+          "why": "1º = primero. Enero."
+        },
+        {
+          "id": "a1-12-d04",
+          "type": "choice",
+          "prompt": "Son las ____ menos cuarto. (3:45)",
+          "options": [
+            "cuatro",
+            "tres",
+            "cinco",
+            "dos"
+          ],
+          "answer": [
+            "cuatro"
+          ],
+          "why": "4 menos cuarto = 3:45."
+        }
+      ]
+    },
+    {
+      "id": "a1-13-reflexivos",
+      "order": 13,
+      "title": "Verbos reflexivos: me lavo, te levantas, se acuesta",
+      "subtitle": "Pronombre antes del verbo",
+      "topics": [
+        "reflexivos"
+      ],
+      "prereq": [
+        "a1-06-irregulares"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Acción que recae sobre el sujeto. Pronombres: me, te, se, nos, os, se. Van ANTES del verbo conjugado."
+        },
+        {
+          "kind": "rule",
+          "title": "Levantarse",
+          "text": "Me levanto, te levantas, se levanta, nos levantamos, os levantáis, se levantan."
+        },
+        {
+          "kind": "rule",
+          "title": "Infinitivo/Gerundio/Imperativo",
+          "text": "Voy a lavarme / Estoy lavándome / ¡Lávate! (pronombre al final con guion)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-13-d01",
+          "type": "choice",
+          "prompt": "Yo ____ (lavarse) las manos.",
+          "options": [
+            "me lavo",
+            "te lavas",
+            "se lava",
+            "lavo me"
+          ],
+          "answer": [
+            "me lavo"
+          ],
+          "why": "Yo + me + verbo."
+        },
+        {
+          "id": "a1-13-d02",
+          "type": "choice",
+          "prompt": "Ellos ____ (acostarse) temprano.",
+          "options": [
+            "se acuestan",
+            "se acuestans",
+            "se acuestann",
+            "se acuestanmos"
+          ],
+          "answer": [
+            "se acuestan"
+          ],
+          "why": "Ellos + se + verbo (ue en raíz)."
+        },
+        {
+          "id": "a1-13-d03",
+          "type": "fill",
+          "prompt": "Voy a ____ (ducharme).",
+          "answer": [
+            "ducharme"
+          ],
+          "why": "Infinitivo + pronombre al final."
+        },
+        {
+          "id": "a1-13-d04",
+          "type": "choice",
+          "prompt": "¡____ (lavarse) las manos!",
+          "options": [
+            "Lávate",
+            "Lávese",
+            "Lavaos",
+            "Lávense"
+          ],
+          "answer": [
+            "Lávate"
+          ],
+          "why": "Imperativo tú + pronombre al final."
+        }
+      ]
+    },
+    {
+      "id": "a1-14-indefinido-regular",
+      "order": 14,
+      "title": "Pretérito indefinido regular (-ar, -er, -ir)",
+      "subtitle": "Acción completada en pasado: hablé, comí, viví",
+      "topics": [
+        "indefinido_regular"
+      ],
+      "prereq": [
+        "a1-04-present-ar",
+        "a1-05-present-er-ir"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Indefinido = acción terminada en pasado. -ar: -é, -aste, -ó, -amos, -asteis, -aron. -er/-ir: -í, -iste, -ió, -imos, -isteis, -ieron."
+        },
+        {
+          "kind": "rule",
+          "title": "Acentos clave",
+          "text": "Yo hablé (acento). Él/Ella habló (acento). Nosotros hablamos (igual que presente -ar)."
+        },
+        {
+          "kind": "table",
+          "ref": "pret_indef_regular"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a1-14-d01",
+          "type": "choice",
+          "prompt": "Ayer yo ____ (hablar) con Juan.",
+          "options": [
+            "hablé",
+            "hablaste",
+            "habló",
+            "hablamos"
+          ],
+          "answer": [
+            "hablé"
+          ],
+          "why": "Yo -ar → -é (con acento)."
+        },
+        {
+          "id": "a1-14-d02",
+          "type": "choice",
+          "prompt": "Ellos ____ (comer) pizza.",
+          "options": [
+            "comieron",
+            "comierons",
+            "comieronn",
+            "comieronmos"
+          ],
+          "answer": [
+            "comieron"
+          ],
+          "why": "Ellos -er/-ir → -ieron."
+        },
+        {
+          "id": "a1-14-d03",
+          "type": "fill",
+          "prompt": "Nosotros ____ (vivir) allí.",
+          "answer": [
+            "vivimos"
+          ],
+          "why": "Nosotros -ir → -imos (igual que presente)."
+        },
+        {
+          "id": "a1-14-d04",
+          "type": "choice",
+          "prompt": "Tú ____ (estudiar) mucho.",
+          "options": [
+            "estudiaste",
+            "estudiastes",
+            "estudiasten",
+            "estudiastemos"
+          ],
+          "answer": [
+            "estudiaste"
+          ],
+          "why": "Tú -ar → -aste."
+        }
+      ]
+    }
+  ]
+}

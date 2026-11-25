@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "bridges": {
+    "a1-01-genre-nombre": {
+      "can_do": "Понимать, что у существительных есть род (m/f) и число, и это влияет на артикли и прилагательные.",
+      "bridge": "В русском/украинском род есть (муж/жен/ср), но в французском ТОЛЬКО m/f — нет среднего. Число работает похоже (sg/pl).",
+      "trap": "Нельзя угадать род по смыслу всегда (la table — женский, le bureau — мужской). Учить с артиклем!"
+    },
+    "a1-02-articles": {
+      "can_do": "Использовать определённый (le/la/l'/les) и неопределённый (un/une/des) артикли.",
+      "bridge": "В русском/украинском артиклей НЕТ. Le/la ≈ «этот», un/une ≈ «один/какой-то».",
+      "trap": "L' перед гласной/молчащим h (l'homme), des = неопр. артикль во мн. ч. (не «де»!)."
+    },
+    "a1-03-adjectives": {
+      "can_do": "Согласовывать прилагательные по роду и числу (grand/grande/grands/grandes).",
+      "bridge": "В русском/украинском прилагательные тоже согласуются (большой/большая/большие), но окончания другие.",
+      "trap": "Многие прилагательные имеют нестандартное женское (beau→belle, nouveau→nouvelle, vieux→vieille)."
+    },
+    "a1-04-present-er": {
+      "can_do": "Спрягать регулярные глаголы на -er (parler, aimer, manger) во всех лицах.",
+      "bridge": "В русском/украинском спряжение сложнее (я говорю, ты говоришь, он говорит...). Французское -er — самая предсказуемая группа.",
+      "trap": "Написание: je parl**e**, tu parl**es**, il parl**e** — три формы звучат одинаково!"
+    },
+    "a1-05-present-irregular": {
+      "can_do": "Спрягать être, avoir, aller, faire, venir в présent.",
+      "bridge": "Être/avoir = быть/иметь (как в русском), но aller (идти) и faire (делать) — уникальные.",
+      "trap": "Je vais (не *je vas*), nous allons (не *nous allons*), ils font (не *ils fontent*)."
+    },
+    "a1-06-negation": {
+      "can_do": "Образовывать отрицание ne...pas, ne...jamais, ne...rien, ne...personne.",
+      "bridge": "В русском «не» стоит перед глаголом. Во французском ДВЕ части: ne перед глаголом, pas после.",
+      "trap": "ne сокращается в n' перед гласной (je ne sais → je n'sais). Jamais/rien/personne заменяют pas."
+    },
+    "a1-07-questions": {
+      "can_do": "Строить вопросы тремя способами: интонация, est-ce que, инверсия.",
+      "bridge": "В русском/украинском вопрос — интонацией или частицей «ли». Est-ce que ≈ «это так, что...».",
+      "trap": "Инверсия: Parles-tu? (с дефисом). Tu parles? (интонация) — только в устной речи."
+    },
+    "a1-08-prepositions": {
+      "can_do": "Использовать базовые предлоги: à, de, en, dans, sur, sous, avec, sans.",
+      "bridge": "À = в/на (город), de = из/от, en = в (страна женск.), dans = внутри, sur = на, sous = под.",
+      "trap": "À + le = au, à + les = aux, de + le = du, de + les = des — обязательные сокращения!"
+    },
+    "a1-09-partitive": {
+      "can_do": "Использовать частичный артикль du/de la/de l'/des для «некоторого количества».",
+      "bridge": "В русском: «хлеба», «воды» (родительный). Во французском: du pain, de l'eau — ОБЯЗАТЕЛЬНО.",
+      "trap": "После отрицания: je ne mange **pas de** pain (не du!). Частичный исчезает после не/pas."
+    },
+    "a1-10-possessives": {
+      "can_do": "Использовать притяжательные: mon/ma/mes, ton/ta/tes, son/sa/ses...",
+      "bridge": "В русском: мой/моя/мои — согласуются с существительным. Во французском ТОЖЕ, но базовая форма зависит от ВЛАДЕЛЬЦА.",
+      "trap": "Mon/ton/son перед женским со словом на гласную: mon amie (не *ma amie*)."
+    },
+    "a1-11-demonstratives": {
+      "can_do": "Различать ce/cet/cette/ces.",
+      "bridge": "В русском: этот/эта/это/эти. Cet перед гласной/молчащим h = ce + t (euphonie).",
+      "trap": "Ce livre, **cet** ami, cette table, ces livres."
+    },
+    "a1-12-numbers-time": {
+      "can_do": "Называть числа, время, даты.",
+      "bridge": "Числа 70=soixante-dix, 80=quatre-vingts, 90=quatre-vingt-dix — вигезаримальная система (по 20).",
+      "trap": "В Бельгии/Швейцарии: 70=septante, 80=huitante/octante, 90=nonante. Время: il est trois heures."
+    },
+    "a1-13-near-future": {
+      "can_do": "Выражать ближайшее будущее: aller + infinitif.",
+      "bridge": "Аналог русского «собираюсь/поеду делать»: Je vais manger = Я собираюсь есть / Я поем.",
+      "trap": "Aller спрягается, второй глагол — в инфинитиве. Не путать с futur simple!"
+    },
+    "a1-14-imperative": {
+      "can_do": "Образовать императив: parle / parlons / parlez.",
+      "bridge": "В русском: говори / говорите. Во французском: tu → без -s (parle!), nous → parlons!, vous → parlez!",
+      "trap": "Глаголы на -er: tu parle (не *parles*). Отрицание: ne parle pas! Рефлексивные: lève-toi!"
+    },
+    "a2-01-passe-compose": {
+      "can_do": "Образовать passé composé с avoir: j'ai parlé, tu as parlé...",
+      "bridge": "Аналог прошедшего совершенного: «я сделал». Авиатор = avoir, Partiçipe passé = -é (-er→é).",
+      "trap": "Большинство глаголов с avoir. 14+ глаголов движения + рефлексивные — с être (согласование!)."
+    },
+    "a2-02-imparfait": {
+      "can_do": "Образовать и употреблять imparfait (beschreibung, habitude, passé progressif).",
+      "bridge": "Аналог русского несовершенного вида: «я делал/делал бы». Основа = nous формы présent без -ons + -ais/-ais/-ait/-ions/-iez/-aient.",
+      "trap": "Être → étais (не *êtait*). Только ИМПАРФАЙТ даёт описание фона в прошлом."
+    },
+    "a2-03-pc-vs-imparfait": {
+      "can_do": "Выбирать между passé composé и imparfait.",
+      "bridge": "PC = событие/факт (точка на таймлайне). Imparfait = фон/описание/привычка (отрезок на таймлайне).",
+      "trap": "C'était beau (описание) vs Il est arrivé (событие). Часто в одном предложении: Il lisait quand le téléphone a sonné."
+    },
+    "a2-04-futur-simple": {
+      "can_do": "Образовать futur simple: je parlerai, tu parleras...",
+      "bridge": "Аналог «я буду делать». Основа = инфинитив (для -er/-ir) или инфинитив без -e (vendre→vendr-), окончания = avoir.",
+      "trap": "Je ferai (faire), j'irai (aller), j'aurai (avoir), je serai (être) — неправильные основы."
+    },
+    "a2-05-conditionnel": {
+      "can_do": "Образовать conditionnel présent: je parlerais...",
+      "bridge": "Аналог «я бы делал». Те же основы, что futur simple, окончания = imparfait (-ais/-ais/-ait/-ions/-iez/-aient).",
+      "trap": "Je voudrais (vouloir), je pourrais (pouvoir), je devrais (devoir) — те же нерегулярности, что futur."
+    },
+    "a2-06-subjunctive-present": {
+      "can_do": "Образовать subjonctif présent регулярных и основных неправильных.",
+      "bridge": "Нет прямого аналога в русском/украинском. Выражает желание/необходимость/сомнение после que.",
+      "trap": "Основа = 3л. мн. ч. présent (ils parlent → parl-) + -e/-es/-e/-ions/-iez/-ent. Être/avoir/aller/faire/savoir/pouvoir/vouloir — нерегулярные."
+    },
+    "a2-07-subjunctive-triggers": {
+      "can_do": "Узнавать триггеры субъюнктива: il faut que, je veux que, bien que, pour que...",
+      "bridge": "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Order. После que → subjonctif.",
+      "trap": "Il est probable que → indicatif (не subjonctif!). Il est possible que → subjonctif."
+    },
+    "a2-08-relative-pronouns": {
+      "can_do": "Использовать qui, que, où, dont.",
+      "bridge": "Qui = кто/который (подлежащее). Que = кого/что (дополнение). Où = где/когда. Dont = о ком/чём (предлог de).",
+      "trap": "Dont заменяет de + объект. L'ami dont je parle (je parle **de** l'ami). Не *que je parle de*."
+    },
+    "a2-09-object-pronouns": {
+      "can_do": "Размещать местоимения-дополнения: le/la/les, lui/leur, y, en.",
+      "bridge": "Порядок перед глаголом: me/te → le/la/les → lui/leur → y → en. В утвердительном императиве — ПОСЛЕ глагола с дефисами.",
+      "trap": "Je le lui donne. Donne-le-moi! Ne me le donne pas! Y/en всегда после всех остальных."
+    },
+    "a2-10-comparatives": {
+      "can_do": "Строить сравнение: plus/moins/aussi...que.",
+      "bridge": "В русском: больше/меньше/так же... как. Во французском: plus grand que / moins grand que / aussi grand que.",
+      "trap": "После que — подлежащее (que moi) или подчёркнутое местоимение (que je)."
+    },
+    "a2-11-superlatives": {
+      "can_do": "Образовать превосходную степень: le plus/le moins... de.",
+      "bridge": "В русском: самый большой. Во французском: le plus grand de la classe. Артикль обязателен!",
+      "trap": "Irréguliers: bon → le meilleur, mauvais → le pire, petit → le moindre."
+    },
+    "a2-12-si-clauses-present": {
+      "can_do": "Строить реальные условия: si + présent → futur/présent.",
+      "bridge": "Если условие реальное: Si j'ai le temps, je viendrai. В русском: если у меня будет время, я приду.",
+      "trap": "Не *si j'aurai*! После si — ТОЛЬКО présent (для реальных условий)."
+    },
+    "a2-13-recent-past": {
+      "can_do": "Выражать недавнее прошедшее: venir de + infinitif.",
+      "bridge": "Аналог «только что сделал»: Je viens de manger = Я только что поел.",
+      "trap": "Venir спрягается в présent. Не путать с passé composé!"
+    },
+    "a2-14-depuis-pendant": {
+      "can_do": "Различать depuis, pendant, il y a.",
+      "bridge": "Depuis + présent = «уже сколько-то время делаю» (сMoment до сейчас). Pendant + passé = «делал некоторое время» (закончено). Il y a = «какое-то время назад» (точка в прошлом).",
+      "trap": "J'habite ici depuis 2 ans (не *pendant*). Je l'ai fait il y a 2 ans."
+    },
+    "b1-01-subjunctive-past": {
+      "can_do": "Образовать subjonctif passé: que j'aie fait / que je sois allé.",
+      "bridge": "Subjonctif passé = action antérieure к главному глаголу в настоящем/будущем. Auxiliaire (subjonctif présent) + participe passé.",
+      "trap": "Согласование с être как в passé composé. Il faut que tu aies fini."
+    },
+    "b1-02-si-clauses-past": {
+      "can_do": "Строить irréel du passé: si + plus-que-parfait → conditionnel passé.",
+      "bridge": "Если бы я сделал (но не сделал): Si j'avais su, je serais venu. В русском: Если бы я знал, я бы пришёл.",
+      "trap": "Не *si j'aurais eu*! После si — plus-que-parfait. Главная — conditionnel passé."
+    },
+    "b1-03-plus-que-parfait": {
+      "can_do": "Образовать plus-que-parfait: j'avais parlé / j'étais allé.",
+      "bridge": "Предпрошедшее: действие ДО другого прошедшего. Авиатор (imparfait) + participe passé. Как русский «уже сделал к моменту...».",
+      "trap": "Согласование с être. Quand je suis arrivé, il était déjà parti."
+    },
+    "b1-04-conditionnel-past": {
+      "can_do": "Образовать conditionnel passé: j'aurais parlé / je serais allé.",
+      "bridge": "Условное прошедшее: «я бы сделал». Авиатор (conditionnel présent) + participe passé.",
+      "trap": "J'aurais voulu venir. Согласование с être."
+    },
+    "b1-05-passive-voice": {
+      "can_do": "Образовать пассив: être + participe passé (согласование!).",
+      "bridge": "В русском: Straße wird gebaut /-Straße wurde gebaut. Во французском: La rue est construite / a été construite. Агент: par + личное местоимение (par moi) или nom.",
+      "trap": "Согласование обязательно: La porte est ouverte (f sg). On évite le passif → on + actif / se + passif réflexif."
+    },
+    "b1-06-indirect-speech": {
+      "can_do": "Передавать чужую речь: il dit que / il a dit que + последовательность времен.",
+      "bridge": "Прямая: «Je viens.» → Косвенная: Il dit qu'il vient. Il a dit qu'il viendrait (сиквенция: présent→imparfait, futur→conditionnel, PC→PQP).",
+      "trap": "Убрать guillemets, изменить местоимения (je→il), временные маркеры (aujourd'hui→ce jour-là)."
+    },
+    "b1-07-gerund": {
+      "can_do": "Образовать герундий: en + participe présent (en faisant).",
+      "bridge": "Аналог деепричастия: «делая». En faisant = «en faisant / quand je fais / parce que je fais».",
+      "trap": "Только en + -ant форма. Participe présent = -ant (parlant), gérondif = en parlant. Pas de sujet exprimé!"
+    },
+    "b1-08-past-infinitive": {
+      "can_do": "Использовать infinitif passé: avoir fait / être parti.",
+      "bridge": "Инфинитив прошедшего: «ать сделанным». Après avoir/être + participe passé. Après avoir mangé, je suis parti.",
+      "trap": "Согласование с être. Pour être parti si tôt... (but: pour avoir fini)."
+    },
+    "b1-09-cause-consequence": {
+      "can_do": "Выражать причину/следствие: parce que, comme, puisque, donc, par conséquent.",
+      "bridge": "Parce que = потому что (ответ на pourquoi). Comme/puisque = так как (факт известен). Donc/par conséquent = поэтому.",
+      "trap": "Parce que + indicatif. Puisque + indicatif. Но: à cause de / grâce à + noms."
+    },
+    "b1-10-concession": {
+      "can_do": "Выражать уступку: bien que / quoique / même si + subjonctif.",
+      "bridge": "Хотя... В русском: Хотя он устал, он работает. Во французском: Bien qu'il soit fatigué, il travaille (subjonctif!).",
+      "trap": "Bien que / quoique → ТОЛЬКО subjonctif. Même si → indicatif (réel) OU subjonctif (hypothétique)."
+    },
+    "b1-11-purpose": {
+      "can_do": "Выражать цель: pour que / afin que + subjonctif.",
+      "bridge": "Чтобы... В русском: Я иду, чтобы купить хлеб. Во французском: Je vais pour que j'achète du pain (subjonctif!).",
+      "trap": "Pour + infinitif (если подлежащее то же): Je vais pour acheter. Pour que + subjonctif (если подлежащие разные)."
+    },
+    "b1-12-hypothesis": {
+      "can_do": "Операть всеми тремя типами si-clauses.",
+      "bridge": "Type 1: si présent → futur (réel). Type 2: si imparfait → conditionnel (irréel présent). Type 3: si PQP → cond. passé (irréel passé).",
+      "trap": "Не путать: si j'aurais (✗) → si j'avais (✓). Si j'aurais eu (✗) → si j'avais eu (✓)."
+    },
+    "b2-01-subjunctive-imperfect": {
+      "can_do": "Узнавать subjonctif imparfait (лтературный): que je parlasse.",
+      "bridge": "Литературная форма после глаголов в прошлом, требующих subjonctif. Je voulais qu'il vînt (modern: qu'il vienne).",
+      "trap": "Только в литературе/формальном письме. В устной речи — présent subjonctif."
+    },
+    "b2-02-subjunctive-pqp": {
+      "can_do": "Узнавать subjonctif plus-que-parfait: que j'eusse fait.",
+      "bridge": "Самая редкая форма. После прошлого + subjonctif trigger. Il doutait qu'il l'eût fait.",
+      "trap": "Почти не используется в современном языке. Для пассивного распознавания."
+    },
+    "b2-03-passive-advanced": {
+      "can_do": "Использовать сложные пассивные конструкции.",
+      "bridge": "Passif composé: ayant été fait. Infinitif passif: être fait. Participe passé comme adjectif: une porte fermée.",
+      "trap": "On + actif часто заменяет пассив: On dit que... = Il est dit que..."
+    },
+    "b2-04-subjunctive-sequence": {
+      "can_do": "Соблюдать последовательность времен в subjonctif.",
+      "bridge": "Главный в présent/futur → subjonctif présent. Главный в passé/cond. → subjonctif présent (action simultanée) или passé (action antérieure).",
+      "trap": "Il faut que tu fasses (présent). Il fallait que tu fasses (imparfait → subj. présent) ou que tu aies fait (PQP → subj. passé)."
+    },
+    "b2-05-subjunctive-vs-indicative": {
+      "can_do": "Различать subjonctif и indicatif после выражений сомнения/эмоций.",
+      "bridge": "Je doute qu'il vienne (subj) vs Je ne doute pas qu'il vient (ind). C'est possible qu'il vienne (subj) vs C'est probable qu'il vient (ind).",
+      "trap": "Négation change le mode: je pense qu'il vient (ind) → je ne pense pas qu'il vienne (subj)."
+    },
+    "b2-06-nominalization": {
+      "can_do": "Использовать номинализацию: le fait de + subjonctif, l'idée que...",
+      "bridge": "Глагол → существительное: Le fait qu'il parte me chagrine. L'idée de partir... (предлог + infinitif).",
+      "trap": "Le fait que + subjonctif (эмоция/оценка). L'idée que + indicatif (факт)."
+    },
+    "b2-07-cleft-sentences": {
+      "can_do": "Строить раздельные предложения: c'est... qui/que.",
+      "bridge": "Акцент на элементе: C'est Marie qui a appelé. C'est hier qu'il est venu. Ce que je veux, c'est dormir.",
+      "trap": "C'est + имя/подчёркнутое местоимение + qui/que. Ce qui/ce que = то, что (субъект/объект)."
+    },
+    "b2-08-discourse-markers": {
+      "can_do": "Использовать маркеры дискурса: du coup, en fait, bref, enfin, quand même.",
+      "bridge": "Du coup = поэтому/в итоге. En fait = вообще-то/фактически. Bref = короче. Enfin = ну/короче. Quand même = всё равно/всё-таки.",
+      "trap": "Разговорная речь. В формальном письме избегать."
+    },
+    "c1-01-subjunctive-nuances": {
+      "can_do": "Улавливать нюансы: douter que (subj) vs ne pas douter que (ind).",
+      "bridge": "Думайте о степени уверенности. Je doute qu'il vienne (не уверен). Je ne doute pas qu'il viendra (уверен → indicatif futur).",
+      "trap": "Ne pas douter / il est certain / il est sûr → indicatif. Douter / il est douteux → subjonctif."
+    },
+    "c1-02-literary-tenses": {
+      "can_do": "Узнавать passé simple и passé antérieur в литературе.",
+      "bridge": "Passé simple = простое прошедшее (литературный аналог PC). Je parlai. Passé antérieur = предпрошедшее (литературный аналог PQP). J'eus parlé.",
+      "trap": "Только в литературе/истории. В устной речи — PC/PQP."
+    },
+    "c1-03-register-style": {
+      "can_do": "Различать регистры: soutenu / courant / familier / québécois.",
+      "bridge": "Soutenu: «Je n'ai pas» → «Je n'ai point», «nous» → «on», inversion questions. Familier: «je sais pas», «c'est moi qui...», «y'a». Québécois: «magasin» (store), «char» (voiture), «déjeuner» (petit-déjeuner).",
+      "trap": "Ne pas mélanger les registres dans un même contexte."
+    },
+    "c2-01-native-idioms": {
+      "can_do": "Использовать идиомы и коллокации носителей.",
+      "bridge": "Avoir le cafard (депрессия), coûter les yeux de la tête (очень дорого), donner sa langue au chat (сдаться). Коллокации: prendre une décision (не *faire*), faire attention (не *donner*).",
+      "trap": "Прямой перевод идиом не работает. Учить как готовые блоки."
+    },
+    "c2-02-regional-variants": {
+      "can_do": "Понимать региональные варианты: Квебек, Бельгия, Швейцария, Африка.",
+      "bridge": "Квебек: vocab (char, magasiner), prononciation (moé/toé), grammaire (sur/in). Бельгия: septante/nonante, savoir/pouvoir. Африка: le/la simplification, emprunts locaux.",
+      "trap": "Не считать «ошибками» — это нормативные варианты стандарта."
+    }
+  }
+}
