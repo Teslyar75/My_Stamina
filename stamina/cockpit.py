@@ -1563,11 +1563,12 @@ class Cockpit(tk.Tk):
             self.screens["honor"].on_key(e)
 
     def _on_key_up(self, e: tk.Event) -> None:
-        """Отпускание клавиши — только английской зоне (подсказка T держится, пока клавиша нажата)."""
-        if self.current == english_hook.KEY:
-            scr = self.screens.get(english_hook.KEY)
-            if scr is not None and hasattr(scr, "on_key_up"):
-                scr.on_key_up(e)
+        """Отпускание клавиши — английской зоне и сканеру языков (перевод T держится, пока нажата)."""
+        if self.current in (english_hook.KEY, languages_hook.KEY):
+            scr = self.screens.get(self.current)
+            fn = getattr(scr, "on_key_up", None)
+            if callable(fn):
+                fn(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():

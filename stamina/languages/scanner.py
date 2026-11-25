@@ -15,14 +15,21 @@ from tkinter import simpledialog
 from stamina import theme
 from stamina.adapt import bind_wraplength
 from stamina.english.mic import MicPanel
-from stamina.english.speech_std import advance_later, passed
+from stamina.english.speech_std import advance_later, is_hint_key, is_mic_key, passed
 from stamina.english.textutil import score_sentence, score_word
-from stamina.english.ui import Flow, L, MatchReadout, ScrollFrame, WrapEntry, chip
+from stamina.english.ui import Flow, FocusMode, L, MatchReadout, ScrollFrame, WrapEntry, chip
+from stamina.grammar_ui.focus import is_grammar_focus_key
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
 from stamina.languages.ctx import LangCtx
 from stamina.languages.speech import asr_for, ensure_model, model_ready, stop_speak
 from stamina.theme import AMBER, BG, CYAN, GREEN, LINE, LINE_HI, MUTED, PANEL, RED, TEXT, px
+
+# Масштаб шрифтов — те же числа, что в английском сканере (english/pages_main.py).
+FOCUS_FONT_GAIN = 0.8
+NORMAL_FONT_GAIN = 0.6
+NORMAL_FONT_CAP = 3.0
+NORMAL_FONT_MIN = 0.66
 
 
 def _gloss_text(word, progress) -> str:
@@ -48,6 +55,12 @@ class WordScanner(tk.Frame):
                 break
         self.si = 0
         self._bar_mode = None
+        self._focus = None           # фокус-режим: панели на всю высоту окна (см. ui.FocusMode)
+        self._k = 1.0                # масштаб шрифтов: 1 — обычно, больше — в фокус-режиме
+        self._word_px = 20
+        self._grow_saved = []
+        self._fit_job = None
+        self._fit_settle_job = None
         self.ctx = LangCtx(progress, asr_for(lang), app, lang=lang, voice_error=self._voice_error)
         ensure_model(lang, on_done=lambda: self.after(0, self._model_ready))
 
@@ -55,6 +68,12 @@ class WordScanner(tk.Frame):
         self.sf.pack(fill=tk.BOTH, expand=True)
         self.sf.autohide = True       # полоса прокрутки — только если не влезает
         self._build(self.sf.inner)
+        # то же, что в английском сканере: обычный режим заполняет высоту окна,
+        # а внутренние блоки (микрофон, подсказки) могут менять высоту без Configure
+        self.sf.canvas.bind("<Configure>", self._queue_fit, add="+")
+        self.sf.inner.bind("<Configure>", self._queue_fit, add="+")
+        self.bind("<Map>", lambda _e: self.after_idle(lambda: self._fit_normal(force=True)), add="+")
+        self.bind("<Unmap>", self._on_unmap, add="+")
 
         if model_ready(lang):
             self.ctx.asr.load_async()
@@ -74,6 +93,9 @@ class WordScanner(tk.Frame):
             side=tk.LEFT, padx=(px(3), 0))
         HudButton(bar, "▶", lambda: self._neighbor(1), width=28, height=22, font_size=7).pack(
             side=tk.LEFT, padx=px(3))
+        self.btn_focus = HudButton(bar, _t("⛶ ФОКУС  O"), lambda: self.toggle_focus(),
+                                   height=22, font_size=7)
+        self.btn_focus.pack(side=tk.LEFT, padx=(px(3), 0))
         self.where = L(bar, "", fg=MUTED, size=8, bg=PANEL)
         self.where.pack(side=tk.LEFT, padx=px(6))
         win.bind("<Configure>", lambda e: self._place_actbar(e.width), add="+")
@@ -92,6 +114,20 @@ class WordScanner(tk.Frame):
         self.rank.pack(anchor="w")
         self.lemma = L(c0, "", fg=TEXT, size=20, bold=True, mono=True)
         self.lemma.pack(anchor="w")
+
+        def fit_word(_e=None):      # длинное слово уменьшает шрифт, а не вылезает из колонки
+            avail = c0.winfo_width() - px(4)
+            txt = self.lemma.cget("text")
+            if avail <= 1 or not txt:
+                return
+            size = round(20 * self._k)
+            while size > 11 and tkfont.Font(font=theme.font(size, True, True)).measure(txt) > avail:
+                size -= 1
+            if size != self._word_px:
+                self._word_px = size
+                self.lemma.configure(font=theme.font(size, True, True))
+        self._fit_word = fit_word
+        c0.bind("<Configure>", fit_word, add="+")
         self.meta = Flow(c0, gap=2)
         self.meta.pack(fill=tk.X, pady=(0, px(2)))
         sens = Flow(c0, gap=3)
@@ -247,6 +283,267 @@ class WordScanner(tk.Frame):
         h = max(1, min(3, (n or 0) + 1))
         if int(self.sent.cget("height")) != h:
             self.sent.configure(height=h)
+            if getattr(self.sf, "autohide", False):
+                self.after(20, self.sf.sync)
+
+    # -- фокус-режим и масштаб: те же правила, что в английском сканере -----
+    def toggle_focus(self, on: bool | None = None, **_kw) -> None:
+        """Развернуть рабочие панели на всё окно (O/Щ или Ctrl+O), Esc — выход."""
+        on = (self._focus is None) if on is None else on
+        if on and self._focus is None:
+            self._focus = FocusMode(self)
+            self._grow(True)
+        elif not on and self._focus is not None:
+            f, self._focus = self._focus, None
+            self._grow(False)
+            f.restore()
+            self.after_idle(self._fit_normal)
+        btn = getattr(self, "btn_focus", None)
+        if btn is not None:
+            btn.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
+            btn.set_active(self._focus is not None)
+        try:
+            self.focus_set()
+        except tk.TclError:
+            pass
+
+    def _grow(self, on: bool) -> None:
+        """Фокус-режим: панели на всю высоту, шрифт по окну (FOCUS_FONT_GAIN)."""
+        if on:
+            self._fill(FOCUS_FONT_GAIN, 4.0)
+        else:
+            self._fill(None)
+
+    def scale_for(self, cw: int, chh: int, gain: float, cap: float) -> float:
+        """Общая формула масштаба для фокуса и обычного режима."""
+        return max(1.0, min(cap, cw / 512, chh / 270) * gain)
+
+    def _fill(self, gain: float | None, cap: float = 4.0, calm: bool = False) -> None:
+        """Растянуть панели сканера и канала связи по высоте окна и масштабировать шрифт.
+
+        gain=None — вернуть исходную компактную раскладку. calm — обычный режим:
+        каждая панель получает не меньше своего содержимого, остаток высоты 55/45.
+        """
+        panels = [w for w in (getattr(self, "scan_panel", None), getattr(self, "chan", None))
+                  if w is not None]
+        if len(panels) != 2:
+            return
+        sp, ch_ = panels
+        try:
+            if gain is not None:
+                if not self._grow_saved:
+                    self._grow_saved = [(w, dict(w.pack_info())) for w in panels
+                                        if w.winfo_manager() == "pack"]
+                self._center(True)
+                for w in panels:
+                    w.pack_propagate(False)
+                    w.pack_configure(fill=tk.BOTH, expand=False)
+                self.update_idletasks()
+                cw = max(1, self.sf.canvas.winfo_width())
+                chh = max(1, self.sf.canvas.winfo_height())
+                k = self.scale_for(cw, chh, gain, cap)
+                if not calm:
+                    k = max(1.0, k * 0.98)  # запас: фокус не должен упираться в потолок окна
+                min_k = NORMAL_FONT_MIN if calm else 1.0
+                for _ in range(12):         # защита от дребезга layout/scrollbar на границе
+                    self._scale(k)
+                    if not calm:
+                        self.update_idletasks()
+                    other = self.sf.inner.winfo_reqheight() - sp.winfo_reqheight() - ch_.winfo_reqheight()
+                    avail = chh - max(0, other) - (0 if calm else px(4))
+                    h1 = int(avail * 0.55)
+                    h2 = avail - h1
+                    need = lambda p: p.body.winfo_reqheight() + px(26) + px(4) + px(6)
+                    over = lambda p, hh: need(p) > hh
+                    if calm:
+                        n1, n2 = need(sp), need(ch_)
+                        if n1 + n2 > avail and k > min_k + 0.01:
+                            k = max(min_k, k * 0.92)
+                            continue
+                        h1 = n1 + int((avail - n1 - n2) * 0.55)
+                        h2 = avail - h1
+                    sp.configure(height=h1)
+                    ch_.configure(height=h2)
+                    if calm:
+                        overflow = self.sf.inner.winfo_reqheight() - chh
+                        if overflow > 0 and k > min_k + 0.01:
+                            k = max(min_k, k * 0.92)
+                            continue
+                    if k <= min_k or not (over(sp, h1) or over(ch_, h2)):
+                        break
+                    nk = max(min_k, k * 0.92)
+                    if abs(nk - k) < 0.005:
+                        break
+                    k = nk
+            else:
+                self._scale(1.0)
+                self._center(False)
+                for w, info in self._grow_saved or []:
+                    w.pack_propagate(True)
+                    w.configure(height=1)
+                    w.pack_configure(fill=info.get("fill", tk.X), expand=info.get("expand", 0))
+                self._grow_saved = []
+            self.sf.sync()
+        except tk.TclError:
+            pass
+
+    def _visible_for_fit(self) -> bool:
+        """Сканер показывается вместо страницы отсека — пересчитывать fit только когда видно."""
+        try:
+            return bool(self.winfo_ismapped())
+        except tk.TclError:
+            return False
+
+    def _cancel_fit_jobs(self) -> None:
+        for attr in ("_fit_job", "_fit_settle_job"):
+            job = getattr(self, attr, None)
+            if job is None:
+                continue
+            try:
+                self.after_cancel(job)
+            except tk.TclError:
+                pass
+            setattr(self, attr, None)
+
+    def _fit_normal(self, force: bool = False) -> None:
+        """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
+        self._fit_job = None
+        if (self._focus is not None or not self.winfo_ismapped() or not self._visible_for_fit()):
+            return
+        cv = self.sf.canvas
+        width, height = cv.winfo_width(), cv.winfo_height()
+        if width < 50 or height < 50:
+            return
+        self._fill(NORMAL_FONT_GAIN, NORMAL_FONT_CAP, calm=True)
+        if height <= px(360) and self._k > NORMAL_FONT_MIN + 0.001:
+            self._scale(NORMAL_FONT_MIN)
+            self.sf.sync()
+        for _ in range(4):          # метрики Tk могут дать небольшой overflow после первого fit
+            try:
+                y1 = self.sf.canvas.yview()[1]
+            except tk.TclError:
+                break
+            if y1 >= 0.995 or self._k <= NORMAL_FONT_MIN + 0.001:
+                break
+            self._scale(max(NORMAL_FONT_MIN, self._k * 0.92))
+            self.sf.sync()
+        if not force and self._fit_settle_job is None:
+            self._fit_settle_job = self.after_idle(self._fit_settle)
+
+    def _queue_fit(self, _e=None) -> None:
+        """Trailing debounce: считать fit в финальной геометрии, а не в середине каскада."""
+        if not self._visible_for_fit():
+            self._cancel_fit_jobs()
+            return
+        if self._fit_job is not None:
+            try:
+                self.after_cancel(self._fit_job)
+            except tk.TclError:
+                pass
+        self._fit_job = self.after(60, self._fit_normal)
+
+    def _fit_settle(self) -> None:
+        self._fit_settle_job = None
+        self._fit_normal(force=True)
+
+    def _center(self, on: bool) -> None:
+        """Фокус-режим: колонки панелей тянутся по ширине, микрофон остаётся сверху."""
+        wb, cb = self.scan_panel.body, self.chan.body
+        wb.grid_rowconfigure(0, weight=1 if on else 0)
+        cb.grid_rowconfigure(0, weight=1 if on else 0)
+        for w in wb.grid_slaves(row=0):
+            if int(w.grid_info()["column"]) in (0, 2, 4):
+                w.grid_configure(sticky="ew" if on else "nsew")
+        for w in cb.grid_slaves(row=0):
+            col = int(w.grid_info()["column"])
+            if col == 0:
+                w.grid_configure(sticky="ew" if on else "nsew")
+            elif w is self.mic:
+                w.grid_configure(sticky="" if on else "n")
+
+    def _scale(self, k: float) -> None:
+        if abs(k - self._k) < 0.01:
+            return
+        self._k = k
+        kb = 1 + (k - 1) * 0.6
+        km = 1 + (k - 1) * 0.8
+        kh = 1 + (k - 1) * 0.45          # заголовки панелей и строка действий — умеренно
+        for p in (self.scan_panel, self.chan):
+            p.rescale(kh)
+        for w in self.chip_bar.winfo_children():
+            self._sfont(w, kh)
+        for root in (self.scan_panel, self.chan, getattr(self, "actbar", None)):
+            if root is None:
+                continue
+            stack = [root]
+            while stack:
+                w = stack.pop()
+                stack.extend(w.winfo_children())
+                if w is self.lemma:
+                    continue
+                if isinstance(w, HudButton):
+                    w.rescale(kh if root is self.actbar
+                              else (min(km * 1.25, 1 + (k - 1) * 0.55) if w is self.mic.btn else kb))
+                    if w is self.mic.btn and k <= 1.0:
+                        w.rescale(1.0)
+                    continue
+                if isinstance(w, (tk.Label, tk.Text, tk.Entry)) and root is not self.actbar:
+                    self._sfont(w, k)
+        self._fit_sent()
+        self._word_px = 0
+        self._fit_word()
+        for fl in self._flows():
+            fl.relayout(fl.winfo_width(), force=True)
+        self._bar_mode = None
+        self._place_actbar(self.scan_panel.winfo_width())
+        self.chip_bar.place_configure(y=px(round(4 * kh)))
+
+    def _flows(self):
+        out, stack = [], [self.scan_panel, self.chan]
+        while stack:
+            w = stack.pop()
+            stack.extend(w.winfo_children())
+            if isinstance(w, Flow):
+                out.append(w)
+        return out
+
+    def _sfont(self, w, k: float) -> None:
+        """Подобрать шрифт элемента и его тегов под масштаб (как в английском сканере)."""
+        if not hasattr(w, "_base_font"):
+            try:
+                w._base_font = tkfont.Font(font=w.cget("font")).actual()
+            except tk.TclError:
+                return
+            if isinstance(w, tk.Text):
+                w._base_tags = {}
+                for t in w.tag_names():
+                    tf = w.tag_cget(t, "font")
+                    if tf:
+                        w._base_tags[t] = tkfont.Font(font=tf).actual()
+
+        def mk(a):
+            sz = a["size"]
+            size = round(abs(sz) * k)
+            return (a["family"], -size if sz < 0 else size,
+                    a.get("weight", "normal"), a.get("slant", "roman"))
+
+        try:
+            w.configure(font=mk(w._base_font))
+            for t, a in getattr(w, "_base_tags", {}).items():
+                w.tag_configure(t, font=mk(a))
+        except tk.TclError:
+            pass
+
+    def _on_unmap(self, e) -> None:
+        """Страницу спрятали (другая вкладка/отсек) — фокус-режим снять."""
+        self._cancel_fit_jobs()
+        if self._focus is not None and e.widget in (self, self.winfo_toplevel()):
+            self.after_idle(lambda: self.toggle_focus(False))
+
+    def destroy(self) -> None:
+        self._cancel_fit_jobs()
+        super().destroy()
+
 
     # -- данные на экране ---------------------------------------------------
     def _model_ready(self) -> None:
@@ -303,11 +600,29 @@ class WordScanner(tk.Frame):
         self.heard.configure(text="")
         self.verdict.configure(text="")
         self._render_sentence()
+        self._word_px = 0
+        self._fit_word()
         self.sf.top()
         try:
             self.mic.reset()
         except Exception:  # noqa: BLE001
             pass
+
+    # -- перевод: скрыт, пока не нажали ПЕРЕВОД/T (как в английском сканере) --
+    def _tr_visible(self) -> bool:
+        settings = getattr(self.progress, "settings", None)
+        get = getattr(settings, "get", None)
+        return bool(get("show_tr", False)) if callable(get) else False
+
+    def _tr_text(self) -> str:
+        items = self._sentences()
+        if not items:
+            return _gloss_text(self.word, self.progress) or _t("перевода нет")
+        return (items[self.si % len(items)].translation
+                or _gloss_text(self.word, self.progress) or _t("перевода нет"))
+
+    def _apply_tr(self, show: bool) -> None:
+        self.str_.configure(text=self._tr_text() if show else "")
 
     def _render_sentence(self) -> None:
         items = self._sentences()
@@ -316,7 +631,7 @@ class WordScanner(tk.Frame):
             self.snum.configure(text=_t("ПРЕДЛОЖЕНИЙ ДЛЯ ЭТОГО СЛОВА НЕТ"))
             self._set_text(self.sent, self.word.lemma)
             self._set_text(self.example, "")
-            self.str_.configure(text=_gloss_text(self.word, self.progress) or _t("перевода нет"))
+            self._apply_tr(self._tr_visible())
             return
         self.si %= len(items)
         cur = items[self.si]
@@ -324,16 +639,10 @@ class WordScanner(tk.Frame):
             self.si + 1, len(items)))
         self._set_text(self.sent, cur.text.strip())
         self._set_text(self.example, f"“{cur.text.strip()}”")
-        self.str_.configure(text=cur.translation or _gloss_text(self.word, self.progress)
-                            or _t("перевода нет"))
+        self._apply_tr(self._tr_visible())
 
     def _show_tr(self) -> None:
-        items = self._sentences()
-        if not items:
-            self.str_.configure(text=_gloss_text(self.word, self.progress) or _t("перевода нет"))
-            return
-        text = items[self.si % len(items)].translation or _gloss_text(self.word, self.progress)
-        self.str_.configure(text=text or _t("перевода нет"))
+        self._apply_tr(True)
 
     def _show_hint(self) -> None:
         gloss = _gloss_text(self.word, self.progress)
@@ -469,23 +778,40 @@ class WordScanner(tk.Frame):
         quality = 5 if score >= 85 else 4 if score >= 60 else 3 if score >= 40 else 2
         self.progress.record_attempt(self.word.slug, score >= 60, "speaking", 0, quality)
 
-    def on_key(self, event) -> None:
-        """Клавиши карточки: ←/→ листают слова, ↑/↓ — предложения, T — перевод."""
-        if isinstance(event.widget, (tk.Entry, tk.Text)):
+    def in_focus(self) -> bool:
+        """Открыт ли фокус-режим (панели на всё окно)."""
+        return self._focus is not None
+
+    def wants_key(self, event) -> bool:
+        """Аккорд фокуса (Ctrl+O) — его можно нажимать и из поля ввода: это не буква."""
+        return is_grammar_focus_key(event)
+
+    def on_key(self, event):
+        """Клавиши как в английском сканере: ←/→ — предложения, T — перевод, O — фокус."""
+        if self._focus is None and isinstance(event.widget, (tk.Entry, tk.Text)):
             return
-        key = event.keysym
-        if key == "Escape":
-            self._back()
-        elif key == "Left":
-            self._neighbor(-1)
-        elif key == "Right":
-            self._neighbor(1)
-        elif key in ("Prior", "Up"):
+        key = (event.keysym or "").lower()
+        if key == "escape" and self._focus is not None:
+            self.toggle_focus(False)     # Esc в фокус-режиме — только выход из него
+            return "break"
+        if is_mic_key(event):
+            self.mic.toggle()            # единый стандарт: M — микрофон
+        elif is_grammar_focus_key(event):
+            self.toggle_focus()          # O/Щ или Ctrl+O — развернуть/свернуть панели
+        elif is_hint_key(event):
+            self._apply_tr(True)         # T держим — перевод
+        elif key == "s":
+            self.ctx.say(self._sentence_text())
+        elif key in ("left", "prior"):
             self._step_sent(-1)
-        elif key in ("Next", "Down"):
+        elif key in ("right", "next"):
             self._step_sent(1)
-        elif key.lower() == "t":
-            self._show_tr()
+        elif key == "escape":
+            self._back()
+
+    def on_key_up(self, event) -> None:
+        if is_hint_key(event):
+            self._apply_tr(self._tr_visible())
 
     def _back(self) -> None:
         self._save_tr()
@@ -493,6 +819,12 @@ class WordScanner(tk.Frame):
         self.on_back()
 
     def shutdown(self) -> None:
+        self._cancel_fit_jobs()
+        if self._focus is not None:
+            try:
+                self.toggle_focus(False)
+            except tk.TclError:
+                pass
         stop_speak()
         try:
             self.mic.reset()

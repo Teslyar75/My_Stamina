@@ -334,7 +334,7 @@ class EnglishScreen(tk.Frame):
         if not hasattr(self, "_tts_btns"):
             self._tts_btns: dict[int, tuple] = {}
             self._tts_polling = False
-        sid = self.tts.speak(text, rate - 4 if slow else rate)
+        sid = self.tts.speak(text, rate - 4 if slow else rate, network=True)
         self._tts_until = time.time() + 12  # ловим ошибки и без кнопки (озвучка с клавиатуры)
         if btn is not None and sid:
             for k, (b, *_r) in list(self._tts_btns.items()):

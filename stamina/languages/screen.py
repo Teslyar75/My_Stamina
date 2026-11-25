@@ -515,6 +515,10 @@ class LanguagesScreen(tk.Frame):
         if getattr(self, "current_page", None) == "grammar" and page is not None:
             if page.on_key(event) == "break":
                 return
+        # Ctrl+O (фокус сканера) — аккорд: работает и когда фокус в поле перевода
+        if self._scanner is not None and self._scanner.wants_key(event):
+            self._scanner.on_key(event)
+            return
         if isinstance(event.widget, (tk.Entry, tk.Text)):
             return
         if self._scanner is not None:
@@ -528,22 +532,35 @@ class LanguagesScreen(tk.Frame):
                 handler(event)
                 return
 
+    def on_key_up(self, event) -> None:
+        """Отпускание клавиш — только сканеру (T держит перевод, отпустили — снова скрыт)."""
+        if self._scanner is not None:
+            self._scanner.on_key_up(event)
+
     def _exit_grammar_focus(self, *, remember: bool = False) -> None:
         page = getattr(self, "_grammar_page", None)
         if page is not None and page.in_focus():
             page.toggle_focus(False, remember=remember)
 
     def focus_active(self) -> bool:
+        if self._scanner is not None and self._scanner.in_focus():
+            return True
         page = getattr(self, "_grammar_page", None)
         return bool(getattr(self, "current_page", None) == "grammar"
                     and page is not None and page.in_focus())
 
     def toggle_focus(self, on: bool | None = None, *, remember: bool = True) -> None:
+        if self._scanner is not None:
+            self._scanner.toggle_focus(on)
+            return
         page = getattr(self, "_grammar_page", None)
         if page is not None:
             page.toggle_focus(on, remember=remember)
 
     def handle_focus_escape(self) -> bool:
+        if self._scanner is not None and self._scanner.in_focus():
+            self._scanner.toggle_focus(False)      # сканер: один Esc из фокуса
+            return True
         page = getattr(self, "_grammar_page", None)
         if page is not None:
             return page.handle_focus_escape()
