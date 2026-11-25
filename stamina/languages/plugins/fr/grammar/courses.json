@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "language": "fr",
+  "levels": [
+    {
+      "code": "A1",
+      "file": "a1.json",
+      "lessons": 14,
+      "title": "A1 · Débutant"
+    },
+    {
+      "code": "A2",
+      "file": "a2.json",
+      "lessons": 15,
+      "title": "A2 · Élémentaire"
+    },
+    {
+      "code": "B1",
+      "file": "b1.json",
+      "lessons": 12,
+      "title": "B1 · Intermédiaire"
+    },
+    {
+      "code": "B2",
+      "file": "b2.json",
+      "lessons": 8,
+      "title": "B2 · Avancé"
+    },
+    {
+      "code": "C1",
+      "file": "c1.json",
+      "lessons": 3,
+      "title": "C1 · Autonome"
+    },
+    {
+      "code": "C2",
+      "file": "c2.json",
+      "lessons": 2,
+      "title": "C2 · Maîtrise"
+    }
+  ],
+  "tables_file": "tables.json"
+}

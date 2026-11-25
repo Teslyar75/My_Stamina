@@ -1,0 +1,441 @@
+{
+  "version": 1,
+  "level": "B2",
+  "lessons": [
+    {
+      "id": "b2-01-subjunctive-imperfect",
+      "order": 1,
+      "title": "Subjonctif imparfait (литературный): que je parlasse",
+      "subtitle": "Только в литературе/формальном письме",
+      "topics": [
+        "subjunctive_imperfect"
+      ],
+      "prereq": [
+        "b1-01-subjunctive-past"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Литературная форма после глаголов в прошлом, требующих subjonctif. Je voulais qu'il vînt (modern: qu'il vienne)."
+        },
+        {
+          "kind": "rule",
+          "title": "Формы",
+          "text": "Parler: que je parlasse, que tu parlasses, qu'il parlât, que nous parlassions, que vous parlassiez, qu'ils parlassent."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-01-d01",
+          "type": "choice",
+          "prompt": "Il voulait que je ____ (partir).",
+          "options": [
+            "partisse",
+            "parte",
+            "partais",
+            "partirais"
+          ],
+          "answer": [
+            "partisse"
+          ],
+          "why": "Subj. imparfait: partir → partisse."
+        },
+        {
+          "id": "b2-01-subjunctive-imperfect-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif imparfait (литературный): que je parlasse.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif imparfait (литературный): que je parlasse."
+        },
+        {
+          "id": "b2-01-subjunctive-imperfect-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif imparfait (литературный): que je parlasse.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif imparfait (литературный): que je parlasse."
+        }
+      ]
+    },
+    {
+      "id": "b2-02-subjunctive-pqp",
+      "order": 2,
+      "title": "Subjonctif plus-que-parfait: que j'eusse fait",
+      "subtitle": "Самая редкая форма",
+      "topics": [
+        "subjunctive_plus_que_parfait"
+      ],
+      "prereq": [
+        "b2-01-subjunctive-imperfect"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "После прошлого + subjonctif trigger. Il doutait qu'il l'eût fait. Почти не используется в современном языке."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-02-d01",
+          "type": "choice",
+          "prompt": "Il doutait qu'il ____ (faire).",
+          "options": [
+            "eût fait",
+            "ait fait",
+            "aurait fait",
+            "faisait"
+          ],
+          "answer": [
+            "eût fait"
+          ],
+          "why": "Subj. PQP: avoir (eût) + participe passé."
+        },
+        {
+          "id": "b2-02-subjunctive-pqp-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif plus-que-parfait: que j'eusse fait.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif plus-que-parfait: que j'eusse fait."
+        },
+        {
+          "id": "b2-02-subjunctive-pqp-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif plus-que-parfait: que j'eusse fait.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif plus-que-parfait: que j'eusse fait."
+        }
+      ]
+    },
+    {
+      "id": "b2-03-passive-advanced",
+      "order": 3,
+      "title": "Пассив: сложные конструкции",
+      "subtitle": "Passif composé, infinitif passif, participe comme adjectif",
+      "topics": [
+        "passive_advanced"
+      ],
+      "prereq": [
+        "b1-05-passive-voice"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passif composé: ayant été fait. Infinitif passif: être fait. Participe passé comme adjectif: une porte fermée. On + actif часто заменяет пассив."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-03-d01",
+          "type": "choice",
+          "prompt": "La porte est ____ (fermer).",
+          "options": [
+            "fermée",
+            "fermé",
+            "ferme",
+            "ferment"
+          ],
+          "answer": [
+            "fermée"
+          ],
+          "why": "Participe passé comme adjectif, accord f sg."
+        },
+        {
+          "id": "b2-03-passive-advanced-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Пассив: сложные конструкции.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Пассив: сложные конструкции."
+        },
+        {
+          "id": "b2-03-passive-advanced-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Пассив: сложные конструкции.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Пассив: сложные конструкции."
+        }
+      ]
+    },
+    {
+      "id": "b2-04-subjunctive-sequence",
+      "order": 4,
+      "title": "Последовательность времен в subjonctif",
+      "subtitle": "Главный в présent/futur → subj. présent; в passé → subj. présent или passé",
+      "topics": [
+        "subjunctive_sequence"
+      ],
+      "prereq": [
+        "b1-01-subjunctive-past"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Главный в présent/futur → subj. présent (simultané) или passé (antérieur). Il faut que tu fasses. Il fallait que tu fasses (imparfait → subj. présent) ou que tu aies fait (PQP → subj. passé)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-04-d01",
+          "type": "choice",
+          "prompt": "Il fallait que tu ____ (faire) hier.",
+          "options": [
+            "fasses",
+            "fassess",
+            "fassest",
+            "fassesons"
+          ],
+          "answer": [
+            "fasses"
+          ],
+          "why": "Imparfait principal → subj. présent (simultané) ou subj. passé (antérieur)."
+        },
+        {
+          "id": "b2-04-subjunctive-sequence-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Последовательность времен в subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Последовательность времен в subjonctif."
+        },
+        {
+          "id": "b2-04-subjunctive-sequence-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Последовательность времен в subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Последовательность времен в subjonctif."
+        }
+      ]
+    },
+    {
+      "id": "b2-05-subjunctive-vs-indicative",
+      "order": 5,
+      "title": "Subjonctif vs Indicative после сомнения/эмоций",
+      "subtitle": "Je doute qu'il vienne (subj) vs Je ne doute pas qu'il vient (ind)",
+      "topics": [
+        "subjunctive_vs_indicative"
+      ],
+      "prereq": [
+        "a2-08-subjunctive-triggers"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Je doute qu'il vienne (subj) vs Je ne doute pas qu'il vient (ind). C'est possible qu'il vienne (subj) vs C'est probable qu'il vient (ind). Нégation меняет режим."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-05-d01",
+          "type": "choice",
+          "prompt": "Je ne pense pas qu'il ____ (venir).",
+          "options": [
+            "vienne",
+            "vient",
+            "viendra",
+            "viendrait"
+          ],
+          "answer": [
+            "vienne"
+          ],
+          "why": "Négation de pensée → subjonctif."
+        },
+        {
+          "id": "b2-05-subjunctive-vs-indicative-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif vs Indicative после сомнения/эмоций.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif vs Indicative после сомнения/эмоций."
+        },
+        {
+          "id": "b2-05-subjunctive-vs-indicative-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif vs Indicative после сомнения/эмоций.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif vs Indicative после сомнения/эмоций."
+        }
+      ]
+    },
+    {
+      "id": "b2-06-nominalization",
+      "order": 6,
+      "title": "Номинализация: le fait de + subjonctif, l'idée que...",
+      "subtitle": "Глагол → существительное",
+      "topics": [
+        "nominalization"
+      ],
+      "prereq": [
+        "b1-01-subjunctive-past"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Le fait qu'il parte me chagrine (subj - эмоция). L'idée que + indicatif (факт). L'idée de partir (предлог + infinitif)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-06-d01",
+          "type": "choice",
+          "prompt": "Le fait qu'il ____ (partir) me chagrine.",
+          "options": [
+            "parte",
+            "part",
+            "partait",
+            "partira"
+          ],
+          "answer": [
+            "parte"
+          ],
+          "why": "Le fait que + subjonctif (оценка/эмоция)."
+        },
+        {
+          "id": "b2-06-nominalization-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Номинализация: le fait de + subjonctif, l'idée que....",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Номинализация: le fait de + subjonctif, l'idée que...."
+        },
+        {
+          "id": "b2-06-nominalization-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Номинализация: le fait de + subjonctif, l'idée que....",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Номинализация: le fait de + subjonctif, l'idée que...."
+        }
+      ]
+    },
+    {
+      "id": "b2-07-cleft-sentences",
+      "order": 7,
+      "title": "Раздельные предложения: c'est... qui/que",
+      "subtitle": "Акцент на элементе",
+      "topics": [
+        "cleft_sentences"
+      ],
+      "prereq": [
+        "a2-09-relative-pronouns"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "C'est Marie qui a appelé. C'est hier qu'il est venu. Ce que je veux, c'est dormir. Ce qui/ce que = то, что (субъект/объект)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-07-d01",
+          "type": "choice",
+          "prompt": "C'est Marie ____ a appelé.",
+          "options": [
+            "qui",
+            "que",
+            "dont",
+            "où"
+          ],
+          "answer": [
+            "qui"
+          ],
+          "why": "C'est + имя + qui (подлежащее)."
+        },
+        {
+          "id": "b2-07-cleft-sentences-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Раздельные предложения: c'est... qui/que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Раздельные предложения: c'est... qui/que."
+        },
+        {
+          "id": "b2-07-cleft-sentences-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Раздельные предложения: c'est... qui/que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Раздельные предложения: c'est... qui/que."
+        }
+      ]
+    },
+    {
+      "id": "b2-08-discourse-markers",
+      "order": 8,
+      "title": "Маркеры дискурса: du coup, en fait, bref, enfin, quand même",
+      "subtitle": "Разговорная речь",
+      "topics": [
+        "discourse_markers"
+      ],
+      "prereq": [],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Du coup = поэтому/в итоге. En fait = вообще-то/фактически. Bref = короче. Enfin = ну/короче. Quand même = всё равно/всё-таки."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-08-d01",
+          "type": "choice",
+          "prompt": "____ , je ne sais pas.",
+          "options": [
+            "En fait",
+            "Du coup",
+            "Bref",
+            "Enfin"
+          ],
+          "answer": [
+            "En fait"
+          ],
+          "why": "En fait = вообще-то/фактически."
+        },
+        {
+          "id": "b2-08-discourse-markers-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Маркеры дискурса: du coup, en fait, bref, enfin, quand même.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Маркеры дискурса: du coup, en fait, bref, enfin, quand même."
+        },
+        {
+          "id": "b2-08-discourse-markers-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Маркеры дискурса: du coup, en fait, bref, enfin, quand même.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Маркеры дискурса: du coup, en fait, bref, enfin, quand même."
+        }
+      ]
+    }
+  ]
+}

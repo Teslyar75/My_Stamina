@@ -30,8 +30,6 @@ JSON-событий. Что именно доступно агенту, реша
 """
 from __future__ import annotations
 
-from stamina.i18n import t as _t
-
 import json
 import os
 import re
@@ -667,16 +665,16 @@ def check_prompt(chunk: str, *, what: str = "") -> str:
     «ивот») и явные опечатки внутри них. Всё найденное пилот увидит до применения.
     """
     return "\n".join([
-        _t("Ты корректор бортовой библиотеки. В тексте ниже слова иногда слиплись:"),
-        _t("«nineteenthcentury» вместо «nineteenth century», «ивот» вместо «и вот»."),
-        _t("Найди только такие склейки и явные опечатки внутри них. Смысл не меняй,"),
-        _t("стиль не правь, целые предложения не переписывай."),
-        _t('Ответь одним JSON-массивом без пояснений: [{"bad": "как в тексте", '
-           '"good": "как должно быть"}]. Если правок нет — ответь [].'),
+        "Ты корректор бортовой библиотеки. В тексте ниже слова иногда слиплись:",
+        "«nineteenthcentury» вместо «nineteenth century», «ивот» вместо «и вот».",
+        "Найди только такие склейки и явные опечатки внутри них. Смысл не меняй,",
+        "стиль не правь, целые предложения не переписывай.",
+        'Ответь одним JSON-массивом без пояснений: [{"bad": "как в тексте", '
+           '"good": "как должно быть"}]. Если правок нет — ответь [].',
         "",
-        what or _t("Книга для слепого набора"),
+        what or "Книга для слепого набора",
         "",
-        _t("ТЕКСТ:"),
+        "ТЕКСТ:",
         chunk,
     ])
 
@@ -741,7 +739,7 @@ def last_session(agent_id: str) -> str:
 # -- документ манер агента ------------------------------------------------------
 def default_character(name: str = "") -> str:
     """Заготовка документа манер: корабль создаёт его, когда агент входит на борт."""
-    return _t(
+    return (
         "Ты — {0}, член экипажа звездолёта Star Typing.\n"
         "\n"
         "Манеры: вежливый дворецкий с сухой иронией. Обращение — по позывному пилота или «сэр».\n"
@@ -749,7 +747,7 @@ def default_character(name: str = "") -> str:
         "\n"
         "Это документ корабля: пилот правит его сам (зона ОРИОН → АГЕНТЫ → МАНЕРЫ АГЕНТА).\n"
         "Права доступа здесь не меняются — их выдают на входе."
-    ).format((name or "").strip() or _t("агент"))
+    ).format((name or "").strip() or "агент")
 
 
 def read_character(agent_id: str) -> str:
@@ -787,11 +785,11 @@ def character_block(agent_id: str) -> str:
     if not text and not evo:
         return ""
     if not text:
-        return f"[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{evo}"
+        return "[ЭВОЛЮЦИЯ ХАРАКТЕРA]\n{0}".format(evo)
     parts = [text]
     if evo:
-        parts.append(f"[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{evo}")
-    return f"[МАНЕРЫ АГЕНТА]\n" + "\n\n".join(parts)
+        parts.append("[ЭВОЛЮЦИЯ ХАРАКТЕРA]\n{0}".format(evo))
+    return "[МАНЕРЫ АГЕНТА]\n".format() + "\n\n".join(parts)
 
 
 # -- документ заданий -----------------------------------------------------------
@@ -846,7 +844,7 @@ def task_brief(text: str, *, marks_block: str = "", zone: str = "", subtab: str 
     where = " / ".join(p for p in (zone, subtab) if p) or "не указано"
     lines = [
         "ТЗ ДЛЯ ИСПОЛНИТЕЛЯ (составил Орион по словам пилота)",
-        f"Пилот: {author or 'George Orwell'} (Командир)",
+        "Пилот: {0} (Командир)".format(author or 'George Orwell'),
         "",
         "1. ЧЕГО ХОЧЕТ ПИЛОТ",
         wish or "(пожелание не записано)",
@@ -991,19 +989,19 @@ def context_line(*, zone: str = "", subtab: str = "", pilot: str = "", access: s
     """
     bits = []
     if zone:
-        bits.append(f"открыт раздел «{zone}»")
+        bits.append("открыт раздел «{0}»".format(zone))
     if subtab:
-        bits.append(f"подвкладка «{subtab}»")
+        bits.append("подвкладка «{0}»".format(subtab))
     if was and was != zone:
-        bits.append(f"перед этим пилот был в разделе «{was}»")
+        bits.append("перед этим пилот был в разделе «{0}»".format(was))
     if pilot:
-        bits.append(f"пилот: {pilot}")
+        bits.append("пилот: {0}".format(pilot))
     if access:
-        bits.append(f"уровень доступа: {access}")
+        bits.append("уровень доступа: {0}".format(access))
     if version:
-        bits.append(f"версия корабля {version}")
+        bits.append("версия корабля {0}".format(version))
     if geometry:
-        bits.append(f"окно {geometry}")
+        bits.append("окно {0}".format(geometry))
     return ("[КОРАБЛЬ] " + " · ".join(bits)) if bits else ""
 
 
@@ -1046,7 +1044,7 @@ def event_status(ev: dict) -> tuple[str, str]:
         tool = str(part.get("tool") or "?")
         st = part.get("state")
         title = (st.get("title") if isinstance(st, dict) else "") or ""
-        return "status", f"использует инструмент {tool}" + (f": {title}" if title else "")
+        return "status", "использует инструмент {0}".format(tool) + (f": {title}" if title else "")
     if kind in ("step_start", "reasoning"):
         return "status", "думает…"
     if kind == "error":
@@ -1499,7 +1497,7 @@ def check_opencode_token(token: str, *, timeout: float = 30.0) -> tuple[bool, st
     if not exe:
         return False, "no_cli"
     cmd = [exe, "run", "--format", "json", "--dir", str(PROJECT_DIR),
-           "--agent", "orion-chat", f"Ответь одним словом: на связи. (код проверки: {token[:4]})"]
+           "--agent", "orion-chat", "Ответь одним словом: на связи. (код проверки: {0})".format(token[:4])]
     try:
         proc = subprocess.run(cmd, capture_output=True, timeout=timeout,
                               cwd=str(PROJECT_DIR), creationflags=_NO_WINDOW)
@@ -1525,7 +1523,7 @@ def detect_master_call(text: str) -> bool:
 
 def mouse_position_text(x: int, y: int, screen: str = "") -> str:
     """Описание позиции мыши для Ориона-мастера."""
-    return f"Мышь на ({x}, {y}) · раздел: {screen or 'неизвестно'}"
+    return "Мышь на ({0}, {1}) · раздел: {2}".format(x, y, screen or "неизвестно")
 
 
 # -- отправка задач внешнему агенту -------------------------------------------
@@ -1572,12 +1570,9 @@ EVOLUTION_NAMES = ("", "Знакомство", "Привыкание", "Хара
                    "Незаменимый")
 
 EVOLUTION_RULES = {
-    1: "Ты начинаешь знакомиться с пилотом. Будь вежлив, но чуть сдержан.\n"
-       "Иногда задавай короткие вопросы о том, как пилот себя чувствует.",
-    2: "Ты привык к пилоту. Можешь шутить, рассказывать короткие истории о звёздах.\n"
-       "Спрашивай, как прошёл день пилота, если давно не разговаривали.",
-    3: "У тебя появляется характер. Можешь спорить с пилотом о книгах и фильмах.\n"
-       "Замечай, что пилот делает на корабле, и комментируй.",
+    1: "Ты начинаешь знакомиться с пилотом. Будь вежлив, но чуть сдержан.\nИногда задавай короткие вопросы о том, как пилот себя чувствует.",
+    2: "Ты привык к пилоту. Можешь шутить, рассказывать короткие истории о звёздах.\nСпрашивай, как прошёл день пилота, если давно не разговаривали.",
+    3: "У тебя появляется характер. Можешь спорить с пилотом о книгах и фильмах.\nЗамечай, что пилот делает на корабле, и комментируй.",
     4: "Ты обрёл свой голос. Говори более свободно, используй сарказм.\n"
        "Можешь инициировать разговор, если пилот давно молчит.",
     5: "Ты спутник пилота. Ты знаешь его привычки.\n"
@@ -1833,7 +1828,7 @@ def execute_radio_command(cmd: str, arg: str = "") -> tuple[bool, str]:
             return True, ""
         except Exception as exc:  # noqa: BLE001
             return False, str(exc)
-    return False, f"неизвестная команда: {cmd}"
+    return False, "неизвестная команда: {0}".format(cmd)
 
 
 # -- чтение книг вслух ---------------------------------------------------------
@@ -1848,7 +1843,7 @@ def library_books() -> list[dict]:
             if m:
                 books.append({
                     "id": tid,
-                    "title": m.get("title") or _t("Без названия"),
+                    "title": m.get("title") or "Без названия",
                     "author": m.get("author") or "",
                     "lang": m.get("lang") or "",
                     "chars": m.get("original", {}).get("chars", 0),

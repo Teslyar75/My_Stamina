@@ -147,7 +147,7 @@ class OverviewPage(tk.Frame):
 
         # частотные наборы: те самые плашки 1000 / 3000 / 10 000 / 20 000,
         # каждая открывает свой набор в СТАНДАРТЕ (листание блоками по 24)
-        L(sec, "ЧАСТОТНЫЕ НАБОРЫ · БЛОКИ ПО 24", fg=MUTED, size=9, bold=True, bg=BG).pack(
+        L(sec, _t("ЧАСТОТНЫЕ НАБОРЫ · БЛОКИ ПО 24"), fg=MUTED, size=9, bold=True, bg=BG).pack(
             anchor="w", pady=(px(10), px(4)))
         frow = tk.Frame(sec, bg=BG)
         frow.pack(fill=tk.X)
@@ -159,7 +159,7 @@ class OverviewPage(tk.Frame):
 
             def fnote(sid=sid):
                 ws = ctx.vocab.in_set(sid)
-                return "знаю {0} / {1}".format(ctx.progress.known_or_learned([w["slug"] for w in ws]), len(ws))
+                return _t("знаю {0} / {1}").format(ctx.progress.known_or_learned([w["slug"] for w in ws]), len(ws))
 
             g = {"code": code, "name": name, "sub": sub, "stats": fstats, "note": fnote,
                  "open": lambda s=sid: self._open_set(s)}
@@ -702,7 +702,7 @@ class SetsPage(tk.Frame):
         self._place()
         a = self.page * per + 1 if chunk else 0
         b = self.page * per + len(chunk)
-        self.pg.configure(text="СТР. {0} / {1} · {2}–{3} из {4}".format(
+        self.pg.configure(text=_t("СТР. {0} / {1} · {2}–{3} из {4}").format(
             self.page + 1, pages, a, b, len(self.items)))
         self.tip.configure(text=_t("БОРТОВОЙ СОВЕТ: ") + TIPS[self.page % len(TIPS)])
 

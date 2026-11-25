@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "level": "B2",
+  "lessons": [
+    {
+      "id": "b2-01-subjuntivo-pluscuamperfecto",
+      "order": 1,
+      "title": "Subjuntivo pluscuamperfecto",
+      "subtitle": "hubiera/hubiese + participio",
+      "topics": [
+        "subjuntivo_pluscuamperfecto"
+      ],
+      "prereq": [
+        "b1-06-pluscuamperfecto"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Acción anterior a principal en pasado con trigger subjuntivo. Dudo que hubiera venido. Ojalá lo hubiera hecho."
+        },
+        {
+          "kind": "rule",
+          "title": "Dos formas",
+          "text": "Hubiera / hubiese (intercambiables). Hubiera hablado / hubiese hablado."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-01-d01",
+          "type": "choice",
+          "prompt": "Ojalá ____ (hacer) los deberes.",
+          "options": [
+            "hubiera hecho",
+            "hubiese hecho",
+            "haya hecho",
+            "todas"
+          ],
+          "answer": [
+            "todas"
+          ],
+          "why": "Hubiera/hubiese/haya hecho = todas correctas (haya = subjuntivo perfecto, también posible)."
+        },
+        {
+          "id": "b2-01-subjuntivo-pluscuamperfecto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo pluscuamperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo pluscuamperfecto."
+        },
+        {
+          "id": "b2-01-subjuntivo-pluscuamperfecto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo pluscuamperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo pluscuamperfecto."
+        }
+      ]
+    },
+    {
+      "id": "b2-02-si-clauses-avanzado",
+      "order": 2,
+      "title": "Si clauses avanzados",
+      "subtitle": "Mixtos, si + indicativo (hecho real), conector + subjuntivo",
+      "topics": [
+        "si_clauses_avanzado"
+      ],
+      "prereq": [
+        "b1-05-si-clauses"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Si + presente indicativo = real (Si llueve, no voy). Si + imperfecto subjuntivo = hipotético (Si lloviera, no iría). Si + pluscuamperfecto subjuntivo = irreal (Si hubiera llovido, no habría ido)."
+        },
+        {
+          "kind": "rule",
+          "title": "Conectores + subjuntivo",
+          "text": "A menos que, con tal de que, en caso de que, siempre que, como si + imperfecto/pluscuamperfecto subjuntivo."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-02-d01",
+          "type": "choice",
+          "prompt": "Lo haré ____ (con tal de que) me ayudes.",
+          "options": [
+            "con tal de que",
+            "a menos que",
+            "en caso de que",
+            "todas"
+          ],
+          "answer": [
+            "con tal de que"
+          ],
+          "why": "Con tal de que + subjuntivo (me ayudes)."
+        },
+        {
+          "id": "b2-02-si-clauses-avanzado-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Si clauses avanzados.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si clauses avanzados."
+        },
+        {
+          "id": "b2-02-si-clauses-avanzado-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Si clauses avanzados.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si clauses avanzados."
+        }
+      ]
+    },
+    {
+      "id": "b2-03-ser-vs-estar-avanzado",
+      "order": 3,
+      "title": "Ser vs Estar: cambios de significado",
+      "subtitle": "Ser aburrido vs Estar aburrido",
+      "topics": [
+        "ser_estar_avanzado"
+      ],
+      "prereq": [
+        "a1-03-ser-estar"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Ser = cualidad intrínseca. Estar = estado resultado o temporal."
+        },
+        {
+          "kind": "rule",
+          "title": "Pares",
+          "text": "Ser aburrido (personalidad) / Estar aburrido (estado). Ser listo (inteligente) / Estar listo (preparado). Ser verde (color) / Estar verde (no maduro). Ser bueno (bondad/calidad) / Estar bueno (sabroso/guapo). Ser malo (maldad) / Estar malo (enfermo). Ser rico (dinero) / Estar rico (sabroso)."
+        },
+        {
+          "kind": "rule",
+          "title": "La manzana",
+          "text": "La manzana es verde (variedad) vs La manzana está verde (no madura)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-03-d01",
+          "type": "choice",
+          "prompt": "La sopa ____ (estar) buena.",
+          "options": [
+            "está",
+            "estás",
+            "están",
+            "estámos"
+          ],
+          "answer": [
+            "está"
+          ],
+          "why": "Sabor = estado → está buena."
+        },
+        {
+          "id": "b2-03-ser-vs-estar-avanzado-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Ser vs Estar: cambios de significado.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Ser vs Estar: cambios de significado."
+        },
+        {
+          "id": "b2-03-ser-vs-estar-avanzado-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Ser vs Estar: cambios de significado.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Ser vs Estar: cambios de significado."
+        }
+      ]
+    },
+    {
+      "id": "b2-04-lexico-avanzado",
+      "order": 4,
+      "title": "Léxico avanzado: colocaciones, verbos con preposición, falsos amigos",
+      "topics": [
+        "lexico_avanzado"
+      ],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Preposiciones fijas: insistir en, olvidarse de, enterarse de, soñar con, consistir en, acordarse de. Falsos amigos: actual=actual (no actual), realizar=hacer (no realizar), asistir=asistir (no asistir), atender=atender (no atender)."
+        },
+        {
+          "kind": "rule",
+          "title": "Preposición cambia significado",
+          "text": "Pensar EN (opinión) vs Pensar DE (opinión sobre alguien). Soñar CON (deseo) vs Soñar QUE (sueño nocturno)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b2-04-d01",
+          "type": "choice",
+          "prompt": "Insisto ____ (en) que vengas.",
+          "options": [
+            "en",
+            "a",
+            "de",
+            "por"
+          ],
+          "answer": [
+            "en"
+          ],
+          "why": "Insistir en + infinitivo/sustantivo."
+        },
+        {
+          "id": "b2-04-lexico-avanzado-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Léxico avanzado: colocaciones, verbos con preposición, falsos amigos.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Léxico avanzado: colocaciones, verbos con preposición, falsos amigos."
+        },
+        {
+          "id": "b2-04-lexico-avanzado-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Léxico avanzado: colocaciones, verbos con preposición, falsos amigos.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Léxico avanzado: colocaciones, verbos con preposición, falsos amigos."
+        }
+      ]
+    }
+  ]
+}

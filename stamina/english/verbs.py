@@ -1,22 +1,24 @@
 """Глаголы: 12 времён по настоящим пакам (Wiktionary + Tatoeba), разблокировка, поиск."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 TENSES = [
-    ("present_simple", "Present Simple", "Настоящее простое", "регулярное действие"),
-    ("present_continuous", "Present Continuous", "Настоящее длительное", "прямо сейчас"),
-    ("present_perfect", "Present Perfect", "Настоящее совершенное", "результат к настоящему"),
-    ("present_perfect_continuous", "Present Perfect Continuous", "Настоящее совершенное длительное",
-     "длится до настоящего"),
-    ("past_simple", "Past Simple", "Прошедшее простое", "завершённое действие"),
-    ("past_continuous", "Past Continuous", "Прошедшее длительное", "процесс в прошлом"),
-    ("past_perfect", "Past Perfect", "Прошедшее совершенное", "завершено до другого прошлого"),
-    ("past_perfect_continuous", "Past Perfect Continuous", "Прошедшее совершенное длительное",
-     "длилось до другого прошлого"),
-    ("future_simple", "Future Simple", "Будущее простое", "решение или прогноз"),
-    ("future_continuous", "Future Continuous", "Будущее длительное", "процесс в будущем"),
-    ("future_perfect", "Future Perfect", "Будущее совершенное", "завершится к сроку"),
-    ("future_perfect_continuous", "Future Perfect Continuous", "Будущее совершенное длительное",
-     "будет длиться к сроку"),
+    ("present_simple", "Present Simple", t("Настоящее простое"), t("регулярное действие")),
+    ("present_continuous", "Present Continuous", t("Настоящее длительное"), t("прямо сейчас")),
+    ("present_perfect", "Present Perfect", t("Настоящее совершенное"), t("результат к настоящему")),
+    ("present_perfect_continuous", "Present Perfect Continuous", t("Настоящее совершенное длительное"),
+     t("длится до настоящего")),
+    ("past_simple", "Past Simple", t("Прошедшее простое"), t("завершённое действие")),
+    ("past_continuous", "Past Continuous", t("Прошедшее длительное"), t("процесс в прошлом")),
+    ("past_perfect", "Past Perfect", t("Прошедшее совершенное"), t("завершено до другого прошлого")),
+    ("past_perfect_continuous", "Past Perfect Continuous", t("Прошедшее совершенное длительное"),
+     t("длилось до другого прошлого")),
+    ("future_simple", "Future Simple", t("Будущее простое"), t("решение или прогноз")),
+    ("future_continuous", "Future Continuous", t("Будущее длительное"), t("процесс в будущем")),
+    ("future_perfect", "Future Perfect", t("Будущее совершенное"), t("завершится к сроку")),
+    ("future_perfect_continuous", "Future Perfect Continuous", t("Будущее совершенное длительное"),
+     t("будет длиться к сроку")),
 ]
 
 # Вкладка «ГЛАГОЛЫ» берёт глаголы только из настоящих паков (data/verbs/*.json):

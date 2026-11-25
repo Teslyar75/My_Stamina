@@ -14,7 +14,7 @@ from stamina.i18n import t as _t
 from stamina.theme import BG, MUTED, px
 
 IMAGE_TYPES = (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
-NO_PILLOW = "Снимки недоступны: нет Pillow (pip install Pillow)"
+NO_PILLOW = _t("Снимки недоступны: нет Pillow (pip install Pillow)")
 
 
 def clipboard_image():

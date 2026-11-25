@@ -1,0 +1,477 @@
+{
+  "version": 1,
+  "level": "B1",
+  "lessons": [
+    {
+      "id": "b1-01-congiuntivo-presente",
+      "order": 1,
+      "title": "Congiuntivo presente (regolari)",
+      "subtitle": "che io parli, che tu parli, che lui parli... -are→-i, -ere/-ire→-a",
+      "topics": [
+        "congiuntivo_presente"
+      ],
+      "prereq": [
+        "a1-03-presente-are"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Uso dopo che + trigger (volere, dubbio, emozione, impersonale, richiesta, ordine). -are: -i/-i/-i/-iamo/-iate/-ino. -ere/-ire: -a/-a/-a/-iamo/-iate/-ano."
+        },
+        {
+          "kind": "table",
+          "ref": "congiuntivo_presente_reg"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-01-d01",
+          "type": "choice",
+          "prompt": "Voglio che tu ____ (parlare) con me.",
+          "options": [
+            "parli",
+            "parla",
+            "parlerai",
+            "parlavi"
+          ],
+          "answer": [
+            "parli"
+          ],
+          "why": "Volere che + congiuntivo. Tu -are → -i."
+        },
+        {
+          "id": "b1-01-congiuntivo-presente-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo presente (regolari).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo presente (regolari)."
+        },
+        {
+          "id": "b1-01-congiuntivo-presente-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo presente (regolari).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo presente (regolari)."
+        }
+      ]
+    },
+    {
+      "id": "b1-02-congiuntivo-irregolare",
+      "order": 2,
+      "title": "Congiuntivo presente (irregolari)",
+      "subtitle": "sia, abbia, vada, faccia, stia, dia, sappia, possa, voglia, debba, venga",
+      "topics": [
+        "congiuntivo_irregolare"
+      ],
+      "prereq": [
+        "b1-01-congiuntivo-presente"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "1/2/3 persona singolare IDENTICHE: che io sia, che tu sia, che lui sia. Noi/voi regolari: siamo/abbiamo/andiamo/facciamo/stiamo/diamo/sappiamo/possiamo/vogliamo/dobbiamo/veniamo."
+        },
+        {
+          "kind": "table",
+          "ref": "congiuntivo_presente_irreg"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-02-d01",
+          "type": "choice",
+          "prompt": "È importante che lui ____ (essere) puntuale.",
+          "options": [
+            "sia",
+            "è",
+            "sarà",
+            "era"
+          ],
+          "answer": [
+            "sia"
+          ],
+          "why": "Impersonale che + congiuntivo. Essere → sia."
+        },
+        {
+          "id": "b1-02-congiuntivo-irregolare-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo presente (irregolari).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo presente (irregolari)."
+        },
+        {
+          "id": "b1-02-congiuntivo-irregolare-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo presente (irregolari).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo presente (irregolari)."
+        }
+      ]
+    },
+    {
+      "id": "b1-03-congiuntivo-triggers",
+      "order": 3,
+      "title": "Triggers del congiuntivo (WEIRDO)",
+      "subtitle": "Volere, Emozione, Impersonale, Richiesta, Dubbio, Ordine → che + congiuntivo",
+      "topics": [
+        "congiuntivo_triggers"
+      ],
+      "prereq": [
+        "b1-01-congiuntivo-presente"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "WEIRDO: Voglio che, Desidero che / Sono felice che, Mi dispiace che / È necessario che, È importante che / Chiedo che, Esigo che / Dubito che, Non credo che / Ordino che, Vieto che."
+        },
+        {
+          "kind": "rule",
+          "title": "Indicativo",
+          "text": "Credo che, Penso che, È certo che, È ovvio che, È vero che → INDICATIVO."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-03-d01",
+          "type": "choice",
+          "prompt": "Non credo che lui ____ (venire).",
+          "options": [
+            "venga",
+            "viene",
+            "verrà",
+            "venisse"
+          ],
+          "answer": [
+            "venga"
+          ],
+          "why": "Non credere che + congiuntivo."
+        },
+        {
+          "id": "b1-03-congiuntivo-triggers-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Triggers del congiuntivo (WEIRDO).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Triggers del congiuntivo (WEIRDO)."
+        },
+        {
+          "id": "b1-03-congiuntivo-triggers-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Triggers del congiuntivo (WEIRDO).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Triggers del congiuntivo (WEIRDO)."
+        }
+      ]
+    },
+    {
+      "id": "b1-04-congiuntivo-usi",
+      "order": 4,
+      "title": "Congiuntivo in relative, temporali, finali",
+      "subtitle": "Cerco un libro che SIA interessante / Quando VADRÒ / Perché POSSA capire",
+      "topics": [
+        "congiuntivo_usi"
+      ],
+      "prereq": [
+        "b1-03-congiuntivo-triggers"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Relativa: antecedente indefinito/negativo → congiuntivo (Cerco un libro che abbia foto). Temporale: futuro → congiuntivo (Quando andrò, ti chiamo). Finale: perché/affinché/perché + congiuntivo (Lo faccio perché tu capisca)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-04-d01",
+          "type": "choice",
+          "prompt": "Cerco qualcuno che ____ (sapere) l'italiano.",
+          "options": [
+            "sappia",
+            "sa",
+            "sapeva",
+            "saprà"
+          ],
+          "answer": [
+            "sappia"
+          ],
+          "why": "Antecedente indefinito → congiuntivo."
+        },
+        {
+          "id": "b1-04-congiuntivo-usi-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo in relative, temporali, finali.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo in relative, temporali, finali."
+        },
+        {
+          "id": "b1-04-congiuntivo-usi-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo in relative, temporali, finali.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo in relative, temporali, finali."
+        }
+      ]
+    },
+    {
+      "id": "b1-05-congiuntivo-imperfetto",
+      "order": 5,
+      "title": "Congiuntivo imperfetto (-assi, -essi, -issi)",
+      "subtitle": "Per passato + trigger: volevo che venisse / Se avessi...",
+      "topics": [
+        "congiuntivo_imperfetto"
+      ],
+      "prereq": [
+        "b1-01-congiuntivo-presente"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Radice = 3ª pl. passato prossimo (parlarono → parlass-). Nessuna irregolarità! -are: -assi/-assi/-asse/-assimo/-aste/-assero. -ere: -essi/-essi/-esse/-essimo/-este/-essero. -ire: -issi/-issi/-isse/-issimo/-iste/-issero."
+        },
+        {
+          "kind": "table",
+          "ref": "congiuntivo_imperfetto"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-05-d01",
+          "type": "choice",
+          "prompt": "Se io ____ (avere) tempo, verrei.",
+          "options": [
+            "avessi",
+            "avrei",
+            "ho",
+            "avevo"
+          ],
+          "answer": [
+            "avessi"
+          ],
+          "why": "Se + congiuntivo imperfetto → condizionale."
+        },
+        {
+          "id": "b1-05-congiuntivo-imperfetto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo imperfetto (-assi, -essi, -issi).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo imperfetto (-assi, -essi, -issi)."
+        },
+        {
+          "id": "b1-05-congiuntivo-imperfetto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo imperfetto (-assi, -essi, -issi).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo imperfetto (-assi, -essi, -issi)."
+        }
+      ]
+    },
+    {
+      "id": "b1-06-se-clauses",
+      "order": 6,
+      "title": "Periodo ipotetico: tre tipi",
+      "subtitle": "Realtà / Possibilità / Irrealtà",
+      "topics": [
+        "se_clauses"
+      ],
+      "prereq": [
+        "a2-05-futuro",
+        "a2-06-condizionale",
+        "b1-05-congiuntivo-imperfetto"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "1° tipo (realtà): Se + indicativo presente → presente/futuro/imperativo. 2° tipo (possibilità): Se + congiuntivo imperfetto → condizionale presente. 3° tipo (irrealtà): Se + congiuntivo trapassato → condizionale passato."
+        },
+        {
+          "kind": "rule",
+          "title": "MAI",
+          "text": "MAI *se avrei* → *se avessi*. MAI *se sarei stato* → *se fossi stato*."
+        },
+        {
+          "kind": "table",
+          "ref": "se_clauses"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-06-d01",
+          "type": "choice",
+          "prompt": "Se ____ (piovere), non verrò.",
+          "options": [
+            "piove",
+            "piovesse",
+            "avesse piovuto",
+            "pioverà"
+          ],
+          "answer": [
+            "piove"
+          ],
+          "why": "1° tipo: se + indicativo presente."
+        },
+        {
+          "id": "b1-06-d02",
+          "type": "choice",
+          "prompt": "Se ____ (avere) i soldi, comprerei la casa.",
+          "options": [
+            "avessi",
+            "ho",
+            "avrei",
+            "avevo"
+          ],
+          "answer": [
+            "avessi"
+          ],
+          "why": "2° tipo: se + congiuntivo imperfetto."
+        },
+        {
+          "id": "b1-06-se-clauses-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Periodo ipotetico: tre tipi.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Periodo ipotetico: tre tipi."
+        }
+      ]
+    },
+    {
+      "id": "b1-07-trappassato",
+      "order": 7,
+      "title": "Trapassato prossimo (azione anteriore)",
+      "subtitle": "avevo parlato / ero andato — accordo con essere",
+      "topics": [
+        "trappassato"
+      ],
+      "prereq": [
+        "a2-01-passato-prossimo"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Azione PRIMA di altra passata. Avere (imperfetto) + participio: avevo mangiato. Essere (imperfetto) + participio (accordo): ero andato/a/i/e."
+        },
+        {
+          "kind": "table",
+          "ref": "trappassato_prossimo"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-07-d01",
+          "type": "choice",
+          "prompt": "Quando sono arrivato, lui ____ (già / partire).",
+          "options": [
+            "era già partito",
+            "era già partita",
+            "aveva già partito",
+            "è già partito"
+          ],
+          "answer": [
+            "era già partito"
+          ],
+          "why": "Partire → essere. Lui = m.sg. → partito."
+        },
+        {
+          "id": "b1-07-trappassato-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Trapassato prossimo (azione anteriore).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Trapassato prossimo (azione anteriore)."
+        },
+        {
+          "id": "b1-07-trappassato-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Trapassato prossimo (azione anteriore).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Trapassato prossimo (azione anteriore)."
+        }
+      ]
+    },
+    {
+      "id": "b1-08-congiuntivo-trapassato",
+      "order": 8,
+      "title": "Congiuntivo trapassato (per 3° tipo si-clauses)",
+      "subtitle": "avessi parlato / fossi andato",
+      "topics": [
+        "congiuntivo_trapassato"
+      ],
+      "prereq": [
+        "b1-07-trappassato",
+        "b1-05-congiuntivo-imperfetto"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Congiuntivo imperfetto di avere/essere + participio. Avessi/avesse/avessimo/aveste/avessero + participio. Fossi/fosse/fossimo/foste/fossero + participio (accordo)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-08-d01",
+          "type": "choice",
+          "prompt": "Se ____ (studiare), ____ (passare) l'esame.",
+          "options": [
+            "avessi studiato / avrei passato",
+            "studiassi / passerei",
+            "avrò studiato / passerò",
+            "studiavo / passavo"
+          ],
+          "answer": [
+            "avessi studiato / avrei passato"
+          ],
+          "why": "3° tipo: se + congiuntivo trapassato → condizionale passato."
+        },
+        {
+          "id": "b1-08-congiuntivo-trapassato-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo trapassato (per 3° tipo si-clauses).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo trapassato (per 3° tipo si-clauses)."
+        },
+        {
+          "id": "b1-08-congiuntivo-trapassato-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo trapassato (per 3° tipo si-clauses).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo trapassato (per 3° tipo si-clauses)."
+        }
+      ]
+    }
+  ]
+}

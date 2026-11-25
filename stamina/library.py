@@ -104,11 +104,11 @@ def book_badges(meta: dict | None) -> list[tuple[str, str]]:
     normalize_book_meta(meta)
     out: list[tuple[str, str]] = []
     if is_bilingual(meta):
-        out.append(("2ЯЗ", "green"))
+        out.append((_t("2ЯЗ"), "green"))
         src = (meta.get("bilingual") or {}).get("source") or "mt"
         out.append(({"pd": "PD", "mt": "MT", "mixed": "PD+MT"}.get(src, "MT"), "cyan"))
-        out.append(("⌀ред.", "amber"))
-        out.append(("⌀печ.", "amber"))
+        out.append((_t("⌀ред."), "amber"))
+        out.append((_t("⌀печ."), "amber"))
     return out
 
 
@@ -418,7 +418,7 @@ class Library:
             if frag is None:
                 return ""
             text, status = frag, "recovered"
-            note = (_t("оригинал — начало файла {0} ({1} из {2} символов)").format(Path((source or {}).get('path', '')).name or 'источника', len(frag), len(original)))
+            note = (_t("оригинал — начало файла {0} ({1} из {2} символов)").format(Path((source or {}).get('path', '')).name or _t("источника"), len(frag), len(original)))
         _write_atomic(self._dir(tid) / "original.txt", text)
         m["original"] = {"status": status, "chars": len(text), "words": len(text.split()),
                          "sha256": sha(text), "note": note}

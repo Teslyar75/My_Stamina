@@ -57,7 +57,7 @@ class EnglishScreen(tk.Frame):
     def _on_loaded(self) -> None:
         self._loading.destroy()
         if self.vocab.error or not self.vocab.words:
-            L(self, t("Словарь не загрузился: {0}\nОжидается файл {1}").format(self.vocab.error or 'пустой файл', paths.VOCAB_PATH), fg=AMBER, size=11, bg=BG,
+            L(self, t("Словарь не загрузился: {0}\nОжидается файл {1}").format(self.vocab.error or t("пустой файл"), paths.VOCAB_PATH), fg=AMBER, size=11, bg=BG,
               justify="left").place(relx=0.5, rely=0.4, anchor="center")
             return
         self._build()
@@ -334,7 +334,7 @@ class EnglishScreen(tk.Frame):
         if not hasattr(self, "_tts_btns"):
             self._tts_btns: dict[int, tuple] = {}
             self._tts_polling = False
-        sid = self.tts.speak(text, rate - 4 if slow else rate)
+        sid = self.tts.speak(text, rate - 4 if slow else rate, network=True)
         self._tts_until = time.time() + 12  # ловим ошибки и без кнопки (озвучка с клавиатуры)
         if btn is not None and sid:
             for k, (b, *_r) in list(self._tts_btns.items()):
@@ -453,7 +453,7 @@ class EnglishScreen(tk.Frame):
     def _toggle_list(self, lid, slug, after) -> None:
         added = self.progress.toggle_in_list(lid, slug)
         name = self.progress.list_by_id(lid)["name"]
-        self.status(t("«{0}» {1} отсек «{2}»").format(slug, 'добавлено в' if added else 'убрано из', name), CYAN)
+        self.status(t("«{0}» {1} отсек «{2}»").format(slug, t("добавлено в") if added else t("убрано из"), name), CYAN)
         if after:
             after()
 

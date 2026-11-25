@@ -1,0 +1,942 @@
+{
+  "version": 1,
+  "level": "A2",
+  "lessons": [
+    {
+      "id": "a2-01-passe-compose",
+      "order": 1,
+      "title": "Passé composé с avoir",
+      "subtitle": "j'ai parlé, tu as parlé... Participe passé -é",
+      "topics": [
+        "passe_compose_avoir"
+      ],
+      "prereq": [
+        "a1-14-imperative"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passé composé = avoir (présent) + participe passé. Для -er глаголов: infinitif -er → -é (parler → parlé)."
+        },
+        {
+          "kind": "rule",
+          "title": "Формула",
+          "text": "J'ai parlé, tu as parlé, il a parlé, nous avons parlé, vous avez parlé, ils ont parlé."
+        },
+        {
+          "kind": "table",
+          "ref": "passe_compose_avoir"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-01-d01",
+          "type": "choice",
+          "prompt": "J'ai ____ (parler) avec Marie.",
+          "options": [
+            "parlé",
+            "parle",
+            "parles",
+            "parlent"
+          ],
+          "answer": [
+            "parlé"
+          ],
+          "why": "-er → -é."
+        },
+        {
+          "id": "a2-01-d02",
+          "type": "fill",
+          "prompt": "Nous avons ____ (manger) une pizza.",
+          "answer": [
+            "mangé"
+          ],
+          "why": "manger → mangé."
+        },
+        {
+          "id": "a2-01-d03",
+          "type": "choice",
+          "prompt": "Ils ____ (finir) leur travail.",
+          "options": [
+            "ont fini",
+            "ont finis",
+            "ont finie",
+            "ont finies"
+          ],
+          "answer": [
+            "ont fini"
+          ],
+          "why": "Ils ont fini - passé composé avec avoir, participe passé ne s'accorde pas (COD après)."
+        }
+      ]
+    },
+    {
+      "id": "a2-02-passe-compose-etre",
+      "order": 2,
+      "title": "Passé composé с être (глаголы движения + рефлексивные)",
+      "subtitle": "je suis allé(e), tu es allé(e)... Согласование!",
+      "topics": [
+        "passe_compose_etre"
+      ],
+      "prereq": [
+        "a2-01-passe-compose"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "14 глаголов движения + все рефлексивные = être. Participe passé согласуется с подлежащим (e/s/es)."
+        },
+        {
+          "kind": "rule",
+          "title": "Список (DR MRS VANDERTRAMP)",
+          "text": "Devenir, Revenir, Monter, Rester, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Retourner, Arriver, Mourir, Partir."
+        },
+        {
+          "kind": "table",
+          "ref": "passe_compose_etre"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-02-d01",
+          "type": "choice",
+          "prompt": "Elle est ____ (aller) à Paris.",
+          "options": [
+            "allé",
+            "allée",
+            "allés",
+            "allées"
+          ],
+          "answer": [
+            "allée"
+          ],
+          "why": "Elle = f sg → +e."
+        },
+        {
+          "id": "a2-02-d02",
+          "type": "fill",
+          "prompt": "Nous sommes ____ (arriver) hier.",
+          "answer": [
+            "arrivés"
+          ],
+          "why": "Nous = m pl → +s."
+        },
+        {
+          "id": "a2-02-passe-compose-etre-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Passé composé с être (глаголы движения + рефлексивные).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passé composé с être (глаголы движения + рефлексивные)."
+        }
+      ]
+    },
+    {
+      "id": "a2-03-imparfait",
+      "order": 3,
+      "title": "Imparfait: формы и употребление",
+      "subtitle": "Описание, привычка, фон в прошлом",
+      "topics": [
+        "imparfait"
+      ],
+      "prereq": [
+        "a2-02-passe-compose-etre"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Imparfait = описание/привычка/фон. Основа = nous формы présent без -ons + -ais/-ais/-ait/-ions/-iez/-aient."
+        },
+        {
+          "kind": "rule",
+          "title": "Parler → parlais",
+          "text": "Je parlais, tu parlais, il parlait, nous parlions, vous parliez, ils parlaient."
+        },
+        {
+          "kind": "rule",
+          "title": "Être → étais (нерегулярный)",
+          "text": "J'étais, tu étais, il était, nous étions, vous étiez, ils étaient."
+        },
+        {
+          "kind": "table",
+          "ref": "imparfait"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-03-d01",
+          "type": "choice",
+          "prompt": "Nous ____ (parler) quand il est arrivé.",
+          "options": [
+            "parlions",
+            "parlais",
+            "parlait",
+            "parlaient"
+          ],
+          "answer": [
+            "parlions"
+          ],
+          "why": "Nous → -ions."
+        },
+        {
+          "id": "a2-03-d02",
+          "type": "fill",
+          "prompt": "Il ____ (être) content.",
+          "answer": [
+            "était"
+          ],
+          "why": "Être → était."
+        },
+        {
+          "id": "a2-03-imparfait-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Imparfait: формы и употребление.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Imparfait: формы и употребление."
+        }
+      ]
+    },
+    {
+      "id": "a2-04-pc-vs-imparfait",
+      "order": 4,
+      "title": "Passé composé vs Imparfait",
+      "subtitle": "Событие (PC) vs Фон/Описание (Imparfait)",
+      "topics": [
+        "passe_compose_vs_imparfait"
+      ],
+      "prereq": [
+        "a2-03-imparfait"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "PC = точка на таймлайне (событие, факт). Imparfait = отрезок (описание, привычка, фон). Часто вместе: Il lisait (imparfait) quand le téléphone a sonné (PC)."
+        },
+        {
+          "kind": "rule",
+          "title": "Маркеры",
+          "text": "PC: un jour, hier, soudain, puis. Imparfait: souvent, toujours, pendant que, quand (фон)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-04-d01",
+          "type": "choice",
+          "prompt": "Il ____ (lire) un livre quand le téléphone ____ (sonner).",
+          "options": [
+            "lisait / a sonné",
+            "a lu / sonnait",
+            "lisait / sonnait",
+            "a lu / a sonné"
+          ],
+          "answer": [
+            "lisait / a sonné"
+          ],
+          "why": "Фон (imparfait) + событие (PC)."
+        },
+        {
+          "id": "a2-04-pc-vs-imparfait-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Passé composé vs Imparfait.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passé composé vs Imparfait."
+        },
+        {
+          "id": "a2-04-pc-vs-imparfait-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Passé composé vs Imparfait.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passé composé vs Imparfait."
+        }
+      ]
+    },
+    {
+      "id": "a2-05-futur-simple",
+      "order": 5,
+      "title": "Futur simple: je parlerai",
+      "subtitle": "Окончания = avoir, основа = инфинитив (большинство)",
+      "topics": [
+        "futur_simple"
+      ],
+      "prereq": [
+        "a2-04-pc-vs-imparfait"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Futur simple = инфинитив + окончания avoir (-ai, -as, -a, -ons, -ez, -ont). Нерегулярные основы: être→ser-, avoir→aur-, aller→ir-, faire→fer-, pouvoir→pourr-, vouloir→voudr-, devoir→devr-, savoir→saur-, venir→viendr-, voir→verr-, envoyer→enverr-."
+        },
+        {
+          "kind": "table",
+          "ref": "futur_simple"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-05-d01",
+          "type": "choice",
+          "prompt": "Je ____ (parler) avec lui demain.",
+          "options": [
+            "parlerai",
+            "parleras",
+            "parlera",
+            "parlerons"
+          ],
+          "answer": [
+            "parlerai"
+          ],
+          "why": "Je → -ai."
+        },
+        {
+          "id": "a2-05-d02",
+          "type": "fill",
+          "prompt": "Ils ____ (être) là à 10h.",
+          "answer": [
+            "seront"
+          ],
+          "why": "Être → ser- + -ont = seront."
+        },
+        {
+          "id": "a2-05-futur-simple-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Futur simple: je parlerai.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Futur simple: je parlerai."
+        }
+      ]
+    },
+    {
+      "id": "a2-06-conditionnel",
+      "order": 6,
+      "title": "Conditionnel présent: je parlerais",
+      "subtitle": "Те же основы, что futur simple, окончания = imparfait",
+      "topics": [
+        "conditionnel_present"
+      ],
+      "prereq": [
+        "a2-05-futur-simple"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Conditionnel = те же основы что futur simple + окончания imparfait (-ais, -ais, -ait, -ions, -iez, -aient). Je parlerais = я бы говорил."
+        },
+        {
+          "kind": "rule",
+          "title": "Нерегулярные те же",
+          "text": "Je voudrais, je pourrais, je devrais, je saurais, je viendrais, je verrais, j'enverrais."
+        },
+        {
+          "kind": "table",
+          "ref": "conditionnel_present"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-06-d01",
+          "type": "choice",
+          "prompt": "Je ____ (aimer) venir.",
+          "options": [
+            "aimerais",
+            "aimerait",
+            "aimerions",
+            "aimeraient"
+          ],
+          "answer": [
+            "aimerais"
+          ],
+          "why": "Je → -ais."
+        },
+        {
+          "id": "a2-06-d02",
+          "type": "fill",
+          "prompt": "Nous ____ (pouvoir) le faire.",
+          "answer": [
+            "pourrions"
+          ],
+          "why": "Pouvoir → pourr- + -ions."
+        },
+        {
+          "id": "a2-06-conditionnel-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Conditionnel présent: je parlerais.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Conditionnel présent: je parlerais."
+        }
+      ]
+    },
+    {
+      "id": "a2-07-subjunctive-present",
+      "order": 7,
+      "title": "Subjonctif présent: регулярные + основные неправильные",
+      "subtitle": "После il faut que, je veux que, bien que...",
+      "topics": [
+        "subjunctive_present"
+      ],
+      "prereq": [
+        "a2-06-conditionnel"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Subjonctif выражает желание/необходимость/сомнение/эмоцию ПОСЛЕ que. Основа = 3л.мн.ч. présent (ils parlent → parl-) + -e/-es/-e/-ions/-iez/-ent."
+        },
+        {
+          "kind": "rule",
+          "title": "Регулярные",
+          "text": "Parler: que je parle, que tu parles, qu'il parle, que nous parlions, que vous parliez, qu'ils parlent."
+        },
+        {
+          "kind": "rule",
+          "title": "Главные неправильные",
+          "text": "Être: sois/sois/soit/soyons/soyez/soient. Avoir: aie/aies/ait/ayons/ayez/aient. Aller: aille/ailles/aille/allions/alliez/aillent. Faire: fasse/fasses/fasse/fassions/fassiez/fassent. Savoir: sache/saches/sache/sachions/sachiez/sachent. Pouvoir: puisse/puisses/puisse/puissions/puissiez/puissent. Vouloir: veuille/veuilles/veuille/veuillions/veuilliez/veuillent."
+        },
+        {
+          "kind": "table",
+          "ref": "subjunctive_present_regular"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-07-d01",
+          "type": "choice",
+          "prompt": "Il faut que tu ____ (partir) maintenant.",
+          "options": [
+            "partes",
+            "partess",
+            "partest",
+            "partesons"
+          ],
+          "answer": [
+            "partes"
+          ],
+          "why": "Tu → -es. Partir → part- (ils partent)."
+        },
+        {
+          "id": "a2-07-d02",
+          "type": "fill",
+          "prompt": "Je veux qu'il ____ (être) prêt.",
+          "answer": [
+            "soit"
+          ],
+          "why": "Être → soit (3л. ед. ч.)."
+        },
+        {
+          "id": "a2-07-subjunctive-present-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif présent: регулярные + основные неправильные.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif présent: регулярные + основные неправильные."
+        }
+      ]
+    },
+    {
+      "id": "a2-08-subjunctive-triggers",
+      "order": 8,
+      "title": "Триггеры субъюнктива: WEIRDO",
+      "subtitle": "Wish, Emotion, Impersonal, Request, Doubt, Order",
+      "topics": [
+        "subjunctive_triggers"
+      ],
+      "prereq": [
+        "a2-07-subjunctive-present"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "WEIRDO = категории глаголов/выражений, требующих subjonctif после que."
+        },
+        {
+          "kind": "rule",
+          "title": "Категории",
+          "text": "Wish: vouloir que, souhaiter que. Emotion: être content que, avoir peur que. Impersonal: il faut que, il est important que. Request: demander que, exiger que. Doubt: douter que, nier que. Order: ordonner que, interdire que."
+        },
+        {
+          "kind": "rule",
+          "title": "Indicatif (НЕ subjonctif)",
+          "text": "Il est certain que, il est probable que, je pense que, je crois que, il semble que (аффирматив)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-08-d01",
+          "type": "choice",
+          "prompt": "Il est ____ que tu viennes. (subjonctif)",
+          "options": [
+            "certain",
+            "probable",
+            "important",
+            "vrai"
+          ],
+          "answer": [
+            "important"
+          ],
+          "why": "Il est important que → subjonctif. Certain/probable/vrai → indicatif."
+        },
+        {
+          "id": "a2-08-subjunctive-triggers-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Триггеры субъюнктива: WEIRDO.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Триггеры субъюнктива: WEIRDO."
+        },
+        {
+          "id": "a2-08-subjunctive-triggers-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Триггеры субъюнктива: WEIRDO.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Триггеры субъюнктива: WEIRDO."
+        }
+      ]
+    },
+    {
+      "id": "a2-09-relative-pronouns",
+      "order": 9,
+      "title": "Относительные местоимения: qui, que, où, dont",
+      "subtitle": "Qui = подлежащее, Que = дополнение, Où = место/время, Dont = de + объект",
+      "topics": [
+        "relative_pronouns"
+      ],
+      "prereq": [
+        "a2-08-subjunctive-triggers"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Qui заменяет подлежащее (кто/который). Que заменяет прямое дополнение (кого/что). Où = где/когда. Dont = о ком/чём (заменяет de + объект)."
+        },
+        {
+          "kind": "rule",
+          "title": "Примеры",
+          "text": "L'homme qui parle. Le livre que je lis. La ville où j'habite. L'ami dont je parle (je parle DE l'ami)."
+        },
+        {
+          "kind": "table",
+          "ref": "relative_pronouns"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-09-d01",
+          "type": "choice",
+          "prompt": "L'homme ____ parle est mon père.",
+          "options": [
+            "qui",
+            "que",
+            "où",
+            "dont"
+          ],
+          "answer": [
+            "qui"
+          ],
+          "why": "Qui = подлежащее (homme parle)."
+        },
+        {
+          "id": "a2-09-d02",
+          "type": "fill",
+          "prompt": "Le livre ____ je lis est intéressant.",
+          "answer": [
+            "que"
+          ],
+          "why": "Que = прямое дополнение (je lis LE LIVRE)."
+        },
+        {
+          "id": "a2-09-relative-pronouns-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Относительные местоимения: qui, que, où, dont.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Относительные местоимения: qui, que, où, dont."
+        }
+      ]
+    },
+    {
+      "id": "a2-10-object-pronouns",
+      "order": 10,
+      "title": "Местоимения-дополнения: le/la/les, lui/leur, y, en",
+      "subtitle": "Порядок: me/te → le/la/les → lui/leur → y → en",
+      "topics": [
+        "object_pronouns"
+      ],
+      "prereq": [
+        "a2-09-relative-pronouns"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "COD (le/la/les) и COI (lui/leur) перед глаголом. Y (место) и en (количество/от) тоже перед глаголом. Порядок строгий."
+        },
+        {
+          "kind": "rule",
+          "title": "Порядок (утверждение)",
+          "text": "me/te → le/la/les → lui/leur → y → en + verbe. Je le lui donne. J'y vais. J'en veux."
+        },
+        {
+          "kind": "rule",
+          "title": "Императив утвердительный",
+          "text": "Верхний порядок ПОСЛЕ глагола с дефисами: Donne-le-moi! Va-t'en! (не *ne va pas t'en*)."
+        },
+        {
+          "kind": "table",
+          "ref": "object_pronouns"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-10-d01",
+          "type": "choice",
+          "prompt": "Je ____ donne le livre.",
+          "options": [
+            "le lui",
+            "lui le",
+            "le y",
+            "en lui"
+          ],
+          "answer": [
+            "le lui"
+          ],
+          "why": "COD (le) перед COI (lui)."
+        },
+        {
+          "id": "a2-10-d02",
+          "type": "fill",
+          "prompt": "J'y ____ (aller) souvent.",
+          "answer": [
+            "vais"
+          ],
+          "why": "J'y vais."
+        },
+        {
+          "id": "a2-10-object-pronouns-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Местоимения-дополнения: le/la/les, lui/leur, y, en.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Местоимения-дополнения: le/la/les, lui/leur, y, en."
+        }
+      ]
+    },
+    {
+      "id": "a2-11-comparatives",
+      "order": 11,
+      "title": "Сравнительная конструкция: plus/moins/aussi...que",
+      "subtitle": "Plus grand que, moins grand que, aussi grand que",
+      "topics": [
+        "comparatives"
+      ],
+      "prereq": [
+        "a2-10-object-pronouns"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Сравнение: plus...que (больше), moins...que (меньше), aussi...que (так же). После que — подлежащее или подчёркнутое местоимение."
+        },
+        {
+          "kind": "rule",
+          "title": "Иррегулярные",
+          "text": "Bon → meilleur (que). Mauvais → pire (que). Petit → moindre (que)."
+        },
+        {
+          "kind": "table",
+          "ref": "comparatives_superlatives"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-11-d01",
+          "type": "choice",
+          "prompt": "Marie est ____ grande ____ Pierre.",
+          "options": [
+            "plus / que",
+            "moins / que",
+            "aussi / que",
+            "toutes"
+          ],
+          "answer": [
+            "plus / que"
+          ],
+          "why": "Plus...que = больше...чем."
+        },
+        {
+          "id": "a2-11-comparatives-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Сравнительная конструкция: plus/moins/aussi...que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Сравнительная конструкция: plus/moins/aussi...que."
+        },
+        {
+          "id": "a2-11-comparatives-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Сравнительная конструкция: plus/moins/aussi...que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Сравнительная конструкция: plus/moins/aussi...que."
+        }
+      ]
+    },
+    {
+      "id": "a2-12-superlatives",
+      "order": 12,
+      "title": "Превосходная степень: le plus/le moins...de",
+      "subtitle": "Le plus grand de la classe",
+      "topics": [
+        "superlatives"
+      ],
+      "prereq": [
+        "a2-11-comparatives"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Superlatif = артикль + plus/moins + прилагательное + de. Le plus grand de la classe. Артикль обязателен!"
+        },
+        {
+          "kind": "rule",
+          "title": "Иррегулярные",
+          "text": "Le meilleur, le pire, le moindre."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-12-d01",
+          "type": "choice",
+          "prompt": "C'est le ____ beau jour de ma vie.",
+          "options": [
+            "plus",
+            "moins",
+            "mieux",
+            "pire"
+          ],
+          "answer": [
+            "plus"
+          ],
+          "why": "Le plus beau = самый красивый."
+        },
+        {
+          "id": "a2-12-superlatives-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Превосходная степень: le plus/le moins...de.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Превосходная степень: le plus/le moins...de."
+        },
+        {
+          "id": "a2-12-superlatives-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Превосходная степень: le plus/le moins...de.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Превосходная степень: le plus/le moins...de."
+        }
+      ]
+    },
+    {
+      "id": "a2-13-si-clauses-present",
+      "order": 13,
+      "title": "Si + présent → futur/présent (реальные условия)",
+      "subtitle": "Si j'ai le temps, je viendrai",
+      "topics": [
+        "si_clauses_present"
+      ],
+      "prereq": [
+        "a2-05-futur-simple"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Реальное условие: si + présent → futur (или présent/impératif). НЕ *si j'aurai*!"
+        },
+        {
+          "kind": "rule",
+          "title": "Примеры",
+          "text": "Si j'ai le temps, je viendrai. Si tu viens, on mange. Si tu as faim, mange!"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-13-d01",
+          "type": "choice",
+          "prompt": "Si j'ai le temps, je ____ (venir).",
+          "options": [
+            "viendrai",
+            "viendrais",
+            "vais venir",
+            "viens"
+          ],
+          "answer": [
+            "viendrai"
+          ],
+          "why": "Si + présent → futur simple."
+        },
+        {
+          "id": "a2-13-si-clauses-present-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Si + présent → futur/présent (реальные условия).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si + présent → futur/présent (реальные условия)."
+        },
+        {
+          "id": "a2-13-si-clauses-present-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Si + présent → futur/présent (реальные условия).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si + présent → futur/présent (реальные условия)."
+        }
+      ]
+    },
+    {
+      "id": "a2-14-recent-past",
+      "order": 14,
+      "title": "Passé récent: venir de + infinitif",
+      "subtitle": "«Только что сделал»",
+      "topics": [
+        "recent_past"
+      ],
+      "prereq": [
+        "a1-05-present-irregular"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Venir de + infinitif = только что. Je viens de manger = Я только что поел. Venir спрягается в présent."
+        },
+        {
+          "kind": "rule",
+          "title": "Не путать с PC",
+          "text": "PC = завершённое действие в прошлом. Passé récent = только что, связь с настоящим."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-14-d01",
+          "type": "fill",
+          "prompt": "Je ____ (venir) de finir.",
+          "answer": [
+            "viens"
+          ],
+          "why": "Je viens de + infinitif."
+        },
+        {
+          "id": "a2-14-recent-past-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Passé récent: venir de + infinitif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passé récent: venir de + infinitif."
+        },
+        {
+          "id": "a2-14-recent-past-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Passé récent: venir de + infinitif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passé récent: venir de + infinitif."
+        }
+      ]
+    },
+    {
+      "id": "a2-15-depuis-pendant",
+      "order": 15,
+      "title": "Depuis vs Pendant vs Il y a",
+      "subtitle": "Сколько времени / Как давно",
+      "topics": [
+        "depuis_pendant"
+      ],
+      "prereq": [
+        "a2-03-imparfait"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Depuis + présent = «уже сколько-то» (от момента до сейчас). J'habite ici depuis 2 ans. Pendant + passé = «делал некоторое время» (закончено). Il y a = «какое-то время назад» (точка)."
+        },
+        {
+          "kind": "rule",
+          "title": "Различие",
+          "text": "J'étudie depuis 2 ans (продолжаю). J'ai étudié pendant 2 ans (закончил). Je l'ai fait il y a 2 ans (точка в прошлом)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-15-d01",
+          "type": "choice",
+          "prompt": "J'habite ici ____ 2 ans.",
+          "options": [
+            "depuis",
+            "pendant",
+            "il y a",
+            "pour"
+          ],
+          "answer": [
+            "depuis"
+          ],
+          "why": "Depuis + présent = продолжается до сих пор."
+        },
+        {
+          "id": "a2-15-depuis-pendant-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Depuis vs Pendant vs Il y a.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Depuis vs Pendant vs Il y a."
+        },
+        {
+          "id": "a2-15-depuis-pendant-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Depuis vs Pendant vs Il y a.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Depuis vs Pendant vs Il y a."
+        }
+      ]
+    }
+  ]
+}

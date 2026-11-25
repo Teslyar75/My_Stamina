@@ -752,8 +752,9 @@ class GrammarSpread(tk.Frame):
             pieces.append(lambda: self._piece_prereq(host, data))
         pieces.append(lambda: self._piece_goal(host, data))
         if data.get("bridge"):
+            lang_name = getattr(self.catalog, "translate_lang_name", "немецкий")
             pieces.append(lambda: self._piece_named(
-                host, _t("МОСТИК RU/UA → DE"), str(data.get("bridge") or "")))
+                host, _t("МОСТИК RU/UA → {0}").format(lang_name.upper()), str(data.get("bridge") or "")))
         if data.get("trap_text"):
             pieces.append(lambda: self._piece_named(
                 host, _t("ЛОВУШКА"), str(data.get("trap_text") or "")))

@@ -20,6 +20,8 @@ Shift+F1 — гид читает вслух справку F1 текущего �
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import hashlib
 import json
 import random
@@ -88,10 +90,10 @@ def help_clip_id(page_key: str) -> str:
 
 
 _SPOKEN = [
-    (r"Ctrl", "Контрол"), (r"Shift", "Шифт"), (r"\bAlt\b", "Альт"), (r"\bEsc\b", "Эскейп"),
-    (r"\bDel\b", "Делит"), (r"PgUp", "Пейдж ап"), (r"PgDn", "Пейдж даун"), (r"\bTab\b", "Таб"),
-    (r"\bEnter\b", "Энтер"), (r"\bHome\b", "Хоум"), (r"…", " до "), (r"←", "стрелка влево"),
-    (r"→", "стрелка вправо"), (r"↑", "стрелка вверх"), (r"↓", "стрелка вниз"),
+    (r"Ctrl", t("Контрол")), (r"Shift", t("Шифт")), (r"\bAlt\b", t("Альт")), (r"\bEsc\b", t("Эскейп")),
+    (r"\bDel\b", t("Делит")), (r"PgUp", t("Пейдж ап")), (r"PgDn", t("Пейдж даун")), (r"\bTab\b", t("Таб")),
+    (r"\bEnter\b", t("Энтер")), (r"\bHome\b", t("Хоум")), (r"…", t(" до ")), (r"←", t("стрелка влево")),
+    (r"→", t("стрелка вправо")), (r"↑", t("стрелка вверх")), (r"↓", t("стрелка вниз")),
 ]
 
 
@@ -100,7 +102,7 @@ def spoken_help(title: str, text: str) -> str:
     body = text.replace("•", "").replace("·", ",").replace("—", ",")
     for pat, rep in _SPOKEN:
         body = re.sub(pat, rep, body)
-    body = re.sub(r"\+", " плюс ", body)
+    body = re.sub(r"\+", t(" плюс "), body)
     lines = [ln.strip(" \t-") for ln in body.splitlines()]
     out = ". ".join(ln.rstrip(".") for ln in lines if ln)
     return re.sub(r"\s+", " ", f"{title.strip().rstrip('.')}. {out}.").replace(" ,", ",")
@@ -760,7 +762,7 @@ class GuideController:
                 self._btn_no = tk.Label(bar, bg=theme.PANEL, fg=theme.TEXT, font=theme.font(9, True),
                                         cursor="hand2", padx=8)
                 self._btn_no.pack(side=tk.RIGHT)
-                self._btn_yes = tk.Label(bar, text=_t("▶ СЛУШАТЬ"), bg=theme.PANEL, fg=theme.AMBER,
+                self._btn_yes = tk.Label(bar, text=_t(t("▶ СЛУШАТЬ")), bg=theme.PANEL, fg=theme.AMBER,
                                          font=theme.font(9, True), cursor="hand2", padx=8)
                 self._btn_yes.pack(side=tk.RIGHT)
                 self._btn_yes.bind("<Button-1>", lambda _e: self.handle_key("Return"))
@@ -769,9 +771,9 @@ class GuideController:
                     f.bind(seq, lambda _e, k=ks: self.handle_key(k))
                 self._toast = f
             self._lbl.configure(text="🛰  " + text)
-            self._hint.configure(text=_t("Enter — слушать  ·  Esc — отказаться") if prompt
-                                 else _t("Esc — прервать"))
-            self._btn_no.configure(text=_t("✕ НЕТ") if prompt else _t("✕ ПРЕРВАТЬ"))
+            self._hint.configure(text=_t(t("Enter — слушать  ·  Esc — отказаться")) if prompt
+                                 else _t(t("Esc — прервать")))
+            self._btn_no.configure(text=_t(t("✕ НЕТ")) if prompt else _t(t("✕ ПРЕРВАТЬ")))
             if prompt:
                 self._btn_yes.pack(side=tk.RIGHT, after=self._btn_no)
             else:

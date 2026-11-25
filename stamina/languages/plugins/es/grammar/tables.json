@@ -1,0 +1,313 @@
+{
+  "version": 1,
+  "tables": [
+    {
+      "id": "articles_definite",
+      "level": "A1",
+      "title": "Artículo definido (el, la, los, las)",
+      "headers": ["Género/Número", "Forma", "Ejemplo"],
+      "rows": [
+        ["Masculino singular", "el", "el libro"],
+        ["Femenino singular", "la", "la mesa"],
+        ["Masculino plural", "los", "los libros"],
+        ["Femenino plural", "las", "las mesas"]
+      ]
+    },
+    {
+      "id": "articles_indefinite",
+      "level": "A1",
+      "title": "Artículo indefinido (un, una, unos, unas)",
+      "headers": ["Género/Número", "Forma", "Ejemplo"],
+      "rows": [
+        ["Masculino singular", "un", "un libro"],
+        ["Femenino singular", "una", "una mesa"],
+        ["Masculino plural", "unos", "unos libros"],
+        ["Femenino plural", "unas", "unas mesas"]
+      ]
+    },
+    {
+      "id": "ser_estar_present",
+      "level": "A1",
+      "title": "Ser vs Estar en presente",
+      "headers": ["Persona", "Ser", "Estar"],
+      "rows": [
+        ["yo", "soy", "estoy"],
+        ["tú", "eres", "estás"],
+        ["él/ella/usted", "es", "está"],
+        ["nosotros", "somos", "estamos"],
+        ["vosotros", "sois", "estáis"],
+        ["ellos/ellas/ustedes", "son", "están"]
+      ]
+    },
+    {
+      "id": "present_ar",
+      "level": "A1",
+      "title": "Presente: verbos en -ar (hablar)",
+      "headers": ["Persona", "Terminación", "Forma"],
+      "rows": [
+        ["yo", "-o", "hablo"],
+        ["tú", "-as", "hablas"],
+        ["él/ella/usted", "-a", "habla"],
+        ["nosotros", "-amos", "hablamos"],
+        ["vosotros", "-áis", "habláis"],
+        ["ellos/ellas/ustedes", "-an", "hablan"]
+      ]
+    },
+    {
+      "id": "present_er",
+      "level": "A1",
+      "title": "Presente: verbos en -er (comer)",
+      "headers": ["Persona", "Terminación", "Forma"],
+      "rows": [
+        ["yo", "-o", "como"],
+        ["tú", "-es", "comes"],
+        ["él/ella/usted", "-e", "come"],
+        ["nosotros", "-emos", "comemos"],
+        ["vosotros", "-éis", "coméis"],
+        ["ellos/ellas/ustedes", "-en", "comen"]
+      ]
+    },
+    {
+      "id": "present_ir",
+      "level": "A1",
+      "title": "Presente: verbos en -ir (vivir)",
+      "headers": ["Persona", "Terminación", "Forma"],
+      "rows": [
+        ["yo", "-o", "vivo"],
+        ["tú", "-es", "vives"],
+        ["él/ella/usted", "-e", "vive"],
+        ["nosotros", "-imos", "vivimos"],
+        ["vosotros", "-ís", "vivís"],
+        ["ellos/ellas/ustedes", "-en", "viven"]
+      ]
+    },
+    {
+      "id": "present_irregulares",
+      "level": "A1",
+      "title": "Presente: irregulares clave (tener, venir, ir, hacer, poder, querer, saber)",
+      "headers": ["Persona", "tener", "venir", "ir", "hacer", "poder", "querer", "saber"],
+      "rows": [
+        ["yo", "tengo", "vengo", "voy", "hago", "puedo", "quiero", "sé"],
+        ["tú", "tienes", "vienes", "vas", "haces", "puedes", "quieres", "sabes"],
+        ["él/ella", "tiene", "viene", "va", "hace", "puede", "quiere", "sabe"],
+        ["nosotros", "tenemos", "venimos", "vamos", "hacemos", "podemos", "queremos", "sabemos"],
+        ["vosotros", "tenéis", "venís", "vais", "hacéis", "podéis", "queréis", "sabéis"],
+        ["ellos", "tienen", "vienen", "van", "hacen", "pueden", "quieren", "saben"]
+      ]
+    },
+    {
+      "id": "adjectives_agreement",
+      "level": "A1",
+      "title": "Concordancia de adjetivos",
+      "headers": ["Base (M. sg.)", "Femenino sg.", "Masculino pl.", "Femenino pl.", "Ejemplo"],
+      "rows": [
+        ["-o", "-a", "-os", "-as", "alto → alta / altos / altas"],
+        ["-e / consonante", "= (idéntico)", "-s", "-s", "grande → grande / grandes / grandes"],
+        ["-or", "-ora", "-ores", "-oras", "trabajador → trabajadora / trabajadores / trabajadoras"],
+        ["-án/-ón/-ín", "-ana/-ona/-ina", "-anes/-ones/-ines", "-anas/-onas/-inas", "holgazán → holgazana"]
+      ]
+    },
+    {
+      "id": "possessives",
+      "level": "A1",
+      "title": "Adjetivos posesivos (mi, tu, su, nuestro, vuestro)",
+      "headers": ["Persona", "Singular", "Plural"],
+      "rows": [
+        ["yo (mi)", "mi / mí (tónico)", "mis"],
+        ["tú (tu)", "tu / tú (tónico)", "tus"],
+        ["él/ella (su)", "su", "sus"],
+        ["nosotros (nuestro)", "nuestro/a", "nuestros/as"],
+        ["vosotros (vuestro)", "vuestro/a", "vuestros/as"],
+        ["ellos (su)", "su", "sus"]
+      ]
+    },
+    {
+      "id": "demonstratives",
+      "level": "A1",
+      "title": "Demostrativos (este, ese, aquel)",
+      "headers": ["Distancia", "Masculino", "Femenino", "Neutro"],
+      "rows": [
+        ["Cerca (este)", "este / estos", "esta / estas", "esto"],
+        ["Media (ese)", "ese / esos", "esa / esas", "eso"],
+        ["Lejos (aquel)", "aquel / aquellos", "aquella / aquellas", "aquello"]
+      ]
+    },
+    {
+      "id": "gustar_type",
+      "level": "A1",
+      "title": "Gustar y verbos afines (encantar, interesar, importar...)",
+      "headers": ["Persona", "Singular (gusta)", "Plural (gustan)"],
+      "rows": [
+        ["a mí", "me gusta", "me gustan"],
+        ["a ti", "te gusta", "te gustan"],
+        ["a él/ella", "le gusta", "le gustan"],
+        ["a nosotros", "nos gusta", "nos gustan"],
+        ["a vosotros", "os gusta", "os gustan"],
+        ["a ellos", "les gusta", "les gustan"]
+      ]
+    },
+    {
+      "id": "pret_indef_regular",
+      "level": "A2",
+      "title": "Pretérito indefinido regular (-ar, -er, -ir)",
+      "headers": ["Persona", "-ar (hablé)", "-er/-ir (comí/viví)"],
+      "rows": [
+        ["yo", "-é", "-í"],
+        ["tú", "-aste", "-iste"],
+        ["él/ella", "-ó", "-ió"],
+        ["nosotros", "-amos", "-imos"],
+        ["vosotros", "-asteis", "-isteis"],
+        ["ellos", "-aron", "-ieron"]
+      ]
+    },
+    {
+      "id": "pret_indef_irregular",
+      "level": "A2",
+      "title": "Pretérito indefinido irregular (tener, estar, hacer, ir/ser, poder, poner, saber, querer)",
+      "headers": ["Persona", "tener", "estar", "hacer", "ir/ser", "poder", "poner", "saber", "querer"],
+      "rows": [
+        ["yo", "tuve", "estuve", "hice", "fui", "pude", "puse", "supe", "quise"],
+        ["tú", "tuviste", "estuviste", "hiciste", "fuiste", "pudiste", "pusiste", "supiste", "quisiste"],
+        ["él", "tuvo", "estuvo", "hizo", "fue", "pudo", "puso", "supo", "quiso"],
+        ["nosotros", "tuvimos", "estuvimos", "hicimos", "fuimos", "pudimos", "pusimos", "supimos", "quisimos"],
+        ["vosotros", "tuvisteis", "estuvisteis", "hicisteis", "fuisteis", "pudisteis", "pusisteis", "supisteis", "quisisteis"],
+        ["ellos", "tuvieron", "estuvieron", "hicieron", "fueron", "pudieron", "pusieron", "supieron", "quisieron"]
+      ]
+    },
+    {
+      "id": "imperfecto",
+      "level": "A2",
+      "title": "Pretérito imperfecto (-aba, -ía)",
+      "headers": ["Persona", "-ar (hablaba)", "-er/-ir (comía/vivía)"],
+      "rows": [
+        ["yo", "-aba", "-ía"],
+        ["tú", "-abas", "-ías"],
+        ["él/ella", "-aba", "-ía"],
+        ["nosotros", "-ábamos", "-íamos"],
+        ["vosotros", "-abais", "-íais"],
+        ["ellos", "-aban", "-ían"]
+      ]
+    },
+    {
+      "id": "pret_indef_vs_imperfecto",
+      "level": "A2",
+      "title": "Indefinido vs Imperfecto",
+      "headers": ["Uso", "Indefinido", "Imperfecto"],
+      "rows": [
+        ["Acción completada", "Comí (terminé)", "—"],
+        ["Descripción/hábito", "—", "Comía (solía comer)"],
+        ["Secuencia de acciones", "Llegué, vi, me fui", "—"],
+        ["Fondo/Contexto", "—", "Era de noche, llovía"],
+        ["Interrupción", "Leía cuando llamó", "Leía (fondo) / llamó (evento)"]
+      ]
+    },
+    {
+      "id": "future_simple",
+      "level": "B1",
+      "title": "Futuro simple (hablaré, comeré, viviré)",
+      "headers": ["Persona", "Terminación", "Ejemplo (hablar)"],
+      "rows": [
+        ["yo", "-é", "hablaré"],
+        ["tú", "-ás", "hablarás"],
+        ["él/ella", "-á", "hablará"],
+        ["nosotros", "-emos", "hablaremos"],
+        ["vosotros", "-éis", "hablaréis"],
+        ["ellos", "-án", "hablarán"]
+      ]
+    },
+    {
+      "id": "conditional",
+      "level": "B1",
+      "title": "Condicional simple (hablaría, comería, viviría)",
+      "headers": ["Persona", "Terminación", "Ejemplo (hablar)"],
+      "rows": [
+        ["yo", "-ía", "hablaría"],
+        ["tú", "-ías", "hablarías"],
+        ["él/ella", "-ía", "hablaría"],
+        ["nosotros", "-íamos", "hablaríamos"],
+        ["vosotros", "-íais", "hablaríais"],
+        ["ellos", "-ían", "hablarían"]
+      ]
+    },
+    {
+      "id": "subj_present_regular",
+      "level": "B1",
+      "title": "Subjuntivo presente regular",
+      "headers": ["Persona", "-ar (hable)", "-er (coma)", "-ir (viva)"],
+      "rows": [
+        ["yo", "-e", "-a", "-a"],
+        ["tú", "-es", "-as", "-as"],
+        ["él/ella", "-e", "-a", "-a"],
+        ["nosotros", "-emos", "-amos", "-amos"],
+        ["vosotros", "-éis", "-áis", "-áis"],
+        ["ellos", "-en", "-an", "-an"]
+      ]
+    },
+    {
+      "id": "subj_present_irregular",
+      "level": "B1",
+      "title": "Subjuntivo presente irregular clave",
+      "headers": ["Persona", "ser", "estar", "ir", "haber", "saber", "poder", "tener", "hacer", "decir", "venir"],
+      "rows": [
+        ["yo", "sea", "esté", "vaya", "haya", "sepa", "pueda", "tenga", "haga", "diga", "venga"],
+        ["tú", "seas", "estés", "vayas", "hayas", "sepas", "puedas", "tengas", "hagas", "digas", "vengas"],
+        ["él", "sea", "esté", "vaya", "haya", "sepa", "pueda", "tenga", "haga", "diga", "venga"],
+        ["nosotros", "seamos", "estemos", "vayamos", "hayamos", "sepamos", "podamos", "tengamos", "hagamos", "digamos", "vengamos"],
+        ["vosotros", "seáis", "estéis", "vayáis", "hayáis", "sepáis", "podáis", "tengáis", "hagáis", "digáis", "vengáis"],
+        ["ellos", "sean", "estén", "vayan", "hayan", "sepan", "puedan", "tengan", "hagan", "digan", "vengan"]
+      ]
+    },
+    {
+      "id": "object_pronouns",
+      "level": "B1",
+      "title": "Pronombres de objeto (lo/la/los/las, le/les, se)",
+      "headers": ["Tipo", "Singular", "Plural", "Ejemplo"],
+      "rows": [
+        ["CD (lo/la/los/las)", "lo / la", "los / las", "Lo veo. La veo. Los veo. Las veo."],
+        ["CI (le/les)", "le", "les", "Le doy el libro. Les doy el libro."],
+        ["Le/les + lo/la/los/las → se", "se lo / se la / se los / se las", "—", "Se lo doy (no *le lo doy*)."],
+        ["Reflexivo", "me/te/se/nos/os/se", "—", "Me lavo. Se lava."],
+        ["Orden (afirmativo)", "verb + pronombre(s)", "—", "Dámelo. Dáselo."],
+        ["Orden (negativo)", "no + pronombre(s) + verbo", "—", "No me lo des. No se lo des."]
+      ]
+    },
+    {
+      "id": "por_para",
+      "level": "B1",
+      "title": "Por vs Para",
+      "headers": ["Por", "Para"],
+      "rows": [
+        ["Causa/Motivo: Lo hice por ti", "Destino/Finalidad: Es para ti"],
+        ["Duración: Estudié por dos horas", "Plazo: Para el lunes"],
+        ["Medio/Transporte: Vino por tren", "Destinatario: Un regalo para María"],
+        ["Sustitución: Lo hice por él", "Opinión: Para mí, es fácil"],
+        ["Distribución: Uno por uno", "Comparación: Para su edad, es alto"]
+      ]
+    },
+    {
+      "id": "subj_past",
+      "level": "B2",
+      "title": "Subjuntivo pretérito imperfecto (-ra/-se)",
+      "headers": ["Persona", "-ra (hablara)", "-se (hablase)"],
+      "rows": [
+        ["yo", "-ra", "-se"],
+        ["tú", "-ras", "-ses"],
+        ["él/ella", "-ra", "-se"],
+        ["nosotros", "-ramos", "-semos"],
+        ["vosotros", "-rais", "-seis"],
+        ["ellos", "-ran", "-sen"]
+      ]
+    },
+    {
+      "id": "si_clauses",
+      "level": "B2",
+      "title": "Oraciones con SI (tres tipos)",
+      "headers": ["Tipo", "Si + ...", "Principal", "Ejemplo"],
+      "rows": [
+        ["Real (presente)", "presente (indicativo)", "presente/futuro/imperativo", "Si tengo tiempo, iré."],
+        ["Posible (imperf. subj.)", "imperfecto subjuntivo", "condicional", "Si tuviera tiempo, iría."],
+        ["Irreal (plusc. subj.)", "pluscuamperfecto subj.", "condicional compuesto", "Si hubiera tenido tiempo, habría ido."]
+      ]
+    }
+  ]
+}

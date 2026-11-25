@@ -21,6 +21,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t as _t
+
 import base64
 import json
 import re
@@ -160,9 +162,9 @@ def token_hint() -> str:
     """Что делать, если GitHub больше не принимает токен (совет другой, чем «добавь прав»)."""
     from stamina.i18n import t
     return "\n".join([
-        t("Токен GitHub больше не действует — истёк срок или его отозвали."),
-        t("Создайте новый: {url} — Discussions и Contents: Read and write.").format(url=TOKEN_SETTINGS),
-        t("Затем вставьте его в «Подключить агента» и нажмите «Проверить связь»."),
+        t(_t("Токен GitHub больше не действует — истёк срок или его отозвали.")),
+        t(_t("Создайте новый: {url} — Discussions и Contents: Read and write.")).format(url=TOKEN_SETTINGS),
+        t(_t("Затем вставьте его в «Подключить агента» и нажмите «Проверить связь».")),
     ])
 
 
@@ -174,16 +176,16 @@ def is_permission_error(code: int | None, detail: str = "") -> bool:
 def permission_hint(repo: str = "", need: str = "") -> str:
     """Что включить у токена GitHub — по-человечески, со ссылкой на настройки."""
     from stamina.i18n import t
-    lines = [t("Токену GitHub не хватает прав для моста."),
-             t("Откройте {url}, выберите токен и проверьте:").format(url=TOKEN_SETTINGS),
-             "• " + t("Repository access — выбран репозиторий {repo}").format(
-                 repo=repo or t("обсуждения")),
-             "• " + t("Discussions — Read and write (писать комментарии в обсуждение)"),
-             "• " + t("Contents — Read and write (класть снимки экрана в ветку ship-chat-media)")]
+    lines = [t(_t("Токену GitHub не хватает прав для моста.")),
+             t(_t("Откройте {url}, выберите токен и проверьте:")).format(url=TOKEN_SETTINGS),
+             "• " + t(_t("Repository access — выбран репозиторий {repo}")).format(
+                 repo=repo or t(_t("обсуждения"))),
+             "• " + t(_t("Discussions — Read and write (писать комментарии в обсуждение)")),
+             "• " + t(_t("Contents — Read and write (класть снимки экрана в ветку ship-chat-media)"))]
     if need == "media":
-        lines.insert(1, t("Не прошла загрузка снимка экрана — скорее всего, нет Contents: Read and write."))
+        lines.insert(1, t(_t("Не прошла загрузка снимка экрана — скорее всего, нет Contents: Read and write.")))
     elif need == "comment":
-        lines.insert(1, t("Не прошёл комментарий — скорее всего, нет Discussions: Read and write."))
+        lines.insert(1, t(_t("Не прошёл комментарий — скорее всего, нет Discussions: Read and write.")))
     return "\n".join(lines)
 
 
@@ -250,9 +252,7 @@ def check(record: dict, *, key: str = "") -> tuple[bool | None, str]:
     if can["media"] is False:
         return None, head + "\n" + permission_hint(repo, "media")
     if can["comment"] is None or can["media"] is None:
-        return None, head + "\n" + t("Чтение работает. Права детального токена на запись GitHub "
-                                      "заранее не сообщает — проверьте их в {url}: Discussions и "
-                                      "Contents — Read and write.").format(url=TOKEN_SETTINGS)
+        return None, head + "\n" + t(_t("Чтение работает. Права детального токена на запись GitHub заранее не сообщает — проверьте их в {url}: Discussions и Contents — Read and write.")).format(url=TOKEN_SETTINGS)
     return True, head
 
 
@@ -352,10 +352,10 @@ def comment_body(payload: dict) -> str:
         if s.get("url"):
             parts.append(f"![{s.get('name', 'shot')}]({s['url']})")
         else:
-            parts.append(f"🖼 {s.get('name', '')} (не загрузился)")
+            parts.append(_t("🖼 {0} (не загрузился)").format(s.get('name', '')))
     details = (c.get("details") or {}).get("raw")
     if details:
-        parts.append("<details><summary>контекст корабля</summary>\n\n```\n"
+        parts.append(_t("<details><summary>контекст корабля</summary>\n\n```\n")
                      + str(details).replace("```", "'''") + "\n```\n</details>")
     parts.append(MSG_MARK.format(payload.get("message_id", "")))
     return "\n\n".join(p for p in parts if p)

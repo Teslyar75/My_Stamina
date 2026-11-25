@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "level": "C1",
+  "lessons": [
+    {
+      "id": "c1-01-congiuntivo-avanzato",
+      "order": 1,
+      "title": "Congiuntivo: sfumature, connettori, periodi misti",
+      "subtitle": "Come se + imperfetto/trapassato, magari + congiuntivo, non è che...",
+      "topics": [
+        "congiuntivo_avanzato"
+      ],
+      "prereq": [
+        "b2-01-congiuntivo-triggers-avanzati"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Come se + imperfetto (simultaneo) / trapassato (anteriore): come se FOSSE re / come se FOSSE STATO re. Magari + imperfetto/trapassato (desiderio irrealizzabile): magari VENISSE! / magari FOSSE VENUTO! Non è che... sia... (negazione parziale)."
+        },
+        {
+          "kind": "rule",
+          "title": "Periodi misti",
+          "text": "Se avessi studiato (passato), ORA sarei medico (presente). Se fossi ricco (presente), avrei comprato la casa (passato)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-01-d01",
+          "type": "choice",
+          "prompt": "Parla come se ____ (essere) il padrone.",
+          "options": [
+            "fosse",
+            "sia",
+            "fosse stato",
+            "è"
+          ],
+          "answer": [
+            "fosse"
+          ],
+          "why": "Come se + congiuntivo imperfetto (simultaneo)."
+        },
+        {
+          "id": "c1-01-congiuntivo-avanzato-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo: sfumature, connettori, periodi misti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo: sfumature, connettori, periodi misti."
+        },
+        {
+          "id": "c1-01-congiuntivo-avanzato-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Congiuntivo: sfumature, connettori, periodi misti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Congiuntivo: sfumature, connettori, periodi misti."
+        }
+      ]
+    },
+    {
+      "id": "c1-02-gerundio-composto",
+      "order": 2,
+      "title": "Gerundio composto (azione anteriore)",
+      "subtitle": "Avendo parlato / Essendo andato",
+      "topics": [
+        "gerundio_composto"
+      ],
+      "prereq": [
+        "b2-02-stare-gerundio"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Azione PRECEDENTE a quella del verbo principale. Avendo finito, sono uscito. Essendo arrivato tardi, ho perso il treno (accordo con essere)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-02-d01",
+          "type": "choice",
+          "prompt": "____ (finire) i compiti, sono uscito.",
+          "options": [
+            "Avendo finito",
+            "Finendo",
+            "Avevo finito",
+            "Finiti"
+          ],
+          "answer": [
+            "Avendo finito"
+          ],
+          "why": "Azione anteriore → gerundio composto."
+        },
+        {
+          "id": "c1-02-gerundio-composto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Gerundio composto (azione anteriore).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Gerundio composto (azione anteriore)."
+        },
+        {
+          "id": "c1-02-gerundio-composto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Gerundio composto (azione anteriore).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Gerundio composto (azione anteriore)."
+        }
+      ]
+    },
+    {
+      "id": "c1-03-periodo-ipotetico-misto",
+      "order": 3,
+      "title": "Periodi ipotetici misti",
+      "subtitle": "Passato → Presente / Presente → Passato",
+      "topics": [
+        "periodo_misto"
+      ],
+      "prereq": [
+        "b1-06-se-clauses",
+        "c1-01-congiuntivo-avanzato"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Misto 1: Se + congiuntivo trapassato (passato) → condizionale presente (presente): Se avessi studiato medicina, ORA sarei dottore. Misto 2: Se + congiuntivo imperfetto (presente) → condizionale passato (passato): Se fossi ricco, avrei comprato quella casa."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-03-d01",
+          "type": "choice",
+          "prompt": "Se ____ (accettare) quel lavoro, ____ (abitare) a Milano ora.",
+          "options": [
+            "avessi accettato / abitere",
+            "accettassi / avrei abitato",
+            "accetto / abiterò",
+            "accettavo / abitavo"
+          ],
+          "answer": [
+            "avessi accettato / abitere"
+          ],
+          "why": "Misto: passato → presente."
+        },
+        {
+          "id": "c1-03-periodo-ipotetico-misto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Periodi ipotetici misti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Periodi ipotetici misti."
+        },
+        {
+          "id": "c1-03-periodo-ipotetico-misto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Periodi ipotetici misti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Periodi ipotetici misti."
+        }
+      ]
+    },
+    {
+      "id": "c1-04-registro-stile",
+      "order": 4,
+      "title": "Registri: formale/informale, varianti regionali",
+      "subtitle": "Lei vs tu, passato remoto vs prossimo, voci meridionali",
+      "topics": [
+        "registro_stile"
+      ],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Formale: Lei (3ª sg.) vs tu. Sud/letteratura: passato remoto (partii, vidi) vs nord/orale: passato prossimo (sono partito, ho visto). Voi (sud) vs Lei (nord/formale). Congiuntivo imperfetto in contesti formali."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-04-d01",
+          "type": "choice",
+          "prompt": "Al Sud: \"Ieri ____ (partire) presto.\"",
+          "options": [
+            "partii",
+            "sono partito",
+            "partivo",
+            "partirò"
+          ],
+          "answer": [
+            "partii"
+          ],
+          "why": "Passato remoto (uso meridionale/letterario)."
+        },
+        {
+          "id": "c1-04-registro-stile-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Registri: formale/informale, varianti regionali.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Registri: formale/informale, varianti regionali."
+        },
+        {
+          "id": "c1-04-registro-stile-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Registri: formale/informale, varianti regionali.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Registri: formale/informale, varianti regionali."
+        }
+      ]
+    }
+  ]
+}

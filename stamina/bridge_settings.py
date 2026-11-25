@@ -32,7 +32,7 @@ def font_label(key: str) -> str:
     return {"": _t("КАК ОСН."), "S": "S", "M": "M", "L": "L", "XL": "XL", "XXL": "XXL"}[key]
 
 
-FACE_LABELS = (("mono", "Моно"), ("sans", "Без засечек"), ("serif", "С засечками"), ("system", "Системный"))
+FACE_LABELS = (("mono", _t("Моно")), ("sans", _t("Без засечек")), ("serif", _t("С засечками")), ("system", _t("Системный")))
 
 
 class BridgeSettingsScreen(tk.Frame):
@@ -74,7 +74,7 @@ class BridgeSettingsScreen(tk.Frame):
         self.tabs: dict[str, tk.Misc] = {}
         self.tab_btns: dict[str, HudButton] = {}
         grid = None
-        sight = self._panel(grid, _t("ПРИЦЕЛ"), "ПРИЦЕЛ")
+        sight = self._panel(grid, _t("ПРИЦЕЛ"), _t("ПРИЦЕЛ"))
         self._toggle(sight, "sight", _t("Прицел на букве"), _t("Вкл — рамка с треугольниками. Выкл — только подчёркивание."))
         self._chips(sight, "cursor_font", _t("Размер буквы в прицеле"), [(k, font_label(k)) for k in ("",) + ts.FONT_KEYS])
         self._color(sight, "cursor_color", _t("Цвет буквы в прицеле"), "#FFFFFF")
@@ -83,7 +83,7 @@ class BridgeSettingsScreen(tk.Frame):
         self._toggle(sight, "keyboard", _t("Экранная клавиатура"), _t("Подсветка следующей клавиши и пальца."))
         self._toggle(sight, "zones", _t("Цветные зоны пальцев"), _t("Клавиши окрашены по пальцам, как в прежнем Stamina."))
 
-        typ = self._panel(grid, _t("НАБОР"), "НАБОР")
+        typ = self._panel(grid, _t("НАБОР"), _t("НАБОР"))
         self._chips(typ, "font", _t("Размер шрифта строки"), [(k, font_label(k)) for k in ts.FONT_KEYS])
         self._chips(typ, "typed_font", _t("Размер набранного"), [(k, font_label(k)) for k in ("",) + ts.FONT_KEYS])
         self._chips(typ, "ahead_font", _t("Размер текста впереди"), [(k, font_label(k)) for k in ("",) + ts.FONT_KEYS])
@@ -98,24 +98,24 @@ class BridgeSettingsScreen(tk.Frame):
         self.ai_info = _label(row, "", fg=MUTED, size=8, wraplength=px(320), justify="left")
         self.ai_info.pack(side=tk.LEFT, padx=(px(8), 0))
 
-        col = self._panel(grid, _t("ЦВЕТА"), "ЦВЕТА")
+        col = self._panel(grid, _t("ЦВЕТА"), _t("ЦВЕТА"))
         self._color(col, "typed_color", _t("Цвет набранного"), CYAN_DIM)
         self._color(col, "ahead_color", _t("Цвет текста впереди"), TEXT)
 
-        box = self._panel(grid, _t("ОКОШКО ПРИЦЕЛА"), "ОКОШКО ПРИЦЕЛА")
+        box = self._panel(grid, _t("ОКОШКО ПРИЦЕЛА"), _t("ОКОШКО ПРИЦЕЛА"))
         _label(box.cols[0], _t("Крупное слово под иллюминатором (видно, когда включён UPLINK)."), fg=MUTED,
                size=8, wraplength=px(500), justify="left").pack(anchor="w")
         self._chips(box, "sight_box_font", _t("Размер слова"), [(k, font_label(k)) for k in ts.FONT_KEYS])
         self._chips(box, "sight_box_face", _t("Шрифт слова"), [(k, _t(v)) for k, v in FACE_LABELS])
         self._color(box, "sight_on_color", _t("Цвет текущей буквы"), RED)
-        self.show_tab("ПРИЦЕЛ")
+        self.show_tab(_t("ПРИЦЕЛ"))
         self.refresh()
 
     def check_ai(self) -> None:
         """«Проверить ИИ»: починка склеек в книге на борту (в фоне), отчёт рядом с кнопкой."""
         run_glue_check(self.app, self, self.btn_ai, self.ai_info)
 
-    HELP_IDS = {"ПРИЦЕЛ": "sight", "НАБОР": "typing", "ЦВЕТА": "colors", "ОКОШКО ПРИЦЕЛА": "box"}
+    HELP_IDS = {_t("ПРИЦЕЛ"): "sight", _t("НАБОР"): "typing", _t("ЦВЕТА"): "colors", _t("ОКОШКО ПРИЦЕЛА"): "box"}
 
     def page_help_key(self) -> str:
         return "bridge_settings." + self.HELP_IDS.get(getattr(self, "current_tab", ""), "sight")
@@ -236,8 +236,8 @@ class BridgeSettingsScreen(tk.Frame):
         self.preview.set_state(text=PREVIEW_TEXT, index=PREVIEW_INDEX, mode="run",
                                status=_t("ПРЕВЬЮ"), status_color=AMBER)
         self.preview_box.set_style(st)
-        self.preview_box.set(direction="EN → RU", source=PREVIEW_TEXT, translation="быстрая бурая лиса прыгает через ленивую собаку",
-                             word="fox", word_tr="лиса", word_cursor=0, status="✓", status_color=GREEN)
+        self.preview_box.set(direction="EN → RU", source=PREVIEW_TEXT, translation=_t("быстрая бурая лиса прыгает через ленивую собаку"),
+                             word="fox", word_tr=_t("лиса"), word_cursor=0, status="✓", status_color=GREEN)
 
 
 def run_glue_check(app, widget, button, info) -> None:

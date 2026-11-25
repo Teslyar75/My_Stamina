@@ -1,0 +1,494 @@
+{
+  "version": 1,
+  "level": "A2",
+  "lessons": [
+    {
+      "id": "a2-01-passato-prossimo",
+      "order": 1,
+      "title": "Passato prossimo (avere/essere + participio)",
+      "subtitle": "Ho parlato / Sono andato — azione completata nel passato",
+      "topics": [
+        "passato_prossimo"
+      ],
+      "prereq": [
+        "a1-06-presente-irregulari"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Ausiliare avere (maggioranza) o essere (movimento, stato, riflessivi) + participio passato. Participio regolare: -are → -ato, -ere → -uto, -ire → -ito."
+        },
+        {
+          "kind": "rule",
+          "title": "Essere = accordo",
+          "text": "Con essere il participio concorda col soggetto: sono andato / è andata / siamo andati / sono andate."
+        },
+        {
+          "kind": "table",
+          "ref": "passato_prossimo"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-01-d01",
+          "type": "choice",
+          "prompt": "Io ____ (mangiare) la pizza.",
+          "options": [
+            "ho mangiato",
+            "sono mangiato",
+            "ho mangiata",
+            "sono mangiata"
+          ],
+          "answer": [
+            "ho mangiato"
+          ],
+          "why": "Mangiare → avere, nessun accordo."
+        },
+        {
+          "id": "a2-01-d02",
+          "type": "choice",
+          "prompt": "Maria ____ (andare) a Roma.",
+          "options": [
+            "è andata",
+            "ha andata",
+            "è andato",
+            "ha andato"
+          ],
+          "answer": [
+            "è andata"
+          ],
+          "why": "Andare → essere, f.sg. → andata."
+        },
+        {
+          "id": "a2-01-passato-prossimo-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Passato prossimo (avere/essere + participio).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passato prossimo (avere/essere + participio)."
+        }
+      ]
+    },
+    {
+      "id": "a2-02-participi-irregolari",
+      "order": 2,
+      "title": "Participi passati irregolari",
+      "subtitle": "fatto, detto, visto, scritto, letto, messo, preso, aperto, chiuso, bevuto, nato, morto...",
+      "topics": [
+        "participi_irregolari"
+      ],
+      "prereq": [
+        "a2-01-passato-prossimo"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Lista da memorizzare. Attenzione: aprire → aperto (non *aprito*), chiudere → chiuso, bere → bevuto, dire → detto, fare → fatto, leggere → letto, mettere → messo, porre → posto, prendere → preso, rispondere → risposto, scrivere → scritto, vedere → visto. Nascere/morire → essere + nato/morto."
+        },
+        {
+          "kind": "table",
+          "ref": "passato_prossimo_irreg"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-02-d01",
+          "type": "choice",
+          "prompt": "Ho ____ (scrivere) una lettera.",
+          "options": [
+            "scritto",
+            "scritti",
+            "scritta",
+            "scrittiamo"
+          ],
+          "answer": [
+            "scritto"
+          ],
+          "why": "Scrivere → scritto."
+        },
+        {
+          "id": "a2-02-d02",
+          "type": "fill",
+          "prompt": "Loro hanno ____ (vedere) il film.",
+          "answer": [
+            "visto"
+          ],
+          "why": "Vedere → visto."
+        },
+        {
+          "id": "a2-02-participi-irregolari-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Participi passati irregolari.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Participi passati irregolari."
+        }
+      ]
+    },
+    {
+      "id": "a2-03-imperfetto",
+      "order": 3,
+      "title": "Imperfetto: descrizione, abitudine, fondo nel passato",
+      "subtitle": "parlavo, credevo, dormivo / capivo (-avo, -evo, -ivo)",
+      "topics": [
+        "imperfetto"
+      ],
+      "prereq": [
+        "a1-03-presente-are"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Nessun irregolare (tranne essere → ero/eri/era/eravamo/eravate/erano). -are: -avo/-avi/-ava/-avamo/-avate/-avano. -ere: -evo/-evi/-eva/-evamo/-evate/-evano. -ire: -ivo/-ivi/-iva/-ivamo/-ivate/-ivano."
+        },
+        {
+          "kind": "table",
+          "ref": "imperfetto"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-03-d01",
+          "type": "choice",
+          "prompt": "Da bambino ____ (giocare) molto.",
+          "options": [
+            "giocavo",
+            "giocavi",
+            "giocava",
+            "giocavamo"
+          ],
+          "answer": [
+            "giocavo"
+          ],
+          "why": "Abitudine nel passato → imperfetto. Io -are → -avo."
+        },
+        {
+          "id": "a2-03-d02",
+          "type": "choice",
+          "prompt": "Era sera e ____ (piovere).",
+          "options": [
+            "pioveva",
+            "ha piovuto",
+            "piove",
+            "pioverà"
+          ],
+          "answer": [
+            "pioveva"
+          ],
+          "why": "Descrizione/fondo → imperfetto."
+        },
+        {
+          "id": "a2-03-imperfetto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Imperfetto: descrizione, abitudine, fondo nel passato.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Imperfetto: descrizione, abitudine, fondo nel passato."
+        }
+      ]
+    },
+    {
+      "id": "a2-04-passato-vs-imperfetto",
+      "order": 4,
+      "title": "Passato prossimo vs Imperfetto",
+      "subtitle": "Evento puntuale vs Descrizione/abitudine/fondo",
+      "topics": [
+        "passato_vs_imperfetto"
+      ],
+      "prereq": [
+        "a2-01-passato-prossimo",
+        "a2-03-imperfetto"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passato prossimo = evento completato, sequenza azioni. Imperfetto = descrizione, abitudine, azione in corso (fondo). Leggevo quando ha telefonato (imperfetto + passato prossimo)."
+        },
+        {
+          "kind": "table",
+          "ref": "passato_prossimo_vs_imperfetto"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-04-d01",
+          "type": "choice",
+          "prompt": "____ (leggere) quando ____ (telefonare) mia madre.",
+          "options": [
+            "Leggevo / ha telefonato",
+            "Ho letto / telefonava",
+            "Leggevo / telefonava",
+            "Ho letto / ha telefonato"
+          ],
+          "answer": [
+            "Leggevo / ha telefonato"
+          ],
+          "why": "Fondo (imperfetto) + evento (passato prossimo)."
+        },
+        {
+          "id": "a2-04-passato-vs-imperfetto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Passato prossimo vs Imperfetto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passato prossimo vs Imperfetto."
+        },
+        {
+          "id": "a2-04-passato-vs-imperfetto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Passato prossimo vs Imperfetto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Passato prossimo vs Imperfetto."
+        }
+      ]
+    },
+    {
+      "id": "a2-05-futuro",
+      "order": 5,
+      "title": "Futuro semplice",
+      "subtitle": "parlerò, crederò, dormirò — stesse desinenze per tutte le coniugazioni",
+      "topics": [
+        "futuro"
+      ],
+      "prereq": [
+        "a1-03-presente-are"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Infinitivo (senza -e per -are) + -ò, -ai, -à, -emo, -ete, -anno. Stesse desinenze per -are/-ere/-ire. Irregolari (radici): andare→andr-, fare→far-, venire→verr-, stare→star-, dare→dar-, sapere→sapr-, potere→potr-, volere→vorr-, dovere→dovr-."
+        },
+        {
+          "kind": "table",
+          "ref": "futuro_semplice"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-05-d01",
+          "type": "choice",
+          "prompt": "Domani io ____ (andare) a Milano.",
+          "options": [
+            "andrò",
+            "andròi",
+            "andròa",
+            "andròiamo"
+          ],
+          "answer": [
+            "andrò"
+          ],
+          "why": "Andare → andr- + -ò = andrò."
+        },
+        {
+          "id": "a2-05-d02",
+          "type": "fill",
+          "prompt": "Noi ____ (potere) venire.",
+          "answer": [
+            "potremo"
+          ],
+          "why": "Potere → potr- + -emo = potremo."
+        },
+        {
+          "id": "a2-05-futuro-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Futuro semplice.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Futuro semplice."
+        }
+      ]
+    },
+    {
+      "id": "a2-06-condizionale",
+      "order": 6,
+      "title": "Condizionale presente",
+      "subtitle": "parlerei, crederei, dormirei — stesse radici del futuro + desinenze imperfetto",
+      "topics": [
+        "condizionale"
+      ],
+      "prereq": [
+        "a2-05-futuro"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Stesse radici irregolari del futuro + -ei/-esti/-ebbe/-emmo/-este/-ebbero. Vorrei (non *volerei*)."
+        },
+        {
+          "kind": "table",
+          "ref": "condizionale_presente"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-06-d01",
+          "type": "choice",
+          "prompt": "Io ____ (volere) un caffè.",
+          "options": [
+            "vorrei",
+            "volerei",
+            "voglio",
+            "volevo"
+          ],
+          "answer": [
+            "vorrei"
+          ],
+          "why": "Volere → vorr- + -ei = vorrei."
+        },
+        {
+          "id": "a2-06-d02",
+          "type": "fill",
+          "prompt": "Loro ____ (dovere) studiare.",
+          "answer": [
+            "dovrebbero"
+          ],
+          "why": "Dovere → dovr- + -ebbero = dovrebbero."
+        },
+        {
+          "id": "a2-06-condizionale-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Condizionale presente.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Condizionale presente."
+        }
+      ]
+    },
+    {
+      "id": "a2-07-pronomi-oggetto",
+      "order": 7,
+      "title": "Pronomi oggetto: COD, CI, CIO, ne, ci",
+      "subtitle": "lo/la/li/le, mi/ti/ci/vi, gli/le, ne, ci — ordine e glielo",
+      "topics": [
+        "pronomi_oggetto"
+      ],
+      "prereq": [
+        "a1-02-essere-avere"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "COD (lo/la/li/le) prima del verbo. CI (mi/ti/ci/vi). CIO (gli/le). gli/le + lo/la/li/le → glielo/gliela/glieli/gliele (MAI *gli lo*). Ne = partitivo (ne ho due). Ci = locativo (ci vado)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ordine (negativo)",
+          "text": "non + mi/ti/ci/vi → gli/le → lo/la/li/le → ne/ci + verbo. Non me lo dai. Non glielo dare."
+        },
+        {
+          "kind": "rule",
+          "title": "Ordine (affermativo imperativo)",
+          "text": "Verbo + pronomi (connessi): Dammi! Daglielo! Dammelo!"
+        },
+        {
+          "kind": "table",
+          "ref": "pronomi_oggetto"
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-07-d01",
+          "type": "choice",
+          "prompt": "Il libro? Marco ____ (dare) a Lucia.",
+          "options": [
+            "glielo dà",
+            "gli lo dà",
+            "lo gli dà",
+            "lo dà"
+          ],
+          "answer": [
+            "glielo dà"
+          ],
+          "why": "Gli (CI) + lo (COD) → glielo."
+        },
+        {
+          "id": "a2-07-d02",
+          "type": "fill",
+          "prompt": "____ (dare + mi + lo)!",
+          "answer": [
+            "Dammelo"
+          ],
+          "why": "Imperativo affermativo: verbo + pronomi."
+        },
+        {
+          "id": "a2-07-pronomi-oggetto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Pronomi oggetto: COD, CI, CIO, ne, ci.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pronomi oggetto: COD, CI, CIO, ne, ci."
+        }
+      ]
+    },
+    {
+      "id": "a2-08-ne-ci",
+      "order": 8,
+      "title": "Ne (partitivo) e Ci (locativo)",
+      "subtitle": "Ne ho due / Ci vado / Ci sono",
+      "topics": [
+        "ne_ci"
+      ],
+      "prereq": [
+        "a2-07-pronomi-oggetto"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Ne = di esso/di loro/quantità (Ne ho tre. Ne voglio). Ci = là/ci (Ci vado domani. Ci sono stato)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "a2-08-d01",
+          "type": "choice",
+          "prompt": "Quanti libri hai? Ne ____ (avere) tre.",
+          "options": [
+            "ho",
+            "hanno",
+            "hai",
+            "abbiamo"
+          ],
+          "answer": [
+            "ho"
+          ],
+          "why": "Io ne ho tre."
+        },
+        {
+          "id": "a2-08-ne-ci-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Ne (partitivo) e Ci (locativo).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Ne (partitivo) e Ci (locativo)."
+        },
+        {
+          "id": "a2-08-ne-ci-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Ne (partitivo) e Ci (locativo).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Ne (partitivo) e Ci (locativo)."
+        }
+      ]
+    }
+  ]
+}

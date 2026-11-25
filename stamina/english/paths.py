@@ -16,7 +16,11 @@ DATA_DIR = PACKAGE_DIR / "data"
 VOCAB_PATH = DATA_DIR / "vocab.json"
 VOCAB_GZ_PATH = DATA_DIR / "vocab.json.gz"
 SAMPLE_PATH = PACKAGE_DIR / "sample_vocab.json"
-MODELS_DIR = Path(os.environ.get("STAR_TYPING_MODELS") or (PROJECT_DIR / "models"))
+#: Модели Vosk: `STAR_TYPING_MODELS`, `models/` корабля или общая библиотека пилота
+#: (`%APPDATA%/Stamina/models`) — правило одно на всех, см. stamina.voice.stt.models_dir.
+from stamina.voice.stt import models_dir as _voice_models_dir  # noqa: E402
+
+MODELS_DIR = _voice_models_dir()
 
 
 def vocab_file() -> Path:

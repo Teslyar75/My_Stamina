@@ -1,0 +1,704 @@
+{
+  "version": 1,
+  "level": "B1",
+  "lessons": [
+    {
+      "id": "b1-01-subjunctive-past",
+      "order": 1,
+      "title": "Subjonctif passé: que j'aie fait / que je sois allé",
+      "subtitle": "Action antérieure к главному глаголу в настоящем/будущем",
+      "topics": [
+        "subjunctive_past"
+      ],
+      "prereq": [
+        "a2-07-subjunctive-present"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Subjonctif passé = auxiliaire (subjonctif présent) + participe passé. Que j'aie fini, que je sois parti."
+        },
+        {
+          "kind": "rule",
+          "title": "Формула",
+          "text": "Avoir/être (subj. présent) + participe passé (с согласованием для être)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-01-d01",
+          "type": "choice",
+          "prompt": "Il faut que tu ____ (finir) avant midi.",
+          "options": [
+            "aies fini",
+            "ais fini",
+            "as fini",
+            "es fini"
+          ],
+          "answer": [
+            "aies fini"
+          ],
+          "why": "Avoir subj. présent (tu aies) + participe passé."
+        },
+        {
+          "id": "b1-01-subjunctive-past-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif passé: que j'aie fait / que je sois allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif passé: que j'aie fait / que je sois allé."
+        },
+        {
+          "id": "b1-01-subjunctive-past-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjonctif passé: que j'aie fait / que je sois allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjonctif passé: que j'aie fait / que je sois allé."
+        }
+      ]
+    },
+    {
+      "id": "b1-02-si-clauses-past",
+      "order": 2,
+      "title": "Si + plus-que-parfait → conditionnel passé (irréel du passé)",
+      "subtitle": "Если бы я сделал (но не сделал)",
+      "topics": [
+        "si_clauses_past"
+      ],
+      "prereq": [
+        "a2-13-si-clauses-present",
+        "b1-03-plus-que-parfait"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Irréel du passé: si + PQP → conditionnel passé. Si j'avais su, je serais venu."
+        },
+        {
+          "kind": "rule",
+          "title": "Не *si j'aurais eu*!",
+          "text": "После si — ТОЛЬКО PQP. Главная — conditionnel passé."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-02-d01",
+          "type": "choice",
+          "prompt": "Si j'____ (savoir), je ____ (venir).",
+          "options": [
+            "avais su / serais venu",
+            "aurais su / serais venu",
+            "avais su / viendrais",
+            "saurais / viendrais"
+          ],
+          "answer": [
+            "avais su / serais venu"
+          ],
+          "why": "Si + PQP → cond. passé."
+        },
+        {
+          "id": "b1-02-si-clauses-past-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Si + plus-que-parfait → conditionnel passé (irréel du passé).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si + plus-que-parfait → conditionnel passé (irréel du passé)."
+        },
+        {
+          "id": "b1-02-si-clauses-past-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Si + plus-que-parfait → conditionnel passé (irréel du passé).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Si + plus-que-parfait → conditionnel passé (irréel du passé)."
+        }
+      ]
+    },
+    {
+      "id": "b1-03-plus-que-parfait",
+      "order": 3,
+      "title": "Plus-que-parfait: j'avais parlé / j'étais allé",
+      "subtitle": "Предпрошедшее: действие ДО другого прошедшего",
+      "topics": [
+        "plus_que_parfait"
+      ],
+      "prereq": [
+        "a2-02-passe-compose-etre",
+        "a2-03-imparfait"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "PQP = avion (imparfait) + participe passé. J'avais parlé, j'étais allé. Quand je suis arrivé, il était déjà parti."
+        },
+        {
+          "kind": "rule",
+          "title": "Согласование с être",
+          "text": "Comme PC с être."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-03-d01",
+          "type": "fill",
+          "prompt": "Quand je suis arrivé, il ____ (partir) déjà.",
+          "answer": [
+            "était parti"
+          ],
+          "why": "Être (imparfait) + participe passé + accord."
+        },
+        {
+          "id": "b1-03-plus-que-parfait-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Plus-que-parfait: j'avais parlé / j'étais allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Plus-que-parfait: j'avais parlé / j'étais allé."
+        },
+        {
+          "id": "b1-03-plus-que-parfait-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Plus-que-parfait: j'avais parlé / j'étais allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Plus-que-parfait: j'avais parlé / j'étais allé."
+        }
+      ]
+    },
+    {
+      "id": "b1-04-conditionnel-past",
+      "order": 4,
+      "title": "Conditionnel passé: j'aurais parlé / je serais allé",
+      "subtitle": "Условное прошедшее: «я бы сделал»",
+      "topics": [
+        "conditionnel_past"
+      ],
+      "prereq": [
+        "a2-06-conditionnel",
+        "b1-02-si-clauses-past"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Cond. passé = avion (conditionnel présent) + participe passé. J'aurais voulu venir."
+        },
+        {
+          "kind": "rule",
+          "title": "Согласование",
+          "text": "Avec être: je serais allé(e)(s)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-04-d01",
+          "type": "choice",
+          "prompt": "J'____ (aimer) venir mais je n'ai pas pu.",
+          "options": [
+            "aurais aimé",
+            "aurais aimer",
+            "aimerais",
+            "aurais aimée"
+          ],
+          "answer": [
+            "aurais aimé"
+          ],
+          "why": "Avoir (cond. présent) + participe passé."
+        },
+        {
+          "id": "b1-04-conditionnel-past-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Conditionnel passé: j'aurais parlé / je serais allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Conditionnel passé: j'aurais parlé / je serais allé."
+        },
+        {
+          "id": "b1-04-conditionnel-past-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Conditionnel passé: j'aurais parlé / je serais allé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Conditionnel passé: j'aurais parlé / je serais allé."
+        }
+      ]
+    },
+    {
+      "id": "b1-05-passive-voice",
+      "order": 5,
+      "title": "Voix passive: être + participe passé",
+      "subtitle": "La rue est nettoyée, on nettoie la rue",
+      "topics": [
+        "passive_voice"
+      ],
+      "prereq": [
+        "a2-01-passe-compose",
+        "a2-02-passe-compose-etre"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passif = être + participe passé (accord с подлежащим). Агент: par + nom/pron. On évite souvent passif → on + actif / se + passif réflexif."
+        },
+        {
+          "kind": "table",
+          "ref": "passive_voice"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-05-d01",
+          "type": "choice",
+          "prompt": "La porte ____ (ouvrir) par Jean.",
+          "options": [
+            "est ouverte",
+            "est ouvert",
+            "a ouverte",
+            "a ouvert"
+          ],
+          "answer": [
+            "est ouverte"
+          ],
+          "why": "Porte = f sg → ouverte."
+        },
+        {
+          "id": "b1-05-passive-voice-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Voix passive: être + participe passé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voix passive: être + participe passé."
+        },
+        {
+          "id": "b1-05-passive-voice-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Voix passive: être + participe passé.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voix passive: être + participe passé."
+        }
+      ]
+    },
+    {
+      "id": "b1-06-indirect-speech",
+      "order": 6,
+      "title": "Косвенная речь: il dit que / il a dit que",
+      "subtitle": "Последовательность времен",
+      "topics": [
+        "indirect_speech"
+      ],
+      "prereq": [
+        "a2-05-futur-simple",
+        "a2-06-conditionnel",
+        "b1-03-plus-que-parfait"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Прямая: «Je viens.» → Косвенная: Il dit qu'il vient. Il a dit qu'il viendrait (présent→imparfait, futur→conditionnel, PC→PQP)."
+        },
+        {
+          "kind": "rule",
+          "title": "Изменения",
+          "text": "Местоимения (je→il), временные маркеры (aujourd'hui→ce jour-là), глаголы (сиквенция)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-06-d01",
+          "type": "choice",
+          "prompt": "Il a dit: «Je viendrai.» → Il a dit qu'il ____.",
+          "options": [
+            "viendrait",
+            "viendraions",
+            "viendraiez",
+            "viendraient"
+          ],
+          "answer": [
+            "viendrait"
+          ],
+          "why": "Futur → conditionnel в косвенной речи."
+        },
+        {
+          "id": "b1-06-indirect-speech-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Косвенная речь: il dit que / il a dit que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Косвенная речь: il dit que / il a dit que."
+        },
+        {
+          "id": "b1-06-indirect-speech-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Косвенная речь: il dit que / il a dit que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Косвенная речь: il dit que / il a dit que."
+        }
+      ]
+    },
+    {
+      "id": "b1-07-gerund",
+      "order": 7,
+      "title": "Герундий: en faisant",
+      "subtitle": "En + participe présent",
+      "topics": [
+        "gerund"
+      ],
+      "prereq": [
+        "a1-04-present-er"
+      ],
+      "minutes": 10,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Gérondif = en + participe présent (-ant). En faisant = «делая / когда делаю / потому что делаю». Pas de sujet exprimé!"
+        },
+        {
+          "kind": "rule",
+          "title": "Participe présent vs Gérondif",
+          "text": "Participe présent = -ant (parlant). Gérondif = en parlant."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-07-d01",
+          "type": "fill",
+          "prompt": "____ (manger) vite, il a mal au ventre.",
+          "answer": [
+            "En mangeant"
+          ],
+          "why": "En + participe présent (manger → mangeant)."
+        },
+        {
+          "id": "b1-07-gerund-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Герундий: en faisant.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Герундий: en faisant."
+        },
+        {
+          "id": "b1-07-gerund-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Герундий: en faisant.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Герундий: en faisant."
+        }
+      ]
+    },
+    {
+      "id": "b1-08-past-infinitive",
+      "order": 8,
+      "title": "Infinitif passé: avoir fait / être parti",
+      "subtitle": "После prépositions: après avoir, pour être...",
+      "topics": [
+        "past_infinitive"
+      ],
+      "prereq": [
+        "b1-01-subjunctive-past",
+        "b1-03-plus-que-parfait"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Infinitif passé = avoir/être (infinitif) + participe passé. Après avoir mangé, je suis parti. Pour être parti si tôt..."
+        },
+        {
+          "kind": "rule",
+          "title": "Согласование с être",
+          "text": "Pour être parti(e)(s)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-08-d01",
+          "type": "choice",
+          "prompt": "Après ____ (manger), je suis parti.",
+          "options": [
+            "avoir mangé",
+            "avoir mange",
+            "ayant mangé",
+            "mangé"
+          ],
+          "answer": [
+            "avoir mangé"
+          ],
+          "why": "Après + infinitif passé."
+        },
+        {
+          "id": "b1-08-past-infinitive-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Infinitif passé: avoir fait / être parti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Infinitif passé: avoir fait / être parti."
+        },
+        {
+          "id": "b1-08-past-infinitive-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Infinitif passé: avoir fait / être parti.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Infinitif passé: avoir fait / être parti."
+        }
+      ]
+    },
+    {
+      "id": "b1-09-cause-consequence",
+      "order": 9,
+      "title": "Причина и следствие: parce que, comme, puisque, donc, par conséquent",
+      "subtitle": "Логические связи",
+      "topics": [
+        "cause_consequence"
+      ],
+      "prereq": [
+        "a2-07-subjunctive-present"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Parce que = потому что (ответ на pourquoi). Comme/puisque = так как (факт известен). Donc/par conséquent = поэтому."
+        },
+        {
+          "kind": "rule",
+          "title": "Режимы",
+          "text": "Parce que + indicatif. Puisque + indicatif. Но: à cause de / grâce à + noms."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-09-d01",
+          "type": "choice",
+          "prompt": "Il est rentré ____ il pleuvait.",
+          "options": [
+            "parce que",
+            "comme",
+            "puisque",
+            "toutes"
+          ],
+          "answer": [
+            "parce que"
+          ],
+          "why": "Parce que = причина (новое знание для собеседника)."
+        },
+        {
+          "id": "b1-09-cause-consequence-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Причина и следствие: parce que, comme, puisque, donc, par conséquent.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Причина и следствие: parce que, comme, puisque, donc, par conséquent."
+        },
+        {
+          "id": "b1-09-cause-consequence-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Причина и следствие: parce que, comme, puisque, donc, par conséquent.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Причина и следствие: parce que, comme, puisque, donc, par conséquent."
+        }
+      ]
+    },
+    {
+      "id": "b1-10-concession",
+      "order": 10,
+      "title": "Уступка: bien que / quoique / même si + subjonctif",
+      "subtitle": "Хотя...",
+      "topics": [
+        "concession"
+      ],
+      "prereq": [
+        "a2-07-subjunctive-present"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Bien que / quoique → ТОЛЬКО subjonctif. Même si → indicatif (реальное) ИЛИ subjonctif (гипотетическое)."
+        },
+        {
+          "kind": "rule",
+          "title": "Примеры",
+          "text": "Bien qu'il soit fatigué, il travaille. Même s'il est fatigué, il travaille (реальное)."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-10-d01",
+          "type": "choice",
+          "prompt": "____ il soit fatigué, il travaille.",
+          "options": [
+            "Bien que",
+            "Parce que",
+            "Puisque",
+            "Comme"
+          ],
+          "answer": [
+            "Bien que"
+          ],
+          "why": "Bien que + subjonctif (soit)."
+        },
+        {
+          "id": "b1-10-concession-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Уступка: bien que / quoique / même si + subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Уступка: bien que / quoique / même si + subjonctif."
+        },
+        {
+          "id": "b1-10-concession-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Уступка: bien que / quoique / même si + subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Уступка: bien que / quoique / même si + subjonctif."
+        }
+      ]
+    },
+    {
+      "id": "b1-11-purpose",
+      "order": 11,
+      "title": "Цель: pour que / afin que + subjonctif",
+      "subtitle": "Чтобы... (разные подлежащие)",
+      "topics": [
+        "purpose"
+      ],
+      "prereq": [
+        "a2-07-subjunctive-present"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Pour que + subjonctif (подлежащие РАЗНЫЕ). Pour + infinitif (подлежащие ОДИНАКОВЫЕ). Je vais pour que tu m'aides. Je vais pour t'aider."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-11-d01",
+          "type": "choice",
+          "prompt": "Je t'appelle ____ tu m'aides.",
+          "options": [
+            "pour que",
+            "pour",
+            "afin de",
+            "parce que"
+          ],
+          "answer": [
+            "pour que"
+          ],
+          "why": "Подлежащие разные (je / tu) → pour que + subj."
+        },
+        {
+          "id": "b1-11-purpose-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Цель: pour que / afin que + subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Цель: pour que / afin que + subjonctif."
+        },
+        {
+          "id": "b1-11-purpose-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Цель: pour que / afin que + subjonctif.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Цель: pour que / afin que + subjonctif."
+        }
+      ]
+    },
+    {
+      "id": "b1-12-hypothesis",
+      "order": 12,
+      "title": "Все три типа si-clauses",
+      "subtitle": "Type 1: réel, Type 2: irréel présent, Type 3: irréel passé",
+      "topics": [
+        "hypothesis"
+      ],
+      "prereq": [
+        "a2-13-si-clauses-present",
+        "b1-02-si-clauses-past"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Type 1: si présent → futur (réel). Type 2: si imparfait → conditionnel (irréel présent). Type 3: si PQP → cond. passé (irréel passé)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ошибки",
+          "text": "Не *si j'aurais* → si j'avais. Не *si j'aurais eu* → si j'avais eu."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-12-d01",
+          "type": "choice",
+          "prompt": "Si j'avais le temps, je ____ (faire).",
+          "options": [
+            "ferais",
+            "ferai",
+            "fais",
+            "aurais fait"
+          ],
+          "answer": [
+            "ferais"
+          ],
+          "why": "Type 2: si imparfait → conditionnel présent."
+        },
+        {
+          "id": "b1-12-hypothesis-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Все три типа si-clauses.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Все три типа si-clauses."
+        },
+        {
+          "id": "b1-12-hypothesis-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Все три типа si-clauses.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Все три типа si-clauses."
+        }
+      ]
+    }
+  ]
+}

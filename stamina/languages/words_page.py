@@ -127,7 +127,7 @@ class WordsPage(tk.Frame):
         if not self.slugs:
             self.tip.configure(text=_t("Нет слов в наборе"))
             return
-        self.on_practice(list(self.slugs), f"{self.level} · блок {self.block + 1}")
+        self.on_practice(list(self.slugs), _t("{0} · блок {1}").format(self.level, self.block + 1))
 
     def _done(self, slug: str) -> bool:
         if self.progress is None:

@@ -1,9 +1,12 @@
-"""Страница «ГРАММАТИКА» для отсека «ИНОСТРАННЫЕ ЯЗЫКИ».
+"""Страница «ГРАММАТИКА» для отсека «ИНОСТРАННЫЕ ЯЗЫКИ» (de, fr, es, it).
 
-Тот же разворот, что у английской грамматики: слева список, справа весь урок.
-Немецкие отличия приходят адаптером: мостик RU/UA и ловушка из bridges.json,
-таблицы по ссылке в правой панели, банк слов и подсказки в упражнениях.
-Вкладки источников задаются списком (курс, позже Grimm / ZUM) — контент
+Общий разворот: слева список, справа весь урок.
+Языко-специфичные отличия приходят адаптерами (GrammarCatalog):
+- мостик RU/UA → целевой язык и ловушка из bridges.json
+- таблицы по ссылке в правой панели
+- банк слов и подсказки в упражнениях
+- инструкции для упражнений с кириллицей («Переведите на …»)
+Вкладки источников задаются списком (курс, позже открытые источники) — контент
 вкладки подгружается лениво.
 """
 from __future__ import annotations
@@ -31,19 +34,35 @@ CHOICE_TYPES = {"choice", "match", "identify"}
 FILL_TYPES = {"fill", "declension", "conjugation", "gap"}
 REORDER_TYPES = {"reorder"}
 
-INSTRUCTION_CHOICE = "Выберите один правильный вариант."
-INSTRUCTION_FILL = "Впишите пропущенное слово в нужной форме."
-INSTRUCTION_TRANSFORM = "Перепишите предложение по заданию."
-INSTRUCTION_REORDER = "Составьте предложение: нажимайте на слова по порядку."
-INSTRUCTION_TRANSLATE = "Переведите на немецкий."
-INSTRUCTION_TRANSLATE_WRITE = "Переведите на немецкий и впишите ответ."
+INSTRUCTION_CHOICE = _t("Выберите один правильный вариант.")
+INSTRUCTION_FILL = _t("Впишите пропущенное слово в нужной форме.")
+INSTRUCTION_TRANSFORM = _t("Перепишите предложение по заданию.")
+INSTRUCTION_REORDER = _t("Составьте предложение: нажимайте на слова по порядку.")
 
 SELF_CHECK_SIZE = 12
 SELF_CHECK_ID = "__self_check__"
 COURSE_SOURCE = "course"
-COURSE_TAB = SourceTab(id=COURSE_SOURCE, title="Курс Star Typing")
+COURSE_TAB = SourceTab(id=COURSE_SOURCE, title=_t("Курс Star Typing"))
 
-_CYRILLIC = re.compile(r"[а-яА-ЯёЁіІїЇєЄґҐ]")
+_CYRILLIC = re.compile(_t("[а-яА-ЯёЁіІїЇєЄґҐ]"))
+
+# Language-specific instruction templates
+TRANSLATE_INSTRUCTIONS = {
+    "de": _t("Переведите на немецкий."),
+    "fr": _t("Переведите на французский."),
+    "es": _t("Переведите на испанский."),
+    "it": _t("Переведите на итальянский."),
+}
+TRANSLATE_WRITE_INSTRUCTIONS = {
+    "de": _t("Переведите на немецкий и впишите ответ."),
+    "fr": _t("Переведите на французский и впишите ответ."),
+    "es": _t("Переведите на испанский и впишите ответ."),
+    "it": _t("Переведите на итальянский и впишите ответ."),
+}
+
+# Backward compatibility for tests
+INSTRUCTION_TRANSLATE = TRANSLATE_INSTRUCTIONS["de"]
+INSTRUCTION_TRANSLATE_WRITE = TRANSLATE_WRITE_INSTRUCTIONS["de"]
 
 
 def _normalize_sentence(text: str) -> str:
@@ -105,15 +124,15 @@ def _shuffled(words: list[str], seed_text: str) -> list[str]:
     return out
 
 
-def _instruction(drill: dict) -> str:
+def _instruction(drill: dict, lang: str = "de") -> str:
     kind = drill.get("type")
     prompt = drill.get("prompt", "")
     if kind in REORDER_TYPES:
         return _t(INSTRUCTION_REORDER)
     if _CYRILLIC.search(prompt or ""):
         if kind in FILL_TYPES or kind == "transform":
-            return _t(INSTRUCTION_TRANSLATE_WRITE)
-        return _t(INSTRUCTION_TRANSLATE)
+            return _t(TRANSLATE_WRITE_INSTRUCTIONS.get(lang, TRANSLATE_WRITE_INSTRUCTIONS["de"]))
+        return _t(TRANSLATE_INSTRUCTIONS.get(lang, TRANSLATE_INSTRUCTIONS["de"]))
     if kind == "transform":
         return _t(INSTRUCTION_TRANSFORM)
     if kind in FILL_TYPES:
@@ -165,7 +184,7 @@ def _adapt_theory_and_examples(lesson: dict, engine) -> tuple[list[dict], list[d
     return theory, examples
 
 
-def _adapt_drill(drill: dict) -> dict:
+def _adapt_drill(drill: dict, lang: str = "de") -> dict:
     kind = drill.get("type") or "fill"
     answers = _expected_of(drill)
     options = list(drill.get("options") or [])
@@ -177,7 +196,7 @@ def _adapt_drill(drill: dict) -> dict:
         "a": drill.get("a", drill.get("answer")),
         "answer": answers,
         "why": drill.get("why") or "",
-        "instruction": _instruction(drill),
+        "instruction": _instruction(drill, lang),
         "hint_enabled": kind in FILL_TYPES or kind == "transform",
         "raw": drill,
         "id": drill.get("id"),
@@ -187,10 +206,12 @@ def _adapt_drill(drill: dict) -> dict:
     return item
 
 
-class GermanGrammarCatalog:
-    """Каталог немецкой грамматики: курс + открытые источники по вкладкам."""
+class BaseGrammarCatalog:
+    """Базовый каталог грамматики: общая логика для всех языков."""
 
     show_source_tabs = True
+    lang_code = "de"
+    translate_lang_name = "немецкий"
 
     def __init__(self, engine, progress: LanguageProgress | None, page: "GrammarPage") -> None:
         self.engine = engine
@@ -202,23 +223,14 @@ class GermanGrammarCatalog:
         self.records_score = True
 
     def _ensure_open(self):
-        if self._open is None:
-            from stamina.languages.plugins.de.open_sources import OpenSourceBank
-            self._open = OpenSourceBank()
-        return self._open
+        return None
 
     def paint_title_flag(self, slot) -> None:
         from stamina.grammar_ui.flags import paint_title_flag
-        paint_title_flag(slot, "de")
+        paint_title_flag(slot, self.lang_code)
 
     def sources(self) -> list[SourceTab]:
-        tabs = [COURSE_TAB]
-        try:
-            from stamina.languages.plugins.de.open_sources import source_tabs
-            tabs.extend(source_tabs())
-        except Exception:  # noqa: BLE001
-            pass
-        return tabs
+        return [COURSE_TAB]
 
     def select_source(self, source_id: str) -> None:
         self._source = source_id
@@ -238,14 +250,11 @@ class GermanGrammarCatalog:
         if self._source == COURSE_SOURCE:
             self.engine.levels()
             return
-        bank = self._ensure_open()
-        bank.meta(self._source)
-        bank.index(self._source)
 
     def index_loaded(self) -> bool:
         if self._source == COURSE_SOURCE:
             return self.engine._courses is not None
-        return self._source in getattr(self._open, "_index", {})
+        return False
 
     def header_subtitle(self, level: str) -> str:
         if self._source == COURSE_SOURCE:
@@ -253,13 +262,7 @@ class GermanGrammarCatalog:
             if info:
                 return "{} · {}".format(info.get("title") or level, info.get("lessons") or "")
             return _t("Курс Star Typing")
-        try:
-            meta = self._ensure_open().meta(self._source)
-            name = meta.get("name") or self._source
-            license_name = meta.get("license") or ""
-            return "{} · {}".format(name, license_name).strip(" ·")
-        except Exception:  # noqa: BLE001
-            return self._source
+        return self._source
 
     def progress_text(self) -> str:
         if self._source != COURSE_SOURCE:
@@ -275,7 +278,7 @@ class GermanGrammarCatalog:
         return "{}: {} / {}".format(_t("ПРОЙДЕНО"), done, total)
 
     def _topic_summaries(self) -> list[dict]:
-        return self._ensure_open().topics(self._source)
+        return []
 
     def list_plan(self, level: str) -> list[tuple[str, object]]:
         plan: list[tuple[str, object]] = []
@@ -288,19 +291,6 @@ class GermanGrammarCatalog:
                     "level": unit.get("level") or level,
                 }))
             return plan
-        current = None
-        for topic in self._topic_summaries():
-            section = topic.get("section") or _t("Темы")
-            if section != current:
-                plan.append(("mod", {"id": section, "title": section, "en": ""}))
-                current = section
-            plan.append(("unit", {
-                "id": topic["id"],
-                "number": "",
-                "title": topic.get("title") or topic["id"],
-                "level": "all",
-                "module_id": section,
-            }))
         return plan
 
     def first_unit(self, level: str):
@@ -331,7 +321,7 @@ class GermanGrammarCatalog:
             raise FileNotFoundError(lesson_id)
         bridge = self.engine.bridge(lesson_id) or {}
         theory, examples = _adapt_theory_and_examples(lesson, self.engine)
-        drills = [_adapt_drill(drill) for drill in (lesson.get("drills") or [])]
+        drills = [_adapt_drill(drill, self.lang_code) for drill in (lesson.get("drills") or [])]
         missing = []
         if self.progress:
             titles = []
@@ -369,54 +359,19 @@ class GermanGrammarCatalog:
         }
 
     def _load_open_topic(self, topic_id: str) -> dict:
-        bank = self._ensure_open()
-        topic = bank.load_topic(self._source, topic_id)
-        theory = []
-        for section in topic.get("sections") or []:
-            theory.append({
-                "h": section.get("heading") or "",
-                "p": section.get("text") or "",
-            })
-        examples = []
-        for ex in topic.get("examples") or []:
-            examples.append({
-                "de": ex.get("de") or "",
-                "en": ex.get("de") or ex.get("en") or "",
-                "ru": ex.get("en") or ex.get("ru") or "",
-                "speak": ex.get("de") or "",
-            })
-        # Упражнения дословно: формулировки Grimm на английском не переводим.
-        exercises = []
-        last_set = None
-        for drill in topic.get("exercises") or []:
-            item = _adapt_drill(drill)
-            item["q"] = drill.get("q") or drill.get("prompt") or ""
-            # длинный prompt серии показываем как инструкцию, без LLM-перевода
-            if drill.get("prompt"):
-                item["instruction"] = drill["prompt"]
-            if drill.get("set_title") and drill.get("set_id") != last_set:
-                item["q"] = "{} — {}".format(drill.get("set_title") or "", item["q"]).strip(" —")
-                last_set = drill.get("set_id")
-            if not item.get("why"):
-                item["why"] = ""
-            item["hint_enabled"] = item["type"] in FILL_TYPES
-            exercises.append(item)
-        attr = bank.attribution_line(self._source, "ru")
         return {
             "n": topic_id,
             "id": topic_id,
-            "title": topic.get("title") or topic_id,
-            "en": topic.get("section") or "",
-            "level": topic.get("cefr") or "",
+            "title": topic_id,
+            "en": "",
+            "level": "",
             "summary": "",
             "can_do": [],
-            "theory": theory,
-            "examples": examples,
+            "theory": [],
+            "examples": [],
             "traps": [],
-            "exercises": exercises,
-            "attribution": attr,
-            "original_url": topic.get("original_url") or "",
-            "raw": topic,
+            "exercises": [],
+            "raw": {},
         }
 
     def neighbours(self, unit_id):
@@ -551,7 +506,7 @@ class GermanGrammarCatalog:
             "theory": [],
             "examples": [],
             "traps": [],
-            "exercises": [_adapt_drill(drill) for drill in picked],
+            "exercises": [_adapt_drill(drill, self.lang_code) for drill in picked],
             "raw": {"drills": picked, "level": level},
         }
         return self._self_check
@@ -629,14 +584,191 @@ class GermanGrammarCatalog:
             HudButton(actions, _t("ПОДСКАЗКА"), show_hint, height=26, font_size=8,
                       color=MUTED).pack(side=tk.LEFT, padx=(px(6), 0))
         note.pack(fill=tk.X, padx=px(14), pady=(0, px(6)))
-        card._reorder_state = state  # noqa: SLF001
+        card._reorder_state = state
         spread._exercise_vars = getattr(spread, "_exercise_vars", {})
         spread._exercise_vars[idx] = {"reorder": state, "note": note, "ex": ex, "card": card, "check": check}
         return True
 
 
+class GermanGrammarCatalog(BaseGrammarCatalog):
+    """Каталог немецкой грамматики: курс + открытые источники по вкладкам."""
+
+    lang_code = "de"
+    translate_lang_name = "немецкий"
+
+    def _ensure_open(self):
+        if self._open is None:
+            from stamina.languages.plugins.de.open_sources import OpenSourceBank
+            self._open = OpenSourceBank()
+        return self._open
+
+    def sources(self) -> list[SourceTab]:
+        tabs = [COURSE_TAB]
+        try:
+            from stamina.languages.plugins.de.open_sources import source_tabs
+            tabs.extend(source_tabs())
+        except Exception:
+            pass
+        return tabs
+
+    def load_index(self) -> None:
+        if self._source == COURSE_SOURCE:
+            self.engine.levels()
+            return
+        bank = self._ensure_open()
+        bank.meta(self._source)
+        bank.index(self._source)
+
+    def index_loaded(self) -> bool:
+        if self._source == COURSE_SOURCE:
+            return self.engine._courses is not None
+        return self._source in getattr(self._open, "_index", {})
+
+    def header_subtitle(self, level: str) -> str:
+        if self._source == COURSE_SOURCE:
+            info = next((item for item in self.engine.levels() if item["code"] == level), None)
+            if info:
+                return "{} · {}".format(info.get("title") or level, info.get("lessons") or "")
+            return _t("Курс Star Typing")
+        try:
+            meta = self._ensure_open().meta(self._source)
+            name = meta.get("name") or self._source
+            license_name = meta.get("license") or ""
+            return "{} · {}".format(name, license_name).strip(" ·")
+        except Exception:
+            return self._source
+
+    def progress_text(self) -> str:
+        if self._source != COURSE_SOURCE:
+            topics = self._topic_summaries()
+            done = sum(1 for item in topics if self.progress and self.progress.grammar_done(item["id"]))
+            return "{}: {} / {}".format(_t("ПРОЙДЕНО"), done, len(topics))
+        total = sum(int(item.get("lessons") or 0) for item in self.engine.levels())
+        done = 0
+        if self.progress:
+            for entry in (self.progress.data.get("grammar") or {}).values():
+                if isinstance(entry, dict) and entry.get("done"):
+                    done += 1
+        return "{}: {} / {}".format(_t("ПРОЙДЕНО"), done, total)
+
+    def _topic_summaries(self) -> list[dict]:
+        return self._ensure_open().topics(self._source)
+
+    def list_plan(self, level: str) -> list[tuple[str, object]]:
+        plan: list[tuple[str, object]] = []
+        if self._source == COURSE_SOURCE:
+            for unit in self.engine.lesson_summaries(level):
+                plan.append(("unit", {
+                    "id": unit["id"],
+                    "number": f"{int(unit.get('order') or 0):02d}",
+                    "title": unit.get("title") or unit["id"],
+                    "level": unit.get("level") or level,
+                }))
+            return plan
+        current = None
+        for topic in self._topic_summaries():
+            section = topic.get("section") or _t("Темы")
+            if section != current:
+                plan.append(("mod", {"id": section, "title": section, "en": ""}))
+                current = section
+            plan.append(("unit", {
+                "id": topic["id"],
+                "number": "",
+                "title": topic.get("title") or topic["id"],
+                "level": "all",
+                "module_id": section,
+            }))
+        return plan
+
+    def _load_open_topic(self, topic_id: str) -> dict:
+        bank = self._ensure_open()
+        topic = bank.load_topic(self._source, topic_id)
+        theory = []
+        for section in topic.get("sections") or []:
+            theory.append({
+                "h": section.get("heading") or "",
+                "p": section.get("text") or "",
+            })
+        examples = []
+        for ex in topic.get("examples") or []:
+            examples.append({
+                "de": ex.get("de") or "",
+                "en": ex.get("de") or ex.get("en") or "",
+                "ru": ex.get("en") or ex.get("ru") or "",
+                "speak": ex.get("de") or "",
+            })
+        exercises = []
+        last_set = None
+        for drill in topic.get("exercises") or []:
+            item = _adapt_drill(drill, self.lang_code)
+            item["q"] = drill.get("q") or drill.get("prompt") or ""
+            if drill.get("prompt"):
+                item["instruction"] = drill["prompt"]
+            if drill.get("set_title") and drill.get("set_id") != last_set:
+                item["q"] = "{} — {}".format(drill.get("set_title") or "", item["q"]).strip(" —")
+                last_set = drill.get("set_id")
+            if not item.get("why"):
+                item["why"] = ""
+            item["hint_enabled"] = item["type"] in FILL_TYPES
+            exercises.append(item)
+        attr = bank.attribution_line(self._source, "ru")
+        return {
+            "n": topic_id,
+            "id": topic_id,
+            "title": topic.get("title") or topic_id,
+            "en": topic.get("section") or "",
+            "level": topic.get("cefr") or "",
+            "summary": "",
+            "can_do": [],
+            "theory": theory,
+            "examples": examples,
+            "traps": [],
+            "exercises": exercises,
+            "attribution": attr,
+            "original_url": topic.get("original_url") or "",
+            "raw": topic,
+        }
+
+
+class FrenchGrammarCatalog(BaseGrammarCatalog):
+    """Каталог французской грамматики."""
+
+    lang_code = "fr"
+    translate_lang_name = "французский"
+
+
+class SpanishGrammarCatalog(BaseGrammarCatalog):
+    """Каталог испанской грамматики."""
+
+    lang_code = "es"
+    translate_lang_name = "испанский"
+
+
+class ItalianGrammarCatalog(BaseGrammarCatalog):
+    """Каталог итальянской грамматики."""
+
+    lang_code = "it"
+    translate_lang_name = "итальянский"
+
+    def paint_title_flag(self, slot) -> None:
+        from stamina.grammar_ui.flags import paint_title_flag
+        paint_title_flag(slot, "it")
+
+
+def _catalog_for_plugin(plugin) -> type[BaseGrammarCatalog]:
+    """Вернуть класс каталога для кода языка плагина."""
+    code = getattr(plugin, "code", "de")
+    if code == "fr":
+        return FrenchGrammarCatalog
+    if code == "es":
+        return SpanishGrammarCatalog
+    if code == "it":
+        return ItalianGrammarCatalog
+    return GermanGrammarCatalog
+
+
 class GrammarPage:
-    """Оболочка немецкой грамматики: общий разворот + адаптер данных."""
+    """Оболочка грамматики (de/fr/es/it): общий разворот + адаптер данных."""
 
     def __init__(self, parent, plugin, progress: LanguageProgress | None, app,
                  on_back=None) -> None:
@@ -646,7 +778,8 @@ class GrammarPage:
         self.app = app
         self.on_back = on_back
         self.engine = plugin.get_grammar_engine()
-        self.catalog = GermanGrammarCatalog(self.engine, progress, self)
+        catalog_cls = _catalog_for_plugin(plugin)
+        self.catalog = catalog_cls(self.engine, progress, self)
         ctx = SimpleNamespace(
             progress=progress,
             audio_button=getattr(app, "audio_button", None) if app is not None else None,

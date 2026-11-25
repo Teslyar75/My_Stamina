@@ -160,27 +160,26 @@ class _GitHubAccessDialog(Modal):
     """
 
     def __init__(self, master) -> None:
-        super().__init__(master, tr_("ДОСТУП К GITHUB"), GREEN)
-        _label(self.body, tr_("Есть ли у тебя доступ к аккаунту разработчика на GitHub?\n"
-                        "Можешь ли ты отправлять обновления и изменять состояние проекта?"),
+        super().__init__(master, tr_(_t("ДОСТУП К GITHUB")), GREEN)
+        _label(self.body, tr_(_t("Есть ли у тебя доступ к аккаунту разработчика на GitHub?\nМожешь ли ты отправлять обновления и изменять состояние проекта?")),
           fg=MUTED, size=10).pack(anchor="w", pady=(px(4), px(8)))
         self.token_entry = tk.Entry(self.body, bg=BG2, fg=TEXT, insertbackground=CYAN,
                                     relief=tk.FLAT, font=theme.font(10),
                                     highlightthickness=1, highlightbackground=LINE,
                                     highlightcolor=CYAN, show="*")
         self.token_entry.pack(fill=tk.X, ipady=px(4))
-        _label(self.body, tr_("Токен GitHub (ghp_... или github_pat_...)"),
+        _label(self.body, tr_(_t("Токен GitHub (ghp_... или github_pat_...)")),
           fg=MUTED, size=8).pack(anchor="w", pady=(px(4), px(8)))
         self.msg = _label(self.body, "", fg=RED, size=9, bold=True)
         self.msg.pack(anchor="w")
         btns = tk.Frame(self.body, bg=PANEL)
         btns.pack(fill=tk.X, pady=(px(8), 0))
-        HudButton(btns, tr_("ПРОВЕРИТЬ"), self.check, color=GREEN, height=36,
+        HudButton(btns, tr_(_t("ПРОВЕРИТЬ")), self.check, color=GREEN, height=36,
                   font_size=10).pack(side=tk.LEFT)
-        HudButton(btns, tr_("ПРОПУСТИТЬ"), self.skip, height=36, font_size=9).pack(side=tk.LEFT, padx=px(6))
-        HudButton(btns, tr_("КАК ПОЛУЧИТЬ ТОКЕН"), self.toggle_help, height=36, font_size=9,
+        HudButton(btns, tr_(_t("ПРОПУСТИТЬ")), self.skip, height=36, font_size=9).pack(side=tk.LEFT, padx=px(6))
+        HudButton(btns, tr_(_t("КАК ПОЛУЧИТЬ ТОКЕН")), self.toggle_help, height=36, font_size=9,
                   color=AMBER).pack(side=tk.LEFT, padx=px(6))
-        HudButton(btns, tr_("ОТКРЫТЬ GITHUB"), self.open_tokens_page, height=36, font_size=9,
+        HudButton(btns, tr_(_t("ОТКРЫТЬ GITHUB")), self.open_tokens_page, height=36, font_size=9,
                   color=CYAN).pack(side=tk.LEFT, padx=px(6))
         # справка для тех, кто не каждый день в GitHub: показывается по кнопке
         self.help_label = _label(self.body, github_token_help(), fg=MUTED, size=9, justify="left",
@@ -201,23 +200,23 @@ class _GitHubAccessDialog(Modal):
         try:
             webbrowser.open(GITHUB_TOKENS_URL)
         except Exception:  # noqa: BLE001
-            self.msg.configure(text=tr_("Откройте вручную: {0}").format(GITHUB_TOKENS_URL),
+            self.msg.configure(text=tr_(_t("Откройте вручную: {0}")).format(GITHUB_TOKENS_URL),
                                fg=AMBER)
 
     def check(self) -> None:
         from stamina import orion
         token = self.token_entry.get().strip()
         if not token:
-            self.msg.configure(text=tr_("Введите токен GitHub"))
+            self.msg.configure(text=tr_(_t("Введите токен GitHub")))
             return
-        self.msg.configure(text=tr_("Проверяю токен…"), fg=AMBER)
+        self.msg.configure(text=tr_(_t("Проверяю токен…")), fg=AMBER)
         self.update_idletasks()
         ok, err = orion.check_github_access(token)
         if ok:
             self.result = True
             self.destroy()
         else:
-            self.msg.configure(text=tr_("Ошибка: {0}").format(err), fg=RED)
+            self.msg.configure(text=tr_(_t("Ошибка: {0}")).format(err), fg=RED)
 
     def skip(self) -> None:
         self.result = False
@@ -227,7 +226,7 @@ class _GitHubAccessDialog(Modal):
 class OrionScreen(tk.Frame):
     """Чат с бортовым разумом и интерфейс заселения агентов."""
 
-    TABS = (("chat", "ЧАТ"), ("agents", "АГЕНТЫ"), ("archive", "АРХИВ"))
+    TABS = (("chat", _t("ЧАТ")), ("agents", _t("АГЕНТЫ")), ("archive", _t("АРХИВ")))
 
     def __init__(self, master, app) -> None:
         super().__init__(master, bg=BG)
@@ -910,7 +909,7 @@ class OrionScreen(tk.Frame):
         # Узкое окно: кнопки «Карточка / Привязка» вместо двух колонок.
         self._agents_tab_bar = tk.Frame(right, bg=BG)
         self._agents_tab_btns: dict[str, HudButton] = {}
-        for key, title in (("card", "КАРТОЧКА"), ("bind", "ПРИВЯЗКА")):
+        for key, title in (("card", _t("КАРТОЧКА")), ("bind", _t("ПРИВЯЗКА"))):
             b = HudButton(self._agents_tab_bar, _t(title),
                           lambda k=key: self._agents_pick_tab(k), height=28, font_size=9,
                           color=CYAN)
@@ -974,8 +973,8 @@ class OrionScreen(tk.Frame):
         self.access_row = tk.Frame(form, bg=PANEL)
         self.access_row.pack(anchor="w")
         self.access_btns: dict[str, HudButton] = {}
-        for key, title in (("crew", "ЭКИПАЖ"), ("observer", "НАБЛЮДАТЕЛЬ"),
-                           ("commander", "КОМАНДИР")):
+        for key, title in (("crew", _t("ЭКИПАЖ")), ("observer", _t("НАБЛЮДАТЕЛЬ")),
+                           ("commander", _t("КОМАНДИР"))):
             b = HudButton(self.access_row, _t(title), lambda k=key: self._pick_access(k),
                           height=28, font_size=9, color=CYAN)
             b.pack(side=tk.LEFT, padx=(0, px(6)))
@@ -1946,7 +1945,7 @@ class OrionScreen(tk.Frame):
         """Живая линия: последняя реплика пилота и последний ответ Ориона."""
         last_pilot = next((m for m in reversed(msgs) if m.get("role") == "pilot"), None)
         last_orion = next((m for m in reversed(msgs) if m.get("role") == "orion"), None)
-        name = str(rec.get("name") or "ОРИОН").upper()
+        name = str(rec.get("name") or _t("ОРИОН")).upper()
         def _clip(t: str, n: int = 280) -> str:
             t = " ".join(str(t).split())
             return t if len(t) <= n else t[:n - 1].rstrip() + "…"
@@ -3001,8 +3000,8 @@ class OrionScreen(tk.Frame):
         self._pending = None
 
     # -- заселение ---------------------------------------------------------
-    KIND_LABELS = {"openai_compat": "OpenAI-совместимый", "opencode": "OpenCode",
-                   "github_bridge": "Мост GitHub"}
+    KIND_LABELS = {"openai_compat": _t("OpenAI-совместимый"), "opencode": "OpenCode",
+                   "github_bridge": _t("Мост GitHub")}
 
     @classmethod
     def agent_subtitle(cls, rec: dict) -> str:
@@ -3510,10 +3509,7 @@ class OrionScreen(tk.Frame):
             if mark_block:
                 ctx = (ctx + "\n\n" + mark_block) if ctx else mark_block
                 self._marks_sent = marks.last_id()
-                prompt = (f"Пилот позвал мастера. Режим активного ока.\n"
-                          f"{mouse_ctx}\n"
-                          f"Элемент под курсором: {element or 'неизвестно'}\n"
-                          f"Проанализируй что пилот делает на корабле и дай подсказку.")
+                prompt = (_t("Пилот позвал мастера. Режим активного ока.\n{0}\nЭлемент под курсором: {1}\nПроанализируй что пилот делает на корабле и дай подсказку.").format(mouse_ctx, element or _t("неизвестно")))
                 # Запускаем в отдельном потоке (как и прежде — только когда есть новые пометки)
                 threading.Thread(target=self._master_worker,
                                  args=(rec, prompt, ctx), daemon=True).start()
@@ -3606,7 +3602,7 @@ class OrionScreen(tk.Frame):
         except Exception:  # noqa: BLE001
             pass
         rec = self._rec()
-        name = str(rec.get("name") or "ОРИОН").upper()
+        name = str(rec.get("name") or _t("ОРИОН")).upper()
         greeting = _t("{0} на связи. Готов к общению, пилот.").format(name)
         self._hint(greeting, GREEN)
         from stamina.voice import tts
@@ -3621,7 +3617,7 @@ class OrionScreen(tk.Frame):
         from stamina import page_help
         from stamina.voice import tts
         rec = self._rec()
-        name = str(rec.get("name") or "ОРИОН").upper()
+        name = str(rec.get("name") or _t("ОРИОН")).upper()
         # Получаем описание отсека из page_help
         key = zone
         if subtab:

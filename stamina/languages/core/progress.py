@@ -1,6 +1,8 @@
 """Per-language progress tracking with SM-2, XP, achievements, streaks."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 import time
 from datetime import date, timedelta
@@ -36,18 +38,18 @@ DEFAULT_SETTINGS = {
 
 
 ACHIEVEMENTS = [
-    ("first_step", "Первый шаг", "первое выполненное задание", 10),
-    ("known_10", "Словарный запас I", "10 слов «знаю» или выучено", 20),
-    ("known_100", "Словарный запас II", "100 слов", 50),
-    ("known_500", "Словарный запас III", "500 слов", 100),
-    ("known_1000", "Словарный запас IV", "1000 слов", 200),
-    ("streak_3", "Серия 3", "3 дня подряд с дневной целью", 20),
-    ("streak_7", "Серия 7", "7 дней подряд", 50),
-    ("streak_30", "Серия 30", "30 дней подряд", 200),
-    ("perfect_session", "Без ошибок", "миссия ≥ 10 заданий без ошибок", 30),
-    ("speaker", "Голос", "50 ответов голосом с баллом ≥ 85", 50),
-    ("reviewer", "Без долгов", "очередь проверки пройдена 7 дней подряд", 50),
-    ("set_1000", "Фундамент", "все слова top-1000 «знаю» или выучены", 300),
+    ("first_step", t("Первый шаг"), t("первое выполненное задание"), 10),
+    ("known_10", t("Словарный запас I"), t("10 слов «знаю» или выучено"), 20),
+    ("known_100", t("Словарный запас II"), t("100 слов"), 50),
+    ("known_500", t("Словарный запас III"), t("500 слов"), 100),
+    ("known_1000", t("Словарный запас IV"), t("1000 слов"), 200),
+    ("streak_3", t("Серия 3"), t("3 дня подряд с дневной целью"), 20),
+    ("streak_7", t("Серия 7"), t("7 дней подряд"), 50),
+    ("streak_30", t("Серия 30"), t("30 дней подряд"), 200),
+    ("perfect_session", t("Без ошибок"), t("миссия ≥ 10 заданий без ошибок"), 30),
+    ("speaker", t("Голос"), t("50 ответов голосом с баллом ≥ 85"), 50),
+    ("reviewer", t("Без долгов"), t("очередь проверки пройдена 7 дней подряд"), 50),
+    ("set_1000", t("Фундамент"), t("все слова top-1000 «знаю» или выучены"), 300),
 ]
 
 
@@ -95,7 +97,7 @@ class LanguageProgress:
         for k, v in DEFAULT_SETTINGS.items():
             d["settings"].setdefault(k, v)
         if not any(l.get("id") == "favorites" for l in d["lists"]):
-            d["lists"].insert(0, {"id": "favorites", "name": "Избранное", "slugs": [], "created": _today()})
+            d["lists"].insert(0, {"id": "favorites", "name": t("Избранное"), "slugs": [], "created": _today()})
         cutoff = time.time() - 90 * 86400
         d["attempts"] = [a for a in d["attempts"] if a.get("ts", 0) >= cutoff]
         return d
@@ -274,7 +276,7 @@ class LanguageProgress:
     def create_list(self, name: str) -> dict:
         item = {
             "id": f"l{int(time.time() * 1000)}",
-            "name": name.strip() or "Новый отсек",
+            "name": name.strip() or t("Новый отсек"),
             "slugs": [],
             "created": _today(),
         }

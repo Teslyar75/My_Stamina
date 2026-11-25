@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "level": "C2",
+  "lessons": [
+    {
+      "id": "c2-01-idiomas-coloquiales",
+      "order": 1,
+      "title": "Modismos y expresiones fijas",
+      "subtitle": "Bloques léxicos no traducibles literalmente",
+      "topics": [
+        "idiomas_coloquiales"
+      ],
+      "prereq": [
+        "c1-02-estilo-registro"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Costar un ojo de la cara (muy caro). Ser pan comido (muy fácil). Estar en las nubes (distraído). Tirar la casa por la ventana (gastar mucho). No tener pelos en la lengua (ser sincero). Poner los cuernos (ser infiel)."
+        },
+        {
+          "kind": "rule",
+          "title": "Aprender como chunks",
+          "text": "Traducción literal no funciona. Memorizar como unidades fijas."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c2-01-d01",
+          "type": "choice",
+          "prompt": "\"Muy caro\" = costar un ____ de la cara.",
+          "options": [
+            "ojo",
+            "brazo",
+            "diente",
+            "pelo"
+          ],
+          "answer": [
+            "ojo"
+          ],
+          "why": "Costar un ojo de la cara."
+        },
+        {
+          "id": "c2-01-idiomas-coloquiales-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Modismos y expresiones fijas.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Modismos y expresiones fijas."
+        },
+        {
+          "id": "c2-01-idiomas-coloquiales-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Modismos y expresiones fijas.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Modismos y expresiones fijas."
+        }
+      ]
+    }
+  ]
+}

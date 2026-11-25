@@ -138,75 +138,107 @@ def _download(lang: str) -> None:
     archive.unlink(missing_ok=True)
 
 
-import hashlib
-import subprocess
-import tempfile
+import time
 
-_VOICES = {
-    "de": "de-DE-KatjaNeural",
-    "es": "es-ES-ElviraNeural",
-    "fr": "fr-FR-DeniseNeural",
-    "it": "it-IT-ElsaNeural",
-}
-_player = None
-_player_lock = threading.Lock()
+from stamina import tts_edge
+
+
+def edge_ready() -> bool:
+    """Есть ли пакет edge-tts: сетевой голос Microsoft на все четыре языка."""
+    return tts_edge.ready()
 
 
 def stop_speak() -> None:
     """Остановить текущую озвучку карточки."""
-    global _player
-    with _player_lock:
-        proc = _player
-        _player = None
-    if proc is not None and proc.poll() is None:
-        proc.kill()
+    tts_edge.stop()
+    if _tts is not None:
+        _tts.stop()          # голос Windows, если звучал он
 
 
-def speak(text: str, lang: str, slow: bool = False, on_error=None) -> None:
-    """Озвучить слово или фразу немецким либо испанским голосом.
+def _no_voice_message(lang: str, why: str = "") -> str:
+    """Понятная причина: чего не хватает для голоса этого языка.
 
-    В Windows стоят только ru и en, поэтому образец идёт через нейросеть
-    Microsoft (нужна сеть). Файл кэшируется, повтор не качается заново.
+    Это пояснение, а не подпись интерфейса, поэтому по-русски и без _t().
+    """
+    why = (why or "").strip()
+    edge_hint = "Без голоса Windows можно включить edge-tts: pip install edge-tts."
+    if why:
+        return f"{why}. {edge_hint}"
+    return (f"нет голоса для языка {lang.upper()}. "
+            "Поставьте голос Windows этого языка (Параметры → Время и язык → Речь). "
+            + edge_hint)
+
+
+def speak(text: str, lang: str, slow: bool = False, on_error=None, on_done=None) -> None:
+    """Озвучить слово или фразу голосом языка карточки.
+
+    Сначала сетевой голос Microsoft (edge-tts), если пакет есть и сеть отвечает.
+    Иначе — голос Windows нужной культуры. Если нет ни того, ни другого,
+    on_error получает понятную причину, что поставить.
     """
     text = (text or "").strip()
-    voice = _VOICES.get(lang)
+    voice = tts_edge.voice_for(lang)
     if not text or not voice:
+        if on_done is not None:
+            on_done()
         return
 
+    def fail(message: str) -> None:
+        if on_error is not None:
+            on_error(message)
+
+    def finish() -> None:
+        if on_done is not None:
+            on_done()
+
     def work() -> None:
-        global _player
-        try:
-            import asyncio
-            import edge_tts
-            folder = Path(tempfile.gettempdir()) / "stamina-say"
-            folder.mkdir(exist_ok=True)
-            rate = "-25%" if slow else "+0%"
-            key = hashlib.sha1(f"{voice}|{rate}|{text}".encode("utf-8")).hexdigest()[:16]
-            path = folder / f"{key}.mp3"
-            if not path.is_file() or path.stat().st_size < 200:
-                async def save() -> None:
-                    await edge_tts.Communicate(text, voice, rate=rate).save(str(path))
-                asyncio.run(save())
-            stop_speak()
-            command = (
-                "Add-Type -AssemblyName presentationCore; "
-                "$m = New-Object System.Windows.Media.MediaPlayer; "
-                "$m.Open([uri]$env:STAMINA_SAY); "
-                "$m.Volume = 1; $m.Play(); "
-                "$until = (Get-Date).AddSeconds(30); "
-                "while (-not $m.NaturalDuration.HasTimeSpan -and (Get-Date) -lt $until) { Start-Sleep -Milliseconds 40 }; "
-                "if ($m.NaturalDuration.HasTimeSpan) { Start-Sleep -Milliseconds ([int]$m.NaturalDuration.TimeSpan.TotalMilliseconds + 200) }"
-            )
-            flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-            proc = subprocess.Popen(
-                ["powershell", "-NoProfile", "-STA", "-Command", command],
-                env={**__import__("os").environ, "STAMINA_SAY": str(path)},
-                creationflags=flags,
-            )
-            with _player_lock:
-                _player = proc
-        except Exception as exc:  # noqa: BLE001
-            if on_error is not None:
-                on_error(str(exc))
+        if edge_ready():
+            try:
+                _speak_edge(text, voice, slow)
+                finish()
+                return
+            except Exception:  # noqa: BLE001
+                pass                     # нет сети или пакет сломался — идём к голосу Windows
+        _speak_sapi(text, lang, slow, fail, finish)
 
     threading.Thread(target=work, daemon=True, name=f"say-{lang}").start()
+
+
+def _speak_edge(text: str, voice: str, slow: bool) -> None:
+    """Нейросетевой образец Microsoft: mp3 кэшируется, играет MediaPlayer.
+
+    Ждём окончания фразы, чтобы кнопка на экране светилась, пока звучит голос.
+    """
+    proc = tts_edge.play(tts_edge.synth(text, voice, slow=slow))
+    try:
+        proc.wait(timeout=60)
+    except Exception:  # noqa: BLE001
+        tts_edge.stop()
+
+
+def _speak_sapi(text: str, lang: str, slow: bool, fail, finish) -> None:
+    """Запасной путь: голос Windows нужной культуры через общий движок TTS."""
+    engine = tts()
+    engine.last_error = ""            # причина прошлой фразы не должна всплыть сейчас
+    sid = engine.speak(text, -4 if slow else 0, culture=culture_for(lang))
+    if not sid:
+        fail(_no_voice_message(lang, engine.last_error))
+        finish()
+        return
+    deadline = time.monotonic() + 20
+    while time.monotonic() < deadline:
+        for kind, ev_sid, message in engine.poll():
+            if kind in ("error", "dead"):
+                fail(_no_voice_message(lang, message))
+                finish()
+                return
+            if kind in ("done", "cancel") and ev_sid == sid:
+                finish()
+                return
+        if engine.last_error:         # голос не выбран — ждать дальше нечего
+            fail(_no_voice_message(lang, engine.last_error))
+            finish()
+            return
+        time.sleep(0.15)
+    fail(_no_voice_message(lang, engine.last_error))
+    finish()

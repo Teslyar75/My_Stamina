@@ -1,0 +1,509 @@
+{
+  "version": 1,
+  "level": "B1",
+  "lessons": [
+    {
+      "id": "b1-01-subjuntivo-presente",
+      "order": 1,
+      "title": "Subjuntivo presente",
+      "subtitle": "hable, coma, viva — raíz = yo presente sin -o + vocales opuestas",
+      "topics": [
+        "subjuntivo_presente"
+      ],
+      "prereq": [
+        "a1-06-irregulares"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Subjuntivo = deseo/duda/emoción/necesidad DESPUÉS DE QUE. Raíz = 1ª pers. sg. presente (hablo→habl-) + vocales opuestas (-ar → -e, -er/-ir → -a)."
+        },
+        {
+          "kind": "rule",
+          "title": "Regulares",
+          "text": "Hable, hables, hable, hablemos, habléis, hablen. Coma, comas, coma, comamos, comáis, coman. Viva, vivas, viva, vivamos, viváis, vivan."
+        },
+        {
+          "kind": "rule",
+          "title": "Irregulares clave",
+          "text": "Sea, estés, vaya, haya, sepa, pueda, tenga, haga, diga, venga (raíz de yo presente: tengo→teng-, vengo→veng-, pongo→pong-)."
+        },
+        {
+          "kind": "table",
+          "ref": "subj_present_regular"
+        },
+        {
+          "kind": "table",
+          "ref": "subj_present_irregular"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-01-d01",
+          "type": "choice",
+          "prompt": "Quiero que tú ____ (venir) mañana.",
+          "options": [
+            "vengas",
+            "vienes",
+            "viniste",
+            "vendrás"
+          ],
+          "answer": [
+            "vengas"
+          ],
+          "why": "Querer que + subjuntivo. Venir→veng- (yo vengo) + -as."
+        },
+        {
+          "id": "b1-01-subjuntivo-presente-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo presente.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo presente."
+        },
+        {
+          "id": "b1-01-subjuntivo-presente-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo presente.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo presente."
+        }
+      ]
+    },
+    {
+      "id": "b1-02-subjuntivo-triggers",
+      "order": 2,
+      "title": "Triggers del subjuntivo: WEIRDO",
+      "subtitle": "Wish, Emotion, Impersonal, Request, Doubt, Order",
+      "topics": [
+        "subjuntivo_triggers"
+      ],
+      "prereq": [
+        "b1-01-subjuntivo-presente"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "WEIRDO = categorías que exigen subjuntivo tras 'que'."
+        },
+        {
+          "kind": "rule",
+          "title": "Categorías",
+          "text": "Wish: quiero que, deseo que. Emotion: me alegro que, siento que. Impersonal: es importante que, es necesario que. Request: pido que, exijo que. Doubt: dudo que, no creo que. Order: ordeno que, prohíbo que."
+        },
+        {
+          "kind": "rule",
+          "title": "Indicativo",
+          "text": "Creo que, pienso que, es cierto que, es obvio que, es verdad que → INDICATIVO."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-02-d01",
+          "type": "choice",
+          "prompt": "No creo que él ____ (venir).",
+          "options": [
+            "venga",
+            "viene",
+            "vendrá",
+            "viniera"
+          ],
+          "answer": [
+            "venga"
+          ],
+          "why": "No creer que + subjuntivo."
+        },
+        {
+          "id": "b1-02-subjuntivo-triggers-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Triggers del subjuntivo: WEIRDO.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Triggers del subjuntivo: WEIRDO."
+        },
+        {
+          "id": "b1-02-subjuntivo-triggers-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Triggers del subjuntivo: WEIRDO.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Triggers del subjuntivo: WEIRDO."
+        }
+      ]
+    },
+    {
+      "id": "b1-03-subjuntivo-usos",
+      "order": 3,
+      "title": "Subjuntivo en relativas, temporales, finalidad",
+      "subtitle": "Busco un libro que SEA interesante. Cuando VAYA. Para que PUEDA.",
+      "topics": [
+        "subjuntivo_usos"
+      ],
+      "prereq": [
+        "b1-02-subjuntivo-triggers"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Relativa: antecedente indefinido/negativo → subjuntivo. Temporal: futuro → subjuntivo (cuando vaya). Finalidad: para que + subjuntivo."
+        },
+        {
+          "kind": "rule",
+          "title": "Ejemplos",
+          "text": "Busco un libro que tenga fotos (no sé si existe). Busco el libro que tiene fotos (existe, indicativo). Cuando llegue, te llamo. Lo hago para que entiendas."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-03-d01",
+          "type": "choice",
+          "prompt": "Busco a alguien que ____ (saber) italiano.",
+          "options": [
+            "sepa",
+            "sabe",
+            "sabía",
+            "sabrá"
+          ],
+          "answer": [
+            "sepa"
+          ],
+          "why": "Antecedente indefinido → subjuntivo."
+        },
+        {
+          "id": "b1-03-subjuntivo-usos-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo en relativas, temporales, finalidad.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo en relativas, temporales, finalidad."
+        },
+        {
+          "id": "b1-03-subjuntivo-usos-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Subjuntivo en relativas, temporales, finalidad.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Subjuntivo en relativas, temporales, finalidad."
+        }
+      ]
+    },
+    {
+      "id": "b1-04-imperfecto-subjuntivo",
+      "order": 4,
+      "title": "Imperfecto de subjuntivo (-ra / -se)",
+      "subtitle": "Para pasado + trigger: quería que viniera. Si tuviera...",
+      "topics": [
+        "subjuntivo_imperfecto"
+      ],
+      "prereq": [
+        "b1-01-subjuntivo-presente"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Dos formas (-ra y -se) = mismo significado. Raíz = 3ª pl. indefinido (tuvieron→tuvier-, hablaron→hablar-)."
+        },
+        {
+          "kind": "rule",
+          "title": "Formas",
+          "text": "Hablara/hablase, comiera/comiese, viviera/viviese. Irregulares: fuera/fuese, estuviera/estuviese, hubiera/hubiese, quisiera/quisiese, pudiera/pudiese, supiera/supiese."
+        },
+        {
+          "kind": "table",
+          "ref": "subj_past"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-04-d01",
+          "type": "choice",
+          "prompt": "Si yo ____ (tener) dinero, compraría un coche.",
+          "options": [
+            "tuviera",
+            "tendría",
+            "tengo",
+            "tuve"
+          ],
+          "answer": [
+            "tuviera"
+          ],
+          "why": "Si + imperfecto subjuntivo → condicional."
+        },
+        {
+          "id": "b1-04-imperfecto-subjuntivo-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Imperfecto de subjuntivo (-ra / -se).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Imperfecto de subjuntivo (-ra / -se)."
+        },
+        {
+          "id": "b1-04-imperfecto-subjuntivo-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Imperfecto de subjuntivo (-ra / -se).",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Imperfecto de subjuntivo (-ra / -se)."
+        }
+      ]
+    },
+    {
+      "id": "b1-05-si-clauses",
+      "order": 5,
+      "title": "Oraciones con SI: tres tipos",
+      "subtitle": "Real / Hipotético / Irreal pasado",
+      "topics": [
+        "si_clauses"
+      ],
+      "prereq": [
+        "a2-04-futuro",
+        "a2-05-condicional",
+        "b1-04-imperfecto-subjuntivo"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Tipo 1: Si + presente indicativo → futuro/presente/imperativo (real). Tipo 2: Si + imperfecto subjuntivo → condicional (hipotético). Tipo 3: Si + pluscuamperfecto subjuntivo → condicional compuesto (irreal pasado)."
+        },
+        {
+          "kind": "rule",
+          "title": "NUNCA",
+          "text": "NUNCA 'si tendría' → 'si tuviera'. NUNCA 'si habría tenido' → 'si hubiera tenido'."
+        },
+        {
+          "kind": "table",
+          "ref": "si_clauses"
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-05-d01",
+          "type": "choice",
+          "prompt": "Si ____ (tener) tiempo, iría al cine.",
+          "options": [
+            "tuviera",
+            "tengo",
+            "tendría",
+            "tuve"
+          ],
+          "answer": [
+            "tuviera"
+          ],
+          "why": "Tipo 2: si + imperfecto subjuntivo."
+        },
+        {
+          "id": "b1-05-si-clauses-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Oraciones con SI: tres tipos.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Oraciones con SI: tres tipos."
+        },
+        {
+          "id": "b1-05-si-clauses-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Oraciones con SI: tres tipos.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Oraciones con SI: tres tipos."
+        }
+      ]
+    },
+    {
+      "id": "b1-06-pluscuamperfecto",
+      "order": 6,
+      "title": "Pluscuamperfecto",
+      "subtitle": "Indicativo: había hablado. Subjuntivo: hubiera/hubiese hablado.",
+      "topics": [
+        "pluscuamperfecto"
+      ],
+      "prereq": [
+        "a2-06-perfecto",
+        "b1-04-imperfecto-subjuntivo"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Acción ANTES de otra pasada. Indicativo: había + participio. Subjuntivo: hubiera/hubiese + participio (dos formas)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ejemplos",
+          "text": "Había salido cuando llegué. Ojalá hubiera venido. Si hubiera sabido, habría ido."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-06-d01",
+          "type": "choice",
+          "prompt": "Cuando llegué, él ya ____ (salir).",
+          "options": [
+            "había salido",
+            "hubiera salido",
+            "salió",
+            "saldría"
+          ],
+          "answer": [
+            "había salido"
+          ],
+          "why": "Pluscuamperfecto indicativo: acción anterior a otra pasada."
+        },
+        {
+          "id": "b1-06-pluscuamperfecto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Pluscuamperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pluscuamperfecto."
+        },
+        {
+          "id": "b1-06-pluscuamperfecto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Pluscuamperfecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Pluscuamperfecto."
+        }
+      ]
+    },
+    {
+      "id": "b1-07-voz-pasiva",
+      "order": 7,
+      "title": "Voz pasiva: refleja y perifrástica",
+      "subtitle": "Se vende casa / La casa fue vendida por Juan",
+      "topics": [
+        "voz_pasiva"
+      ],
+      "prereq": [
+        "a2-06-perfecto"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Pasiva refleja: se + verbo 3ª persona (se vende, se venden). Pasiva perifrástica: ser + participio (concordancia)."
+        },
+        {
+          "kind": "rule",
+          "title": "Ejemplos",
+          "text": "Se habla español aquí. Se venden casas. La casa fue vendida por Juan. Las cartas fueron escritas por María."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-07-d01",
+          "type": "choice",
+          "prompt": "Aquí ____ (hablar) español.",
+          "options": [
+            "se habla",
+            "se hablan",
+            "es hablado",
+            "son hablados"
+          ],
+          "answer": [
+            "se habla"
+          ],
+          "why": "Pasiva refleja: español = sg → se habla."
+        },
+        {
+          "id": "b1-07-voz-pasiva-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Voz pasiva: refleja y perifrástica.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voz pasiva: refleja y perifrástica."
+        },
+        {
+          "id": "b1-07-voz-pasiva-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Voz pasiva: refleja y perifrástica.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Voz pasiva: refleja y perifrástica."
+        }
+      ]
+    },
+    {
+      "id": "b1-08-estilo-indirecto",
+      "order": 8,
+      "title": "Estilo indirecto",
+      "subtitle": "Dice que viene / Dijo que venía / Dijo que vendría",
+      "topics": [
+        "estilo_indirecto"
+      ],
+      "prereq": [
+        "a2-04-futuro",
+        "a2-05-condicional",
+        "b1-06-pluscuamperfecto"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Cambios: yo→él, aquí→allí, ahora→entonces, este→ese. Tiempos: presente→imperfecto, futuro→condicional, indefinido/perfecto→pluscuamperfecto."
+        },
+        {
+          "kind": "rule",
+          "title": "Preguntas indirectas",
+          "text": "Me preguntó si VENÍA (no *viene*). Me preguntó QUÉ HACÍA."
+        }
+      ],
+      "drills": [
+        {
+          "id": "b1-08-d01",
+          "type": "choice",
+          "prompt": "Dijo: \"Vendré mañana.\" → Dijo que ____ al día siguiente.",
+          "options": [
+            "vendría",
+            "viene",
+            "vendrá",
+            "viniera"
+          ],
+          "answer": [
+            "vendría"
+          ],
+          "why": "Futuro → condicional en estilo indirecto."
+        },
+        {
+          "id": "b1-08-estilo-indirecto-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Estilo indirecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Estilo indirecto."
+        },
+        {
+          "id": "b1-08-estilo-indirecto-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Estilo indirecto.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Estilo indirecto."
+        }
+      ]
+    }
+  ]
+}

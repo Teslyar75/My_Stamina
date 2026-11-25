@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import datetime as dt
 
 MAX_SLOTS = 20
@@ -34,21 +36,21 @@ KINDS = {
     "verb": {"A": 6, "B": 6, "C": 4, "D": 3, "E": 1},
     "sentence": {"A": 2, "B": 6, "C": 8, "D": 3, "E": 1},
 }
-KIND_TITLES = {"word": "слово", "verb": "глагол", "sentence": "предложение"}
+KIND_TITLES = {"word": t("слово"), "verb": t("глагол"), "sentence": t("предложение")}
 
 GROUP_TITLES = {
-    "A": "СЛОВО",
-    "B": "ЧТЕНИЕ",
-    "C": "ПЕРЕВОД",
-    "D": "АУДИО",
-    "E": "СВОЁ",
+    "A": t("СЛОВО"),
+    "B": t("ЧТЕНИЕ"),
+    "C": t("ПЕРЕВОД"),
+    "D": t("АУДИО"),
+    "E": t("СВОЁ"),
 }
 GROUP_HINTS = {
-    "A": "сказать слово по-английски",
-    "B": "прочитать предложение вслух (EN виден)",
-    "C": "перевести с русского (EN скрыт)",
-    "D": "услышать и повторить",
-    "E": "составить своё предложение",
+    "A": t("сказать слово по-английски"),
+    "B": t("прочитать предложение вслух (EN виден)"),
+    "C": t("перевести с русского (EN скрыт)"),
+    "D": t("услышать и повторить"),
+    "E": t("составить своё предложение"),
 }
 
 
@@ -70,7 +72,7 @@ def slots(kind: str = "word", n_sents: int = 5) -> list[dict]:
     for i in range(int(spec["A"])):
         out.append({"key": f"a{i}", "group": "A", "n": i,
                     "threshold": THRESHOLDS["A"][min(i, len(THRESHOLDS["A"]) - 1)],
-                    "label": f"слово {i + 1}"})
+                    "label": t("слово {0}").format(i + 1)})
     pairs = min(n_sents, max(1, b_max // 2))
     b_added = 0
     for si in range(pairs):
@@ -79,19 +81,19 @@ def slots(kind: str = "word", n_sents: int = 5) -> list[dict]:
                 break
             out.append({"key": f"b{si}{part}", "group": "B", "n": si, "part": part,
                         "threshold": THRESHOLDS["B"][part],
-                        "label": f"предл. {si + 1}{'.2' if part else '.1'}"})
+                        "label": t("предл. {0}{1}").format(si + 1, '.2' if part else '.1')})
             b_added += 1
     for i in range(int(spec["C"])):
         out.append({"key": f"c{i}", "group": "C", "n": i,
                     "threshold": THRESHOLDS["C"][min(i, len(THRESHOLDS["C"]) - 1)],
-                    "label": "перевод"})
+                    "label": t("перевод")})
     for i in range(int(spec["D"])):
         out.append({"key": f"d{i}", "group": "D", "n": i,
                     "threshold": THRESHOLDS["D"][min(i, len(THRESHOLDS["D"]) - 1)],
-                    "label": "аудио"})
+                    "label": t("аудио")})
     for i in range(int(spec["E"])):
         out.append({"key": f"e{i}", "group": "E", "n": i, "threshold": 0,
-                    "label": "своё"})
+                    "label": t("своё")})
     return out
 
 
@@ -300,7 +302,7 @@ def hint(progress, slug: str, kind: str = "word", n_sents: int = 5) -> str:
     """Короткая подсказка «что делать дальше»."""
     c = counts(progress, slug, kind, n_sents)
     if c["filled"] >= c["goal"]:
-        return "готово"
+        return t("готово")
     for gkey in ("A", "B", "C", "D", "E"):
         f, n = c["by"].get(gkey, (0, 0))
         if f < n:

@@ -6,6 +6,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 from collections import OrderedDict
 from pathlib import Path
@@ -17,11 +19,11 @@ SOURCES_DIR = Path(__file__).resolve().parent / "grammar" / "sources"
 SOURCE_TABS = (
     SourceTab(
         id="grimm_grammar",
-        title="По методике Grimm Grammar — Техасский университет (COERLL), CC BY 4.0",
+        title=t("По методике Grimm Grammar — Техасский университет (COERLL), CC BY 4.0"),
     ),
     SourceTab(
         id="zum_grammatik_kiste",
-        title="По методике ZUM Deutsch Lernen, CC BY 4.0",
+        title=t("По методике ZUM Deutsch Lernen, CC BY 4.0"),
     ),
 )
 

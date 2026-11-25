@@ -20,14 +20,14 @@ from .engine import get_engine
 
 #: Профиль alt-скина → (заголовок, значок, акцентный токен, фон-смесь)
 STYLE: dict[str, tuple[str, str, str, float]] = {
-    "starship": ("АНТЕННЫЙ ОТСЕК", "≋", "CYAN", 0.10),
-    "steampunk": ("ГРАММОФОН", "☊", "AMBER", 0.14),
-    "bathyscaphe": ("ГИДРОФОН", "◉", "CYAN", 0.10),
+    "starship": (_t("АНТЕННЫЙ ОТСЕК"), "≋", "CYAN", 0.10),
+    "steampunk": (_t("ГРАММОФОН"), "☊", "AMBER", 0.14),
+    "bathyscaphe": (_t("ГИДРОФОН"), "◉", "CYAN", 0.10),
     "neon_city": ("RADIO · FM", "≋", "PURPLE", 0.16),
     "old_england": ("WIRELESS", "☎", "AMBER", 0.10),
-    "scriptorium": ("ПЕСНОПЕНИЯ", "♪", "AMBER", 0.08),
-    "zen_garden": ("ЗВУКИ САДА", "≋", "GREEN", 0.06),
-    "generic": ("РАДИО", "≋", "CYAN", 0.08),
+    "scriptorium": (_t("ПЕСНОПЕНИЯ"), "♪", "AMBER", 0.08),
+    "zen_garden": (_t("ЗВУКИ САДА"), "≋", "GREEN", 0.06),
+    "generic": (_t("РАДИО"), "≋", "CYAN", 0.08),
 }
 STATE_KEY = "alt_radio_collapsed"
 POS_KEY = "alt_radio_pos"   # [доля x, доля y] в окне отсеков; None — справа по центру

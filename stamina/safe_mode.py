@@ -9,12 +9,14 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import os
 
 ENV = "STAR_TYPING_SAFE"
 FLAG = "--safe"
 
-_TRUE = ("1", "true", "yes", "on", "да")
+_TRUE = ("1", "true", "yes", "on", t("да"))
 
 
 def enabled() -> bool:
@@ -37,5 +39,4 @@ def flag_in(argv) -> bool:
 
 def notice() -> str:
     """Строка для журнала и статуса — что именно отключено."""
-    return ("безопасный режим: без живого космоса, звука, отдыха, "
-            "сети и фоновой сборки отсеков")
+    return (t("безопасный режим: без живого космоса, звука, отдыха, сети и фоновой сборки отсеков"))

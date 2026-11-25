@@ -23,6 +23,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 import os
 import re
@@ -242,12 +244,12 @@ def brief_block(task_id) -> str:
     tid = _safe_id(task_id)
     return "\n".join([
         "",
-        "6. ДОКЛАД О ХОДЕ (полоска задачи на пульте Ориона)",
-        f"— id задачи: {tid}. Сначала оцени объём и запиши план шагов с весами:",
-        f'  python -m stamina.task_progress plan {tid} "<суть задачи>" "шаг 1:2" "шаг 2:3" "тесты:1"',
-        f'— закрыл шаг: python -m stamina.task_progress step {tid} "шаг 1"',
-        "— план изменился: снова plan с новым списком (закрытые шаги сохраняются);",
-        f"— в конце: python -m stamina.task_progress finish {tid} (или failed/stopped).",
+        t("6. ДОКЛАД О ХОДЕ (полоска задачи на пульте Ориона)"),
+        t("— id задачи: {0}. Сначала оцени объём и запиши план шагов с весами:").format(tid),
+        t("  python -m stamina.task_progress plan {0} \"<суть задачи>\" \"шаг 1:2\" \"шаг 2:3\" \"тесты:1\"").format(tid),
+        t("— закрыл шаг: python -m stamina.task_progress step {0} \"шаг 1\"").format(tid),
+        t("— план изменился: снова plan с новым списком (закрытые шаги сохраняются);"),
+        t("— в конце: python -m stamina.task_progress finish {0} (или failed/stopped).").format(tid),
     ])
 
 

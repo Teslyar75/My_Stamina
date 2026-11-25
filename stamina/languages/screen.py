@@ -515,6 +515,10 @@ class LanguagesScreen(tk.Frame):
         if getattr(self, "current_page", None) == "grammar" and page is not None:
             if page.on_key(event) == "break":
                 return
+        # Ctrl+O (фокус сканера) — аккорд: работает и когда фокус в поле перевода
+        if self._scanner is not None and self._scanner.wants_key(event):
+            self._scanner.on_key(event)
+            return
         if isinstance(event.widget, (tk.Entry, tk.Text)):
             return
         if self._scanner is not None:
@@ -528,22 +532,35 @@ class LanguagesScreen(tk.Frame):
                 handler(event)
                 return
 
+    def on_key_up(self, event) -> None:
+        """Отпускание клавиш — только сканеру (T держит перевод, отпустили — снова скрыт)."""
+        if self._scanner is not None:
+            self._scanner.on_key_up(event)
+
     def _exit_grammar_focus(self, *, remember: bool = False) -> None:
         page = getattr(self, "_grammar_page", None)
         if page is not None and page.in_focus():
             page.toggle_focus(False, remember=remember)
 
     def focus_active(self) -> bool:
+        if self._scanner is not None and self._scanner.in_focus():
+            return True
         page = getattr(self, "_grammar_page", None)
         return bool(getattr(self, "current_page", None) == "grammar"
                     and page is not None and page.in_focus())
 
     def toggle_focus(self, on: bool | None = None, *, remember: bool = True) -> None:
+        if self._scanner is not None:
+            self._scanner.toggle_focus(on)
+            return
         page = getattr(self, "_grammar_page", None)
         if page is not None:
             page.toggle_focus(on, remember=remember)
 
     def handle_focus_escape(self) -> bool:
+        if self._scanner is not None and self._scanner.in_focus():
+            self._scanner.toggle_focus(False)      # сканер: один Esc из фокуса
+            return True
         page = getattr(self, "_grammar_page", None)
         if page is not None:
             return page.handle_focus_escape()
@@ -885,7 +902,7 @@ class LanguagesScreen(tk.Frame):
                  bg=PANEL, fg=MUTED, font=theme.font(10)).pack(anchor="w", pady=px(4))
         row = tk.Frame(card.body, bg=PANEL)
         row.pack(fill=tk.X, pady=px(4))
-        for label, quality in (("СНОВА", 0), ("ТРУДНО", 3), ("ХОРОШО", 4), ("ЛЕГКО", 5)):
+        for label, quality in ((_t("СНОВА"), 0), (_t("ТРУДНО"), 3), (_t("ХОРОШО"), 4), (_t("ЛЕГКО"), 5)):
             HudButton(
                 row, _t(label), lambda q=quality, s=slug: self._grade_review(s, q),
                 height=30, font_size=10,
@@ -1001,6 +1018,8 @@ class LanguagesScreen(tk.Frame):
                  font=theme.font(8)).pack(anchor="w", pady=(0, px(4)))
         inner = self._scroller(frame)
 
+        from stamina.languages.core.progress import DEFAULT_SETTINGS
+
         for key, title in (
             ("autoplay", _t("Автовоспроизведение слова")),
             ("asr", _t("Микрофон и распознавание")),
@@ -1012,7 +1031,9 @@ class LanguagesScreen(tk.Frame):
             row = tk.Frame(inner, bg=BG)
             row.pack(fill=tk.X, pady=px(2))
             tk.Label(row, text=title, bg=BG, fg=TEXT, font=theme.font(10)).pack(side=tk.LEFT)
-            on = bool(progress.settings.get(key, False))
+            # Значение по умолчанию берём из DEFAULT_SETTINGS, иначе настройка показывала
+            # «ВЫКЛ», хотя микрофон и распознавание на самом деле работали.
+            on = bool(progress.settings.get(key, DEFAULT_SETTINGS.get(key, False)))
             HudButton(row, _t("ВКЛ") if on else _t("ВЫКЛ"),
                       lambda k=key: self._toggle_setting(k), height=26, font_size=8,
                       active=on, color=GREEN if on else MUTED).pack(side=tk.RIGHT)
@@ -1028,7 +1049,7 @@ class LanguagesScreen(tk.Frame):
                          labels={"soft": _t("мягко"), "normal": _t("обычно"), "strict": _t("строго")})
         self._choice_row(inner, "gloss_lang", _t("ЯЗЫК ПЕРЕВОДА"),
                          ["ui", "ru", "en", "uk", "de"],
-                         labels={"ui": _t("как интерфейс"), "ru": "Русский", "en": "English",
+                         labels={"ui": _t("как интерфейс"), "ru": _t("Русский"), "en": "English",
                                  "uk": "Українська", "de": "Deutsch"})
         tk.Label(inner,
                  text=_t("Учите испанский по-английски? Поставьте интерфейс и перевод "

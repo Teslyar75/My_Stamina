@@ -105,7 +105,166 @@ Done:
   у каждой темы есть теория, панель показывает теорию выбранной темы, лобби считает
   миссии сам; `tests/test_lounge_help.py` обновлён под новые миссии и две игры.
 
-Next: слияние `agent/orion/term-games` в `master`, тесты, push, PR.
+Next: выпуск (следующий `tools/auto_release.py --push` в CI) — программа
+увидит обновление по кнопке «Обновить сейчас».
+Влито в `master`: PR #59, merge-коммит `eac3410`; на коммите слияния зелёные
+`tests/test_terminal_trainers.py`, `test_lounge_help`, `test_docker_trainer_input`,
+`test_i18n`, `tools/i18n_check.py` (3015/3015) и `ci_gate --only contrast --only dep`.
 
-Problems: `tools/i18n_check.py` остаётся красным из-за чужого WIP (3071/3787 переводов),
-ключей lounge в нём больше нет; `stamina/lounge/help_texts/*` — тексты по-русски намеренно.
+Problems: в рабочем дереве `D:\Star_Typing_games` остаётся чужой WIP (~900 ключей
+в `stamina/i18n/*.json` и `_t()`-обёртки), поэтому `i18n_check` красный именно там;
+в коммите и на `master` гейт зелёный. `stamina/lounge/help_texts/*` — тексты по-русски намеренно.
+
+## Учебник VIM (23.11, ветка `agent/orion/vim-textbook`)
+
+Goal: в тренажёре VIM не хватало материалов — только 12 уроков и справка F1.
+Нужен учебник по образцу Док-станции (панель F2): темы, теория, примеры.
+
+Done:
+- `vim_reference.py` — 14 тем, 95 клавиш; у темы `blurb` и `theory` (3 тезиса),
+  у клавиши `cmd/desc/example/sim/seq/needs/probe/lesson`.
+- Честность пометок: `sim=True` (38 клавиш) проверяется тестом через настоящий
+  `vim_engine` (`seq` + `needs` + `probe`); `"partial"` (4) — движок знает, но
+  упрощено (`p/P`, `yy` — регистров нет); `False` (53) — только в настоящем VIM.
+  Обратный тест: `gg`, `ciw`, `:%s/…`, `:w`, `ma` не могут быть помечены «работает».
+- `vim_ref_panel.py` — три колонки: темы / клавиши с поиском и теорией / карточка
+  с примером, статусом и кнопкой «▶ К УРОКУ» (ведёт в урок тренажёра, где эта
+  клавиша отрабатывается). Вторая кнопка — «✕ ЗАКРЫТЬ  F2».
+- `vim_trainer.py` — `tools_row=True`, `build_tools()`, `reference_open/toggle/
+  close_reference/open_lesson`; F2 в `on_key` переключает панель, Esc закрывает,
+  остальные клавиши при открытой панели в поле не доходят.
+- `ref_list.py` — прокручиваемый список вынесен из `docker_ref_panel` и общий
+  для Docker/Linux/PowerShell и VIM (`_ScrollList` оставлен алиасом).
+- 13 ключей интерфейса в 7 языках; `help_texts/vim_trainer.json` упоминает F2.
+  Учебный текст — по-русски, без `_t()`: i18n-долг не растёт.
+- Тесты: `tests/test_vim_reference.py` (24 проверки: структура, честность `sim`
+  движком, панель, интеграция с игрой). Зелёные `test_vim_trainer`,
+  `test_lounge_help`, `test_i18n`, `test_terminal_trainers`; `tools/i18n_check.py`
+  код 0 (3028/3028); `ci_gate --only contrast --only dep` зелёный; ruff чисто.
+- Влито в `master`: PR #60, merge-коммит `2ceb015`.
+
+Next: `D:\Star_Typing` подтянут до 3.9.10 (`git merge --ff-only`), учебник на месте.
+Пилоту в `D:\Star_Typing_games`: `git merge origin/master`, чтобы учебник появился
+в рабочей копии игр.
+
+Локальная правка пилота (галка Backspace в `TrainerGame`) снята в `stash@{0}` и
+сохранена патчем; на master Backspace в тренажёре набора уже не уводит в лобби
+(`GameShell.backspace_edits`), видимой галки у этого тренажёра нет.
+
+Problems: в `D:\Star_Typing_games` остаётся чужой WIP (i18n-ключи и `_t()`),
+поэтому `i18n_check` красный именно там; в коммите и на `master` гейт зелёный.
+
+## Одна папка: всё сведено в D:\Star_Typing (24.11, ветка `local/all-work`)
+
+Goal: пилот просил держать все изменения локально в одном месте, а не в нескольких
+папках с фрагментами — и один ярлык на рабочем столе для десктопной версии.
+
+Done:
+- `D:\Star_Typing` — единственная рабочая копия, ветка `local/all-work`:
+  - `8a1dd79` — master 3.9.10 (учебник VIM, терминальные тренажёры);
+  - `0666033` — правка микрофона и `alt2_ui.py` из `D:\My_New_Stamina`
+    (коммиты `4ba9526` + `0af4e8c`);
+  - `df3fc46` — 68 файлов работы по английскому, языкам, голосу и прочему из
+    `D:\Star_Typing_games` + 7 файлов переводов (в них добито 111 ключей из
+    master, в том числе ключи учебника VIM). Мусор из wip-коммита (log.txt,
+    pr_body.md, два скрипта в корне) убран.
+- Восстановлена правка микрофона, которую WIP затёр: `voice/stt.py`, `voice/mic.py`,
+  `languages/screen.py` взяты из `0666033`, сверху возвращены i18n-обёртки;
+  `tests/test_mic_availability.py` — 7/7.
+- Микрофон в Сканере на месте: `pages_main.ScannerPage` создаёт `MicPanel`
+  (кнопка «🎤 ГОВОРИТЕ  M»), в `refresh_mode()` она больше не прячется; в `.venv`
+  `stt.ready() → True`, модели в `D:\Star_Typing\models`.
+- Веб-версия перенесена в `D:\Star_Typing\web_star_typing`, ярлык «Star Typing Web»
+  перецелен туда.
+- На рабочем столе один ярлык десктопной версии: «Star Typing» →
+  `.venv\Scripts\pythonw.exe main.py`, иконка `stamina/assets/star_typing.ico`.
+- Удалены: `D:\Star_Typing_games`, `D:\Star_Typing_games_docker`,
+  `D:\My_New_Stamina`, временный worktree `vim-work`. Архивы в `D:\_archive`:
+  `Star_Typing_games_20261124.zip` (821 МБ), `Star_Typing_games_docker_20261124.zip`
+  (314 МБ), `My_New_Stamina_20261124.zip` (747 МБ). Снимки до уборки — теги
+  `snap-20261124-0245` и `snap-20261124-0247`.
+
+Problems: i18n-долг из WIP остался (870 русских ключей без переводов), поэтому
+`tools/i18n_check.py` и `tests/test_i18n.py` красные на этой ветке — унаследовано,
+не поломка. `master` чистый.
+
+## Сканер языков как в английском + озвучка (25.11, `local/all-work`)
+
+Goal: сканер слова в DE/ES/FR/IT должен выглядеть и работать как английский,
+и должна звучать озвучка слова и предложения.
+
+Done:
+- `stamina/languages/scanner.py` переписан по шаблону английского компактного
+  `ScannerPage`: `ScrollFrame` с автоскрытием прокрутки, строка действий
+  (←/◀/▶ и номер карточки) в заголовке панели через `_place_actbar`, три колонки
+  6:7:9 с тонкими разделителями, предложение в `tk.Text` (перенос, подсветка
+  изучаемого слова), `ПЕРЕВОД  T` и `💡 ПОДСКАЗКА`, `MatchReadout` появляется
+  только с результатом, микрофон справа в канале связи, `sf.top()` при смене слова.
+- `LangCtx` (`stamina/languages/ctx.py`): `lang`, `voice_error`, `say()` и
+  `audio_button()` — кнопки озвучки светятся, пока звучит фраза (как `english/screen.py`).
+- `stamina/languages/speech.py`: `speak()` сначала пробует edge-tts (mp3 в кэше),
+  если пакета или сети нет — голос Windows нужной культуры через общий `TTS`
+  (`culture="de-*"`), а если нет и его — в `on_error` уходит понятная причина
+  («нет голоса Windows de-* … поставьте голос или edge-tts»). Добавлены `on_done`,
+  `edge_ready()`; `stop_speak()` останавливает и голос Windows.
+- `requirements.txt`: `edge-tts>=7.0` стал настоящей зависимостью; в `.venv`
+  пакет установлен (`edge_ready() → True`). `tools/dep_audit.py`: имя модуля
+  `edge_tts` сопоставлено пакету `edge-tts`, аудит зелёный (код 0).
+- Новых ключей i18n нет: подписи взяты из существующих, пояснения и причины
+  отказа — по-русски без `_t()` (долг не растёт).
+
+Проверено только затронутое: сборка сканера в окне 1100×700 (строка действий в
+заголовке, предложение и перевод, ПЕРЕВОД/ПОДСКАЗКА, скрытая шкала, итог проверки),
+озвучка DE через edge-tts и запасной путь без пакета (сообщение за 0.8 с),
+`ruff` по изменённым файлам, `dep_audit`.
+
+Next: пилот слушает сканер в DE/ES/FR/IT; если голос нужен без сети — поставить
+голоса Windows этих языков (Параметры → Время и язык → Речь).
+
+### Фокус-режим и клавиши сканера языков + сетевой голос в английском (25.11)
+
+Goal: сканер DE/ES/FR/IT должен не просто выглядеть как английский, а иметь те же
+настройки и клавиши; английская озвучка должна звучать так же живо, как языковая.
+
+Done:
+- `languages/scanner.py`: перенесены из английского компактного сканера
+  фокус-режим (`FocusMode`, `_grow/_fill/_center/_scale`, кнопка `⛶ ФОКУС  O`),
+  авто-подгонка длинного слова (`fit_word`), обычное заполнение высоты окна
+  (`_fit_normal`, `NORMAL_FONT_GAIN/CAP/MIN`, те же числа, что в `english/pages_main.py`),
+  debounce `_queue_fit` на `<Configure>`/`<Map>`, снятие фокуса при `<Unmap>`.
+- Клавиши теперь как в английском: `O`/`Щ` и `Ctrl+O` — фокус, `Esc` — выход из
+  фокуса (а вне его — назад), `M` — микрофон, `T` (удерживать) — перевод,
+  `S` — озвучить предложение, `←/→` (и PgUp/PgDn) — предложения. Перевод по
+  умолчанию скрыт, как в английском, и показывается по `T`/кнопке `ПЕРЕВОД`.
+- `Ctrl+O` работает и из поля «МОЙ ПЕРЕВОД»: `languages/screen.py` отдаёт аккорд
+  сканеру до проверки «фокус в поле ввода»; `cockpit._on_key_up` теперь отдаёт
+  отпускание клавиш и языкам — иначе `T` не скрывал перевод обратно.
+- `focus_active/handle_focus_escape/toggle_focus` языкового отсека знают про
+  сканер: Esc из фокуса не уводит в обзор, а `cockpit.show()` корректно снимает
+  фокус при смене отсека.
+- Английский голос: `english/screen.py::say` вызывает `tts.speak(..., network=True)`;
+  сетевой синтез вынесен в общий `stamina/tts_edge.py` (голоса en/en-GB/de/es/fr/it),
+  им пользуются и языки, и английский. При отказе сети фраза уходит в голос
+  Windows под тем же `id`, поэтому подсветка кнопок и события не меняются.
+- Новых ключей i18n нет: `⛶ ФОКУС  O` и `✕ ФОКУС  Esc` уже есть в 7 локалях.
+
+Проверено только затронутое: сборка сканера 1100×700 (обычный вид и фокус,
+`k` 1.29→1.68), `T` скрывает/показывает перевод, `O`/`Ctrl+O`/`Esc`, `←/→` по
+предложениям, итог проверки; снимки `scanner_normal.png` и `scanner_focus.png`;
+английская фраза через edge-tts (`start`→`done`) и немецкая через `speech.py`
+после рефакторинга; `tests/test_languages_speech.py`, `test_languages_tile.py`
+(12 passed); `ruff` по изменённым файлам; `dep_audit` код 0.
+
+---
+
+## Исправление микрофона английского сканера + итальянская грамматика (25.11, `local/all-work`)
+
+Goal: два независимых бага — микрофон в английском сканере не работал (Vosk-модель отсутствовала), и итальянская грамматика показывала немецкий флаг + лишние вкладки немецких курсов.
+
+Done:
+- **Английский сканер — микрофон**: нехватающая Vosk-модель `vosk-model-small-en-us-0.15` скачана через `scripts/download_vosk_model.py` в `models/` (корень). `ASR().available()` → `True`, `vosk_model_dir()` находит модель. `tests/test_mic_availability.py` — 7/7 зелёных.
+- **Итальянская грамматика — флаг**: в `ItalianGrammarCatalog.paint_title_flag` (stamina/languages/grammar_page.py:755) заменено `"de"` на `"it"` — теперь отображается итальянский флаг.
+- **Итальянская грамматика — лишние вкладки**: `ItalianGrammarCatalog` была полной копией `GermanGrammarCatalog` с `OpenSourceBank` и `source_tabs()`. Убраны все методы/атрибуты, связанные с открытыми источниками (`show_source_tabs`, `_ensure_open`, `sources`, `select_source`, `_load_open_topic`, `header_subtitle` для open, `progress_text` для open, `_topic_summaries`, `neighbours`, `hint_for_unit`, `unit_number`, `is_done`, `mark_complete` для open, `load_table` делегировал к engine). Класс теперь минимален — только `paint_title_flag("it")`. Французский/испанский каталоги работают так же (только базовый курс).
+- Тесты: все итальянские/французские/испанские грамматические тесты проходят (`test_languages_grammar_it.py`, `test_languages_grammar_fr.py`, `test_languages_grammar_es.py` — зелёные). CI gate (`tools/ci_gate.py --only contrast --only dep`) — зелёный. `i18n_check` без новых ошибок (код 3282, те же 450 лишних ключей из WIP-наследия, не моя поломка).
+
+Problems: один тест `test_lesson_intro_explains_goal_and_traps` (немецкая грамматика) падает — ищет текст "МОСТИК RU/UA → DE" в UI, которого теперь нет (данные bridges.json могли измениться). Это не связано с моими правками (тронул только итальянский каталог).

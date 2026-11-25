@@ -13,6 +13,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import json
 import os
 import threading
@@ -396,11 +398,11 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(prog="stamina.roles")
     sub = parser.add_subparsers(dest="cmd", required=True)
-    link = sub.add_parser("link", help="привязать GitHub и проверить доступ к репозиторию")
-    link.add_argument("login", help="логин GitHub")
-    link.add_argument("--pilot", default="", help="id пилота; по умолчанию активный или last_pilot")
+    link = sub.add_parser("link", help=t("привязать GitHub и проверить доступ к репозиторию"))
+    link.add_argument("login", help=t("логин GitHub"))
+    link.add_argument("--pilot", default="", help=t("id пилота; по умолчанию активный или last_pilot"))
     link.add_argument("--clipboard", action="store_true",
-                      help="взять токен из буфера обмена (без вставки в консоль)")
+                      help=t("взять токен из буфера обмена (без вставки в консоль)"))
     args = parser.parse_args(argv)
     if args.cmd != "link":
         parser.print_help()
@@ -423,7 +425,7 @@ def main(argv: list[str] | None = None) -> int:
             print("clipboard is empty", file=sys.stderr)
             return 1
     else:
-        token = getpass.getpass("GitHub token (символы не видны): ").strip()
+        token = getpass.getpass(t("GitHub token (символы не видны): ")).strip()
     ok, msg = link_github(pid, args.login, token)
     print(msg)
     return 0 if ok else 1

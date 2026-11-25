@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "level": "C1",
+  "lessons": [
+    {
+      "id": "c1-01-subjunctive-nuances",
+      "order": 1,
+      "title": "Нюансы subjonctif: douter que vs ne pas douter que",
+      "subtitle": "Степень уверенности определяет режим",
+      "topics": [
+        "subjunctive_nuances"
+      ],
+      "prereq": [
+        "b2-05-subjunctive-vs-indicative"
+      ],
+      "minutes": 12,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Je doute qu'il vienne (не уверен → subj). Je ne doute pas qu'il viendra (уверен → indicatif futur). Ne pas douter / il est certain / il est sûr → indicatif. Douter / il est douteux → subjonctif."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-01-d01",
+          "type": "choice",
+          "prompt": "Il est certain qu'il ____ (réussir).",
+          "options": [
+            "réussira",
+            "réussisse",
+            "réussit",
+            "réussirait"
+          ],
+          "answer": [
+            "réussira"
+          ],
+          "why": "Il est certain que → indicatif futur."
+        },
+        {
+          "id": "c1-01-subjunctive-nuances-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Нюансы subjonctif: douter que vs ne pas douter que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Нюансы subjonctif: douter que vs ne pas douter que."
+        },
+        {
+          "id": "c1-01-subjunctive-nuances-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Нюансы subjonctif: douter que vs ne pas douter que.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Нюансы subjonctif: douter que vs ne pas douter que."
+        }
+      ]
+    },
+    {
+      "id": "c1-02-literary-tenses",
+      "order": 2,
+      "title": "Литературные времена: passé simple, passé antérieur",
+      "subtitle": "Только в литературе/истории",
+      "topics": [
+        "literary_tenses"
+      ],
+      "prereq": [
+        "b1-03-plus-que-parfait"
+      ],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Passé simple = простое прошедшее (литературный аналог PC). Je parlai, tu parlas, il parla... Passé antérieur = предпрошедшее (литературный аналог PQP). J'eus parlé, tu eus parlé... Только в литературе/истории. В устной речи — PC/PQP."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-02-d01",
+          "type": "choice",
+          "prompt": "Il ____ (parler) longuement. (Passé simple)",
+          "options": [
+            "parla",
+            "parlait",
+            "a parlé",
+            "parlerait"
+          ],
+          "answer": [
+            "parla"
+          ],
+          "why": "Passé simple 3л. ед. ч. -er → -a."
+        },
+        {
+          "id": "c1-02-literary-tenses-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Литературные времена: passé simple, passé antérieur.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Литературные времена: passé simple, passé antérieur."
+        },
+        {
+          "id": "c1-02-literary-tenses-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Литературные времена: passé simple, passé antérieur.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Литературные времена: passé simple, passé antérieur."
+        }
+      ]
+    },
+    {
+      "id": "c1-03-register-style",
+      "order": 3,
+      "title": "Регистры и стиль: soutenu / courant / familier / québécois",
+      "subtitle": "Не смешивать регистры в одном контексте",
+      "topics": [
+        "register_style"
+      ],
+      "prereq": [],
+      "minutes": 15,
+      "theory": [
+        {
+          "kind": "text",
+          "text": "Soutenu: «Je n'ai pas» → «Je n'ai point», «nous» → «on», inversion questions. Familier: «je sais pas», «c'est moi qui...», «y'a». Québécois: «magasin» (store), «char» (voiture), «déjeuner» (petit-déjeuner)."
+        },
+        {
+          "kind": "rule",
+          "title": "Грамматика Quebec",
+          "text": "Sur/In (в интернете), sur le web → dans le web. Tu/Vous различия."
+        }
+      ],
+      "drills": [
+        {
+          "id": "c1-03-d01",
+          "type": "choice",
+          "prompt": "В Québec: «Машина» = ____",
+          "options": [
+            "voiture",
+            "char",
+            "auto",
+            "machine"
+          ],
+          "answer": [
+            "char"
+          ],
+          "why": "Québécois: char = voiture."
+        },
+        {
+          "id": "c1-03-register-style-d2",
+          "type": "fill",
+          "prompt": "Completa la frase per Регистры и стиль: soutenu / courant / familier / québécois.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Регистры и стиль: soutenu / courant / familier / québécois."
+        },
+        {
+          "id": "c1-03-register-style-d3",
+          "type": "fill",
+          "prompt": "Completa la frase per Регистры и стиль: soutenu / courant / familier / québécois.",
+          "answer": [
+            "risposta"
+          ],
+          "why": "Esercizio aggiuntivo per Регистры и стиль: soutenu / courant / familier / québécois."
+        }
+      ]
+    }
+  ]
+}

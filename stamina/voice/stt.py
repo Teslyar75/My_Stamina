@@ -18,6 +18,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import array
 import json
 import math
@@ -43,9 +45,40 @@ LANG = "ru"
 
 
 # -- модель --------------------------------------------------------------------
+def shared_models_dir() -> Path:
+    """Общая библиотека моделей пилота: `%APPDATA%/Stamina/models`.
+
+    Модель Vosk весит десятки мегабайт. У пилота бывает несколько копий корабля
+    (рабочая, установленная, старая), и держать модель в каждой — расточительно.
+    Поэтому одна папка в данных пилота годится для всех копий сразу.
+    """
+    try:
+        from stamina.pilots import ROOT_DIR as DATA_DIR
+        return Path(DATA_DIR) / "models"
+    except Exception:  # noqa: BLE001
+        appdata = os.environ.get("APPDATA")
+        return Path(appdata) / "Stamina" / "models" if appdata else PROJECT_DIR / "models"
+
+
+def _holds_model(root: Path) -> bool:
+    return root.is_dir() and any(p.is_dir() and (p / "am").exists()
+                                 for p in root.glob("vosk-model*"))
+
+
 def models_dir() -> Path:
-    """Папка моделей: `STAR_TYPING_MODELS` или `models/` корабля."""
-    return Path(os.environ.get("STAR_TYPING_MODELS") or (PROJECT_DIR / "models"))
+    """Где лежат модели: `STAR_TYPING_MODELS`, `models/` корабля или общая библиотека.
+
+    Возвращается первая папка, в которой уже есть модель. Если моделей нет нигде —
+    `models/` корабля, чтобы скачивание шло туда.
+    """
+    env = os.environ.get("STAR_TYPING_MODELS")
+    if env:
+        return Path(env)
+    local = PROJECT_DIR / "models"
+    for root in (local, shared_models_dir()):
+        if _holds_model(root):
+            return root
+    return local
 
 
 def find_model(root: Path | None = None, prefer: str = LANG) -> Path | None:
@@ -75,10 +108,10 @@ def ready(model_path: Path | None = None) -> tuple[bool, str]:
     """Готов ли голосовой ввод целиком: (готово, причина отказа)."""
     ok, missing = deps_ok()
     if not ok:
-        return False, f"нет библиотеки {missing}"
+        return False, t("нет библиотеки {0}").format(missing)
     path = Path(model_path) if model_path and Path(model_path).is_dir() else find_model()
     if path is None:
-        return False, f"нет модели Vosk в {models_dir()}"
+        return False, t("нет модели Vosk в {0}").format(models_dir())
     return True, ""
 
 
@@ -223,6 +256,7 @@ class Listener:
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
         self.error = ""
+        self.fail_reason = ""         # почему не удалось начать запись (нет модели, библиотеки…)
 
     # -- управление
     @property
@@ -235,11 +269,13 @@ class Listener:
             return True
         ok, why = ready(self.model_path)
         if not ok:
+            self.fail_reason = why
             self._push(("error", why))
             self._push(("done", None))
             return False
         self._stop.clear()
         self.error = ""
+        self.fail_reason = ""
         self._thread = threading.Thread(target=self._run, daemon=True)
         self._thread.start()
         return True
@@ -266,7 +302,7 @@ class Listener:
             self._push(("status", "loading"))
             model = load_model(self.model_path)
             if model is None:
-                raise RuntimeError(f"нет модели Vosk в {models_dir()}")
+                raise RuntimeError(t("нет модели Vosk в {0}").format(models_dir()))
             import sounddevice as sd
             import vosk
 

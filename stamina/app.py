@@ -144,8 +144,7 @@ def choose_pilot(argv: list[str]) -> str | None:
                     grab = root.grab_current()
                 except tk.TclError:
                     grab = "?"
-                _journal(f"ask_pin -> {ok_pin}, grab после диалога: {grab}, "
-                         f"root viewable: {root.winfo_viewable()}")
+                _journal(t("ask_pin -> {0}, grab после диалога: {1}, root viewable: {2}").format(ok_pin, grab, root.winfo_viewable()))
                 if not ok_pin:
                     return None
             pid = p["id"]
@@ -171,7 +170,7 @@ def run_app(argv: list[str] | None = None) -> None:
     if safe_mode.flag_in(argv):
         safe_mode.set_enabled(True)
     _safe_streams()
-    _journal(f"=== ЗАПУСК argv={argv} exe={sys.executable} cwd={os.getcwd()}")
+    _journal("=== ЗАПУСК argv={0} exe={1} cwd={2}".format(argv, sys.executable, os.getcwd()))
     # Ошибку в обратном вызове Tk пишем в журнал: под pythonw её больше некуда девать
     try:
         import tkinter as _tk
@@ -242,42 +241,40 @@ def run_app(argv: list[str] | None = None) -> None:
                 walk(cockpit)
             except Exception as e:  # noqa: BLE001
                 tops = [f"err {e}"]
-            _journal(f"снимок {tag}: grab={grab} focus={focus} окно={view} "
-                     f"экран={getattr(cockpit, 'current', '?')} "
-                     f"переднее окно Windows={fg} прочие окна={tops}")
+            _journal(t("снимок {0}: grab={1} focus={2} окно={3} экран={4} переднее окно Windows={5} прочие окна={6}").format(tag, grab, focus, view, getattr(cockpit, 'current', '?'), fg, tops))
             # Ширины: если требуемая ширина больше окна, шапка и клавиатура не влезают,
             # и раскладка может зациклиться (окно встаёт при живом главном потоке).
             try:
-                parts = [f"окно={cockpit.winfo_width()}", f"нужно={cockpit.winfo_reqwidth()}"]
+                parts = [t("окно={0}").format(cockpit.winfo_width()), t("нужно={0}").format(cockpit.winfo_reqwidth())]
                 for name in ("nav_strip", "subnav", "_mini_row", "content"):
                     w = getattr(cockpit, name, None)
                     if w is not None:
                         parts.append(f"{name}={w.winfo_reqwidth()}/{w.winfo_width()}")
-                _journal("ширины: " + " ".join(parts))
+                _journal(t("ширины: ") + " ".join(parts))
             except Exception as e:  # noqa: BLE001
-                _journal(f"ширины: err {e}")
+                _journal(t("ширины: err {0}").format(e))
             # Кто именно просит лишнюю ширину: строки окна и каждый экран
             try:
                 rows = []
                 for ch in cockpit.winfo_children():
                     rows.append(f"{ch.winfo_class()}#{str(ch).split('.')[-1]}="
                                 f"{ch.winfo_reqwidth()}/{ch.winfo_width()}")
-                _journal("строки: " + " ".join(rows))
+                _journal(t("строки: ") + " ".join(rows))
                 scr = []
                 for name, s in (getattr(cockpit, "screens", {}) or {}).items():
                     try:
                         scr.append(f"{name}={s.winfo_reqwidth()}")
                     except Exception:  # noqa: BLE001
                         pass
-                _journal("экраны: " + " ".join(scr))
+                _journal(t("экраны: ") + " ".join(scr))
                 mapped = [k for k, s in (getattr(cockpit, "screens", {}) or {}).items()
                           if s.winfo_ismapped()]
-                _journal(f"видимые экраны: {mapped}")
+                _journal(t("видимые экраны: {0}").format(mapped))
             except Exception as e:  # noqa: BLE001
-                _journal(f"строки: err {e}")
+                _journal(t("строки: err {0}").format(e))
 
         for _t in (1000, 2000, 3500, 6000, 12000):
-            cockpit.after(_t, lambda tag=_t: _snap(f"{tag} мс"))
+            cockpit.after(_t, lambda tag=_t: _snap(t("{0} мс").format(tag)))
 
         # Пульс главного потока: если окно «замерло», видно, когда и на сколько
         _beat = {"last": time.time()}
@@ -292,8 +289,7 @@ def run_app(argv: list[str] | None = None) -> None:
                     pending = len(cockpit.tk.splitlist(cockpit.tk.call("after", "info")))
                 except Exception:  # noqa: BLE001
                     pass
-                _journal(f"ГЛАВНЫЙ ПОТОК ЗАМИРАЛ на {gap:.2f} с "
-                         f"(экран={getattr(cockpit, 'current', '?')}, таймеров={pending})")
+                _journal(t("ГЛАВНЫЙ ПОТОК ЗАМИРАЛ на {0:.2f} с (экран={1}, таймеров={2})").format(gap, getattr(cockpit, 'current', '?'), pending))
             # пульс живёт всё время работы: без него сторож замираний считает
             # «замиранием» сам факт остановки пульса и врёт в журнал
             cockpit.after(250, _pulse)
@@ -318,7 +314,7 @@ def run_app(argv: list[str] | None = None) -> None:
                     finally:
                         dt = time.perf_counter() - t0
                         if dt > limit:
-                            _journal(f"ДОЛГИЙ ВЫЗОВ {name}: {dt:.2f} с")
+                            _journal(t("ДОЛГИЙ ВЫЗОВ {0}: {1:.2f} с").format(name, dt))
                 return orig(self, ms, wrapper, *args)
 
             tkinter.Misc.after = after
@@ -340,8 +336,7 @@ def run_app(argv: list[str] | None = None) -> None:
                 n = per_widget.get(key, 0) + 1
                 per_widget[key] = n
                 if n == 300:
-                    _journal(f"ПЕТЛЯ РАСКЛАДКИ: {widget.winfo_class()} {key} — "
-                             f"{n} событий, снимаю обработчик")
+                    _journal("ПЕТЛЯ РАСКЛАДКИ: {0} {1} — {2} событий, снимаю обработчик".format(widget.winfo_class(), key, n))
                     try:
                         widget.unbind("<Configure>")
                     except Exception:  # noqa: BLE001
@@ -412,9 +407,9 @@ def run_app(argv: list[str] | None = None) -> None:
                 pass
             if oc_token or gh_token:
                 orion.save_binding(rec["id"], opencode_token=oc_token, github_token=gh_token)
-                cp.set_status("Связь с OpenCode восстановлена автоматически", "green")
+                cp.set_status(t("Связь с OpenCode восстановлена автоматически"), "green")
             else:
-                cp.set_status("Нет связи с OpenCode — войди в opencode auth login", "red")
+                cp.set_status(t("Нет связи с OpenCode — войди в opencode auth login"), "red")
         if not safe_mode.enabled():
             cockpit.after(100, lambda: _ensure_connection(cockpit))
         _journal("mainloop старт")
@@ -444,7 +439,7 @@ def run_app(argv: list[str] | None = None) -> None:
     except Exception:  # noqa: BLE001 — иначе окно «мелькает» без следа
         import traceback
         from stamina import pilots
-        text = t("Ошибка пульта:\n") + traceback.format_exc()
+        text = "Ошибка пульта:\n" + traceback.format_exc()
         pilots.log_error(text, "cockpit_error.log")
         _journal(text)
         # Под pythonw консоли нет: без окна пилот видит только «ничего не произошло»
@@ -453,9 +448,8 @@ def run_app(argv: list[str] | None = None) -> None:
 
             last = (traceback.format_exc().strip().splitlines() or ["?"])[-1]
             launch_check.show_dialog(
-                "Star Typing: ошибка при запуске",
-                f"Пульт не открылся.\n\n{last}\n\n"
-                f"Подробности в журнале:\n{launch_check.log_path()}",
+                t("Star Typing: ошибка при запуске"),
+                t("Пульт не открылся.\n\n{0}\n\nПодробности в журнале:\n{1}").format(last, launch_check.log_path()),
             )
         except Exception:  # noqa: BLE001 — окно с ошибкой не важнее самой ошибки
             pass

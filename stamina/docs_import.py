@@ -7,6 +7,7 @@
 """
 from __future__ import annotations
 
+
 import re
 import zipfile
 import xml.etree.ElementTree as ET
@@ -99,7 +100,7 @@ def import_docx(path: Path) -> docs.Document:
             if ppr is not None and ppr.find(W + "pStyle") is not None:
                 sid = ppr.find(W + "pStyle").get(W + "val", "")
             name = (styles.get(sid) or sid).lower()
-            m = re.search(r"(?:heading|заголовок)\s*(\d)", name)
+            m = re.search("(?:heading|заголовок)\\s*(\\d)", name)
             prefix = ""
             if m:
                 prefix = "#" * max(1, min(6, int(m.group(1)))) + " "

@@ -25,6 +25,8 @@ import time
 import sys
 import threading
 
+from stamina import tts_edge
+
 _PS = r"""
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
@@ -200,9 +202,12 @@ class TTS:
             self.proc = None
             return False
 
-    def speak(self, text: str, rate: int = 0, culture: str = "") -> int:
+    def speak(self, text: str, rate: int = 0, culture: str = "", network: bool = False) -> int:
         """rate: −10…10 (0 — обычная, −4 — медленно). Возвращает id фразы (0 — не отправлено,
-        причина в событии ('error', 0, текст))."""
+        причина в событии ('error', 0, текст)).
+
+        network=True — сначала живой голос Microsoft из сети (edge-tts), а если сети
+        или пакета нет, та же фраза уходит в голос Windows."""
         if not text:
             return 0
         try:
@@ -210,6 +215,12 @@ class TTS:
             get_engine().duck(10)
         except Exception:  # noqa: BLE001
             pass
+        if network and tts_edge.ready() and tts_edge.voice_for("en", culture):
+            with self._lock:
+                sid = next(self._ids)
+            threading.Thread(target=self._edge_worker, args=(sid, text, int(rate), culture),
+                             daemon=True).start()
+            return sid
         with self._lock:
             if not self._ensure():
                 self.events.put(("error", 0, self.why_unavailable()))
@@ -225,6 +236,30 @@ class TTS:
                 if not (self._ensure() and self._send(f"SAY|{sid}|{int(rate)}|{data}{tail}")):
                     self.events.put(("error", sid, self.why_unavailable()))
             return sid
+
+    def _edge_worker(self, sid: int, text: str, rate: int, culture: str) -> None:
+        """Сетевой голос; при отказе — та же фраза голосом Windows под тем же id."""
+        try:
+            voice = tts_edge.voice_for("en", culture)
+            path = tts_edge.synth(text, voice, rate=rate)
+            self.events.put(("start", sid, ""))
+            proc = tts_edge.play(path)
+            code = proc.wait()
+            self.events.put(("done" if code == 0 else "cancel", sid, ""))
+            return
+        except Exception as exc:  # noqa: BLE001
+            self.last_error = str(exc)
+        with self._lock:
+            retry = self._ensure()
+            data = base64.b64encode(text.encode("utf-8")).decode("ascii")
+            tail = f"|{culture}" if culture else ""
+            ok = retry and self._send(f"SAY|{sid}|{int(rate)}|{data}{tail}")
+            if not ok:
+                ok = self._ensure() and self._send(f"SAY|{sid}|{int(rate)}|{data}{tail}")
+        if ok:
+            self.events.put(("start", sid, ""))
+        else:
+            self.events.put(("error", sid, self.last_error or self.why_unavailable()))
 
     def poll(self) -> list[tuple]:
         out = []
@@ -242,6 +277,7 @@ class TTS:
         return out
 
     def stop(self) -> None:
+        tts_edge.stop()
         if self._lproc and self._lproc.poll() is None:
             self._lproc.terminate()
         with self._lock:

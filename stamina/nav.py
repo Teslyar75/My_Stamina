@@ -17,30 +17,30 @@ ZONE_ORDER = ("bridge", "languages", "speedread", "lounge", "radio", "comm", "do
 
 # подменю Мостика: (экран, подпись)
 BRIDGE_LEAVES = (
-    ("bridge", "ПОЛЁТ"),
-    ("missions", "МИССИИ"),
-    ("cargo", "СВОЙ ТЕКСТ"),
-    ("log", "БОРТЖУРНАЛ"),
-    ("bridge_settings", "НАСТРОЙКИ МОСТИКА"),
+    ("bridge", t("ПОЛЁТ")),
+    ("missions", t("МИССИИ")),
+    ("cargo", t("СВОЙ ТЕКСТ")),
+    ("log", t("БОРТЖУРНАЛ")),
+    ("bridge_settings", t("НАСТРОЙКИ МОСТИКА")),
 )
 
 ZONE_TITLES = {
-    "bridge": "МОСТИК",
-    "english": "АНГЛИЙСКИЙ",
-    "languages": "ИНОСТРАННЫЕ ЯЗЫКИ",
-    "speedread": "СКОРОЧТЕНИЕ",
-    "lounge": "ОТДЫХ",
-    "radio": "РАДИОРУБКА",
-    "comm": "ЭФИР",
-    "docs": "ДОКУМЕНТЫ",
-    "orion": "ОРИОН",
-    "lab": "ЛАБОРАТОРИЯ",
-    "terraformer": "ТЕРРАФОРМЕР",
-    "settings": "НАСТРОЙКИ",
+    "bridge": t("МОСТИК"),
+    "english": t("АНГЛИЙСКИЙ"),
+    "languages": t("ИНОСТРАННЫЕ ЯЗЫКИ"),
+    "speedread": t("СКОРОЧТЕНИЕ"),
+    "lounge": t("ОТДЫХ"),
+    "radio": t("РАДИОРУБКА"),
+    "comm": t("ЭФИР"),
+    "docs": t("ДОКУМЕНТЫ"),
+    "orion": t("ОРИОН"),
+    "lab": t("ЛАБОРАТОРИЯ"),
+    "terraformer": t("ТЕРРАФОРМЕР"),
+    "settings": t("НАСТРОЙКИ"),
 }
 
 # экраны вне зон: показываем отдельной строкой пути
-EXTRA_TITLES = {"help": "СПРАВКА", "honor": "ДОСКА ПОЧЁТА"}
+EXTRA_TITLES = {"help": t("СПРАВКА"), "honor": t("ДОСКА ПОЧЁТА")}
 
 _BRIDGE_SCREENS = {k for k, _ in BRIDGE_LEAVES}
 

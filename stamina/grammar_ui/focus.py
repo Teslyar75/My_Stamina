@@ -5,6 +5,8 @@
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import time
 
 from stamina.english.speech_std import FOCUS_KEYS
@@ -38,7 +40,7 @@ def is_o_physical(e) -> bool:
     code = int(getattr(e, "keycode", 0) or 0)
     if code == O_KEYCODE:
         return True
-    return ks in FOCUS_KEYS or ks in ("o", "щ") or ch in ("o", "щ")
+    return ks in FOCUS_KEYS or ks in ("o", t("щ")) or ch in ("o", t("щ"))
 
 
 def is_grammar_focus_key(e) -> bool:

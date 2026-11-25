@@ -16,6 +16,8 @@
 
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import os
 import re
 import shutil
@@ -69,7 +71,7 @@ def save_image(image, *, folder: Path | None = None, limit: int = MAX_BYTES) -> 
         small.save(path, "PNG")
     if limit and path.stat().st_size > limit:
         path.unlink(missing_ok=True)
-        raise ValueError(f"снимок не входит в лимит {limit} байт")
+        raise ValueError(t("снимок не входит в лимит {0} байт").format(limit))
     return path
 
 

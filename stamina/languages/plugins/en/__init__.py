@@ -1,6 +1,8 @@
 """English language plugin."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from pathlib import Path
 from stamina.languages.core.base import (
     LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
@@ -187,15 +189,15 @@ class EnglishGrammarEngine(GrammarEngine):
 class EnglishPlugin(LanguagePlugin):
     code = "en"
     name_native = "English"
-    name_target = "Английский"
+    name_target = t("Английский")
     flag_emoji = "🇬🇧"
     cefr_levels = ["A1", "A2", "B1", "B2", "C1", "C2"]
     freq_sets = [
-        FreqSet("top-1000", 1000, "Essential 1000", "ФУНДАМЕНТ", "S-1000"),
-        FreqSet("top-3000", 3000, "Core 3000", "РАЗГОВОРНЫЙ", "S-3000"),
-        FreqSet("top-10000", 10000, "Advanced 10K", "СВОБОДНЫЙ", "S-10K"),
-        FreqSet("top-20000", 20000, "Master 20K", "КАК НОСИТЕЛЬ", "S-20K"),
-        FreqSet("dev-interview", 0, "IT Interview", "СОБЕСЕДОВАНИЕ", "S-DEV"),
+        FreqSet("top-1000", 1000, "Essential 1000", t("ФУНДАМЕНТ"), "S-1000"),
+        FreqSet("top-3000", 3000, "Core 3000", t("РАЗГОВОРНЫЙ"), "S-3000"),
+        FreqSet("top-10000", 10000, "Advanced 10K", t("СВОБОДНЫЙ"), "S-10K"),
+        FreqSet("top-20000", 20000, "Master 20K", t("КАК НОСИТЕЛЬ"), "S-20K"),
+        FreqSet("dev-interview", 0, "IT Interview", t("СОБЕСЕДОВАНИЕ"), "S-DEV"),
     ]
     thematic_sets = {
         "dev-interview": ThematicSet("dev-interview", "IT Interview", "Technical interview vocabulary"),

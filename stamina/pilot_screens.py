@@ -912,7 +912,7 @@ class LoginScreen(tk.Frame):
             self.sel = ids[0] if ids else None
         self.stats = {p["id"]: pilot_stats(p["id"]) for p in self.plist}
         n = len(self.plist)
-        self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, 'ПИЛОТ' if n == 1 else 'ПИЛОТА' if 2 <= n <= 4 else 'ПИЛОТОВ'))
+        self.crew.configure(text=tr_("ЭКИПАЖ: {0} {1}").format(n, tr_("ПИЛОТ") if n == 1 else tr_("ПИЛОТА") if 2 <= n <= 4 else tr_("ПИЛОТОВ")))
         if self.sel:
             self._skin_id = self._pilot_settings(self.sel).get("skin") or "spaceship"
         self._load_layout(self.sel)

@@ -11,6 +11,8 @@ century», «1984was» → «1984 was», «ивот» → «и вот».
 """
 from __future__ import annotations
 
+from stamina.i18n import t
+
 import gzip
 import math
 import re
@@ -21,11 +23,11 @@ from typing import NamedTuple
 
 LEX_DIR = Path(__file__).with_name("lexicon")
 _TOKEN = re.compile(r"[^\W_]+(?:['’\-][^\W_]+)*", re.UNICODE)
-_CYR = re.compile(r"[а-яё]")
+_CYR = re.compile(t("[а-яё]"))
 #: Части короче трёх букв разрешены только из этого списка (иначе «meagre|ness»-подобный мусор).
 _SHORT_OK = {
     "en": frozenset("a i an as at be by do go he if in is it me my no of on or so to up us we am".split()),
-    "ru": frozenset("а и в о у с к я ж б во во за из на не ни но об от по до же ли бы мы вы он то ко со да".split()),
+    "ru": frozenset(t("а и в о у с к я ж б во во за из на не ни но об от по до же ли бы мы вы он то ко со да").split()),
 }
 #: Штраф за каждую часть (меньше частей — лучше) и за 1–2-буквенную часть.
 _PART_PENALTY = 4.0

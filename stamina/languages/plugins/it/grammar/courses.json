@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "language": "it",
+  "levels": [
+    {
+      "code": "A1",
+      "file": "a1.json",
+      "lessons": 10,
+      "title": "A1 · Principiante"
+    },
+    {
+      "code": "A2",
+      "file": "a2.json",
+      "lessons": 8,
+      "title": "A2 · Elementare"
+    },
+    {
+      "code": "B1",
+      "file": "b1.json",
+      "lessons": 8,
+      "title": "B1 · Intermedio"
+    },
+    {
+      "code": "B2",
+      "file": "b2.json",
+      "lessons": 5,
+      "title": "B2 · Avanzato"
+    },
+    {
+      "code": "C1",
+      "file": "c1.json",
+      "lessons": 4,
+      "title": "C1 · Autonomo"
+    },
+    {
+      "code": "C2",
+      "file": "c2.json",
+      "lessons": 1,
+      "title": "C2 · Maestria"
+    }
+  ],
+  "tables_file": "tables.json"
+}

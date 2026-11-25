@@ -1,12 +1,15 @@
 """Italian language plugin."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from pathlib import Path
 
 from stamina.languages.core.base import (
-    LanguagePlugin, VocabSource, GrammarEngine, FreqSet, ThematicSet,
+    LanguagePlugin, VocabSource, FreqSet, ThematicSet,
     VoicesConfig, BestPractices, WordEntry,
 )
+from stamina.languages.plugins.it.grammar_engine import ItalianGrammarEngine
 
 
 class ItalianVocabSource(VocabSource):
@@ -34,120 +37,10 @@ class ItalianVocabSource(VocabSource):
         return [w.slug for w in self._words.values() if w.frequency_band == band]
 
 
-class ItalianGrammarEngine(GrammarEngine):
-    TOPICS = {
-        "A1": [
-            ("gender_number", "Genere e numero dei sostantivi", ["choice", "transform"]),
-            ("articles", "Articoli (il/lo/la/l'/i/gli/le, un/uno/una/un')", ["choice", "fill"]),
-            ("adjectives", "Concordanza degli aggettivi", ["transform", "choice"]),
-            ("present_regular", "Presente indicativo: verbi regolari (-are, -ere, -ire)", ["conjugation"]),
-            ("present_irregular", "Presente: irregolari (essere, avere, fare, andare, venire, stare)", ["conjugation"]),
-            ("present_irregular_2", "Presente: irregolari (potere, volere, dovere, sapere, dare)", ["conjugation"]),
-            ("negation", "Negazione (non, neppure, neanche, niente, nessuno)", ["choice", "transform"]),
-            ("questions", "Domande (intonazione, inversione, che cosa/chi/come)", ["reorder", "choice"]),
-            ("prepositions_basic", "Preposizioni semplici (di, a, da, in, con, su, per, tra/fra)", ["choice", "fill"]),
-            ("prepositions_articulate", "Preposizioni articolate (del, allo, nella, coi, sui, etc.)", ["choice", "fill"]),
-            ("partitive", "Partitivo (del, dello, della, dei, degli, delle)", ["choice", "fill"]),
-            ("possessives", "Possessivi (mio/tuo/suo/nostro/vostro/loro)", ["choice", "transform"]),
-            ("demonstratives", "Dimostrativi (questo/quello/quel/quella/quei/quegli/quelle)", ["choice", "transform"]),
-            ("numbers_time", "Numeri, ora, date", ["choice", "fill"]),
-            ("future_prossimo", "Futuro prossimo (stare per + infinito)", ["conjugation", "transform"]),
-            ("imperative", "Imperativo (tu/noi/voi)", ["conjugation", "transform"]),
-        ],
-        "A2": [
-            ("passato_prossimo", "Passato prossimo (avere/essere + participio passato)", ["conjugation", "choice"]),
-            ("imperfetto", "Imperfetto: forme e uso", ["conjugation", "choice"]),
-            ("passato_prossimo_vs_imperfetto", "Passato prossimo vs Imperfetto", ["choice", "explain", "transform"]),
-            ("futuro_semplice", "Futuro semplice (canterò)", ["conjugation", "choice"]),
-            ("condizionale", "Condizionale presente (canterei)", ["conjugation", "choice"]),
-            ("congiuntivo_presente", "Congiuntivo presente: regolari e principali irregolari", ["conjugation"]),
-            ("congiuntivo_triggers", "Trigger del congiuntivo (bisogna che, voglio che, benché)", ["choice", "explain", "transform"]),
-            ("relative_pronouns", "Pronomi relativi (che, cui, il quale)", ["choice", "transform"]),
-            ("object_pronouns", "Pronomi complemento (lo/la/li/le, gli/le, ci, ne)", ["choice", "transform", "reorder"]),
-            ("comparatives", "Comparativo (più/meno/quanto... di/che)", ["choice", "transform"]),
-            ("superlatives", "Superlativo (il più/il meno... di)", ["choice", "transform"]),
-            ("si_clauses_present", "Se + presente → futuro/presente (condizioni reali)", ["choice", "transform"]),
-            ("recent_past", "Passato prossimo (venire di + infinito / appena + participio)", ["transform"]),
-            ("da_per_from", "Da vs per vs da (tempo, causa, scopo)", ["choice", "explain"]),
-        ],
-        "B1": [
-            ("congiuntivo_passato", "Congiuntivo passato (che io abbia fatto)", ["conjugation", "transform"]),
-            ("si_clauses_past", "Se + imperfetto → condizionale (irreale)", ["choice", "transform", "explain"]),
-            ("trapassato_prossimo", "Trapassato prossimo (avevo fatto)", ["conjugation", "choice"]),
-            ("condizionale_passato", "Condizionale passato (avrei fatto)", ["conjugation", "choice"]),
-            ("passive_voice", "Passivo (essere + participio, si passivante)", ["transform", "choice"]),
-            ("indirect_speech", "Discorso indiretto (dice che / ha detto che)", ["transform"]),
-            ("gerund", "Gerundio (facendo, avendo fatto)", ["transform", "choice"]),
-            ("past_infinitive", "Infinito passato (avere fatto / essere partito)", ["transform"]),
-            ("cause_consequence", "Causa e conseguenza (perché, poiché, siccome, quindi, perciò)", ["choice", "transform"]),
-            ("concession", "Concessione (benché, sebbene, anche se + congiuntivo)", ["choice", "transform"]),
-            ("purpose", "Scopo (perché, affinché + congiuntivo)", ["choice", "transform"]),
-            ("hypothesis", "Ipotesi (periodi ipotetici di tutti i tipi)", ["choice", "transform"]),
-        ],
-        "B2": [
-            ("congiuntivo_imperfetto", "Congiuntivo imperfetto (che io facessi)", ["conjugation", "choice"]),
-            ("congiuntivo_trapassato", "Congiuntivo trapassato (che io avessi fatto)", ["conjugation", "choice"]),
-            ("passive_advanced", "Passivo: costruzioni complesse", ["transform"]),
-            ("congiuntivo_sequence", "Concordanze dei tempi nel congiuntivo", ["choice", "transform"]),
-            ("congiuntivo_vs_indicativo", "Congiuntivo vs Indicativo dopo dubbio/emozione", ["choice", "explain", "transform"]),
-            ("nominalization", "Nominalizzazione (il fatto che + congiuntivo, l'idea che...)", ["transform", "choice"]),
-            ("cleft_sentences", "Frasi scisse (è... che...)", ["transform"]),
-            ("discourse_markers", "Marcatori discorsivi (dunque, insomma, comunque, alla fine)", ["choice", "explain"]),
-        ],
-        "C1": [
-            ("congiuntivo_nuances", "Sfumature del congiuntivo (dubitare che vs non dubitare che)", ["choice", "explain"]),
-            ("literary_tenses", "Tempi letterari (passato remoto, trapassato remoto)", ["choice", "explain"]),
-            ("register_style", "Registri e stili (formale/informale, italiano regionale)", ["choice", "explain"]),
-        ],
-        "C2": [
-            ("native_idioms", "Idiomaticità e collocazioni", ["choice", "match"]),
-            ("regional_variants", "Varianti regionali (tosco, romanesco, napoletano, siciliano, etc.)", ["choice", "explain"]),
-        ],
-    }
-
-    REGIONAL_VARIANTS = {
-        "standard": "Standard Italian",
-        "tuscan": "Tuscan",
-        "roman": "Romanesco",
-        "neapolitan": "Neapolitan",
-        "sicilian": "Sicilian",
-        "swiss": "Swiss Italian",
-    }
-
-    def get_topics(self, cefr: str) -> list:
-        topics = []
-        for level, items in self.TOPICS.items():
-            if self._cefr_order(level) <= self._cefr_order(cefr):
-                for tid, name, types in items:
-                    topics.append({"id": tid, "name": name, "cefr": level, "types": types})
-        return topics
-
-    def _cefr_order(self, level: str) -> int:
-        return {"A1": 0, "A2": 1, "B1": 2, "B2": 3, "C1": 4, "C2": 5}.get(level, 0)
-
-    def generate_exercise(self, topic_id: str, difficulty: str, seed: int):
-        import random
-        random.seed(seed)
-        return {
-            "id": f"{topic_id}_{seed}",
-            "topic_id": topic_id,
-            "type": "choice",
-            "prompt": f"Esercizio: {topic_id}",
-            "expected_answer": "answer",
-            "options": ["opt1", "opt2", "opt3", "opt4"],
-        }
-
-    def validate_answer(self, exercise: dict, answer: str):
-        return {"correct": answer == exercise["expected_answer"], "score": 1.0 if answer == exercise["expected_answer"] else 0.0}
-
-    def get_explanation(self, topic_id: str, learner_lang: str) -> str:
-        return f"Spiegazione per {topic_id} in {learner_lang}"
-
-
 class ItalianPlugin(LanguagePlugin):
     code = "it"
     name_native = "Italiano"
-    name_target = "Итальянский"
+    name_target = t("Итальянский")
     flag_emoji = "🇮🇹"
     cefr_levels = ["A1", "A2", "B1", "B2", "C1", "C2"]
     freq_sets = [
@@ -157,7 +50,7 @@ class ItalianPlugin(LanguagePlugin):
         FreqSet("celi-b2", 5000, "CELI B2", "CELI B2", "C-B2"),
         FreqSet("celi-c1", 10000, "CELI C1", "CELI C1", "C-C1"),
         FreqSet("celi-c2", 20000, "CELI C2", "CELI C2", "C-C2"),
-        FreqSet("rest", 50000, "Beyond 20K", "СВЕРХ 20К", "20K+"),
+        FreqSet("rest", 50000, "Beyond 20K", t("СВЕРХ 20К"), "20K+"),
     ]
     thematic_sets = {
         "celi": ThematicSet("celi", "CELI/CILS Exams", "Vocab for CELI/CILS certification"),
@@ -179,7 +72,7 @@ class ItalianPlugin(LanguagePlugin):
         src._loaded = True
         return src
 
-    def get_grammar_engine(self) -> GrammarEngine:
+    def get_grammar_engine(self):
         return ItalianGrammarEngine()
 
     def get_best_practices(self) -> BestPractices:

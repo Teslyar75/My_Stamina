@@ -1,6 +1,8 @@
 """Quality review system (4-grade self-assessment)."""
 from __future__ import annotations
 
+from stamina.i18n import t
+
 from dataclasses import dataclass
 
 
@@ -14,10 +16,10 @@ class QualityReview:
 
 class QualityReviewEngine:
     GRADES = {
-        0: ("Again", "Повторить"),
-        1: ("Hard", "Сложно"),
-        2: ("Good", "Хорошо"),
-        3: ("Easy", "Легко"),
+        0: ("Again", t("Повторить")),
+        1: ("Hard", t("Сложно")),
+        2: ("Good", t("Хорошо")),
+        3: ("Easy", t("Легко")),
     }
 
     def __init__(self, progress, vocab):

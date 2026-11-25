@@ -22,9 +22,9 @@ from stamina.hud import HudButton
 from stamina.theme import AMBER, GREEN, MUTED, RED
 from stamina.voice import stt
 
-RESTING = "ГОЛОС"
-STOP = "СТОП"
-HOLD = "ДЕРЖАТЬ"
+RESTING = _t("ГОЛОС")
+STOP = _t("СТОП")
+HOLD = _t("ДЕРЖАТЬ")
 
 DEFAULT_SILENCE = 2.5
 DEFAULT_MAX = 120.0
@@ -119,7 +119,10 @@ class MicControl:
         self._pause = 0.0
         self._reason = ""
         if not listener.start():
-            self._say(_t("Микрофон недоступен: нужны библиотеки vosk и sounddevice"), RED)
+            # Причина у Listener своя: нет модели, нет библиотеки, битый архив. Раньше
+            # здесь всегда печаталось «нужны библиотеки» — и пилот искал не то.
+            self._say(_t("Микрофон недоступен: {0}").format(
+                listener.fail_reason or _t("запись не началась")), RED)
             return False
         self._listener = listener
         self.button.set_text(_t(STOP))
@@ -202,7 +205,7 @@ class MicControl:
     def _reason_text(self) -> str:
         """Почему фраза закрылась — пилоту видно прямо в строке состояния."""
         if self._reason == "silence":
-            return _t("тишина {0}").format(f"{self.silence_sec():g} с")
+            return _t("тишина {0}").format(_t("{0:g} с").format(self.silence_sec()))
         if self._reason == "max":
             return _t("лимит времени")
         if self._reason == "key":

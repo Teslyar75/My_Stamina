@@ -20,8 +20,8 @@ from stamina.pilot_screens import Modal
 from stamina.voice import agent_voice, tts
 from stamina.theme import AMBER, BG2, CYAN, GREEN, MUTED, PANEL, RED, TEXT, px
 
-KIND_TITLES = (("openai_compat", "API (OpenAI-совместимый)"), ("opencode", "OpenCode CLI"),
-               ("github_bridge", "Мост GitHub"))
+KIND_TITLES = (("openai_compat", _t("API (OpenAI-совместимый)")), ("opencode", "OpenCode CLI"),
+               ("github_bridge", _t("Мост GitHub")))
 
 
 def _lbl(master, text, *, fg=None, size=9, bold=True, **kw):
@@ -38,8 +38,7 @@ def agent_for_pilot(pid: str) -> dict | None:
 
 
 #: Linux без Secret Service: ключ хранить негде — в файл открытым текстом не пишем.
-NO_STORE = ("Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) "
-            "и пакет keyring — см. docs/LINUX.md")
+NO_STORE = (_t("Нет защищённого хранилища ключей: установите gnome-keyring (или KWallet) и пакет keyring — см. docs/LINUX.md"))
 
 class ConnectAgentDialog(Modal):
     """result — сохранённая запись агента или None."""
@@ -71,17 +70,17 @@ class ConnectAgentDialog(Modal):
         self.hook_key_var = tk.StringVar()
         self.entries: dict[str, tk.Entry] = {}
         self.rows: dict[str, tk.Frame] = {}
-        for k, title in (("name", "ИМЯ АГЕНТА"), ("base_url", "АДРЕС API (BASE URL)"),
-                         ("model", "МОДЕЛЬ"), ("key", "КЛЮЧ API"),
-                         ("bridge_repo", "РЕПОЗИТОРИЙ GITHUB (ВЛАДЕЛЕЦ/ИМЯ)"),
-                         ("discussion_number", "НОМЕР ОБСУЖДЕНИЯ"),
-                         ("discussion_id", "ID ОБСУЖДЕНИЯ GITHUB"),
-                         ("bridge_login", "ВАШ ЛОГИН GITHUB (ЗАПАСНОЙ ПРИЗНАК ОТВЕТА)"),
-                         ("webhook", "ВЕБХУК АГЕНТА (НЕОБЯЗАТЕЛЬНО)"), ("hook_key", "КЛЮЧ ВЕБХУКА"),
-                         ("webhook_header", "ЗАГОЛОВОК КЛЮЧА (ПО УМОЛЧАНИЮ Authorization)"),
-                         ("webhook_scheme", "СХЕМА КЛЮЧА (ПО УМОЛЧАНИЮ Bearer, «-» — БЕЗ СХЕМЫ)"),
-                         ("timeout", "ЖДАТЬ ОТВЕТА, СЕКУНД (ПО УМОЛЧАНИЮ 900)"),
-                         ("tts_voice", "ГОЛОС АГЕНТА (ПУСТО — СВОЙ, НЕ КАК У ОРИОНА)")):
+        for k, title in (("name", _t("ИМЯ АГЕНТА")), ("base_url", _t("АДРЕС API (BASE URL)")),
+                         ("model", _t("МОДЕЛЬ")), ("key", _t("КЛЮЧ API")),
+                         ("bridge_repo", _t("РЕПОЗИТОРИЙ GITHUB (ВЛАДЕЛЕЦ/ИМЯ)")),
+                         ("discussion_number", _t("НОМЕР ОБСУЖДЕНИЯ")),
+                         ("discussion_id", _t("ID ОБСУЖДЕНИЯ GITHUB")),
+                         ("bridge_login", _t("ВАШ ЛОГИН GITHUB (ЗАПАСНОЙ ПРИЗНАК ОТВЕТА)")),
+                         ("webhook", _t("ВЕБХУК АГЕНТА (НЕОБЯЗАТЕЛЬНО)")), ("hook_key", _t("КЛЮЧ ВЕБХУКА")),
+                         ("webhook_header", _t("ЗАГОЛОВОК КЛЮЧА (ПО УМОЛЧАНИЮ Authorization)")),
+                         ("webhook_scheme", _t("СХЕМА КЛЮЧА (ПО УМОЛЧАНИЮ Bearer, «-» — БЕЗ СХЕМЫ)")),
+                         ("timeout", _t("ЖДАТЬ ОТВЕТА, СЕКУНД (ПО УМОЛЧАНИЮ 900)")),
+                         ("tts_voice", _t("ГОЛОС АГЕНТА (ПУСТО — СВОЙ, НЕ КАК У ОРИОНА)"))):
             row = tk.Frame(self.body, bg=PANEL)
             _lbl(row, _t(title), fg=MUTED, size=8).pack(fill=tk.X)
             var = {"key": self.key_var, "hook_key": self.hook_key_var}.get(k) or self.vars[k]

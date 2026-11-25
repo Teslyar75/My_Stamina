@@ -224,7 +224,7 @@ class Cockpit(tk.Tk):
                         lines.append("%s:%s %s" % (os.path.basename(fs.filename),
                                                    fs.lineno, (fs.line or "")[:100]))
                 except Exception:  # noqa: BLE001
-                    lines.append("стек не снялся")
+                    lines.append(tr_("стек не снялся"))
                 try:
                     os.makedirs(folder, exist_ok=True)
                     with open(path, "a", encoding="utf-8") as f:
@@ -956,7 +956,7 @@ class Cockpit(tk.Tk):
             text = marks.describe(mark)
             copied = self._copy_mark(text, e.widget)
             self.set_status("⊕ " + text + (
-                "  ·  скопировано" if copied else ""), GREEN)
+                tr_("  ·  скопировано") if copied else ""), GREEN)
             try:
                 self.sound.click()
             except Exception:  # noqa: BLE001
@@ -1264,10 +1264,10 @@ class Cockpit(tk.Tk):
         if not ver:
             return
         if kind == "applied":
-            self.set_status(_t("Программа обновлена до версии {0}.").format(ver), GREEN)
+            self.set_status(_t(tr_("Программа обновлена до версии {0}.")).format(ver), GREEN)
         else:
             self.set_status(
-                _t("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.").format(ver),
+                _t(tr_("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.")).format(ver),
                 AMBER,
             )
 
@@ -1295,10 +1295,10 @@ class Cockpit(tk.Tk):
                 def show() -> None:
                     ver = result.version
                     if result.notice_kind == "applied":
-                        self.set_status(_t("Программа обновлена до версии {0}.").format(ver), GREEN)
+                        self.set_status(_t(tr_("Программа обновлена до версии {0}.")).format(ver), GREEN)
                     else:
                         self.set_status(
-                            _t("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.").format(ver),
+                            _t(tr_("Установлена версия {0}. Перезапустите программу, чтобы она вступила в силу.")).format(ver),
                             AMBER,
                         )
                 try:
@@ -1563,11 +1563,12 @@ class Cockpit(tk.Tk):
             self.screens["honor"].on_key(e)
 
     def _on_key_up(self, e: tk.Event) -> None:
-        """Отпускание клавиши — только английской зоне (подсказка T держится, пока клавиша нажата)."""
-        if self.current == english_hook.KEY:
-            scr = self.screens.get(english_hook.KEY)
-            if scr is not None and hasattr(scr, "on_key_up"):
-                scr.on_key_up(e)
+        """Отпускание клавиши — английской зоне и сканеру языков (перевод T держится, пока нажата)."""
+        if self.current in (english_hook.KEY, languages_hook.KEY):
+            scr = self.screens.get(self.current)
+            fn = getattr(scr, "on_key_up", None)
+            if callable(fn):
+                fn(e)
 
     def _on_focus_out(self, _e) -> None:
         def check():
