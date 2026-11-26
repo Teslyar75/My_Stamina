@@ -354,3 +354,49 @@ Problems: нет.
 - `stamina/terraformer_strategy.py`: `set_developer_mode` только переключает `_DEV`, не трогает `os.environ`.
 - `stamina/terraformer_trainer.py`: комментарий «A1 · выживание» → «A1 · Высадка».
 - ЛКМ box-select + клик по юниту/пустой земле, ПКМ — приказ идти, Ctrl+колесо и СКМ панорама без изменений, `--dev` / `STAR_TYPING_DEV=1` + проверка капитана.
+
+---
+
+## Изометрический вид (Stage 2) — ветка `agent/orion/terraformer-s2`
+
+Goal: добавить полноценную изометрическую проекцию в тренажёр терраформера:
+по нажатию `I` (или keycode 73) переключение между плоским (top-down) и изометрическим видом.
+Изометрия: ромбические тайлы 2:1, высота слоя видна, зум Ctrl+колесо вокруг курсора,
+корректный `pick_tile` (math.floor для отрицательных координат), видимые границы для отсечения.
+
+Done:
+- `stamina/lounge/iso.py` — чистый модуль проекции без Tk:
+  - константы `ZOOM_MIN=0.5`, `ZOOM_MAX=3.0`, `ZOOM_STEP=1.25` (совпадают с `Camera`);
+  - `tile_metrics` — метрики тайла для зума/канваса/камеры;
+  - `world_to_screen` / `screen_to_world` — прямая и обратная проекция (gz=0);
+  - `tile_polygon` — 8 координат ромба (top, right, bottom, left);
+  - `pick_tile` — экран → клетка, использует `math.floor` (не `int`);
+  - `zoom_at` — зум вокруг курсора, держит мировую точку под мышью;
+  - `visible_cell_bounds` — (min_gx, min_gy, max_gx, max_gy) для viewport culling.
+- `stamina/lounge/trainer.py` — интеграция изометрии:
+  - флаг `_iso_view = False` (переключается клавишей `I`);
+  - свойство `iso_view` (read-only);
+  - отдельный `_iso_zoom` для изометрии;
+  - `on_wheel` → `iso.zoom_at` при Ctrl+колесо в iso-режиме;
+  - `zoom_in`/`zoom_out` действия используют `_iso_zoom` в iso-режиме;
+  - `redraw` вызывает `_draw_iso` при `_iso_view`, иначе старый плоский код;
+  - `_draw_iso` — тайлы по диагоналям (порядок прорисовки: дальние → ближние),
+    находки, стройплощадка, блоки, рамка карты, здания, червь, отряд;
+  - хелперы: `_draw_buildings_iso`, `_draw_worm_iso`, `_draw_units_iso`,
+    `_draw_hud`, `_draw_overlays` (общие для обоих видов).
+- `tests/test_terraformer_iso.py` — 12 тестов:
+  - константы зума совпадают с Camera;
+  - round-trip world→screen→world (6 точек);
+  - `tile_polygon` порядок углов;
+  - `pick_tile` попадание, вне карты, math.floor для отрицательных;
+  - `zoom_at` in/out возврат, клампы, точка под курсором;
+  - `visible_cell_bounds` покрытие вьюпорта, кламп к краям;
+  - интеграция: `TrainerGame.iso_view` — property.
+- Исправлены два падения тестов и ruff:
+  - `key_hint()` сокращён до «…ЛКМ выбор · ПКМ ход · СКМ карта · I изо» (влезло в 1200 px);
+  - добавлен новый ключ i18n с переводом во все 7 локалей (ru/uk/en/de/es/fr/it);
+  - убран неиспользуемый `import math` из `tests/test_terraformer_iso.py`.
+- Все тесты зелёные: `test_terraformer_iso.py` (12/12), `test_terraformer_trainer.py` (включая `test_key_hint_fits_1280_in_all_languages` и `test_help_and_resource_keys_in_all_languages`), `test_terraformer_strategy.py`, `test_lounge_help` — без регрессий.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Next: слияние в `master` (PR), затем обычный выпуск через CI.

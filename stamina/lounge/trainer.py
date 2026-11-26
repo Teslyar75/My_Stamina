@@ -32,6 +32,7 @@ from ..terraformer_trainer import (
     platform_height,
 )
 from .. import terraformer_strategy as strategy
+from . import iso
 
 from .base import GameShell
 
@@ -54,7 +55,7 @@ KEYSYM_ACTIONS = {
     "m": ("mixed_mode",), "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
-    "escape": ("esc",), "p": ("pause",), "f1": ("help",),
+    "escape": ("esc",), "p": ("pause",), "f1": ("help",), "i": ("iso",),
 }
 KEYCODE_ACTIONS = {
     65: ("move", -1, 0), 87: ("move", 0, -1), 68: ("move", 1, 0), 83: ("move", 0, 1),
@@ -62,14 +63,14 @@ KEYCODE_ACTIONS = {
     84: ("missions",), 78: ("structures",), 88: ("select_all",),
     80: ("pause",),
     187: ("zoom_in",), 107: ("zoom_in",), 189: ("zoom_out",), 109: ("zoom_out",),
-    48: ("home",), 96: ("home",), 112: ("help",),
+    48: ("home",), 96: ("home",), 112: ("help",), 73: ("iso",),
 }
 
 
 def key_hint() -> str:
     """Постоянная подсказка внизу экрана (одна строка, влезает в 1280 на всех языках)."""
     return _t("F1 справка · WASD ход · Пробел копать · E блок · Q находки · B план · "
-              "G галерея · T задания · N стройка · ЛКМ выделение/сброс · ПКМ приказ · СКМ карта")
+              "G галерея · T задания · N стройка · ЛКМ выбор · ПКМ ход · СКМ карта · I изо")
 
 
 def resource_name(res: str) -> str:
@@ -187,6 +188,8 @@ class TrainerGame(GameShell):
         self._mmb_last: tuple[float, float] | None = None
         self._struct_index = 0
         self._last_mouse: tuple[int, int] = (0, 0)
+        self._iso_view = False                # I: переключение плоский/изометрический вид
+        self._iso_zoom = 1.0                  # отдельный зум для изометрии
         self.set_hint("")                     # подсказка — одной строкой внизу поля
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
@@ -390,10 +393,16 @@ class TrainerGame(GameShell):
             self.show_toast(_t("Выделен весь отряд: {0}").format(len(self.model.units)))
             self.redraw()
         elif name == "zoom_in":
-            self.camera.zoom_in()
+            if self._iso_view:
+                self._iso_zoom = min(iso.ZOOM_MAX, self._iso_zoom * iso.ZOOM_STEP)
+            else:
+                self.camera.zoom_in()
             self.redraw()
         elif name == "zoom_out":
-            self.camera.zoom_out()
+            if self._iso_view:
+                self._iso_zoom = max(iso.ZOOM_MIN, self._iso_zoom / iso.ZOOM_STEP)
+            else:
+                self.camera.zoom_out()
             self.redraw()
         elif name == "home":
             self.camera.reset(*self.model.robot)
@@ -401,6 +410,20 @@ class TrainerGame(GameShell):
         elif name == "mixed_mode":
             self._toggle_mixed_mode()
             self.redraw()
+        elif name == "iso":
+            self._toggle_iso_view()
+            self.redraw()
+
+    def _toggle_iso_view(self) -> None:
+        """Переключает между плоским (топ-даун) и изометрическим видом."""
+        self._iso_view = not self._iso_view
+        mode = _t("ИЗОМЕТРИЯ") if self._iso_view else _t("ПЛОСКИЙ ВИД")
+        self.show_toast(_t("Вид: {0}").format(mode))
+
+    @property
+    def iso_view(self) -> bool:
+        """Включён ли изометрический вид."""
+        return self._iso_view
 
     def _toggle_mixed_mode(self) -> None:
         """Переключает смешанный режим: Orion-foreman копает и достраивает приоритетную платформу/базу."""
@@ -613,9 +636,15 @@ class TrainerGame(GameShell):
         w = max(self.canvas.winfo_width(), 10)
         h = max(self.canvas.winfo_height(), 10)
         if ctrl:
-            # масштаб вокруг указателя мыши (как в Red Alert)
-            self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
-                                self._last_mouse[1] if y is None else y, w, h)
+            # масштаб вокруг указателя мыши
+            if self._iso_view:
+                self._iso_zoom = iso.zoom_at(direction,
+                    self._last_mouse[0] if x is None else x,
+                    self._last_mouse[1] if y is None else y, w, h,
+                    self.camera, self._iso_zoom)
+            else:
+                self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
+                                    self._last_mouse[1] if y is None else y, w, h)
         elif shift:
             self.camera.pan(2 * direction, 0)
         else:
@@ -799,6 +828,12 @@ class TrainerGame(GameShell):
         w = max(c.winfo_width(), 10)
         h = max(c.winfo_height(), 10)
         c.create_rectangle(0, 0, w, h, fill=BG2, outline="")
+
+        if self._iso_view:
+            self._draw_iso(w, h)
+            # HUD и оверлеи рисуются в _draw_iso через _draw_hud
+            self._draw_overlays(w, h)
+            return
 
         model = self.model
         cam = self.camera
@@ -1859,3 +1894,282 @@ class TrainerGame(GameShell):
             c.create_text(x, legend_y, text=f"🔒 Нужен терраформер {need_level}", fill=MUTED, anchor="nw", font=theme.font(10, True), tags="gallery")
         else:
             c.create_text(x, legend_y, text=_t("Доступно для строительства"), fill=GREEN, anchor="nw", font=theme.font(10, True), tags="gallery")
+
+    # -- изометрическая отрисовка -------------------------------------------------
+    def _draw_iso(self, w: int, h: int) -> None:
+        """Отрисовка карты в изометрической проекции."""
+        c = self.canvas
+        model = self.model
+        cam = self.camera
+
+        # вычисляем метрики тайла для текущего зума
+        m = iso.tile_metrics(self._iso_zoom, w, h, cam)
+
+        # видимые клетки с запасом
+        min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(m, model.w, model.h, w, h)
+
+        explored = model.explored
+        visible = model.visible_cells()
+
+        # цвета слоев (как в плоском виде)
+        layer_colors = [SOIL, CLAY, METAL, DUG_OUT]
+
+        # рисуем тайлы: сначала дальние (y + x), потом ближние
+        # порядок: по диагоналям от левого-верхнего к правому-нижнему
+        for depth_sum in range(min_gx + min_gy, max_gx + max_gy + 1):
+            for gy in range(min_gy, max_gy + 1):
+                gx = depth_sum - gy
+                if not (min_gx <= gx <= max_gx):
+                    continue
+                if (gx, gy) not in explored:
+                    continue
+
+                gz = model.dug[gy][gx]
+                poly = iso.tile_polygon(gx, gy, gz, m)
+
+                # цвет по глубине
+                color = layer_colors[min(gz, len(layer_colors) - 1)]
+                if (gx, gy) not in visible:
+                    color = blend(color, BG, 0.62)
+
+                c.create_polygon(*poly, fill=color, outline=blend(color, BG2, 0.45), tags="map")
+
+        # открытые находки
+        for (x, y) in model.revealed:
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            res = model.finds[(x, y)][0]
+            # центр верхней грани тайла
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, model.dug[y][x] + 1, m)
+            if res == "water":
+                r = m.hw * 0.35
+                c.create_oval(cx - r, cy - r, cx + r, cy + r, fill=SPRING, outline=TEXT, width=1, tags="map")
+            else:
+                r = m.hw * 0.2
+                c.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy,
+                                 fill=GREEN, outline="", tags="map")
+
+        # стройплощадка
+        for x, y in model.site_cells():
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            poly = iso.tile_polygon(x, y, model.dug[y][x], m)
+            c.create_polygon(*poly, outline=AMBER, dash=(3, 3), width=1, fill="", tags="map")
+
+        # блоки (фундамент + платформы)
+        block_fill = blend(AMBER, TEXT, 0.25)
+        for x, y in model.blocks:
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            poly = iso.tile_polygon(x, y, model.dug[y][x] + 1, m)
+            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
+        for x, y in model.platform_blocks:
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            poly = iso.tile_polygon(x, y, model.dug[y][x] + 1, m)
+            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
+
+        # граница поля (рамка из 4-х углов карты)
+        corners = [
+            iso.world_to_screen(0, 0, 0, m),
+            iso.world_to_screen(model.w, 0, 0, m),
+            iso.world_to_screen(model.w, model.h, 0, m),
+            iso.world_to_screen(0, model.h, 0, m),
+        ]
+        flat = [c for p in corners for c in p]
+        c.create_polygon(*flat, outline=LINE, width=2, fill="", tags="map")
+
+        # здания, червь, отряд
+        self._draw_buildings_iso(w, h, m)
+        self._draw_worm_iso(w, h, m)
+        self._draw_units_iso(w, h, m)
+
+        # HUD (переиспользуем существующий код панели)
+        self._draw_hud(w, h, m)
+
+    def _draw_buildings_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """Здания в изометрии: объём вверх."""
+        c = self.canvas
+        model = self.model
+        for b in model.buildings:
+            cx, cy = iso.world_to_screen(b.center[0] + 0.5, b.center[1] + 0.5, model.dug[b.center[1]][b.center[0]] + 1, m)
+            # проверка видимости
+            if cx < -m.hw * 4 or cy < -m.hh * 8 or cx > w + m.hw or cy > h + m.hh:
+                continue
+            spec = strategy.STRUCTURES.get(b.type)
+            color = GREEN if b.built else MUTED
+            rise = m.hh * 0.8 * max(1, b.height)
+            # основание
+            base_poly = iso.tile_polygon(b.center[0], b.center[1], model.dug[b.center[1]][b.center[0]] + 1, m)
+            c.create_polygon(*base_poly, fill=blend(color, BG, 0.55), outline=color, width=1, tags="building")
+            # объём вверх (прямоугольник от центра базы)
+            top_y = cy - rise
+            c.create_rectangle(cx - m.hw * 0.3, top_y, cx + m.hw * 0.3, cy - m.hh * 0.2,
+                               fill=color, outline=blend(color, TEXT, 0.4), tags="building")
+            c.create_text(cx, cy - m.hh * 0.35, text=f"h{b.height}", fill=BG, tags="building",
+                          font=theme.font(max(6, int(m.hw * 0.15)), True))
+            if b.connected:
+                best = None
+                for other in model.buildings + [None]:
+                    ox, oy = (other.center if other is not None else model.site[:2])
+                    if (ox, oy) == tuple(b.center):
+                        continue
+                    d = abs(ox - b.center[0]) + abs(oy - b.center[1])
+                    if best is None or d < best[0]:
+                        best = (d, ox, oy)
+                if best:
+                    ox, oy = iso.world_to_screen(best[1] + 0.5, best[2] + 0.5,
+                                                  model.dug[best[2]][best[1]] + 1, m)
+                    c.create_line(cx, cy - m.hh * 0.3, ox, oy - m.hh * 0.3,
+                                  fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
+
+    def _draw_worm_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """След червя и червь в изометрии."""
+        c = self.canvas
+        worm = self.model.worm
+        if not worm.alive:
+            return
+        for (x, y), ttl in worm.trail.items():
+            if not self.model.is_explored(x, y):
+                continue
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, self.model.dug[y][x] + 1, m)
+            fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+            r = m.hw * 0.35
+            c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                          fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
+        cx, cy = iso.world_to_screen(worm.x + 0.5, worm.y + 0.5, self.model.dug[worm.y][worm.x] + 1, m)
+        r = m.hw * 0.4
+        c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                      fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
+        c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
+                      font=theme.font(max(8, int(m.hw * 0.3)), True))
+
+    def _draw_units_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """Отряд в изометрии."""
+        c = self.canvas
+        for u in self.model.units:
+            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, self.model.dug[u.y][u.x] + 1, m)
+            body = m.hw * 0.55
+            color = self._unit_color(u.level)
+            if u.uid in self.model.selected:
+                r = m.hw * 0.6
+                c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                              outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
+            track_w = max(2.0, m.hw * 0.18)
+            c.create_rectangle(cx - m.hw * 0.15, cy - m.hh * 0.3,
+                               cx - m.hw * 0.15 + track_w, cy + m.hh * 0.3,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx + m.hw * 0.15 - track_w, cy - m.hh * 0.3,
+                               cx + m.hw * 0.15, cy + m.hh * 0.3,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
+                               fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
+            label = u.level if len(u.level) <= 4 else u.level[:4]
+            c.create_text(cx, cy, text=label, fill=BG, tags="unit",
+                          font=theme.font(max(6, int(m.hw * 0.2)), True, mono=True))
+            if u.hp < 100:
+                bar_w = m.hw * 0.7
+                x0 = cx - bar_w / 2
+                y0 = cy + m.hh * 0.4
+                c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, m.hh * 0.1),
+                                   fill=BG, outline="", tags="unit")
+                c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                                   y0 + max(2, m.hh * 0.1), fill=GREEN if u.hp > 40 else AMBER,
+                                   outline="", tags="unit")
+            if u.uid == self.model.main_unit.uid:
+                fx, fy = self.model.facing
+                c.create_line(cx, cy, cx + fx * m.hw * 0.5, cy + fy * m.hh * 0.5,
+                              fill=AMBER, width=max(2, int(m.hw * 0.15)), arrow="last",
+                              tags="unit")
+            if u.path:
+                points = [cx, cy]
+                for px_, py_ in u.path[::max(1, len(u.path) // 8)]:
+                    ax, ay = iso.world_to_screen(px_ + 0.5, py_ + 0.5,
+                                                  self.model.dug[py_][px_] + 1, m)
+                    points += [ax, ay]
+                if u.target:
+                    ax, ay = iso.world_to_screen(u.target[0] + 0.5, u.target[1] + 0.5,
+                                                  self.model.dug[u.target[1]][u.target[0]] + 1, m)
+                    points += [ax, ay]
+                if len(points) >= 4:
+                    c.create_line(*points, fill=color, width=1, dash=(2, 4), tags="unit")
+
+    def _draw_hud(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """HUD панель (верхняя левая) — как в плоском виде."""
+        c = self.canvas
+        model = self.model
+        found = sum(model.finds_count.values())
+        bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
+        ty = px(8)
+        level_name = model.standing.current_level
+        lines = (
+            (_t("Учебная смена / тренажёр"), TEXT, True),
+            (f"Уровень {level_name} · высота до {model.max_build_height}", AMBER, True),
+            (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
+            (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
+            (_t("Находки {0}").format(found), MUTED, False),
+            (f"Кредиты {model.credits}", GREEN, False),
+            (f"Отряд {len(model.units)}", MUTED, False),
+            (_t("Масштаб {0}%").format(int(round(self._iso_zoom * 100))), MUTED, False),
+        )
+        for text, color, bold in lines:
+            c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
+                          font=theme.font(10, bold))
+            ty += px(16)
+
+        book = model.mission_book
+        done = book.done_count()
+        total = len(book.missions)
+        mark = " ●" if book.unread else ""
+        c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
+                      fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
+        ty += px(15)
+        if model.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {model.holds.get(strategy.SPICE, 0)}",
+                          fill=AMBER, anchor="nw", font=theme.font(9, True))
+            ty += px(14)
+
+        active_platforms = [p for p in model.platforms if not p.complete]
+        if active_platforms:
+            ty += px(4)
+            c.create_text(px(10), ty, text=_t("ПЛАТФОРМЫ:"), fill=CYAN, anchor="nw",
+                          font=theme.font(9, True))
+            ty += px(14)
+            for p in active_platforms[:3]:
+                prio_mark = " ★" if p.priority > 0 else ""
+                pct = p.progress_pct()
+                fill = GREEN if pct == 100 else AMBER if pct > 0 else MUTED
+                c.create_text(px(10), ty,
+                              text=f"{resource_name(p.resource)[:10]} {pct}% · h{p.height}{prio_mark}",
+                              fill=fill, anchor="nw", font=theme.font(8))
+                ty += px(13)
+
+        if model.walls_open:
+            c.create_text(px(10), ty, text=_t("СТЕНЫ ОТКРЫТЫ"), fill=GREEN, anchor="nw",
+                          font=theme.font(11, True))
+            ty += px(16)
+
+        ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        c.coords(bg_id, 0, 0, px(230), ty)
+
+    def _draw_overlays(self, w: int, h: int) -> None:
+        """Оверлеи (подсказка, тост, модальные окна) — общие для обоих видов."""
+        c = self.canvas
+        bar_top = self._draw_key_hint(w, h)
+        if self.msg:
+            c.create_text(px(10), bar_top - px(6), text=self.msg, fill=AMBER, anchor="sw",
+                          font=theme.font(10, True))
+        if self.toast:
+            self._draw_toast(w)
+        if self.overlay == "help":
+            self._draw_help(w, h)
+        elif self.overlay == "finds":
+            self._draw_finds(w, h)
+        elif self.overlay == "gallery":
+            self._draw_gallery(w, h)
+        elif self.overlay == "missions":
+            self._draw_missions(w, h)
+        elif self.overlay == "structures":
+            self._draw_structures(w, h)
+        elif self.paused:
+            self.draw_overlay(_t("ПАУЗА"))
