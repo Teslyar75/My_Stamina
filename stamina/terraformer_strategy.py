@@ -18,21 +18,44 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+import os
 import random
+
+# ─── разработчик ────────────────────────────────────────────────────────────
+ENV = "STAR_TYPING_DEV"
+FLAG = "--dev"
+_DEV = False
+
+
+def set_developer_mode(value: bool = True) -> None:
+    """Включить (или выключить) режим разработчика для текущего процесса."""
+    global _DEV
+    _DEV = value
+
+
+def dev_flag_in(argv) -> bool:
+    """Есть ли ключ ``--dev`` среди аргументов командной строки."""
+    return any(str(a).strip().lower() == FLAG for a in (argv or ()))
+
+
+def is_dev_env() -> bool:
+    """Проверка переменной окружения STAR_TYPING_DEV."""
+    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
 
 # ─── лестница уровней ────────────────────────────────────────────────────────
 # Порядок и подписи совпадают с английским CEFR (stamina/english/cefr.py),
 # чтобы тренажёр говорил с пилотом тем же языком, что и остальные отсеки.
 LEVELS: tuple[str, ...] = ("A1", "A2", "B1.1", "B1.2", "B2.1", "B2.2", "C1", "C2")
 LEVEL_TITLE: dict[str, str] = {
-    "A1": "A1 · ВЫЖИВАНИЕ",
-    "A2": "A2 · БЫТ",
-    "B1.1": "B1.1 · ПОРОГ",
-    "B1.2": "B1.2 · ПОРОГ+",
-    "B2.1": "B2.1 · СВОБОДНО",
-    "B2.2": "B2.2 · СВОБОДНО+",
-    "C1": "C1 · ПРОДВИНУТЫЙ",
-    "C2": "C2 · МАСТЕРСТВО",
+    "A1": "A1 · Высадка",
+    "A2": "A2 · Лагерь",
+    "B1.1": "B1.1 · Посёлок",
+    "B1.2": "B1.2 · Станция",
+    "B2.1": "B2.1 · Город",
+    "B2.2": "B2.2 · Агломерация",
+    "C1": "C1 · Колония",
+    "C2": "C2 · Цивилизация",
 }
 LEVEL_INDEX: dict[str, int] = {name: i for i, name in enumerate(LEVELS)}
 
@@ -94,9 +117,9 @@ def is_developer() -> bool:
     """Капитан-разработчик видит все уровни (см. stamina.roles)."""
     try:
         from stamina import pilots
-        return bool(pilots.is_captain())
+        return bool(_DEV or is_dev_env() or pilots.is_captain())
     except Exception:  # noqa: BLE001
-        return False
+        return _DEV or is_dev_env()
 
 
 # ─── прогресс пилота по уровням ──────────────────────────────────────────────

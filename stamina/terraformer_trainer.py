@@ -211,7 +211,7 @@ HOLD_CAP_WITH_UPGRADES = {
 _ALL_VARIANTS = {res: (0, 1, 2) for res in RESOURCES}
 
 PROGRESSION_TIERS = {
-    0: {  # A1 · выживание
+    0: {  # A1 · Высадка
         "platform_variants": {res: (0,) for res in RESOURCES},
         "robots": ("A1",),
         "upgrades": (),

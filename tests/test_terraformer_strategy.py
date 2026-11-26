@@ -55,6 +55,22 @@ class LevelsTest(unittest.TestCase):
         self.assertEqual(st.allowed_levels(), strategy.LEVELS)
         self.assertTrue(st.unlocked("C2"))
 
+    def test_level_titles(self) -> None:
+        expected = {
+            "A1": "Высадка",
+            "A2": "Лагерь",
+            "B1.1": "Посёлок",
+            "B1.2": "Станция",
+            "B2.1": "Город",
+            "B2.2": "Агломерация",
+            "C1": "Колония",
+            "C2": "Цивилизация",
+        }
+        for name, russian in expected.items():
+            self.assertEqual(strategy.LEVEL_TITLE[name], f"{name} · {russian}")
+            state = strategy.LevelState(name, strategy.level_index(name))
+            self.assertEqual(state.title, f"{name} · {russian}")
+
 
 class MissionsTest(unittest.TestCase):
     def test_catalog_has_three_per_level(self) -> None:
@@ -325,16 +341,35 @@ class TrainerStrategyUiTest(unittest.TestCase):
         self.assertTrue(any("C2" in t for t in texts))
         self.game.toggle_structures()
 
-    def test_rmb_selects_unit_and_click_gives_order(self) -> None:
+    def test_lmb_click_selects_unit_or_clears(self) -> None:
         game = self.game
         u2 = game.model.add_unit("A1", 5, 5)
         game.redraw()
+        # LMB click on a unit selects it
         sx, sy = self._screen(5, 5)
-        down = _Event(sx + 2, sy + 2)
-        game._on_rmb_down(down)
-        game._on_rmb_up(down)
+        click = _Event(sx, sy)
+        game._on_lmb_down(click)
+        game._on_lmb_up(click)
         self.assertIn(u2.uid, game.model.selected)
 
+        # LMB click on empty ground clears selection
+        game.model.clear_selection()
+        game.redraw()
+        # use a cell where no unit exists
+        empty_x, empty_y = 8, 8
+        self.assertIsNone(game.model.unit_at(empty_x, empty_y))
+        sx3, sy3 = self._screen(empty_x, empty_y)
+        click2 = _Event(sx3 + 2, sy3 + 2)
+        game._on_lmb_down(click2)
+        game._on_lmb_up(click2)
+        self.assertEqual(game.model.selected, set())
+
+    def test_rmb_click_gives_order_without_selecting(self) -> None:
+        game = self.game
+        u2 = game.model.add_unit("A1", 5, 5)
+        game.model.selected = {u2.uid}
+        game.redraw()
+        # RMB click on empty cell issues command_move without changing selection
         tx, ty = 8, 8
         sx, sy = self._screen(tx, ty)
         click = _Event(sx + 2, sy + 2)
@@ -342,6 +377,24 @@ class TrainerStrategyUiTest(unittest.TestCase):
         game._on_rmb_up(click)
         self.assertEqual(u2.target, (tx, ty))
         self.assertTrue(u2.path)
+        # selection should remain as was (not changed to the target unit)
+        self.assertEqual(game.model.selected, {u2.uid})
+
+    def test_lmb_drag_box_selects(self) -> None:
+        game = self.game
+        u2 = game.model.add_unit("A1", 5, 5)
+        u3 = game.model.add_unit("A1", 10, 10)
+        game.redraw()
+        # LMB down at cell just before both units, drag past 6px to cell just after both
+        sx_start, sy_start = self._screen(4, 4)
+        sx_end, sy_end = self._screen(11, 11)
+        down = _Event(sx_start, sy_start)
+        game._on_lmb_down(down)
+        game._on_lmb_drag(_Event(sx_end, sy_end))
+        game._on_lmb_up(_Event(sx_end, sy_end))
+        # both units should be selected
+        self.assertIn(u2.uid, game.model.selected)
+        self.assertIn(u3.uid, game.model.selected)
 
     def test_ctrl_wheel_zooms_at_cursor(self) -> None:
         game = self.game
@@ -370,6 +423,58 @@ class TrainerStrategyUiTest(unittest.TestCase):
             self.assertEqual(self.game.help_level_id(), "stage_7")
         with patch("stamina.terraformer_trainer.get_language_level", return_value=2):
             self.assertEqual(self.game.help_level_id(), "stage_2")
+
+
+class DevFlagTest(unittest.TestCase):
+    def test_dev_flag_in_dev_is_true(self) -> None:
+        self.assertTrue(strategy.dev_flag_in(["--dev"]))
+
+    def test_dev_flag_in_empty_is_false(self) -> None:
+        self.assertFalse(strategy.dev_flag_in([]))
+
+    def test_is_dev_env_with_1(self) -> None:
+        import os
+        os.environ["STAR_TYPING_DEV"] = "1"
+        try:
+            self.assertTrue(strategy.is_dev_env())
+        finally:
+            os.environ.pop("STAR_TYPING_DEV", None)
+
+    def test_is_developer_with_env(self) -> None:
+        import os
+        from stamina import pilots
+        prev = os.environ.get("STAR_TYPING_DEV")
+        strategy.set_developer_mode(False)
+        try:
+            os.environ["STAR_TYPING_DEV"] = "1"
+            with patch.object(pilots, "is_captain", return_value=False):
+                self.assertTrue(strategy.is_developer())
+        finally:
+            if prev is None:
+                os.environ.pop("STAR_TYPING_DEV", None)
+            else:
+                os.environ["STAR_TYPING_DEV"] = prev
+            strategy.set_developer_mode(False)
+
+    def test_dev_flag_consistency_with_set_developer_mode(self) -> None:
+        import os
+        from stamina import pilots
+        prev = os.environ.get("STAR_TYPING_DEV")
+        strategy.set_developer_mode(False)
+        try:
+            if "STAR_TYPING_DEV" in os.environ:
+                os.environ.pop("STAR_TYPING_DEV")
+            with patch.object(pilots, "is_captain", return_value=False):
+                strategy.set_developer_mode(True)
+                self.assertTrue(strategy.is_developer())
+                strategy.set_developer_mode(False)
+                self.assertFalse(strategy.is_developer())
+        finally:
+            if prev is None:
+                os.environ.pop("STAR_TYPING_DEV", None)
+            else:
+                os.environ["STAR_TYPING_DEV"] = prev
+            strategy.set_developer_mode(False)
 
 
 if __name__ == "__main__":

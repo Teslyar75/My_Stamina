@@ -347,3 +347,10 @@ Next: слияние в `master` (PR), затем обычный выпуск ч
 плюс выполненные задания; это следующий шаг, если пилот захочет.
 
 Problems: нет.
+
+### Stage 1 fix (26.11, ветка `agent/orion/terraformer-s1`)
+- Исправлены тесты: удалён пустой дубликат `test_ctrl_wheel_zooms_at_cursor`, удалён второй класс `LevelsTest`, добавлен `test_level_titles` с проверкой 8 русских названий (Высадка, Лагерь, Посёлок, Станция, Город, Агломерация, Колония, Цивилизация), переписаны `DevFlagTest` без патчинга `is_developer` (save/restore env, patch `pilots.is_captain`), исправлены UI-тесты клика и бокса (пустая клетка, корректные координаты drag).
+- `stamina/lounge/trainer.py`: инициализированы `_lmb_start`/`_lmb_box`, порядок проверок в `_on_lmb_down` (pause → gallery → overlay → box), убран лишний `bind("<Button-1>", _on_canvas_click)`, `_on_rmb_drag` — no-op, `_on_rmb_up` оставляет приказ без выделения, удалена отрисовка ПКМ-рамки, поправлен отступ и текст в `help_sections` («ЛКМ: рамка выделяет отряд, клик по юниту выделяет, клик по пустой земле снимает выделение; ПКМ — приказ идти»), `key_hint` добавил ЛКМ, убран stale-комментарий «ПКМ — рамка/приказ», удалён toast `_t("Снято выделение")`.
+- `stamina/terraformer_strategy.py`: `set_developer_mode` только переключает `_DEV`, не трогает `os.environ`.
+- `stamina/terraformer_trainer.py`: комментарий «A1 · выживание» → «A1 · Высадка».
+- ЛКМ box-select + клик по юниту/пустой земле, ПКМ — приказ идти, Ctrl+колесо и СКМ панорама без изменений, `--dev` / `STAR_TYPING_DEV=1` + проверка капитана.

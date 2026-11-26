@@ -69,7 +69,7 @@ KEYCODE_ACTIONS = {
 def key_hint() -> str:
     """Постоянная подсказка внизу экрана (одна строка, влезает в 1280 на всех языках)."""
     return _t("F1 справка · WASD ход · Пробел копать · E блок · Q находки · B план · "
-              "G галерея · T задания · N стройка · ПКМ выделить/приказ · СКМ карта")
+              "G галерея · T задания · N стройка · ЛКМ выделение/сброс · ПКМ приказ · СКМ карта")
 
 
 def resource_name(res: str) -> str:
@@ -110,10 +110,11 @@ def help_sections() -> list[tuple[str, str]]:
         ("Управление",
          "Стрелки или WASD — ехать главным терраформером. Esc или P — пауза. "
          "Ctrl+колесо — масштаб вокруг курсора, СКМ — таскать карту, 0 — вернуться к отряду."),
-        ("Отряд и приказы",
-         "ПКМ по карте — рамка выделения; ПКМ по клетке — приказ идти (как в Dune). "
-         "X — выделить весь отряд. Отряд обходит здания и источники, а карта растёт, "
-         "когда терраформер подходит к краю."),
+("Отряд и приказы",
+          "ЛКМ: рамка выделяет отряд, клик по юниту выделяет, клик по пустой земле снимает выделение. "
+          "ПКМ — приказ идти выделенным терраформерам (как в Red Alert). "
+          "X — выделить весь отряд. Отряд обходит здания и источники, а карта растёт, "
+          "когда терраформер подходит к краю."),
         ("Копание и грунт",
          "Пробел — копать клетку под главным терраформером. Отсек грунта вмещает 5. "
          "Стройплощадку и источник воды копать нельзя. E — уложить блок из полного отсека."),
@@ -178,6 +179,8 @@ class TrainerGame(GameShell):
         self._gallery_variant: int = 0
         self._gallery_view_3d: bool = False
         # состояние стратегии: рамка выделения и перетаскивание карты
+        self._lmb_start: tuple[float, float] | None = None
+        self._lmb_box: int | None = None
         self._rmb_start: tuple[float, float] | None = None
         self._rmb_cell: tuple[int, int] | None = None
         self._rmb_box: int | None = None
@@ -188,8 +191,11 @@ class TrainerGame(GameShell):
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
             self.canvas.bind(seq, self._wheel_event)
-        self.canvas.bind("<Button-1>", self._on_canvas_click)
-        # стратегическое управление: ПКМ — рамка/приказ, СКМ — таскать карту
+        # стратегическое управление: ЛПМ — рамка/выделение, ПКМ — приказ идти, СКМ — таскать карту
+        self.canvas.bind("<Button-1>", self._on_lmb_down)
+        self.canvas.bind("<B1-Motion>", self._on_lmb_drag)
+        self.canvas.bind("<ButtonRelease-1>", self._on_lmb_up)
+        # стратегическое управление: ПКМ — приказ идти, СКМ — таскать карту
         self.canvas.bind("<Button-3>", self._on_rmb_down)
         self.canvas.bind("<B3-Motion>", self._on_rmb_drag)
         self.canvas.bind("<ButtonRelease-3>", self._on_rmb_up)
@@ -244,6 +250,8 @@ class TrainerGame(GameShell):
         self.camera.reset(*self.model.robot)
         self.msg = ""
         self.overlay = None
+        self._lmb_start = None
+        self._lmb_box = None
         self._rmb_start = None
         self._rmb_cell = None
         self._rmb_box = None
@@ -632,49 +640,89 @@ class TrainerGame(GameShell):
         h = max(self.canvas.winfo_height(), 10)
         self._rmb_start = (float(e.x), float(e.y))
         self._rmb_cell = self.camera.to_cell(e.x, e.y, w, h)
-        self._rmb_box = None
         return "break"
 
     def _on_rmb_drag(self, e: tk.Event) -> str:
-        if self._rmb_start is None:
-            return ""
-        x0, y0 = self._rmb_start
-        if abs(e.x - x0) + abs(e.y - y0) < 6 and self._rmb_box is None:
+        # RMB drag does nothing (no selection rectangle)
+        if self._rmb_start is not None:
             return "break"
-        if self._rmb_box is not None:
-            self.canvas.delete(self._rmb_box)
-        self._rmb_box = self.canvas.create_rectangle(
-            x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
-        return "break"
+        return ""
 
     def _on_rmb_up(self, e: tk.Event) -> str:
         start = self._rmb_start
         self._rmb_start = None
-        if self._rmb_box is not None:
-            self.canvas.delete(self._rmb_box)
-            self._rmb_box = None
+        if start is None or self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+        if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
+            # RMB click: order selected units to move (не выделяет, не box-select)
+            result = self.model.command_move(tx, ty)
+            n = sum(1 for v in result.values() if v)
+            self.show_toast(_t("Приказ: идти в {0},{1} ({2})").format(tx, ty, n))
+        self.redraw()
+        return "break"
+
+    def _on_lmb_down(self, e: tk.Event) -> str:
+        if self.paused:
+            return ""
+        if self.overlay == "gallery":
+            # gallery button handling from _on_canvas_click
+            item = self.canvas.find_closest(e.x, e.y)
+            if item:
+                tags = self.canvas.gettags(item[0])
+                if "lang_boost_btn" in tags:
+                    self.close_overlay()
+                    if hasattr(self.app, "open_english"):
+                        self.app.open_english()
+                    return ""
+        if self.overlay is not None:
+            return ""
+        self._lmb_start = (float(e.x), float(e.y))
+        self._lmb_cell = self.camera.to_cell(e.x, e.y, max(self.canvas.winfo_width(), 10), max(self.canvas.winfo_height(), 10))
+        self._lmb_box = None
+        return "break"
+
+    def _on_lmb_drag(self, e: tk.Event) -> str:
+        if self._lmb_start is None:
+            return ""
+        x0, y0 = self._lmb_start
+        if abs(e.x - x0) + abs(e.y - y0) < 6 and self._lmb_box is None:
+            return "break"
+        if self._lmb_box is not None:
+            self.canvas.delete(self._lmb_box)
+        self._lmb_box = self.canvas.create_rectangle(
+            x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
+        return "break"
+
+    def _on_lmb_up(self, e: tk.Event) -> str:
+        start = self._lmb_start
+        self._lmb_start = None
+        if self._lmb_box is not None:
+            self.canvas.delete(self._lmb_box)
+            self._lmb_box = None
         if start is None or self.overlay is not None or self.paused:
             return ""
         w = max(self.canvas.winfo_width(), 10)
         h = max(self.canvas.winfo_height(), 10)
         x0, y0 = start
         if abs(e.x - x0) + abs(e.y - y0) >= 6:
+            # box select
             ax, ay = self.camera.to_cell(x0, y0, w, h)
             bx, by = self.camera.to_cell(e.x, e.y, w, h)
             picked = self.model.select_rect(ax, ay, bx, by)
             self.show_toast(_t("Выделено терраформеров: {0}").format(len(picked)))
         else:
+            # LMB click - select unit or clear selection
             tx, ty = self.camera.to_cell(e.x, e.y, w, h)
             if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
-                # клик по терраформеру — выделить его, клик по карте — приказ
                 unit = self.model.unit_at(tx, ty)
                 if unit is not None:
                     self.model.selected = {unit.uid}
                     self.show_toast(_t("Выделено терраформеров: {0}").format(1))
                 else:
-                    result = self.model.command_move(tx, ty)
-                    n = sum(1 for v in result.values() if v)
-                    self.show_toast(_t("Приказ: идти в {0},{1} ({2})").format(tx, ty, n))
+                    self.model.clear_selection()
         self.redraw()
         return "break"
 
