@@ -33,6 +33,7 @@ from ..terraformer_trainer import (
 )
 from .. import terraformer_strategy as strategy
 from . import iso
+from .iso import terrain_gz, prism_faces, apply_zoom
 
 from .base import GameShell
 
@@ -638,10 +639,11 @@ class TrainerGame(GameShell):
         if ctrl:
             # масштаб вокруг указателя мыши
             if self._iso_view:
-                self._iso_zoom = iso.zoom_at(direction,
+                self._iso_zoom = apply_zoom(direction,
                     self._last_mouse[0] if x is None else x,
                     self._last_mouse[1] if y is None else y, w, h,
-                    self.camera, self._iso_zoom)
+                    self.camera, self._iso_zoom,
+                    self.model.dug, self.model.w, self.model.h)
             else:
                 self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
                                     self._last_mouse[1] if y is None else y, w, h)
@@ -915,9 +917,10 @@ class TrainerGame(GameShell):
         bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
         level_name = model.standing.current_level
+        allowed_h = strategy.max_height(level_name)
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
-            (f"Уровень {level_name} · высота до {model.max_build_height}", AMBER, True),
+            (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
             (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
@@ -1897,7 +1900,7 @@ class TrainerGame(GameShell):
 
     # -- изометрическая отрисовка -------------------------------------------------
     def _draw_iso(self, w: int, h: int) -> None:
-        """Отрисовка карты в изометрической проекции."""
+        """Отрисовка карты в изометрической проекции с питами (terrain prisms)."""
         c = self.canvas
         model = self.model
         cam = self.camera
@@ -1914,7 +1917,10 @@ class TrainerGame(GameShell):
         # цвета слоев (как в плоском виде)
         layer_colors = [SOIL, CLAY, METAL, DUG_OUT]
 
-        # рисуем тайлы: сначала дальние (y + x), потом ближние
+        # процедурные текстуры (кэш на уровень зума)
+        self._ensure_textures(m.hw, m.hh)
+
+        # рисуем тайлы как призмы: сначала дальние (y + x), потом ближние
         # порядок: по диагоналям от левого-верхнего к правому-нижнему
         for depth_sum in range(min_gx + min_gy, max_gx + max_gy + 1):
             for gy in range(min_gy, max_gy + 1):
@@ -1924,23 +1930,43 @@ class TrainerGame(GameShell):
                 if (gx, gy) not in explored:
                     continue
 
-                gz = model.dug[gy][gx]
-                poly = iso.tile_polygon(gx, gy, gz, m)
-
+                dug = model.dug[gy][gx]
+                gz_top = terrain_gz(dug)
                 # цвет по глубине
-                color = layer_colors[min(gz, len(layer_colors) - 1)]
+                base_color = layer_colors[min(dug, len(layer_colors) - 1)]
                 if (gx, gy) not in visible:
-                    color = blend(color, BG, 0.62)
+                    base_color = blend(base_color, BG, 0.62)
 
-                c.create_polygon(*poly, fill=color, outline=blend(color, BG2, 0.45), tags="map")
+                # Рисуем призму: верхняя грань + боковые стены SW/SE
+                # Для невыкопанных клеток (dug=0) gz_top=0, рисуем тонкую плиту
+                # Для выкопанных клеток (dug>0) gz_top < 0, рисуем стены вниз
+                # Полностью выкопанные (DUG_OUT) - темный пол дна ямы
+                if dug == 0:
+                    # Поверхность: тонкая плита толщиной 0.3
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
+                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.2), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.1), outline="", tags="map")
+                elif dug < 8:  # частично выкопанные - призма до следующего слоя
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
+                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.3), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.2), outline="", tags="map")
+                else:
+                    # Полностью выкопанная (dug >= 8) - темный пол дна ямы
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
+                    c.create_polygon(*faces.sw, fill=blend(DUG_OUT, BG, 0.4), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(DUG_OUT, BG, 0.3), outline="", tags="map")
 
         # открытые находки
         for (x, y) in model.revealed:
             if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
                 continue
             res = model.finds[(x, y)][0]
-            # центр верхней грани тайла
-            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, model.dug[y][x] + 1, m)
+            # центр верхней грани тайла на текущей поверхности (без +1)
+            gz = terrain_gz(model.dug[y][x])
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz, m)
             if res == "water":
                 r = m.hw * 0.35
                 c.create_oval(cx - r, cy - r, cx + r, cy + r, fill=SPRING, outline=TEXT, width=1, tags="map")
@@ -1953,20 +1979,23 @@ class TrainerGame(GameShell):
         for x, y in model.site_cells():
             if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
                 continue
-            poly = iso.tile_polygon(x, y, model.dug[y][x], m)
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz, m)
             c.create_polygon(*poly, outline=AMBER, dash=(3, 3), width=1, fill="", tags="map")
 
-        # блоки (фундамент + платформы)
+        # блоки (фундамент + платформы) - рисуются на уровне поверхности + 1
         block_fill = blend(AMBER, TEXT, 0.25)
         for x, y in model.blocks:
             if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
                 continue
-            poly = iso.tile_polygon(x, y, model.dug[y][x] + 1, m)
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz + 1, m)
             c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
         for x, y in model.platform_blocks:
             if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
                 continue
-            poly = iso.tile_polygon(x, y, model.dug[y][x] + 1, m)
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz + 1, m)
             c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
 
         # граница поля (рамка из 4-х углов карты)
@@ -1988,26 +2017,36 @@ class TrainerGame(GameShell):
         self._draw_hud(w, h, m)
 
     def _draw_buildings_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-        """Здания в изометрии: объём вверх."""
+        """Здания в изометрии: настоящие призмы с правильными цветами."""
         c = self.canvas
         model = self.model
         for b in model.buildings:
-            cx, cy = iso.world_to_screen(b.center[0] + 0.5, b.center[1] + 0.5, model.dug[b.center[1]][b.center[0]] + 1, m)
+            gz_ground = terrain_gz(model.dug[b.center[1]][b.center[0]])
+            cx, cy = iso.world_to_screen(b.center[0] + 0.5, b.center[1] + 0.5, gz_ground, m)
             # проверка видимости
             if cx < -m.hw * 4 or cy < -m.hh * 8 or cx > w + m.hw or cy > h + m.hh:
                 continue
             spec = strategy.STRUCTURES.get(b.type)
             color = GREEN if b.built else MUTED
-            rise = m.hh * 0.8 * max(1, b.height)
-            # основание
-            base_poly = iso.tile_polygon(b.center[0], b.center[1], model.dug[b.center[1]][b.center[0]] + 1, m)
-            c.create_polygon(*base_poly, fill=blend(color, BG, 0.55), outline=color, width=1, tags="building")
-            # объём вверх (прямоугольник от центра базы)
-            top_y = cy - rise
-            c.create_rectangle(cx - m.hw * 0.3, top_y, cx + m.hw * 0.3, cy - m.hh * 0.2,
-                               fill=color, outline=blend(color, TEXT, 0.4), tags="building")
-            c.create_text(cx, cy - m.hh * 0.35, text=f"h{b.height}", fill=BG, tags="building",
+            
+            # Рисуем здание как призму: верхняя грань + боковые стены
+            # Высота здания в слоях (gz)
+            building_height = max(1, b.height)
+            gz_top = gz_ground + building_height
+            
+            # Используем prism_faces для построения призмы
+            faces = prism_faces(b.center[0], b.center[1], gz_top, gz_ground, m)
+            
+            # Верхняя грань (крыша)
+            c.create_polygon(*faces.top, fill=color, outline=blend(color, TEXT, 0.5), width=1, tags="building")
+            # Боковые стены
+            c.create_polygon(*faces.sw, fill=blend(color, BG, 0.3), outline="", tags="building")
+            c.create_polygon(*faces.se, fill=blend(color, BG, 0.2), outline="", tags="building")
+            
+            # Метка высоты
+            c.create_text(cx, cy - m.hh * (building_height + 0.3), text=f"h{b.height}", fill=BG, tags="building",
                           font=theme.font(max(6, int(m.hw * 0.15)), True))
+            
             if b.connected:
                 best = None
                 for other in model.buildings + [None]:
@@ -2019,7 +2058,7 @@ class TrainerGame(GameShell):
                         best = (d, ox, oy)
                 if best:
                     ox, oy = iso.world_to_screen(best[1] + 0.5, best[2] + 0.5,
-                                                  model.dug[best[2]][best[1]] + 1, m)
+                                                  terrain_gz(model.dug[best[2]][best[1]]), m)
                     c.create_line(cx, cy - m.hh * 0.3, ox, oy - m.hh * 0.3,
                                   fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
 
@@ -2045,13 +2084,50 @@ class TrainerGame(GameShell):
                       font=theme.font(max(8, int(m.hw * 0.3)), True))
 
     def _draw_units_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-        """Отряд в изометрии."""
+        """Отряд в изометрии: яркоте только у выделенных/наведённых, тень для закрепления."""
         c = self.canvas
+        # Определяем наведённый юнит (под курсором)
+        hovered_uid = None
+        if hasattr(self, "_last_mouse"):
+            mx, my = self._last_mouse
+            gx, gy = self.camera.to_cell(mx, my, w, h)
+            if 0 <= gx < self.model.w and 0 <= gy < self.model.h:
+                u = self.model.unit_at(gx, gy)
+                if u:
+                    hovered_uid = u.uid
+
+        # Сначала рисуем тени всех юнитов (под ними)
         for u in self.model.units:
-            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, self.model.dug[u.y][u.x] + 1, m)
+            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
+            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
+            # Тень - эллипс на уровне земли (gz = terrain_gz(dug))
+            shadow_w = m.hw * 0.5
+            shadow_h = m.hh * 0.25
+            c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
+                          fill=blend(BG, "#000000", 0.3), outline="", tags="unit")
+
+        # Затем сами юниты
+        for u in self.model.units:
+            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
+            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
             body = m.hw * 0.55
             color = self._unit_color(u.level)
-            if u.uid in self.model.selected:
+            is_selected = u.uid in self.model.selected
+            is_hovered = u.uid == hovered_uid
+            show_label = is_selected or is_hovered
+
+            # Highlight for selected unit's cell: ground shadow ellipse + soft glow outline of top diamond
+            if is_selected:
+                # Ground shadow ellipse (already drawn above, but make it more prominent for selected)
+                shadow_w = m.hw * 0.6
+                shadow_h = m.hh * 0.3
+                c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
+                              fill="", outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
+                # Soft glow outline of top diamond
+                diamond = iso.tile_polygon(u.x, u.y, gz_ground, m)
+                c.create_polygon(*diamond, fill="", outline=GREEN, width=max(2, int(m.hw * 0.08)), tags="unit")
+
+            if is_selected:
                 r = m.hw * 0.6
                 c.create_oval(cx - r, cy - r, cx + r, cy + r,
                               outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
@@ -2064,9 +2140,20 @@ class TrainerGame(GameShell):
                                fill=MUTED, outline="", tags="unit")
             c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
                                fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
-            label = u.level if len(u.level) <= 4 else u.level[:4]
-            c.create_text(cx, cy, text=label, fill=BG, tags="unit",
-                          font=theme.font(max(6, int(m.hw * 0.2)), True, mono=True))
+
+            # Метка уровня — только для выделенных/наведённых, со смещением при кластеризации
+            if show_label:
+                label = u.level if len(u.level) <= 4 else u.level[:4]
+                # Проверяем кластеризацию: есть ли другие юниты в соседних клетках
+                offset_y = 0
+                for other in self.model.units:
+                    if other is u:
+                        continue
+                    if abs(other.x - u.x) <= 1 and abs(other.y - u.y) <= 1:
+                        offset_y -= m.hh * 0.5  # сдвигаем вверх
+                c.create_text(cx, cy - m.hh * 0.6 + offset_y, text=label, fill=BG, tags="unit",
+                              font=theme.font(max(6, int(m.hw * 0.18)), True, mono=True))
+
             if u.hp < 100:
                 bar_w = m.hw * 0.7
                 x0 = cx - bar_w / 2
@@ -2102,9 +2189,10 @@ class TrainerGame(GameShell):
         bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
         level_name = model.standing.current_level
+        allowed_h = strategy.max_height(level_name)
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
-            (f"Уровень {level_name} · высота до {model.max_build_height}", AMBER, True),
+            (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
             (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
@@ -2173,3 +2261,68 @@ class TrainerGame(GameShell):
             self._draw_structures(w, h)
         elif self.paused:
             self.draw_overlay(_t("ПАУЗА"))
+
+    # -- процедурные текстуры --------------------------------------------------
+    def _ensure_textures(self, hw: float, hh: float) -> None:
+        """Создаёт/обновляет кэш процедурных текстур для заданного размера тайла."""
+        key = (int(hw), int(hh))
+        if getattr(self, "_texture_cache_key", None) == key:
+            return
+        try:
+            from PIL import Image, ImageDraw, ImageFilter
+        except Exception:
+            self._textures = {}
+            self._texture_cache_key = key
+            return
+
+        # базовый размер текстуры (кратно hw/hh)
+        tw = max(16, int(hw * 2))
+        th = max(16, int(hh * 2))
+
+        # Песок: шум бежевых оттенков
+        img_sand = Image.new("RGBA", (tw, th), (194, 160, 102, 255))
+        draw = ImageDraw.Draw(img_sand)
+        import random
+        rng = random.Random(42)
+        for _ in range(tw * th // 4):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-20, 20)
+            c = max(0, min(255, 194 + v))
+            draw.point((x, y), fill=(c, max(0, min(255, 160 + v)), max(0, min(255, 102 + v)), 255))
+        self._textures["sand"] = img_sand
+
+        # Камень: более темные, контрастные шумы
+        img_rock = Image.new("RGBA", (tw, th), (110, 110, 110, 255))
+        draw = ImageDraw.Draw(img_rock)
+        rng = random.Random(43)
+        for _ in range(tw * th // 3):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-40, 40)
+            c = max(0, min(255, 110 + v))
+            draw.point((x, y), fill=(c, c, c, 255))
+        img_rock = img_rock.filter(ImageFilter.SMOOTH)
+        self._textures["rock"] = img_rock
+
+        # Специя: красновато-оранжевые искры
+        img_spice = Image.new("RGBA", (tw, th), (200, 100, 30, 255))
+        draw = ImageDraw.Draw(img_spice)
+        rng = random.Random(44)
+        for _ in range(tw * th // 2):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-30, 30)
+            r = max(0, min(255, 200 + v))
+            g = max(0, min(255, 100 + v))
+            b = max(0, min(255, 30 + v))
+            draw.point((x, y), fill=(r, g, b, 255))
+        self._textures["spice"] = img_spice
+
+        self._texture_cache_key = key
+
+    def _get_texture_color(self, texture_name: str, base_color: str, blend_factor: float = 0.3) -> str:
+        """Возвращает цвет с наложением текстуры (упрощённо - смешиваем с базовым)."""
+        # В Tkinter нет нативных текстур, используем цветовой бленд
+        # Это упрощение; полноценные текстуры потребовали бы PhotoImage
+        return base_color

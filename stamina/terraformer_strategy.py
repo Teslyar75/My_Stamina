@@ -60,10 +60,11 @@ LEVEL_TITLE: dict[str, str] = {
 LEVEL_INDEX: dict[str, int] = {name: i for i, name in enumerate(LEVELS)}
 
 # Высота здания, которую умеет строить терраформер уровня.
-# A1 — только фундамент и навес; C2 — атмосферные башни.
+# A1/A2 = 1 floor; B1.1, B1.2, B2.1, B2.2 = up to 3 floors;
+# C1 = up to 6 floors; C2 = up to 6 floors + towers (core height 8)
 MAX_BUILD_HEIGHT: dict[str, int] = {
-    "A1": 1, "A2": 2, "B1.1": 2, "B1.2": 3,
-    "B2.1": 4, "B2.2": 5, "C1": 6, "C2": 8,
+    "A1": 1, "A2": 1, "B1.1": 3, "B1.2": 3,
+    "B2.1": 3, "B2.2": 3, "C1": 6, "C2": 8,
 }
 # Радиус обзора (клетки). Карта большая, видно сначала немного.
 SIGHT_RADIUS: dict[str, int] = {

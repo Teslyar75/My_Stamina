@@ -28,10 +28,22 @@ class LevelsTest(unittest.TestCase):
 
     def test_heights_grow_with_level(self) -> None:
         heights = [strategy.max_height(name) for name in strategy.LEVELS]
+        # Высота не убывает с уровнем
         self.assertEqual(heights, sorted(heights))
+        # Новые допустимые высоты: A1/A2=1, B1.1-B2.2=3, C1=6, C2=8
         self.assertEqual(strategy.max_height("A1"), 1)
+        self.assertEqual(strategy.max_height("A2"), 1)
+        self.assertEqual(strategy.max_height("B1.1"), 3)
+        self.assertEqual(strategy.max_height("B1.2"), 3)
+        self.assertEqual(strategy.max_height("B2.1"), 3)
+        self.assertEqual(strategy.max_height("B2.2"), 3)
+        self.assertEqual(strategy.max_height("C1"), 6)
         self.assertEqual(strategy.max_height("C2"), 8)
-        self.assertEqual(strategy.level_for_height(3), "B1.2")
+        # level_for_height возвращает первый уровень с допустимой высотой >= заданной
+        self.assertEqual(strategy.level_for_height(1), "A1")
+        self.assertEqual(strategy.level_for_height(2), "B1.1")
+        self.assertEqual(strategy.level_for_height(3), "B1.1")
+        self.assertEqual(strategy.level_for_height(6), "C1")
         self.assertEqual(strategy.level_for_height(8), "C2")
 
     def test_standing_unlocks_next_level_above_80(self) -> None:

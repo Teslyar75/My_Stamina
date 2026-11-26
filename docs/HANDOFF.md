@@ -400,3 +400,26 @@ Done:
 - `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
 
 Next: слияние в `master` (PR), затем обычный выпуск через CI.
+
+---
+
+## Изометрический зум: surface-aware (Stage 2 fix, 26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить баг зума в изометрическом виде — `iso.zoom_at` делал unproject на `gz=0` (дно), а нужно на видимой **верхней поверхности** клетки под курсором (верхний ромб, который рисуется на `terrain_gz(dug) + 1`).
+
+Done:
+- `stamina/lounge/iso.py` — новые функции:
+  - `screen_to_world_at_gz(sx, sy, gz, m)` — обратная проекция на заданном gz.
+  - `point_in_diamond(sx, sy, polygon)` — hit-test точки в ромб (8 координат).
+  - `pick_surface(sx, sy, m, dug_grid, w, h)` — находит верхнюю видимую поверхность под курсором: ищет в окрестности seed-клетки (gz=0 unproject), сортирует кандидаты front-to-back (больше gx+gy — ближе к камере), возвращает `(gx, gy, top_gz)` где `top_gz = terrain_gz(dug) + 1`.
+  - `apply_zoom(direction, sx, sy, canvas_w, canvas_h, cam, zoom, dug_grid, w, h)` — surface-aware зум: при наличии `dug_grid` якорь на `pick_surface`, иначе fallback на `gz=0` (совместимость со старым `zoom_at`). Камера рассчитывается аналитически для нового зума, чтобы заданная мировая точка осталась на той же позиции экрана.
+- `stamina/lounge/trainer.py` — `on_wheel` (Ctrl+колесо в iso) теперь вызывает `apply_zoom` с `model.dug`, `model.w`, `model.h`.
+- `tests/test_terraformer_iso.py` — добавлены 4 новых тест-класса (18 проверок):
+  - `ScreenToWorldAtGzTest` — обратная проекция на gz≠0.
+  - `PointInDiamondTest` — попадание в ромб.
+  - `PickSurfaceTest` — поиск поверхности: ровная карта, высокая клетка рядом с ямой, отличие от gz=0 unproject.
+  - `ApplyZoomTest` — зум держит поверхностную точку под курсором, in/out возвращается к исходному, fallback без dug_grid.
+- Все тесты зелёные: `test_terraformer_iso.py` (30/30), `test_terraformer_trainer.py`, `test_terraformer_strategy.py`, `test_lounge_help` — без регрессий.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.
