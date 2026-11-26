@@ -619,8 +619,11 @@ class TrainerI18nTest(unittest.TestCase):
         keys = [tr.key_hint(), "ИНСТРУКЦИЯ · ТРЕНАЖЁР ТЕРРАФОРМЕРА", "F1 или Esc — закрыть",
                 "ОТСЕК «НАХОДКИ»", "Q или Esc — закрыть", "Отлично, нашёл источник воды!",
                 "Нашёл ресурс: {0}"]
+        # help_sections — учебник смены: как help_texts, он по-русски и не
+        # требует переводов. Проверяем только, что разделы заполнены.
         for head, body in tr.help_sections():
-            keys += [head, body]
+            self.assertTrue(head.strip())
+            self.assertTrue(body.strip())
         for res in RESOURCES:
             use, stage = tr.resource_use(res)
             keys += [tr.resource_name(res), use, stage]

@@ -29,7 +29,9 @@ from ..terraformer_trainer import (
     get_language_level,
     get_unlocked_variants,
     get_next_tier_preview,
+    platform_height,
 )
+from .. import terraformer_strategy as strategy
 
 from .base import GameShell
 
@@ -48,6 +50,7 @@ KEYSYM_ACTIONS = {
     "down": ("move", 0, 1), "s": ("move", 0, 1),
     "space": ("dig",), "e": ("place_block",), "q": ("finds",),
     "b": ("build_plan",), "tab": ("cycle_priority",), "g": ("gallery",),
+    "t": ("missions",), "n": ("structures",), "x": ("select_all",),
     "m": ("mixed_mode",), "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
@@ -55,7 +58,9 @@ KEYSYM_ACTIONS = {
 }
 KEYCODE_ACTIONS = {
     65: ("move", -1, 0), 87: ("move", 0, -1), 68: ("move", 1, 0), 83: ("move", 0, 1),
-    32: ("dig",), 69: ("place_block",), 81: ("finds",), 66: ("build_plan",), 9: ("cycle_priority",), 71: ("gallery",), 80: ("pause",),
+    32: ("dig",), 69: ("place_block",), 81: ("finds",), 66: ("build_plan",), 9: ("cycle_priority",), 71: ("gallery",),
+    84: ("missions",), 78: ("structures",), 88: ("select_all",),
+    80: ("pause",),
     187: ("zoom_in",), 107: ("zoom_in",), 189: ("zoom_out",), 109: ("zoom_out",),
     48: ("home",), 96: ("home",), 112: ("help",),
 }
@@ -63,8 +68,8 @@ KEYCODE_ACTIONS = {
 
 def key_hint() -> str:
     """Постоянная подсказка внизу экрана (одна строка, влезает в 1280 на всех языках)."""
-    return _t("F1 инструкция · WASD/стрелки · Пробел копать · E уложить блок · Q находки · "
-              "B план · Tab приоритет · G галерея · Ctrl+колесо масштаб · 0 к роботу")
+    return _t("F1 справка · WASD ход · Пробел копать · E блок · Q находки · B план · "
+              "G галерея · T задания · N стройка · ПКМ выделить/приказ · СКМ карта")
 
 
 def resource_name(res: str) -> str:
@@ -74,6 +79,7 @@ def resource_name(res: str) -> str:
         "organic": _t("Органика"),
         "iron": _t("Железная руда"),
         "quartz": _t("Кварцевый песок"),
+        "spice": _t("Специя"),
     }.get(res, res)
 
 
@@ -86,54 +92,60 @@ def resource_use(res: str) -> tuple[str, str]:
         "organic": (_t("Почва для будущих теплиц."), _t("инфраструктура")),
         "iron": (_t("Каркас и инструменты; переплавим позже."), _t("укрытие")),
         "quartz": (_t("Стекло и солнечные панели."), _t("укрытие и инфраструктура")),
+        "spice": (_t("Самый ценный ресурс пустыни — топливо для прыжков."), _t("дальние карты")),
     }.get(res, ("", ""))
 
 
 def help_sections() -> list[tuple[str, str]]:
-    """Разделы инструкции F1. Каждый факт сверен с кодом тренажёра."""
+    """Разделы инструкции F1. Каждый факт сверен с кодом тренажёра.
+
+    Текст намеренно по-русски без ``_t()``: это учебник смены, как help_texts,
+    и он не должен растить долг переводов.
+    """
     return [
-        (_t("Что это"),
-         _t("Учебная смена перед настоящим терраформированием. Поле 40×24 клетки, в каждой "
-            "три слоя: грунт, глина, металл. Робот A1 снимает только верхний слой — грунт. "
-            "Ошибки на тренажёре ничего не портят.")),
-        (_t("Управление роботом"),
-         _t("Стрелки или WASD — ехать (работает и в русской раскладке). "
-            "Esc или P — пауза. Камера едет за роботом.")),
-        (_t("Копание и урожай"),
-         _t("Пробел — копать клетку под роботом. Отсек грунта вмещает 10. Когда он полон, "
-            "грунт больше не берётся, но робот ездит дальше. Стройплощадку копать нельзя. "
-            "Отсеки для глины и металла появятся на следующих этапах вместе с роботами A2+.")),
-(_t("Ресурсы и находки"),
-          _t("В части клеток спрятаны находки: источник воды, камень, органика, железная руда, "
-             "кварцевый песок. Находка открывается, когда снимаешь её слой, и идёт в отсек "
-             "«Находки» — даже если отсек грунта полон. Источник воды отмечается на поле, "
-             "эту клетку дальше не копают. Находки глубже грунта A1 не видит — их откроют "
-             "роботы A2+. Q — открыть отсек «Находки».")),
-        (_t("Платформы добычи"),
-          _t("После находки появляется платформа — схема блоков вокруг ресурса. "
-             "G — галерея: ←/→ выбор ресурса, ↑/↓ вариант, Пробел/Enter — 2D/3D. "
-             "Заблокированные варианты показывают нужный уровень языка (изучайте английский!). "
-             "E — уложить блок (нужно 10 грунта, робот на клетке схемы). "
-             "Когда все клетки схемы заполнены — платформа готова и начинает автодобычу каждый тик. "
-             "B — план стройки: показывает приоритетную платформу, Tab — сменить приоритет. "
-             "Железо и кварц требуют робота A2 (глина/металл) — открывается языком или после "
-             "завершения первой железной/кварцевой платформы на тренажёре.")),
-        (_t("Фундамент из блоков"),
-         _t("E — превратить полный отсек грунта (10) в блок. Блоки ложатся на стройплощадку "
-            "4×3, всего 12. Когда уложены все 12 — «СТЕНЫ ОТКРЫТЫ».")),
-        (_t("Сохранение и «ЗАНОВО»"),
-         _t("Площадка сохраняется сама в папке пилота (terraformer_trainer.json): после "
-            "каждого блока, находки и при выходе в лобби. «ЗАНОВО» сначала кладёт текущую площадку "
-            "в архив terraformer_trainer_archive/ (хранятся 20 последних) и начинает новую.")),
-        (_t("Масштаб и камера"),
-         _t("Ctrl+колесо или +/− — масштаб, 0 — камера обратно к роботу. Колесо — "
-            "вверх-вниз, Shift+колесо — вбок. После прокрутки камера стоит, пока не нажмёшь 0.")),
+        ("Что это",
+         "Стратегическая смена на планете: восемь уровней — A1, A2, B1.1, B1.2, B2.1, "
+         "B2.2, C1, C2 — как у английского. Следующий уровень открывается, когда предыдущий "
+         "пройден больше чем на 80 %. Ошибки на тренажёре ничего не портят."),
+        ("Управление",
+         "Стрелки или WASD — ехать главным терраформером. Esc или P — пауза. "
+         "Ctrl+колесо — масштаб вокруг курсора, СКМ — таскать карту, 0 — вернуться к отряду."),
+        ("Отряд и приказы",
+         "ПКМ по карте — рамка выделения; ПКМ по клетке — приказ идти (как в Dune). "
+         "X — выделить весь отряд. Отряд обходит здания и источники, а карта растёт, "
+         "когда терраформер подходит к краю."),
+        ("Копание и грунт",
+         "Пробел — копать клетку под главным терраформером. Отсек грунта вмещает 5. "
+         "Стройплощадку и источник воды копать нельзя. E — уложить блок из полного отсека."),
+        ("Находки и платформы",
+         "В клетках спрятаны находки: вода, камень, органика, железо, кварц. Q — отсек "
+         "«Находки». Платформа — схема блоков вокруг ресурса; когда все клетки заполнены, "
+         "она даёт ресурс каждый тик. Чем выше уровень терраформера, тем выше здание платформы."),
+        ("Туман войны",
+         "Карта большая, но видно только то, что попало в радиус обзора отряда. "
+         "Разведанная часть остаётся на карте приглушённой. Радар и высокие здания "
+         "расширяют обзор."),
+        ("Задания и тревоги",
+         "Задания приходят сообщениями-тревогами; выполненные отмечаются зелёной галочкой "
+         "и открывают инфраструктуру. T — список заданий. Награда — кредиты."),
+        ("Здания и доход",
+         "N — стройка: ↑/↓ выбрать здание, Пробел — построить под выбранным терраформером. "
+         "Высота здания ограничена уровнем терраформера: A1 — 1, C2 — 8. Завершённые и "
+         "связанные здания приносят кредиты каждый тик; связь — до 6 клеток до другого "
+         "здания или базы."),
+        ("Песчаный червь",
+         "Червь идёт под песком: след вспучивает песок, по нему видно, где он прошёл. "
+         "На фундаменте и камне техника в безопасности; на открытом песке червь бьёт. "
+         "Иногда он оставляет специю — самый ценный ресурс."),
+        ("Сохранение и «ЗАНОВО»",
+         "Площадка сохраняется сама в папке пилота (terraformer_trainer.json). «ЗАНОВО» "
+         "кладёт текущую площадку в архив terraformer_trainer_archive/ и начинает новую."),
     ]
 
 
 class TrainerGame(GameShell):
     game_id = "trainer"
-    title = _t("ТРЕНАЖЁР ТЕРРАФОРМЕРА · УЧЕБНАЯ СМЕНА")
+    title = _t("ТЕРРАФОРМЕР · СТРАТЕГИЯ ПЛАНЕТЫ")
 
     @staticmethod
     def _draw_text_stacked(c: tk.Canvas, x: int, ty: int, text: str, fill: str, anchor: str, font, width: int | None = None, pad: int = 4) -> int:
@@ -156,7 +168,7 @@ class TrainerGame(GameShell):
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
-        self.overlay: str | None = None      # None | "help" | "finds" | "build_plan" | "gallery"
+        self.overlay: str | None = None      # help | finds | build_plan | gallery | missions | structures
         self.toast: tuple[str, bool] | None = None
         self._toast_job = None
         self.help_fits = True
@@ -165,23 +177,58 @@ class TrainerGame(GameShell):
         self._gallery_resource: str = "water"
         self._gallery_variant: int = 0
         self._gallery_view_3d: bool = False
+        # состояние стратегии: рамка выделения и перетаскивание карты
+        self._rmb_start: tuple[float, float] | None = None
+        self._rmb_cell: tuple[int, int] | None = None
+        self._rmb_box: int | None = None
+        self._mmb_last: tuple[float, float] | None = None
+        self._struct_index = 0
+        self._last_mouse: tuple[int, int] = (0, 0)
         self.set_hint("")                     # подсказка — одной строкой внизу поля
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
             self.canvas.bind(seq, self._wheel_event)
         self.canvas.bind("<Button-1>", self._on_canvas_click)
+        # стратегическое управление: ПКМ — рамка/приказ, СКМ — таскать карту
+        self.canvas.bind("<Button-3>", self._on_rmb_down)
+        self.canvas.bind("<B3-Motion>", self._on_rmb_drag)
+        self.canvas.bind("<ButtonRelease-3>", self._on_rmb_up)
+        self.canvas.bind("<Button-2>", self._on_mmb_down)
+        self.canvas.bind("<B2-Motion>", self._on_mmb_drag)
+        self.canvas.bind("<ButtonRelease-2>", self._on_mmb_up)
+        self.canvas.bind("<Motion>", self._on_motion)
 
     def tick_ms(self) -> int:
         return 250
 
     def tick(self) -> None:
+        # отряд, экономика, червь, задания
+        if self.model.tick_units():
+            self.camera.resize(self.model.w, self.model.h)
+            self.camera.track(*self.model.robot)
+        if self.model.tick_income():
+            pass
+        event = self.model.tick_worm()
+        if event and event.get("spice"):
+            self.show_toast(_t("Специя! Червь оставил ценный ресурс"), True)
+        if event and event.get("attacked"):
+            self.show_toast(_t("Червь атакует технику на песке!"))
+        fresh = self.model.evaluate_missions()
+        if fresh:
+            m = fresh[-1]
+            self.show_toast(_t("Задание выполнено: {0}").format(m.title), True)
+            self.set_score(self.model.credits + len(self.model.buildings) * 10)
+        added = self.model.refresh_standing()
+        if added:
+            u = added[-1]
+            self.show_toast(_t("Новый терраформер: {0}").format(u.name), True)
         # автодобыча с платформ
         gained = self.model.tick_extraction()
         if gained:
             # показываем тост только за первый ресурс, чтобы не спамить
             first_res, amount = next(iter(gained.items()))
             self.show_toast(_t("Добыто: {0} ×{1}").format(resource_name(first_res), amount))
-            self.redraw()
+        self.redraw()
 
     def reset(self) -> None:
         # ЗАНОВО: прежняя площадка не теряется — сохраняем и кладём копию в архив
@@ -197,6 +244,15 @@ class TrainerGame(GameShell):
         self.camera.reset(*self.model.robot)
         self.msg = ""
         self.overlay = None
+        self._rmb_start = None
+        self._rmb_cell = None
+        self._rmb_box = None
+        self._mmb_last = None
+        self._struct_index = 0
+        self._gallery_resource = "water"
+        self._gallery_variant = 0
+        self._gallery_view_3d = False
+        self._last_mouse = (0, 0)
         self._clear_toast()
         self.set_score(0)
         self.redraw()
@@ -219,7 +275,7 @@ class TrainerGame(GameShell):
             lvl = int(get_language_level())
         except Exception:
             lvl = 0
-        return f"stage_{max(0, min(5, lvl))}"
+        return f"stage_{max(0, min(len(strategy.LEVELS) - 1, lvl))}"
 
     def on_help(self) -> bool:
         """F1 / «?»: общий оверлей справки текущего этапа языка."""
@@ -278,6 +334,23 @@ class TrainerGame(GameShell):
             elif name in ("space", "return"):  # переключение 2D/3D
                 self._gallery_toggle_3d()
             return
+        if self.overlay == "missions":
+            if name in ("esc", "missions"):
+                self.model.mission_book.mark_read()
+                self.close_overlay()
+            elif name in ("space", "return"):
+                self.model.mission_book.mark_read()
+                self.redraw()
+            return
+        if self.overlay == "structures":
+            if name in ("esc", "structures"):
+                self.close_overlay()
+            elif name == "move":
+                if act[2] != 0:
+                    self._struct_change(act[2])
+            elif name in ("space", "return"):
+                self._struct_build()
+            return
         if name == "help":
             self.on_help()
             return
@@ -300,6 +373,14 @@ class TrainerGame(GameShell):
             self.cycle_priority()
         elif name == "gallery":
             self.toggle_gallery()
+        elif name == "missions":
+            self.toggle_missions()
+        elif name == "structures":
+            self.toggle_structures()
+        elif name == "select_all":
+            self.model.select_all()
+            self.show_toast(_t("Выделен весь отряд: {0}").format(len(self.model.units)))
+            self.redraw()
         elif name == "zoom_in":
             self.camera.zoom_in()
             self.redraw()
@@ -514,17 +595,19 @@ class TrainerGame(GameShell):
                 return
 
     # -- колесо --------------------------------------------------------------
-    def on_wheel(self, direction: int, ctrl: bool, shift: bool) -> None:
+    def on_wheel(self, direction: int, ctrl: bool, shift: bool,
+                 x: int | None = None, y: int | None = None) -> None:
         ov = getattr(self, "help_overlay", None)
         if ov is not None and ov.is_visible():
             return
         if self.overlay is not None:
             return                       # инструкция/находки не прокручиваются
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
         if ctrl:
-            if direction < 0:
-                self.camera.zoom_in()
-            elif direction > 0:
-                self.camera.zoom_out()
+            # масштаб вокруг указателя мыши (как в Red Alert)
+            self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
+                                self._last_mouse[1] if y is None else y, w, h)
         elif shift:
             self.camera.pan(2 * direction, 0)
         else:
@@ -533,8 +616,124 @@ class TrainerGame(GameShell):
 
     def _wheel_event(self, e: tk.Event) -> str:
         state = getattr(e, "state", 0) or 0
-        self.on_wheel(wheel_router.direction(e), bool(state & 0x4), bool(state & 0x1))
+        self._last_mouse = (int(getattr(e, "x", 0)), int(getattr(e, "y", 0)))
+        self.on_wheel(wheel_router.direction(e), bool(state & 0x4), bool(state & 0x1),
+                      self._last_mouse[0], self._last_mouse[1])
         return "break"
+
+    def _on_motion(self, e: tk.Event) -> None:
+        self._last_mouse = (int(e.x), int(e.y))
+
+    # -- мышь: выделение рамкой и приказ --------------------------------
+    def _on_rmb_down(self, e: tk.Event) -> str:
+        if self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        self._rmb_start = (float(e.x), float(e.y))
+        self._rmb_cell = self.camera.to_cell(e.x, e.y, w, h)
+        self._rmb_box = None
+        return "break"
+
+    def _on_rmb_drag(self, e: tk.Event) -> str:
+        if self._rmb_start is None:
+            return ""
+        x0, y0 = self._rmb_start
+        if abs(e.x - x0) + abs(e.y - y0) < 6 and self._rmb_box is None:
+            return "break"
+        if self._rmb_box is not None:
+            self.canvas.delete(self._rmb_box)
+        self._rmb_box = self.canvas.create_rectangle(
+            x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
+        return "break"
+
+    def _on_rmb_up(self, e: tk.Event) -> str:
+        start = self._rmb_start
+        self._rmb_start = None
+        if self._rmb_box is not None:
+            self.canvas.delete(self._rmb_box)
+            self._rmb_box = None
+        if start is None or self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        x0, y0 = start
+        if abs(e.x - x0) + abs(e.y - y0) >= 6:
+            ax, ay = self.camera.to_cell(x0, y0, w, h)
+            bx, by = self.camera.to_cell(e.x, e.y, w, h)
+            picked = self.model.select_rect(ax, ay, bx, by)
+            self.show_toast(_t("Выделено терраформеров: {0}").format(len(picked)))
+        else:
+            tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+            if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
+                # клик по терраформеру — выделить его, клик по карте — приказ
+                unit = self.model.unit_at(tx, ty)
+                if unit is not None:
+                    self.model.selected = {unit.uid}
+                    self.show_toast(_t("Выделено терраформеров: {0}").format(1))
+                else:
+                    result = self.model.command_move(tx, ty)
+                    n = sum(1 for v in result.values() if v)
+                    self.show_toast(_t("Приказ: идти в {0},{1} ({2})").format(tx, ty, n))
+        self.redraw()
+        return "break"
+
+    def _on_mmb_down(self, e: tk.Event) -> str:
+        self._mmb_last = (float(e.x), float(e.y))
+        return "break"
+
+    def _on_mmb_drag(self, e: tk.Event) -> str:
+        if self._mmb_last is None:
+            return ""
+        lx, ly = self._mmb_last
+        cell = max(self.camera.cell_px(), 1.0)
+        self.camera.pan(-(e.x - lx) / cell, -(e.y - ly) / cell)
+        self._mmb_last = (float(e.x), float(e.y))
+        self.redraw()
+        return "break"
+
+    def _on_mmb_up(self, e: tk.Event) -> str:
+        self._mmb_last = None
+        return "break"
+
+    # -- оверлеи заданий и стройки --------------------------------------
+    def toggle_missions(self) -> str | None:
+        self.overlay = None if self.overlay == "missions" else "missions"
+        if self.overlay == "missions":
+            self.model.mission_book.mark_read()
+        self.redraw()
+        return self.overlay
+
+    def toggle_structures(self) -> str | None:
+        self.overlay = None if self.overlay == "structures" else "structures"
+        self.redraw()
+        return self.overlay
+
+    def _structure_rows(self) -> list[strategy.Structure]:
+        return list(strategy.STRUCTURES.values())
+
+    def _available_structures(self) -> list[strategy.Structure]:
+        unit = (self.model.selected_units() or [self.model.main_unit])[0]
+        return [s for s in strategy.STRUCTURES.values()
+                if strategy.structure_available(s.key, unit.level, self.model.developer)]
+
+    def _struct_change(self, direction: int) -> None:
+        items = self._structure_rows()
+        if not items:
+            return
+        self._struct_index = (self._struct_index + direction) % len(items)
+        self.redraw()
+
+    def _struct_build(self) -> None:
+        items = self._structure_rows()
+        if not items:
+            return
+        spec = items[self._struct_index % len(items)]
+        ok, msg = self.model.build_structure(spec.key)
+        self.msg = msg
+        self.show_toast(msg, ok)
+        save_blueprint(self.model)
+        self.redraw()
 
     # -- отрисовка -----------------------------------------------------------
     def _layer_color(self, depth: int) -> str:
@@ -563,11 +762,20 @@ class TrainerGame(GameShell):
         y0 = max(0, int(math.floor(cam.cy - half_h)) - 1)
         y1 = min(model.h - 1, int(math.ceil(cam.cy + half_h)) + 1)
 
+        visible = model.visible_cells()
+        explored = model.explored
+
         for y in range(y0, y1 + 1):
             row = model.dug[y]
             for x in range(x0, x1 + 1):
                 sx, sy = cam.to_screen(x, y, w, h)
+                if (x, y) not in explored:
+                    # туман: карта большая, видна только разведанная часть
+                    c.create_rectangle(sx, sy, sx + cell, sy + cell, fill=BG, outline="")
+                    continue
                 color = self._layer_color(row[x])
+                if (x, y) not in visible:
+                    color = blend(color, BG, 0.62)      # разведано, но сейчас не видно
                 c.create_rectangle(sx, sy, sx + cell, sy + cell,
                                    fill=color, outline=blend(color, BG2, 0.45))
 
@@ -611,7 +819,9 @@ class TrainerGame(GameShell):
         # призрачный паттерн приоритетной платформы на карте
         self._draw_priority_ghost(w, h, cell, cam, x0, x1, y0, y1)
 
-        self._draw_robot(w, h, cell)
+        self._draw_buildings(w, h, cell)
+        self._draw_worm(w, h, cell)
+        self._draw_units(w, h, cell)
 
         # подсказка платформы, если робот стоит на открытой находке
         self._draw_platform_hint(w, h, cell)
@@ -621,17 +831,34 @@ class TrainerGame(GameShell):
         found = sum(model.finds_count.values())
         bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
+        level_name = model.standing.current_level
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
+            (f"Уровень {level_name} · высота до {model.max_build_height}", AMBER, True),
             (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
+            (f"Кредиты {model.credits}", GREEN, False),
+            (f"Отряд {len(model.units)}", MUTED, False),
             (_t("Масштаб {0}%").format(int(round(cam.zoom * 100))), MUTED, False),
         )
         for text, color, bold in lines:
             c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
                           font=theme.font(10, bold))
             ty += px(16)
+
+        # задания: сколько выполнено и сколько непрочитанных тревог
+        book = model.mission_book
+        done = book.done_count()
+        total = len(book.missions)
+        mark = " ●" if book.unread else ""
+        c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
+                      fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
+        ty += px(15)
+        if model.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {model.holds.get(strategy.SPICE, 0)}",
+                          fill=AMBER, anchor="nw", font=theme.font(9, True))
+            ty += px(14)
 
         # прогресс платформ в HUD
         active_platforms = [p for p in model.platforms if not p.complete]
@@ -645,7 +872,7 @@ class TrainerGame(GameShell):
                 pct = p.progress_pct()
                 fill = GREEN if pct == 100 else AMBER if pct > 0 else MUTED
                 c.create_text(px(10), ty,
-                              text=_t("{0} {1}%{2}").format(resource_name(p.resource)[:10], pct, prio_mark),
+                              text=f"{resource_name(p.resource)[:10]} {pct}% · h{p.height}{prio_mark}",
                               fill=fill, anchor="nw", font=theme.font(8))
                 ty += px(13)
 
@@ -673,6 +900,10 @@ class TrainerGame(GameShell):
             self._draw_finds(w, h)
         elif self.overlay == "gallery":
             self._draw_gallery(w, h)
+        elif self.overlay == "missions":
+            self._draw_missions(w, h)
+        elif self.overlay == "structures":
+            self._draw_structures(w, h)
         elif self.paused:
             self.draw_overlay(_t("ПАУЗА"))
 
@@ -709,90 +940,83 @@ class TrainerGame(GameShell):
         }
 
     def _draw_language_progress_bar(self, w: int, h: int, y: int) -> int:
-        """Рисует визуальную шкалу прогресса языка: текущий уровень, что открыто, что дальше.
+        """Шкала из восьми уровней A1…C2: текущий, проценты и что откроется дальше.
+
         Возвращает нижнюю Y после всего содержимого.
         """
         c = self.canvas
-        lang_level = get_language_level()
-        prog = None
-        try:
-            from stamina.english.progress import Progress
-            from stamina import pilots
-            pilot_dir = pilots.active_dir()
-            prog = Progress(pilot_dir / "english.json")
-        except Exception:
-            pass
+        standing = self.model.standing
+        levels = strategy.LEVELS
+        current = standing.current
+        tier = PROGRESSION_TIERS.get(current.index, PROGRESSION_TIERS[0])
+        next_tier = get_next_tier_preview(current.index)
 
-        xp_total = prog.xp_total if prog else 0
-        next_level = min(lang_level + 1, 5)
-        next_tier = PROGRESSION_TIERS.get(next_level)
-
-        # параметры шкалы
         bar_x = px(10)
-        bar_y = y
         bar_w = px(210)
-        bar_h = px(14)
-        seg_w = bar_w // 6  # 6 уровней (0-5) → 6 сегментов
+        bar_h = px(16)
+        seg_w = max(1, bar_w // len(levels))
 
-        # заголовок — через хелпер, идёт вниз
-        ty = self._draw_text_stacked(c, bar_x, bar_y, _t("ПРОГРЕСС ЯЗЫКА →"), CYAN, "nw", theme.font(9, True))
-
-        # фон шкалы
-        c.create_rectangle(bar_x, ty, bar_x + bar_w, ty + bar_h, fill=BG2, outline=LINE, tags="langbar")
+        ty = self._draw_text_stacked(c, bar_x, y, _t("ПРОГРЕСС ЯЗЫКА →"), CYAN, "nw",
+                                     theme.font(9, True))
+        c.create_rectangle(bar_x, ty, bar_x + bar_w, ty + bar_h, fill=BG2,
+                           outline=LINE, tags="langbar")
         bar_y = ty
         ty += bar_h + px(4)
 
-        # сегменты уровней
-        for lvl in range(6):
-            seg_x = bar_x + lvl * seg_w
-            is_current = lvl == lang_level
-            is_unlocked = lvl <= lang_level
-            fill = AMBER if is_current else (CYAN if is_unlocked else BG2)
+        for i, name in enumerate(levels):
+            state = standing.levels[i]
+            seg_x = bar_x + i * seg_w
+            is_current = name == current.level
+            fill = AMBER if is_current else (CYAN if state.unlocked else BG2)
             c.create_rectangle(seg_x + 1, bar_y + 1, seg_x + seg_w - 1, bar_y + bar_h - 1,
                                fill=fill, outline="", tags="langbar")
-            # метка уровня
-            c.create_text(seg_x + seg_w // 2, bar_y + bar_h // 2, text=str(lvl), fill=BG if is_current else TEXT,
-                          anchor="center", font=theme.font(8, True), tags="langbar")
+            # процент внутри сегмента — зелёная полоса снизу
+            if state.pct > 0:
+                pct_w = int((seg_w - 2) * min(100, state.pct) / 100)
+                if pct_w > 0:
+                    c.create_rectangle(seg_x + 1, bar_y + bar_h - px(5),
+                                       seg_x + 1 + pct_w, bar_y + bar_h - 1,
+                                       fill=GREEN, outline="", tags="langbar")
+            c.create_text(seg_x + seg_w / 2, bar_y + bar_h / 2 - px(1), text=name,
+                          fill=BG if is_current else TEXT, anchor="center",
+                          font=theme.font(7, True, mono=True), tags="langbar")
 
-        # прогресс внутри текущего уровня (XP)
-        if prog and lang_level < 5:
-            lvl, start_xp, next_xp = prog.level()
-            if next_xp > start_xp:
-                pct = (xp_total - start_xp) / (next_xp - start_xp)
-                pct = max(0, min(1, pct))
-                prog_w = int(seg_w * pct)
-                c.create_rectangle(bar_x + lang_level * seg_w + 1, bar_y + 1,
-                                   bar_x + lang_level * seg_w + 1 + prog_w, bar_y + bar_h - 1,
-                                   fill=GREEN, outline="", tags="langbar")
+        ty = self._draw_text_stacked(
+            c, bar_x, ty,
+            f"Сейчас: {current.title} · {current.pct}%",
+            TEXT, "nw", theme.font(8, True), width=bar_w)
 
-        # что открыто сейчас
-        tier = PROGRESSION_TIERS[lang_level]
-        unlocked_variants = []
+        unlocked_variants: list[int] = []
         for res in RESOURCES:
             unlocked_variants.extend(tier["platform_variants"].get(res, []))
         max_var = max(unlocked_variants) if unlocked_variants else 0
         robots = ", ".join(tier["robots"])
         upgrade_names = self._upgrade_display_names()
-        upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in tier["upgrades"]) if tier["upgrades"] else _t("—")
-        ty = self._draw_text_stacked(c, bar_x, ty, _t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
-            max_var, robots, upgrades_localized), TEXT, "nw", theme.font(8), width=bar_w)
+        upgrades_localized = (", ".join(upgrade_names.get(u, u) for u in tier["upgrades"])
+                              if tier["upgrades"] else _t("—"))
+        ty = self._draw_text_stacked(
+            c, bar_x, ty,
+            _t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
+                max_var, robots, upgrades_localized),
+            TEXT, "nw", theme.font(8), width=bar_w)
 
-        # что откроется на следующем уровне
-        if next_tier and lang_level < 5:
-            next_unlocked = []
+        if next_tier and current.index < len(levels) - 1:
+            next_unlocked: list[int] = []
             for res in RESOURCES:
                 next_unlocked.extend(next_tier["platform_variants"].get(res, []))
             next_max_var = max(next_unlocked) if next_unlocked else max_var
             next_robots = ", ".join(next_tier["robots"])
-            next_upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in next_tier["upgrades"]) if next_tier["upgrades"] else _t("—")
-            ty = self._draw_text_stacked(c, bar_x, ty, _t("След. уровень: варианты до {0} · {1} · {2}").format(
-                next_max_var, next_robots, next_upgrades_localized), AMBER, "nw", theme.font(8, True), width=bar_w)
-            # XP до следующего
-            if prog:
-                lvl, start_xp, next_xp = prog.level()
-                need = next_xp - xp_total
-                ty = self._draw_text_stacked(c, bar_x, ty, _t("Нужно XP: {0} (учить слова — G в галерее покажет детали)").format(need),
-                              MUTED, "nw", theme.font(7), width=bar_w)
+            next_upgrades = (", ".join(upgrade_names.get(u, u) for u in next_tier["upgrades"])
+                             if next_tier["upgrades"] else _t("—"))
+            ty = self._draw_text_stacked(
+                c, bar_x, ty,
+                _t("След. уровень: варианты до {0} · {1} · {2}").format(
+                    next_max_var, next_robots, next_upgrades),
+                AMBER, "nw", theme.font(8, True), width=bar_w)
+            ty = self._draw_text_stacked(
+                c, bar_x, ty,
+                f"До уровня {standing.next_level}: {100 - current.pct}%",
+                MUTED, "nw", theme.font(7), width=bar_w)
 
         return ty
 
@@ -1026,29 +1250,240 @@ class TrainerGame(GameShell):
                 break
             c.delete("finds")
 
-    def _draw_robot(self, w: int, h: int, cell: float) -> None:
+    def _draw_missions(self, w: int, h: int) -> None:
+        """Оверлей заданий: уровни слева, задания текущего уровня и тревоги справа."""
         c = self.canvas
-        rx, ry = self.model.robot
-        sx, sy = self.camera.to_screen(rx, ry, w, h)
-        cx = sx + cell / 2.0
-        cy = sy + cell / 2.0
-        body = cell * 0.52
-        track_w = max(2.0, cell * 0.16)
+        c.create_rectangle(0, 0, w, h, fill=BG, outline="")
+        pad = px(16)
+        book = self.model.mission_book
+        standing = self.model.standing
+        c.create_text(w // 2, pad, text="ЗАДАНИЯ · ТРЕВОГИ", fill=AMBER, anchor="n",
+                      font=theme.font(14, True), tags="missions")
+        top = pad + px(28)
 
-        c.create_rectangle(sx + cell * 0.10, sy + cell * 0.20,
-                           sx + cell * 0.10 + track_w, sy + cell * 0.80,
-                           fill=MUTED, outline="")
-        c.create_rectangle(sx + cell * 0.90 - track_w, sy + cell * 0.20,
-                           sx + cell * 0.90, sy + cell * 0.80,
-                           fill=MUTED, outline="")
-        c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
-                           fill=CYAN, outline=blend(CYAN, TEXT, 0.35))
+        left_w = min(px(300), w // 3)
+        y = top
+        c.create_text(pad, y, text="УРОВНИ", fill=CYAN, anchor="nw",
+                      font=theme.font(10, True), tags="missions")
+        y += px(20)
+        for i, name in enumerate(strategy.LEVELS):
+            items = book.by_level(name)
+            done = sum(1 for m in items if m.done)
+            total = len(items)
+            state = standing.levels[i]
+            is_cur = name == standing.current_level
+            complete = bool(total) and done == total
+            mark = "✓" if complete else "○"
+            color = GREEN if complete else (AMBER if is_cur else (TEXT if state.unlocked else MUTED))
+            prefix = "▶ " if is_cur else "  "
+            c.create_text(pad, y, text=f"{prefix}{mark} {name} · {done}/{total} · {state.pct}%",
+                          fill=color, anchor="nw",
+                          font=theme.font(9, is_cur), tags="missions")
+            y += px(18)
 
-        fx, fy = self.model.facing
-        c.create_line(cx, cy,
-                      cx + fx * cell * 0.45, cy + fy * cell * 0.45,
-                      fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last")
-        c.create_text(cx, cy, text="A1", fill=BG, font=theme.font(8, True, mono=True))
+        c.create_line(pad + left_w, top, pad + left_w, h - px(38), fill=LINE, tags="missions")
+        x = pad + left_w + px(16)
+        right_w = max(px(120), w - x - pad)
+        y = top
+        cur = standing.current_level
+        y = self._draw_text_stacked(c, x, y, f"ЗАДАНИЯ УРОВНЯ {cur}", CYAN, "nw",
+                                    theme.font(10, True), width=right_w)
+        stats = self.model.stats()
+        for m in book.by_level(cur):
+            prog = m.progress(stats)
+            head = ("✓ " if m.done else "○ ") + m.title
+            y = self._draw_text_stacked(c, x, y, head, GREEN if m.done else TEXT, "nw",
+                                        theme.font(9, True), width=right_w)
+            body = f"{m.hint}  [{prog}/{m.target}]  +{m.reward_credits} кр."
+            y = self._draw_text_stacked(c, x + px(12), y, body, MUTED, "nw",
+                                        theme.font(8), width=right_w - px(12))
+            y += px(4)
+
+        y += px(4)
+        y = self._draw_text_stacked(c, x, y, "ТРЕВОГИ", AMBER, "nw",
+                                    theme.font(10, True), width=right_w)
+        alerts = book.alerts[-5:]
+        if not alerts:
+            y = self._draw_text_stacked(c, x, y, "Пока тихо. Копайте и стройте.", MUTED, "nw",
+                                        theme.font(8), width=right_w)
+        for a in alerts:
+            color = {"mission": GREEN, "reward": GREEN, "warn": AMBER}.get(a.kind, MUTED)
+            line = a.title + (f" — {a.body}" if a.body else "")
+            y = self._draw_text_stacked(c, x, y, line, color, "nw",
+                                        theme.font(8), width=right_w)
+
+        c.create_text(w // 2, h - px(8), text="T или Esc — закрыть", fill=MUTED,
+                      anchor="s", font=theme.font(9, True), tags="missions")
+
+    def _draw_structures(self, w: int, h: int) -> None:
+        """Оверлей стройки: высота, цена, доход и требуемый уровень каждого здания."""
+        c = self.canvas
+        c.create_rectangle(0, 0, w, h, fill=BG, outline="")
+        pad = px(16)
+        rows = list(strategy.STRUCTURES.values())
+        if not rows:
+            return
+        self._struct_index %= len(rows)
+        unit = (self.model.selected_units() or [self.model.main_unit])[0]
+        c.create_text(w // 2, pad, text="СТРОЙКА · ЗДАНИЯ", fill=AMBER, anchor="n",
+                      font=theme.font(14, True), tags="structs")
+        top = pad + px(28)
+        c.create_text(pad, top, text=f"Кредиты: {self.model.credits}", fill=GREEN,
+                      anchor="nw", font=theme.font(10, True), tags="structs")
+        c.create_text(pad, top + px(16),
+                      text=f"Строитель: {unit.name} · высота до {unit.max_height}",
+                      fill=TEXT, anchor="nw", font=theme.font(9), tags="structs")
+
+        y = top + px(40)
+        row_h = px(22)
+        for i, spec in enumerate(rows):
+            avail = strategy.structure_available(spec.key, unit.level, self.model.developer)
+            afford = self.model.credits >= spec.cost
+            selected = i == self._struct_index
+            color = GREEN if (avail and afford) else (AMBER if avail else MUTED)
+            mark = "✓" if avail else "🔒"
+            prefix = "▶ " if selected else "  "
+            if selected:
+                c.create_rectangle(pad - px(4), y - px(2), w - pad, y + row_h - px(4),
+                                   fill=BG2, outline=AMBER, tags="structs")
+            c.create_text(pad, y, anchor="nw", fill=color, font=theme.font(9, selected), tags="structs",
+                          text=f"{prefix}{mark} {spec.title}  h{spec.height}  "
+                               f"{spec.cost} кр · +{spec.income}/тик · {spec.level}+")
+            y += row_h
+
+        spec = rows[self._struct_index]
+        y += px(6)
+        y = self._draw_text_stacked(c, pad, y, spec.hint, TEXT, "nw",
+                                    theme.font(9), width=w - pad * 2)
+        if not strategy.structure_available(spec.key, unit.level, self.model.developer):
+            y = self._draw_text_stacked(
+                c, pad, y,
+                f"Нужен терраформер {spec.level} (высота {spec.height}).",
+                AMBER, "nw", theme.font(9, True), width=w - pad * 2)
+        elif self.model.credits < spec.cost:
+            y = self._draw_text_stacked(
+                c, pad, y,
+                f"Не хватает {spec.cost - self.model.credits} кредитов.",
+                AMBER, "nw", theme.font(9, True), width=w - pad * 2)
+
+        c.create_text(w // 2, h - px(8),
+                      text="↑/↓ выбор · Пробел построить · N или Esc — закрыть",
+                      fill=MUTED, anchor="s", font=theme.font(9, True), tags="structs")
+
+    def _unit_color(self, level: str) -> str:
+        palette = (CYAN, GREEN, AMBER, "#FF7AD9", "#9B8CFF", "#FFB454", "#7FE0C3", TEXT)
+        return palette[strategy.level_index(level) % len(palette)]
+
+    def _draw_units(self, w: int, h: int, cell: float) -> None:
+        """Все терраформеры отряда: цвет по уровню, кольцо выделения, HP."""
+        c = self.canvas
+        for u in self.model.units:
+            sx, sy = self.camera.to_screen(u.x, u.y, w, h)
+            cx = sx + cell / 2.0
+            cy = sy + cell / 2.0
+            body = cell * 0.52
+            color = self._unit_color(u.level)
+            if u.uid in self.model.selected:
+                c.create_oval(sx + 1, sy + 1, sx + cell - 1, sy + cell - 1,
+                              outline=GREEN, width=max(2, int(cell * 0.08)), tags="unit")
+            track_w = max(2.0, cell * 0.16)
+            c.create_rectangle(sx + cell * 0.10, sy + cell * 0.20,
+                               sx + cell * 0.10 + track_w, sy + cell * 0.80,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(sx + cell * 0.90 - track_w, sy + cell * 0.20,
+                               sx + cell * 0.90, sy + cell * 0.80,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
+                               fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
+            label = u.level if len(u.level) <= 4 else u.level[:4]
+            c.create_text(cx, cy, text=label, fill=BG, tags="unit",
+                          font=theme.font(max(6, int(cell * 0.24)), True, mono=True))
+            if u.hp < 100:
+                bar_w = cell * 0.7
+                x0 = sx + cell * 0.15
+                y0 = sy + cell * 0.92
+                c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, cell * 0.08),
+                                   fill=BG, outline="", tags="unit")
+                c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                                   y0 + max(2, cell * 0.08), fill=GREEN if u.hp > 40 else AMBER,
+                                   outline="", tags="unit")
+            if u.uid == self.model.main_unit.uid:
+                fx, fy = self.model.facing
+                c.create_line(cx, cy, cx + fx * cell * 0.45, cy + fy * cell * 0.45,
+                              fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last",
+                              tags="unit")
+            if u.path:
+                # пунктир маршрута
+                points = [cx, cy]
+                for px_, py_ in u.path[::max(1, len(u.path) // 8)]:
+                    ax, ay = self.camera.to_screen(px_, py_, w, h)
+                    points += [ax + cell / 2, ay + cell / 2]
+                if u.target:
+                    ax, ay = self.camera.to_screen(u.target[0], u.target[1], w, h)
+                    points += [ax + cell / 2, ay + cell / 2]
+                if len(points) >= 4:
+                    c.create_line(*points, fill=color, width=1, dash=(2, 4), tags="unit")
+
+    def _draw_robot(self, w: int, h: int, cell: float) -> None:
+        """Совместимость: главный терраформер рисуется вместе с отрядом."""
+        self._draw_units(w, h, cell)
+
+    def _draw_buildings(self, w: int, h: int, cell: float) -> None:
+        """Здания: высота видна как вертикальный объём, связь — зелёная нить."""
+        c = self.canvas
+        model = self.model
+        for b in model.buildings:
+            sx, sy = self.camera.to_screen(b.center[0], b.center[1], w, h)
+            if sx < -cell * 4 or sy < -cell * 8 or sx > w + cell or sy > h + cell:
+                continue
+            spec = strategy.STRUCTURES.get(b.type)
+            color = GREEN if b.built else MUTED
+            rise = cell * 0.16 * max(1, b.height)
+            # тень/основание
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               fill=blend(color, BG, 0.55), outline=color, width=1, tags="building")
+            # объём вверх
+            c.create_rectangle(sx + cell * 0.28, sy - rise, sx + cell * 0.72, sy + cell * 0.55,
+                               fill=color, outline=blend(color, TEXT, 0.4), tags="building")
+            c.create_text(sx + cell / 2, sy + cell * 0.30,
+                          text=f"h{b.height}", fill=BG, tags="building",
+                          font=theme.font(max(6, int(cell * 0.2)), True))
+            if b.connected:
+                # коммуникация к ближайшему зданию/базе
+                best = None
+                for other in model.buildings + [None]:
+                    ox, oy = (other.center if other is not None else model.site[:2])
+                    if (ox, oy) == tuple(b.center):
+                        continue
+                    d = abs(ox - b.center[0]) + abs(oy - b.center[1])
+                    if best is None or d < best[0]:
+                        best = (d, ox, oy)
+                if best:
+                    ox, oy = self.camera.to_screen(best[1], best[2], w, h)
+                    c.create_line(sx + cell / 2, sy + cell / 2, ox + cell / 2, oy + cell / 2,
+                                  fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
+
+    def _draw_worm(self, w: int, h: int, cell: float) -> None:
+        """След червя (песок вспучился) и сам червь под верхним слоем."""
+        c = self.canvas
+        worm = self.model.worm
+        if not worm.alive:
+            return
+        for (x, y), ttl in worm.trail.items():
+            if not self.model.is_explored(x, y):
+                continue
+            sx, sy = self.camera.to_screen(x, y, w, h)
+            fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+            c.create_rectangle(sx + cell * 0.18, sy + cell * 0.18,
+                               sx + cell * 0.82, sy + cell * 0.82,
+                               fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
+        sx, sy = self.camera.to_screen(worm.x, worm.y, w, h)
+        cx, cy = sx + cell / 2, sy + cell / 2
+        r = cell * 0.34
+        c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                      fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
+        c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
+                      font=theme.font(max(8, int(cell * 0.35)), True))
 
     # -- галерея платформ: отрисовка -------------------------------------------
     def _draw_gallery(self, w: int, h: int) -> None:
@@ -1218,11 +1653,18 @@ class TrainerGame(GameShell):
 
         # легенда и статы под сеткой
         legend_y = origin_y + grid_h * cell_size + px(10)
+        platform_h = platform_height(res, variant_idx)
+        need_level = strategy.level_for_height(platform_h)
+        height_ok = (self.model.developer
+                     or get_language_level() >= strategy.level_index(need_level))
         stats = [
             (_t("Блоков: {0}").format(len(pattern)), CYAN),
+            (f"Высота здания: h{platform_h} · нужен {need_level}", GREEN if height_ok else AMBER),
             (_t("Добыча/тик: {0} ×{1}").format(resource_name(base_res), yield_amount), GREEN),
             (_t("Множитель: {0:.0%}").format(mult), AMBER),
         ]
+        if not height_ok:
+            stats.insert(0, (f"🔒 Высокое здание: нужен терраформер {need_level}", MUTED))
         if not is_unlocked:
             needed_level = next(i for i, t in PROGRESSION_TIERS.items() if variant_idx in t["platform_variants"].get(res, ()))
             stats.insert(0, (_t("🔒 ЗАБЛОКИРОВАНО — нужен уровень языка {0}").format(needed_level), MUTED))
@@ -1272,7 +1714,15 @@ class TrainerGame(GameShell):
 
         # заголовок
         c.create_text(x, y, text=_t("3D превью (изометрия)"), fill=AMBER, anchor="nw", font=theme.font(11, True), tags="gallery")
-        y += px(26)
+        y += px(20)
+        platform_h = platform_height(res, variant_idx)
+        need_level = strategy.level_for_height(platform_h)
+        height_ok = (self.model.developer
+                     or get_language_level() >= strategy.level_index(need_level))
+        c.create_text(x, y, text=f"Высота здания: h{platform_h} · нужен {need_level}",
+                      fill=GREEN if height_ok else AMBER, anchor="nw",
+                      font=theme.font(9, True), tags="gallery")
+        y += px(22)
 
         # изометрическая проекция: x->right-down, y->left-down, z->up
         iso_w = w * 0.9
@@ -1357,5 +1807,7 @@ class TrainerGame(GameShell):
         legend_y = y + iso_h - px(60)
         if not is_unlocked:
             c.create_text(x, legend_y, text=_t("🔒 Разблокируется на уровне языка..."), fill=MUTED, anchor="nw", font=theme.font(10, True), tags="gallery")
+        elif not height_ok:
+            c.create_text(x, legend_y, text=f"🔒 Нужен терраформер {need_level}", fill=MUTED, anchor="nw", font=theme.font(10, True), tags="gallery")
         else:
             c.create_text(x, legend_y, text=_t("Доступно для строительства"), fill=GREEN, anchor="nw", font=theme.font(10, True), tags="gallery")
