@@ -395,13 +395,23 @@ class TrainerGame(GameShell):
             self.redraw()
         elif name == "zoom_in":
             if self._iso_view:
-                self._iso_zoom = min(iso.ZOOM_MAX, self._iso_zoom * iso.ZOOM_STEP)
+                w = max(self.canvas.winfo_width(), 10)
+                h = max(self.canvas.winfo_height(), 10)
+                # Zoom around screen center
+                self._iso_zoom = iso.apply_zoom(-1, w / 2, h / 2, w, h,
+                                                self.camera, self._iso_zoom,
+                                                self.model.dug, self.model.w, self.model.h)
             else:
                 self.camera.zoom_in()
             self.redraw()
         elif name == "zoom_out":
             if self._iso_view:
-                self._iso_zoom = max(iso.ZOOM_MIN, self._iso_zoom / iso.ZOOM_STEP)
+                w = max(self.canvas.winfo_width(), 10)
+                h = max(self.canvas.winfo_height(), 10)
+                # Zoom around screen center
+                self._iso_zoom = iso.apply_zoom(1, w / 2, h / 2, w, h,
+                                                self.camera, self._iso_zoom,
+                                                self.model.dug, self.model.w, self.model.h)
             else:
                 self.camera.zoom_out()
             self.redraw()
@@ -1944,20 +1954,30 @@ class TrainerGame(GameShell):
                 if dug == 0:
                     # Поверхность: тонкая плита толщиной 0.3
                     faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
                     c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.2), outline="", tags="map")
                     c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.1), outline="", tags="map")
+                    # Верхняя грань с текстурой песка
+                    if "sand" in self._texture_photos:
+                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
+                        c.create_image(cx, cy, image=self._texture_photos["sand"], tags="map", anchor="center")
+                    else:
+                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
                 elif dug < 8:  # частично выкопанные - призма до следующего слоя
                     faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
                     c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.3), outline="", tags="map")
                     c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.2), outline="", tags="map")
+                    # Верхняя грань с текстурой камня
+                    if "rock" in self._texture_photos:
+                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
+                        c.create_image(cx, cy, image=self._texture_photos["rock"], tags="map", anchor="center")
+                    else:
+                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
                 else:
                     # Полностью выкопанная (dug >= 8) - темный пол дна ямы
                     faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
                     c.create_polygon(*faces.sw, fill=blend(DUG_OUT, BG, 0.4), outline="", tags="map")
                     c.create_polygon(*faces.se, fill=blend(DUG_OUT, BG, 0.3), outline="", tags="map")
+                    c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
 
         # открытые находки
         for (x, y) in model.revealed:
@@ -2028,25 +2048,25 @@ class TrainerGame(GameShell):
                 continue
             spec = strategy.STRUCTURES.get(b.type)
             color = GREEN if b.built else MUTED
-            
+
             # Рисуем здание как призму: верхняя грань + боковые стены
             # Высота здания в слоях (gz)
             building_height = max(1, b.height)
             gz_top = gz_ground + building_height
-            
+
             # Используем prism_faces для построения призмы
             faces = prism_faces(b.center[0], b.center[1], gz_top, gz_ground, m)
-            
+
             # Верхняя грань (крыша)
             c.create_polygon(*faces.top, fill=color, outline=blend(color, TEXT, 0.5), width=1, tags="building")
             # Боковые стены
             c.create_polygon(*faces.sw, fill=blend(color, BG, 0.3), outline="", tags="building")
             c.create_polygon(*faces.se, fill=blend(color, BG, 0.2), outline="", tags="building")
-            
+
             # Метка высоты
             c.create_text(cx, cy - m.hh * (building_height + 0.3), text=f"h{b.height}", fill=BG, tags="building",
                           font=theme.font(max(6, int(m.hw * 0.15)), True))
-            
+
             if b.connected:
                 best = None
                 for other in model.buildings + [None]:
@@ -2063,25 +2083,28 @@ class TrainerGame(GameShell):
                                   fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
 
     def _draw_worm_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-        """След червя и червь в изометрии."""
-        c = self.canvas
-        worm = self.model.worm
-        if not worm.alive:
-            return
-        for (x, y), ttl in worm.trail.items():
-            if not self.model.is_explored(x, y):
-                continue
-            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, self.model.dug[y][x] + 1, m)
-            fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
-            r = m.hw * 0.35
+            """След червя и червь в изометрии."""
+            c = self.canvas
+            worm = self.model.worm
+            if not worm.alive:
+                return
+            for (x, y), ttl in worm.trail.items():
+                if not self.model.is_explored(x, y):
+                    continue
+                # Используем terrain_gz(dug) (как у юнитов) — верхняя видимая поверхность
+                gz_surface = terrain_gz(self.model.dug[y][x])
+                cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz_surface, m)
+                fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+                r = m.hw * 0.35
+                c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                              fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
+            gz_surface = terrain_gz(self.model.dug[worm.y][worm.x])
+            cx, cy = iso.world_to_screen(worm.x + 0.5, worm.y + 0.5, gz_surface, m)
+            r = m.hw * 0.4
             c.create_oval(cx - r, cy - r, cx + r, cy + r,
-                          fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
-        cx, cy = iso.world_to_screen(worm.x + 0.5, worm.y + 0.5, self.model.dug[worm.y][worm.x] + 1, m)
-        r = m.hw * 0.4
-        c.create_oval(cx - r, cy - r, cx + r, cy + r,
-                      fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
-        c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
-                      font=theme.font(max(8, int(m.hw * 0.3)), True))
+                          fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
+            c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
+                          font=theme.font(max(8, int(m.hw * 0.3)), True))
 
     def _draw_units_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
         """Отряд в изометрии: яркоте только у выделенных/наведённых, тень для закрепления."""
@@ -2264,22 +2287,48 @@ class TrainerGame(GameShell):
 
     # -- процедурные текстуры --------------------------------------------------
     def _ensure_textures(self, hw: float, hh: float) -> None:
-        """Создаёт/обновляет кэш процедурных текстур для заданного размера тайла."""
+        """Создаёт/обновляет кэш процедурных текстур для заданного размера тайла.
+        Создаёт ромбовидные PhotoImage с прозрачностью за пределами верхней грани."""
         key = (int(hw), int(hh))
         if getattr(self, "_texture_cache_key", None) == key:
             return
         try:
-            from PIL import Image, ImageDraw, ImageFilter
+            from PIL import Image, ImageDraw, ImageFilter, ImageTk
         except Exception:
             self._textures = {}
+            self._texture_photos = {}
             self._texture_cache_key = key
             return
 
-        # базовый размер текстуры (кратно hw/hh)
-        tw = max(16, int(hw * 2))
-        th = max(16, int(hh * 2))
+        # Размер ромба: ширина = 2*hw, высота = 2*hh
+        # Делаем немного больше для качества
+        dw = max(16, int(hw * 2))
+        dh = max(16, int(hh * 2))
+        # Размер изображения с запасом
+        img_w = dw + 4
+        img_h = dh + 4
+        cx = img_w // 2
+        cy = img_h // 2
 
-        # Песок: шум бежевых оттенков
+        def make_diamond_mask(base_img: Image.Image) -> Image.Image:
+            """Наложить ромб-маску на базовую текстуру."""
+            mask = Image.new("L", (img_w, img_h), 0)
+            md = ImageDraw.Draw(mask)
+            # Ромб: top, right, bottom, left
+            md.polygon([
+                (cx, 2),           # top
+                (img_w - 2, cy),   # right
+                (cx, img_h - 2),   # bottom
+                (2, cy),           # left
+            ], fill=255)
+            # Применяем маску
+            result = base_img.resize((img_w, img_h), Image.Resampling.LANCZOS)
+            result.putalpha(mask)
+            return result
+
+        # Песок: шум бежевых оттенков (dug == 0)
+        tw = max(32, int(hw * 4))
+        th = max(32, int(hh * 4))
         img_sand = Image.new("RGBA", (tw, th), (194, 160, 102, 255))
         draw = ImageDraw.Draw(img_sand)
         import random
@@ -2290,9 +2339,9 @@ class TrainerGame(GameShell):
             v = rng.randint(-20, 20)
             c = max(0, min(255, 194 + v))
             draw.point((x, y), fill=(c, max(0, min(255, 160 + v)), max(0, min(255, 102 + v)), 255))
-        self._textures["sand"] = img_sand
+        sand_diamond = make_diamond_mask(img_sand)
 
-        # Камень: более темные, контрастные шумы
+        # Камень: более темные, контрастные шумы (dug > 0 и dug < 8)
         img_rock = Image.new("RGBA", (tw, th), (110, 110, 110, 255))
         draw = ImageDraw.Draw(img_rock)
         rng = random.Random(43)
@@ -2303,9 +2352,9 @@ class TrainerGame(GameShell):
             c = max(0, min(255, 110 + v))
             draw.point((x, y), fill=(c, c, c, 255))
         img_rock = img_rock.filter(ImageFilter.SMOOTH)
-        self._textures["rock"] = img_rock
+        rock_diamond = make_diamond_mask(img_rock)
 
-        # Специя: красновато-оранжевые искры
+        # Специя: красновато-оранжевые искры (есть специя в клетке)
         img_spice = Image.new("RGBA", (tw, th), (200, 100, 30, 255))
         draw = ImageDraw.Draw(img_spice)
         rng = random.Random(44)
@@ -2317,12 +2366,22 @@ class TrainerGame(GameShell):
             g = max(0, min(255, 100 + v))
             b = max(0, min(255, 30 + v))
             draw.point((x, y), fill=(r, g, b, 255))
-        self._textures["spice"] = img_spice
+        spice_diamond = make_diamond_mask(img_spice)
+
+        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL))
+        try:
+            self._texture_photos = {
+                "sand": ImageTk.PhotoImage(sand_diamond),
+                "rock": ImageTk.PhotoImage(rock_diamond),
+                "spice": ImageTk.PhotoImage(spice_diamond),
+            }
+            self._textures = {
+                "sand": sand_diamond,
+                "rock": rock_diamond,
+                "spice": spice_diamond,
+            }
+        except Exception:
+            self._texture_photos = {}
+            self._textures = {}
 
         self._texture_cache_key = key
-
-    def _get_texture_color(self, texture_name: str, base_color: str, blend_factor: float = 0.3) -> str:
-        """Возвращает цвет с наложением текстуры (упрощённо - смешиваем с базовым)."""
-        # В Tkinter нет нативных текстур, используем цветовой бленд
-        # Это упрощение; полноценные текстуры потребовали бы PhotoImage
-        return base_color

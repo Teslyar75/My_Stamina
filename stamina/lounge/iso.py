@@ -239,9 +239,8 @@ def apply_zoom(direction: int, sx: float, sy: float, canvas_w: int, canvas_h: in
         hit = pick_surface(sx, sy, m, dug_grid, map_w, map_h)
         if hit is not None:
             gx, gy, surface_gz = hit
-            # Use cell center at surface_gz as anchor point
-            anchor_gx = gx + 0.5
-            anchor_gy = gy + 0.5
+            # Use exact world coordinates on the surface (not cell center)
+            anchor_gx, anchor_gy = screen_to_world_at_gz(sx, sy, surface_gz, m)
             anchor_gz = surface_gz
         else:
             # Fallback to gz=0

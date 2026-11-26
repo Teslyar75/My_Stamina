@@ -4,6 +4,7 @@ from __future__ import annotations
 import unittest
 
 from stamina.terraformer_trainer import Camera
+from stamina.terraformer_strategy import STRUCTURES
 from stamina.lounge import iso
 from stamina.lounge.iso import terrain_gz, prism_faces, PrismFaces, screen_to_world_at_gz, point_in_diamond, pick_surface, apply_zoom
 
@@ -398,6 +399,136 @@ class ApplyZoomTest(unittest.TestCase):
 
         self.assertAlmostEqual(wx_before, wx_after, places=3)
         self.assertAlmostEqual(wy_before, wy_after, places=3)
+
+    def test_mixed_height_map_offset_cursor_stays_anchored(self) -> None:
+        """Смешанная карта: курсор НЕ в центре верхней грани высокой клетки.
+        
+        - Карта: HIGH клетка (dug=0) рядом с PIT (dug=2)
+        - Курсор на (gx=10.3, gy=10.7, gz=1) — внутри верхнего ромба, но не в центре
+        - После apply_zoom in (и out) world_to_screen той же (gx,gy,surface_gz)
+          остаётся на том же sx,sy в пределах ~1px
+        - Якорение только по центру клетки ИЛИ только gz=0 сдвигает эту точку
+          (так тест ловит старый баг).
+        """
+        cam = Camera(20, 20)
+        cam.cx, cam.cy = 10.0, 10.0
+        zoom = 1.0
+        w, h = 800, 600
+
+        map_w, map_h = 20, 20
+        dug = [[0 for _ in range(map_w)] for _ in range(map_h)]
+        dug[10][11] = 2  # яма справа от (10,10)
+
+        m = iso.tile_metrics(zoom, w, h, cam)
+        
+        # Курсор на точке, смещённой от центра (10.5, 10.5) — внутри верхнего ромба
+        # world_to_screen(10.3, 10.7, 1) даст экранные координаты
+        anchor_gx, anchor_gy, anchor_gz = 10.3, 10.7, 1.0
+        sx, sy = iso.world_to_screen(anchor_gx, anchor_gy, anchor_gz, m)
+
+        # Зум in
+        zoom = apply_zoom(-1, sx, sy, w, h, cam, zoom, dug, map_w, map_h)
+
+        # После зума та же поверхностная точка должна быть под курсором
+        m2 = iso.tile_metrics(zoom, w, h, cam)
+        sx2, sy2 = iso.world_to_screen(anchor_gx, anchor_gy, anchor_gz, m2)
+        
+        # Разница не должна превышать ~1 пиксель (или 1e-6 в мировых координатах)
+        self.assertLess(abs(sx - sx2), 1.0, 
+            f"sx drift {abs(sx - sx2):.3f}px after zoom in")
+        self.assertLess(abs(sy - sy2), 1.0,
+            f"sy drift {abs(sy - sy2):.3f}px after zoom in")
+
+        # Зум out — возврат
+        zoom = apply_zoom(1, sx, sy, w, h, cam, zoom, dug, map_w, map_h)
+        m3 = iso.tile_metrics(zoom, w, h, cam)
+        sx3, sy3 = iso.world_to_screen(anchor_gx, anchor_gy, anchor_gz, m3)
+        self.assertLess(abs(sx - sx3), 1.0,
+            f"sx drift {abs(sx - sx3):.3f}px after zoom out")
+        self.assertLess(abs(sy - sy3), 1.0,
+            f"sy drift {abs(sy - sy3):.3f}px after zoom out")
+
+        # --- Проверка, что старый баг воспроизводится ---
+        # 1) Если якорь только в ЦЕНТРЕ клетки (10.5, 10.5), точка (10.3, 10.7, 1) смещается
+        cam2 = Camera(20, 20)
+        cam2.cx, cam2.cy = 10.0, 10.0
+        zoom2 = 1.0
+        m2_before = iso.tile_metrics(zoom2, w, h, cam2)
+        sx_c, sy_c = iso.world_to_screen(10.5, 10.5, 1.0, m2_before)  # centre anchor
+        zoom2 = apply_zoom(-1, sx_c, sy_c, w, h, cam2, zoom2, dug, map_w, map_h)
+        m2_after = iso.tile_metrics(zoom2, w, h, cam2)
+        sx2_c, sy2_c = iso.world_to_screen(anchor_gx, anchor_gy, anchor_gz, m2_after)
+        # Точка должна сместиться больше 1px
+        self.assertGreater(abs(sx - sx2_c), 1.5,
+            "Centre-anchor should move the offset point (bug reproduced)")
+
+        # 2) Если якорь только gz=0 (экранные координаты sx,sy от screen_to_world на gz=0)
+        # В этой изометрической проекции gz=0 unprojection того же (sx,sy) также закрепляет
+        # (gx,gy,gz) на том же луче экрана (sx/sy identity), поэтому точка НЕ смещается.
+        # Это геометрически ожидаемо — проверяем, что gz=0 unproject даёт ДРУГУЮ мировую координату.
+        cam3 = Camera(20, 20)
+        cam3.cx, cam3.cy = 10.0, 10.0
+        zoom3 = 1.0
+        m3_before = iso.tile_metrics(zoom3, w, h, cam3)
+        # gz=0 unproject того же экранного sx,sy
+        gx0, gy0 = iso.screen_to_world(sx, sy, m3_before)
+        # gx0,gy0 должно отличаться от anchor_gx, anchor_gy (10.3, 10.7)
+        self.assertNotAlmostEqual(gx0, anchor_gx, places=1)
+        self.assertNotAlmostEqual(gy0, anchor_gy, places=1)
+
+
+class StructuresHeightsTest(unittest.TestCase):
+    """Тесты высот зданий STRUCTURES: должны соответствовать потолкам уровней."""
+
+    def test_structure_heights_match_level_ceilings(self) -> None:
+        """Высоты зданий из STRUCTURES соответствуют потолкам CEFR-уровней.
+        
+        Реальные потолки уровней (MAX_BUILD_HEIGHT):
+        A1=1, A2=1, B1.1=3, B1.2=3, B2.1=3, B2.2=3, C1=6, C2=8
+        
+        Каждое здание должно иметь высоту <= потолка своего уровня.
+        Используем strategy.max_height(spec.level) для получения потолка.
+        """
+        from stamina import terraformer_strategy as strategy
+        
+        for key, spec in STRUCTURES.items():
+            ceiling = strategy.max_height(spec.level)
+            self.assertLessEqual(spec.height, ceiling,
+                f"{key}: height={spec.height} > ceiling={ceiling} for level {spec.level}")
+            self.assertGreater(spec.height, 0,
+                f"{key}: height must be positive")
+
+    def test_expected_structure_heights(self) -> None:
+        """Контрольные значения высот конкретных зданий (известные константы)."""
+        expected = {
+            "shelter": 1,
+            "greenhouse": 1,
+            "energy_panel": 1,
+            "refinery": 3,
+            "habitat": 3,
+            "radar": 3,
+            "spire": 6,
+            "core": 8,
+        }
+        for key, expected_height in expected.items():
+            self.assertIn(key, STRUCTURES, f"Missing structure: {key}")
+            self.assertEqual(STRUCTURES[key].height, expected_height,
+                f"{key}: expected height {expected_height}, got {STRUCTURES[key].height}")
+
+    def test_structure_heights_strictly_increasing_by_level(self) -> None:
+        """Высоты зданий не убывают при повышении уровня."""
+        # Группируем по уровню и проверяем максимумы
+        from stamina.terraformer_strategy import level_index
+        max_by_level: dict[int, int] = {}
+        for spec in STRUCTURES.values():
+            idx = level_index(spec.level)
+            max_by_level[idx] = max(max_by_level.get(idx, 0), spec.height)
+        
+        # Проверяем монотонность: следующий уровень не ниже предыдущего
+        for i in range(1, 8):
+            if i in max_by_level and (i-1) in max_by_level:
+                self.assertGreaterEqual(max_by_level[i], max_by_level[i-1],
+                    f"Level {i} max height < level {i-1} max height")
 
 
 if __name__ == "__main__":

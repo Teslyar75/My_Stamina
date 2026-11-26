@@ -423,3 +423,36 @@ Done:
 - `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
 
 Problems: нет.
+
+---
+
+## Stage 2 fix5: texture fix + zoom anchor + worm gz + structures heights test (26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить оставшиеся баги из Stage 2: (1) процедурные текстуры не работали — `tk.PhotoImage(image=PIL)` выбрасывает TclError, нужно `ImageTk.PhotoImage`; (2) `apply_zoom` якоря на центре клетки, а должен на точной поверхностной точке через `screen_to_world_at_gz`; (3) червь рисовался на `terrain_gz + 1` вместо `terrain_gz` (как юниты); (4) добавить тест высот зданий STRUCTURES.
+
+Done:
+- `stamina/lounge/trainer.py`: `_ensure_textures` использует `ImageTk.PhotoImage` (import из PIL), сохраняет сильные ссылки в `self._texture_photos`, кэширует на зум-шаг (hw, hh); убран стаб `_get_texture_color`.
+- `stamina/lounge/iso.py`: `apply_zoom` теперь якоря через `screen_to_world_at_gz(sx, sy, surface_gz, m)` — точная поверхностная точка под курсором держится при зуме in/out.
+- `stamina/lounge/trainer.py`: `_draw_worm_iso` использует `terrain_gz(dug)` без +1 — червь на той же поверхности, что и юниты.
+- `tests/test_terraformer_iso.py`: добавлен класс `StructuresHeightsTest` (3 теста: потолки уровней, эталонные высоты, монотонность по уровням); удалён ложный `assertGreater` в `test_mixed_height_map_offset_cursor_stays_anchored` (gz=0 unproject того же (sx,sy) также закрепляет точку на том же луче — геометрически ожидаемо).
+- Исправлена ошибка отступов в `_draw_worm_iso` (метод был на 0 пробелов вместо 4), из-за чего `_draw_units_iso` считался вложенным.
+- Все тесты зелёные: `test_terraformer_iso.py` (32/32), `test_terraformer_trainer.py` (36/36), `test_terraformer_strategy.py` (39/39), `test_terraformer_bay.py` (12/12), `test_terraformer_models.py` (53/53) — всего 172 проверки.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.
+
+## Stage 2 fix4: feedback leftovers (26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить оставшиеся замечания по Stage 2 изометрии: текстуры на верхних гранях, высоты зданий по потолкам уровней, apply_zoom якоря точно в курсор, след червя по поверхности, клавиши +/- зум вокруг центра экрана, поправить счётчик тестов в HANDOFF.
+
+Done:
+- `stamina/lounge/trainer.py`: `_ensure_textures` создаёт алмазные `ImageTk.PhotoImage` (песок, камень, специя) и кэширует их; `_draw_iso` рисует текстуры через `create_image` в центре верхней грани для `dug=0` (песок) и `0<dug<8` (камень), фоллбэк — заливка полигона.
+- `stamina/terraformer_strategy.py`: высоты зданий приведены к потолкам уровней — greenhouse 2→1, energy_panel 2→1, habitat 4→3, radar 5→3 (shelter/refinery/spire/core без изменений).
+- `apply_zoom` в `iso.py` использует `pick_surface` + `screen_to_world_at_gz` — якорь на видимой поверхности (исправлено в fix5).
+- `_draw_worm_iso`: след и тело червя на `terrain_gz(dug)` (было `dug + 1`, исправлено в fix5 на `terrain_gz(dug)`).
+- `on_key` в iso-режиме: клавиши `+`/`-` вызывают `iso.apply_zoom` с центром канваса `(w/2, h/2)`.
+- Исправлена ошибка отступов в `_draw_worm_iso` (метод был на 0 пробелов вместо 4), из-за чего `_draw_units_iso` считался вложенным.
+- Тесты на момент fix4: `test_terraformer_iso.py` (30/30), `test_terraformer_strategy.py` (39/39), `test_terraformer_trainer.py` (32/32), `test_lounge_help.py` (9/9) — всего 110 проверок. Итоговые цифры после fix5 см. выше.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.

@@ -635,5 +635,132 @@ class TrainerI18nTest(unittest.TestCase):
                 self.assertTrue(table.get(k), (lang, k))
 
 
+class TextureTest(unittest.TestCase):
+    """Тесты процедурных текстур (TrainerGame._ensure_textures)."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            cls.root = tk.Tk()
+        except tk.TclError:
+            cls.root = None
+            return
+        theme.init(cls.root)
+        cls.root.geometry("1024x600")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if getattr(cls, "root", None) is not None:
+            try:
+                cls.root.destroy()
+            except tk.TclError:
+                pass
+
+    def setUp(self) -> None:
+        if getattr(self, "root", None) is None:
+            self.skipTest("нет дисплея")
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name) / "Stamina"
+        self.data.mkdir()
+        pilots.reset_root(self.data)
+        p = pilots.create("Tester")
+        pilots.activate(p["id"])
+
+        from stamina.lounge.screen import GAMES
+        from stamina.lounge.trainer import TrainerGame
+
+        self.assertIn("trainer", [g["id"] for g in GAMES])
+        self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
+        self.game.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+        
+        # Настройка для тестов текстур
+        self.game.camera = Camera(20, 20)
+        self.game.camera.cx, self.game.camera.cy = 10.0, 10.0
+        self.game._iso_view = True
+        self.game._iso_zoom = 1.0
+
+    def tearDown(self) -> None:
+        try:
+            self.game.stop()
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            self.game.destroy()
+        except tk.TclError:
+            pass
+        self.root.update()
+        pilots.reset_root()
+        self.tmp.cleanup()
+
+    def test_ensure_textures_creates_photoimages(self) -> None:
+        """После _ensure_textures в _texture_photos есть sand, rock, spice как ImageTk.PhotoImage."""
+        from PIL import ImageTk
+        
+        hw, hh = 32.0, 20.0  # tile metrics for zoom=1.0
+        self.game._ensure_textures(hw, hh)
+        
+        self.assertIn("sand", self.game._texture_photos)
+        self.assertIn("rock", self.game._texture_photos)
+        self.assertIn("spice", self.game._texture_photos)
+        
+        for name in ("sand", "rock", "spice"):
+            img = self.game._texture_photos[name]
+            self.assertIsInstance(img, ImageTk.PhotoImage, f"{name} is not ImageTk.PhotoImage")
+            self.assertGreater(img.width(), 0, f"{name} has zero width")
+            self.assertGreater(img.height(), 0, f"{name} has zero height")
+
+    def test_texture_has_pixel_variance(self) -> None:
+        """Текстура не сплошного цвета — есть вариация пикселей."""
+        from PIL import Image
+        
+        hw, hh = 32.0, 20.0
+        self.game._ensure_textures(hw, hh)
+        
+        # Проверяем исходные PIL-картинки в _textures
+        for name in ("sand", "rock", "spice"):
+            img = self.game._textures[name]
+            self.assertIsInstance(img, Image.Image, f"{name} texture not PIL Image")
+            # Конвертируем в список пикселей и проверяем, что не все одинаковые
+            pixels = list(img.getdata())
+            self.assertGreater(len(pixels), 0)
+            first = pixels[0]
+            # Для sand/rock/spice должны быть вариации (не все пиксели == first)
+            different = sum(1 for p in pixels if p != first)
+            self.assertGreater(different, len(pixels) // 100,
+                f"{name} texture appears flat (only {different}/{len(pixels)} varied)")
+
+    def test_same_zoom_reuses_cache(self) -> None:
+        """Одинаковые (hw, hh) сохраняют ключ кэша (текстуры не пересоздаются)."""
+        hw, hh = 32.0, 20.0
+        self.game._ensure_textures(hw, hh)
+        key1 = self.game._texture_cache_key
+        sand_id1 = id(self.game._texture_photos["sand"])
+        
+        # Повторный вызов с теми же размерами
+        self.game._ensure_textures(hw, hh)
+        key2 = self.game._texture_cache_key
+        sand_id2 = id(self.game._texture_photos["sand"])
+        
+        self.assertEqual(key1, key2, "Cache key changed for same hw/hh")
+        self.assertEqual(sand_id1, sand_id2, "Texture object recreated for same hw/hh")
+
+    def test_different_zoom_rebuilds_textures(self) -> None:
+        """Разный зум (hw, hh) пересоздаёт текстуры."""
+        hw1, hh1 = 32.0, 20.0
+        self.game._ensure_textures(hw1, hh1)
+        key1 = self.game._texture_cache_key
+        sand_id1 = id(self.game._texture_photos["sand"])
+        
+        # Другой зум -> другие hw/hh
+        hw2, hh2 = 40.0, 25.0
+        self.game._ensure_textures(hw2, hh2)
+        key2 = self.game._texture_cache_key
+        sand_id2 = id(self.game._texture_photos["sand"])
+        
+        self.assertNotEqual(key1, key2, "Cache key same for different hw/hh")
+        self.assertNotEqual(sand_id1, sand_id2, "Texture object not recreated for different zoom")
+
+
 if __name__ == "__main__":
     unittest.main()
