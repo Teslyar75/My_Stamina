@@ -708,6 +708,8 @@ class LoungeScreen(tk.Frame):
 
     def _clear_game(self) -> None:
         if self.game is not None:
+            from stamina import zen_mode
+            zen_mode.exit_zen(self.game)
             try:
                 self.game.stop()
             except Exception:
@@ -732,6 +734,10 @@ class LoungeScreen(tk.Frame):
         if getattr(e, "keysym", "") == "F1":
             return
         if self.game is not None:
+            # Ctrl+O приходит из cockpit._on_key; здесь хелпер для прямых вызовов.
+            from stamina import zen_mode
+            if zen_mode.handle_key(e, widget=self.game, allow_esc=False):
+                return
             self.game.on_key(e)
 
     def on_help(self) -> bool:

@@ -2,6 +2,8 @@
 
 import unittest
 
+import pytest
+
 from stamina.lounge.vim_engine import (
     init_from_grid,
     get_cursor_pos,
@@ -12,6 +14,7 @@ from stamina.lounge.vim_engine import (
     _undo,
     _redo,
 )
+from stamina.lounge.vim_trainer import VimTrainerGame
 
 
 class VimEngineTests(unittest.TestCase):
@@ -533,6 +536,90 @@ class VimTrainerLessonTests(unittest.TestCase):
         process_key(state, "3")
         process_key(state, "l")
         self.assertEqual(get_cursor_pos(state)[0], 3)
+
+
+class _Event:
+    def __init__(self, keysym="", keycode=0, char="", state=0):
+        self.keysym = keysym
+        self.keycode = keycode
+        self.char = char
+        self.state = state
+
+
+class VimTrainerNavigationTests(unittest.TestCase):
+    """Ctrl+N/Ctrl+P lesson navigation and printable guard."""
+
+    @classmethod
+    def setUpClass(cls):
+        tk = pytest.importorskip("tkinter")
+        try:
+            cls.root = tk.Tk()
+            cls.root.withdraw()
+        except tk.TclError as e:
+            pytest.skip(f"no Tk display: {e}")
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            cls.root.destroy()
+        except Exception:
+            pass
+
+    def _make_game(self):
+        from stamina.lounge.vim_trainer import VimTrainerGame
+        g = VimTrainerGame.__new__(VimTrainerGame)
+        g.state = init_from_grid(["@hello"])
+        g.lesson_idx = 0
+        g.completed_lessons = set()
+        g.pending_count = ""
+        g._pending_count = ""
+        g.message = ""
+        g.message_color = "#fff"
+        g.redraw = lambda *a, **k: None
+        g.save_progress = lambda *a, **k: None
+        g.add_score = lambda *a, **k: 0
+        g._check_lesson_complete = lambda *a, **k: None
+        g.handle_help_keys = lambda *a, **k: False
+        g.reference_open = lambda *a, **k: False
+        g._load_lesson = lambda idx: setattr(g, 'lesson_idx', idx)
+        g._next_lesson = VimTrainerGame._next_lesson.__get__(g, VimTrainerGame)
+        g._prev_lesson = VimTrainerGame._prev_lesson.__get__(g, VimTrainerGame)
+        return g
+
+    def test_ctrl_n_advances_lesson(self):
+        g = self._make_game()
+        VimTrainerGame.on_key(g, _Event("n", keycode=78, char="\x0e", state=0x4))
+        self.assertEqual(g.lesson_idx, 1)
+
+    def test_ctrl_n_russian_layout_advances_lesson(self):
+        g = self._make_game()
+        VimTrainerGame.on_key(g, _Event("Cyrillic_te", keycode=78, char="?", state=0x4))
+        self.assertEqual(g.lesson_idx, 1)
+
+    def test_ctrl_p_goes_previous(self):
+        g = self._make_game()
+        g.lesson_idx = 2
+        VimTrainerGame.on_key(g, _Event("p", keycode=80, char="\x10", state=0x4))
+        self.assertEqual(g.lesson_idx, 1)
+
+    def test_ctrl_p_russian_layout_goes_previous(self):
+        g = self._make_game()
+        g.lesson_idx = 2
+        VimTrainerGame.on_key(g, _Event("Cyrillic_ze", keycode=80, char="?", state=0x4))
+        self.assertEqual(g.lesson_idx, 1)
+
+    def test_ctrl_t_does_not_switch_lesson(self):
+        g = self._make_game()
+        g.lesson_idx = 1
+        VimTrainerGame.on_key(g, _Event("t", keycode=84, char="\x14", state=0x4))
+        self.assertEqual(g.lesson_idx, 1)
+
+    def test_ctrl_n_not_sent_to_engine(self):
+        g = self._make_game()
+        g.state = init_from_grid(["@foo foo"])
+        VimTrainerGame.on_key(g, _Event("n", keycode=78, char="\x0e", state=0x4))
+        self.assertEqual(get_cursor_pos(g.state), (0, 0))
+        self.assertEqual(g.lesson_idx, 1)
 
 
 class VimTrainerIntegrationTests(unittest.TestCase):

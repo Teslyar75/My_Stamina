@@ -2689,7 +2689,6 @@
   "ЧТО ЗНАЧИТ СЛОВО В КОНТЕКСТЕ?": "WHAT DOES THE WORD MEAN IN THE CONTEXT OF?",
   "СЛОВО": "WORD",
   "ПРОИЗНОШЕНИЕ": "PRONUNCIATION",
-  "ПЕРЕВОД": "TRANSLATION",
   "Чередуйте: чёрное по возрастанию,\nкрасное по убыванию (ч1 → к12 → ч2 → к11…).": "Hair: Black at an increasing rate,\nRed, in descending position (h1 * 12 * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~…).",
   "Числа или буквы по порядку, 3×3…7×7": "Numbers or letters in order, 3×3..7×7",
   "Число ПЕРЕД командой = повтор: 5j = jjjjj, 3dw = 3 раза dw, 2dd = 2 строки.": "Число ПЕРЕД командой = повтор: 5j = jjjjj, 3dw = 3 раза dw, 2dd = 2 строки.",
@@ -3782,5 +3781,13 @@
   "не удалось прочитать git status": "failed to read git status",
   "{0:g} с": "{0:g} s",
   "движок озвучки не ответил": "speech engine did not respond",
-  "нет библиотеки {0}": "library {0} not found"
+  "нет библиотеки {0}": "library {0} not found",
+  "СЛЕДУЮЩИЙ УРОК ▶": "NEXT LESSON ▶",
+  "Урок пройден! Кнопка «Следующий урок ▶» или Ctrl+N / Ctrl+Т": "Lesson complete! Use the Next lesson ▶ button or Ctrl+N / Ctrl+T",
+  "Ctrl+n / Ctrl+Т → дальше": "Ctrl+n / Ctrl+T → next",
+  "Vim-ход: {0}": "Vim-move: {0}",
+  "Vim: счёт {0}": "Vim: count {0}",
+  "VIM-ХОД  F4: {0}": "VIM-MOVE  F4: {0}",
+  "Vim-ход: h/j/k/l, w/b, gg/G, 0/$, счётчик и F4": "Vim-move: h/j/k/l, w/b, gg/G, 0/$, digit count and F4",
+  "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · arrows · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · LMB · RMB · I"
 }

@@ -2689,7 +2689,6 @@
   "ЧТО ЗНАЧИТ СЛОВО В КОНТЕКСТЕ?": "WAS BEDEUTET DAS WORT IM KONTEXT VON?",
   "СЛОВО": "WORT",
   "ПРОИЗНОШЕНИЕ": "AUSSPRACHE",
-  "ПЕРЕВОД": "ÜBERSETZUNG",
   "Чередуйте: чёрное по возрастанию,\nкрасное по убыванию (ч1 → к12 → ч2 → к11…).": "Haare: Schwarz mit zunehmender Geschwindigkeit,\nRot, in absteigender Position (h1 * 12 * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~…).",
   "Числа или буквы по порядку, 3×3…7×7": "Zahlen oder Buchstaben in der Reihenfolge, 3×3..7×7",
   "Число ПЕРЕД командой = повтор: 5j = jjjjj, 3dw = 3 раза dw, 2dd = 2 строки.": "Число ПЕРЕД командой = повтор: 5j = jjjjj, 3dw = 3 раза dw, 2dd = 2 строки.",
@@ -3782,5 +3781,13 @@
   "не удалось прочитать git status": "git status konnte nicht gelesen werden",
   "{0:g} с": "{0:g} s",
   "движок озвучки не ответил": "Sprachausgabe-Engine hat nicht geantwortet",
-  "нет библиотеки {0}": "Bibliothek {0} ist nicht vorhanden"
+  "нет библиотеки {0}": "Bibliothek {0} ist nicht vorhanden",
+  "СЛЕДУЮЩИЙ УРОК ▶": "NÄCHSTE LEKTION ▶",
+  "Урок пройден! Кнопка «Следующий урок ▶» или Ctrl+N / Ctrl+Т": "Lektion abgeschlossen! Schaltfläche „Nächste Lektion ▶“ oder Ctrl+N / Ctrl+T",
+  "Ctrl+n / Ctrl+Т → дальше": "Ctrl+n / Ctrl+T → weiter",
+  "Vim-ход: {0}": "Vim-Bewegung: {0}",
+  "Vim: счёт {0}": "Vim: Zähler {0}",
+  "VIM-ХОД  F4: {0}": "VIM-BEWEGUNG  F4: {0}",
+  "Vim-ход: h/j/k/l, w/b, gg/G, 0/$, счётчик и F4": "Vim-Bewegung: h/j/k/l, w/b, gg/G, 0/$, Zähler und F4",
+  "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · Pfeile · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · LMT · RMT · I"
 }

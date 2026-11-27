@@ -2689,7 +2689,6 @@
   "ЧТО ЗНАЧИТ СЛОВО В КОНТЕКСТЕ?": "QUE SIGNIFIE LE MOT DANS LE CONTEXTE ?",
   "СЛОВО": "MOT",
   "ПРОИЗНОШЕНИЕ": "PRONONCIATION",
-  "ПЕРЕВОД": "TRADUCTION",
   "Чередуйте: чёрное по возрастанию,\nкрасное по убыванию (ч1 → к12 → ч2 → к11…).": "Alternatif : noir ascendant,\nrouge par ordre décroissant (ch1 → k12 → ch2 → k11...).",
   "Числа или буквы по порядку, 3×3…7×7": "Chiffres ou lettres dans l'ordre, 3×3…7×7",
   "Число ПЕРЕД командой = повтор: 5j = jjjjj, 3dw = 3 раза dw, 2dd = 2 строки.": "Numéro AVANT la commande = répéter : 5j = jjjjj, 3dw = 3 fois dw, 2dd = 2 lignes.",
@@ -3782,5 +3781,13 @@
   "не удалось прочитать git status": "impossible de lire git status",
   "{0:g} с": "{0:g} s",
   "движок озвучки не ответил": "le moteur de synthèse vocale n'a pas répondu",
-  "нет библиотеки {0}": "bibliothèque {0} manquante"
+  "нет библиотеки {0}": "bibliothèque {0} manquante",
+  "СЛЕДУЮЩИЙ УРОК ▶": "LEÇON SUIVANTE ▶",
+  "Урок пройден! Кнопка «Следующий урок ▶» или Ctrl+N / Ctrl+Т": "Leçon terminée ! Bouton « Leçon suivante ▶ » ou Ctrl+N / Ctrl+T",
+  "Ctrl+n / Ctrl+Т → дальше": "Ctrl+n / Ctrl+T → suivant",
+  "Vim-ход: {0}": "Déplacement Vim : {0}",
+  "Vim: счёт {0}": "Vim : compteur {0}",
+  "VIM-ХОД  F4: {0}": "VIM-DÉPLACEMENT  F4 : {0}",
+  "Vim-ход: h/j/k/l, w/b, gg/G, 0/$, счётчик и F4": "Déplacement Vim : h/j/k/l, w/b, gg/G, 0/$, compteur et F4",
+  "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · flèches · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · Clic g. · Clic d. · I"
 }

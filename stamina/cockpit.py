@@ -604,10 +604,29 @@ class Cockpit(tk.Tk):
                 pass
 
 
+    def _zen_target_for(self, screen_name: str | None):
+        """Экран/игра, где работает общий зенид; грамматика и сканеры не трогаем."""
+        if screen_name in (None, "settings", "bridge_settings", "ether",
+                           english_hook.KEY, languages_hook.KEY, docs_hook.KEY):
+            return None
+        scr = self.screens.get(screen_name)
+        if scr is None:
+            return None
+        if getattr(scr, "focus_active", lambda: False)() or getattr(scr, "in_focus", lambda: False)():
+            return None
+        if screen_name == lounge_hook.KEY:
+            return getattr(scr, "game", None) or scr
+        return scr
+
+    def _zen_target(self):
+        return self._zen_target_for(getattr(self, "current", None))
+
     def _exit_screen_focus(self, screen_name: str | None) -> None:
         """Снять фокус-режим текущего отсека и восстановить шапку."""
         if not screen_name:
             return
+        from stamina import zen_mode
+        zen_mode.exit_zen(self._zen_target_for(screen_name))
         scr = self.screens.get(screen_name)
         if scr is None:
             return
@@ -1509,6 +1528,14 @@ class Cockpit(tk.Tk):
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
+        target = self._zen_target()
+        if target is not None:
+            from stamina import zen_mode
+            if zen_mode.is_zen_hotkey(e):
+                zen_mode.toggle(target)
+                return "break"
+            if e.keysym == "Escape" and zen_mode.handle_key(e, target):
+                return "break"
         vc = getattr(self, "voice_call", None)
         if e.keysym == "Escape" and vc is not None and vc.active():
             vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
