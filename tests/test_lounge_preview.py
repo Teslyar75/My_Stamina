@@ -93,6 +93,92 @@ class LoungePreviewTest(unittest.TestCase):
                     pass
         return None
 
+    def _find_game_frame(self, canvas: tk.Canvas) -> tuple[int, int, int, int] | None:
+        """Find the game frame rectangle (bordered rectangle with game color outline)."""
+        for item_id in canvas.find_all():
+            if canvas.type(item_id) == "rectangle":
+                try:
+                    coords = canvas.coords(item_id)
+                    outline = canvas.itemcget(item_id, "outline")
+                    fill = canvas.itemcget(item_id, "fill")
+                    width = canvas.itemcget(item_id, "width")
+                    # Game frames have colored outlines (CYAN, GREEN, PURPLE, AMBER) and width >= 2
+                    if (outline and outline in (theme.CYAN, theme.GREEN, theme.PURPLE, theme.AMBER, theme.RED)
+                            and width and float(width) >= 2 and len(coords) == 4):
+                        x1, y1, x2, y2 = coords
+                        if x2 - x1 > 50 and y2 - y1 > 30:
+                            return (int(x1), int(y1), int(x2), int(y2))
+                except tk.TclError:
+                    pass
+        return None
+
+    def _assert_inside_frame(
+        self,
+        bboxes: list[tuple[int, int, int, int]],
+        frame_rect: tuple[int, int, int, int],
+        canvas_w: int,
+        canvas_h: int,
+    ) -> None:
+        """Assert every text bbox is fully inside frame rect and canvas."""
+        fx1, fy1, fx2, fy2 = frame_rect
+        for i, (x1, y1, x2, y2) in enumerate(bboxes):
+            # Inside frame rect (with small tolerance for rounding)
+            self.assertGreaterEqual(x1, fx1 - 1, f"bbox {i} x1 < frame x1")
+            self.assertGreaterEqual(y1, fy1 - 1, f"bbox {i} y1 < frame y1")
+            self.assertLessEqual(x2, fx2 + 1, f"bbox {i} x2 > frame x2")
+            self.assertLessEqual(y2, fy2 + 1, f"bbox {i} y2 > frame y2")
+            # Inside canvas
+            self.assertGreaterEqual(x1, -1, f"bbox {i} x1 < 0")
+            self.assertGreaterEqual(y1, -1, f"bbox {i} y1 < 0")
+            self.assertLessEqual(x2, canvas_w + 1, f"bbox {i} x2 > canvas_w")
+            self.assertLessEqual(y2, canvas_h + 1, f"bbox {i} y2 > canvas_h")
+
+    def _assert_scene_fills_canvas(
+        self,
+        canvas: tk.Canvas,
+        frame_rect: tuple[int, int, int, int] | None,
+        min_width_ratio: float = 0.7,
+        min_height_ratio: float = 0.6,
+    ) -> None:
+        """Assert the union of all items covers a good portion of the canvas."""
+        all_items = canvas.find_all()
+        if not all_items:
+            self.fail("No items drawn on canvas")
+        union_x1 = canvas_w = canvas.winfo_width()
+        union_y1 = canvas_h = canvas.winfo_height()
+        union_x2 = 0
+        union_y2 = 0
+        for item_id in all_items:
+            try:
+                bbox = canvas.bbox(item_id)
+                if bbox:
+                    x1, y1, x2, y2 = bbox
+                    union_x1 = min(union_x1, x1)
+                    union_y1 = min(union_y1, y1)
+                    union_x2 = max(union_x2, x2)
+                    union_y2 = max(union_y2, y2)
+            except tk.TclError:
+                pass
+        if frame_rect:
+            fx1, fy1, fx2, fy2 = frame_rect
+            # Use frame as reference
+            frame_w = fx2 - fx1
+            frame_h = fy2 - fy1
+            union_w = union_x2 - union_x1
+            union_h = union_y2 - union_y1
+            self.assertGreaterEqual(union_w, frame_w * min_width_ratio,
+                                    f"Scene width {union_w} < {min_width_ratio*100:.0f}% of frame width {frame_w}")
+            self.assertGreaterEqual(union_h, frame_h * min_height_ratio,
+                                    f"Scene height {union_h} < {min_height_ratio*100:.0f}% of frame height {frame_h}")
+        else:
+            # Fallback to canvas
+            union_w = union_x2 - union_x1
+            union_h = union_y2 - union_y1
+            self.assertGreaterEqual(union_w, canvas_w * min_width_ratio,
+                                    f"Scene width {union_w} < {min_width_ratio*100:.0f}% of canvas width {canvas_w}")
+            self.assertGreaterEqual(union_h, canvas_h * min_height_ratio,
+                                    f"Scene height {union_h} < {min_height_ratio*100:.0f}% of canvas height {canvas_h}")
+
     def _assert_no_vertical_overlap(self, bboxes: list[tuple[int, int, int, int]]) -> None:
         """Assert no two text bboxes overlap vertically (allow 1px rounding)."""
         for i, (x1a, y1a, x2a, y2a) in enumerate(bboxes):
@@ -233,6 +319,83 @@ class LoungePreviewTest(unittest.TestCase):
         self._assert_inside_terminal(bboxes, term_rect, ww, hh)
         self.assertGreaterEqual(len(bboxes), 2, "At least 2 text lines should fit")
         c.destroy()
+
+    def test_tetris_preview(self) -> None:
+        canvas = self._get_card_canvas("tetris")
+        self.assertIsNotNone(canvas, "tetris card not found")
+        assert canvas is not None
+
+        frame_rect = self._find_game_frame(canvas)
+        self.assertIsNotNone(frame_rect, "Game frame not found for tetris")
+        assert frame_rect is not None
+
+        bboxes = self._collect_text_bboxes(canvas)
+        self._assert_no_vertical_overlap(bboxes)
+        self._assert_inside_frame(bboxes, frame_rect, canvas.winfo_width(), canvas.winfo_height())
+        self._assert_scene_fills_canvas(canvas, frame_rect)
+        self.assertGreater(len(canvas.find_all()), 10, "Preview should have many items drawn")
+
+    def test_snake_preview(self) -> None:
+        canvas = self._get_card_canvas("snake")
+        self.assertIsNotNone(canvas, "snake card not found")
+        assert canvas is not None
+
+        frame_rect = self._find_game_frame(canvas)
+        self.assertIsNotNone(frame_rect, "Game frame not found for snake")
+        assert frame_rect is not None
+
+        bboxes = self._collect_text_bboxes(canvas)
+        self._assert_no_vertical_overlap(bboxes)
+        self._assert_inside_frame(bboxes, frame_rect, canvas.winfo_width(), canvas.winfo_height())
+        self._assert_scene_fills_canvas(canvas, frame_rect)
+        self.assertGreater(len(canvas.find_all()), 10, "Preview should have many items drawn")
+
+    def test_breakout_preview(self) -> None:
+        canvas = self._get_card_canvas("breakout")
+        self.assertIsNotNone(canvas, "breakout card not found")
+        assert canvas is not None
+
+        frame_rect = self._find_game_frame(canvas)
+        self.assertIsNotNone(frame_rect, "Game frame not found for breakout")
+        assert frame_rect is not None
+
+        bboxes = self._collect_text_bboxes(canvas)
+        self._assert_no_vertical_overlap(bboxes)
+        self._assert_inside_frame(bboxes, frame_rect, canvas.winfo_width(), canvas.winfo_height())
+        self._assert_scene_fills_canvas(canvas, frame_rect)
+        self.assertGreater(len(canvas.find_all()), 10, "Preview should have many items drawn")
+
+    def test_trainer_preview(self) -> None:
+        canvas = self._get_card_canvas("trainer")
+        self.assertIsNotNone(canvas, "trainer card not found")
+        assert canvas is not None
+
+        frame_rect = self._find_game_frame(canvas)
+        self.assertIsNotNone(frame_rect, "Game frame not found for trainer")
+        assert frame_rect is not None
+
+        bboxes = self._collect_text_bboxes(canvas)
+        self._assert_no_vertical_overlap(bboxes)
+        self._assert_inside_frame(bboxes, frame_rect, canvas.winfo_width(), canvas.winfo_height())
+        self._assert_scene_fills_canvas(canvas, frame_rect)
+        self.assertGreater(len(canvas.find_all()), 10, "Preview should have many items drawn")
+
+    def test_vim_trainer_preview(self) -> None:
+        canvas = self._get_card_canvas("vim_trainer")
+        self.assertIsNotNone(canvas, "vim_trainer card not found")
+        assert canvas is not None
+
+        frame_rect = self._find_game_frame(canvas)
+        self.assertIsNotNone(frame_rect, "Game frame not found for vim_trainer")
+        assert frame_rect is not None
+
+        bboxes = self._collect_text_bboxes(canvas)
+        self._assert_no_vertical_overlap(bboxes)
+        self._assert_inside_frame(bboxes, frame_rect, canvas.winfo_width(), canvas.winfo_height())
+        self._assert_scene_fills_canvas(canvas, frame_rect)
+        # vim_trainer has text (status line), verify it doesn't overflow
+        self.assertGreaterEqual(len(bboxes), 1, "At least status line should be drawn")
+        self.assertGreater(len(canvas.find_all()), 10, "Preview should have many items drawn")
 
 
 if __name__ == "__main__":
