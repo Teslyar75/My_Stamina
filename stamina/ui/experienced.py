@@ -185,6 +185,9 @@ def build_chrome(app) -> tk.Frame:
             work.place_forget()
             top_overlay.place_forget()
             side_overlay.place_forget()
+            # Возврат в предыдущее окно не должен оставлять чёрный полноэкранный вид.
+            if getattr(app, "_fullscreen", False):
+                app.toggle_fullscreen(False)
         _raise_ribbons()
         _lift_chrome(app)
 

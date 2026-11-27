@@ -1612,6 +1612,18 @@ class Cockpit(tk.Tk):
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
+        vc = getattr(self, "voice_call", None)
+        if e.keysym == "Escape" and vc is not None and vc.active():
+            vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
+            return "break"
+        # ЭКРАН — внешний слой: Esc/Del снимает его ПЕРВЫМ. Иначе двойной Esc
+        # зенида закрывает рабочее окно и оставляет чёрный полноэкранный вид.
+        if e.keysym in ("Escape", "Delete") and self._fullscreen:
+            self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
+            # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
+            if self.current == "bridge" and self.screens["bridge"].state == "pause":
+                self.screens["bridge"].resume()
+            return
         target = self._zen_target()
         if target is not None:
             from stamina import zen_mode
@@ -1627,18 +1639,8 @@ class Cockpit(tk.Tk):
                 zen_mode.mark_handled(e)
                 zen_mode.handle_key(e, target)
                 return "break"
-        vc = getattr(self, "voice_call", None)
-        if e.keysym == "Escape" and vc is not None and vc.active():
-            vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
-            return "break"
         if e.keysym == "Escape" and self._handle_focus_escape():
             return "break"
-        if e.keysym in ("Escape", "Delete") and self._fullscreen:
-            self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
-            # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
-            if self.current == "bridge" and self.screens["bridge"].state == "pause":
-                self.screens["bridge"].resume()
-            return
         if (e.keysym == "Escape" and self._layout == "experienced"
                 and getattr(self, "_xp_work_open", False)
                 and not (zen is not None and getattr(zen, "on", False))):

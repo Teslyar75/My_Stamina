@@ -309,6 +309,41 @@ def test_work_window_opens_by_popup_and_closes(xp_app):
     assert not app._xp_work_open
 
 
+def test_esc_exits_fullscreen_before_closing_work(xp_app):
+    """Esc в ЭКРАНЕ снимает его первым — двойной Esc не оставляет чёрный экран."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+    assert app._xp_work_open
+
+    app.toggle_fullscreen(True)
+    app.update()
+    assert app._fullscreen
+
+    _fire_esc(app)
+    assert not app._fullscreen, "первый Esc снимает ЭКРАН, а не закрывает окно"
+    assert app._xp_work_open
+    assert app._xp_work.winfo_ismapped()
+
+    _fire_esc(app)
+    assert app._xp_work_open, "первый Esc зенида ещё держит окно"
+    _fire_esc(app)
+    assert not app._xp_work_open
+    assert not app._fullscreen
+
+
+def test_close_work_also_leaves_fullscreen(xp_app):
+    """Возврат ДОМОЙ/двойным Esc из полноэкранного отсека — не пустой ЭКРАН."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+    app.toggle_fullscreen(True)
+    app.update()
+
+    experienced.close_work(app)
+    app.update()
+    assert not app._xp_work_open
+    assert not app._fullscreen
+
+
 def test_nested_grammar_focus_keeps_work_window(xp_app):
     """⛶ в грамматике любого языка — зенид ВНУТРИ рабочего окна, а не вместо него."""
     app = xp_app()
