@@ -624,9 +624,10 @@ class ZenOverlay(tk.Frame):
             tx.tag_raise("caretblock")
             self.caret.place_forget()
             return
-        else:   # underline
+        else:   # underline: черта всегда шире своей высоты, даже под узкой буквой
             h = max(2, int(lh * 0.08))
-            x, y, w = x + 1, y + int(lh * 0.98) - h, max(4, cw - 2)
+            w = max(h + 2, cw - 2)
+            x, y = x + 1, y + int(lh * 0.98) - h
         self._caret_target = (x, y, w, h)
         if self._caret_x is None or not animate or abs(y - (self._caret_y or y)) > lh * 2:
             self._caret_x, self._caret_y = x, y

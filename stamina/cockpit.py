@@ -106,6 +106,7 @@ class Cockpit(tk.Tk):
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
         self._fullscreen = False
+        self._fs_restore: dict | None = None   # геометрия перед «ЭКРАНОМ» (чтобы вернуться на свой монитор)
         from stamina import alt_ui
         self._layout = alt_ui.layout_of(st)  # вид интерфейса: classic | alt (docs/ALT_UI.md)
         self._build()
@@ -930,12 +931,54 @@ class Cockpit(tk.Tk):
             alt_ui.on_screen(self)
 
     def toggle_fullscreen(self, on: bool | None = None) -> None:
-        """ЭКРАН: полный экран для любого раздела (PgDn; выход — Esc/Del или «✕ ЭКРАН»)."""
+        """ЭКРАН: полный экран на мониторе, где стоит окно (PgDn, Esc/Del — выход).
+
+        Tk-атрибут -fullscreen на Windows расправляет окно на ПЕРВИЧНОМ мониторе:
+        перенесённую на второй экран программу кнопка возвращала на ноутбук.
+        Поэтому убираем рамку сами и задаём геометрию монитора, на котором окно
+        находится в момент нажатия (включая отрицательные координаты).
+        """
         on = (not self._fullscreen) if on is None else on
-        try:
-            self.attributes("-fullscreen", on)
-        except tk.TclError:
+        if on == bool(self._fullscreen):
             return
+        if on:
+            from stamina import monitors
+            l, t, r, b = monitors.monitor_rect(self)
+            w, h = max(1, r - l), max(1, b - t)
+            state = {}
+            for key, getter in (("geometry", self.geometry),
+                                ("overrideredirect", self.overrideredirect),
+                                ("topmost", lambda: self.attributes("-topmost"))):
+                try:
+                    state[key] = getter()
+                except tk.TclError:
+                    pass
+            self._fs_restore = state
+            try:
+                self.overrideredirect(True)
+                self.attributes("-topmost", True)
+                self.geometry(f"{w}x{h}+{l}+{t}")
+                self.lift()
+            except tk.TclError:
+                # виджет ещё не создан — старый путь всё равно лучше, чем ничего
+                self.overrideredirect(False)
+                self.attributes("-fullscreen", True)
+                self._fs_restore["tk_fullscreen"] = True
+        else:
+            state = getattr(self, "_fs_restore", None) or {}
+            if state.get("tk_fullscreen"):
+                try:
+                    self.attributes("-fullscreen", False)
+                except tk.TclError:
+                    pass
+            try:
+                self.overrideredirect(bool(state.get("overrideredirect", False)))
+                self.attributes("-topmost", bool(state.get("topmost", False)))
+                if state.get("geometry"):
+                    self.geometry(state["geometry"])
+            except tk.TclError:
+                pass
+            self._fs_restore = None
         self._fullscreen = on
         label = tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН")
         # Кнопка «ЭКРАН» в опытном виде живёт на самом холсте и видна всегда —

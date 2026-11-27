@@ -13,6 +13,7 @@ import pytest
 class _FakeApp:
     def __init__(self):
         self.shown = []
+        self._layout = "classic"
 
     def show(self, name):
         self.shown.append(name)
@@ -64,6 +65,28 @@ def test_other_languages_share_inplace_ui(monkeypatch, code):
         assert scr.current_page == "overview"
         assert scr.page_container.winfo_children(), "встроенная страница языка должна собраться"
         assert app.shown == []
+    finally:
+        root.destroy()
+
+
+def test_experienced_english_keeps_work_window(monkeypatch):
+    """В опытном виде show() убирает зенид; без повторного open_work экран не виден."""
+    tk = pytest.importorskip("tkinter")
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    app = _FakeApp()
+    app._layout = "experienced"
+    from stamina.ui import experienced
+    opened = []
+    monkeypatch.setattr(experienced, "open_work", lambda a: opened.append(a))
+    try:
+        root.withdraw()
+        scr = _screen(root, monkeypatch, app)
+        scr._select_language("en")
+        assert app.shown == ["english"]
+        assert opened == [app], "рабочее окно должно открыться после перехода в английский"
     finally:
         root.destroy()
 

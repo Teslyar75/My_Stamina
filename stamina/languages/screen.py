@@ -155,7 +155,7 @@ class LanguagesScreen(tk.Frame):
         # ИЗ КНИГИ), сканер и грамматика Murphy. Общая страница «Наборы» ждёт
         # частотные наборы с суффиксом уровня (goethe-a1 и т.п.), которых у en нет.
         if lang_code == "en":
-            self.app.show("english")
+            self._open_native_english()
             return
         self.current_lang = lang_code
         self._pool_slugs = None
@@ -164,6 +164,17 @@ class LanguagesScreen(tk.Frame):
         if not plugin:
             return
         self._build_language_ui(plugin)
+
+    def _open_native_english(self) -> None:
+        """Карточка en ведёт в родной отсек, не закрывая рабочее окно опытного вида."""
+        self.app.show("english")
+        if getattr(self.app, "_layout", "") != "experienced":
+            return
+        try:
+            from stamina.ui.experienced import open_work
+            open_work(self.app)
+        except Exception:  # noqa: BLE001 — отсек уже открыт, decorations не критичны
+            pass
 
     def _build_language_ui(self, plugin) -> None:
         for w in self.content.winfo_children():

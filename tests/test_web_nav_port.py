@@ -215,6 +215,35 @@ class CockpitKeyboardTest(unittest.TestCase):
         a.toggle_fullscreen(False)
         self.assertFalse(a._fullscreen)
 
+    def test_fullscreen_stays_on_second_monitor(self):
+        """Кнопка ЭКРАН не должна переносить окно с допмонитора на ноутбук."""
+        from stamina import monitors
+        a = self.app
+        a.geometry("700x500+20+20")
+        a.update()
+        before = monitors.parse_xy(a.geometry())
+        # Модельный монитор в пределах реального экрана: иначе WM на тестовом
+        # одноэкранном стенде сам «вернёт» отрицательные координаты и проверка
+        # станет про virtual desktop, а не про нашу логику.
+        monitors.set_provider(lambda x, y, n: (300, 200, 1200, 800))
+        try:
+            a.toggle_fullscreen(True)
+            a.update()
+            x, y = monitors.parse_xy(a.geometry())
+            self.assertGreaterEqual(x, 290)    # геометрия взята у монитора окна
+            self.assertGreaterEqual(y, 190)
+            self.assertTrue(a._fullscreen)
+
+            a.toggle_fullscreen(False)
+            a.update()
+            self.assertFalse(a._fullscreen)
+            self.assertFalse(bool(a.overrideredirect()))
+            after = monitors.parse_xy(a.geometry())
+            self.assertLess(abs(after[0] - before[0]), 40)
+            self.assertLess(abs(after[1] - before[1]), 40)
+        finally:
+            monitors.set_provider(None)
+
 
 class PageHelpCoverageTest(CockpitKeyboardTest):
     """F1 есть для каждого экрана и каждой подвкладки; справка листается клавишами."""

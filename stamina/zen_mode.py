@@ -96,6 +96,16 @@ def _is_esc(e) -> bool:
     return ks == "escape" or int(getattr(e, "keycode", 0) or 0) == 27
 
 
+def _contains(ancestor, widget) -> bool:
+    """ancestor — сам widget или один из его предков по дереву Tk."""
+    node = widget
+    while node is not None:
+        if node is ancestor:
+            return True
+        node = getattr(node, "master", None)
+    return False
+
+
 def _notify(widget, on: bool) -> None:
     """Один путь раскладки: хук ищется на виджете или его владельце выше по дереву."""
     node = widget
@@ -115,7 +125,17 @@ def enter(widget) -> bool:
         return False
     if is_active(widget):
         return True
-    exit_zen()
+    previous = active_widget()
+    if previous is not None and previous is not widget:
+        rec = _ACTIVE.pop(id(previous), None)
+        if rec is not None and not _contains(previous, widget):
+            # Разные зениды: старый раскладываем обратно. Если же новый зенид
+            # живёт ВНУТРИ предыдущего (грамматика внутри рабочего окна опытного
+            # вида), рабочее окно обязано остаться открытым — иначе экран чёрный.
+            try:
+                rec[1].restore()
+            finally:
+                _notify(previous, False)
     from stamina.english.ui import FocusMode
     mode = FocusMode(widget)
     _ACTIVE[id(widget)] = (widget, mode)

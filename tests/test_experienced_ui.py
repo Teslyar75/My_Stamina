@@ -309,6 +309,30 @@ def test_work_window_opens_by_popup_and_closes(xp_app):
     assert not app._xp_work_open
 
 
+def test_nested_grammar_focus_keeps_work_window(xp_app):
+    """⛶ в грамматике любого языка — зенид ВНУТРИ рабочего окна, а не вместо него."""
+    app = xp_app()
+    experienced.open_work(app)
+    assert app._xp_work_open and zen_mode.is_active(app._xp_work)
+
+    child = tk.Frame(app._xp_work)
+    child.pack(fill=tk.BOTH, expand=True)
+    seen = []
+    child.after_zen_toggle = lambda on: seen.append(on)
+    app.update()
+
+    zen_mode.enter(child)
+    app.update()
+    assert zen_mode.is_active(child)
+    assert seen == [True]
+    assert app._xp_work_open, "рабочее окно не должно закрываться при входе в фокус грамматики"
+    assert child.winfo_ismapped()
+
+    zen_mode.exit_zen(child)
+    app.update()
+    assert app._xp_work_open
+
+
 def test_esc_keeps_fullscreen_and_zen_priority(xp_app, monkeypatch):
     app = xp_app()
     _open_missions_from_ribbon(app)
