@@ -11,15 +11,20 @@
 from __future__ import annotations
 
 import json
+import math
 import random
 import time
 from pathlib import Path
 from stamina.i18n import t as _t
 
+from stamina import terraformer_strategy as strategy
+from stamina.terraformer_strategy import find_for_cell
+
 GRID_W = 40
 GRID_H = 24
 LAYERS = ("soil", "clay", "metal")
-HOLD_CAP = 10
+# Блок фундамента = 5 единиц грунта (было 10). Пресс делает блок из 3.
+HOLD_CAP = 5
 SITE = (2, 2, 4, 3)          # x, y, width, height — 12 блоков фундамента
 BLUEPRINT_NAME = "terraformer_trainer.json"
 ARCHIVE_DIR = "terraformer_trainer_archive"
@@ -193,61 +198,106 @@ VARIANT_DESC: dict[str, tuple[str, ...]] = {
 DEEP_RESOURCES = {"iron", "quartz"}
 
 HOLD_CAP_WITH_UPGRADES = {
-    "soil_compactor": 5,
-    "default": 10,
+    "soil_compactor": 3,
+    "default": 5,
 }
 
 
 # ─── система прогрессии: разблокировка вариантов и роботов через язык ─────────
-# Уровни владения языком (0-5): 0=новичок, 1=базовый, 2=средний, 3=продвинутый, 4=эксперт, 5=мастер
-# Уровень вычисляется как максимум из английского и немецкого прогресса.
-# Пилот видит все варианты в galerie, но может строить только разблокированные.
-# Это создаёт желание учить язык, чтобы получить доступ к лучшим постройкам.
+# Лестница та же, что у английского: A1, A2, B1.1, B1.2, B2.1, B2.2, C1, C2.
+# Индекс 0…7. Уровень — максимум из языка, успехов в других отсеках и заданий
+# тренажёра (см. stamina.terraformer_strategy.standing).
+# Пилот видит все варианты в галерее, но строить может только открытые.
+
+_ALL_VARIANTS = {res: (0, 1, 2) for res in RESOURCES}
 
 PROGRESSION_TIERS = {
-    0: {  # Новичок — только база
-        "platform_variants": {"water": (0,), "stone": (0,), "organic": (0,), "iron": (0,), "quartz": (0,)},
+    0: {  # A1 · Высадка
+        "platform_variants": {res: (0,) for res in RESOURCES},
         "robots": ("A1",),
         "upgrades": (),
-        "description": _t("Базовые платформы. Робот A1. Учите язык, чтобы разблокировать продвинутые постройки."),
+        "description": _t("A1: базовые платформы и робот A1. Копайте грунт, ставьте первые блоки."),
     },
-    1: {  # Базовый — вторые варианты
-        "platform_variants": {"water": (0, 1), "stone": (0, 1), "organic": (0, 1), "iron": (0, 1), "quartz": (0, 1)},
-        "robots": ("A1",),
-        "upgrades": ("soil_compactor",),
-        "description": _t("Компактные варианты платформ. Доступен пресс для грунта (блоки из 5 грунта)."),
-    },
-    2: {  # Средний — третьи варианты + A2
-        "platform_variants": {"water": (0, 1, 2), "stone": (0, 1, 2), "organic": (0, 1, 2), "iron": (0, 1, 2), "quartz": (0, 1, 2)},
+    1: {  # A2 · быт
+        "platform_variants": {res: (0, 1) for res in RESOURCES},
         "robots": ("A1", "A2"),
+        "upgrades": ("soil_compactor",),
+        "description": _t("A2: компактные платформы, робот A2 и пресс для грунта (блок из 3 единиц)."),
+    },
+    2: {  # B1.1 · порог
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": ("A1", "A2", "B1.1"),
         "upgrades": ("soil_compactor", "auto_unloader", "water_purifier"),
-        "description": _t("Все варианты платформ! Робот A2 копет глину и металл. Автовыгрузка и очистка воды."),
+        "description": _t("B1.1: все варианты платформ, робот B1.1, автовыгрузка и очистка воды."),
     },
-    3: {  # Продвинутый — эффективность + A3
-        "platform_variants": {"water": (0, 1, 2), "stone": (0, 1, 2), "organic": (0, 1, 2), "iron": (0, 1, 2), "quartz": (0, 1, 2)},
-        "robots": ("A1", "A2", "A3"),
+    3: {  # B1.2 · порог+
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": ("A1", "A2", "B1.1", "B1.2"),
+        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster"),
+        "description": _t("B1.2: робот B1.2, усилитель добычи +50% и быстрый шаг по карте."),
+    },
+    4: {  # B2.1 · свободно
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": ("A1", "A2", "B1.1", "B1.2", "B2.1"),
         "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster", "remote_control"),
-        "description": _t("Робот A3 — автономная добыча. Усилитель добычи +50%. Дистанционное управление."),
+        "description": _t("B2.1: робот B2.1, дистанционное управление отрядом и здания высотой 4."),
     },
-    4: {  # Эксперт — автоматизация + A4
-        "platform_variants": {"water": (0, 1, 2), "stone": (0, 1, 2), "organic": (0, 1, 2), "iron": (0, 1, 2), "quartz": (0, 1, 2)},
-        "robots": ("A1", "A2", "A3", "A4"),
-        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster", "remote_control", "logistics_network", "auto_builder"),
-        "description": _t("Робот A4 — строительство платформ за вас. Логистическая сеть доставляет ресурсы."),
+    5: {  # B2.2 · свободно+
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": ("A1", "A2", "B1.1", "B1.2", "B2.1", "B2.2"),
+        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster",
+                     "remote_control", "logistics_network"),
+        "description": _t("B2.2: робот B2.2, логистическая сеть и здания высотой 5."),
     },
-    5: {  # Мастер — всё, включая экспериментальное
-        "platform_variants": {"water": (0, 1, 2), "stone": (0, 1, 2), "organic": (0, 1, 2), "iron": (0, 1, 2), "quartz": (0, 1, 2)},
-        "robots": ("A1", "A2", "A3", "A4", "A5"),
-        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster", "remote_control", "logistics_network", "auto_builder", "terraform_core"),
-        "description": _t("Робот A5 — полная терраформация. Ядро терраформирования меняет биом планеты."),
+    6: {  # C1 · продвинутый
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": ("A1", "A2", "B1.1", "B1.2", "B2.1", "B2.2", "C1"),
+        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster",
+                     "remote_control", "logistics_network", "auto_builder"),
+        "description": _t("C1: робот C1, автостроитель и шпили высотой 6."),
+    },
+    7: {  # C2 · мастерство
+        "platform_variants": dict(_ALL_VARIANTS),
+        "robots": tuple(strategy.LEVELS),
+        "upgrades": ("soil_compactor", "auto_unloader", "water_purifier", "yield_booster",
+                     "remote_control", "logistics_network", "auto_builder", "terraform_core"),
+        "description": _t("C2: робот C2, ядро терраформирования и башни высотой 8."),
     },
 }
 
+# Высота готового здания по варианту платформы. Фундамент ниже, башни выше.
+PLATFORM_HEIGHT: dict[str, tuple[int, ...]] = {
+    "water": (1, 2, 4),
+    "stone": (1, 2, 3),
+    "organic": (1, 2, 3),
+    "iron": (2, 3, 6),
+    "quartz": (2, 4, 8),
+}
+
+
+def platform_height(resource: str, variant_index: int = 0) -> int:
+    heights = PLATFORM_HEIGHT.get(resource, (1,))
+    return heights[max(0, min(len(heights) - 1, int(variant_index)))]
+
+
+_standing_cache: tuple[float, int, "strategy.Standing"] | None = None
+
+
+def current_standing(refresh: bool = False) -> "strategy.Standing":
+    """Положение пилота с кэшем на 5 секунд (редро каждый тик не должен грузить словарь)."""
+    global _standing_cache
+    now = time.monotonic()
+    if not refresh and _standing_cache is not None and now - _standing_cache[0] < 5.0:
+        return _standing_cache[2]
+    st = strategy.standing()
+    _standing_cache = (now, id(st), st)
+    return st
+
 
 def get_language_level_from_tiers(language_level: int) -> int:
-    """Возвращает уровень для использования в PROGRESSION_TIERS на основе объединенного языка.
-    Уровень 0-5 от английского + немецкого."""
-    return min(language_level, 5)
+    """Индекс уровня 0…7 для PROGRESSION_TIERS."""
+    return max(0, min(len(strategy.LEVELS) - 1, int(language_level)))
+
 
 def _language_xp(path: Path) -> int:
     """Читает XP из файла прогресса языка."""
@@ -259,36 +309,26 @@ def _language_xp(path: Path) -> int:
 
 
 def get_language_level() -> int:
-    """Возвращает текущий уровень языка пилота (0-5).
-    Объединяет прогресс английского и немецкого языков."""
-    try:
-        from stamina.english.progress import Progress
-        from stamina import pilots
-        pilot_dir = pilots.active_dir()
-        eng_prog = Progress(pilot_dir / "english.json")
-        eng_lvl, _, _ = eng_prog.level()
-        eng_level = max(0, min(5, eng_lvl - 1))
-    except Exception:
-        eng_level = 0
+    """Текущий уровень пилота 0…7 (A1 … C2).
 
+    Учитывает английский CEFR, немецкий XP, задания тренажёра и роль капитана.
+    """
     try:
-        germ_path = pilot_dir / "german.json"
-        germ_xp = _language_xp(germ_path)
-        germ_level = int(germ_xp ** 0.5 / 50 ** 0.5) if germ_xp > 0 else 0
-        germ_level = max(0, min(5, germ_level))
-    except Exception:
-        germ_level = 0
+        return current_standing().current.index
+    except Exception:  # noqa: BLE001
+        return 0
 
-    # Уровень — максимум из английского и немецкого
-    level = max(eng_level, germ_level)
-    return level
+
+def get_level_name(index: int | None = None) -> str:
+    if index is None:
+        index = get_language_level()
+    return strategy.level_name(index)
 
 
 def _tier_index(language_level: int | None = None) -> int:
-    """Возвращает индекс тира на основе объединенного языка."""
     if language_level is None:
         language_level = get_language_level()
-    return min(language_level, 5)
+    return get_language_level_from_tiers(language_level)
 
 
 def get_unlocked_variants(resource: str, language_level: int | None = None) -> tuple[int, ...]:
@@ -313,7 +353,7 @@ def get_unlocked_upgrades(language_level: int | None = None) -> tuple[str, ...]:
 def get_tier_description(language_level: int | None = None) -> str:
     if language_level is None:
         language_level = get_language_level()
-    tier = PROGRESSION_TIERS.get(min(language_level, 5), PROGRESSION_TIERS[0])
+    tier = PROGRESSION_TIERS.get(get_language_level_from_tiers(language_level), PROGRESSION_TIERS[0])
     return tier["description"]
 
 
@@ -321,7 +361,7 @@ def get_next_tier_preview(language_level: int | None = None) -> dict | None:
     """Что откроется на следующем уровне — для мотивации в галерее."""
     if language_level is None:
         language_level = get_language_level()
-    next_level = min(language_level + 1, 5)
+    next_level = min(language_level + 1, len(strategy.LEVELS) - 1)
     if next_level == language_level:
         return None
     return PROGRESSION_TIERS.get(next_level)
@@ -358,6 +398,8 @@ class PlatformBlueprint:
     priority: int = 0                # 0 = неактивен, >0 = приоритет (больше = важнее)
     requires_a2: bool = False        # центр недоступен без A2
     variant_index: int = 0           # какой вариант из PLATFORM_VARIANTS выбран
+    height: int = 1                  # высота готового здания
+    required_level: str = "A1"       # младший терраформер, который его построит
 
     def total_cells(self) -> int:
         return len(self.pattern)
@@ -398,20 +440,67 @@ def new_seed() -> int:
 
 
 def generate_finds(seed: int, w: int, h: int, exclude=()) -> dict:
-    """{(x, y): (ресурс, слой)} — детерминированно по сиду и размеру поля."""
-    rng = random.Random(f"terraformer-trainer:{int(seed)}:{int(w)}x{int(h)}")
+    """{(x, y): (ресурс, слой)} — детерминированно по сиду и размеру поля.
+
+    Для малых карт (≤ 40×24) использует фиксированный FIND_PLAN.
+    Для больших карт — масштабированную генерацию с плотностью ~6%.
+    """
+    # Порог для «большой» карты: больше старой GRID_W×GRID_H = 40×24 = 960 клеток
+    if w * h <= GRID_W * GRID_H:
+        # Старая логика для обратной совместимости
+        rng = random.Random(f"terraformer-trainer:{int(seed)}:{int(w)}x{int(h)}")
+        skip = set(exclude)
+        cells = [(x, y) for y in range(h) for x in range(w) if (x, y) not in skip]
+        rng.shuffle(cells)
+        out: dict = {}
+        i = 0
+        for res, layer, n in FIND_PLAN:
+            for _ in range(n):
+                if i >= len(cells):
+                    return out
+                out[cells[i]] = (res, layer)
+                i += 1
+        return out
+
+    # Большие карты: используем ту же логику, что find_for_cell, для всех клеток
+    return generate_finds_scaled(seed, w, h, exclude)
+
+
+def generate_finds_scaled(seed: int, w: int, h: int, exclude=()) -> dict:
+    """Генерация находок для большой карты с плотностью ~6%."""
     skip = set(exclude)
-    cells = [(x, y) for y in range(h) for x in range(w) if (x, y) not in skip]
-    rng.shuffle(cells)
     out: dict = {}
-    i = 0
-    for res, layer, n in FIND_PLAN:
-        for _ in range(n):
-            if i >= len(cells):
-                return out
-            out[cells[i]] = (res, layer)
-            i += 1
+    for y in range(h):
+        for x in range(w):
+            if (x, y) in skip:
+                continue
+            f = find_for_cell(seed, x, y)
+            if f:
+                out[(x, y)] = f
     return out
+
+
+def deposit_is_visible(model: "TrainerModel", x: int, y: int) -> bool:
+    """Check if a deposit at (x, y) should be drawn/rendered.
+
+    A deposit is visible for rendering if:
+    1. It's in the revealed set (found and shown to player), OR
+    2. It sits on a built platform center that's complete.
+    """
+    # Check if deposit exists at this position
+    if (x, y) not in model.finds:
+        return False
+
+    # 1. Revealed deposits are always visible
+    if (x, y) in model.revealed:
+        return True
+
+    # 2. Check if there's a complete platform at this location
+    for platform in model.platforms:
+        if platform.center == (x, y) and platform.complete:
+            return True
+
+    return False
 
 
 class TrainerModel:
@@ -432,12 +521,14 @@ class TrainerModel:
         else:
             self.depth = max(1, min(int(depth), len(LAYERS) + 2))
         self.dug = [[0] * self.w for _ in range(self.h)]
-        self.robot = [self.w // 2, self.h // 2]
+        self._robot = [self.w // 2, self.h // 2]
+        self.site: tuple[int, int, int, int] = SITE
         self.facing = (1, 0)
+        # Model-level holds (for backward compatibility with old saves only)
         self.holds = {name: 0 for name in LAYERS}
-        # расширяем отсеки для ресурсов платформ
         for r in RESOURCES:
             self.holds.setdefault(r, 0)
+        self.holds[strategy.SPICE] = 0
         self.active_hold = "soil"
         self.upgrades: tuple[str, ...] = get_unlocked_upgrades()
         self.blocks: list[tuple[int, int]] = []          # блоки на фундаменте (старая система)
@@ -453,6 +544,34 @@ class TrainerModel:
         # платформы добычи
         self.platforms: list[PlatformBlueprint] = []
         self._platform_priority_counter = 0
+        # ── стратегический слой ──────────────────────────────────────────────
+        self.developer = strategy.is_developer()
+        self.standing = current_standing()
+        self.credits = 0
+        self.mission_book = strategy.MissionBook()
+        self.units: list[strategy.Unit] = []
+        self.selected: set[str] = set()
+        self.explored: set[tuple[int, int]] = set()
+        self.worm = strategy.Sandworm(max(0, self.w - 6), max(0, self.h - 6))
+        self.worm_seen = False
+        self.worm_attacks = 0
+        self.max_build_height = 1
+        self.connected = 0
+        self._tick_count = 0
+        self._init_units()
+        self._update_explored()
+
+    @classmethod
+    def for_level(cls, level: str | None = None, depth: int | None = None,
+                  seed: int | None = None) -> "TrainerModel":
+        """Новая стратегическая смена: карта размером под уровень пилота.
+
+        Обычный ``TrainerModel()`` остаётся 40×24 (так его строят тесты и
+        старые чертежи); размер по уровню берётся только здесь.
+        """
+        name = level if level is not None else current_standing().current_level
+        w, h = strategy.map_size(name)
+        return cls(w, h, depth=depth, seed=seed)
 
     # -- находки ---------------------------------------------------------------
     @property
@@ -463,6 +582,601 @@ class TrainerModel:
     def found_types(self) -> list[str]:
         return [r for r in RESOURCES if self.finds_count.get(r, 0) > 0]
 
+    # -- отряд, выбор и приказы ------------------------------------------------
+    @property
+    def main_unit(self) -> strategy.Unit:
+        if not self.units:
+            self._init_units()
+        return self.units[0]
+
+    @property
+    def robot(self) -> list[int]:
+        """Позиция робота, синхронизированная с main_unit."""
+        if hasattr(self, 'units') and self.units:
+            return [self.main_unit.x, self.main_unit.y]
+        return self._robot
+
+    @robot.setter
+    def robot(self, value: list[int] | tuple[int, int]) -> None:
+        x, y = int(value[0]), int(value[1])
+        x = max(0, min(self.w - 1, x))
+        y = max(0, min(self.h - 1, y))
+        self._robot = [x, y]
+        if self.units:
+            self.main_unit.x = x
+            self.main_unit.y = y
+
+    def _init_units(self) -> None:
+        """Первый терраформер всегда есть; его клетка — прежний self.robot."""
+        if self.units:
+            return
+        level = self.standing.current_level if not self.developer else self.standing.current_level
+        u = strategy.Unit("u1", level, int(self.robot[0]), int(self.robot[1]), serial=1)
+        self._init_unit_holds(u)
+        self.units = [u]
+        self.selected = {"u1"}
+
+    def _init_unit_holds(self, unit: strategy.Unit) -> None:
+        """Initialize holds dict for a unit with all known resources at 0."""
+        unit.holds = {name: 0 for name in LAYERS}
+        for r in RESOURCES:
+            unit.holds.setdefault(r, 0)
+        unit.holds.setdefault(strategy.SPICE, 0)
+
+    def add_unit(self, level: str | None = None, x: int | None = None,
+                 y: int | None = None) -> strategy.Unit:
+        """Добавить терраформера. Место — рядом с главным, если не указано."""
+        level = strategy.level_name(strategy.level_index(level or self.standing.current_level))
+        if x is None or y is None:
+            mx, my = self.main_unit.x, self.main_unit.y
+            spots = ((1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1))
+            x, y = mx, my
+            for dx, dy in spots:
+                nx, ny = max(0, min(self.w - 1, mx + dx)), max(0, min(self.h - 1, my + dy))
+                if not any(u.x == nx and u.y == ny for u in self.units):
+                    x, y = nx, ny
+                    break
+        serial = sum(1 for u in self.units if u.level == level) + 1
+        uid = f"u{len(self.units) + 1}"
+        while any(u.uid == uid for u in self.units):
+            uid += "x"
+        unit = strategy.Unit(uid, level, int(x), int(y), serial=serial)
+        self._init_unit_holds(unit)
+        self.units.append(unit)
+        self.mission_book.push(strategy.Alert(
+            "reward", _t("Новый терраформер {0}").format(unit.name),
+            _t("Уровень {0} · высота зданий до {1}").format(level, unit.max_height), level))
+        return unit
+
+    def sync_units(self) -> list[strategy.Unit]:
+        """Выдать положенные терраформеры: второй того же уровня и следующий.
+
+        Правило пилота: второй — если идём с опережением (≥50 % уровня),
+        следующий — если текущий пройден больше чем на 80 %.
+        Разработчику доступны все восемь уровней.
+        """
+        added: list[strategy.Unit] = []
+        if not self.units:
+            self._init_units()
+        st = self.standing
+        if self.developer:
+            have = {u.level for u in self.units}
+            for lv in strategy.LEVELS:
+                if lv not in have:
+                    added.append(self.add_unit(lv))
+            return added
+        # текущий уровень: хотя бы один
+        if not any(u.level == st.current_level for u in self.units):
+            added.append(self.add_unit(st.current_level))
+        # второй того же уровня
+        same = [u for u in self.units if u.level == st.current_level]
+        if st.second_unit and len(same) < 2:
+            added.append(self.add_unit(st.current_level))
+        # следующий уровень
+        if st.next_unit and not any(u.level == st.next_level for u in self.units):
+            added.append(self.add_unit(st.next_level))
+        return added
+
+    def unit_at(self, x: int, y: int) -> strategy.Unit | None:
+        for u in self.units:
+            if u.x == x and u.y == y:
+                return u
+        return None
+
+    def selected_units(self) -> list[strategy.Unit]:
+        return [u for u in self.units if u.uid in self.selected]
+
+    def active_unit(self, unit: strategy.Unit | None = None) -> strategy.Unit:
+        """Return the unit to act on: explicit unit, or selected unit, or main_unit."""
+        if unit is not None:
+            return unit
+        selected = self.selected_units()
+        if selected:
+            return selected[0]
+        return self.main_unit
+
+    def select_rect(self, x0: int, y0: int, x1: int, y1: int) -> list[strategy.Unit]:
+        picked = strategy.units_in_rect(self.units, x0, y0, x1, y1)
+        self.selected = {u.uid for u in picked}
+        return picked
+
+    def clear_selection(self) -> None:
+        self.selected.clear()
+
+    def select_all(self) -> list[strategy.Unit]:
+        self.selected = {u.uid for u in self.units}
+        return list(self.units)
+
+    def _blocked_cells(self) -> set[tuple[int, int]]:
+        blocked = set(self.springs)
+        # Блоки фундамента и платформ — непроходимы
+        blocked.update(self.blocks)
+        blocked.update(self.platform_blocks)
+        # Здания — центр здания и все клетки, которые занимает здание по высоте
+        for b in self.buildings:
+            blocked.add(tuple(b.center))
+            # Здание занимает клетки вокруг центра в зависимости от высоты
+            # Для простоты блокируем квадрат height x height вокруг центра
+            h = max(1, b.height)
+            cx, cy = b.center
+            for dy in range(-(h - 1), h):
+                for dx in range(-(h - 1), h):
+                    bx, by = cx + dx, cy + dy
+                    if 0 <= bx < self.w and 0 <= by < self.h:
+                        blocked.add((bx, by))
+        # Ямы (dug > 0) непроходимы — роботы/юниты не могут по ним ходить
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.dug[y][x] > 0:
+                    blocked.add((x, y))
+        return blocked
+
+    def command_move(self, tx: int, ty: int) -> dict[str, int]:
+        """Приказ выделенным идти. Пустая рамка — приказ главному."""
+        units = self.selected_units() or [self.main_unit]
+        result = strategy.issue_move(units, tx, ty, self.w, self.h, self._blocked_cells())
+        if not any(result.values()):
+            self.mission_book.push(strategy.Alert(
+                "warn", _t("Путь закрыт"),
+                _t("Клетка {0},{1} недоступна — обойдите преграду.").format(tx, ty),
+                units[0].level))
+        return result
+
+    def apply_control_preset(self, preset: str) -> None:
+        """Применить пресет управления отрядом.
+
+        'one'  — выбранный (или главный) manual, остальные autonomous
+        'two'  — первые два manual, остальные autonomous
+        'all'  — все manual
+        'semi' — все semi-autonomous
+        """
+        if preset not in ("one", "two", "all", "semi"):
+            return
+        units = self.units
+        if not units:
+            return
+
+        if preset == "all":
+            for u in units:
+                u.mode = "manual"
+                u.path = []
+                u.order = ""
+                u.target = None
+        elif preset == "semi":
+            for u in units:
+                u.mode = "semi-autonomous"
+        elif preset == "one":
+            # Выбранный или главный -> manual, остальные -> autonomous
+            selected = self.selected_units()
+            main = selected[0] if selected else self.main_unit
+            for u in units:
+                if u is main:
+                    u.mode = "manual"
+                    u.path = []
+                    u.order = ""
+                    u.target = None
+                else:
+                    u.mode = "autonomous"
+        elif preset == "two":
+            # Первые два -> manual, остальные -> autonomous
+            for i, u in enumerate(units):
+                if i < 2:
+                    u.mode = "manual"
+                    u.path = []
+                    u.order = ""
+                    u.target = None
+                else:
+                    u.mode = "autonomous"
+
+    def tick_units(self) -> bool:
+        """Шаг отряда по маршрутам. True — кто-то сдвинулся."""
+        moved_any = False
+        for u in self.units:
+            steps = strategy.unit_speed(u.level)
+            for _ in range(steps):
+                if not u.path:
+                    break
+                nx, ny = u.path.pop(0)
+                if 0 <= nx < self.w and 0 <= ny < self.h:
+                    u.x, u.y = nx, ny
+                    moved_any = True
+            if moved_any:
+                self.explored.update(self._visible_from(u))
+        if moved_any:
+            self._robot = [self.main_unit.x, self.main_unit.y]
+            self._maybe_expand()
+        return moved_any
+
+    def tick_autonomous(self) -> bool:
+        """Автономное поведение юнитов не в manual режиме.
+        Возвращает True, если какой-то юнит выполнил действие или сдвинулся."""
+        moved_any = False
+        for u in self.units:
+            if u.mode == "manual":
+                continue
+            # Если есть путь — идём по нему
+            if u.path:
+                steps = strategy.unit_speed(u.level)
+                for _ in range(steps):
+                    if not u.path:
+                        break
+                    nx, ny = u.path.pop(0)
+                    if 0 <= nx < self.w and 0 <= ny < self.h:
+                        u.x, u.y = nx, ny
+                        moved_any = True
+                if moved_any:
+                    self.explored.update(self._visible_from(u))
+                continue
+
+            # Нет пути — ищем работу
+            cap = self._hold_cap()
+            soil = u.holds.get("soil", 0)
+            has_finds = any(v > 0 for k, v in u.holds.items() if k not in ("soil", "spice"))
+
+            # Полный отсек — едем разгружаться (на фундамент или платформу)
+            if soil >= cap:
+                # Ищем ближайшую незавершённую платформу или фундамент
+                target = self._find_build_target(u)
+                if target:
+                    tx, ty = target
+                    blocked = self._blocked_cells()
+                    path = strategy.pathfind((u.x, u.y), (tx, ty), self.w, self.h, blocked)
+                    if path:
+                        u.path = path
+                        u.target = (tx, ty)
+                        u.order = "auto_unload"
+                        continue
+
+            # Пустой отсек — копаем (ищем клетку с грунтом)
+            if not has_finds and soil < cap:
+                target = self._find_dig_target(u)
+                if target:
+                    tx, ty = target
+                    blocked = self._blocked_cells()
+                    path = strategy.pathfind((u.x, u.y), (tx, ty), self.w, self.h, blocked)
+                    if path:
+                        u.path = path
+                        u.target = (tx, ty)
+                        u.order = "auto_dig"
+                        continue
+
+            # В semi-autonomous режиме после выполнения задания ждём
+            if u.mode == "semi-autonomous" and u.order:
+                u.order = ""
+                u.target = None
+
+        if moved_any:
+            self._robot = [self.main_unit.x, self.main_unit.y]
+            self._maybe_expand()
+        return moved_any
+
+    def _find_build_target(self, unit: strategy.Unit) -> tuple[int, int] | None:
+        """Найти ближайшую клетку для укладки блока (платформа или фундамент)."""
+        # Приоритет: платформы с приоритетом > 0, потом остальные незавершённые
+        best = None
+        best_dist = float('inf')
+        for p in self.platforms:
+            if p.complete:
+                continue
+            for rel in p.pattern:
+                ax, ay = p.cell_abs(rel)
+                if (ax, ay) in self.platform_blocks:
+                    continue
+                if not (0 <= ax < self.w and 0 <= ay < self.h):
+                    continue
+                if unit.max_height < p.height and not self.developer:
+                    continue
+                d = abs(ax - unit.x) + abs(ay - unit.y)
+                if d < best_dist:
+                    best_dist = d
+                    best = (ax, ay)
+        if best:
+            return best
+        # Фундамент
+        if not self.walls_open:
+            for cell in self.site_cells():
+                if cell not in self.blocks:
+                    d = abs(cell[0] - unit.x) + abs(cell[1] - unit.y)
+                    if d < best_dist:
+                        best_dist = d
+                        best = cell
+        return best
+
+    def _find_dig_target(self, unit: strategy.Unit) -> tuple[int, int] | None:
+        """Найти ближайшую клетку для копки (с грунтом, не на стройплощадке, не источник)."""
+        best = None
+        best_dist = float('inf')
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.on_site(x, y):
+                    continue
+                if (x, y) in self.springs:
+                    continue
+                if self.dug[y][x] >= self.depth or self.dug[y][x] >= len(LAYERS):
+                    continue
+                if self.dug[y][x] > 0:
+                    continue  # уже копали
+                d = abs(x - unit.x) + abs(y - unit.y)
+                if d < best_dist:
+                    best_dist = d
+                    best = (x, y)
+        return best
+
+    def _maybe_expand(self) -> bool:
+        """Если юнит подошёл к краю — карта растёт вокруг него."""
+        for u in self.units:
+            if u.x < 3 or u.y < 3 or u.x > self.w - 4 or u.y > self.h - 4:
+                if self.expand_around(u.x, u.y):
+                    return True
+        return False
+
+    def expand_around(self, x: int, y: int, pad: int = 4) -> bool:
+        """Расширить карту на ``pad`` клеток с той стороны, где стоит юнит."""
+        left = pad if x < pad else 0
+        right = pad if x > self.w - 1 - pad else 0
+        top = pad if y < pad else 0
+        bottom = pad if y > self.h - 1 - pad else 0
+        if not (left or right or top or bottom):
+            return False
+        old_w, old_h = self.w, self.h
+        new_w, new_h = old_w + left + right, old_h + top + bottom
+        if new_w > 400 or new_h > 400:
+            return False
+        self._shift_world(left, top, new_w, new_h)
+        # новые клетки получают детерминированные находки
+        for ny in range(new_h):
+            for nx in range(new_w):
+                if left <= nx < left + old_w and top <= ny < top + old_h:
+                    continue
+                cell = (nx, ny)
+                if cell in self.finds or self.on_site(nx, ny):
+                    continue
+                f = strategy.find_for_cell(self.seed, nx, ny)
+                if f:
+                    self.finds[cell] = f
+        self._update_explored()
+        self.mission_book.push(strategy.Alert(
+            "info", _t("Карта расширена"),
+            _t("Теперь {0}×{1} клеток.").format(new_w, new_h),
+            self.standing.current_level))
+        return True
+
+    def _shift_world(self, dx: int, dy: int, new_w: int, new_h: int) -> None:
+        """Сдвинуть все координаты при расширении влево/вверх."""
+        new_dug = [[0] * new_w for _ in range(new_h)]
+        for y, row in enumerate(self.dug):
+            for x, value in enumerate(row):
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < new_w and 0 <= ny < new_h:
+                    new_dug[ny][nx] = value
+        self.dug = new_dug
+
+        def sc(cell: tuple[int, int]) -> tuple[int, int]:
+            return (int(cell[0]) + dx, int(cell[1]) + dy)
+
+        self.finds = {sc(c): v for c, v in self.finds.items()}
+        self.revealed = {sc(c) for c in self.revealed}
+        self.explored = {sc(c) for c in self.explored}
+        self.platform_blocks = {sc(c) for c in self.platform_blocks}
+        self.blocks = [sc(c) for c in self.blocks]
+        for p in self.platforms:
+            p.center = sc(p.center)
+            p.built = {sc(c) for c in p.built}
+        for b in self.buildings:
+            b.center = sc(b.center)
+        for u in self.units:
+            u.x += dx
+            u.y += dy
+            u.path = [sc(c) for c in u.path]
+            if u.target:
+                u.target = sc(u.target)
+        self._robot = [self._robot[0] + dx, self._robot[1] + dy]
+        sx, sy, sw, sh = self.site
+        self.site = (sx + dx, sy + dy, sw, sh)
+        self.worm.x += dx
+        self.worm.y += dy
+        self.worm.trail = {sc(c): ttl for c, ttl in self.worm.trail.items()}
+        self.w = new_w
+        self.h = new_h
+
+    # -- туман войны -----------------------------------------------------------
+    def _visible_from(self, unit: strategy.Unit) -> set[tuple[int, int]]:
+        r = unit.sight
+        out: set[tuple[int, int]] = set()
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dy * dy > r * r + r:
+                    continue
+                x, y = unit.x + dx, unit.y + dy
+                if 0 <= x < self.w and 0 <= y < self.h:
+                    out.add((x, y))
+        return out
+
+    def _visible_from_structure(self, building: BuildingBlueprint) -> set[tuple[int, int]]:
+        """Vision radius from structures. Only radar grants vision for now."""
+        if building.type != "radar":
+            return set()
+        # Radar at B2.2 level: large vision radius
+        r = 10
+        out: set[tuple[int, int]] = set()
+        bx, by = building.center
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dy * dy > r * r + r:
+                    continue
+                x, y = bx + dx, by + dy
+                if 0 <= x < self.w and 0 <= y < self.h:
+                    out.add((x, y))
+        return out
+
+    def visible_cells(self) -> set[tuple[int, int]]:
+        out: set[tuple[int, int]] = set()
+        for u in self.units:
+            out |= self._visible_from(u)
+        for b in self.buildings:
+            if b.built:
+                out |= self._visible_from_structure(b)
+        return out
+
+    def _update_explored(self) -> None:
+        self.explored |= self.visible_cells()
+
+    def is_visible(self, x: int, y: int, visible: set | None = None) -> bool:
+        return (x, y) in (visible if visible is not None else self.visible_cells())
+
+    def is_explored(self, x: int, y: int) -> bool:
+        return (x, y) in self.explored
+
+    # -- экономика и здания ----------------------------------------------------
+    def _update_connections(self) -> int:
+        """Коммуникация: здание связано, если рядом другое здание или база."""
+        centers = [tuple(b.center) for b in self.buildings] + [tuple(self.site[:2])]
+        n = 0
+        for b in self.buildings:
+            bx, by = b.center
+            b.connected = any(
+                (abs(bx - ox) + abs(by - oy)) <= 6 and (ox, oy) != (bx, by)
+                for ox, oy in centers
+            )
+            if b.connected:
+                n += 1
+        self.connected = n
+        return n
+
+    def tick_income(self) -> int:
+        """Завершённые и связанные здания приносят кредиты каждый тик."""
+        self._update_connections()
+        gain = 0
+        for b in self.buildings:
+            if b.built and b.connected:
+                gain += int(b.income)
+        if gain:
+            self.credits += gain
+        return gain
+
+    def build_structure(self, key: str, x: int | None = None, y: int | None = None,
+                        unit: strategy.Unit | None = None) -> tuple[bool, str]:
+        """Построить здание из каталога. Высота ограничена уровнем терраформера."""
+        spec = strategy.STRUCTURES.get(key)
+        if spec is None:
+            return False, _t("Неизвестное здание")
+        unit = unit or (self.selected_units() or [self.main_unit])[0]
+        if not strategy.structure_available(key, unit.level, self.developer):
+            need = strategy.level_name(spec.min_index)
+            return False, _t("Нужен терраформер {0} (высота {1})").format(need, spec.height)
+        if self.credits < spec.cost:
+            return False, _t("Нужно {0} кредитов (есть {1})").format(spec.cost, self.credits)
+        x = unit.x if x is None else int(x)
+        y = unit.y if y is None else int(y)
+        if not (0 <= x < self.w and 0 <= y < self.h):
+            return False, _t("за пределами поля")
+        if any(b.center == (x, y) for b in self.buildings):
+            return False, _t("Здесь уже есть здание")
+        self.credits -= spec.cost
+        b = BuildingBlueprint(key, (x, y))
+        b.height = spec.height
+        b.income = spec.income
+        b.built = True
+        self.buildings.append(b)
+        self.max_build_height = max(self.max_build_height, spec.height)
+        self._update_connections()
+        self.mission_book.push(strategy.Alert(
+            "reward", _t("Построено: {0}").format(spec.title),
+            _t("Высота {0} · доход {1}/тик").format(spec.height, spec.income), unit.level))
+        return True, _t("{0} построено (высота {1})").format(spec.title, spec.height)
+
+    # -- песчаный червь --------------------------------------------------------
+    def tick_worm(self) -> dict | None:
+        """Шаг червя: след, специя, атака техники на песке."""
+        self._tick_count += 1
+        if not self.worm.alive or self._tick_count % strategy.WORM_MOVE_EVERY:
+            return None
+        deposits = set(self.finds)
+        rocks = {c for c, f in self.finds.items() if f[0] == "stone"}
+        safe = strategy.worm_safe_cells(self.platform_blocks | set(self.blocks), rocks)
+        cell, spice = strategy.worm_step(self.worm, self.w, self.h, self.seed, deposits, safe)
+        self.worm_seen = True
+        event: dict = {"cell": cell, "spice": spice, "attacked": None}
+        if spice:
+            self.main_unit.holds[strategy.SPICE] = self.main_unit.holds.get(strategy.SPICE, 0) + 1
+            self.mission_book.push(strategy.Alert(
+                "reward", _t("Специя!"),
+                _t("Червь оставил специю. Соберите её в отсек находок."),
+                self.standing.current_level))
+        if cell is not None:
+            victim = self.unit_at(*cell)
+            if victim is not None:
+                victim.hp = max(0, victim.hp - strategy.WORM_DAMAGE)
+                self.worm_attacks += 1
+                event["attacked"] = victim.uid
+                self.mission_book.push(strategy.Alert(
+                    "warn", _t("Атака червя!"),
+                    _t("{0} повреждён: {1} HP. Уходите на фундамент.").format(victim.name, victim.hp),
+                    victim.level))
+                if victim.hp <= 0 and victim.uid != self.main_unit.uid:
+                    self.units.remove(victim)
+                    self.selected.discard(victim.uid)
+                elif victim.uid == self.main_unit.uid and victim.hp <= 0:
+                    victim.hp = 10
+        return event
+
+    # -- задания и статистика --------------------------------------------------
+    def stats(self) -> dict:
+        # Aggregate holds from all units
+        total_holds: dict[str, int] = {}
+        for u in self.units:
+            for res, val in u.holds.items():
+                total_holds[res] = total_holds.get(res, 0) + val
+        return {
+            "soil_dug": int(sum(sum(row) for row in self.dug)),
+            "finds": int(sum(self.finds_count.values())),
+            "platforms_complete": sum(1 for p in self.platforms if p.complete),
+            "buildings": len(self.buildings),
+            "buildings_complete": sum(1 for b in self.buildings if b.built),
+            "credits": int(self.credits),
+            "units": len(self.units),
+            "connected": int(self.connected),
+            "worm_seen": 1 if self.worm_seen else 0,
+            "worm_attacks": int(self.worm_attacks),
+            "spice": int(total_holds.get(strategy.SPICE, 0)),
+            "max_height": int(self.max_build_height),
+            "core": 1 if any(b.type == "core" and b.built for b in self.buildings) else 0,
+            "map_cells": int(self.w * self.h),
+            **{res: int(total_holds.get(res, 0)) for res in RESOURCES},
+        }
+
+    def refresh_standing(self) -> list[strategy.Unit]:
+        """Пересчитать права по заданиям и выдать новых терраформеров."""
+        game_pct = self.mission_book.stats_pct()
+        self.standing = strategy.standing(game_pct)
+        return self.sync_units()
+
+    def evaluate_missions(self) -> list[strategy.Mission]:
+        fresh = self.mission_book.evaluate(self.stats(), stamp=time.time())
+        if fresh:
+            self.credits += sum(m.reward_credits for m in fresh)
+        return fresh
+
     def _reveal(self, x: int, y: int, layer: int) -> dict | None:
         cell = (x, y)
         f = self.finds.get(cell)
@@ -470,6 +1184,7 @@ class TrainerModel:
             return None
         res = f[0]
         self.revealed.add(cell)
+        self.explored.add(cell)
         first = self.finds_count.get(res, 0) == 0
         self.finds_count[res] = self.finds_count.get(res, 0) + 1
         self.last_find = {"res": res, "first": first, "cell": cell, "layer": layer}
@@ -490,12 +1205,15 @@ class TrainerModel:
         if not pattern:
             return None
         requires_a2 = resource in DEEP_RESOURCES
+        height = platform_height(resource, variant_idx)
         bp = PlatformBlueprint(
             resource=resource,
             center=center,
             pattern=pattern,
             requires_a2=requires_a2,
             variant_index=variant_idx,
+            height=height,
+            required_level=strategy.level_for_height(height),
         )
         self.platforms.append(bp)
         # автоматически назначаем приоритет первой незавершённой платформе
@@ -540,16 +1258,19 @@ class TrainerModel:
             return HOLD_CAP_WITH_UPGRADES["soil_compactor"]
         return HOLD_CAP_WITH_UPGRADES["default"]
 
-    def try_place_block(self, x: int, y: int) -> tuple[bool, str]:
+    def try_place_block(self, x: int, y: int,
+                        unit: "strategy.Unit | None" = None) -> tuple[bool, str]:
         """
         Пытается поставить блок в клетку (x, y).
         Возвращает (success, message).
-        Блок тратится из отсека грунта (по умолчанию 10, или 5 с прессом).
+        Блок тратится из отсека грунта (по умолчанию 5, или 3 с прессом).
+        Высокое здание строит только терраформер подходящего уровня.
         """
+        unit = self.active_unit(unit)
         if not (0 <= x < self.w and 0 <= y < self.h):
             return False, _t("за пределами поля")
         cap = self._hold_cap()
-        if self.holds.get("soil", 0) < cap:
+        if unit.holds.get("soil", 0) < cap:
             return False, _t("отсек грунта не полон")
         # проверяем, принадлежит ли клетка какой-то платформе
         target_platform = None
@@ -561,13 +1282,19 @@ class TrainerModel:
         on_foundation = self.on_site(x, y) and not self.walls_open
         if not target_platform and not on_foundation:
             return False, _t("здесь нет чертежа платформы")
+        builder = unit
+        if target_platform and not self.developer:
+            if builder.max_height < target_platform.height:
+                return False, _t("Нужен терраформер {0}: здание высотой {1}").format(
+                    target_platform.required_level, target_platform.height)
         # тратим грунт
-        self.holds["soil"] = 0
+        unit.holds["soil"] = 0
         self.platform_blocks.add((x, y))
         if target_platform:
             target_platform.try_add_block(x, y)
             if target_platform.complete:
                 self._assign_next_priority()
+                self.max_build_height = max(self.max_build_height, target_platform.height)
                 return True, _t("платформа {0} готова!").format(target_platform.resource)
             return True, _t("блок уложен на платформу {0} ({1}%)").format(target_platform.resource, target_platform.progress_pct())
         else:
@@ -583,6 +1310,8 @@ class TrainerModel:
         """Вызывается каждый тик для завершённых платформ. Возвращает словарь наград."""
         gained: dict[str, int] = {}
         yield_mult = 1.5 if "yield_booster" in self.upgrades else 1.0
+        # Deposit to main unit (or first unit with space)
+        target_unit = self.main_unit
         for p in self.platforms:
             if p.complete:
                 res, base_amount = PLATFORM_YIELD.get(p.resource, (p.resource, 0))
@@ -591,30 +1320,41 @@ class TrainerModel:
                     if p.variant_index < len(VARIANT_YIELD_MULT.get(p.resource, (1.0,))):
                         mult = VARIANT_YIELD_MULT[p.resource][p.variant_index]
                     amount = int(base_amount * mult * yield_mult)
-                    self.holds[res] = self.holds.get(res, 0) + amount
+                    target_unit.holds[res] = target_unit.holds.get(res, 0) + amount
                     gained[res] = gained.get(res, 0) + amount
         return gained
 
     # -- стройплощадка -------------------------------------------------------
     def site_cells(self) -> list[tuple[int, int]]:
-        x, y, w, h = SITE
+        x, y, w, h = self.site
         return [(cx, cy) for cy in range(y, y + h) for cx in range(x, x + w)]
 
     def on_site(self, x: int, y: int) -> bool:
-        sx, sy, sw, sh = SITE
+        sx, sy, sw, sh = self.site
         return sx <= x < sx + sw and sy <= y < sy + sh
 
     # -- действия робота -----------------------------------------------------
-    def move(self, dx: int, dy: int) -> bool:
+    def move(self, dx: int, dy: int, unit: strategy.Unit | None = None) -> bool:
+        unit = self.active_unit(unit)
         self.facing = (dx, dy)
-        x = max(0, min(self.w - 1, self.robot[0] + dx))
-        y = max(0, min(self.h - 1, self.robot[1] + dy))
-        moved = (x, y) != (self.robot[0], self.robot[1])
-        self.robot = [x, y]
+        x = max(0, min(self.w - 1, unit.x + dx))
+        y = max(0, min(self.h - 1, unit.y + dy))
+        moved = (x, y) != (unit.x, unit.y)
+        unit.x, unit.y = x, y
+        if moved:
+            unit.path = []
+            self.explored.update(self._visible_from(unit))
+            self._maybe_expand()
+            # Sync robot to main_unit if main_unit moved
+            if unit is self.main_unit:
+                self.robot = [x, y]
         # auto_unloader: авто-укладка блока при заезде на клетку схемы
         if "auto_unloader" in self.upgrades and moved:
+            builder = unit
             for p in self.platforms:
                 if not p.complete and p.is_cell_part(x, y):
+                    if not self.developer and builder.max_height < p.height:
+                        continue
                     success = p.try_add_block(x, y)
                     if success:
                         self.platform_blocks.add((x, y))
@@ -625,8 +1365,13 @@ class TrainerModel:
 
     def dig(self) -> str:
         """ok | hold_full | too_deep | site | spring. Находка — в self.last_find."""
+        unit = self.active_unit()
+        return self.dig_at(unit.x, unit.y, unit)
+
+    def dig_at(self, x: int, y: int, unit: strategy.Unit | None = None) -> str:
+        """Dig at specific coordinates for a unit. Returns result string."""
+        unit = self.active_unit(unit)
         self.last_find = None
-        x, y = self.robot
         if self.on_site(x, y):
             return "site"
         if (x, y) in self.springs:
@@ -637,14 +1382,17 @@ class TrainerModel:
         hold = LAYERS[layers]
         # находка уходит в свой отсек, даже если отсек грунта полон
         self._reveal(x, y, layers)
-        if self.holds[hold] >= HOLD_CAP:
+        cap = self._hold_cap()
+        if unit.holds.get(hold, 0) >= cap:
             return "hold_full"
         self.dug[y][x] = layers + 1
-        self.holds[hold] += 1
+        unit.holds[hold] = unit.holds.get(hold, 0) + 1
         return "ok"
 
-    def hold_full(self, name: str = "soil") -> bool:
-        return self.holds.get(name, 0) >= HOLD_CAP
+    def hold_full(self, name: str = "soil", unit: strategy.Unit | None = None) -> bool:
+        unit = self.active_unit(unit)
+        cap = self._hold_cap()
+        return unit.holds.get(name, 0) >= cap
 
     def switch_hold(self) -> str:
         try:
@@ -654,8 +1402,10 @@ class TrainerModel:
         self.active_hold = LAYERS[(idx + 1) % len(LAYERS)]
         return self.active_hold
 
-    def unload(self) -> str:
-        if self.holds.get("soil", 0) < HOLD_CAP:
+    def unload(self, unit: strategy.Unit | None = None) -> str:
+        unit = self.active_unit(unit)
+        cap = self._hold_cap()
+        if unit.holds.get("soil", 0) < cap:
             return "not_full"
         site = self.site_cells()
         if len(self.blocks) >= len(site):
@@ -664,26 +1414,28 @@ class TrainerModel:
         if free is None:
             return "done"
         self.blocks.append(free)
-        self.holds["soil"] = 0
+        unit.holds["soil"] = 0
         if len(self.blocks) >= len(site):
             self.walls_open = True
             return "complete"
         return "ok"
 
-    def _check_resources(self, resource: str, amount: int) -> bool:
-        """Проверяет, достаточно ли ресурса."""
-        return self.holds.get(resource, 0) >= amount
+    def _check_resources(self, resource: str, amount: int, unit: strategy.Unit | None = None) -> bool:
+        """Проверяет, достаточно ли ресурса у юнита."""
+        unit = self.active_unit(unit)
+        return unit.holds.get(resource, 0) >= amount
 
-    def build_shelter(self) -> str | None:
+    def build_shelter(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит укрытие (стена) из kamienia + воды. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("stone", 1):
+        if not self._check_resources("stone", 1, unit):
             return _t("Не хватает камня")
-        if not self._check_resources("water", 1):
+        if not self._check_resources("water", 1, unit):
             return _t("Не хватает воды")
-        self.holds["stone"] = 0
-        self.holds["water"] = 0
+        unit.holds["stone"] = 0
+        unit.holds["water"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -693,18 +1445,21 @@ class TrainerModel:
             # если платформ нет, используем текущую позицию робота
             center = tuple(self.robot)
         self.buildings.append(BuildingBlueprint(_BUILDING_SHELTER, center))
+        self.buildings[-1].built = True
+        self._update_connections()
         return _t("Укрытие построено! +10 очков")
 
-    def build_greenhouse(self) -> str | None:
+    def build_greenhouse(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит теплицу из органики + воды. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("organic", 1):
+        if not self._check_resources("organic", 1, unit):
             return _t("Не хватает органики")
-        if not self._check_resources("water", 1):
+        if not self._check_resources("water", 1, unit):
             return _t("Не хватает воды")
-        self.holds["organic"] = 0
-        self.holds["water"] = 0
+        unit.holds["organic"] = 0
+        unit.holds["water"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -713,18 +1468,21 @@ class TrainerModel:
         if center is None:
             center = tuple(self.robot)
         self.buildings.append(BuildingBlueprint(_BUILDING_GREENHOUSE, center))
+        self.buildings[-1].built = True
+        self._update_connections()
         return _t("Теплица построена! +15 очков")
 
-    def build_energy_panel(self) -> str | None:
+    def build_energy_panel(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит энергопанель из кварца + железа. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("quartz", 1):
+        if not self._check_resources("quartz", 1, unit):
             return _t("Не хватает кварца")
-        if not self._check_resources("iron", 1):
+        if not self._check_resources("iron", 1, unit):
             return _t("Не хватает железа")
-        self.holds["quartz"] = 0
-        self.holds["iron"] = 0
+        unit.holds["quartz"] = 0
+        unit.holds["iron"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -733,6 +1491,8 @@ class TrainerModel:
         if center is None:
             center = tuple(self.robot)
         self.buildings.append(BuildingBlueprint(_BUILDING_ENERGY_PANEL, center))
+        self.buildings[-1].built = True
+        self._update_connections()
         return _t("Энергопанель построена! +20 очков")
 
     def progress(self) -> tuple[int, int]:
@@ -763,24 +1523,41 @@ class TrainerModel:
                 "center": list(b.center),
                 "built": b.built,
                 "score": b.score,
+                "height": b.height,
+                "income": b.income,
+                "connected": b.connected,
             })
+        units_data = []
+        for u in self.units:
+            units_data.append({**u.to_dict()})
         return {
             "kind": "terraformer_trainer",
-            "version": 3,
+            "version": 5,
             "w": self.w,
             "h": self.h,
             "depth": self.depth,
             "dug": [row[:] for row in self.dug],
             "robot": list(self.robot),
-            "holds": dict(self.holds),
+            "holds": dict(self.holds),  # legacy model-level holds for backward compat
             "blocks": [[x, y] for x, y in self.blocks],
             "platform_blocks": [[x, y] for x, y in sorted(self.platform_blocks)],
             "walls_open": bool(self.walls_open),
             "seed": self.seed,
             "revealed": [[x, y] for x, y in sorted(self.revealed)],
+            "explored": [[x, y] for x, y in sorted(self.explored)],
             "finds_count": dict(self.finds_count),
             "platforms": platforms_data,
             "buildings": buildings_data,
+            "site": list(self.site),
+            "credits": int(self.credits),
+            "units": units_data,
+            "selected": sorted(self.selected),
+            "missions": self.mission_book.to_dict(),
+            "worm": self.worm.to_dict(),
+            "worm_seen": bool(self.worm_seen),
+            "worm_attacks": int(self.worm_attacks),
+            "max_build_height": int(self.max_build_height),
+            "connected": int(self.connected),
         }
 
     @classmethod
@@ -895,6 +1672,8 @@ class TrainerModel:
                         priority=priority,
                         requires_a2=requires_a2,
                         variant_index=variant_index,
+                        height=platform_height(resource, variant_index),
+                        required_level=strategy.level_for_height(platform_height(resource, variant_index)),
                     )
                     model.platforms.append(bp)
                     model.platform_blocks.update(built)
@@ -923,12 +1702,102 @@ class TrainerModel:
                     b = BuildingBlueprint(btype, center)
                     b.built = built
                     b.score = score
+                    b.height = int(bd.get("height", b.height))
+                    b.income = int(bd.get("income", b.income))
+                    b.connected = bool(bd.get("connected", False))
                     model.buildings.append(b)
                 except Exception:  # noqa: BLE001
                     pass
         # также восстанавливаем holds для ресурсов платформ
         for r in RESOURCES:
             model.holds.setdefault(r, 0)
+        model.holds.setdefault(strategy.SPICE, 0)
+        if isinstance(holds, dict):
+            for name in list(model.holds):
+                try:
+                    model.holds[name] = max(0, int(holds.get(name, model.holds[name])))
+                except (TypeError, ValueError):
+                    pass
+        # ── стратегический слой: площадка, туман, отряд, задания, червь ──────
+        site = d.get("site")
+        if isinstance(site, (list, tuple)) and len(site) >= 4:
+            try:
+                model.site = tuple(int(v) for v in site[:4])  # type: ignore[assignment]
+            except (TypeError, ValueError):
+                model.site = SITE
+        explored = d.get("explored")
+        if isinstance(explored, list):
+            for item in explored:
+                try:
+                    model.explored.add((int(item[0]), int(item[1])))
+                except (TypeError, ValueError, IndexError):
+                    continue
+        else:
+            model.explored = set(model.revealed) | model.visible_cells()
+        try:
+            model.credits = max(0, int(d.get("credits", 0)))
+        except (TypeError, ValueError):
+            model.credits = 0
+        units_data = d.get("units")
+        if isinstance(units_data, list) and units_data:
+            restored: list[strategy.Unit] = []
+            for ud in units_data:
+                if not isinstance(ud, dict):
+                    continue
+                try:
+                    u = strategy.Unit.from_dict(ud)
+                except Exception:  # noqa: BLE001
+                    continue
+                u.x = max(0, min(model.w - 1, u.x))
+                u.y = max(0, min(model.h - 1, u.y))
+                restored.append(u)
+            if restored:
+                model.units = restored
+                model.robot = [restored[0].x, restored[0].y]
+                # Backward compatibility: if units don't have holds (old save),
+                # initialize them and put model-level holds into main_unit
+                if not restored[0].holds:
+                    for u in model.units:
+                        model._init_unit_holds(u)
+                    # Transfer legacy model.holds to main_unit
+                    for name, value in model.holds.items():
+                        if value > 0:
+                            model.main_unit.holds[name] = model.main_unit.holds.get(name, 0) + value
+        else:
+            model._init_units()
+            model.main_unit.x, model.main_unit.y = model.robot[0], model.robot[1]
+            # Backward compatibility: legacy blueprint (v4 or older) has no units,
+            # transfer model.holds to main_unit
+            for name, value in model.holds.items():
+                if value > 0:
+                    model.main_unit.holds[name] = model.main_unit.holds.get(name, 0) + value
+        selected = d.get("selected")
+        if isinstance(selected, list):
+            model.selected = {str(x) for x in selected if any(u.uid == str(x) for u in model.units)}
+        missions = d.get("missions")
+        if isinstance(missions, dict):
+            model.mission_book = strategy.MissionBook.from_dict(missions)
+        worm = d.get("worm")
+        if isinstance(worm, dict):
+            try:
+                model.worm = strategy.Sandworm.from_dict(worm)
+            except Exception:  # noqa: BLE001
+                pass
+        model.worm_seen = bool(d.get("worm_seen", False))
+        try:
+            model.worm_attacks = max(0, int(d.get("worm_attacks", 0)))
+        except (TypeError, ValueError):
+            model.worm_attacks = 0
+        try:
+            model.max_build_height = max(1, int(d.get("max_build_height", 1)))
+        except (TypeError, ValueError):
+            model.max_build_height = 1
+        try:
+            model.connected = max(0, int(d.get("connected", 0)))
+        except (TypeError, ValueError):
+            model.connected = 0
+        if model.units:
+            model.units[0].x, model.units[0].y = model.robot[0], model.robot[1]
         return model
 
 
@@ -939,15 +1808,25 @@ _BUILDING_ENERGY_PANEL = "energy_panel"
 
 
 class BuildingBlueprint:
-    """Чертеж объекта базы."""
+    """Чертеж объекта базы: высота, доход и связь с коммуникацией."""
+
     type: str
     center: tuple[int, int]
     built: bool = False
     score: int = 0
+    height: int = 1
+    income: int = 0
+    connected: bool = False
 
     def __init__(self, btype: str, center: tuple[int, int]) -> None:
         self.type = btype
         self.center = center
+        spec = strategy.STRUCTURES.get(btype)
+        if spec is not None:
+            self.score = spec.income
+            self.height = spec.height
+            self.income = spec.income
+            return
         if btype == _BUILDING_SHELTER:
             self.score = 10
         elif btype == _BUILDING_GREENHOUSE:
@@ -970,6 +1849,12 @@ class Camera:
         self.follow = True
         self._clamp()
 
+    def resize(self, w: int, h: int) -> None:
+        """Карта выросла — камера не должна упираться в старые границы."""
+        self.w = max(1, int(w))
+        self.h = max(1, int(h))
+        self._clamp()
+
     def _clamp(self) -> None:
         self.cx = max(0.0, min(float(self.w), self.cx))
         self.cy = max(0.0, min(float(self.h), self.cy))
@@ -985,10 +1870,40 @@ class Camera:
         self.zoom = max(ZOOM_MIN, self.zoom / ZOOM_STEP)
         return self.zoom
 
+    def zoom_at(self, direction: int, sx: float, sy: float, width: int, height: int) -> float:
+        """Ctrl+колесо: масштаб вокруг указателя мыши (клетка под курсором стоит)."""
+        old = self.cell_px()
+        wx = self.cx + (sx - width / 2.0) / old
+        wy = self.cy + (sy - height / 2.0) / old
+        if direction < 0:
+            self.zoom_in()
+        elif direction > 0:
+            self.zoom_out()
+        new = self.cell_px()
+        self.cx = wx - (sx - width / 2.0) / new
+        self.cy = wy - (sy - height / 2.0) / new
+        self.follow = False
+        self._clamp()
+        return self.zoom
+
+    def to_cell(self, sx: float, sy: float, width: int, height: int) -> tuple[int, int]:
+        """Экранная точка → клетка карты."""
+        cell = self.cell_px()
+        x = self.cx + (sx - width / 2.0) / cell
+        y = self.cy + (sy - height / 2.0) / cell
+        return int(math.floor(x)), int(math.floor(y))
+
     def pan(self, dx_cells: float, dy_cells: float) -> None:
         self.follow = False
         self.cx += dx_cells
         self.cy += dy_cells
+        self._clamp()
+
+    def center_on(self, x: float, y: float) -> None:
+        """Поставить камеру в клетку (миникарта, переход) и снять слежение."""
+        self.cx = float(x)
+        self.cy = float(y)
+        self.follow = False
         self._clamp()
 
     def reset(self, x: float, y: float) -> None:
@@ -1011,6 +1926,58 @@ class Camera:
             width / 2.0 + (x - self.cx) * cell,
             height / 2.0 + (y - self.cy) * cell,
         )
+
+
+# ─── миникарта ───────────────────────────────────────────────────────────────
+# Чистая геометрия без Tk: прямоугольник миникарты на экране и пересчёт
+# «клик ↔ клетка карты». Рисует и принимает клики уже lounge/trainer.py.
+
+def minimap_rect(canvas_w: int, canvas_h: int, map_w: int, map_h: int,
+                 margin: int = 10, bottom: int = 34,
+                 max_w: int = 190, max_h: int = 150) -> tuple[int, int, int, int]:
+    """Прямоугольник миникарты в правом нижнем углу, с сохранением пропорций."""
+    canvas_w = max(1, int(canvas_w))
+    canvas_h = max(1, int(canvas_h))
+    map_w = max(1, int(map_w))
+    map_h = max(1, int(map_h))
+    scale = min(max_w / map_w, max_h / map_h)
+    mw = max(24, int(round(map_w * scale)))
+    mh = max(18, int(round(map_h * scale)))
+    x1 = canvas_w - max(0, int(margin))
+    y1 = canvas_h - max(0, int(bottom))
+    return (x1 - mw, y1 - mh, x1, y1)
+
+
+def world_to_minimap(gx: float, gy: float, rect: tuple[int, int, int, int],
+                     map_w: int, map_h: int) -> tuple[float, float]:
+    """Клетка карты → точка на миникарте."""
+    x0, y0, x1, y1 = rect
+    fx = float(gx) / max(1, int(map_w))
+    fy = float(gy) / max(1, int(map_h))
+    return (x0 + fx * (x1 - x0), y0 + fy * (y1 - y0))
+
+
+def minimap_click_to_world(sx: float, sy: float, rect: tuple[int, int, int, int],
+                           map_w: int, map_h: int) -> tuple[float, float]:
+    """Клик по миникарте → клетка карты (дробная, с зажимом в границы)."""
+    x0, y0, x1, y1 = rect
+    mw = max(1, x1 - x0)
+    mh = max(1, y1 - y0)
+    fx = (float(sx) - x0) / mw
+    fy = (float(sy) - y0) / mh
+    fx = max(0.0, min(1.0, fx))
+    fy = max(0.0, min(1.0, fy))
+    map_w = max(1, int(map_w))
+    map_h = max(1, int(map_h))
+    return (fx * map_w, fy * map_h)
+
+
+def point_in_rect(x: float, y: float, rect: tuple[int, int, int, int] | None) -> bool:
+    """Попал ли клик в прямоугольник (None — мимо)."""
+    if rect is None:
+        return False
+    x0, y0, x1, y1 = rect
+    return x0 <= x <= x1 and y0 <= y <= y1
 
 
 def blueprint_path() -> Path:

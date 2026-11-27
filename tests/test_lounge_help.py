@@ -39,7 +39,8 @@ REQUIRED_LEVELS = {
         "search_replace", "undo_redo", "repeat_count",
     ],
     "terraformer": [
-        "stage_0", "stage_1", "stage_2", "stage_3", "stage_4", "stage_5",
+        "stage_0", "stage_1", "stage_2", "stage_3",
+        "stage_4", "stage_5", "stage_6", "stage_7",
     ],
     "orion": [
         "ru-01", "ru-02", "ru-03", "ru-04", "ru-05",
@@ -102,7 +103,7 @@ def test_loader_current_level_and_fallback():
     none = load_help("docker_trainer", None)
     assert none["id"] == "overview"
     assert load_help("trainer", "stage_2")["id"] == "stage_2"
-    assert load_help("terraformer", "stage_5")["id"] == "stage_5"
+    assert load_help("terraformer", "stage_7")["id"] == "stage_7"
     assert load_help("orion", "ru-01")["id"] == "ru-01"
     assert load_help("orion", "en-10")["id"] == "en-10"
     assert load_overview("vim_trainer")["id"] == "overview"

@@ -298,3 +298,164 @@ Problems: один тест `test_lesson_intro_explains_goal_and_traps` (нем�
 - Тесты: `test_languages_grammar_de_ui.py` (TestLessonIntro, TestTheory — зелёные), `test_english_grammar.py` (3/3), FR/ES/IT грамматика (78/78).
 
 **Не делал.** Карточки, сканер, «знаю», «в отсек», слияние в `master`, релиз.
+
+---
+
+## Терраформер как стратегия: Dune / Red Alert (26.11, ветка `agent/orion/terraformer-strategy`)
+
+Goal: «Тренажёр Терраформера» в «Отдыхе» — не учебная смена на A1–A4, а стратегия
+на лестнице языка A1…C2: отряд, задания-тревоги, туман войны, экономика, песчаный
+червь. Ветка от `master` (`d185c21`, тег `v3.9.12`).
+
+Done:
+- `stamina/terraformer_strategy.py` — чистый слой без Tk: `LEVELS` (A1, A2, B1.1,
+  B1.2, B2.1, B2.2, C1, C2), высоты 1…8, радиус обзора, скорость; `Standing`
+  (следующий уровень — когда предыдущий >80 %, второй юнит — от 50 %, разработчику
+  все восемь), `Alert`/`Mission`/`MissionBook` (24 задания, 3 на уровень),
+  `Unit`/`pathfind`/`formation_targets`/`issue_move`, `STRUCTURES` (8 зданий
+  с высотой, ценой, доходом и нужным уровнем), `Sandworm`/`worm_step` (след,
+  специя, обход месторождений, безопасные фундамент/скала), `find_for_cell`
+  для новых клеток карты, `community_snapshot` — задел под онлайн-карту сообщества.
+- `stamina/terraformer_trainer.py` — отсек грунта 5 (было 10); `PROGRESSION_TIERS`
+  переведены на CEFR; у платформы появились `height`/`required_level`; в модели —
+  отряд, выбор рамкой, приказы, расширение карты со сдвигом координат, туман
+  (`explored`/`visible`), связи зданий и доход за тик, стройка с проверкой высоты
+  и уровня, червь и его атаки; blueprint v4 хранит всё это и читает старые файлы.
+- `stamina/lounge/trainer.py` — 8-сегментная шкала языка; Ctrl+колесо — масштаб
+  вокруг курсора, СКМ — таскать карту; ПКМ-рамка выделяет отряд, клик по карте —
+  приказ идти, клик по терраформеру — выделить его; отрисовка юнитов, зданий,
+  тумана, следа червя, рамки и маршрутов; оверлеи «Задания · тревоги» (зелёные
+  галочки) и «Стройка · здания» (высота и нужный уровень); HUD с кредитами,
+  отрядом, заданиями и специей; галерея 2D/3D показывает высоту здания.
+- `help_texts/terraformer.json` — 8 этапов CEFR вместо шести старых; лобби
+  (`lounge/screen.py`) переименовано в «ТЕРРАФОРМЕР · СТРАТЕГИЯ ПЛАНЕТЫ».
+- i18n: 39 новых ключей добавлены в 7 локалей (ru/uk/en/de/es/fr/it) в конец
+  файлов, порядок и формат не тронуты. `tools/i18n_check.py`: 3295 ключей,
+  2998 переведено, ошибок подстановок 0; лишние ключи и пропуск
+  `МОСТИК RU/UA → {0}` — унаследованный долг master, не этот коммит.
+- Тесты: новый `tests/test_terraformer_strategy.py` (31 проверка: уровни, задания,
+  отряд и путь, туман/расширение, червь, стройка/доход, blueprint, зум камеры,
+  оверлеи, ПКМ/СКМ, этапы справки). Вместе с `test_terraformer_trainer` и
+  `test_lounge_help` — 72 проверки зелёные; `ci_gate --only contrast --only dep`
+  зелёный; ruff по изменённым файлам чистый.
+
+Проверено вручную: сборка 900×360 — оверлеи заданий/стройки, галерея, восемь
+юнитов разработчика, постройка башни, 60 тиков и след червя без ошибок Tk.
+
+Next: слияние в `master` (PR), затем обычный выпуск через CI. Успехи других
+отсеков (печать, скорочтение) пока не подмешаны в `Standing` — сейчас язык
+плюс выполненные задания; это следующий шаг, если пилот захочет.
+
+Problems: нет.
+
+### Stage 1 fix (26.11, ветка `agent/orion/terraformer-s1`)
+- Исправлены тесты: удалён пустой дубликат `test_ctrl_wheel_zooms_at_cursor`, удалён второй класс `LevelsTest`, добавлен `test_level_titles` с проверкой 8 русских названий (Высадка, Лагерь, Посёлок, Станция, Город, Агломерация, Колония, Цивилизация), переписаны `DevFlagTest` без патчинга `is_developer` (save/restore env, patch `pilots.is_captain`), исправлены UI-тесты клика и бокса (пустая клетка, корректные координаты drag).
+- `stamina/lounge/trainer.py`: инициализированы `_lmb_start`/`_lmb_box`, порядок проверок в `_on_lmb_down` (pause → gallery → overlay → box), убран лишний `bind("<Button-1>", _on_canvas_click)`, `_on_rmb_drag` — no-op, `_on_rmb_up` оставляет приказ без выделения, удалена отрисовка ПКМ-рамки, поправлен отступ и текст в `help_sections` («ЛКМ: рамка выделяет отряд, клик по юниту выделяет, клик по пустой земле снимает выделение; ПКМ — приказ идти»), `key_hint` добавил ЛКМ, убран stale-комментарий «ПКМ — рамка/приказ», удалён toast `_t("Снято выделение")`.
+- `stamina/terraformer_strategy.py`: `set_developer_mode` только переключает `_DEV`, не трогает `os.environ`.
+- `stamina/terraformer_trainer.py`: комментарий «A1 · выживание» → «A1 · Высадка».
+- ЛКМ box-select + клик по юниту/пустой земле, ПКМ — приказ идти, Ctrl+колесо и СКМ панорама без изменений, `--dev` / `STAR_TYPING_DEV=1` + проверка капитана.
+
+---
+
+## Изометрический вид (Stage 2) — ветка `agent/orion/terraformer-s2`
+
+Goal: добавить полноценную изометрическую проекцию в тренажёр терраформера:
+по нажатию `I` (или keycode 73) переключение между плоским (top-down) и изометрическим видом.
+Изометрия: ромбические тайлы 2:1, высота слоя видна, зум Ctrl+колесо вокруг курсора,
+корректный `pick_tile` (math.floor для отрицательных координат), видимые границы для отсечения.
+
+Done:
+- `stamina/lounge/iso.py` — чистый модуль проекции без Tk:
+  - константы `ZOOM_MIN=0.5`, `ZOOM_MAX=3.0`, `ZOOM_STEP=1.25` (совпадают с `Camera`);
+  - `tile_metrics` — метрики тайла для зума/канваса/камеры;
+  - `world_to_screen` / `screen_to_world` — прямая и обратная проекция (gz=0);
+  - `tile_polygon` — 8 координат ромба (top, right, bottom, left);
+  - `pick_tile` — экран → клетка, использует `math.floor` (не `int`);
+  - `zoom_at` — зум вокруг курсора, держит мировую точку под мышью;
+  - `visible_cell_bounds` — (min_gx, min_gy, max_gx, max_gy) для viewport culling.
+- `stamina/lounge/trainer.py` — интеграция изометрии:
+  - флаг `_iso_view = False` (переключается клавишей `I`);
+  - свойство `iso_view` (read-only);
+  - отдельный `_iso_zoom` для изометрии;
+  - `on_wheel` → `iso.zoom_at` при Ctrl+колесо в iso-режиме;
+  - `zoom_in`/`zoom_out` действия используют `_iso_zoom` в iso-режиме;
+  - `redraw` вызывает `_draw_iso` при `_iso_view`, иначе старый плоский код;
+  - `_draw_iso` — тайлы по диагоналям (порядок прорисовки: дальние → ближние),
+    находки, стройплощадка, блоки, рамка карты, здания, червь, отряд;
+  - хелперы: `_draw_buildings_iso`, `_draw_worm_iso`, `_draw_units_iso`,
+    `_draw_hud`, `_draw_overlays` (общие для обоих видов).
+- `tests/test_terraformer_iso.py` — 12 тестов:
+  - константы зума совпадают с Camera;
+  - round-trip world→screen→world (6 точек);
+  - `tile_polygon` порядок углов;
+  - `pick_tile` попадание, вне карты, math.floor для отрицательных;
+  - `zoom_at` in/out возврат, клампы, точка под курсором;
+  - `visible_cell_bounds` покрытие вьюпорта, кламп к краям;
+  - интеграция: `TrainerGame.iso_view` — property.
+- Исправлены два падения тестов и ruff:
+  - `key_hint()` сокращён до «…ЛКМ выбор · ПКМ ход · СКМ карта · I изо» (влезло в 1200 px);
+  - добавлен новый ключ i18n с переводом во все 7 локалей (ru/uk/en/de/es/fr/it);
+  - убран неиспользуемый `import math` из `tests/test_terraformer_iso.py`.
+- Все тесты зелёные: `test_terraformer_iso.py` (12/12), `test_terraformer_trainer.py` (включая `test_key_hint_fits_1280_in_all_languages` и `test_help_and_resource_keys_in_all_languages`), `test_terraformer_strategy.py`, `test_lounge_help` — без регрессий.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Next: слияние в `master` (PR), затем обычный выпуск через CI.
+
+---
+
+## Изометрический зум: surface-aware (Stage 2 fix, 26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить баг зума в изометрическом виде — `iso.zoom_at` делал unproject на `gz=0` (дно), а нужно на видимой **верхней поверхности** клетки под курсором (верхний ромб, который рисуется на `terrain_gz(dug) + 1`).
+
+Done:
+- `stamina/lounge/iso.py` — новые функции:
+  - `screen_to_world_at_gz(sx, sy, gz, m)` — обратная проекция на заданном gz.
+  - `point_in_diamond(sx, sy, polygon)` — hit-test точки в ромб (8 координат).
+  - `pick_surface(sx, sy, m, dug_grid, w, h)` — находит верхнюю видимую поверхность под курсором: ищет в окрестности seed-клетки (gz=0 unproject), сортирует кандидаты front-to-back (больше gx+gy — ближе к камере), возвращает `(gx, gy, top_gz)` где `top_gz = terrain_gz(dug) + 1`.
+  - `apply_zoom(direction, sx, sy, canvas_w, canvas_h, cam, zoom, dug_grid, w, h)` — surface-aware зум: при наличии `dug_grid` якорь на `pick_surface`, иначе fallback на `gz=0` (совместимость со старым `zoom_at`). Камера рассчитывается аналитически для нового зума, чтобы заданная мировая точка осталась на той же позиции экрана.
+- `stamina/lounge/trainer.py` — `on_wheel` (Ctrl+колесо в iso) теперь вызывает `apply_zoom` с `model.dug`, `model.w`, `model.h`.
+- `tests/test_terraformer_iso.py` — добавлены 4 новых тест-класса (18 проверок):
+  - `ScreenToWorldAtGzTest` — обратная проекция на gz≠0.
+  - `PointInDiamondTest` — попадание в ромб.
+  - `PickSurfaceTest` — поиск поверхности: ровная карта, высокая клетка рядом с ямой, отличие от gz=0 unproject.
+  - `ApplyZoomTest` — зум держит поверхностную точку под курсором, in/out возвращается к исходному, fallback без dug_grid.
+- Все тесты зелёные: `test_terraformer_iso.py` (30/30), `test_terraformer_trainer.py`, `test_terraformer_strategy.py`, `test_lounge_help` — без регрессий.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.
+
+---
+
+## Stage 2 fix5: texture fix + zoom anchor + worm gz + structures heights test (26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить оставшиеся баги из Stage 2: (1) процедурные текстуры не работали — `tk.PhotoImage(image=PIL)` выбрасывает TclError, нужно `ImageTk.PhotoImage`; (2) `apply_zoom` якоря на центре клетки, а должен на точной поверхностной точке через `screen_to_world_at_gz`; (3) червь рисовался на `terrain_gz + 1` вместо `terrain_gz` (как юниты); (4) добавить тест высот зданий STRUCTURES.
+
+Done:
+- `stamina/lounge/trainer.py`: `_ensure_textures` использует `ImageTk.PhotoImage` (import из PIL), сохраняет сильные ссылки в `self._texture_photos`, кэширует на зум-шаг (hw, hh); убран стаб `_get_texture_color`.
+- `stamina/lounge/iso.py`: `apply_zoom` теперь якоря через `screen_to_world_at_gz(sx, sy, surface_gz, m)` — точная поверхностная точка под курсором держится при зуме in/out.
+- `stamina/lounge/trainer.py`: `_draw_worm_iso` использует `terrain_gz(dug)` без +1 — червь на той же поверхности, что и юниты.
+- `tests/test_terraformer_iso.py`: добавлен класс `StructuresHeightsTest` (3 теста: потолки уровней, эталонные высоты, монотонность по уровням); удалён ложный `assertGreater` в `test_mixed_height_map_offset_cursor_stays_anchored` (gz=0 unproject того же (sx,sy) также закрепляет точку на том же луче — геометрически ожидаемо).
+- Исправлена ошибка отступов в `_draw_worm_iso` (метод был на 0 пробелов вместо 4), из-за чего `_draw_units_iso` считался вложенным.
+- Все тесты зелёные: `test_terraformer_iso.py` (32/32), `test_terraformer_trainer.py` (36/36), `test_terraformer_strategy.py` (39/39), `test_terraformer_bay.py` (12/12), `test_terraformer_models.py` (53/53) — всего 172 проверки.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.
+
+## Stage 2 fix4: feedback leftovers (26.11, ветка `agent/orion/terraformer-s2`)
+
+Goal: исправить оставшиеся замечания по Stage 2 изометрии: текстуры на верхних гранях, высоты зданий по потолкам уровней, apply_zoom якоря точно в курсор, след червя по поверхности, клавиши +/- зум вокруг центра экрана, поправить счётчик тестов в HANDOFF.
+
+Done:
+- `stamina/lounge/trainer.py`: `_ensure_textures` создаёт алмазные `ImageTk.PhotoImage` (песок, камень, специя) и кэширует их; `_draw_iso` рисует текстуры через `create_image` в центре верхней грани для `dug=0` (песок) и `0<dug<8` (камень), фоллбэк — заливка полигона.
+- `stamina/terraformer_strategy.py`: высоты зданий приведены к потолкам уровней — greenhouse 2→1, energy_panel 2→1, habitat 4→3, radar 5→3 (shelter/refinery/spire/core без изменений).
+- `apply_zoom` в `iso.py` использует `pick_surface` + `screen_to_world_at_gz` — якорь на видимой поверхности (исправлено в fix5).
+- `_draw_worm_iso`: след и тело червя на `terrain_gz(dug)` (было `dug + 1`, исправлено в fix5 на `terrain_gz(dug)`).
+- `on_key` в iso-режиме: клавиши `+`/`-` вызывают `iso.apply_zoom` с центром канваса `(w/2, h/2)`.
+- Исправлена ошибка отступов в `_draw_worm_iso` (метод был на 0 пробелов вместо 4), из-за чего `_draw_units_iso` считался вложенным.
+- Тесты на момент fix4: `test_terraformer_iso.py` (30/30), `test_terraformer_strategy.py` (39/39), `test_terraformer_trainer.py` (32/32), `test_lounge_help.py` (9/9) — всего 110 проверок. Итоговые цифры после fix5 см. выше.
+- `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
+
+Problems: нет.
+
+## Этап 3: большая карта, панорама, миникарта (27.11, `agent/orion/terraformer-s3-map`)
+- `MAP_SIZE` A1 64×40 … C2 100×60; `TrainerModel.for_level()` для новой смены (обычный `TrainerModel()` остаётся 40×24), стрелки/край/СКМ — панорама с зажимом, миникарта с кликом в плоском и изо-виде; `tests/test_terraformer_s3_map.py` (25), всего 197 passed, ruff чисто.

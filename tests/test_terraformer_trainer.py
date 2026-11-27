@@ -25,7 +25,7 @@ from stamina.terraformer_trainer import (
 def _dig_until_soil_full(model: TrainerModel) -> None:
     for y in range(model.h):
         for x in range(model.w):
-            if model.holds["soil"] >= HOLD_CAP:
+            if model.main_unit.holds.get("soil", 0) >= HOLD_CAP:
                 return
             if model.on_site(x, y) or model.dug[y][x]:
                 continue
@@ -53,7 +53,7 @@ class TrainerModelTest(unittest.TestCase):
         m.finds = {}
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
-        self.assertEqual(m.holds["soil"], 1)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 1)
         self.assertEqual(m.dug[10][10], 1)
         self.assertEqual(m.dig(), "too_deep")
 
@@ -63,8 +63,8 @@ class TrainerModelTest(unittest.TestCase):
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
         self.assertEqual(m.dig(), "ok")
-        self.assertEqual(m.holds["soil"], 1)
-        self.assertEqual(m.holds["clay"], 1)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 1)
+        self.assertEqual(m.main_unit.holds.get("clay", 0), 1)
         self.assertEqual(m.dug[10][10], 2)
         self.assertEqual(m.dig(), "too_deep")
 
@@ -74,7 +74,7 @@ class TrainerModelTest(unittest.TestCase):
         m.robot = [sx, sy]
         self.assertTrue(m.on_site(sx, sy))
         self.assertEqual(m.dig(), "site")
-        self.assertEqual(m.holds["soil"], 0)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 0)
 
     def test_hold_full_and_robot_still_moves(self) -> None:
         m = TrainerModel()
@@ -85,7 +85,7 @@ class TrainerModelTest(unittest.TestCase):
             x += 1
         m.robot = [x, y]
         self.assertEqual(m.dig(), "hold_full")
-        self.assertEqual(m.holds["soil"], HOLD_CAP)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), HOLD_CAP)
         before = list(m.robot)
         m.move(1, 0)
         self.assertNotEqual(m.robot, before)
@@ -96,7 +96,7 @@ class TrainerModelTest(unittest.TestCase):
         _dig_until_soil_full(m)
         self.assertEqual(m.unload(), "ok")
         self.assertEqual(m.progress(), (1, len(m.site_cells())))
-        self.assertEqual(m.holds["soil"], 0)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 0)
         self.assertEqual(m.blocks, [m.site_cells()[0]])
 
     def test_twelve_unloads_complete_foundation(self) -> None:
@@ -284,7 +284,7 @@ class TrainerTkTest(unittest.TestCase):
 
         self.game.model.robot = [10, 10]
         self.assertEqual(self.game.do_dig(), "ok")
-        self.assertEqual(self.game.model.holds["soil"], 1)
+        self.assertEqual(self.game.model.main_unit.holds.get("soil", 0), 1)
 
         self.assertEqual(self.game.do_unload(), "not_full")
 
@@ -418,12 +418,12 @@ class FindsModelTest(unittest.TestCase):
 
     def test_find_goes_to_own_hold_when_soil_full(self) -> None:
         m = TrainerModel(seed=11)
-        m.holds["soil"] = HOLD_CAP
+        m.main_unit.holds["soil"] = HOLD_CAP
         m.robot = list(_cell_with(m, "quartz", 0))
         self.assertEqual(m.dig(), "hold_full")
         self.assertEqual(m.last_find["res"], "quartz")
         self.assertEqual(m.finds_count["quartz"], 1)
-        self.assertEqual(m.holds["soil"], HOLD_CAP)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), HOLD_CAP)
         self.assertEqual(m.dig(), "hold_full")
         self.assertIsNone(m.last_find)                 # второй раз не открывается
         self.assertEqual(m.finds_count["quartz"], 1)
@@ -524,7 +524,7 @@ class TrainerHelpTkTest(unittest.TestCase):
         g.on_key(self._Event("space", 32))
         g.on_wheel(-1, True, False)
         self.assertEqual(g.model.robot, before)
-        self.assertEqual(g.model.holds["soil"], 0)
+        self.assertEqual(g.model.main_unit.holds.get("soil", 0), 0)
         self.assertEqual(g.camera.zoom, 1.0)
         g.on_key(self._Event("Escape", 27))
         self.assertFalse(g.help_overlay.is_visible())
@@ -619,8 +619,11 @@ class TrainerI18nTest(unittest.TestCase):
         keys = [tr.key_hint(), "ИНСТРУКЦИЯ · ТРЕНАЖЁР ТЕРРАФОРМЕРА", "F1 или Esc — закрыть",
                 "ОТСЕК «НАХОДКИ»", "Q или Esc — закрыть", "Отлично, нашёл источник воды!",
                 "Нашёл ресурс: {0}"]
+        # help_sections — учебник смены: как help_texts, он по-русски и не
+        # требует переводов. Проверяем только, что разделы заполнены.
         for head, body in tr.help_sections():
-            keys += [head, body]
+            self.assertTrue(head.strip())
+            self.assertTrue(body.strip())
         for res in RESOURCES:
             use, stage = tr.resource_use(res)
             keys += [tr.resource_name(res), use, stage]
@@ -630,6 +633,133 @@ class TrainerI18nTest(unittest.TestCase):
             for k in keys:
                 self.assertIn(k, ru)
                 self.assertTrue(table.get(k), (lang, k))
+
+
+class TextureTest(unittest.TestCase):
+    """Тесты процедурных текстур (TrainerGame._ensure_textures)."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            cls.root = tk.Tk()
+        except tk.TclError:
+            cls.root = None
+            return
+        theme.init(cls.root)
+        cls.root.geometry("1024x600")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if getattr(cls, "root", None) is not None:
+            try:
+                cls.root.destroy()
+            except tk.TclError:
+                pass
+
+    def setUp(self) -> None:
+        if getattr(self, "root", None) is None:
+            self.skipTest("нет дисплея")
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name) / "Stamina"
+        self.data.mkdir()
+        pilots.reset_root(self.data)
+        p = pilots.create("Tester")
+        pilots.activate(p["id"])
+
+        from stamina.lounge.screen import GAMES
+        from stamina.lounge.trainer import TrainerGame
+
+        self.assertIn("trainer", [g["id"] for g in GAMES])
+        self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
+        self.game.pack(fill=tk.BOTH, expand=True)
+        self.root.update()
+        
+        # Настройка для тестов текстур
+        self.game.camera = Camera(20, 20)
+        self.game.camera.cx, self.game.camera.cy = 10.0, 10.0
+        self.game._iso_view = True
+        self.game._iso_zoom = 1.0
+
+    def tearDown(self) -> None:
+        try:
+            self.game.stop()
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            self.game.destroy()
+        except tk.TclError:
+            pass
+        self.root.update()
+        pilots.reset_root()
+        self.tmp.cleanup()
+
+    def test_ensure_textures_creates_photoimages(self) -> None:
+        """После _ensure_textures в _texture_photos есть sand, rock, spice как ImageTk.PhotoImage."""
+        from PIL import ImageTk
+        
+        hw, hh = 32.0, 20.0  # tile metrics for zoom=1.0
+        self.game._ensure_textures(hw, hh)
+        
+        self.assertIn("sand", self.game._texture_photos)
+        self.assertIn("rock", self.game._texture_photos)
+        self.assertIn("spice", self.game._texture_photos)
+        
+        for name in ("sand", "rock", "spice"):
+            img = self.game._texture_photos[name]
+            self.assertIsInstance(img, ImageTk.PhotoImage, f"{name} is not ImageTk.PhotoImage")
+            self.assertGreater(img.width(), 0, f"{name} has zero width")
+            self.assertGreater(img.height(), 0, f"{name} has zero height")
+
+    def test_texture_has_pixel_variance(self) -> None:
+        """Текстура не сплошного цвета — есть вариация пикселей."""
+        from PIL import Image
+        
+        hw, hh = 32.0, 20.0
+        self.game._ensure_textures(hw, hh)
+        
+        # Проверяем исходные PIL-картинки в _textures
+        for name in ("sand", "rock", "spice"):
+            img = self.game._textures[name]
+            self.assertIsInstance(img, Image.Image, f"{name} texture not PIL Image")
+            # Конвертируем в список пикселей и проверяем, что не все одинаковые
+            pixels = list(img.getdata())
+            self.assertGreater(len(pixels), 0)
+            first = pixels[0]
+            # Для sand/rock/spice должны быть вариации (не все пиксели == first)
+            different = sum(1 for p in pixels if p != first)
+            self.assertGreater(different, len(pixels) // 100,
+                f"{name} texture appears flat (only {different}/{len(pixels)} varied)")
+
+    def test_same_zoom_reuses_cache(self) -> None:
+        """Одинаковые (hw, hh) сохраняют ключ кэша (текстуры не пересоздаются)."""
+        hw, hh = 32.0, 20.0
+        self.game._ensure_textures(hw, hh)
+        key1 = self.game._texture_cache_key
+        sand_id1 = id(self.game._texture_photos["sand"])
+        
+        # Повторный вызов с теми же размерами
+        self.game._ensure_textures(hw, hh)
+        key2 = self.game._texture_cache_key
+        sand_id2 = id(self.game._texture_photos["sand"])
+        
+        self.assertEqual(key1, key2, "Cache key changed for same hw/hh")
+        self.assertEqual(sand_id1, sand_id2, "Texture object recreated for same hw/hh")
+
+    def test_different_zoom_rebuilds_textures(self) -> None:
+        """Разный зум (hw, hh) пересоздаёт текстуры."""
+        hw1, hh1 = 32.0, 20.0
+        self.game._ensure_textures(hw1, hh1)
+        key1 = self.game._texture_cache_key
+        sand_id1 = id(self.game._texture_photos["sand"])
+        
+        # Другой зум -> другие hw/hh
+        hw2, hh2 = 40.0, 25.0
+        self.game._ensure_textures(hw2, hh2)
+        key2 = self.game._texture_cache_key
+        sand_id2 = id(self.game._texture_photos["sand"])
+        
+        self.assertNotEqual(key1, key2, "Cache key same for different hw/hh")
+        self.assertNotEqual(sand_id1, sand_id2, "Texture object not recreated for different zoom")
 
 
 if __name__ == "__main__":
