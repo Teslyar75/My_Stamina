@@ -513,6 +513,18 @@ class TrainerModel:
         self._init_units()
         self._update_explored()
 
+    @classmethod
+    def for_level(cls, level: str | None = None, depth: int | None = None,
+                  seed: int | None = None) -> "TrainerModel":
+        """Новая стратегическая смена: карта размером под уровень пилота.
+
+        Обычный ``TrainerModel()`` остаётся 40×24 (так его строят тесты и
+        старые чертежи); размер по уровню берётся только здесь.
+        """
+        name = level if level is not None else current_standing().current_level
+        w, h = strategy.map_size(name)
+        return cls(w, h, depth=depth, seed=seed)
+
     # -- находки ---------------------------------------------------------------
     @property
     def springs(self) -> set:
@@ -1565,6 +1577,13 @@ class Camera:
         self.cy += dy_cells
         self._clamp()
 
+    def center_on(self, x: float, y: float) -> None:
+        """Поставить камеру в клетку (миникарта, переход) и снять слежение."""
+        self.cx = float(x)
+        self.cy = float(y)
+        self.follow = False
+        self._clamp()
+
     def reset(self, x: float, y: float) -> None:
         self.zoom = 1.0
         self.cx = x + 0.5
@@ -1585,6 +1604,58 @@ class Camera:
             width / 2.0 + (x - self.cx) * cell,
             height / 2.0 + (y - self.cy) * cell,
         )
+
+
+# ─── миникарта ───────────────────────────────────────────────────────────────
+# Чистая геометрия без Tk: прямоугольник миникарты на экране и пересчёт
+# «клик ↔ клетка карты». Рисует и принимает клики уже lounge/trainer.py.
+
+def minimap_rect(canvas_w: int, canvas_h: int, map_w: int, map_h: int,
+                 margin: int = 10, bottom: int = 34,
+                 max_w: int = 190, max_h: int = 150) -> tuple[int, int, int, int]:
+    """Прямоугольник миникарты в правом нижнем углу, с сохранением пропорций."""
+    canvas_w = max(1, int(canvas_w))
+    canvas_h = max(1, int(canvas_h))
+    map_w = max(1, int(map_w))
+    map_h = max(1, int(map_h))
+    scale = min(max_w / map_w, max_h / map_h)
+    mw = max(24, int(round(map_w * scale)))
+    mh = max(18, int(round(map_h * scale)))
+    x1 = canvas_w - max(0, int(margin))
+    y1 = canvas_h - max(0, int(bottom))
+    return (x1 - mw, y1 - mh, x1, y1)
+
+
+def world_to_minimap(gx: float, gy: float, rect: tuple[int, int, int, int],
+                     map_w: int, map_h: int) -> tuple[float, float]:
+    """Клетка карты → точка на миникарте."""
+    x0, y0, x1, y1 = rect
+    fx = float(gx) / max(1, int(map_w))
+    fy = float(gy) / max(1, int(map_h))
+    return (x0 + fx * (x1 - x0), y0 + fy * (y1 - y0))
+
+
+def minimap_click_to_world(sx: float, sy: float, rect: tuple[int, int, int, int],
+                           map_w: int, map_h: int) -> tuple[float, float]:
+    """Клик по миникарте → клетка карты (дробная, с зажимом в границы)."""
+    x0, y0, x1, y1 = rect
+    mw = max(1, x1 - x0)
+    mh = max(1, y1 - y0)
+    fx = (float(sx) - x0) / mw
+    fy = (float(sy) - y0) / mh
+    fx = max(0.0, min(1.0, fx))
+    fy = max(0.0, min(1.0, fy))
+    map_w = max(1, int(map_w))
+    map_h = max(1, int(map_h))
+    return (fx * map_w, fy * map_h)
+
+
+def point_in_rect(x: float, y: float, rect: tuple[int, int, int, int] | None) -> bool:
+    """Попал ли клик в прямоугольник (None — мимо)."""
+    if rect is None:
+        return False
+    x0, y0, x1, y1 = rect
+    return x0 <= x <= x1 and y0 <= y <= y1
 
 
 def blueprint_path() -> Path:

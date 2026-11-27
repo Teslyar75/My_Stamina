@@ -20,7 +20,11 @@ from ..terraformer_trainer import (
     TrainerModel,
     archive_blueprint,
     load_blueprint,
+    minimap_click_to_world,
+    minimap_rect,
+    point_in_rect,
     save_blueprint,
+    world_to_minimap,
     PLATFORM_YIELD,
     PLATFORM_VARIANTS,
     VARIANT_DESC,
@@ -43,13 +47,20 @@ METAL = "#8FA6BF"
 DUG_OUT = "#0A1420"
 SPRING = "#2E9BFF"
 TOAST_MS = 2600
+# Панорама камеры у края экрана: ширина полосы и шаг за такт.
+EDGE_MARGIN = 28
+EDGE_PAN_STEP = 1.0
+EDGE_PAN_MS = 70
 
 # keysym → действие; keycode (Windows) — запасной путь для русской раскладки
+# Стрелки водят камеру, WASD — главного терраформера.
 KEYSYM_ACTIONS = {
-    "left": ("move", -1, 0), "a": ("move", -1, 0),
-    "up": ("move", 0, -1), "w": ("move", 0, -1),
-    "right": ("move", 1, 0), "d": ("move", 1, 0),
-    "down": ("move", 0, 1), "s": ("move", 0, 1),
+    "left": ("pan_camera", -1, 0),
+    "up": ("pan_camera", 0, -1),
+    "right": ("pan_camera", 1, 0),
+    "down": ("pan_camera", 0, 1),
+    "a": ("move", -1, 0), "w": ("move", 0, -1),
+    "d": ("move", 1, 0), "s": ("move", 0, 1),
     "space": ("dig",), "e": ("place_block",), "q": ("finds",),
     "b": ("build_plan",), "tab": ("cycle_priority",), "g": ("gallery",),
     "t": ("missions",), "n": ("structures",), "x": ("select_all",),
@@ -110,8 +121,9 @@ def help_sections() -> list[tuple[str, str]]:
          "B2.2, C1, C2 — как у английского. Следующий уровень открывается, когда предыдущий "
          "пройден больше чем на 80 %. Ошибки на тренажёре ничего не портят."),
         ("Управление",
-         "Стрелки или WASD — ехать главным терраформером. Esc или P — пауза. "
-         "Ctrl+колесо — масштаб вокруг курсора, СКМ — таскать карту, 0 — вернуться к отряду."),
+         "WASD — ехать главным терраформером, стрелки — панорама камеры. Esc или P — пауза. "
+         "Ctrl+колесо — масштаб вокруг курсора, СКМ — таскать карту, 0 — вернуться к отряду. "
+         "У края экрана камера едет сама; клик по миникарте в углу прыгает в точку."),
 ("Отряд и приказы",
           "ЛКМ: рамка выделяет отряд, клик по юниту выделяет, клик по пустой земле снимает выделение. "
           "ПКМ — приказ идти выделенным терраформерам (как в Red Alert). "
@@ -167,7 +179,7 @@ class TrainerGame(GameShell):
 
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
-        self.model = load_blueprint() or TrainerModel()
+        self.model = load_blueprint() or TrainerModel.for_level()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
@@ -191,6 +203,10 @@ class TrainerGame(GameShell):
         self._last_mouse: tuple[int, int] = (0, 0)
         self._iso_view = False                # I: переключение плоский/изометрический вид
         self._iso_zoom = 1.0                  # отдельный зум для изометрии
+        # миникарта и панорама у края
+        self._minimap_rect: tuple[int, int, int, int] | None = None
+        self._minimap_press = False
+        self._edge_job = None
         self.set_hint("")                     # подсказка — одной строкой внизу поля
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
@@ -249,7 +265,7 @@ class TrainerGame(GameShell):
                 archive_blueprint()
             except Exception:  # noqa: BLE001
                 pass
-        self.model = TrainerModel()
+        self.model = TrainerModel.for_level()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
@@ -265,12 +281,16 @@ class TrainerGame(GameShell):
         self._gallery_variant = 0
         self._gallery_view_3d = False
         self._last_mouse = (0, 0)
+        self._minimap_rect = None
+        self._minimap_press = False
+        self._stop_edge_pan()
         self._clear_toast()
         self.set_score(0)
         self.redraw()
 
     def stop(self) -> None:
         super().stop()
+        self._stop_edge_pan()
         self._clear_toast()
         try:
             save_blueprint(self.model)
@@ -373,6 +393,8 @@ class TrainerGame(GameShell):
             return
         if name == "move":
             self.do_move(act[1], act[2])
+        elif name == "pan_camera":
+            self.pan_camera(act[1], act[2])
         elif name == "dig":
             self.do_dig()
         elif name == "place_block":
@@ -448,6 +470,83 @@ class TrainerGame(GameShell):
         self.msg = ""
         self.redraw()
         return moved
+
+    # -- камера: стрелки, край экрана, миникарта --------------------------------
+    def pan_camera(self, dx: int, dy: int, step: float = 2.0) -> None:
+        """Сдвинуть камеру стрелками; слежение за отрядом выключается."""
+        self.camera.pan(dx * step, dy * step)
+        self.redraw()
+
+    @staticmethod
+    def edge_pan_direction(mx: float, my: float, w: int, h: int,
+                           margin: int = EDGE_MARGIN) -> tuple[int, int]:
+        """Направление панорамы, если курсор у края холста (0 — не у края)."""
+        dx = dy = 0
+        if mx <= margin:
+            dx = -1
+        elif mx >= w - margin:
+            dx = 1
+        if my <= margin:
+            dy = -1
+        elif my >= h - margin:
+            dy = 1
+        return dx, dy
+
+    def edge_pan_step(self, w: int | None = None, h: int | None = None,
+                      margin: int = EDGE_MARGIN) -> tuple[int, int]:
+        """Один шаг панорамы у края по последней позиции курсора."""
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        mx, my = self._last_mouse
+        if point_in_rect(mx, my, self._minimap_rect):
+            return 0, 0
+        dx, dy = self.edge_pan_direction(mx, my, w, h, margin)
+        if dx or dy:
+            self.camera.pan(dx * EDGE_PAN_STEP, dy * EDGE_PAN_STEP)
+            self.redraw()
+        return dx, dy
+
+    def _update_edge_pan(self) -> None:
+        if self.overlay is not None or self.paused:
+            self._stop_edge_pan()
+            return
+        dx, dy = self.edge_pan_step()
+        if not (dx or dy):
+            self._stop_edge_pan()
+            return
+        if self._edge_job is None:
+            try:
+                self._edge_job = self.after(EDGE_PAN_MS, self._edge_pan_tick)
+            except tk.TclError:
+                self._edge_job = None
+
+    def _edge_pan_tick(self) -> None:
+        self._edge_job = None
+        if self.overlay is not None or self.paused:
+            return
+        dx, dy = self.edge_pan_step()
+        if dx or dy:
+            try:
+                self._edge_job = self.after(EDGE_PAN_MS, self._edge_pan_tick)
+            except tk.TclError:
+                self._edge_job = None
+
+    def _stop_edge_pan(self) -> None:
+        if self._edge_job is not None:
+            try:
+                self.after_cancel(self._edge_job)
+            except tk.TclError:
+                pass
+            self._edge_job = None
+
+    def _minimap_jump(self, sx: float, sy: float) -> None:
+        """Клик по миникарте ставит камеру в соответствующую клетку карты."""
+        if self._minimap_rect is None:
+            return
+        gx, gy = minimap_click_to_world(sx, sy, self._minimap_rect,
+                                        self.model.w, self.model.h)
+        self.camera.center_on(gx, gy)
+        self.redraw()
 
     def do_dig(self) -> str:
         result = self.model.dig()
@@ -672,6 +771,7 @@ class TrainerGame(GameShell):
 
     def _on_motion(self, e: tk.Event) -> None:
         self._last_mouse = (int(e.x), int(e.y))
+        self._update_edge_pan()
 
     # -- мышь: выделение рамкой и приказ --------------------------------
     def _on_rmb_down(self, e: tk.Event) -> str:
@@ -720,12 +820,20 @@ class TrainerGame(GameShell):
                     return ""
         if self.overlay is not None:
             return ""
+        if point_in_rect(e.x, e.y, self._minimap_rect):
+            self._minimap_press = True
+            self._lmb_start = None
+            self._minimap_jump(e.x, e.y)
+            return "break"
         self._lmb_start = (float(e.x), float(e.y))
         self._lmb_cell = self.camera.to_cell(e.x, e.y, max(self.canvas.winfo_width(), 10), max(self.canvas.winfo_height(), 10))
         self._lmb_box = None
         return "break"
 
     def _on_lmb_drag(self, e: tk.Event) -> str:
+        if self._minimap_press:
+            self._minimap_jump(e.x, e.y)
+            return "break"
         if self._lmb_start is None:
             return ""
         x0, y0 = self._lmb_start
@@ -738,6 +846,9 @@ class TrainerGame(GameShell):
         return "break"
 
     def _on_lmb_up(self, e: tk.Event) -> str:
+        if self._minimap_press:
+            self._minimap_press = False
+            return "break"
         start = self._lmb_start
         self._lmb_start = None
         if self._lmb_box is not None:
@@ -837,6 +948,7 @@ class TrainerGame(GameShell):
     def redraw(self) -> None:
         c = self.canvas
         c.delete("all")
+        self._minimap_rect = None
         w = max(c.winfo_width(), 10)
         h = max(c.winfo_height(), 10)
         c.create_rectangle(0, 0, w, h, fill=BG2, outline="")
@@ -982,6 +1094,9 @@ class TrainerGame(GameShell):
 
         # расширяем фон панели под реальный контент
         c.coords(bg_id, 0, 0, px(230), ty)
+
+        if self.overlay is None and not self.paused:
+            self._draw_minimap(w, h)
 
         bar_top = self._draw_key_hint(w, h)
         if self.msg:
@@ -2263,9 +2378,77 @@ class TrainerGame(GameShell):
         ty = self._draw_language_progress_bar(w, h, ty + px(10))
         c.coords(bg_id, 0, 0, px(230), ty)
 
+    # -- миникарта ------------------------------------------------------------
+    def _viewport_cells(self, w: int, h: int) -> tuple[float, float, float, float]:
+        """Какие клетки карты сейчас видны (в мировых координатах)."""
+        cam = self.camera
+        model = self.model
+        if self._iso_view:
+            m = iso.tile_metrics(self._iso_zoom, w, h, cam)
+            min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(
+                m, model.w, model.h, w, h)
+            return float(min_gx), float(min_gy), float(max_gx + 1), float(max_gy + 1)
+        cell = max(cam.cell_px(), 4.0)
+        half_w = w / (2.0 * cell)
+        half_h = h / (2.0 * cell)
+        return cam.cx - half_w, cam.cy - half_h, cam.cx + half_w, cam.cy + half_h
+
+    def _draw_minimap(self, w: int, h: int) -> None:
+        """Полная карта в углу: рельеф, рамка вида, отряд и здания."""
+        c = self.canvas
+        model = self.model
+        rect = minimap_rect(w, h, model.w, model.h,
+                            margin=px(10), bottom=px(34),
+                            max_w=px(190), max_h=px(150))
+        self._minimap_rect = rect
+        x0, y0, x1, y1 = rect
+        c.create_rectangle(x0 - 2, y0 - 2, x1 + 2, y1 + 2,
+                           fill=BG, outline=LINE, tags="minimap")
+        c.create_rectangle(x0, y0, x1, y1, fill=BG2, outline=LINE, tags="minimap")
+
+        step_x = max(1, math.ceil(model.w / 36))
+        step_y = max(1, math.ceil(model.h / 28))
+        explored = model.explored
+        for gy in range(0, model.h, step_y):
+            for gx in range(0, model.w, step_x):
+                ax, ay = world_to_minimap(gx, gy, rect, model.w, model.h)
+                bx, by = world_to_minimap(gx + step_x, gy + step_y, rect,
+                                          model.w, model.h)
+                if (gx, gy) not in explored:
+                    fill = BG
+                else:
+                    fill = self._layer_color(model.dug[gy][gx])
+                c.create_rectangle(ax, ay, max(ax + 1, bx), max(ay + 1, by),
+                                   fill=fill, outline="", tags="minimap")
+
+        # рамка текущего вида
+        vx0, vy0, vx1, vy1 = self._viewport_cells(w, h)
+        vx0 = max(0.0, min(float(model.w), vx0))
+        vy0 = max(0.0, min(float(model.h), vy0))
+        vx1 = max(0.0, min(float(model.w), vx1))
+        vy1 = max(0.0, min(float(model.h), vy1))
+        ax, ay = world_to_minimap(vx0, vy0, rect, model.w, model.h)
+        bx, by = world_to_minimap(vx1, vy1, rect, model.w, model.h)
+        c.create_rectangle(ax, ay, bx, by, outline=AMBER, width=1, tags="minimap")
+
+        # здания и отряд
+        for b in model.buildings:
+            bx, by = world_to_minimap(b.center[0] + 0.5, b.center[1] + 0.5,
+                                      rect, model.w, model.h)
+            c.create_rectangle(bx - 1, by - 1, bx + 1, by + 1,
+                               fill=AMBER, outline="", tags="minimap")
+        for u in model.units:
+            ux, uy = world_to_minimap(u.x + 0.5, u.y + 0.5, rect,
+                                      model.w, model.h)
+            color = AMBER if u.uid == model.main_unit.uid else GREEN
+            c.create_oval(ux - 2, uy - 2, ux + 2, uy + 2,
+                          fill=color, outline="", tags="minimap")
+
     def _draw_overlays(self, w: int, h: int) -> None:
         """Оверлеи (подсказка, тост, модальные окна) — общие для обоих видов."""
         c = self.canvas
+        if self.overlay is None and not self.paused:
+            self._draw_minimap(w, h)
         bar_top = self._draw_key_hint(w, h)
         if self.msg:
             c.create_text(px(10), bar_top - px(6), text=self.msg, fill=AMBER, anchor="sw",

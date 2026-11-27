@@ -59,6 +59,25 @@ LEVEL_TITLE: dict[str, str] = {
 }
 LEVEL_INDEX: dict[str, int] = {name: i for i, name in enumerate(LEVELS)}
 
+# Размер карты (клетки) растёт вместе с уровнем языка: от высадки A1 до
+# цивилизации C2. Обе стороны не убывают, поэтому камера и миникарта всегда
+# знают, во что масштабироваться.
+MAP_SIZE: dict[str, tuple[int, int]] = {
+    "A1": (64, 40),
+    "A2": (72, 44),
+    "B1.1": (80, 48),
+    "B1.2": (84, 52),
+    "B2.1": (88, 52),
+    "B2.2": (92, 56),
+    "C1": (96, 56),
+    "C2": (100, 60),
+}
+
+
+def map_size(level: str | None) -> tuple[int, int]:
+    """Размер стратегической карты для уровня; неизвестный уровень — A1."""
+    return MAP_SIZE.get(level_name(level_index(level)), MAP_SIZE[LEVELS[0]])
+
 # Высота здания, которую умеет строить терраформер уровня.
 # A1/A2 = 1 floor; B1.1, B1.2, B2.1, B2.2 = up to 3 floors;
 # C1 = up to 6 floors; C2 = up to 6 floors + towers (core height 8)

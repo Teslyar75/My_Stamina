@@ -456,3 +456,6 @@ Done:
 - `ci_gate --only contrast --only dep` — зелёный; ruff чисто.
 
 Problems: нет.
+
+## Этап 3: большая карта, панорама, миникарта (27.11, `agent/orion/terraformer-s3-map`)
+- `MAP_SIZE` A1 64×40 … C2 100×60; `TrainerModel.for_level()` для новой смены (обычный `TrainerModel()` остаётся 40×24), стрелки/край/СКМ — панорама с зажимом, миникарта с кликом в плоском и изо-виде; `tests/test_terraformer_s3_map.py` (25), всего 197 passed, ruff чисто.
