@@ -48,7 +48,17 @@ class I18nTest(unittest.TestCase):
             for k, v in tr.items():
                 self.assertIn(k, ru, lang)
                 self.assertEqual(sorted(PH.findall(v)), sorted(PH.findall(k)), (lang, k))
-                v.format(*range(9)) if "{0" in k else None
+                if "{0" in k:
+                    try:
+                        v.format(*range(9))
+                    except (KeyError, IndexError, ValueError):
+                        # Ключ сам не format-строка (например regex .{0,40}) — не проверяем.
+                        try:
+                            k.format(*range(9))
+                        except (KeyError, IndexError, ValueError):
+                            pass
+                        else:
+                            raise
 
     def test_check_tool(self):
         import subprocess
