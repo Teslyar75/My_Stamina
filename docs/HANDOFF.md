@@ -507,6 +507,8 @@ Done:
 - `stamina/ui/experienced.py`: убраны прямые пункты «english» из верхней и правой лент — вход только через сетку языков, как у всех.
 - Тесты: `tests/test_timeline.py`, `tests/test_wheel_router.py`, `tests/test_experienced_ui.py`, `tests/test_slideshow.py`, новый `tests/test_languages_english_path.py` — 49 passed в одном прогоне с `--basetemp`. `tools/ci_gate.py --only contrast --only i18n --only dep` — зелёный.
 
+Отправлено: коммит `07940b2`, ветка `agent/orion/xp-dash-hover` → `origin`, PR #66 в `master`.
+
 Next: глазами пройти на ярлыке «чёрточка → меню → ПРАВИЛО/ГРАММАТИКА → Экран» и проверить вход в английский из сетки «ИНОСТРАННЫЕ ЯЗЫКИ» на втором мониторе.
 
 Problems: нет (предсуществующие падения `test_scroll_frame.py` на Windows подтверждены на чистом baseline `40cfbf6` и к этой ветке не относятся).
