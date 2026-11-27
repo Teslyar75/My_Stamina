@@ -605,15 +605,15 @@ class Cockpit(tk.Tk):
 
 
     def _zen_target_for(self, screen_name: str | None):
-        """Экран/игра, где работает общий зенид; грамматика и сканеры не трогаем."""
-        if screen_name in (None, "settings", "bridge_settings", "ether",
-                           english_hook.KEY, languages_hook.KEY, docs_hook.KEY):
+        """Виджет, где работает общий зенид (стройка и Ether по-прежнему вне)."""
+        if screen_name in (None, "settings", "bridge_settings", "ether"):
             return None
         scr = self.screens.get(screen_name)
         if scr is None:
             return None
-        if getattr(scr, "focus_active", lambda: False)() or getattr(scr, "in_focus", lambda: False)():
-            return None
+        target = getattr(scr, "zen_target", None)
+        if callable(target):
+            return target()
         if screen_name == lounge_hook.KEY:
             return getattr(scr, "game", None) or scr
         return scr
@@ -652,7 +652,11 @@ class Cockpit(tk.Tk):
                 scr.toggle_focus(False)
 
     def _handle_focus_escape(self) -> bool:
-        """Esc в фокусе: грамматика — двойной Esc; сканер и документы — один Esc."""
+        """Esc в зениде: общий двойной Esc для всех экранов."""
+        from stamina import zen_mode
+        target = self._zen_target()
+        if target is not None and zen_mode.is_active(target):
+            return zen_mode.handle_escape(target)
         scr = self.screens.get(self.current)
         if scr is None:
             return False
@@ -1532,9 +1536,16 @@ class Cockpit(tk.Tk):
         if target is not None:
             from stamina import zen_mode
             if zen_mode.is_zen_hotkey(e):
-                zen_mode.toggle(target)
+                zen_mode.mark_handled(e)
+                page_toggle = getattr(target, "toggle_focus", None)
+                if callable(page_toggle):
+                    page_toggle()
+                else:
+                    zen_mode.toggle(target)
                 return "break"
-            if e.keysym == "Escape" and zen_mode.handle_key(e, target):
+            if zen_mode.is_escape(e) and zen_mode.is_active(target):
+                zen_mode.mark_handled(e)
+                zen_mode.handle_key(e, target)
                 return "break"
         vc = getattr(self, "voice_call", None)
         if e.keysym == "Escape" and vc is not None and vc.active():

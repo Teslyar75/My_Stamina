@@ -557,13 +557,20 @@ class LanguagesScreen(tk.Frame):
         if page is not None:
             page.toggle_focus(on, remember=remember)
 
-    def handle_focus_escape(self) -> bool:
-        if self._scanner is not None and self._scanner.in_focus():
-            self._scanner.toggle_focus(False)      # сканер: один Esc из фокуса
-            return True
+    def zen_target(self):
+        """Виджет, на котором живёт общий зенид языкового отсека."""
+        if self._scanner is not None:
+            return self._scanner
         page = getattr(self, "_grammar_page", None)
-        if page is not None:
-            return page.handle_focus_escape()
+        if getattr(self, "current_page", None) == "grammar" and page is not None:
+            return page
+        return None
+
+    def handle_focus_escape(self) -> bool:
+        from stamina import zen_mode
+        target = self.zen_target()
+        if target is not None and zen_mode.is_active(target):
+            return zen_mode.handle_escape(target)
         return False
 
     def snapshot_place(self):

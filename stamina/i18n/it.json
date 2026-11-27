@@ -3789,5 +3789,8 @@
   "Vim: счёт {0}": "Vim: contatore {0}",
   "VIM-ХОД  F4: {0}": "VIM-MOVIMENTO  F4: {0}",
   "Vim-ход: h/j/k/l, w/b, gg/G, 0/$, счётчик и F4": "Movimento Vim: h/j/k/l, w/b, gg/G, 0/$, contatore e F4",
-  "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · frecce · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · Clic sx · Clic dx · I"
+  "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · frecce · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · Clic sx · Clic dx · I",
+  "⛶ ФОКУС  Ctrl+O": "⛶ FUOCO  Ctrl+O",
+  "⛶ ЗЕНИД  Ctrl+O": "⛶ ZENIT  Ctrl+O",
+  "ЗЕНИД: {0} зн/мин · {1}": "ZENIT: {0} car/min · {1}"
 }

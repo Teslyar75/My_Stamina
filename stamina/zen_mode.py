@@ -74,9 +74,40 @@ def is_zen_hotkey(e) -> bool:
     return bool(state & CTRL) and is_o_physical(e)
 
 
+def mark_handled(event) -> None:
+    """Пометить: cockpit уже обработал Ctrl+O/Esc, страница не должна повторить."""
+    try:
+        setattr(event, "_zen_mode_handled", True)
+    except Exception:
+        pass
+
+
+def was_handled(event) -> bool:
+    # unittest.mock.Mock отдаёт дочерний Mock для любого атрибута — нужен именно True.
+    return getattr(event, "_zen_mode_handled", False) is True
+
+
+def is_escape(e) -> bool:
+    return _is_esc(e)
+
+
 def _is_esc(e) -> bool:
     ks = (getattr(e, "keysym", "") or "").lower()
     return ks == "escape" or int(getattr(e, "keycode", 0) or 0) == 27
+
+
+def _notify(widget, on: bool) -> None:
+    """Один путь раскладки: хук ищется на виджете или его владельце выше по дереву."""
+    node = widget
+    while node is not None:
+        method = getattr(node, "after_zen_toggle", None)
+        if callable(method):
+            try:
+                method(on)
+            except Exception:  # noqa: BLE001 — сбой раскладки не должен ломать вход/выход
+                pass
+            return
+        node = getattr(node, "master", None)
 
 
 def enter(widget) -> bool:
@@ -89,6 +120,7 @@ def enter(widget) -> bool:
     mode = FocusMode(widget)
     _ACTIVE[id(widget)] = (widget, mode)
     _ESC.reset()
+    _notify(widget, True)
     return True
 
 
@@ -103,6 +135,7 @@ def exit_zen(widget=None) -> bool:
         rec[1].restore()
     finally:
         _ESC.reset()
+        _notify(target, False)
     return True
 
 
@@ -113,21 +146,29 @@ def toggle(widget) -> bool:
     return enter(widget)
 
 
+def handle_escape(widget=None) -> bool:
+    """Один общий таймер двойного Esc для всех экранов зенида."""
+    if widget is None:
+        widget = active_widget()
+    if not is_active(widget):
+        _ESC.reset()
+        return False
+    if _ESC.tap():
+        exit_zen(widget)
+        return True
+    return False
+
+
 def handle_key(e, widget=None, *, allow_esc: bool = True) -> bool:
     if widget is None:
         widget = active_widget() or getattr(e, "widget", None)
     if is_zen_hotkey(e):
+        mark_handled(e)
         if widget is not None:
             toggle(widget)
         return True
     if _is_esc(e):
-        if not is_active(widget):
-            _ESC.reset()
-            return False
-        if _ESC.tap():
-            exit_zen(widget)
-            return True
-        return False
+        return handle_escape(widget)
     if is_active(widget):
         _ESC.reset()
     return False

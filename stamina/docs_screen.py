@@ -17,7 +17,7 @@ import tkinter as tk
 from pathlib import Path
 
 from stamina.english.ui import Flow
-from stamina import clip_html, docs_dialogs, docs_imgdrag, docs_templates, docs_visual, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme
+from stamina import clip_html, docs_dialogs, docs_imgdrag, docs_templates, docs_visual, compose, docs, docs_format, docs_import, docs_tools, mailer, shots, theme, zen_mode
 from stamina.docs_dialogs import confirm
 from stamina.docs_preview import DocPreview
 from stamina.docs_undo import DocUndo
@@ -173,8 +173,8 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         for sym, cmd in (("■", self.read_stop), ("|◀", lambda: self.read_chapter(-1)),
                          ("▶|", lambda: self.read_chapter(1))):
             ins.add(HudButton(ins, sym, cmd, height=30, font_size=9, width=30, color=MUTED), gap_before=2)
-        self._focus = None      # фокус-режим O — общий ui.FocusMode, как в сканере английского
-        self.btn_focus = HudButton(ins, _t("⛶ ФОКУС  O"), self.toggle_focus, height=30, font_size=9,
+        self._focus = None      # общий зенид — тот же zen_mode, что в сканере английского
+        self.btn_focus = HudButton(ins, _t("⛶ ФОКУС  Ctrl+O"), self.toggle_focus, height=30, font_size=9,
                                    color=AMBER)
         ins.add(self.btn_focus, gap_before=6)
         # «⋯ ЕЩЁ» (общая подпись меню-переполнения пульта): на узком/низком окне сюда уходят
@@ -248,34 +248,44 @@ class DocsScreen(docs_format.FormatMixin, docs_imgdrag.ImageDragMixin, docs_visu
         self.text.focus_set()
 
     def on_key(self, e):
-        """Набор принадлежит редактору; O/Щ — фокус-режим, только вне полей ввода."""
-        if e.keysym == "Escape" and self._focus is not None:
-            self.toggle_focus(False)
+        """Набор принадлежит редактору; O/Щ — зенид, только вне полей ввода."""
+        if zen_mode.was_handled(e):
+            return "break"
+        target = self.zen_target()
+        if zen_mode.is_escape(e) and zen_mode.is_active(target):
+            zen_mode.handle_key(e, target)     # первый Esc держит зенид, второй выходит
             return "break"
         from stamina.english.speech_std import is_focus_key
         w = self.focus_get()
         if is_focus_key(e) and not isinstance(w, (tk.Text, tk.Entry)):
+            if zen_mode.is_zen_hotkey(e):
+                return "break"                 # Ctrl+O уже обработан cockpit
             self.toggle_focus()
             return "break"
         return None
 
-    # -- фокус-режим (O / Щ, Esc — выход) ----------------------------------------
+    # -- общий зенид (O / Щ, Ctrl+O, двойной Esc) ----------------------------------
+    def zen_target(self):
+        """Виджет зенида: редактор, а при открытой справке — тело с обоими панелями."""
+        return self._body if getattr(self, "_help_on", False) else self.right_panel
+
     def in_focus(self) -> bool:
-        return self._focus is not None
+        return zen_mode.is_active(self.zen_target())
 
     def toggle_focus(self, on: bool | None = None, **_kw) -> None:
-        from stamina.english.ui import FocusMode
-        on = (self._focus is None) if on is None else on
-        if on and self._focus is None:
-            # редактор на всё окно; если открыта справка — редактор вместе со справкой
-            target = self._body if getattr(self, "_help_on", False) else self.right_panel
+        target = self.zen_target()
+        active = zen_mode.is_active(target)
+        on = (not active) if on is None else on
+        if on and not active:
             self.update_idletasks()   # FocusMode прячет только отображённые grid-виджеты
-            self._focus = FocusMode(target)
-        elif not on and self._focus is not None:
-            f, self._focus = self._focus, None
-            f.restore()
-        self.btn_focus.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
-        self.btn_focus.set_active(self._focus is not None)
+            zen_mode.enter(target)
+        elif not on and active:
+            zen_mode.exit_zen(target)
+
+    def after_zen_toggle(self, on: bool) -> None:
+        self._focus = zen_mode.mode_of(self.zen_target()) if on else None
+        self.btn_focus.set_text(_t("✕ ФОКУС  Esc") if on else _t("⛶ ФОКУС  Ctrl+O"))
+        self.btn_focus.set_active(on)
 
     def on_leave(self) -> None:
         self.toggle_focus(False)
