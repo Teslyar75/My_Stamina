@@ -477,9 +477,9 @@ class Unit:
 def pathfind(start: tuple[int, int], goal: tuple[int, int], w: int, h: int,
              blocked: set[tuple[int, int]] | None = None,
              limit: int = 6000) -> list[tuple[int, int]]:
-    """Кратчайший путь по 4 направлениям (BFS). Пустой список — пути нет.
+    """Кратчайший путь по 4 направлениям (A* с манхэттенской эвристикой). Пустой список — пути нет.
 
-    ``blocked`` — непроходимые клетки (здания, источники). Цель, даже если она
+    ``blocked`` — непроходимые клетки (здания, источники, ямы). Цель, даже если она
     в ``blocked``, остаётся доступной: юнит подходит к ней вплотную.
     """
     sx, sy = int(start[0]), int(start[1])
@@ -489,33 +489,54 @@ def pathfind(start: tuple[int, int], goal: tuple[int, int], w: int, h: int,
     if (sx, sy) == (gx, gy):
         return []
     blocked = blocked or set()
-    from collections import deque
 
-    q = deque([(sx, sy)])
-    prev: dict[tuple[int, int], tuple[int, int] | None] = {(sx, sy): None}
+    import heapq
+
+    def heuristic(x: int, y: int) -> int:
+        return abs(x - gx) + abs(y - gy)
+
+    start_node = (sx, sy)
+    goal_node = (gx, gy)
+
+    open_set: list[tuple[int, int, int]] = []  # (f_score, g_score, x, y)
+    heapq.heappush(open_set, (heuristic(sx, sy), 0, sx, sy))
+
+    g_score: dict[tuple[int, int], int] = {start_node: 0}
+    prev: dict[tuple[int, int], tuple[int, int] | None] = {start_node: None}
+
     seen = 0
-    while q and seen < limit:
-        x, y = q.popleft()
+    while open_set and seen < limit:
+        f, g, x, y = heapq.heappop(open_set)
+        current = (x, y)
+
+        if current == goal_node:
+            path: list[tuple[int, int]] = []
+            cur: tuple[int, int] | None = current
+            while cur is not None and cur != start_node:
+                path.append(cur)
+                cur = prev[cur]
+            path.reverse()
+            return path
+
+        if f > g_score.get(current, float('inf')) + heuristic(x, y):
+            continue
+
         seen += 1
         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             nx, ny = x + dx, y + dy
             if not (0 <= nx < w and 0 <= ny < h):
                 continue
-            cell = (nx, ny)
-            if cell in prev:
+            neighbor = (nx, ny)
+            if neighbor in blocked and neighbor != goal_node:
                 continue
-            if cell in blocked and cell != (gx, gy):
-                continue
-            prev[cell] = (x, y)
-            if cell == (gx, gy):
-                path: list[tuple[int, int]] = []
-                cur: tuple[int, int] | None = cell
-                while cur is not None and cur != (sx, sy):
-                    path.append(cur)
-                    cur = prev[cur]
-                path.reverse()
-                return path
-            q.append(cell)
+
+            tentative_g = g + 1
+            if tentative_g < g_score.get(neighbor, float('inf')):
+                g_score[neighbor] = tentative_g
+                prev[neighbor] = current
+                f_score = tentative_g + heuristic(nx, ny)
+                heapq.heappush(open_set, (f_score, tentative_g, nx, ny))
+
     return []
 
 
