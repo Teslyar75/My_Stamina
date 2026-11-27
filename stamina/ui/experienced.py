@@ -4,13 +4,14 @@ import tkinter as tk
 from pathlib import Path
 
 from stamina import nav, theme
+from stamina.alt_ui import AltNavButton
 from stamina.hud import HudButton as HB
 from stamina.i18n import t as tr_
 from stamina.theme import BG, MUTED, blend, px
 
 from .timeline import Timeline
 from .slideshow import Slideshow
-from .earth_downloader import EarthDownloader, cache_root
+from .earth_downloader import EarthDownloader
 
 
 def _core_wallpapers() -> list:
@@ -189,9 +190,9 @@ def _rebuild_top(app) -> None:
             children = [{"id": k, "label": tr_(t)} for k, t in nav.BRIDGE_LEAVES]
         items.append({"id": name, "label": tr_(dict(getattr(app, "SCREENS", [])).get(name, name)), "children": children})
     app._xp_top.set_items(items)
-    # nav_buttons compatibility: map to simple proxies
+    # nav_buttons compatibility: реальная (скрытая) кнопка за прокси, как в ALT UI
     for name, _ in getattr(app, "SCREENS", []):
-        app.nav_buttons[name] = _NavProxy(app, name)
+        app.nav_buttons[name] = _NavProxy(app, name, role="nav")
     try:
         zone = nav.zone_of(getattr(app, "current", "bridge")) or "bridge"
         app._xp_top.set_active(zone)
@@ -200,27 +201,63 @@ def _rebuild_top(app) -> None:
 
 
 class _NavProxy:
-    def __init__(self, app, name):
-        self.app = app
-        self.name = name
-        self._text = name
-    def set_active(self, on):
-        if on:
+    """Настоящая скрытая кнопка навигации с проксированием всего контракта HudButton.
+
+    Пульт (update_comm_badge, bridge_menu, keynav и т.д.) работает с nav_buttons как
+    с HudButton/tk.Canvas: set_color, set_narrow, configure, bind, winfo_*. Прокси
+    держит такую кнопку в тех же руках, но не пакет в видимую шапку: видна только
+    чёрточка на ленте, которую отмечает set_active.
+    """
+
+    _OWN = frozenset(("_app", "_name", "_role", "_button"))
+
+    def __init__(self, app, name: str, *, role: str = "nav"):
+        object.__setattr__(self, "_app", app)
+        object.__setattr__(self, "_name", name)
+        object.__setattr__(self, "_role", role)
+        cache = getattr(app, "_xp_proxy_buttons", None)
+        if cache is None:
+            cache = {}
+            app._xp_proxy_buttons = cache
+        key = (role, name)
+        button = cache.get(key)
+        if button is None:
+            titles = dict(getattr(app, "SCREENS", [])) if role == "nav" else dict(nav.BRIDGE_LEAVES)
+            command = (lambda: app.show_zone(name)) if role == "nav" else (lambda: app.show(name))
+            button = AltNavButton(app, tr_(titles.get(name, name)), command,
+                                  profile=getattr(app, "_xp_profile", "starship"),
+                                  height=34 if role == "nav" else 26, font_size=9)
             try:
-                self.app._xp_top.set_active(self.name)
-            except Exception:
+                button.place_forget()
+            except tk.TclError:
                 pass
-    def set_text(self, text):
-        self._text = text
-    def configure(self, **_kw):
-        pass
-    def winfo_manager(self):
-        return "pack"
-    def bind(self, *_a, **_k):
-        pass
+            cache[key] = button
+        object.__setattr__(self, "_button", button)
+
+    def __getattr__(self, item):
+        return getattr(object.__getattribute__(self, "_button"), item)
+
+    def __setattr__(self, key, value):
+        if key in _NavProxy._OWN:
+            object.__setattr__(self, key, value)
+        else:
+            setattr(self._button, key, value)
+
+    def set_active(self, on: bool) -> None:
+        button = object.__getattribute__(self, "_button")
+        button.set_active(bool(on))
+        if not on:
+            return
+        app = object.__getattribute__(self, "_app")
+        ribbon = app._xp_top if object.__getattribute__(self, "_role") == "nav" else getattr(app, "_xp_side", None)
+        if ribbon is not None:
+            try:
+                ribbon.set_active(object.__getattribute__(self, "_name"))
+            except Exception:  # noqa: BLE001 — лента не должна ронять смену отсека
+                pass
 
 
-def _rebuild_side(app, zone: str) -> None:
+def _rebuild_side(app, zone: str, active: str | None = None) -> None:
     children = []
     if zone == "bridge":
         children = [{"id": k, "label": tr_(t)} for k, t in nav.BRIDGE_LEAVES]
@@ -228,7 +265,9 @@ def _rebuild_side(app, zone: str) -> None:
         # existing submenu buttons if any in subnav_buttons will be represented by screen itself
         children = [{"id": zone, "label": tr_(nav.ZONE_TITLES.get(zone, zone.upper()))}]
     app._xp_side.set_items(children)
-    app.subnav_buttons = {c["id"]: _NavProxy(app, c["id"]) for c in children}
+    ids = {c["id"] for c in children}
+    app._xp_side.set_active(active if active in ids else (children[0]["id"] if children else None))
+    app.subnav_buttons = {c["id"]: _NavProxy(app, c["id"], role="subnav") for c in children}
 
 
 def toggle_drawer(app, open_: bool | None = None) -> None:
@@ -253,7 +292,7 @@ def on_screen(app) -> None:
         app._xp_top.set_active(zone)
     except Exception:
         pass
-    _rebuild_side(app, zone)
+    _rebuild_side(app, zone, getattr(app, "current", None))
     # sync title/crumbs
     try:
         segs = nav.path(app.current)

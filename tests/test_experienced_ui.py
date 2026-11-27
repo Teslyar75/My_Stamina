@@ -1,10 +1,10 @@
 import json
-import os
-import types
 import unittest
 from pathlib import Path
 
 import tkinter as tk
+
+import pytest
 
 from stamina import alt_ui, storage
 from stamina.ui import experienced
@@ -93,3 +93,78 @@ class ExperiencedUiTest(unittest.TestCase):
         self.assertNotEqual(cache, storage.DATA_DIR.resolve())
         self.assertFalse(str(cache).startswith(str(storage.DATA_DIR.resolve())))
         self.assertFalse(str(cache).startswith(str(root.resolve())))
+
+
+def _experienced_app(tmp_path, monkeypatch, skin):
+    from stamina import pilots, storage
+    from stamina.ui.earth_downloader import EarthDownloader
+    from stamina.ui.slideshow import Slideshow
+
+    monkeypatch.setenv("APPDATA", str(tmp_path))
+    pilots.reset_root(Path(tmp_path))
+    settings = dict(storage.DEFAULT_SETTINGS)
+    settings.update(ui_layout="experienced", skin=skin, sound=False, topmost=False,
+                    living_space="off", idle_minutes=0, guide_enabled=False, geometry="")
+    storage.SETTINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    storage.SETTINGS_PATH.write_text(json.dumps(settings, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(EarthDownloader, "start", lambda self: None)
+    monkeypatch.setattr(Slideshow, "start", lambda self: None)
+    from stamina.cockpit import Cockpit
+    try:
+        app = Cockpit()
+    except tk.TclError:
+        pytest.skip("нет дисплея")
+    guide = getattr(app, "guide", None)
+    if callable(getattr(guide, "stop", None)):
+        guide.stop()
+    return app
+
+
+def test_experienced_cockpit_all_skins_all_bridge_leaves(tmp_path, monkeypatch):
+    from stamina import nav, pilots, theme
+
+    themes = theme.list_themes()
+    assert themes
+    popups = []
+    monkeypatch.setattr(tk.Menu, "tk_popup", lambda self, x, y: popups.append((x, y)))
+    try:
+        for meta in themes:
+            app = None
+            try:
+                app = _experienced_app(tmp_path, monkeypatch, meta["id"])
+                assert app._layout == "experienced"
+                for key, _title in nav.BRIDGE_LEAVES:
+                    app.show(key)
+                    app.update_idletasks()
+                    assert app.current == key
+                    zone = nav.zone_of(key)
+                    for button in (app.nav_buttons.get(zone), app.subnav_buttons.get(key)):
+                        assert button is not None
+                        button.set_color(theme.CYAN)
+                        button.set_narrow(True)
+                        button.set_narrow(False)
+                        button.set_text("ПРОВЕРКА")
+                        button.set_enabled(True)
+                        button.configure(cursor="hand2")
+                        button.bind("<Button-3>", lambda _e: None)
+                        button.set_active(True)
+                        button.set_active(False)
+                        assert isinstance(button.winfo_manager(), str)
+                        assert isinstance(button.winfo_rootx(), int)
+                        assert isinstance(button.winfo_rooty(), int)
+                        assert isinstance(button.winfo_width(), int)
+                        assert isinstance(button.winfo_height(), int)
+                        assert isinstance(button.winfo_ismapped(), (bool, int))
+                    app.update_comm_badge()
+                before = len(popups)
+                app.bridge_menu()
+                assert len(popups) == before + 1
+                assert all(isinstance(v, int) for v in popups[-1])
+            finally:
+                if app is not None:
+                    try:
+                        app.destroy()
+                    except Exception:
+                        pass
+    finally:
+        pilots.reset_root()
