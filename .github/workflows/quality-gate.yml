@@ -113,7 +113,7 @@ jobs:
         # bash, не pwsh: иначе код выхода pytest теряется в пайпе с Tee-Object
         run: |
           set -o pipefail
-          mapfile -t files < shard_files.txt
+          mapfile -t files < <(tr -d '\r' < shard_files.txt)
           python -m pytest "${files[@]}" -vv -o console_output_style=classic -rfE --tb=short --durations=20 -p no:cacheprovider 2>&1 | tee pytest_shard.log
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
@@ -122,7 +122,7 @@ jobs:
         # thread: signal не прерывает зависание внутри Tk/C на Xvfb
         run: |
           set -o pipefail
-          mapfile -t files < shard_files.txt
+          mapfile -t files < <(tr -d '\r' < shard_files.txt)
           xvfb-run -a python -m pytest "${files[@]}" -vv -o console_output_style=classic -rfE --tb=short --durations=20 -p no:cacheprovider --timeout=90 --timeout-method=thread 2>&1 | tee pytest_shard.log
 
       - uses: actions/upload-artifact@v4

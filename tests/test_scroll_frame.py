@@ -171,7 +171,7 @@ def test_scrollbar_mapped_in_narrow_column(root):
     assert sf.inner.winfo_height() > sf.canvas.winfo_height()
 
 
-def _pump(spread, root, seconds: float = 3.0) -> None:
+def _pump(spread, root, seconds: float = 3.0, *, need_lesson: bool = False) -> None:
     import time
     deadline = time.time() + seconds
     while time.time() < deadline:
@@ -181,7 +181,9 @@ def _pump(spread, root, seconds: float = 3.0) -> None:
             pass
         root.update()
         if "list" not in spread._jobs and "lesson" not in spread._jobs:
-            if spread._data is not None or spread._rows:
+            if need_lesson and spread._data is None:
+                pass
+            elif spread._data is not None or spread._rows:
                 root.update()
                 return
         time.sleep(0.04)
@@ -203,21 +205,26 @@ def test_grammar_left_bar_and_page_keys(root, tmp_path):
     pilots.activate(pilot["id"])
     try:
         page = build_grammar_page(root, GermanPlugin(), LanguageProgress(pilots.pilot_dir(pilot["id"]), "de"), None)
+        root.update_idletasks()
         root.update()
         page._show_lessons("A1")
         _pump(page.spread, root)
         assert page.level_lessons
         page._open_lesson(page.level_lessons[0])
-        _pump(page.spread, root, 4.0)
+        _pump(page.spread, root, 4.0, need_lesson=True)
         spread = page.spread
         left, right = spread._list_sf, spread._lesson_sf
+        root.update_idletasks()
         root.update()
         assert left.inner.winfo_height() > 1
         # 18 уроков A1 в низкой колонке — полоса должна быть на экране
         assert left.bar.winfo_manager() == "pack"
         assert left.bar.winfo_ismapped()
         assert left.bar.winfo_width() > 1
-        assert right.inner.winfo_height() > right.canvas.winfo_height()
+        assert spread._data is not None, "урок не загрузился"
+        assert right.canvas.winfo_height() > 100, "холст урока не получил размер"
+        content_height = max(right.inner.winfo_height(), right.inner.winfo_reqheight())
+        assert content_height > right.canvas.winfo_height()
 
         _warp(right.canvas, 40, 80)
         right.canvas.focus_set()

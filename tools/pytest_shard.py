@@ -74,8 +74,15 @@ def main(argv: list[str] | None = None) -> int:
         weights = [sum(max(1, count_tests(path)) for path in bucket) for bucket in buckets]
         print("шарды:", ", ".join(f"{i + 1}: {w}" for i, w in enumerate(weights)),
               file=sys.stderr)
+    out = getattr(sys.stdout, "buffer", None)
     for path in buckets[args.shard - 1]:
-        print(path.relative_to(ROOT).as_posix())
+        line = f"{path.relative_to(ROOT).as_posix()}\n".encode("utf-8")
+        if out is None:
+            sys.stdout.write(line.decode("utf-8"))
+        else:
+            out.write(line)
+    if out is not None:
+        out.flush()
     return 0
 
 
