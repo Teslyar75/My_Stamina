@@ -298,16 +298,27 @@ def _side_action_factory(app):
 
 def _lift_chrome(app) -> None:
     """Порядок слоёв: фото → рабочее окно → чёрточки → радио."""
+    def lift(widget) -> None:
+        # HudButton и наладки — Canvas: их `raise` означает tag_raise, а не подъём
+        # виджета. Не даём этому сбою оборвать восстановление хрома.
+        try:
+            widget.lift()
+        except tk.TclError:
+            try:
+                widget.tag_raise("all")
+            except tk.TclError:
+                pass
+
     work = getattr(app, "_xp_work", None)
     if work is not None and work.winfo_exists() and work.winfo_ismapped():
-        work.lift()
+        lift(work)
     for attr in ("_xp_top_overlay", "_xp_side_overlay"):
         overlay = getattr(app, attr, None)
         if overlay is not None and overlay.winfo_exists() and overlay.winfo_ismapped():
-            overlay.lift()
+            lift(overlay)
     screen_btn = getattr(app, "_xp_screen_button", None)
     if screen_btn is not None and screen_btn.winfo_exists() and screen_btn.winfo_ismapped():
-        screen_btn.lift()
+        lift(screen_btn)
     radio = getattr(app, "_alt_radio", None)
     if radio is None:
         return
@@ -321,7 +332,7 @@ def _lift_chrome(app) -> None:
             radio._place(shown)
         for widget in (frame, tab):
             if widget is not None and widget.winfo_exists() and widget.winfo_ismapped():
-                widget.lift()
+                lift(widget)
     except tk.TclError:
         pass
 

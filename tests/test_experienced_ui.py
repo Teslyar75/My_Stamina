@@ -358,6 +358,7 @@ def test_double_esc_in_english_grammar_steps_back(xp_app):
             return True
 
     app.screens["english"] = FakeEnglish()
+    app.current = "english"
 
     _fire_esc(app)
     assert calls == []                  # первый Esc только запоминается
@@ -367,6 +368,49 @@ def test_double_esc_in_english_grammar_steps_back(xp_app):
     assert calls == [1]                 # второй делает шаг назад по грамматике
     assert app._xp_work_open
     assert not zen_mode.double_esc_pending()
+
+
+def test_double_esc_at_grammar_top_keeps_work(xp_app):
+    """На верхнем уровне грамматики шага нет — но отсек не закрывается в чёрный «домой»."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+
+    class FakeGrammar:
+        current = "grammar"
+
+        def handle_back(self):
+            return False                # список уровней, откатывать нечего
+
+    app.screens["english"] = FakeGrammar()
+    app.current = "english"
+
+    _fire_esc(app)
+    _fire_esc(app)
+    assert app._xp_work_open
+    assert app._xp_screen_button.winfo_ismapped()
+
+
+def test_double_esc_in_languages_grammar_steps_back(xp_app):
+    """Двойной Esc на общей странице грамматики тоже шагает назад, не закрывая отсек."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+    calls = []
+
+    class FakeLanguages:
+        current_page = "grammar"
+
+        def handle_back(self):
+            calls.append(1)
+            return True
+
+    app.screens["languages"] = FakeLanguages()
+    app.current = "languages"
+
+    _fire_esc(app)
+    assert calls == []
+    _fire_esc(app)
+    assert calls == [1]
+    assert app._xp_work_open
 
 
 def test_screen_button_stays_visible_with_work_open(xp_app):

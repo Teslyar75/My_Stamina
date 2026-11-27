@@ -665,11 +665,18 @@ class Cockpit(tk.Tk):
             except TypeError:
                 scr.toggle_focus(False)
 
+    def _in_grammar_context(self) -> bool:
+        """Грамматика на экране: в опытном виде Esc не должен закрывать отсек."""
+        scr = self.screens.get(getattr(self, "current", None))
+        if scr is None:
+            return False
+        return bool(getattr(scr, "current", None) == "grammar"
+                    or getattr(scr, "current_page", None) == "grammar")
+
     def _grammar_back(self) -> bool:
-        """Шаг назад внутри грамматики английского вместо закрытия всего отсека."""
-        from stamina import english_hook
-        scr = self.screens.get(english_hook.KEY)
-        if scr is None or getattr(scr, "current", None) != "grammar":
+        """Шаг назад внутри грамматики (родной отсек en или общая страница языков)."""
+        scr = self.screens.get(getattr(self, "current", None))
+        if scr is None or not self._in_grammar_context():
             return False
         back = getattr(scr, "handle_back", None)
         return bool(callable(back) and back())
@@ -1645,9 +1652,11 @@ class Cockpit(tk.Tk):
                     zen_mode.toggle(target)
                 return "break"
             if zen_mode.is_escape(e) and zen_mode.is_active(target):
-                # В грамматике английского двойной Esc — шаг назад по меню урока,
-                # а не закрытие всего рабочего отсека (иначе чёрный «домой» без кнопки ЭКРАН).
-                if zen_mode.double_esc_pending() and self._grammar_back():
+                # В грамматике двойной Esc — шаг назад по меню урока. На верхнем
+                # уровне шага нет, но отсек всё равно остаётся открытым: закрытие
+                # даёт пустой «домой» без кнопки ЭКРАН (чёрный экран у пилота).
+                if zen_mode.double_esc_pending() and self._in_grammar_context():
+                    self._grammar_back()
                     zen_mode._ESC.reset()
                     return "break"
                 zen_mode.mark_handled(e)
@@ -1657,6 +1666,7 @@ class Cockpit(tk.Tk):
             return "break"
         if (e.keysym == "Escape" and self._layout == "experienced"
                 and getattr(self, "_xp_work_open", False)
+                and not self._in_grammar_context()
                 and not (zen is not None and getattr(zen, "on", False))):
             # Зенид рабочего окна обработан выше (двойной Esc). Здесь только
             # страховка для окна, открытого без зенида.
