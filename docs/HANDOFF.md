@@ -490,3 +490,23 @@ Next: глазами пройти на ярлыке путь «чёрточка 
 Ярлык для проверки создан: рабочий стол `C:\Users\mi\OneDrive\Рабочий стол\Star Typing — Опытный пилот.lnk` → `pythonw.exe "D:\tmp\st-pilot\main.py" --select`, рабочая папка `D:\tmp\st-pilot`, иконка из репозитория. Existing shortcuts не затирались; репозиторий остался чистым. На экране входа выбрать «ОПЫТНЫЙ ПИЛОТ» (это сохранит выбор в настройках пилота).
 
 Problems: при прогоне без `--basetemp` pytest на Windows падает на teardown из-за заблокированного symlink `pytest-of-mi\pytest-current` (сами тесты зелёные); чистый прогон сделан с `--basetemp`.
+
+---
+
+## Опытный пилот: чёрточки, меню, колесо, Экран, слайдшоу и вход в английский (28.11, `agent/orion/xp-dash-hover`)
+
+Goal: чёрточки удобнее (рост/подсветка, меню рядом на любом мониторе, колесо у ползунков), видимая кнопка «на весь экран», плавное слайдшоу, и английский — тем же путём, что остальные языки.
+
+Done:
+- `stamina/ui/timeline.py`: верхние чёрточки растут вниз, правые — влево; длина ×2–3 и яркость растут вместе (`_hover_progress`, один `_animate_hover`). Поп-ап прижат к концу выросшей чёрточки (`_full_tick_screen_box`, зазор `px(10)`), при росте не дёргается. Позиция считается через `stamina.monitors.work_area()/fit()`, работает второй монитор с отрицательными координатами; зона выживания расширена.
+- `stamina/wheel_router.py`: колесо над `ttk/tk Scrollbar` крутит прицепленный виджет через `_CommandScroller` (Tcl-команда `command=cv.yview`), над кастомным `SlimBar` — его `view.canvas`.
+- `stamina/cockpit.py` + `stamina/ui/experienced.py`: видимая кнопка «⛶ ЭКРАН» на теле опытного пилота; `toggle_fullscreen()` синхронизирует её с `btn_screen`, полный экран убирает полосу с названием программы.
+- `stamina/ui/slideshow.py`: вместо stipple-подмены — настоящий кроссфейд `Image.blend()` с шагами (`_image_for`, `_fade`, `_cancel_fade`); картинки создаются с `master=self.canvas`, поэтому несколько `Tk()` в одном прогоне больше не дают `image "pyimageN" does not exist`.
+- `stamina/languages/screen.py`: убрана развилка `if lang_code == "en": show("english")`. Карточка английского в сетке открывает тот же встроенный отсек с подстраницами, что немецкий/французский/испанский/итальянский; `restore_place` больше не пропускает английский.
+- `stamina/languages/grammar_page.py`: `build_grammar_page` для `en` подключает готовый каталог Murphy (`stamina.english.pages_grammar`) на том же `GrammarSpread`, вместо несовместимой заглушки `EnglishGrammarEngine`; заглушка прогресса для `progress=None`. В `screen.py` в билдер грамматики передан `vocab`.
+- `stamina/ui/experienced.py`: убраны прямые пункты «english» из верхней и правой лент — вход только через сетку языков, как у всех.
+- Тесты: `tests/test_timeline.py`, `tests/test_wheel_router.py`, `tests/test_experienced_ui.py`, `tests/test_slideshow.py`, новый `tests/test_languages_english_path.py` — 49 passed в одном прогоне с `--basetemp`. `tools/ci_gate.py --only contrast --only i18n --only dep` — зелёный.
+
+Next: глазами пройти на ярлыке «чёрточка → меню → ПРАВИЛО/ГРАММАТИКА → Экран» и проверить вход в английский из сетки «ИНОСТРАННЫЕ ЯЗЫКИ» на втором мониторе.
+
+Problems: нет (предсуществующие падения `test_scroll_frame.py` на Windows подтверждены на чистом baseline `40cfbf6` и к этой ветке не относятся).

@@ -937,9 +937,19 @@ class Cockpit(tk.Tk):
         except tk.TclError:
             return
         self._fullscreen = on
-        self.btn_screen.set_text(tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН"))
-        self.btn_screen.set_active(on)
-        self.btn_screen.set_color(AMBER if on else CYAN)
+        label = tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН")
+        # Кнопка «ЭКРАН» в опытном виде живёт на самом холсте и видна всегда —
+        # полоса с названием программы убирается одним нажатием, без F8.
+        for btn in (getattr(self, "btn_screen", None),
+                    getattr(self, "_xp_screen_button", None)):
+            if btn is None:
+                continue
+            try:
+                btn.set_text(label)
+                btn.set_active(on)
+                btn.set_color(AMBER if on else CYAN)
+            except (tk.TclError, AttributeError):
+                pass
 
     def _esc_fullscreen(self, _e=None) -> None:
         if self._fullscreen:

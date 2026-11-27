@@ -80,6 +80,27 @@ class ExperiencedUiTest(unittest.TestCase):
         self.assertIsNone(self.app._radio_mini)
         experienced.on_screen(self.app)
 
+    def test_fullscreen_button_is_visible_on_home(self):
+        experienced.build_chrome(self.app)
+        self.app.deiconify()
+        self.app.update()
+        btn = self.app._xp_screen_button
+        self.assertTrue(btn.winfo_ismapped())
+        self.assertGreater(btn.winfo_width(), 20)
+        self.assertEqual(btn.command, self.app.toggle_fullscreen)
+        # Полный экран убирает полосу с названием программы.
+        self.assertIn("ЭКРАН", btn._text)
+
+    def test_languages_ribbon_has_no_direct_english(self):
+        """Английский — карточка в сетке языков, а не отдельный пункт ленты."""
+        self.app.SCREENS = [("bridge", "МОСТИК"), ("languages", "ИНОСТРАННЫЕ ЯЗЫКИ")]
+        experienced.build_chrome(self.app)
+        self.app.current = "languages"
+        experienced.on_screen(self.app)
+        self.assertEqual([i.id for i in self.app._xp_side.items()], ["languages"])
+        top = next(i for i in self.app._xp_top.items() if i.id == "languages")
+        self.assertEqual([c.id for c in top.children], [])
+
     def test_layout_of_accepts_experienced(self):
         self.assertEqual(alt_ui.layout_of({"ui_layout": "experienced"}), "experienced")
 
@@ -393,3 +414,54 @@ def test_experienced_cockpit_all_skins_all_bridge_leaves(xp_app, monkeypatch):
         app.bridge_menu()
         assert len(popups) == before + 1
         assert all(isinstance(v, int) for v in popups[-1])
+
+
+def test_side_popup_opens_next_to_dashes_on_second_monitor(xp_app):
+    from stamina import monitors
+    from stamina.theme import px
+
+    app = xp_app()
+    monitors.set_provider(lambda x, y, n: (-2560, 0, 0, 1400) if x < 0 else (0, 0, 2560, 1400))
+    try:
+        fake_x, fake_y = -2500, 20
+        app._xp_canvas.winfo_rootx = lambda: fake_x
+        app._xp_canvas.winfo_rooty = lambda: fake_y
+        app.winfo_rootx = lambda: fake_x
+        app.winfo_rooty = lambda: fake_y
+        ribbon = app._xp_side
+        item = next(i for i in ribbon.items() if i.id == "missions")
+        ribbon._on_motion(type("E", (), {"x": 15, "y": 14})())
+        if ribbon._anim_job is not None:
+            app.after_cancel(ribbon._anim_job)
+            ribbon._anim_job = None
+        for _ in range(10):
+            ribbon._animate_hover()
+        app.update_idletasks()
+
+        tx0, _ty0, _tx1, _ty1 = ribbon._full_tick_screen_box(item)
+        info = ribbon._popup.place_info()
+        popup_x = fake_x + float(info["x"])
+        pw = max(px(180), ribbon._popup.winfo_reqwidth())
+        assert -2560 <= popup_x and popup_x + pw <= 0
+        assert abs(tx0 - popup_x - pw - px(10)) <= 12
+    finally:
+        monitors.set_provider(None)
+
+
+def test_work_window_scrolls_by_mouse_wheel(xp_app):
+    app = xp_app(slides=False)   # слайдшоу здесь ни к чему: меньше Tk-картинок между окнами
+    _open_missions_from_ribbon(app)
+
+    from stamina.english.ui import ScrollFrame
+    sf = ScrollFrame(app._xp_work)
+    first = app._xp_work.winfo_children()[0]
+    sf.pack(fill=tk.BOTH, expand=True, before=first)
+    for i in range(50):
+        tk.Label(sf.inner, text=f"row {i}").pack(anchor="w")
+    app.update()
+    assert sf.inner.winfo_height() > sf.canvas.winfo_height()
+
+    child = sf.inner.winfo_children()[4]
+    child.event_generate("<MouseWheel>", delta=-120)
+    app.update()
+    assert sf.canvas.yview()[0] > 0

@@ -61,6 +61,38 @@ class SlideshowTest(unittest.TestCase):
         ss.stop()
         self.assertFalse(ss._running)
 
+    def test_switch_blends_frames_instead_of_sharp_cut(self):
+        if Image is None or len(self.frames) < 2:
+            self.skipTest("no PIL")
+        c = tk.Canvas(self.root, width=120, height=80)
+        c.pack()
+        self.root.update()
+        ss = Slideshow(c, interval_ms=5000, fade_ms=120, scrim_alpha=0.0)
+        ss.set_frames(self.frames[:2])
+        ss.start()
+        scheduled = []
+        original_after = c.after
+        c.after = lambda ms, fn=None, *a: scheduled.append(fn) or "fake"
+        blends = []
+        original_blend = Image.blend
+
+        def spy(a, b, t):
+            blends.append(t)
+            return original_blend(a, b, t)
+
+        Image.blend = spy
+        try:
+            ss._fade(self.frames[0], self.frames[1])
+            while scheduled:
+                scheduled.pop(0)()
+        finally:
+            Image.blend = original_blend
+            c.after = original_after
+            ss.stop()
+        self.assertGreaterEqual(len(blends), 3)
+        self.assertLess(blends[0], blends[-1])
+        self.assertLessEqual(blends[-1], 1.0)
+
     def test_on_frame_hook_and_no_scrim_for_experienced(self):
         c = tk.Canvas(self.root, width=120, height=80)
         c.pack()

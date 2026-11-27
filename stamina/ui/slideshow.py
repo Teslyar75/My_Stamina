@@ -41,6 +41,8 @@ class Slideshow:
         self._last_switch = 0.0
         self._scrim_color = "#0B0E14"
         self._preload_cache: dict[tuple[str, int, int], object] = {}
+        self._image_cache: dict[tuple[str, int, int], object] = {}
+        self._fade_photos: list = []
         self.canvas.bind("<Configure>", self._on_configure, add="+")
         self.canvas.bind("<Destroy>", lambda _e: self.stop(), add="+")
 
@@ -88,6 +90,15 @@ class Slideshow:
             self._show_next(initial=True)
         self._schedule()
 
+    def _cancel_fade(self) -> None:
+        if self._fade_job is not None:
+            try:
+                self.canvas.after_cancel(self._fade_job)
+            except Exception:
+                pass
+            self._fade_job = None
+        self._fade_photos = []
+
     def stop(self) -> None:
         self._running = False
         if self._job is not None:
@@ -96,12 +107,7 @@ class Slideshow:
             except Exception:
                 pass
             self._job = None
-        if self._fade_job is not None:
-            try:
-                self.canvas.after_cancel(self._fade_job)
-            except Exception:
-                pass
-            self._fade_job = None
+        self._cancel_fade()
 
     def _schedule(self) -> None:
         if self._job is not None:
@@ -170,16 +176,17 @@ class Slideshow:
         self._render_current(prev=prev if not initial else None)
         self._preload_next()
 
-    def _decode(self, path: Path):
-        if Image is None or ImageTk is None:
+    def _image_for(self, path: Path):
+        """Кадр, подготовленный под текущий размер окна (PIL Image)."""
+        if Image is None:
             return None
         w, h = self._size
         key = (str(path).lower(), w, h)
-        if key in self._preload_cache:
-            return self._preload_cache[key]
+        if key in self._image_cache:
+            return self._image_cache[key]
         try:
-            with Image.open(path) as im:
-                im = im.convert("RGB")
+            with Image.open(path) as src:
+                im = src.convert("RGB")
                 iw, ih = im.size
                 if iw <= 0 or ih <= 0:
                     return None
@@ -191,7 +198,30 @@ class Slideshow:
                 im = im.crop((left, top, left + w, top + h))
                 if ImageEnhance is not None:
                     im = ImageEnhance.Brightness(im).enhance(0.72)
-                photo = ImageTk.PhotoImage(im)
+        except Exception:
+            return None
+        if im.size != (w, h):
+            im = im.resize((w, h))
+        self._image_cache[key] = im
+        if len(self._image_cache) > 8:
+            for k in list(self._image_cache.keys())[:-6]:
+                self._image_cache.pop(k, None)
+        return im
+
+    def _decode(self, path: Path):
+        if ImageTk is None:
+            return None
+        w, h = self._size
+        key = (str(path).lower(), w, h)
+        if key in self._preload_cache:
+            return self._preload_cache[key]
+        im = self._image_for(path)
+        if im is None:
+            return None
+        try:
+            # master=canvas: иной корень Tk (several Tk() в тестах/окнах) ловит
+            # "image pyimageN does not exist" — картинка живёт в чужом интерпретаторе.
+            photo = ImageTk.PhotoImage(im, master=self.canvas)
         except Exception:
             return None
         self._preload_cache[key] = photo
@@ -209,6 +239,8 @@ class Slideshow:
     def _render_current(self, prev: Path | None = None) -> None:
         if self._current is None:
             return
+        if prev is None:
+            self._cancel_fade()   # ресайз/первый кадр — не продолжаем старую анимацию
         photo = self._decode(self._current)
         if photo is None:
             # bad frame - drop it
@@ -217,10 +249,9 @@ class Slideshow:
             self._show_next(initial=True)
             return
         if prev is not None and self.fade_ms > 0 and Image is not None and ImageTk is not None:
-            prev_photo = self._decode(prev)
-            if prev_photo is not None:
-                self._fade(prev_photo, photo)
-                return
+            # Плавное проявление нового кадра поверх прежнего — без резкой смены.
+            self._fade(prev, self._current)
+            return
         self._draw_photo(photo)
 
     def _draw_photo(self, photo) -> None:
@@ -250,35 +281,36 @@ class Slideshow:
             self.canvas.create_rectangle(0, 0, w, h, fill=color, outline="", tags=("scrim",))
         self.canvas.tag_raise("scrim")
 
-    def _fade(self, prev_photo, next_photo) -> None:
-        if self._fade_job is not None:
-            try:
-                self.canvas.after_cancel(self._fade_job)
-            except Exception:
-                pass
-            self._fade_job = None
-        steps = 8
+    def _fade(self, prev_path: Path, next_path: Path) -> None:
+        """Плавный кроссфейд: каждый шаг смешивает два кадра вместо резкой подмены."""
+        self._cancel_fade()
+        before = self._image_for(prev_path)
+        after = self._image_for(next_path)
+        if before is None or after is None:
+            self._draw_photo(self._decode(next_path))
+            return
+        steps = max(3, min(24, self.fade_ms // 40))
         delay = max(20, self.fade_ms // steps)
 
         def step(i=0):
             if not self._running:
                 return
             if i >= steps:
-                self._photo_overlay = None
-                self._draw_photo(next_photo)
+                self._fade_photos = []
+                self._draw_photo(self._decode(next_path))
                 return
-            # Crossfade approximation: draw next, then overlay previous with increasing stipple sparsity.
+            ratio = i / (steps - 1)
+            try:
+                blended = Image.blend(before, after, ratio)
+                photo = ImageTk.PhotoImage(blended, master=self.canvas)
+            except Exception:
+                self._fade_photos = []
+                self._draw_photo(self._decode(next_path))
+                return
+            self._fade_photos = [photo]   # иначе Tk забудет картинку на следующем шаге
             self.canvas.delete("slide")
             self.canvas.delete("scrim")
-            self._photo = next_photo
-            self._photo_next = prev_photo
-            self.canvas.create_image(0, 0, anchor="nw", image=next_photo, tags=("slide",))
-            stipples = ["gray75", "gray50", "gray25", "gray12"]
-            st = stipples[min(len(stipples) - 1, i * len(stipples) // steps)]
-            try:
-                self.canvas.create_image(0, 0, anchor="nw", image=prev_photo, tags=("slide", "fade"), stipple=st)
-            except tk.TclError:
-                pass
+            self.canvas.create_image(0, 0, anchor="nw", image=photo, tags=("slide",))
             self._draw_scrim(*self._size)
             self.canvas.tag_lower("slide")
             self._notify_frame()

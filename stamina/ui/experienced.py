@@ -242,6 +242,12 @@ def build_chrome(app) -> tk.Frame:
        width=104, color=theme.AMBER).pack(side=tk.LEFT, padx=px(3))
     app._radio_mini = None  # в опытном виде — плавающая AltRadioPanel, не плашка F8
 
+    # Видимая кнопка «на весь экран»: убирает полосу с названием программы.
+    # Живёт на холсте, а не в скрытой полке F8, поэтому доступна и на старте.
+    app._xp_screen_button = HB(body, tr_("⛶ ЭКРАН"), app.toggle_fullscreen,
+                               height=32, font_size=9, width=104, color=theme.CYAN)
+    app._xp_screen_button.place(x=px(12), rely=1, y=-px(12), anchor="sw")
+
     def _on_canvas_cfg(e=None):
         if e is not None and getattr(e, "widget", None) is not canvas:
             return
@@ -292,6 +298,9 @@ def _lift_chrome(app) -> None:
         overlay = getattr(app, attr, None)
         if overlay is not None and overlay.winfo_exists() and overlay.winfo_ismapped():
             overlay.lift()
+    screen_btn = getattr(app, "_xp_screen_button", None)
+    if screen_btn is not None and screen_btn.winfo_exists() and screen_btn.winfo_ismapped():
+        screen_btn.lift()
     radio = getattr(app, "_alt_radio", None)
     if radio is None:
         return

@@ -150,9 +150,9 @@ class LanguagesScreen(tk.Frame):
     def _select_language(self, lang_code: str) -> None:
         self._exit_grammar_focus(remember=False)
         self._grammar_page = None
-        if lang_code == "en":
-            self.app.show("english")
-            return
+        # Английский — обычная карточка в сетке, как немецкий/французский и др.
+        # Раньше он уводил на отдельный старый экран english; теперь открывается
+        # тот же встроенный отсек с подстраницами (слова, миссии, грамматика).
         self.current_lang = lang_code
         self._pool_slugs = None
         self._pool_title = ""
@@ -592,8 +592,6 @@ class LanguagesScreen(tk.Frame):
             return
         if self.current_lang != place.lang:
             self._select_language(place.lang)
-        if place.lang == "en":
-            return
         if place.sub and place.sub != "grid" and (
             self.current_page != place.sub or getattr(self, "_inner", "")
         ):
@@ -1102,6 +1100,6 @@ class LanguagesScreen(tk.Frame):
     def _build_grammar(self, plugin, progress, vocab) -> None:
         """Построить страницу грамматики."""
         from stamina.languages.grammar_page import build_grammar_page
-        page = build_grammar_page(self.page_container, plugin, progress, self.app)
+        page = build_grammar_page(self.page_container, plugin, progress, self.app, vocab)
         self._grammar_page = page
         # Страница сама упаковывается в build_grammar_page

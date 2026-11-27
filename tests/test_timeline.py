@@ -1,6 +1,7 @@
 import tkinter as tk
 import unittest
 
+from stamina import monitors
 from stamina.theme import px
 from stamina.ui.timeline import Timeline
 
@@ -16,6 +17,7 @@ class TimelineTest(unittest.TestCase):
         self.root.update()
 
     def tearDown(self):
+        monitors.set_provider(None)
         try:
             self.root.destroy()
         except Exception:
@@ -106,12 +108,12 @@ class TimelineTest(unittest.TestCase):
         item = tl.items()[0]
         tl._show_popup(item)
         self.root.update_idletasks()
-        x0, _y0, _x1, _y1 = tl._dash_screen_box(item)
+        x0, _y0, _x1, _y1 = tl._full_tick_screen_box(item)
         popup = tl._popup
         gap = x0 - (popup.winfo_rootx() + popup.winfo_width())
-        self.assertLessEqual(abs(gap - px(4)), 12)  # DPI tolerance
+        self.assertLessEqual(abs(gap - px(10)), 12)  # DPI tolerance
         self.assertGreaterEqual(gap, 0)
-        self.assertLessEqual(gap, 24)
+        self.assertLessEqual(gap, 30)
 
     def test_horizontal_popup_sits_below_dash_with_small_gap(self):
         canvas, box = self._surface("horizontal")
@@ -124,12 +126,12 @@ class TimelineTest(unittest.TestCase):
         item = tl.items()[0]
         tl._show_popup(item)
         self.root.update_idletasks()
-        _x0, _y0, _x1, y1 = tl._dash_screen_box(item)
+        _x0, _y0, _x1, y1 = tl._full_tick_screen_box(item)
         popup = tl._popup
         gap = popup.winfo_rooty() - y1
-        self.assertLessEqual(abs(gap - px(4)), 12)
+        self.assertLessEqual(abs(gap - px(10)), 12)
         self.assertGreaterEqual(gap, 0)
-        self.assertLessEqual(gap, 24)
+        self.assertLessEqual(gap, 30)
 
     def test_popup_stays_open_in_gap_and_closes_far_away(self):
         canvas, box = self._surface("vertical")
@@ -153,6 +155,138 @@ class TimelineTest(unittest.TestCase):
         tl.winfo_pointerxy = lambda: (5, 480)
         tl._maybe_close_popup()
         self.assertIsNone(tl._popup)
+
+    @staticmethod
+    def _motion(x, y):
+        e = tk.Event()
+        e.x, e.y = x, y
+        return e
+
+    @staticmethod
+    def _line(tl, item_id):
+        for i in tl.canvas.find_withtag(item_id):
+            if tl.canvas.type(i) == "line":
+                return i
+        return None
+
+    def _settle(self, tl):
+        if tl._anim_job is not None:
+            self.root.after_cancel(tl._anim_job)
+            tl._anim_job = None
+        for _ in range(10):
+            tl._animate_hover()
+
+    def test_both_ribbons_grow_toward_popup_and_get_brighter(self):
+        for orientation, box, point, direction in (
+            ("horizontal", (0, 0, 870, 46), (14, 20), "down"),
+            ("vertical", (870, 0, 30, 454), (15, 14), "left"),
+        ):
+            with self.subTest(orientation=orientation):
+                canvas, _ = self._surface(orientation)
+                tl = Timeline(self.root, orientation=orientation, surface=canvas,
+                              region=lambda b=box: b, tag=f"ribbon_{orientation}")
+                tl.set_items([{"id": "a", "label": "A", "children": [{"id": "a1", "label": "A1"}]}])
+                tl.redraw()
+                item = tl.items()[0]
+                line = self._line(tl, item.id)
+                self.assertIsNotNone(line)
+                before = list(tl.canvas.coords(line))
+                before_color = tl.canvas.itemcget(line, "fill")
+
+                tl._on_motion(self._motion(*point))
+                self._settle(tl)
+                line = self._line(tl, item.id)   # redraw создаёт новые item id
+                after = list(tl.canvas.coords(line))
+                after_color = tl.canvas.itemcget(line, "fill")
+                if direction == "down":
+                    self.assertAlmostEqual(after[1], before[1])
+                    self.assertGreaterEqual(after[3] - after[1], (before[3] - before[1]) * 2)
+                else:
+                    self.assertAlmostEqual(after[2], before[2])
+                    self.assertGreaterEqual(before[2] - after[0], (before[2] - before[0]) * 2)
+                self.assertNotEqual(before_color, after_color)
+
+                # Меню стоит у ПОЛНОСТЬЮ выросшей чёрточки с первого кадра и
+                # не едет за ней — кнопка не дёргается перед глазами.
+                self.root.update_idletasks()
+                tx0, ty0, tx1, ty1 = tl._full_tick_screen_box(item)
+                popup = tl._popup
+                self.assertIsNotNone(popup)
+                if direction == "down":
+                    self.assertLessEqual(abs(popup.winfo_rooty() - ty1 - px(10)), 12)
+                else:
+                    self.assertLessEqual(abs(tx0 - popup.winfo_rootx() - popup.winfo_width() - px(10)), 12)
+                self.assertLessEqual(tx1 - tx0 if direction == "left" else ty1 - ty0, px(40))
+
+    def test_popup_does_not_jump_while_dash_grows(self):
+        for orientation, box, point in (("horizontal", (0, 0, 870, 46), (14, 20)),
+                                        ("vertical", (870, 0, 30, 454), (15, 14))):
+            with self.subTest(orientation=orientation):
+                canvas, _ = self._surface(orientation)
+                tl = Timeline(self.root, orientation=orientation, surface=canvas,
+                              region=lambda b=box: b, tag=f"ribbon_{orientation}")
+                tl.set_items([{"id": "a", "label": "A", "children": [{"id": "a1", "label": "A1"}]}])
+                tl.redraw()
+                item = tl.items()[0]
+                tl._on_motion(self._motion(*point))
+                self.root.update_idletasks()
+                start = (tl._popup.winfo_rootx(), tl._popup.winfo_rooty())
+                if tl._anim_job is not None:
+                    self.root.after_cancel(tl._anim_job)
+                    tl._anim_job = None
+                for _ in range(10):
+                    tl._animate_hover()
+                self.root.update_idletasks()
+                end = (tl._popup.winfo_rootx(), tl._popup.winfo_rooty())
+                self.assertEqual(start, end)
+
+    def test_popup_survives_whole_path_from_dash_to_button(self):
+        canvas, box = self._surface("vertical")
+        tl = Timeline(self.root, orientation="vertical", surface=canvas,
+                      region=lambda: box, tag="ribbon_side", dash_width=px(30))
+        tl.set_items([{"id": "a", "label": "A", "children": [{"id": "a1", "label": "A1"}]}])
+        tl.redraw()
+        item = tl.items()[0]
+        tl._on_motion(self._motion(15, 14))
+        self._settle(tl)
+        self.root.update_idletasks()
+        tx0, ty0, tx1, ty1 = tl._tick_screen_box(item)
+        popup = tl._popup
+        px0, py0 = popup.winfo_rootx(), popup.winfo_rooty()
+        px1, py1 = px0 + popup.winfo_width(), py0 + popup.winfo_height()
+        for x, y in ((tx1, ty0), ((tx0 + px1) // 2, (ty0 + py0) // 2),
+                     (px1 - px(12), py0 + px(8)), (px0 + px(20), py1 - px(8))):
+            tl.winfo_pointerxy = lambda p=(x, y): p
+            tl._maybe_close_popup()
+            self.assertIsNotNone(tl._popup, (x, y))
+        tl.winfo_pointerxy = lambda: (px0 - px(120), py0 + 5)
+        tl._maybe_close_popup()
+        self.assertIsNone(tl._popup)
+
+    def test_popup_stays_on_second_monitor_with_negative_coords(self):
+        canvas, box = self._surface("vertical")
+        tl = Timeline(self.root, orientation="vertical", surface=canvas,
+                      region=lambda: box, tag="ribbon_side", dash_width=px(30))
+        tl.set_items([{"id": "a", "label": "A", "children": [{"id": "a1", "label": "A1"}]}])
+        tl.redraw()
+        monitors.set_provider(lambda x, y, n: (-2560, 0, 0, 1400) if x < 0 else (0, 0, 2560, 1400))
+        fake_root_x, fake_root_y = -2500, 20
+        canvas.winfo_rootx = lambda: fake_root_x
+        canvas.winfo_rooty = lambda: fake_root_y
+        self.root.winfo_rootx = lambda: fake_root_x
+        self.root.winfo_rooty = lambda: fake_root_y
+        self.root.update_idletasks()
+
+        item = tl.items()[0]
+        tl._on_motion(self._motion(15, 14))
+        self._settle(tl)
+        tx0, _ty0, _tx1, _ty1 = tl._full_tick_screen_box(item)
+        info = tl._popup.place_info()
+        popup_x = fake_root_x + float(info["x"])
+        pw = max(px(180), tl._popup.winfo_reqwidth())
+        self.assertGreaterEqual(popup_x, -2560)
+        self.assertLessEqual(popup_x + pw, 0)
+        self.assertLessEqual(abs(tx0 - popup_x - pw - px(10)), 12)
 
 
 if __name__ == "__main__":
