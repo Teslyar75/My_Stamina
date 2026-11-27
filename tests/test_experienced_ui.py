@@ -344,6 +344,41 @@ def test_close_work_also_leaves_fullscreen(xp_app):
     assert not app._fullscreen
 
 
+def test_double_esc_in_english_grammar_steps_back(xp_app):
+    """Двойной Esc в грамматике английского — шаг назад, а не закрытие отсека в «домой»."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+    calls = []
+
+    class FakeEnglish:
+        current = "grammar"
+
+        def handle_back(self):
+            calls.append(1)
+            return True
+
+    app.screens["english"] = FakeEnglish()
+
+    _fire_esc(app)
+    assert calls == []                  # первый Esc только запоминается
+    assert app._xp_work_open
+
+    _fire_esc(app)
+    assert calls == [1]                 # второй делает шаг назад по грамматике
+    assert app._xp_work_open
+    assert not zen_mode.double_esc_pending()
+
+
+def test_screen_button_stays_visible_with_work_open(xp_app):
+    """Кнопка ЭКРАН не прячется общим зенидом рабочего окна."""
+    app = xp_app()
+    assert app._xp_screen_button.winfo_ismapped()
+    _open_missions_from_ribbon(app)
+    app.update()
+    assert app._xp_work_open
+    assert app._xp_screen_button.winfo_ismapped()
+
+
 def test_nested_grammar_focus_keeps_work_window(xp_app):
     """⛶ в грамматике любого языка — зенид ВНУТРИ рабочего окна, а не вместо него."""
     app = xp_app()

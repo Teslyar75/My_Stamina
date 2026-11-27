@@ -178,6 +178,10 @@ def build_chrome(app) -> tk.Frame:
             app._xp_work_open = True
             _place_work()
             _place_overlays()
+            # FocusMode спрятал кнопку ЭКРАН как «соседа» рабочего окна — вернём её.
+            screen_btn = getattr(app, "_xp_screen_button", None)
+            if screen_btn is not None and not screen_btn.winfo_ismapped():
+                screen_btn.place(x=px(12), rely=1, y=-px(12), anchor="sw")
             _use_ribbon_surface(top_overlay, side_overlay)
         else:
             app._xp_work_open = False

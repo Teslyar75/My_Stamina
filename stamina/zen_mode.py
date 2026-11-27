@@ -91,6 +91,11 @@ def is_escape(e) -> bool:
     return _is_esc(e)
 
 
+def double_esc_pending() -> bool:
+    """Первый Esc уже нажат недавно — следующий закроет зенид (или шаг назад)."""
+    return bool(_ESC._at and (time.monotonic() - _ESC._at) <= ESC_WINDOW)
+
+
 def _is_esc(e) -> bool:
     ks = (getattr(e, "keysym", "") or "").lower()
     return ks == "escape" or int(getattr(e, "keycode", 0) or 0) == 27

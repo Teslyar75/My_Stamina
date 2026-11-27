@@ -665,6 +665,15 @@ class Cockpit(tk.Tk):
             except TypeError:
                 scr.toggle_focus(False)
 
+    def _grammar_back(self) -> bool:
+        """Шаг назад внутри грамматики английского вместо закрытия всего отсека."""
+        from stamina import english_hook
+        scr = self.screens.get(english_hook.KEY)
+        if scr is None or getattr(scr, "current", None) != "grammar":
+            return False
+        back = getattr(scr, "handle_back", None)
+        return bool(callable(back) and back())
+
     def _handle_focus_escape(self) -> bool:
         """Esc в зениде: общий двойной Esc для всех экранов."""
         from stamina import zen_mode
@@ -1636,6 +1645,11 @@ class Cockpit(tk.Tk):
                     zen_mode.toggle(target)
                 return "break"
             if zen_mode.is_escape(e) and zen_mode.is_active(target):
+                # В грамматике английского двойной Esc — шаг назад по меню урока,
+                # а не закрытие всего рабочего отсека (иначе чёрный «домой» без кнопки ЭКРАН).
+                if zen_mode.double_esc_pending() and self._grammar_back():
+                    zen_mode._ESC.reset()
+                    return "break"
                 zen_mode.mark_handled(e)
                 zen_mode.handle_key(e, target)
                 return "break"
