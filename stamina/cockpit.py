@@ -1652,11 +1652,10 @@ class Cockpit(tk.Tk):
                     zen_mode.toggle(target)
                 return "break"
             if zen_mode.is_escape(e) and zen_mode.is_active(target):
-                # В грамматике двойной Esc — шаг назад по меню урока. На верхнем
-                # уровне шага нет, но отсек всё равно остаётся открытым: закрытие
-                # даёт пустой «домой» без кнопки ЭКРАН (чёрный экран у пилота).
-                if zen_mode.double_esc_pending() and self._in_grammar_context():
-                    self._grammar_back()
+                # В грамматике двойной Esc — шаг назад, если есть куда. На верхнем
+                # уровне шага нет: обычный двойной Esc возвращает в исходное состояние
+                # (слайдшоу/мостик), а не оставляет чёрный отсек без выхода.
+                if zen_mode.double_esc_pending() and self._grammar_back():
                     zen_mode._ESC.reset()
                     return "break"
                 zen_mode.mark_handled(e)
@@ -1666,7 +1665,6 @@ class Cockpit(tk.Tk):
             return "break"
         if (e.keysym == "Escape" and self._layout == "experienced"
                 and getattr(self, "_xp_work_open", False)
-                and not self._in_grammar_context()
                 and not (zen is not None and getattr(zen, "on", False))):
             # Зенид рабочего окна обработан выше (двойной Esc). Здесь только
             # страховка для окна, открытого без зенида.

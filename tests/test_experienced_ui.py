@@ -370,8 +370,8 @@ def test_double_esc_in_english_grammar_steps_back(xp_app):
     assert not zen_mode.double_esc_pending()
 
 
-def test_double_esc_at_grammar_top_keeps_work(xp_app):
-    """На верхнем уровне грамматики шага нет — но отсек не закрывается в чёрный «домой»."""
+def test_double_esc_at_grammar_top_returns_home(xp_app):
+    """На верхнем уровне грамматики шага нет — двойной Esc возвращает в слайдшоу."""
     app = xp_app()
     _open_missions_from_ribbon(app)
 
@@ -386,8 +386,10 @@ def test_double_esc_at_grammar_top_keeps_work(xp_app):
 
     _fire_esc(app)
     _fire_esc(app)
-    assert app._xp_work_open
+    assert not app._xp_work_open
+    assert not app._fullscreen
     assert app._xp_screen_button.winfo_ismapped()
+    assert app._xp_slideshow._running
 
 
 def test_double_esc_in_languages_grammar_steps_back(xp_app):
