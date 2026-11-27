@@ -2052,7 +2052,11 @@ class TrainerGame(GameShell):
                 gx = depth_sum - gy
                 if not (min_gx <= gx <= max_gx):
                     continue
+
                 if (gx, gy) not in explored:
+                    # Туман войны: неразведанные клетки — сплошной черный ромб
+                    poly = iso.tile_polygon(gx, gy, 0, m)
+                    c.create_polygon(*poly, fill=BG, outline="", tags="map")
                     continue
 
                 dug = model.dug[gy][gx]
