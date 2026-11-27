@@ -742,6 +742,52 @@ class TrainerModel:
                 units[0].level))
         return result
 
+    def apply_control_preset(self, preset: str) -> None:
+        """Применить пресет управления отрядом.
+
+        'one'  — выбранный (или главный) manual, остальные autonomous
+        'two'  — первые два manual, остальные autonomous
+        'all'  — все manual
+        'semi' — все semi-autonomous
+        """
+        if preset not in ("one", "two", "all", "semi"):
+            return
+        units = self.units
+        if not units:
+            return
+
+        if preset == "all":
+            for u in units:
+                u.mode = "manual"
+                u.path = []
+                u.order = ""
+                u.target = None
+        elif preset == "semi":
+            for u in units:
+                u.mode = "semi-autonomous"
+        elif preset == "one":
+            # Выбранный или главный -> manual, остальные -> autonomous
+            selected = self.selected_units()
+            main = selected[0] if selected else self.main_unit
+            for u in units:
+                if u is main:
+                    u.mode = "manual"
+                    u.path = []
+                    u.order = ""
+                    u.target = None
+                else:
+                    u.mode = "autonomous"
+        elif preset == "two":
+            # Первые два -> manual, остальные -> autonomous
+            for i, u in enumerate(units):
+                if i < 2:
+                    u.mode = "manual"
+                    u.path = []
+                    u.order = ""
+                    u.target = None
+                else:
+                    u.mode = "autonomous"
+
     def tick_units(self) -> bool:
         """Шаг отряда по маршрутам. True — кто-то сдвинулся."""
         moved_any = False
@@ -760,6 +806,121 @@ class TrainerModel:
             self._robot = [self.main_unit.x, self.main_unit.y]
             self._maybe_expand()
         return moved_any
+
+    def tick_autonomous(self) -> bool:
+        """Автономное поведение юнитов не в manual режиме.
+        Возвращает True, если какой-то юнит выполнил действие или сдвинулся."""
+        moved_any = False
+        for u in self.units:
+            if u.mode == "manual":
+                continue
+            # Если есть путь — идём по нему
+            if u.path:
+                steps = strategy.unit_speed(u.level)
+                for _ in range(steps):
+                    if not u.path:
+                        break
+                    nx, ny = u.path.pop(0)
+                    if 0 <= nx < self.w and 0 <= ny < self.h:
+                        u.x, u.y = nx, ny
+                        moved_any = True
+                if moved_any:
+                    self.explored.update(self._visible_from(u))
+                continue
+
+            # Нет пути — ищем работу
+            cap = self._hold_cap()
+            soil = u.holds.get("soil", 0)
+            has_finds = any(v > 0 for k, v in u.holds.items() if k not in ("soil", "spice"))
+
+            # Полный отсек — едем разгружаться (на фундамент или платформу)
+            if soil >= cap:
+                # Ищем ближайшую незавершённую платформу или фундамент
+                target = self._find_build_target(u)
+                if target:
+                    tx, ty = target
+                    blocked = self._blocked_cells()
+                    path = strategy.pathfind((u.x, u.y), (tx, ty), self.w, self.h, blocked)
+                    if path:
+                        u.path = path
+                        u.target = (tx, ty)
+                        u.order = "auto_unload"
+                        continue
+
+            # Пустой отсек — копаем (ищем клетку с грунтом)
+            if not has_finds and soil < cap:
+                target = self._find_dig_target(u)
+                if target:
+                    tx, ty = target
+                    blocked = self._blocked_cells()
+                    path = strategy.pathfind((u.x, u.y), (tx, ty), self.w, self.h, blocked)
+                    if path:
+                        u.path = path
+                        u.target = (tx, ty)
+                        u.order = "auto_dig"
+                        continue
+
+            # В semi-autonomous режиме после выполнения задания ждём
+            if u.mode == "semi-autonomous" and u.order:
+                u.order = ""
+                u.target = None
+
+        if moved_any:
+            self._robot = [self.main_unit.x, self.main_unit.y]
+            self._maybe_expand()
+        return moved_any
+
+    def _find_build_target(self, unit: strategy.Unit) -> tuple[int, int] | None:
+        """Найти ближайшую клетку для укладки блока (платформа или фундамент)."""
+        # Приоритет: платформы с приоритетом > 0, потом остальные незавершённые
+        best = None
+        best_dist = float('inf')
+        for p in self.platforms:
+            if p.complete:
+                continue
+            for rel in p.pattern:
+                ax, ay = p.cell_abs(rel)
+                if (ax, ay) in self.platform_blocks:
+                    continue
+                if not (0 <= ax < self.w and 0 <= ay < self.h):
+                    continue
+                if unit.max_height < p.height and not self.developer:
+                    continue
+                d = abs(ax - unit.x) + abs(ay - unit.y)
+                if d < best_dist:
+                    best_dist = d
+                    best = (ax, ay)
+        if best:
+            return best
+        # Фундамент
+        if not self.walls_open:
+            for cell in self.site_cells():
+                if cell not in self.blocks:
+                    d = abs(cell[0] - unit.x) + abs(cell[1] - unit.y)
+                    if d < best_dist:
+                        best_dist = d
+                        best = cell
+        return best
+
+    def _find_dig_target(self, unit: strategy.Unit) -> tuple[int, int] | None:
+        """Найти ближайшую клетку для копки (с грунтом, не на стройплощадке, не источник)."""
+        best = None
+        best_dist = float('inf')
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.on_site(x, y):
+                    continue
+                if (x, y) in self.springs:
+                    continue
+                if self.dug[y][x] >= self.depth or self.dug[y][x] >= len(LAYERS):
+                    continue
+                if self.dug[y][x] > 0:
+                    continue  # уже копали
+                d = abs(x - unit.x) + abs(y - unit.y)
+                if d < best_dist:
+                    best_dist = d
+                    best = (x, y)
+        return best
 
     def _maybe_expand(self) -> bool:
         """Если юнит подошёл к краю — карта растёт вокруг него."""

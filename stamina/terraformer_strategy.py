@@ -448,6 +448,7 @@ class Unit:
     order: str = ""
     serial: int = 1
     holds: dict[str, int] = field(default_factory=dict)
+    mode: str = "manual"  # "manual" | "autonomous" | "semi-autonomous"
 
     @property
     def name(self) -> str:
@@ -472,6 +473,7 @@ class Unit:
             "target": list(self.target) if self.target else None,
             "order": self.order, "serial": self.serial,
             "holds": dict(self.holds),
+            "mode": self.mode,
         }
 
     @classmethod
@@ -490,12 +492,45 @@ class Unit:
         holds = d.get("holds")
         if not isinstance(holds, dict):
             holds = {}
+        mode = d.get("mode", "manual")
+        if mode not in ("manual", "autonomous", "semi-autonomous"):
+            mode = "manual"
         return cls(
             uid=str(d.get("uid", "unit")), level=str(d.get("level", "A1")),
             x=int(d.get("x", 0)), y=int(d.get("y", 0)), hp=int(d.get("hp", 100)),
             path=path, target=tgt, order=str(d.get("order", "")),
-            serial=int(d.get("serial", 1)), holds=holds,
+            serial=int(d.get("serial", 1)), holds=holds, mode=mode,
         )
+
+
+def unit_action_report(unit: Unit) -> dict:
+    """Возвращает краткий отчёт о действии юнита: action, target, status.
+
+    status: idle / moving / collecting / going to extract / placing / waiting / unloading
+    """
+    if unit.mode == "manual":
+        if unit.path:
+            return {"action": "moving", "target": unit.target, "status": "moving"}
+        return {"action": "idle", "target": None, "status": "idle"}
+
+    # autonomous / semi-autonomous
+    if unit.path:
+        return {"action": "moving", "target": unit.target, "status": "moving"}
+
+    # No path - check holds to determine status
+    soil = unit.holds.get("soil", 0)
+    # Check if has any finds (resources other than soil)
+    has_finds = any(v > 0 for k, v in unit.holds.items() if k not in ("soil", "spice"))
+    cap = 5  # HOLD_CAP from trainer, simplified
+
+    if soil >= cap:
+        return {"action": "unloading", "target": None, "status": "unloading"}
+    if has_finds:
+        return {"action": "going to extract", "target": None, "status": "going to extract"}
+    if unit.order:
+        return {"action": "waiting", "target": unit.target, "status": "waiting"}
+
+    return {"action": "collecting", "target": None, "status": "collecting"}
 
 
 def pathfind(start: tuple[int, int], goal: tuple[int, int], w: int, h: int,

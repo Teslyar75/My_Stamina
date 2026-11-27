@@ -68,6 +68,7 @@ KEYSYM_ACTIONS = {
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
     "escape": ("esc",), "p": ("pause",), "f1": ("help",), "i": ("iso",),
+    "v": ("toggle_mode",),
 }
 KEYCODE_ACTIONS = {
     65: ("move", -1, 0), 87: ("move", 0, -1), 68: ("move", 1, 0), 83: ("move", 0, 1),
@@ -76,6 +77,7 @@ KEYCODE_ACTIONS = {
     80: ("pause",),
     187: ("zoom_in",), 107: ("zoom_in",), 189: ("zoom_out",), 109: ("zoom_out",),
     48: ("home",), 96: ("home",), 112: ("help",), 73: ("iso",),
+    86: ("toggle_mode",),
 }
 
 
@@ -231,6 +233,8 @@ class TrainerGame(GameShell):
         if self.model.tick_units():
             self.camera.resize(self.model.w, self.model.h)
             self.camera.track(*self.model.robot)
+        # автономное поведение юнитов не в manual режиме
+        self.model.tick_autonomous()
         if self.model.tick_income():
             pass
         event = self.model.tick_worm()
@@ -447,6 +451,9 @@ class TrainerGame(GameShell):
         elif name == "iso":
             self._toggle_iso_view()
             self.redraw()
+        elif name == "toggle_mode":
+            self._toggle_mode()
+            self.redraw()
 
     def _toggle_iso_view(self) -> None:
         """Переключает между плоским (топ-даун) и изометрическим видом."""
@@ -464,6 +471,28 @@ class TrainerGame(GameShell):
         self.model._mixed_mode = not getattr(self.model, "_mixed_mode", False)
         status = _t("ВКЛ") if self.model._mixed_mode else _t("ВЫКЛ")
         self.show_toast(_t("Смешанный режим {0}").format(status))
+
+    def _toggle_mode(self) -> None:
+        """Переключает режим выбранного юнита: manual → autonomous → semi-autonomous → manual."""
+        units = self.model.selected_units()
+        if not units:
+            units = [self.model.main_unit]
+        for u in units:
+            if u.mode == "manual":
+                u.mode = "autonomous"
+            elif u.mode == "autonomous":
+                u.mode = "semi-autonomous"
+            else:
+                u.mode = "manual"
+            # Сброс автоматических приказов при смене режима
+            u.path = []
+            u.order = ""
+            u.target = None
+        if len(units) == 1:
+            mode_map = {"manual": _t("РУЧНОЙ"), "autonomous": _t("АВТОНОМНЫЙ"), "semi-autonomous": _t("ПОЛУ-АВТО")}
+            self.show_toast(_t("Режим: {0}").format(mode_map.get(units[0].mode, units[0].mode)))
+        else:
+            self.show_toast(_t("Режим изменён для {0} юнитов").format(len(units)))
 
     def do_move(self, dx: int, dy: int) -> bool:
         moved = self.model.move(dx, dy)
@@ -1164,6 +1193,32 @@ class TrainerGame(GameShell):
             c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
                           font=theme.font(10, bold))
             ty += px(16)
+
+        # Режим выбранного юнита — чекбоксы
+        selected = model.selected_units()
+        if not selected:
+            selected = [model.main_unit]
+        ty += px(4)
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(13)
+        for u in selected[:3]:
+            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
+                checked = u.mode == mode_key
+                box_x = px(10)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
+                                 fill=GREEN, width=2)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
+                                 fill=GREEN, width=2)
+                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked))
+            ty += px(32)
 
         # задания: сколько выполнено и сколько непрочитанных тревог
         book = model.mission_book
@@ -2496,6 +2551,32 @@ class TrainerGame(GameShell):
             c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
                           font=theme.font(10, bold))
             ty += px(16)
+
+        # Режим выбранного юнита — чекбоксы
+        selected = model.selected_units()
+        if not selected:
+            selected = [model.main_unit]
+        ty += px(4)
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(13)
+        for u in selected[:3]:
+            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
+                checked = u.mode == mode_key
+                box_x = px(10)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
+                                 fill=GREEN, width=2)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
+                                 fill=GREEN, width=2)
+                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked))
+            ty += px(32)
 
         book = model.mission_book
         done = book.done_count()
