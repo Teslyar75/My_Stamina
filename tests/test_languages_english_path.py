@@ -1,8 +1,9 @@
-"""Английский открывается из сетки языков тем же путём, что и остальные языки.
+"""Английский открывается из сетки языков, но содержимое — его родной отсек.
 
-Раньше карточка en уводила на отдельный старый экраны english; теперь это обычная
-карточка plugin-а: она собирает встроенный отсек с подстраницами (слова, миссии,
-грамматика), как немецкий, французский, испанский и итальянский.
+Вход делается той же карточкой, что и у немецкого/французского, однако внутри
+английского остаётся старый хаб «СТАНДАРТ · CEFR · ГЛАГОЛЫ · ИЗ КНИГИ»: общая
+страница «Наборы» рассчитана на частотные наборы с суффиксом уровня и потому
+английскому не подходит.
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ def _screen(root, monkeypatch, app):
     return screen_module.LanguagesScreen(root, app)
 
 
-def test_english_card_uses_same_select_path(monkeypatch):
+def test_english_card_leads_to_its_own_compartment(monkeypatch):
     tk = pytest.importorskip("tkinter")
     try:
         root = tk.Tk()
@@ -37,18 +38,18 @@ def test_english_card_uses_same_select_path(monkeypatch):
         codes = [entry["plugin"].code for entry in scr.lang_cards]
         assert codes.count("en") == 1
         english = next(entry for entry in scr.lang_cards if entry["plugin"].code == "en")
-        # У карточки en обычный для всех языков обработчик: _select_language(code).
         assert english["locked"] is False
         scr._select_language("en")
-        assert scr.current_lang == "en"
-        assert app.shown == [], "английский не должен уводить на отдельный экран english"
+        assert app.shown == ["english"], "карточка ведёт в родной отсек английского"
+        assert scr.current_lang != "en", "общая страница «Наборы» для английского не строится"
+        container = getattr(scr, "page_container", None)
+        assert container is None or not container.winfo_children()
     finally:
         root.destroy()
 
 
-@pytest.mark.parametrize("code", ["en", "de", "fr", "es", "it"])
-def test_all_languages_share_inplace_ui(monkeypatch, code):
-    """Любая карточка, включая английский, собирает один и тот же встроенный отсек."""
+@pytest.mark.parametrize("code", ["de", "fr", "es", "it"])
+def test_other_languages_share_inplace_ui(monkeypatch, code):
     tk = pytest.importorskip("tkinter")
     try:
         root = tk.Tk()
@@ -67,7 +68,7 @@ def test_all_languages_share_inplace_ui(monkeypatch, code):
         root.destroy()
 
 
-def test_english_restores_subpage_like_other_languages(monkeypatch):
+def test_english_place_does_not_rebuild_generic_page(monkeypatch):
     tk = pytest.importorskip("tkinter")
     try:
         root = tk.Tk()
@@ -79,8 +80,10 @@ def test_english_restores_subpage_like_other_languages(monkeypatch):
         scr = _screen(root, monkeypatch, app)
         from stamina.nav_back import Place
 
-        scr.restore_place(Place(screen="languages", lang="en", sub="grammar"))
-        assert scr.current_lang == "en"
-        assert scr.current_page == "grammar"
+        scr.restore_place(Place(screen="languages", lang="en", sub="sets"))
+        assert app.shown == ["english"]
+        assert scr.current_lang != "en"
+        container = getattr(scr, "page_container", None)
+        assert container is None or not container.winfo_children()
     finally:
         root.destroy()

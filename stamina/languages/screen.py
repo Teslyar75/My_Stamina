@@ -150,9 +150,13 @@ class LanguagesScreen(tk.Frame):
     def _select_language(self, lang_code: str) -> None:
         self._exit_grammar_focus(remember=False)
         self._grammar_page = None
-        # Английский — обычная карточка в сетке, как немецкий/французский и др.
-        # Раньше он уводил на отдельный старый экран english; теперь открывается
-        # тот же встроенный отсек с подстраницами (слова, миссии, грамматика).
+        # Вход в английский — та же карточка в сетке, что у остальных языков,
+        # но contents — его родной отсек: там хаб наборов (СТАНДАРТ/CEFR/ГЛАГОЛЫ/
+        # ИЗ КНИГИ), сканер и грамматика Murphy. Общая страница «Наборы» ждёт
+        # частотные наборы с суффиксом уровня (goethe-a1 и т.п.), которых у en нет.
+        if lang_code == "en":
+            self.app.show("english")
+            return
         self.current_lang = lang_code
         self._pool_slugs = None
         self._pool_title = ""
@@ -592,6 +596,9 @@ class LanguagesScreen(tk.Frame):
             return
         if self.current_lang != place.lang:
             self._select_language(place.lang)
+        if place.lang == "en":
+            # Английский живёт в своём отсеке; общая вкладка «Наборы» к нему не применяется.
+            return
         if place.sub and place.sub != "grid" and (
             self.current_page != place.sub or getattr(self, "_inner", "")
         ):

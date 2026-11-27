@@ -502,10 +502,12 @@ Done:
 - `stamina/wheel_router.py`: колесо над `ttk/tk Scrollbar` крутит прицепленный виджет через `_CommandScroller` (Tcl-команда `command=cv.yview`), над кастомным `SlimBar` — его `view.canvas`.
 - `stamina/cockpit.py` + `stamina/ui/experienced.py`: видимая кнопка «⛶ ЭКРАН» на теле опытного пилота; `toggle_fullscreen()` синхронизирует её с `btn_screen`, полный экран убирает полосу с названием программы.
 - `stamina/ui/slideshow.py`: вместо stipple-подмены — настоящий кроссфейд `Image.blend()` с шагами (`_image_for`, `_fade`, `_cancel_fade`); картинки создаются с `master=self.canvas`, поэтому несколько `Tk()` в одном прогоне больше не дают `image "pyimageN" does not exist`.
-- `stamina/languages/screen.py`: убрана развилка `if lang_code == "en": show("english")`. Карточка английского в сетке открывает тот же встроенный отсек с подстраницами, что немецкий/французский/испанский/итальянский; `restore_place` больше не пропускает английский.
+- `stamina/languages/screen.py`: вход в английский — всё та же карточка в сетке языков (прямых пунктов в лентах нет), но внутри открывается его родной экран `show("english")` со старым хабом наборов. Общая вкладка «Наборы» рассчитана на частотные наборы с суффиксом уровня (`goethe-a1` и т.п.), у английского таких нет — она показывала «НАБОР ГОТОВИТСЯ». `restore_place` снова пропускает английский.
 - `stamina/languages/grammar_page.py`: `build_grammar_page` для `en` подключает готовый каталог Murphy (`stamina.english.pages_grammar`) на том же `GrammarSpread`, вместо несовместимой заглушки `EnglishGrammarEngine`; заглушка прогресса для `progress=None`. В `screen.py` в билдер грамматики передан `vocab`.
 - `stamina/ui/experienced.py`: убраны прямые пункты «english» из верхней и правой лент — вход только через сетку языков, как у всех.
 - Тесты: `tests/test_timeline.py`, `tests/test_wheel_router.py`, `tests/test_experienced_ui.py`, `tests/test_slideshow.py`, новый `tests/test_languages_english_path.py` — 49 passed в одном прогоне с `--basetemp`. `tools/ci_gate.py --only contrast --only i18n --only dep` — зелёный.
+
+Исправление после проверки: наборы английского вернуты — карточка в сетке снова ведёт в родной отсек (`СТАНДАРТ · CEFR · ГЛАГОЛЫ · ИЗ КНИГИ`), а не в общую страницу «Наборы». Тесты `tests/test_languages_english_path.py` переписаны под этот путь; 104 теста в прогоне с `--basetemp` зелёные, гейт и ruff зелёные.
 
 Отправлено: коммит `07940b2`, ветка `agent/orion/xp-dash-hover` → `origin`, PR #66 в `master`.
 
