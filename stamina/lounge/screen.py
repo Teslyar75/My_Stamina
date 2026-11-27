@@ -4,6 +4,7 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import tkinter as tk
+import tkinter.font as tkfont
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
@@ -18,6 +19,69 @@ from .vim_trainer import VimTrainerGame
 from .docker_trainer import DockerTrainerGame
 from .linux_trainer import LinuxTrainerGame
 from .powershell_trainer import PowerShellTrainerGame
+
+
+def _draw_terminal_preview(
+    c: tk.Canvas,
+    ww: int,
+    hh: int,
+    ox: int,
+    oy: int,
+    box_w: int,
+    box_h: int,
+    bg_color: str,
+    border_color: str,
+    lines: list[tuple[str, str]],
+    mono_font_spec: tuple,
+) -> None:
+    """Draw a terminal-style preview with proper line spacing and clipping.
+
+    Args:
+        c: Canvas to draw on.
+        ww, hh: Canvas width/height.
+        ox, oy: Top-left of terminal box.
+        box_w, box_h: Terminal box width/height.
+        bg_color: Terminal background color.
+        border_color: Terminal border color.
+        lines: List of (text, color) tuples.
+        mono_font_spec: Font spec from theme.font(7, mono=True).
+    """
+    # Draw terminal chrome
+    c.create_rectangle(ox, oy, ox + box_w, oy + box_h, fill=bg_color, outline=border_color, width=1)
+
+    # Measure actual line height from the font
+    mono_font = tkfont.Font(font=mono_font_spec)
+    line_h = mono_font.metrics("linespace")
+    # Add 1px gap between lines
+    line_h = max(line_h, 1) + 1
+
+    # Inner padding
+    pad_x = 4
+    pad_y = 2
+
+    # Max lines that fit inside the box
+    max_lines = max(1, (box_h - 2 * pad_y) // line_h)
+
+    # Draw lines, clipped to max_lines
+    for i, (text, color) in enumerate(lines[:max_lines]):
+        y = oy + pad_y + i * line_h
+        # Horizontal clip: measure text width and truncate if needed
+        text_w = mono_font.measure(text)
+        max_text_w = box_w - 2 * pad_x
+        if text_w > max_text_w:
+            # Truncate with ellipsis
+            ellipsis = "…"
+            ellipsis_w = mono_font.measure(ellipsis)
+            # Binary search for max chars that fit
+            lo, hi = 0, len(text)
+            while lo < hi:
+                mid = (lo + hi + 1) // 2
+                if mono_font.measure(text[:mid]) + ellipsis_w <= max_text_w:
+                    lo = mid
+                else:
+                    hi = mid - 1
+            text = text[:lo] + ellipsis
+        c.create_text(ox + pad_x, y, text=text, fill=color, anchor="nw", font=mono_font_spec)
 
 
 def _mission_count(cls) -> int:
@@ -263,62 +327,55 @@ class LoungeScreen(tk.Frame):
                 c.create_text(ox + 4 * cell, oy + 4 * cell + 5, text="h j k l  w b e  x dw dd  i a o  v / u",
                               fill=AMBER, font=theme.font(7), anchor="center")
             elif gid == "docker_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # Terminal-style preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#0D1117", outline=AMBER, width=1)
-                # Prompt lines
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "$ docker run -d ship/radio",
-                    "abc123def456",
-                    "$ docker ps",
-                    "CONTAINER ID   IMAGE          STATUS    PORTS     NAMES",
-                    "abc123def456   ship/radio     Up 5s     8080/tcp  ship_abc",
-                    "$ docker logs abc123",
-                    "[radio] Module ready ✓",
+                    ("$ docker run -d ship/radio", AMBER),
+                    ("abc123def456", TEXT),
+                    ("$ docker ps", AMBER),
+                    ("CONTAINER ID   IMAGE          STATUS    PORTS     NAMES", TEXT),
+                    ("abc123def456   ship/radio     Up 5s     8080/tcp  ship_abc", TEXT),
+                    ("$ docker logs abc123", AMBER),
+                    ("[radio] Module ready ✓", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#0D1117", AMBER, lines, mono_font_spec)
             elif gid == "linux_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # Linux terminal preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#1a1a2e", outline=CYAN, width=1)
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "$ pwd",
-                    "/home/cosmonaut",
-                    "$ whoami",
-                    "cosmonaut",
-                    "$ ls -la /var/log",
-                    "syslog  auth.log  kern.log",
-                    "$ grep -i error syslog",
-                    "[error] module radio timeout",
+                    ("$ pwd", AMBER),
+                    ("/home/cosmonaut", TEXT),
+                    ("$ whoami", AMBER),
+                    ("cosmonaut", TEXT),
+                    ("$ ls -la /var/log", AMBER),
+                    ("syslog  auth.log  kern.log", TEXT),
+                    ("$ grep -i error syslog", AMBER),
+                    ("[error] module radio timeout", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("$") else (CYAN if "error" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#1a1a2e", CYAN, lines, mono_font_spec)
             elif gid == "powershell_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # PowerShell terminal preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#012456", outline=AMBER, width=1)
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "PS C:\\ship> Get-Process",
-                    "  123  pwsh    12.4  45MB",
-                    "  456  orion   8.1   128MB",
-                    "PS C:\\ship> Get-Service",
-                    "Running  ship-radio   Radio Module",
-                    "Stopped  ship-scanner Offline",
-                    "PS C:\\ship> Test-NetConnection localhost -Port 8080",
-                    "TcpTestSucceeded : True",
+                    ("PS C:\\ship> Get-Process", AMBER),
+                    ("  123  pwsh    12.4  45MB", TEXT),
+                    ("  456  orion   8.1   128MB", TEXT),
+                    ("PS C:\\ship> Get-Service", AMBER),
+                    ("Running  ship-radio   Radio Module", TEXT),
+                    ("Stopped  ship-scanner Offline", TEXT),
+                    ("PS C:\\ship> Test-NetConnection localhost -Port 8080", AMBER),
+                    ("TcpTestSucceeded : True", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("PS") else (CYAN if "True" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#012456", AMBER, lines, mono_font_spec)
             else:
                 for r in range(3):
                     for col in range(8):
