@@ -15,8 +15,6 @@
 
 from __future__ import annotations
 
-from stamina.i18n import t
-
 import json
 import os
 import sys
