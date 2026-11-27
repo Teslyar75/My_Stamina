@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import tkinter as tk
 from dataclasses import dataclass, field
 
@@ -17,48 +18,155 @@ class TimelineItem:
 
 
 class Timeline(tk.Canvas):
-    """Interactive timeline ribbon.
+    """Interactive ribbon of ticks.
 
     orientation: horizontal|vertical. Items: list[dict|TimelineItem].
+
+    With ``surface=`` the ticks are drawn as tagged items on a foreign canvas
+    (the full-window slideshow), while this widget only owns the logic/events.
+    ``region`` returns ``(x, y, w, h)`` in that canvas' coordinates.
     """
 
     def __init__(self, master, *, orientation: str = "horizontal", command=None,
-                 bg: str | None = None, scrim: str = "#0B0E14", **kw):
+                 bg: str | None = None, scrim: str = "#0B0E14", surface: tk.Canvas | None = None,
+                 region=None, tag: str | None = None, dash_width=None, **kw):
         self.orientation = orientation
         self.command = command
+        self.surface = surface
+        self.dash_width = int(dash_width) if dash_width is not None else px(30)
+        self._region_fn = region
+        self._tag = tag or f"timeline_{id(self):x}"
         self._items: list[TimelineItem] = []
         self._active_id: str | None = None
         self._hover_id: str | None = None
         self._popup: tk.Frame | None = None
         self._popup_for: str | None = None
         self._popup_buttons: list[tk.Widget] = []
+        self._popup_item: TimelineItem | None = None
         self._focus_idx: int = -1
         self._item_boxes: dict[str, tuple[int, int, int, int]] = {}
         self._scroll = 0
         self._total = 0
         self._scrim = scrim
         bg = bg or theme.BG
-        strip = px(40) if orientation == "horizontal" else px(52)
-        w = kw.pop("width", strip if orientation == "vertical" else 200)
-        h = kw.pop("height", strip if orientation == "horizontal" else 200)
-        super().__init__(master, bg=bg, highlightthickness=0, width=w, height=h, **kw)
-        self.bind("<Configure>", lambda _e: self.redraw())
-        self.bind("<Motion>", self._on_motion)
-        self.bind("<Leave>", self._on_leave)
-        self.bind("<Button-1>", self._on_click)
-        self.bind("<MouseWheel>", self._on_wheel)
-        self.bind("<Button-4>", lambda e: self._on_wheel(e, delta=120))
-        self.bind("<Button-5>", lambda e: self._on_wheel(e, delta=-120))
-        self.bind("<Left>", self._on_key_left)
-        self.bind("<Right>", self._on_key_right)
-        self.bind("<Up>", self._on_key_up)
-        self.bind("<Down>", self._on_key_down)
-        self.bind("<Return>", self._on_key_activate)
-        self.bind("<KP_Enter>", self._on_key_activate)
-        self.bind("<Escape>", lambda _e: self.close_popup())
-        self.bind("<Tab>", self._on_tab)
-        self.bind("<FocusOut>", lambda _e: self.after_idle(self._maybe_close_popup))
 
+        if surface is not None:
+            # Never mapped: the visible drawing belongs to ``surface``.
+            super().__init__(master, width=1, height=1, highlightthickness=0, bd=0)
+            try:
+                self.place_forget()
+            except tk.TclError:
+                pass
+            self.canvas = surface
+            self._bind_surface(surface)
+        else:
+            strip = px(40) if orientation == "horizontal" else px(52)
+            w = kw.pop("width", strip if orientation == "vertical" else 200)
+            h = kw.pop("height", strip if orientation == "horizontal" else 200)
+            super().__init__(master, bg=bg, highlightthickness=0, width=w, height=h, **kw)
+            self.canvas = self
+            self.bind("<Configure>", lambda _e: self.redraw())
+            self.bind("<Motion>", self._on_motion)
+            self.bind("<Leave>", self._on_leave)
+            self.bind("<Button-1>", self._on_click)
+            self.bind("<MouseWheel>", self._on_wheel)
+            self.bind("<Button-4>", lambda e: self._on_wheel(e, delta=120))
+            self.bind("<Button-5>", lambda e: self._on_wheel(e, delta=-120))
+        if surface is None:
+            self.bind("<Left>", self._on_key_left)
+            self.bind("<Right>", self._on_key_right)
+            self.bind("<Up>", self._on_key_up)
+            self.bind("<Down>", self._on_key_down)
+            self.bind("<Return>", self._on_key_activate)
+            self.bind("<KP_Enter>", self._on_key_activate)
+            self.bind("<Escape>", lambda _e: self.close_popup())
+            self.bind("<Tab>", self._on_tab)
+            self.bind("<FocusOut>", lambda _e: self.after_idle(self._maybe_close_popup))
+
+    def _bind_surface(self, surface: tk.Canvas) -> None:
+        """Events follow the visible canvas when ribbons move over a work window."""
+        surface.bind("<Motion>", self._on_surface_motion, add="+")
+        surface.bind("<Button-1>", self._on_surface_click, add="+")
+        surface.bind("<Leave>", lambda _e: self._on_leave(), add="+")
+        surface.bind("<MouseWheel>", self._on_wheel, add="+")
+        surface.bind("<Button-4>", lambda e: self._on_wheel(e, delta=120), add="+")
+        surface.bind("<Button-5>", lambda e: self._on_wheel(e, delta=-120), add="+")
+
+    def set_surface(self, surface: tk.Canvas) -> None:
+        """Draw the same ribbon on another canvas (home photo ↔ work overlay)."""
+        if surface is self.canvas:
+            self.lift()
+            return
+        self.close_popup()
+        old = self.canvas
+        self.canvas = surface
+        self.surface = surface
+        if old is not None and old is not surface:
+            try:
+                old.delete(self._tag)
+            except tk.TclError:
+                pass
+        self._bind_surface(surface)
+        self.redraw()
+
+    # --- geometry helpers -------------------------------------------------
+    def _region(self) -> tuple[int, int, int, int]:
+        if self._region_fn is not None:
+            try:
+                x, y, w, h = self._region_fn()
+                return int(x), int(y), max(1, int(w)), max(1, int(h))
+            except Exception:  # noqa: BLE001
+                pass
+        if self.surface is None:
+            return 0, 0, max(1, self.winfo_width()), max(1, self.winfo_height())
+        w = max(1, self.surface.winfo_width())
+        h = max(1, self.surface.winfo_height())
+        strip = px(40) if self.orientation == "horizontal" else px(52)
+        if self.orientation == "horizontal":
+            return 0, 0, w, strip
+        return w - strip, 0, strip, h
+
+    def _view_size(self) -> tuple[int, int]:
+        _x, _y, w, h = self._region()
+        return w, h
+
+    def _screen_origin(self) -> tuple[int, int]:
+        """Top-left of the ribbon's local coordinate system in screen pixels."""
+        if self.surface is None:
+            return self.winfo_rootx(), self.winfo_rooty()
+        rx, ry, _w, _h = self._region()
+        return self.surface.winfo_rootx() + rx, self.surface.winfo_rooty() + ry
+
+    def _xy(self, x: float, y: float) -> tuple[float, float]:
+        rx, ry, _w, _h = self._region()
+        return x + rx, y + ry
+
+    def _dash_screen_box(self, item: TimelineItem) -> tuple[int, int, int, int]:
+        box = self._item_boxes.get(item.id)
+        if not box:
+            return 0, 0, 0, 0
+        x0, y0, x1, y1 = box
+        ox, oy = self._screen_origin()
+        return ox + x0, oy + y0, ox + x1, oy + y1
+
+    def lift(self) -> None:
+        """Keep dashes above a freshly drawn slideshow frame."""
+        if self.surface is not None:
+            self.surface.tag_raise(self._tag)
+
+    def _emit(self, item: TimelineItem, from_popup: bool) -> None:
+        if self.command is None:
+            return
+        try:
+            arity = len(inspect.signature(self.command).parameters)
+        except (TypeError, ValueError):
+            arity = 2
+        if arity >= 3:
+            self.command(item.id, item, from_popup)
+        else:
+            self.command(item.id, item)
+
+    # --- items/drawing ----------------------------------------------------
     @staticmethod
     def _coerce(item) -> TimelineItem:
         if isinstance(item, TimelineItem):
@@ -92,11 +200,14 @@ class Timeline(tk.Canvas):
         return px(18)
 
     def _clamp_scroll(self) -> None:
-        view = max(1, (self.winfo_width() if self.orientation == "horizontal" else self.winfo_height()))
+        view = max(1, self._view_size()[0 if self.orientation == "horizontal" else 1])
         self._scroll = max(0, min(self._scroll, max(0, self._total - view + px(20))))
 
     def redraw(self) -> None:
-        self.delete("all")
+        if self.surface is not None:
+            self.canvas.delete(self._tag)
+        else:
+            self.delete("all")
         self._item_boxes.clear()
         if not self._items:
             return
@@ -118,50 +229,63 @@ class Timeline(tk.Canvas):
             pos += gap
         self._total = pos + self._scroll + px(14)
         self._draw_scroll_hint()
+        self.lift()
 
     def _is_group_break(self, idx: int) -> bool:
-        # Larger gap before items that start a semantic group; callers can encode
-        # by adding item.status=="group" or by label convention. Default: none.
         it = self._items[idx]
         return bool(getattr(it, "group_break", False) or it.status == "group")
 
     def _tick_bbox(self, pos: int) -> tuple[int, int, int, int]:
-        w = max(1, self.winfo_width())
-        h = max(1, self.winfo_height())
+        w, h = self._view_size()
         if self.orientation == "horizontal":
-            cx = pos
-            return cx - px(10), px(6), cx + px(10), h - px(6)
-        cy = pos
-        return px(6), cy - px(10), w - px(6), cy + px(10)
+            return pos - px(10), px(6), pos + px(10), h - px(6)
+        return px(6), pos - px(10), w - px(6), pos + px(10)
+
+    def _tags(self, item: TimelineItem) -> tuple[str, ...]:
+        return (self._tag, "timeline", "dash", item.id, self.orientation)
 
     def _draw_tick(self, item: TimelineItem, x0, y0, x1, y1, *, color: str, active: bool, hover: bool) -> None:
+        tags = self._tags(item)
         if self.orientation == "horizontal":
-            cx = (x0 + x1) // 2
-            base_y = y1 - px(10)
+            cx, base_y = (x0 + x1) // 2, y1 - px(10)
             tick_h = px(14) if active else px(10) if hover else px(8)
-            self.create_line(cx, base_y - tick_h, cx, base_y, fill=color, width=2 if active else 1, tags=("tick", item.id))
+            x, ya = self._xy(cx, base_y - tick_h)
+            _, ybb = self._xy(cx, base_y)
+            self.canvas.create_line(x, ya, x, ybb, fill=color, width=2 if active else 1, tags=tags)
             if active:
-                self.create_oval(cx - px(3), base_y - tick_h - px(6), cx + px(3), base_y - tick_h, fill=color, outline="")
+                x3, y3 = self._xy(cx - px(3), base_y - tick_h - px(6))
+                x4, y4 = self._xy(cx + px(3), base_y - tick_h)
+                self.canvas.create_oval(x3, y3, x4, y4, fill=color, outline="", tags=tags)
             if item.unread:
-                self.create_oval(cx + px(4), base_y - tick_h - px(2), cx + px(8), base_y - tick_h + px(2), fill=theme.AMBER, outline="")
+                x3, y3 = self._xy(cx + px(4), base_y - tick_h - px(2))
+                x4, y4 = self._xy(cx + px(8), base_y - tick_h + px(2))
+                self.canvas.create_oval(x3, y3, x4, y4, fill=theme.AMBER, outline="", tags=tags)
         else:
-            cy = (y0 + y1) // 2
-            base_x = x0 + px(10)
+            cy, base_x = (y0 + y1) // 2, x0 + px(10)
             tick_w = px(14) if active else px(10) if hover else px(8)
-            self.create_line(base_x, cy, base_x + tick_w, cy, fill=color, width=2 if active else 1, tags=("tick", item.id))
+            xa, ya = self._xy(base_x, cy)
+            xb, _ = self._xy(base_x + tick_w, cy)
+            self.canvas.create_line(xa, ya, xb, ya, fill=color, width=2 if active else 1, tags=tags)
             if active:
-                self.create_oval(base_x + tick_w, cy - px(3), base_x + tick_w + px(6), cy + px(3), fill=color, outline="")
+                x3, y3 = self._xy(base_x + tick_w, cy - px(3))
+                x4, y4 = self._xy(base_x + tick_w + px(6), cy + px(3))
+                self.canvas.create_oval(x3, y3, x4, y4, fill=color, outline="", tags=tags)
             if item.unread:
-                self.create_oval(base_x + tick_w + px(1), cy - px(8), base_x + tick_w + px(5), cy - px(4), fill=theme.AMBER, outline="")
+                x3, y3 = self._xy(base_x + tick_w + px(1), cy - px(8))
+                x4, y4 = self._xy(base_x + tick_w + px(5), cy - px(4))
+                self.canvas.create_oval(x3, y3, x4, y4, fill=theme.AMBER, outline="", tags=tags)
 
     def _draw_scroll_hint(self) -> None:
-        view = max(1, (self.winfo_width() if self.orientation == "horizontal" else self.winfo_height()))
-        if self._total <= view + px(20):
+        w, h = self._view_size()
+        if self._total <= w + px(20) if self.orientation == "horizontal" else self._total <= h + px(20):
             return
         if self.orientation == "horizontal":
-            self.create_text(self.winfo_width() - px(8), px(8), text="?", fill=theme.MUTED, font=theme.font(8, True), anchor="ne")
+            x, y = self._xy(w - px(8), px(8))
         else:
-            self.create_text(px(8), self.winfo_height() - px(8), text="?", fill=theme.MUTED, font=theme.font(8, True), anchor="sw")
+            x, y = self._xy(px(8), h - px(8))
+        self.canvas.create_text(x, y, text="?", fill=theme.MUTED, font=theme.font(8, True),
+                                anchor="ne" if self.orientation == "horizontal" else "sw",
+                                tags=(self._tag, "timeline", "dash"))
 
     def _item_at(self, x: int, y: int) -> TimelineItem | None:
         for item in self._items:
@@ -173,6 +297,28 @@ class Timeline(tk.Canvas):
             if x0 - pad <= x <= x1 + pad and y0 - pad <= y <= y1 + pad:
                 return item
         return None
+
+    # --- events -----------------------------------------------------------
+    def _local(self, e) -> tuple[int, int] | None:
+        if self.surface is None:
+            return e.x, e.y
+        rx, ry, w, h = self._region()
+        x, y = e.x - rx, e.y - ry
+        if 0 <= x <= w and 0 <= y <= h:
+            return x, y
+        return None
+
+    def _on_surface_motion(self, e) -> None:
+        pt = self._local(e)
+        if pt is None:
+            self._on_leave()
+            return
+        self._on_motion(_Point(pt[0], pt[1]))
+
+    def _on_surface_click(self, e) -> None:
+        pt = self._local(e)
+        if pt is not None:
+            self._on_click(_Point(pt[0], pt[1]))
 
     def _on_motion(self, e) -> None:
         item = self._item_at(e.x, e.y)
@@ -196,10 +342,9 @@ class Timeline(tk.Canvas):
         self.focus_set()
         self.activate(item)
 
-    def activate(self, item: TimelineItem) -> None:
+    def activate(self, item: TimelineItem, *, from_popup: bool = False) -> None:
         self.set_active(item.id)
-        if self.command:
-            self.command(item.id, item)
+        self._emit(item, from_popup)
 
     def _on_wheel(self, e, delta=None) -> None:
         d = delta if delta is not None else getattr(e, "delta", 0)
@@ -210,6 +355,7 @@ class Timeline(tk.Canvas):
         self._clamp_scroll()
         self.redraw()
 
+    # --- popup ------------------------------------------------------------
     def _show_popup(self, item: TimelineItem) -> None:
         if self._popup_for == item.id and self._popup is not None:
             return
@@ -236,6 +382,7 @@ class Timeline(tk.Canvas):
             btns.append(b)
         self._popup = popup
         self._popup_for = item.id
+        self._popup_item = item
         self._popup_buttons = btns
         self._place_popup(item)
         popup.bind("<Leave>", lambda _e: self.after(120, self._maybe_close_popup))
@@ -253,23 +400,45 @@ class Timeline(tk.Canvas):
         box = self._item_boxes.get(item.id)
         if not box:
             return
-        x0, y0, x1, y1 = box
-        rx = self.winfo_rootx()
-        ry = self.winfo_rooty()
+        root = popup.winfo_toplevel()
+        x0, y0, x1, y1 = self._dash_screen_box(item)
         pw = max(px(180), popup.winfo_reqwidth())
         ph = popup.winfo_reqheight()
+        gap = px(4)
+        # place() expects coordinates relative to the parent (the toplevel),
+        # not screen coordinates.
         if self.orientation == "horizontal":
-            x = rx + (x0 + x1) // 2 - pw // 2
-            y = ry + y1 + px(2)
+            x = (x0 + x1) // 2 - root.winfo_rootx() - pw // 2
+            y = y1 - root.winfo_rooty() + gap
         else:
-            x = rx + x1 + px(2)
-            y = ry + (y0 + y1) // 2 - ph // 2
-        sw = self.winfo_screenwidth()
-        sh = self.winfo_screenheight()
-        x = max(8, min(x, sw - pw - 8))
-        y = max(8, min(y, sh - ph - 8))
+            x = x0 - root.winfo_rootx() - gap - pw   # left of the vertical dash
+            y = (y0 + y1) // 2 - root.winfo_rooty() - ph // 2
+
+        max_x = root.winfo_width() - pw - px(4)
+        max_y = root.winfo_height() - ph - px(4)
+        x = max(px(4), min(x, max(px(4), max_x)))
+        y = max(px(4), min(y, max(px(4), max_y)))
+        # Also stay inside the physical screen (Windows DPI scaling).
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        rx, ry = root.winfo_rootx(), root.winfo_rooty()
+        x = max(px(4) - rx, min(x, sw - pw - px(4) - rx))
+        y = max(px(4) - ry, min(y, sh - ph - px(4) - ry))
         popup.place(x=x, y=y, width=pw)
         popup.lift()
+
+    def _in_popup_zone(self, x: int, y: int) -> bool:
+        """Keep the popup alive over the dash, the popup and the narrow gap."""
+        popup = self._popup
+        item = self._popup_item
+        if popup is None or item is None:
+            return False
+        pad = px(14)
+        dx0, dy0, dx1, dy1 = self._dash_screen_box(item)
+        px0 = popup.winfo_rootx()
+        py0 = popup.winfo_rooty()
+        px1, py1 = px0 + popup.winfo_width(), py0 + popup.winfo_height()
+        return (dx0 - pad <= x <= dx1 + pad and dy0 - pad <= y <= dy1 + pad) or \
+               (px0 - pad <= x <= px1 + pad and py0 - pad <= y <= py1 + pad)
 
     def close_popup(self) -> None:
         if self._popup is not None:
@@ -279,6 +448,7 @@ class Timeline(tk.Canvas):
                 pass
         self._popup = None
         self._popup_for = None
+        self._popup_item = None
         self._popup_buttons = []
         self._focus_idx = -1
 
@@ -288,6 +458,8 @@ class Timeline(tk.Canvas):
             w = self.winfo_containing(x, y)
         except tk.TclError:
             self.close_popup()
+            return
+        if self._in_popup_zone(x, y):
             return
         cur = w
         while cur is not None:
@@ -299,7 +471,7 @@ class Timeline(tk.Canvas):
     def _popup_activate(self, parent: TimelineItem, child: TimelineItem) -> None:
         self.close_popup()
         target = child if child is not parent else parent
-        self.activate(target)
+        self.activate(target, from_popup=True)
 
     def focused(self) -> bool:
         try:
@@ -343,7 +515,6 @@ class Timeline(tk.Canvas):
         if self.orientation == "vertical":
             return self._move_focus(-1)
         if self.orientation == "horizontal":
-            # open popup / focus first child
             item = self._current_focus_item()
             if item:
                 self._show_popup(item)
@@ -385,6 +556,12 @@ class Timeline(tk.Canvas):
         return "break"
 
     def _on_tab(self, _e):
-        # Let app-level focus traversal move between ribbons.
         self.close_popup()
         return None
+
+
+class _Point:
+    __slots__ = ("x", "y")
+
+    def __init__(self, x: int, y: int) -> None:
+        self.x, self.y = x, y

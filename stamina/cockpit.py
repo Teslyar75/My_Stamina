@@ -309,7 +309,7 @@ class Cockpit(tk.Tk):
         if lay == "experienced":
             from stamina.ui.experienced import build_chrome as build_experienced
             host = build_experienced(self)
-            self._content_host = getattr(self, "_alt_body", None)
+            self._content_host = getattr(self, "_xp_body", host)
         elif lay == "alt":
             host = alt_ui.build_chrome(self)
             self._content_host = getattr(self, "_alt_body", None)
@@ -439,6 +439,8 @@ class Cockpit(tk.Tk):
                   else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(_n_zones)),
             bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
+        if self._layout == "experienced":
+            status.pack_forget()       # пустой вид: только фото, чёрточки и радио
         self._start_orion_link_watcher()
 
         self.screens = {
@@ -624,6 +626,12 @@ class Cockpit(tk.Tk):
         return scr
 
     def _zen_target(self):
+        # В «Опытном пилоте» зенид относится к рабочему окну целиком: все
+        # отсеки открываются одним и тем же полноэкранным режимом.
+        if self._layout == "experienced":
+            work = getattr(self, "_xp_work", None)
+            if work is not None:
+                return work
         return self._zen_target_for(getattr(self, "current", None))
 
     def _exit_screen_focus(self, screen_name: str | None) -> None:
@@ -1372,6 +1380,10 @@ class Cockpit(tk.Tk):
         if not adapted and saved:
             adapted = saved.text
         self.screens["cargo"].load_initial(adapted, original)
+        if self._layout == "experienced":
+            # «Опытный пилот» начинается с пустого вида. Отсек откроется только
+            # после щелчка по кнопке в рамке чёрточки.
+            return
         if saved is not None and saved.is_unfinished:
             # Продолжаем ровно там, где пилот остановился: набранный фрагмент книги
             # остаётся в работе на мостике. Позиция хранится в session.json и пишется
@@ -1574,6 +1586,16 @@ class Cockpit(tk.Tk):
             if self.current == "bridge" and self.screens["bridge"].state == "pause":
                 self.screens["bridge"].resume()
             return
+        if (e.keysym == "Escape" and self._layout == "experienced"
+                and getattr(self, "_xp_work_open", False)
+                and not (zen is not None and getattr(zen, "on", False))):
+            # Зенид рабочего окна обработан выше (двойной Esc). Здесь только
+            # страховка для окна, открытого без зенида.
+            from stamina import zen_mode
+            if not zen_mode.is_active(getattr(self, "_xp_work", None)):
+                from stamina.ui.experienced import close_work
+                close_work(self)
+                return "break"
         if e.keysym == "Escape" and self.current == "bridge_settings":
             from stamina.hud import HudButton
             if not isinstance(self.focus_get(), HudButton):

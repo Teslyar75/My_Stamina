@@ -6,8 +6,6 @@ from pathlib import Path
 
 import tkinter as tk
 
-from stamina import theme
-
 try:
     from PIL import Image, ImageEnhance, ImageTk
 except Exception:  # noqa: BLE001
@@ -23,11 +21,12 @@ class Slideshow:
     """
 
     def __init__(self, canvas: tk.Canvas, *, interval_ms: int = 25000, fade_ms: int = 900,
-                 scrim_alpha: float = 0.42):
+                 scrim_alpha: float = 0.42, on_frame=None):
         self.canvas = canvas
         self.interval_ms = max(3000, int(interval_ms))
         self.fade_ms = max(120, int(fade_ms))
         self.scrim_alpha = float(scrim_alpha)
+        self.on_frame = on_frame
         self._frames: list[Path] = []
         self._deck: list[Path] = []
         self._current: Path | None = None
@@ -231,9 +230,17 @@ class Slideshow:
         self.canvas.create_image(0, 0, anchor="nw", image=photo, tags=("slide",))
         self._draw_scrim(w, h)
         self.canvas.tag_lower("slide")
+        self._notify_frame()
+
+    def _notify_frame(self) -> None:
+        """Chances to re-raise overlays (ribbons) after a fresh photo is drawn."""
+        if callable(self.on_frame):
+            self.on_frame()
 
     def _draw_scrim(self, w: int, h: int) -> None:
         self.canvas.delete("scrim")
+        if self.scrim_alpha <= 0:
+            return
         # Tk has no true alpha fill; approximate with stipple if available.
         # Use a dark rectangle; visual scrim is complemented by UI panel backgrounds.
         color = self._scrim_color
@@ -274,6 +281,7 @@ class Slideshow:
                 pass
             self._draw_scrim(*self._size)
             self.canvas.tag_lower("slide")
+            self._notify_frame()
             self._fade_job = self.canvas.after(delay, lambda: step(i + 1))
 
         step(0)

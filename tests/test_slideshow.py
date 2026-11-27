@@ -61,6 +61,19 @@ class SlideshowTest(unittest.TestCase):
         ss.stop()
         self.assertFalse(ss._running)
 
+    def test_on_frame_hook_and_no_scrim_for_experienced(self):
+        c = tk.Canvas(self.root, width=120, height=80)
+        c.pack()
+        calls = []
+        ss = Slideshow(c, interval_ms=5000, fade_ms=200, scrim_alpha=0.0, on_frame=lambda: calls.append(1))
+        ss.set_frames(self.frames)
+        ss._show_next(initial=False)
+        self.root.update()
+        self.assertGreaterEqual(len(calls), 1)
+        self.assertEqual(c.find_withtag("scrim"), ())
+        self.assertTrue(c.find_withtag("slide"))
+        ss.stop()
+
 
 class DeckAndDownloaderTest(unittest.TestCase):
     def test_missing_file_skipped(self):
