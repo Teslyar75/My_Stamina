@@ -625,8 +625,21 @@ class TrainerModel:
 
     def _blocked_cells(self) -> set[tuple[int, int]]:
         blocked = set(self.springs)
+        # Блоки фундамента и платформ — непроходимы
+        blocked.update(self.blocks)
+        blocked.update(self.platform_blocks)
+        # Здания — центр здания и все клетки, которые занимает здание по высоте
         for b in self.buildings:
             blocked.add(tuple(b.center))
+            # Здание занимает клетки вокруг центра в зависимости от высоты
+            # Для простоты блокируем квадрат height x height вокруг центра
+            h = max(1, b.height)
+            cx, cy = b.center
+            for dy in range(-(h - 1), h):
+                for dx in range(-(h - 1), h):
+                    bx, by = cx + dx, cy + dy
+                    if 0 <= bx < self.w and 0 <= by < self.h:
+                        blocked.add((bx, by))
         # Ямы (dug > 0) непроходимы — роботы/юниты не могут по ним ходить
         for y in range(self.h):
             for x in range(self.w):

@@ -200,18 +200,24 @@ class TrainerMapUiTest(unittest.TestCase):
         expected = strategy.map_size(self.game.model.standing.current_level)
         self.assertEqual((self.game.model.w, self.game.model.h), expected)
 
-    def test_arrow_keys_pan_camera_and_disable_follow(self) -> None:
+    def test_arrow_keys_move_selected_unit_not_pan_camera(self) -> None:
         game = self.game
         game.camera.center_on(game.model.w / 2, game.model.h / 2)
         game.camera.follow = True
-        before = game.camera.cx
-        game.on_key(_Event("Right", 39))
-        self.assertGreater(game.camera.cx, before)
-        self.assertFalse(game.camera.follow)
+        before_cx = game.camera.cx
+        before_unit_x = game.model.main_unit.x
 
-        before = game.camera.cx
+        game.on_key(_Event("Right", 39))
+        self.assertEqual(game.camera.cx, before_cx)
+        game.model.tick_units()
+        self.assertEqual(game.model.main_unit.x, before_unit_x + 1)
+
+        before_cx = game.camera.cx
+        before_unit_x = game.model.main_unit.x
         game.on_key(_Event("Left", 37))
-        self.assertLess(game.camera.cx, before)
+        self.assertEqual(game.camera.cx, before_cx)
+        game.model.tick_units()
+        self.assertEqual(game.model.main_unit.x, before_unit_x - 1)
 
     def test_wasd_still_moves_the_unit(self) -> None:
         game = self.game
