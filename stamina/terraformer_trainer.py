@@ -521,7 +521,7 @@ class TrainerModel:
         else:
             self.depth = max(1, min(int(depth), len(LAYERS) + 2))
         self.dug = [[0] * self.w for _ in range(self.h)]
-        self.robot = [self.w // 2, self.h // 2]
+        self._robot = [self.w // 2, self.h // 2]
         self.site: tuple[int, int, int, int] = SITE
         self.facing = (1, 0)
         self.holds = {name: 0 for name in LAYERS}
@@ -588,6 +588,23 @@ class TrainerModel:
         if not self.units:
             self._init_units()
         return self.units[0]
+
+    @property
+    def robot(self) -> list[int]:
+        """Позиция робота, синхронизированная с main_unit."""
+        if hasattr(self, 'units') and self.units:
+            return [self.main_unit.x, self.main_unit.y]
+        return self._robot
+
+    @robot.setter
+    def robot(self, value: list[int] | tuple[int, int]) -> None:
+        x, y = int(value[0]), int(value[1])
+        x = max(0, min(self.w - 1, x))
+        y = max(0, min(self.h - 1, y))
+        self._robot = [x, y]
+        if self.units:
+            self.main_unit.x = x
+            self.main_unit.y = y
 
     def _init_units(self) -> None:
         """Первый терраформер всегда есть; его клетка — прежний self.robot."""
@@ -721,7 +738,7 @@ class TrainerModel:
             if moved_any:
                 self.explored.update(self._visible_from(u))
         if moved_any:
-            self.robot = [self.main_unit.x, self.main_unit.y]
+            self._robot = [self.main_unit.x, self.main_unit.y]
             self._maybe_expand()
         return moved_any
 
@@ -793,7 +810,7 @@ class TrainerModel:
             u.path = [sc(c) for c in u.path]
             if u.target:
                 u.target = sc(u.target)
-        self.robot = [self.robot[0] + dx, self.robot[1] + dy]
+        self._robot = [self._robot[0] + dx, self._robot[1] + dy]
         sx, sy, sw, sh = self.site
         self.site = (sx + dx, sy + dy, sw, sh)
         self.worm.x += dx
@@ -982,6 +999,7 @@ class TrainerModel:
             return None
         res = f[0]
         self.revealed.add(cell)
+        self.explored.add(cell)
         first = self.finds_count.get(res, 0) == 0
         self.finds_count[res] = self.finds_count.get(res, 0) + 1
         self.last_find = {"res": res, "first": first, "cell": cell, "layer": layer}
@@ -1134,10 +1152,9 @@ class TrainerModel:
         y = max(0, min(self.h - 1, self.robot[1] + dy))
         moved = (x, y) != (self.robot[0], self.robot[1])
         self.robot = [x, y]
-        main = self.main_unit
-        main.x, main.y = x, y
-        main.path = []
         if moved:
+            main = self.main_unit
+            main.path = []
             self.explored.update(self._visible_from(main))
             self._maybe_expand()
         # auto_unloader: авто-укладка блока при заезде на клетку схемы
@@ -1157,8 +1174,11 @@ class TrainerModel:
 
     def dig(self) -> str:
         """ok | hold_full | too_deep | site | spring. Находка — в self.last_find."""
+        return self.dig_at(self.robot[0], self.robot[1])
+
+    def dig_at(self, x: int, y: int) -> str:
+        """Dig at specific coordinates. Returns result string."""
         self.last_find = None
-        x, y = self.robot
         if self.on_site(x, y):
             return "site"
         if (x, y) in self.springs:

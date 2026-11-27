@@ -565,7 +565,22 @@ class TrainerGame(GameShell):
         self.redraw()
 
     def do_dig(self) -> str:
-        result = self.model.dig()
+        """Dig for all selected units (or main unit if none selected)."""
+        selected = self.model.selected_units()
+        if not selected:
+            # Use main unit at robot position
+            x, y = self.model.robot
+            result = self.model.dig_at(x, y)
+            dug_cells = [(x, y)]
+        else:
+            results = []
+            dug_cells = []
+            for u in selected:
+                result = self.model.dig_at(u.x, u.y)
+                results.append(result)
+                dug_cells.append((u.x, u.y))
+            # Use the first non-"ok" result for message, or "ok" if all ok
+            result = next((r for r in results if r != "ok"), "ok")
         if result == "site":
             self.msg = _t("Здесь стройплощадка")
         elif result == "too_deep":
@@ -584,7 +599,9 @@ class TrainerGame(GameShell):
             except Exception:  # noqa: BLE001
                 pass
         self.camera.track(*self.model.robot)
-        self.redraw()
+        # Redraw only the cells that were dug
+        for x, y in dug_cells:
+            self.redraw_cell(x, y)
         return result
 
     def do_place_block(self) -> tuple[bool, str]:
@@ -715,6 +732,10 @@ class TrainerGame(GameShell):
             self._toast_job = self.after(TOAST_MS, self._toast_done)
         except tk.TclError:
             self._toast_job = None
+        try:
+            self.redraw()
+        except tk.TclError:
+            pass
 
     def _toast_done(self) -> None:
         self._toast_job = None
@@ -960,6 +981,73 @@ class TrainerGame(GameShell):
         if depth == 2:
             return METAL
         return DUG_OUT
+
+    def redraw_cell(self, x: int, y: int) -> None:
+        """Redraw a single cell at (x, y) in correct z-order:
+        terrain → deposit → foundation/blueprint → fog tint → units."""
+        c = self.canvas
+        model = self.model
+        cam = self.camera
+        w = max(c.winfo_width(), 10)
+        h = max(c.winfo_height(), 10)
+        cell = max(cam.cell_px(), 4.0)
+
+        # Only redraw if cell is on screen
+        sx, sy = cam.to_screen(x, y, w, h)
+        if sx + cell < 0 or sx > w or sy + cell < 0 or sy > h:
+            return
+
+        # Delete old cell items
+        c.delete(f"cell_{x}_{y}")
+
+        # If not explored, draw fog
+        if (x, y) not in model.explored:
+            c.create_rectangle(sx, sy, sx + cell, sy + cell,
+                               fill=BG, outline="",
+                               tags=(f"cell_{x}_{y}",))
+            return
+
+        # 1. Terrain (base layer)
+        color = self._layer_color(model.dug[y][x])
+        visible = model.visible_cells()
+        if (x, y) not in visible:
+            color = blend(color, BG, 0.62)
+        c.create_rectangle(sx, sy, sx + cell, sy + cell,
+                           fill=color, outline=blend(color, BG2, 0.45),
+                           tags=(f"cell_{x}_{y}",))
+
+        # 2. Deposit (if visible)
+        if (x, y) in model.finds and deposit_is_visible(model, x, y):
+            res, layer = model.finds[(x, y)]
+            if res == "water":
+                c.create_oval(sx + cell * 0.18, sy + cell * 0.18,
+                              sx + cell * 0.82, sy + cell * 0.82,
+                              fill=SPRING, outline=TEXT, width=1,
+                              tags=(f"cell_{x}_{y}",))
+            else:
+                mx, my, r = sx + cell / 2, sy + cell / 2, cell * 0.16
+                c.create_polygon(mx, my - r, mx + r, my, mx, my + r, mx - r, my,
+                                 fill=GREEN, outline="",
+                                 tags=(f"cell_{x}_{y}",))
+
+        # 3. Foundation/blueprint blocks
+        if (x, y) in model.blocks or (x, y) in model.platform_blocks:
+            block_fill = blend(AMBER, TEXT, 0.25)
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               fill=block_fill, outline=AMBER, width=2,
+                               tags=(f"cell_{x}_{y}",))
+
+        # 4. Site outline (construction site)
+        if (x, y) in model.site_cells():
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               outline=AMBER, dash=(3, 3), width=1,
+                               tags=(f"cell_{x}_{y}",))
+
+        # 5. Units on this cell
+        for u in model.units:
+            if u.x == x and u.y == y:
+                self._draw_unit_on_cell(c, sx, sy, cell, u, tags=(f"cell_{x}_{y}",))
+                break
 
     def redraw(self) -> None:
         c = self.canvas
@@ -1601,6 +1689,43 @@ class TrainerGame(GameShell):
     def _unit_color(self, level: str) -> str:
         palette = (CYAN, GREEN, AMBER, "#FF7AD9", "#9B8CFF", "#FFB454", "#7FE0C3", TEXT)
         return palette[strategy.level_index(level) % len(palette)]
+
+    def _draw_unit_on_cell(self, c: tk.Canvas, sx: float, sy: float, cell: float,
+                            u, tags: tuple = ()) -> None:
+        """Draw a single unit at screen coordinates (sx, sy)."""
+        cx = sx + cell / 2.0
+        cy = sy + cell / 2.0
+        body = cell * 0.52
+        color = self._unit_color(u.level)
+        if u.uid in self.model.selected:
+            c.create_oval(sx + 1, sy + 1, sx + cell - 1, sy + cell - 1,
+                          outline=GREEN, width=max(2, int(cell * 0.08)), tags=tags)
+        track_w = max(2.0, cell * 0.16)
+        c.create_rectangle(sx + cell * 0.10, sy + cell * 0.20,
+                           sx + cell * 0.10 + track_w, sy + cell * 0.80,
+                           fill=MUTED, outline="", tags=tags)
+        c.create_rectangle(sx + cell * 0.90 - track_w, sy + cell * 0.20,
+                           sx + cell * 0.90, sy + cell * 0.80,
+                           fill=MUTED, outline="", tags=tags)
+        c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
+                           fill=color, outline=blend(color, TEXT, 0.35), tags=tags)
+        label = u.level if len(u.level) <= 4 else u.level[:4]
+        c.create_text(cx, cy, text=label, fill=BG, tags=tags,
+                      font=theme.font(max(6, int(cell * 0.24)), True, mono=True))
+        if u.hp < 100:
+            bar_w = cell * 0.7
+            x0 = sx + cell * 0.15
+            y0 = sy + cell * 0.92
+            c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, cell * 0.08),
+                               fill=BG, outline="", tags=tags)
+            c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                               y0 + max(2, cell * 0.08), fill=GREEN if u.hp > 40 else AMBER,
+                               outline="", tags=tags)
+        if u.uid == self.model.main_unit.uid:
+            fx, fy = self.model.facing
+            c.create_line(cx, cy, cx + fx * cell * 0.45, cy + fy * cell * 0.45,
+                          fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last",
+                          tags=tags)
 
     def _draw_units(self, w: int, h: int, cell: float) -> None:
         """Все терраформеры отряда: цвет по уровню, кольцо выделения, HP."""
