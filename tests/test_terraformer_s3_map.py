@@ -174,6 +174,8 @@ class TrainerMapUiTest(unittest.TestCase):
         from stamina.lounge.trainer import TrainerGame
         self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
         self.game.pack(fill=tk.BOTH, expand=True)
+        self.game.canvas.config(width=960, height=540)
+        self.root.update_idletasks()
         self.root.update()
 
     def tearDown(self) -> None:

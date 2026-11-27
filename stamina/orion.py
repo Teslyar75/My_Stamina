@@ -785,10 +785,10 @@ def character_block(agent_id: str) -> str:
     if not text and not evo:
         return ""
     if not text:
-        return "[ЭВОЛЮЦИЯ ХАРАКТЕРA]\n{0}".format(evo)
+        return "[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{0}".format(evo)
     parts = [text]
     if evo:
-        parts.append("[ЭВОЛЮЦИЯ ХАРАКТЕРA]\n{0}".format(evo))
+        parts.append("[ЭВОЛЮЦИЯ ХАРАКТЕРА]\n{0}".format(evo))
     return "[МАНЕРЫ АГЕНТА]\n".format() + "\n\n".join(parts)
 
 
