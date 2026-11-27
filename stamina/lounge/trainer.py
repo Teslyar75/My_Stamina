@@ -14,7 +14,6 @@ from stamina import theme, wheel_router
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, TEXT, blend, px
 
 from ..terraformer_trainer import (
-    HOLD_CAP,
     RESOURCES,
     Camera,
     TrainerModel,
@@ -605,17 +604,19 @@ class TrainerGame(GameShell):
         return result
 
     def do_place_block(self) -> tuple[bool, str]:
-        """Укладка блока в текущей клетке робота (E)."""
-        x, y = self.model.robot
-        success, msg = self.model.try_place_block(x, y)
+        """Укладка блока в текущей клетке выделенного юнита (или главного)."""
+        unit = self.model.active_unit()
+        x, y = unit.x, unit.y
+        success, msg = self.model.try_place_block(x, y, unit)
         if success:
             self.msg = msg
             self.show_toast(msg)
             self.set_score(len(self.model.blocks) + len(self.model.platform_blocks))
         else:
             # более полезная подсказка
-            if self.model.holds.get("soil", 0) < HOLD_CAP:
-                self.msg = _t("Соберите {0} грунта (Пробел)").format(HOLD_CAP - self.model.holds.get("soil", 0))
+            cap = self.model._hold_cap()
+            if unit.holds.get("soil", 0) < cap:
+                self.msg = _t("Соберите {0} грунта (Пробел)").format(cap - unit.holds.get("soil", 0))
             else:
                 # подсказываем, где ближайшая платформа
                 prio = self.model.get_priority_platform()
@@ -636,9 +637,11 @@ class TrainerGame(GameShell):
 
     def do_unload(self) -> str:
         """Выгрузка грунта на стройплощадку (E при полном отсеке)."""
-        result = self.model.unload()
+        unit = self.model.active_unit()
+        result = self.model.unload(unit)
         if result == "not_full":
-            self.msg = _t("Отсек не полон — набери {0} грунта").format(HOLD_CAP - self.model.holds.get("soil", 0))
+            cap = self.model._hold_cap()
+            self.msg = _t("Отсек не полон — набери {0} грунта").format(cap - unit.holds.get("soil", 0))
         elif result == "ok":
             self.msg = _t("Блок уложен")
         elif result == "complete":
@@ -1145,10 +1148,12 @@ class TrainerGame(GameShell):
         ty = px(8)
         level_name = model.standing.current_level
         allowed_h = strategy.max_height(level_name)
+        unit = model.active_unit()
+        cap = model._hold_cap()
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
             (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
-            (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
+            (_t("Грунт {0}/{1}").format(unit.holds.get("soil", 0), cap), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
             (f"Кредиты {model.credits}", GREEN, False),
@@ -1168,8 +1173,8 @@ class TrainerGame(GameShell):
         c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
                       fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
         ty += px(15)
-        if model.holds.get(strategy.SPICE, 0):
-            c.create_text(px(10), ty, text=f"Специя {model.holds.get(strategy.SPICE, 0)}",
+        if unit.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {unit.holds.get(strategy.SPICE, 0)}",
                           fill=AMBER, anchor="nw", font=theme.font(9, True))
             ty += px(14)
 
@@ -2470,6 +2475,8 @@ class TrainerGame(GameShell):
         """HUD панель (верхняя левая) — как в плоском виде."""
         c = self.canvas
         model = self.model
+        unit = model.active_unit()
+        cap = model._hold_cap()
         found = sum(model.finds_count.values())
         bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
@@ -2478,7 +2485,7 @@ class TrainerGame(GameShell):
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
             (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
-            (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
+            (_t("Грунт {0}/{1}").format(unit.holds.get("soil", 0), cap), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
             (f"Кредиты {model.credits}", GREEN, False),
@@ -2497,8 +2504,8 @@ class TrainerGame(GameShell):
         c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
                       fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
         ty += px(15)
-        if model.holds.get(strategy.SPICE, 0):
-            c.create_text(px(10), ty, text=f"Специя {model.holds.get(strategy.SPICE, 0)}",
+        if unit.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {unit.holds.get(strategy.SPICE, 0)}",
                           fill=AMBER, anchor="nw", font=theme.font(9, True))
             ty += px(14)
 

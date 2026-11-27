@@ -447,6 +447,7 @@ class Unit:
     target: tuple[int, int] | None = None
     order: str = ""
     serial: int = 1
+    holds: dict[str, int] = field(default_factory=dict)
 
     @property
     def name(self) -> str:
@@ -470,6 +471,7 @@ class Unit:
             "hp": self.hp, "path": [list(p) for p in self.path],
             "target": list(self.target) if self.target else None,
             "order": self.order, "serial": self.serial,
+            "holds": dict(self.holds),
         }
 
     @classmethod
@@ -485,11 +487,14 @@ class Unit:
             tgt = (int(target[0]), int(target[1])) if target else None
         except (TypeError, ValueError, IndexError):
             tgt = None
+        holds = d.get("holds")
+        if not isinstance(holds, dict):
+            holds = {}
         return cls(
             uid=str(d.get("uid", "unit")), level=str(d.get("level", "A1")),
             x=int(d.get("x", 0)), y=int(d.get("y", 0)), hp=int(d.get("hp", 100)),
             path=path, target=tgt, order=str(d.get("order", "")),
-            serial=int(d.get("serial", 1)),
+            serial=int(d.get("serial", 1)), holds=holds,
         )
 
 

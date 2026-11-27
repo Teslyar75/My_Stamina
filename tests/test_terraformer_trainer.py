@@ -25,7 +25,7 @@ from stamina.terraformer_trainer import (
 def _dig_until_soil_full(model: TrainerModel) -> None:
     for y in range(model.h):
         for x in range(model.w):
-            if model.holds["soil"] >= HOLD_CAP:
+            if model.main_unit.holds.get("soil", 0) >= HOLD_CAP:
                 return
             if model.on_site(x, y) or model.dug[y][x]:
                 continue
@@ -53,7 +53,7 @@ class TrainerModelTest(unittest.TestCase):
         m.finds = {}
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
-        self.assertEqual(m.holds["soil"], 1)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 1)
         self.assertEqual(m.dug[10][10], 1)
         self.assertEqual(m.dig(), "too_deep")
 
@@ -63,8 +63,8 @@ class TrainerModelTest(unittest.TestCase):
         m.robot = [10, 10]
         self.assertEqual(m.dig(), "ok")
         self.assertEqual(m.dig(), "ok")
-        self.assertEqual(m.holds["soil"], 1)
-        self.assertEqual(m.holds["clay"], 1)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 1)
+        self.assertEqual(m.main_unit.holds.get("clay", 0), 1)
         self.assertEqual(m.dug[10][10], 2)
         self.assertEqual(m.dig(), "too_deep")
 
@@ -74,7 +74,7 @@ class TrainerModelTest(unittest.TestCase):
         m.robot = [sx, sy]
         self.assertTrue(m.on_site(sx, sy))
         self.assertEqual(m.dig(), "site")
-        self.assertEqual(m.holds["soil"], 0)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 0)
 
     def test_hold_full_and_robot_still_moves(self) -> None:
         m = TrainerModel()
@@ -85,7 +85,7 @@ class TrainerModelTest(unittest.TestCase):
             x += 1
         m.robot = [x, y]
         self.assertEqual(m.dig(), "hold_full")
-        self.assertEqual(m.holds["soil"], HOLD_CAP)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), HOLD_CAP)
         before = list(m.robot)
         m.move(1, 0)
         self.assertNotEqual(m.robot, before)
@@ -96,7 +96,7 @@ class TrainerModelTest(unittest.TestCase):
         _dig_until_soil_full(m)
         self.assertEqual(m.unload(), "ok")
         self.assertEqual(m.progress(), (1, len(m.site_cells())))
-        self.assertEqual(m.holds["soil"], 0)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), 0)
         self.assertEqual(m.blocks, [m.site_cells()[0]])
 
     def test_twelve_unloads_complete_foundation(self) -> None:
@@ -284,7 +284,7 @@ class TrainerTkTest(unittest.TestCase):
 
         self.game.model.robot = [10, 10]
         self.assertEqual(self.game.do_dig(), "ok")
-        self.assertEqual(self.game.model.holds["soil"], 1)
+        self.assertEqual(self.game.model.main_unit.holds.get("soil", 0), 1)
 
         self.assertEqual(self.game.do_unload(), "not_full")
 
@@ -418,12 +418,12 @@ class FindsModelTest(unittest.TestCase):
 
     def test_find_goes_to_own_hold_when_soil_full(self) -> None:
         m = TrainerModel(seed=11)
-        m.holds["soil"] = HOLD_CAP
+        m.main_unit.holds["soil"] = HOLD_CAP
         m.robot = list(_cell_with(m, "quartz", 0))
         self.assertEqual(m.dig(), "hold_full")
         self.assertEqual(m.last_find["res"], "quartz")
         self.assertEqual(m.finds_count["quartz"], 1)
-        self.assertEqual(m.holds["soil"], HOLD_CAP)
+        self.assertEqual(m.main_unit.holds.get("soil", 0), HOLD_CAP)
         self.assertEqual(m.dig(), "hold_full")
         self.assertIsNone(m.last_find)                 # второй раз не открывается
         self.assertEqual(m.finds_count["quartz"], 1)
@@ -524,7 +524,7 @@ class TrainerHelpTkTest(unittest.TestCase):
         g.on_key(self._Event("space", 32))
         g.on_wheel(-1, True, False)
         self.assertEqual(g.model.robot, before)
-        self.assertEqual(g.model.holds["soil"], 0)
+        self.assertEqual(g.model.main_unit.holds.get("soil", 0), 0)
         self.assertEqual(g.camera.zoom, 1.0)
         g.on_key(self._Event("Escape", 27))
         self.assertFalse(g.help_overlay.is_visible())

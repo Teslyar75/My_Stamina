@@ -524,10 +524,11 @@ class TrainerModel:
         self._robot = [self.w // 2, self.h // 2]
         self.site: tuple[int, int, int, int] = SITE
         self.facing = (1, 0)
+        # Model-level holds (for backward compatibility with old saves only)
         self.holds = {name: 0 for name in LAYERS}
-        # расширяем отсеки для ресурсов платформ
         for r in RESOURCES:
             self.holds.setdefault(r, 0)
+        self.holds[strategy.SPICE] = 0
         self.active_hold = "soil"
         self.upgrades: tuple[str, ...] = get_unlocked_upgrades()
         self.blocks: list[tuple[int, int]] = []          # блоки на фундаменте (старая система)
@@ -548,7 +549,6 @@ class TrainerModel:
         self.standing = current_standing()
         self.credits = 0
         self.mission_book = strategy.MissionBook()
-        self.holds[strategy.SPICE] = 0
         self.units: list[strategy.Unit] = []
         self.selected: set[str] = set()
         self.explored: set[tuple[int, int]] = set()
@@ -611,8 +611,17 @@ class TrainerModel:
         if self.units:
             return
         level = self.standing.current_level if not self.developer else self.standing.current_level
-        self.units = [strategy.Unit("u1", level, int(self.robot[0]), int(self.robot[1]), serial=1)]
+        u = strategy.Unit("u1", level, int(self.robot[0]), int(self.robot[1]), serial=1)
+        self._init_unit_holds(u)
+        self.units = [u]
         self.selected = {"u1"}
+
+    def _init_unit_holds(self, unit: strategy.Unit) -> None:
+        """Initialize holds dict for a unit with all known resources at 0."""
+        unit.holds = {name: 0 for name in LAYERS}
+        for r in RESOURCES:
+            unit.holds.setdefault(r, 0)
+        unit.holds.setdefault(strategy.SPICE, 0)
 
     def add_unit(self, level: str | None = None, x: int | None = None,
                  y: int | None = None) -> strategy.Unit:
@@ -632,6 +641,7 @@ class TrainerModel:
         while any(u.uid == uid for u in self.units):
             uid += "x"
         unit = strategy.Unit(uid, level, int(x), int(y), serial=serial)
+        self._init_unit_holds(unit)
         self.units.append(unit)
         self.mission_book.push(strategy.Alert(
             "reward", _t("Новый терраформер {0}").format(unit.name),
@@ -675,6 +685,15 @@ class TrainerModel:
 
     def selected_units(self) -> list[strategy.Unit]:
         return [u for u in self.units if u.uid in self.selected]
+
+    def active_unit(self, unit: strategy.Unit | None = None) -> strategy.Unit:
+        """Return the unit to act on: explicit unit, or selected unit, or main_unit."""
+        if unit is not None:
+            return unit
+        selected = self.selected_units()
+        if selected:
+            return selected[0]
+        return self.main_unit
 
     def select_rect(self, x0: int, y0: int, x1: int, y1: int) -> list[strategy.Unit]:
         picked = strategy.units_in_rect(self.units, x0, y0, x1, y1)
@@ -938,7 +957,7 @@ class TrainerModel:
         self.worm_seen = True
         event: dict = {"cell": cell, "spice": spice, "attacked": None}
         if spice:
-            self.holds[strategy.SPICE] = self.holds.get(strategy.SPICE, 0) + 1
+            self.main_unit.holds[strategy.SPICE] = self.main_unit.holds.get(strategy.SPICE, 0) + 1
             self.mission_book.push(strategy.Alert(
                 "reward", _t("Специя!"),
                 _t("Червь оставил специю. Соберите её в отсек находок."),
@@ -962,6 +981,11 @@ class TrainerModel:
 
     # -- задания и статистика --------------------------------------------------
     def stats(self) -> dict:
+        # Aggregate holds from all units
+        total_holds: dict[str, int] = {}
+        for u in self.units:
+            for res, val in u.holds.items():
+                total_holds[res] = total_holds.get(res, 0) + val
         return {
             "soil_dug": int(sum(sum(row) for row in self.dug)),
             "finds": int(sum(self.finds_count.values())),
@@ -973,11 +997,11 @@ class TrainerModel:
             "connected": int(self.connected),
             "worm_seen": 1 if self.worm_seen else 0,
             "worm_attacks": int(self.worm_attacks),
-            "spice": int(self.holds.get(strategy.SPICE, 0)),
+            "spice": int(total_holds.get(strategy.SPICE, 0)),
             "max_height": int(self.max_build_height),
             "core": 1 if any(b.type == "core" and b.built for b in self.buildings) else 0,
             "map_cells": int(self.w * self.h),
-            **{res: int(self.holds.get(res, 0)) for res in RESOURCES},
+            **{res: int(total_holds.get(res, 0)) for res in RESOURCES},
         }
 
     def refresh_standing(self) -> list[strategy.Unit]:
@@ -1081,10 +1105,11 @@ class TrainerModel:
         Блок тратится из отсека грунта (по умолчанию 5, или 3 с прессом).
         Высокое здание строит только терраформер подходящего уровня.
         """
+        unit = self.active_unit(unit)
         if not (0 <= x < self.w and 0 <= y < self.h):
             return False, _t("за пределами поля")
         cap = self._hold_cap()
-        if self.holds.get("soil", 0) < cap:
+        if unit.holds.get("soil", 0) < cap:
             return False, _t("отсек грунта не полон")
         # проверяем, принадлежит ли клетка какой-то платформе
         target_platform = None
@@ -1096,13 +1121,13 @@ class TrainerModel:
         on_foundation = self.on_site(x, y) and not self.walls_open
         if not target_platform and not on_foundation:
             return False, _t("здесь нет чертежа платформы")
-        builder = unit or (self.selected_units() or [self.main_unit])[0]
+        builder = unit
         if target_platform and not self.developer:
             if builder.max_height < target_platform.height:
                 return False, _t("Нужен терраформер {0}: здание высотой {1}").format(
                     target_platform.required_level, target_platform.height)
         # тратим грунт
-        self.holds["soil"] = 0
+        unit.holds["soil"] = 0
         self.platform_blocks.add((x, y))
         if target_platform:
             target_platform.try_add_block(x, y)
@@ -1124,6 +1149,8 @@ class TrainerModel:
         """Вызывается каждый тик для завершённых платформ. Возвращает словарь наград."""
         gained: dict[str, int] = {}
         yield_mult = 1.5 if "yield_booster" in self.upgrades else 1.0
+        # Deposit to main unit (or first unit with space)
+        target_unit = self.main_unit
         for p in self.platforms:
             if p.complete:
                 res, base_amount = PLATFORM_YIELD.get(p.resource, (p.resource, 0))
@@ -1132,7 +1159,7 @@ class TrainerModel:
                     if p.variant_index < len(VARIANT_YIELD_MULT.get(p.resource, (1.0,))):
                         mult = VARIANT_YIELD_MULT[p.resource][p.variant_index]
                     amount = int(base_amount * mult * yield_mult)
-                    self.holds[res] = self.holds.get(res, 0) + amount
+                    target_unit.holds[res] = target_unit.holds.get(res, 0) + amount
                     gained[res] = gained.get(res, 0) + amount
         return gained
 
@@ -1146,20 +1173,23 @@ class TrainerModel:
         return sx <= x < sx + sw and sy <= y < sy + sh
 
     # -- действия робота -----------------------------------------------------
-    def move(self, dx: int, dy: int) -> bool:
+    def move(self, dx: int, dy: int, unit: strategy.Unit | None = None) -> bool:
+        unit = self.active_unit(unit)
         self.facing = (dx, dy)
-        x = max(0, min(self.w - 1, self.robot[0] + dx))
-        y = max(0, min(self.h - 1, self.robot[1] + dy))
-        moved = (x, y) != (self.robot[0], self.robot[1])
-        self.robot = [x, y]
+        x = max(0, min(self.w - 1, unit.x + dx))
+        y = max(0, min(self.h - 1, unit.y + dy))
+        moved = (x, y) != (unit.x, unit.y)
+        unit.x, unit.y = x, y
         if moved:
-            main = self.main_unit
-            main.path = []
-            self.explored.update(self._visible_from(main))
+            unit.path = []
+            self.explored.update(self._visible_from(unit))
             self._maybe_expand()
+            # Sync robot to main_unit if main_unit moved
+            if unit is self.main_unit:
+                self.robot = [x, y]
         # auto_unloader: авто-укладка блока при заезде на клетку схемы
         if "auto_unloader" in self.upgrades and moved:
-            builder = self.main_unit
+            builder = unit
             for p in self.platforms:
                 if not p.complete and p.is_cell_part(x, y):
                     if not self.developer and builder.max_height < p.height:
@@ -1174,10 +1204,12 @@ class TrainerModel:
 
     def dig(self) -> str:
         """ok | hold_full | too_deep | site | spring. Находка — в self.last_find."""
-        return self.dig_at(self.robot[0], self.robot[1])
+        unit = self.active_unit()
+        return self.dig_at(unit.x, unit.y, unit)
 
-    def dig_at(self, x: int, y: int) -> str:
-        """Dig at specific coordinates. Returns result string."""
+    def dig_at(self, x: int, y: int, unit: strategy.Unit | None = None) -> str:
+        """Dig at specific coordinates for a unit. Returns result string."""
+        unit = self.active_unit(unit)
         self.last_find = None
         if self.on_site(x, y):
             return "site"
@@ -1189,14 +1221,17 @@ class TrainerModel:
         hold = LAYERS[layers]
         # находка уходит в свой отсек, даже если отсек грунта полон
         self._reveal(x, y, layers)
-        if self.holds[hold] >= HOLD_CAP:
+        cap = self._hold_cap()
+        if unit.holds.get(hold, 0) >= cap:
             return "hold_full"
         self.dug[y][x] = layers + 1
-        self.holds[hold] += 1
+        unit.holds[hold] = unit.holds.get(hold, 0) + 1
         return "ok"
 
-    def hold_full(self, name: str = "soil") -> bool:
-        return self.holds.get(name, 0) >= HOLD_CAP
+    def hold_full(self, name: str = "soil", unit: strategy.Unit | None = None) -> bool:
+        unit = self.active_unit(unit)
+        cap = self._hold_cap()
+        return unit.holds.get(name, 0) >= cap
 
     def switch_hold(self) -> str:
         try:
@@ -1206,8 +1241,10 @@ class TrainerModel:
         self.active_hold = LAYERS[(idx + 1) % len(LAYERS)]
         return self.active_hold
 
-    def unload(self) -> str:
-        if self.holds.get("soil", 0) < HOLD_CAP:
+    def unload(self, unit: strategy.Unit | None = None) -> str:
+        unit = self.active_unit(unit)
+        cap = self._hold_cap()
+        if unit.holds.get("soil", 0) < cap:
             return "not_full"
         site = self.site_cells()
         if len(self.blocks) >= len(site):
@@ -1216,26 +1253,28 @@ class TrainerModel:
         if free is None:
             return "done"
         self.blocks.append(free)
-        self.holds["soil"] = 0
+        unit.holds["soil"] = 0
         if len(self.blocks) >= len(site):
             self.walls_open = True
             return "complete"
         return "ok"
 
-    def _check_resources(self, resource: str, amount: int) -> bool:
-        """Проверяет, достаточно ли ресурса."""
-        return self.holds.get(resource, 0) >= amount
+    def _check_resources(self, resource: str, amount: int, unit: strategy.Unit | None = None) -> bool:
+        """Проверяет, достаточно ли ресурса у юнита."""
+        unit = self.active_unit(unit)
+        return unit.holds.get(resource, 0) >= amount
 
-    def build_shelter(self) -> str | None:
+    def build_shelter(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит укрытие (стена) из kamienia + воды. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("stone", 1):
+        if not self._check_resources("stone", 1, unit):
             return _t("Не хватает камня")
-        if not self._check_resources("water", 1):
+        if not self._check_resources("water", 1, unit):
             return _t("Не хватает воды")
-        self.holds["stone"] = 0
-        self.holds["water"] = 0
+        unit.holds["stone"] = 0
+        unit.holds["water"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -1249,16 +1288,17 @@ class TrainerModel:
         self._update_connections()
         return _t("Укрытие построено! +10 очков")
 
-    def build_greenhouse(self) -> str | None:
+    def build_greenhouse(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит теплицу из органики + воды. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("organic", 1):
+        if not self._check_resources("organic", 1, unit):
             return _t("Не хватает органики")
-        if not self._check_resources("water", 1):
+        if not self._check_resources("water", 1, unit):
             return _t("Не хватает воды")
-        self.holds["organic"] = 0
-        self.holds["water"] = 0
+        unit.holds["organic"] = 0
+        unit.holds["water"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -1271,16 +1311,17 @@ class TrainerModel:
         self._update_connections()
         return _t("Теплица построена! +15 очков")
 
-    def build_energy_panel(self) -> str | None:
+    def build_energy_panel(self, unit: strategy.Unit | None = None) -> str | None:
         """Строит энергопанель из кварца + железа. Возвращает сообщение или None."""
+        unit = self.active_unit(unit)
         if not self.walls_open:
             return None
-        if not self._check_resources("quartz", 1):
+        if not self._check_resources("quartz", 1, unit):
             return _t("Не хватает кварца")
-        if not self._check_resources("iron", 1):
+        if not self._check_resources("iron", 1, unit):
             return _t("Не хватает железа")
-        self.holds["quartz"] = 0
-        self.holds["iron"] = 0
+        unit.holds["quartz"] = 0
+        unit.holds["iron"] = 0
         center = None
         for p in self.platforms:
             if not p.complete:
@@ -1325,15 +1366,18 @@ class TrainerModel:
                 "income": b.income,
                 "connected": b.connected,
             })
+        units_data = []
+        for u in self.units:
+            units_data.append({**u.to_dict()})
         return {
             "kind": "terraformer_trainer",
-            "version": 4,
+            "version": 5,
             "w": self.w,
             "h": self.h,
             "depth": self.depth,
             "dug": [row[:] for row in self.dug],
             "robot": list(self.robot),
-            "holds": dict(self.holds),
+            "holds": dict(self.holds),  # legacy model-level holds for backward compat
             "blocks": [[x, y] for x, y in self.blocks],
             "platform_blocks": [[x, y] for x, y in sorted(self.platform_blocks)],
             "walls_open": bool(self.walls_open),
@@ -1345,10 +1389,7 @@ class TrainerModel:
             "buildings": buildings_data,
             "site": list(self.site),
             "credits": int(self.credits),
-            "units": [
-                {**u.to_dict(), **({"x": self.robot[0], "y": self.robot[1]} if i == 0 else {})}
-                for i, u in enumerate(self.units)
-            ],
+            "units": units_data,
             "selected": sorted(self.selected),
             "missions": self.mission_book.to_dict(),
             "worm": self.worm.to_dict(),
@@ -1552,9 +1593,23 @@ class TrainerModel:
             if restored:
                 model.units = restored
                 model.robot = [restored[0].x, restored[0].y]
+                # Backward compatibility: if units don't have holds (old save),
+                # initialize them and put model-level holds into main_unit
+                if not restored[0].holds:
+                    for u in model.units:
+                        model._init_unit_holds(u)
+                    # Transfer legacy model.holds to main_unit
+                    for name, value in model.holds.items():
+                        if value > 0:
+                            model.main_unit.holds[name] = model.main_unit.holds.get(name, 0) + value
         else:
             model._init_units()
             model.main_unit.x, model.main_unit.y = model.robot[0], model.robot[1]
+            # Backward compatibility: legacy blueprint (v4 or older) has no units,
+            # transfer model.holds to main_unit
+            for name, value in model.holds.items():
+                if value > 0:
+                    model.main_unit.holds[name] = model.main_unit.holds.get(name, 0) + value
         selected = d.get("selected")
         if isinstance(selected, list):
             model.selected = {str(x) for x in selected if any(u.uid == str(x) for u in model.units)}
