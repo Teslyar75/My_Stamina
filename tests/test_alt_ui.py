@@ -15,8 +15,10 @@ class TestAltSettings(unittest.TestCase):
     def test_default_is_classic(self):
         self.assertEqual(storage.DEFAULT_SETTINGS["ui_layout"], "classic")
         self.assertEqual(alt_ui.layout_of({}), "classic")
-        self.assertEqual(alt_ui.layout_of({"ui_layout": "мусор"}), "classic")
+        self.assertEqual(alt_ui.layout_of({"ui_layout": "?????"}), "classic")
         self.assertEqual(alt_ui.layout_of({"ui_layout": "alt"}), "alt")
+        self.assertEqual(alt_ui.layout_of({"ui_layout": "experienced"}), "experienced")
+        self.assertTrue(alt_ui.is_alt_like({"ui_layout": "experienced"}))
 
     def test_profiles(self):
         self.assertEqual(alt_ui.profile_id("spaceship", {}), "starship")

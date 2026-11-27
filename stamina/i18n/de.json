@@ -3792,5 +3792,7 @@
   "F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I": "F1 · WASD · Pfeile · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · LMT · RMT · I",
   "⛶ ФОКУС  Ctrl+O": "⛶ FOKUS  Ctrl+O",
   "⛶ ЗЕНИД  Ctrl+O": "⛶ ZENIT  Ctrl+O",
-  "ЗЕНИД: {0} зн/мин · {1}": "ZENIT: {0} Zeichen/Min · {1}"
+  "ЗЕНИД: {0} зн/мин · {1}": "ZENIT: {0} Zeichen/Min · {1}",
+  "ОПЫТНЫЙ ПИЛОТ": "ERFAHRENER PILOT",
+  "ОПЫТНЫЙ ПИЛОТ — ленты сверху и справа поверх слайдшоу Земли из космоса. Набор фото докачивается при первом запуске.": "ERFAHRENER PILOT — Strichleisten oben und rechts über einer Diashow der Erde aus dem All. Der Fotosatz wird beim ersten Start heruntergeladen."
 }

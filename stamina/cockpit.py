@@ -273,7 +273,7 @@ class Cockpit(tk.Tk):
     def _apply_geometry(self) -> None:
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         from stamina import alt_ui
-        if alt_ui.layout_of(self.store.settings) == "alt":
+        if alt_ui.is_alt_like(self.store.settings):
             # «Пульт-кабина» прокручивается: окно можно сузить до 1024×768 и 1280×720 при любом DPI
             self.minsize(min(1000, sw - 40), min(600, sh - 80))
         else:
@@ -305,7 +305,12 @@ class Cockpit(tk.Tk):
         # Рама: классическая шапка или «Пульт-кабина» (stamina/alt_ui.py). Экраны,
         # статус-строка и горячие клавиши — общие для обоих видов.
         from stamina import alt_ui
-        if getattr(self, "_layout", "classic") == "alt":
+        lay = getattr(self, "_layout", "classic")
+        if lay == "experienced":
+            from stamina.ui.experienced import build_chrome as build_experienced
+            host = build_experienced(self)
+            self._content_host = getattr(self, "_alt_body", None)
+        elif lay == "alt":
             host = alt_ui.build_chrome(self)
             self._content_host = getattr(self, "_alt_body", None)
         else:
@@ -395,8 +400,8 @@ class Cockpit(tk.Tk):
     def _build_body(self, host) -> None:
         """Область экранов и статус-строка (общая часть обоих видов)."""
         from stamina import alt_ui
-        if self._layout == "alt":
-            # alt: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
+        if self._layout in ("alt", "experienced"):
+            # alt/experienced: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
             self.content = alt_ui.make_content(self, host)
         else:
             self.content = tk.Frame(host, bg=BG)
@@ -430,7 +435,7 @@ class Cockpit(tk.Tk):
         _n_zones = min(9, sum(1 for s_ in self.SCREENS if s_[0] not in nav.FIXED_HOTKEYS))
         self._status_hint = tk.Label(
             status,
-            text=(alt_ui.status_hint(_n_zones) if self._layout == "alt"
+            text=(alt_ui.status_hint(_n_zones) if self._layout in ("alt", "experienced")
                   else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(_n_zones)),
             bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
@@ -893,16 +898,26 @@ class Cockpit(tk.Tk):
                 lb.bind("<Button-1>", lambda _e, tg=target: self.show(tg))
                 lb.bind("<Enter>", lambda _e, w=lb: w.configure(fg=TEXT))
                 lb.bind("<Leave>", lambda _e, w=lb: w.configure(fg=CYAN))
+        lay = getattr(self, "_layout", "classic")
         in_bridge = nav.zone_of(self.current) == "bridge"
-        if in_bridge:
-            if not self.subnav.winfo_ismapped():
-                # кнопки — слева; приёмник, если уже показан, остаётся справа
-                self.subnav.pack(side=tk.LEFT)
-            for k, b in self.subnav_buttons.items():
-                b.set_active(k == self.current)
+        if lay == "classic":
+            if in_bridge:
+                if not self.subnav.winfo_ismapped():
+                    self.subnav.pack(side=tk.LEFT)
+                for k, b in self.subnav_buttons.items():
+                    b.set_active(k == self.current)
+            else:
+                self.subnav.pack_forget()
         else:
-            self.subnav.pack_forget()
-        if getattr(self, "_layout", "classic") == "alt":
+            for k, b in getattr(self, "subnav_buttons", {}).items():
+                try:
+                    b.set_active(k == self.current)
+                except Exception:
+                    pass
+        if lay == "experienced":
+            from stamina.ui import experienced
+            experienced.on_screen(self)
+        elif lay == "alt":
             from stamina import alt_ui
             alt_ui.on_screen(self)
 

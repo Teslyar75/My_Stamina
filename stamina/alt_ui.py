@@ -41,7 +41,7 @@ from stamina.hud import HudButton, fit_text
 from stamina.i18n import t as tr_
 from stamina.theme import blend, chamfer, px
 
-LAYOUTS = ("classic", "alt")
+LAYOUTS = ("classic", "alt", "experienced")
 DEFAULT_LAYOUT = "classic"
 
 # Профили антуража. Подписи — ключи i18n (переводятся при сборке).
@@ -121,6 +121,11 @@ def layout_of(settings: dict | None) -> str:
     """Вид интерфейса из настроек; всё незнакомое — классический."""
     v = (settings or {}).get("ui_layout", DEFAULT_LAYOUT)
     return v if v in LAYOUTS else DEFAULT_LAYOUT
+
+
+def is_alt_like(settings: dict | None) -> bool:
+    """Альтернативные рабочие виды (пульт/опытный пилот) — общая рамка/контент."""
+    return layout_of(settings) in ("alt", "experienced")
 
 
 def profile_id(skin_id: str | None = None, data: dict | None = None) -> str:

@@ -1,0 +1,628 @@
+{
+  "version": 1,
+  "credit": "NASA",
+  "licence": "Public Domain (NASA)",
+  "notes": "Downloader fetches these on first Experienced Pilot launch. Do not commit the image files. Priority items download first (2-3), the rest in the background.",
+  "items": [
+    {
+      "id": "GSFC-2014-15815-002",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC-2014-15815-002/GSFC-2014-15815-002~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Ray Rubilotta receives the Blue Marble Award",
+      "source": "https://images.nasa.gov/",
+      "priority": true
+    },
+    {
+      "id": "iss039e005387",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/iss039e005387/iss039e005387~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 39 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": true
+    },
+    {
+      "id": "epic-epic_1b_20261125001751",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125001751.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": true
+    },
+    {
+      "id": "iss023e058455",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/iss023e058455/iss023e058455~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 23 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss039e009160",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/iss039e009160/iss039e009160~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 39 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss052e004998",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/iss052e004998/iss052e004998~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth observation taken by the Expedition 52 crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss066e146457",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/iss066e146457/iss066e146457~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss066e146457",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss072e159172",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/iss072e159172/iss072e159172~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "The aurora borealis blankets the Earth",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "sl3-130-3131",
+      "category": "aurora",
+      "url": "https://images-assets.nasa.gov/image/sl3-130-3131/sl3-130-3131~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "View of the southern aurora, luminous bands or streamers of light",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001016",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001016/GSFC_20171208_Archive_e001016~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Blue Marble, Eastern Hemisphere March 2014",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001386",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001386/GSFC_20171208_Archive_e001386~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Most Amazing High Definition Image of Earth - Blue Marble 2012",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001788",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001788/GSFC_20171208_Archive_e001788~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Eastern Hemisphere - Blue Marble 2012",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "GSFC_20171208_Archive_e002130",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e002130/GSFC_20171208_Archive_e002130~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "NASA Blue Marble 2007 East",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "GSFC_20171208_Archive_e002131",
+      "category": "blue_marble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e002131/GSFC_20171208_Archive_e002131~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "NASA Blue Marble 2007 West",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss035e011124",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss035e011124/iss035e011124~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 35 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss035e017286",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss035e017286/iss035e017286~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 35 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss035e017673",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss035e017673/iss035e017673~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 35 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss039e009144",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss039e009144/iss039e009144~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 39 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss040e091208",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss040e091208/iss040e091208~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observation",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss040e091231",
+      "category": "city_lights",
+      "url": "https://images-assets.nasa.gov/image/iss040e091231/iss040e091231~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observation",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss038e013587",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/iss038e013587/iss038e013587~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Cupola Windows",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss042e078481",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/iss042e078481/iss042e078481~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Exterior view of Cupola windows",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss042e099123",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/iss042e099123/iss042e099123~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss042e099123",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss047e142181",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/iss047e142181/iss047e142181~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "At Home in Space",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "jsc2024e050831",
+      "category": "cupola",
+      "url": "https://images-assets.nasa.gov/image/jsc2024e050831/jsc2024e050831~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "PRO Earthshine From ISS",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125020553",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125020553.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125035355",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125035355.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125054157",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125054157.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125073000",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125073000.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125091802",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125091802.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125110604",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125110604.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "epic-epic_1b_20261125125406",
+      "category": "epic",
+      "url": "https://epic.gsfc.nasa.gov/archive/natural/2026/11/25/jpg/epic_1b_20261125125406.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft",
+      "source": "https://epic.gsfc.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss048e046434",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/iss048e046434/iss048e046434~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss048e046434",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss048e046902",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/iss048e046902/iss048e046902~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss048e046902",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss048e046923",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/iss048e046923/iss048e046923~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss048e046923",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss050e029074",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/iss050e029074/iss050e029074~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Stowed Cameras and Lenses",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "s102e5113",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/s102e5113/s102e5113~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "A view of the Earth taken from the ISS",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "s102e5114",
+      "category": "iss_earth",
+      "url": "https://images-assets.nasa.gov/image/s102e5114/s102e5114~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "A view of the Earth taken from the ISS",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "PIA08002",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/PIA08002/PIA08002~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "High-Resolution Mars Camera Test Image of Moon",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "PIA14949",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/PIA14949/PIA14949~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "One Special Day in the Life of Planet Earth",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "PIA17170",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/PIA17170/PIA17170~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "One Special Day in the Life of Planet Earth -- Close-Up",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "PIA21260",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/PIA21260/PIA21260~orig.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth and Its Moon, as Seen From Mars",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "S92-52043",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/S92-52043/S92-52043~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Galileo view of Moon orbiting the Earth taken from 3.9 million miles",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss071e456772",
+      "category": "moon",
+      "url": "https://images-assets.nasa.gov/image/iss071e456772/iss071e456772~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "The Moon's glint beams off the Pacific Ocean",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss035e008716",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss035e008716/iss035e008716~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 35 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss035e013365",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss035e013365/iss035e013365~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observations taken by the Expedition 35 Crew",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss036e006865",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss036e006865/iss036e006865~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Solar array and Earth",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss037e017170",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss037e017170/iss037e017170~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "View of Moon over Earth limb taken by the Expedition 37 crew.",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss049e004248",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss049e004248/iss049e004248~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Solar array",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss057e057107",
+      "category": "solar_array",
+      "url": "https://images-assets.nasa.gov/image/iss057e057107/iss057e057107~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth Observation",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss053e079613",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss053e079613/iss053e079613~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss053e079613",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss055e032444",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss055e032444/iss055e032444~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss055e032444",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss059e002710",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss059e002710/iss059e002710~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss059e002710",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss061e064798",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss061e064798/iss061e064798~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss061e064798",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss061e065379",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss061e065379/iss061e065379~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss061e065379",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "iss063e052528",
+      "category": "spacewalk",
+      "url": "https://images-assets.nasa.gov/image/iss063e052528/iss063e052528~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "iss063e052528",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "STS047-54-018",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/STS047-54-018/STS047-54-018~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Sunrise, Earth Limb, SW Pacific Ocean",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "STS052-23-022",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/STS052-23-022/STS052-23-022~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Sunrise, Earth Limb",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "ast-27-2339",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/ast-27-2339/ast-27-2339~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth's limb and cloud silhouette in Southern Hemisphere",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "s09-11-675",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/s09-11-675/s09-11-675~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth limb at sunrise",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "s43-22-011",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/s43-22-011/s43-22-011~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "STS-43 Earth observation of a colorful sunrise",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    },
+    {
+      "id": "s66-38275",
+      "category": "sunrise",
+      "url": "https://images-assets.nasa.gov/image/s66-38275/s66-38275~large.jpg",
+      "licence": "Public Domain (NASA)",
+      "credit": "NASA",
+      "title": "Earth's limb at sunrise as seen from the Gemini 9-A spacecraft",
+      "source": "https://images.nasa.gov/",
+      "priority": false
+    }
+  ]
+}
