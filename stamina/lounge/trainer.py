@@ -34,6 +34,7 @@ from ..terraformer_trainer import (
     get_unlocked_variants,
     get_next_tier_preview,
     platform_height,
+    deposit_is_visible,
 )
 from .. import terraformer_strategy as strategy
 from . import iso
@@ -1001,11 +1002,12 @@ class TrainerGame(GameShell):
                 c.create_rectangle(sx, sy, sx + cell, sy + cell,
                                    fill=color, outline=blend(color, BG2, 0.45))
 
-        # открытые находки: источник воды — синий круг, прочее — маленький ромб
-        for (x, y) in model.revealed:
+        # открытые находки и находки на построенных платформах
+        for (x, y), (res, layer) in model.finds.items():
+            if not deposit_is_visible(model, x, y):
+                continue
             if not (x0 <= x <= x1 and y0 <= y <= y1):
                 continue
-            res = model.finds[(x, y)][0]
             sx, sy = cam.to_screen(x, y, w, h)
             if res == "water":
                 c.create_oval(sx + cell * 0.18, sy + cell * 0.18, sx + cell * 0.82, sy + cell * 0.82,
@@ -2113,11 +2115,12 @@ class TrainerGame(GameShell):
                     c.create_polygon(*faces.se, fill=blend(DUG_OUT, BG, 0.3), outline="", tags="map")
                     c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
 
-        # открытые находки
-        for (x, y) in model.revealed:
+# открытые находки и находки на построенных платформах
+        for (x, y), (res, layer) in model.finds.items():
+            if not deposit_is_visible(model, x, y):
+                continue
             if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
                 continue
-            res = model.finds[(x, y)][0]
             # центр верхней грани тайла на текущей поверхности (без +1)
             gz = terrain_gz(model.dug[y][x])
             cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz, m)

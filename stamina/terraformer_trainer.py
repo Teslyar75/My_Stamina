@@ -18,6 +18,7 @@ from pathlib import Path
 from stamina.i18n import t as _t
 
 from stamina import terraformer_strategy as strategy
+from stamina.terraformer_strategy import find_for_cell
 
 GRID_W = 40
 GRID_H = 24
@@ -439,20 +440,67 @@ def new_seed() -> int:
 
 
 def generate_finds(seed: int, w: int, h: int, exclude=()) -> dict:
-    """{(x, y): (ресурс, слой)} — детерминированно по сиду и размеру поля."""
-    rng = random.Random(f"terraformer-trainer:{int(seed)}:{int(w)}x{int(h)}")
+    """{(x, y): (ресурс, слой)} — детерминированно по сиду и размеру поля.
+
+    Для малых карт (≤ 40×24) использует фиксированный FIND_PLAN.
+    Для больших карт — масштабированную генерацию с плотностью ~6%.
+    """
+    # Порог для «большой» карты: больше старой GRID_W×GRID_H = 40×24 = 960 клеток
+    if w * h <= GRID_W * GRID_H:
+        # Старая логика для обратной совместимости
+        rng = random.Random(f"terraformer-trainer:{int(seed)}:{int(w)}x{int(h)}")
+        skip = set(exclude)
+        cells = [(x, y) for y in range(h) for x in range(w) if (x, y) not in skip]
+        rng.shuffle(cells)
+        out: dict = {}
+        i = 0
+        for res, layer, n in FIND_PLAN:
+            for _ in range(n):
+                if i >= len(cells):
+                    return out
+                out[cells[i]] = (res, layer)
+                i += 1
+        return out
+
+    # Большие карты: используем ту же логику, что find_for_cell, для всех клеток
+    return generate_finds_scaled(seed, w, h, exclude)
+
+
+def generate_finds_scaled(seed: int, w: int, h: int, exclude=()) -> dict:
+    """Генерация находок для большой карты с плотностью ~6%."""
     skip = set(exclude)
-    cells = [(x, y) for y in range(h) for x in range(w) if (x, y) not in skip]
-    rng.shuffle(cells)
     out: dict = {}
-    i = 0
-    for res, layer, n in FIND_PLAN:
-        for _ in range(n):
-            if i >= len(cells):
-                return out
-            out[cells[i]] = (res, layer)
-            i += 1
+    for y in range(h):
+        for x in range(w):
+            if (x, y) in skip:
+                continue
+            f = find_for_cell(seed, x, y)
+            if f:
+                out[(x, y)] = f
     return out
+
+
+def deposit_is_visible(model: "TrainerModel", x: int, y: int) -> bool:
+    """Check if a deposit at (x, y) should be drawn/rendered.
+
+    A deposit is visible for rendering if:
+    1. It's in the revealed set (found and shown to player), OR
+    2. It sits on a built platform center that's complete.
+    """
+    # Check if deposit exists at this position
+    if (x, y) not in model.finds:
+        return False
+
+    # 1. Revealed deposits are always visible
+    if (x, y) in model.revealed:
+        return True
+
+    # 2. Check if there's a complete platform at this location
+    for platform in model.platforms:
+        if platform.center == (x, y) and platform.complete:
+            return True
+
+    return False
 
 
 class TrainerModel:
