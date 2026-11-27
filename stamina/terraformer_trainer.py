@@ -737,10 +737,30 @@ class TrainerModel:
                     out.add((x, y))
         return out
 
+    def _visible_from_structure(self, building: BuildingBlueprint) -> set[tuple[int, int]]:
+        """Vision radius from structures. Only radar grants vision for now."""
+        if building.type != "radar":
+            return set()
+        # Radar at B2.2 level: large vision radius
+        r = 10
+        out: set[tuple[int, int]] = set()
+        bx, by = building.center
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dy * dy > r * r + r:
+                    continue
+                x, y = bx + dx, by + dy
+                if 0 <= x < self.w and 0 <= y < self.h:
+                    out.add((x, y))
+        return out
+
     def visible_cells(self) -> set[tuple[int, int]]:
         out: set[tuple[int, int]] = set()
         for u in self.units:
             out |= self._visible_from(u)
+        for b in self.buildings:
+            if b.built:
+                out |= self._visible_from_structure(b)
         return out
 
     def _update_explored(self) -> None:
