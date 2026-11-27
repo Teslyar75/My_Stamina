@@ -3478,5 +3478,12 @@
   "Уровень {0} · высота зданий до {1}": "Stufe {0} · Gebäudehöhe bis {1}",
   "Червь оставил специю. Соберите её в отсек находок.": "Der Wurm hat Gewürz hinterlassen. Sammle es in die Fundkammer.",
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Strategische Schicht: acht Stufen A1–C2, Einheit, Alarmaufträge, Nebel des Krieges, Gebäude und Sandwurm.",
-  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Pfeile · Leertaste · E · Q · B · G · T · N · LMT · RMT · MMT · I"
+  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Pfeile · Leertaste · E · Q · B · G · T · N · LMT · RMT · MMT · I",
+  "РУЧНОЙ": "MANUELL",
+  "АВТОНОМНЫЙ": "AUTONOM",
+  "ПОЛУ-АВТО": "HALBAUTO",
+  "РЕЖИМ:": "MODUS:",
+  "Режим изменён для {0} юнитов": "Modus geändert für {0} Einheiten",
+  "Приказ: идти в {0},{1}": "Befehl: gehe zu {0},{1}",
+  "Путь закрыт: {0},{1}": "Weg versperrt: {0},{1}"
 }
