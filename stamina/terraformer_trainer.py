@@ -627,6 +627,11 @@ class TrainerModel:
         blocked = set(self.springs)
         for b in self.buildings:
             blocked.add(tuple(b.center))
+        # Ямы (dug > 0) непроходимы — роботы/юниты не могут по ним ходить
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.dug[y][x] > 0:
+                    blocked.add((x, y))
         return blocked
 
     def command_move(self, tx: int, ty: int) -> dict[str, int]:
