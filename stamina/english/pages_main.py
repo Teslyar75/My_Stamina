@@ -10,7 +10,7 @@ import random
 import tkinter as tk
 import tkinter.font as tkfont
 
-from stamina import missions, theme
+from stamina import missions, theme, zen_mode
 from stamina.adapt import bind_wraplength
 from stamina.hud import HudButton, HudPanel, Readouts, RingGauge, SegmentBar
 from stamina.theme import (AMBER, BG, BG2, CYAN, CYAN_DIM, FAINT, GREEN, LINE, LINE_HI, MUTED, PANEL,
@@ -20,7 +20,7 @@ from .speech_std import advance_later, passed
 from . import tasks
 from .mic import MicPanel
 from .textutil import score_sentence, verdict, word_forms
-from .ui import WrapEntry, DIFF_COLOR, TIPS, Bar, Flow, FocusMode, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
+from .ui import WrapEntry, DIFF_COLOR, TIPS, Bar, Flow, L, MatchReadout, ScrollFrame, Segments, Strip, Tile, chip, entry, target_missed
 from .vocab import DIFF_RU, POS_FILTER, POS_SHORT, SETS
 
 VCOL = {"green": GREEN, "amber": AMBER, "red": RED}
@@ -1337,24 +1337,28 @@ class ScannerPage(tk.Frame):
         bar.configure(bg=PANEL if fits else BG)
         bar.lift()
 
-    # -- фокус-режим (O / Щ, Esc — выход) ------------------------------------------
+    # -- общий зенид (O / Щ, Ctrl+O, двойной Esc) ----------------------------------
     def in_focus(self) -> bool:
-        return self._focus is not None
+        return zen_mode.is_active(self)
 
     def toggle_focus(self, on: bool | None = None, **_kw) -> None:
-        on = (self._focus is None) if on is None else on
-        if on and self._focus is None:
-            self._focus = FocusMode(self)
-            self._grow(True)
-        elif not on and self._focus is not None:
-            f, self._focus = self._focus, None
-            self._grow(False)
-            f.restore()
+        active = zen_mode.is_active(self)
+        on = (not active) if on is None else on
+        if on and not active:
+            zen_mode.enter(self)
+        elif not on and active:
+            zen_mode.exit_zen(self)
+
+    def after_zen_toggle(self, on: bool) -> None:
+        """Раскладка вызывается и из cockpit (Ctrl+O), и из кнопки/O/Щ."""
+        self._focus = zen_mode.mode_of(self) if on else None
+        self._grow(on)
+        if not on:
             self.after_idle(self._fit_normal)
         btn = getattr(self, "btn_focus", None)
         if btn is not None:
-            btn.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
-            btn.set_active(self._focus is not None)
+            btn.set_text(_t("✕ ФОКУС  Esc") if on else _t("⛶ ФОКУС  O"))
+            btn.set_active(on)
         try:
             self.focus_set()
         except tk.TclError:
@@ -1466,7 +1470,7 @@ class ScannerPage(tk.Frame):
     def _fit_normal(self, force: bool = False) -> None:
         """Обычный режим: заполнить высоту окна, шрифт — NORMAL_FONT_GAIN / NORMAL_FONT_CAP."""
         self._fit_job = None
-        if (self._focus is not None or not getattr(self, "compact", False)
+        if (zen_mode.is_active(self) or not getattr(self, "compact", False)
                 or not self.winfo_ismapped() or not self._visible_for_fit()):
             return
         cv = self.sf.canvas
@@ -1618,7 +1622,7 @@ class ScannerPage(tk.Frame):
     def _on_unmap(self, e) -> None:
         # страницу спрятали (другая вкладка/отсек) — фокус-режим снять, шапку вернуть
         self._cancel_fit_jobs()
-        if self._focus is not None and e.widget in (self, self.ctx):
+        if zen_mode.is_active(self) and e.widget in (self, self.ctx):
             self.after_idle(lambda: self.toggle_focus(False))
 
     # -- данные -------------------------------------------------------------------
@@ -1842,12 +1846,16 @@ class ScannerPage(tk.Frame):
         k = e.keysym.lower()
         from .speech_std import is_mic_key
         from .speech_std import is_focus_key, is_hint_key
-        if k == "escape" and self._focus is not None:
-            self.toggle_focus(False)    # Esc в фокус-режиме — только выход из него
+        if zen_mode.was_handled(e):
+            return "break"
+        if zen_mode.is_escape(e) and zen_mode.is_active(self):
+            zen_mode.handle_key(e, self)   # первый Esc держит зенид, второй выходит
             return "break"
         if is_mic_key(e):
             self.mic.toggle()           # единый стандарт: M — микрофон
         elif is_focus_key(e) and getattr(self, "compact", False):
+            if zen_mode.is_zen_hotkey(e):
+                return "break"          # Ctrl+O уже обработан cockpit
             self.toggle_focus()         # O — развернуть/свернуть рабочую панель
         elif is_hint_key(e):
             self.str_.configure(text=self._sent().get("ru") or _t("перевода нет"))  # T держим — перевод

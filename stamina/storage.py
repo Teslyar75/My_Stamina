@@ -71,7 +71,7 @@ DEFAULT_SETTINGS = {
     "geometry": "",
     "living_space": "off",  # «Живой космос» во всех разделах: off | light | full
     "skin": "spaceship",
-    "ui_layout": "classic",  # вид интерфейса: classic | alt («Пульт-кабина», stamina/alt_ui.py)
+    "ui_layout": "classic",  # вид интерфейса: classic | alt | experienced (stamina/alt_ui.py)
     "alt_rail_narrow": True,  # alt: док отсеков свёрнут до значков
     "alt_wallpaper_dim": 0.35,  # alt: затемнение обоев отсеков 0..0.9
     "alt_wall_interval": 30,  # alt: слайдшоу обоев отсеков, секунды (0 — выкл; 15/30/60)

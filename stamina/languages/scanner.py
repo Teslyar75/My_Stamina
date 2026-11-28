@@ -17,7 +17,8 @@ from stamina.adapt import bind_wraplength
 from stamina.english.mic import MicPanel
 from stamina.english.speech_std import advance_later, is_hint_key, is_mic_key, passed
 from stamina.english.textutil import score_sentence, score_word
-from stamina.english.ui import Flow, FocusMode, L, MatchReadout, ScrollFrame, WrapEntry, chip
+from stamina import zen_mode
+from stamina.english.ui import Flow, L, MatchReadout, ScrollFrame, WrapEntry, chip
 from stamina.grammar_ui.focus import is_grammar_focus_key
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
@@ -286,22 +287,26 @@ class WordScanner(tk.Frame):
             if getattr(self.sf, "autohide", False):
                 self.after(20, self.sf.sync)
 
-    # -- фокус-режим и масштаб: те же правила, что в английском сканере -----
+    # -- общий зенид и масштаб: те же правила, что в английском сканере -----
     def toggle_focus(self, on: bool | None = None, **_kw) -> None:
-        """Развернуть рабочие панели на всё окно (O/Щ или Ctrl+O), Esc — выход."""
-        on = (self._focus is None) if on is None else on
-        if on and self._focus is None:
-            self._focus = FocusMode(self)
-            self._grow(True)
-        elif not on and self._focus is not None:
-            f, self._focus = self._focus, None
-            self._grow(False)
-            f.restore()
+        """Развернуть рабочие панели на всё окно (O/Щ или Ctrl+O), двойной Esc — выход."""
+        active = zen_mode.is_active(self)
+        on = (not active) if on is None else on
+        if on and not active:
+            zen_mode.enter(self)
+        elif not on and active:
+            zen_mode.exit_zen(self)
+
+    def after_zen_toggle(self, on: bool) -> None:
+        """Один путь раскладки для кнопки, O/Щ и Ctrl+O из cockpit."""
+        self._focus = zen_mode.mode_of(self) if on else None
+        self._grow(on)
+        if not on:
             self.after_idle(self._fit_normal)
         btn = getattr(self, "btn_focus", None)
         if btn is not None:
-            btn.set_text(_t("✕ ФОКУС  Esc") if self._focus else _t("⛶ ФОКУС  O"))
-            btn.set_active(self._focus is not None)
+            btn.set_text(_t("✕ ФОКУС  Esc") if on else _t("⛶ ФОКУС  O"))
+            btn.set_active(on)
         try:
             self.focus_set()
         except tk.TclError:
@@ -779,8 +784,8 @@ class WordScanner(tk.Frame):
         self.progress.record_attempt(self.word.slug, score >= 60, "speaking", 0, quality)
 
     def in_focus(self) -> bool:
-        """Открыт ли фокус-режим (панели на всё окно)."""
-        return self._focus is not None
+        """Открыт ли общий зенид (панели на всё окно)."""
+        return zen_mode.is_active(self)
 
     def wants_key(self, event) -> bool:
         """Аккорд фокуса (Ctrl+O) — его можно нажимать и из поля ввода: это не буква."""
@@ -788,16 +793,20 @@ class WordScanner(tk.Frame):
 
     def on_key(self, event):
         """Клавиши как в английском сканере: ←/→ — предложения, T — перевод, O — фокус."""
-        if self._focus is None and isinstance(event.widget, (tk.Entry, tk.Text)):
+        if zen_mode.was_handled(event):
+            return "break"
+        if zen_mode.is_active(self) is False and isinstance(event.widget, (tk.Entry, tk.Text)):
             return
         key = (event.keysym or "").lower()
-        if key == "escape" and self._focus is not None:
-            self.toggle_focus(False)     # Esc в фокус-режиме — только выход из него
+        if zen_mode.is_escape(event) and zen_mode.is_active(self):
+            zen_mode.handle_key(event, self)   # двойной Esc: первый держит, второй выходит
             return "break"
         if is_mic_key(event):
             self.mic.toggle()            # единый стандарт: M — микрофон
         elif is_grammar_focus_key(event):
-            self.toggle_focus()          # O/Щ или Ctrl+O — развернуть/свернуть панели
+            if zen_mode.is_zen_hotkey(event):
+                return "break"           # Ctrl+O уже обработан cockpit
+            self.toggle_focus()          # O/Щ — развернуть/свернуть панели
         elif is_hint_key(event):
             self._apply_tr(True)         # T держим — перевод
         elif key == "s":
@@ -820,7 +829,7 @@ class WordScanner(tk.Frame):
 
     def shutdown(self) -> None:
         self._cancel_fit_jobs()
-        if self._focus is not None:
+        if zen_mode.is_active(self):
             try:
                 self.toggle_focus(False)
             except tk.TclError:

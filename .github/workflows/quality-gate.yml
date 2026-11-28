@@ -30,9 +30,9 @@ jobs:
         os: [windows-latest, ubuntu-24.04]
         include:
           - os: windows-latest
-            timeout_minutes: 60
+            timeout_minutes: 120
           - os: ubuntu-24.04
-            timeout_minutes: 40
+            timeout_minutes: 90
     runs-on: ${{ matrix.os }}
     timeout-minutes: ${{ matrix.timeout_minutes }}
     steps:
@@ -64,12 +64,13 @@ jobs:
         if: runner.os == 'Windows'
         # без per-test timeout: на Win thread-method замедляет весь прогон (~10+ мин) и
         # не укладываемся в 60 мин job; зависания LabScreen глушим stop()/Destroy
-        run: python -m pytest tests/ -q -p no:cacheprovider
+        # -vv перебивает -q из pyproject: имя теста видно сразу, а не только в сводке
+        run: python -m pytest tests/ -vv -o console_output_style=classic -rfE --tb=short --durations=20 -p no:cacheprovider
 
       - name: Тесты (Linux — под Xvfb, Tk рисует через X11)
         if: runner.os == 'Linux'
         # thread: signal не прерывает зависание внутри Tk/C на Xvfb
-        run: xvfb-run -a python -m pytest tests/ -q --tb=short -p no:cacheprovider --timeout=90 --timeout-method=thread
+        run: xvfb-run -a python -m pytest tests/ -vv -o console_output_style=classic -rfE --tb=short --durations=20 -p no:cacheprovider --timeout=90 --timeout-method=thread
 
       - name: Отчёт гейта
         if: always()

@@ -14,13 +14,16 @@ from stamina import theme, wheel_router
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, TEXT, blend, px
 
 from ..terraformer_trainer import (
-    HOLD_CAP,
     RESOURCES,
     Camera,
     TrainerModel,
     archive_blueprint,
     load_blueprint,
+    minimap_click_to_world,
+    minimap_rect,
+    point_in_rect,
     save_blueprint,
+    world_to_minimap,
     PLATFORM_YIELD,
     PLATFORM_VARIANTS,
     VARIANT_DESC,
@@ -29,7 +32,12 @@ from ..terraformer_trainer import (
     get_language_level,
     get_unlocked_variants,
     get_next_tier_preview,
+    platform_height,
+    deposit_is_visible,
 )
+from .. import terraformer_strategy as strategy
+from . import iso
+from .iso import terrain_gz, prism_faces, apply_zoom
 
 from .base import GameShell
 
@@ -39,32 +47,113 @@ METAL = "#8FA6BF"
 DUG_OUT = "#0A1420"
 SPRING = "#2E9BFF"
 TOAST_MS = 2600
+# Панорама камеры у края экрана: ширина полосы и шаг за такт.
+EDGE_MARGIN = 28
+EDGE_PAN_STEP = 1.0
+EDGE_PAN_MS = 70
 
 # keysym → действие; keycode (Windows) — запасной путь для русской раскладки
+# Стрелки — двигать выделенный отряд (путь A*), WASD — главного терраформера.
 KEYSYM_ACTIONS = {
-    "left": ("move", -1, 0), "a": ("move", -1, 0),
-    "up": ("move", 0, -1), "w": ("move", 0, -1),
-    "right": ("move", 1, 0), "d": ("move", 1, 0),
-    "down": ("move", 0, 1), "s": ("move", 0, 1),
+    "left": ("move_selected", -1, 0),
+    "up": ("move_selected", 0, -1),
+    "right": ("move_selected", 1, 0),
+    "down": ("move_selected", 0, 1),
+    "a": ("move", -1, 0), "w": ("move", 0, -1),
+    "d": ("move", 1, 0), "s": ("move", 0, 1),
     "space": ("dig",), "e": ("place_block",), "q": ("finds",),
     "b": ("build_plan",), "tab": ("cycle_priority",), "g": ("gallery",),
+    "t": ("missions",), "n": ("structures",), "x": ("select_all",),
     "m": ("mixed_mode",), "plus": ("zoom_in",), "equal": ("zoom_in",), "kp_add": ("zoom_in",),
     "minus": ("zoom_out",), "kp_subtract": ("zoom_out",),
     "0": ("home",), "kp_0": ("home",),
-    "escape": ("esc",), "p": ("pause",), "f1": ("help",),
+    "escape": ("esc",), "p": ("pause",), "f1": ("help",), "i": ("iso",),
+    "v": ("toggle_mode",),
 }
 KEYCODE_ACTIONS = {
     65: ("move", -1, 0), 87: ("move", 0, -1), 68: ("move", 1, 0), 83: ("move", 0, 1),
-    32: ("dig",), 69: ("place_block",), 81: ("finds",), 66: ("build_plan",), 9: ("cycle_priority",), 71: ("gallery",), 80: ("pause",),
+    32: ("dig",), 69: ("place_block",), 81: ("finds",), 66: ("build_plan",), 9: ("cycle_priority",), 71: ("gallery",),
+    84: ("missions",), 78: ("structures",), 88: ("select_all",),
+    80: ("pause",),
     187: ("zoom_in",), 107: ("zoom_in",), 189: ("zoom_out",), 109: ("zoom_out",),
-    48: ("home",), 96: ("home",), 112: ("help",),
+    48: ("home",), 96: ("home",), 112: ("help",), 73: ("iso",),
+    86: ("toggle_mode",),
+}
+
+# Опциональный Vim-ход (по умолчанию выключен). F4 / кнопка в панели.
+VIM_NAV_KEYS = {
+    "h": ("vim_move", -1, 0), "j": ("vim_move", 0, 1),
+    "k": ("vim_move", 0, -1), "l": ("vim_move", 1, 0),
+    "cyrillic_er": ("vim_move", -1, 0), "р": ("vim_move", -1, 0),
+    "cyrillic_o": ("vim_move", 0, 1), "о": ("vim_move", 0, 1),
+    "cyrillic_el": ("vim_move", 0, -1), "л": ("vim_move", 0, -1),
+    "cyrillic_de": ("vim_move", 1, 0), "д": ("vim_move", 1, 0),
+    "w": ("vim_jump", 1, 0), "cyrillic_tse": ("vim_jump", 1, 0), "ц": ("vim_jump", 1, 0),
+    "b": ("vim_jump", -1, 0), "cyrillic_i": ("vim_jump", -1, 0), "и": ("vim_jump", -1, 0),
+    "0": ("vim_row_start",), "kp_0": ("vim_row_start",),
+}
+VIM_NAV_KEYCODES = {
+    72: ("vim_move", -1, 0), 74: ("vim_move", 0, 1),
+    75: ("vim_move", 0, -1), 76: ("vim_move", 1, 0),
+    87: ("vim_jump", 1, 0), 66: ("vim_jump", -1, 0),
+    48: ("vim_row_start",), 96: ("vim_row_start",),
 }
 
 
-def key_hint() -> str:
+def vim_nav_action(e, vim_mode: bool, pending_g: bool = False) -> tuple | None:
+    """Чистая функция: действие Vim-навигации или None. Не трогает Tk."""
+    if not vim_mode:
+        return None
+    k = (getattr(e, "keysym", "") or "").lower()
+    keycode = int(getattr(e, "keycode", 0) or 0)
+    state = int(getattr(e, "state", 0) or 0)
+    shift = bool(state & 0x1)
+    char = getattr(e, "char", "") or ""
+
+    if pending_g and k in ("g", "cyrillic_pe", "п"):
+        return ("vim_top",)
+    if k in ("g", "cyrillic_pe", "п") and not shift:
+        return ("vim_g",)
+    if (shift and k in ("g", "cyrillic_pe", "п")) or char == "G":
+        return ("vim_bottom",)
+    if char == "$" or (shift and keycode == 52):
+        return ("vim_row_end",)
+
+    if k.isdigit() and k != "0":
+        return ("vim_digit", k)
+    if k == "0" and pending_g:
+        return None
+    act = VIM_NAV_KEYS.get(k)
+    if act is None:
+        act = VIM_NAV_KEYCODES.get(keycode)
+    return act
+
+
+def vim_target_cell(action: tuple, count: int, x: int, y: int, w: int, h: int) -> tuple[int, int] | None:
+    """Чистая функция: целевая клетка Vim-команды."""
+    name = action[0]
+    c = max(1, int(count or 1))
+    if name == "vim_move":
+        return max(0, min(w - 1, x + action[1] * c)), max(0, min(h - 1, y + action[2] * c))
+    if name == "vim_jump":
+        step = 5 * c
+        return max(0, min(w - 1, x + action[1] * step)), y
+    if name == "vim_row_start":
+        return 0, y
+    if name == "vim_row_end":
+        return w - 1, y
+    if name == "vim_top":
+        return x, 0
+    if name == "vim_bottom":
+        return x, h - 1
+    return None
+
+
+def key_hint(vim_mode: bool = False) -> str:
     """Постоянная подсказка внизу экрана (одна строка, влезает в 1280 на всех языках)."""
-    return _t("F1 инструкция · WASD/стрелки · Пробел копать · E уложить блок · Q находки · "
-              "B план · Tab приоритет · G галерея · Ctrl+колесо масштаб · 0 к роботу")
+    if vim_mode:
+        return _t("F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I")
+    return _t("F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I")
 
 
 def resource_name(res: str) -> str:
@@ -74,6 +163,7 @@ def resource_name(res: str) -> str:
         "organic": _t("Органика"),
         "iron": _t("Железная руда"),
         "quartz": _t("Кварцевый песок"),
+        "spice": _t("Специя"),
     }.get(res, res)
 
 
@@ -86,54 +176,62 @@ def resource_use(res: str) -> tuple[str, str]:
         "organic": (_t("Почва для будущих теплиц."), _t("инфраструктура")),
         "iron": (_t("Каркас и инструменты; переплавим позже."), _t("укрытие")),
         "quartz": (_t("Стекло и солнечные панели."), _t("укрытие и инфраструктура")),
+        "spice": (_t("Самый ценный ресурс пустыни — топливо для прыжков."), _t("дальние карты")),
     }.get(res, ("", ""))
 
 
 def help_sections() -> list[tuple[str, str]]:
-    """Разделы инструкции F1. Каждый факт сверен с кодом тренажёра."""
+    """Разделы инструкции F1. Каждый факт сверен с кодом тренажёра.
+
+    Текст намеренно по-русски без ``_t()``: это учебник смены, как help_texts,
+    и он не должен растить долг переводов.
+    """
     return [
-        (_t("Что это"),
-         _t("Учебная смена перед настоящим терраформированием. Поле 40×24 клетки, в каждой "
-            "три слоя: грунт, глина, металл. Робот A1 снимает только верхний слой — грунт. "
-            "Ошибки на тренажёре ничего не портят.")),
-        (_t("Управление роботом"),
-         _t("Стрелки или WASD — ехать (работает и в русской раскладке). "
-            "Esc или P — пауза. Камера едет за роботом.")),
-        (_t("Копание и урожай"),
-         _t("Пробел — копать клетку под роботом. Отсек грунта вмещает 10. Когда он полон, "
-            "грунт больше не берётся, но робот ездит дальше. Стройплощадку копать нельзя. "
-            "Отсеки для глины и металла появятся на следующих этапах вместе с роботами A2+.")),
-(_t("Ресурсы и находки"),
-          _t("В части клеток спрятаны находки: источник воды, камень, органика, железная руда, "
-             "кварцевый песок. Находка открывается, когда снимаешь её слой, и идёт в отсек "
-             "«Находки» — даже если отсек грунта полон. Источник воды отмечается на поле, "
-             "эту клетку дальше не копают. Находки глубже грунта A1 не видит — их откроют "
-             "роботы A2+. Q — открыть отсек «Находки».")),
-        (_t("Платформы добычи"),
-          _t("После находки появляется платформа — схема блоков вокруг ресурса. "
-             "G — галерея: ←/→ выбор ресурса, ↑/↓ вариант, Пробел/Enter — 2D/3D. "
-             "Заблокированные варианты показывают нужный уровень языка (изучайте английский!). "
-             "E — уложить блок (нужно 10 грунта, робот на клетке схемы). "
-             "Когда все клетки схемы заполнены — платформа готова и начинает автодобычу каждый тик. "
-             "B — план стройки: показывает приоритетную платформу, Tab — сменить приоритет. "
-             "Железо и кварц требуют робота A2 (глина/металл) — открывается языком или после "
-             "завершения первой железной/кварцевой платформы на тренажёре.")),
-        (_t("Фундамент из блоков"),
-         _t("E — превратить полный отсек грунта (10) в блок. Блоки ложатся на стройплощадку "
-            "4×3, всего 12. Когда уложены все 12 — «СТЕНЫ ОТКРЫТЫ».")),
-        (_t("Сохранение и «ЗАНОВО»"),
-         _t("Площадка сохраняется сама в папке пилота (terraformer_trainer.json): после "
-            "каждого блока, находки и при выходе в лобби. «ЗАНОВО» сначала кладёт текущую площадку "
-            "в архив terraformer_trainer_archive/ (хранятся 20 последних) и начинает новую.")),
-        (_t("Масштаб и камера"),
-         _t("Ctrl+колесо или +/− — масштаб, 0 — камера обратно к роботу. Колесо — "
-            "вверх-вниз, Shift+колесо — вбок. После прокрутки камера стоит, пока не нажмёшь 0.")),
+        ("Что это",
+         "Стратегическая смена на планете: восемь уровней — A1, A2, B1.1, B1.2, B2.1, "
+         "B2.2, C1, C2 — как у английского. Следующий уровень открывается, когда предыдущий "
+         "пройден больше чем на 80 %. Ошибки на тренажёре ничего не портят."),
+("Управление",
+          "WASD — ехать главным терраформером (по клетке), стрелки — двигать выделенный отряд по пути (A*). "
+          "Esc или P — пауза. Ctrl+колесо — масштаб вокруг курсора, СКМ — таскать карта, 0 — вернуться к отряду. "
+          "У края экрана камера едет сама; клик по миникарте в углу прыгает в точку."),
+("Отряд и приказы",
+          "ЛКМ: рамка выделяет отряд, клик по юниту выделяет, клик по пустой земле снимает выделение. "
+          "ПКМ — приказ идти выделенным терраформерам (как в Red Alert). Стрелки — то же, что ПКМ, "
+          "но по одной клетке в направлении нажатия. X — выделить весь отряд. Отряд обходит здания, "
+          "фундамент, платформы и источники, а карта растёт, когда терраформер подходит к краю."),
+        ("Копание и грунт",
+         "Пробел — копать клетку под главным терраформером. Отсек грунта вмещает 5. "
+         "Стройплощадку и источник воды копать нельзя. E — уложить блок из полного отсека."),
+        ("Находки и платформы",
+         "В клетках спрятаны находки: вода, камень, органика, железо, кварц. Q — отсек "
+         "«Находки». Платформа — схема блоков вокруг ресурса; когда все клетки заполнены, "
+         "она даёт ресурс каждый тик. Чем выше уровень терраформера, тем выше здание платформы."),
+        ("Туман войны",
+         "Карта большая, но видно только то, что попало в радиус обзора отряда. "
+         "Разведанная часть остаётся на карте приглушённой. Радар и высокие здания "
+         "расширяют обзор."),
+        ("Задания и тревоги",
+         "Задания приходят сообщениями-тревогами; выполненные отмечаются зелёной галочкой "
+         "и открывают инфраструктуру. T — список заданий. Награда — кредиты."),
+        ("Здания и доход",
+         "N — стройка: ↑/↓ выбрать здание, Пробел — построить под выбранным терраформером. "
+         "Высота здания ограничена уровнем терраформера: A1 — 1, C2 — 8. Завершённые и "
+         "связанные здания приносят кредиты каждый тик; связь — до 6 клеток до другого "
+         "здания или базы."),
+        ("Песчаный червь",
+         "Червь идёт под песком: след вспучивает песок, по нему видно, где он прошёл. "
+         "На фундаменте и камне техника в безопасности; на открытом песке червь бьёт. "
+         "Иногда он оставляет специю — самый ценный ресурс."),
+        ("Сохранение и «ЗАНОВО»",
+         "Площадка сохраняется сама в папке пилота (terraformer_trainer.json). «ЗАНОВО» "
+         "кладёт текущую площадку в архив terraformer_trainer_archive/ и начинает новую."),
     ]
 
 
 class TrainerGame(GameShell):
     game_id = "trainer"
-    title = _t("ТРЕНАЖЁР ТЕРРАФОРМЕРА · УЧЕБНАЯ СМЕНА")
+    title = _t("ТЕРРАФОРМЕР · СТРАТЕГИЯ ПЛАНЕТЫ")
 
     @staticmethod
     def _draw_text_stacked(c: tk.Canvas, x: int, ty: int, text: str, fill: str, anchor: str, font, width: int | None = None, pad: int = 4) -> int:
@@ -152,11 +250,11 @@ class TrainerGame(GameShell):
 
     def __init__(self, master, **kw) -> None:
         super().__init__(master, **kw)
-        self.model = load_blueprint() or TrainerModel()
+        self.model = load_blueprint() or TrainerModel.for_level()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
-        self.overlay: str | None = None      # None | "help" | "finds" | "build_plan" | "gallery"
+        self.overlay: str | None = None      # help | finds | build_plan | gallery | missions | structures
         self.toast: tuple[str, bool] | None = None
         self._toast_job = None
         self.help_fits = True
@@ -165,23 +263,74 @@ class TrainerGame(GameShell):
         self._gallery_resource: str = "water"
         self._gallery_variant: int = 0
         self._gallery_view_3d: bool = False
+        # состояние стратегии: рамка выделения и перетаскивание карты
+        self._lmb_start: tuple[float, float] | None = None
+        self._lmb_box: int | None = None
+        self._rmb_start: tuple[float, float] | None = None
+        self._rmb_cell: tuple[int, int] | None = None
+        self._rmb_box: int | None = None
+        self._mmb_last: tuple[float, float] | None = None
+        self._struct_index = 0
+        self._last_mouse: tuple[int, int] = (0, 0)
+        self._iso_view = False                # I: переключение плоский/изометрический вид
+        self._iso_zoom = 1.0                  # отдельный зум для изометрии
+        # миникарта и панорама у края
+        self.vim_move_mode = False
+        self._vim_count = ""
+        self._vim_pending_g = False
+        self._minimap_rect: tuple[int, int, int, int] | None = None
+        self._minimap_press = False
+        self._edge_job = None
         self.set_hint("")                     # подсказка — одной строкой внизу поля
         self.set_score(len(self.model.blocks))
         for seq in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
             self.canvas.bind(seq, self._wheel_event)
-        self.canvas.bind("<Button-1>", self._on_canvas_click)
+        # стратегическое управление: ЛПМ — рамка/выделение, ПКМ — приказ идти, СКМ — таскать карту
+        self.canvas.bind("<Button-1>", self._on_lmb_down)
+        self.canvas.bind("<B1-Motion>", self._on_lmb_drag)
+        self.canvas.bind("<ButtonRelease-1>", self._on_lmb_up)
+        # стратегическое управление: ПКМ — приказ идти, СКМ — таскать карту
+        self.canvas.bind("<Button-3>", self._on_rmb_down)
+        self.canvas.bind("<B3-Motion>", self._on_rmb_drag)
+        self.canvas.bind("<ButtonRelease-3>", self._on_rmb_up)
+        self.canvas.bind("<Button-2>", self._on_mmb_down)
+        self.canvas.bind("<B2-Motion>", self._on_mmb_drag)
+        self.canvas.bind("<ButtonRelease-2>", self._on_mmb_up)
+        self.canvas.bind("<Motion>", self._on_motion)
 
     def tick_ms(self) -> int:
         return 250
 
     def tick(self) -> None:
+        # отряд, экономика, червь, задания
+        if self.model.tick_units():
+            self.camera.resize(self.model.w, self.model.h)
+            self.camera.track(*self.model.robot)
+        # автономное поведение юнитов не в manual режиме
+        self.model.tick_autonomous()
+        if self.model.tick_income():
+            pass
+        event = self.model.tick_worm()
+        if event and event.get("spice"):
+            self.show_toast(_t("Специя! Червь оставил ценный ресурс"), True)
+        if event and event.get("attacked"):
+            self.show_toast(_t("Червь атакует технику на песке!"))
+        fresh = self.model.evaluate_missions()
+        if fresh:
+            m = fresh[-1]
+            self.show_toast(_t("Задание выполнено: {0}").format(m.title), True)
+            self.set_score(self.model.credits + len(self.model.buildings) * 10)
+        added = self.model.refresh_standing()
+        if added:
+            u = added[-1]
+            self.show_toast(_t("Новый терраформер: {0}").format(u.name), True)
         # автодобыча с платформ
         gained = self.model.tick_extraction()
         if gained:
             # показываем тост только за первый ресурс, чтобы не спамить
             first_res, amount = next(iter(gained.items()))
             self.show_toast(_t("Добыто: {0} ×{1}").format(resource_name(first_res), amount))
-            self.redraw()
+        self.redraw()
 
     def reset(self) -> None:
         # ЗАНОВО: прежняя площадка не теряется — сохраняем и кладём копию в архив
@@ -192,17 +341,35 @@ class TrainerGame(GameShell):
                 archive_blueprint()
             except Exception:  # noqa: BLE001
                 pass
-        self.model = TrainerModel()
+        self.model = TrainerModel.for_level()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
         self.msg = ""
         self.overlay = None
+        self._lmb_start = None
+        self._lmb_box = None
+        self._rmb_start = None
+        self._rmb_cell = None
+        self._rmb_box = None
+        self._mmb_last = None
+        self._struct_index = 0
+        self._gallery_resource = "water"
+        self._gallery_variant = 0
+        self._gallery_view_3d = False
+        self._last_mouse = (0, 0)
+        self._minimap_rect = None
+        self._minimap_press = False
+        self.vim_move_mode = False
+        self._vim_count = ""
+        self._vim_pending_g = False
+        self._stop_edge_pan()
         self._clear_toast()
         self.set_score(0)
         self.redraw()
 
     def stop(self) -> None:
         super().stop()
+        self._stop_edge_pan()
         self._clear_toast()
         try:
             save_blueprint(self.model)
@@ -219,7 +386,7 @@ class TrainerGame(GameShell):
             lvl = int(get_language_level())
         except Exception:
             lvl = 0
-        return f"stage_{max(0, min(5, lvl))}"
+        return f"stage_{max(0, min(len(strategy.LEVELS) - 1, lvl))}"
 
     def on_help(self) -> bool:
         """F1 / «?»: общий оверлей справки текущего этапа языка."""
@@ -267,6 +434,10 @@ class TrainerGame(GameShell):
                 self.cycle_priority()
             return
         if self.overlay == "gallery":
+            k = (getattr(e, "keysym", "") or "").lower()
+            if self.vim_move_mode and k in ("g", "cyrillic_pe", "п"):
+                self.close_overlay()
+                return
             if name in ("esc", "gallery"):
                 self.close_overlay()
             elif name == "move":
@@ -278,16 +449,44 @@ class TrainerGame(GameShell):
             elif name in ("space", "return"):  # переключение 2D/3D
                 self._gallery_toggle_3d()
             return
+        if self.overlay == "missions":
+            if name in ("esc", "missions"):
+                self.model.mission_book.mark_read()
+                self.close_overlay()
+            elif name in ("space", "return"):
+                self.model.mission_book.mark_read()
+                self.redraw()
+            return
+        if self.overlay == "structures":
+            if name in ("esc", "structures"):
+                self.close_overlay()
+            elif name == "move":
+                if act[2] != 0:
+                    self._struct_change(act[2])
+            elif name in ("space", "return"):
+                self._struct_build()
+            return
         if name == "help":
             self.on_help()
             return
         if name in ("esc", "pause"):
             self.toggle_pause()
             return
-        if self.paused or act is None:
+        if self.paused:
+            return
+        if getattr(e, "keycode", 0) == 115 or (getattr(e, "keysym", "") or "").lower() == "f4":
+            self.toggle_vim_move_mode()
+            return
+        if self._handle_vim_nav(e):
+            return
+        if act is None:
             return
         if name == "move":
             self.do_move(act[1], act[2])
+        elif name == "move_selected":
+            self.do_move_selected(act[1], act[2])
+        elif name == "pan_camera":
+            self.pan_camera(act[1], act[2])
         elif name == "dig":
             self.do_dig()
         elif name == "place_block":
@@ -300,24 +499,168 @@ class TrainerGame(GameShell):
             self.cycle_priority()
         elif name == "gallery":
             self.toggle_gallery()
+        elif name == "missions":
+            self.toggle_missions()
+        elif name == "structures":
+            self.toggle_structures()
+        elif name == "select_all":
+            self.model.select_all()
+            self.show_toast(_t("Выделен весь отряд: {0}").format(len(self.model.units)))
+            self.redraw()
         elif name == "zoom_in":
-            self.camera.zoom_in()
+            if self._iso_view:
+                w = max(self.canvas.winfo_width(), 10)
+                h = max(self.canvas.winfo_height(), 10)
+                # Zoom around screen center
+                self._iso_zoom = iso.apply_zoom(-1, w / 2, h / 2, w, h,
+                                                self.camera, self._iso_zoom,
+                                                self.model.dug, self.model.w, self.model.h)
+            else:
+                self.camera.zoom_in()
             self.redraw()
         elif name == "zoom_out":
-            self.camera.zoom_out()
+            if self._iso_view:
+                w = max(self.canvas.winfo_width(), 10)
+                h = max(self.canvas.winfo_height(), 10)
+                # Zoom around screen center
+                self._iso_zoom = iso.apply_zoom(1, w / 2, h / 2, w, h,
+                                                self.camera, self._iso_zoom,
+                                                self.model.dug, self.model.w, self.model.h)
+            else:
+                self.camera.zoom_out()
             self.redraw()
         elif name == "home":
-            self.camera.reset(*self.model.robot)
-            self.redraw()
+            if self.vim_move_mode:
+                self._vim_nav_command(("vim_row_start",))
+            else:
+                self.camera.reset(*self.model.robot)
+                self.redraw()
         elif name == "mixed_mode":
             self._toggle_mixed_mode()
             self.redraw()
+        elif name == "iso":
+            self._toggle_iso_view()
+            self.redraw()
+        elif name == "toggle_mode":
+            self._toggle_mode()
+            self.redraw()
+
+    def _toggle_iso_view(self) -> None:
+        """Переключает между плоским (топ-даун) и изометрическим видом."""
+        self._iso_view = not self._iso_view
+        mode = _t("ИЗОМЕТРИЯ") if self._iso_view else _t("ПЛОСКИЙ ВИД")
+        self.show_toast(_t("Вид: {0}").format(mode))
+
+    @property
+    def iso_view(self) -> bool:
+        """Включён ли изометрический вид."""
+        return self._iso_view
+
+    def toggle_vim_move_mode(self) -> None:
+        self.vim_move_mode = not self.vim_move_mode
+        self._vim_count = ""
+        self._vim_pending_g = False
+        state = _t("ВКЛ") if self.vim_move_mode else _t("ВЫКЛ")
+        self.show_toast(_t("Vim-ход: {0}").format(state))
+        self._refresh_vim_button()
+        self.set_hint(key_hint(self.vim_move_mode))
+        self.redraw()
+
+    def _vim_nav_command(self, action: tuple) -> bool:
+        count = int(self._vim_count) if self._vim_count else 1
+        self._vim_count = ""
+        self._vim_pending_g = False
+        units = self.model.selected_units() or [self.model.main_unit]
+        moved_any = False
+        for u in units:
+            target = vim_target_cell(action, count, u.x, u.y, self.model.w, self.model.h)
+            if not target:
+                continue
+            tx, ty = target
+            if tx == u.x and ty == u.y:
+                continue
+            u.x, u.y = tx, ty
+            u.path = []
+            u.target = None
+            moved_any = True
+        self.camera.track(*self.model.robot)
+        self.redraw()
+        return True
+
+    def _handle_vim_nav(self, e) -> bool:
+        if not self.vim_move_mode or self.overlay:
+            self._vim_pending_g = False
+            self._vim_count = ""
+            return False
+        k = (getattr(e, "keysym", "") or "").lower()
+        state = int(getattr(e, "state", 0) or 0)
+        ctrl = bool(state & 0x4)
+        alt = bool(state & 0x20000) or bool(state & 0x8)
+        if ctrl or alt:
+            self._vim_pending_g = False
+            self._vim_count = ""
+            return False
+        action = vim_nav_action(e, self.vim_move_mode, self._vim_pending_g)
+        if action is None:
+            if self._vim_count and not (k.isdigit()):
+                self._vim_count = ""
+            self._vim_pending_g = False
+            return False
+        name = action[0]
+        if name == "vim_digit":
+            self._vim_count += action[1]
+            self.show_toast(_t("Vim: счёт {0}").format(self._vim_count))
+            return True
+        if name == "vim_g":
+            self._vim_pending_g = True
+            return True
+        return self._vim_nav_command(action)
+
+    def _refresh_vim_button(self) -> None:
+        """Кнопка F4 в шапке игр: показывает текущее состояние Vim-хода."""
+        btn = getattr(self, "btn_vim", None)
+        if btn is None:
+            bar = getattr(self, "toolbar", None)
+            if bar is None:
+                return
+            from stamina.hud import HudButton
+            btn = HudButton(
+                bar, _t("VIM-ХОД  F4: {0}").format(_t("ВЫКЛ")),
+                self.toggle_vim_move_mode, height=34, font_size=10, width=160, color=CYAN,
+            )
+            btn.pack(side=tk.LEFT, padx=(px(4), 0))
+            self.btn_vim = btn
+        else:
+            state = _t("ВКЛ") if self.vim_move_mode else _t("ВЫКЛ")
+            btn.set_text(_t("VIM-ХОД  F4: {0}").format(state))
 
     def _toggle_mixed_mode(self) -> None:
         """Переключает смешанный режим: Orion-foreman копает и достраивает приоритетную платформу/базу."""
         self.model._mixed_mode = not getattr(self.model, "_mixed_mode", False)
         status = _t("ВКЛ") if self.model._mixed_mode else _t("ВЫКЛ")
         self.show_toast(_t("Смешанный режим {0}").format(status))
+
+    def _toggle_mode(self) -> None:
+        """Переключает режим выбранного юнита: manual → autonomous → semi-autonomous → manual."""
+        units = self.model.selected_units()
+        if not units:
+            units = [self.model.main_unit]
+        for u in units:
+            if u.mode == "manual":
+                u.mode = "autonomous"
+            elif u.mode == "autonomous":
+                u.mode = "semi-autonomous"
+            else:
+                u.mode = "manual"
+            # Сброс автоматических приказов при смене режима
+            u.path = []
+            u.order = ""
+            u.target = None
+        if len(units) == 1:
+            mode_map = {"manual": _t("РУЧНОЙ"), "autonomous": _t("АВТОНОМНЫЙ"), "semi-autonomous": _t("ПОЛУ-АВТО")}
+            self.show_toast(_t("Режим: {0}").format(mode_map.get(units[0].mode, units[0].mode)))
+        else:
+            self.show_toast(_t("Режим изменён для {0} юнитов").format(len(units)))
 
     def do_move(self, dx: int, dy: int) -> bool:
         moved = self.model.move(dx, dy)
@@ -326,8 +669,114 @@ class TrainerGame(GameShell):
         self.redraw()
         return moved
 
+    def do_move_selected(self, dx: int, dy: int) -> None:
+        """Двигает выделенные юниты (или главного, если никого нет) на одну клетку
+        в заданном направлении, используя поиск пути A* вокруг препятствий."""
+        units = self.model.selected_units() or [self.model.main_unit]
+        for u in units:
+            tx, ty = u.x + dx, u.y + dy
+            if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
+                result = self.model.command_move(tx, ty)
+                if result.get(u.uid, 0) > 0:
+                    self.show_toast(_t("Приказ: идти в {0},{1}").format(tx, ty))
+                else:
+                    self.show_toast(_t("Путь закрыт: {0},{1}").format(tx, ty))
+        self.redraw()
+
+    # -- камера: стрелки, край экрана, миникарта --------------------------------
+    def pan_camera(self, dx: int, dy: int, step: float = 2.0) -> None:
+        """Сдвинуть камеру стрелками; слежение за отрядом выключается."""
+        self.camera.pan(dx * step, dy * step)
+        self.redraw()
+
+    @staticmethod
+    def edge_pan_direction(mx: float, my: float, w: int, h: int,
+                           margin: int = EDGE_MARGIN) -> tuple[int, int]:
+        """Направление панорамы, если курсор у края холста (0 — не у края)."""
+        dx = dy = 0
+        if mx <= margin:
+            dx = -1
+        elif mx >= w - margin:
+            dx = 1
+        if my <= margin:
+            dy = -1
+        elif my >= h - margin:
+            dy = 1
+        return dx, dy
+
+    def edge_pan_step(self, w: int | None = None, h: int | None = None,
+                      margin: int = EDGE_MARGIN) -> tuple[int, int]:
+        """Один шаг панорамы у края по последней позиции курсора."""
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        mx, my = self._last_mouse
+        if point_in_rect(mx, my, self._minimap_rect):
+            return 0, 0
+        dx, dy = self.edge_pan_direction(mx, my, w, h, margin)
+        if dx or dy:
+            self.camera.pan(dx * EDGE_PAN_STEP, dy * EDGE_PAN_STEP)
+            self.redraw()
+        return dx, dy
+
+    def _update_edge_pan(self) -> None:
+        if self.overlay is not None or self.paused:
+            self._stop_edge_pan()
+            return
+        dx, dy = self.edge_pan_step()
+        if not (dx or dy):
+            self._stop_edge_pan()
+            return
+        if self._edge_job is None:
+            try:
+                self._edge_job = self.after(EDGE_PAN_MS, self._edge_pan_tick)
+            except tk.TclError:
+                self._edge_job = None
+
+    def _edge_pan_tick(self) -> None:
+        self._edge_job = None
+        if self.overlay is not None or self.paused:
+            return
+        dx, dy = self.edge_pan_step()
+        if dx or dy:
+            try:
+                self._edge_job = self.after(EDGE_PAN_MS, self._edge_pan_tick)
+            except tk.TclError:
+                self._edge_job = None
+
+    def _stop_edge_pan(self) -> None:
+        if self._edge_job is not None:
+            try:
+                self.after_cancel(self._edge_job)
+            except tk.TclError:
+                pass
+            self._edge_job = None
+
+    def _minimap_jump(self, sx: float, sy: float) -> None:
+        """Клик по миникарте ставит камеру в соответствующую клетку карты."""
+        if self._minimap_rect is None:
+            return
+        gx, gy = minimap_click_to_world(sx, sy, self._minimap_rect,
+                                        self.model.w, self.model.h)
+        self.camera.center_on(gx, gy)
+        self.redraw()
+
     def do_dig(self) -> str:
-        result = self.model.dig()
+        """Dig for all selected units (or main unit if none selected)."""
+        selected = self.model.selected_units()
+        if not selected:
+            # Use main unit at robot position
+            x, y = self.model.robot
+            result = self.model.dig_at(x, y)
+            dug_cells = [(x, y)]
+        else:
+            results = []
+            dug_cells = []
+            for u in selected:
+                result = self.model.dig_at(u.x, u.y)
+                results.append(result)
+                dug_cells.append((u.x, u.y))
+            # Use the first non-"ok" result for message, or "ok" if all ok
+            result = next((r for r in results if r != "ok"), "ok")
         if result == "site":
             self.msg = _t("Здесь стройплощадка")
         elif result == "too_deep":
@@ -346,21 +795,25 @@ class TrainerGame(GameShell):
             except Exception:  # noqa: BLE001
                 pass
         self.camera.track(*self.model.robot)
-        self.redraw()
+        # Redraw only the cells that were dug
+        for x, y in dug_cells:
+            self.redraw_cell(x, y)
         return result
 
     def do_place_block(self) -> tuple[bool, str]:
-        """Укладка блока в текущей клетке робота (E)."""
-        x, y = self.model.robot
-        success, msg = self.model.try_place_block(x, y)
+        """Укладка блока в текущей клетке выделенного юнита (или главного)."""
+        unit = self.model.active_unit()
+        x, y = unit.x, unit.y
+        success, msg = self.model.try_place_block(x, y, unit)
         if success:
             self.msg = msg
             self.show_toast(msg)
             self.set_score(len(self.model.blocks) + len(self.model.platform_blocks))
         else:
             # более полезная подсказка
-            if self.model.holds.get("soil", 0) < HOLD_CAP:
-                self.msg = _t("Соберите {0} грунта (Пробел)").format(HOLD_CAP - self.model.holds.get("soil", 0))
+            cap = self.model._hold_cap()
+            if unit.holds.get("soil", 0) < cap:
+                self.msg = _t("Соберите {0} грунта (Пробел)").format(cap - unit.holds.get("soil", 0))
             else:
                 # подсказываем, где ближайшая платформа
                 prio = self.model.get_priority_platform()
@@ -381,9 +834,11 @@ class TrainerGame(GameShell):
 
     def do_unload(self) -> str:
         """Выгрузка грунта на стройплощадку (E при полном отсеке)."""
-        result = self.model.unload()
+        unit = self.model.active_unit()
+        result = self.model.unload(unit)
         if result == "not_full":
-            self.msg = _t("Отсек не полон — набери {0} грунта").format(HOLD_CAP - self.model.holds.get("soil", 0))
+            cap = self.model._hold_cap()
+            self.msg = _t("Отсек не полон — набери {0} грунта").format(cap - unit.holds.get("soil", 0))
         elif result == "ok":
             self.msg = _t("Блок уложен")
         elif result == "complete":
@@ -477,6 +932,10 @@ class TrainerGame(GameShell):
             self._toast_job = self.after(TOAST_MS, self._toast_done)
         except tk.TclError:
             self._toast_job = None
+        try:
+            self.redraw()
+        except tk.TclError:
+            pass
 
     def _toast_done(self) -> None:
         self._toast_job = None
@@ -514,17 +973,26 @@ class TrainerGame(GameShell):
                 return
 
     # -- колесо --------------------------------------------------------------
-    def on_wheel(self, direction: int, ctrl: bool, shift: bool) -> None:
+    def on_wheel(self, direction: int, ctrl: bool, shift: bool,
+                 x: int | None = None, y: int | None = None) -> None:
         ov = getattr(self, "help_overlay", None)
         if ov is not None and ov.is_visible():
             return
         if self.overlay is not None:
             return                       # инструкция/находки не прокручиваются
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
         if ctrl:
-            if direction < 0:
-                self.camera.zoom_in()
-            elif direction > 0:
-                self.camera.zoom_out()
+            # масштаб вокруг указателя мыши
+            if self._iso_view:
+                self._iso_zoom = apply_zoom(direction,
+                    self._last_mouse[0] if x is None else x,
+                    self._last_mouse[1] if y is None else y, w, h,
+                    self.camera, self._iso_zoom,
+                    self.model.dug, self.model.w, self.model.h)
+            else:
+                self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
+                                    self._last_mouse[1] if y is None else y, w, h)
         elif shift:
             self.camera.pan(2 * direction, 0)
         else:
@@ -533,8 +1001,176 @@ class TrainerGame(GameShell):
 
     def _wheel_event(self, e: tk.Event) -> str:
         state = getattr(e, "state", 0) or 0
-        self.on_wheel(wheel_router.direction(e), bool(state & 0x4), bool(state & 0x1))
+        self._last_mouse = (int(getattr(e, "x", 0)), int(getattr(e, "y", 0)))
+        self.on_wheel(wheel_router.direction(e), bool(state & 0x4), bool(state & 0x1),
+                      self._last_mouse[0], self._last_mouse[1])
         return "break"
+
+    def _on_motion(self, e: tk.Event) -> None:
+        self._last_mouse = (int(e.x), int(e.y))
+        self._update_edge_pan()
+
+    # -- мышь: выделение рамкой и приказ --------------------------------
+    def _on_rmb_down(self, e: tk.Event) -> str:
+        if self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        self._rmb_start = (float(e.x), float(e.y))
+        self._rmb_cell = self.camera.to_cell(e.x, e.y, w, h)
+        return "break"
+
+    def _on_rmb_drag(self, e: tk.Event) -> str:
+        # RMB drag does nothing (no selection rectangle)
+        if self._rmb_start is not None:
+            return "break"
+        return ""
+
+    def _on_rmb_up(self, e: tk.Event) -> str:
+        start = self._rmb_start
+        self._rmb_start = None
+        if start is None or self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+        if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
+            # RMB click: order selected units to move (не выделяет, не box-select)
+            result = self.model.command_move(tx, ty)
+            n = sum(1 for v in result.values() if v)
+            self.show_toast(_t("Приказ: идти в {0},{1} ({2})").format(tx, ty, n))
+        self.redraw()
+        return "break"
+
+    def _on_lmb_down(self, e: tk.Event) -> str:
+        if self.paused:
+            return ""
+        if self.overlay == "gallery":
+            # gallery button handling from _on_canvas_click
+            item = self.canvas.find_closest(e.x, e.y)
+            if item:
+                tags = self.canvas.gettags(item[0])
+                if "lang_boost_btn" in tags:
+                    self.close_overlay()
+                    if hasattr(self.app, "open_english"):
+                        self.app.open_english()
+                    return ""
+        if self.overlay is not None:
+            return ""
+        if point_in_rect(e.x, e.y, self._minimap_rect):
+            self._minimap_press = True
+            self._lmb_start = None
+            self._minimap_jump(e.x, e.y)
+            return "break"
+        self._lmb_start = (float(e.x), float(e.y))
+        self._lmb_cell = self.camera.to_cell(e.x, e.y, max(self.canvas.winfo_width(), 10), max(self.canvas.winfo_height(), 10))
+        self._lmb_box = None
+        return "break"
+
+    def _on_lmb_drag(self, e: tk.Event) -> str:
+        if self._minimap_press:
+            self._minimap_jump(e.x, e.y)
+            return "break"
+        if self._lmb_start is None:
+            return ""
+        x0, y0 = self._lmb_start
+        if abs(e.x - x0) + abs(e.y - y0) < 6 and self._lmb_box is None:
+            return "break"
+        if self._lmb_box is not None:
+            self.canvas.delete(self._lmb_box)
+        self._lmb_box = self.canvas.create_rectangle(
+            x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
+        return "break"
+
+    def _on_lmb_up(self, e: tk.Event) -> str:
+        if self._minimap_press:
+            self._minimap_press = False
+            return "break"
+        start = self._lmb_start
+        self._lmb_start = None
+        if self._lmb_box is not None:
+            self.canvas.delete(self._lmb_box)
+            self._lmb_box = None
+        if start is None or self.overlay is not None or self.paused:
+            return ""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        x0, y0 = start
+        if abs(e.x - x0) + abs(e.y - y0) >= 6:
+            # box select
+            ax, ay = self.camera.to_cell(x0, y0, w, h)
+            bx, by = self.camera.to_cell(e.x, e.y, w, h)
+            picked = self.model.select_rect(ax, ay, bx, by)
+            self.show_toast(_t("Выделено терраформеров: {0}").format(len(picked)))
+        else:
+            # LMB click - select unit or clear selection
+            tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+            if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
+                unit = self.model.unit_at(tx, ty)
+                if unit is not None:
+                    self.model.selected = {unit.uid}
+                    self.show_toast(_t("Выделено терраформеров: {0}").format(1))
+                else:
+                    self.model.clear_selection()
+        self.redraw()
+        return "break"
+
+    def _on_mmb_down(self, e: tk.Event) -> str:
+        self._mmb_last = (float(e.x), float(e.y))
+        return "break"
+
+    def _on_mmb_drag(self, e: tk.Event) -> str:
+        if self._mmb_last is None:
+            return ""
+        lx, ly = self._mmb_last
+        cell = max(self.camera.cell_px(), 1.0)
+        self.camera.pan(-(e.x - lx) / cell, -(e.y - ly) / cell)
+        self._mmb_last = (float(e.x), float(e.y))
+        self.redraw()
+        return "break"
+
+    def _on_mmb_up(self, e: tk.Event) -> str:
+        self._mmb_last = None
+        return "break"
+
+    # -- оверлеи заданий и стройки --------------------------------------
+    def toggle_missions(self) -> str | None:
+        self.overlay = None if self.overlay == "missions" else "missions"
+        if self.overlay == "missions":
+            self.model.mission_book.mark_read()
+        self.redraw()
+        return self.overlay
+
+    def toggle_structures(self) -> str | None:
+        self.overlay = None if self.overlay == "structures" else "structures"
+        self.redraw()
+        return self.overlay
+
+    def _structure_rows(self) -> list[strategy.Structure]:
+        return list(strategy.STRUCTURES.values())
+
+    def _available_structures(self) -> list[strategy.Structure]:
+        unit = (self.model.selected_units() or [self.model.main_unit])[0]
+        return [s for s in strategy.STRUCTURES.values()
+                if strategy.structure_available(s.key, unit.level, self.model.developer)]
+
+    def _struct_change(self, direction: int) -> None:
+        items = self._structure_rows()
+        if not items:
+            return
+        self._struct_index = (self._struct_index + direction) % len(items)
+        self.redraw()
+
+    def _struct_build(self) -> None:
+        items = self._structure_rows()
+        if not items:
+            return
+        spec = items[self._struct_index % len(items)]
+        ok, msg = self.model.build_structure(spec.key)
+        self.msg = msg
+        self.show_toast(msg, ok)
+        save_blueprint(self.model)
+        self.redraw()
 
     # -- отрисовка -----------------------------------------------------------
     def _layer_color(self, depth: int) -> str:
@@ -546,12 +1182,86 @@ class TrainerGame(GameShell):
             return METAL
         return DUG_OUT
 
+    def redraw_cell(self, x: int, y: int) -> None:
+        """Redraw a single cell at (x, y) in correct z-order:
+        terrain → deposit → foundation/blueprint → fog tint → units."""
+        c = self.canvas
+        model = self.model
+        cam = self.camera
+        w = max(c.winfo_width(), 10)
+        h = max(c.winfo_height(), 10)
+        cell = max(cam.cell_px(), 4.0)
+
+        # Only redraw if cell is on screen
+        sx, sy = cam.to_screen(x, y, w, h)
+        if sx + cell < 0 or sx > w or sy + cell < 0 or sy > h:
+            return
+
+        # Delete old cell items
+        c.delete(f"cell_{x}_{y}")
+
+        # If not explored, draw fog
+        if (x, y) not in model.explored:
+            c.create_rectangle(sx, sy, sx + cell, sy + cell,
+                               fill=BG, outline="",
+                               tags=(f"cell_{x}_{y}",))
+            return
+
+        # 1. Terrain (base layer)
+        color = self._layer_color(model.dug[y][x])
+        visible = model.visible_cells()
+        if (x, y) not in visible:
+            color = blend(color, BG, 0.62)
+        c.create_rectangle(sx, sy, sx + cell, sy + cell,
+                           fill=color, outline=blend(color, BG2, 0.45),
+                           tags=(f"cell_{x}_{y}",))
+
+        # 2. Deposit (if visible)
+        if (x, y) in model.finds and deposit_is_visible(model, x, y):
+            res, layer = model.finds[(x, y)]
+            if res == "water":
+                c.create_oval(sx + cell * 0.18, sy + cell * 0.18,
+                              sx + cell * 0.82, sy + cell * 0.82,
+                              fill=SPRING, outline=TEXT, width=1,
+                              tags=(f"cell_{x}_{y}",))
+            else:
+                mx, my, r = sx + cell / 2, sy + cell / 2, cell * 0.16
+                c.create_polygon(mx, my - r, mx + r, my, mx, my + r, mx - r, my,
+                                 fill=GREEN, outline="",
+                                 tags=(f"cell_{x}_{y}",))
+
+        # 3. Foundation/blueprint blocks
+        if (x, y) in model.blocks or (x, y) in model.platform_blocks:
+            block_fill = blend(AMBER, TEXT, 0.25)
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               fill=block_fill, outline=AMBER, width=2,
+                               tags=(f"cell_{x}_{y}",))
+
+        # 4. Site outline (construction site)
+        if (x, y) in model.site_cells():
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               outline=AMBER, dash=(3, 3), width=1,
+                               tags=(f"cell_{x}_{y}",))
+
+        # 5. Units on this cell
+        for u in model.units:
+            if u.x == x and u.y == y:
+                self._draw_unit_on_cell(c, sx, sy, cell, u, tags=(f"cell_{x}_{y}",))
+                break
+
     def redraw(self) -> None:
         c = self.canvas
         c.delete("all")
+        self._minimap_rect = None
         w = max(c.winfo_width(), 10)
         h = max(c.winfo_height(), 10)
         c.create_rectangle(0, 0, w, h, fill=BG2, outline="")
+
+        if self._iso_view:
+            self._draw_iso(w, h)
+            # HUD и оверлеи рисуются в _draw_iso через _draw_hud
+            self._draw_overlays(w, h)
+            return
 
         model = self.model
         cam = self.camera
@@ -563,19 +1273,29 @@ class TrainerGame(GameShell):
         y0 = max(0, int(math.floor(cam.cy - half_h)) - 1)
         y1 = min(model.h - 1, int(math.ceil(cam.cy + half_h)) + 1)
 
+        visible = model.visible_cells()
+        explored = model.explored
+
         for y in range(y0, y1 + 1):
             row = model.dug[y]
             for x in range(x0, x1 + 1):
                 sx, sy = cam.to_screen(x, y, w, h)
+                if (x, y) not in explored:
+                    # туман: карта большая, видна только разведанная часть
+                    c.create_rectangle(sx, sy, sx + cell, sy + cell, fill=BG, outline="")
+                    continue
                 color = self._layer_color(row[x])
+                if (x, y) not in visible:
+                    color = blend(color, BG, 0.62)      # разведано, но сейчас не видно
                 c.create_rectangle(sx, sy, sx + cell, sy + cell,
                                    fill=color, outline=blend(color, BG2, 0.45))
 
-        # открытые находки: источник воды — синий круг, прочее — маленький ромб
-        for (x, y) in model.revealed:
+        # открытые находки и находки на построенных платформах
+        for (x, y), (res, layer) in model.finds.items():
+            if not deposit_is_visible(model, x, y):
+                continue
             if not (x0 <= x <= x1 and y0 <= y <= y1):
                 continue
-            res = model.finds[(x, y)][0]
             sx, sy = cam.to_screen(x, y, w, h)
             if res == "water":
                 c.create_oval(sx + cell * 0.18, sy + cell * 0.18, sx + cell * 0.82, sy + cell * 0.82,
@@ -611,7 +1331,9 @@ class TrainerGame(GameShell):
         # призрачный паттерн приоритетной платформы на карте
         self._draw_priority_ghost(w, h, cell, cam, x0, x1, y0, y1)
 
-        self._draw_robot(w, h, cell)
+        self._draw_buildings(w, h, cell)
+        self._draw_worm(w, h, cell)
+        self._draw_units(w, h, cell)
 
         # подсказка платформы, если робот стоит на открытой находке
         self._draw_platform_hint(w, h, cell)
@@ -621,17 +1343,63 @@ class TrainerGame(GameShell):
         found = sum(model.finds_count.values())
         bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
         ty = px(8)
+        level_name = model.standing.current_level
+        allowed_h = strategy.max_height(level_name)
+        unit = model.active_unit()
+        cap = model._hold_cap()
         lines = (
             (_t("Учебная смена / тренажёр"), TEXT, True),
-            (_t("Грунт {0}/{1}").format(model.holds.get("soil", 0), HOLD_CAP), MUTED, False),
+            (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
+            (_t("Грунт {0}/{1}").format(unit.holds.get("soil", 0), cap), MUTED, False),
             (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
             (_t("Находки {0}").format(found), MUTED, False),
+            (f"Кредиты {model.credits}", GREEN, False),
+            (f"Отряд {len(model.units)}", MUTED, False),
             (_t("Масштаб {0}%").format(int(round(cam.zoom * 100))), MUTED, False),
         )
         for text, color, bold in lines:
             c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
                           font=theme.font(10, bold))
             ty += px(16)
+
+        # Режим выбранного юнита — чекбоксы
+        selected = model.selected_units()
+        if not selected:
+            selected = [model.main_unit]
+        ty += px(4)
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(13)
+        for u in selected[:3]:
+            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
+                checked = u.mode == mode_key
+                box_x = px(10)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
+                                 fill=GREEN, width=2)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
+                                 fill=GREEN, width=2)
+                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked))
+            ty += px(32)
+
+        # задания: сколько выполнено и сколько непрочитанных тревог
+        book = model.mission_book
+        done = book.done_count()
+        total = len(book.missions)
+        mark = " ●" if book.unread else ""
+        c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
+                      fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
+        ty += px(15)
+        if unit.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {unit.holds.get(strategy.SPICE, 0)}",
+                          fill=AMBER, anchor="nw", font=theme.font(9, True))
+            ty += px(14)
 
         # прогресс платформ в HUD
         active_platforms = [p for p in model.platforms if not p.complete]
@@ -645,7 +1413,7 @@ class TrainerGame(GameShell):
                 pct = p.progress_pct()
                 fill = GREEN if pct == 100 else AMBER if pct > 0 else MUTED
                 c.create_text(px(10), ty,
-                              text=_t("{0} {1}%{2}").format(resource_name(p.resource)[:10], pct, prio_mark),
+                              text=f"{resource_name(p.resource)[:10]} {pct}% · h{p.height}{prio_mark}",
                               fill=fill, anchor="nw", font=theme.font(8))
                 ty += px(13)
 
@@ -660,6 +1428,9 @@ class TrainerGame(GameShell):
         # расширяем фон панели под реальный контент
         c.coords(bg_id, 0, 0, px(230), ty)
 
+        if self.overlay is None and not self.paused:
+            self._draw_minimap(w, h)
+
         bar_top = self._draw_key_hint(w, h)
         if self.msg:
             c.create_text(px(10), bar_top - px(6), text=self.msg, fill=AMBER, anchor="sw",
@@ -673,13 +1444,17 @@ class TrainerGame(GameShell):
             self._draw_finds(w, h)
         elif self.overlay == "gallery":
             self._draw_gallery(w, h)
+        elif self.overlay == "missions":
+            self._draw_missions(w, h)
+        elif self.overlay == "structures":
+            self._draw_structures(w, h)
         elif self.paused:
             self.draw_overlay(_t("ПАУЗА"))
 
     def _draw_key_hint(self, w: int, h: int) -> int:
         """Одна строка подсказки внизу; шрифт уменьшается, если окно узкое. Возвращает верх полосы."""
         c = self.canvas
-        text = key_hint()
+        text = key_hint(self.vim_move_mode)
         for size in (10, 9, 8):
             tid = c.create_text(px(10), h - px(6), text=text, fill=TEXT, anchor="sw",
                                 font=theme.font(size), tags="keyhint")
@@ -709,90 +1484,83 @@ class TrainerGame(GameShell):
         }
 
     def _draw_language_progress_bar(self, w: int, h: int, y: int) -> int:
-        """Рисует визуальную шкалу прогресса языка: текущий уровень, что открыто, что дальше.
+        """Шкала из восьми уровней A1…C2: текущий, проценты и что откроется дальше.
+
         Возвращает нижнюю Y после всего содержимого.
         """
         c = self.canvas
-        lang_level = get_language_level()
-        prog = None
-        try:
-            from stamina.english.progress import Progress
-            from stamina import pilots
-            pilot_dir = pilots.active_dir()
-            prog = Progress(pilot_dir / "english.json")
-        except Exception:
-            pass
+        standing = self.model.standing
+        levels = strategy.LEVELS
+        current = standing.current
+        tier = PROGRESSION_TIERS.get(current.index, PROGRESSION_TIERS[0])
+        next_tier = get_next_tier_preview(current.index)
 
-        xp_total = prog.xp_total if prog else 0
-        next_level = min(lang_level + 1, 5)
-        next_tier = PROGRESSION_TIERS.get(next_level)
-
-        # параметры шкалы
         bar_x = px(10)
-        bar_y = y
         bar_w = px(210)
-        bar_h = px(14)
-        seg_w = bar_w // 6  # 6 уровней (0-5) → 6 сегментов
+        bar_h = px(16)
+        seg_w = max(1, bar_w // len(levels))
 
-        # заголовок — через хелпер, идёт вниз
-        ty = self._draw_text_stacked(c, bar_x, bar_y, _t("ПРОГРЕСС ЯЗЫКА →"), CYAN, "nw", theme.font(9, True))
-
-        # фон шкалы
-        c.create_rectangle(bar_x, ty, bar_x + bar_w, ty + bar_h, fill=BG2, outline=LINE, tags="langbar")
+        ty = self._draw_text_stacked(c, bar_x, y, _t("ПРОГРЕСС ЯЗЫКА →"), CYAN, "nw",
+                                     theme.font(9, True))
+        c.create_rectangle(bar_x, ty, bar_x + bar_w, ty + bar_h, fill=BG2,
+                           outline=LINE, tags="langbar")
         bar_y = ty
         ty += bar_h + px(4)
 
-        # сегменты уровней
-        for lvl in range(6):
-            seg_x = bar_x + lvl * seg_w
-            is_current = lvl == lang_level
-            is_unlocked = lvl <= lang_level
-            fill = AMBER if is_current else (CYAN if is_unlocked else BG2)
+        for i, name in enumerate(levels):
+            state = standing.levels[i]
+            seg_x = bar_x + i * seg_w
+            is_current = name == current.level
+            fill = AMBER if is_current else (CYAN if state.unlocked else BG2)
             c.create_rectangle(seg_x + 1, bar_y + 1, seg_x + seg_w - 1, bar_y + bar_h - 1,
                                fill=fill, outline="", tags="langbar")
-            # метка уровня
-            c.create_text(seg_x + seg_w // 2, bar_y + bar_h // 2, text=str(lvl), fill=BG if is_current else TEXT,
-                          anchor="center", font=theme.font(8, True), tags="langbar")
+            # процент внутри сегмента — зелёная полоса снизу
+            if state.pct > 0:
+                pct_w = int((seg_w - 2) * min(100, state.pct) / 100)
+                if pct_w > 0:
+                    c.create_rectangle(seg_x + 1, bar_y + bar_h - px(5),
+                                       seg_x + 1 + pct_w, bar_y + bar_h - 1,
+                                       fill=GREEN, outline="", tags="langbar")
+            c.create_text(seg_x + seg_w / 2, bar_y + bar_h / 2 - px(1), text=name,
+                          fill=BG if is_current else TEXT, anchor="center",
+                          font=theme.font(7, True, mono=True), tags="langbar")
 
-        # прогресс внутри текущего уровня (XP)
-        if prog and lang_level < 5:
-            lvl, start_xp, next_xp = prog.level()
-            if next_xp > start_xp:
-                pct = (xp_total - start_xp) / (next_xp - start_xp)
-                pct = max(0, min(1, pct))
-                prog_w = int(seg_w * pct)
-                c.create_rectangle(bar_x + lang_level * seg_w + 1, bar_y + 1,
-                                   bar_x + lang_level * seg_w + 1 + prog_w, bar_y + bar_h - 1,
-                                   fill=GREEN, outline="", tags="langbar")
+        ty = self._draw_text_stacked(
+            c, bar_x, ty,
+            f"Сейчас: {current.title} · {current.pct}%",
+            TEXT, "nw", theme.font(8, True), width=bar_w)
 
-        # что открыто сейчас
-        tier = PROGRESSION_TIERS[lang_level]
-        unlocked_variants = []
+        unlocked_variants: list[int] = []
         for res in RESOURCES:
             unlocked_variants.extend(tier["platform_variants"].get(res, []))
         max_var = max(unlocked_variants) if unlocked_variants else 0
         robots = ", ".join(tier["robots"])
         upgrade_names = self._upgrade_display_names()
-        upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in tier["upgrades"]) if tier["upgrades"] else _t("—")
-        ty = self._draw_text_stacked(c, bar_x, ty, _t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
-            max_var, robots, upgrades_localized), TEXT, "nw", theme.font(8), width=bar_w)
+        upgrades_localized = (", ".join(upgrade_names.get(u, u) for u in tier["upgrades"])
+                              if tier["upgrades"] else _t("—"))
+        ty = self._draw_text_stacked(
+            c, bar_x, ty,
+            _t("Открыто: варианты до {0} · Роботы: {1} · Апгрейды: {2}").format(
+                max_var, robots, upgrades_localized),
+            TEXT, "nw", theme.font(8), width=bar_w)
 
-        # что откроется на следующем уровне
-        if next_tier and lang_level < 5:
-            next_unlocked = []
+        if next_tier and current.index < len(levels) - 1:
+            next_unlocked: list[int] = []
             for res in RESOURCES:
                 next_unlocked.extend(next_tier["platform_variants"].get(res, []))
             next_max_var = max(next_unlocked) if next_unlocked else max_var
             next_robots = ", ".join(next_tier["robots"])
-            next_upgrades_localized = ", ".join(upgrade_names.get(u, u) for u in next_tier["upgrades"]) if next_tier["upgrades"] else _t("—")
-            ty = self._draw_text_stacked(c, bar_x, ty, _t("След. уровень: варианты до {0} · {1} · {2}").format(
-                next_max_var, next_robots, next_upgrades_localized), AMBER, "nw", theme.font(8, True), width=bar_w)
-            # XP до следующего
-            if prog:
-                lvl, start_xp, next_xp = prog.level()
-                need = next_xp - xp_total
-                ty = self._draw_text_stacked(c, bar_x, ty, _t("Нужно XP: {0} (учить слова — G в галерее покажет детали)").format(need),
-                              MUTED, "nw", theme.font(7), width=bar_w)
+            next_upgrades = (", ".join(upgrade_names.get(u, u) for u in next_tier["upgrades"])
+                             if next_tier["upgrades"] else _t("—"))
+            ty = self._draw_text_stacked(
+                c, bar_x, ty,
+                _t("След. уровень: варианты до {0} · {1} · {2}").format(
+                    next_max_var, next_robots, next_upgrades),
+                AMBER, "nw", theme.font(8, True), width=bar_w)
+            ty = self._draw_text_stacked(
+                c, bar_x, ty,
+                f"До уровня {standing.next_level}: {100 - current.pct}%",
+                MUTED, "nw", theme.font(7), width=bar_w)
 
         return ty
 
@@ -1026,29 +1794,277 @@ class TrainerGame(GameShell):
                 break
             c.delete("finds")
 
-    def _draw_robot(self, w: int, h: int, cell: float) -> None:
+    def _draw_missions(self, w: int, h: int) -> None:
+        """Оверлей заданий: уровни слева, задания текущего уровня и тревоги справа."""
         c = self.canvas
-        rx, ry = self.model.robot
-        sx, sy = self.camera.to_screen(rx, ry, w, h)
+        c.create_rectangle(0, 0, w, h, fill=BG, outline="")
+        pad = px(16)
+        book = self.model.mission_book
+        standing = self.model.standing
+        c.create_text(w // 2, pad, text="ЗАДАНИЯ · ТРЕВОГИ", fill=AMBER, anchor="n",
+                      font=theme.font(14, True), tags="missions")
+        top = pad + px(28)
+
+        left_w = min(px(300), w // 3)
+        y = top
+        c.create_text(pad, y, text="УРОВНИ", fill=CYAN, anchor="nw",
+                      font=theme.font(10, True), tags="missions")
+        y += px(20)
+        for i, name in enumerate(strategy.LEVELS):
+            items = book.by_level(name)
+            done = sum(1 for m in items if m.done)
+            total = len(items)
+            state = standing.levels[i]
+            is_cur = name == standing.current_level
+            complete = bool(total) and done == total
+            mark = "✓" if complete else "○"
+            color = GREEN if complete else (AMBER if is_cur else (TEXT if state.unlocked else MUTED))
+            prefix = "▶ " if is_cur else "  "
+            c.create_text(pad, y, text=f"{prefix}{mark} {name} · {done}/{total} · {state.pct}%",
+                          fill=color, anchor="nw",
+                          font=theme.font(9, is_cur), tags="missions")
+            y += px(18)
+
+        c.create_line(pad + left_w, top, pad + left_w, h - px(38), fill=LINE, tags="missions")
+        x = pad + left_w + px(16)
+        right_w = max(px(120), w - x - pad)
+        y = top
+        cur = standing.current_level
+        y = self._draw_text_stacked(c, x, y, f"ЗАДАНИЯ УРОВНЯ {cur}", CYAN, "nw",
+                                    theme.font(10, True), width=right_w)
+        stats = self.model.stats()
+        for m in book.by_level(cur):
+            prog = m.progress(stats)
+            head = ("✓ " if m.done else "○ ") + m.title
+            y = self._draw_text_stacked(c, x, y, head, GREEN if m.done else TEXT, "nw",
+                                        theme.font(9, True), width=right_w)
+            body = f"{m.hint}  [{prog}/{m.target}]  +{m.reward_credits} кр."
+            y = self._draw_text_stacked(c, x + px(12), y, body, MUTED, "nw",
+                                        theme.font(8), width=right_w - px(12))
+            y += px(4)
+
+        y += px(4)
+        y = self._draw_text_stacked(c, x, y, "ТРЕВОГИ", AMBER, "nw",
+                                    theme.font(10, True), width=right_w)
+        alerts = book.alerts[-5:]
+        if not alerts:
+            y = self._draw_text_stacked(c, x, y, "Пока тихо. Копайте и стройте.", MUTED, "nw",
+                                        theme.font(8), width=right_w)
+        for a in alerts:
+            color = {"mission": GREEN, "reward": GREEN, "warn": AMBER}.get(a.kind, MUTED)
+            line = a.title + (f" — {a.body}" if a.body else "")
+            y = self._draw_text_stacked(c, x, y, line, color, "nw",
+                                        theme.font(8), width=right_w)
+
+        c.create_text(w // 2, h - px(8), text="T или Esc — закрыть", fill=MUTED,
+                      anchor="s", font=theme.font(9, True), tags="missions")
+
+    def _draw_structures(self, w: int, h: int) -> None:
+        """Оверлей стройки: высота, цена, доход и требуемый уровень каждого здания."""
+        c = self.canvas
+        c.create_rectangle(0, 0, w, h, fill=BG, outline="")
+        pad = px(16)
+        rows = list(strategy.STRUCTURES.values())
+        if not rows:
+            return
+        self._struct_index %= len(rows)
+        unit = (self.model.selected_units() or [self.model.main_unit])[0]
+        c.create_text(w // 2, pad, text="СТРОЙКА · ЗДАНИЯ", fill=AMBER, anchor="n",
+                      font=theme.font(14, True), tags="structs")
+        top = pad + px(28)
+        c.create_text(pad, top, text=f"Кредиты: {self.model.credits}", fill=GREEN,
+                      anchor="nw", font=theme.font(10, True), tags="structs")
+        c.create_text(pad, top + px(16),
+                      text=f"Строитель: {unit.name} · высота до {unit.max_height}",
+                      fill=TEXT, anchor="nw", font=theme.font(9), tags="structs")
+
+        y = top + px(40)
+        row_h = px(22)
+        for i, spec in enumerate(rows):
+            avail = strategy.structure_available(spec.key, unit.level, self.model.developer)
+            afford = self.model.credits >= spec.cost
+            selected = i == self._struct_index
+            color = GREEN if (avail and afford) else (AMBER if avail else MUTED)
+            mark = "✓" if avail else "🔒"
+            prefix = "▶ " if selected else "  "
+            if selected:
+                c.create_rectangle(pad - px(4), y - px(2), w - pad, y + row_h - px(4),
+                                   fill=BG2, outline=AMBER, tags="structs")
+            c.create_text(pad, y, anchor="nw", fill=color, font=theme.font(9, selected), tags="structs",
+                          text=f"{prefix}{mark} {spec.title}  h{spec.height}  "
+                               f"{spec.cost} кр · +{spec.income}/тик · {spec.level}+")
+            y += row_h
+
+        spec = rows[self._struct_index]
+        y += px(6)
+        y = self._draw_text_stacked(c, pad, y, spec.hint, TEXT, "nw",
+                                    theme.font(9), width=w - pad * 2)
+        if not strategy.structure_available(spec.key, unit.level, self.model.developer):
+            y = self._draw_text_stacked(
+                c, pad, y,
+                f"Нужен терраформер {spec.level} (высота {spec.height}).",
+                AMBER, "nw", theme.font(9, True), width=w - pad * 2)
+        elif self.model.credits < spec.cost:
+            y = self._draw_text_stacked(
+                c, pad, y,
+                f"Не хватает {spec.cost - self.model.credits} кредитов.",
+                AMBER, "nw", theme.font(9, True), width=w - pad * 2)
+
+        c.create_text(w // 2, h - px(8),
+                      text="↑/↓ выбор · Пробел построить · N или Esc — закрыть",
+                      fill=MUTED, anchor="s", font=theme.font(9, True), tags="structs")
+
+    def _unit_color(self, level: str) -> str:
+        palette = (CYAN, GREEN, AMBER, "#FF7AD9", "#9B8CFF", "#FFB454", "#7FE0C3", TEXT)
+        return palette[strategy.level_index(level) % len(palette)]
+
+    def _draw_unit_on_cell(self, c: tk.Canvas, sx: float, sy: float, cell: float,
+                            u, tags: tuple = ()) -> None:
+        """Draw a single unit at screen coordinates (sx, sy)."""
         cx = sx + cell / 2.0
         cy = sy + cell / 2.0
         body = cell * 0.52
+        color = self._unit_color(u.level)
+        if u.uid in self.model.selected:
+            c.create_oval(sx + 1, sy + 1, sx + cell - 1, sy + cell - 1,
+                          outline=GREEN, width=max(2, int(cell * 0.08)), tags=tags)
         track_w = max(2.0, cell * 0.16)
-
         c.create_rectangle(sx + cell * 0.10, sy + cell * 0.20,
                            sx + cell * 0.10 + track_w, sy + cell * 0.80,
-                           fill=MUTED, outline="")
+                           fill=MUTED, outline="", tags=tags)
         c.create_rectangle(sx + cell * 0.90 - track_w, sy + cell * 0.20,
                            sx + cell * 0.90, sy + cell * 0.80,
-                           fill=MUTED, outline="")
+                           fill=MUTED, outline="", tags=tags)
         c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
-                           fill=CYAN, outline=blend(CYAN, TEXT, 0.35))
+                           fill=color, outline=blend(color, TEXT, 0.35), tags=tags)
+        label = u.level if len(u.level) <= 4 else u.level[:4]
+        c.create_text(cx, cy, text=label, fill=BG, tags=tags,
+                      font=theme.font(max(6, int(cell * 0.24)), True, mono=True))
+        if u.hp < 100:
+            bar_w = cell * 0.7
+            x0 = sx + cell * 0.15
+            y0 = sy + cell * 0.92
+            c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, cell * 0.08),
+                               fill=BG, outline="", tags=tags)
+            c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                               y0 + max(2, cell * 0.08), fill=GREEN if u.hp > 40 else AMBER,
+                               outline="", tags=tags)
+        if u.uid == self.model.main_unit.uid:
+            fx, fy = self.model.facing
+            c.create_line(cx, cy, cx + fx * cell * 0.45, cy + fy * cell * 0.45,
+                          fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last",
+                          tags=tags)
 
-        fx, fy = self.model.facing
-        c.create_line(cx, cy,
-                      cx + fx * cell * 0.45, cy + fy * cell * 0.45,
-                      fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last")
-        c.create_text(cx, cy, text="A1", fill=BG, font=theme.font(8, True, mono=True))
+    def _draw_units(self, w: int, h: int, cell: float) -> None:
+        """Все терраформеры отряда: цвет по уровню, кольцо выделения, HP."""
+        c = self.canvas
+        for u in self.model.units:
+            sx, sy = self.camera.to_screen(u.x, u.y, w, h)
+            cx = sx + cell / 2.0
+            cy = sy + cell / 2.0
+            body = cell * 0.52
+            color = self._unit_color(u.level)
+            if u.uid in self.model.selected:
+                c.create_oval(sx + 1, sy + 1, sx + cell - 1, sy + cell - 1,
+                              outline=GREEN, width=max(2, int(cell * 0.08)), tags="unit")
+            track_w = max(2.0, cell * 0.16)
+            c.create_rectangle(sx + cell * 0.10, sy + cell * 0.20,
+                               sx + cell * 0.10 + track_w, sy + cell * 0.80,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(sx + cell * 0.90 - track_w, sy + cell * 0.20,
+                               sx + cell * 0.90, sy + cell * 0.80,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
+                               fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
+            label = u.level if len(u.level) <= 4 else u.level[:4]
+            c.create_text(cx, cy, text=label, fill=BG, tags="unit",
+                          font=theme.font(max(6, int(cell * 0.24)), True, mono=True))
+            if u.hp < 100:
+                bar_w = cell * 0.7
+                x0 = sx + cell * 0.15
+                y0 = sy + cell * 0.92
+                c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, cell * 0.08),
+                                   fill=BG, outline="", tags="unit")
+                c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                                   y0 + max(2, cell * 0.08), fill=GREEN if u.hp > 40 else AMBER,
+                                   outline="", tags="unit")
+            if u.uid == self.model.main_unit.uid:
+                fx, fy = self.model.facing
+                c.create_line(cx, cy, cx + fx * cell * 0.45, cy + fy * cell * 0.45,
+                              fill=AMBER, width=max(2, int(cell * 0.12)), arrow="last",
+                              tags="unit")
+            if u.path:
+                # пунктир маршрута
+                points = [cx, cy]
+                for px_, py_ in u.path[::max(1, len(u.path) // 8)]:
+                    ax, ay = self.camera.to_screen(px_, py_, w, h)
+                    points += [ax + cell / 2, ay + cell / 2]
+                if u.target:
+                    ax, ay = self.camera.to_screen(u.target[0], u.target[1], w, h)
+                    points += [ax + cell / 2, ay + cell / 2]
+                if len(points) >= 4:
+                    c.create_line(*points, fill=color, width=1, dash=(2, 4), tags="unit")
+
+    def _draw_robot(self, w: int, h: int, cell: float) -> None:
+        """Совместимость: главный терраформер рисуется вместе с отрядом."""
+        self._draw_units(w, h, cell)
+
+    def _draw_buildings(self, w: int, h: int, cell: float) -> None:
+        """Здания: высота видна как вертикальный объём, связь — зелёная нить."""
+        c = self.canvas
+        model = self.model
+        for b in model.buildings:
+            sx, sy = self.camera.to_screen(b.center[0], b.center[1], w, h)
+            if sx < -cell * 4 or sy < -cell * 8 or sx > w + cell or sy > h + cell:
+                continue
+            spec = strategy.STRUCTURES.get(b.type)
+            color = GREEN if b.built else MUTED
+            rise = cell * 0.16 * max(1, b.height)
+            # тень/основание
+            c.create_rectangle(sx + 2, sy + 2, sx + cell - 2, sy + cell - 2,
+                               fill=blend(color, BG, 0.55), outline=color, width=1, tags="building")
+            # объём вверх
+            c.create_rectangle(sx + cell * 0.28, sy - rise, sx + cell * 0.72, sy + cell * 0.55,
+                               fill=color, outline=blend(color, TEXT, 0.4), tags="building")
+            c.create_text(sx + cell / 2, sy + cell * 0.30,
+                          text=f"h{b.height}", fill=BG, tags="building",
+                          font=theme.font(max(6, int(cell * 0.2)), True))
+            if b.connected:
+                # коммуникация к ближайшему зданию/базе
+                best = None
+                for other in model.buildings + [None]:
+                    ox, oy = (other.center if other is not None else model.site[:2])
+                    if (ox, oy) == tuple(b.center):
+                        continue
+                    d = abs(ox - b.center[0]) + abs(oy - b.center[1])
+                    if best is None or d < best[0]:
+                        best = (d, ox, oy)
+                if best:
+                    ox, oy = self.camera.to_screen(best[1], best[2], w, h)
+                    c.create_line(sx + cell / 2, sy + cell / 2, ox + cell / 2, oy + cell / 2,
+                                  fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
+
+    def _draw_worm(self, w: int, h: int, cell: float) -> None:
+        """След червя (песок вспучился) и сам червь под верхним слоем."""
+        c = self.canvas
+        worm = self.model.worm
+        if not worm.alive:
+            return
+        for (x, y), ttl in worm.trail.items():
+            if not self.model.is_explored(x, y):
+                continue
+            sx, sy = self.camera.to_screen(x, y, w, h)
+            fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+            c.create_rectangle(sx + cell * 0.18, sy + cell * 0.18,
+                               sx + cell * 0.82, sy + cell * 0.82,
+                               fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
+        sx, sy = self.camera.to_screen(worm.x, worm.y, w, h)
+        cx, cy = sx + cell / 2, sy + cell / 2
+        r = cell * 0.34
+        c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                      fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
+        c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
+                      font=theme.font(max(8, int(cell * 0.35)), True))
 
     # -- галерея платформ: отрисовка -------------------------------------------
     def _draw_gallery(self, w: int, h: int) -> None:
@@ -1218,11 +2234,18 @@ class TrainerGame(GameShell):
 
         # легенда и статы под сеткой
         legend_y = origin_y + grid_h * cell_size + px(10)
+        platform_h = platform_height(res, variant_idx)
+        need_level = strategy.level_for_height(platform_h)
+        height_ok = (self.model.developer
+                     or get_language_level() >= strategy.level_index(need_level))
         stats = [
             (_t("Блоков: {0}").format(len(pattern)), CYAN),
+            (f"Высота здания: h{platform_h} · нужен {need_level}", GREEN if height_ok else AMBER),
             (_t("Добыча/тик: {0} ×{1}").format(resource_name(base_res), yield_amount), GREEN),
             (_t("Множитель: {0:.0%}").format(mult), AMBER),
         ]
+        if not height_ok:
+            stats.insert(0, (f"🔒 Высокое здание: нужен терраформер {need_level}", MUTED))
         if not is_unlocked:
             needed_level = next(i for i, t in PROGRESSION_TIERS.items() if variant_idx in t["platform_variants"].get(res, ()))
             stats.insert(0, (_t("🔒 ЗАБЛОКИРОВАНО — нужен уровень языка {0}").format(needed_level), MUTED))
@@ -1272,7 +2295,15 @@ class TrainerGame(GameShell):
 
         # заголовок
         c.create_text(x, y, text=_t("3D превью (изометрия)"), fill=AMBER, anchor="nw", font=theme.font(11, True), tags="gallery")
-        y += px(26)
+        y += px(20)
+        platform_h = platform_height(res, variant_idx)
+        need_level = strategy.level_for_height(platform_h)
+        height_ok = (self.model.developer
+                     or get_language_level() >= strategy.level_index(need_level))
+        c.create_text(x, y, text=f"Высота здания: h{platform_h} · нужен {need_level}",
+                      fill=GREEN if height_ok else AMBER, anchor="nw",
+                      font=theme.font(9, True), tags="gallery")
+        y += px(22)
 
         # изометрическая проекция: x->right-down, y->left-down, z->up
         iso_w = w * 0.9
@@ -1357,5 +2388,586 @@ class TrainerGame(GameShell):
         legend_y = y + iso_h - px(60)
         if not is_unlocked:
             c.create_text(x, legend_y, text=_t("🔒 Разблокируется на уровне языка..."), fill=MUTED, anchor="nw", font=theme.font(10, True), tags="gallery")
+        elif not height_ok:
+            c.create_text(x, legend_y, text=f"🔒 Нужен терраформер {need_level}", fill=MUTED, anchor="nw", font=theme.font(10, True), tags="gallery")
         else:
             c.create_text(x, legend_y, text=_t("Доступно для строительства"), fill=GREEN, anchor="nw", font=theme.font(10, True), tags="gallery")
+
+    # -- изометрическая отрисовка -------------------------------------------------
+    def _draw_iso(self, w: int, h: int) -> None:
+        """Отрисовка карты в изометрической проекции с питами (terrain prisms)."""
+        c = self.canvas
+        model = self.model
+        cam = self.camera
+
+        # вычисляем метрики тайла для текущего зума
+        m = iso.tile_metrics(self._iso_zoom, w, h, cam)
+
+        # видимые клетки с запасом
+        min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(m, model.w, model.h, w, h)
+
+        explored = model.explored
+        visible = model.visible_cells()
+
+        # цвета слоев (как в плоском виде)
+        layer_colors = [SOIL, CLAY, METAL, DUG_OUT]
+
+        # процедурные текстуры (кэш на уровень зума)
+        self._ensure_textures(m.hw, m.hh)
+
+        # рисуем тайлы как призмы: сначала дальние (y + x), потом ближние
+        # порядок: по диагоналям от левого-верхнего к правому-нижнему
+        for depth_sum in range(min_gx + min_gy, max_gx + max_gy + 1):
+            for gy in range(min_gy, max_gy + 1):
+                gx = depth_sum - gy
+                if not (min_gx <= gx <= max_gx):
+                    continue
+
+                if (gx, gy) not in explored:
+                    # Туман войны: неразведанные клетки — сплошной черный ромб
+                    poly = iso.tile_polygon(gx, gy, 0, m)
+                    c.create_polygon(*poly, fill=BG, outline="", tags="map")
+                    continue
+
+                dug = model.dug[gy][gx]
+                gz_top = terrain_gz(dug)
+                # цвет по глубине
+                base_color = layer_colors[min(dug, len(layer_colors) - 1)]
+                if (gx, gy) not in visible:
+                    base_color = blend(base_color, BG, 0.62)
+
+                # Рисуем призму: верхняя грань + боковые стены SW/SE
+                # Для невыкопанных клеток (dug=0) gz_top=0, рисуем тонкую плиту
+                # Для выкопанных клеток (dug>0) gz_top < 0, рисуем стены вниз
+                # Полностью выкопанные (DUG_OUT) - темный пол дна ямы
+                if dug == 0:
+                    # Поверхность: тонкая плита толщиной 0.3
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.2), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.1), outline="", tags="map")
+                    # Верхняя грань с текстурой песка
+                    if "sand" in self._texture_photos:
+                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
+                        c.create_image(cx, cy, image=self._texture_photos["sand"], tags="map", anchor="center")
+                    else:
+                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
+                elif dug < 8:  # частично выкопанные - призма до следующего слоя
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.3), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.2), outline="", tags="map")
+                    # Верхняя грань с текстурой камня
+                    if "rock" in self._texture_photos:
+                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
+                        c.create_image(cx, cy, image=self._texture_photos["rock"], tags="map", anchor="center")
+                    else:
+                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
+                else:
+                    # Полностью выкопанная (dug >= 8) - темный пол дна ямы
+                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
+                    c.create_polygon(*faces.sw, fill=blend(DUG_OUT, BG, 0.4), outline="", tags="map")
+                    c.create_polygon(*faces.se, fill=blend(DUG_OUT, BG, 0.3), outline="", tags="map")
+                    c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
+
+# открытые находки и находки на построенных платформах
+        for (x, y), (res, layer) in model.finds.items():
+            if not deposit_is_visible(model, x, y):
+                continue
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            # центр верхней грани тайла на текущей поверхности (без +1)
+            gz = terrain_gz(model.dug[y][x])
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz, m)
+            if res == "water":
+                r = m.hw * 0.35
+                c.create_oval(cx - r, cy - r, cx + r, cy + r, fill=SPRING, outline=TEXT, width=1, tags="map")
+            else:
+                r = m.hw * 0.2
+                c.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy,
+                                 fill=GREEN, outline="", tags="map")
+
+        # стройплощадка
+        for x, y in model.site_cells():
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz, m)
+            c.create_polygon(*poly, outline=AMBER, dash=(3, 3), width=1, fill="", tags="map")
+
+        # блоки (фундамент + платформы) - рисуются на уровне поверхности + 1
+        block_fill = blend(AMBER, TEXT, 0.25)
+        for x, y in model.blocks:
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz + 1, m)
+            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
+        for x, y in model.platform_blocks:
+            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
+                continue
+            gz = terrain_gz(model.dug[y][x])
+            poly = iso.tile_polygon(x, y, gz + 1, m)
+            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
+
+        # граница поля (рамка из 4-х углов карты)
+        corners = [
+            iso.world_to_screen(0, 0, 0, m),
+            iso.world_to_screen(model.w, 0, 0, m),
+            iso.world_to_screen(model.w, model.h, 0, m),
+            iso.world_to_screen(0, model.h, 0, m),
+        ]
+        flat = [c for p in corners for c in p]
+        c.create_polygon(*flat, outline=LINE, width=2, fill="", tags="map")
+
+        # здания, червь, отряд
+        self._draw_buildings_iso(w, h, m)
+        self._draw_worm_iso(w, h, m)
+        self._draw_units_iso(w, h, m)
+
+        # HUD (переиспользуем существующий код панели)
+        self._draw_hud(w, h, m)
+
+    def _draw_buildings_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """Здания в изометрии: настоящие призмы с правильными цветами."""
+        c = self.canvas
+        model = self.model
+        for b in model.buildings:
+            gz_ground = terrain_gz(model.dug[b.center[1]][b.center[0]])
+            cx, cy = iso.world_to_screen(b.center[0] + 0.5, b.center[1] + 0.5, gz_ground, m)
+            # проверка видимости
+            if cx < -m.hw * 4 or cy < -m.hh * 8 or cx > w + m.hw or cy > h + m.hh:
+                continue
+            spec = strategy.STRUCTURES.get(b.type)
+            color = GREEN if b.built else MUTED
+
+            # Рисуем здание как призму: верхняя грань + боковые стены
+            # Высота здания в слоях (gz)
+            building_height = max(1, b.height)
+            gz_top = gz_ground + building_height
+
+            # Используем prism_faces для построения призмы
+            faces = prism_faces(b.center[0], b.center[1], gz_top, gz_ground, m)
+
+            # Верхняя грань (крыша)
+            c.create_polygon(*faces.top, fill=color, outline=blend(color, TEXT, 0.5), width=1, tags="building")
+            # Боковые стены
+            c.create_polygon(*faces.sw, fill=blend(color, BG, 0.3), outline="", tags="building")
+            c.create_polygon(*faces.se, fill=blend(color, BG, 0.2), outline="", tags="building")
+
+            # Метка высоты
+            c.create_text(cx, cy - m.hh * (building_height + 0.3), text=f"h{b.height}", fill=BG, tags="building",
+                          font=theme.font(max(6, int(m.hw * 0.15)), True))
+
+            if b.connected:
+                best = None
+                for other in model.buildings + [None]:
+                    ox, oy = (other.center if other is not None else model.site[:2])
+                    if (ox, oy) == tuple(b.center):
+                        continue
+                    d = abs(ox - b.center[0]) + abs(oy - b.center[1])
+                    if best is None or d < best[0]:
+                        best = (d, ox, oy)
+                if best:
+                    ox, oy = iso.world_to_screen(best[1] + 0.5, best[2] + 0.5,
+                                                  terrain_gz(model.dug[best[2]][best[1]]), m)
+                    c.create_line(cx, cy - m.hh * 0.3, ox, oy - m.hh * 0.3,
+                                  fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
+
+    def _draw_worm_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+            """След червя и червь в изометрии."""
+            c = self.canvas
+            worm = self.model.worm
+            if not worm.alive:
+                return
+            for (x, y), ttl in worm.trail.items():
+                if not self.model.is_explored(x, y):
+                    continue
+                # Используем terrain_gz(dug) (как у юнитов) — верхняя видимая поверхность
+                gz_surface = terrain_gz(self.model.dug[y][x])
+                cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz_surface, m)
+                fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+                r = m.hw * 0.35
+                c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                              fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
+            gz_surface = terrain_gz(self.model.dug[worm.y][worm.x])
+            cx, cy = iso.world_to_screen(worm.x + 0.5, worm.y + 0.5, gz_surface, m)
+            r = m.hw * 0.4
+            c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                          fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
+            c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
+                          font=theme.font(max(8, int(m.hw * 0.3)), True))
+
+    def _draw_units_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """Отряд в изометрии: яркоте только у выделенных/наведённых, тень для закрепления."""
+        c = self.canvas
+        # Определяем наведённый юнит (под курсором)
+        hovered_uid = None
+        if hasattr(self, "_last_mouse"):
+            mx, my = self._last_mouse
+            gx, gy = self.camera.to_cell(mx, my, w, h)
+            if 0 <= gx < self.model.w and 0 <= gy < self.model.h:
+                u = self.model.unit_at(gx, gy)
+                if u:
+                    hovered_uid = u.uid
+
+        # Сначала рисуем тени всех юнитов (под ними)
+        for u in self.model.units:
+            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
+            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
+            # Тень - эллипс на уровне земли (gz = terrain_gz(dug))
+            shadow_w = m.hw * 0.5
+            shadow_h = m.hh * 0.25
+            c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
+                          fill=blend(BG, "#000000", 0.3), outline="", tags="unit")
+
+        # Затем сами юниты
+        for u in self.model.units:
+            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
+            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
+            body = m.hw * 0.55
+            color = self._unit_color(u.level)
+            is_selected = u.uid in self.model.selected
+            is_hovered = u.uid == hovered_uid
+            show_label = is_selected or is_hovered
+
+            # Highlight for selected unit's cell: ground shadow ellipse + soft glow outline of top diamond
+            if is_selected:
+                # Ground shadow ellipse (already drawn above, but make it more prominent for selected)
+                shadow_w = m.hw * 0.6
+                shadow_h = m.hh * 0.3
+                c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
+                              fill="", outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
+                # Soft glow outline of top diamond
+                diamond = iso.tile_polygon(u.x, u.y, gz_ground, m)
+                c.create_polygon(*diamond, fill="", outline=GREEN, width=max(2, int(m.hw * 0.08)), tags="unit")
+
+            if is_selected:
+                r = m.hw * 0.6
+                c.create_oval(cx - r, cy - r, cx + r, cy + r,
+                              outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
+            track_w = max(2.0, m.hw * 0.18)
+            c.create_rectangle(cx - m.hw * 0.15, cy - m.hh * 0.3,
+                               cx - m.hw * 0.15 + track_w, cy + m.hh * 0.3,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx + m.hw * 0.15 - track_w, cy - m.hh * 0.3,
+                               cx + m.hw * 0.15, cy + m.hh * 0.3,
+                               fill=MUTED, outline="", tags="unit")
+            c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
+                               fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
+
+            # Метка уровня — только для выделенных/наведённых, со смещением при кластеризации
+            if show_label:
+                label = u.level if len(u.level) <= 4 else u.level[:4]
+                # Проверяем кластеризацию: есть ли другие юниты в соседних клетках
+                offset_y = 0
+                for other in self.model.units:
+                    if other is u:
+                        continue
+                    if abs(other.x - u.x) <= 1 and abs(other.y - u.y) <= 1:
+                        offset_y -= m.hh * 0.5  # сдвигаем вверх
+                c.create_text(cx, cy - m.hh * 0.6 + offset_y, text=label, fill=BG, tags="unit",
+                              font=theme.font(max(6, int(m.hw * 0.18)), True, mono=True))
+
+            if u.hp < 100:
+                bar_w = m.hw * 0.7
+                x0 = cx - bar_w / 2
+                y0 = cy + m.hh * 0.4
+                c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, m.hh * 0.1),
+                                   fill=BG, outline="", tags="unit")
+                c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
+                                   y0 + max(2, m.hh * 0.1), fill=GREEN if u.hp > 40 else AMBER,
+                                   outline="", tags="unit")
+            if u.uid == self.model.main_unit.uid:
+                fx, fy = self.model.facing
+                c.create_line(cx, cy, cx + fx * m.hw * 0.5, cy + fy * m.hh * 0.5,
+                              fill=AMBER, width=max(2, int(m.hw * 0.15)), arrow="last",
+                              tags="unit")
+            if u.path:
+                points = [cx, cy]
+                for px_, py_ in u.path[::max(1, len(u.path) // 8)]:
+                    ax, ay = iso.world_to_screen(px_ + 0.5, py_ + 0.5,
+                                                  self.model.dug[py_][px_] + 1, m)
+                    points += [ax, ay]
+                if u.target:
+                    ax, ay = iso.world_to_screen(u.target[0] + 0.5, u.target[1] + 0.5,
+                                                  self.model.dug[u.target[1]][u.target[0]] + 1, m)
+                    points += [ax, ay]
+                if len(points) >= 4:
+                    c.create_line(*points, fill=color, width=1, dash=(2, 4), tags="unit")
+
+    def _draw_hud(self, w: int, h: int, m: iso.TileMetrics) -> None:
+        """HUD панель (верхняя левая) — как в плоском виде."""
+        c = self.canvas
+        model = self.model
+        unit = model.active_unit()
+        cap = model._hold_cap()
+        found = sum(model.finds_count.values())
+        bg_id = c.create_rectangle(0, 0, px(230), px(8), fill=BG, outline=LINE)
+        ty = px(8)
+        level_name = model.standing.current_level
+        allowed_h = strategy.max_height(level_name)
+        lines = (
+            (_t("Учебная смена / тренажёр"), TEXT, True),
+            (f"Уровень {level_name} · высота до {allowed_h}", AMBER, True),
+            (_t("Грунт {0}/{1}").format(unit.holds.get("soil", 0), cap), MUTED, False),
+            (_t("Фундамент {0}/{1}").format(*model.progress()), MUTED, False),
+            (_t("Находки {0}").format(found), MUTED, False),
+            (f"Кредиты {model.credits}", GREEN, False),
+            (f"Отряд {len(model.units)}", MUTED, False),
+            (_t("Масштаб {0}%").format(int(round(self._iso_zoom * 100))), MUTED, False),
+        )
+        for text, color, bold in lines:
+            c.create_text(px(10), ty, text=text, fill=color, anchor="nw",
+                          font=theme.font(10, bold))
+            ty += px(16)
+
+        # Режим выбранного юнита — чекбоксы
+        selected = model.selected_units()
+        if not selected:
+            selected = [model.main_unit]
+        ty += px(4)
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(13)
+        for u in selected[:3]:
+            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
+                checked = u.mode == mode_key
+                box_x = px(10)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
+                                 fill=GREEN, width=2)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
+                                 fill=GREEN, width=2)
+                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked))
+            ty += px(32)
+
+        book = model.mission_book
+        done = book.done_count()
+        total = len(book.missions)
+        mark = " ●" if book.unread else ""
+        c.create_text(px(10), ty, text=f"ЗАДАНИЯ {done}/{total}{mark}",
+                      fill=GREEN if done else MUTED, anchor="nw", font=theme.font(9, True))
+        ty += px(15)
+        if unit.holds.get(strategy.SPICE, 0):
+            c.create_text(px(10), ty, text=f"Специя {unit.holds.get(strategy.SPICE, 0)}",
+                          fill=AMBER, anchor="nw", font=theme.font(9, True))
+            ty += px(14)
+
+        active_platforms = [p for p in model.platforms if not p.complete]
+        if active_platforms:
+            ty += px(4)
+            c.create_text(px(10), ty, text=_t("ПЛАТФОРМЫ:"), fill=CYAN, anchor="nw",
+                          font=theme.font(9, True))
+            ty += px(14)
+            for p in active_platforms[:3]:
+                prio_mark = " ★" if p.priority > 0 else ""
+                pct = p.progress_pct()
+                fill = GREEN if pct == 100 else AMBER if pct > 0 else MUTED
+                c.create_text(px(10), ty,
+                              text=f"{resource_name(p.resource)[:10]} {pct}% · h{p.height}{prio_mark}",
+                              fill=fill, anchor="nw", font=theme.font(8))
+                ty += px(13)
+
+        if model.walls_open:
+            c.create_text(px(10), ty, text=_t("СТЕНЫ ОТКРЫТЫ"), fill=GREEN, anchor="nw",
+                          font=theme.font(11, True))
+            ty += px(16)
+
+        ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        c.coords(bg_id, 0, 0, px(230), ty)
+
+    # -- миникарта ------------------------------------------------------------
+    def _viewport_cells(self, w: int, h: int) -> tuple[float, float, float, float]:
+        """Какие клетки карты сейчас видны (в мировых координатах)."""
+        cam = self.camera
+        model = self.model
+        if self._iso_view:
+            m = iso.tile_metrics(self._iso_zoom, w, h, cam)
+            min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(
+                m, model.w, model.h, w, h)
+            return float(min_gx), float(min_gy), float(max_gx + 1), float(max_gy + 1)
+        cell = max(cam.cell_px(), 4.0)
+        half_w = w / (2.0 * cell)
+        half_h = h / (2.0 * cell)
+        return cam.cx - half_w, cam.cy - half_h, cam.cx + half_w, cam.cy + half_h
+
+    def _draw_minimap(self, w: int, h: int) -> None:
+        """Полная карта в углу: рельеф, рамка вида, отряд и здания."""
+        c = self.canvas
+        model = self.model
+        rect = minimap_rect(w, h, model.w, model.h,
+                            margin=px(10), bottom=px(34),
+                            max_w=px(190), max_h=px(150))
+        self._minimap_rect = rect
+        x0, y0, x1, y1 = rect
+        c.create_rectangle(x0 - 2, y0 - 2, x1 + 2, y1 + 2,
+                           fill=BG, outline=LINE, tags="minimap")
+        c.create_rectangle(x0, y0, x1, y1, fill=BG2, outline=LINE, tags="minimap")
+
+        step_x = max(1, math.ceil(model.w / 36))
+        step_y = max(1, math.ceil(model.h / 28))
+        explored = model.explored
+        for gy in range(0, model.h, step_y):
+            for gx in range(0, model.w, step_x):
+                ax, ay = world_to_minimap(gx, gy, rect, model.w, model.h)
+                bx, by = world_to_minimap(gx + step_x, gy + step_y, rect,
+                                          model.w, model.h)
+                if (gx, gy) not in explored:
+                    fill = BG
+                else:
+                    fill = self._layer_color(model.dug[gy][gx])
+                c.create_rectangle(ax, ay, max(ax + 1, bx), max(ay + 1, by),
+                                   fill=fill, outline="", tags="minimap")
+
+        # рамка текущего вида
+        vx0, vy0, vx1, vy1 = self._viewport_cells(w, h)
+        vx0 = max(0.0, min(float(model.w), vx0))
+        vy0 = max(0.0, min(float(model.h), vy0))
+        vx1 = max(0.0, min(float(model.w), vx1))
+        vy1 = max(0.0, min(float(model.h), vy1))
+        ax, ay = world_to_minimap(vx0, vy0, rect, model.w, model.h)
+        bx, by = world_to_minimap(vx1, vy1, rect, model.w, model.h)
+        c.create_rectangle(ax, ay, bx, by, outline=AMBER, width=1, tags="minimap")
+
+        # здания и отряд
+        for b in model.buildings:
+            bx, by = world_to_minimap(b.center[0] + 0.5, b.center[1] + 0.5,
+                                      rect, model.w, model.h)
+            c.create_rectangle(bx - 1, by - 1, bx + 1, by + 1,
+                               fill=AMBER, outline="", tags="minimap")
+        for u in model.units:
+            ux, uy = world_to_minimap(u.x + 0.5, u.y + 0.5, rect,
+                                      model.w, model.h)
+            color = AMBER if u.uid == model.main_unit.uid else GREEN
+            c.create_oval(ux - 2, uy - 2, ux + 2, uy + 2,
+                          fill=color, outline="", tags="minimap")
+
+    def _draw_overlays(self, w: int, h: int) -> None:
+        """Оверлеи (подсказка, тост, модальные окна) — общие для обоих видов."""
+        c = self.canvas
+        if self.overlay is None and not self.paused:
+            self._draw_minimap(w, h)
+        bar_top = self._draw_key_hint(w, h)
+        if self.msg:
+            c.create_text(px(10), bar_top - px(6), text=self.msg, fill=AMBER, anchor="sw",
+                          font=theme.font(10, True))
+        if self.toast:
+            self._draw_toast(w)
+        if self.overlay == "help":
+            self._draw_help(w, h)
+        elif self.overlay == "finds":
+            self._draw_finds(w, h)
+        elif self.overlay == "gallery":
+            self._draw_gallery(w, h)
+        elif self.overlay == "missions":
+            self._draw_missions(w, h)
+        elif self.overlay == "structures":
+            self._draw_structures(w, h)
+        elif self.paused:
+            self.draw_overlay(_t("ПАУЗА"))
+
+    # -- процедурные текстуры --------------------------------------------------
+    def _ensure_textures(self, hw: float, hh: float) -> None:
+        """Создаёт/обновляет кэш процедурных текстур для заданного размера тайла.
+        Создаёт ромбовидные PhotoImage с прозрачностью за пределами верхней грани."""
+        key = (int(hw), int(hh))
+        if getattr(self, "_texture_cache_key", None) == key:
+            return
+        try:
+            from PIL import Image, ImageDraw, ImageFilter, ImageTk
+        except Exception:
+            self._textures = {}
+            self._texture_photos = {}
+            self._texture_cache_key = key
+            return
+
+        # Размер ромба: ширина = 2*hw, высота = 2*hh
+        # Делаем немного больше для качества
+        dw = max(16, int(hw * 2))
+        dh = max(16, int(hh * 2))
+        # Размер изображения с запасом
+        img_w = dw + 4
+        img_h = dh + 4
+        cx = img_w // 2
+        cy = img_h // 2
+
+        def make_diamond_mask(base_img: Image.Image) -> Image.Image:
+            """Наложить ромб-маску на базовую текстуру."""
+            mask = Image.new("L", (img_w, img_h), 0)
+            md = ImageDraw.Draw(mask)
+            # Ромб: top, right, bottom, left
+            md.polygon([
+                (cx, 2),           # top
+                (img_w - 2, cy),   # right
+                (cx, img_h - 2),   # bottom
+                (2, cy),           # left
+            ], fill=255)
+            # Применяем маску
+            result = base_img.resize((img_w, img_h), Image.Resampling.LANCZOS)
+            result.putalpha(mask)
+            return result
+
+        # Песок: шум бежевых оттенков (dug == 0)
+        tw = max(32, int(hw * 4))
+        th = max(32, int(hh * 4))
+        img_sand = Image.new("RGBA", (tw, th), (194, 160, 102, 255))
+        draw = ImageDraw.Draw(img_sand)
+        import random
+        rng = random.Random(42)
+        for _ in range(tw * th // 4):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-20, 20)
+            c = max(0, min(255, 194 + v))
+            draw.point((x, y), fill=(c, max(0, min(255, 160 + v)), max(0, min(255, 102 + v)), 255))
+        sand_diamond = make_diamond_mask(img_sand)
+
+        # Камень: более темные, контрастные шумы (dug > 0 и dug < 8)
+        img_rock = Image.new("RGBA", (tw, th), (110, 110, 110, 255))
+        draw = ImageDraw.Draw(img_rock)
+        rng = random.Random(43)
+        for _ in range(tw * th // 3):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-40, 40)
+            c = max(0, min(255, 110 + v))
+            draw.point((x, y), fill=(c, c, c, 255))
+        img_rock = img_rock.filter(ImageFilter.SMOOTH)
+        rock_diamond = make_diamond_mask(img_rock)
+
+        # Специя: красновато-оранжевые искры (есть специя в клетке)
+        img_spice = Image.new("RGBA", (tw, th), (200, 100, 30, 255))
+        draw = ImageDraw.Draw(img_spice)
+        rng = random.Random(44)
+        for _ in range(tw * th // 2):
+            x = rng.randrange(tw)
+            y = rng.randrange(th)
+            v = rng.randint(-30, 30)
+            r = max(0, min(255, 200 + v))
+            g = max(0, min(255, 100 + v))
+            b = max(0, min(255, 30 + v))
+            draw.point((x, y), fill=(r, g, b, 255))
+        spice_diamond = make_diamond_mask(img_spice)
+
+        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL))
+        try:
+            self._texture_photos = {
+                "sand": ImageTk.PhotoImage(sand_diamond),
+                "rock": ImageTk.PhotoImage(rock_diamond),
+                "spice": ImageTk.PhotoImage(spice_diamond),
+            }
+            self._textures = {
+                "sand": sand_diamond,
+                "rock": rock_diamond,
+                "spice": spice_diamond,
+            }
+        except Exception:
+            self._texture_photos = {}
+            self._textures = {}
+
+        self._texture_cache_key = key

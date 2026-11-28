@@ -117,35 +117,39 @@ def _gc_on_main_thread():
 
 @pytest.fixture(autouse=True)
 def _cockpit_bootstrapped(monkeypatch):
-    """Кабина достраивается через after(60): на медленной машине это успевает внутри
-    первого update() теста, на быстрой — нет, и стартовая миссия потом перебивает
-    show() теста. Ждём старта прямо в конструкторе, чтобы тесты не зависели от скорости."""
+    """Кабина достраивается через after(60). В тестах старт идёт синхронно в конце
+    конструктора (иначе стартовая миссия перебивает show() теста), а повторный
+    after(60) уже ничего не делает. Ожидание update()+sleep убрано: на CI оно
+    растягивалось до 3 с на каждый тест и давало шанс сетевой проверке обновлений."""
     try:
         from stamina.cockpit import Cockpit
     except Exception:  # noqa: BLE001
         yield
         return
-    orig = Cockpit.__init__
+    # GitHub Releases в тестах не дёргаем через after(2500) после старта кабины.
+    # fetch_latest / run_auto_update не трогаем: их проверяет tests/test_auto_update.py.
+    monkeypatch.setattr(Cockpit, "_check_updates_bg", lambda self: None)
+    orig_init = Cockpit.__init__
+    orig_bootstrap = Cockpit._bootstrap
+
+    def bootstrap(self):
+        if getattr(self, "_bootstrapped", False):
+            return
+        orig_bootstrap(self)
 
     def init(self, *a, **k):
-        orig(self, *a, **k)
-        import time
-        end = time.time() + 3.0
-        while not getattr(self, "_bootstrapped", False) and time.time() < end:
-            try:
-                self.update()
-            except Exception:  # noqa: BLE001
-                break
-            time.sleep(0.005)
+        orig_init(self, *a, **k)
+        bootstrap(self)
 
+    monkeypatch.setattr(Cockpit, "_bootstrap", bootstrap)
     monkeypatch.setattr(Cockpit, "__init__", init)
     yield
 
 
 @pytest.fixture(autouse=True)
 def _close_english_tts(monkeypatch):
-    """Каждая кабина поднимает свой powershell-процесс озвучки английского и тесты его
-    не закрывают: к середине прогона в Windows их десятки и всё встаёт. Закрываем после теста."""
+    """Голос не должен поднимать powershell/edge-tts по тесту: на CI это дорого,
+    а в Windows копии процессов копятся и тормозят весь прогон."""
     try:
         from stamina.english import tts as etts
     except Exception:  # noqa: BLE001
@@ -159,6 +163,8 @@ def _close_english_tts(monkeypatch):
         made.append(self)
 
     monkeypatch.setattr(etts.TTS, "__init__", init)
+    monkeypatch.setattr(etts.TTS, "_ensure", lambda self: False)
+    monkeypatch.setattr(etts.tts_edge, "ready", lambda: False)
     yield
     for t in made:
         try:

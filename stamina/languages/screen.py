@@ -150,8 +150,12 @@ class LanguagesScreen(tk.Frame):
     def _select_language(self, lang_code: str) -> None:
         self._exit_grammar_focus(remember=False)
         self._grammar_page = None
+        # Вход в английский — та же карточка в сетке, что у остальных языков,
+        # но contents — его родной отсек: там хаб наборов (СТАНДАРТ/CEFR/ГЛАГОЛЫ/
+        # ИЗ КНИГИ), сканер и грамматика Murphy. Общая страница «Наборы» ждёт
+        # частотные наборы с суффиксом уровня (goethe-a1 и т.п.), которых у en нет.
         if lang_code == "en":
-            self.app.show("english")
+            self._open_native_english()
             return
         self.current_lang = lang_code
         self._pool_slugs = None
@@ -160,6 +164,17 @@ class LanguagesScreen(tk.Frame):
         if not plugin:
             return
         self._build_language_ui(plugin)
+
+    def _open_native_english(self) -> None:
+        """Карточка en ведёт в родной отсек, не закрывая рабочее окно опытного вида."""
+        self.app.show("english")
+        if getattr(self.app, "_layout", "") != "experienced":
+            return
+        try:
+            from stamina.ui.experienced import open_work
+            open_work(self.app)
+        except Exception:  # noqa: BLE001 — отсек уже открыт, decorations не критичны
+            pass
 
     def _build_language_ui(self, plugin) -> None:
         for w in self.content.winfo_children():
@@ -557,13 +572,20 @@ class LanguagesScreen(tk.Frame):
         if page is not None:
             page.toggle_focus(on, remember=remember)
 
-    def handle_focus_escape(self) -> bool:
-        if self._scanner is not None and self._scanner.in_focus():
-            self._scanner.toggle_focus(False)      # сканер: один Esc из фокуса
-            return True
+    def zen_target(self):
+        """Виджет, на котором живёт общий зенид языкового отсека."""
+        if self._scanner is not None:
+            return self._scanner
         page = getattr(self, "_grammar_page", None)
-        if page is not None:
-            return page.handle_focus_escape()
+        if getattr(self, "current_page", None) == "grammar" and page is not None:
+            return page
+        return None
+
+    def handle_focus_escape(self) -> bool:
+        from stamina import zen_mode
+        target = self.zen_target()
+        if target is not None and zen_mode.is_active(target):
+            return zen_mode.handle_escape(target)
         return False
 
     def snapshot_place(self):
@@ -586,6 +608,7 @@ class LanguagesScreen(tk.Frame):
         if self.current_lang != place.lang:
             self._select_language(place.lang)
         if place.lang == "en":
+            # Английский живёт в своём отсеке; общая вкладка «Наборы» к нему не применяется.
             return
         if place.sub and place.sub != "grid" and (
             self.current_page != place.sub or getattr(self, "_inner", "")
@@ -1095,6 +1118,6 @@ class LanguagesScreen(tk.Frame):
     def _build_grammar(self, plugin, progress, vocab) -> None:
         """Построить страницу грамматики."""
         from stamina.languages.grammar_page import build_grammar_page
-        page = build_grammar_page(self.page_container, plugin, progress, self.app)
+        page = build_grammar_page(self.page_container, plugin, progress, self.app, vocab)
         self._grammar_page = page
         # Страница сама упаковывается в build_grammar_page

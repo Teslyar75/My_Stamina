@@ -8,6 +8,8 @@ import os
 import sys
 import time
 
+from stamina import terraformer_strategy
+
 
 def _enable_dpi_awareness() -> None:
     """Чёткий текст на экранах с масштабом 125–150 % (Windows)."""
@@ -169,6 +171,8 @@ def run_app(argv: list[str] | None = None) -> None:
 
     if safe_mode.flag_in(argv):
         safe_mode.set_enabled(True)
+    if terraformer_strategy.dev_flag_in(argv):
+        terraformer_strategy.set_developer_mode(True)
     _safe_streams()
     _journal("=== ЗАПУСК argv={0} exe={1} cwd={2}".format(argv, sys.executable, os.getcwd()))
     # Ошибку в обратном вызове Tk пишем в журнал: под pythonw её больше некуда девать

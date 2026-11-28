@@ -779,7 +779,7 @@ class LogScreen(tk.Frame):
         self._relaying = True
         try:
             need = self._need()
-            alt = (self.app.store.settings.get("ui_layout") == "alt")
+            alt = (self.app.store.settings.get("ui_layout") in ("alt", "experienced"))
             if alt and self.scroll.winfo_pixels(self.scroll.cget("height")) != need:
                 self.scroll.configure(height=need)      # внешний вьюпорт видит всю высоту
             h = max(1, self.scroll.winfo_height())
@@ -967,9 +967,9 @@ class SettingsScreen(tk.Frame):
             b.pack(side=tk.LEFT, padx=px(2), pady=px(1))
             self.skin_btns[tid] = b
         sk.grid_configure(row=1, column=0, sticky="w", padx=0, pady=(px(4), 0))  # кнопки под описанием — без обрезки
-        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, кнопка «СЛАЙДЫ» в шапке, звук и экран на полке «ПРИБОРЫ» (F8), обои отсеков меняются слайдшоу, длинные ряды кнопок свёрнуты в «ещё», экран прокручивается. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется."))
+        lay = self._row(_t("Вид интерфейса"), _t("КЛАССИЧЕСКИЙ — все отсеки и кнопки в шапке. АЛЬТЕРНАТИВНЫЙ — «Пульт-кабина»: отсеки в доке слева, кнопка «СЛАЙДЫ» в шапке, звук и экран на полке «ПРИБОРЫ» (F8), обои отсеков меняются слайдшоу, длинные ряды кнопок свёрнуты в «ещё», экран прокручивается. Работает с любым скином; функции и горячие клавиши те же. Применяется сразу: кабина мягко перезапускается, прогресс сохраняется.") + "\n" + _t("ОПЫТНЫЙ ПИЛОТ — ленты сверху и справа поверх слайдшоу Земли из космоса. Набор фото докачивается при первом запуске."))
         self.layout_btns = {}
-        for key, name in (("classic", _t("КЛАССИЧЕСКИЙ")), ("alt", _t("АЛЬТЕРНАТИВНЫЙ"))):
+        for key, name in (("classic", _t("КЛАССИЧЕСКИЙ")), ("alt", _t("АЛЬТЕРНАТИВНЫЙ")), ("experienced", _t("ОПЫТНЫЙ ПИЛОТ"))):
             b = HudButton(lay, name, lambda k=key: self._set_layout(k), height=30, font_size=8)
             b.pack(side=tk.LEFT, padx=px(2))
             self.layout_btns[key] = b

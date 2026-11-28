@@ -67,6 +67,11 @@ class MonitorsTest(unittest.TestCase):
         self.assertEqual(geo, "800x600+-2000+150")
         self.assertEqual(monitors.area_size(top), (2560, 1400))
 
+    def test_monitor_rect_follows_window(self):
+        # «ЭКРАН» должен распахнуть окно на том мониторе, где оно стоит, а не на первом
+        self.assertEqual(monitors.monitor_rect(Anchor(-1500, 400)), LAYOUT[1])
+        self.assertEqual(monitors.monitor_rect(Anchor(100, 100)), LAYOUT[0])
+
     def test_saved_geometry_on_second_monitor_is_valid(self):
         self.assertTrue(monitors.on_some_monitor(-1000, 50))
         self.assertFalse(monitors.on_some_monitor(5000, 50))

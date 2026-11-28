@@ -294,6 +294,8 @@ class TestFocusMode(_Root):
         self.assertFalse(s.left_panel.winfo_ismapped())       # список скрыт
         self.assertTrue(s.right_panel.winfo_ismapped())       # редактор остался
         self.assertEqual(s.on_key(self._key("Escape")), "break")
+        self.assertTrue(s.in_focus())       # общий зенид: первый Esc только запоминается
+        self.assertEqual(s.on_key(self._key("Escape")), "break")
         self.assertFalse(s.in_focus())
         self.root.update()
         self.assertTrue(s.left_panel.winfo_ismapped())

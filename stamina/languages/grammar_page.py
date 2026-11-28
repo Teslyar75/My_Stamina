@@ -1102,5 +1102,29 @@ class GrammarPage:
         self.spread._focus = value
 
 
-def build_grammar_page(parent, plugin, progress, app) -> GrammarPage:
+class _NoGrammarProgress:
+    """Заглушка прогресса, когда пилот ещё не выбран (в тестах и на первом экране)."""
+
+    def grammar_done(self, _unit_id) -> bool:
+        return False
+
+    def grammar_mark(self, _unit_id, _ok: int, _total: int) -> bool:
+        return False
+
+
+def build_grammar_page(parent, plugin, progress, app, vocab=None) -> GrammarPage:
+    """Собрать страницу грамматики для языка плагина.
+
+    Английский приходит сюда через общую сетку языков, но у него уже есть
+    полноценный каталог уроков Murphy на том же GrammarSpread. Используем его,
+    а не заглушку EnglishGrammarEngine, чтобы вкладка не падала.
+    """
+    if getattr(plugin, "code", "") == "en":
+        from stamina.english.pages_grammar import GrammarPage as EnglishGrammarPage
+        from stamina.languages.ctx import LangCtx
+
+        ctx = LangCtx(progress if progress is not None else _NoGrammarProgress(),
+                      None, app, lang="en")
+        ctx.vocab = vocab
+        return EnglishGrammarPage(parent, ctx)
     return GrammarPage(parent, plugin, progress, app)

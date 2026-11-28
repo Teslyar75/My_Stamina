@@ -106,6 +106,7 @@ class Cockpit(tk.Tk):
         self.SCREENS = [(z, tr_(nav.ZONE_TITLES[z])) for z in nav.zones(loaded)]
         self._last_bridge = "bridge"
         self._fullscreen = False
+        self._fs_restore: dict | None = None   # геометрия перед «ЭКРАНОМ» (чтобы вернуться на свой монитор)
         from stamina import alt_ui
         self._layout = alt_ui.layout_of(st)  # вид интерфейса: classic | alt (docs/ALT_UI.md)
         self._build()
@@ -273,7 +274,7 @@ class Cockpit(tk.Tk):
     def _apply_geometry(self) -> None:
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         from stamina import alt_ui
-        if alt_ui.layout_of(self.store.settings) == "alt":
+        if alt_ui.is_alt_like(self.store.settings):
             # «Пульт-кабина» прокручивается: окно можно сузить до 1024×768 и 1280×720 при любом DPI
             self.minsize(min(1000, sw - 40), min(600, sh - 80))
         else:
@@ -305,7 +306,12 @@ class Cockpit(tk.Tk):
         # Рама: классическая шапка или «Пульт-кабина» (stamina/alt_ui.py). Экраны,
         # статус-строка и горячие клавиши — общие для обоих видов.
         from stamina import alt_ui
-        if getattr(self, "_layout", "classic") == "alt":
+        lay = getattr(self, "_layout", "classic")
+        if lay == "experienced":
+            from stamina.ui.experienced import build_chrome as build_experienced
+            host = build_experienced(self)
+            self._content_host = getattr(self, "_xp_body", host)
+        elif lay == "alt":
             host = alt_ui.build_chrome(self)
             self._content_host = getattr(self, "_alt_body", None)
         else:
@@ -395,8 +401,8 @@ class Cockpit(tk.Tk):
     def _build_body(self, host) -> None:
         """Область экранов и статус-строка (общая часть обоих видов)."""
         from stamina import alt_ui
-        if self._layout == "alt":
-            # alt: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
+        if self._layout in ("alt", "experienced"):
+            # alt/experienced: экраны лежат в окне с прокруткой — ничего не обрезается на 1024×768
             self.content = alt_ui.make_content(self, host)
         else:
             self.content = tk.Frame(host, bg=BG)
@@ -430,10 +436,12 @@ class Cockpit(tk.Tk):
         _n_zones = min(9, sum(1 for s_ in self.SCREENS if s_[0] not in nav.FIXED_HOTKEYS))
         self._status_hint = tk.Label(
             status,
-            text=(alt_ui.status_hint(_n_zones) if self._layout == "alt"
+            text=(alt_ui.status_hint(_n_zones) if self._layout in ("alt", "experienced")
                   else tr_("F1 справка · F5 заново · Esc/Del пауза · Home Орион · PgUp слайды · PgDn экран · Ctrl+1…{0}").format(_n_zones)),
             bg=status["bg"], fg=MUTED, font=theme.font(8))
         self._status_hint.pack(side=tk.RIGHT, padx=px(10))
+        if self._layout == "experienced":
+            status.pack_forget()       # пустой вид: только фото, чёрточки и радио
         self._start_orion_link_watcher()
 
         self.screens = {
@@ -604,10 +612,37 @@ class Cockpit(tk.Tk):
                 pass
 
 
+    def _zen_target_for(self, screen_name: str | None):
+        """Виджет, где работает общий зенид (стройка и Ether по-прежнему вне)."""
+        # Мостик больше не участвует в общем зениде: его кнопка убрана, а
+        # Ctrl+O на тренировке не должен прятать приборы и клавиатуру.
+        if screen_name in (None, "bridge", "settings", "bridge_settings", "ether"):
+            return None
+        scr = self.screens.get(screen_name)
+        if scr is None:
+            return None
+        target = getattr(scr, "zen_target", None)
+        if callable(target):
+            return target()
+        if screen_name == lounge_hook.KEY:
+            return getattr(scr, "game", None) or scr
+        return scr
+
+    def _zen_target(self):
+        # В «Опытном пилоте» зенид относится к рабочему окну целиком: все
+        # отсеки открываются одним и тем же полноэкранным режимом.
+        if self._layout == "experienced":
+            work = getattr(self, "_xp_work", None)
+            if work is not None:
+                return work
+        return self._zen_target_for(getattr(self, "current", None))
+
     def _exit_screen_focus(self, screen_name: str | None) -> None:
         """Снять фокус-режим текущего отсека и восстановить шапку."""
         if not screen_name:
             return
+        from stamina import zen_mode
+        zen_mode.exit_zen(self._zen_target_for(screen_name))
         scr = self.screens.get(screen_name)
         if scr is None:
             return
@@ -632,8 +667,28 @@ class Cockpit(tk.Tk):
             except TypeError:
                 scr.toggle_focus(False)
 
+    def _in_grammar_context(self) -> bool:
+        """Грамматика на экране: в опытном виде Esc не должен закрывать отсек."""
+        scr = self.screens.get(getattr(self, "current", None))
+        if scr is None:
+            return False
+        return bool(getattr(scr, "current", None) == "grammar"
+                    or getattr(scr, "current_page", None) == "grammar")
+
+    def _grammar_back(self) -> bool:
+        """Шаг назад внутри грамматики (родной отсек en или общая страница языков)."""
+        scr = self.screens.get(getattr(self, "current", None))
+        if scr is None or not self._in_grammar_context():
+            return False
+        back = getattr(scr, "handle_back", None)
+        return bool(callable(back) and back())
+
     def _handle_focus_escape(self) -> bool:
-        """Esc в фокусе: грамматика — двойной Esc; сканер и документы — один Esc."""
+        """Esc в зениде: общий двойной Esc для всех экранов."""
+        from stamina import zen_mode
+        target = self._zen_target()
+        if target is not None and zen_mode.is_active(target):
+            return zen_mode.handle_escape(target)
         scr = self.screens.get(self.current)
         if scr is None:
             return False
@@ -653,6 +708,15 @@ class Cockpit(tk.Tk):
         if self.current == docs_hook.KEY and getattr(scr, "in_focus", lambda: False)():
             scr.toggle_focus(False)
             return True
+        # Кнопка «⛶ ЗЕНИД» на мостике включает зенид САМОГО экрана, а не рабочего
+        # окна опытного вида. Двойной Esc должен снять его, не закрывая отсек —
+        # иначе остаётся чёрный экран с включённым зенидом без хрома.
+        zen_fn = getattr(scr, "zen_target", None)
+        if callable(zen_fn):
+            zt = zen_fn()
+            if zt is not None and zen_mode.is_active(zt):
+                zen_mode.handle_escape(zt)
+                return True
         return False
 
     def show(self, name: str) -> None:
@@ -870,30 +934,92 @@ class Cockpit(tk.Tk):
                 lb.bind("<Button-1>", lambda _e, tg=target: self.show(tg))
                 lb.bind("<Enter>", lambda _e, w=lb: w.configure(fg=TEXT))
                 lb.bind("<Leave>", lambda _e, w=lb: w.configure(fg=CYAN))
+        lay = getattr(self, "_layout", "classic")
         in_bridge = nav.zone_of(self.current) == "bridge"
-        if in_bridge:
-            if not self.subnav.winfo_ismapped():
-                # кнопки — слева; приёмник, если уже показан, остаётся справа
-                self.subnav.pack(side=tk.LEFT)
-            for k, b in self.subnav_buttons.items():
-                b.set_active(k == self.current)
+        if lay == "classic":
+            if in_bridge:
+                if not self.subnav.winfo_ismapped():
+                    self.subnav.pack(side=tk.LEFT)
+                for k, b in self.subnav_buttons.items():
+                    b.set_active(k == self.current)
+            else:
+                self.subnav.pack_forget()
         else:
-            self.subnav.pack_forget()
-        if getattr(self, "_layout", "classic") == "alt":
+            for k, b in getattr(self, "subnav_buttons", {}).items():
+                try:
+                    b.set_active(k == self.current)
+                except Exception:
+                    pass
+        if lay == "experienced":
+            from stamina.ui import experienced
+            experienced.on_screen(self)
+        elif lay == "alt":
             from stamina import alt_ui
             alt_ui.on_screen(self)
 
     def toggle_fullscreen(self, on: bool | None = None) -> None:
-        """ЭКРАН: полный экран для любого раздела (PgDn; выход — Esc/Del или «✕ ЭКРАН»)."""
+        """ЭКРАН: полный экран на мониторе, где стоит окно (PgDn, Esc/Del — выход).
+
+        Tk-атрибут -fullscreen на Windows расправляет окно на ПЕРВИЧНОМ мониторе:
+        перенесённую на второй экран программу кнопка возвращала на ноутбук.
+        Поэтому убираем рамку сами и задаём геометрию монитора, на котором окно
+        находится в момент нажатия (включая отрицательные координаты).
+        """
         on = (not self._fullscreen) if on is None else on
-        try:
-            self.attributes("-fullscreen", on)
-        except tk.TclError:
+        if on == bool(self._fullscreen):
             return
+        if on:
+            from stamina import monitors
+            l, t, r, b = monitors.monitor_rect(self)
+            w, h = max(1, r - l), max(1, b - t)
+            state = {}
+            for key, getter in (("geometry", self.geometry),
+                                ("overrideredirect", self.overrideredirect),
+                                ("topmost", lambda: self.attributes("-topmost"))):
+                try:
+                    state[key] = getter()
+                except tk.TclError:
+                    pass
+            self._fs_restore = state
+            try:
+                self.overrideredirect(True)
+                self.attributes("-topmost", True)
+                self.geometry(f"{w}x{h}+{l}+{t}")
+                self.lift()
+            except tk.TclError:
+                # виджет ещё не создан — старый путь всё равно лучше, чем ничего
+                self.overrideredirect(False)
+                self.attributes("-fullscreen", True)
+                self._fs_restore["tk_fullscreen"] = True
+        else:
+            state = getattr(self, "_fs_restore", None) or {}
+            if state.get("tk_fullscreen"):
+                try:
+                    self.attributes("-fullscreen", False)
+                except tk.TclError:
+                    pass
+            try:
+                self.overrideredirect(bool(state.get("overrideredirect", False)))
+                self.attributes("-topmost", bool(state.get("topmost", False)))
+                if state.get("geometry"):
+                    self.geometry(state["geometry"])
+            except tk.TclError:
+                pass
+            self._fs_restore = None
         self._fullscreen = on
-        self.btn_screen.set_text(tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН"))
-        self.btn_screen.set_active(on)
-        self.btn_screen.set_color(AMBER if on else CYAN)
+        label = tr_("✕ ЭКРАН") if on else tr_("⛶ ЭКРАН")
+        # Кнопка «ЭКРАН» в опытном виде живёт на самом холсте и видна всегда —
+        # полоса с названием программы убирается одним нажатием, без F8.
+        for btn in (getattr(self, "btn_screen", None),
+                    getattr(self, "_xp_screen_button", None)):
+            if btn is None:
+                continue
+            try:
+                btn.set_text(label)
+                btn.set_active(on)
+                btn.set_color(AMBER if on else CYAN)
+            except (tk.TclError, AttributeError):
+                pass
 
     def _esc_fullscreen(self, _e=None) -> None:
         if self._fullscreen:
@@ -1334,6 +1460,10 @@ class Cockpit(tk.Tk):
         if not adapted and saved:
             adapted = saved.text
         self.screens["cargo"].load_initial(adapted, original)
+        if self._layout == "experienced":
+            # «Опытный пилот» начинается с пустого вида. Отсек откроется только
+            # после щелчка по кнопке в рамке чёрточки.
+            return
         if saved is not None and saved.is_unfinished:
             # Продолжаем ровно там, где пилот остановился: набранный фрагмент книги
             # остаётся в работе на мостике. Позиция хранится в session.json и пишется
@@ -1513,14 +1643,47 @@ class Cockpit(tk.Tk):
         if e.keysym == "Escape" and vc is not None and vc.active():
             vc.cancel()                  # Esc - отмена голосового вызова, а не пауза
             return "break"
-        if e.keysym == "Escape" and self._handle_focus_escape():
-            return "break"
+        # ЭКРАН — внешний слой: Esc/Del снимает его ПЕРВЫМ. Иначе двойной Esc
+        # зенида закрывает рабочее окно и оставляет чёрный полноэкранный вид.
         if e.keysym in ("Escape", "Delete") and self._fullscreen:
             self.toggle_fullscreen(False)     # Esc/Del выходит из ЭКРАНА
             # На мостике в паузе — сразу продолжить полёт тем же Esc/Del
             if self.current == "bridge" and self.screens["bridge"].state == "pause":
                 self.screens["bridge"].resume()
             return
+        target = self._zen_target()
+        if target is not None:
+            from stamina import zen_mode
+            if zen_mode.is_zen_hotkey(e):
+                zen_mode.mark_handled(e)
+                page_toggle = getattr(target, "toggle_focus", None)
+                if callable(page_toggle):
+                    page_toggle()
+                else:
+                    zen_mode.toggle(target)
+                return "break"
+            if zen_mode.is_escape(e) and zen_mode.is_active(target):
+                # В грамматике двойной Esc — шаг назад, если есть куда. На верхнем
+                # уровне шага нет: обычный двойной Esc возвращает в исходное состояние
+                # (слайдшоу/мостик), а не оставляет чёрный отсек без выхода.
+                if zen_mode.double_esc_pending() and self._grammar_back():
+                    zen_mode._ESC.reset()
+                    return "break"
+                zen_mode.mark_handled(e)
+                zen_mode.handle_key(e, target)
+                return "break"
+        if e.keysym == "Escape" and self._handle_focus_escape():
+            return "break"
+        if (e.keysym == "Escape" and self._layout == "experienced"
+                and getattr(self, "_xp_work_open", False)
+                and not (zen is not None and getattr(zen, "on", False))):
+            # Зенид рабочего окна обработан выше (двойной Esc). Здесь только
+            # страховка для окна, открытого без зенида.
+            from stamina import zen_mode
+            if not zen_mode.is_active(getattr(self, "_xp_work", None)):
+                from stamina.ui.experienced import close_work
+                close_work(self)
+                return "break"
         if e.keysym == "Escape" and self.current == "bridge_settings":
             from stamina.hud import HudButton
             if not isinstance(self.focus_get(), HudButton):
