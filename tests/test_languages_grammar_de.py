@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+import time
 from pathlib import Path
 
 import pytest
@@ -338,11 +339,17 @@ class TestGrammarUISmoke:
         page = build_grammar_page(root, GermanPlugin(), progress, None)
         root.update()
 
-        def pump() -> None:
-            page._flush_pending()
-            root.update()
-            page._flush_pending()
-            root.update()
+        def pump(until=None) -> None:
+            deadline = time.monotonic() + 3.0 if until is not None else None
+            while True:
+                page._flush_pending()
+                root.update_idletasks()
+                root.update()
+                page._flush_pending()
+                root.update()
+                if until is None or until() or time.monotonic() >= deadline:
+                    return
+                time.sleep(0.02)
 
         try:
             yield page, progress, pump
@@ -394,7 +401,7 @@ class TestGrammarUISmoke:
         pump()
         page._open_lesson(page.level_lessons[0])
         page._start_practice()
-        pump()
+        pump(lambda: page._current_drill() is not None and page._drill_index() is not None)
         drill = page._current_drill()
         expected = page._expected(drill)[0]
         if drill["type"] in ("choice", "identify"):
@@ -412,7 +419,7 @@ class TestGrammarUISmoke:
         pump()
         page._open_lesson(page.level_lessons[0])
         page._start_practice()
-        pump()
+        pump(lambda: page._current_drill() is not None and page._drill_index() is not None)
         drill = page._current_drill()
         expected = page._expected(drill)[0]
         if drill["type"] in ("choice", "identify"):

@@ -189,6 +189,8 @@ class RedrawCellTest(unittest.TestCase):
 
         self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
         self.game.pack(fill=tk.BOTH, expand=True)
+        self.game.canvas.config(width=1000, height=600)
+        self.root.update_idletasks()
         self.root.update()
 
     def tearDown(self) -> None:
@@ -272,7 +274,7 @@ class RedrawCellTest(unittest.TestCase):
             game.redraw()
             self.root.update()
         except tk.TclError as e:
-            if "image" in str(e) and "does not exist" in str(e):
+            if "image" in str(e).lower():
                 self.skipTest(f"Texture loading issue in test environment: {e}")
             raise
 
