@@ -706,6 +706,15 @@ class Cockpit(tk.Tk):
         if self.current == docs_hook.KEY and getattr(scr, "in_focus", lambda: False)():
             scr.toggle_focus(False)
             return True
+        # Кнопка «⛶ ЗЕНИД» на мостике включает зенид САМОГО экрана, а не рабочего
+        # окна опытного вида. Двойной Esc должен снять его, не закрывая отсек —
+        # иначе остаётся чёрный экран с включённым зенидом без хрома.
+        zen_fn = getattr(scr, "zen_target", None)
+        if callable(zen_fn):
+            zt = zen_fn()
+            if zt is not None and zen_mode.is_active(zt):
+                zen_mode.handle_escape(zt)
+                return True
         return False
 
     def show(self, name: str) -> None:

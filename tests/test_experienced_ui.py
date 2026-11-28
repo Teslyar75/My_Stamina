@@ -415,6 +415,24 @@ def test_double_esc_in_languages_grammar_steps_back(xp_app):
     assert app._xp_work_open
 
 
+def test_double_esc_exits_bridge_zen_not_work(xp_app):
+    """«⛶ ЗЕНИД» на мостике снимается двойным Esc, не закрывая рабочий отсек."""
+    app = xp_app()
+    _open_missions_from_ribbon(app)
+    bridge = app.screens["bridge"]
+    app.current = "bridge"
+    assert zen_mode.enter(bridge)
+    assert zen_mode.is_active(bridge)
+
+    _fire_esc(app)
+    assert zen_mode.is_active(bridge)          # первый Esc только запоминается
+    assert app._xp_work_open
+
+    _fire_esc(app)
+    assert not zen_mode.is_active(bridge)      # второй снимает зенид мостика
+    assert app._xp_work_open                   # но не закрывает отсек в чёрный экран
+
+
 def test_screen_button_stays_visible_with_work_open(xp_app):
     """Кнопка ЭКРАН не прячется общим зенидом рабочего окна."""
     app = xp_app()
