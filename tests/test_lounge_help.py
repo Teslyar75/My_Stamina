@@ -167,7 +167,8 @@ def test_game_classes_expose_on_help_and_level_ids():
     src = inspect.getsource(TrainerGame.help_game_id)
     assert "terraformer" in src
     assert "handle_help_keys" in inspect.getsource(DockerTrainerGame.on_key)
-    assert "handle_help_keys" in inspect.getsource(VimTrainerGame.on_key)
+    # VIM обёрнул on_key для заминок-подсказок; сама клавиша помощи живёт в impl.
+    assert "handle_help_keys" in inspect.getsource(VimTrainerGame._on_key_impl)
     assert "handle_help_keys" in inspect.getsource(TrainerGame.on_key)
 
 
