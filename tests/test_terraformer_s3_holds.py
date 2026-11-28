@@ -1,6 +1,18 @@
 """Tests for per-unit holds in terraformer (S3 holds refactor)."""
+import tempfile
+import tkinter as tk
+import unittest
+from pathlib import Path
+
 import pytest
-from stamina.terraformer_trainer import TrainerModel, RESOURCES
+
+from stamina import pilots, theme
+from stamina.terraformer_trainer import (
+    HOLD_CAP as TRAINER_HOLD_CAP,
+    RESOURCES,
+    TrainerModel,
+    load_blueprint,
+)
 from stamina import terraformer_strategy as strategy
 
 
@@ -149,7 +161,7 @@ class TestPerUnitHolds:
         model.main_unit.holds["water"] = 3
         model.main_unit.holds[strategy.SPICE] = 2
         bp = model.to_blueprint()
-        assert bp["version"] == 5
+        assert bp["version"] == 6
         assert "units" in bp
         assert len(bp["units"]) == len(model.units)
         # Check main unit has holds
@@ -169,23 +181,22 @@ class TestPerUnitHolds:
         assert model2.main_unit.holds["water"] == 3
         assert model2.main_unit.holds[strategy.SPICE] == 2
 
-    def test_legacy_blueprint_migrates_holds_to_main_unit(self):
-        """Old blueprint (no unit holds) should migrate model.holds to main_unit."""
-        # Create a v4-style blueprint without units
+    def test_legacy_blueprint_migrates_holds_to_active_unit(self):
+        """Старый общий отсек переносится в активного юнита и удаляется из чертежа."""
         model = TrainerModel(w=10, h=10, depth=1)
-        model.holds["water"] = 5
-        model.holds[strategy.SPICE] = 3
         bp = model.to_blueprint()
         bp["version"] = 4
+        bp["holds"] = {"water": 5, strategy.SPICE: 3}
         bp.pop("units", None)
         bp.pop("selected", None)
         bp.pop("missions", None)
         bp.pop("worm", None)
-        # Load into new model
+
         model2 = TrainerModel.from_blueprint(bp)
-        # Legacy model.holds should be transferred to main_unit
         assert model2.main_unit.holds["water"] == 5
         assert model2.main_unit.holds[strategy.SPICE] == 3
+        # Новый чертёж больше не содержит общего отсека.
+        assert "holds" not in model2.to_blueprint()
 
     def test_selected_units_have_independent_holds(self):
         """Each selected unit should have independent holds."""
@@ -220,6 +231,183 @@ class TestPerUnitHolds:
         # Setup a platform at unit position
         # This is a basic smoke test - just ensure no crash
         model.move(0, 0, model.main_unit)  # no-op, just test
+
+
+class TestStep1HoldFlow:
+    """Шаг 1: свои отсеки, активный юнит, авторазгрузка и «Сформировать»."""
+
+    def test_no_shared_holds_and_one_cap(self) -> None:
+        model = TrainerModel(w=10, h=10, depth=1)
+        assert not hasattr(model, "holds")
+        assert TRAINER_HOLD_CAP is strategy.HOLD_CAP
+        assert model._hold_cap() == strategy.HOLD_CAP == 5
+        model.upgrades = model.upgrades + ("soil_compactor", "yield_booster")
+        assert model._hold_cap() == strategy.HOLD_CAP
+
+    def test_camera_and_resources_follow_active_unit(self) -> None:
+        model = TrainerModel(w=20, h=20, seed=1, depth=2)
+        second = model.add_unit("A1", x=8, y=7)
+        model.set_active_unit(second)
+        assert model.active_uid == second.uid
+        assert model.robot == [second.x, second.y]
+        assert model.main_unit is model.units[0]
+
+        second.holds["soil"] = 3
+        bp = model.to_blueprint()
+        assert "holds" not in bp
+        assert bp["active_uid"] == second.uid
+        restored = TrainerModel.from_blueprint(bp)
+        assert restored.active_uid == second.uid
+        assert restored.robot == [second.x, second.y]
+        active = next(u for u in restored.units if u.uid == second.uid)
+        assert active.holds["soil"] == 3
+
+        # Прямое назначение selected в старых тестах не должно тащить камеру.
+        restored.selected = {restored.units[0].uid}
+        assert restored.active_uid == second.uid
+        assert restored.robot == [second.x, second.y]
+
+    def test_move_syncs_camera_to_active_not_main(self) -> None:
+        model = TrainerModel(w=20, h=20, seed=1, depth=2)
+        second = model.add_unit("A1", x=8, y=7)
+        model.set_active_unit(second)
+        before_main = list(model.main_unit.holds.items())
+        assert model.move(1, 0)
+        assert model.robot == [second.x, second.y] == [9, 7]
+        assert model.main_unit.x != second.x or model.main_unit.y != second.y
+        assert list(model.main_unit.holds.items()) == before_main
+
+    def test_full_unit_drives_and_unloads_itself(self) -> None:
+        model = TrainerModel(w=20, h=20, seed=1, depth=2)
+        model.developer = True
+        model.springs.clear()
+        model.dug = [[0 for _ in range(model.w)] for _ in range(model.h)]
+        unit = model.main_unit
+        unit.x, unit.y = 9, 9
+        unit.mode = "autonomous"
+        unit.holds["soil"] = strategy.HOLD_CAP
+        assert model._find_build_target(unit) is not None
+
+        placed_before = len(model.blocks) + len(model.platform_blocks)
+        for _ in range(30):
+            model.tick_autonomous()
+            if unit.holds.get("soil", 0) == 0:
+                break
+
+        assert unit.holds.get("soil", 0) == 0
+        assert len(model.blocks) + len(model.platform_blocks) > placed_before
+        assert unit.order == ""
+        assert unit.target is None
+
+    def test_form_current_stage_builds_in_one_press(self) -> None:
+        model = TrainerModel(w=20, h=20, seed=1, depth=2)
+        model.developer = True
+        # Платформа появляется, только когда найдено месторождение.
+        platform = model._ensure_platform("water", (10, 10))
+        assert platform is not None
+        accessible = [p for p in model.platforms
+                      if all(0 <= x < model.w and 0 <= y < model.h
+                             for x, y in p.all_cells_abs())]
+        assert accessible and any(not p.complete for p in accessible)
+
+        ok, _ = model.form_current_stage()
+        assert ok
+        assert model.walls_open
+        assert set(model.site_cells()).issubset(set(model.blocks))
+        assert all(p.complete for p in accessible)
+        assert model.form_current_stage()[0] is False
+
+
+class _Event:
+    def __init__(self, x: float = 0, y: float = 0, keysym: str = "",
+                 keycode: int = 0, state: int = 0) -> None:
+        self.x = x
+        self.y = y
+        self.keysym = keysym
+        self.keycode = keycode
+        self.state = state
+
+
+class TestStep1HudControls(unittest.TestCase):
+    """Чекбоксы режимов и кнопка «Сформировать» кликабельны и сохраняются."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            cls.root = tk.Tk()
+        except tk.TclError:
+            cls.root = None
+            return
+        theme.init(cls.root)
+        cls.root.geometry("1024x600")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if getattr(cls, "root", None) is not None:
+            try:
+                cls.root.destroy()
+            except tk.TclError:
+                pass
+
+    def setUp(self) -> None:
+        if getattr(self, "root", None) is None:
+            self.skipTest("нет дисплея")
+        self.tmp = tempfile.TemporaryDirectory()
+        data = Path(self.tmp.name) / "Stamina"
+        data.mkdir()
+        pilots.reset_root(data)
+        pilots.activate(pilots.create("Tester")["id"])
+        from stamina.lounge.trainer import TrainerGame
+        try:
+            self.game = TrainerGame(self.root, on_back=lambda: None, app=None)
+            self.game.pack(fill=tk.BOTH, expand=True)
+            self.root.update()
+            self.game.redraw()
+        except tk.TclError as exc:
+            if "image" in str(exc).lower():
+                self.tmp.cleanup()
+                self.skipTest(f"Tk image: {exc}")
+            raise
+
+    def tearDown(self) -> None:
+        try:
+            self.game.stop()
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            self.game.destroy()
+        except tk.TclError:
+            pass
+        self.tmp.cleanup()
+
+    def _click_tag(self, tag: str) -> None:
+        items = self.game.canvas.find_withtag(tag)
+        assert items, tag
+        box = self.game.canvas.bbox(items[0])
+        assert box is not None, tag
+        e = _Event(x=(box[0] + box[2]) / 2, y=(box[1] + box[3]) / 2)
+        self.game._on_lmb_down(e)
+        self.game._on_lmb_up(e)
+
+    def test_mode_checkbox_is_clickable_and_saved(self) -> None:
+        game = self.game
+        unit = game.model.active_unit()
+        target = next(mode for mode in ("autonomous", "semi-autonomous", "manual")
+                      if mode != unit.mode)
+        self._click_tag(f"mode:{unit.uid}:{target}")
+        assert unit.mode == target
+        saved = load_blueprint()
+        saved_unit = saved.unit_by_uid(unit.uid)
+        assert saved_unit is not None and saved_unit.mode == target
+
+    def test_form_stage_button_builds_current_stage(self) -> None:
+        game = self.game
+        game.model.developer = True
+        game.redraw()
+        self._click_tag("form_stage")
+        assert game.model.walls_open
+        assert set(game.model.site_cells()).issubset(set(game.model.blocks))
+        assert load_blueprint().walls_open is True
 
 
 class TestUIIntegration:

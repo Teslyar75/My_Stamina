@@ -102,6 +102,9 @@ WORM_MOVE_EVERY = 3          # тиков между шагами червя
 WORM_SPICE_CHANCE = 0.28     # шанс оставить специю на месте гибели/норы
 SPICE = "spice"
 FOUNDATION_SAFE = "foundation"   # тип клетки, где червь не достаёт технику
+# Единственная ёмкость отсека грунта. Апгрейды меняют скорость и выгоду,
+# но не создают вторую ёмкость для того же числа.
+HOLD_CAP = 5
 
 
 def level_index(name: str | None) -> int:
@@ -521,7 +524,7 @@ def unit_action_report(unit: Unit) -> dict:
     soil = unit.holds.get("soil", 0)
     # Check if has any finds (resources other than soil)
     has_finds = any(v > 0 for k, v in unit.holds.items() if k not in ("soil", "spice"))
-    cap = 5  # HOLD_CAP from trainer, simplified
+    cap = HOLD_CAP
 
     if soil >= cap:
         return {"action": "unloading", "target": None, "status": "unloading"}

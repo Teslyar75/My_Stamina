@@ -5,12 +5,12 @@ F1 — инструкция (модальный оверлей поверх по
 """
 from __future__ import annotations
 
-from stamina.i18n import t as _t
+from stamina.i18n import language as _language, t as _t
 
 import math
 import tkinter as tk
 
-from stamina import theme, wheel_router
+from stamina import layouts, theme, wheel_router
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, TEXT, blend, px
 
 from ..terraformer_trainer import (
@@ -34,10 +34,11 @@ from ..terraformer_trainer import (
     get_next_tier_preview,
     platform_height,
     deposit_is_visible,
+    generate_finds,
 )
 from .. import terraformer_strategy as strategy
 from . import iso
-from .iso import terrain_gz, prism_faces, apply_zoom
+from .iso import prism_faces, apply_zoom
 
 from .base import GameShell
 
@@ -263,6 +264,8 @@ class TrainerGame(GameShell):
         self._gallery_resource: str = "water"
         self._gallery_variant: int = 0
         self._gallery_view_3d: bool = False
+        self._gallery_level: str = ""
+        self._gallery_finds_cache: dict[tuple[int, str], dict] = {}
         # состояние стратегии: рамка выделения и перетаскивание карты
         self._lmb_start: tuple[float, float] | None = None
         self._lmb_box: int | None = None
@@ -274,6 +277,7 @@ class TrainerGame(GameShell):
         self._last_mouse: tuple[int, int] = (0, 0)
         self._iso_view = False                # I: переключение плоский/изометрический вид
         self._iso_zoom = 1.0                  # отдельный зум для изометрии
+        self._iso_cell_anchor: dict[tuple[int, int], int] = {}
         # миникарта и панорама у края
         self.vim_move_mode = False
         self._vim_count = ""
@@ -305,7 +309,7 @@ class TrainerGame(GameShell):
         # отряд, экономика, червь, задания
         if self.model.tick_units():
             self.camera.resize(self.model.w, self.model.h)
-            self.camera.track(*self.model.robot)
+            self._track_camera(*self.model.robot)
         # автономное поведение юнитов не в manual режиме
         self.model.tick_autonomous()
         if self.model.tick_income():
@@ -315,6 +319,8 @@ class TrainerGame(GameShell):
             self.show_toast(_t("Специя! Червь оставил ценный ресурс"), True)
         if event and event.get("attacked"):
             self.show_toast(_t("Червь атакует технику на песке!"))
+        if event and event.get("lost_intel"):
+            self.show_toast(_t("Часть разведданных потеряна"))
         fresh = self.model.evaluate_missions()
         if fresh:
             m = fresh[-1]
@@ -344,6 +350,7 @@ class TrainerGame(GameShell):
         self.model = TrainerModel.for_level()
         self.camera = Camera(self.model.w, self.model.h)
         self.camera.reset(*self.model.robot)
+        self._iso_cell_anchor.clear()
         self.msg = ""
         self.overlay = None
         self._lmb_start = None
@@ -356,6 +363,8 @@ class TrainerGame(GameShell):
         self._gallery_resource = "water"
         self._gallery_variant = 0
         self._gallery_view_3d = False
+        self._gallery_level = ""
+        self._gallery_finds_cache.clear()
         self._last_mouse = (0, 0)
         self._minimap_rect = None
         self._minimap_press = False
@@ -515,6 +524,7 @@ class TrainerGame(GameShell):
                 self._iso_zoom = iso.apply_zoom(-1, w / 2, h / 2, w, h,
                                                 self.camera, self._iso_zoom,
                                                 self.model.dug, self.model.w, self.model.h)
+                self._clamp_camera(w, h)
             else:
                 self.camera.zoom_in()
             self.redraw()
@@ -526,14 +536,19 @@ class TrainerGame(GameShell):
                 self._iso_zoom = iso.apply_zoom(1, w / 2, h / 2, w, h,
                                                 self.camera, self._iso_zoom,
                                                 self.model.dug, self.model.w, self.model.h)
+                self._clamp_camera(w, h)
             else:
                 self.camera.zoom_out()
             self.redraw()
         elif name == "home":
+            self._iso_zoom = 1.0
             if self.vim_move_mode:
                 self._vim_nav_command(("vim_row_start",))
             else:
                 self.camera.reset(*self.model.robot)
+                if self._iso_view:
+                    self._center_iso_cell(*self.model.robot)
+                self._clamp_camera()
                 self.redraw()
         elif name == "mixed_mode":
             self._toggle_mixed_mode()
@@ -545,9 +560,99 @@ class TrainerGame(GameShell):
             self._toggle_mode()
             self.redraw()
 
+    # -- iso: геометрия камеры и мыши ------------------------------------------
+    def _iso_metrics(self, w: int | None = None, h: int | None = None) -> iso.TileMetrics:
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        return iso.tile_metrics(self._iso_zoom, w, h, self.camera)
+
+    def _cell_from_screen(self, sx: float, sy: float,
+                          w: int | None = None, h: int | None = None) -> tuple[int, int] | None:
+        """Точный screen→cell: в изометрии — по верхней грани тайла."""
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        if not self._iso_view:
+            return self.camera.to_cell(sx, sy, w, h)
+        m = self._iso_metrics(w, h)
+        hit = iso.pick_surface(sx, sy, m, self.model.dug, self.model.w, self.model.h)
+        return None if hit is None else (hit[0], hit[1])
+
+    def _iso_cell_camera(self, x: int, y: int) -> tuple[float, float]:
+        """Центр камеры, при котором верхняя грань клетки (x,y) — в центре экрана."""
+        if not (0 <= x < self.model.w and 0 <= y < self.model.h):
+            return self.camera.cx, self.camera.cy
+        gz = iso.terrain_gz(self.model.dug[y][x]) + 1
+        return x + 0.5 - gz, y + 0.5 - gz
+
+    def _center_iso_cell(self, x: int, y: int) -> None:
+        self.camera.cx, self.camera.cy = self._iso_cell_camera(int(x), int(y))
+
+    def _clamp_camera(self, w: int | None = None, h: int | None = None) -> None:
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        if self._iso_view:
+            m = self._iso_metrics(w, h)
+            self.camera.clamp_iso(m.hw, m.hh, w, h)
+        else:
+            self.camera._clamp()
+
+    def _track_camera(self, x: float, y: float) -> None:
+        if not self.camera.follow:
+            return
+        if self._iso_view:
+            self._center_iso_cell(int(x), int(y))
+        else:
+            self.camera.track(x, y)
+        self._clamp_camera()
+
+    def _pan_screen(self, dx: float, dy: float, step: float = 1.0) -> None:
+        """Панорама по экранным осям (в изометрии — по диагоналям ромба)."""
+        if self._iso_view:
+            m = self._iso_metrics()
+            sx, sy = dx * step, dy * step
+            wx = (sx / m.hw + sy / m.hh) / 2.0
+            wy = (sy / m.hh - sx / m.hw) / 2.0
+            self.camera.pan(wx, wy)
+        else:
+            self.camera.pan(dx * step, dy * step)
+        self._clamp_camera()
+
+    def _iso_selection_points(self, sx0: float, sy0: float, sx1: float, sy1: float,
+                              w: int | None = None, h: int | None = None) -> list[float] | None:
+        """Рамка выделения в iso — параллелограмм по линиям ромбовой сетки."""
+        w = max(self.canvas.winfo_width(), 10) if w is None else int(w)
+        h = max(self.canvas.winfo_height(), 10) if h is None else int(h)
+        a = self._cell_from_screen(sx0, sy0, w, h)
+        b = self._cell_from_screen(sx1, sy1, w, h)
+        if a is None or b is None:
+            return None
+        x0, x1 = sorted((a[0], b[0]))
+        y0, y1 = sorted((a[1], b[1]))
+        m = self._iso_metrics(w, h)
+        corners = ((x0, y0), (x1 + 1, y0), (x1 + 1, y1 + 1), (x0, y1 + 1))
+        flat: list[float] = []
+        for gx, gy in corners:
+            flat.extend(iso.world_to_screen(gx, gy, 1, m))
+        return flat
+
     def _toggle_iso_view(self) -> None:
-        """Переключает между плоским (топ-даун) и изометрическим видом."""
+        """Переключает вид, сохраняя клетку в центре экрана."""
+        w = max(self.canvas.winfo_width(), 10)
+        h = max(self.canvas.winfo_height(), 10)
+        if self._iso_view:
+            cell = self._cell_from_screen(w / 2, h / 2, w, h)
+            if cell is None:
+                cell = self.camera.to_cell(w / 2, h / 2, w, h)
+        else:
+            cell = self.camera.to_cell(w / 2, h / 2, w, h)
+        follow = self.camera.follow
         self._iso_view = not self._iso_view
+        if self._iso_view:
+            self._center_iso_cell(cell[0], cell[1])
+        else:
+            self.camera.center_on(cell[0] + 0.5, cell[1] + 0.5)
+        self.camera.follow = follow
+        self._clamp_camera(w, h)
         mode = _t("ИЗОМЕТРИЯ") if self._iso_view else _t("ПЛОСКИЙ ВИД")
         self.show_toast(_t("Вид: {0}").format(mode))
 
@@ -664,7 +769,7 @@ class TrainerGame(GameShell):
 
     def do_move(self, dx: int, dy: int) -> bool:
         moved = self.model.move(dx, dy)
-        self.camera.track(*self.model.robot)
+        self._track_camera(*self.model.robot)
         self.msg = ""
         self.redraw()
         return moved
@@ -686,7 +791,7 @@ class TrainerGame(GameShell):
     # -- камера: стрелки, край экрана, миникарта --------------------------------
     def pan_camera(self, dx: int, dy: int, step: float = 2.0) -> None:
         """Сдвинуть камеру стрелками; слежение за отрядом выключается."""
-        self.camera.pan(dx * step, dy * step)
+        self._pan_screen(dx, dy, step)
         self.redraw()
 
     @staticmethod
@@ -714,7 +819,7 @@ class TrainerGame(GameShell):
             return 0, 0
         dx, dy = self.edge_pan_direction(mx, my, w, h, margin)
         if dx or dy:
-            self.camera.pan(dx * EDGE_PAN_STEP, dy * EDGE_PAN_STEP)
+            self._pan_screen(dx, dy, EDGE_PAN_STEP)
             self.redraw()
         return dx, dy
 
@@ -757,7 +862,12 @@ class TrainerGame(GameShell):
             return
         gx, gy = minimap_click_to_world(sx, sy, self._minimap_rect,
                                         self.model.w, self.model.h)
-        self.camera.center_on(gx, gy)
+        if self._iso_view:
+            self._center_iso_cell(int(gx), int(gy))
+            self.camera.follow = False
+        else:
+            self.camera.center_on(gx, gy)
+        self._clamp_camera()
         self.redraw()
 
     def do_dig(self) -> str:
@@ -794,7 +904,7 @@ class TrainerGame(GameShell):
                 save_blueprint(self.model)
             except Exception:  # noqa: BLE001
                 pass
-        self.camera.track(*self.model.robot)
+        self._track_camera(*self.model.robot)
         # Redraw only the cells that were dug
         for x, y in dug_cells:
             self.redraw_cell(x, y)
@@ -827,7 +937,7 @@ class TrainerGame(GameShell):
                         resource_name(prio.resource), dx, dy)
                 else:
                     self.msg = _t("Нельзя уложить: {0}").format(msg)
-        self.camera.track(*self.model.robot)
+        self._track_camera(*self.model.robot)
         save_blueprint(self.model)
         self.redraw()
         return success, msg
@@ -846,7 +956,7 @@ class TrainerGame(GameShell):
         elif result == "done":
             self.msg = _t("Все блоки уже уложены")
         self.set_score(len(self.model.blocks) + len(self.model.platform_blocks))
-        self.camera.track(*self.model.robot)
+        self._track_camera(*self.model.robot)
         save_blueprint(self.model)
         self.redraw()
         return result
@@ -887,6 +997,7 @@ class TrainerGame(GameShell):
             self._gallery_resource = found[0] if found else "water"
             self._gallery_variant = 0
             self._gallery_view_3d = False
+            self._gallery_level = self.model.standing.current_level
         self.redraw()
         return self.overlay
 
@@ -972,6 +1083,102 @@ class TrainerGame(GameShell):
                     self.app.open_english()
                 return
 
+    # -- кнопки HUD: режимы и «Сформировать» ----------------------------------
+    _MODE_LABELS = (
+        ("manual", "РУЧНОЙ"),
+        ("autonomous", "АВТО"),
+        ("semi-autonomous", "ПОЛУ-АВТО"),
+    )
+
+    def _set_unit_mode(self, uid: str, mode: str) -> None:
+        """Переключить режим одного юнита и сразу записать его в чертёж."""
+        if mode not in dict(self._MODE_LABELS):
+            return
+        unit = self.model.unit_by_uid(uid)
+        if unit is None:
+            return
+        unit.mode = mode
+        unit.path = []
+        unit.order = ""
+        unit.target = None
+        self.model.set_active_unit(unit)
+        save_blueprint(self.model)
+        label = _t(dict(self._MODE_LABELS)[mode])
+        self.show_toast(_t("{0}: {1}").format(unit.name, label), True)
+
+    def _form_stage(self) -> None:
+        """Кнопка «Сформировать»: готовит текущий этап и сохраняет чертёж."""
+        ok, msg = self.model.form_current_stage()
+        self.msg = msg
+        save_blueprint(self.model)
+        self.show_toast(msg, ok)
+
+    def _hud_button_tags(self, x: float, y: float) -> tuple[str, ...]:
+        """Найти кнопку HUD под курсором (клик по тексту тоже считается)."""
+        for item in reversed(self.canvas.find_withtag("hud_button")):
+            box = self.canvas.bbox(item)
+            if box is None:
+                continue
+            if box[0] <= x <= box[2] and box[1] <= y <= box[3]:
+                return tuple(self.canvas.gettags(item))
+        return ()
+
+    def _handle_hud_click(self, e: tk.Event) -> bool:
+        if self.overlay is not None or self.paused:
+            return False
+        tags = self._hud_button_tags(e.x, e.y)
+        for tag in tags:
+            if tag.startswith("mode:"):
+                _, uid, mode = tag.split(":", 2)
+                self._set_unit_mode(uid, mode)
+                return True
+            if tag == "form_stage":
+                self._form_stage()
+                return True
+        return False
+
+    def _draw_mode_controls(self, selected: list, ty: float) -> float:
+        """Общие кликабельные чекбоксы режимов и кнопка «Сформировать».
+
+        Возвращает Y под кнопкой, чтобы обе карты (плоская и изо) клали
+        остальной HUD на одно и то же место.
+        """
+        c = self.canvas
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(15)
+        for u in selected[:3]:
+            for col, (mode_key, mode_label) in enumerate(self._MODE_LABELS):
+                checked = u.mode == mode_key
+                tags = ("hud_button", "mode_checkbox", f"mode:{u.uid}:{mode_key}")
+                box_x = px(10 + col * 72)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                   outline=GREEN if checked else MUTED,
+                                   width=2 if checked else 1, tags=tags)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2,
+                                  box_x + box_size // 2, box_y + box_size - 2,
+                                  fill=GREEN, width=2, tags=tags)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2,
+                                  box_x + box_size - 2, box_y + 2,
+                                  fill=GREEN, width=2, tags=tags)
+                c.create_text(box_x + box_size + px(3), box_y, text=_t(mode_label),
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked), tags=tags)
+            ty += px(16)
+
+        ty += px(3)
+        bx0, by0 = px(10), ty
+        bx1, by1 = px(120), ty + px(19)
+        tags = ("hud_button", "form_stage")
+        c.create_rectangle(bx0, by0, bx1, by1, fill=BG2, outline=AMBER, width=1,
+                           tags=tags)
+        c.create_text((bx0 + bx1) / 2, (by0 + by1) / 2, text=_t("СФОРМИРОВАТЬ"),
+                      fill=TEXT, anchor="center", font=theme.font(9, True), tags=tags)
+        return by1 + px(8)
+
     # -- колесо --------------------------------------------------------------
     def on_wheel(self, direction: int, ctrl: bool, shift: bool,
                  x: int | None = None, y: int | None = None) -> None:
@@ -990,13 +1197,14 @@ class TrainerGame(GameShell):
                     self._last_mouse[1] if y is None else y, w, h,
                     self.camera, self._iso_zoom,
                     self.model.dug, self.model.w, self.model.h)
+                self._clamp_camera(w, h)
             else:
                 self.camera.zoom_at(direction, self._last_mouse[0] if x is None else x,
                                     self._last_mouse[1] if y is None else y, w, h)
         elif shift:
-            self.camera.pan(2 * direction, 0)
+            self._pan_screen(2 * direction, 0, 1.0)
         else:
-            self.camera.pan(0, 2 * direction)
+            self._pan_screen(0, 2 * direction, 1.0)
         self.redraw()
 
     def _wheel_event(self, e: tk.Event) -> str:
@@ -1017,7 +1225,7 @@ class TrainerGame(GameShell):
         w = max(self.canvas.winfo_width(), 10)
         h = max(self.canvas.winfo_height(), 10)
         self._rmb_start = (float(e.x), float(e.y))
-        self._rmb_cell = self.camera.to_cell(e.x, e.y, w, h)
+        self._rmb_cell = self._cell_from_screen(e.x, e.y, w, h)
         return "break"
 
     def _on_rmb_drag(self, e: tk.Event) -> str:
@@ -1033,7 +1241,11 @@ class TrainerGame(GameShell):
             return ""
         w = max(self.canvas.winfo_width(), 10)
         h = max(self.canvas.winfo_height(), 10)
-        tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+        cell = self._cell_from_screen(e.x, e.y, w, h)
+        if cell is not None:
+            tx, ty = cell
+        else:
+            tx, ty = -1, -1
         if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
             # RMB click: order selected units to move (не выделяет, не box-select)
             result = self.model.command_move(tx, ty)
@@ -1055,15 +1267,24 @@ class TrainerGame(GameShell):
                     if hasattr(self.app, "open_english"):
                         self.app.open_english()
                     return ""
+                for tag in tags:
+                    if tag.startswith("gallery_level:"):
+                        level = tag.split(":", 1)[1]
+                        if level in strategy.LEVELS:
+                            self._gallery_level = level
+                            self.redraw()
+                        return ""
         if self.overlay is not None:
             return ""
+        if self._handle_hud_click(e):
+            return "break"
         if point_in_rect(e.x, e.y, self._minimap_rect):
             self._minimap_press = True
             self._lmb_start = None
             self._minimap_jump(e.x, e.y)
             return "break"
         self._lmb_start = (float(e.x), float(e.y))
-        self._lmb_cell = self.camera.to_cell(e.x, e.y, max(self.canvas.winfo_width(), 10), max(self.canvas.winfo_height(), 10))
+        self._lmb_cell = self._cell_from_screen(e.x, e.y)
         self._lmb_box = None
         return "break"
 
@@ -1078,8 +1299,16 @@ class TrainerGame(GameShell):
             return "break"
         if self._lmb_box is not None:
             self.canvas.delete(self._lmb_box)
-        self._lmb_box = self.canvas.create_rectangle(
-            x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
+        if self._iso_view:
+            points = self._iso_selection_points(x0, y0, e.x, e.y)
+            if points is None:
+                return "break"
+            self._lmb_box = self.canvas.create_line(
+                *points, points[0], points[1], fill=GREEN, width=2,
+                dash=(4, 2), tags="selbox")
+        else:
+            self._lmb_box = self.canvas.create_rectangle(
+                x0, y0, e.x, e.y, outline=GREEN, width=2, dash=(4, 2), tags="selbox")
         return "break"
 
     def _on_lmb_up(self, e: tk.Event) -> str:
@@ -1098,17 +1327,24 @@ class TrainerGame(GameShell):
         x0, y0 = start
         if abs(e.x - x0) + abs(e.y - y0) >= 6:
             # box select
-            ax, ay = self.camera.to_cell(x0, y0, w, h)
-            bx, by = self.camera.to_cell(e.x, e.y, w, h)
+            first = self._cell_from_screen(x0, y0, w, h)
+            last = self._cell_from_screen(e.x, e.y, w, h)
+            if first is None or last is None:
+                return "break"
+            ax, ay = first
+            bx, by = last
             picked = self.model.select_rect(ax, ay, bx, by)
             self.show_toast(_t("Выделено терраформеров: {0}").format(len(picked)))
         else:
             # LMB click - select unit or clear selection
-            tx, ty = self.camera.to_cell(e.x, e.y, w, h)
+            cell = self._cell_from_screen(e.x, e.y, w, h)
+            if cell is None:
+                return "break"
+            tx, ty = cell
             if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
                 unit = self.model.unit_at(tx, ty)
                 if unit is not None:
-                    self.model.selected = {unit.uid}
+                    self.model.select_unit(unit)
                     self.show_toast(_t("Выделено терраформеров: {0}").format(1))
                 else:
                     self.model.clear_selection()
@@ -1123,8 +1359,12 @@ class TrainerGame(GameShell):
         if self._mmb_last is None:
             return ""
         lx, ly = self._mmb_last
-        cell = max(self.camera.cell_px(), 1.0)
-        self.camera.pan(-(e.x - lx) / cell, -(e.y - ly) / cell)
+        if self._iso_view:
+            self._pan_screen(-(e.x - lx), -(e.y - ly), 1.0)
+        else:
+            cell = max(self.camera.cell_px(), 1.0)
+            self.camera.pan(-(e.x - lx) / cell, -(e.y - ly) / cell)
+            self._clamp_camera()
         self._mmb_last = (float(e.x), float(e.y))
         self.redraw()
         return "break"
@@ -1185,6 +1425,9 @@ class TrainerGame(GameShell):
     def redraw_cell(self, x: int, y: int) -> None:
         """Redraw a single cell at (x, y) in correct z-order:
         terrain → deposit → foundation/blueprint → fog tint → units."""
+        if self._iso_view:
+            self._redraw_iso_cell(x, y)
+            return
         c = self.canvas
         model = self.model
         cam = self.camera
@@ -1362,31 +1605,11 @@ class TrainerGame(GameShell):
                           font=theme.font(10, bold))
             ty += px(16)
 
-        # Режим выбранного юнита — чекбоксы
+        # Режим выбранного юнита — кликабельные чекбоксы и «Сформировать»
         selected = model.selected_units()
         if not selected:
             selected = [model.main_unit]
-        ty += px(4)
-        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
-                      font=theme.font(9, True))
-        ty += px(13)
-        for u in selected[:3]:
-            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
-                checked = u.mode == mode_key
-                box_x = px(10)
-                box_y = ty
-                box_size = px(11)
-                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
-                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
-                if checked:
-                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
-                                 fill=GREEN, width=2)
-                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
-                                 fill=GREEN, width=2)
-                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
-                              fill=TEXT if checked else MUTED, anchor="nw",
-                              font=theme.font(8, checked))
-            ty += px(32)
+        ty = self._draw_mode_controls(selected, ty + px(4))
 
         # задания: сколько выполнено и сколько непрочитанных тревог
         book = model.mission_book
@@ -1424,6 +1647,7 @@ class TrainerGame(GameShell):
 
         # визуальная шкала прогресса языка — возвращает нижнюю Y
         ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        ty = self._draw_reminders(ty)
 
         # расширяем фон панели под реальный контент
         c.coords(bg_id, 0, 0, px(230), ty)
@@ -1482,6 +1706,41 @@ class TrainerGame(GameShell):
             "auto_builder": _t("Автостроитель"),
             "terraform_core": _t("Ядро терраформирования"),
         }
+
+    def _reminder_lines(self) -> tuple[str, str]:
+        """Две спокойные подсказки: что нужно и что можно прямо сейчас."""
+        model = self.model
+        level = model.standing.current_level
+        pending = [m for m in model.mission_book.by_level(level) if not m.done]
+        if pending:
+            need = _t("НУЖНО: {0}").format(pending[0].title)
+        elif not model.walls_open:
+            need = _t("НУЖНО: уложить блоки фундамента ({0}/{1})").format(*model.progress())
+        else:
+            need = _t("НУЖНО: закрыть задания уровня")
+
+        unit = model.active_unit()
+        complete, total = model.progress()
+        if unit.holds.get("soil", 0) >= model._hold_cap() and complete < total:
+            can = _t("МОЖНО: уложить блок (E)")
+        elif any(not p.complete for p in model.platforms):
+            can = _t("МОЖНО: построить платформу (G)")
+        else:
+            level_name = model.standing.current_level
+            affordable = [spec.title for key, spec in strategy.STRUCTURES.items()
+                          if model.credits >= spec.cost
+                          and strategy.structure_available(key, level_name, model.developer)]
+            can = (_t("МОЖНО: построить {0} (N)").format(affordable[0])
+                   if affordable else _t("МОЖНО: копайте грунт (Пробел)"))
+        return need, can
+
+    def _draw_reminders(self, y: int) -> int:
+        c = self.canvas
+        need, can = self._reminder_lines()
+        for text, color in ((need, AMBER), (can, GREEN)):
+            y = self._draw_text_stacked(c, px(10), y, text, color, "nw",
+                                        theme.font(8, True), width=px(210), pad=2)
+        return y + px(2)
 
     def _draw_language_progress_bar(self, w: int, h: int, y: int) -> int:
         """Шкала из восьми уровней A1…C2: текущий, проценты и что откроется дальше.
@@ -2067,8 +2326,90 @@ class TrainerGame(GameShell):
                       font=theme.font(max(8, int(cell * 0.35)), True))
 
     # -- галерея платформ: отрисовка -------------------------------------------
+    def _gallery_finds(self, level: str) -> dict:
+        """Раскладка находок уровня: детерминирована сидом пилота и размером карты."""
+        if level not in strategy.LEVELS:
+            level = self.model.standing.current_level
+        key = (self.model.seed, level)
+        if key not in self._gallery_finds_cache:
+            mw, mh = strategy.map_size(level)
+            self._gallery_finds_cache[key] = generate_finds(self.model.seed, mw, mh)
+        return self._gallery_finds_cache[key]
+
+    @staticmethod
+    def _layout_name(kind: str) -> str:
+        return {"ru": "ЙЦУКЕН", "de": "QWERTZ", "en": "QWERTY"}.get(kind, kind)
+
+    def _gallery_key_hints(self) -> str:
+        """Буквы ресурсов на клавиатуре этого пилота."""
+        kind = layouts.keyboard_for(_language())
+        pairs = (("water", "w"), ("stone", "s"), ("organic", "o"),
+                 ("iron", "i"), ("quartz", "q"))
+        keys = []
+        for res, char in pairs:
+            key = layouts.key_for_char(char, kind) or char
+            keys.append(f"{resource_name(res)[:4]}={key.upper()}")
+        return ", ".join(keys)
+
+    def _draw_gallery_level_strip(self, w: int, y: int) -> int:
+        """Восемь кликабельных уровней A1…C2 и мини-карта выбранного уровня."""
+        c = self.canvas
+        pad = px(20)
+        levels = strategy.LEVELS
+        gap = px(4)
+        card_w = max(px(24), (w - pad * 2 - gap * (len(levels) - 1)) // len(levels))
+        card_h = px(26)
+        for i, name in enumerate(levels):
+            x0 = pad + i * (card_w + gap)
+            selected = name == self._gallery_level
+            unlocked = self.model.standing.levels[i].unlocked
+            tags = ("gallery", "gallery_level", f"gallery_level:{name}")
+            c.create_rectangle(x0, y, x0 + card_w, y + card_h,
+                               fill=AMBER if selected else (CYAN if unlocked else BG2),
+                               outline=TEXT if selected else LINE,
+                               width=2 if selected else 1, tags=tags)
+            c.create_text(x0 + card_w // 2, y + card_h // 2, text=name,
+                          fill=BG if selected or unlocked else MUTED,
+                          font=theme.font(9, True), anchor="center", tags=tags)
+        y += card_h + px(4)
+
+        level = self._gallery_level or self.model.standing.current_level
+        mw, mh = strategy.map_size(level)
+        finds = self._gallery_finds(level)
+        layout = layouts.keyboard_for(_language())
+        c.create_text(pad, y, text=_t("СИД {0} · РАСКЛАДКА {1}").format(
+            self.model.seed, self._layout_name(layout)),
+            fill=CYAN, anchor="nw", font=theme.font(9, True), tags="gallery")
+        y += px(15)
+        c.create_text(pad, y, text=_t("НАХОДКИ {0} · КАРТА {1}×{2}").format(
+            len(finds), mw, mh), fill=TEXT, anchor="nw", font=theme.font(8), tags="gallery")
+        y += px(14)
+        c.create_text(pad, y, text=self._gallery_key_hints(), fill=MUTED, anchor="nw",
+                      font=theme.font(8), width=w - pad * 2, tags="gallery")
+        y += px(15)
+
+        colors = {
+            "water": "#2E9BFF", "stone": "#888888", "organic": "#4A7C2E",
+            "iron": "#A0522D", "quartz": "#E8E8F0",
+        }
+        cols, rows = 24, 7
+        size = min((w - pad * 2) / cols, px(9))
+        for gy in range(rows):
+            for gx in range(cols):
+                cell = (min(mw - 1, int((gx + 0.5) * mw / cols)),
+                        min(mh - 1, int((gy + 0.5) * mh / rows)))
+                found = finds.get(cell)
+                fill = colors.get(found[0], LINE) if found else BG2
+                c.create_rectangle(pad + gx * size, y + gy * size,
+                                   pad + (gx + 1) * size - 1, y + (gy + 1) * size - 1,
+                                   fill=fill, outline="", tags="gallery")
+        y += rows * size + px(4)
+        c.create_text(pad, y, text=_t("Клик по уровню — выбрать карту"), fill=MUTED,
+                      anchor="nw", font=theme.font(8), tags="gallery")
+        return y + px(14)
+
     def _draw_gallery(self, w: int, h: int) -> None:
-        """Галерея платформ: 2D схема + 3D превью (псевдо-изометрия), прогрессия языка."""
+        """Галерея платформ: A1–C2 по сиду, 2D схема, 3D превью, прогрессия языка."""
         c = self.canvas
         c.create_rectangle(0, 0, w, h, fill=BG, outline="")
         pad = px(20)
@@ -2082,8 +2423,12 @@ class TrainerGame(GameShell):
         c.create_text(w // 2, pad, text=title_text, fill=AMBER, anchor="n",
                       font=theme.font(14, True), tags="gallery")
 
+        # уровни A1…C2 и карта пилота
+        strip_bottom = self._draw_gallery_level_strip(w, pad + px(22))
+        content_top = strip_bottom + px(8)
+
         # текущий тир
-        y = pad + px(30)
+        y = content_top
         c.create_text(pad, y, text=_t("Текущий уровень:"), fill=CYAN, anchor="nw",
                       font=theme.font(10, True), tags="gallery")
         y += px(18)
@@ -2121,7 +2466,7 @@ class TrainerGame(GameShell):
         # область превью справа
         preview_x = w // 2 + pad
         preview_w = w // 2 - pad * 2
-        preview_y = pad + px(30)
+        preview_y = content_top
 
         # выбор ресурса (вкладки сверху)
         res_y = preview_y
@@ -2394,305 +2739,333 @@ class TrainerGame(GameShell):
             c.create_text(x, legend_y, text=_t("Доступно для строительства"), fill=GREEN, anchor="nw", font=theme.font(10, True), tags="gallery")
 
     # -- изометрическая отрисовка -------------------------------------------------
-    def _draw_iso(self, w: int, h: int) -> None:
-        """Отрисовка карты в изометрической проекции с питами (terrain prisms)."""
+    def _iso_hovered_uid(self, m: iso.TileMetrics, w: int, h: int) -> str | None:
+        """Юнит под курсором — по точному iso-пику, а не по плоской сетке."""
+        if not hasattr(self, "_last_mouse"):
+            return None
+        cell = self._cell_from_screen(self._last_mouse[0], self._last_mouse[1], w, h)
+        if cell is None:
+            return None
+        unit = self.model.unit_at(cell[0], cell[1])
+        return None if unit is None else unit.uid
+
+    def _draw_iso_cell(self, x: int, y: int, m: iso.TileMetrics,
+                       explored: set, visible: set,
+                       hovered_uid: str | None) -> list[int]:
+        """Одна клетка целиком: земля, находки, постройки, червь, отряд.
+
+        Все объекты клетки получают общий тег ``iso_cell_x_y`` и общий ключ
+        painter's order ``(x+y, высота, тип)``. Ближние клетки рисуются после
+        дальних, поэтому здание закрывает юнита, стоящего за ним.
+        """
         c = self.canvas
         model = self.model
-        cam = self.camera
+        cell_tag = f"iso_cell_{x}_{y}"
+        ids: list[int] = []
 
-        # вычисляем метрики тайла для текущего зума
-        m = iso.tile_metrics(self._iso_zoom, w, h, cam)
+        def put(creator, args, extra: tuple[str, ...] = (), **kw):
+            kw["tags"] = tuple(extra) + (cell_tag,)
+            item = creator(*args, **kw)
+            ids.append(item)
+            return item
 
-        # видимые клетки с запасом
-        min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(m, model.w, model.h, w, h)
+        # туман: неразведанная клетка — сплошной тёмный ромб с сеткой
+        if (x, y) not in explored:
+            poly = iso.tile_polygon(x, y, 0, m)
+            put(c.create_polygon, poly, fill=BG, outline="", extra=("map",))
+            put(c.create_line, (*poly, poly[0], poly[1]),
+                fill=blend(BG2, BG, 0.4), width=1, extra=("map", "iso_grid"))
+            # Свои юниты и постройки видны всегда, даже в неразведанной клетке.
+            for unit in model.units:
+                if unit.x == x and unit.y == y:
+                    self._draw_unit_iso(unit, m, hovered_uid, put)
+                    break
+            for building in model.buildings:
+                if tuple(building.center) == (x, y):
+                    self._draw_building_iso(building, m, put, True)
+            return ids
+
+        dug = model.dug[y][x]
+        gz = iso.terrain_gz(dug)
+        dim = (x, y) not in visible
+        base = self._layer_color(dug)
+        if dim:
+            base = blend(base, BG, 0.62)
+
+        # Призмы: боковые стенки и сплошная подложка верхней грани. Сплошной
+        # многоугольник под текстурой убирает щели между соседними ромбами.
+        faces = prism_faces(x, y, gz, gz - 1, m)
+        put(c.create_polygon, faces.sw, fill=blend(base, BG, 0.25),
+            outline="", extra=("map",))
+        put(c.create_polygon, faces.se, fill=blend(base, BG, 0.15),
+            outline="", extra=("map",))
+        put(c.create_polygon, faces.top, fill=base, outline="", extra=("map",))
+        texture = "sand" if dug == 0 else ("rock" if dug < 8 else None)
+        if texture and texture in self._texture_photos:
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz, m)
+            put(c.create_image, (cx, cy), image=self._texture_photos[texture],
+                anchor="center", extra=("map",))
+        grid = blend(BG2, BG, 0.45) if dim else blend(BG2, base, 0.3)
+        put(c.create_line, (*faces.top, faces.top[0], faces.top[1]),
+            fill=grid, width=1, extra=("map", "iso_grid"))
+
+        # разметка стройплощадки — на верхней грани рельефа
+        if (x, y) in model.site_cells():
+            put(c.create_polygon, iso.tile_polygon(x, y, gz, m),
+                fill="", outline=AMBER, dash=(3, 3), width=1, extra=("map",))
+
+        # находки — по центру видимой верхней грани
+        if (x, y) in model.finds and deposit_is_visible(model, x, y):
+            res, _ = model.finds[(x, y)]
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz + 1, m)
+            if res == "water":
+                r = m.hw * 0.35
+                put(c.create_oval, (cx - r, cy - r, cx + r, cy + r),
+                    fill=SPRING, outline=TEXT, width=1, extra=("map",))
+            else:
+                r = m.hw * 0.2
+                put(c.create_polygon,
+                    (cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy),
+                    fill=GREEN, outline="", extra=("map",))
+
+        # фундамент и блоки платформ — слой над поверхностью
+        if (x, y) in model.blocks or (x, y) in model.platform_blocks:
+            put(c.create_polygon, iso.tile_polygon(x, y, gz + 1, m),
+                fill=blend(AMBER, TEXT, 0.25), outline=AMBER, width=2,
+                extra=("map", "iso_block"))
+
+        # отряд: тени, корпуса, метки и маршруты — внутри своей клетки
+        for unit in model.units:
+            if unit.x == x and unit.y == y:
+                self._draw_unit_iso(unit, m, hovered_uid, put)
+                break
+
+        # здание рисуется последним в своей клетке и закрывает юнита за собой
+        for building in model.buildings:
+            if tuple(building.center) == (x, y):
+                self._draw_building_iso(building, m, put, dim)
+
+        # след и тело червя
+        ttl = model.worm.trail.get((x, y))
+        if model.worm.alive and ttl is not None:
+            fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz + 1, m)
+            r = m.hw * 0.35
+            put(c.create_oval, (cx - r, cy - r, cx + r, cy + r),
+                fill=blend("#C79A4A", BG, 1.0 - fade), outline="", extra=("worm",))
+        if model.worm.alive and (model.worm.x, model.worm.y) == (x, y):
+            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz + 1, m)
+            r = m.hw * 0.4
+            put(c.create_oval, (cx - r, cy - r, cx + r, cy + r),
+                fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2,
+                extra=("worm",))
+            put(c.create_text, (cx, cy), text="≈", fill=BG, extra=("worm",),
+                font=theme.font(max(8, int(m.hw * 0.3)), True))
+        return ids
+
+    def _draw_unit_iso(self, unit, m: iso.TileMetrics, hovered_uid: str | None, put) -> None:
+        """Один терраформер в изометрии (все примитивы — тега ``unit``)."""
+        c = self.canvas
+        x, y = unit.x, unit.y
+        gz = iso.terrain_gz(self.model.dug[y][x])
+        cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz + 1, m)
+        selected = unit.uid in self.model.selected
+        hovered = unit.uid == hovered_uid
+
+        shadow_w, shadow_h = m.hw * (0.6 if selected else 0.5), m.hh * (0.3 if selected else 0.25)
+        put(c.create_oval, (cx - shadow_w, cy - shadow_h,
+                            cx + shadow_w, cy + shadow_h),
+            fill=blend(BG, "#000000", 0.3), outline="", extra=("unit",))
+        if selected:
+            put(c.create_polygon, iso.tile_polygon(x, y, gz, m),
+                fill="", outline=GREEN, width=max(2, int(m.hw * 0.08)),
+                extra=("unit", "iso_selection"))
+            r = m.hw * 0.6
+            put(c.create_oval, (cx - r, cy - r, cx + r, cy + r),
+                fill="", outline=GREEN, width=max(2, int(m.hw * 0.1)),
+                extra=("unit", "iso_selection"))
+
+        body = m.hw * 0.55
+        color = self._unit_color(unit.level)
+        track_w = max(2.0, m.hw * 0.18)
+        put(c.create_rectangle,
+            (cx - m.hw * 0.15, cy - m.hh * 0.3,
+             cx - m.hw * 0.15 + track_w, cy + m.hh * 0.3),
+            fill=MUTED, outline="", extra=("unit",))
+        put(c.create_rectangle,
+            (cx + m.hw * 0.15 - track_w, cy - m.hh * 0.3,
+             cx + m.hw * 0.15, cy + m.hh * 0.3),
+            fill=MUTED, outline="", extra=("unit",))
+        put(c.create_rectangle,
+            (cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2),
+            fill=color, outline=blend(color, TEXT, 0.35), extra=("unit",))
+
+        if selected or hovered:
+            label = unit.level if len(unit.level) <= 4 else unit.level[:4]
+            offset_y = 0.0
+            for other in self.model.units:
+                if other is not unit and abs(other.x - x) <= 1 and abs(other.y - y) <= 1:
+                    offset_y -= m.hh * 0.5
+            put(c.create_text, (cx, cy - m.hh * 0.6 + offset_y), text=label,
+                fill=BG, extra=("unit",),
+                font=theme.font(max(6, int(m.hw * 0.18)), True, mono=True))
+
+        if unit.hp < 100:
+            bar_w = m.hw * 0.7
+            x0, y0 = cx - bar_w / 2, cy + m.hh * 0.4
+            put(c.create_rectangle,
+                (x0, y0, x0 + bar_w, y0 + max(2, m.hh * 0.1)),
+                fill=BG, outline="", extra=("unit",))
+            put(c.create_rectangle,
+                (x0, y0, x0 + bar_w * max(0, unit.hp) / 100.0,
+                 y0 + max(2, m.hh * 0.1)),
+                fill=GREEN if unit.hp > 40 else AMBER, outline="", extra=("unit",))
+
+        if unit.uid == self.model.main_unit.uid:
+            fx, fy = self.model.facing
+            put(c.create_line, (cx, cy, cx + fx * m.hw * 0.5, cy + fy * m.hh * 0.5),
+                fill=AMBER, width=max(2, int(m.hw * 0.15)), arrow="last",
+                extra=("unit",))
+
+        if unit.path:
+            points = [cx, cy]
+            for px_, py_ in unit.path[::max(1, len(unit.path) // 8)]:
+                if not (0 <= px_ < self.model.w and 0 <= py_ < self.model.h):
+                    continue
+                pz = iso.terrain_gz(self.model.dug[py_][px_]) + 1
+                points.extend(iso.world_to_screen(px_ + 0.5, py_ + 0.5, pz, m))
+            if unit.target and (0 <= unit.target[0] < self.model.w
+                                and 0 <= unit.target[1] < self.model.h):
+                tx, ty = unit.target
+                tz = iso.terrain_gz(self.model.dug[ty][tx]) + 1
+                points.extend(iso.world_to_screen(tx + 0.5, ty + 0.5, tz, m))
+            if len(points) >= 4:
+                put(c.create_line, points, fill=color, width=1,
+                    dash=(2, 4), extra=("unit", "iso_path"))
+
+    def _draw_building_iso(self, building, m: iso.TileMetrics, put, dim: bool) -> None:
+        """Одно здание-призма; рисуется после юнитов своей и дальних клеток."""
+        c = self.canvas
+        x, y = building.center
+        gz = iso.terrain_gz(self.model.dug[y][x])
+        cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz + 1, m)
+        color = GREEN if building.built else MUTED
+        if dim:
+            color = blend(color, BG, 0.45)
+        height = max(1, building.height)
+        faces = prism_faces(x, y, gz + height, gz, m)
+        put(c.create_polygon, faces.sw, fill=blend(color, BG, 0.3),
+            outline="", extra=("building",))
+        put(c.create_polygon, faces.se, fill=blend(color, BG, 0.2),
+            outline="", extra=("building",))
+        put(c.create_polygon, faces.top, fill=color,
+            outline=blend(color, TEXT, 0.5), width=1, extra=("building",))
+        put(c.create_text, (cx, cy - m.hh * (height + 0.3)), text=f"h{building.height}",
+            fill=BG, extra=("building",),
+            font=theme.font(max(6, int(m.hw * 0.15)), True))
+
+        if building.connected:
+            best = None
+            for other in self.model.buildings + [None]:
+                ox, oy = (other.center if other is not None else self.model.site[:2])
+                if (ox, oy) == (x, y):
+                    continue
+                distance = abs(ox - x) + abs(oy - y)
+                if best is None or distance < best[0]:
+                    best = (distance, ox, oy)
+            if best:
+                ox, oy = iso.world_to_screen(
+                    best[1] + 0.5, best[2] + 0.5,
+                    iso.terrain_gz(self.model.dug[best[2]][best[1]]) + 1, m)
+                put(c.create_line, (cx, cy - m.hh * 0.3, ox, oy - m.hh * 0.3),
+                    fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3),
+                    extra=("building",))
+
+    def _draw_iso(self, w: int, h: int) -> None:
+        """Изометрия: painter's order по ``x+y`` и высоте, сетка по ромбам."""
+        c = self.canvas
+        model = self.model
+        self._clamp_camera(w, h)
+        m = self._iso_metrics(w, h)
+        margin = 2 + max(0, int(getattr(model, "max_build_height", 1)))
+        min_gx, min_gy, max_gx, max_gy = iso.visible_cell_bounds(
+            m, model.w, model.h, w, h, margin=margin)
+        # Юнит и здание должны рисоваться со своим порядком слоёв даже когда
+        # их клетка за краем экрана (путь юнита виден и за пределами вьюпорта).
+        for unit in model.units:
+            min_gx, max_gx = min(min_gx, unit.x), max(max_gx, unit.x)
+            min_gy, max_gy = min(min_gy, unit.y), max(max_gy, unit.y)
+        for building in model.buildings:
+            bx, by = building.center
+            min_gx, max_gx = min(min_gx, bx), max(max_gx, bx)
+            min_gy, max_gy = min(min_gy, by), max(max_gy, by)
+        min_gx, min_gy = max(0, min_gx), max(0, min_gy)
+        max_gx = min(model.w - 1, max_gx)
+        max_gy = min(model.h - 1, max_gy)
+        self._ensure_textures(m.hw, m.hh)
 
         explored = model.explored
         visible = model.visible_cells()
+        hovered_uid = self._iso_hovered_uid(m, w, h)
+        self._iso_cell_anchor = {}
 
-        # цвета слоев (как в плоском виде)
-        layer_colors = [SOIL, CLAY, METAL, DUG_OUT]
+        cells = []
+        for gy in range(min_gy, max_gy + 1):
+            for gx in range(min_gx, max_gx + 1):
+                z = iso.terrain_gz(model.dug[gy][gx])
+                cells.append(iso.draw_order_key(gx, gy, z))
+        for order in sorted(cells):
+            gx, gy = order[3], order[4]
+            ids = self._draw_iso_cell(gx, gy, m, explored, visible, hovered_uid)
+            if ids:
+                self._iso_cell_anchor[(gx, gy)] = ids[0]
 
-        # процедурные текстуры (кэш на уровень зума)
-        self._ensure_textures(m.hw, m.hh)
-
-        # рисуем тайлы как призмы: сначала дальние (y + x), потом ближние
-        # порядок: по диагоналям от левого-верхнего к правому-нижнему
-        for depth_sum in range(min_gx + min_gy, max_gx + max_gy + 1):
-            for gy in range(min_gy, max_gy + 1):
-                gx = depth_sum - gy
-                if not (min_gx <= gx <= max_gx):
-                    continue
-
-                if (gx, gy) not in explored:
-                    # Туман войны: неразведанные клетки — сплошной черный ромб
-                    poly = iso.tile_polygon(gx, gy, 0, m)
-                    c.create_polygon(*poly, fill=BG, outline="", tags="map")
-                    continue
-
-                dug = model.dug[gy][gx]
-                gz_top = terrain_gz(dug)
-                # цвет по глубине
-                base_color = layer_colors[min(dug, len(layer_colors) - 1)]
-                if (gx, gy) not in visible:
-                    base_color = blend(base_color, BG, 0.62)
-
-                # Рисуем призму: верхняя грань + боковые стены SW/SE
-                # Для невыкопанных клеток (dug=0) gz_top=0, рисуем тонкую плиту
-                # Для выкопанных клеток (dug>0) gz_top < 0, рисуем стены вниз
-                # Полностью выкопанные (DUG_OUT) - темный пол дна ямы
-                if dug == 0:
-                    # Поверхность: тонкая плита толщиной 0.3
-                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.2), outline="", tags="map")
-                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.1), outline="", tags="map")
-                    # Верхняя грань с текстурой песка
-                    if "sand" in self._texture_photos:
-                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
-                        c.create_image(cx, cy, image=self._texture_photos["sand"], tags="map", anchor="center")
-                    else:
-                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
-                elif dug < 8:  # частично выкопанные - призма до следующего слоя
-                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.sw, fill=blend(base_color, BG, 0.3), outline="", tags="map")
-                    c.create_polygon(*faces.se, fill=blend(base_color, BG, 0.2), outline="", tags="map")
-                    # Верхняя грань с текстурой камня
-                    if "rock" in self._texture_photos:
-                        cx, cy = iso.world_to_screen(gx + 0.5, gy + 0.5, gz_top, m)
-                        c.create_image(cx, cy, image=self._texture_photos["rock"], tags="map", anchor="center")
-                    else:
-                        c.create_polygon(*faces.top, fill=base_color, outline=blend(base_color, BG2, 0.45), tags="map")
-                else:
-                    # Полностью выкопанная (dug >= 8) - темный пол дна ямы
-                    faces = prism_faces(gx, gy, gz_top, gz_top - 1, m)
-                    c.create_polygon(*faces.sw, fill=blend(DUG_OUT, BG, 0.4), outline="", tags="map")
-                    c.create_polygon(*faces.se, fill=blend(DUG_OUT, BG, 0.3), outline="", tags="map")
-                    c.create_polygon(*faces.top, fill=DUG_OUT, outline=blend(DUG_OUT, BG2, 0.45), tags="map")
-
-# открытые находки и находки на построенных платформах
-        for (x, y), (res, layer) in model.finds.items():
-            if not deposit_is_visible(model, x, y):
-                continue
-            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
-                continue
-            # центр верхней грани тайла на текущей поверхности (без +1)
-            gz = terrain_gz(model.dug[y][x])
-            cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz, m)
-            if res == "water":
-                r = m.hw * 0.35
-                c.create_oval(cx - r, cy - r, cx + r, cy + r, fill=SPRING, outline=TEXT, width=1, tags="map")
-            else:
-                r = m.hw * 0.2
-                c.create_polygon(cx, cy - r, cx + r, cy, cx, cy + r, cx - r, cy,
-                                 fill=GREEN, outline="", tags="map")
-
-        # стройплощадка
-        for x, y in model.site_cells():
-            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
-                continue
-            gz = terrain_gz(model.dug[y][x])
-            poly = iso.tile_polygon(x, y, gz, m)
-            c.create_polygon(*poly, outline=AMBER, dash=(3, 3), width=1, fill="", tags="map")
-
-        # блоки (фундамент + платформы) - рисуются на уровне поверхности + 1
-        block_fill = blend(AMBER, TEXT, 0.25)
-        for x, y in model.blocks:
-            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
-                continue
-            gz = terrain_gz(model.dug[y][x])
-            poly = iso.tile_polygon(x, y, gz + 1, m)
-            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
-        for x, y in model.platform_blocks:
-            if not (min_gx <= x <= max_gx and min_gy <= y <= max_gy):
-                continue
-            gz = terrain_gz(model.dug[y][x])
-            poly = iso.tile_polygon(x, y, gz + 1, m)
-            c.create_polygon(*poly, fill=block_fill, outline=AMBER, width=2, tags="map")
-
-        # граница поля (рамка из 4-х углов карты)
         corners = [
             iso.world_to_screen(0, 0, 0, m),
             iso.world_to_screen(model.w, 0, 0, m),
             iso.world_to_screen(model.w, model.h, 0, m),
             iso.world_to_screen(0, model.h, 0, m),
         ]
-        flat = [c for p in corners for c in p]
-        c.create_polygon(*flat, outline=LINE, width=2, fill="", tags="map")
+        c.create_polygon(*[value for point in corners for value in point],
+                         outline=LINE, width=2, fill="", tags="map")
 
-        # здания, червь, отряд
-        self._draw_buildings_iso(w, h, m)
-        self._draw_worm_iso(w, h, m)
-        self._draw_units_iso(w, h, m)
+        # рамка выделения переживает перерисовку во время перетаскивания
+        if self._lmb_start is not None:
+            points = self._iso_selection_points(
+                self._lmb_start[0], self._lmb_start[1],
+                self._last_mouse[0], self._last_mouse[1], w, h)
+            if points:
+                c.create_line(*points, points[0], points[1], fill=GREEN,
+                              width=2, dash=(4, 2), tags="selbox")
 
-        # HUD (переиспользуем существующий код панели)
         self._draw_hud(w, h, m)
 
-    def _draw_buildings_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-        """Здания в изометрии: настоящие призмы с правильными цветами."""
+    def _redraw_iso_cell(self, x: int, y: int) -> None:
+        """Точечный перерисов одной клетки без полной перерисовки карты."""
+        if not (0 <= x < self.model.w and 0 <= y < self.model.h):
+            return
         c = self.canvas
-        model = self.model
-        for b in model.buildings:
-            gz_ground = terrain_gz(model.dug[b.center[1]][b.center[0]])
-            cx, cy = iso.world_to_screen(b.center[0] + 0.5, b.center[1] + 0.5, gz_ground, m)
-            # проверка видимости
-            if cx < -m.hw * 4 or cy < -m.hh * 8 or cx > w + m.hw or cy > h + m.hh:
-                continue
-            spec = strategy.STRUCTURES.get(b.type)
-            color = GREEN if b.built else MUTED
-
-            # Рисуем здание как призму: верхняя грань + боковые стены
-            # Высота здания в слоях (gz)
-            building_height = max(1, b.height)
-            gz_top = gz_ground + building_height
-
-            # Используем prism_faces для построения призмы
-            faces = prism_faces(b.center[0], b.center[1], gz_top, gz_ground, m)
-
-            # Верхняя грань (крыша)
-            c.create_polygon(*faces.top, fill=color, outline=blend(color, TEXT, 0.5), width=1, tags="building")
-            # Боковые стены
-            c.create_polygon(*faces.sw, fill=blend(color, BG, 0.3), outline="", tags="building")
-            c.create_polygon(*faces.se, fill=blend(color, BG, 0.2), outline="", tags="building")
-
-            # Метка высоты
-            c.create_text(cx, cy - m.hh * (building_height + 0.3), text=f"h{b.height}", fill=BG, tags="building",
-                          font=theme.font(max(6, int(m.hw * 0.15)), True))
-
-            if b.connected:
-                best = None
-                for other in model.buildings + [None]:
-                    ox, oy = (other.center if other is not None else model.site[:2])
-                    if (ox, oy) == tuple(b.center):
-                        continue
-                    d = abs(ox - b.center[0]) + abs(oy - b.center[1])
-                    if best is None or d < best[0]:
-                        best = (d, ox, oy)
-                if best:
-                    ox, oy = iso.world_to_screen(best[1] + 0.5, best[2] + 0.5,
-                                                  terrain_gz(model.dug[best[2]][best[1]]), m)
-                    c.create_line(cx, cy - m.hh * 0.3, ox, oy - m.hh * 0.3,
-                                  fill=blend(GREEN, BG, 0.35), width=1, dash=(1, 3), tags="building")
-
-    def _draw_worm_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-            """След червя и червь в изометрии."""
-            c = self.canvas
-            worm = self.model.worm
-            if not worm.alive:
-                return
-            for (x, y), ttl in worm.trail.items():
-                if not self.model.is_explored(x, y):
-                    continue
-                # Используем terrain_gz(dug) (как у юнитов) — верхняя видимая поверхность
-                gz_surface = terrain_gz(self.model.dug[y][x])
-                cx, cy = iso.world_to_screen(x + 0.5, y + 0.5, gz_surface, m)
-                fade = max(0.15, min(1.0, ttl / max(1, strategy.WORM_TRAIL_TTL)))
-                r = m.hw * 0.35
-                c.create_oval(cx - r, cy - r, cx + r, cy + r,
-                              fill=blend("#C79A4A", BG, 1.0 - fade), outline="", tags="worm")
-            gz_surface = terrain_gz(self.model.dug[worm.y][worm.x])
-            cx, cy = iso.world_to_screen(worm.x + 0.5, worm.y + 0.5, gz_surface, m)
-            r = m.hw * 0.4
-            c.create_oval(cx - r, cy - r, cx + r, cy + r,
-                          fill=blend("#C79A4A", BG, 0.25), outline=AMBER, width=2, tags="worm")
-            c.create_text(cx, cy, text="≈", fill=BG, tags="worm",
-                          font=theme.font(max(8, int(m.hw * 0.3)), True))
-
-    def _draw_units_iso(self, w: int, h: int, m: iso.TileMetrics) -> None:
-        """Отряд в изометрии: яркоте только у выделенных/наведённых, тень для закрепления."""
-        c = self.canvas
-        # Определяем наведённый юнит (под курсором)
-        hovered_uid = None
-        if hasattr(self, "_last_mouse"):
-            mx, my = self._last_mouse
-            gx, gy = self.camera.to_cell(mx, my, w, h)
-            if 0 <= gx < self.model.w and 0 <= gy < self.model.h:
-                u = self.model.unit_at(gx, gy)
-                if u:
-                    hovered_uid = u.uid
-
-        # Сначала рисуем тени всех юнитов (под ними)
-        for u in self.model.units:
-            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
-            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
-            # Тень - эллипс на уровне земли (gz = terrain_gz(dug))
-            shadow_w = m.hw * 0.5
-            shadow_h = m.hh * 0.25
-            c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
-                          fill=blend(BG, "#000000", 0.3), outline="", tags="unit")
-
-        # Затем сами юниты
-        for u in self.model.units:
-            gz_ground = terrain_gz(self.model.dug[u.y][u.x])
-            cx, cy = iso.world_to_screen(u.x + 0.5, u.y + 0.5, gz_ground, m)
-            body = m.hw * 0.55
-            color = self._unit_color(u.level)
-            is_selected = u.uid in self.model.selected
-            is_hovered = u.uid == hovered_uid
-            show_label = is_selected or is_hovered
-
-            # Highlight for selected unit's cell: ground shadow ellipse + soft glow outline of top diamond
-            if is_selected:
-                # Ground shadow ellipse (already drawn above, but make it more prominent for selected)
-                shadow_w = m.hw * 0.6
-                shadow_h = m.hh * 0.3
-                c.create_oval(cx - shadow_w, cy - shadow_h, cx + shadow_w, cy + shadow_h,
-                              fill="", outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
-                # Soft glow outline of top diamond
-                diamond = iso.tile_polygon(u.x, u.y, gz_ground, m)
-                c.create_polygon(*diamond, fill="", outline=GREEN, width=max(2, int(m.hw * 0.08)), tags="unit")
-
-            if is_selected:
-                r = m.hw * 0.6
-                c.create_oval(cx - r, cy - r, cx + r, cy + r,
-                              outline=GREEN, width=max(2, int(m.hw * 0.1)), tags="unit")
-            track_w = max(2.0, m.hw * 0.18)
-            c.create_rectangle(cx - m.hw * 0.15, cy - m.hh * 0.3,
-                               cx - m.hw * 0.15 + track_w, cy + m.hh * 0.3,
-                               fill=MUTED, outline="", tags="unit")
-            c.create_rectangle(cx + m.hw * 0.15 - track_w, cy - m.hh * 0.3,
-                               cx + m.hw * 0.15, cy + m.hh * 0.3,
-                               fill=MUTED, outline="", tags="unit")
-            c.create_rectangle(cx - body / 2, cy - body / 2, cx + body / 2, cy + body / 2,
-                               fill=color, outline=blend(color, TEXT, 0.35), tags="unit")
-
-            # Метка уровня — только для выделенных/наведённых, со смещением при кластеризации
-            if show_label:
-                label = u.level if len(u.level) <= 4 else u.level[:4]
-                # Проверяем кластеризацию: есть ли другие юниты в соседних клетках
-                offset_y = 0
-                for other in self.model.units:
-                    if other is u:
-                        continue
-                    if abs(other.x - u.x) <= 1 and abs(other.y - u.y) <= 1:
-                        offset_y -= m.hh * 0.5  # сдвигаем вверх
-                c.create_text(cx, cy - m.hh * 0.6 + offset_y, text=label, fill=BG, tags="unit",
-                              font=theme.font(max(6, int(m.hw * 0.18)), True, mono=True))
-
-            if u.hp < 100:
-                bar_w = m.hw * 0.7
-                x0 = cx - bar_w / 2
-                y0 = cy + m.hh * 0.4
-                c.create_rectangle(x0, y0, x0 + bar_w, y0 + max(2, m.hh * 0.1),
-                                   fill=BG, outline="", tags="unit")
-                c.create_rectangle(x0, y0, x0 + bar_w * max(0, u.hp) / 100.0,
-                                   y0 + max(2, m.hh * 0.1), fill=GREEN if u.hp > 40 else AMBER,
-                                   outline="", tags="unit")
-            if u.uid == self.model.main_unit.uid:
-                fx, fy = self.model.facing
-                c.create_line(cx, cy, cx + fx * m.hw * 0.5, cy + fy * m.hh * 0.5,
-                              fill=AMBER, width=max(2, int(m.hw * 0.15)), arrow="last",
-                              tags="unit")
-            if u.path:
-                points = [cx, cy]
-                for px_, py_ in u.path[::max(1, len(u.path) // 8)]:
-                    ax, ay = iso.world_to_screen(px_ + 0.5, py_ + 0.5,
-                                                  self.model.dug[py_][px_] + 1, m)
-                    points += [ax, ay]
-                if u.target:
-                    ax, ay = iso.world_to_screen(u.target[0] + 0.5, u.target[1] + 0.5,
-                                                  self.model.dug[u.target[1]][u.target[0]] + 1, m)
-                    points += [ax, ay]
-                if len(points) >= 4:
-                    c.create_line(*points, fill=color, width=1, dash=(2, 4), tags="unit")
+        tag = f"iso_cell_{x}_{y}"
+        old = list(c.find_withtag(tag))
+        if not old:
+            return
+        next_id = next((item for item in c.find_all() if item > max(old)), None)
+        c.delete(tag)
+        w = max(c.winfo_width(), 10)
+        h = max(c.winfo_height(), 10)
+        m = self._iso_metrics(w, h)
+        ids = self._draw_iso_cell(x, y, m, self.model.explored,
+                                  self.model.visible_cells(),
+                                  self._iso_hovered_uid(m, w, h))
+        if ids:
+            self._iso_cell_anchor[(x, y)] = ids[0]
+        if next_id is not None:
+            c.tag_lower(tag, next_id)
+        else:
+            c.tag_raise(tag)
+        hud = c.find_withtag("hud")
+        if hud:
+            c.tag_lower(tag, min(hud))
 
     def _draw_hud(self, w: int, h: int, m: iso.TileMetrics) -> None:
         """HUD панель (верхняя левая) — как в плоском виде."""
@@ -2720,31 +3093,11 @@ class TrainerGame(GameShell):
                           font=theme.font(10, bold))
             ty += px(16)
 
-        # Режим выбранного юнита — чекбоксы
+        # Режим выбранного юнита — кликабельные чекбоксы и «Сформировать»
         selected = model.selected_units()
         if not selected:
             selected = [model.main_unit]
-        ty += px(4)
-        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
-                      font=theme.font(9, True))
-        ty += px(13)
-        for u in selected[:3]:
-            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
-                checked = u.mode == mode_key
-                box_x = px(10)
-                box_y = ty
-                box_size = px(11)
-                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
-                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
-                if checked:
-                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
-                                 fill=GREEN, width=2)
-                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
-                                 fill=GREEN, width=2)
-                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
-                              fill=TEXT if checked else MUTED, anchor="nw",
-                              font=theme.font(8, checked))
-            ty += px(32)
+        ty = self._draw_mode_controls(selected, ty + px(4))
 
         book = model.mission_book
         done = book.done_count()
@@ -2779,6 +3132,7 @@ class TrainerGame(GameShell):
             ty += px(16)
 
         ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        ty = self._draw_reminders(ty)
         c.coords(bg_id, 0, 0, px(230), ty)
 
     # -- миникарта ------------------------------------------------------------
@@ -2954,12 +3308,16 @@ class TrainerGame(GameShell):
             draw.point((x, y), fill=(r, g, b, 255))
         spice_diamond = make_diamond_mask(img_spice)
 
-        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL))
+        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL)).
+        # master обязателен: без него ImageTk берёт tk._default_root — первый
+        # когда-либо созданный в процессе Tk. Если тест открыл другой root,
+        # картинка живёт в чужом интерпретаторе и Canvas выдаёт
+        # «image "pyimageNN" does not exist».
         try:
             self._texture_photos = {
-                "sand": ImageTk.PhotoImage(sand_diamond),
-                "rock": ImageTk.PhotoImage(rock_diamond),
-                "spice": ImageTk.PhotoImage(spice_diamond),
+                "sand": ImageTk.PhotoImage(sand_diamond, master=self),
+                "rock": ImageTk.PhotoImage(rock_diamond, master=self),
+                "spice": ImageTk.PhotoImage(spice_diamond, master=self),
             }
             self._textures = {
                 "sand": sand_diamond,

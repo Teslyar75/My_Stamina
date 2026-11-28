@@ -171,13 +171,12 @@ def point_in_diamond(sx: float, sy: float, polygon: list[float]) -> bool:
     # Check if point is on the same side of all edges
     def cross(ax, ay, bx, by, cx, cy):
         return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
-    
+
     c1 = cross(x0, y0, x1, y1, sx, sy)
-    c2 = cross(x1, y1, x2, y2, sx, sy)
     c2 = cross(x1, y1, x2, y2, sx, sy)
     c3 = cross(x2, y2, x3, y3, sx, sy)
     c4 = cross(x3, y3, x0, y0, sx, sy)
-    
+
     # All same sign (or zero)
     return (c1 >= 0 and c2 >= 0 and c3 >= 0 and c4 >= 0) or \
            (c1 <= 0 and c2 <= 0 and c3 <= 0 and c4 <= 0)
@@ -191,31 +190,33 @@ def pick_surface(sx: float, sy: float, m: TileMetrics, dug_grid: list[list[int]]
     Returns (gx, gy, surface_gz) of the front-most hit, or None if no hit.
     surface_gz is the gz of the drawn top face (terrain_gz(dug) + 1, matching tile_polygon).
     """
-    # Start from gz=0 unprojection as seed
-    gx_f, gy_f = screen_to_world(sx, sy, m)
-    seed_gx = math.floor(gx_f)
-    seed_gy = math.floor(gy_f)
-    
-    # Search in a neighborhood around the seed
-    # Iterate front-to-back: higher gx+gy first (closer to camera in isometric)
-    candidates = []
-    radius = 3
-    for gy in range(seed_gy - radius, seed_gy + radius + 1):
-        for gx in range(seed_gx - radius, seed_gx + radius + 1):
-            if 0 <= gx < map_w and 0 <= gy < map_h:
-                candidates.append((gx, gy))
-    
-    # Sort front-to-back: higher gx+gy first (closer to camera)
-    candidates.sort(key=lambda c: -(c[0] + c[1]))
-    
+    # Обратная проекция на нескольких плоскостях: у глубокой ямы gz=0-проекция
+    # уезжает на несколько клеток, одного радиуса 3 уже мало.
+    if not dug_grid:
+        return None
+    deepest = max((max(row) for row in dug_grid if row), default=0)
+    seeds = []
+    for gz in (1, 0, terrain_gz(deepest)):
+        gx_f, gy_f = screen_to_world_at_gz(sx, sy, gz, m)
+        seeds.append((math.floor(gx_f), math.floor(gy_f)))
+    gx0 = max(0, min(s[0] for s in seeds) - 1)
+    gx1 = min(map_w - 1, max(s[0] for s in seeds) + 1)
+    gy0 = max(0, min(s[1] for s in seeds) - 1)
+    gy1 = min(map_h - 1, max(s[1] for s in seeds) + 1)
+    candidates = [(gx, gy) for gy in range(gy0, gy1 + 1)
+                  for gx in range(gx0, gx1 + 1)]
+
+    # Front-to-back: ближе камере (больше x+y), а для одной диагонали — выше.
+    candidates.sort(key=lambda c: (-(c[0] + c[1]), -terrain_gz(dug_grid[c[1]][c[0]])))
+
     for gx, gy in candidates:
         dug = dug_grid[gy][gx]
         surface_gz = terrain_gz(dug)  # This is the ground level
         top_gz = surface_gz + 1       # tile_polygon draws top at gz+1
-        
+
         # Build the SAME top diamond the renderer draws
         poly = tile_polygon(gx, gy, surface_gz, m)
-        
+
         if point_in_diamond(sx, sy, poly):
             return gx, gy, top_gz
     
@@ -285,6 +286,15 @@ def apply_zoom(direction: int, sx: float, sy: float, canvas_w: int, canvas_h: in
     cam._clamp()
     
     return zoom
+
+
+def draw_order_key(x: int, y: int, z: float = 0.0, layer: int = 0) -> tuple:
+    """Ключ painter's order: дальная диагональ, высота, тип объекта, координаты.
+
+    ``layer`` задаёт порядок внутри одной клетки: 0 — земля, 1 — находки и
+    разметка, 2 — тени, 3 — юниты, 4 — блоки, 5 — здания, 6 — червь.
+    """
+    return (x + y, z, layer, x, y)
 
 
 def terrain_gz(dug: int) -> int:
