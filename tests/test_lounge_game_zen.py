@@ -74,6 +74,12 @@ class TestZenChrome:
         assert chrome.header.winfo_ismapped()
         assert zen_mode.mode_of(chrome.game) is None
 
+    def test_allow_esc_false_leaves_esc_to_the_game(self, chrome):
+        esc = key("Escape", char="\x1b", state=0)
+        assert zen_mode.enter(chrome.game)
+        assert zen_mode.handle_key(esc, widget=chrome.game, allow_esc=False) is False
+        assert zen_mode.is_active(chrome.game)
+
     def test_first_esc_passes_second_exits(self, chrome):
         assert zen_mode.enter(chrome.game)
         chrome.root.update()

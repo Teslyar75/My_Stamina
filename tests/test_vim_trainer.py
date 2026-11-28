@@ -8,13 +8,14 @@ from stamina.lounge.vim_engine import (
     init_from_grid,
     get_cursor_pos,
     get_grid_text,
+    get_mode,
     process_key,
     process_insert_char,
     process_special_key,
     _undo,
     _redo,
 )
-from stamina.lounge.vim_trainer import VimTrainerGame
+from stamina.lounge.vim_trainer import LESSONS, VimTrainerGame
 
 
 class VimEngineTests(unittest.TestCase):
@@ -174,20 +175,26 @@ class VimEngineTests(unittest.TestCase):
         self.assertEqual(get_grid_text(state)[1], "new")
 
     def test_yank_line_yy(self):
-        grid = ["yank this line"]
-        state = init_from_grid(grid)
+        state = init_from_grid(["yank this line"])
         process_key(state, "y")
         process_key(state, "y")
-        # No visual change, just internal register (not tested here)
+        self.assertEqual(state.registers['"'], ["yank this line"])
+        self.assertEqual(get_grid_text(state), ["yank this line"])
 
-    def test_put_p(self):
-        grid = ["line one", "line two"]
-        state = init_from_grid(grid)
+    def test_yank_line_Y_and_named_register(self):
+        state = init_from_grid(["yank this line"])
+        for key in ('"', "a", "Y"):
+            process_key(state, key)
+        self.assertEqual(state.registers["a"], ["yank this line"])
+        self.assertEqual(state.registers['"'], ["yank this line"])
+
+    def test_put_p_on_empty_line(self):
+        state = init_from_grid(["copy me", ""])
         process_key(state, "y")
         process_key(state, "y")
         process_key(state, "j")
         process_key(state, "p")
-        # Put after cursor - simplified, no actual register
+        self.assertEqual(get_grid_text(state)[:2], ["copy me", "copy me"])
 
     def test_undo_redo(self):
         grid = ["hello world"]
@@ -626,21 +633,33 @@ class VimTrainerIntegrationTests(unittest.TestCase):
     """Integration tests for the full trainer flow."""
 
     def test_all_lessons_load(self):
-        """All 12 lessons should be loadable."""
+        """All 24 lessons should be loadable."""
         from stamina.lounge.vim_trainer import LESSONS
-        self.assertEqual(len(LESSONS), 12)
+        self.assertEqual(len(LESSONS), 24)
         for i, lesson in enumerate(LESSONS):
             state = init_from_grid(lesson["grid"])
             self.assertIsNotNone(state)
             self.assertTrue(len(state.grid) > 0)
+            if "cursor" in lesson:
+                x, y = lesson["cursor"]
+                self.assertLess(y, len(state.grid))
+                self.assertLessEqual(x, len(state.grid[y]))
 
     def test_lesson_targets_defined(self):
-        """Each lesson has a target type."""
+        """Each lesson has a target or a generic expect check."""
         from stamina.lounge.vim_trainer import LESSONS
         for lesson in LESSONS:
-            self.assertIn("target", lesson)
+            self.assertTrue("target" in lesson or "expect" in lesson, lesson["id"])
             self.assertIn("grid", lesson)
             self.assertIn("hint", lesson)
+
+    def test_new_lessons_have_task_text_and_hints(self):
+        """Generated-text lessons must be self-explanatory."""
+        from stamina.lounge.vim_trainer import LESSONS
+        for lesson in LESSONS[12:]:
+            self.assertTrue(lesson.get("tasks"), lesson["id"])
+            self.assertGreaterEqual(len(lesson.get("hints") or []), 2, lesson["id"])
+            self.assertTrue(set(lesson.get("focus") or []), lesson["id"])
 
     def test_lesson_grid_has_at_marker(self):
         """First lesson should have @ marker for cursor."""
@@ -648,6 +667,338 @@ class VimTrainerIntegrationTests(unittest.TestCase):
         first = LESSONS[0]
         grid_text = "\n".join(first["grid"])
         self.assertIn("@", grid_text)
+
+
+class VimTrainerControlTests(unittest.TestCase):
+    """Keys that go through VimTrainerGame.on_key (not straight into the engine)."""
+
+    def _make_game(self, grid=None):
+        g = VimTrainerGame.__new__(VimTrainerGame)
+        g.state = init_from_grid(grid or ["@hello world", "second line", "third line"])
+        g.lesson_idx = 0
+        g.practice = False
+        g.completed_lessons = set()
+        g.message = ""
+        g.message_color = "#fff"
+        g._pending_count = ""
+        g._targets = {"word": set(), "line": set()}
+        g._search_text = ""
+        g._search_hits = set()
+        g._command = ""
+        g._command_prefix = ""
+        g._vim_found_count = 0
+        g._did_undo_redo = False
+        g._used_count = False
+        g.redraw = lambda *a, **k: None
+        g.save_progress = lambda *a, **k: None
+        g.add_score = lambda *a, **k: 0
+        g._check_lesson_complete = lambda *a, **k: None
+        g.handle_help_keys = lambda *a, **k: False
+        g.reference_open = lambda *a, **k: False
+        g._next_lesson = lambda *a, **k: None
+        g._prev_lesson = lambda *a, **k: None
+        g._restore_focus = lambda *a, **k: None
+        return g
+
+    def test_escape_leaves_insert_visual_and_visual_line(self):
+        for mode in ("INSERT", "VISUAL", "VISUAL_LINE"):
+            g = self._make_game()
+            g.state.mode = mode
+            g.state.visual_start = (0, 0) if mode.startswith("VISUAL") else None
+            VimTrainerGame.on_key(g, _Event("escape"))
+            self.assertEqual(get_mode(g.state), "NORMAL", mode)
+
+    def test_escape_cancels_command_line(self):
+        g = self._make_game()
+        g.state.mode = "COMMAND"
+        g._command = ":s/old/new/"
+        VimTrainerGame.on_key(g, _Event("escape"))
+        self.assertEqual(get_mode(g.state), "NORMAL")
+        self.assertEqual(g._command, "")
+
+    def test_arrows_move_in_normal_and_visual(self):
+        g = self._make_game(["@hello", "second", "third"])
+        VimTrainerGame.on_key(g, _Event("Right"))
+        self.assertEqual(get_cursor_pos(g.state), (1, 0))
+        g.state.mode = "VISUAL"
+        g.state.visual_start = (0, 1)
+        g.state.cursor_x, g.state.cursor_y = 1, 0
+        VimTrainerGame.on_key(g, _Event("Down"))
+        self.assertEqual(get_cursor_pos(g.state), (1, 1))
+
+    def test_count_reaches_engine_and_marks_usage(self):
+        g = self._make_game(["@one", "two", "three", "four", "five", "six"])
+        VimTrainerGame.on_key(g, _Event("5"))
+        VimTrainerGame.on_key(g, _Event("j"))
+        self.assertEqual(get_cursor_pos(g.state)[1], 5)
+        self.assertTrue(g._used_count)
+        self.assertEqual(g._pending_count, "")
+
+    def test_search_command_and_n_count_hits(self):
+        g = self._make_game(["@find the word vim here", "vim is powerful vim"])
+        VimTrainerGame.on_key(g, _Event("slash", char="/"))
+        self.assertEqual(get_mode(g.state), "COMMAND")
+        for ch in "vim":
+            VimTrainerGame.on_key(g, _Event(ch))
+        VimTrainerGame.on_key(g, _Event("Return"))
+        self.assertEqual(get_mode(g.state), "NORMAL")
+        self.assertGreaterEqual(g._vim_found_count, 1)
+        VimTrainerGame.on_key(g, _Event("n"))
+        self.assertGreaterEqual(g._vim_found_count, 2)
+
+
+class VimTrainerEscPriorityTests(unittest.TestCase):
+    """Esc belongs to the trainer in any VIM mode until F3 allows double-Esc exit."""
+
+    def _owner(self, mode="NORMAL", *, current=None, command="", keysym="Escape"):
+        from types import SimpleNamespace
+
+        from stamina import lounge_hook
+        from stamina.cockpit import Cockpit
+
+        seen = []
+        game = SimpleNamespace(
+            game_id="vim_trainer",
+            state=SimpleNamespace(mode=mode),
+            _command=command,
+            esc_isolated=True,
+            on_key=lambda e: seen.append(e),
+        )
+        fake = SimpleNamespace(
+            current=current or lounge_hook.KEY,
+            screens={lounge_hook.KEY: SimpleNamespace(game=game)},
+        )
+        event = _Event(keysym)
+        return Cockpit._vim_trainer_owner(fake, event), seen, event
+
+    def test_non_normal_modes_own_escape(self):
+        for mode in ("INSERT", "VISUAL", "VISUAL_LINE", "COMMAND"):
+            owner, _, _ = self._owner(mode)
+            self.assertIsNotNone(owner, mode)
+
+    def test_escape_is_owned_in_any_vim_mode(self):
+        # Из урока нельзя вылететь двойным Esc: клавиша всегда идёт в тренажёр.
+        self.assertIsNotNone(self._owner("NORMAL")[0])
+        self.assertIsNotNone(self._owner("INSERT")[0])
+
+    def test_other_screens_and_other_keys_do_not_steal_escape(self):
+        self.assertIsNone(self._owner("INSERT", current="bridge")[0])
+        self.assertIsNone(self._owner("INSERT", keysym="Left")[0])
+
+    def test_pending_command_still_owns_escape_in_normal_mode(self):
+        self.assertIsNotNone(self._owner("NORMAL", command=":s/old/")[0])
+
+
+class VimTrainerArenaTests(unittest.TestCase):
+    def test_first_lesson_arena_is_large(self):
+        from stamina.lounge.vim_trainer import LESSONS
+        first = LESSONS[0]
+        self.assertGreaterEqual(len(first["grid"]), 8)
+        self.assertGreaterEqual(len(first["grid"][0]), 16)
+        self.assertEqual(first["goal_pos"][0], len(first["grid"][0]) - 1)
+
+    def test_practice_arena_is_large_and_uniform(self):
+        from stamina.lounge.vim_trainer import PRACTICE_GRID
+        self.assertGreaterEqual(len(PRACTICE_GRID), 8)
+        widths = {len(row) for row in PRACTICE_GRID}
+        self.assertEqual(len(widths), 1)
+        self.assertGreaterEqual(widths.pop(), 16)
+
+
+class VimTrainerIsolationTests(unittest.TestCase):
+    """F3: изоляция Esc и возврат двойного Esc для выхода из тренажёра."""
+
+    def _make_game(self, grid=None):
+        g = VimTrainerGame.__new__(VimTrainerGame)
+        g.state = init_from_grid(grid or ["@hello world", "second line", "third line"])
+        g.lesson_idx = 0
+        g.practice = False
+        g.completed_lessons = set()
+        g.message = ""
+        g.message_color = "#fff"
+        g._pending_count = ""
+        g._targets = {"word": set(), "line": set()}
+        g._search_text = ""
+        g._search_hits = set()
+        g._command = ""
+        g._command_prefix = ""
+        g._vim_found_count = 0
+        g._did_undo_redo = False
+        g._used_count = False
+        g._used_keys = set()
+        g._typed_commands = []
+        g._macros = {}
+        g._macro_keys = []
+        g._macro_recording = False
+        g._macro_replayed = False
+        g._expect_targets = []
+        g._hint_index = 0
+        g._idle_keys = 0
+        g._progress_sig = None
+        g.esc_isolated = True
+        g._esc_exit_at = 0.0
+        g.btn_iso = None
+        g.backs = []
+        g._back = lambda: g.backs.append(True)
+        g.redraw = lambda *a, **k: None
+        g.save_progress = lambda *a, **k: None
+        g.add_score = lambda *a, **k: 0
+        g._check_lesson_complete = lambda *a, **k: None
+        g.handle_help_keys = lambda *a, **k: False
+        g.reference_open = lambda *a, **k: False
+        g._next_lesson = lambda *a, **k: None
+        g._prev_lesson = lambda *a, **k: None
+        g._restore_focus = lambda *a, **k: None
+        return g
+
+    def test_f3_toggles_isolation(self):
+        g = self._make_game()
+        self.assertTrue(g.esc_isolated)
+        VimTrainerGame.on_key(g, _Event("F3"))
+        self.assertFalse(g.esc_isolated)
+        self.assertIn("ВЫКЛ", g._iso_text())
+        self.assertIn("выход", g.message)
+        VimTrainerGame.on_key(g, _Event("F3"))
+        self.assertTrue(g.esc_isolated)
+
+    def test_double_esc_does_not_exit_while_isolated(self):
+        g = self._make_game()
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(g.backs, [])
+
+    def test_double_esc_exits_after_f3(self):
+        g = self._make_game()
+        VimTrainerGame.on_key(g, _Event("F3"))
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(g.backs, [])
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(g.backs, [True])
+
+    def test_other_key_resets_double_esc_timer(self):
+        g = self._make_game()
+        VimTrainerGame.on_key(g, _Event("F3"))
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        VimTrainerGame.on_key(g, _Event("x"))
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(g.backs, [])
+
+    def test_escape_still_switches_mode_before_exit(self):
+        g = self._make_game()
+        g.state.mode = "INSERT"
+        VimTrainerGame.on_key(g, _Event("F3"))
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(get_mode(g.state), "NORMAL")
+        VimTrainerGame.on_key(g, _Event("Escape"))
+        self.assertEqual(g.backs, [True])
+
+    def test_question_key_shows_lesson_hint(self):
+        g = self._make_game()
+        g.lesson_idx = 12
+        VimTrainerGame.on_key(g, _Event("question", char="?"))
+        self.assertIn("Подсказка 1/", g.message)
+
+    def test_macro_record_and_replay(self):
+        g = self._make_game(["@xxxx first", "xxxx second", "third"])
+        for key in ("q", "x", "x", "q", "j", "@", "a"):
+            VimTrainerGame.on_key(g, _Event(key))
+        self.assertEqual(get_grid_text(g.state)[1], "xx second")
+        self.assertTrue(g._macro_replayed)
+
+    def test_expect_visit_tracks_each_target(self):
+        g = self._make_game()
+        expect = {"kind": "visit", "targets": [(0, 0), (5, 0)]}
+        self.assertFalse(g._check_expect(expect, [], (0, 0)))
+        self.assertTrue(g._check_expect(expect, [], (5, 0)))
+
+    def test_expect_text_checks_edited_rows(self):
+        g = self._make_game()
+        expect = {"kind": "text", "rows": ["CC Def", "second line"]}
+        self.assertTrue(g._check_expect(expect, ["CC Def", "second line", "third line"], (0, 0)))
+        self.assertFalse(g._check_expect(expect, ["xx Def", "second line"], (0, 0)))
+
+    def test_expect_commands_need_typed_command(self):
+        g = self._make_game()
+        expect = {"kind": "commands", "any": [":sp", ":tabnew"]}
+        self.assertFalse(g._check_expect(expect, [], (0, 0)))
+        g._typed_commands.append(":sp")
+        self.assertTrue(g._check_expect(expect, [], (0, 0)))
+
+
+class VimTrainerAdvancedLessonTests(unittest.TestCase):
+    """Уроки 13–24 проходятся теми клавишами, которые показаны игроку."""
+
+    SEQUENCES = {
+        12: ["g", "g", "G"],
+        13: ["f", "(", "f", ")", "f", "x"],
+        14: ["%", "%"],
+        15: ["r", "C", "l", "~"],
+        16: ["d", "i", "w", "w", "d", "a", "w"],
+        17: [">", ">", "j", "<", "<"],
+        18: ["m", "a", "j", "'", "a"],
+        19: ["y", "y", "j", "p"],
+        20: ["x", ".", ".", "."],
+        21: ["/", "v", "i", "m", "Return", "n", "n", ":", "s", "/", "v", "i", "m",
+             "/", "V", "I", "M", "/", "g", "Return", "k", ":", "s", "/", "v", "i",
+             "m", "/", "V", "I", "M", "/", "g", "Return"],
+        22: ["q", "x", "x", "x", "x", "q", "j", "@", "a"],
+        23: [":", "s", "p", "Return", ":", "v", "s", "p", "Return",
+             ":", "t", "a", "b", "n", "e", "w", "Return", ":", "q", "Return"],
+    }
+
+    def _make_game(self, idx):
+        lesson = LESSONS[idx]
+        g = VimTrainerGame.__new__(VimTrainerGame)
+        g.state = init_from_grid(lesson["grid"])
+        if "cursor" in lesson:
+            g.state.cursor_x, g.state.cursor_y = lesson["cursor"]
+        g.lesson_idx = idx
+        g.practice = False
+        g.completed_lessons = set()
+        g.message = ""
+        g.message_color = "#fff"
+        g._pending_count = ""
+        g._targets = {"word": set(), "line": set()}
+        g._search_text = ""
+        g._search_hits = set()
+        g._command = ""
+        g._command_prefix = ""
+        g._vim_found_count = 0
+        g._did_undo_redo = False
+        g._used_count = False
+        g._ensure_tracking()
+        g._reset_progress_state()
+        g.btn_iso = None
+        g.backs = []
+        g._back = lambda: g.backs.append(True)
+        g.redraw = lambda *a, **k: None
+        g.save_progress = lambda *a, **k: None
+        g.add_score = lambda *a, **k: None
+        g.handle_help_keys = lambda *a, **k: False
+        g.reference_open = lambda *a, **k: False
+        g._next_lesson = lambda *a, **k: None
+        g._prev_lesson = lambda *a, **k: None
+        g._restore_focus = lambda *a, **k: None
+        return g
+
+    def test_every_advanced_lesson_completes(self):
+        for idx, sequence in self.SEQUENCES.items():
+            with self.subTest(lesson=LESSONS[idx]["id"]):
+                g = self._make_game(idx)
+                for key in sequence:
+                    event = _Event(key, char=key if len(key) == 1 else "")
+                    VimTrainerGame.on_key(g, event)
+                self.assertIn(idx, g.completed_lessons)
+                self.assertIn("Урок пройден", g.message)
+
+    def test_completion_banner_survives_further_commands(self):
+        g = self._make_game(21)
+        for key in self.SEQUENCES[21]:
+            VimTrainerGame.on_key(g, _Event(key, char=key if len(key) == 1 else ""))
+        self.assertIn("Урок пройден", g.message)
+        for key in (":", "x", "Return"):
+            VimTrainerGame.on_key(g, _Event(key, char=key if len(key) == 1 else ""))
+        self.assertIn("Урок пройден", g.message)
 
 
 if __name__ == "__main__":

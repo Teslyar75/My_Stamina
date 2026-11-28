@@ -631,11 +631,11 @@ class Cockpit(tk.Tk):
     def _zen_target(self):
         # В «Опытном пилоте» зенид относится к рабочему окну целиком: все
         # отсеки открываются одним и тем же полноэкранным режимом.
-        if self._layout == "experienced":
+        if getattr(self, "_layout", None) == "experienced":
             work = getattr(self, "_xp_work", None)
             if work is not None:
                 return work
-        return self._zen_target_for(getattr(self, "current", None))
+        return Cockpit._zen_target_for(self, getattr(self, "current", None))
 
     def _exit_screen_focus(self, screen_name: str | None) -> None:
         """Снять фокус-режим текущего отсека и восстановить шапку."""
@@ -718,6 +718,26 @@ class Cockpit(tk.Tk):
                 zen_mode.handle_escape(zt)
                 return True
         return False
+
+    def _vim_trainer_owner(self, e: tk.Event):
+        """Активный VIM-тренажёр забирает Esc у всех глобальных слоёв.
+
+        Внутри урока Esc — это переключатель режимов VIM, а не выход из ЭКРАНа
+        и не первый тап двойного Esc зенида. Забираем клавишу в ЛЮБОМ режиме:
+        иначе deux Esc всё равно вынесли бы игрока из тренажёра в лобби/зенид.
+        """
+        ks = (getattr(e, "keysym", "") or "").lower()
+        if ks not in ("escape", "esc") and int(getattr(e, "keycode", 0) or 0) != 27:
+            return None
+        if getattr(self, "current", None) != lounge_hook.KEY:
+            return None
+        scr = self.screens.get(lounge_hook.KEY)
+        game = getattr(scr, "game", None)
+        if game is None or getattr(game, "game_id", None) != "vim_trainer":
+            return None
+        if getattr(game, "state", None) is None:
+            return None
+        return game if callable(getattr(game, "on_key", None)) else None
 
     def show(self, name: str) -> None:
         if name == self.current:
@@ -1636,6 +1656,16 @@ class Cockpit(tk.Tk):
         return False
 
     def _on_key(self, e: tk.Event) -> str | None:
+        # Порядок важен: VIM-урок — «поглотитель» Esc. Он забирает клавишу раньше
+        # голосового вызова, старого зенида, ЭКРАНа и двойного Esc. Вызов через
+        # класс: тесты зовут _on_key с подставным self без методов.
+        vim_owner = Cockpit._vim_trainer_owner(self, e)
+        if vim_owner is not None:
+            from stamina import zen_mode
+            zen_mode.reset_escape()       # предыдущий Esc не должен «дозреть» до двойного
+            zen_mode.mark_handled(e)      # страница не обработает тот же Esc повторно
+            vim_owner.on_key(e)           # Esc всегда переключает режим VIM
+            return "break"
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
             return "break"               # Ctrl+M / Esc — дзен-режим (stamina/zen.py)
@@ -1651,7 +1681,7 @@ class Cockpit(tk.Tk):
             if self.current == "bridge" and self.screens["bridge"].state == "pause":
                 self.screens["bridge"].resume()
             return
-        target = self._zen_target()
+        target = Cockpit._zen_target(self)
         if target is not None:
             from stamina import zen_mode
             if zen_mode.is_zen_hotkey(e):
