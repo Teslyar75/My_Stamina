@@ -54,6 +54,7 @@ class Timeline(tk.Canvas):
         self._scroll = 0
         self._total = 0
         self._scrim = scrim
+        self._surface_bindings: dict[int, list[tuple[str, str]]] = {}
         bg = bg or theme.BG
 
         if surface is not None:
@@ -91,12 +92,21 @@ class Timeline(tk.Canvas):
 
     def _bind_surface(self, surface: tk.Canvas) -> None:
         """Events follow the visible canvas when ribbons move over a work window."""
-        surface.bind("<Motion>", self._on_surface_motion, add="+")
-        surface.bind("<Button-1>", self._on_surface_click, add="+")
-        surface.bind("<Leave>", lambda _e: self._on_leave(), add="+")
-        surface.bind("<MouseWheel>", self._on_wheel, add="+")
-        surface.bind("<Button-4>", lambda e: self._on_wheel(e, delta=120), add="+")
-        surface.bind("<Button-5>", lambda e: self._on_wheel(e, delta=-120), add="+")
+        handlers = (
+            ("<Motion>", self._on_surface_motion),
+            ("<Button-1>", self._on_surface_click),
+            ("<Leave>", lambda _e: self._on_leave()),
+            ("<MouseWheel>", self._on_wheel),
+            ("<Button-4>", lambda e: self._on_wheel(e, delta=120)),
+            ("<Button-5>", lambda e: self._on_wheel(e, delta=-120)),
+        )
+        ids: list[tuple[str, str]] = []
+        for seq, handler in handlers:
+            try:
+                ids.append((seq, surface.bind(seq, handler, add="+")))
+            except tk.TclError:
+                pass
+        self._surface_bindings[id(surface)] = ids
 
     def set_surface(self, surface: tk.Canvas) -> None:
         """Draw the same ribbon on another canvas (home photo ↔ work overlay)."""
@@ -108,6 +118,13 @@ class Timeline(tk.Canvas):
         self.canvas = surface
         self.surface = surface
         if old is not None and old is not surface:
+            # Снимаем свои обработчики со старого холста: иначе после возврата
+            # из рабочего окна колесо продолжает проглатываться старой лентой.
+            for seq, funcid in self._surface_bindings.pop(id(old), ()):
+                try:
+                    old.unbind(seq, funcid)
+                except tk.TclError:
+                    pass
             try:
                 old.delete(self._tag)
             except tk.TclError:
@@ -473,9 +490,13 @@ class Timeline(tk.Canvas):
         self._emit(item, from_popup)
 
     def _on_wheel(self, e, delta=None) -> None:
+        # Лента висит на общем холсте: вне своей полосы она не трогает колесо,
+        # иначе break мешает общему роутеру прокрутить мостик/бортжурнал.
+        if self.surface is not None and self._local(e) is None:
+            return None
         d = delta if delta is not None else getattr(e, "delta", 0)
         if d == 0:
-            return
+            return None
         step = px(40)
         self._scroll = max(0, self._scroll - (step if d > 0 else -step))
         self._clamp_scroll()

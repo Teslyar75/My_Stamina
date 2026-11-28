@@ -192,15 +192,18 @@ def build_chrome(app) -> tk.Frame:
             # Возврат в предыдущее окно не должен оставлять чёрный полноэкранный вид.
             if getattr(app, "_fullscreen", False):
                 app.toggle_fullscreen(False)
-            # Гарантия исходного состояния: ни один экран не перекрывает слайдшоу,
-            # само слайдшоу запущено, чёрточки поверх него.
-            try:
-                app._only_screen(None)
-            except Exception:  # noqa: BLE001
-                pass
-            slides = getattr(app, "_xp_slideshow", None)
-            if slides is not None:
-                slides.start()
+            # Гарантия исходного состояния для пустого вида: ни один экран не
+            # перекрывает слайдшоу. Если же ушли из окна в другой отсек, его
+            # экран уже показан show() — прятать его здесь нельзя (иначе под
+            # обоями остаётся невидимый бортжурнал и не работает колесо).
+            if getattr(app, "current", None) is None:
+                try:
+                    app._only_screen(None)
+                except Exception:  # noqa: BLE001
+                    pass
+                slides = getattr(app, "_xp_slideshow", None)
+                if slides is not None:
+                    slides.start()
         _raise_ribbons()
         _lift_chrome(app)
 
