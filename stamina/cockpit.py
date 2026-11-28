@@ -614,7 +614,9 @@ class Cockpit(tk.Tk):
 
     def _zen_target_for(self, screen_name: str | None):
         """Виджет, где работает общий зенид (стройка и Ether по-прежнему вне)."""
-        if screen_name in (None, "settings", "bridge_settings", "ether"):
+        # Мостик больше не участвует в общем зениде: его кнопка убрана, а
+        # Ctrl+O на тренировке не должен прятать приборы и клавиатуру.
+        if screen_name in (None, "bridge", "settings", "bridge_settings", "ether"):
             return None
         scr = self.screens.get(screen_name)
         if scr is None:

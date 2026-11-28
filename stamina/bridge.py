@@ -8,7 +8,7 @@ import time
 import tkinter as tk
 from typing import TYPE_CHECKING
 
-from stamina import layouts, missions, theme, zen_mode
+from stamina import layouts, missions, theme
 from stamina.engine import DONE, ERROR, TypingEngine
 from stamina.hud import (
     HudButton, HudKeyboard, HudPanel, Readouts, RingGauge, SegmentBar, SpeedGauge,
@@ -116,9 +116,6 @@ class Bridge(tk.Frame):
         self._word_key = None
         self._word_src = None
         self.debrief: HudPanel | None = None
-        self._zen_grid: dict | None = None
-        self._zen_size: int | None = None
-        self._zen_stats: tk.Label | None = None
         self._build()
 
     # ------------------------------------------------------------------
@@ -159,10 +156,6 @@ class Bridge(tk.Frame):
         self.btn_pause = HudButton(bar, t("❚❚ ПАУЗА  Esc/Del"), self.toggle_pause, height=28, font_size=9,
                                    width=200)
         self.btn_pause.pack(side=tk.LEFT)
-        self.btn_zen_full = HudButton(bar, t("⛶ ЗЕНИД  Ctrl+O"),
-                                      lambda: zen_mode.toggle(self), height=28, font_size=9,
-                                      color=AMBER)
-        self.btn_zen_full.pack(side=tk.LEFT, padx=(0, px(6)))
         HudButton(bar, "?", lambda: self.app.open_help(), height=28, font_size=10,
                   width=32, color=AMBER).pack(side=tk.RIGHT)
         HudButton(bar, t("↻ ЗАНОВО  F5"), self.app.restart_current, height=28,
@@ -186,77 +179,8 @@ class Bridge(tk.Frame):
         self.readouts.pack(fill=tk.X)
         self.panels = [left, center, right]
 
-        self._zen_stats = tk.Label(self, text="", bg=BG, fg=MUTED,
-                                   font=theme.font(9, True), anchor="w")
         self.show_idle()
         self.refresh_stats()
-
-    # ------------------------------------------------------------------
-    # Общий зенид ⛶ / Ctrl+O: только текст, каретка и мелкие числа в углу
-    # ------------------------------------------------------------------
-    def zen_target(self):
-        return self
-
-    @staticmethod
-    def _grid_apply(widget, info: dict) -> None:
-        # grid_info() пустой после grid_remove: grid() без опций как раз вернул бы виджет на место.
-        if not info or "row" not in info:
-            widget.grid_remove()
-            return
-        widget.grid(**{k: v for k, v in info.items() if k != "in"})
-
-    def _zen_font_size(self) -> int:
-        base = FONT_SIZES.get(self.app.store.settings.get("font"), 26)
-        return max(base + 16, int(base * 1.5))
-
-    def _update_zen_stats(self) -> None:
-        if self._zen_stats is None:
-            return
-        acc = self.ring.value
-        acc_text = "—" if acc is None else f"{acc:.0f}%"
-        self._zen_stats.configure(text=t("ЗЕНИД: {0} зн/мин · {1}").format(
-            f"{self.speed.target:.0f}", acc_text))
-
-    def after_zen_toggle(self, on: bool) -> None:
-        if on:
-            if self._zen_grid is None:
-                self._zen_grid = {
-                    "strip": dict(self.strip.grid_info()),
-                    "viewport": dict(self.viewport.grid_info()),
-                    "uplink": dict(self.uplink.grid_info()),
-                    "panels": [dict(p.grid_info()) for p in self.panels],
-                    "row0": int(self.grid_rowconfigure(0).get("weight") or 0),
-                    "row3": int(self.grid_rowconfigure(3).get("weight") or 0),
-                }
-                self._zen_size = self._zen_font_size()
-            for w in (self.strip, self.uplink, *self.panels):
-                w.grid_remove()
-            self.grid_rowconfigure(0, weight=1)
-            self.grid_rowconfigure(3, weight=0)
-            self.viewport.grid(row=0, column=0, columnspan=3, sticky="nsew",
-                               padx=px(16), pady=px(16))
-            st = dict(self.app.store.settings)
-            st["_size"] = self._zen_size
-            self.viewport.set_style(st)
-            self.viewport.set_state(status="", status_color=MUTED, finger=None)
-            self._update_zen_stats()
-            self._zen_stats.place(relx=0.0, rely=1.0, x=px(14), y=-px(10), anchor="sw")
-            return
-        if self._zen_grid is None:
-            return
-        saved, self._zen_grid = self._zen_grid, None
-        self._zen_stats.place_forget()
-        self._grid_apply(self.strip, saved["strip"])
-        self._grid_apply(self.uplink, saved["uplink"])
-        for panel, info in zip(self.panels, saved["panels"]):
-            self._grid_apply(panel, info)
-        self._grid_apply(self.viewport, saved["viewport"])
-        self.grid_rowconfigure(0, weight=saved["row0"])
-        self.grid_rowconfigure(3, weight=saved["row3"])
-        st = dict(self.app.store.settings)
-        st.pop("_size", None)
-        self.viewport.set_style(st)
-        self.viewport.redraw()
 
     # ------------------------------------------------------------------
     # Старт / состояние
@@ -885,7 +809,6 @@ class Bridge(tk.Frame):
             self.speed.set(0)
             self.ring.set(None, t("ОШИБОК 0"))
             self.rhythm.set(None, "—")
-            self._update_zen_stats()
             self.readouts.set([(t("ВРЕМЯ"), "00:00", CYAN), (t("ОШИБКИ"), "0", GREEN),
                                (t("СЕРИЯ / ЛУЧШАЯ"), "0 / 0", AMBER), (t("ОСТАЛОСЬ"), "—", TEXT)])
             return
@@ -899,7 +822,6 @@ class Bridge(tk.Frame):
         self.ring.set(acc, t("ОШИБОК {0}").format(eng.errors))
         r = eng.rhythm
         self.rhythm.set(None if r is None else r / 100, "—" if r is None else f"{r:.0f}%")
-        self._update_zen_stats()
         total = len(self._full_text) or len(eng.text)
         done = self._full_index()
         left = max(0, total - done)

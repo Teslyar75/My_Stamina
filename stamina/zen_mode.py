@@ -43,7 +43,9 @@ def _alive(widget) -> bool:
 
 
 def active_widget():
-    for widget, _mode in list(_ACTIVE.values()):
+    # Вложенный зенид (например, грамматика внутри рабочего окна)
+    # активнее родителя: выходить и снимать надо его первым.
+    for widget, _mode in reversed(list(_ACTIVE.values())):
         if _alive(widget):
             return widget
     _ACTIVE.clear()
@@ -132,15 +134,17 @@ def enter(widget) -> bool:
         return True
     previous = active_widget()
     if previous is not None and previous is not widget:
-        rec = _ACTIVE.pop(id(previous), None)
+        rec = _ACTIVE.get(id(previous))
         if rec is not None and not _contains(previous, widget):
-            # Разные зениды: старый раскладываем обратно. Если же новый зенид
-            # живёт ВНУТРИ предыдущего (грамматика внутри рабочего окна опытного
-            # вида), рабочее окно обязано остаться открытым — иначе экран чёрный.
+            # Разные зениды: старый раскладываем обратно и убираем из реестра.
+            _ACTIVE.pop(id(previous), None)
             try:
                 rec[1].restore()
             finally:
                 _notify(previous, False)
+        # Вложенный зенид: родитель ОСТАЁТСЯ в реестре. Его FocusMode прячет
+        # холст слайдшоу и чёрточки; если забыть запись, при закрытии отсека
+        # их некому восстановить — остаётся чёрный экран.
     from stamina.english.ui import FocusMode
     mode = FocusMode(widget)
     _ACTIVE[id(widget)] = (widget, mode)
