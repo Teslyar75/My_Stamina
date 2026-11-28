@@ -577,6 +577,8 @@ Done:
 
 Проверки: 43 затронутых теста зелёные (`test_experienced_ui`, `test_wheel_router`, `test_timeline`, `test_zen`, `test_zen_engine`, `test_keynav`, `test_speedread_to_bridge`), `ruff` по правкам и `ci_gate` зелёные. Два падения `test_scroll_frame.py` на Windows предсуществуют и подтверждены на чистом baseline.
 
-Next: запушить ветку, открыть PR, после слияния попросить пилота глазами проверить колесо и стрелки на мостике после книги и в бортжурнале.
+Отправлено: ветка `agent/orion/scroll-regression` → PR #68 (`6abfe80` → `origin/agent/orion/scroll-regression`).
+
+Next: после слияния попросить пилота глазами проверить колесо и стрелки на мостике после книги и в бортжурнале.
 
 Problems: нет.
