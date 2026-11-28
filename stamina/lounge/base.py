@@ -255,7 +255,10 @@ class GameShell(tk.Frame):
         if ov.is_visible():
             if k == "Escape":
                 ov.hide()
-            return True
+                return True
+            # Остальные клавиши (в частности h/j/k/l и стрелки VIM) должны
+            # доходить до игры: справка — это оверлей, а не модальный диалог.
+            return False
         return False
 
     def on_key(self, e: tk.Event) -> None:

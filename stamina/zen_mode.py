@@ -98,6 +98,11 @@ def double_esc_pending() -> bool:
     return bool(_ESC._at and (time.monotonic() - _ESC._at) <= ESC_WINDOW)
 
 
+def reset_escape() -> None:
+    """Сбросить таймер двойного Esc (например, когда Esc съел VIM-тренажёр)."""
+    _ESC.reset()
+
+
 def _is_esc(e) -> bool:
     ks = (getattr(e, "keysym", "") or "").lower()
     return ks == "escape" or int(getattr(e, "keycode", 0) or 0) == 27
@@ -197,7 +202,8 @@ def handle_key(e, widget=None, *, allow_esc: bool = True) -> bool:
             toggle(widget)
         return True
     if _is_esc(e):
-        return handle_escape(widget)
+        # Экраны с вводом сами решают, что делать с Esc (VIM переключает режим).
+        return False if not allow_esc else handle_escape(widget)
     if is_active(widget):
         _ESC.reset()
     return False

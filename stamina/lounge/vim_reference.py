@@ -836,6 +836,12 @@ TOPICS = [
 ]
 # fmt: on
 
+# Полный перевод шпаргалки vim.rtorr.com: 14 тем и ~180 команд сверх
+# проверенных уроков. Данные лежат отдельно, чтобы уроки оставались читаемыми.
+from .vim_cheatsheet import TOPICS as _CHEATSHEET_TOPICS  # noqa: E402
+
+TOPICS.extend(_CHEATSHEET_TOPICS)
+
 
 def topics() -> list[dict]:
     """Все темы учебника (для панели и тестов)."""

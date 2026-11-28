@@ -29,6 +29,14 @@ class VimState:
     last_motion: str = ""
     last_count: int = 0
     pending_count: str = ""
+    # Клавиши-префиксы (g, f, r, m, ', `, ", >, <, i/a после оператора) и
+    # «память» редактора. Всё это — данные движка, без Tk и без интерфейса.
+    seq: str = ""
+    marks: dict[str, tuple[int, int]] = field(default_factory=dict)
+    registers: dict[str, list[str]] = field(default_factory=dict)
+    pending_register: str = ""
+    last_find: tuple[str, str] | None = None
+    last_change: list[str] = field(default_factory=list)
 
 
 def _deep_copy_grid(grid: list[list[str]]) -> list[list[str]]:
@@ -198,6 +206,121 @@ MOTION_FUNCS = {
 }
 
 
+def _word_bounds(state: VimState, *, include_space: bool = False) -> tuple[int, int]:
+    """Границы слова под курсором: iw — только буквы, aw — ещё и пробел."""
+    row = state.grid[state.cursor_y]
+    x = state.cursor_x
+    while x < len(row) and not row[x].isalnum():
+        x += 1
+    left = x
+    while left > 0 and row[left - 1].isalnum():
+        left -= 1
+    right = x
+    while right < len(row) and row[right].isalnum():
+        right += 1
+    if include_space:
+        if right < len(row) and row[right] == " ":
+            right += 1
+        elif left > 0 and row[left - 1] == " ":
+            left -= 1
+    return left, right
+
+
+def _store_register(state: VimState, lines: list[str]) -> None:
+    """Удаление и копирование пишут в регистр; явный регистр имеет приоритет."""
+    name = state.pending_register or '"'
+    state.registers[name] = lines[:]
+    state.registers['"'] = lines[:]
+    state.pending_register = ""
+
+
+def _apply_range(state: VimState, op: str, y1: int, x1: int, y2: int, x2: int) -> None:
+    """Оператор над готовым диапазоном — движение и текстовый объект идут сюда же."""
+    _save_state(state)
+    if op == "d":
+        _store_register(state, _delete_range(state, y1, x1, y2, x2))
+        state.cursor_x, state.cursor_y = x1, y1
+    elif op == "c":
+        _store_register(state, _delete_range(state, y1, x1, y2, x2))
+        state.cursor_x, state.cursor_y = x1, y1
+        state.mode = "INSERT"
+    elif op == "y":
+        _store_register(state, _yank_range(state, y1, x1, y2, x2))
+    _clamp_cursor(state)
+
+
+def _apply_text_object(state: VimState, op: str, inner: bool) -> None:
+    x1, x2 = _word_bounds(state, include_space=not inner)
+    _apply_range(state, op, state.cursor_y, x1, state.cursor_y, x2)
+
+
+def _find_char(state: VimState, char: str, kind: str) -> None:
+    """f/F/t/T — прыжок к символу в строке, ; и , повторяют последний поиск."""
+    row = state.grid[state.cursor_y]
+    forward = kind in ("f", "t")
+    before = kind in ("t", "T")
+    positions = [i for i, c in enumerate(row) if c == char]
+    if not positions:
+        return
+    x = state.cursor_x
+    if forward:
+        candidates = [i for i in positions if i > x]
+        pos = candidates[0] if candidates else positions[0]
+        if before:
+            pos = max(0, pos - 1)
+    else:
+        candidates = [i for i in positions if i < x]
+        pos = candidates[-1] if candidates else positions[-1]
+        if before:
+            pos = min(len(row) - 1, pos + 1)
+    state.cursor_x = pos
+    state.last_find = (kind, char)
+
+
+def _matching_bracket(state: VimState) -> None:
+    """% — прыжок к парной скобке."""
+    pairs = {"(": ")", "{": "}", "[": "]"}
+    reverse = {v: k for k, v in pairs.items()}
+    row = state.grid[state.cursor_y]
+    x = state.cursor_x
+    start = x
+    while start < len(row) and row[start] not in pairs and row[start] not in reverse:
+        start += 1
+    if start >= len(row):
+        return
+    ch = row[start]
+    if ch in pairs:
+        want, step = pairs[ch], 1
+    else:
+        want, step = reverse[ch], -1
+    depth = 0
+    positions = range(start + 1, len(row)) if step == 1 else range(start - 1, -1, -1)
+    for i in positions:
+        if row[i] == ch:
+            depth += 1
+        elif row[i] == want:
+            if depth == 0:
+                state.cursor_x = i
+                return
+            depth -= 1
+
+
+def _indent_line(state: VimState, delta: int) -> None:
+    """>> и << — добавить/убрать один отступ в две позиции."""
+    _save_state(state)
+    row = state.grid[state.cursor_y]
+    if delta > 0:
+        state.grid[state.cursor_y] = [" "] * 2 + row
+        state.cursor_x += 2
+    else:
+        cut = 0
+        while cut < min(2, len(row)) and row[cut] == " ":
+            cut += 1
+        state.grid[state.cursor_y] = row[cut:]
+        state.cursor_x = max(0, state.cursor_x - cut)
+    _clamp_cursor(state)
+
+
 def _delete_range(state: VimState, y1: int, x1: int, y2: int, x2: int) -> list[str]:
     """Delete range and return deleted text lines. Range is [y1,x1) to [y2,x2) exclusive end."""
     deleted = []
@@ -243,7 +366,6 @@ def _yank_range(state: VimState, y1: int, x1: int, y2: int, x2: int) -> list[str
 
 def _apply_operator(state: VimState, op: str, motion: str, count: int) -> None:
     """Apply operator with motion."""
-    _save_state(state)
     start_x, start_y = state.cursor_x, state.cursor_y
 
     # Execute motion to get end position
@@ -267,22 +389,14 @@ def _apply_operator(state: VimState, op: str, motion: str, count: int) -> None:
     else:
         y1, x1, y2, x2 = end_y, end_x, start_y, start_x
 
-    if op == "d":
-        _delete_range(state, y1, x1, y2, x2)
-        state.cursor_x, state.cursor_y = x1, y1
-    elif op == "c":
-        _delete_range(state, y1, x1, y2, x2)
-        state.cursor_x, state.cursor_y = x1, y1
-        state.mode = "INSERT"
-    elif op == "y":
-        _yank_range(state, y1, x1, y2, x2)
-        # cursor doesn't move for yank
-
-    _clamp_cursor(state)
+    _apply_range(state, op, y1, x1, y2, x2)
 
 
 def _delete_line(state: VimState, count: int = 1) -> None:
     _save_state(state)
+    removed = ["".join(state.grid[state.cursor_y + i])
+               for i in range(count) if state.cursor_y + i < len(state.grid)]
+    _store_register(state, removed)
     for _ in range(count):
         if len(state.grid) > 1 and state.cursor_y < len(state.grid):
             del state.grid[state.cursor_y]
@@ -311,9 +425,28 @@ def _yank_line(state: VimState, count: int = 1) -> list[str]:
 
 
 def _put(state: VimState, after: bool = True) -> None:
-    """Put (paste) yanked/deleted text. Simplified - uses last deleted."""
+    """Вставить регистр: после курсора (p) или перед ним (P)."""
+    name = state.pending_register or '"'
+    lines = state.registers.get(name) or state.registers.get('"') or []
+    state.pending_register = ""
+    if not lines:
+        return
     _save_state(state)
-    # Simplified: no actual register implementation
+    text = "".join(lines)
+    y = state.cursor_y
+    row = state.grid[y]
+    x = state.cursor_x + (1 if after else 0)
+    if "\n" in text or len(lines) > 1:
+        # Упрощённая вставка нескольких строк: первая — в текущую, остальные ниже.
+        head, *tail = lines
+        state.grid[y] = row[:x] + list(head) + row[x:]
+        for offset, line in enumerate(tail, start=1):
+            state.grid.insert(y + offset, list(line))
+        state.cursor_y = y + len(lines) - 1
+        state.cursor_x = max(0, len(line) - 1)
+    else:
+        state.grid[y] = row[:x] + list(text) + row[x:]
+        state.cursor_x = x + len(text) - 1
     _clamp_cursor(state)
 
 
@@ -409,7 +542,7 @@ def _delete_visual_selection(state: VimState) -> None:
     # For visual mode, range is inclusive on end
     if y1 == y2:
         x2 += 1
-    _delete_range(state, y1, x1, y2, x2)
+    _store_register(state, _delete_range(state, y1, x1, y2, x2))
     state.cursor_x, state.cursor_y = x1, y1
     state.mode = "NORMAL"
     state.visual_start = None
@@ -427,7 +560,9 @@ def _yank_visual_selection(state: VimState) -> list[str]:
         x1, x2 = x2, x1
     if y1 == y2:
         x2 += 1
-    return _yank_range(state, y1, x1, y2, x2)
+    yanked = _yank_range(state, y1, x1, y2, x2)
+    _store_register(state, yanked)
+    return yanked
 
 
 def _change_visual_selection(state: VimState) -> None:
@@ -469,7 +604,7 @@ def _redo(state: VimState) -> None:
         _clamp_cursor(state)
 
 
-def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = False) -> None:
+def _process_key_impl(state: VimState, key: str, ctrl: bool = False, shift: bool = False) -> None:
     """Process a single key press in NORMAL mode."""
     # Handle count prefix
     if key.isdigit() and key != "0":
@@ -535,6 +670,97 @@ def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = Fal
         return
 
     # NORMAL mode
+    # Двухклавишные команды. Префикс живёт в state.seq, пока не придёт вторая
+    # клавиша: gg, gj/gk, ge, g_, f/t/F/T + символ, ;,, r + символ, m + метка,
+    # 'a / `a, "a (регистр), >> / << и текстовые объекты iw / aw.
+    if state.seq:
+        first = state.seq
+        state.seq = ""
+        if first == "g":
+            if key == "g":
+                state.cursor_x, state.cursor_y = 0, 0
+            elif key == "j":
+                _move_down(state, count)
+            elif key == "k":
+                _move_up(state, count)
+            elif key == "e":
+                _move_word_backward(state)
+                _move_word_end(state)
+            elif key == "_":
+                row = state.grid[state.cursor_y]
+                state.cursor_x = max((i for i, c in enumerate(row) if c != " "), default=0)
+            return
+        if first in ("f", "F", "t", "T"):
+            _find_char(state, key, first)
+            return
+        if first == "r" and len(key) == 1:
+            _save_state(state)
+            row = state.grid[state.cursor_y]
+            if state.cursor_x < len(row):
+                row[state.cursor_x] = key
+            return
+        if first == "m":
+            state.marks[key] = (state.cursor_x, state.cursor_y)
+            return
+        if first in ("'", "`"):
+            pos = state.marks.get(key)
+            if pos is not None:
+                state.cursor_x, state.cursor_y = pos
+                _clamp_cursor(state)
+            return
+        if first == '"':
+            state.pending_register = key
+            return
+        if first in (">", "<") and key == first:
+            _indent_line(state, 1 if first == ">" else -1)
+            return
+        if first in ("i", "a") and state.last_op and key == "w":
+            _apply_text_object(state, state.last_op, inner=first == "i")
+            state.last_op = ""
+            state.last_count = 0
+            return
+        return
+
+    if key == "." and state.last_change:
+        replay = state.last_change[:]
+        for token in replay:
+            process_key(state, token)
+        return
+
+    if key == "G":
+        line = max(0, (count if count > 1 else len(state.grid)) - 1)
+        state.cursor_y = min(line, len(state.grid) - 1)
+        row = state.grid[state.cursor_y]
+        state.cursor_x = next((i for i, c in enumerate(row) if c != " "), 0)
+        return
+
+    if key == "%":
+        _matching_bracket(state)
+        return
+
+    if key == "~":
+        row = state.grid[state.cursor_y]
+        if state.cursor_x < len(row):
+            _save_state(state)
+            ch = row[state.cursor_x]
+            row[state.cursor_x] = ch.lower() if ch.isupper() else ch.upper()
+        return
+
+    if not ctrl and key in ("g", "f", "F", "t", "T", "r", "m", "'", "`", '"', ">", "<"):
+        state.seq = key
+        return
+
+    if key in (";", ",") and state.last_find:
+        kind, char = state.last_find
+        _find_char(state, char, kind if key == ";" else
+                   {"f": "F", "F": "f", "t": "T", "T": "t"}[kind])
+        return
+
+    # Если после оператора пошла i/a — это текстовый объект (iw/aw), а не вставка.
+    if state.last_op and key in ("i", "a"):
+        state.seq = key
+        return
+
     if key in ("u", "U"):
         _undo(state)
         return
@@ -553,7 +779,7 @@ def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = Fal
         state.last_op = ""
         return
     if key == "y" and state.last_op == "y":
-        _yank_line(state, count)
+        _store_register(state, _yank_line(state, count))
         state.last_op = ""
         return
 
@@ -625,7 +851,7 @@ def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = Fal
 
     # Y (yank to end of line)
     if key == "Y" or (shift and key == "y"):
-        _yank_line(state, 1)
+        _store_register(state, _yank_line(state, 1))
         return
 
     # X (delete before cursor)
@@ -648,6 +874,28 @@ def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = Fal
         return
 
 
+def process_key(state: VimState, key: str, ctrl: bool = False, shift: bool = False) -> None:
+    """Клавиша NORMAL; запоминает последнее изменение для оператора ``.``."""
+    before_grid = _deep_copy_grid(state.grid)
+    before_op, before_seq = state.last_op, state.seq
+    _process_key_impl(state, key, ctrl=ctrl, shift=shift)
+    if state.grid == before_grid or ctrl or key == "." or key in ("u", "U"):
+        return
+    if before_seq == "r":
+        tokens = ["r", key]
+    elif before_seq in (">", "<"):
+        tokens = [before_seq, before_seq]
+    elif before_op:
+        tokens = [before_op, key]
+    elif key in ("x", "X", "D", "C", "~", "p", "P"):
+        tokens = [key]
+    else:
+        return
+    state.last_change = tokens
+    if len(state.last_change) > 64:
+        state.last_change.pop(0)
+
+
 def process_insert_char(state: VimState, ch: str) -> None:
     """Process a printable character in INSERT mode."""
     if state.mode == "INSERT":
@@ -655,23 +903,39 @@ def process_insert_char(state: VimState, ch: str) -> None:
 
 
 def process_special_key(state: VimState, key: str, ctrl: bool = False, shift: bool = False) -> None:
-    """Process special keys (backspace, enter, escape, arrows) in INSERT mode."""
-    if state.mode != "INSERT":
+    """Insert-mode specials; Esc and arrows also route to the current VIM mode.
+
+    Esc is the mode switch in every mode, and arrows are aliases for h/j/k/l.
+    The old version silently ignored both outside INSERT, so VISUAL and COMMAND
+    could not be left with Esc and arrows did nothing in NORMAL/VISUAL.
+    """
+    k = key.lower()
+    if state.mode == "INSERT":
+        if k == "backspace":
+            _handle_backspace(state)
+        elif k in ("return", "enter"):
+            _handle_enter(state)
+        elif k == "escape":
+            _handle_escape(state)
+        elif k == "left":
+            _move_left(state)
+        elif k == "right":
+            _move_right(state)
+        elif k == "up":
+            _move_up(state)
+        elif k == "down":
+            _move_down(state)
         return
-    if key in ("backspace", "BackSpace"):
-        _handle_backspace(state)
-    elif key in ("return", "enter", "Return", "Enter"):
-        _handle_enter(state)
-    elif key in ("escape", "Escape"):
-        _handle_escape(state)
-    elif key in ("left", "Left"):
-        _move_left(state)
-    elif key in ("right", "Right"):
-        _move_right(state)
-    elif key in ("up", "Up"):
-        _move_up(state)
-    elif key in ("down", "Down"):
-        _move_down(state)
+    mapped = {
+        "escape": "escape",
+        "esc": "escape",
+        "left": "h",
+        "right": "l",
+        "up": "k",
+        "down": "j",
+    }.get(k)
+    if mapped is not None:
+        process_key(state, mapped, ctrl=ctrl, shift=shift)
 
 
 if __name__ == "__main__":

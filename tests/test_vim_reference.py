@@ -147,7 +147,7 @@ class TestEngineHonesty:
     def test_unknown_command_cannot_be_marked_supported(self):
         """Обратная сторона: то, чего движок не знает, не должно быть в supported."""
         supported = {item["cmd"] for item in ref.supported()}
-        for cmd in ("gg", "G", "ciw", "/pattern", ":%s/old/new/g", ":w", "ma"):
+        for cmd in ("ciw", "/pattern", ":%s/old/new/g", ":w", ":sp", ":tabnew", "q"):
             assert cmd not in supported, f"{cmd}: движок этого не умеет — нельзя обещать"
 
 
