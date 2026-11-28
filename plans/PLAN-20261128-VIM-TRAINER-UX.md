@@ -1,6 +1,6 @@
 # VIM Trainer UX and controls — 2026-11-28
 
-**Status:** implemented, awaiting the pilot's visual check from `D:\tmp\st-pilot\main.py --select`. Key-interception recon is complete; all four steps below are done in code and covered by targeted tests. The trainer now has 24 lessons (12 foundational + 12 for confident editing), a translated 182-card cheatsheet, free sandbox and progressive hints. Branch `agent/orion/vim-controls` was cut from `master` 57a9f22; PR #68 (scroll/Esc-on-bridge) stays separate and is merged before release if conflicts appear.
+**Status:** implemented and sent as PR #69 (`agent/orion/vim-controls` → `master`, MERGEABLE), awaiting the pilot's visual check from `D:\tmp\st-pilot\main.py --select` and the final full `pytest` result. Key-interception recon is complete; all four steps below are done in code and covered by targeted tests. The trainer now has 24 lessons (12 foundational + 12 for confident editing), a translated 182-card cheatsheet, free sandbox and progressive hints. PR #68 (scroll/Esc-on-bridge) stays separate; its commits are not in this branch.
 
 ## Decisions
 
