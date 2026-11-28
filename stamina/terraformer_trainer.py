@@ -2012,6 +2012,24 @@ class Camera:
         self.cx = max(0.0, min(float(self.w), self.cx))
         self.cy = max(0.0, min(float(self.h), self.cy))
 
+    def clamp_iso(self, hw: float, hh: float, canvas_w: int, canvas_h: int) -> None:
+        """Не показывать пустоту за краем карты в изометрии.
+
+        ``hw``/``hh`` — полуширина/полувысота ромба. Углы экрана в мировых
+        координатах отстоя от центра ровно на ``span`` по обеим осям.
+        """
+        if hw <= 0 or hh <= 0:
+            return
+        span = (canvas_w / (2.0 * hw) + canvas_h / (2.0 * hh)) / 2.0
+        if 2.0 * span <= self.w:
+            self.cx = max(span, min(float(self.w) - span, self.cx))
+        else:
+            self.cx = self.w / 2.0
+        if 2.0 * span <= self.h:
+            self.cy = max(span, min(float(self.h) - span, self.cy))
+        else:
+            self.cy = self.h / 2.0
+
     def cell_px(self) -> float:
         return BASE_CELL * self.zoom
 
