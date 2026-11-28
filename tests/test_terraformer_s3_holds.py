@@ -161,7 +161,7 @@ class TestPerUnitHolds:
         model.main_unit.holds["water"] = 3
         model.main_unit.holds[strategy.SPICE] = 2
         bp = model.to_blueprint()
-        assert bp["version"] == 5
+        assert bp["version"] == 6
         assert "units" in bp
         assert len(bp["units"]) == len(model.units)
         # Check main unit has holds

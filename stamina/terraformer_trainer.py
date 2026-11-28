@@ -544,6 +544,9 @@ class TrainerModel:
         self.units: list[strategy.Unit] = []
         self.selected: set[str] = set()
         self.explored: set[tuple[int, int]] = set()
+        # Клетки, где отряд побывал. Вместе с фундаментом, зданиями и платформами
+        # они образуют разведку, которую туман больше не закрывает.
+        self.visited: set[tuple[int, int]] = set()
         self.worm = strategy.Sandworm(max(0, self.w - 6), max(0, self.h - 6))
         self.worm_seen = False
         self.worm_attacks = 0
@@ -551,6 +554,7 @@ class TrainerModel:
         self.connected = 0
         self._tick_count = 0
         self._init_units()
+        self.visited.update((u.x, u.y) for u in self.units)
         self._update_explored()
 
     @classmethod
@@ -668,6 +672,8 @@ class TrainerModel:
         unit = strategy.Unit(uid, level, int(x), int(y), serial=serial)
         self._init_unit_holds(unit)
         self.units.append(unit)
+        self.visited.add((unit.x, unit.y))
+        self.explored.update(self._visible_from(unit) | self._permanent_cells())
         self.mission_book.push(strategy.Alert(
             "reward", _t("Новый терраформер {0}").format(unit.name),
             _t("Уровень {0} · высота зданий до {1}").format(level, unit.max_height), level))
@@ -836,8 +842,9 @@ class TrainerModel:
                 if 0 <= nx < self.w and 0 <= ny < self.h:
                     u.x, u.y = nx, ny
                     moved_any = True
+                self.visited.add((u.x, u.y))
             if moved_any:
-                self.explored.update(self._visible_from(u))
+                self.explored.update(self._visible_from(u) | self._permanent_cells())
         if moved_any:
             active = self.unit_by_uid(self._active_uid)
             if active is not None:
@@ -866,6 +873,7 @@ class TrainerModel:
         acted_any = False
         cap = self._hold_cap()
         for u in self.units:
+            self.visited.add((u.x, u.y))
             if u.mode == "manual":
                 continue
             if u.path:
@@ -880,7 +888,8 @@ class TrainerModel:
                 if (u.x, u.y) != start:
                     moved_any = True
                     acted_any = True
-                    self.explored.update(self._visible_from(u))
+                    self.visited.add((u.x, u.y))
+                    self.explored.update(self._visible_from(u) | self._permanent_cells())
                 if not u.path and u.order == "auto_unload":
                     acted_any = self._complete_auto_order(u) or acted_any
                 continue
@@ -1042,6 +1051,7 @@ class TrainerModel:
         self.finds = {sc(c): v for c, v in self.finds.items()}
         self.revealed = {sc(c) for c in self.revealed}
         self.explored = {sc(c) for c in self.explored}
+        self.visited = {sc(c) for c in self.visited}
         self.platform_blocks = {sc(c) for c in self.platform_blocks}
         self.blocks = [sc(c) for c in self.blocks]
         for p in self.platforms:
@@ -1103,8 +1113,19 @@ class TrainerModel:
                 out |= self._visible_from_structure(b)
         return out
 
+    def _permanent_cells(self) -> set[tuple[int, int]]:
+        """Разведка, которую туман не закрывает обратно.
+
+        Фундамент, платформы, здания и побыванная земля известны пилоту,
+        даже когда отряд ушёл и червь уничтожил терраформера.
+        """
+        cells = set(self.site_cells()) | set(self.blocks) | set(self.platform_blocks)
+        cells |= {tuple(b.center) for b in self.buildings if b.built}
+        cells |= set(self.visited)
+        return cells
+
     def _update_explored(self) -> None:
-        self.explored |= self.visible_cells()
+        self.explored |= self.visible_cells() | self._permanent_cells()
 
     def is_visible(self, x: int, y: int, visible: set | None = None) -> bool:
         return (x, y) in (visible if visible is not None else self.visible_cells())
@@ -1163,6 +1184,8 @@ class TrainerModel:
         b.income = spec.income
         b.built = True
         self.buildings.append(b)
+        self.visited.add((x, y))
+        self.explored.add((x, y))
         self.max_build_height = max(self.max_build_height, spec.height)
         self._update_connections()
         self.mission_book.push(strategy.Alert(
@@ -1202,6 +1225,18 @@ class TrainerModel:
                 if victim.hp <= 0 and victim.uid != self.main_unit.uid:
                     self.units.remove(victim)
                     self.selected.discard(victim.uid)
+                    # Потеря техники — единственный повод снова закрыть туманом
+                    # уже разведанные клетки. Половина непостоянной разведки
+                    # исчезает; фундамент, платформы, здания и побыванная
+                    # земля остаются открытыми.
+                    keep = self._permanent_cells()
+                    lost = sorted(c for c in self.explored if c not in keep)
+                    self.explored.difference_update(lost[::2])
+                    event["lost_intel"] = True
+                    self.mission_book.push(strategy.Alert(
+                        "warn", _t("Часть разведданных потеряна"),
+                        _t("{0} погиб. Карта открытых клеток уменьшилась.").format(victim.name),
+                        victim.level))
                 elif victim.uid == self.main_unit.uid and victim.hp <= 0:
                     victim.hp = 10
         return event
@@ -1354,6 +1389,8 @@ class TrainerModel:
         # тратим грунт
         unit.holds["soil"] = 0
         self.platform_blocks.add((x, y))
+        self.visited.add((x, y))
+        self.explored.add((x, y))
         if target_platform:
             target_platform.try_add_block(x, y)
             if target_platform.complete:
@@ -1407,7 +1444,8 @@ class TrainerModel:
         unit.x, unit.y = x, y
         if moved:
             unit.path = []
-            self.explored.update(self._visible_from(unit))
+            self.visited.add((x, y))
+            self.explored.update(self._visible_from(unit) | self._permanent_cells())
             self._maybe_expand()
             # Камера идёт за активным терраформером, а не всегда за units[0].
             if self.unit_by_uid(self._active_uid) is unit:
@@ -1478,6 +1516,8 @@ class TrainerModel:
         if free is None:
             return "done"
         self.blocks.append(free)
+        self.visited.add(free)
+        self.explored.add(free)
         unit.holds["soil"] = 0
         if len(self.blocks) >= len(site):
             self.walls_open = True
@@ -1634,7 +1674,7 @@ class TrainerModel:
             units_data.append({**u.to_dict()})
         return {
             "kind": "terraformer_trainer",
-            "version": 5,
+            "version": 6,
             "w": self.w,
             "h": self.h,
             "depth": self.depth,
@@ -1647,6 +1687,7 @@ class TrainerModel:
             "seed": self.seed,
             "revealed": [[x, y] for x, y in sorted(self.revealed)],
             "explored": [[x, y] for x, y in sorted(self.explored)],
+            "visited": [[x, y] for x, y in sorted(self.visited)],
             "finds_count": dict(self.finds_count),
             "platforms": platforms_data,
             "buildings": buildings_data,
@@ -1833,6 +1874,20 @@ class TrainerModel:
                     continue
         else:
             model.explored = set(model.revealed) | model.visible_cells()
+        visited = d.get("visited")
+        if isinstance(visited, list):
+            for item in visited:
+                try:
+                    cell = (int(item[0]), int(item[1]))
+                except (TypeError, ValueError, IndexError):
+                    continue
+                if 0 <= cell[0] < model.w and 0 <= cell[1] < model.h:
+                    model.visited.add(cell)
+        else:
+            # Старый чертёж: побыванные клетки — всё, что уже было открыто.
+            model.visited = set(model.explored)
+        # Фундамент, постройки и разведка всегда остаются видимыми.
+        model.explored |= model._permanent_cells()
         try:
             model.credits = max(0, int(d.get("credits", 0)))
         except (TypeError, ValueError):

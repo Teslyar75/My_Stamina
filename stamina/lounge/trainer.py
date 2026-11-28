@@ -5,12 +5,12 @@ F1 — инструкция (модальный оверлей поверх по
 """
 from __future__ import annotations
 
-from stamina.i18n import t as _t
+from stamina.i18n import language as _language, t as _t
 
 import math
 import tkinter as tk
 
-from stamina import theme, wheel_router
+from stamina import layouts, theme, wheel_router
 from stamina.theme import AMBER, BG, BG2, CYAN, GREEN, LINE, MUTED, TEXT, blend, px
 
 from ..terraformer_trainer import (
@@ -34,6 +34,7 @@ from ..terraformer_trainer import (
     get_next_tier_preview,
     platform_height,
     deposit_is_visible,
+    generate_finds,
 )
 from .. import terraformer_strategy as strategy
 from . import iso
@@ -193,6 +194,8 @@ class TrainerGame(GameShell):
         self._gallery_resource: str = "water"
         self._gallery_variant: int = 0
         self._gallery_view_3d: bool = False
+        self._gallery_level: str = ""
+        self._gallery_finds_cache: dict[tuple[int, str], dict] = {}
         # состояние стратегии: рамка выделения и перетаскивание карты
         self._lmb_start: tuple[float, float] | None = None
         self._lmb_box: int | None = None
@@ -242,6 +245,8 @@ class TrainerGame(GameShell):
             self.show_toast(_t("Специя! Червь оставил ценный ресурс"), True)
         if event and event.get("attacked"):
             self.show_toast(_t("Червь атакует технику на песке!"))
+        if event and event.get("lost_intel"):
+            self.show_toast(_t("Часть разведданных потеряна"))
         fresh = self.model.evaluate_missions()
         if fresh:
             m = fresh[-1]
@@ -283,6 +288,8 @@ class TrainerGame(GameShell):
         self._gallery_resource = "water"
         self._gallery_variant = 0
         self._gallery_view_3d = False
+        self._gallery_level = ""
+        self._gallery_finds_cache.clear()
         self._last_mouse = (0, 0)
         self._minimap_rect = None
         self._minimap_press = False
@@ -719,6 +726,7 @@ class TrainerGame(GameShell):
             self._gallery_resource = found[0] if found else "water"
             self._gallery_variant = 0
             self._gallery_view_3d = False
+            self._gallery_level = self.model.standing.current_level
         self.redraw()
         return self.overlay
 
@@ -983,6 +991,13 @@ class TrainerGame(GameShell):
                     if hasattr(self.app, "open_english"):
                         self.app.open_english()
                     return ""
+                for tag in tags:
+                    if tag.startswith("gallery_level:"):
+                        level = tag.split(":", 1)[1]
+                        if level in strategy.LEVELS:
+                            self._gallery_level = level
+                            self.redraw()
+                        return ""
         if self.overlay is not None:
             return ""
         if self._handle_hud_click(e):
@@ -1334,6 +1349,7 @@ class TrainerGame(GameShell):
 
         # визуальная шкала прогресса языка — возвращает нижнюю Y
         ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        ty = self._draw_reminders(ty)
 
         # расширяем фон панели под реальный контент
         c.coords(bg_id, 0, 0, px(230), ty)
@@ -1392,6 +1408,41 @@ class TrainerGame(GameShell):
             "auto_builder": _t("Автостроитель"),
             "terraform_core": _t("Ядро терраформирования"),
         }
+
+    def _reminder_lines(self) -> tuple[str, str]:
+        """Две спокойные подсказки: что нужно и что можно прямо сейчас."""
+        model = self.model
+        level = model.standing.current_level
+        pending = [m for m in model.mission_book.by_level(level) if not m.done]
+        if pending:
+            need = _t("НУЖНО: {0}").format(pending[0].title)
+        elif not model.walls_open:
+            need = _t("НУЖНО: уложить блоки фундамента ({0}/{1})").format(*model.progress())
+        else:
+            need = _t("НУЖНО: закрыть задания уровня")
+
+        unit = model.active_unit()
+        complete, total = model.progress()
+        if unit.holds.get("soil", 0) >= model._hold_cap() and complete < total:
+            can = _t("МОЖНО: уложить блок (E)")
+        elif any(not p.complete for p in model.platforms):
+            can = _t("МОЖНО: построить платформу (G)")
+        else:
+            level_name = model.standing.current_level
+            affordable = [spec.title for key, spec in strategy.STRUCTURES.items()
+                          if model.credits >= spec.cost
+                          and strategy.structure_available(key, level_name, model.developer)]
+            can = (_t("МОЖНО: построить {0} (N)").format(affordable[0])
+                   if affordable else _t("МОЖНО: копайте грунт (Пробел)"))
+        return need, can
+
+    def _draw_reminders(self, y: int) -> int:
+        c = self.canvas
+        need, can = self._reminder_lines()
+        for text, color in ((need, AMBER), (can, GREEN)):
+            y = self._draw_text_stacked(c, px(10), y, text, color, "nw",
+                                        theme.font(8, True), width=px(210), pad=2)
+        return y + px(2)
 
     def _draw_language_progress_bar(self, w: int, h: int, y: int) -> int:
         """Шкала из восьми уровней A1…C2: текущий, проценты и что откроется дальше.
@@ -1977,8 +2028,90 @@ class TrainerGame(GameShell):
                       font=theme.font(max(8, int(cell * 0.35)), True))
 
     # -- галерея платформ: отрисовка -------------------------------------------
+    def _gallery_finds(self, level: str) -> dict:
+        """Раскладка находок уровня: детерминирована сидом пилота и размером карты."""
+        if level not in strategy.LEVELS:
+            level = self.model.standing.current_level
+        key = (self.model.seed, level)
+        if key not in self._gallery_finds_cache:
+            mw, mh = strategy.map_size(level)
+            self._gallery_finds_cache[key] = generate_finds(self.model.seed, mw, mh)
+        return self._gallery_finds_cache[key]
+
+    @staticmethod
+    def _layout_name(kind: str) -> str:
+        return {"ru": "ЙЦУКЕН", "de": "QWERTZ", "en": "QWERTY"}.get(kind, kind)
+
+    def _gallery_key_hints(self) -> str:
+        """Буквы ресурсов на клавиатуре этого пилота."""
+        kind = layouts.keyboard_for(_language())
+        pairs = (("water", "w"), ("stone", "s"), ("organic", "o"),
+                 ("iron", "i"), ("quartz", "q"))
+        keys = []
+        for res, char in pairs:
+            key = layouts.key_for_char(char, kind) or char
+            keys.append(f"{resource_name(res)[:4]}={key.upper()}")
+        return ", ".join(keys)
+
+    def _draw_gallery_level_strip(self, w: int, y: int) -> int:
+        """Восемь кликабельных уровней A1…C2 и мини-карта выбранного уровня."""
+        c = self.canvas
+        pad = px(20)
+        levels = strategy.LEVELS
+        gap = px(4)
+        card_w = max(px(24), (w - pad * 2 - gap * (len(levels) - 1)) // len(levels))
+        card_h = px(26)
+        for i, name in enumerate(levels):
+            x0 = pad + i * (card_w + gap)
+            selected = name == self._gallery_level
+            unlocked = self.model.standing.levels[i].unlocked
+            tags = ("gallery", "gallery_level", f"gallery_level:{name}")
+            c.create_rectangle(x0, y, x0 + card_w, y + card_h,
+                               fill=AMBER if selected else (CYAN if unlocked else BG2),
+                               outline=TEXT if selected else LINE,
+                               width=2 if selected else 1, tags=tags)
+            c.create_text(x0 + card_w // 2, y + card_h // 2, text=name,
+                          fill=BG if selected or unlocked else MUTED,
+                          font=theme.font(9, True), anchor="center", tags=tags)
+        y += card_h + px(4)
+
+        level = self._gallery_level or self.model.standing.current_level
+        mw, mh = strategy.map_size(level)
+        finds = self._gallery_finds(level)
+        layout = layouts.keyboard_for(_language())
+        c.create_text(pad, y, text=_t("СИД {0} · РАСКЛАДКА {1}").format(
+            self.model.seed, self._layout_name(layout)),
+            fill=CYAN, anchor="nw", font=theme.font(9, True), tags="gallery")
+        y += px(15)
+        c.create_text(pad, y, text=_t("НАХОДКИ {0} · КАРТА {1}×{2}").format(
+            len(finds), mw, mh), fill=TEXT, anchor="nw", font=theme.font(8), tags="gallery")
+        y += px(14)
+        c.create_text(pad, y, text=self._gallery_key_hints(), fill=MUTED, anchor="nw",
+                      font=theme.font(8), width=w - pad * 2, tags="gallery")
+        y += px(15)
+
+        colors = {
+            "water": "#2E9BFF", "stone": "#888888", "organic": "#4A7C2E",
+            "iron": "#A0522D", "quartz": "#E8E8F0",
+        }
+        cols, rows = 24, 7
+        size = min((w - pad * 2) / cols, px(9))
+        for gy in range(rows):
+            for gx in range(cols):
+                cell = (min(mw - 1, int((gx + 0.5) * mw / cols)),
+                        min(mh - 1, int((gy + 0.5) * mh / rows)))
+                found = finds.get(cell)
+                fill = colors.get(found[0], LINE) if found else BG2
+                c.create_rectangle(pad + gx * size, y + gy * size,
+                                   pad + (gx + 1) * size - 1, y + (gy + 1) * size - 1,
+                                   fill=fill, outline="", tags="gallery")
+        y += rows * size + px(4)
+        c.create_text(pad, y, text=_t("Клик по уровню — выбрать карту"), fill=MUTED,
+                      anchor="nw", font=theme.font(8), tags="gallery")
+        return y + px(14)
+
     def _draw_gallery(self, w: int, h: int) -> None:
-        """Галерея платформ: 2D схема + 3D превью (псевдо-изометрия), прогрессия языка."""
+        """Галерея платформ: A1–C2 по сиду, 2D схема, 3D превью, прогрессия языка."""
         c = self.canvas
         c.create_rectangle(0, 0, w, h, fill=BG, outline="")
         pad = px(20)
@@ -1992,8 +2125,12 @@ class TrainerGame(GameShell):
         c.create_text(w // 2, pad, text=title_text, fill=AMBER, anchor="n",
                       font=theme.font(14, True), tags="gallery")
 
+        # уровни A1…C2 и карта пилота
+        strip_bottom = self._draw_gallery_level_strip(w, pad + px(22))
+        content_top = strip_bottom + px(8)
+
         # текущий тир
-        y = pad + px(30)
+        y = content_top
         c.create_text(pad, y, text=_t("Текущий уровень:"), fill=CYAN, anchor="nw",
                       font=theme.font(10, True), tags="gallery")
         y += px(18)
@@ -2031,7 +2168,7 @@ class TrainerGame(GameShell):
         # область превью справа
         preview_x = w // 2 + pad
         preview_w = w // 2 - pad * 2
-        preview_y = pad + px(30)
+        preview_y = content_top
 
         # выбор ресурса (вкладки сверху)
         res_y = preview_y
@@ -2669,6 +2806,7 @@ class TrainerGame(GameShell):
             ty += px(16)
 
         ty = self._draw_language_progress_bar(w, h, ty + px(10))
+        ty = self._draw_reminders(ty)
         c.coords(bg_id, 0, 0, px(230), ty)
 
     # -- миникарта ------------------------------------------------------------

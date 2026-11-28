@@ -3480,5 +3480,18 @@
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Turno estratégico: ocho niveles A1–C2, escuadrón, misiones de alerta, niebla de guerra, edificios y gusano de arena.",
   "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Flechas · Espacio · E · Q · B · G · T · N · Clic izq. · Clic der. · Clic medio · I",
   "Этап уже сформирован": "Etapa ya formada",
-  "Этап сформирован: фундамент и доступные платформы": "Etapa formada: cimiento y plataformas disponibles"
+  "Этап сформирован: фундамент и доступные платформы": "Etapa formada: cimiento y plataformas disponibles",
+  "Часть разведданных потеряна": "Parte del reconocimiento se perdió",
+  "{0} погиб. Карта открытых клеток уменьшилась.": "{0} se perdió. Hay menos casillas exploradas.",
+  "НУЖНО: {0}": "NECESARIO: {0}",
+  "МОЖНО: {0}": "PUEDES: {0}",
+  "НУЖНО: уложить блоки фундамента ({0}/{1})": "NECESARIO: colocar bloques de cimentación ({0}/{1})",
+  "НУЖНО: закрыть задания уровня": "NECESARIO: completar las misiones del nivel",
+  "МОЖНО: уложить блок (E)": "PUEDES: colocar un bloque (E)",
+  "МОЖНО: построить платформу (G)": "PUEDES: construir una plataforma (G)",
+  "МОЖНО: построить {0} (N)": "PUEDES: construir {0} (N)",
+  "МОЖНО: копайте грунт (Пробел)": "PUEDES: excavar tierra (Espacio)",
+  "СИД {0} · РАСКЛАДКА {1}": "SEMILLA {0} · DISTRIBUCIÓN {1}",
+  "НАХОДКИ {0} · КАРТА {1}×{2}": "HALLAZGOS {0} · MAPA {1}×{2}",
+  "Клик по уровню — выбрать карту": "Haz clic en un nivel para elegir su mapa"
 }

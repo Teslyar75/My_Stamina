@@ -3480,5 +3480,18 @@
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Strategische Schicht: acht Stufen A1–C2, Einheit, Alarmaufträge, Nebel des Krieges, Gebäude und Sandwurm.",
   "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Pfeile · Leertaste · E · Q · B · G · T · N · LMT · RMT · MMT · I",
   "Этап уже сформирован": "Stufe bereits erstellt",
-  "Этап сформирован: фундамент и доступные платформы": "Stufe erstellt: Fundament und verfügbare Plattformen"
+  "Этап сформирован: фундамент и доступные платформы": "Stufe erstellt: Fundament und verfügbare Plattformen",
+  "Часть разведданных потеряна": "Ein Teil der Aufklärung ging verloren",
+  "{0} погиб. Карта открытых клеток уменьшилась.": "{0} fiel aus. Weniger Felder sind erkundet.",
+  "НУЖНО: {0}": "NÖTIG: {0}",
+  "МОЖНО: {0}": "MÖGLICH: {0}",
+  "НУЖНО: уложить блоки фундамента ({0}/{1})": "NÖTIG: Fundamentblöcke legen ({0}/{1})",
+  "НУЖНО: закрыть задания уровня": "NÖTIG: Aufgaben dieser Stufe abschließen",
+  "МОЖНО: уложить блок (E)": "MÖGLICH: Block legen (E)",
+  "МОЖНО: построить платформу (G)": "MÖGLICH: Plattform bauen (G)",
+  "МОЖНО: построить {0} (N)": "MÖGLICH: {0} bauen (N)",
+  "МОЖНО: копайте грунт (Пробел)": "MÖGLICH: Erde graben (Leertaste)",
+  "СИД {0} · РАСКЛАДКА {1}": "SEED {0} · TASTATUR {1}",
+  "НАХОДКИ {0} · КАРТА {1}×{2}": "FUNDE {0} · KARTE {1}×{2}",
+  "Клик по уровню — выбрать карту": "Klick auf eine Stufe wählt ihre Karte"
 }
