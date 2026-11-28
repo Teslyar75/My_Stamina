@@ -3478,5 +3478,7 @@
   "Уровень {0} · высота зданий до {1}": "Nivel {0} · altura de edificios hasta {1}",
   "Червь оставил специю. Соберите её в отсек находок.": "El gusano dejó especia. Recógela en el compartimento de hallazgos.",
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Turno estratégico: ocho niveles A1–C2, escuadrón, misiones de alerta, niebla de guerra, edificios y gusano de arena.",
-  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Flechas · Espacio · E · Q · B · G · T · N · Clic izq. · Clic der. · Clic medio · I"
+  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Flechas · Espacio · E · Q · B · G · T · N · Clic izq. · Clic der. · Clic medio · I",
+  "Этап уже сформирован": "Etapa ya formada",
+  "Этап сформирован: фундамент и доступные платформы": "Etapa formada: cimiento y plataformas disponibles"
 }

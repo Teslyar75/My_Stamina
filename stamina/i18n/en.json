@@ -3478,5 +3478,7 @@
   "Уровень {0} · высота зданий до {1}": "Level {0} · building height up to {1}",
   "Червь оставил специю. Соберите её в отсек находок.": "The worm left spice. Collect it into the finds hold.",
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Strategic shift: eight levels A1–C2, a squad, alert missions, fog of war, buildings and the sandworm.",
-  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Arrows · Space · E · Q · B · G · T · N · LMB · RMB · MMB · I"
+  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Arrows · Space · E · Q · B · G · T · N · LMB · RMB · MMB · I",
+  "Этап уже сформирован": "Stage already formed",
+  "Этап сформирован: фундамент и доступные платформы": "Stage formed: foundation and available platforms"
 }

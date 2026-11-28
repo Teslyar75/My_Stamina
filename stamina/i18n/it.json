@@ -3478,5 +3478,7 @@
   "Уровень {0} · высота зданий до {1}": "Livello {0} · altezza edifici fino a {1}",
   "Червь оставил специю. Соберите её в отсек находок.": "Il verme ha lasciato spezia. Raccoglila nello scomparto dei ritrovamenti.",
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Turno strategico: otto livelli A1–C2, squadra, missioni di allerta, nebbia di guerra, edifici e verme delle sabbie.",
-  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Frecce · Spazio · E · Q · B · G · T · N · Clic sx · Clic dx · Clic cent. · I"
+  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Frecce · Spazio · E · Q · B · G · T · N · Clic sx · Clic dx · Clic cent. · I",
+  "Этап уже сформирован": "Fase già formata",
+  "Этап сформирован: фундамент и доступные платформы": "Fase formata: fondazione e piattaforme disponibili"
 }

@@ -3478,5 +3478,7 @@
   "Уровень {0} · высота зданий до {1}": "Stufe {0} · Gebäudehöhe bis {1}",
   "Червь оставил специю. Соберите её в отсек находок.": "Der Wurm hat Gewürz hinterlassen. Sammle es in die Fundkammer.",
   "Стратегическая смена: восемь уровней A1–C2, отряд, задания-тревоги, туман войны, здания и песчаный червь.": "Strategische Schicht: acht Stufen A1–C2, Einheit, Alarmaufträge, Nebel des Krieges, Gebäude und Sandwurm.",
-  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Pfeile · Leertaste · E · Q · B · G · T · N · LMT · RMT · MMT · I"
+  "F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I": "F1 · WASD · Pfeile · Leertaste · E · Q · B · G · T · N · LMT · RMT · MMT · I",
+  "Этап уже сформирован": "Stufe bereits erstellt",
+  "Этап сформирован: фундамент и доступные платформы": "Stufe erstellt: Fundament und verfügbare Plattformen"
 }

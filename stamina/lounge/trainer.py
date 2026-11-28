@@ -804,6 +804,102 @@ class TrainerGame(GameShell):
                     self.app.open_english()
                 return
 
+    # -- кнопки HUD: режимы и «Сформировать» ----------------------------------
+    _MODE_LABELS = (
+        ("manual", "РУЧНОЙ"),
+        ("autonomous", "АВТО"),
+        ("semi-autonomous", "ПОЛУ-АВТО"),
+    )
+
+    def _set_unit_mode(self, uid: str, mode: str) -> None:
+        """Переключить режим одного юнита и сразу записать его в чертёж."""
+        if mode not in dict(self._MODE_LABELS):
+            return
+        unit = self.model.unit_by_uid(uid)
+        if unit is None:
+            return
+        unit.mode = mode
+        unit.path = []
+        unit.order = ""
+        unit.target = None
+        self.model.set_active_unit(unit)
+        save_blueprint(self.model)
+        label = _t(dict(self._MODE_LABELS)[mode])
+        self.show_toast(_t("{0}: {1}").format(unit.name, label), True)
+
+    def _form_stage(self) -> None:
+        """Кнопка «Сформировать»: готовит текущий этап и сохраняет чертёж."""
+        ok, msg = self.model.form_current_stage()
+        self.msg = msg
+        save_blueprint(self.model)
+        self.show_toast(msg, ok)
+
+    def _hud_button_tags(self, x: float, y: float) -> tuple[str, ...]:
+        """Найти кнопку HUD под курсором (клик по тексту тоже считается)."""
+        for item in reversed(self.canvas.find_withtag("hud_button")):
+            box = self.canvas.bbox(item)
+            if box is None:
+                continue
+            if box[0] <= x <= box[2] and box[1] <= y <= box[3]:
+                return tuple(self.canvas.gettags(item))
+        return ()
+
+    def _handle_hud_click(self, e: tk.Event) -> bool:
+        if self.overlay is not None or self.paused:
+            return False
+        tags = self._hud_button_tags(e.x, e.y)
+        for tag in tags:
+            if tag.startswith("mode:"):
+                _, uid, mode = tag.split(":", 2)
+                self._set_unit_mode(uid, mode)
+                return True
+            if tag == "form_stage":
+                self._form_stage()
+                return True
+        return False
+
+    def _draw_mode_controls(self, selected: list, ty: float) -> float:
+        """Общие кликабельные чекбоксы режимов и кнопка «Сформировать».
+
+        Возвращает Y под кнопкой, чтобы обе карты (плоская и изо) клали
+        остальной HUD на одно и то же место.
+        """
+        c = self.canvas
+        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
+                      font=theme.font(9, True))
+        ty += px(15)
+        for u in selected[:3]:
+            for col, (mode_key, mode_label) in enumerate(self._MODE_LABELS):
+                checked = u.mode == mode_key
+                tags = ("hud_button", "mode_checkbox", f"mode:{u.uid}:{mode_key}")
+                box_x = px(10 + col * 72)
+                box_y = ty
+                box_size = px(11)
+                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
+                                   outline=GREEN if checked else MUTED,
+                                   width=2 if checked else 1, tags=tags)
+                if checked:
+                    c.create_line(box_x + 2, box_y + box_size // 2,
+                                  box_x + box_size // 2, box_y + box_size - 2,
+                                  fill=GREEN, width=2, tags=tags)
+                    c.create_line(box_x + box_size // 2, box_y + box_size - 2,
+                                  box_x + box_size - 2, box_y + 2,
+                                  fill=GREEN, width=2, tags=tags)
+                c.create_text(box_x + box_size + px(3), box_y, text=_t(mode_label),
+                              fill=TEXT if checked else MUTED, anchor="nw",
+                              font=theme.font(8, checked), tags=tags)
+            ty += px(16)
+
+        ty += px(3)
+        bx0, by0 = px(10), ty
+        bx1, by1 = px(120), ty + px(19)
+        tags = ("hud_button", "form_stage")
+        c.create_rectangle(bx0, by0, bx1, by1, fill=BG2, outline=AMBER, width=1,
+                           tags=tags)
+        c.create_text((bx0 + bx1) / 2, (by0 + by1) / 2, text=_t("СФОРМИРОВАТЬ"),
+                      fill=TEXT, anchor="center", font=theme.font(9, True), tags=tags)
+        return by1 + px(8)
+
     # -- колесо --------------------------------------------------------------
     def on_wheel(self, direction: int, ctrl: bool, shift: bool,
                  x: int | None = None, y: int | None = None) -> None:
@@ -889,6 +985,8 @@ class TrainerGame(GameShell):
                     return ""
         if self.overlay is not None:
             return ""
+        if self._handle_hud_click(e):
+            return "break"
         if point_in_rect(e.x, e.y, self._minimap_rect):
             self._minimap_press = True
             self._lmb_start = None
@@ -940,7 +1038,7 @@ class TrainerGame(GameShell):
             if 0 <= tx < self.model.w and 0 <= ty < self.model.h:
                 unit = self.model.unit_at(tx, ty)
                 if unit is not None:
-                    self.model.selected = {unit.uid}
+                    self.model.select_unit(unit)
                     self.show_toast(_t("Выделено терраформеров: {0}").format(1))
                 else:
                     self.model.clear_selection()
@@ -1194,31 +1292,11 @@ class TrainerGame(GameShell):
                           font=theme.font(10, bold))
             ty += px(16)
 
-        # Режим выбранного юнита — чекбоксы
+        # Режим выбранного юнита — кликабельные чекбоксы и «Сформировать»
         selected = model.selected_units()
         if not selected:
             selected = [model.main_unit]
-        ty += px(4)
-        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
-                      font=theme.font(9, True))
-        ty += px(13)
-        for u in selected[:3]:
-            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
-                checked = u.mode == mode_key
-                box_x = px(10)
-                box_y = ty
-                box_size = px(11)
-                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
-                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
-                if checked:
-                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
-                                 fill=GREEN, width=2)
-                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
-                                 fill=GREEN, width=2)
-                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
-                              fill=TEXT if checked else MUTED, anchor="nw",
-                              font=theme.font(8, checked))
-            ty += px(32)
+        ty = self._draw_mode_controls(selected, ty + px(4))
 
         # задания: сколько выполнено и сколько непрочитанных тревог
         book = model.mission_book
@@ -2552,31 +2630,11 @@ class TrainerGame(GameShell):
                           font=theme.font(10, bold))
             ty += px(16)
 
-        # Режим выбранного юнита — чекбоксы
+        # Режим выбранного юнита — кликабельные чекбоксы и «Сформировать»
         selected = model.selected_units()
         if not selected:
             selected = [model.main_unit]
-        ty += px(4)
-        c.create_text(px(10), ty, text=_t("РЕЖИМ:"), fill=CYAN, anchor="nw",
-                      font=theme.font(9, True))
-        ty += px(13)
-        for u in selected[:3]:
-            for mode_key, mode_label in (("manual", _t("РУЧНОЙ")), ("autonomous", _t("АВТО")), ("semi-autonomous", _t("ПОЛУ-АВТО"))):
-                checked = u.mode == mode_key
-                box_x = px(10)
-                box_y = ty
-                box_size = px(11)
-                c.create_rectangle(box_x, box_y, box_x + box_size, box_y + box_size,
-                                  outline=GREEN if checked else MUTED, width=2 if checked else 1)
-                if checked:
-                    c.create_line(box_x + 2, box_y + box_size // 2, box_x + box_size // 2, box_y + box_size - 2,
-                                 fill=GREEN, width=2)
-                    c.create_line(box_x + box_size // 2, box_y + box_size - 2, box_x + box_size - 2, box_y + 2,
-                                 fill=GREEN, width=2)
-                c.create_text(box_x + box_size + 4, box_y, text=mode_label,
-                              fill=TEXT if checked else MUTED, anchor="nw",
-                              font=theme.font(8, checked))
-            ty += px(32)
+        ty = self._draw_mode_controls(selected, ty + px(4))
 
         book = model.mission_book
         done = book.done_count()
@@ -2786,12 +2844,16 @@ class TrainerGame(GameShell):
             draw.point((x, y), fill=(r, g, b, 255))
         spice_diamond = make_diamond_mask(img_spice)
 
-        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL))
+        # Конвертируем в PhotoImage через ImageTk (НЕ tk.PhotoImage(image=PIL)).
+        # master обязателен: без него ImageTk берёт tk._default_root — первый
+        # когда-либо созданный в процессе Tk. Если тест открыл другой root,
+        # картинка живёт в чужом интерпретаторе и Canvas выдаёт
+        # «image "pyimageNN" does not exist».
         try:
             self._texture_photos = {
-                "sand": ImageTk.PhotoImage(sand_diamond),
-                "rock": ImageTk.PhotoImage(rock_diamond),
-                "spice": ImageTk.PhotoImage(spice_diamond),
+                "sand": ImageTk.PhotoImage(sand_diamond, master=self),
+                "rock": ImageTk.PhotoImage(rock_diamond, master=self),
+                "spice": ImageTk.PhotoImage(spice_diamond, master=self),
             }
             self._textures = {
                 "sand": sand_diamond,
