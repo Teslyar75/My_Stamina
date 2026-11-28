@@ -13,15 +13,15 @@ import threading
 import tkinter as tk
 import traceback
 
-from stamina import theme
+from stamina import theme, zen_mode
 from stamina.hud import HudButton, HudPanel
 from stamina.i18n import t as _t
 from stamina.theme import AMBER, BG, BG2, CYAN, FAINT, GREEN, LINE, MUTED, PANEL, RED, TEXT, px
 
-from stamina.english.ui import FocusMode, L, ScrollFrame, entry
+from stamina.english.ui import L, ScrollFrame, entry
 from stamina.hotkeys import typing_in
 from stamina.grammar_ui.focus import (
-    EscDouble, is_grammar_focus_key, session_wanted, set_session_wanted,
+    is_grammar_focus_key, session_wanted, set_session_wanted,
 )
 
 LIST_CHUNK = 8
@@ -68,8 +68,7 @@ class GrammarSpread(tk.Frame):
         self._pumping = False
         self._table_id: str | None = None
         self._source_buttons: dict[str, HudButton] = {}
-        self._focus = None          # zen/фокус: запись скрытого хрома (ui.FocusMode)
-        self._esc_double = EscDouble()
+        self._focus = None          # zen/фокус: запись скрытого хрома (zen_mode)
         self._build_skeleton()
 
     # -- оболочка --------------------------------------------------------------
@@ -327,25 +326,28 @@ class GrammarSpread(tk.Frame):
 
     # -- зенид / фокус (Ctrl+O, O/Щ; выход — та же клавиша или двойной Esc) --------
     def in_focus(self) -> bool:
-        return self._focus is not None
+        return zen_mode.is_active(self)
 
     def toggle_focus(self, on: bool | None = None, *, remember: bool = True) -> None:
         """Показать только панель грамматики на всё окно или вернуть хром как был."""
-        on = (self._focus is None) if on is None else on
-        if on and self._focus is None:
+        active = zen_mode.is_active(self)
+        on = (not active) if on is None else on
+        if on and not active:
             self._ensure_lesson_for_focus()
             try:
                 self.update_idletasks()
             except tk.TclError:
                 pass
-            self._focus = FocusMode(self)
-            self._esc_double.reset()
-        elif not on and self._focus is not None:
-            f, self._focus = self._focus, None
-            f.restore()
-            self._esc_double.reset()
+            zen_mode.enter(self)
+        elif not on and active:
+            zen_mode.exit_zen(self)
         if remember:
-            set_session_wanted(self._focus is not None)
+            set_session_wanted(zen_mode.is_active(self))
+        self._sync_focus_button()
+
+    def after_zen_toggle(self, on: bool) -> None:
+        """Один хук для кнопки, O/Щ и Ctrl+O из cockpit."""
+        self._focus = zen_mode.mode_of(self) if on else None
         self._sync_focus_button()
 
     def _sync_focus_button(self) -> None:
@@ -400,17 +402,18 @@ class GrammarSpread(tk.Frame):
 
     def handle_focus_escape(self) -> bool:
         """Двойной Esc выходит из зенида. Первый Esc только запоминается. Всегда перехватывается."""
-        if self._focus is None:
+        if not zen_mode.is_active(self):
             return False
-        if self._esc_double.tap():
-            self.toggle_focus(False)
+        zen_mode.handle_escape(self)
         return True
 
     def on_key(self, e) -> str | None:
         """Клавиши зенида и возврата по меню, только пока страница грамматики на экране."""
+        if zen_mode.was_handled(e):
+            return "break"
         ks = getattr(e, "keysym", "") or ""
-        if ks == "Escape" and self._focus is not None:
-            self.handle_focus_escape()
+        if zen_mode.is_escape(e) and zen_mode.is_active(self):
+            zen_mode.handle_key(e, self)
             return "break"
         if ks in ("BackSpace", "Backspace"):
             if typing_in(getattr(e, "widget", None)):

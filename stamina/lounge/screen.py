@@ -4,10 +4,11 @@ from __future__ import annotations
 from stamina.i18n import t as _t
 
 import tkinter as tk
+import tkinter.font as tkfont
 
 from stamina import theme
 from stamina.hud import HudButton, HudPanel
-from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, PURPLE, TEXT, blend, px
+from stamina.theme import AMBER, BG, CYAN, GREEN, MUTED, PANEL, PURPLE, RED, TEXT, blend, px
 
 from . import store
 from .breakout import BreakoutGame
@@ -18,6 +19,92 @@ from .vim_trainer import VimTrainerGame
 from .docker_trainer import DockerTrainerGame
 from .linux_trainer import LinuxTrainerGame
 from .powershell_trainer import PowerShellTrainerGame
+
+
+def _draw_terminal_preview(
+    c: tk.Canvas,
+    ww: int,
+    hh: int,
+    ox: int,
+    oy: int,
+    box_w: int,
+    box_h: int,
+    bg_color: str,
+    border_color: str,
+    lines: list[tuple[str, str]],
+    mono_font_spec: tuple,
+) -> None:
+    """Draw a terminal-style preview with proper line spacing and clipping.
+
+    Args:
+        c: Canvas to draw on.
+        ww, hh: Canvas width/height.
+        ox, oy: Top-left of terminal box.
+        box_w, box_h: Terminal box width/height.
+        bg_color: Terminal background color.
+        border_color: Terminal border color.
+        lines: List of (text, color) tuples.
+        mono_font_spec: Font spec from theme.font(7, mono=True).
+    """
+    # Draw terminal chrome
+    c.create_rectangle(ox, oy, ox + box_w, oy + box_h, fill=bg_color, outline=border_color, width=1)
+
+    # Measure actual line height from the font
+    mono_font = tkfont.Font(font=mono_font_spec)
+    line_h = mono_font.metrics("linespace")
+    # Add 1px gap between lines
+    line_h = max(line_h, 1) + 1
+
+    # Inner padding
+    pad_x = 4
+    pad_y = 2
+
+    # Max lines that fit inside the box
+    max_lines = max(1, (box_h - 2 * pad_y) // line_h)
+
+    # Draw lines, clipped to max_lines
+    for i, (text, color) in enumerate(lines[:max_lines]):
+        y = oy + pad_y + i * line_h
+        # Horizontal clip: measure text width and truncate if needed
+        text_w = mono_font.measure(text)
+        max_text_w = box_w - 2 * pad_x
+        if text_w > max_text_w:
+            # Truncate with ellipsis
+            ellipsis = "\u2026"
+            ellipsis_w = mono_font.measure(ellipsis)
+            # Binary search for max chars that fit
+            lo, hi = 0, len(text)
+            while lo < hi:
+                mid = (lo + hi + 1) // 2
+                if mono_font.measure(text[:mid]) + ellipsis_w <= max_text_w:
+                    lo = mid
+                else:
+                    hi = mid - 1
+            text = text[:lo] + ellipsis
+        c.create_text(ox + pad_x, y, text=text, fill=color, anchor="nw", font=mono_font_spec)
+
+
+def _draw_game_frame(
+    c: tk.Canvas,
+    ww: int,
+    hh: int,
+    color: str,
+    bg_tint: float = 0.15,
+) -> tuple[int, int, int, int]:
+    """Draw a wide framed playfield for game previews.
+
+    Returns (ox, oy, box_w, box_h) of the inner content area (inside the border).
+    """
+    box_w = int(ww * 0.85)
+    box_h = int(hh * 0.8)
+    ox = (ww - box_w) // 2
+    oy = (hh - box_h) // 2
+
+    bg_color = blend(PANEL, color, bg_tint)
+    c.create_rectangle(ox, oy, ox + box_w, oy + box_h, fill=bg_color, outline=color, width=2)
+
+    # Inner content area (1px inset from border)
+    return ox + 1, oy + 1, box_w - 2, box_h - 2
 
 
 def _mission_count(cls) -> int:
@@ -203,122 +290,377 @@ class LoungeScreen(tk.Frame):
             ww = max(c.winfo_width(), 40)
             hh = max(c.winfo_height(), 40)
             if gid == "tetris":
-                blocks = [(1, 0), (1, 1), (1, 2), (2, 2), (0, 3), (1, 3), (2, 3)]
-                cell = min(ww, hh) // 8
-                ox, oy = ww // 2 - cell * 1.5, hh // 2 - cell * 2
-                for x, y in blocks:
-                    c.create_rectangle(ox + x * cell, oy + y * cell,
-                                       ox + (x + 1) * cell - 1, oy + (y + 1) * cell - 1,
-                                       fill=color, outline=blend(color, PANEL, 0.4))
+                ox, oy, box_w, box_h = _draw_game_frame(c, ww, hh, color)
+                # Tetris well: 10 cols x ~15 rows visible, scaled to fit
+                cols = 10
+                rows = 14
+                cell = min(box_w // cols, box_h // rows)
+                # Center the grid in the frame
+                gx = ox + (box_w - cols * cell) // 2
+                gy = oy + (box_h - rows * cell) // 2
+
+                # Stacked tetrominoes (frozen pieces)
+                frozen = [
+                    # Bottom row - almost complete line (missing one)
+                    (0, 13), (1, 13), (2, 13), (3, 13), (4, 13), (5, 13), (6, 13), (7, 13), (9, 13),
+                    # Row above
+                    (0, 12), (2, 12), (3, 12), (4, 12), (5, 12), (6, 12), (7, 12), (8, 12), (9, 12),
+                    # Scattered blocks above
+                    (1, 11), (3, 11), (6, 11), (8, 11),
+                    (0, 10), (2, 10), (5, 10), (9, 10),
+                    (4, 9), (7, 9),
+                ]
+                for x, y in frozen:
+                    cx = gx + x * cell
+                    cy = gy + y * cell
+                    c.create_rectangle(cx, cy, cx + cell - 1, cy + cell - 1,
+                                       fill=blend(color, PANEL, 0.3), outline=blend(color, PANEL, 0.6))
+
+                # Active falling piece (I-piece, vertical, about to complete the line)
+                active = [(8, 5), (8, 6), (8, 7), (8, 8)]
+                for x, y in active:
+                    cx = gx + x * cell
+                    cy = gy + y * cell
+                    c.create_rectangle(cx, cy, cx + cell - 1, cy + cell - 1,
+                                       fill=color, outline=blend(color, TEXT, 0.3))
             elif gid == "snake":
-                path = [(2, 3), (3, 3), (4, 3), (5, 3), (5, 2), (5, 1)]
-                cell = min(ww, hh) // 10
-                ox, oy = ww // 2 - 3 * cell, hh // 2 - 2 * cell
-                for i, (x, y) in enumerate(path):
-                    col = CYAN if i == len(path) - 1 else color
-                    c.create_rectangle(ox + x * cell, oy + y * cell,
-                                       ox + (x + 1) * cell - 1, oy + (y + 1) * cell - 1,
-                                       fill=col, outline="")
-                c.create_oval(ox + 7 * cell, oy + 1 * cell, ox + 8 * cell, oy + 2 * cell, fill=AMBER)
+                ox, oy, box_w, box_h = _draw_game_frame(c, ww, hh, color)
+                # Wide grid: ~16 cols x 10 rows
+                cols = 16
+                rows = 10
+                cell = min(box_w // cols, box_h // rows)
+                gx = ox + (box_w - cols * cell) // 2
+                gy = oy + (box_h - rows * cell) // 2
+
+                # Faint grid lines
+                for x in range(cols + 1):
+                    c.create_line(gx + x * cell, gy, gx + x * cell, gy + rows * cell,
+                                  fill=blend(color, PANEL, 0.8), width=1)
+                for y in range(rows + 1):
+                    c.create_line(gx, gy + y * cell, gx + cols * cell, gy + y * cell,
+                                  fill=blend(color, PANEL, 0.8), width=1)
+
+                # Longer snake weaving across the grid
+                # Head at right, body weaving left
+                snake_body = [
+                    (14, 5), (13, 5), (12, 5), (11, 5), (10, 5),
+                    (10, 4), (10, 3), (9, 3), (8, 3), (7, 3),
+                    (7, 4), (7, 5), (6, 5), (5, 5), (4, 5),
+                ]
+                for i, (x, y) in enumerate(snake_body):
+                    cx = gx + x * cell
+                    cy = gy + y * cell
+                    is_head = (i == 0)
+                    fill = CYAN if is_head else (blend(color, CYAN, 0.3) if i < 3 else color)
+                    c.create_rectangle(cx + 1, cy + 1, cx + cell - 1, cy + cell - 1,
+                                       fill=fill, outline=blend(fill, PANEL, 0.3))
+                    # Head indicator
+                    if is_head:
+                        c.create_oval(cx + cell // 3, cy + cell // 3,
+                                      cx + 2 * cell // 3, cy + 2 * cell // 3,
+                                      fill=AMBER, outline="")
+
+                # Apple/beacon at top-left area
+                ax, ay = 2, 2
+                c.create_oval(gx + ax * cell + 2, gy + ay * cell + 2,
+                              gx + (ax + 1) * cell - 2, gy + (ay + 1) * cell - 2,
+                              fill=AMBER, outline=blend(AMBER, TEXT, 0.5), width=1)
             elif gid == "trainer":
-                cell = max(6, min(ww, hh) // 9)
-                ox = ww // 2 - 3 * cell
-                oy = hh // 2 - 2 * cell
-                # снятые слои грунта
-                for bx, by in ((0, 0), (1, 0), (0, 1)):
-                    c.create_rectangle(ox + bx * cell, oy + by * cell,
-                                       ox + (bx + 1) * cell - 1, oy + (by + 1) * cell - 1,
-                                       fill=blend(color, PANEL, 0.45), outline="")
-                # контур площадки 4×3 и несколько блоков
-                c.create_rectangle(ox + 3 * cell, oy, ox + 7 * cell, oy + 3 * cell,
-                                   outline=AMBER, dash=(3, 2))
-                for bx in range(4):
-                    for by in range(3):
-                        if (bx + by) % 2 == 0:
-                            c.create_rectangle(ox + (3 + bx) * cell + 1, oy + by * cell + 1,
-                                               ox + (4 + bx) * cell - 1, oy + (by + 1) * cell - 1,
-                                               fill=blend(AMBER, PANEL, 0.35), outline="")
-                # маленький робот
-                c.create_rectangle(ox, oy + 2 * cell, ox + cell - 1, oy + 3 * cell - 1,
-                                   fill=CYAN, outline="")
-                c.create_line(ox + cell, oy + 2.5 * cell, ox + cell * 2, oy + 2.5 * cell,
+                ox, oy, box_w, box_h = _draw_game_frame(c, ww, hh, color)
+                # Wide work site: layered soil, dug cells, foundation footprint, robot
+                cols = 14
+                rows = 8
+                cell = min(box_w // cols, box_h // rows)
+                gx = ox + (box_w - cols * cell) // 2
+                gy = oy + (box_h - rows * cell) // 2
+
+                # Layered soil (bottom rows, darker)
+                soil_colors = [
+                    blend(AMBER, PANEL, 0.15),  # top soil
+                    blend(AMBER, PANEL, 0.25),
+                    blend(AMBER, PANEL, 0.35),
+                    blend(AMBER, PANEL, 0.45),  # deep soil
+                ]
+                for row in range(rows):
+                    soil_idx = min(row, len(soil_colors) - 1)
+                    for col in range(cols):
+                        cx = gx + col * cell
+                        cy = gy + row * cell
+                        c.create_rectangle(cx, cy, cx + cell - 1, cy + cell - 1,
+                                           fill=soil_colors[soil_idx], outline="")
+
+                # Dug cells (excavated - lighter)
+                dug = [(2, 5), (3, 5), (4, 5), (5, 5), (2, 4), (5, 4)]
+                for x, y in dug:
+                    cx = gx + x * cell
+                    cy = gy + y * cell
+                    c.create_rectangle(cx + 1, cy + 1, cx + cell - 1, cy + cell - 1,
+                                       fill=blend(AMBER, PANEL, 0.05), outline=blend(AMBER, PANEL, 0.3))
+
+                # Dashed foundation footprint (4x3 area)
+                fx, fy = 7, 4
+                fw, fh = 5, 3
+                c.create_rectangle(gx + fx * cell, gy + fy * cell,
+                                   gx + (fx + fw) * cell, gy + (fy + fh) * cell,
+                                   outline=AMBER, dash=(4, 3), width=1)
+
+                # Placed foundation blocks inside footprint
+                for bx in range(fw):
+                    for by in range(fh):
+                        if (bx + by) % 2 == 0 or by == fh - 1:
+                            cx = gx + (fx + bx) * cell
+                            cy = gy + (fy + by) * cell
+                            c.create_rectangle(cx + 2, cy + 2, cx + cell - 2, cy + cell - 2,
+                                               fill=blend(AMBER, CYAN, 0.3), outline=blend(AMBER, TEXT, 0.4))
+
+                # Robot (left side)
+                rx, ry = 1, 2
+                c.create_rectangle(gx + rx * cell, gy + ry * cell,
+                                   gx + (rx + 1) * cell - 1, gy + (ry + 2) * cell - 1,
+                                   fill=CYAN, outline=blend(CYAN, TEXT, 0.4))
+                # Robot arm/indicator
+                c.create_line(gx + (rx + 1) * cell, gy + (ry + 1) * cell,
+                              gx + (rx + 2) * cell, gy + (ry + 1) * cell,
                               fill=AMBER, width=2, arrow="last")
             elif gid == "vim_trainer":
-                cell = max(6, min(ww, hh) // 10)
-                ox = ww // 2 - 4 * cell
-                oy = hh // 2 - 2 * cell
-                # VIM-like grid preview
-                for y in range(4):
-                    for x in range(8):
-                        cx = ox + x * cell
-                        cy = oy + y * cell
-                        is_cursor = (x == 3 and y == 1)
-                        fill = CYAN if is_cursor else blend(color, PANEL, 0.15 + y * 0.05)
-                        c.create_rectangle(cx, cy, cx + cell - 1, cy + cell - 1, fill=fill, outline=blend(fill, TEXT, 0.2))
-                        if is_cursor:
-                            c.create_text(cx + cell // 2, cy + cell // 2, text="@", fill=BG, font=theme.font(8, True, mono=True))
-                        elif (x + y) % 3 == 0:
-                            c.create_text(cx + cell // 2, cy + cell // 2, text="vim"[x % 3], fill=MUTED, font=theme.font(7, mono=True))
-                # Key hints
-                c.create_text(ox + 4 * cell, oy + 4 * cell + 5, text="h j k l  w b e  x dw dd  i a o  v / u",
-                              fill=AMBER, font=theme.font(7), anchor="center")
+                ox, oy, box_w, box_h = _draw_game_frame(c, ww, hh, color)
+
+                # Use a small mono font; compute actual linespace
+                mono_font_spec = theme.font(7, mono=True)
+                mono_font = tkfont.Font(font=mono_font_spec)
+                line_h = mono_font.metrics("linespace") + 1  # actual linespace + 1px gap
+
+                # Inner padding
+                pad_x = 4
+                pad_y = 2
+                max_text_w = box_w - 2 * pad_x
+
+                # Editor content lines
+                buffer_lines = [
+                    "def navigate(ship):",
+                    "    if ship.radar:",  # cursor on 'i' of 'if'
+                    "        scan()",
+                    "    return course",
+                    "",
+                    "-- NORMAL --",
+                ]
+
+                # Truncate each line to fit, compute actual drawn lines count
+                drawn_lines = []
+                for line in buffer_lines:
+                    text_w = mono_font.measure(line)
+                    if text_w > max_text_w:
+                        ellipsis = "\u2026"
+                        ellipsis_w = mono_font.measure(ellipsis)
+                        lo, hi = 0, len(line)
+                        while lo < hi:
+                            mid = (lo + hi + 1) // 2
+                            if mono_font.measure(line[:mid]) + ellipsis_w <= max_text_w:
+                                lo = mid
+                            else:
+                                hi = mid - 1
+                        line = line[:lo] + ellipsis
+                    drawn_lines.append(line)
+
+                # Max lines that fit with optional status line
+                status_text = "h j k l  w b e  x dw dd  i a o  v / u"
+                status_font_spec = theme.font(6, mono=True)
+                status_font = tkfont.Font(font=status_font_spec)
+                status_h = status_font.metrics("linespace") + 1
+
+                # Determine how many buffer lines fit with status
+                max_buffer_lines = max(1, (box_h - 2 * pad_y - status_h) // line_h)
+                if max_buffer_lines > len(drawn_lines):
+                    max_buffer_lines = len(drawn_lines)
+
+                # Vertically center the buffer+status block
+                total_h = max_buffer_lines * line_h + status_h
+                gy = oy + pad_y + (box_h - 2 * pad_y - total_h) // 2
+                if gy < oy + pad_y:
+                    gy = oy + pad_y
+
+                gx = ox + pad_x
+
+                # ---- Editor chrome (non-text) ----
+                # Top title/tab bar
+                tab_h = line_h
+                c.create_rectangle(ox, oy, ox + box_w, oy + tab_h,
+                                   fill=blend(PANEL, color, 0.2), outline="")
+                # Thin separator under tab bar
+                sep_y = oy + tab_h
+                c.create_line(ox, sep_y, ox + box_w, sep_y, fill=blend(color, PANEL, 0.5), width=1)
+
+                # Left gutter (narrow strip)
+                gutter_w = 3
+                c.create_rectangle(ox, oy + tab_h, ox + gutter_w, oy + box_h,
+                                   fill=blend(PANEL, color, 0.15), outline="")
+
+                # Right scrollbar track + thumb
+                sb_w = 4
+                sb_x = ox + box_w - sb_w
+                c.create_rectangle(sb_x, oy + tab_h, ox + box_w, oy + box_h,
+                                   fill=blend(PANEL, color, 0.1), outline="")
+                # Thumb (small, near top)
+                thumb_h = max(8, box_h // 6)
+                thumb_y = oy + tab_h + 4
+                c.create_rectangle(sb_x + 1, thumb_y, sb_x + sb_w - 1, thumb_y + thumb_h,
+                                   fill=blend(color, PANEL, 0.4), outline="")
+
+                # Adjust text start x to account for gutter
+                gx = ox + gutter_w + pad_x
+                max_text_w = box_w - gutter_w - 2 * pad_x
+
+                # Draw buffer lines
+                for row, line in enumerate(drawn_lines[:max_buffer_lines]):
+                    y = gy + row * line_h
+                    # Line background
+                    c.create_rectangle(gx, y, gx + max_text_w, y + line_h - 1,
+                                       fill=blend(PANEL, color, 0.1), outline="")
+                    # Text
+                    c.create_text(gx, y, text=line, fill=TEXT, anchor="nw",
+                                  font=mono_font_spec)
+
+                # Block cursor on 'i' of 'if' (line 1, col 4)
+                cursor_row = 1
+                cursor_col = 4  # character index in the original line
+                if cursor_row < max_buffer_lines:
+                    line = buffer_lines[cursor_row]
+                    # Measure exact x position of cursor character
+                    cursor_x = mono_font.measure(line[:cursor_col])
+                    cx = gx + cursor_x
+                    cy = gy + cursor_row * line_h
+                    char_w = mono_font.measure(line[cursor_col:cursor_col+1]) or mono_font.measure("i")
+                    c.create_rectangle(cx, cy, cx + char_w, cy + line_h - 1,
+                                       fill=CYAN, outline="")
+                    # Do NOT add extra text for cursor letter; line text already shows it
+
+                # Extra empty-row backgrounds below buffer (no text, just tilde-less rows)
+                # Add 2 more row rects below the last buffer line if space permits
+                extra_rows = 2
+                for i in range(extra_rows):
+                    y = gy + max_buffer_lines * line_h + i * line_h
+                    if y + line_h <= oy + box_h - pad_y - status_h:
+                        c.create_rectangle(gx, y, gx + max_text_w, y + line_h - 1,
+                                           fill=blend(PANEL, color, 0.05), outline="")
+
+                # Status line below buffer, anchor nw, strictly inside frame
+                status_y = gy + max_buffer_lines * line_h + extra_rows * line_h
+                if status_y + status_h <= oy + box_h - pad_y:
+                    status_w = status_font.measure(status_text)
+                    if status_w > max_text_w:
+                        # Truncate status with ellipsis
+                        ellipsis = "\u2026"
+                        ellipsis_w = status_font.measure(ellipsis)
+                        lo, hi = 0, len(status_text)
+                        while lo < hi:
+                            mid = (lo + hi + 1) // 2
+                            if status_font.measure(status_text[:mid]) + ellipsis_w <= max_text_w:
+                                lo = mid
+                            else:
+                                hi = mid - 1
+                        status_text = status_text[:lo] + ellipsis
+                    c.create_text(gx, status_y, text=status_text, fill=AMBER, anchor="nw",
+                                  font=status_font_spec)
             elif gid == "docker_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # Terminal-style preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#0D1117", outline=AMBER, width=1)
-                # Prompt lines
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "$ docker run -d ship/radio",
-                    "abc123def456",
-                    "$ docker ps",
-                    "CONTAINER ID   IMAGE          STATUS    PORTS     NAMES",
-                    "abc123def456   ship/radio     Up 5s     8080/tcp  ship_abc",
-                    "$ docker logs abc123",
-                    "[radio] Module ready ✓",
+                    ("$ docker run -d ship/radio", AMBER),
+                    ("abc123def456", TEXT),
+                    ("$ docker ps", AMBER),
+                    ("CONTAINER ID   IMAGE          STATUS    PORTS     NAMES", TEXT),
+                    ("abc123def456   ship/radio     Up 5s     8080/tcp  ship_abc", TEXT),
+                    ("$ docker logs abc123", AMBER),
+                    ("[radio] Module ready ✓", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("$") else (CYAN if "ready" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#0D1117", AMBER, lines, mono_font_spec)
             elif gid == "linux_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # Linux terminal preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#1a1a2e", outline=CYAN, width=1)
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "$ pwd",
-                    "/home/cosmonaut",
-                    "$ whoami",
-                    "cosmonaut",
-                    "$ ls -la /var/log",
-                    "syslog  auth.log  kern.log",
-                    "$ grep -i error syslog",
-                    "[error] module radio timeout",
+                    ("$ pwd", AMBER),
+                    ("/home/cosmonaut", TEXT),
+                    ("$ whoami", AMBER),
+                    ("cosmonaut", TEXT),
+                    ("$ ls -la /var/log", AMBER),
+                    ("syslog  auth.log  kern.log", TEXT),
+                    ("$ grep -i error syslog", AMBER),
+                    ("[error] module radio timeout", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("$") else (CYAN if "error" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#1a1a2e", CYAN, lines, mono_font_spec)
             elif gid == "powershell_trainer":
-                cell = max(6, min(ww, hh) // 12)
-                ox = ww // 2 - 5 * cell
-                oy = hh // 2 - 3 * cell
-                # PowerShell terminal preview
-                c.create_rectangle(ox, oy, ox + 10 * cell, oy + 6 * cell, fill="#012456", outline=AMBER, width=1)
+                mono_font_spec = theme.font(7, mono=True)
+                box_w = int(ww * 0.85)
+                box_h = int(hh * 0.7)
+                ox = (ww - box_w) // 2
+                oy = (hh - box_h) // 2
                 lines = [
-                    "PS C:\\ship> Get-Process",
-                    "  123  pwsh    12.4  45MB",
-                    "  456  orion   8.1   128MB",
-                    "PS C:\\ship> Get-Service",
-                    "Running  ship-radio   Radio Module",
-                    "Stopped  ship-scanner Offline",
-                    "PS C:\\ship> Test-NetConnection localhost -Port 8080",
-                    "TcpTestSucceeded : True",
+                    ("PS C:\\ship> Get-Process", AMBER),
+                    ("  123  pwsh    12.4  45MB", TEXT),
+                    ("  456  orion   8.1   128MB", TEXT),
+                    ("PS C:\\ship> Get-Service", AMBER),
+                    ("Running  ship-radio   Radio Module", TEXT),
+                    ("Stopped  ship-scanner Offline", TEXT),
+                    ("PS C:\\ship> Test-NetConnection localhost -Port 8080", AMBER),
+                    ("TcpTestSucceeded : True", CYAN),
                 ]
-                for i, line in enumerate(lines):
-                    line_color = AMBER if line.startswith("PS") else (CYAN if "True" in line else TEXT)
-                    c.create_text(ox + cell, oy + cell + i * cell, text=line, fill=line_color, anchor="nw", font=theme.font(7, mono=True))
+                _draw_terminal_preview(c, ww, hh, ox, oy, box_w, box_h, "#012456", AMBER, lines, mono_font_spec)
+            elif gid == "breakout":
+                ox, oy, box_w, box_h = _draw_game_frame(c, ww, hh, color)
+                # Brick rows spanning frame width
+                brick_rows = 5
+                brick_cols = 14
+                cell_w = box_w // brick_cols
+                cell_h = (box_h // 2) // brick_rows  # bricks in upper half
+                bx0 = ox + (box_w - brick_cols * cell_w) // 2
+                by0 = oy + 4
+
+                # Color variations per row
+                row_colors = [
+                    blend(PURPLE, RED, 0.6),
+                    blend(PURPLE, AMBER, 0.5),
+                    blend(PURPLE, CYAN, 0.4),
+                    blend(PURPLE, GREEN, 0.4),
+                    blend(PURPLE, TEXT, 0.3),
+                ]
+
+                for row in range(brick_rows):
+                    for col in range(brick_cols):
+                        # Skip some bricks to show gaps (like broken ones)
+                        if (row == 2 and col in (3, 4, 5)) or (row == 4 and col in (8, 9)):
+                            continue
+                        bx = bx0 + col * cell_w
+                        by = by0 + row * cell_h
+                        c.create_rectangle(bx + 1, by + 1, bx + cell_w - 1, by + cell_h - 1,
+                                           fill=row_colors[row], outline=blend(row_colors[row], TEXT, 0.3))
+
+                # Paddle near bottom
+                paddle_w = box_w // 3
+                paddle_h = max(4, cell_h // 2)
+                px = ox + (box_w - paddle_w) // 2
+                py = oy + box_h - paddle_h - 6
+                c.create_rectangle(px, py, px + paddle_w, py + paddle_h,
+                                   fill=CYAN, outline=blend(CYAN, TEXT, 0.4), width=1)
+
+                # Ball in flight
+                ball_r = max(3, cell_h // 2)
+                ball_x = ox + box_w // 2 + 10
+                ball_y = py - 20
+                c.create_oval(ball_x - ball_r, ball_y - ball_r,
+                              ball_x + ball_r, ball_y + ball_r,
+                              fill=AMBER, outline=blend(AMBER, TEXT, 0.5), width=1)
+
+                # Three lives indicators (small circles top-right)
+                for i in range(3):
+                    lx = ox + box_w - 18 - i * 14
+                    ly = oy + 8
+                    c.create_oval(lx - 3, ly - 3, lx + 3, ly + 3, fill=RED, outline="")
             else:
                 for r in range(3):
                     for col in range(8):
@@ -366,6 +708,8 @@ class LoungeScreen(tk.Frame):
 
     def _clear_game(self) -> None:
         if self.game is not None:
+            from stamina import zen_mode
+            zen_mode.exit_zen(self.game)
             try:
                 self.game.stop()
             except Exception:
@@ -390,6 +734,10 @@ class LoungeScreen(tk.Frame):
         if getattr(e, "keysym", "") == "F1":
             return
         if self.game is not None:
+            # Ctrl+O приходит из cockpit._on_key; здесь хелпер для прямых вызовов.
+            from stamina import zen_mode
+            if zen_mode.handle_key(e, widget=self.game, allow_esc=False):
+                return
             self.game.on_key(e)
 
     def on_help(self) -> bool:

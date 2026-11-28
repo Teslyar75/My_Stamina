@@ -49,6 +49,7 @@ class GameShell(tk.Frame):
         self.lbl_best.pack(side=tk.RIGHT, padx=(0, px(16)))
 
         bar = tk.Frame(self, bg=BG)
+        self.toolbar = bar
         bar.pack(fill=tk.X, padx=px(12), pady=(0, px(4)))
         self.btn_pause = HudButton(bar, _t("ПАУЗА"), self.toggle_pause, height=34, font_size=10, width=100)
         self.btn_pause.pack(side=tk.LEFT, padx=(0, px(4)))
@@ -57,6 +58,8 @@ class GameShell(tk.Frame):
         HudButton(bar, _t("← В ЛОББИ"), self._back, height=34, font_size=10, width=120).pack(side=tk.LEFT)
         self.btn_help = HudButton(bar, "?", self.on_help, height=34, font_size=12, width=40, color=AMBER)
         self.btn_help.pack(side=tk.LEFT, padx=(px(8), 0))
+        self.btn_zen = HudButton(bar, "⛶", self.toggle_zen, height=34, font_size=12, width=40, color=CYAN)
+        self.btn_zen.pack(side=tk.LEFT, padx=(px(4), 0))
         # Галка для игр с вводом: Backspace стирает символ, а не уводит в лобби.
         # Вне игры глобальный Backspace не меняется — настройка живёт в lounge.json.
         self.backspace_edits = bool(store.setting("backspace_edits", True))
@@ -226,6 +229,11 @@ class GameShell(tk.Frame):
     def help_level_id(self) -> str | None:
         """id уровня из help_texts/<game>.json; None — только обзор."""
         return None
+
+    def toggle_zen(self) -> bool:
+        """Общий зенид приложения: ⛶ / Ctrl+O, выход — двойной Esc."""
+        from stamina import zen_mode
+        return zen_mode.toggle(self)
 
     def on_help(self) -> bool:
         """F1 / «?»: открыть или закрыть оверлей справки. True — событие обработано."""

@@ -22,7 +22,7 @@ def set_provider(fn) -> None:
     _provider = fn
 
 
-def _win32(x: int, y: int, nearest: bool) -> Rect | None:
+def _win32(x: int, y: int, nearest: bool, full: bool = False) -> Rect | None:
     import ctypes
     from ctypes import wintypes
 
@@ -41,16 +41,16 @@ def _win32(x: int, y: int, nearest: bool) -> Rect | None:
     mi.cbSize = ctypes.sizeof(MONITORINFO)
     if not u.GetMonitorInfoW(h, ctypes.byref(mi)):
         return None
-    r = mi.rcWork
+    r = mi.rcMonitor if full else mi.rcWork
     return int(r.left), int(r.top), int(r.right), int(r.bottom)
 
 
-def _query(x: int, y: int, nearest: bool) -> Rect | None:
+def _query(x: int, y: int, nearest: bool, full: bool = False) -> Rect | None:
     if _provider is not None:
-        return _provider(x, y, nearest)
+        return _provider(x, y, nearest)   # подмена в тестах задаёт рабочую область
     if sys.platform == "win32":
         try:
-            return _win32(x, y, nearest)
+            return _win32(x, y, nearest, full)
         except Exception:
             return None
     return None
@@ -73,6 +73,26 @@ def work_area(widget, x: int | None = None, y: int | None = None) -> Rect:
         return 0, 0, widget.winfo_screenwidth(), widget.winfo_screenheight()
     except tk.TclError:
         return 0, 0, 1920, 1080
+
+
+def monitor_rect(widget, x: int | None = None, y: int | None = None) -> Rect:
+    """Полный монитор окна (включая панель задач) — для кнопки «ЭКРАН».
+
+    work_area() возвращает область без панели, она подходит для выпадашек, но
+    полноэкранное окно должно занять монитор целиком и остаться на нём, даже
+    если это второй монитор с отрицательными координатами.
+    """
+    try:
+        if x is None or y is None:
+            top = widget.winfo_toplevel()
+            x = top.winfo_rootx() + top.winfo_width() // 2
+            y = top.winfo_rooty() + top.winfo_height() // 2
+        r = _query(x, y, True, True)
+        if r is not None:
+            return r
+    except tk.TclError:
+        pass
+    return work_area(widget, x, y)
 
 
 def on_some_monitor(x: int, y: int) -> bool | None:

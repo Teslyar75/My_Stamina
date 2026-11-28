@@ -538,6 +538,11 @@ class EnglishScreen(tk.Frame):
         if page is not None and hasattr(page, "on_key"):
             page.on_key(e)
 
+    def zen_target(self):
+        """Виджет зенида: только страницы со своим общим зенидом."""
+        page = self.pages.get(self.current) if self._built else None
+        return page if page is not None and hasattr(page, "toggle_focus") else None
+
     def focus_active(self) -> bool:
         page = self.pages.get(self.current) if self._built else None
         return getattr(page, "_focus", None) is not None

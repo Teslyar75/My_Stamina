@@ -7,7 +7,10 @@ import tkinter as tk
 import unittest
 from pathlib import Path
 
+import pytest
+
 from stamina import pilots, theme
+from stamina.lounge.trainer import TrainerGame
 from stamina.terraformer_trainer import (
     BASE_CELL,
     HOLD_CAP,
@@ -20,6 +23,15 @@ from stamina.terraformer_trainer import (
     load_blueprint,
     save_blueprint,
 )
+
+
+class _Event:
+    def __init__(self, keysym: str = "", keycode: int = 0, char: str = "", state: int = 0, **kwargs) -> None:
+        self.keysym = keysym
+        self.keycode = keycode
+        self.char = char
+        self.state = state
+        self.__dict__.update(kwargs)
 
 
 def _dig_until_soil_full(model: TrainerModel) -> None:
@@ -603,7 +615,7 @@ class TrainerHelpTkTest(unittest.TestCase):
         room = 1280 - theme.px(12) * 2 - theme.px(40)
         for lang in ("ru", "uk", "en", "de"):
             text = key if lang == "ru" else json.loads(
-                (i18n.DIR / f"{lang}.json").read_text(encoding="utf-8"))[key]
+                (i18n.DIR / f"{lang}.json").read_text(encoding="utf-8-sig"))[key]
             self.assertLessEqual(font.measure(text), room, lang)
         self.root.update()
         self.game.redraw()
@@ -762,5 +774,173 @@ class TextureTest(unittest.TestCase):
         self.assertNotEqual(sand_id1, sand_id2, "Texture object not recreated for different zoom")
 
 
+class TerraformerVimMovePureTest(unittest.TestCase):
+    def test_vim_nav_action_disabled(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertIsNone(vim_nav_action(_Event("h"), vim_mode=False))
+
+    def test_vim_nav_action_hjkl(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertEqual(vim_nav_action(_Event("h"), True), ("vim_move", -1, 0))
+        self.assertEqual(vim_nav_action(_Event("j"), True), ("vim_move", 0, 1))
+        self.assertEqual(vim_nav_action(_Event("k"), True), ("vim_move", 0, -1))
+        self.assertEqual(vim_nav_action(_Event("l"), True), ("vim_move", 1, 0))
+
+    def test_vim_nav_action_russian_keys(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_er", keycode=72), True), ("vim_move", -1, 0))
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_o", keycode=74), True), ("vim_move", 0, 1))
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_el", keycode=75), True), ("vim_move", 0, -1))
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_de", keycode=76), True), ("vim_move", 1, 0))
+
+    def test_vim_nav_action_wb_and_russian(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertEqual(vim_nav_action(_Event("w"), True), ("vim_jump", 1, 0))
+        self.assertEqual(vim_nav_action(_Event("b"), True), ("vim_jump", -1, 0))
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_tse", keycode=87), True), ("vim_jump", 1, 0))
+        self.assertEqual(vim_nav_action(_Event("Cyrillic_i", keycode=66), True), ("vim_jump", -1, 0))
+
+    def test_vim_nav_action_digits_and_zero_edges(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertEqual(vim_nav_action(_Event("5"), True), ("vim_digit", "5"))
+        self.assertEqual(vim_nav_action(_Event("0"), True), ("vim_row_start",))
+        self.assertEqual(vim_nav_action(_Event("4", char="$", state=0x1), True), ("vim_row_end",))
+
+    def test_vim_nav_action_gg_G(self):
+        from stamina.lounge.trainer import vim_nav_action
+        self.assertEqual(vim_nav_action(_Event("g"), True, pending_g=False), ("vim_g",))
+        self.assertEqual(vim_nav_action(_Event("g"), True, pending_g=True), ("vim_top",))
+        self.assertEqual(vim_nav_action(_Event("G", char="G", state=0x1), True), ("vim_bottom",))
+
+    def test_vim_target_cell_counts(self):
+        from stamina.lounge.trainer import vim_target_cell
+        self.assertEqual(vim_target_cell(("vim_move", 1, 0), 5, 0, 2, 10, 10), (5, 2))
+        self.assertEqual(vim_target_cell(("vim_move", 0, -1), 3, 5, 5, 10, 10), (5, 2))
+        self.assertEqual(vim_target_cell(("vim_jump", 1, 0), 3, 0, 1, 40, 10), (15, 1))
+        self.assertEqual(vim_target_cell(("vim_jump", -1, 0), 1, 10, 1, 40, 10), (5, 1))
+        self.assertEqual(vim_target_cell(("vim_top",), 1, 7, 9, 10, 10), (7, 0))
+        self.assertEqual(vim_target_cell(("vim_bottom",), 1, 7, 0, 10, 10), (7, 9))
+        self.assertEqual(vim_target_cell(("vim_row_start",), 1, 7, 3, 10, 10), (0, 3))
+        self.assertEqual(vim_target_cell(("vim_row_end",), 1, 0, 3, 10, 10), (9, 3))
+
+
+class TerraformerVimMoveTkTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        tk = pytest.importorskip("tkinter")
+        try:
+            cls.root = tk.Tk()
+            cls.root.withdraw()
+        except tk.TclError as e:
+            pytest.skip(f"no Tk display: {e}")
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            cls.root.destroy()
+        except Exception:
+            pass
+
+    def _make_game(self):
+        from stamina.lounge.trainer import TrainerGame
+        g = TrainerGame.__new__(TrainerGame)
+        g.model = TrainerModel()
+        g.camera = Camera(g.model.w, g.model.h)
+        g.overlay = None
+        g.paused = False
+        g._vim_count = ""
+        g._vim_pending_g = False
+        g.vim_move_mode = False
+        g._iso_view = False
+        g._iso_zoom = 1.0
+        g.msg = ""
+        g.show_toast = lambda *a, **k: None
+        g.redraw = lambda *a, **k: None
+        g._refresh_vim_button = lambda *a, **k: None
+        g.set_hint = lambda *a, **k: None
+        g.handle_help_keys = lambda *a, **k: False
+        g.close_overlay = lambda *a, **k: None
+        g.toggle_pause = lambda *a, **k: None
+        g.do_move = TrainerGame.do_move.__get__(g, TrainerGame)
+        g.do_move_selected = TrainerGame.do_move_selected.__get__(g, TrainerGame)
+        g.pan_camera = TrainerGame.pan_camera.__get__(g, TrainerGame)
+        g._handle_vim_nav = TrainerGame._handle_vim_nav.__get__(g, TrainerGame)
+        g._vim_nav_command = TrainerGame._vim_nav_command.__get__(g, TrainerGame)
+        g.toggle_vim_move_mode = TrainerGame.toggle_vim_move_mode.__get__(g, TrainerGame)
+        g._action = TrainerGame._action
+        return g
+
+    def test_toggle_f4_and_button_state(self):
+        g = self._make_game()
+        self.assertFalse(g.vim_move_mode)
+        TrainerGame.on_key(g, _Event("F4", keycode=115))
+        self.assertTrue(g.vim_move_mode)
+        TrainerGame.on_key(g, _Event("F4", keycode=115))
+        self.assertFalse(g.vim_move_mode)
+
+    def test_hjkl_moves_selected_when_enabled(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        x0, y0 = g.model.robot
+        TrainerGame.on_key(g, _Event("l", keycode=76))
+        self.assertEqual((g.model.robot[0], g.model.robot[1]), (x0 + 1, y0))
+
+    def test_count_move_5l(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        g.model.robot = [1, 1]
+        g.model.main_unit.x, g.model.main_unit.y = 1, 1
+        TrainerGame.on_key(g, _Event("5", char="5"))
+        TrainerGame.on_key(g, _Event("l", keycode=76))
+        self.assertEqual(g.model.main_unit.x, 6)
+
+    def test_w_jump_and_3w(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        g.model.main_unit.x, g.model.main_unit.y = 0, 2
+        TrainerGame.on_key(g, _Event("w", keycode=87))
+        self.assertEqual(g.model.main_unit.x, 5)
+        TrainerGame.on_key(g, _Event("3", char="3"))
+        TrainerGame.on_key(g, _Event("w", keycode=87))
+        self.assertEqual(g.model.main_unit.x, 20)
+
+    def test_gg_and_G(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        g.model.main_unit.x, g.model.main_unit.y = 3, 5
+        TrainerGame.on_key(g, _Event("g", keycode=71))
+        TrainerGame.on_key(g, _Event("g", keycode=71))
+        self.assertEqual(g.model.main_unit.y, 0)
+        TrainerGame.on_key(g, _Event("G", char="G", state=0x1, keycode=71))
+        self.assertEqual(g.model.main_unit.y, g.model.h - 1)
+
+    def test_0_and_dollar(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        g.model.main_unit.x, g.model.main_unit.y = 5, 4
+        TrainerGame.on_key(g, _Event("0", keycode=48))
+        self.assertEqual(g.model.main_unit.x, 0)
+        TrainerGame.on_key(g, _Event("4", char="$", state=0x1, keycode=52))
+        self.assertEqual(g.model.main_unit.x, g.model.w - 1)
+
+    def test_g_does_not_open_gallery_when_enabled(self):
+        g = self._make_game()
+        g.vim_move_mode = True
+        opened = {"n": 0}
+        g.toggle_gallery = lambda: opened.__setitem__("n", opened["n"] + 1)
+        TrainerGame.on_key(g, _Event("g", keycode=71))
+        self.assertEqual(opened["n"], 0)
+        self.assertTrue(g._vim_pending_g)
+
+    def test_g_opens_gallery_when_disabled(self):
+        g = self._make_game()
+        g.vim_move_mode = False
+        opened = {"n": 0}
+        g.toggle_gallery = lambda: opened.__setitem__("n", opened["n"] + 1)
+        TrainerGame.on_key(g, _Event("g", keycode=71))
+        self.assertEqual(opened["n"], 1)
+
+
 if __name__ == "__main__":
     unittest.main()
+

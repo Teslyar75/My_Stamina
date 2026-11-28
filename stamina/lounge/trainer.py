@@ -81,9 +81,79 @@ KEYCODE_ACTIONS = {
     86: ("toggle_mode",),
 }
 
+# Опциональный Vim-ход (по умолчанию выключен). F4 / кнопка в панели.
+VIM_NAV_KEYS = {
+    "h": ("vim_move", -1, 0), "j": ("vim_move", 0, 1),
+    "k": ("vim_move", 0, -1), "l": ("vim_move", 1, 0),
+    "cyrillic_er": ("vim_move", -1, 0), "р": ("vim_move", -1, 0),
+    "cyrillic_o": ("vim_move", 0, 1), "о": ("vim_move", 0, 1),
+    "cyrillic_el": ("vim_move", 0, -1), "л": ("vim_move", 0, -1),
+    "cyrillic_de": ("vim_move", 1, 0), "д": ("vim_move", 1, 0),
+    "w": ("vim_jump", 1, 0), "cyrillic_tse": ("vim_jump", 1, 0), "ц": ("vim_jump", 1, 0),
+    "b": ("vim_jump", -1, 0), "cyrillic_i": ("vim_jump", -1, 0), "и": ("vim_jump", -1, 0),
+    "0": ("vim_row_start",), "kp_0": ("vim_row_start",),
+}
+VIM_NAV_KEYCODES = {
+    72: ("vim_move", -1, 0), 74: ("vim_move", 0, 1),
+    75: ("vim_move", 0, -1), 76: ("vim_move", 1, 0),
+    87: ("vim_jump", 1, 0), 66: ("vim_jump", -1, 0),
+    48: ("vim_row_start",), 96: ("vim_row_start",),
+}
 
-def key_hint() -> str:
+
+def vim_nav_action(e, vim_mode: bool, pending_g: bool = False) -> tuple | None:
+    """Чистая функция: действие Vim-навигации или None. Не трогает Tk."""
+    if not vim_mode:
+        return None
+    k = (getattr(e, "keysym", "") or "").lower()
+    keycode = int(getattr(e, "keycode", 0) or 0)
+    state = int(getattr(e, "state", 0) or 0)
+    shift = bool(state & 0x1)
+    char = getattr(e, "char", "") or ""
+
+    if pending_g and k in ("g", "cyrillic_pe", "п"):
+        return ("vim_top",)
+    if k in ("g", "cyrillic_pe", "п") and not shift:
+        return ("vim_g",)
+    if (shift and k in ("g", "cyrillic_pe", "п")) or char == "G":
+        return ("vim_bottom",)
+    if char == "$" or (shift and keycode == 52):
+        return ("vim_row_end",)
+
+    if k.isdigit() and k != "0":
+        return ("vim_digit", k)
+    if k == "0" and pending_g:
+        return None
+    act = VIM_NAV_KEYS.get(k)
+    if act is None:
+        act = VIM_NAV_KEYCODES.get(keycode)
+    return act
+
+
+def vim_target_cell(action: tuple, count: int, x: int, y: int, w: int, h: int) -> tuple[int, int] | None:
+    """Чистая функция: целевая клетка Vim-команды."""
+    name = action[0]
+    c = max(1, int(count or 1))
+    if name == "vim_move":
+        return max(0, min(w - 1, x + action[1] * c)), max(0, min(h - 1, y + action[2] * c))
+    if name == "vim_jump":
+        step = 5 * c
+        return max(0, min(w - 1, x + action[1] * step)), y
+    if name == "vim_row_start":
+        return 0, y
+    if name == "vim_row_end":
+        return w - 1, y
+    if name == "vim_top":
+        return x, 0
+    if name == "vim_bottom":
+        return x, h - 1
+    return None
+
+
+def key_hint(vim_mode: bool = False) -> str:
     """Постоянная подсказка внизу экрана (одна строка, влезает в 1280 на всех языках)."""
+    if vim_mode:
+        return _t("F1 · WASD · стрелки · h/j/k/l · w/b · gg/G · 0/$ · F4 Vim · ЛКМ · ПКМ · I")
     return _t("F1 · WASD · Стрелки · Пробел · E · Q · B · G · T · N · ЛКМ · ПКМ · СКМ · I")
 
 
@@ -209,6 +279,9 @@ class TrainerGame(GameShell):
         self._iso_zoom = 1.0                  # отдельный зум для изометрии
         self._iso_cell_anchor: dict[tuple[int, int], int] = {}
         # миникарта и панорама у края
+        self.vim_move_mode = False
+        self._vim_count = ""
+        self._vim_pending_g = False
         self._minimap_rect: tuple[int, int, int, int] | None = None
         self._minimap_press = False
         self._edge_job = None
@@ -295,6 +368,9 @@ class TrainerGame(GameShell):
         self._last_mouse = (0, 0)
         self._minimap_rect = None
         self._minimap_press = False
+        self.vim_move_mode = False
+        self._vim_count = ""
+        self._vim_pending_g = False
         self._stop_edge_pan()
         self._clear_toast()
         self.set_score(0)
@@ -367,6 +443,10 @@ class TrainerGame(GameShell):
                 self.cycle_priority()
             return
         if self.overlay == "gallery":
+            k = (getattr(e, "keysym", "") or "").lower()
+            if self.vim_move_mode and k in ("g", "cyrillic_pe", "п"):
+                self.close_overlay()
+                return
             if name in ("esc", "gallery"):
                 self.close_overlay()
             elif name == "move":
@@ -401,7 +481,14 @@ class TrainerGame(GameShell):
         if name in ("esc", "pause"):
             self.toggle_pause()
             return
-        if self.paused or act is None:
+        if self.paused:
+            return
+        if getattr(e, "keycode", 0) == 115 or (getattr(e, "keysym", "") or "").lower() == "f4":
+            self.toggle_vim_move_mode()
+            return
+        if self._handle_vim_nav(e):
+            return
+        if act is None:
             return
         if name == "move":
             self.do_move(act[1], act[2])
@@ -455,11 +542,14 @@ class TrainerGame(GameShell):
             self.redraw()
         elif name == "home":
             self._iso_zoom = 1.0
-            self.camera.reset(*self.model.robot)
-            if self._iso_view:
-                self._center_iso_cell(*self.model.robot)
-            self._clamp_camera()
-            self.redraw()
+            if self.vim_move_mode:
+                self._vim_nav_command(("vim_row_start",))
+            else:
+                self.camera.reset(*self.model.robot)
+                if self._iso_view:
+                    self._center_iso_cell(*self.model.robot)
+                self._clamp_camera()
+                self.redraw()
         elif name == "mixed_mode":
             self._toggle_mixed_mode()
             self.redraw()
@@ -570,6 +660,84 @@ class TrainerGame(GameShell):
     def iso_view(self) -> bool:
         """Включён ли изометрический вид."""
         return self._iso_view
+
+    def toggle_vim_move_mode(self) -> None:
+        self.vim_move_mode = not self.vim_move_mode
+        self._vim_count = ""
+        self._vim_pending_g = False
+        state = _t("ВКЛ") if self.vim_move_mode else _t("ВЫКЛ")
+        self.show_toast(_t("Vim-ход: {0}").format(state))
+        self._refresh_vim_button()
+        self.set_hint(key_hint(self.vim_move_mode))
+        self.redraw()
+
+    def _vim_nav_command(self, action: tuple) -> bool:
+        count = int(self._vim_count) if self._vim_count else 1
+        self._vim_count = ""
+        self._vim_pending_g = False
+        units = self.model.selected_units() or [self.model.main_unit]
+        moved_any = False
+        for u in units:
+            target = vim_target_cell(action, count, u.x, u.y, self.model.w, self.model.h)
+            if not target:
+                continue
+            tx, ty = target
+            if tx == u.x and ty == u.y:
+                continue
+            u.x, u.y = tx, ty
+            u.path = []
+            u.target = None
+            moved_any = True
+        self.camera.track(*self.model.robot)
+        self.redraw()
+        return True
+
+    def _handle_vim_nav(self, e) -> bool:
+        if not self.vim_move_mode or self.overlay:
+            self._vim_pending_g = False
+            self._vim_count = ""
+            return False
+        k = (getattr(e, "keysym", "") or "").lower()
+        state = int(getattr(e, "state", 0) or 0)
+        ctrl = bool(state & 0x4)
+        alt = bool(state & 0x20000) or bool(state & 0x8)
+        if ctrl or alt:
+            self._vim_pending_g = False
+            self._vim_count = ""
+            return False
+        action = vim_nav_action(e, self.vim_move_mode, self._vim_pending_g)
+        if action is None:
+            if self._vim_count and not (k.isdigit()):
+                self._vim_count = ""
+            self._vim_pending_g = False
+            return False
+        name = action[0]
+        if name == "vim_digit":
+            self._vim_count += action[1]
+            self.show_toast(_t("Vim: счёт {0}").format(self._vim_count))
+            return True
+        if name == "vim_g":
+            self._vim_pending_g = True
+            return True
+        return self._vim_nav_command(action)
+
+    def _refresh_vim_button(self) -> None:
+        """Кнопка F4 в шапке игр: показывает текущее состояние Vim-хода."""
+        btn = getattr(self, "btn_vim", None)
+        if btn is None:
+            bar = getattr(self, "toolbar", None)
+            if bar is None:
+                return
+            from stamina.hud import HudButton
+            btn = HudButton(
+                bar, _t("VIM-ХОД  F4: {0}").format(_t("ВЫКЛ")),
+                self.toggle_vim_move_mode, height=34, font_size=10, width=160, color=CYAN,
+            )
+            btn.pack(side=tk.LEFT, padx=(px(4), 0))
+            self.btn_vim = btn
+        else:
+            state = _t("ВКЛ") if self.vim_move_mode else _t("ВЫКЛ")
+            btn.set_text(_t("VIM-ХОД  F4: {0}").format(state))
 
     def _toggle_mixed_mode(self) -> None:
         """Переключает смешанный режим: Orion-foreman копает и достраивает приоритетную платформу/базу."""
@@ -1510,7 +1678,7 @@ class TrainerGame(GameShell):
     def _draw_key_hint(self, w: int, h: int) -> int:
         """Одна строка подсказки внизу; шрифт уменьшается, если окно узкое. Возвращает верх полосы."""
         c = self.canvas
-        text = key_hint()
+        text = key_hint(self.vim_move_mode)
         for size in (10, 9, 8):
             tid = c.create_text(px(10), h - px(6), text=text, fill=TEXT, anchor="sw",
                                 font=theme.font(size), tags="keyhint")

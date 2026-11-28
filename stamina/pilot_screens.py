@@ -755,7 +755,7 @@ class LoginScreen(tk.Frame):
         L(var_bar, tr_("ВАРИАНТ"), fg=MUTED, size=8, bold=True, bg=BG).pack(side=tk.LEFT, padx=(0, px(8)))
         self._layout_id = "classic"
         self._layout_btns: dict[str, HudButton] = {}
-        for lid, label in (("classic", tr_("КЛАССИКА")), ("alt", tr_("ПУЛЬТ-КАБИНА"))):
+        for lid, label in (("classic", tr_("КЛАССИКА")), ("alt", tr_("ПУЛЬТ-КАБИНА")), ("experienced", tr_("ОПЫТНЫЙ ПИЛОТ"))):
             b = HudButton(var_bar, label, lambda k=lid: self._pick_layout(k), height=28, font_size=8, color=AMBER)
             b.pack(side=tk.LEFT, padx=px(2))
             self._layout_btns[lid] = b
@@ -855,7 +855,13 @@ class LoginScreen(tk.Frame):
         """«Скин + вариант» для подписи: «Звездолёт · ПУЛЬТ-КАБИНА»."""
         name = next((theme.theme_display_name(m["data"]) for m in theme.list_themes()
                      if m["id"] == getattr(self, "_skin_id", None)), getattr(self, "_skin_id", ""))
-        var = tr_("ПУЛЬТ-КАБИНА") if getattr(self, "_layout_id", "classic") == "alt" else tr_("КЛАССИКА")
+        lid = getattr(self, "_layout_id", "classic")
+        if lid == "experienced":
+            var = tr_("ОПЫТНЫЙ ПИЛОТ")
+        elif lid == "alt":
+            var = tr_("ПУЛЬТ-КАБИНА")
+        else:
+            var = tr_("КЛАССИКА")
         return f"{name} · {var}"
 
     def _update_stage(self) -> None:

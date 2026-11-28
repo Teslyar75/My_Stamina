@@ -51,6 +51,43 @@ def test_at_edge_and_own_binding(root):
     assert wheel_router.direction(type("E", (), {"num": 5, "delta": 0})()) == 1
 
 
+def test_wheel_over_scrollbar_scrolls_attached_text(root):
+    """Колесо над ползунком должно крутить поле, к которому он прицеплен."""
+    wheel_router.install(root)
+    text = tk.Text(root, height=5)
+    bar = tk.Scrollbar(root, command=text.yview)
+    text.configure(yscrollcommand=bar.set)
+    bar.pack(side=tk.RIGHT, fill=tk.Y)
+    text.pack(fill=tk.BOTH, expand=True)
+    for i in range(40):
+        text.insert("end", f"row {i}\n")
+    root.update()
+
+    target = wheel_router.target(bar, 1)
+    assert target is not None
+    before = text.yview()[0]
+    e = type("E", (), {"widget": bar, "delta": -120, "num": 0})()
+    wheel_router.route(e)
+    root.update()
+    assert text.yview()[0] > before
+
+
+def test_wheel_over_slim_bar_uses_owner_canvas(root):
+    wheel_router.install(root)
+    cv, inner = _scroller(root)
+    root.update()
+    bar = tk.Canvas(root, width=10)
+    bar.view = type("View", (), {"canvas": cv})()
+    bar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    assert wheel_router.target(bar, 1) is cv
+    before = cv.yview()[0]
+    e = type("E", (), {"widget": bar, "delta": -120, "num": 0})()
+    wheel_router.route(e)
+    root.update()
+    assert cv.yview()[0] > before
+
+
 def test_install_survives_new_tk_after_destroy():
     """После destroy() новый Tk() снова "." — роутер должен повеситься заново."""
     try:

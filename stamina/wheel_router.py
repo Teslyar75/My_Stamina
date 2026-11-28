@@ -68,11 +68,12 @@ def _own_wheel(w) -> bool:
 
 def _can_scroll(w, d: int) -> bool:
     try:
-        cls = w.winfo_class()
-        if cls == "Canvas" and not str(w.cget("yscrollcommand")):
-            return False
-        if cls not in ("Canvas",) + SELF_SCROLL:
-            return False
+        if not getattr(w, "_is_command_scroller", False):
+            cls = w.winfo_class()
+            if cls not in ("Canvas",) + SELF_SCROLL:
+                return False
+            if cls == "Canvas" and not str(w.cget("yscrollcommand")):
+                return False
         top, bot = (float(v) for v in w.yview())
     except (tk.TclError, ValueError, TypeError):
         return False
@@ -81,8 +82,69 @@ def _can_scroll(w, d: int) -> bool:
     return top > 0.0 if d < 0 else bot < 1.0
 
 
+class _CommandScroller:
+    """Прокси для ползунка, прицепленного через `command=cv.yview`.
+
+    Tkinter регистрирует его как безымянную Tcl-команду и не оставляет
+    Python-ссылки на виджет, поэтому крутим через саму команду.
+    """
+
+    _is_command_scroller = True
+
+    def __init__(self, top: tk.Misc, command: str) -> None:
+        self.top, self.command = top, command
+
+    def winfo_class(self) -> str:
+        return "CommandScroller"
+
+    def yview(self):
+        return tuple(float(v) for v in self.top.tk.call(self.command))
+
+    def yview_scroll(self, n: int, what: str) -> None:
+        self.top.tk.call(self.command, "scroll", n, what)
+
+
+def _via_scrollbar(w, d: int):
+    """Колесо над ползунком крутит тот виджет, к которому он прицеплен."""
+    try:
+        cls = w.winfo_class()
+    except tk.TclError:
+        return None
+    if cls in ("Scrollbar", "TScrollbar"):
+        command = str(w.cget("command") or "").strip()
+        top = w.winfo_toplevel()
+        view = None
+        if command.startswith("."):
+            try:
+                view = top.nametowidget(command.split()[0])
+            except (tk.TclError, KeyError):
+                view = None
+        if view is None and command:
+            view = _CommandScroller(top, command)
+            try:
+                top, bot = view.yview()
+            except tk.TclError:
+                view = None
+            else:
+                if top <= 0.0 and bot >= 1.0:
+                    view = None
+                elif not (top > 0.0 if d < 0 else bot < 1.0):
+                    view = None
+        if view is not None and _can_scroll(view, d):
+            return view
+    # Свои тонкие полосы (SlimBar в alt_ui) хранят владельца в .view.
+    view = getattr(w, "view", None)
+    canvas = getattr(view, "canvas", None)
+    if canvas is not None and _can_scroll(canvas, d):
+        return canvas
+    return None
+
+
 def target(w, d: int):
     """Ближайший предок (или сам виджет), который может прокрутиться в сторону d."""
+    direct = _via_scrollbar(w, d)
+    if direct is not None:
+        return direct
     x = w
     while x is not None:
         if _can_scroll(x, d):

@@ -40,9 +40,10 @@ def style_of(prof: str) -> tuple[str, str, str, float]:
 class AltRadioPanel:
     """Создаётся в ``alt_ui.build_chrome``: ``AltRadioPanel(app, app._alt_body, prof)``."""
 
-    def __init__(self, app, host, prof: str) -> None:
+    def __init__(self, app, host, prof: str, right_inset: int = 0) -> None:
         from stamina import alt_ui
         self.app, self.host, self.prof = app, host, prof
+        self.right_inset = max(0, int(right_inset))
         self.eng = get_engine()
         self.eng.bind_ui(app)
         title, self.glyph, acc_name, mix = style_of(prof)
@@ -244,13 +245,13 @@ class AltRadioPanel:
         if mode == "full":
             xy = self.drag.xy()
             if xy is None:
-                self.frame.place(relx=1.0, rely=0.5, anchor="e", x=-px(4))
+                self.frame.place(relx=1.0, rely=0.5, anchor="e", x=-(self.right_inset + px(4)))
             else:
                 self.frame.place(x=xy[0], y=xy[1], relx=0, rely=0, anchor="nw")
             self.frame.lift()
         elif mode == "tab":
             if pos is None:
-                self.tab.place(relx=1.0, rely=0.5, anchor="e", x=-px(2))
+                self.tab.place(relx=1.0, rely=0.5, anchor="e", x=-(self.right_inset + px(2)))
             else:
                 # ярлычок — у ближайшего края, на высоте перенесённой панели
                 self.tab_drag.pos = (1.0 if pos[0] >= 0.5 else 0.0, pos[1])

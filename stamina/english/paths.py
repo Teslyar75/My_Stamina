@@ -7,7 +7,6 @@ scripts/download_vosk_model.ps1 в папку models/ в корне проект
 """
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 PACKAGE_DIR = Path(__file__).resolve().parent

@@ -312,9 +312,11 @@ class VimTrainerGame(GameShell):
         self.set_hint(lesson_key())
 
     def build_tools(self) -> None:
-        """Вторая строка панели: учебник клавиш."""
+        """Вторая строка панели: учебник и навигация по урокам."""
         HudButton(self.tools, _t("УЧЕБНИК  F2"), self.toggle_reference, height=30,
                   font_size=9, width=140, color=AMBER).pack(side=tk.LEFT, padx=(0, px(8)))
+        HudButton(self.tools, _t("СЛЕДУЮЩИЙ УРОК ▶"), self._next_lesson, height=30,
+                  font_size=9, width=160, color=CYAN).pack(side=tk.LEFT, padx=(0, px(8)))
         tk.Label(self.tools, text=_t("клавиши, примеры и теория по темам · F2 в игре"),
                  bg=BG, fg=MUTED, font=theme.font(9)).pack(side=tk.LEFT)
 
@@ -457,6 +459,19 @@ class VimTrainerGame(GameShell):
             self.redraw()
             return
 
+        # Lesson navigation before printable: Ctrl+N must not become VIM 'n'.
+        keycode = int(getattr(e, "keycode", 0) or 0)
+        if ctrl:
+            if k in ("n", "cyrillic_te", "т") or keycode == 78:
+                self._next_lesson()
+                return
+            if k in ("p", "cyrillic_ze", "з") or keycode == 80:
+                self._prev_lesson()
+                return
+            # Ctrl+letter combos (except Ctrl+R handled above) must not reach engine.
+            if (len(k) == 1 and k.isprintable()) or k.startswith("cyrillic_"):
+                return
+
         # Handle printable characters and other keys via engine
         if len(k) == 1 and k.isprintable():
             # Handle digits for counts
@@ -466,33 +481,14 @@ class VimTrainerGame(GameShell):
                 self.message_color = AMBER
                 self.redraw()
                 return
-            
+
             # Process the key with any pending count
             count = int(self._pending_count) if self._pending_count else 1
             self._pending_count = ""
-            
-            # Check for shift + key combinations
-            if shift and k in ("x", "d", "c", "y"):
-                # These are handled by engine with shift
-                pass
-            
-            # For simplicity, let the engine handle it
-            # But we need to handle operators specially
-            if k in ("d", "c", "y") and self.state.pending_operator:
-                # This is a second key of an operator (dd, cc, yy, dw, etc.)
-                pass
-            
+
             process_key(self.state, k, count, shift=shift)
             self._check_lesson_complete()
             self.redraw()
-            return
-
-        # Check for lesson navigation
-        if k == "n" and ctrl:
-            self._next_lesson()
-            return
-        elif k == "p" and ctrl:
-            self._prev_lesson()
             return
 
         self.redraw()
@@ -581,7 +577,7 @@ class VimTrainerGame(GameShell):
             self.completed_lessons.add(self.lesson_idx)
             self.save_progress()
             self.add_score(100)
-            self.message = _t("Урок пройден! Ctrl+n — следующий урок")
+            self.message = _t("Урок пройден! Кнопка «Следующий урок ▶» или Ctrl+N / Ctrl+Т")
             self.message_color = GREEN
 
     def _next_lesson(self) -> None:
@@ -733,5 +729,5 @@ class VimTrainerGame(GameShell):
 
         # Next lesson hint
         if self.lesson_idx in self.completed_lessons and self.lesson_idx + 1 < len(LESSONS):
-            c.create_text(w - px(10), status_y + px(10), text=_t("Ctrl+n → дальше"),
+            c.create_text(w - px(10), status_y + px(10), text=_t("Ctrl+n / Ctrl+Т → дальше"),
                           fill=GREEN, anchor="e", font=theme.font(9, True))
