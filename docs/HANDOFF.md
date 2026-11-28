@@ -572,13 +572,14 @@ Done:
 - `timeline.py`: `_on_wheel()` возвращает `None` вне зоны ленты; при смене поверхности свои биндинги снимаются с прежнего холста.
 - `cockpit.py`: `exit_zen()` вызывается только при реальном `zen_target` отсека; добавлен `_arrow_scroll()` — Up/Down крутят область под курсором через `wheel_router.target()`, когда фокус не в поле ввода и не на `HudButton` (там стрелки двигают фокус по-прежнему).
 - `experienced.py`: `_on_zen(False)` не прячет экраны, если переход уже показал отсек (пустой вид по-прежнему убирает экраны и запускает слайдшоу).
-- Тесты в `tests/test_experienced_ui.py`: `test_ribbon_wheel_outside_strip_passes_event_on`, `test_leaving_work_to_log_keeps_scroller`, `test_arrow_keys_scroll_area_under_pointer`.
+- Пилот заметил следующий эффект: на мостике во время слепого набора одиночный Esc перестал ставить на паузу. Причина — зенид рабочего окна остаётся активным и первое нажатие съедается им. `cockpit._on_key()` теперь отдаёт Esc/Del мостику, если идёт набор (`state in ready/run/pause`), не трогая зенид; двойной Esc в простое по-прежнему закрывает отсек.
+- Тесты в `tests/test_experienced_ui.py`: `test_ribbon_wheel_outside_strip_passes_event_on`, `test_leaving_work_to_log_keeps_scroller`, `test_arrow_keys_scroll_area_under_pointer`, `test_single_esc_pauses_typing_on_bridge_even_with_work_open`.
 - Сравнение baseline `40cfbf6` и текущей ветки: `log-center` снова даёт `scroller True` и те же `views`, что до регрессии.
 
-Проверки: 43 затронутых теста зелёные (`test_experienced_ui`, `test_wheel_router`, `test_timeline`, `test_zen`, `test_zen_engine`, `test_keynav`, `test_speedread_to_bridge`), `ruff` по правкам и `ci_gate` зелёные. Два падения `test_scroll_frame.py` на Windows предсуществуют и подтверждены на чистом baseline.
+Проверки: затронутые тесты зелёные (`test_experienced_ui`, `test_wheel_router`, `test_timeline`, `test_bridge_zen`, `test_zen`, `test_zen_engine`, `test_keynav`, `test_speedread_to_bridge`), `ruff` по правкам и `ci_gate` зелёные. Два падения `test_scroll_frame.py` на Windows предсуществуют и подтверждены на чистом baseline.
 
 Отправлено: ветка `agent/orion/scroll-regression` → PR #68 (`6abfe80` → `origin/agent/orion/scroll-regression`).
 
-Next: после слияния попросить пилота глазами проверить колесо и стрелки на мостике после книги и в бортжурнале.
+Next: после слияния попросить пилота глазами проверить колесо, стрелки и одиночный Esc на мостике после книги, а также скролл в бортжурнале.
 
 Problems: нет.

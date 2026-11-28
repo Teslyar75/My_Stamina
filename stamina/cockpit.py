@@ -1687,6 +1687,14 @@ class Cockpit(tk.Tk):
             if self.current == "bridge" and self.screens["bridge"].state == "pause":
                 self.screens["bridge"].resume()
             return
+        # Слепой набор на мостике: Esc/Del — это пауза/продолжение, даже если
+        # открыто рабочее окно опытного вида. Иначе зенид проглатывает первое
+        # нажатие и набор не ставится на паузу.
+        bridge = self.screens.get("bridge") if self.current == "bridge" else None
+        if (e.keysym in ("Escape", "Delete") and bridge is not None
+                and bridge.state in ("ready", "run", "pause")):
+            bridge.on_key(e)
+            return "break"
         target = self._zen_target()
         if target is not None:
             from stamina import zen_mode

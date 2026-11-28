@@ -467,6 +467,27 @@ def test_esc_keeps_fullscreen_and_zen_priority(xp_app, monkeypatch):
     assert not app._xp_work_open         # двойной Esc — выход в пустой вид
 
 
+def test_single_esc_pauses_typing_on_bridge_even_with_work_open(xp_app):
+    """Одиночный Esc во время набора на мостике ставит на паузу, не закрывая отсек."""
+    app = xp_app()
+    experienced.open_work(app)
+    app.show("bridge")
+    app.update()
+    bridge = app.screens["bridge"]
+    bridge.start("hello world abc def ghi jkl", mode="cargo", title="t", subtitle="s")
+    app.update()
+    assert bridge.state == "ready"
+    assert zen_mode.is_active(app._xp_work)
+
+    _fire_esc(app)
+    assert bridge.state == "pause"
+    assert app._xp_work_open
+    assert zen_mode.is_active(app._xp_work)
+
+    _fire_esc(app)
+    assert bridge.state == "ready"
+
+
 def test_side_ribbon_centered_under_radio(xp_app):
     app = xp_app()
     app.geometry("1200x800")
