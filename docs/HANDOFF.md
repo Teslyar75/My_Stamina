@@ -557,3 +557,29 @@ Done:
 Next: выпуск через CI; при желании глазами пройти «чёрточка → меню → ПРАВИЛО/ГРАММАТИКА → Экран» и вход в английский из сетки «ИНОСТРАННЫЕ ЯЗЫКИ» на втором мониторе (реального второго монитора на стенде агента нет — проверка только на модельном rect).
 
 Problems: полный прогон `pytest tests/` на этом стенде не уложился в 15 минут; два падения в `test_english_unified_check.py` и `test_guest_cabin.py` в GeneralFibers не воспроизводятся изолированно и в смежном блоке, к правкам отношения не имеют. Предсуществующие падения `test_scroll_frame.py` на Windows подтверждены на чистом baseline `40cfbf6`.
+
+---
+
+## Регрессия скролла (28.11) — ветка `agent/orion/scroll-regression` от `master` `57a9f22`
+
+Пилот: после загрузки книги для набора перестали работать колесо и стрелки Up/Down на мостике, в бортжурнале тоже перестал работать скролл. Снимок перед правкой `snap-20261128-0253` (откат `git checkout snap-20261128-0253`).
+
+Найдены две причины, обе — из PR #66:
+- `stamina/ui/timeline.py`: новый `return "break"` в `_on_wheel()` срабатывал и вне полосы чёрточек (ленты рисуются на общем холсте), поэтому колесо не доходило до общего `wheel_router`. `set_surface()` ещё и оставлял обработчики на старом холсте.
+- `stamina/cockpit.py`: `_zen_target_for("bridge")` стал `None`, а `_exit_screen_focus()` передавал `None` в `zen_mode.exit_zen()` — тот закрывал **любой** активный зенид, в том числе рабочее окно опытного вида. `FocusMode.restore()` возвращал обои поверх уже открытого экрана: бортжурнал оставался невидимым (`winfo_ismapped() == 0`), скроллера под курсором не было.
+
+Done:
+- `timeline.py`: `_on_wheel()` возвращает `None` вне зоны ленты; при смене поверхности свои биндинги снимаются с прежнего холста.
+- `cockpit.py`: `exit_zen()` вызывается только при реальном `zen_target` отсека; добавлен `_arrow_scroll()` — Up/Down крутят область под курсором через `wheel_router.target()`, когда фокус не в поле ввода и не на `HudButton` (там стрелки двигают фокус по-прежнему).
+- `experienced.py`: `_on_zen(False)` не прячет экраны, если переход уже показал отсек (пустой вид по-прежнему убирает экраны и запускает слайдшоу).
+- Пилот заметил следующий эффект: на мостике во время слепого набора одиночный Esc перестал ставить на паузу. Причина — зенид рабочего окна остаётся активным и первое нажатие съедается им. `cockpit._on_key()` теперь отдаёт Esc/Del мостику, если идёт набор (`state in ready/run/pause`), не трогая зенид; двойной Esc в простое по-прежнему закрывает отсек.
+- Тесты в `tests/test_experienced_ui.py`: `test_ribbon_wheel_outside_strip_passes_event_on`, `test_leaving_work_to_log_keeps_scroller`, `test_arrow_keys_scroll_area_under_pointer`, `test_single_esc_pauses_typing_on_bridge_even_with_work_open`.
+- Сравнение baseline `40cfbf6` и текущей ветки: `log-center` снова даёт `scroller True` и те же `views`, что до регрессии.
+
+Проверки: затронутые тесты зелёные (`test_experienced_ui`, `test_wheel_router`, `test_timeline`, `test_bridge_zen`, `test_zen`, `test_zen_engine`, `test_keynav`, `test_speedread_to_bridge`), `ruff` по правкам и `ci_gate` зелёные. Два падения `test_scroll_frame.py` на Windows предсуществуют и подтверждены на чистом baseline.
+
+Отправлено: ветка `agent/orion/scroll-regression` → PR #68 (`6abfe80` → `origin/agent/orion/scroll-regression`).
+
+Next: после слияния попросить пилота глазами проверить колесо, стрелки и одиночный Esc на мостике после книги, а также скролл в бортжурнале.
+
+Problems: нет.

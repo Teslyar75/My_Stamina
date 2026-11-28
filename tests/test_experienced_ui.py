@@ -467,6 +467,27 @@ def test_esc_keeps_fullscreen_and_zen_priority(xp_app, monkeypatch):
     assert not app._xp_work_open         # двойной Esc — выход в пустой вид
 
 
+def test_single_esc_pauses_typing_on_bridge_even_with_work_open(xp_app):
+    """Одиночный Esc во время набора на мостике ставит на паузу, не закрывая отсек."""
+    app = xp_app()
+    experienced.open_work(app)
+    app.show("bridge")
+    app.update()
+    bridge = app.screens["bridge"]
+    bridge.start("hello world abc def ghi jkl", mode="cargo", title="t", subtitle="s")
+    app.update()
+    assert bridge.state == "ready"
+    assert zen_mode.is_active(app._xp_work)
+
+    _fire_esc(app)
+    assert bridge.state == "pause"
+    assert app._xp_work_open
+    assert zen_mode.is_active(app._xp_work)
+
+    _fire_esc(app)
+    assert bridge.state == "ready"
+
+
 def test_side_ribbon_centered_under_radio(xp_app):
     app = xp_app()
     app.geometry("1200x800")
@@ -605,3 +626,72 @@ def test_work_window_scrolls_by_mouse_wheel(xp_app):
     child.event_generate("<MouseWheel>", delta=-120)
     app.update()
     assert sf.canvas.yview()[0] > 0
+
+
+def test_ribbon_wheel_outside_strip_passes_event_on(xp_app):
+    """Колесо вне чёрточки не должно заканчиваться break и глушить роутер."""
+    from stamina.theme import px
+
+    app = xp_app(slides=False)
+    app.show("bridge")
+    experienced.open_work(app)
+    app.update()
+    ribbon = app._xp_top
+    assert ribbon.surface is app._xp_top_overlay
+    bottom = ribbon._region()[3]
+
+    outside = tk.Event()
+    outside.x, outside.y, outside.delta = 50, bottom + px(20), 120
+    assert ribbon._on_wheel(outside) is None
+
+    inside = tk.Event()
+    inside.x, inside.y, inside.delta = 50, 2, -120
+    assert ribbon._on_wheel(inside) == "break"
+
+
+def test_leaving_work_to_log_keeps_scroller(xp_app):
+    """Переход с мостика в бортжурнал не прячет экран под обоями."""
+    from stamina import wheel_router
+
+    app = xp_app(slides=False)
+    _open_missions_from_ribbon(app)
+    app.show("bridge")          # у мостика нет своего зенида
+    app.update()
+    app.show("log")
+    app.update()
+
+    log = app.screens["log"]
+    assert log.winfo_ismapped()
+    w = app.winfo_containing(app.winfo_rootx() + 300, app.winfo_rooty() + 300)
+    assert w is not None
+    assert wheel_router.target(w, 1) is not None
+
+
+def test_arrow_keys_scroll_area_under_pointer(xp_app):
+    """Up/Down крутят прокручиваемую область, когда фокус не в кнопке/поле."""
+    from stamina import wheel_router
+    from stamina.english.ui import ScrollFrame
+
+    app = xp_app(slides=False)
+    _open_missions_from_ribbon(app)
+    sf = ScrollFrame(app._xp_work)
+    first = app._xp_work.winfo_children()[0]
+    sf.pack(fill=tk.BOTH, expand=True, before=first)
+    for i in range(50):
+        tk.Label(sf.inner, text=f"row {i}").pack(anchor="w")
+    app.update()
+
+    x = sf.canvas.winfo_rootx() + sf.canvas.winfo_width() // 2 - app.winfo_rootx()
+    y = sf.canvas.winfo_rooty() + sf.canvas.winfo_height() // 2 - app.winfo_rooty()
+    app.event_generate("<Motion>", x=x, y=y, warp=True)
+    app.update()
+    w = app.winfo_containing(app.winfo_pointerx(), app.winfo_pointery())
+    scroller = wheel_router.target(w, 1)
+    assert scroller is not None
+    before = scroller.yview()[0]
+
+    e = tk.Event()
+    e.keysym, e.state, e.char = "Down", 0, ""
+    assert app._arrow_scroll(e) is True
+    app.update()
+    assert scroller.yview()[0] > before

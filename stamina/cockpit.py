@@ -642,7 +642,13 @@ class Cockpit(tk.Tk):
         if not screen_name:
             return
         from stamina import zen_mode
-        zen_mode.exit_zen(self._zen_target_for(screen_name))
+        # У отсека может не быть своего зенида (мостик после удаления кнопки).
+        # Передавать None в exit_zen нельзя: он закроет любой
+        # активный зенид (например, рабочее окно опытного вида) и вернёт
+        # обои поверх открытого экрана — тогда колесо не находит скроллер.
+        zen_target = self._zen_target_for(screen_name)
+        if zen_target is not None:
+            zen_mode.exit_zen(zen_target)
         scr = self.screens.get(screen_name)
         if scr is None:
             return
@@ -1635,6 +1641,36 @@ class Cockpit(tk.Tk):
             return True
         return False
 
+    def _arrow_scroll(self, e: tk.Event) -> bool:
+        """Up/Down крутят ту область, где стоит курсор, если фокус не в вводе."""
+        if int(getattr(e, "state", 0) or 0) & 0x4:   # Ctrl+стрелки — чужие хоткеи
+            return False
+        try:
+            focus = self.focus_get()
+            if focus is not None:
+                # Поля ввода и списки обрабатывают стрелки сами.
+                if focus.winfo_class() in ("Entry", "TEntry", "Text", "Listbox", "Treeview",
+                                           "Spinbox", "TSpinbox", "Combobox", "TCombobox"):
+                    return False
+                from stamina import keynav
+                if keynav.TAG in focus.bindtags():
+                    return False                 # HudButton: стрелки двигают фокус
+            w = self.winfo_containing(self.winfo_pointerx(), self.winfo_pointery())
+            if w is None or w.winfo_toplevel() is not self:
+                return False
+            from stamina import wheel_router
+            d = -1 if e.keysym == "Up" else 1
+            scroller = wheel_router.target(w, d)
+            if scroller is None:
+                return False
+            inc = ""
+            if scroller.winfo_class() == "Canvas" and hasattr(scroller, "cget"):
+                inc = str(scroller.cget("yscrollincrement"))
+            scroller.yview_scroll(d * (2 if inc not in ("", "0") else 3), "units")
+            return True
+        except (tk.TclError, AttributeError, ValueError):
+            return False
+
     def _on_key(self, e: tk.Event) -> str | None:
         zen = getattr(self, "zen", None)
         if zen is not None and zen.handle_key(e):
@@ -1651,6 +1687,14 @@ class Cockpit(tk.Tk):
             if self.current == "bridge" and self.screens["bridge"].state == "pause":
                 self.screens["bridge"].resume()
             return
+        # Слепой набор на мостике: Esc/Del — это пауза/продолжение, даже если
+        # открыто рабочее окно опытного вида. Иначе зенид проглатывает первое
+        # нажатие и набор не ставится на паузу.
+        bridge = self.screens.get("bridge") if self.current == "bridge" else None
+        if (e.keysym in ("Escape", "Delete") and bridge is not None
+                and bridge.state in ("ready", "run", "pause")):
+            bridge.on_key(e)
+            return "break"
         target = self._zen_target()
         if target is not None:
             from stamina import zen_mode
@@ -1698,6 +1742,8 @@ class Cockpit(tk.Tk):
         from stamina.nav_back import backspace_edits_text, is_back_key
         if is_back_key(e) and not backspace_edits_text(self, e):
             self.go_back(e)
+            return "break"
+        if e.keysym in ("Up", "Down") and self._arrow_scroll(e):
             return "break"
         if self.current == "bridge":
             from stamina.hud import HudButton
